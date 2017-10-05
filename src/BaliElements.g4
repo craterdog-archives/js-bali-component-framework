@@ -16,7 +16,10 @@ element:
     number
 ;
 
-any: ('none' | 'any') ;
+any:
+    'none'  #noneAny  |
+    'any'   #anyAny
+;
 
 tag: TAG ;
 
@@ -29,36 +32,34 @@ reference: RESOURCE ;
 version: VERSION ;
 
 text:
-    TEXT |
-    TEXT_BLOCK
+    TEXT        #inlineText  |
+    TEXT_BLOCK  #blockText
 ;
 
 binary: BINARY ;
 
 probability:
-    'true' |
-    'false' |
-    FRACTION
+    'true'    #trueProbability   |
+    'false'   #falseProbability  |
+    FRACTION  #fractionalProbability
 ;
 
 percent: real '%' ;
 
 real:
-    '-'? ('e' | 'pi' | 'phi') |
-    FLOAT
+    sign='-'? con=('e' | 'pi' | 'phi')  #constantReal  |
+    FLOAT                               #variableReal
 ;
 
-imaginary: (real | '-')? 'i' ;
+imaginary: (real | sign='-')? 'i' ;
 
 number:
-    'undefined' |
-    'infinity' |
-    real |
-    imaginary |
-    '(' real (',' | 'e^') imaginary ')'
+    'undefined'                              #undefinedNumber  |
+    'infinity'                               #infiniteNumber   |
+    real                                     #realNumber       |
+    imaginary                                #imaginaryNumber  |
+    '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
 ;
 
 name: IDENTIFIER ;
-
-newline: NEWLINE ;
 

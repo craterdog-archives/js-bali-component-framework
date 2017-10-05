@@ -41,7 +41,13 @@ module.exports = function(grunt) {
 
     // grunt-contrib-clean plugin configuration (clean up files)
     clean: {
-      generate: ['src/*.js', 'src/*.tokens'],
+      generate: [
+        'src/BaliLanguageLexer.js',
+        'src/BaliLanguageParser.js',
+        'src/BaliLanguageListener.js',
+        'src/BaliLanguageVisitor.js',
+        'src/*.tokens'
+      ],
       build: ['dist/*']
     },
 
@@ -57,7 +63,8 @@ module.exports = function(grunt) {
           flags: [
             'Werror',
             'Xlog',
-            'listener'
+            'listener',
+            'visitor'
           ]
         }
       }

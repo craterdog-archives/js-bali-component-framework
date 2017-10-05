@@ -1,7 +1,7 @@
 [
     $block: [
-        $simple: {}
-        $simple: { }
+        $empty: {}
+        $empty: { }
         $empty: {
         }
         $single: {
@@ -119,11 +119,11 @@
     ]
     $withLoop: [
         $simple: {
-            with 1..10 do {
+            with [1..10] do {
             }
         }
         $withLabel: {
-            label: with 1..10 do {
+            label: with [1..10] do {
             }
         }
         $withEach: {

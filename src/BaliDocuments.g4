@@ -2,45 +2,31 @@ grammar BaliDocuments;
 
 import BaliStatements;
 
-document: literal ('(' parameters ')')? ;
+document: literal parameters?;
 
-literal:
-    element |
-    composite |
-    block
-;
+literal: element | structure | block;
 
-parameters:
-    parameter (',' parameter)* |
-    newline (parameter newline)+
-;
+structure: '[' composite ']';
 
-parameter: (symbol ':')? value ;
+composite: range | collection | table;
 
-composite: '[' (range | collection | table) ']' ;
-
-range: element '..' element ;
+range: expression '..' expression;
 
 collection:
-    value (',' value)* |
-    newline (value newline)+ |
-    // empty collection
+    expression (',' expression)* #inlineCollection |
+    NEWLINE (expression NEWLINE)* #newlineCollection |
+    /*empty collection*/ #emptyCollection
 ;
 
 table:
-    association (',' association)* |
-    newline (association newline)+ |
-    ':' // empty table
+    association (',' association)* #inlineTable |
+    NEWLINE (association NEWLINE)* #newlineTable |
+    ':' /*empty table*/ #emptyTable
 ;
 
-association: key ':' value ;
+association: key ':' expression;
 
-key: element ('(' parameters ')')? ;
+key: element parameters?;
 
-value:
-    document |
-    variable
-;
-
-variable: name ;
+parameters: '(' composite ')';
 

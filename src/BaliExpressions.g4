@@ -2,40 +2,30 @@ grammar BaliExpressions;
 
 import BaliElements;
 
-expression:                                                       // Precedence (highest to lowest)
-    value |                                                       // literal value
-    funxtion '(' arguments? ')' |                                 // function invocation
-    '(' expression ')' |                                          // precedence specification
-    '@'expression |                                               // reference traversal
-    expression '[' indexes ']' |                                  // subvalue retrieval
-    expression '.' message '(' arguments? ')' |                   // message transmission
-    expression '!' |                                              // factorial
-    <assoc=right> expression '^' expression |                     // exponential
-    ('-' | '/' | '*') expression |                                // inversion
-    expression ('*' | '/' | '//' | '+' | '-') expression |        // arithmetic
-    '|' expression '|' |                                          // magnitude
-    expression '..' expression |                                  // range
-    expression ('<' | '=' | '>' | 'is' | 'matches') expression |  // comparison
-    'not' expression |                                            // complement
-    expression ('and' | 'sans' | 'xor' | 'or') expression |       // logical
-    expression '?' expression                                     // default specification
+expression:                                                        // Precedence (highest to lowest)
+    document                                                       #documentExpression     |
+    variable                                                       #variableExpression     |
+    funxion                                                        #funxionExpression      |
+    '(' expression ')'                                             #precedenceExpression   |
+    '@' expression                                                 #dereferenceExpression  |
+    expression indices                                             #componentExpression    |
+    expression '.' message                                         #messageExpression      |
+    expression '!'                                                 #factorialExpression    |
+    <assoc=right> expression '^' expression                        #exponentialExpression  |
+    op=('-' | '/' | '*') expression                                #inversionExpression    |
+    expression op=('*' | '/' | '//' | '+' | '-') expression        #arithmeticExpression   |
+    '|' expression '|'                                             #magnitudeExpression    |
+    expression op=('<' | '=' | '>' | 'is' | 'matches') expression  #comparisonExpression   |
+    'not' expression                                               #complementExpression   |
+    expression op=('and' | 'sans' | 'xor' | 'or') expression       #logicalExpression      |
+    expression '?' expression                                      #defaultExpression
 ;
 
-funxtion: name ;
+variable: name;
 
-message: name ;
+funxion: name parameters;
 
-arguments:
-    argument (',' argument)* |
-    newline (argument newline)+
-;
+message: name parameters;
 
-argument: (symbol ':')? expression ;
-
-indexes:
-    index (',' index)* |
-    newline (index newline)+
-;
-
-index: expression ;
+indices: structure;
 
