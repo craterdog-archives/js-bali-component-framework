@@ -1,27 +1,28 @@
 {
-  "name": "bali-parser",
+  "name": "bali-language",
   "version": "1.0.0",
-  "description": "This library provides a JavaScript based parser for the Bali Document Language™.",
+  "description": "This library provides a JavaScript based parser and formatterfor the Bali Document Language™.",
   "main": "Gruntfile.js",
   "scripts": {
     "pretest": "generate-parser",
-    "test": "test-parser"
+    "test": "test-roundtrip"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-parser.git"
+    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-language.git"
   },
   "keywords": [
     "JavaScript",
     "Bali",
-    "Parser"
+    "Parser",
+    "Formatter"
   ],
   "author": "Derk Norton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/craterdog-bali/js-bali-parser/issues"
+    "url": "https://github.com/craterdog-bali/js-bali-language/issues"
   },
-  "homepage": "https://github.com/craterdog-bali/js-bali-parser#readme",
+  "homepage": "https://github.com/craterdog-bali/js-bali-language#readme",
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-antlr4": "^0.1.6",

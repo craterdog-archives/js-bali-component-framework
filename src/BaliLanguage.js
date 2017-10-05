@@ -1,24 +1,45 @@
+var fs = require('fs');
 var antlr4 = require('antlr4/index');
+var BaliLanguageLexer = require('../src/BaliLanguageLexer').BaliLanguageLexer;
+var BaliLanguageParser = require('../src/BaliLanguageParser').BaliLanguageParser;
 var BaliLanguageVisitor = require('../src/BaliLanguageVisitor').BaliLanguageVisitor;
 
+
+// These functions parse Bali Language Documents
+
+function parseFile(filename) {
+    var document = fs.readFileSync(filename, 'utf8');
+    return parseDocument(document);
+}
+
+function parseDocument(document) {
+    var chars = new antlr4.InputStream(document);
+    var lexer = new BaliLanguageLexer(chars);
+    var tokens  = new antlr4.CommonTokenStream(lexer);
+    var parser = new BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var tree = parser.document();
+    return tree;
+}
+
+exports.parseFile = parseFile;
+exports.parseDocument = parseDocument;
 
 
 // These functions format Bali Language Documents as a string of text
 
 function formatDocument(document) {
-    this.visitor = new FormattingVisitor();
-    document.accept(this.visitor);
-    return this.visitor.buffer;
+    return formatDocument(document, '');
 }
 
 function formatDocument(document, indentation) {
     this.visitor = new FormattingVisitor(indentation);
     document.accept(this.visitor);
-    return this.visitor.buffer;
+    return this.visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
 }
 
-
 exports.formatDocument = formatDocument;
+
 
 // This helper class defines a formatting visitor for a parse tree produced by BaliLanguageParser.
 
