@@ -10,9 +10,9 @@
  * @type BaliLanguage <https://github.com/craterdog-bali/js-bali-language>
  ************************************************************************/
 var antlr4 = require('antlr4/index');
-var BaliLanguageLexer = require('../src/antlr/BaliLanguageLexer').BaliLanguageLexer;
-var BaliLanguageParser = require('../src/antlr/BaliLanguageParser').BaliLanguageParser;
-var BaliLanguageVisitor = require('../src/antlr/BaliLanguageVisitor').BaliLanguageVisitor;
+var bali = require('./antlr/index');
+var handlers = require('./handlers/index');
+
 
 /*
  * This module provides useful functions for parsing and manipulating documents
@@ -34,9 +34,9 @@ var BaliLanguageVisitor = require('../src/antlr/BaliLanguageVisitor').BaliLangua
  */
 function parseDocument(document) {
     var chars = new antlr4.InputStream(document);
-    var lexer = new BaliLanguageLexer(chars);
+    var lexer = new bali.BaliLanguageLexer(chars);
     var tokens  = new antlr4.CommonTokenStream(lexer);
-    var parser = new BaliLanguageParser(tokens);
+    var parser = new bali.BaliLanguageParser(tokens);
     parser.buildParseTrees = true;
     var tree = parser.document();
     return tree;
@@ -113,8 +113,8 @@ exports.convertToTree = convertToTree;
  * its corresponding Bali parse tree.
  */
 function ObjectTransformer() {
-    this.handlers = {
-        String: new StringHandler()
+    this.handlerMap = {
+        String: new handlers.StringHandler()
     };
     return this;
 }
@@ -126,18 +126,18 @@ ObjectTransformer.prototype.constructor = ObjectTransformer;
 // Transformer Methods
 
 ObjectTransformer.prototype.addHandler = function(type, handler) {
-    this.handlers.defineProperty(type, handler);
+    this.handlerMap.defineProperty(type, handler);
 };
 
 ObjectTransformer.prototype.toObject = function(type, tree) {
-    var handler = this.handlers[type];
+    var handler = this.handlerMap[type];
     var object = handler.toObject(tree);
     return object;
 };
 
 ObjectTransformer.prototype.toTree = function(object) {
     var type = object.constructor;
-    var handler = this.handlers[type];
+    var handler = this.handlerMap[type];
     var tree = handler.toTree(object);
     return tree;
 };
@@ -151,14 +151,14 @@ ObjectTransformer.prototype.toTree = function(object) {
  */
 
 function FormattingVisitor(padding) {
-    BaliLanguageVisitor.call(this);
+    bali.BaliLanguageVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
     this.buffer = '';
     this.depth = 0;
     return this;
 }
 
-FormattingVisitor.prototype = Object.create(BaliLanguageVisitor.prototype);
+FormattingVisitor.prototype = Object.create(bali.BaliLanguageVisitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 FormattingVisitor.prototype.indentation = '    ';  // indentation per level
 
