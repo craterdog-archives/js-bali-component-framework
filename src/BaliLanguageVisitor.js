@@ -117,11 +117,6 @@ BaliLanguageVisitor.prototype.visitExceptionClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#exception.
-BaliLanguageVisitor.prototype.visitException = function(ctx) {
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#finalClause.
 BaliLanguageVisitor.prototype.visitFinalClause = function(ctx) {
 };
@@ -204,6 +199,11 @@ BaliLanguageVisitor.prototype.visitResult = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#throwException.
 BaliLanguageVisitor.prototype.visitThrowException = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#xception.
+BaliLanguageVisitor.prototype.visitXception = function(ctx) {
 };
 
 

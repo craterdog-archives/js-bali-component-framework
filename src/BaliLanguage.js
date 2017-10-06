@@ -1,16 +1,10 @@
-var fs = require('fs');
 var antlr4 = require('antlr4/index');
 var BaliLanguageLexer = require('../src/BaliLanguageLexer').BaliLanguageLexer;
 var BaliLanguageParser = require('../src/BaliLanguageParser').BaliLanguageParser;
 var BaliLanguageVisitor = require('../src/BaliLanguageVisitor').BaliLanguageVisitor;
 
 
-// These functions parse Bali Language Documents
-
-function parseFile(filename) {
-    var document = fs.readFileSync(filename, 'utf8');
-    return parseDocument(document);
-}
+// These utility functions parse and format Bali Language Documents
 
 function parseDocument(document) {
     var chars = new antlr4.InputStream(document);
@@ -22,12 +16,6 @@ function parseDocument(document) {
     return tree;
 }
 
-exports.parseFile = parseFile;
-exports.parseDocument = parseDocument;
-
-
-// These functions format Bali Language Documents as a string of text
-
 function formatDocument(document) {
     return formatDocument(document, '');
 }
@@ -38,6 +26,7 @@ function formatDocument(document, indentation) {
     return this.visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
 }
 
+exports.parseDocument = parseDocument;
 exports.formatDocument = formatDocument;
 
 
@@ -143,7 +132,6 @@ FormattingVisitor.prototype.visitNewlineCollection = function(ctx) {
 
 // emptyCollection: /*empty collection*/
 FormattingVisitor.prototype.visitEmptyCollection = function(ctx) {
-    this.buffer += ' ';
 };
 
 
@@ -226,7 +214,7 @@ FormattingVisitor.prototype.visitBlock = function(ctx) {
 
 
 // HACK: this method is missing from the generated visitor!
-FormattingVisitor.prototype.visitStatement = function(ctx) {
+FormattingVisitor.prototype.visitStatements = function(ctx) {
     ctx.accept(this);
 };
 
@@ -257,7 +245,6 @@ FormattingVisitor.prototype.visitNewlineStatements = function(ctx) {
 
 // emptyStatements: /*empty statements*/
 FormattingVisitor.prototype.visitEmptyStatements = function(ctx) {
-    this.buffer += ' ';
 };
 
 
@@ -265,8 +252,8 @@ FormattingVisitor.prototype.visitEmptyStatements = function(ctx) {
 FormattingVisitor.prototype.visitStatement = function(ctx) {
     this.visitMainClause(ctx.mainClause());
     var exceptionClauses = ctx.exceptionClause();
-    for (var clause in exceptionClauses) {
-        this.visitExceptionClause(clause);
+    for (var i = 0; i < exceptionClauses.length; i++) {
+        this.visitExceptionClause(exceptionClauses[i]);
     }
     var finalClause = ctx.finalClause();
     if (finalClause) {
@@ -283,26 +270,21 @@ FormattingVisitor.prototype.visitMainClause = function(ctx) {
 };
 
 
-// exceptionClause: 'catch' symbol 'matching' exception 'with' block
+// exceptionClause: 'catch' symbol 'matching' xception 'with' block
 FormattingVisitor.prototype.visitExceptionClause = function(ctx) {
-    this.buffer += 'catch ';
+    this.buffer += ' catch ';
     this.visitSymbol(ctx.symbol());
     this.buffer += ' matching ';
-    this.visitException(ctx.exception());
+    this.visitException(ctx.xception());
     this.buffer += ' with ';
     this.visitBlock(ctx.block());
 };
 
 
-// exception: expression
-FormattingVisitor.prototype.visitException = function(ctx) {
-    this.visitExpression(ctx.expression());
-};
-
 
 // finalClause: 'finish' 'with' block
 FormattingVisitor.prototype.visitFinalClause = function(ctx) {
-    this.buffer += 'finish with ';
+    this.buffer += ' finish with ';
     this.visitBlock(ctx.block());
 };
 
@@ -422,10 +404,16 @@ FormattingVisitor.prototype.visitResult = function(ctx) {
 };
 
 
-// throwException: 'throw' exception
+// throwException: 'throw' xception
 FormattingVisitor.prototype.visitThrowException = function(ctx) {
     this.buffer += 'throw ';
-    this.visitException(ctx.exception());
+    this.visitException(ctx.xception());
+};
+
+
+// xception: expression
+FormattingVisitor.prototype.visitException = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
@@ -470,10 +458,11 @@ FormattingVisitor.prototype.visitSelectFrom = function(ctx) {
     // handle the selection
     this.buffer += 'select ';
     this.visitSelection(ctx.selection());
-    this.buffer += ' from ';
+    this.buffer += ' from';
 
     // handle option blocks
     for (var i = 0; i < options.length; i++) {
+        this.buffer += ' ';
         this.visitOption(options[i]);
         this.buffer += ' do ';
         this.visitBlock(blocks[i]);
@@ -610,7 +599,14 @@ FormattingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // inversionExpression: op=('-' | '/' | '*') expression
 FormattingVisitor.prototype.visitInversionExpression = function(ctx) {
-    this.buffer += ctx.op.text;
+    var operation = ctx.op.text;
+    var expression = ctx.expression();
+    this.buffer += operation;
+    if (operation === '-') {
+        if (expression.getText()[0] === "-") {
+            this.buffer += ' ';  // must insert a space before a negative value!
+        }
+    }
     this.visitExpression(ctx.expression());
 };
 

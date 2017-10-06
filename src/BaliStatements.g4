@@ -14,9 +14,7 @@ statements:
 
 statement: mainClause exceptionClause* finalClause?;
 
-exceptionClause: 'catch' symbol 'matching' exception 'with' block;
-
-exception: expression;
+exceptionClause: 'catch' symbol 'matching' xception 'with' block;
 
 finalClause: 'finish' 'with' block;
 

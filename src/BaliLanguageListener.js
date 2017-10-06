@@ -200,15 +200,6 @@ BaliLanguageListener.prototype.exitExceptionClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#exception.
-BaliLanguageListener.prototype.enterException = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#exception.
-BaliLanguageListener.prototype.exitException = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#finalClause.
 BaliLanguageListener.prototype.enterFinalClause = function(ctx) {
 };
@@ -359,6 +350,15 @@ BaliLanguageListener.prototype.enterThrowException = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#throwException.
 BaliLanguageListener.prototype.exitThrowException = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#xception.
+BaliLanguageListener.prototype.enterXception = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#xception.
+BaliLanguageListener.prototype.exitXception = function(ctx) {
 };
 
 

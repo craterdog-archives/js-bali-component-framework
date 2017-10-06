@@ -45,7 +45,9 @@ returnResult: 'return' result?;
 
 result: expression;
 
-throwException: 'throw' exception;
+throwException: 'throw' xception;
+
+xception: expression;
 
 ifThen: 'if' condition 'then' block ('else' 'if' condition 'then' block)* ('else' block)?;
 
