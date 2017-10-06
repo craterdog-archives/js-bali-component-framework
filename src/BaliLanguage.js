@@ -1,11 +1,37 @@
+/************************************************************************
+ * Copyright (c) Crater Dog Technologies(TM).  All Rights Reserved.     *
+ ************************************************************************
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.        *
+ *                                                                      *
+ * This code is free software; you can redistribute it and/or modify it *
+ * under the terms of The MIT License (MIT), as published by the Open   *
+ * Source Initiative. (See http://opensource.org/licenses/MIT)          *
+ ************************************************************************
+ * @type BaliLanguage <https://github.com/craterdog-bali/js-bali-language>
+ ************************************************************************/
 var antlr4 = require('antlr4/index');
 var BaliLanguageLexer = require('../src/antlr/BaliLanguageLexer').BaliLanguageLexer;
 var BaliLanguageParser = require('../src/antlr/BaliLanguageParser').BaliLanguageParser;
 var BaliLanguageVisitor = require('../src/antlr/BaliLanguageVisitor').BaliLanguageVisitor;
 
+/*
+ * This module provides useful functions for parsing and manipulating documents
+ * that are written using the Bali Document Language™. For more information
+ * about the Bali language refer to the Reference Guide at:
+ * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
+ */
 
-// These utility functions parse and format Bali Language Documents
 
+// PUBLIC FUNCTIONS
+
+/*
+ * This function parses a text document written using the Bali Document Language™
+ * and returns the parse tree. The parse tree can then be used by other functions
+ * that do formatting, language transformations, validation, compilation, etc.
+ * 
+ * @param String document The Bali document to be parsed.
+ * @returns antlr4.ParserRuleContext The root of the resulting parser tree.
+ */
 function parseDocument(document) {
     var chars = new antlr4.InputStream(document);
     var lexer = new BaliLanguageLexer(chars);
@@ -16,25 +42,117 @@ function parseDocument(document) {
     return tree;
 }
 
-function formatDocument(document) {
-    return formatDocument(document, '');
+
+/*
+ * This function "walks" a parse tree for a Bali document creating a canonically
+ * formatted text string containing the corresponding Bali document.
+ * 
+ * @param antlr4.ParseRuleContext tree The parse tree for the desired document.
+ * @returns String The formatted Bali document.
+ */
+function formatDocument(tree) {
+    return formatPaddedDocument(tree, '');
 }
 
-function formatDocument(document, indentation) {
-    this.visitor = new FormattingVisitor(indentation);
-    document.accept(this.visitor);
-    return this.visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
+
+/*
+ * This function "walks" a parse tree for a Bali document creating a canonically
+ * formatted text string containing the corresponding Bali document.
+ * 
+ * @param antlr4.ParseRuleContext tree The parse tree for the desired document.
+ * @param String padding The padding string to be used at the beginning of
+ *               each line of the formatted string.
+ * @returns String The formatted Bali document.
+ */
+function formatPaddedDocument(tree, padding) {
+    var visitor = new FormattingVisitor(padding);
+    tree.accept(visitor);
+    return visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
 }
+
+
+/*
+ * This function "walks" a parse tree for a Bali document creating the corresponding
+ * javascript object.
+ * 
+ * @param antlr4.ParseRuleContext tree The parse tree to be converted to a javascript object.
+ * @returns Object The resulting javascript object.
+ */
+function convertToObject(tree) {
+    var transformer = new ObjectTransformer();
+    var object = transformer.toObject(tree);
+    return object;
+}
+
+
+/*
+ * This function reflectively converts a javascript object into its corresponding Bali parse tree.
+ * 
+ * @param Object object The javascript object to be converted into a parse tree for a Bali document.
+ * @returns antlr4.ParseRuleContext The resulting parse tree for the javascript object.
+ */
+function convertToTree(object) {
+    var transformer = new ObjectTransformer();
+    var tree = transformer.toTree(object);
+    return tree;
+}
+
 
 exports.parseDocument = parseDocument;
 exports.formatDocument = formatDocument;
+exports.formatPaddedDocument = formatPaddedDocument;
+exports.convertToObject = convertToObject;
+exports.convertToTree = convertToTree;
 
 
-// This helper class defines a formatting visitor for a parse tree produced by BaliLanguageParser.
+// PRIVATE HELPER CLASSES AND FUNCTIONS
 
-function FormattingVisitor(indentation) {
+/*
+ * This helper class defines a transformer that can transform a Bali parse tree
+ * into its corresponding javascript object, or transform a javascript object into
+ * its corresponding Bali parse tree.
+ */
+function ObjectTransformer() {
+    this.handlers = {
+        String: new StringHandler()
+    };
+    return this;
+}
+
+ObjectTransformer.prototype = Object.create(Object.prototype);
+ObjectTransformer.prototype.constructor = ObjectTransformer;
+
+
+// Transformer Methods
+
+ObjectTransformer.prototype.addHandler = function(type, handler) {
+    this.handlers.defineProperty(type, handler);
+};
+
+ObjectTransformer.prototype.toObject = function(type, tree) {
+    var handler = this.handlers[type];
+    var object = handler.toObject(tree);
+    return object;
+};
+
+ObjectTransformer.prototype.toTree = function(object) {
+    var type = object.constructor;
+    var handler = this.handlers[type];
+    var tree = handler.toTree(object);
+    return tree;
+};
+
+
+/*
+ * This helper class defines a formatting visitor that "walks" a parse tree
+ * produced by the BaliLanguageParser and generates a canonical version of
+ * the corresponding Bali document. An optional padding may be specified
+ * that is prepended to each line of the Bali document.
+ */
+
+function FormattingVisitor(padding) {
     BaliLanguageVisitor.call(this);
-    this.indentation = indentation === undefined ? '' : indentation;
+    this.padding = padding === undefined ? '' : padding;
     this.buffer = '';
     this.depth = 0;
     return this;
@@ -42,10 +160,10 @@ function FormattingVisitor(indentation) {
 
 FormattingVisitor.prototype = Object.create(BaliLanguageVisitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
-FormattingVisitor.prototype.pad = '    ';  // padding per indentation level
+FormattingVisitor.prototype.indentation = '    ';  // indentation per level
 
 
-// private helper methods
+// Private Helper Methods
 
 FormattingVisitor.prototype.appendNewline = function() {
     this.buffer += '\n';
@@ -53,13 +171,15 @@ FormattingVisitor.prototype.appendNewline = function() {
 };
 
 FormattingVisitor.prototype.getPadding = function() {
-    var padding = this.indentation;
+    var padding = this.padding;
     for (var i = 0; i < this.depth; i++) {
-        padding += FormattingVisitor.prototype.pad;
+        padding += FormattingVisitor.prototype.indentation;
     }
     return padding;
 };
 
+
+// Visitor Methods (One for Each Rule)
 
 // document: literal parameters?
 FormattingVisitor.prototype.visitDocument = function(ctx) {
