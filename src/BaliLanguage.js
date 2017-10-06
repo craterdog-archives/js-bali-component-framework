@@ -1,7 +1,7 @@
 var antlr4 = require('antlr4/index');
-var BaliLanguageLexer = require('../src/BaliLanguageLexer').BaliLanguageLexer;
-var BaliLanguageParser = require('../src/BaliLanguageParser').BaliLanguageParser;
-var BaliLanguageVisitor = require('../src/BaliLanguageVisitor').BaliLanguageVisitor;
+var BaliLanguageLexer = require('../src/antlr/BaliLanguageLexer').BaliLanguageLexer;
+var BaliLanguageParser = require('../src/antlr/BaliLanguageParser').BaliLanguageParser;
+var BaliLanguageVisitor = require('../src/antlr/BaliLanguageVisitor').BaliLanguageVisitor;
 
 
 // These utility functions parse and format Bali Language Documents

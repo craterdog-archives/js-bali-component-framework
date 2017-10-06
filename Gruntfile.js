@@ -42,11 +42,12 @@ module.exports = function(grunt) {
     // grunt-contrib-clean plugin configuration (clean up files)
     clean: {
       generate: [
-        'src/BaliLanguageLexer.js',
-        'src/BaliLanguageParser.js',
-        'src/BaliLanguageListener.js',
-        'src/BaliLanguageVisitor.js',
-        'src/*.tokens'
+        '*.log',
+        'src/antlr/BaliLanguageLexer.js',
+        'src/antlr/BaliLanguageParser.js',
+        'src/antlr/BaliLanguageListener.js',
+        'src/antlr/BaliLanguageVisitor.js',
+        'src/antlr/*.tokens'
       ],
       build: ['dist/*']
     },
@@ -54,9 +55,8 @@ module.exports = function(grunt) {
     // grunt-antlr4 plugin configuration (generate parser)
     antlr4: {
       generate: {
-        grammar: 'src/BaliLanguage.g4',
+        grammar: 'src/antlr/BaliLanguage.g4',
         options: {
-          //lib: 'src/',
           grammarLevel: {
             language: 'JavaScript'
           },
