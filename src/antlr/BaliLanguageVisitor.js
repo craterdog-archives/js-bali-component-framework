@@ -22,8 +22,18 @@ BaliLanguageVisitor.prototype.visitLiteral = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#parameters.
+BaliLanguageVisitor.prototype.visitParameters = function(ctx) {
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#structure.
 BaliLanguageVisitor.prototype.visitStructure = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#block.
+BaliLanguageVisitor.prototype.visitBlock = function(ctx) {
 };
 
 
@@ -77,18 +87,8 @@ BaliLanguageVisitor.prototype.visitKey = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#parameters.
-BaliLanguageVisitor.prototype.visitParameters = function(ctx) {
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#script.
 BaliLanguageVisitor.prototype.visitScript = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#block.
-BaliLanguageVisitor.prototype.visitBlock = function(ctx) {
 };
 
 
@@ -459,11 +459,6 @@ BaliLanguageVisitor.prototype.visitImaginaryNumber = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#complexNumber.
 BaliLanguageVisitor.prototype.visitComplexNumber = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#name.
-BaliLanguageVisitor.prototype.visitName = function(ctx) {
 };
 
 

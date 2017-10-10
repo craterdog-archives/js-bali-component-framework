@@ -114,7 +114,9 @@ exports.convertToTree = convertToTree;
  */
 function ObjectTransformer() {
     this.handlerMap = {
-        String: new handlers.StringHandler()
+        Boolean: new handlers.BooleanHandler(),
+        String: new handlers.StringHandler(),
+        Number: new handlers.NumberHandler()
     };
     return this;
 }
@@ -503,7 +505,7 @@ FormattingVisitor.prototype.visitBreakFrom = function(ctx) {
 
 // label: name
 FormattingVisitor.prototype.visitLabel = function(ctx) {
-    this.visitName(ctx.name());
+    this.buffer += ctx.IDENTIFIER().getText();
 };
 
 
@@ -786,20 +788,20 @@ FormattingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // variable: name
 FormattingVisitor.prototype.visitVariable = function(ctx) {
-    this.visitName(ctx.name());
+    this.buffer += ctx.IDENTIFIER().getText();
 };
 
 
 // funxion: name parameters
 FormattingVisitor.prototype.visitFunxion = function(ctx) {
-    this.visitName(ctx.name());
+    this.buffer += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
 
 // message: name parameters
 FormattingVisitor.prototype.visitMessage = function(ctx) {
-    this.visitName(ctx.name());
+    this.buffer += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
@@ -994,8 +996,3 @@ FormattingVisitor.prototype.visitComplexNumber = function(ctx) {
     this.buffer += ')';
 };
 
-
-// name: IDENTIFIER
-FormattingVisitor.prototype.visitName = function(ctx) {
-    this.buffer += ctx.IDENTIFIER().getText();
-};

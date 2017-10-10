@@ -61,5 +61,3 @@ number:
     '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
 ;
 
-name: IDENTIFIER ;
-

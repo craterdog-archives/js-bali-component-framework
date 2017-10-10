@@ -6,7 +6,11 @@ document: literal parameters?;
 
 literal: element | structure | block;
 
+parameters: '(' composite ')';
+
 structure: '[' composite ']';
+
+block: '{' statements '}';
 
 composite: range | collection | table;
 
@@ -27,6 +31,4 @@ table:
 association: key ':' expression;
 
 key: element parameters?;
-
-parameters: '(' composite ')';
 

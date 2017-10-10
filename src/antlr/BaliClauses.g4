@@ -39,7 +39,7 @@ continueTo: 'continue' ('to' label)?;
 
 breakFrom: 'break' ('from' label)?;
 
-label: name;
+label: IDENTIFIER;
 
 returnResult: 'return' result?;
 

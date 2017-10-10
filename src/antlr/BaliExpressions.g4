@@ -21,11 +21,11 @@ expression:                                                        // Precedence
     expression '?' expression                                      #defaultExpression
 ;
 
-variable: name;
+variable: IDENTIFIER;
 
-funxion: name parameters;
+funxion: IDENTIFIER parameters;
 
-message: name parameters;
+message: IDENTIFIER parameters;
 
 indices: structure;
 

@@ -4,8 +4,6 @@ import BaliClauses;
 
 script: SHELL statements EOF;
 
-block: '{' statements '}';
-
 statements:
     statement (';' statement)* #inlineStatements |
     NEWLINE (statement NEWLINE)* #newlineStatements |
