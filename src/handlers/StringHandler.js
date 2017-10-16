@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var BaliLanguageParser = require('../antlr/BaliLanguageParser');
+var BaliLanguageParser = require('../antlr/BaliLanguageParser').BaliLanguageParser;
 
 
 /*
@@ -19,7 +19,6 @@ function StringHandler() {
     return this;
 }
 
-StringHandler.prototype = Object.create(Object.prototype);
 StringHandler.prototype.constructor = StringHandler;
 
 

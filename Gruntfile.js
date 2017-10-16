@@ -43,11 +43,11 @@ module.exports = function(grunt) {
     clean: {
       generate: [
         '*.log',
-        'src/antlr/BaliLanguageLexer.js',
-        'src/antlr/BaliLanguageParser.js',
-        'src/antlr/BaliLanguageListener.js',
-        'src/antlr/BaliLanguageVisitor.js',
-        'src/antlr/*.tokens'
+        'src/grammar/BaliLanguageLexer.js',
+        'src/grammar/BaliLanguageParser.js',
+        'src/grammar/BaliLanguageListener.js',
+        'src/grammar/BaliLanguageVisitor.js',
+        'src/grammar/*.tokens'
       ],
       build: ['dist/*']
     },
@@ -55,7 +55,7 @@ module.exports = function(grunt) {
     // grunt-antlr4 plugin configuration (generate parser)
     antlr4: {
       generate: {
-        grammar: 'src/antlr/BaliLanguage.g4',
+        grammar: 'src/grammar/BaliLanguage.g4',
         options: {
           grammarLevel: {
             language: 'JavaScript'
