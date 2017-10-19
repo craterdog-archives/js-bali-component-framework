@@ -8,14 +8,23 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+
 /*
- * This utility function converts a Bali unit based index into a JavaScript
- * zero based index, preserving negative indexing:
- * positive indexing:       1          2         3             4              5
- * $platonicSolids := [$tetrahedron, $cube, $octahedron, $dodecahedron, $icosahedron]
- * negative indexing:      -5         -4        -3            -2             -1
+ * This element class captures the state and methods associated with a symbol.
  */
-function convertIndex(index) {
-    return index < 0 ? index : index - 1;
+function Symbol(string) {
+    this.string = (string || '');
+    if (/\s/g.test(this.string)) {
+        throw "A symbol cannot contain white space: " + this.string;
+    }
+    return this;
 }
+
+Symbol.prototype.constructor = Symbol;
+exports.Symbol = Symbol;
+
+
+Symbol.prototype.toString = function() {
+    return this.string;
+};
 
