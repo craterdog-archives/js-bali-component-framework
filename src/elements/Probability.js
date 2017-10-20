@@ -9,9 +9,6 @@
  ************************************************************************/
 
 
-/*
- * This element class captures the state and methods associated with a probability.
- */
 function Probability(value) {
     this.value = value || 0;
     if (this.value < 0 || this.value > 1) {
@@ -23,12 +20,12 @@ Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
 
 
-Probability.prototype.toString = function() {
+Probability.prototype.toString = function () {
     return this.value.toString();
 };
 
 
-Probability.prototype.toNumber = function() {
+Probability.prototype.toNumber = function () {
     return this.value;
 };
 
