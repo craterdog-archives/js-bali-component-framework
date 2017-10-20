@@ -8,8 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var antlr = require('antlr4');
 var grammar = require('../grammar/BaliLanguageParser');
+var language = require('../BaliLanguage');
 var Probability = require('../elements/Probability').Probability;
 
 
@@ -21,27 +21,21 @@ ProbabilityHandler.prototype.constructor = ProbabilityHandler;
 exports.ProbabilityHandler = ProbabilityHandler;
 
 
-ProbabilityHandler.prototype.toJavaScript = function(tree) {
-    if (tree instanceof grammar.TrueProbabilityContext) {
+ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
+    if (baliTree instanceof grammar.TrueProbabilityContext) {
         return true;
-    } else if (tree instanceof grammar.FalseProbabilityContext) {
+    } else if (baliTree instanceof grammar.FalseProbabilityContext) {
         return false;
     } else {
-        var fraction = Number(tree.FRACTION().getText());
+        var fraction = Number(baliTree.FRACTION().getText());
         var probability = new Probability(fraction);
         return probability;
     }
 };
 
 
-ProbabilityHandler.prototype.toBali = function(object) {
-    var tree;
-    var string = object.toString();
-    var chars = new antlr.InputStream(string);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    tree = parser.probability();
-    return tree;
+ProbabilityHandler.prototype.toBali = function(jsProbability) {
+    var probability = jsProbability.toString();
+    var baliTree = language.parseElement(probability);
+    return baliTree.probability();
 };

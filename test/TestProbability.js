@@ -21,9 +21,9 @@ module.exports = testCase({
 
         var half = new Probability(0.5);
         number = half.toNumber();
-        test.equal(number, 0.5, 'The probability should have been number 0.5.');
+        test.equal(number, 0.5, 'The probability should have been number .5');
         string = half.toString();
-        test.equal(string, '0.5', "The probability should have been string '0.5'.");
+        test.equal(string, '.5', "The probability should have been string '.5'.");
 
         var one = new Probability(1);
         number = one.toNumber();

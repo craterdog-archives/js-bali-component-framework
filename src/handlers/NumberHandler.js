@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var antlr = require('antlr4');
+var language = require('../BaliLanguage');
 var grammar = require('../grammar/BaliLanguageParser');
 
 
@@ -20,34 +20,27 @@ NumberHandler.prototype.constructor = NumberHandler;
 exports.NumberHandler = NumberHandler;
 
 
-NumberHandler.prototype.toJavaScript = function(tree) {
-    if (tree instanceof grammar.UndefinedNumberContext) {
+NumberHandler.prototype.toJavaScript = function(baliTree) {
+    if (baliTree instanceof grammar.UndefinedNumberContext) {
         return 'undefined';
-    } else if (tree instanceof grammar.InfiniteNumberContext) {
+    } else if (baliTree instanceof grammar.InfiniteNumberContext) {
         return 'infinity';
-    } else if (tree instanceof grammar.RealNumberContext) {
-        var real = tree.real();
+    } else if (baliTree instanceof grammar.RealNumberContext) {
+        var real = baliTree.real();
         return toRealNumber(real);
-    } else if (tree instanceof grammar.ImaginaryNumberContext) {
-        var imaginary = tree.imaginary();
+    } else if (baliTree instanceof grammar.ImaginaryNumberContext) {
+        var imaginary = baliTree.imaginary();
         return toImaginarylNumber(imaginary);
     } else {
-        var complex = toComplexNumber(tree);
-        return complex;
+        return toComplexNumber(baliTree);
     }
 };
 
 
-NumberHandler.prototype.toBali = function(object) {
-    var tree;
-    var string = object.toString();
-    var chars = new antlr.InputStream(string);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    tree = parser.number();
-    return tree;
+NumberHandler.prototype.toBali = function(jsNumber) {
+    var number = jsNumber.toString();
+    var baliTree = language.parseElement(number);
+    return baliTree.number();
 };
 
 
@@ -82,15 +75,15 @@ function toImaginaryNumber(imaginary) {
 }
 
 
-function toComplexNumber(tree) {
+function toComplexNumber(baliTree) {
     var string = '(';
-    string += toRealNumber(tree.real());
-    var delimiter = tree.del.text;
+    string += toRealNumber(baliTree.real());
+    var delimiter = baliTree.del.text;
     string += delimiter;
     if (delimiter === ',') {
         string += " ";
     }
-    string += toImaginaryNumber(tree.imaginary());
+    string += toImaginaryNumber(baliTree.imaginary());
     string += ')';
     return string;
 }

@@ -8,8 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var antlr = require('antlr4');
-var grammar = require('../grammar/BaliLanguageParser');
+var language = require('../BaliLanguage');
 var Symbol = require('../elements/Symbol').Symbol;
 
 
@@ -20,21 +19,15 @@ SymbolHandler.prototype.constructor = SymbolHandler;
 exports.SymbolHandler = SymbolHandler;
 
 
-SymbolHandler.prototype.toJavaScript = function(tree) {
-    var token = tree.SYMBOL();
-    var string = token.getText();
-    return new Symbol(string);
+SymbolHandler.prototype.toJavaScript = function(baliTree) {
+    var token = baliTree.SYMBOL();
+    var symbol = token.getText();
+    return new Symbol(symbol);
 };
 
 
-SymbolHandler.prototype.toBali = function(object) {
-    var tree;
-    var symbol = object.toString();
-    var chars = new antlr.InputStream(symbol);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    tree = parser.symbol();
-    return tree;
+SymbolHandler.prototype.toBali = function(jsSymbol) {
+    var symbol = jsSymbol.toString();
+    var baliTree = language.parseElement(symbol);
+    return baliTree.symbol();
 };

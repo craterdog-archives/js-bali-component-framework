@@ -24,83 +24,115 @@ var transformers = require('./transformers');
 
 // PUBLIC FUNCTIONS
 
-/*
- * This function parses a text document written using the Bali Document Language™
- * and returns the parse tree. The parse tree can then be used by other functions
- * that do formatting, language transformations, validation, compilation, etc.
- * 
- * @param String document The Bali document to be parsed.
- * @returns antlr.ParserRuleContext The root of the resulting parser tree.
- */
-function parseDocument(document) {
+exports.parseDocument = function(document) {
     var chars = new antlr.InputStream(document);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
     var parser = new grammar.BaliLanguageParser(tokens);
     parser.buildParseTrees = true;
-    var tree = parser.document();
-    return tree;
-}
+    var baliTree = parser.document();
+    return baliTree;
+};
 
 
-/*
- * This function "walks" a parse tree for a Bali document creating a canonically
- * formatted text string containing the corresponding Bali document.
- * 
- * @param antlr.ParseRuleContext tree The parse tree for the desired document.
- * @returns String The formatted Bali source document.
- */
-function formatDocument(tree) {
-    return formatPaddedDocument(tree, '');
-}
+exports.parseElement = function(element) {
+    var chars = new antlr.InputStream(element);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.element();
+    return baliTree;
+};
 
 
-/*
- * This function "walks" a parse tree for a Bali document creating a canonically
- * formatted text string containing the corresponding Bali document.
- * 
- * @param antlr.ParseRuleContext tree The parse tree for the desired document.
- * @param String padding The padding string to be used at the beginning of
- *               each line of the formatted string.
- * @returns String The formatted Bali source document.
- */
-function formatPaddedDocument(tree, padding) {
+exports.parseStructure = function(structure) {
+    var chars = new antlr.InputStream(structure);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.structure();
+    return baliTree;
+};
+
+
+exports.parseRange = function(range) {
+    var chars = new antlr.InputStream(range);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.range();
+    return baliTree;
+};
+
+
+exports.parseCollection = function(collection) {
+    var chars = new antlr.InputStream(collection);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.collection();
+    return baliTree;
+};
+
+
+exports.parseTable = function(table) {
+    var chars = new antlr.InputStream(table);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.table();
+    return baliTree;
+};
+
+
+exports.parseBlock = function(block) {
+    var chars = new antlr.InputStream(block);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.block();
+    return baliTree;
+};
+
+
+exports.parseExpression = function(expression) {
+    var chars = new antlr.InputStream(expression);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var baliTree = parser.expression();
+    return baliTree;
+};
+
+
+exports.formatDocument = function(baliTree) {
+    return exports.formatPaddedDocument(baliTree, '');
+};
+
+
+exports.formatPaddedDocument = function(baliTree, padding) {
     var visitor = new transformers.FormattingVisitor(padding);
-    tree.accept(visitor);
+    baliTree.accept(visitor);
     return visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
-}
+};
 
 
-/*
- * This function "walks" a parse tree for a Bali document creating the corresponding
- * javascript object.
- * 
- * @param antlr.ParseRuleContext tree The parse tree to be converted to a javascript object.
- * @returns Object The resulting javascript object.
- */
-function convertToObject(tree) {
+exports.convertToJavaScript = function(baliTree) {
     var transformer = new transformers.ObjectTransformer();
-    var object = transformer.toObject(tree);
-    return object;
-}
+    var jsObject = transformer.toObject(baliTree);
+    return jsObject;
+};
 
 
-/*
- * This function reflectively converts a javascript object into its corresponding Bali parse tree.
- * 
- * @param Object object The javascript object to be converted into a parse tree for a Bali document.
- * @returns antlr.ParseRuleContext The resulting parse tree for the javascript object.
- */
-function convertToTree(object) {
+exports.convertToBali = function(jsObject) {
     var transformer = new transformers.ObjectTransformer();
-    var tree = transformer.toTree(object);
-    return tree;
-}
-
-
-exports.parseDocument = parseDocument;
-exports.formatDocument = formatDocument;
-exports.formatPaddedDocument = formatPaddedDocument;
-exports.convertToObject = convertToObject;
-exports.convertToTree = convertToTree;
-
+    var baliTree = transformer.toBali(jsObject);
+    return baliTree;
+};

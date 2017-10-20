@@ -8,8 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var antlr = require('antlr4');
 var grammar = require('../grammar/BaliLanguageParser');
+var language = require('../BaliLanguage');
 
 
 function TextHandler() {
@@ -19,26 +19,23 @@ TextHandler.prototype.constructor = TextHandler;
 exports.TextHandler = TextHandler;
 
 
-TextHandler.prototype.toJavaScript = function(tree) {
+TextHandler.prototype.toJavaScript = function(baliTree) {
     var token;
-    if (tree instanceof grammar.BlockTextContext) {
-        token = tree.TEXT_BLOCK();
+    if (baliTree instanceof grammar.BlockTextContext) {
+        token = baliTree.TEXT_BLOCK();
     } else {
-        token = tree.TEXT();
+        token = baliTree.TEXT();
     }
-    var string = token.getText();
-    string = string.substring(1, -1);  // remove the double quote delimiters
-    return string;
+    var text = token.getText();
+    text = text.substring(1, -1);  // remove the double quote delimiters
+    var jsString = text.replace(/\\"/g, '"');  // remove escapes from double quotes
+    return jsString;
 };
 
 
-TextHandler.prototype.toBali = function(object) {
-    string = '"' + string + '"';  // add the double quote delimiters
-    var chars = new antlr.InputStream(string);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var tree = parser.text();
-    return tree;
+TextHandler.prototype.toBali = function(jsString) {
+    var text = jsString.replace(/"/g, '\\"');  // escape any double quotes
+    text = '"' + text + '"';  // add the double quote delimiters
+    var baliTree = language.parseElement(text);
+    return baliTree.text();
 };
