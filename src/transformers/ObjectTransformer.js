@@ -32,7 +32,32 @@ exports.ObjectTransformer = ObjectTransformer;
 
 // Transformer Methods
 
-ObjectTransformer.prototype.toJavaScript = function(baliTree) {
+ObjectTransformer.prototype.toJavaScript = function(type, baliTree) {
+    var handler = ObjectTransformer.prototype.handlers[type];
+    var jsObject = handler.toJavaScript(baliTree);
+    return jsObject;
+};
+
+
+ObjectTransformer.prototype.toBali = function(type, jsObject) {
+    var handler = ObjectTransformer.prototype.handlers[type];
+    var baliTree = handler.toBali(jsObject);
+    return baliTree;
+};
+
+
+ObjectTransformer.prototype.getJavaScriptType = function(jsObject) {
+    var type;
+    if (typeof jsObject === 'object') {
+        type = jsObject.constructor.name.toLowerCase();
+    } else {
+        type = typeof jsObject;
+    }
+    return type;
+};
+
+ObjectTransformer.prototype.getBaliType = function(baliTree) {
+    var type;
     var nodeType = baliTree.constructor.name;
     switch (nodeType) {
         case 'UndefinedNumberContext':
@@ -55,20 +80,5 @@ ObjectTransformer.prototype.toJavaScript = function(baliTree) {
             type = 'text';
             break;
     }
-    var handler = ObjectTransformer.prototype.handlers[type];
-    var object = handler.toJavaScript(baliTree);
-    return object;
-};
-
-
-ObjectTransformer.prototype.toBali = function(jsObject) {
-    var type;
-    if (typeof jsObject === 'object') {
-        type = jsObject.constructor.name.toLowerCase();
-    } else {
-        type = typeof jsObject;
-    }
-    var handler = ObjectTransformer.prototype.handlers[type];
-    var baliTree = handler.toBali(jsObject);
-    return baliTree;
+    return type;
 };

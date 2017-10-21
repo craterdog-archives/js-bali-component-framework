@@ -21,7 +21,7 @@ exports.SymbolHandler = SymbolHandler;
 
 SymbolHandler.prototype.toJavaScript = function(baliTree) {
     var token = baliTree.SYMBOL();
-    var symbol = token.text;
+    var symbol = token.getText();
     return new Symbol(symbol);
 };
 

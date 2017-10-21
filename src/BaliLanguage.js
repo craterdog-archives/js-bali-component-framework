@@ -124,15 +124,15 @@ exports.formatPaddedDocument = function(baliTree, padding) {
 };
 
 
-exports.convertToJavaScript = function(baliTree) {
+exports.convertToJavaScript = function(type, baliTree) {
     var transformer = new transformers.ObjectTransformer();
-    var jsObject = transformer.toJavaScript(baliTree);
+    var jsObject = transformer.toJavaScript(type, baliTree);
     return jsObject;
 };
 
 
-exports.convertToBali = function(jsObject) {
+exports.convertToBali = function(type, jsObject) {
     var transformer = new transformers.ObjectTransformer();
-    var baliTree = transformer.toBali(jsObject);
+    var baliTree = transformer.toBali(type, jsObject);
     return baliTree;
 };

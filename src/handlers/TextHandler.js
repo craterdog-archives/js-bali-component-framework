@@ -26,7 +26,7 @@ TextHandler.prototype.toJavaScript = function(baliTree) {
     } else {
         token = baliTree.TEXT();
     }
-    var text = token.text;
+    var text = token.getText();
     text = text.substring(1, -1);  // remove the double quote delimiters
     var jsString = text.replace(/\\"/g, '"');  // remove escapes from double quotes
     return jsString;

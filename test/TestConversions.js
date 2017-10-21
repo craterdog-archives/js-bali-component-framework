@@ -5,15 +5,50 @@ var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Numbers': function(test) {
-        //var testValues = [-infinity, -1.3E10, -1, 0, 5, 23.7E-12, infinity, NaN];
-        var testValues = [-1, 0, 5];
+        var testValues = [NaN, -1.3e10, -1, 0, 5, 23.7e-12, Infinity];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
-            var jsNumber = testValues[i];
-            var baliTree = language.convertToBali(jsNumber);
-            var jsResult = language.convertToJavaScript(baliTree);
-            test.equal(jsResult, jsNumber, "The round trip conversion didn't match.");
+            var jsObject = testValues[i];
+            var baliTree = language.convertToBali('number', jsObject);
+            var jsResult = language.convertToJavaScript('number', baliTree);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
+    'Test Booleans': function(test) {
+        var testValues = [false, true];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = testValues[i];
+            var baliTree = language.convertToBali('boolean', jsObject);
+            var jsResult = language.convertToJavaScript('boolean', baliTree);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
+    'Test Probabilities': function(test) {
+        var testValues = [false, 0.5, true];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = testValues[i];
+            var baliTree = language.convertToBali('probability', jsObject);
+            var jsResult = language.convertToJavaScript('probability', baliTree);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
+    'Test Symbols': function(test) {
+        var testValues = ['$f', '$foo', '$foobar'];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = testValues[i];
+            var baliTree = language.convertToBali('symbol', jsObject);
+            var jsResult = language.convertToJavaScript('symbol', baliTree);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
     }

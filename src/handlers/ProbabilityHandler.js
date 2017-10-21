@@ -27,7 +27,7 @@ ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
     } else if (baliTree.constructor.name === 'FalseProbabilityContext') {
         return false;
     } else {
-        var fraction = Number(baliTree.FRACTION().text);
+        var fraction = Number('0' + baliTree.FRACTION().getText());  // add leading zero before decimal point
         var probability = new Probability(fraction);
         return probability;
     }
@@ -36,6 +36,18 @@ ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
 
 ProbabilityHandler.prototype.toBali = function(jsProbability) {
     var probability = jsProbability.toString();
+    switch (probability) {
+        case '1':
+        case 'true':
+            probability = 'true';
+            break;
+        case '0':
+        case 'false':
+            probability = 'false';
+            break;
+        default:
+            probability = probability.substring(1);  // strip off leading zero before decimal point
+    }
     var baliTree = language.parseElement(probability);
     return baliTree.probability();
 };

@@ -21,11 +21,7 @@ exports.Probability = Probability;
 
 
 Probability.prototype.toString = function () {
-    var string = this.value.toString();
-    if (string.length > 1) {
-        string = string.substring(1);  // strip off the leading zero
-    }
-    return string;
+    return this.value.toString();
 };
 
 

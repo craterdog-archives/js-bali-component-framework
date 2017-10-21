@@ -22,9 +22,9 @@ exports.NumberHandler = NumberHandler;
 
 NumberHandler.prototype.toJavaScript = function(baliTree) {
     if (baliTree.constructor.name === 'UndefinedNumberContext') {
-        return 'undefined';
+        return NaN;
     } else if (baliTree.constructor.name === 'InfiniteNumberContext') {
-        return 'infinity';
+        return Infinity;
     } else if (baliTree.constructor.name === 'RealNumberContext') {
         var real = baliTree.real();
         return toRealNumber(real);
@@ -39,6 +39,18 @@ NumberHandler.prototype.toJavaScript = function(baliTree) {
 
 NumberHandler.prototype.toBali = function(jsNumber) {
     var number = jsNumber.toString();
+    switch (number) {
+        case 'Infinity':
+        case '-Infinity':
+            number = 'infinity';
+            break;
+        case 'NaN':
+            number = 'undefined';
+            break;
+        default:
+            number = number.replace(/e/, 'E');
+    }
+
     var baliTree = language.parseElement(number);
     return baliTree.number();
 };
