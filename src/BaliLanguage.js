@@ -126,7 +126,7 @@ exports.formatPaddedDocument = function(baliTree, padding) {
 
 exports.convertToJavaScript = function(baliTree) {
     var transformer = new transformers.ObjectTransformer();
-    var jsObject = transformer.toObject(baliTree);
+    var jsObject = transformer.toJavaScript(baliTree);
     return jsObject;
 };
 

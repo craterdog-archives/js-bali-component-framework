@@ -16,11 +16,6 @@ var handlers = require('../handlers');
  * its corresponding Bali parse tree.
  */
 function ObjectTransformer() {
-    this.handlerMap = {
-        Boolean: new handlers.BooleanHandler(),
-        String: new handlers.StringHandler(),
-        Number: new handlers.NumberHandler()
-    };
     return this;
 }
 ObjectTransformer.prototype.constructor = ObjectTransformer;
@@ -37,8 +32,29 @@ exports.ObjectTransformer = ObjectTransformer;
 
 // Transformer Methods
 
-ObjectTransformer.prototype.toJavaScript = function(type, baliTree) {
-    type = type.toLowerCase();
+ObjectTransformer.prototype.toJavaScript = function(baliTree) {
+    var nodeType = baliTree.constructor.name;
+    switch (nodeType) {
+        case 'UndefinedNumberContext':
+        case 'InfiniteNumberContext':
+        case 'RealNumberContext':
+        case 'ImaginaryNumberContext':
+        case 'ComplexNumberContext':
+            type = 'number';
+            break;
+        case 'TrueProbabilityContext':
+        case 'FalseProbabilityContext':
+        case 'FractionalProbabilityContext':
+            type = 'probability';
+            break;
+        case 'SymbolContext':
+            type = 'symbol';
+            break;
+        case 'InlineTextContext':
+        case 'BlockTextContext':
+            type = 'text';
+            break;
+    }
     var handler = ObjectTransformer.prototype.handlers[type];
     var object = handler.toJavaScript(baliTree);
     return object;
@@ -52,7 +68,7 @@ ObjectTransformer.prototype.toBali = function(jsObject) {
     } else {
         type = typeof jsObject;
     }
-    var handler = this.handlerMap[type];
+    var handler = ObjectTransformer.prototype.handlers[type];
     var baliTree = handler.toBali(jsObject);
     return baliTree;
 };

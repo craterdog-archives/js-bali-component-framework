@@ -22,12 +22,12 @@ exports.ProbabilityHandler = ProbabilityHandler;
 
 
 ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
-    if (baliTree instanceof grammar.TrueProbabilityContext) {
+    if (baliTree.constructor.name === 'TrueProbabilityContext') {
         return true;
-    } else if (baliTree instanceof grammar.FalseProbabilityContext) {
+    } else if (baliTree.constructor.name === 'FalseProbabilityContext') {
         return false;
     } else {
-        var fraction = Number(baliTree.FRACTION().getText());
+        var fraction = Number(baliTree.FRACTION().text);
         var probability = new Probability(fraction);
         return probability;
     }

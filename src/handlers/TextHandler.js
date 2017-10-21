@@ -21,12 +21,12 @@ exports.TextHandler = TextHandler;
 
 TextHandler.prototype.toJavaScript = function(baliTree) {
     var token;
-    if (baliTree instanceof grammar.BlockTextContext) {
+    if (baliTree.constructor.name === 'BlockTextContext') {
         token = baliTree.TEXT_BLOCK();
     } else {
         token = baliTree.TEXT();
     }
-    var text = token.getText();
+    var text = token.text;
     text = text.substring(1, -1);  // remove the double quote delimiters
     var jsString = text.replace(/\\"/g, '"');  // remove escapes from double quotes
     return jsString;

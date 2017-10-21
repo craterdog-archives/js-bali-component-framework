@@ -21,14 +21,14 @@ exports.NumberHandler = NumberHandler;
 
 
 NumberHandler.prototype.toJavaScript = function(baliTree) {
-    if (baliTree instanceof grammar.UndefinedNumberContext) {
+    if (baliTree.constructor.name === 'UndefinedNumberContext') {
         return 'undefined';
-    } else if (baliTree instanceof grammar.InfiniteNumberContext) {
+    } else if (baliTree.constructor.name === 'InfiniteNumberContext') {
         return 'infinity';
-    } else if (baliTree instanceof grammar.RealNumberContext) {
+    } else if (baliTree.constructor.name === 'RealNumberContext') {
         var real = baliTree.real();
         return toRealNumber(real);
-    } else if (baliTree instanceof grammar.ImaginaryNumberContext) {
+    } else if (baliTree.constructor.name === 'ImaginaryNumberContext') {
         var imaginary = baliTree.imaginary();
         return toImaginarylNumber(imaginary);
     } else {
@@ -45,14 +45,15 @@ NumberHandler.prototype.toBali = function(jsNumber) {
 
 
 function toRealNumber(real) {
-    if (real instanceof grammar.ConstantRealContext) {
-        var constant = real.text;
+    if (real.constructor.name === 'ConstantRealContext') {
+        var constant = real.con.text;
         if (real.sign) {
             constant = '-' + constant;
         }
         return constant;
     } else {
-        var float = Number(real.text);
+        var string = real.FLOAT().getText();
+        var float = Number(string);
         return float;
     }
 }
