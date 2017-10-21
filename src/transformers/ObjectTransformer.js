@@ -23,27 +23,36 @@ function ObjectTransformer() {
     };
     return this;
 }
-
 ObjectTransformer.prototype.constructor = ObjectTransformer;
+ObjectTransformer.prototype.handlers = {
+    'boolean': new handlers.ProbabilityHandler(),
+    'number': new handlers.NumberHandler(),
+    'probability': new handlers.ProbabilityHandler(),
+    'string': new handlers.TextHandler(),
+    'symbol': new handlers.SymbolHandler(),
+    'text': new handlers.TextHandler()
+};
+exports.ObjectTransformer = ObjectTransformer;
 
 
 // Transformer Methods
 
-ObjectTransformer.prototype.addHandler = function(type, handler) {
-    this.handlerMap.defineProperty(type, handler);
-};
-
-ObjectTransformer.prototype.toObject = function(type, tree) {
-    var handler = this.handlerMap[type];
-    var object = handler.toObject(tree);
+ObjectTransformer.prototype.toJavaScript = function(type, baliTree) {
+    type = type.toLowerCase();
+    var handler = ObjectTransformer.prototype.handlers[type];
+    var object = handler.toJavaScript(baliTree);
     return object;
 };
 
-ObjectTransformer.prototype.toTree = function(object) {
-    var type = object.constructor;
+
+ObjectTransformer.prototype.toBali = function(jsObject) {
+    var type;
+    if (typeof jsObject === 'object') {
+        type = jsObject.constructor.name.toLowerCase();
+    } else {
+        type = typeof jsObject;
+    }
     var handler = this.handlerMap[type];
-    var tree = handler.toTree(object);
-    return tree;
+    var baliTree = handler.toBali(jsObject);
+    return baliTree;
 };
-
-

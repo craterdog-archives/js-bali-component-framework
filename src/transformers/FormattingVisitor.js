@@ -16,7 +16,6 @@ var grammar = require('../grammar');
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
  */
-
 function FormattingVisitor(padding) {
     grammar.BaliLanguageVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
@@ -24,11 +23,9 @@ function FormattingVisitor(padding) {
     this.depth = 0;
     return this;
 }
-
 FormattingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 FormattingVisitor.prototype.indentation = '    ';  // indentation per level
-
 exports.FormattingVisitor = FormattingVisitor;
 
 

@@ -8,3 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+exports.NumberHandler = require('./NumberHandler').NumberHandler;
+exports.ProbabilityHandler = require('./ProbabilityHandler').ProbabilityHandler;
+exports.SymbolHandler = require('./SymbolHandler').SymbolHandler;
+exports.TextHandler = require('./TextHandler').TextHandler;
