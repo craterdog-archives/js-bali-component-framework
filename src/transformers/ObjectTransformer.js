@@ -47,11 +47,9 @@ ObjectTransformer.prototype.toBali = function(type, jsObject) {
 
 
 ObjectTransformer.prototype.getJavaScriptType = function(jsObject) {
-    var type;
-    if (typeof jsObject === 'object') {
+    var type = typeof jsObject;
+    if (type === 'object') {
         type = jsObject.constructor.name.toLowerCase();
-    } else {
-        type = typeof jsObject;
     }
     return type;
 };

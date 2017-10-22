@@ -9,8 +9,6 @@
  ************************************************************************/
 
 var language = require('../BaliLanguage');
-var grammar = require('../grammar/BaliLanguageParser');
-
 
 
 function NumberHandler() {

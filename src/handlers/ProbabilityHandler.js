@@ -8,10 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var grammar = require('../grammar/BaliLanguageParser');
 var language = require('../BaliLanguage');
 var Probability = require('../elements/Probability').Probability;
-
 
 
 function ProbabilityHandler() {

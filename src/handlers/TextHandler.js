@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var grammar = require('../grammar/BaliLanguageParser');
 var language = require('../BaliLanguage');
 
 
@@ -20,22 +19,23 @@ exports.TextHandler = TextHandler;
 
 
 TextHandler.prototype.toJavaScript = function(baliTree) {
-    var token;
+    var text;
     if (baliTree.constructor.name === 'BlockTextContext') {
-        token = baliTree.TEXT_BLOCK();
+        text = baliTree.TEXT_BLOCK().getText();
     } else {
-        token = baliTree.TEXT();
+        text = baliTree.TEXT().getText();
+        text = text.replace(/\\"/g, '"');  // remove escapes from double quotes
     }
-    var text = token.getText();
-    text = text.substring(1, -1);  // remove the double quote delimiters
-    var jsString = text.replace(/\\"/g, '"');  // remove escapes from double quotes
+    var jsString = text.substring(1, text.length - 1);  // remove the double quote delimiters
     return jsString;
 };
 
 
 TextHandler.prototype.toBali = function(jsString) {
-    var text = jsString.replace(/"/g, '\\"');  // escape any double quotes
-    text = '"' + text + '"';  // add the double quote delimiters
+    if (jsString.length > 0 && jsString[0] !== '\n') {
+        jsString = jsString.replace(/"/g, '\\"');  // escape any double quotes
+    }
+    text = '"' + jsString + '"';  // add the double quote delimiters
     var baliTree = language.parseElement(text);
     return baliTree.text();
 };
