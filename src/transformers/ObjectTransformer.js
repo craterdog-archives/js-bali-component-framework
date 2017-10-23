@@ -11,42 +11,39 @@ var handlers = require('../handlers');
 
 
 /*
- * This class defines a transformer that can transform a Bali parse tree
- * into its corresponding javascript object, or transform a javascript object into
- * its corresponding Bali parse tree.
+ * This module defines functions that can transform a Bali parse tree
+ * into its corresponding javascript object, or transform a javascript
+ * object into its corresponding Bali parse tree.
  */
-function ObjectTransformer() {
-    return this;
-}
-ObjectTransformer.prototype.constructor = ObjectTransformer;
-ObjectTransformer.prototype.handlers = {
+
+var handlerMap = {
+    'array': new handlers.CollectionHandler(),
     'boolean': new handlers.ProbabilityHandler(),
     'number': new handlers.NumberHandler(),
+    //'object': new handlers.TableHandler(),
     'probability': new handlers.ProbabilityHandler(),
     'string': new handlers.TextHandler(),
-    'symbol': new handlers.SymbolHandler(),
-    'text': new handlers.TextHandler()
+    'symbol': new handlers.SymbolHandler()
 };
-exports.ObjectTransformer = ObjectTransformer;
 
 
 // Transformer Methods
 
-ObjectTransformer.prototype.toJavaScript = function(type, baliTree) {
-    var handler = ObjectTransformer.prototype.handlers[type];
+exports.toJavaScript = function(type, baliTree) {
+    var handler = handlerMap[type];
     var jsObject = handler.toJavaScript(baliTree);
     return jsObject;
 };
 
 
-ObjectTransformer.prototype.toBali = function(type, jsObject) {
-    var handler = ObjectTransformer.prototype.handlers[type];
+exports.toBali = function(type, jsObject) {
+    var handler = handlerMap[type];
     var baliTree = handler.toBali(jsObject);
     return baliTree;
 };
 
 
-ObjectTransformer.prototype.getJavaScriptType = function(jsObject) {
+exports.getJavaScriptType = function(jsObject) {
     var type = typeof jsObject;
     if (type === 'object') {
         type = jsObject.constructor.name.toLowerCase();
@@ -54,7 +51,7 @@ ObjectTransformer.prototype.getJavaScriptType = function(jsObject) {
     return type;
 };
 
-ObjectTransformer.prototype.getBaliType = function(baliTree) {
+exports.getBaliType = function(baliTree) {
     var type;
     var nodeType = baliTree.constructor.name;
     switch (nodeType) {
@@ -65,17 +62,20 @@ ObjectTransformer.prototype.getBaliType = function(baliTree) {
         case 'ComplexNumberContext':
             type = 'number';
             break;
+        case 'CollectionContext':
+            type = 'object';
+            break;
         case 'TrueProbabilityContext':
         case 'FalseProbabilityContext':
         case 'FractionalProbabilityContext':
             type = 'probability';
             break;
-        case 'SymbolContext':
-            type = 'symbol';
-            break;
         case 'InlineTextContext':
         case 'BlockTextContext':
-            type = 'text';
+            type = 'string';
+            break;
+        case 'SymbolContext':
+            type = 'symbol';
             break;
     }
     return type;

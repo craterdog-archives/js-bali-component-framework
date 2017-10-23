@@ -19,18 +19,20 @@ exports.NumberHandler = NumberHandler;
 
 
 NumberHandler.prototype.toJavaScript = function(baliTree) {
-    if (baliTree.constructor.name === 'UndefinedNumberContext') {
-        return NaN;
-    } else if (baliTree.constructor.name === 'InfiniteNumberContext') {
-        return Infinity;
-    } else if (baliTree.constructor.name === 'RealNumberContext') {
-        var real = baliTree.real();
-        return toRealNumber(real);
-    } else if (baliTree.constructor.name === 'ImaginaryNumberContext') {
-        var imaginary = baliTree.imaginary();
-        return toImaginarylNumber(imaginary);
-    } else {
-        return toComplexNumber(baliTree);
+    var nodeType = baliTree.constructor.name;
+    switch (nodeType) {
+        case 'UndefinedNumberContext':
+            return NaN;
+        case 'InfiniteNumberContext':
+            return Infinity;
+        case 'RealNumberContext':
+            var real = baliTree.real();
+            return toRealNumber(real);
+        case 'ImaginaryNumberContext':
+            var imaginary = baliTree.imaginary();
+            return toImaginarylNumber(imaginary);
+        default:
+            return toComplexNumber(baliTree);
     }
 };
 

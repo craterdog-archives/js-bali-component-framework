@@ -20,14 +20,16 @@ exports.ProbabilityHandler = ProbabilityHandler;
 
 
 ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
-    if (baliTree.constructor.name === 'TrueProbabilityContext') {
-        return true;
-    } else if (baliTree.constructor.name === 'FalseProbabilityContext') {
-        return false;
-    } else {
-        var fraction = Number('0' + baliTree.FRACTION().getText());  // add leading zero before decimal point
-        var probability = new Probability(fraction);
-        return probability;
+    var nodeType = baliTree.constructor.name;
+    switch (nodeType) {
+        case 'TrueProbabilityContext':
+            return true;
+        case 'FalseProbabilityContext':
+            return false;
+        default:
+            var fraction = Number('0' + baliTree.FRACTION().getText());  // add leading zero before decimal point
+            var probability = new Probability(fraction);
+            return probability;
     }
 };
 

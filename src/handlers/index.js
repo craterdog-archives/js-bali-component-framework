@@ -12,3 +12,5 @@ exports.NumberHandler = require('./NumberHandler').NumberHandler;
 exports.ProbabilityHandler = require('./ProbabilityHandler').ProbabilityHandler;
 exports.SymbolHandler = require('./SymbolHandler').SymbolHandler;
 exports.TextHandler = require('./TextHandler').TextHandler;
+exports.CollectionHandler = require('./CollectionHandler').CollectionHandler;
+//exports.TableHandler = require('./TableHandler').TableHandler;
