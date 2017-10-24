@@ -63,5 +63,18 @@ module.exports = testCase({
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
+    },
+    'Test Collections': function(test) {
+        var testValues = [[], [1], ['one', 'two'], [[1, 2, 3], [4, 5]]];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = testValues[i];
+            console.log("OBJECT: " + jsObject);
+            var baliExpression = language.javaScriptToExpression('array', jsObject);
+            var jsResult = language.expressionToJavaScript('array', baliExpression);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
     }
 });

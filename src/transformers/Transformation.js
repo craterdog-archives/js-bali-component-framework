@@ -49,6 +49,7 @@ exports.javaScriptToDocument = function(type, jsObject) {
 
 exports.expressionToJavaScript = function(type, baliExpression) {
     var handler = handlerMap[type];
+    console.log("TYPE: " + type + " HANDLER: " + handler);
     var baliDocument = baliExpression.document();  // strip off the expression wrapper
     var jsObject = handler.toJavaScript(baliDocument);
     return jsObject;
