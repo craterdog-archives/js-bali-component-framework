@@ -8,6 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-exports.FormattingVisitor = require('./FormattingVisitor').FormattingVisitor;
-exports.ObjectTransformer = require('./ObjectTransformer').ObjectTransformer;
+exports.Formatter = require('./Formatter').Formatter;
+exports.transformation = require('./Transformation');
 

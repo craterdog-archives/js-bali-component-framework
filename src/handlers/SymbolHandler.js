@@ -19,15 +19,17 @@ SymbolHandler.prototype.constructor = SymbolHandler;
 exports.SymbolHandler = SymbolHandler;
 
 
-SymbolHandler.prototype.toJavaScript = function(baliTree) {
-    var token = baliTree.SYMBOL();
-    var symbol = token.getText();
+SymbolHandler.prototype.toJavaScript = function(baliDocument) {
+    var baliLiteral = baliDocument.literal();
+    var baliElement = baliLiteral.element();
+    var baliSymbol = baliElement.symbol();
+    var symbol = baliSymbol.SYMBOL().getText();
     return new Symbol(symbol);
 };
 
 
 SymbolHandler.prototype.toBali = function(jsSymbol) {
     var symbol = jsSymbol.toString();
-    var baliTree = language.parseElement(symbol);
-    return baliTree.symbol();
+    var baliDocument = language.parseDocument(symbol);
+    return baliDocument;
 };

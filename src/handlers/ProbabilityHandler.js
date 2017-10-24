@@ -19,15 +19,18 @@ ProbabilityHandler.prototype.constructor = ProbabilityHandler;
 exports.ProbabilityHandler = ProbabilityHandler;
 
 
-ProbabilityHandler.prototype.toJavaScript = function(baliTree) {
-    var nodeType = baliTree.constructor.name;
+ProbabilityHandler.prototype.toJavaScript = function(baliDocument) {
+    var baliLiteral = baliDocument.literal();
+    var baliElement = baliLiteral.element();
+    var baliProbability = baliElement.probability();
+    var nodeType = baliProbability.constructor.name;
     switch (nodeType) {
         case 'TrueProbabilityContext':
             return true;
         case 'FalseProbabilityContext':
             return false;
         default:
-            var fraction = Number('0' + baliTree.FRACTION().getText());  // add leading zero before decimal point
+            var fraction = Number('0' + baliProbability.FRACTION().getText());  // add leading zero before decimal point
             var probability = new Probability(fraction);
             return probability;
     }
@@ -48,6 +51,6 @@ ProbabilityHandler.prototype.toBali = function(jsProbability) {
         default:
             probability = probability.substring(1);  // strip off leading zero before decimal point
     }
-    var baliTree = language.parseElement(probability);
-    return baliTree.probability();
+    var baliDocument = language.parseDocument(probability);
+    return baliDocument;
 };

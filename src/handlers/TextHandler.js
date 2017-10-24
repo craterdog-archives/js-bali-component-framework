@@ -18,12 +18,15 @@ TextHandler.prototype.constructor = TextHandler;
 exports.TextHandler = TextHandler;
 
 
-TextHandler.prototype.toJavaScript = function(baliTree) {
+TextHandler.prototype.toJavaScript = function(baliDocument) {
+    var baliLiteral = baliDocument.literal();
+    var baliElement = baliLiteral.element();
+    var baliText = baliElement.text();
     var text;
-    if (baliTree.constructor.name === 'BlockTextContext') {
-        text = baliTree.TEXT_BLOCK().getText();
+    if (baliText.constructor.name === 'BlockTextContext') {
+        text = baliText.TEXT_BLOCK().getText();
     } else {
-        text = baliTree.TEXT().getText();
+        text = baliText.TEXT().getText();
         text = text.replace(/\\"/g, '"');  // remove escapes from double quotes
     }
     var jsString = text.substring(1, text.length - 1);  // remove the double quote delimiters
@@ -36,6 +39,6 @@ TextHandler.prototype.toBali = function(jsString) {
         jsString = jsString.replace(/"/g, '\\"');  // escape any double quotes
     }
     text = '"' + jsString + '"';  // add the double quote delimiters
-    var baliTree = language.parseElement(text);
-    return baliTree.text();
+    var baliDocument = language.parseDocument(text);
+    return baliDocument;
 };

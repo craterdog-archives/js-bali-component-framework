@@ -18,21 +18,24 @@ NumberHandler.prototype.constructor = NumberHandler;
 exports.NumberHandler = NumberHandler;
 
 
-NumberHandler.prototype.toJavaScript = function(baliTree) {
-    var nodeType = baliTree.constructor.name;
+NumberHandler.prototype.toJavaScript = function(baliDocument) {
+    var baliLiteral = baliDocument.literal();
+    var baliElement = baliLiteral.element();
+    var baliNumber = baliElement.number();
+    var nodeType = baliNumber.constructor.name;
     switch (nodeType) {
         case 'UndefinedNumberContext':
             return NaN;
         case 'InfiniteNumberContext':
             return Infinity;
         case 'RealNumberContext':
-            var real = baliTree.real();
+            var real = baliNumber.real();
             return toRealNumber(real);
         case 'ImaginaryNumberContext':
-            var imaginary = baliTree.imaginary();
+            var imaginary = baliNumber.imaginary();
             return toImaginarylNumber(imaginary);
         default:
-            return toComplexNumber(baliTree);
+            return toComplexNumber(baliNumber);
     }
 };
 
@@ -51,8 +54,8 @@ NumberHandler.prototype.toBali = function(jsNumber) {
             number = number.replace(/e/, 'E');
     }
 
-    var baliTree = language.parseElement(number);
-    return baliTree.number();
+    var baliDocument = language.parseDocument(number);
+    return baliDocument;
 };
 
 

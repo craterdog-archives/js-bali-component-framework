@@ -11,8 +11,8 @@
  ************************************************************************/
 var antlr = require('antlr4');
 var grammar = require('./grammar');
-var FormattingVisitor = require('./transformers/FormattingVisitor').FormattingVisitor;
-var transformer = require('./transformers/ObjectTransformer');
+var Formatter = require('./transformers/Formatter').Formatter;
+var transform = require('./transformers/Transformation');
 
 
 /*
@@ -119,19 +119,43 @@ exports.formatDocument = function(baliTree) {
 
 
 exports.formatPaddedDocument = function(baliTree, padding) {
-    var visitor = new FormattingVisitor(padding);
+    var visitor = new Formatter(padding);
     baliTree.accept(visitor);
     return visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
 };
 
 
-exports.convertToJavaScript = function(type, baliTree) {
-    var jsObject = transformer.toJavaScript(type, baliTree);
+exports.documentToJavaScript = function(type, baliTree) {
+    var jsObject = transform.documentToJavaScript(type, baliTree);
     return jsObject;
 };
 
 
-exports.convertToBali = function(type, jsObject) {
-    var baliTree = transformer.toBali(type, jsObject);
-    return baliTree;
+exports.javaScriptToDocument = function(type, jsObject) {
+    var baliDocument = transform.javaScriptToDocument(type, jsObject);
+    return baliDocument;
+};
+
+
+exports.expressionToJavaScript = function(type, baliTree) {
+    var jsObject = transform.expressionToJavaScript(type, baliTree);
+    return jsObject;
+};
+
+
+exports.javaScriptToExpression = function(type, jsObject) {
+    var baliExpression = transform.javaScriptToExpression(type, jsObject);
+    return baliExpression;
+};
+
+
+exports.keyToJavaScript = function(type, baliTree) {
+    var jsObject = transform.keyToJavaScript(type, baliTree);
+    return jsObject;
+};
+
+
+exports.javaScriptToKey = function(type, jsObject) {
+    var baliKey = transform.javaScriptToKey(type, jsObject);
+    return baliKey;
 };

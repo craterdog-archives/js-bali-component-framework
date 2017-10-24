@@ -10,7 +10,7 @@
 
 var language = require('../BaliLanguage');
 var grammar = require('../grammar/');
-var transformer = require('../transformers/ObjectTransformer');
+var transformation = require('../transformers/Transformation');
 
 
 function CollectionHandler() {
@@ -29,8 +29,8 @@ CollectionHandler.prototype.toJavaScript = function(baliTree) {
             var expressions = baliTree.expression();
             for (var i = 0; i < expressions.length; i++) {
                 var expression = expressions[i];
-                type = transformer.getBaliType(expression);
-                jsArray += transformer.toJavaScript(type, expression);
+                type = transformation.getBaliType(expression);
+                jsArray += transformation.toJavaScript(type, expression);
             }
             break;
         default:
@@ -45,8 +45,8 @@ CollectionHandler.prototype.toBali = function(jsArray) {
     baliTree = new grammar.InlineCollectionContext(null, baliTree);
     for (var i = 0; i < jsArray.length; i++) {
         var jsObject = jsArray[i];
-        type = transformer.getJavaScriptType(jsObject);
-        var baliNode = transformer.toBali(type, jsObject);
+        type = transformation.getJavaScriptType(jsObject);
+        var baliNode = transformation.toBali(type, jsObject);
         baliTree.addChild(baliNode);
         baliNode.parentCtx = baliTree;
     }
