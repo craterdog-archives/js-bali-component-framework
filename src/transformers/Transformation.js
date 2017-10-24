@@ -49,7 +49,6 @@ exports.javaScriptToDocument = function(type, jsObject) {
 
 exports.expressionToJavaScript = function(type, baliExpression) {
     var handler = handlerMap[type];
-    console.log("TYPE: " + type + " HANDLER: " + handler);
     var baliDocument = baliExpression.document();  // strip off the expression wrapper
     var jsObject = handler.toJavaScript(baliDocument);
     return jsObject;
@@ -106,6 +105,22 @@ exports.getJavaScriptType = function(jsObject) {
 
 exports.getBaliType = function(baliTree) {
     var type;
+    if (baliTree.document()) {
+        // the bali tree is a document expression
+        baliTree = baliTree.document();
+    }
+    baliTree = baliTree.literal();
+    if (baliTree.element()) {
+        baliTree = baliTree.element();
+        baliTree = baliTree.getChild(0);  // get the actual element
+    } else if (baliTree.structure()) {
+        baliTree = baliTree.structure();
+        baliTree = baliTree.getChild(0);  // get the composite between the brackets []
+        baliTree = baliTree.getChild(0);  // get the actual range, collection, or table
+    } else {
+        baliTree = baliTree.block();
+        throw 'Not yet implemented...';
+    }
     var nodeType = baliTree.constructor.name;
     switch (nodeType) {
         case 'UndefinedNumberContext':
@@ -114,9 +129,6 @@ exports.getBaliType = function(baliTree) {
         case 'ImaginaryNumberContext':
         case 'ComplexNumberContext':
             type = 'number';
-            break;
-        case 'CollectionContext':
-            type = 'object';
             break;
         case 'TrueProbabilityContext':
         case 'FalseProbabilityContext':
@@ -129,6 +141,14 @@ exports.getBaliType = function(baliTree) {
             break;
         case 'SymbolContext':
             type = 'symbol';
+            break;
+        case 'InlineCollectionContext':
+        case 'NewlineCollectionContext':
+            type = 'array';
+            break;
+        case 'InlineTableContext':
+        case 'NewlineTableContext':
+            type = 'object';
             break;
     }
     return type;

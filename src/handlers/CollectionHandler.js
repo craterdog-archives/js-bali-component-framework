@@ -19,11 +19,11 @@ exports.CollectionHandler = CollectionHandler;
 
 
 CollectionHandler.prototype.toJavaScript = function(baliDocument) {
+    var jsArray = [];
     var baliLiteral = baliDocument.literal();
     var baliStructure = baliLiteral.structure();
     var baliComposite = baliStructure.composite();
     var baliCollection = baliComposite.collection();
-    var jsArray = [];
     var type = baliCollection.constructor.name;
     switch (type) {
         case 'InlineCollectionContext':
@@ -32,7 +32,8 @@ CollectionHandler.prototype.toJavaScript = function(baliDocument) {
             for (var i = 0; i < expressions.length; i++) {
                 var baliExpression = expressions[i];
                 type = transformation.getBaliType(baliExpression);
-                jsArray += transformation.expressionToJavaScript(type, baliExpression);
+                var jsObject = transformation.expressionToJavaScript(type, baliExpression);
+                jsArray.push(jsObject);
             }
             break;
         default:

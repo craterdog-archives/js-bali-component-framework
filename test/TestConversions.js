@@ -70,10 +70,9 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = testValues[i];
-            console.log("OBJECT: " + jsObject);
             var baliExpression = language.javaScriptToExpression('array', jsObject);
             var jsResult = language.expressionToJavaScript('array', baliExpression);
-            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+            test.deepEqual(jsResult, jsObject, "The round trip conversion didn't match.");
         }
         test.done();
     }
