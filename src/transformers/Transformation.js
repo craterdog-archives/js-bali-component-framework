@@ -23,7 +23,7 @@ var handlerMap = {
     'array': new handlers.CollectionHandler(),
     'boolean': new handlers.ProbabilityHandler(),
     'number': new handlers.NumberHandler(),
-    //'object': new handlers.TableHandler(),
+    'object': new handlers.TableHandler(),
     'probability': new handlers.ProbabilityHandler(),
     'string': new handlers.TextHandler(),
     'symbol': new handlers.SymbolHandler()
@@ -105,11 +105,15 @@ exports.getJavaScriptType = function(jsObject) {
 
 exports.getBaliType = function(baliTree) {
     var type;
-    if (baliTree.document()) {
+    if (baliTree.constructor.name === 'DocumentExpressionContext') {
         // the bali tree is a document expression
         baliTree = baliTree.document();
     }
-    baliTree = baliTree.literal();
+    if (baliTree.constructor.name === 'DocumentContext') {
+        // the bali tree is a document
+        baliTree = baliTree.literal();
+    }
+    // at this point the bali tree must be a literal
     if (baliTree.element()) {
         baliTree = baliTree.element();
         baliTree = baliTree.getChild(0);  // get the actual element

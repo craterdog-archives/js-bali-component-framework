@@ -75,5 +75,17 @@ module.exports = testCase({
             test.deepEqual(jsResult, jsObject, "The round trip conversion didn't match.");
         }
         test.done();
+    },
+    'Test Tables': function(test) {
+        var testValues = [{}, {foo: 'bar'}, {one: 1, two: 2}, {nested: {alpha: 'a', beta: 'b'}}];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = testValues[i];
+            var baliExpression = language.javaScriptToExpression('object', jsObject);
+            var jsResult = language.expressionToJavaScript('object', baliExpression);
+            test.deepEqual(jsResult, jsObject, "The round trip conversion didn't match.");
+        }
+        test.done();
     }
 });
