@@ -7,6 +7,7 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 var language = require('../BaliLanguage');
 
@@ -33,7 +34,7 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
             return toRealNumber(real);
         case 'ImaginaryNumberContext':
             var imaginary = baliNumber.imaginary();
-            return toImaginarylNumber(imaginary);
+            return toImaginaryNumber(imaginary);
         default:
             return toComplexNumber(baliNumber);
     }

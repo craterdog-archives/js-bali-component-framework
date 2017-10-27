@@ -7,6 +7,8 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
+
 var antlr = require('antlr4');
 var grammar = require('../grammar/BaliLanguageParser').BaliLanguageParser;
 var handlers = require('../handlers');

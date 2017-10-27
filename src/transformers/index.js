@@ -7,6 +7,7 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 exports.Formatter = require('./Formatter').Formatter;
 exports.transformation = require('./Transformation');

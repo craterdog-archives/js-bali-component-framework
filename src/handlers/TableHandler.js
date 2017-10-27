@@ -7,6 +7,8 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
+
 var grammar = require('../grammar/BaliLanguageParser').BaliLanguageParser;
 var transformation = require('../transformers/Transformation');
 
@@ -65,7 +67,7 @@ TableHandler.prototype.toBali = function(jsObject) {
     baliComposite.addChild(baliTable);
     for (var jsKey in jsObject) {
         var jsValue = jsObject[jsKey];
-        type = transformation.getJavaScriptType(jsKey);
+        var type = transformation.getJavaScriptType(jsKey);
         var baliKey = transformation.javaScriptToKey(type, jsKey);
         type = transformation.getJavaScriptType(jsValue);
         var baliExpression = transformation.javaScriptToExpression(type, jsValue);

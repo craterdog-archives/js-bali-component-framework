@@ -6,9 +6,9 @@
  * This code is free software; you can redistribute it and/or modify it *
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
- ************************************************************************
- * @type BaliLanguage <https://github.com/craterdog-bali/js-bali-language>
  ************************************************************************/
+'use strict';
+
 var antlr = require('antlr4');
 var grammar = require('./grammar');
 var Formatter = require('./transformers/Formatter').Formatter;

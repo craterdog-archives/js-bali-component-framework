@@ -34,6 +34,7 @@
     "grunt-contrib-watch": "^1.0.0"
   },
   "dependencies": {
-    "antlr4": "^4.7.0"
+    "antlr4": "^4.7.0",
+    "node-forge": "^0.7.1"
   }
 }

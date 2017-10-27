@@ -7,6 +7,7 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 var language = require('../BaliLanguage');
 
@@ -38,7 +39,7 @@ TextHandler.prototype.toBali = function(jsString) {
     if (jsString.length > 0 && jsString[0] !== '\n') {
         jsString = jsString.replace(/"/g, '\\"');  // escape any double quotes
     }
-    text = '"' + jsString + '"';  // add the double quote delimiters
+    var text = '"' + jsString + '"';  // add the double quote delimiters
     var baliDocument = language.parseDocument(text);
     return baliDocument;
 };
