@@ -21,7 +21,7 @@ var base2LookupTable = "01";
 
 
 /**
- * This function encodes the bytes in a buffer into a base 2 string.
+ * This function encodes a byte array into a base 2 string.
  *
  * @param bytes The byte array containing the integer.
  * @param indentation The string to be prepended to each line of the result.
@@ -112,7 +112,7 @@ var base16LookupTable = "0123456789ABCDEF";
 
 
 /**
- * This function encodes the bytes in a buffer into a base 16 string.
+ * This function encodes a byte array into a base 16 string.
  *
  * @param bytes The byte array containing the integer.
  * @param indentation The string to be prepended to each line of the result.
@@ -210,7 +210,7 @@ var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
 
 
 /**
- * This function encodes the bytes in a buffer into a base 32 string.
+ * This function encodes a byte array into a base 32 string.
  *
  * @param bytes The byte array containing the integer.
  * @param indentation The string to be prepended to each line of the result.
@@ -296,13 +296,32 @@ exports.base32Decode = function(base32) {
 
 
 /**
- * This function encodes the bytes in a buffer into a base 64 string.
+ * This function encodes a byte array into a base 64 string.
  *
  * @param bytes The byte array containing the integer.
+ * @param indentation The string to be prepended to each line of the result.
  * @return The corresponding base 64 string.
  */
-exports.base64Encode = function(bytes) {
-    return forge.util.encode64(bytes);
+exports.base64Encode = function(bytes, indentation) {
+
+    // validate the parameters
+    var base64 = '';
+    if (typeof indentation === 'undefined' || indentation === null) indentation = '';
+    var length = bytes.length;
+    if (length === 0) return "";  // empty byte array
+
+    // format as indented 80 character blocks
+    if (length > 50) {
+        base64 += '\n';
+    }
+    base64 += forge.util.encode64(bytes, 80);
+
+    // insert indentations
+    if (indentation) {
+        base64 = base64.replace(/\n/g, '\n' + indentation);
+    }
+
+    return base64;
 };
 
 
