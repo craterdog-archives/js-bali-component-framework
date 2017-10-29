@@ -25,16 +25,18 @@ ProbabilityHandler.prototype.toJavaScript = function(baliDocument) {
     var baliElement = baliLiteral.element();
     var baliProbability = baliElement.probability();
     var nodeType = baliProbability.constructor.name;
+    var probability;
     switch (nodeType) {
         case 'TrueProbabilityContext':
-            return true;
+            probability = 1;
+            break;
         case 'FalseProbabilityContext':
-            return false;
+            probability = 0;
+            break;
         default:
-            var fraction = Number('0' + baliProbability.FRACTION().getText());  // add leading zero before decimal point
-            var probability = new Probability(fraction);
-            return probability;
+            probability = Number('0' + baliProbability.FRACTION().getText());  // add leading zero before decimal point
     }
+    return new Probability(probability);
 };
 
 

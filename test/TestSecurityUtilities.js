@@ -4,6 +4,12 @@ var security = require('../src/utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
+    'Test Coin Toss': function(test) {
+        test.expect(2);
+        test.ok(!security.coinToss(0));
+        test.ok(security.coinToss(1));
+        test.done();
+    },
     'Test Random': function(test) {
         test.expect(66);
         for (var i = 0; i < 33; i++) {

@@ -23,12 +23,14 @@ var handlers = require('../handlers');
 var handlerMap = {
     //'any': new handlers.AnyHandler(),
     'array': new handlers.CollectionHandler(),
+    'binary': new handlers.BinaryHandler(),
     'boolean': new handlers.ProbabilityHandler(),
     'number': new handlers.NumberHandler(),
     'object': new handlers.TableHandler(),
     'probability': new handlers.ProbabilityHandler(),
     'string': new handlers.TextHandler(),
-    'symbol': new handlers.SymbolHandler()
+    'symbol': new handlers.SymbolHandler(),
+    'tag': new handlers.TagHandler()
     //'undefined': new handlers.AnyHandler()
 };
 
@@ -129,6 +131,9 @@ exports.getBaliType = function(baliTree) {
     }
     var nodeType = baliTree.constructor.name;
     switch (nodeType) {
+        case 'BinaryContext':
+            type = 'binary';
+            break;
         case 'UndefinedNumberContext':
         case 'InfiniteNumberContext':
         case 'RealNumberContext':
@@ -147,6 +152,9 @@ exports.getBaliType = function(baliTree) {
             break;
         case 'SymbolContext':
             type = 'symbol';
+            break;
+        case 'TagContext':
+            type = 'tag';
             break;
         case 'InlineCollectionContext':
         case 'NewlineCollectionContext':

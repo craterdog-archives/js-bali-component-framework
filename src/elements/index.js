@@ -9,11 +9,7 @@
  ************************************************************************/
 'use strict';
 
-exports.BinaryHandler = require('./BinaryHandler').BinaryHandler;
-exports.NumberHandler = require('./NumberHandler').NumberHandler;
-exports.ProbabilityHandler = require('./ProbabilityHandler').ProbabilityHandler;
-exports.SymbolHandler = require('./SymbolHandler').SymbolHandler;
-exports.TagHandler = require('./TagHandler').TagHandler;
-exports.TextHandler = require('./TextHandler').TextHandler;
-exports.CollectionHandler = require('./CollectionHandler').CollectionHandler;
-exports.TableHandler = require('./TableHandler').TableHandler;
+exports.Binary = require('./Binary').Binary;
+exports.Probability = require('./Probability').Probability;
+exports.Symbol = require('./Symbol').Symbol;
+exports.Tag = require('./Tag').Tag;
