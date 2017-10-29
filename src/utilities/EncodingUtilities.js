@@ -52,7 +52,7 @@ exports.base2Encode = function(bytes, indentation) {
         }
 
         // format as indented 80 character blocks
-        if (i % 10 === 9) {
+        if (i < length - 1 && i % 10 === 9) {
             base2 += '\n';
             base2 += indentation;
         }
@@ -144,7 +144,7 @@ exports.base16Encode = function(bytes, indentation) {
         base16 += base16LookupTable[lowOrderNybble];
 
         // format as indented 80 character blocks
-        if (i % 40 === 39) {
+        if (i < length - 1 && i % 40 === 39) {
             base16 += '\n';
             base16 += indentation;
         }
@@ -238,7 +238,7 @@ exports.base32Encode = function(bytes, indentation) {
         base32 = base32EncodeNextChucks(previousByte, currentByte, i, base32);
 
         // format as indented 80 character blocks
-        if (i % 50 === 49) {
+        if (i < length - 1 && i % 50 === 49) {
             base32 += '\n';
             base32 += indentation;
         }

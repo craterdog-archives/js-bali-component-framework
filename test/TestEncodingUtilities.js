@@ -11,7 +11,6 @@ module.exports = testCase({
             var bytes = security.generateRandomBytes(i);
             var base2 = codex.base2Encode(bytes, '    ');
             var decoded = codex.base2Decode(base2);
-            console.log('Base2: ' + base2);
             test.strictEqual(decoded, bytes, 'The base 2 round trip encoding failed for: ' + base2);
         }
         test.done();
@@ -22,7 +21,6 @@ module.exports = testCase({
             var bytes = security.generateRandomBytes(i);
             var base16 = codex.base16Encode(bytes, '    ');
             var decoded = codex.base16Decode(base16);
-            console.log('Base16: ' + base16);
             test.strictEqual(decoded, bytes, 'The base 16 round trip encoding failed for: ' + base16);
         }
         test.done();
@@ -33,7 +31,6 @@ module.exports = testCase({
             var bytes = security.generateRandomBytes(i);
             var base32 = codex.base32Encode(bytes, '    ');
             var decoded = codex.base32Decode(base32);
-            console.log('Base32: ' + base32);
             test.strictEqual(decoded, bytes, 'The base 32 round trip encoding failed for: ' + base32);
         }
         test.done();
@@ -44,7 +41,6 @@ module.exports = testCase({
             var bytes = security.generateRandomBytes(i);
             var base64 = codex.base64Encode(bytes, '    ');
             var decoded = codex.base64Decode(base64);
-            console.log('Base64: ' + base64);
             test.strictEqual(decoded, bytes, 'The base 64 round trip encoding failed for: ' + base64);
         }
         test.done();
