@@ -13,7 +13,7 @@
 function Probability(value) {
     this.value = value || 0;
     if (this.value < 0 || this.value > 1) {
-        throw "A probability must be in the range [0..1]: " + this.value;
+        throw 'A probability must be in the range [0..1]: ' + this.value;
     }
     return this;
 }

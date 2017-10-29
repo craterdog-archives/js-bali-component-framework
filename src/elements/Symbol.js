@@ -14,16 +14,12 @@
  * This element class captures the state and methods associated with a symbol.
  */
 function Symbol(string) {
-    this.string = (string || '$');
-    if (this.string.charAt(0) !== '$') {
-        throw "A symbol must begin with a '$': " + this.string;
-    }
-    if (/\s/g.test(this.string)) {
-        throw "A symbol cannot contain white space: " + this.string;
+    this.string = string || '';
+    if (!/^[a-zA-Z][0-9a-zA-Z]*$/g.test(this.string)) {
+        throw 'A symbol must contain at least one character and cannot contain white space: ' + this.string;
     }
     return this;
 }
-
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
@@ -31,4 +27,3 @@ exports.Symbol = Symbol;
 Symbol.prototype.toString = function() {
     return this.string;
 };
-

@@ -24,13 +24,13 @@ SymbolHandler.prototype.toJavaScript = function(baliDocument) {
     var baliLiteral = baliDocument.literal();
     var baliElement = baliLiteral.element();
     var baliSymbol = baliElement.symbol();
-    var symbol = baliSymbol.SYMBOL().getText();
+    var symbol = baliSymbol.SYMBOL().getText().replace(/\$/g, '');  // strip off the $
     return new Symbol(symbol);
 };
 
 
 SymbolHandler.prototype.toBali = function(jsSymbol) {
-    var symbol = jsSymbol.toString();
+    var symbol = '$' + jsSymbol.toString();  // prepend a $
     var baliDocument = language.parseDocument(symbol);
     return baliDocument;
 };

@@ -41,7 +41,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Symbols': function(test) {
-        var testValues = ['$f', '$foo', '$foobar'];
+        var testValues = ['f', 'foo', 'foobar'];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {

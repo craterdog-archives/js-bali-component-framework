@@ -343,14 +343,14 @@ exports.base64Decode = function(base64) {
  * @param bytes The byte array containing the integer.
  * @return The corresponding integer value.
  */
-function bytesToInteger(bytes) {
+exports.bytesToInteger = function(bytes) {
     var integer = 0;
     var length = 4;
     for (var i = 0; i < length; i++) {
         integer |= ((bytes[length - i - 1] & 0xFF) << (i * 8));
     }
     return integer;
-}
+};
 
 
 // offset:    0        1        2        3        4        0
