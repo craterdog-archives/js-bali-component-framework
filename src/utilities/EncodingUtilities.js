@@ -337,17 +337,34 @@ exports.base64Decode = function(base64) {
 
 
 /**
- * This private function converts the bytes in a byte array at the specified index to its
- * corresponding integer value.
+ * This private function converts an integer into its corresponding bytes
+ * in a byte array in 'big endian' order.
+ *
+ * @param integer The integer to be converted.
+ * @return The corresponding byte array.
+ */
+exports.integerToBytes = function(integer) {
+    var bytes = '';
+    for (var i = 3; i >= 0; i--) {
+        var byte = integer >> (i * 8) & 0xFF;
+        bytes += String.fromCharCode(byte);
+    }
+    return bytes;
+};
+
+
+/**
+ * This private function converts the bytes in a byte array in 'big endian'
+ * order to its corresponding integer value.
  *
  * @param bytes The byte array containing the integer.
  * @return The corresponding integer value.
  */
 exports.bytesToInteger = function(bytes) {
     var integer = 0;
-    var length = 4;
-    for (var i = 0; i < length; i++) {
-        integer |= ((bytes[length - i - 1] & 0xFF) << (i * 8));
+    for (var i = 0; i < 4; i++) {
+        var byte = bytes.charCodeAt(3 - i);
+        integer |= byte << (i * 8);
     }
     return integer;
 };

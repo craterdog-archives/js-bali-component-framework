@@ -5,6 +5,30 @@ var security = require('../src/utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
+    'Test Integer to Bytes': function(test) {
+        test.expect(100);
+        for (var i = 0; i < 100; i++) {
+            var bytes = security.generateRandomBytes(4);
+            var expected = codex.bytesToInteger(bytes);
+            bytes = codex.integerToBytes(expected);
+            var integer = codex.bytesToInteger(bytes);
+            test.strictEqual(integer, expected, 'The integer to bytes conversion failed for: ' + expected);
+        }
+        test.done();
+    },
+    'Test Bytes to Integer': function(test) {
+        test.expect(64);
+        for (var i = 0; i < 256; ) {
+            var expected = '';
+            for (var b = 0; b < 4; b++) {
+                expected += String.fromCharCode(i++);
+            }
+            var integer = codex.bytesToInteger(expected);
+            var bytes = codex.integerToBytes(integer);
+            test.strictEqual(bytes, expected, 'The bytes to integer conversion failed for: ' + expected);
+        }
+        test.done();
+    },
     'Test Base2': function(test) {
         test.expect(21);
         for (var i = 0; i < 21; i++) {

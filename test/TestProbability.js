@@ -43,5 +43,16 @@ module.exports = testCase({
             }
         );
         test.done();
+    },
+    'Test Accuracy': function(test) {
+        test.expect(1);
+        var even = new Probability(0.5);
+        var heads = 0;
+        var tosses = 10000;
+        for (var i = 1; i < tosses; i++) {
+            if (even.toBoolean()) heads++;
+        }
+        test.ok(tosses * 0.494 < heads && heads < tosses * 0.506, 'The coin toss is not fair: ' + heads * 100 / tosses + '%');
+        test.done();
     }
 });

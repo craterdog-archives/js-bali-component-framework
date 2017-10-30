@@ -20,12 +20,13 @@ var hash = require('node-forge').md;
  * This utility method returns the result of a weighted coin toss. A probability of
  * zero will always return false and a probability of one will always return true.
  *
- * @param probability The probability that the toss will return true [0..1].
+ * @param probability The probability that the toss will return true [0.0..1.0].
  * @return The result of the coin toss.
  */
 exports.coinToss = function(probability) {
-    var toss = random.generateSync(1).charCodeAt(0) / 256;  // random value in range [0..1)
-    return probability > toss;
+    var randomInteger = exports.generateRandomInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
+    var toss = randomInteger / 2147483648;  // convert to range [0.0..1.0)
+    return toss < probability;  // true: [0.0..probability) and false: [probability..1.0]
 };
 
 
@@ -38,6 +39,18 @@ exports.coinToss = function(probability) {
 exports.generateRandomBytes = function(numberOfBytes) {
     var bytes = random.generateSync(numberOfBytes);
     return bytes;
+};
+
+
+/**
+ * This utility method returns a random integer in the range in the
+ * range [-2,147,483,648..2,147,483,647].
+ *
+ * @return The random integer.
+ */
+exports.generateRandomInteger = function() {
+    var integer = codex.bytesToInteger(random.generateSync(4));
+    return integer;
 };
 
 
