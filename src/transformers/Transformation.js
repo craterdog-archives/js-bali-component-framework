@@ -30,7 +30,8 @@ var handlerMap = {
     'probability': new handlers.ProbabilityHandler(),
     'string': new handlers.TextHandler(),
     'symbol': new handlers.SymbolHandler(),
-    'tag': new handlers.TagHandler()
+    'tag': new handlers.TagHandler(),
+    'version': new handlers.VersionHandler()
     //'undefined': new handlers.AnyHandler()
 };
 
@@ -155,6 +156,9 @@ exports.getBaliType = function(baliTree) {
             break;
         case 'TagContext':
             type = 'tag';
+            break;
+        case 'VersionContext':
+            type = 'version';
             break;
         case 'InlineCollectionContext':
         case 'NewlineCollectionContext':

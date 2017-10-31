@@ -118,6 +118,18 @@ module.exports = testCase({
         }
         test.done();
     },
+    'Test Versions': function(test) {
+        var testValues = ['', '1', '2.3', '4.5.6'];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = new elements.Version(testValues[i]);
+            var baliKey = language.javaScriptToKey('version', jsObject);
+            var jsResult = language.keyToJavaScript('version', baliKey);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
     'Test Collections': function(test) {
         var testValues = [[], [1], ['one', 'two'], [[1, 2, 3], [4, 5]]];
         var tests = testValues.length;
