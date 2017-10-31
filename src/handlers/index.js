@@ -12,6 +12,7 @@
 exports.BinaryHandler = require('./BinaryHandler').BinaryHandler;
 exports.MomentHandler = require('./MomentHandler').MomentHandler;
 exports.NumberHandler = require('./NumberHandler').NumberHandler;
+exports.PercentHandler = require('./PercentHandler').PercentHandler;
 exports.ProbabilityHandler = require('./ProbabilityHandler').ProbabilityHandler;
 exports.SymbolHandler = require('./SymbolHandler').SymbolHandler;
 exports.TagHandler = require('./TagHandler').TagHandler;

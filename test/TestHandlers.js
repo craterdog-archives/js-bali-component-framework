@@ -42,6 +42,18 @@ module.exports = testCase({
         }
         test.done();
     },
+    'Test Percents': function(test) {
+        var testValues = ['0%', -50.5, '-75.25%', 100];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = new elements.Percent(testValues[i]);
+            var baliDocument = language.javaScriptToDocument('percent', jsObject);
+            var jsResult = language.documentToJavaScript('percent', baliDocument);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
     'Test Probabilities': function(test) {
         var testValues = [0, 0.5, 1];
         var tests = testValues.length;

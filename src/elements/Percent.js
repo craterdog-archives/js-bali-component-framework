@@ -9,9 +9,32 @@
  ************************************************************************/
 'use strict';
 
-exports.Binary = require('./Binary').Binary;
-exports.Percent = require('./Percent').Percent;
-exports.Probability = require('./Probability').Probability;
-exports.Symbol = require('./Symbol').Symbol;
-exports.Tag = require('./Tag').Tag;
-exports.Version = require('./Version').Version;
+
+function Percent(value) {
+
+    // constructor generates a percent based on a numeric value
+    if (typeof value === 'number') {
+        this.value = value;
+        return this;
+    }
+
+    // constructor generates a percent based on a string value
+    if (typeof value === 'string') {
+        this.value = Number(value.replace(/%/g, ''));  // strip off the %
+        return this;
+    }
+
+}
+Percent.prototype.constructor = Percent;
+exports.Percent = Percent;
+
+
+Percent.prototype.toString = function () {
+    return this.value.toString() + '%';  // append the %
+};
+
+
+Percent.prototype.toNumber = function () {
+    return this.value / 100;
+};
+

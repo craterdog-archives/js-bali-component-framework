@@ -28,6 +28,7 @@ var handlerMap = {
     'moment': new handlers.MomentHandler(),
     'number': new handlers.NumberHandler(),
     'object': new handlers.TableHandler(),
+    'percent': new handlers.PercentHandler(),
     'probability': new handlers.ProbabilityHandler(),
     'string': new handlers.TextHandler(),
     'symbol': new handlers.SymbolHandler(),
@@ -145,6 +146,9 @@ exports.getBaliType = function(baliTree) {
         case 'ImaginaryNumberContext':
         case 'ComplexNumberContext':
             type = 'number';
+            break;
+        case 'PercentContext':
+            type = 'percent';
             break;
         case 'TrueProbabilityContext':
         case 'FalseProbabilityContext':
