@@ -9,8 +9,21 @@
  ************************************************************************/
 'use strict';
 
-exports.Binary = require('./Binary').Binary;
-exports.Probability = require('./Probability').Probability;
-exports.Symbol = require('./Symbol').Symbol;
-exports.Tag = require('./Tag').Tag;
-exports.Version = require('./Version').Version;
+
+/*
+ * This element class captures the state and methods associated with a version string.
+ */
+function Version(string) {
+    this.string = string || '1';
+    if (!/^([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(this.string)) {
+        throw 'A version string must contain at least one version and cannot contain white space: ' + this.string;
+    }
+    return this;
+}
+Version.prototype.constructor = Version;
+exports.Version = Version;
+
+
+Version.prototype.toString = function() {
+    return this.string;
+};
