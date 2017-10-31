@@ -6,7 +6,7 @@ element:
     any |
     tag |
     symbol |
-    time |
+    moment |
     reference |
     version |
     text |
@@ -25,7 +25,7 @@ tag: TAG ;
 
 symbol: SYMBOL ;
 
-time: TIME ;
+moment: MOMENT ;
 
 reference: RESOURCE ;
 

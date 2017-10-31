@@ -357,7 +357,7 @@ var symbolicNames = [ 'null', 'null', 'null', 'null', 'null', 'null', 'null',
                       'null', 'null', 'null', 'null', 'null', 'null', 'null', 
                       'null', 'null', 'null', 'null', 'null', 'null', 'null', 
                       'null', "SHELL", "COMMENT", "COMMENT_BLOCK", "TAG", 
-                      "SYMBOL", "FRACTION", "FLOAT", "TIME", "RESOURCE", 
+                      "SYMBOL", "FRACTION", "FLOAT", "MOMENT", "RESOURCE", 
                       "VERSION", "BINARY", "TEXT_BLOCK", "TEXT", "IDENTIFIER", 
                       "NEWLINE", "SPACE" ];
 
@@ -371,7 +371,7 @@ var ruleNames =  [ "document", "literal", "parameters", "structure", "block",
                    "ifThen", "condition", "selectFrom", "selection", "option", 
                    "whileLoop", "withLoop", "sequence", "expression", "variable", 
                    "funxion", "message", "indices", "element", "any", "tag", 
-                   "symbol", "time", "reference", "version", "text", "binary", 
+                   "symbol", "moment", "reference", "version", "text", "binary", 
                    "probability", "percent", "real", "imaginary", "number" ];
 
 function BaliLanguageParser (input) {
@@ -477,7 +477,7 @@ BaliLanguageParser.TAG = 81;
 BaliLanguageParser.SYMBOL = 82;
 BaliLanguageParser.FRACTION = 83;
 BaliLanguageParser.FLOAT = 84;
-BaliLanguageParser.TIME = 85;
+BaliLanguageParser.MOMENT = 85;
 BaliLanguageParser.RESOURCE = 86;
 BaliLanguageParser.VERSION = 87;
 BaliLanguageParser.BINARY = 88;
@@ -537,7 +537,7 @@ BaliLanguageParser.RULE_element = 46;
 BaliLanguageParser.RULE_any = 47;
 BaliLanguageParser.RULE_tag = 48;
 BaliLanguageParser.RULE_symbol = 49;
-BaliLanguageParser.RULE_time = 50;
+BaliLanguageParser.RULE_moment = 50;
 BaliLanguageParser.RULE_reference = 51;
 BaliLanguageParser.RULE_version = 52;
 BaliLanguageParser.RULE_text = 53;
@@ -702,7 +702,7 @@ BaliLanguageParser.prototype.literal = function() {
         case BaliLanguageParser.SYMBOL:
         case BaliLanguageParser.FRACTION:
         case BaliLanguageParser.FLOAT:
-        case BaliLanguageParser.TIME:
+        case BaliLanguageParser.MOMENT:
         case BaliLanguageParser.RESOURCE:
         case BaliLanguageParser.VERSION:
         case BaliLanguageParser.BINARY:
@@ -1309,7 +1309,7 @@ BaliLanguageParser.prototype.collection = function() {
         case BaliLanguageParser.SYMBOL:
         case BaliLanguageParser.FRACTION:
         case BaliLanguageParser.FLOAT:
-        case BaliLanguageParser.TIME:
+        case BaliLanguageParser.MOMENT:
         case BaliLanguageParser.RESOURCE:
         case BaliLanguageParser.VERSION:
         case BaliLanguageParser.BINARY:
@@ -1341,7 +1341,7 @@ BaliLanguageParser.prototype.collection = function() {
             this.state = 164;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.TIME - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.MOMENT - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0)) {
                 this.state = 159;
                 this.expression(0);
                 this.state = 160;
@@ -1552,7 +1552,7 @@ BaliLanguageParser.prototype.table = function() {
         case BaliLanguageParser.SYMBOL:
         case BaliLanguageParser.FRACTION:
         case BaliLanguageParser.FLOAT:
-        case BaliLanguageParser.TIME:
+        case BaliLanguageParser.MOMENT:
         case BaliLanguageParser.RESOURCE:
         case BaliLanguageParser.VERSION:
         case BaliLanguageParser.BINARY:
@@ -1583,7 +1583,7 @@ BaliLanguageParser.prototype.table = function() {
             this.state = 184;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===BaliLanguageParser.T__0 || ((((_la - 49)) & ~0x1f) == 0 && ((1 << (_la - 49)) & ((1 << (BaliLanguageParser.T__48 - 49)) | (1 << (BaliLanguageParser.T__65 - 49)) | (1 << (BaliLanguageParser.T__66 - 49)) | (1 << (BaliLanguageParser.T__67 - 49)) | (1 << (BaliLanguageParser.T__68 - 49)) | (1 << (BaliLanguageParser.T__70 - 49)) | (1 << (BaliLanguageParser.T__71 - 49)) | (1 << (BaliLanguageParser.T__72 - 49)) | (1 << (BaliLanguageParser.T__73 - 49)) | (1 << (BaliLanguageParser.T__74 - 49)) | (1 << (BaliLanguageParser.T__75 - 49)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.TIME - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)))) !== 0)) {
+            while(_la===BaliLanguageParser.T__0 || ((((_la - 49)) & ~0x1f) == 0 && ((1 << (_la - 49)) & ((1 << (BaliLanguageParser.T__48 - 49)) | (1 << (BaliLanguageParser.T__65 - 49)) | (1 << (BaliLanguageParser.T__66 - 49)) | (1 << (BaliLanguageParser.T__67 - 49)) | (1 << (BaliLanguageParser.T__68 - 49)) | (1 << (BaliLanguageParser.T__70 - 49)) | (1 << (BaliLanguageParser.T__71 - 49)) | (1 << (BaliLanguageParser.T__72 - 49)) | (1 << (BaliLanguageParser.T__73 - 49)) | (1 << (BaliLanguageParser.T__74 - 49)) | (1 << (BaliLanguageParser.T__75 - 49)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.MOMENT - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)))) !== 0)) {
                 this.state = 179;
                 this.association();
                 this.state = 180;
@@ -2045,7 +2045,7 @@ BaliLanguageParser.prototype.statements = function() {
         case BaliLanguageParser.SYMBOL:
         case BaliLanguageParser.FRACTION:
         case BaliLanguageParser.FLOAT:
-        case BaliLanguageParser.TIME:
+        case BaliLanguageParser.MOMENT:
         case BaliLanguageParser.RESOURCE:
         case BaliLanguageParser.VERSION:
         case BaliLanguageParser.BINARY:
@@ -2077,7 +2077,7 @@ BaliLanguageParser.prototype.statements = function() {
             this.state = 216;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4) | (1 << BaliLanguageParser.T__12) | (1 << BaliLanguageParser.T__26) | (1 << BaliLanguageParser.T__28) | (1 << BaliLanguageParser.T__29) | (1 << BaliLanguageParser.T__30))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliLanguageParser.T__32 - 33)) | (1 << (BaliLanguageParser.T__34 - 33)) | (1 << (BaliLanguageParser.T__35 - 33)) | (1 << (BaliLanguageParser.T__36 - 33)) | (1 << (BaliLanguageParser.T__39 - 33)) | (1 << (BaliLanguageParser.T__41 - 33)) | (1 << (BaliLanguageParser.T__44 - 33)) | (1 << (BaliLanguageParser.T__48 - 33)) | (1 << (BaliLanguageParser.T__49 - 33)) | (1 << (BaliLanguageParser.T__50 - 33)) | (1 << (BaliLanguageParser.T__53 - 33)) | (1 << (BaliLanguageParser.T__59 - 33)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (BaliLanguageParser.T__65 - 66)) | (1 << (BaliLanguageParser.T__66 - 66)) | (1 << (BaliLanguageParser.T__67 - 66)) | (1 << (BaliLanguageParser.T__68 - 66)) | (1 << (BaliLanguageParser.T__70 - 66)) | (1 << (BaliLanguageParser.T__71 - 66)) | (1 << (BaliLanguageParser.T__72 - 66)) | (1 << (BaliLanguageParser.T__73 - 66)) | (1 << (BaliLanguageParser.T__74 - 66)) | (1 << (BaliLanguageParser.T__75 - 66)) | (1 << (BaliLanguageParser.TAG - 66)) | (1 << (BaliLanguageParser.SYMBOL - 66)) | (1 << (BaliLanguageParser.FRACTION - 66)) | (1 << (BaliLanguageParser.FLOAT - 66)) | (1 << (BaliLanguageParser.TIME - 66)) | (1 << (BaliLanguageParser.RESOURCE - 66)) | (1 << (BaliLanguageParser.VERSION - 66)) | (1 << (BaliLanguageParser.BINARY - 66)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 66)) | (1 << (BaliLanguageParser.TEXT - 66)) | (1 << (BaliLanguageParser.IDENTIFIER - 66)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4) | (1 << BaliLanguageParser.T__12) | (1 << BaliLanguageParser.T__26) | (1 << BaliLanguageParser.T__28) | (1 << BaliLanguageParser.T__29) | (1 << BaliLanguageParser.T__30))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliLanguageParser.T__32 - 33)) | (1 << (BaliLanguageParser.T__34 - 33)) | (1 << (BaliLanguageParser.T__35 - 33)) | (1 << (BaliLanguageParser.T__36 - 33)) | (1 << (BaliLanguageParser.T__39 - 33)) | (1 << (BaliLanguageParser.T__41 - 33)) | (1 << (BaliLanguageParser.T__44 - 33)) | (1 << (BaliLanguageParser.T__48 - 33)) | (1 << (BaliLanguageParser.T__49 - 33)) | (1 << (BaliLanguageParser.T__50 - 33)) | (1 << (BaliLanguageParser.T__53 - 33)) | (1 << (BaliLanguageParser.T__59 - 33)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (BaliLanguageParser.T__65 - 66)) | (1 << (BaliLanguageParser.T__66 - 66)) | (1 << (BaliLanguageParser.T__67 - 66)) | (1 << (BaliLanguageParser.T__68 - 66)) | (1 << (BaliLanguageParser.T__70 - 66)) | (1 << (BaliLanguageParser.T__71 - 66)) | (1 << (BaliLanguageParser.T__72 - 66)) | (1 << (BaliLanguageParser.T__73 - 66)) | (1 << (BaliLanguageParser.T__74 - 66)) | (1 << (BaliLanguageParser.T__75 - 66)) | (1 << (BaliLanguageParser.TAG - 66)) | (1 << (BaliLanguageParser.SYMBOL - 66)) | (1 << (BaliLanguageParser.FRACTION - 66)) | (1 << (BaliLanguageParser.FLOAT - 66)) | (1 << (BaliLanguageParser.MOMENT - 66)) | (1 << (BaliLanguageParser.RESOURCE - 66)) | (1 << (BaliLanguageParser.VERSION - 66)) | (1 << (BaliLanguageParser.BINARY - 66)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 66)) | (1 << (BaliLanguageParser.TEXT - 66)) | (1 << (BaliLanguageParser.IDENTIFIER - 66)))) !== 0)) {
                 this.state = 211;
                 this.statement();
                 this.state = 212;
@@ -3498,7 +3498,7 @@ BaliLanguageParser.prototype.returnResult = function() {
         this.match(BaliLanguageParser.T__34);
         this.state = 305;
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.TIME - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.MOMENT - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0)) {
             this.state = 304;
             this.result();
         }
@@ -4002,7 +4002,7 @@ BaliLanguageParser.prototype.selectFrom = function() {
             this.state = 344; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.TIME - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__4))) !== 0) || ((((_la - 45)) & ~0x1f) == 0 && ((1 << (_la - 45)) & ((1 << (BaliLanguageParser.T__44 - 45)) | (1 << (BaliLanguageParser.T__48 - 45)) | (1 << (BaliLanguageParser.T__49 - 45)) | (1 << (BaliLanguageParser.T__50 - 45)) | (1 << (BaliLanguageParser.T__53 - 45)) | (1 << (BaliLanguageParser.T__59 - 45)) | (1 << (BaliLanguageParser.T__65 - 45)) | (1 << (BaliLanguageParser.T__66 - 45)) | (1 << (BaliLanguageParser.T__67 - 45)) | (1 << (BaliLanguageParser.T__68 - 45)) | (1 << (BaliLanguageParser.T__70 - 45)) | (1 << (BaliLanguageParser.T__71 - 45)) | (1 << (BaliLanguageParser.T__72 - 45)) | (1 << (BaliLanguageParser.T__73 - 45)) | (1 << (BaliLanguageParser.T__74 - 45)) | (1 << (BaliLanguageParser.T__75 - 45)))) !== 0) || ((((_la - 81)) & ~0x1f) == 0 && ((1 << (_la - 81)) & ((1 << (BaliLanguageParser.TAG - 81)) | (1 << (BaliLanguageParser.SYMBOL - 81)) | (1 << (BaliLanguageParser.FRACTION - 81)) | (1 << (BaliLanguageParser.FLOAT - 81)) | (1 << (BaliLanguageParser.MOMENT - 81)) | (1 << (BaliLanguageParser.RESOURCE - 81)) | (1 << (BaliLanguageParser.VERSION - 81)) | (1 << (BaliLanguageParser.BINARY - 81)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 81)) | (1 << (BaliLanguageParser.TEXT - 81)) | (1 << (BaliLanguageParser.IDENTIFIER - 81)))) !== 0));
         this.state = 348;
         _la = this._input.LA(1);
         if(_la===BaliLanguageParser.T__38) {
@@ -5620,8 +5620,8 @@ ElementContext.prototype.symbol = function() {
     return this.getTypedRuleContext(SymbolContext,0);
 };
 
-ElementContext.prototype.time = function() {
-    return this.getTypedRuleContext(TimeContext,0);
+ElementContext.prototype.moment = function() {
+    return this.getTypedRuleContext(MomentContext,0);
 };
 
 ElementContext.prototype.reference = function() {
@@ -5706,7 +5706,7 @@ BaliLanguageParser.prototype.element = function() {
         case 4:
             this.enterOuterAlt(localctx, 4);
             this.state = 442;
-            this.time();
+            this.moment();
             break;
 
         case 5:
@@ -6026,7 +6026,7 @@ BaliLanguageParser.prototype.symbol = function() {
     return localctx;
 };
 
-function TimeContext(parser, parent, invokingState) {
+function MomentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -6035,32 +6035,32 @@ function TimeContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_time;
+    this.ruleIndex = BaliLanguageParser.RULE_moment;
     return this;
 }
 
-TimeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-TimeContext.prototype.constructor = TimeContext;
+MomentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+MomentContext.prototype.constructor = MomentContext;
 
-TimeContext.prototype.TIME = function() {
-    return this.getToken(BaliLanguageParser.TIME, 0);
+MomentContext.prototype.MOMENT = function() {
+    return this.getToken(BaliLanguageParser.MOMENT, 0);
 };
 
-TimeContext.prototype.enterRule = function(listener) {
+MomentContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterTime(this);
+        listener.enterMoment(this);
 	}
 };
 
-TimeContext.prototype.exitRule = function(listener) {
+MomentContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitTime(this);
+        listener.exitMoment(this);
 	}
 };
 
-TimeContext.prototype.accept = function(visitor) {
+MomentContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitTime(this);
+        return visitor.visitMoment(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -6069,16 +6069,16 @@ TimeContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.TimeContext = TimeContext;
+BaliLanguageParser.MomentContext = MomentContext;
 
-BaliLanguageParser.prototype.time = function() {
+BaliLanguageParser.prototype.moment = function() {
 
-    var localctx = new TimeContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 100, BaliLanguageParser.RULE_time);
+    var localctx = new MomentContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 100, BaliLanguageParser.RULE_moment);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 460;
-        this.match(BaliLanguageParser.TIME);
+        this.match(BaliLanguageParser.MOMENT);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;

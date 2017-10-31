@@ -10,12 +10,12 @@
 'use strict';
 
 exports.BinaryHandler = require('./BinaryHandler').BinaryHandler;
+exports.MomentHandler = require('./MomentHandler').MomentHandler;
 exports.NumberHandler = require('./NumberHandler').NumberHandler;
 exports.ProbabilityHandler = require('./ProbabilityHandler').ProbabilityHandler;
 exports.SymbolHandler = require('./SymbolHandler').SymbolHandler;
 exports.TagHandler = require('./TagHandler').TagHandler;
 exports.TextHandler = require('./TextHandler').TextHandler;
-exports.TimeHandler = require('./TimeHandler').TimeHandler;
 exports.VersionHandler = require('./VersionHandler').VersionHandler;
 exports.CollectionHandler = require('./CollectionHandler').CollectionHandler;
 exports.TableHandler = require('./TableHandler').TableHandler;

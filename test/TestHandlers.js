@@ -119,7 +119,7 @@ module.exports = testCase({
         }
         test.done();
     },
-    'Test Times': function(test) {
+    'Test Moments': function(test) {
         var testValues = ['2017-10-30T19:10:01.257'];
         var tests = testValues.length;
         test.expect(tests);

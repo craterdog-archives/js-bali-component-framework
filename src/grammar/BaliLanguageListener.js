@@ -659,12 +659,12 @@ BaliLanguageListener.prototype.exitSymbol = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#time.
-BaliLanguageListener.prototype.enterTime = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageListener.prototype.enterMoment = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#time.
-BaliLanguageListener.prototype.exitTime = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageListener.prototype.exitMoment = function(ctx) {
 };
 
 

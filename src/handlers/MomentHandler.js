@@ -13,26 +13,26 @@ var language = require('../BaliLanguage');
 var moment = require('moment');
 
 
-function TimeHandler() {
+function MomentHandler() {
     return this;
 }
-TimeHandler.prototype.constructor = TimeHandler;
-exports.TimeHandler = TimeHandler;
+MomentHandler.prototype.constructor = MomentHandler;
+exports.MomentHandler = MomentHandler;
 
 
-TimeHandler.prototype.toJavaScript = function(baliDocument) {
+MomentHandler.prototype.toJavaScript = function(baliDocument) {
     var baliLiteral = baliDocument.literal();
     var baliElement = baliLiteral.element();
-    var baliTime = baliElement.time();
-    var time = baliTime.TIME().getText();
-    var jsString = time.substring(1, time.length - 1);  // remove the angle bracket delimiters
+    var baliMoment = baliElement.moment();
+    var jsString = baliMoment.MOMENT().getText();
+    jsString = jsString.substring(1, jsString.length - 1);  // remove the angle bracket delimiters
     return moment(jsString);
 };
 
 
-TimeHandler.prototype.toBali = function(jsMoment) {
+MomentHandler.prototype.toBali = function(jsMoment) {
     var jsString = jsMoment.format('YYYY-MM-DDTHH:mm:ss.SSS');
-    var time = '<' + jsString + '>';  // add the angle bracket delimiters
-    var baliDocument = language.parseDocument(time);
+    var baliMoment = '<' + jsString + '>';  // add the angle bracket delimiters
+    var baliDocument = language.parseDocument(baliMoment);
     return baliDocument;
 };

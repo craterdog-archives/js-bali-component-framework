@@ -22,7 +22,7 @@ FRACTION: '.' ('0'..'9')* '1'..'9' ;
 
 FLOAT: INTEGER FRACTION? ('E' INTEGER)? ;
 
-TIME: '<' YEARS '>' ;
+MOMENT: '<' YEARS '>' ;
 
 RESOURCE: '<' SCHEME ':' CONTEXT '>' ;
 

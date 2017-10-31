@@ -2,7 +2,7 @@
     $none: [none, any]
     $token: #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
     $symbol: $symbol
-    $timestamp: [
+    $moment: [
         <-10000-01-01T00:00:00>("Atlantis")
         <1962-04-01>("New York City")
         <1962-04-01T06>

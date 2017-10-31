@@ -567,7 +567,7 @@ BaliLanguageLexer.TAG = 81;
 BaliLanguageLexer.SYMBOL = 82;
 BaliLanguageLexer.FRACTION = 83;
 BaliLanguageLexer.FLOAT = 84;
-BaliLanguageLexer.TIME = 85;
+BaliLanguageLexer.MOMENT = 85;
 BaliLanguageLexer.RESOURCE = 86;
 BaliLanguageLexer.VERSION = 87;
 BaliLanguageLexer.BINARY = 88;
@@ -615,7 +615,7 @@ BaliLanguageLexer.symbolicNames = [ 'null', 'null', 'null', 'null', 'null',
                                     'null', 'null', 'null', 'null', 'null', 
                                     'null', 'null', 'null', "SHELL", "COMMENT", 
                                     "COMMENT_BLOCK", "TAG", "SYMBOL", "FRACTION", 
-                                    "FLOAT", "TIME", "RESOURCE", "VERSION", 
+                                    "FLOAT", "MOMENT", "RESOURCE", "VERSION", 
                                     "BINARY", "TEXT_BLOCK", "TEXT", "IDENTIFIER", 
                                     "NEWLINE", "SPACE" ];
 
@@ -635,7 +635,7 @@ BaliLanguageLexer.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                 "T__65", "T__66", "T__67", "T__68", "T__69", 
                                 "T__70", "T__71", "T__72", "T__73", "T__74", 
                                 "T__75", "T__76", "SHELL", "COMMENT", "COMMENT_BLOCK", 
-                                "TAG", "SYMBOL", "FRACTION", "FLOAT", "TIME", 
+                                "TAG", "SYMBOL", "FRACTION", "FLOAT", "MOMENT", 
                                 "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
                                 "TEXT", "IDENTIFIER", "NEWLINE", "SPACE", 
                                 "LINE", "CHARACTER", "NATURAL", "INTEGER", 

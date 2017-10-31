@@ -678,7 +678,7 @@ Formatter.prototype.visitIndices = function(ctx) {
 };
 
 
-// element: any | tag | symbol | time | reference | version | text | binary |
+// element: any | tag | symbol | moment | reference | version | text | binary |
 //  probability | percent | number
 Formatter.prototype.visitElement = function(ctx) {
     this.visitChildren(ctx);
@@ -709,9 +709,9 @@ Formatter.prototype.visitSymbol = function(ctx) {
 };
 
 
-// time: TIME
-Formatter.prototype.visitTime = function(ctx) {
-    this.buffer += ctx.TIME().getText();
+// moment: MOMENT
+Formatter.prototype.visitMoment = function(ctx) {
+    this.buffer += ctx.MOMENT().getText();
 };
 
 
