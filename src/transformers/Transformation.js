@@ -25,6 +25,7 @@ var handlerMap = {
     'array': new handlers.CollectionHandler(),
     'binary': new handlers.BinaryHandler(),
     'boolean': new handlers.ProbabilityHandler(),
+    'moment': new handlers.TimeHandler(),
     'number': new handlers.NumberHandler(),
     'object': new handlers.TableHandler(),
     'probability': new handlers.ProbabilityHandler(),
@@ -134,6 +135,9 @@ exports.getBaliType = function(baliTree) {
     switch (nodeType) {
         case 'BinaryContext':
             type = 'binary';
+            break;
+        case 'TimeContext':
+            type = 'moment';
             break;
         case 'UndefinedNumberContext':
         case 'InfiniteNumberContext':

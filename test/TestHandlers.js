@@ -1,5 +1,6 @@
 'use strict';
 
+var moment = require('moment');
 var elements = require('../src/elements');
 var language = require('../src/BaliLanguage');
 var testCase = require('nodeunit').testCase;
@@ -114,6 +115,18 @@ module.exports = testCase({
             var jsObject = testValues[i];
             var baliKey = language.javaScriptToKey('string', jsObject);
             var jsResult = language.keyToJavaScript('string', baliKey);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
+    'Test Times': function(test) {
+        var testValues = ['2017-10-30T19:10:01.257'];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = moment(testValues[i]);
+            var baliKey = language.javaScriptToKey('moment', jsObject);
+            var jsResult = language.keyToJavaScript('moment', baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
