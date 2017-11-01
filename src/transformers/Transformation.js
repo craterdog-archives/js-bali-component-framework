@@ -33,6 +33,7 @@ var handlerMap = {
     'string': new handlers.TextHandler(),
     'symbol': new handlers.SymbolHandler(),
     'tag': new handlers.TagHandler(),
+    'url': new handlers.ReferenceHandler(),
     'version': new handlers.VersionHandler()
     //'undefined': new handlers.AnyHandler()
 };
@@ -164,6 +165,9 @@ exports.getBaliType = function(baliTree) {
             break;
         case 'TagContext':
             type = 'tag';
+            break;
+        case 'ReferenceContext':
+            type = 'url';
             break;
         case 'VersionContext':
             type = 'version';

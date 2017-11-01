@@ -1,6 +1,7 @@
 'use strict';
 
 var moment = require('moment');
+var url = require('url');
 var elements = require('../src/elements');
 var language = require('../src/BaliLanguage');
 var testCase = require('nodeunit').testCase;
@@ -62,6 +63,25 @@ module.exports = testCase({
             var jsObject = new elements.Probability(testValues[i]);
             var baliDocument = language.javaScriptToDocument('probability', jsObject);
             var jsResult = language.documentToJavaScript('probability', baliDocument);
+            test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
+        }
+        test.done();
+    },
+    'Test References': function(test) {
+        var testValues = [
+            'https://google.com',
+            'bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM',
+            'bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1',
+            'bali:/bali/elements/Text',
+            'bali:/bali/elements/Text?version=6.12.1',
+            'bali:/abcCorp/reports/2010/Q3'
+        ];
+        var tests = testValues.length;
+        test.expect(tests);
+        for (var i = 0; i < tests; i++) {
+            var jsObject = url.parse(testValues[i]);
+            var baliKey = language.javaScriptToKey('url', jsObject);
+            var jsResult = language.keyToJavaScript('url', baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
