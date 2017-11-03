@@ -18,6 +18,19 @@ var handlers = require('../handlers');
  * This module defines functions that can transform a Bali parse tree
  * into its corresponding javascript object, or transform a javascript
  * object into its corresponding Bali parse tree.
+ *    Bali Type    JavaScript Type(s)
+ *    Any          undefined
+ *    Tag          bali-language:Tag
+ *    Symbol       bali-language:Symbol
+ *    Moment       bali-language:Moment
+ *    Reference    url
+ *    Version      bali-language:Version
+ *    Text         string
+ *    Binary       bali-language:Binary
+ *    Probability  bali-language:Probability, boolean
+ *    Percent      bali-language:Percent
+ *    Number       number, js-big-integer:BigInteger,
+ *                 mathjs:BigNumber, mathjs:Complex
  */
 
 var handlerMap = {

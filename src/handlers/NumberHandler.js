@@ -9,6 +9,8 @@
  ************************************************************************/
 'use strict';
 
+var Integer = require("js-big-integer").BigInteger;
+var Complex = require('complex');
 var language = require('../BaliLanguage');
 
 
@@ -42,20 +44,64 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
 
 
 NumberHandler.prototype.toBali = function(jsNumber) {
-    var number = jsNumber.toString();
-    switch (number) {
-        case 'Infinity':
-        case '-Infinity':
-            number = 'infinity';
-            break;
-        case 'NaN':
-            number = 'undefined';
-            break;
-        default:
-            number = number.replace(/e/, 'E');
+    // figure out the type of number
+    var type = typeof jsNumber;
+    if (type !== 'number') {
+        type = jsNumber.constructor.name.toLowerCase();
     }
 
-    var baliDocument = language.parseDocument(number);
+    var string = jsNumber.toString();
+    switch (type) {
+        case 'number':
+            switch (string) {
+                case 'Infinity':
+                case '-Infinity':
+                    string = 'infinity';
+                    break;
+                case 'NaN':
+                    string = 'undefined';
+                    break;
+                default:
+                    string = string.replace(/e/, 'E');
+            }
+            break;
+        case 'biginteger':
+            // nothing to do
+            break;
+        case 'complex':
+            string = '';
+            var real = jsNumber.real;
+            var imaginary = jsNumber.im;
+
+            // check for an undefined number
+            if ((real && real.isNaN()) || (imaginary && imaginary.isNaN())) {
+                string = 'infinity';
+                break;
+            }
+
+            // grab real part
+            if (real) {
+                string += real.toString();
+            } else {
+                string += '0';
+            }
+
+            // grab imaginary part
+            string += ', ';
+            if (imaginary) {
+                string += imaginary.toString();
+            } else {
+                string += '0';
+            }
+            string += 'i';
+
+            // wrap in parentheses
+            string = '(' + string + ')';
+            break;
+        default:
+    }
+
+    var baliDocument = language.parseDocument(string);
     return baliDocument;
 };
 
