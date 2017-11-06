@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "antlr4": "^4.7.0",
-    "complex.js": "^2.0.4",
     "decimal": "0.0.2",
     "js-big-integer": "^1.0.2",
     "moment": "^2.19.1",
