@@ -9,7 +9,9 @@
  ************************************************************************/
 'use strict';
 
+exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
+exports.Complex = require('./Complex').Complex;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
 exports.Symbol = require('./Symbol').Symbol;

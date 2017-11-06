@@ -10,7 +10,8 @@
 'use strict';
 
 var Integer = require("js-big-integer").BigInteger;
-var Complex = require('complex');
+var Angle = require('../elements/Angle').Angle;
+var Complex = require('../elements/Complex').Complex;
 var language = require('../BaliLanguage');
 
 
@@ -25,6 +26,8 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
     var baliLiteral = baliDocument.literal();
     var baliElement = baliLiteral.element();
     var baliNumber = baliElement.number();
+    var baliReal;
+    var baliImaginary;
     var nodeType = baliNumber.constructor.name;
     switch (nodeType) {
         case 'UndefinedNumberContext':
@@ -32,13 +35,27 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
         case 'InfiniteNumberContext':
             return Infinity;
         case 'RealNumberContext':
-            var real = baliNumber.real();
-            return toRealNumber(real);
+            baliReal = baliNumber.real();
+            return baliRealToJsNumber(baliReal);
         case 'ImaginaryNumberContext':
-            var imaginary = baliNumber.imaginary();
-            return toImaginaryNumber(imaginary);
+            baliImaginary = baliNumber.imaginary();
+            var jsNumber = baliImaginaryToJsNumber(baliImaginary);
+            return new Complex(0, jsNumber);
+        case 'ComplexNumberContext':
+            baliReal = baliNumber.real();
+            var jsReal = baliRealToJsNumber(baliReal);
+            baliImaginary = baliNumber.imaginary();
+            var jsImaginary = baliImaginaryToJsNumber(baliImaginary);
+            var delimiter = baliNumber.del.text;
+            if (delimiter === ',') {
+                return new Complex(jsReal, jsImaginary);
+            } else {
+                return new Complex(jsReal, new Angle(jsImaginary));
+            }
+            break;
+            
         default:
-            return toComplexNumber(baliNumber);
+            throw 'An unexpected Bali node type was encountered as a Bali Number: ' + nodeType;
     }
 };
 
@@ -46,7 +63,7 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
 NumberHandler.prototype.toBali = function(jsNumber) {
     // figure out the type of number
     var type = typeof jsNumber;
-    if (type !== 'number') {
+    if (type === 'object') {
         type = jsNumber.constructor.name.toLowerCase();
     }
 
@@ -62,43 +79,30 @@ NumberHandler.prototype.toBali = function(jsNumber) {
                     string = 'undefined';
                     break;
                 default:
-                    string = string.replace(/e/, 'E');
+                    // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
+                    string = string.replace(/e/g, 'E');
             }
             break;
+
         case 'biginteger':
             // nothing to do
             break;
+
         case 'complex':
-            string = '';
-            var real = jsNumber.real;
-            var imaginary = jsNumber.im;
-
-            // check for an undefined number
-            if ((real && real.isNaN()) || (imaginary && imaginary.isNaN())) {
+            // handle special cases
+            if (jsNumber.isNaN()) {
+                string = 'undefined';
+            } else if (jsNumber.isInfinite()) {
                 string = 'infinity';
-                break;
-            }
-
-            // grab real part
-            if (real) {
-                string += real.toString();
             } else {
-                string += '0';
+                string = jsNumber.toString();
+                // must replace the 'e' in the exponents with 'E' but not affect the 'e^'
+                string = string.replace(/e([^^])/g, 'E$1');
             }
-
-            // grab imaginary part
-            string += ', ';
-            if (imaginary) {
-                string += imaginary.toString();
-            } else {
-                string += '0';
-            }
-            string += 'i';
-
-            // wrap in parentheses
-            string = '(' + string + ')';
             break;
+
         default:
+            throw 'Unexpected JavaScript number type: ' + type;
     }
 
     var baliDocument = language.parseDocument(string);
@@ -106,47 +110,42 @@ NumberHandler.prototype.toBali = function(jsNumber) {
 };
 
 
-function toRealNumber(real) {
-    if (real.constructor.name === 'ConstantRealContext') {
-        var constant = real.con.text;
-        if (real.sign) {
-            constant = '-' + constant;
+function baliRealToJsNumber(baliReal) {
+    var jsNumber;
+    if (baliReal.constructor.name === 'ConstantRealContext') {
+        var constant = baliReal.con.text;
+        switch (constant) {
+            case 'e':
+                jsNumber = 2.718281828459045;
+                break;
+            case 'pi':
+                jsNumber = 3.141592653589793;
+                break;
+            case 'phi':
+                jsNumber = 1.618033988749895;
+                break;
         }
-        return constant;
+        if (baliReal.sign) {
+            jsNumber = -jsNumber;
+        }
+        return jsNumber;
     } else {
-        var string = real.FLOAT().getText();
-        var float = Number(string);
-        return float;
+        var string = baliReal.FLOAT().getText();
+        jsNumber = Number(string);
+        return jsNumber;
     }
 }
 
 
-function toImaginaryNumber(imaginary) {
-    var real = imaginary.real();
-    var sign = imaginary.sign;
-    var string = '';
+function baliImaginaryToJsNumber(baliImaginary) {
+    var real = baliImaginary.real();
+    var sign = baliImaginary.sign;
+    var jsNumber = 1;
     if (real) {
-        string += toRealNumber(real);
-        if (real.con) {
-            string += ' ';
-        }
-    } else if (sign) {
-        string += '-';
+        jsNumber = baliRealToJsNumber(real);
     }
-    string += 'i';
-    return string;
-}
-
-
-function toComplexNumber(baliTree) {
-    var string = '(';
-    string += toRealNumber(baliTree.real());
-    var delimiter = baliTree.del.text;
-    string += delimiter;
-    if (delimiter === ',') {
-        string += " ";
+    if (sign) {
+        jsNumber = -jsNumber;
     }
-    string += toImaginaryNumber(baliTree.imaginary());
-    string += ')';
-    return string;
+    return jsNumber;
 }

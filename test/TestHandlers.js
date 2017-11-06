@@ -1,3 +1,12 @@
+/************************************************************************
+ * Copyright (c) Crater Dog Technologies(TM).  All Rights Reserved.     *
+ ************************************************************************
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.        *
+ *                                                                      *
+ * This code is free software; you can redistribute it and/or modify it *
+ * under the terms of The MIT License (MIT), as published by the Open   *
+ * Source Initiative. (See http://opensource.org/licenses/MIT)          *
+ ************************************************************************/
 'use strict';
 
 var moment = require('moment');
@@ -32,11 +41,11 @@ module.exports = testCase({
         test.done();
     },
     'Test Numbers': function(test) {
-        var testValues = [NaN, -1.3e10, -1, 0, 5, 23.7e-12, Infinity];
+        var testValues = [NaN, -1.3e10, -1, 0, 5, 23.7e-12, Infinity, '(3, 4i)'];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
-            var jsObject = testValues[i];
+            var jsObject = new elements.Complex(testValues[i]);
             var baliExpression = language.javaScriptToExpression('number', jsObject);
             var jsResult = language.expressionToJavaScript('number', baliExpression);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
