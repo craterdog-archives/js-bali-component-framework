@@ -131,13 +131,39 @@ module.exports = testCase({
             '(5, 0i)',
             '(-3, 4i)',
             '(-1, i)',
+            '(1 e^i)',
+            '(5 e^3.141592653589793i)',
+            '(1.23e-56, -7.8e+90i)',
+            '(5 e^3.141592653589793i)'
+        ];
+        var rectangularValues = [
+            'NaN',
+            '0',
+            'Infinity',
+            '(-5, 0i)',
+            '(5, 0i)',
+            '(-3, 4i)',
+            '(-1, i)',
             '(0.5403023058681398, 0.8414709848078965i)',
             '(-5, 0i)',
             '(1.23e-56, -7.8e+90i)',
             '(-5, 0i)'
         ];
+        var polarValues = [
+            'NaN',
+            '0',
+            'Infinity',
+            '(5 e^3.141592653589793i)',
+            '(5 e^0i)',
+            '(5 e^2.214297435588181i)',
+            '(1.4142135623730951 e^2.356194490192345i)',
+            '(1 e^i)',
+            '(5 e^3.141592653589793i)',
+            '(7.8e+90 e^-1.5707963267948966i)',
+            '(5 e^3.141592653589793i)'
+        ];
         var tests = testValues.length;
-        test.expect(8 * tests);
+        test.expect(10 * tests);
         for (var i = 0; i < tests; i++) {
             var complex = testValues[i];
             test.strictEqual(complex.isNaN(), isNanValues[i]);
@@ -148,6 +174,8 @@ module.exports = testCase({
             test.strictEqual(complex.getMagnitude().toString(), magnitudeValues[i].toString());
             test.strictEqual(complex.getAngle().toNumber(), angleValues[i]);
             test.strictEqual(complex.toString(), stringValues[i]);
+            test.strictEqual(complex.toRectangular(), rectangularValues[i]);
+            test.strictEqual(complex.toPolar(), polarValues[i]);
         }
 
         test.done();

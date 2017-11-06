@@ -27,6 +27,7 @@ var Angle = require('../elements/Angle').Angle;
  * @returns {Complex}
  */
 function Complex(numberOrString, optionalNumberOrAngle) {
+    this.format = 'rectangular';  // by default
 
     // Complex(real): constructor generates a complex number with only a real part
     if (typeof numberOrString === 'number' && (typeof optionalNumberOrAngle === 'undefined' || optionalNumberOrAngle === null)) {
@@ -61,6 +62,7 @@ function Complex(numberOrString, optionalNumberOrAngle) {
             this.real = complex.real;
             this.imaginary = complex.imaginary;
         } else {
+            this.format = 'polar';
             this.magnitude = complex.magnitude;
             this.angle = complex.angle;
         }
@@ -86,7 +88,7 @@ function Complex(numberOrString, optionalNumberOrAngle) {
 
     // Complex(magnitude, angle): constructor generates a complex number with a magnitude and angle
     if (typeof numberOrString === 'number' && typeof optionalNumberOrAngle === 'object' && optionalNumberOrAngle.constructor.name === 'Angle') {
-        // normalize the values
+        this.format = 'polar';
         var magnitude = numberOrString;
         var angle = optionalNumberOrAngle;
 
@@ -201,26 +203,56 @@ Complex.prototype.getAngle = function() {
  * @returns {string}
  */
 Complex.prototype.toString = function() {
+    if (this.format === 'rectangular') {
+        return this.toRectangular();
+    } else {
+        return this.toPolar();
+    }
+};
+
+
+/**
+ * This method returns a string version of the complex number in retangular form.
+ * 
+ * @returns {string}
+ */
+Complex.prototype.toRectangular = function() {
     if (this.isNaN()) return 'NaN';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'Infinity';
     var string = '(';
-    if (this.real) {
-        string += this.real.toString();
-        string += ', ';
-        if (this.imaginary === -1) {
-            string += '-';  // use -i instead of -1i
-        } else if (this.imaginary !== 1) {
-            string += this.imaginary.toString();
-        }
-    } else {
-        string += this.magnitude.toString();
-        string += ' e^';
-        if (this.angle.toNumber() === -1) {
-            string += '-';  // use -i instead of -1i
-        } else if (this.angle.toNumber() !== 1) {
-            string += this.angle.toString();
-        }
+    var real = this.getRealPart();
+    var imaginary = this.getImaginaryPart();
+    string += real;
+    string += ', ';
+    if (imaginary === -1) {
+        string += '-';  // use -i instead of -1i
+    } else if (imaginary !== 1) {
+        string += imaginary;
+    }
+    string += 'i)';
+    return string;
+};
+
+
+/**
+ * This method returns a string version of the complex number in polar form.
+ * 
+ * @returns {string}
+ */
+Complex.prototype.toPolar = function() {
+    if (this.isNaN()) return 'NaN';
+    if (this.isZero()) return '0';
+    if (this.isInfinite()) return 'Infinity';
+    var string = '(';
+    var magnitude = this.getMagnitude();
+    var angle = this.getAngle().toNumber();
+    string += magnitude;
+    string += ' e^';
+    if (angle === -1) {
+        string += '-';  // use -i instead of -1i
+    } else if (angle !== 1) {
+        string += angle;
     }
     string += 'i)';
     return string;
