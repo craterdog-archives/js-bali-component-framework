@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-
 var antlr = require('antlr4');
 var grammar = require('../grammar/BaliLanguageParser').BaliLanguageParser;
 var handlers = require('../handlers');
@@ -29,8 +28,7 @@ var handlers = require('../handlers');
  *    Binary       bali-language:Binary
  *    Probability  bali-language:Probability, boolean
  *    Percent      bali-language:Percent
- *    Number       number, js-big-integer:BigInteger,
- *                 mathjs:BigNumber, mathjs:Complex
+ *    Number       number, js-big-integer:BigInteger, bali-language:Complex
  */
 
 var handlerMap = {
@@ -52,8 +50,14 @@ var handlerMap = {
 };
 
 
-// Transformer Methods
-
+/**
+ * This function transforms a Bali document into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {DocumentContext} baliDocument The Bali document to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
 exports.documentToJavaScript = function(type, baliDocument) {
     var handler = handlerMap[type];
     var jsObject = handler.toJavaScript(baliDocument);
@@ -61,6 +65,14 @@ exports.documentToJavaScript = function(type, baliDocument) {
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * document.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {DocumentContext} The corresponding Bali document.
+ */
 exports.javaScriptToDocument = function(type, jsObject) {
     var handler = handlerMap[type];
     var baliDocument = handler.toBali(jsObject);
@@ -68,6 +80,14 @@ exports.javaScriptToDocument = function(type, jsObject) {
 };
 
 
+/**
+ * This function transforms a Bali expression into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {ExpressionContext} baliExpression The Bali expression to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
 exports.expressionToJavaScript = function(type, baliExpression) {
     var handler = handlerMap[type];
     var baliDocument = baliExpression.document();  // strip off the expression wrapper
@@ -76,6 +96,14 @@ exports.expressionToJavaScript = function(type, baliExpression) {
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * expression.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {ExpressionContext} The corresponding Bali expression.
+ */
 exports.javaScriptToExpression = function(type, jsObject) {
     var baliDocument = exports.javaScriptToDocument(type, jsObject);
     var baliExpression = new antlr.ParserRuleContext();  // HACK: since ExpressionContext() is not exported
@@ -86,6 +114,14 @@ exports.javaScriptToExpression = function(type, jsObject) {
 };
 
 
+/**
+ * This function transforms a Bali association key into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {KeyContext} baliKey The Bali association key to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
 exports.keyToJavaScript = function(type, baliKey) {
     var handler = handlerMap[type];
     var baliElement = baliKey.element();  // strip off the key wrapper
@@ -100,6 +136,14 @@ exports.keyToJavaScript = function(type, baliKey) {
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * association key.
+ * 
+ * @param {string} type The type of handler to be used for the transformation.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {KeyContext} The corresponding Bali association key.
+ */
 exports.javaScriptToKey = function(type, jsObject) {
     var handler = handlerMap[type];
     var baliDocument = handler.toBali(jsObject);
@@ -112,6 +156,12 @@ exports.javaScriptToKey = function(type, jsObject) {
 };
 
 
+/**
+ * This function returns the handler type of a JavaScript object.
+ * 
+ * @param {object} jsObject The JavaScript object.
+ * @returns {string} The handler type for the object.
+ */
 exports.getJavaScriptType = function(jsObject) {
     var type = typeof jsObject;
     if (type === 'object') {
@@ -124,6 +174,13 @@ exports.getJavaScriptType = function(jsObject) {
     return type;
 };
 
+
+/**
+ * This function returns the handler type of a Bali parse tree node.
+ * 
+ * @param {ParserContext} baliTree The Bali parse tree node.
+ * @returns {string} The handler type for the tree node.
+ */
 exports.getBaliType = function(baliTree) {
     var type;
     if (baliTree.constructor.name === 'DocumentExpressionContext') {

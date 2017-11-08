@@ -21,11 +21,11 @@ var base2LookupTable = "01";
 
 
 /**
- * This function encodes a byte array into a base 2 string.
+ * This function encodes a binary string into a base 2 string.
  *
- * @param bytes The byte array containing the integer.
- * @param indentation The string to be prepended to each line of the result.
- * @return The corresponding base 2 string.
+ * @param {string} bytes The binary string containing the integer.
+ * @param {string} indentation The string to be prepended to each line of the result.
+ * @return {string} The corresponding base 2 string.
  */
 exports.base2Encode = function(bytes, indentation) {
 
@@ -33,7 +33,7 @@ exports.base2Encode = function(bytes, indentation) {
     var base2 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
     var length = bytes.length;
-    if (length === 0) return "";  // empty byte array
+    if (length === 0) return "";  // empty binary string
 
     if (length > 10) {
         base2 += '\n';
@@ -64,10 +64,10 @@ exports.base2Encode = function(bytes, indentation) {
 
 
 /**
- * This function decodes a base 2 encoded string into a byte array.
+ * This function decodes a base 2 encoded string into a binary string.
  *
- * @param base2 The base 2 encoded string.
- * @return The corresponding byte array.
+ * @param {string} base2 The base 2 encoded string.
+ * @return {string} The corresponding binary string.
  */
 exports.base2Decode = function(base2) {
 
@@ -95,7 +95,7 @@ exports.base2Decode = function(base2) {
             byte |= (bit << b);
         }
 
-        // append byte to byte array
+        // append byte to binary string
         bytes += String.fromCharCode(byte);
 
     }
@@ -112,11 +112,11 @@ var base16LookupTable = "0123456789ABCDEF";
 
 
 /**
- * This function encodes a byte array into a base 16 string.
+ * This function encodes a binary string into a base 16 string.
  *
- * @param bytes The byte array containing the integer.
- * @param indentation The string to be prepended to each line of the result.
- * @return The corresponding base 16 string.
+ * @param {string} bytes The binary string containing the integer.
+ * @param {string} indentation The string to be prepended to each line of the result.
+ * @return {string} The corresponding base 16 string.
  */
 exports.base16Encode = function(bytes, indentation) {
 
@@ -124,7 +124,7 @@ exports.base16Encode = function(bytes, indentation) {
     var base16 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
     var length = bytes.length;
-    if (length === 0) return "";  // empty byte array
+    if (length === 0) return "";  // empty binary string
 
     if (length > 40) {
         base16 += '\n';
@@ -156,10 +156,10 @@ exports.base16Encode = function(bytes, indentation) {
 
 
 /**
- * This function decodes a base 16 encoded string into a byte array.
+ * This function decodes a base 16 encoded string into a binary string.
  *
- * @param base16 The base 16 encoded string.
- * @return The corresponding byte array.
+ * @param {string} base16 The base 16 encoded string.
+ * @return {string} The corresponding binary string.
  */
 exports.base16Decode = function(base16) {
 
@@ -210,11 +210,11 @@ var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
 
 
 /**
- * This function encodes a byte array into a base 32 string.
+ * This function encodes a binary string into a base 32 string.
  *
- * @param bytes The byte array containing the integer.
- * @param indentation The string to be prepended to each line of the result.
- * @return The corresponding base 32 string.
+ * @param {string} bytes The binary string containing the integer.
+ * @param {string} indentation The string to be prepended to each line of the result.
+ * @return {string} The corresponding base 32 string.
  */
 exports.base32Encode = function(bytes, indentation) {
 
@@ -222,7 +222,7 @@ exports.base32Encode = function(bytes, indentation) {
     var base32 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
     var length = bytes.length;
-    if (length === 0) return "";  // empty byte array
+    if (length === 0) return "";  // empty binary string
 
     if (length > 50) {
         base32 += '\n';
@@ -253,10 +253,10 @@ exports.base32Encode = function(bytes, indentation) {
 
 
 /**
- * This function decodes a base 32 encoded string into a byte array.
+ * This function decodes a base 32 encoded string into a binary string.
  *
- * @param base32 The base 32 encoded string.
- * @return The corresponding byte array.
+ * @param {string} base32 The base 32 encoded string.
+ * @return {string} The corresponding binary string.
  */
 exports.base32Decode = function(base32) {
 
@@ -296,11 +296,11 @@ exports.base32Decode = function(base32) {
 
 
 /**
- * This function encodes a byte array into a base 64 string.
+ * This function encodes a binary string into a base 64 string.
  *
- * @param bytes The byte array containing the integer.
- * @param indentation The string to be prepended to each line of the result.
- * @return The corresponding base 64 string.
+ * @param {string} bytes The binary string containing the integer.
+ * @param {string} indentation The string to be prepended to each line of the result.
+ * @return {string} The corresponding base 64 string.
  */
 exports.base64Encode = function(bytes, indentation) {
 
@@ -308,7 +308,7 @@ exports.base64Encode = function(bytes, indentation) {
     var base64 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
     var length = bytes.length;
-    if (length === 0) return "";  // empty byte array
+    if (length === 0) return "";  // empty binary string
 
     // format as indented 80 character blocks
     if (length > 50) {
@@ -326,10 +326,10 @@ exports.base64Encode = function(bytes, indentation) {
 
 
 /**
- * This function decodes a base 64 encoded string into a byte array.
+ * This function decodes a base 64 encoded string into a binary string.
  *
- * @param base64 The base 64 encoded string.
- * @return The corresponding byte array.
+ * @param {string} base64 The base 64 encoded string.
+ * @return {string} The corresponding binary string.
  */
 exports.base64Decode = function(base64) {
     return forge.util.decode64(base64);
@@ -338,10 +338,10 @@ exports.base64Decode = function(base64) {
 
 /**
  * This private function converts an integer into its corresponding bytes
- * in a byte array in 'big endian' order.
+ * in a binary string in 'big endian' order.
  *
- * @param integer The integer to be converted.
- * @return The corresponding byte array.
+ * @param {number} integer The integer to be converted.
+ * @return {string} The corresponding binary string.
  */
 exports.integerToBytes = function(integer) {
     var bytes = '';
@@ -354,11 +354,11 @@ exports.integerToBytes = function(integer) {
 
 
 /**
- * This private function converts the bytes in a byte array in 'big endian'
+ * This private function converts the bytes in a binary string in 'big endian'
  * order to its corresponding integer value.
  *
- * @param bytes The byte array containing the integer.
- * @return The corresponding integer value.
+ * @param {string} bytes The binary string containing the integer.
+ * @return {number} The corresponding integer value.
  */
 exports.bytesToInteger = function(bytes) {
     var integer = 0;

@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-
 var grammar = require('../grammar');
 
 
@@ -17,6 +16,15 @@ var grammar = require('../grammar');
  * produced by the BaliLanguageParser and generates a canonical version of
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
+ */
+
+/**
+ * This constructor creates a new formatter with the specified padding.
+ * 
+ * @constructor
+ * @param {string} padding The padding string to be prefixed to each line
+ * of output. The default padding is ''.
+ * @returns {Formatter} The new formatter.
  */
 function Formatter(padding) {
     grammar.BaliLanguageVisitor.call(this);
