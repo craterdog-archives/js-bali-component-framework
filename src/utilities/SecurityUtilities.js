@@ -56,7 +56,7 @@ exports.coinToss = function(probability) {
  * utf8 encoded character string. The string does not need to be encoded ahead
  * of time.
  * 
- * @param {string} string The character string to be hashed.
+ * @param {string} string The (character or binary) string to be hashed.
  * @param {string} optionalVersion An optional library version string for the
  * implementation (e.g. '1', '1.3', '2', etc.).  The default version is '1'.
  * @returns {string} The resulting binary hash string.
@@ -68,7 +68,7 @@ exports.sha512Hash = function(string, optionalVersion) {
     switch(optionalVersion) {
         case '1':
             var hasher = forge.sha512.create();
-            hasher.update(string, 'utf8');
+            hasher.update(string);
             var hashBytes = hasher.digest().getBytes();
             return hashBytes;
         default:
@@ -103,7 +103,7 @@ exports.generateKeyPair = function(optionalVersion) {
  * signature can be verified using the <code>signatureIsValid()</code> function.
  * 
  * @param {PrivateKey} privateKey The private key to be used to sign the string.
- * @param {string} string The string to be digitally signed.
+ * @param {string} string The (character or binary) string to be digitally signed.
  * @param {string} optionalVersion An optional library version string for the
  * implementation (e.g. '1', '1.3', '2', etc.).  The default version is '1'.
  * @returns {string} The binary string containing the signature bytes.
@@ -115,7 +115,7 @@ exports.signString = function(privateKey, string, optionalVersion) {
     switch(optionalVersion) {
         case '1':
             var hasher = forge.sha512.create();
-            hasher.update(string, 'utf8');
+            hasher.update(string);
             var signer = forge.pss.create({
                 md: forge.sha512.create(),
                 mgf: forge.mgf1.create(forge.sha512.create()),
@@ -136,7 +136,7 @@ exports.signString = function(privateKey, string, optionalVersion) {
  * 
  * @param {PublicKey} publicKey The public key associated with the private key that was
  * used to sign the string.
- * @param {string} string The original string that was signed.
+ * @param {string} string The original (character or binary) string that was signed.
  * @param {string} signatureBytes The digital signature generated for the string.
  * @param {string} optionalVersion An optional library version string for the
  * implementation (e.g. '1', '1.3', '2', etc.).  The default version is '1'.
@@ -149,7 +149,7 @@ exports.signatureIsValid = function(publicKey, string, signatureBytes, optionalV
     switch(optionalVersion) {
         case '1':
             var hasher = forge.sha512.create();
-            hasher.update(string, 'utf8');
+            hasher.update(string);
             var hash = hasher.digest().getBytes();
             var signer = forge.pss.create({
                 md: forge.sha512.create(),
