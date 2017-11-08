@@ -8,9 +8,9 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-
 var security = require('../src/utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
+
 
 module.exports = testCase({
     'Test Coin Toss': function(test) {
@@ -28,8 +28,21 @@ module.exports = testCase({
             test.strictEqual(length, expected, 'The length of the random string is wrong: ' + length);
             var hash = security.sha512Hash(bytes);
             length = hash.length;
-            expected = 105;
+            expected = 64;
             test.strictEqual(length, expected, 'The length of the hash string is wrong: ' + length);
+        }
+        test.done();
+    },
+    'Test Signatures': function(test) {
+        var keyPair = security.generateKeyPair();
+        var publicKey = keyPair.publicKey;
+        var privateKey = keyPair.privateKey;
+        test.expect(10);
+        for (var i = 0; i < 10; i++) {
+            var bytes = security.generateRandomBytes(i);
+            var signatureBytes = security.signString(privateKey, bytes);
+            var isValid = security.signatureIsValid(publicKey, bytes, signatureBytes);
+            test.ok(isValid, 'The signature is not valid.');
         }
         test.done();
     }
