@@ -533,7 +533,7 @@ PercentHandler.prototype.toJavaScript = function(baliDocument) {
     var baliElement = baliLiteral.element();
     var baliPercent = baliElement.percent();
     var baliReal = baliPercent.real();
-    var jsPercent = toRealNumber(baliReal);
+    var jsPercent = baliRealToJsNumber(baliReal);
     return new Percent(jsPercent);
 };
 
@@ -543,22 +543,6 @@ PercentHandler.prototype.toBali = function(jsPercent) {
     var baliDocument = language.parseDocument(percent);
     return baliDocument;
 };
-
-
-// TODO: copied from NumberHandler, needs refactoring
-function toRealNumber(real) {
-    if (real.constructor.name === 'ConstantRealContext') {
-        var constant = real.con.text;
-        if (real.sign) {
-            constant = '-' + constant;
-        }
-        return constant;
-    } else {
-        var string = real.FLOAT().getText();
-        var float = Number(string);
-        return float;
-    }
-}
 
 
 function ProbabilityHandler() {
