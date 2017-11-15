@@ -9,153 +9,126 @@
  ************************************************************************/
 'use strict';
 
-var antlr = require('antlr4');
-var grammar = require('./grammar');
-var Formatter = require('./transformers/Formatter').Formatter;
-var transform = require('./transformers/Transformation');
-
-
 /*
  * This module provides useful functions for parsing and manipulating documents
  * that are written using the Bali Document Language™. For more information
  * about the Bali language refer to the Reference Guide at:
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
+var Parser = require('./transformers/LanguageParser').LanguageParser;
+var Formatter = require('./transformers/LanguageFormatter').LanguageFormatter;
+var Mapper = require('./transformers/LanguageMapper').LanguageMapper;
 
 
 // PUBLIC FUNCTIONS
 
-exports.parseDocument = function(document) {
-    var chars = new antlr.InputStream(document);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.document();
-    return baliTree;
+exports.parseDocument = function(source) {
+    var parser = new Parser();
+    var document = parser.parseDocument(source);
+    return document;
 };
 
 
-exports.parseElement = function(element) {
-    var chars = new antlr.InputStream(element);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.element();
-    return baliTree;
+exports.parseElement = function(source) {
+    var parser = new Parser();
+    var element = parser.parseDocument(source);
+    return element;
 };
 
 
-exports.parseStructure = function(structure) {
-    var chars = new antlr.InputStream(structure);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.structure();
-    return baliTree;
+exports.parseStructure = function(source) {
+    var parser = new Parser();
+    var structure = parser.parseDocument(source);
+    return structure;
 };
 
 
-exports.parseRange = function(range) {
-    var chars = new antlr.InputStream(range);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.range();
-    return baliTree;
+exports.parseRange = function(source) {
+    var parser = new Parser();
+    var range = parser.parseDocument(source);
+    return range;
 };
 
 
-exports.parseCollection = function(collection) {
-    var chars = new antlr.InputStream(collection);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.collection();
-    return baliTree;
+exports.parseCollection = function(source) {
+    var parser = new Parser();
+    var collection = parser.parseDocument(source);
+    return collection;
 };
 
 
-exports.parseTable = function(table) {
-    var chars = new antlr.InputStream(table);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.table();
-    return baliTree;
+exports.parseTable = function(source) {
+    var parser = new Parser();
+    var table = parser.parseDocument(source);
+    return table;
 };
 
 
-exports.parseBlock = function(block) {
-    var chars = new antlr.InputStream(block);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.block();
-    return baliTree;
+exports.parseBlock = function(source) {
+    var parser = new Parser();
+    var block = parser.parseDocument(source);
+    return block;
 };
 
 
-exports.parseExpression = function(expression) {
-    var chars = new antlr.InputStream(expression);
-    var lexer = new grammar.BaliLanguageLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
-    parser.buildParseTrees = true;
-    var baliTree = parser.expression();
-    return baliTree;
+exports.parseExpression = function(source) {
+    var parser = new Parser();
+    var expression = parser.parseDocument(source);
+    return expression;
 };
 
 
-exports.formatDocument = function(baliTree) {
-    return exports.formatPaddedDocument(baliTree, '');
+exports.formatDocument = function(baliDocument) {
+    var formatter = new Formatter();
+    var source = formatter.formatDocument(baliDocument, '');
+    return source;
 };
 
 
-exports.formatPaddedDocument = function(baliTree, padding) {
-    var visitor = new Formatter(padding);
-    baliTree.accept(visitor);
-    return visitor.buffer + '\n';  // POSIX requires all lines end with a line feed
+exports.formatPaddedDocument = function(baliDocument, padding) {
+    var formatter = new Formatter();
+    var source = formatter.formatDocument(baliDocument, padding);
+    return source;
 };
 
 
 exports.documentToJavaScript = function(type, baliTree) {
-    var jsObject = transform.documentToJavaScript(type, baliTree);
+    var mapper = new Mapper();
+    var jsObject = mapper.documentToJavaScript(type, baliTree);
     return jsObject;
 };
 
 
 exports.javaScriptToDocument = function(type, jsObject) {
-    var baliDocument = transform.javaScriptToDocument(type, jsObject);
+    var mapper = new Mapper();
+    var baliDocument = mapper.javaScriptToDocument(type, jsObject);
     return baliDocument;
 };
 
 
 exports.expressionToJavaScript = function(type, baliTree) {
-    var jsObject = transform.expressionToJavaScript(type, baliTree);
+    var mapper = new Mapper();
+    var jsObject = mapper.expressionToJavaScript(type, baliTree);
     return jsObject;
 };
 
 
 exports.javaScriptToExpression = function(type, jsObject) {
-    var baliExpression = transform.javaScriptToExpression(type, jsObject);
+    var mapper = new Mapper();
+    var baliExpression = mapper.javaScriptToExpression(type, jsObject);
     return baliExpression;
 };
 
 
 exports.keyToJavaScript = function(type, baliTree) {
-    var jsObject = transform.keyToJavaScript(type, baliTree);
+    var mapper = new Mapper();
+    var jsObject = mapper.keyToJavaScript(type, baliTree);
     return jsObject;
 };
 
 
 exports.javaScriptToKey = function(type, jsObject) {
-    var baliKey = transform.javaScriptToKey(type, jsObject);
+    var mapper = new Mapper();
+    var baliKey = mapper.javaScriptToKey(type, jsObject);
     return baliKey;
 };
