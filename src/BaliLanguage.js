@@ -22,6 +22,13 @@ var Mapper = require('./transformers/LanguageMapper').LanguageMapper;
 
 // PUBLIC FUNCTIONS
 
+/**
+ * This function takes a source code string containing a Bali document
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {DocumentContext} The corresponding parse tree structure.
+ */
 exports.parseDocument = function(source) {
     var parser = new Parser();
     var document = parser.parseDocument(source);
@@ -29,6 +36,13 @@ exports.parseDocument = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali element
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ElementContext} The corresponding parse tree structure.
+ */
 exports.parseElement = function(source) {
     var parser = new Parser();
     var element = parser.parseDocument(source);
@@ -36,6 +50,13 @@ exports.parseElement = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali structure
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {StructureContext} The corresponding parse tree structure.
+ */
 exports.parseStructure = function(source) {
     var parser = new Parser();
     var structure = parser.parseDocument(source);
@@ -43,6 +64,13 @@ exports.parseStructure = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali range
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {RangeContext} The corresponding parse tree structure.
+ */
 exports.parseRange = function(source) {
     var parser = new Parser();
     var range = parser.parseDocument(source);
@@ -50,6 +78,13 @@ exports.parseRange = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali collection
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {CollectionContext} The corresponding parse tree structure.
+ */
 exports.parseCollection = function(source) {
     var parser = new Parser();
     var collection = parser.parseDocument(source);
@@ -57,6 +92,13 @@ exports.parseCollection = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali table
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {TableContext} The corresponding parse tree structure.
+ */
 exports.parseTable = function(source) {
     var parser = new Parser();
     var table = parser.parseDocument(source);
@@ -64,6 +106,13 @@ exports.parseTable = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali block
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {BlockContext} The corresponding parse tree structure.
+ */
 exports.parseBlock = function(source) {
     var parser = new Parser();
     var block = parser.parseDocument(source);
@@ -71,6 +120,13 @@ exports.parseBlock = function(source) {
 };
 
 
+/**
+ * This function takes a source code string containing a Bali expression
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ExpressionContext} The corresponding parse tree structure.
+ */
 exports.parseExpression = function(source) {
     var parser = new Parser();
     var expression = parser.parseDocument(source);
@@ -78,6 +134,12 @@ exports.parseExpression = function(source) {
 };
 
 
+/**
+ * This function takes a Bali document and formats it as source code.
+ * 
+ * @param {DocumentContext} baliDocument The Bali document to be formatted.
+ * @returns {string} The formatted source code string.
+ */
 exports.formatDocument = function(baliDocument) {
     var formatter = new Formatter();
     var source = formatter.formatDocument(baliDocument, '');
@@ -85,20 +147,44 @@ exports.formatDocument = function(baliDocument) {
 };
 
 
-exports.formatPaddedDocument = function(baliDocument, padding) {
+/**
+ * This function takes a Bali document and formats it as source code. Each
+ * line will be prepended with the specified padding string.
+ * 
+ * @param {DocumentContext} baliDocument The Bali document to be formatted.
+ * @param {string} padding The string that should be prepended to each line.
+ * @returns {string} The formatted source code string.
+ */
+exports.formatDocumentWithPadding = function(baliDocument, padding) {
     var formatter = new Formatter();
     var source = formatter.formatDocument(baliDocument, padding);
     return source;
 };
 
 
-exports.documentToJavaScript = function(type, baliTree) {
+/**
+ * This function transforms a Bali document into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {DocumentContext} baliDocument The Bali document to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
+exports.documentToJavaScript = function(type, baliDocument) {
     var mapper = new Mapper();
-    var jsObject = mapper.documentToJavaScript(type, baliTree);
+    var jsObject = mapper.documentToJavaScript(type, baliDocument);
     return jsObject;
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * document.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {DocumentContext} The corresponding Bali document.
+ */
 exports.javaScriptToDocument = function(type, jsObject) {
     var mapper = new Mapper();
     var baliDocument = mapper.javaScriptToDocument(type, jsObject);
@@ -106,13 +192,29 @@ exports.javaScriptToDocument = function(type, jsObject) {
 };
 
 
-exports.expressionToJavaScript = function(type, baliTree) {
+/**
+ * This function transforms a Bali expression into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {ExpressionContext} baliExpression The Bali expression to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
+exports.expressionToJavaScript = function(type, baliExpression) {
     var mapper = new Mapper();
-    var jsObject = mapper.expressionToJavaScript(type, baliTree);
+    var jsObject = mapper.expressionToJavaScript(type, baliExpression);
     return jsObject;
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * expression.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {ExpressionContext} The corresponding Bali expression.
+ */
 exports.javaScriptToExpression = function(type, jsObject) {
     var mapper = new Mapper();
     var baliExpression = mapper.javaScriptToExpression(type, jsObject);
@@ -120,13 +222,29 @@ exports.javaScriptToExpression = function(type, jsObject) {
 };
 
 
-exports.keyToJavaScript = function(type, baliTree) {
+/**
+ * This function transforms a Bali association key into its corresponding JavaScript
+ * object.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {KeyContext} baliKey The Bali association key to be transformed.
+ * @returns {object} The corresponding JavaScript object.
+ */
+exports.keyToJavaScript = function(type, baliKey) {
     var mapper = new Mapper();
-    var jsObject = mapper.keyToJavaScript(type, baliTree);
+    var jsObject = mapper.keyToJavaScript(type, baliKey);
     return jsObject;
 };
 
 
+/**
+ * This function transforms a JavaScript object into its corresponding Bali
+ * association key.
+ * 
+ * @param {string} type The type of handler to be used for the mapping.
+ * @param {object} jsObject The JavaScript object to be transformed.
+ * @returns {KeyContext} The corresponding Bali association key.
+ */
 exports.javaScriptToKey = function(type, jsObject) {
     var mapper = new Mapper();
     var baliKey = mapper.javaScriptToKey(type, jsObject);

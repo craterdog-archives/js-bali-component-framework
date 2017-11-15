@@ -26,11 +26,11 @@
  *    Percent      bali-language:Percent
  *    Number       number, js-big-integer:BigInteger, bali-language:Complex
  */
+var url = require('url');
+var moment = require('moment');
 var antlr = require('antlr4');
 var grammar = require('../grammar').BaliLanguageParser;
 var codex = require('../utilities/EncodingUtilities');
-var moment = require('moment');
-var url = require('url');
 var language = require('../BaliLanguage');
 var Binary = require('../elements/Binary').Binary;
 var Integer = require("js-big-integer").BigInteger;
@@ -44,10 +44,10 @@ var Version = require('../elements/Version').Version;
 
 
 /**
- * This constructor creates a new formatter with the specified padding.
+ * This constructor creates a new JavaScript language mapper.
  * 
  * @constructor
- * @returns {LanguageMapper} The new formatter.
+ * @returns {LanguageMapper} The new mapper.
  */
 function LanguageMapper() {
     return this;

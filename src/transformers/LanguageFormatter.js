@@ -31,9 +31,17 @@ LanguageFormatter.prototype.constructor = LanguageFormatter;
 exports.LanguageFormatter = LanguageFormatter;
 
 
-LanguageFormatter.prototype.formatDocument = function(document, padding) {
+/**
+ * This function takes a Bali document and formats it as source code. Each
+ * line will be prepended with the specified padding string.
+ * 
+ * @param {DocumentContext} baliDocument The Bali document to be formatted.
+ * @param {string} padding The string that should be prepended to each line.
+ * @returns {string} The formatted source code string.
+ */
+LanguageFormatter.prototype.formatDocument = function(baliDocument, padding) {
     var visitor = new FormatterVisitor(padding);
-    document.accept(visitor);
+    baliDocument.accept(visitor);
     return visitor.source + '\n';  // POSIX requires all lines end with a line feed
 };
 

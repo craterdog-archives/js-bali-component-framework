@@ -30,6 +30,13 @@ LanguageParser.prototype.constructor = LanguageParser;
 exports.LanguageParser = LanguageParser;
 
 
+/**
+ * This method takes a source code string containing a Bali document
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {DocumentContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseDocument = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -41,6 +48,13 @@ LanguageParser.prototype.parseDocument = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali element
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ElementContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseElement = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -52,6 +66,13 @@ LanguageParser.prototype.parseElement = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali structure
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {StructureContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseStructure = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -63,6 +84,13 @@ LanguageParser.prototype.parseStructure = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali range
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {RangeContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseRange = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -74,6 +102,13 @@ LanguageParser.prototype.parseRange = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali collection
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {CollectionContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseCollection = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -85,6 +120,13 @@ LanguageParser.prototype.parseCollection = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali table
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {TableContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseTable = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -96,6 +138,13 @@ LanguageParser.prototype.parseTable = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali block
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {BlockContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseBlock = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
@@ -107,6 +156,13 @@ LanguageParser.prototype.parseBlock = function(source) {
 };
 
 
+/**
+ * This method takes a source code string containing a Bali expression
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ExpressionContext} The corresponding parse tree structure.
+ */
 LanguageParser.prototype.parseExpression = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
