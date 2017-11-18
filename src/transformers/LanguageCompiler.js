@@ -74,56 +74,62 @@ CompilerVisitor.prototype.constructor = CompilerVisitor;
 
 // document: literal parameters?
 CompilerVisitor.prototype.visitDocument = function(ctx) {
-    // place the literal component on the stack
+    // place the literal component on the execution stack
     this.visitLiteral(ctx.literal());
-    // place the parameters on the stack
+    // place the parameters on the execution stack
     var parameters = ctx.parameters();
     if (parameters) {
         this.visitParameters(parameters);
         // TODO: what do we do with these if they exist?
-        // If they remain on the stack how do we know they are there?
+        // If they remain on the execution stack how do we know they are there?
     }
-    // the literal component remains on the stack
+    // the literal component remains on the execution stack
 };
 
 
 // literal: element | structure | block
 CompilerVisitor.prototype.visitLiteral = function(ctx) {
+    // compile the concrete literal type
     this.visitChildren(ctx);
-    // the element or structure remains on the stack
-    // TODO: what happens if it is a block? bytcode remains on the stack?
+    // the element or structure remains on the execution stack
+    // TODO: what happens if it is a block? bytcode remains on the execution stack?
 };
 
 
 // structure: '[' composite ']'
 CompilerVisitor.prototype.visitStructure = function(ctx) {
+    // compile the composite
     this.visitComposite(ctx.composite());
-    // the composite remains on the stack
+    // the composite remains on the execution stack
 };
 
 
 // composite: range | collection | table
 CompilerVisitor.prototype.visitComposite = function(ctx) {
+    // compile the concrete composite type
     this.visitChildren(ctx);
-    // the range, collection, or table remains on the stack
+    // the range, collection, or table remains on the execution stack
 };
 
 
 // range: expression '..' expression
 CompilerVisitor.prototype.visitRange = function(ctx) {
+    // compile the starting range expression
     this.visitExpression(ctx.expression(0));
+    // compile the ending range expression
     this.visitExpression(ctx.expression(1));
-    // replace the two range values on the stack with a new range component
+    // replace the two range values on the execution stack with a new range component
     this.builder.insertInvokeInstruction('range', 2);
-    // the range component remains on the stack
+    // the range component remains on the execution stack
 };
 
 
 // HACK: this method is missing from the generated visitor!
 // SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
 CompilerVisitor.prototype.visitCollection = function(ctx) {
+    // compile the collection
     ctx.accept(this);
-    // the collection remains on the stack
+    // the collection remains on the execution stack
 };
 
 
@@ -133,18 +139,18 @@ CompilerVisitor.prototype.visitInlineCollection = function(ctx) {
     var expressions = ctx.expression();
     // record how many expressions there are in this collection
     var size = expressions.length;
-    // place the size of the collection on the stack
+    // place the size of the collection on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the stack with a new dynamic array of that size
+    // replace the size value on the execution stack with a new dynamic array of that size
     this.builder.insertInvokeInstruction('dynamicArray', 1);
     // evaluate each expression
     for (var i = 0; i < expressions.length; i++) {
-        // place the result of the next expression on the stack
+        // place the result of the next expression on the execution stack
         this.visitExpression(expressions[i]);
-        // add the result as the next item in the dynamic array on the stack
+        // add the result as the next item in the dynamic array on the execution stack
         this.builder.insertSendInstruction('addItem', 1);
     }
-    // the dynamic array remains on the stack
+    // the dynamic array remains on the execution stack
 };
 
 
@@ -154,36 +160,36 @@ CompilerVisitor.prototype.visitNewlineCollection = function(ctx) {
     var expressions = ctx.expression();
     // record how many expressions there are in this collection
     var size = expressions.length;
-    // place the size of the collection on the stack
+    // place the size of the collection on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the stack with a new dynamic array of that size
+    // replace the size value on the execution stack with a new dynamic array of that size
     this.builder.insertInvokeInstruction('dynamicArray', 1);
     // evaluate each expression
     for (var i = 0; i < expressions.length; i++) {
-        // place the result of the next expression on the stack
+        // place the result of the next expression on the execution stack
         this.visitExpression(expressions[i]);
-        // add the result as the next item in the dynamic array on the stack
+        // add the result as the next item in the dynamic array on the execution stack
         this.builder.insertSendInstruction('addItem', 1);
-        // the expression result has been removed from the stack
     }
-    // the dynamic array remains on the stack
+    // the dynamic array remains on the execution stack
 };
 
 
 // emptyCollection: /*empty collection*/
 CompilerVisitor.prototype.visitEmptyCollection = function(ctx) {
-    // place the size of the collection on the stack
+    // place the size of the collection on the execution stack
     this.builder.insertLoadInstruction('LITERAL', 0);
-    // replace the size value on the stack with a new dynamic array of that size
+    // replace the size value on the execution stack with a new dynamic array of that size
     this.builder.insertInvokeInstruction('dynamicArray', 1);
-    // the dynamic array remains on the stack
+    // the dynamic array remains on the execution stack
 };
 
 
 // HACK: this method is missing from the generated visitor!
 CompilerVisitor.prototype.visitTable = function(ctx) {
+    // compile the table
     ctx.accept(this);
-    // the table remains on the stack
+    // the table remains on the execution stack
 };
 
 
@@ -193,19 +199,19 @@ CompilerVisitor.prototype.visitInlineTable = function(ctx) {
     var associations = ctx.association();
     // record how many associations there are in this table
     var size = associations.length;
-    // place the size of the table on the stack
+    // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the stack with a new hash table of that size
+    // replace the size value on the execution stack with a new hash table of that size
     this.builder.insertInvokeInstruction('hashTable', 1);
     // evaluate each association
     for (var i = 0; i < associations.length; i++) {
-        // place the key and value of the next association on the stack
+        // place the key and value of the next association on the execution stack
         this.visitAssociation(associations[i]);
-        // add the key-value pair as the next association in the hash table on the stack
+        // add the key-value pair as the next association in the hash table on the execution stack
         this.builder.insertSendInstruction('setValue', 2);
-        // the key and value have been removed from the stack
+        // the key and value have been removed from the execution stack
     }
-    // the hash table remains on the stack
+    // the hash table remains on the execution stack
 };
 
 
@@ -215,103 +221,119 @@ CompilerVisitor.prototype.visitNewlineTable = function(ctx) {
     var associations = ctx.association();
     // record how many associations there are in this table
     var size = associations.length;
-    // place the size of the table on the stack
+    // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the stack with a new hash table of that size
+    // replace the size value on the execution stack with a new hash table of that size
     this.builder.insertInvokeInstruction('hashTable', 1);
     // evaluate each association
     for (var i = 0; i < associations.length; i++) {
-        // place the key and value of the next association on the stack
+        // place the key and value of the next association on the execution stack
         this.visitAssociation(associations[i]);
-        // add the key-value pair as the next association in the hash table on the stack
+        // add the key-value pair as the next association in the hash table on the execution stack
         this.builder.insertSendInstruction('setValue', 2);
-        // the key and value have been removed from the stack
+        // the key and value have been removed from the execution stack
     }
-    // the hash table remains on the stack
+    // the hash table remains on the execution stack
 };
 
 
 // emptyTable: ':' /*empty table*/
 CompilerVisitor.prototype.visitEmptyTable = function(ctx) {
-    // place the size of the table on the stack
+    // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', 0);
-    // replace the size value on the stack with a new hash table of that size
+    // replace the size value on the execution stack with a new hash table of that size
     this.builder.insertInvokeInstruction('hashTable', 1);
-    // the hash table remains on the stack
+    // the hash table remains on the execution stack
 };
 
 
 // association: key ':' expression
 CompilerVisitor.prototype.visitAssociation = function(ctx) {
-    // place the key component on the stack
+    // place the key component on the execution stack
     this.visitKey(ctx.key());
-    // place the result of the value expression on the stack
+    // place the result of the value expression on the execution stack
     this.visitExpression(ctx.expression());
-    // the key and value remain on the stack
+    // the key and value remain on the execution stack
 };
 
 
 // key: element parameters?
 CompilerVisitor.prototype.visitKey = function(ctx) {
-    // place the element component on the stack
+    // place the element component on the execution stack
     this.visitElement(ctx.element());
-    // place the parameters on the stack
+    // place the parameters on the execution stack
     var parameters = ctx.parameters();
     if (parameters) {
         this.visitParameters(parameters);
         // TODO: what do we do with these if they exist?
-        // If they remain on the stack how do we know they are there?
+        // If they remain on the execution stack how do we know they are there?
     }
-    // the element component remains on the stack
+    // the element component remains on the execution stack
 };
 
 
 // parameters: '(' composite ')';
 CompilerVisitor.prototype.visitParameters = function(ctx) {
+    // compile the composite
     this.visitComposite(ctx.composite());
-    // the composite remains on the stack
+    // the composite remains on the execution stack
 };
 
 
 // script: SHELL statements EOF
 CompilerVisitor.prototype.visitScript = function(ctx) {
+    // compile the script
     this.visitStatements(ctx.statements());
 };
 
 
 // block: '{' statements '}'
 CompilerVisitor.prototype.visitBlock = function(ctx) {
+    // compile the block
     this.visitStatements(ctx.statements());
-    // TODO: what remains on the stack? bytecode?
 };
 
 
 // HACK: this method is missing from the generated visitor!
 CompilerVisitor.prototype.visitStatements = function(ctx) {
+    // compile the statements type
     ctx.accept(this);
 };
 
 
 // inlineStatements: statement (';' statement)*
 CompilerVisitor.prototype.visitInlineStatements = function(ctx) {
-    var statements = ctx.statement();  // retrieve all the statements
-    this.visitStatement(statements[0]);
-    for (var i = 1; i < statements.length; i++) {
+    // push a new statement counter onto the compiler stack and set it to 1
+    this.builder.pushStatementCounter();
+
+    // retrieve all the statements
+    var statements = ctx.statement();
+    // evaluate each statement
+    for (var i = 0; i < statements.length; i++) {
+        // compile this statement
         this.visitStatement(statements[i]);
     }
+
+    // pop the current statement counter off the compiler stack
+    this.builder.popStatementCounter();
 };
 
 
 // newlineStatements: NEWLINE (statement NEWLINE)*
 CompilerVisitor.prototype.visitNewlineStatements = function(ctx) {
-    var statements = ctx.statement();  // retrieve all the statements
-    this.depth++;
+    // push a new statement counter onto the compiler stack and set it to 1
+    this.builder.pushStatementCounter();
+
+    // retrieve all the statements
+    var statements = ctx.statement();
+    // evaluate each statement
     for (var i = 0; i < statements.length; i++) {
-        this.appendNewline();
+        // compile this statement
         this.visitStatement(statements[i]);
     }
-    this.depth--;
-    this.appendNewline();
+
+    // pop the current statement counter off the compiler stack
+    this.builder.popStatementCounter();
 };
 
 
@@ -322,15 +344,57 @@ CompilerVisitor.prototype.visitEmptyStatements = function(ctx) {
 
 // statement: mainClause exceptionClause* finalClause?
 CompilerVisitor.prototype.visitStatement = function(ctx) {
+    // push the next label prefix on the compiler stack
+    this.builder.pushLabelPrefix();
+
+    // label the start of the statement
+    this.builder.insertLabel("StatementStart");
+    // tell the VM to push a new statement context onto the execution stack
+    this.builder.insertPushInstruction("STATEMENT", "StatementStart");
+
+    // label the start of the main clause
+    this.builder.insertLabel('MainClause');
+    // process the main clause
     this.visitMainClause(ctx.mainClause());
+    // tell the VM to jump to the final clause handler
+    this.builder.insertJumpInstruction('HANDLER', 'FinalClause');
+    // the VM will jump here after the final clause handler is done to be redirected
+    this.builder.insertJumpInstruction('INSTRUCTION', 'StatementEnd');
+
+    // label the start of the exception clauses
+    this.builder.insertLabel('ExceptionClauses');
     var exceptionClauses = ctx.exceptionClause();
     for (var i = 0; i < exceptionClauses.length; i++) {
+        // compile the exception clause
         this.visitExceptionClause(exceptionClauses[i]);
+        // successfully handled the exception, tell the VM to jump to the final clause handler
+        this.builder.insertJumpInstruction('HANDLER', 'FinalClause');
+        // the VM will jump here after the final clause handler is done to be redirected
+        this.builder.insertJumpInstruction('INSTRUCTION', 'StatementEnd');
     }
+    // no exception handler found, tell the VM to jump to the final clause handler
+    this.builder.insertJumpInstruction('HANDLER', 'FinalClause');
+    // the VM will jump here after the final clause handler is done to walk the execution stack
+    this.builder.insertHandleInstruction();
+
+    // label the start of the final clause
+    this.builder.insertLabel('FinalClause');
     var finalClause = ctx.finalClause();
     if (finalClause) {
+        // compile the final clause
         this.visitFinalClause(finalClause);
     }
+    // tell the VM to jump to the return label on the jump stack
+    this.builder.insertJumpInstruction('RETURN');
+
+    // label the end of the statement
+    this.builder.insertLabel("StatementEnd");
+    // tell the VM to pop the current statement context off the execution stack
+    this.builder.insertPopInstruction("STATEMENT");
+    // pop the current label prefix off the compiler stack
+    this.builder.popLabelPrefix();
+    // increment the statement counter
+    this.builder.incrementStatementCounter();
 };
 
 
@@ -338,12 +402,14 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
 // continueTo | breakFrom | returnResult | throwException | ifThen | selectFrom |
 // whileLoop | withLoop
 CompilerVisitor.prototype.visitMainClause = function(ctx) {
+    // compile the concrete clause type
     this.visitChildren(ctx);
 };
 
 
 // exceptionClause: 'catch' symbol 'matching' xception 'with' block
 CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
+    this.builder.insertLabel('ExceptionClause');
     this.visitSymbol(ctx.symbol());
     this.visitException(ctx.xception());
     this.visitBlock(ctx.block());
@@ -864,14 +930,53 @@ CompilerVisitor.prototype.visitComplexNumber = function(ctx) {
 
 // PRIVATE BUILDER CLASS
 
+// define the missing stack function for Array
+Array.prototype.peek = function() {
+    return this[this.length - 1];
+};
+
+
 function InstructionBuilder() {
     this.asmcode = '';
-    this.statementCounters = [];  // stack of counters
-    this.labelPrefixes = [1];  // stack of prefix strings
+    this.blocks = [];  // stack of block contexts
     this.nextLabel = null;
     return this;
 }
 InstructionBuilder.prototype.constructor = InstructionBuilder;
+
+
+InstructionBuilder.prototype.getLabel = function(label) {
+    return this.getPrefix() + label;
+};
+
+
+InstructionBuilder.prototype.getPrefix = function() {
+    var prefix = '';  // initial value
+    if (this.blocks.length > 0) {
+        var block = this.blocks.peek();
+        prefix = block.prefix + block.counter + '.';
+    }
+    return prefix;
+};
+
+
+InstructionBuilder.prototype.pushBlockContext = function() {
+    var block = {
+        prefix: this.getPrefix(),
+        counter: 1
+    };
+    this.blocks.push(block);
+};
+
+
+InstructionBuilder.prototype.popBlockContext = function() {
+    this.blocks.pop();
+};
+
+
+InstructionBuilder.prototype.incrementCounter = function() {
+    this.blocks.peek().counter++;
+};
 
 
 InstructionBuilder.prototype.insertLabel = function(label) {
@@ -881,7 +986,7 @@ InstructionBuilder.prototype.insertLabel = function(label) {
     }
 
     // set the new label
-    this.nextLabel = this.getLabelPrefix() + label;
+    this.nextLabel = this.getLabel(label);
 };
 
 
@@ -930,21 +1035,6 @@ InstructionBuilder.prototype.insertRemoveInstruction = function(count) {
 };
 
 
-InstructionBuilder.prototype.insertReverseInstruction = function(count) {
-    var instruction;
-    switch (count) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a REVERSE instruction with zero components.');
-        case 1:
-            instruction = 'REVERSE COMPONENTS';
-            break;
-        default:
-            instruction = 'REVERSE ' + count + ' COMPONENTS';
-    }
-    this.insertInstruction(instruction);
-};
-    
-
 InstructionBuilder.prototype.insertLoadInstruction = function(type, value) {
     var instruction;
     switch (type) {
@@ -986,49 +1076,91 @@ InstructionBuilder.prototype.insertStoreInstruction = function(type, value) {
 };
     
 
-InstructionBuilder.prototype.insertInvokeInstruction = function(symbol, count) {
+InstructionBuilder.prototype.insertReverseInstruction = function(count) {
     var instruction;
     switch (count) {
         case 0:
-            instruction = 'INVOKE ' + symbol;
-            break;
+            throw new Error('COMPILER: Attempted to insert a REVERSE instruction with zero components.');
         case 1:
-            instruction = 'INVOKE ' + symbol + ' WITH ARGUMENT';
+            instruction = 'REVERSE COMPONENTS';
             break;
         default:
-            instruction = 'INVOKE ' + symbol + ' WITH ' + count + ' ARGUMENTS';
+            instruction = 'REVERSE ' + count + ' COMPONENTS';
     }
     this.insertInstruction(instruction);
 };
     
 
-InstructionBuilder.prototype.insertSendInstruction = function(symbol, count) {
+InstructionBuilder.prototype.insertInvokeInstruction = function(count, intrinsic) {
     var instruction;
     switch (count) {
         case 0:
-            instruction = 'SEND ' + symbol;
+            instruction = 'INVOKE ' + intrinsic;
             break;
         case 1:
-            instruction = 'SEND ' + symbol + ' WITH ARGUMENT';
+            instruction = 'INVOKE ' + intrinsic + ' WITH ARGUMENT';
             break;
         default:
-            instruction = 'SEND ' + symbol + ' WITH ' + count + ' ARGUMENTS';
+            instruction = 'INVOKE ' + intrinsic + ' WITH ' + count + ' ARGUMENTS';
     }
     this.insertInstruction(instruction);
 };
     
 
-InstructionBuilder.prototype.insertQueueInstruction = function(symbol, count) {
+InstructionBuilder.prototype.insertReadInstruction = function(tag) {
+    var instruction = 'READ COMPONENT FROM ' + tag;
+    this.insertInstruction(instruction);
+};
+    
+
+InstructionBuilder.prototype.insertWriteInstruction = function(tag) {
+    var instruction = 'WRITE COMPONENT TO ' + tag;
+    this.insertInstruction(instruction);
+};
+    
+
+InstructionBuilder.prototype.insertPushInstruction = function(context, label) {
+    var instruction;
+    switch (context) {
+        case 'METHOD':
+        case 'BLOCK':
+        case 'HANDLER':
+        case 'STATEMENT':
+            instruction = 'PUSH ' + context + 'CONTEXT ' + this.getLabel(label);
+            break;
+        default:
+            throw new Error('COMPILER: Attempted to insert a PUSH instruction with an invalid context: ' + context);
+    }
+    this.insertInstruction(instruction);
+};
+    
+
+InstructionBuilder.prototype.insertPopInstruction = function(context) {
+    var instruction;
+    switch (context) {
+        case 'METHOD':
+        case 'BLOCK':
+        case 'HANDLER':
+        case 'STATEMENT':
+            instruction = 'POP ' + context + 'CONTEXT ';
+            break;
+        default:
+            throw new Error('COMPILER: Attempted to insert a POP instruction with an invalid context: ' + context);
+    }
+    this.insertInstruction(instruction);
+};
+    
+
+InstructionBuilder.prototype.insertQueueInstruction = function(count, tag) {
     var instruction;
     switch (count) {
         case 0:
-            instruction = 'QUEUE ' + symbol;
-            break;
+            throw new Error('COMPILER: Attempted to insert a QUEUE instruction with zero components.');
         case 1:
-            instruction = 'QUEUE ' + symbol + ' WITH ARGUMENT';
+            instruction = 'QUEUE COMPONENT ON ' + tag;
             break;
         default:
-            instruction = 'QUEUE ' + symbol + ' WITH ' + count + ' ARGUMENTS';
+            instruction = 'QUEUE ' + count + ' COMPONENTS ON ' + tag;
     }
     this.insertInstruction(instruction);
 };
@@ -1064,49 +1196,6 @@ InstructionBuilder.prototype.insertWaitInstruction = function(count) {
 };
     
 
-InstructionBuilder.prototype.insertPushInstruction = function(context, label) {
-    var instruction;
-    switch (context) {
-        case 'BLOCK':
-            instruction = 'PUSH ' + context + 'CONTEXT';
-            break;
-        case 'INSTRUCTION':
-        case 'HANDLER':
-            instruction = 'PUSH ' + context + 'CONTEXT ' + label;
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a PUSH instruction with an invalid context: ' + context);
-    }
-};
-    
-
-InstructionBuilder.prototype.insertPopInstruction = function(context) {
-    var instruction;
-    switch (context) {
-        case 'BLOCK':
-        case 'INSTRUCTION':
-        case 'HANDLER':
-            instruction = 'POP ' + context + 'CONTEXT ';
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a POP instruction with an invalid context: ' + context);
-    }
-};
-    
-
-InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
-    var instruction;
-    switch (context) {
-        case 'INSTRUCTION':
-        case 'HANDLER':
-            instruction = 'JUMP TO ' + context + label;
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a JUMP instruction with an invalid context: ' + context);
-    }
-};
-    
-
 InstructionBuilder.prototype.insertBranchInstruction = function(condition, label) {
     var instruction;
     switch (condition) {
@@ -1118,68 +1207,50 @@ InstructionBuilder.prototype.insertBranchInstruction = function(condition, label
         case 'NOT MORE THAN ZERO':
         case 'EQUAL TO ZERO':
         case 'NOT EQUAL TO ZERO':
-            instruction = 'BRANCH TO ' + label + ' ON ' + condition;
+            instruction = 'BRANCH TO ' + this.getLabel(label) + ' ON ' + condition;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a BRANCH instruction with an invalid condition: ' + condition);
     }
+    this.insertInstruction(instruction);
 };
     
 
-InstructionBuilder.prototype.insertReturnInstruction = function(count) {
+InstructionBuilder.prototype.insertJumpInstruction = function(context, value) {
     var instruction;
-    switch (count) {
-        case 0:
-            instruction = 'RETURN';
+    switch (context) {
+        case 'METHOD':
+            var tag = value;
+            instruction = 'JUMP TO ' + context + ' ' + tag;
             break;
-        case 1:
-            instruction = 'RETURN RESULT';
+        case 'BLOCK':
+        case 'HANDLER':
+        case 'STATEMENT':
+        case 'INSTRUCTION':
+            var label = value;
+            instruction = 'JUMP TO ' + context + ' ' + this.getLabel(label);
             break;
         default:
-            instruction = 'RETURN ' + count + ' RESULTS';
+            throw new Error('COMPILER: Attempted to insert a JUMP instruction with an invalid context: ' + context);
     }
     this.insertInstruction(instruction);
 };
     
 
-InstructionBuilder.prototype.insertHandleInstruction = function() {
-    var instruction = 'HANDLE EXCEPTION';
+InstructionBuilder.prototype.insertReturnInstruction = function(context, label) {
+    var instruction;
     this.insertInstruction(instruction);
-};
-
-
-InstructionBuilder.prototype.pushStatementCounter = function() {
-    this.statementCounters.push(1);  // first instruction number is always one
-};
-
-
-InstructionBuilder.prototype.incrementStatementCounter = function() {
-    var current = this.statementCounters.pop();
-    this.statementCounters.push(current + 1);
-};
-
-
-
-InstructionBuilder.prototype.popStatementCounter = function() {
-    this.statementCounters.pop();
-};
-
-
-InstructionBuilder.prototype.pushLabelPrefix = function() {
-    var prefix = '';
-    for (var i = 0; i < this.statementCounters.length; i++) {
-        prefix += this.statementCounters[i] + '.';
+    switch (context) {
+        case 'BLOCK':
+        case 'HANDLER':
+        case 'METHOD':
+            instruction = 'RETURN FROM ' + context;
+            if (label) {
+                instruction += ' WITH EXCEPTION ' + this.getLabel(label);
+            }
+            break;
+        default:
+            throw new Error('COMPILER: Attempted to insert a RETURN instruction with an invalid context: ' + context);
     }
-    this.labelPrefixes.push(prefix);
 };
-
-
-InstructionBuilder.prototype.popLabelPrefix = function() {
-    this.labelPrefixes.pop();
-};
-
-
-InstructionBuilder.prototype.getLabelPrefix = function() {
-    // there is no: "this.labelPrefixes.peek()", oh well...
-    return this.labelPrefixes[this.labelPrefixes.length - 1];
-};
+    
