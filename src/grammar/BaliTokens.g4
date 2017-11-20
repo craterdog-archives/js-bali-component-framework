@@ -10,9 +10,9 @@ grammar BaliTokens;
 
 SHELL: '^#!' LINE ;
 
-COMMENT: '--' LINE -> skip ;
+COMMENT: ('--' LINE) -> channel(HIDDEN) ;
 
-COMMENT_BLOCK: '/*' CHARACTER*? '*/' -> skip ;
+COMMENT_BLOCK: ('/*' CHARACTER*? '*/') -> channel(HIDDEN) ;
 
 TAG: '#' BASE32* ;
 
@@ -40,7 +40,7 @@ IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
 NEWLINE: '\r'? '\n' ;
 
-SPACE: ('\t'..'\r' | ' ') -> skip ;
+SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN) ;
 
 fragment
 LINE: CHARACTER*? NEWLINE ;

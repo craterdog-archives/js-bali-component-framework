@@ -1,0 +1,7 @@
+{
+    if false then {
+        $component := (3, 4i)
+    } else {
+        $foo += bar
+    }
+}

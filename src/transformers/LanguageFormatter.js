@@ -42,7 +42,7 @@ exports.LanguageFormatter = LanguageFormatter;
 LanguageFormatter.prototype.formatDocument = function(baliDocument, padding) {
     var visitor = new FormatterVisitor(padding);
     baliDocument.accept(visitor);
-    return visitor.source + '\n';  // POSIX requires all lines end with a line feed
+    return visitor.source;
 };
 
 
@@ -289,7 +289,7 @@ FormatterVisitor.prototype.visitExceptionClause = function(ctx) {
     this.source += ' catch ';
     this.visitSymbol(ctx.symbol());
     this.source += ' matching ';
-    this.visitException(ctx.xception());
+    this.visitXception(ctx.xception());
     this.source += ' with ';
     this.visitBlock(ctx.block());
 };
@@ -421,12 +421,12 @@ FormatterVisitor.prototype.visitResult = function(ctx) {
 // throwException: 'throw' xception
 FormatterVisitor.prototype.visitThrowException = function(ctx) {
     this.source += 'throw ';
-    this.visitException(ctx.xception());
+    this.visitXception(ctx.xception());
 };
 
 
 // xception: expression
-FormatterVisitor.prototype.visitException = function(ctx) {
+FormatterVisitor.prototype.visitXception = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
