@@ -249,7 +249,6 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
 
     // STATEMENT INITIALIZATION
     this.builder.insertLabel("StatementStart");
-    this.builder.insertPushInstruction("STATEMENT", "StatementStart");
 
     // COMPILE THE MAIN CLAUSE
     this.visitMainClause(ctx.mainClause());
@@ -292,7 +291,6 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
 
     // STATEMENT FINALIZATION
     this.builder.insertLabel("StatementEnd");
-    this.builder.insertPopInstruction("STATEMENT");
 };
 
 
@@ -894,21 +892,6 @@ InstructionBuilder.prototype.insertSkipInstruction = function() {
 };
 
 
-InstructionBuilder.prototype.insertCopyInstruction = function(times) {
-    var instruction;
-    switch (times) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a COPY instruction with a count of zero.');
-        case 1:
-            instruction = 'COPY COMPONENT';
-            break;
-        default:
-            instruction = 'COPY COMPONENT ' + times + ' TIMES';
-    }
-    this.insertInstruction(instruction);
-};
-
-
 InstructionBuilder.prototype.insertRemoveInstruction = function(numberOfComponents) {
     var instruction;
     switch (numberOfComponents) {
@@ -927,15 +910,9 @@ InstructionBuilder.prototype.insertRemoveInstruction = function(numberOfComponen
 InstructionBuilder.prototype.insertLoadInstruction = function(type, value) {
     var instruction;
     switch (type) {
-        case 'CONTEXT':
-        case 'TARGET':
-        case 'ITEM':
-            instruction = 'LOAD ' + type;
-            break;
-        case 'ATTRIBUTE':
-        case 'VARIABLE':
         case 'PARAMETER':
         case 'ARGUMENT':
+        case 'VARIABLE':
             instruction = 'LOAD ' + type + ' ' + value;
             break;
         case 'LITERAL':
@@ -946,17 +923,11 @@ InstructionBuilder.prototype.insertLoadInstruction = function(type, value) {
     }
     this.insertInstruction(instruction);
 };
-    
+
 
 InstructionBuilder.prototype.insertStoreInstruction = function(type, value) {
     var instruction;
     switch (type) {
-        case 'CONTEXT':
-        case 'TARGET':
-        case 'ITEM':
-            instruction = 'STORE ' + type;
-            break;
-        case 'ATTRIBUTE':
         case 'VARIABLE':
             instruction = 'STORE ' + type + ' ' + value;
             break;
@@ -965,22 +936,7 @@ InstructionBuilder.prototype.insertStoreInstruction = function(type, value) {
     }
     this.insertInstruction(instruction);
 };
-    
 
-InstructionBuilder.prototype.insertReverseInstruction = function(numberOfComponents) {
-    var instruction;
-    switch (numberOfComponents) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a REVERSE instruction with zero components.');
-        case 1:
-            instruction = 'REVERSE COMPONENTS';
-            break;
-        default:
-            instruction = 'REVERSE ' + numberOfComponents + ' COMPONENTS';
-    }
-    this.insertInstruction(instruction);
-};
-    
 
 InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numberOfArguments) {
     var instruction;
@@ -996,107 +952,14 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
     }
     this.insertInstruction(instruction);
 };
-    
 
-InstructionBuilder.prototype.insertReadInstruction = function(tag) {
-    var instruction = 'READ COMPONENT FROM ' + tag;
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertWriteInstruction = function(tag) {
-    var instruction = 'WRITE COMPONENT TO ' + tag;
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertPushInstruction = function(context, label) {
-    var instruction;
-    switch (context) {
-        case 'METHOD':
-        case 'BLOCK':
-        case 'HANDLER':
-        case 'STATEMENT':
-            instruction = 'PUSH ' + context + ' CONTEXT ' + this.generateLabel(label);
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a PUSH instruction with an invalid context: ' + context);
-    }
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertPopInstruction = function(context) {
-    var instruction;
-    switch (context) {
-        case 'METHOD':
-        case 'BLOCK':
-        case 'HANDLER':
-        case 'STATEMENT':
-            instruction = 'POP ' + context + ' CONTEXT ';
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a POP instruction with an invalid context: ' + context);
-    }
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertQueueInstruction = function(numberOfComponents, tag) {
-    var instruction;
-    switch (numberOfComponents) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a QUEUE instruction with zero components.');
-        case 1:
-            instruction = 'QUEUE COMPONENT ON ' + tag;
-            break;
-        default:
-            instruction = 'QUEUE ' + numberOfComponents + ' COMPONENTS ON ' + tag;
-    }
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertPublishInstruction = function(numberOfEvents) {
-    var instruction;
-    switch (numberOfEvents) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a PUBLISH instruction with zero events.');
-        case 1:
-            instruction = 'PUBLISH EVENT';
-            break;
-        default:
-            instruction = 'PUBLISH ' + numberOfEvents + ' EVENTS';
-    }
-    this.insertInstruction(instruction);
-};
-    
-
-InstructionBuilder.prototype.insertWaitInstruction = function(numberOfEvents) {
-    var instruction;
-    switch (numberOfEvents) {
-        case 0:
-            throw new Error('COMPILER: Attempted to insert a WAIT instruction with zero events.');
-        case 1:
-            instruction = 'WAIT FOR EVENT';
-            break;
-        default:
-            instruction = 'WAIT FOR ' + numberOfEvents + ' EVENTS';
-    }
-    this.insertInstruction(instruction);
-};
-    
 
 InstructionBuilder.prototype.insertBranchInstruction = function(condition, label) {
     var instruction;
     switch (condition) {
-        case 'TRUE':
+        case 'NOT NONE':
         case 'NOT TRUE':
-        case 'LESS THAN ZERO':
-        case 'NOT LESS THAN ZERO':
-        case 'MORE THAN ZERO':
         case 'NOT MORE THAN ZERO':
-        case 'EQUAL TO ZERO':
         case 'NOT EQUAL TO ZERO':
             instruction = 'BRANCH TO ' + this.generateLabel(label) + ' ON ' + condition;
             break;
@@ -1105,20 +968,15 @@ InstructionBuilder.prototype.insertBranchInstruction = function(condition, label
     }
     this.insertInstruction(instruction);
 };
-    
 
-InstructionBuilder.prototype.insertJumpInstruction = function(context, value) {
+
+InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
     var instruction;
     switch (context) {
-        case 'METHOD':
-            var tag = value;
-            instruction = 'JUMP TO ' + context + ' ' + tag;
-            break;
         case 'BLOCK':
         case 'HANDLER':
         case 'STATEMENT':
         case 'INSTRUCTION':
-            var label = value;
             instruction = 'JUMP TO ' + context + ' ' + this.generateLabel(label);
             break;
         default:
@@ -1126,22 +984,35 @@ InstructionBuilder.prototype.insertJumpInstruction = function(context, value) {
     }
     this.insertInstruction(instruction);
 };
-    
+
+
+InstructionBuilder.prototype.insertCallInstruction = function(method, numberOfArguments) {
+    var instruction;
+    switch (numberOfArguments) {
+        case 0:
+            instruction = 'CALL ' + method;
+            break;
+        case 1:
+            instruction = 'CALL ' + method + ' WITH ARGUMENT';
+            break;
+        default:
+            instruction = 'CALL ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+    }
+    this.insertInstruction(instruction);
+};
+
 
 InstructionBuilder.prototype.insertReturnInstruction = function(context, label) {
     var instruction;
     switch (context) {
+        case 'METHOD':
         case 'BLOCK':
         case 'HANDLER':
-        case 'METHOD':
+        case 'EXCEPTION':
             instruction = 'RETURN FROM ' + context;
-            if (label) {
-                instruction += ' WITH EXCEPTION ' + this.generateLabel(label);
-            }
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a RETURN instruction with an invalid context: ' + context);
     }
     this.insertInstruction(instruction);
 };
-    
