@@ -72,7 +72,7 @@ exports.sha512Hash = function(string, optionalVersion) {
             var hashBytes = hasher.digest().getBytes();
             return hashBytes;
         default:
-            throw 'The specified version is not supported: ' + optionalVersion;
+            throw new Error('SECURITY: The specified version is not supported: ' + optionalVersion);
     }
 };
 
@@ -93,7 +93,7 @@ exports.generateKeyPair = function(optionalVersion) {
             var keypair = forge.rsa.generateKeyPair({bits: 2048, e: 0x10001});
             return keypair;
         default:
-            throw 'The specified version is not supported: ' + optionalVersion;
+            throw new Error('SECURITY: The specified version is not supported: ' + optionalVersion);
     }
 };
 
@@ -124,7 +124,7 @@ exports.signString = function(privateKey, string, optionalVersion) {
             var signatureBytes = privateKey.sign(hasher, signer);
             return signatureBytes;
         default:
-            throw 'The specified version is not supported: ' + optionalVersion;
+            throw new Error('SECURITY: The specified version is not supported: ' + optionalVersion);
     }
 };
 
@@ -159,16 +159,16 @@ exports.signatureIsValid = function(publicKey, string, signatureBytes, optionalV
             var isValid = publicKey.verify(hash, signatureBytes, signer);
             return isValid;
         default:
-            throw 'The specified version is not supported: ' + optionalVersion;
+            throw new Error('SECURITY: The specified version is not supported: ' + optionalVersion);
     }
 };
 
 
 exports.encryptBytes = function(publicKey, bytes) {
-    throw 'Not yet implemented...';
+    throw new Error('SECURITY: Not yet implemented...');
 };
 
 
 exports.decryptBytes = function(privateKey, bytes) {
-    throw 'Not yet implemented...';
+    throw new Error('SECURITY: Not yet implemented...');
 };

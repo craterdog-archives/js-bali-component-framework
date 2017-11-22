@@ -207,7 +207,7 @@ LanguageMapper.prototype.getBaliType = function(baliTree) {
         baliTree = baliTree.getChild(0);  // get the actual range, collection, or table
     } else {
         baliTree = baliTree.block();
-        throw 'Not yet implemented...';
+        throw new Error('MAPPER: Not yet implemented...');
     }
     var nodeType = baliTree.constructor.name;
     switch (nodeType) {
@@ -426,7 +426,7 @@ NumberHandler.prototype.toJavaScript = function(baliDocument) {
             break;
             
         default:
-            throw 'An unexpected Bali node type was encountered as a Bali Number: ' + nodeType;
+            throw new Error('MAPPER: An unexpected Bali node type was encountered as a Bali Number: ' + nodeType);
     }
 };
 
@@ -473,7 +473,7 @@ NumberHandler.prototype.toBali = function(jsNumber) {
             break;
 
         default:
-            throw 'Unexpected JavaScript number type: ' + type;
+            throw new Error('MAPPER: Unexpected JavaScript number type: ' + type);
     }
 
     var baliDocument = language.parseDocument(string);

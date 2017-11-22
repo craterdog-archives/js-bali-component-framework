@@ -76,7 +76,7 @@ exports.base2Decode = function(base2) {
     base2 = base2.toUpperCase();
     var length = base2.length;
     if (length % 8 !== 0) {
-        throw "The base 2 string must have a number of characters that is divisible by 8: " + base2;
+        throw new Error("ENCODING: The base 2 string must have a number of characters that is divisible by 8: " + base2);
     }
 
     // decode each base 2 character
@@ -90,7 +90,7 @@ exports.base2Decode = function(base2) {
             var character = base2[index++];
             var bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
-                throw "Attempted to decode a string that is not base 2: " + base2;
+                throw new Error("ENCODING: Attempted to decode a string that is not base 2: " + base2);
             }
             byte |= (bit << b);
         }
@@ -168,7 +168,7 @@ exports.base16Decode = function(base16) {
     base16 = base16.toUpperCase();
     var length = base16.length;
     if (length % 2 !== 0) {
-        throw "The base 16 string must have an even number of characters: " + base16;
+        throw new Error("ENCODING: The base 16 string must have an even number of characters: " + base16);
     }
 
     // decode each base 16 character
@@ -180,14 +180,14 @@ exports.base16Decode = function(base16) {
         var character = base16[index++];
         var highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
-            throw "Attempted to decode a string that is not base 16: " + base16;
+            throw new Error("ENCODING: Attempted to decode a string that is not base 16: " + base16);
         }
 
         // decode the character for the low order nybble
         character = base16[index++];
         var lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
-            throw "Attempted to decode a string that is not base 16: " + base16;
+            throw new Error("ENCODING: Attempted to decode a string that is not base 16: " + base16);
         }
 
         // combine the nybbles to form the byte
@@ -275,7 +275,7 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw "Attempted to decode a string that is not base 32: " + base32;
+            throw new ("ENCODING: Attempted to decode a string that is not base 32: " + base32);
         }
         base32DecodeNextCharacter(chunk, index++, bytes, 0);
     }
@@ -283,7 +283,7 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw "Attempted to decode a string that is not base 32: " + base32;
+            throw new ("ENCODING: Attempted to decode a string that is not base 32: " + base32);
         }
         base32DecodeLastCharacter(chunk, index, bytes, 0);
     }
