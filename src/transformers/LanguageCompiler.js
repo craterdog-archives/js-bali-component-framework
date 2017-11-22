@@ -74,6 +74,7 @@ CompilerVisitor.prototype.constructor = CompilerVisitor;
 
 
 CompilerVisitor.prototype.getResult = function(ctx) {
+    this.builder.finalize();
     return this.builder.asmcode;
 };
 
@@ -245,10 +246,8 @@ CompilerVisitor.prototype.visitStatements = function(ctx) {
 // statement: mainClause exceptionClause* finalClause?
 CompilerVisitor.prototype.visitStatement = function(ctx) {
     var exceptionClauses = ctx.exceptionClause();
+    if (exceptionClauses.length === 0) exceptionClauses = null;
     var finalClause = ctx.finalClause();
-
-    // STATEMENT INITIALIZATION
-    this.builder.insertLabel("StatementStart");
 
     // COMPILE THE MAIN CLAUSE
     this.visitMainClause(ctx.mainClause());
@@ -257,40 +256,43 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
         // tell the VM to jump to the final clause block
         this.builder.insertJumpInstruction('BLOCK', 'FinalClause');
     }
-    // the VM will jump back here after the final clause block is done if one exists
-    this.builder.insertJumpInstruction('INSTRUCTION', 'StatementEnd');
+    // the VM will jump back here after the final clause is done if one exists
 
     // COMPILE THE EXCEPTION CLAUSES
-    this.builder.insertLabel('ExceptionClauses');
-    for (var i = 0; i < exceptionClauses.length; i++) {
-        this.visitExceptionClause(exceptionClauses[i]);
-        // successfully handled the exception
+    if (exceptionClauses) {
+        // no exceptions occurred and final clause, if one exists, is done so jump to the end
+        this.builder.insertJumpInstruction('INSTRUCTION', 'Done');
+        // when exceptions are thrown they will jump to here
+        this.builder.insertLabel('ExceptionClauses');
+        // each clause checks for a match and handles it if it matches
+        for (var i = 0; i < exceptionClauses.length; i++) {
+            // check to see if the exception matches the template
+            this.visitExceptionClause(exceptionClauses[i]);
+            // no match, check the next one
+        }
+        // an exception was thrown and no matching exception handler was found
         if (finalClause) {
             // tell the VM to jump to the final clause block
             this.builder.insertJumpInstruction('BLOCK', 'FinalClause');
         }
-        // the VM will jump here after the final clause block is done if one exists
-        this.builder.insertJumpInstruction('INSTRUCTION', 'StatementEnd');
+        // the VM will jump back here after the final clause is done if one exists
+        // return from the method with the unhandled exception on top of the execution stack
+        this.builder.insertReturnInstruction('METHOD');
     }
-    // an exception was thrown and no matching exception handler was found
-    if (finalClause) {
-        // tell the VM to jump to the final clause block
-        this.builder.insertJumpInstruction('BLOCK', 'FinalClause');
-    }
-    // the VM will jump here after the final clause block is done if one exists
-    // return from the method with the unhandled exception on top of the execution stack
-    this.builder.insertReturnInstruction('METHOD', 'ExceptionClauses');
 
     // COMPILE THE FINAL CLAUSE
     if (finalClause) {
+        // no exceptions occurred and the final clause, is done so jump to the end
+        this.builder.insertJumpInstruction('INSTRUCTION', 'Done');
         this.builder.insertLabel('FinalClause');
         this.visitFinalClause(finalClause);
         // tell the VM to return to the address on top of the jump stack
         this.builder.insertReturnInstruction('BLOCK');
     }
 
-    // STATEMENT FINALIZATION
-    this.builder.insertLabel("StatementEnd");
+    if (exceptionClauses || finalClause) {
+        this.builder.insertLabel('Done');
+    }
 };
 
 
@@ -317,7 +319,7 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
     this.builder.insertInvokeInstruction('$matches', 2);
     // the result of the comparison replaces the two operands on the execution stack
     this.builder.insertBranchInstruction('NOT TRUE', 'ExceptionClauseNoMatch' + clauseNumber);
-    // compile the exception handler block
+    // the VM executes the exception handler block
     this.visitBlock(ctx.block());
     // successfully handled the exception return VM to next statement after exception was thrown
     this.builder.insertReturnInstruction('HANDLER');
@@ -512,7 +514,7 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
 CompilerVisitor.prototype.visitLabel = function(ctx) {
     // insert a custom label
     var label = ctx.IDENTIFIER().getText();
-    this.builder.insertLabel('Custom' + label);
+    this.builder.insertLabel('Custom' + label.charAt(0).toUpperCase() + label.slice(1));
 };
 
 
@@ -570,10 +572,12 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
         // if the condition is not true, the VM branches to the next condition or the end
         this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
         // if the condition is true, then the VM enters the block
-        this.builder.insertLabel('ThenBlock' + clauseNumber);
         this.visitBlock(blocks[i]);
-        // all done, the VM jumps to the end of the statement
-        this.builder.insertJumpInstruction('INSTRUCTION', 'EndIf');
+        // all done
+        if (hasElseBlock || i < conditions.length - 1) {
+            // not the last block so the VM jumps to the end of the statement
+            this.builder.insertJumpInstruction('INSTRUCTION', 'EndIf');
+        }
     }
 
     // compile the optional final else block
@@ -581,6 +585,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
         this.builder.insertLabel('ElseBlock');
         this.visitBlock(blocks[blocks.length - 1]);
     }
+
     this.builder.insertLabel('EndIf');
 };
 
@@ -630,8 +635,16 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     if (label) {
         this.visitLabel(label);
     }
+    this.builder.insertLabel('WhileCondition');
+    // compile the condition
     this.visitCondition(ctx.condition());
+    // if the condition is not true, the VM branches to the end
+    this.builder.insertBranchInstruction('NOT TRUE', 'EndWhile');
+    // if the condition is true, then the VM enters the block
     this.visitBlock(ctx.block());
+    // all done, the VM jumps to the end of the statement
+    this.builder.insertJumpInstruction('INSTRUCTION', 'WhileCondition');
+    this.builder.insertLabel('EndWhile');
 };
 
 
@@ -847,9 +860,11 @@ InstructionBuilder.prototype.nextClauseNumber = function() {
 
 
 InstructionBuilder.prototype.pushBlockContext = function() {
+    var statementCounter = 1;
+    if (this.blocks.length > 0) statementCounter = this.blocks.peek().clauseCounter;
     var block = {
         prefix: this.getPrefix(),
-        statementCounter: 1,
+        statementCounter: statementCounter,
         clauseCounter: 1
     };
     this.blocks.push(block);
@@ -858,11 +873,17 @@ InstructionBuilder.prototype.pushBlockContext = function() {
 
 InstructionBuilder.prototype.popBlockContext = function() {
     this.blocks.pop();
+    if (this.blocks.length > 0) this.blocks.peek().clauseCounter++;
 };
 
 
 InstructionBuilder.prototype.incrementStatementCounter = function() {
     this.blocks.peek().statementCounter++;
+};
+
+
+InstructionBuilder.prototype.incrementClauseCounter = function() {
+    this.blocks.peek().clauseCounter++;
 };
 
 
@@ -1002,7 +1023,7 @@ InstructionBuilder.prototype.insertCallInstruction = function(method, numberOfAr
 };
 
 
-InstructionBuilder.prototype.insertReturnInstruction = function(context, label) {
+InstructionBuilder.prototype.insertReturnInstruction = function(context) {
     var instruction;
     switch (context) {
         case 'METHOD':
@@ -1015,4 +1036,12 @@ InstructionBuilder.prototype.insertReturnInstruction = function(context, label) 
             throw new Error('COMPILER: Attempted to insert a RETURN instruction with an invalid context: ' + context);
     }
     this.insertInstruction(instruction);
+};
+
+
+InstructionBuilder.prototype.finalize = function() {
+    // check for existing label
+    if (this.nextLabel) {
+        this.insertSkipInstruction();
+    }
 };

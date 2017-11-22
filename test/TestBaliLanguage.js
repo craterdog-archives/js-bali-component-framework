@@ -85,5 +85,14 @@ module.exports = testCase({
         var asmcode = language.compileBlock(tree);
         console.log('\nASSEMBLY CODE:\n' + asmcode);
         test.done();
+    },
+    'Test Compile While Loop Statement': function(test) {
+        test.expect(1);
+        var block = fs.readFileSync('test/whileLoop.bali', 'utf8');
+        var tree = language.parseBlock(block);
+        test.notEqual(tree, null, 'The parser returned a null tree.');
+        var asmcode = language.compileBlock(tree);
+        console.log('\nASSEMBLY CODE:\n' + asmcode);
+        test.done();
     }
 });
