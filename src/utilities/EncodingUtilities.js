@@ -275,7 +275,7 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw new ("ENCODING: Attempted to decode a string that is not base 32: " + base32);
+            throw new Error("ENCODING: Attempted to decode a string that is not base 32: " + base32);
         }
         base32DecodeNextCharacter(chunk, index++, bytes, 0);
     }
@@ -283,7 +283,7 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw new ("ENCODING: Attempted to decode a string that is not base 32: " + base32);
+            throw new Error("ENCODING: Attempted to decode a string that is not base 32: " + base32);
         }
         base32DecodeLastCharacter(chunk, index, bytes, 0);
     }
