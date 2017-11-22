@@ -942,13 +942,13 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
     var instruction;
     switch (numberOfArguments) {
         case 0:
-            instruction = 'INVOKE ' + intrinsic;
+            instruction = 'INVOKE INTRINSIC ' + intrinsic;
             break;
         case 1:
-            instruction = 'INVOKE ' + intrinsic + ' WITH ARGUMENT';
+            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH ARGUMENT';
             break;
         default:
-            instruction = 'INVOKE ' + intrinsic + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH ' + numberOfArguments + ' ARGUMENTS';
     }
     this.insertInstruction(instruction);
 };
@@ -990,13 +990,13 @@ InstructionBuilder.prototype.insertCallInstruction = function(method, numberOfAr
     var instruction;
     switch (numberOfArguments) {
         case 0:
-            instruction = 'CALL ' + method;
+            instruction = 'CALL METHOD ' + method;
             break;
         case 1:
-            instruction = 'CALL ' + method + ' WITH ARGUMENT';
+            instruction = 'CALL METHOD ' + method + ' WITH ARGUMENT';
             break;
         default:
-            instruction = 'CALL ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+            instruction = 'CALL METHOD ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
     }
     this.insertInstruction(instruction);
 };
