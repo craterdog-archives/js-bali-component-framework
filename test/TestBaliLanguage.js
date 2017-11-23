@@ -14,40 +14,22 @@ var language = require('../src/BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
-    'Test Parse Elements': function(test) {
-        test.expect(2);
-        var document = fs.readFileSync('test/source/elements.bali', 'utf8');
-        var tree = language.parseDocument(document);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var formatted = language.formatDocument(tree) + '\n';
-        test.strictEqual(formatted, document, 'The formatter returned a different document.');
-        test.done();
-    },
-    'Test Parse Expressions': function(test) {
-        test.expect(2);
-        var document = fs.readFileSync('test/source/expressions.bali', 'utf8');
-        var tree = language.parseDocument(document);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var formatted = language.formatDocument(tree) + '\n';
-        test.strictEqual(formatted, document, 'The formatter returned a different document.');
-        test.done();
-    },
-    'Test Parse Statements': function(test) {
-        test.expect(2);
-        var document = fs.readFileSync('test/source/statements.bali', 'utf8');
-        var tree = language.parseDocument(document);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var formatted = language.formatDocument(tree) + '\n';
-        test.strictEqual(formatted, document, 'The formatter returned a different document.');
-        test.done();
-    },
-    'Test Parse Documents': function(test) {
-        test.expect(2);
-        var document = fs.readFileSync('test/source/documents.bali', 'utf8');
-        var tree = language.parseDocument(document);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var formatted = language.formatDocument(tree) + '\n';
-        test.strictEqual(formatted, document, 'The formatter returned a different document.');
+    'Test Parser and Formatter': function(test) {
+        var source = [
+            'test/source/elements',
+            'test/source/expressions',
+            'test/source/statements',
+            'test/source/documents'
+        ];
+        test.expect(source.length * 2);
+        for (var i = 0; i < source.length; i++) {
+            var file = source[i] + '.bali';
+            var document = fs.readFileSync(file, 'utf8');
+            var tree = language.parseDocument(document);
+            test.notEqual(tree, null, 'The parser returned a null tree.');
+            var formatted = language.formatDocument(tree) + '\n';
+            test.strictEqual(formatted, document, 'The formatter returned a different document.');
+        }
         test.done();
     },
     'Test Compiler': function(test) {
