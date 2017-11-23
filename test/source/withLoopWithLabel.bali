@@ -1,0 +1,5 @@
+{
+    label: with $sequence do {
+        break from label
+    }
+}

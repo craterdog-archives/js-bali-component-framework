@@ -1,0 +1,9 @@
+
+1.WhileCondition:
+LOAD LITERAL `$condition`
+BRANCH TO 1.EndWhile ON NOT TRUE
+JUMP TO INSTRUCTION 1.WhileCondition
+
+1.EndWhile:
+SKIP INSTRUCTION
+

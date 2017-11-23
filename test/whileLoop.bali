@@ -1,5 +1,0 @@
-{
-    loop: while count < length do {
-        $count += 5
-    }
-}

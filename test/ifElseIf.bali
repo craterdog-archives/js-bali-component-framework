@@ -1,7 +1,0 @@
-{
-    if false then {
-        $component := (3, 4i)
-    } else if component < 5 then {
-        $foo := 1.2
-    }
-}

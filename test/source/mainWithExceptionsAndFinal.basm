@@ -1,0 +1,50 @@
+
+1.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+JUMP TO BLOCK 1.FinalClause
+JUMP TO INSTRUCTION 1.Done
+
+1.ExceptionClauses:
+SKIP INSTRUCTION
+
+1.ExceptionClause1:
+STORE VARIABLE $error
+INVOKE INTRINSIC $matches WITH 2 ARGUMENTS
+BRANCH TO 1.ExceptionClauseNoMatch1 ON NOT TRUE
+
+1.2.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+RETURN FROM HANDLER
+
+1.ExceptionClauseNoMatch1:
+LOAD VARIABLE $error
+
+1.ExceptionClause3:
+STORE VARIABLE $error
+INVOKE INTRINSIC $matches WITH 2 ARGUMENTS
+BRANCH TO 1.ExceptionClauseNoMatch3 ON NOT TRUE
+
+1.4.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+RETURN FROM HANDLER
+
+1.ExceptionClauseNoMatch3:
+LOAD VARIABLE $error
+JUMP TO BLOCK 1.FinalClause
+RETURN FROM METHOD
+JUMP TO INSTRUCTION 1.Done
+
+1.FinalClause:
+SKIP INSTRUCTION
+
+1.5.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+RETURN FROM BLOCK
+
+1.Done:
+SKIP INSTRUCTION
+

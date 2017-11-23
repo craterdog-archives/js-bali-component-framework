@@ -266,7 +266,7 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
         this.builder.insertLabel('ExceptionClauses');
         // each clause checks for a match and handles it if it matches
         for (var i = 0; i < exceptionClauses.length; i++) {
-            // check to see if the exception matches the template
+            // the VM checks to see if the exception matches the template and handles it if so
             this.visitExceptionClause(exceptionClauses[i]);
             // no match, check the next one
         }
@@ -284,10 +284,9 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
     if (finalClause) {
         // no exceptions occurred and the final clause, is done so jump to the end
         this.builder.insertJumpInstruction('INSTRUCTION', 'Done');
-        this.builder.insertLabel('FinalClause');
+        // jumps to final clause end up here
         this.visitFinalClause(finalClause);
-        // tell the VM to return to the address on top of the jump stack
-        this.builder.insertReturnInstruction('BLOCK');
+        // the VM jumped back to the next instruction after where the final clause was called
     }
 
     if (exceptionClauses || finalClause) {
@@ -332,8 +331,12 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
 
 // finalClause: 'finish' 'with' block
 CompilerVisitor.prototype.visitFinalClause = function(ctx) {
-    // compile the final clause block
+    // jumps to final clause end up here
+    this.builder.insertLabel('FinalClause');
+    // the VM executes the final clause
     this.visitBlock(ctx.block());
+    // tell the VM to return to the address on top of the jump stack
+    this.builder.insertReturnInstruction('BLOCK');
 };
 
 
@@ -345,15 +348,17 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
     // COMPILE THE ASSIGNEE
     var assignee = ctx.assignee();
     var target = assignee ? assignee.target() : null;
-    var symbol = target ? target.symbol().SYMBOL().getText() : null;
+    var symbol = target ? target.symbol().SYMBOL().getText() : '$ignored';
     var component = assignee ? assignee.component() : null;
+    var operator = assignee ? ctx.op.text : ':=';
+
     if (assignee && ctx.op.text !== ':=') {
-        if (target) {
-            // load the current value of the target variable onto the top of the execution stack
-            this.builder.insertLoadInstruction('VARIABLE', symbol);
-        } else {
+        if (component) {
             // load the current value of the component onto the top of the execution stack
             // TODO: HOW???
+        } else {
+            // load the current value of the target variable onto the top of the execution stack
+            this.builder.insertLoadInstruction('VARIABLE', symbol);
         }
     }
 
@@ -362,81 +367,75 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
     // the value of the expression remains on the execution stack
 
     // COMPILE THE ASSIGNMENT
-    if (assignee) {
-        var operator = ctx.op.text;
-        switch (operator) {
-            case ':=':
-                // no operation, do nothing
-                break;
-            case '?=':
-                // if the current value of the variable is 'none' replace it with the expression
-                this.builder.insertInvokeInstruction('$default', 2);
-                // the resulting value is now on top of the execution stack
-                break;
-            case '+=':
-                // add the expression to the current value of the variable
-                this.builder.insertInvokeInstruction('$sum', 2);
-                // the sum of the values is now on top of the execution stack
-                break;
-            case '-=':
-                // subtract the expression from the current value of the variable
-                this.builder.insertInvokeInstruction('$difference', 2);
-                // the difference between the values is now on top of the execution stack
-                break;
-            case '*=':
-                // multiply the expression by the current value of the variable
-                this.builder.insertInvokeInstruction('$product', 2);
-                // the product of the values is now on top of the execution stack
-                break;
-            case '/=':
-                // divide the value of the variable by the expression
-                this.builder.insertInvokeInstruction('$quotient', 2);
-                // the quotient of the values is now on top of the execution stack
-                break;
-            case '//=':
-                // divide the value of the variable by the expression and leave the remainder
-                this.builder.insertInvokeInstruction('$remainder', 2);
-                // the remainder of the values is now on top of the execution stack
-                break;
-            case '^=':
-                // raise the value of the variable to the power of the expression
-                this.builder.insertInvokeInstruction('$exponential');
-                // the exponential of the values is now on top of the execution stack
-                break;
-            case 'a=':
-                // determine the logical AND of the expression to the current value of the variable
-                this.builder.insertInvokeInstruction('$and', 2);
-                // the logical AND of the values is now on top of the execution stack
-                break;
-            case 's=':
-                // determine the logical SANS of the current value of the variable and the expression
-                this.builder.insertInvokeInstruction('$sans', 2);
-                // the logical SANS of the values is now on top of the execution stack
-                break;
-            case 'o=':
-                // determine the logical OR of the expression to the current value of the variable
-                this.builder.insertInvokeInstruction('$or', 2);
-                // the logical OR of the values is now on top of the execution stack
-                break;
-            case 'x=':
-                // determine the logical XOR of the expression to the current value of the variable
-                this.builder.insertInvokeInstruction('$xor', 2);
-                // the logical XOR of the values is now on top of the execution stack
-                break;
-            default:
-                throw new Error('COMPILER: Invalid operator passed to an EvaluateExpression clause: ' + operator);
-        }
+    switch (operator) {
+        case ':=':
+            // no operation, do nothing
+            break;
+        case '?=':
+            // if the current value of the variable is 'none' replace it with the expression
+            this.builder.insertInvokeInstruction('$default', 2);
+            // the resulting value is now on top of the execution stack
+            break;
+        case '+=':
+            // add the expression to the current value of the variable
+            this.builder.insertInvokeInstruction('$sum', 2);
+            // the sum of the values is now on top of the execution stack
+            break;
+        case '-=':
+            // subtract the expression from the current value of the variable
+            this.builder.insertInvokeInstruction('$difference', 2);
+            // the difference between the values is now on top of the execution stack
+            break;
+        case '*=':
+            // multiply the expression by the current value of the variable
+            this.builder.insertInvokeInstruction('$product', 2);
+            // the product of the values is now on top of the execution stack
+            break;
+        case '/=':
+            // divide the value of the variable by the expression
+            this.builder.insertInvokeInstruction('$quotient', 2);
+            // the quotient of the values is now on top of the execution stack
+            break;
+        case '//=':
+            // divide the value of the variable by the expression and leave the remainder
+            this.builder.insertInvokeInstruction('$remainder', 2);
+            // the remainder of the values is now on top of the execution stack
+            break;
+        case '^=':
+            // raise the value of the variable to the power of the expression
+            this.builder.insertInvokeInstruction('$exponential');
+            // the exponential of the values is now on top of the execution stack
+            break;
+        case 'a=':
+            // determine the logical AND of the expression to the current value of the variable
+            this.builder.insertInvokeInstruction('$and', 2);
+            // the logical AND of the values is now on top of the execution stack
+            break;
+        case 's=':
+            // determine the logical SANS of the current value of the variable and the expression
+            this.builder.insertInvokeInstruction('$sans', 2);
+            // the logical SANS of the values is now on top of the execution stack
+            break;
+        case 'o=':
+            // determine the logical OR of the expression to the current value of the variable
+            this.builder.insertInvokeInstruction('$or', 2);
+            // the logical OR of the values is now on top of the execution stack
+            break;
+        case 'x=':
+            // determine the logical XOR of the expression to the current value of the variable
+            this.builder.insertInvokeInstruction('$xor', 2);
+            // the logical XOR of the values is now on top of the execution stack
+            break;
+        default:
+            throw new Error('COMPILER: Invalid operator passed to an EvaluateExpression clause: ' + operator);
+    }
 
-        if (target) {
-            // store the result that is on top of the execution stack in the variable
-            this.builder.insertStoreInstruction('VARIABLE', symbol);
-        } else {
-            // store the result that is on top of the execution stack in the component
-            // TODO: HOW???
-        }
+    if (component) {
+        // store the result that is on top of the execution stack in the component
+        // TODO: HOW???
     } else {
-        // remove the unused result from the top of the execution stack
-        this.builder.insertRemoveInstruction(1);
+        // store the result that is on top of the execution stack in the variable
+        this.builder.insertStoreInstruction('VARIABLE', symbol);
     }
 };
 
@@ -551,11 +550,11 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
     var blocks = ctx.block();
     var hasElseBlock = blocks.length > conditions.length;
 
-    // compile each condition
+    // check each condition
     for (var i = 0; i < conditions.length; i++) {
         var clauseNumber = i + 1;
         this.builder.insertLabel('IfCondition' + clauseNumber);
-        // compile the condition
+        // place the condition value on top of the execution stack
         this.visitCondition(conditions[i]);
         // the result of the condition expression is now on top of the execution stack
         var nextLabel;
@@ -600,20 +599,53 @@ CompilerVisitor.prototype.visitCondition = function(ctx) {
 CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
     var options = ctx.option();
     var blocks = ctx.block();
+    var hasElseBlock = blocks.length > options.length;
 
-    // handle the selection
+    // place the selection value on the top of the execution stack
     this.visitSelection(ctx.selection());
+    // store off the selection value so that it can be used multiple times
+    var selection = '$selection' + this.temporaryVariableCounter++;
+    this.builder.insertStoreInstruction('VARIABLE', selection);
 
-    // handle option blocks
+    // check each option
     for (var i = 0; i < options.length; i++) {
+        var clauseNumber = i + 1;
+        this.builder.insertLabel('SelectOption' + clauseNumber);
+        // load the selection value onto the execution stack
+        this.builder.insertLoadInstruction('VARIABLE', selection);
+        // place the option value on top of the execution stack
         this.visitOption(options[i]);
+        // the VM checks to see if the selection and option match
+        this.builder.insertInvokeInstruction('$matches', 2);
+        var nextLabel;
+        if (i === options.length - 1) {
+            // we are on the last options
+            if (hasElseBlock) {
+                nextLabel = 'ElseBlock';
+            } else {
+                nextLabel = 'EndSelect';
+            }
+        } else {
+            nextLabel = 'SelectOption' + (clauseNumber + 1);
+        }
+        // if the option does not match, the VM branches to the next option or the end
+        this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
+        // if the option matches, then the VM enters the block
         this.visitBlock(blocks[i]);
+        // all done
+        if (hasElseBlock || i < options.length - 1) {
+            // not the last block so the VM jumps to the end of the statement
+            this.builder.insertJumpInstruction('INSTRUCTION', 'EndSelect');
+        }
     }
 
-    // handle the optional final else block
-    if (blocks.length > options.length) {
+    // the VM executes the optional final else block
+    if (hasElseBlock) {
+        this.builder.insertLabel('ElseBlock');
         this.visitBlock(blocks[blocks.length - 1]);
     }
+
+    this.builder.insertLabel('EndSelect');
 };
 
 
@@ -636,7 +668,7 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
         this.visitLabel(label);
     }
     this.builder.insertLabel('WhileCondition');
-    // compile the condition
+    // the VM places the result of the boolean condition on top of the execution stack
     this.visitCondition(ctx.condition());
     // if the condition is not true, the VM branches to the end
     this.builder.insertBranchInstruction('NOT TRUE', 'EndWhile');
@@ -654,12 +686,38 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     if (label) {
         this.visitLabel(label);
     }
-    var symbol = ctx.symbol();
-    if (symbol) {
-        this.visitSymbol(symbol);
-    }
+    // the VM evaluates the sequence expression and places the result on top of the execution stack
     this.visitSequence(ctx.sequence());
+    // The VM replaces the sequence with a new iterator for the sequence on the execution stack
+    this.builder.insertCallInstruction('$createIterator');
+    // The VM stores the iterater into a temporary variable
+    var iterator = '$iterator' + this.temporaryVariableCounter++;
+    this.builder.insertStoreInstruction('VARIABLE', iterator);
+    // retrieve the name of the symbol or make a temporary variable
+    var item = ctx.symbol();
+    if (item) {
+        item = item.SYMBOL().getText();
+    } else {
+        item = '$item' + this.temporaryVariableCounter++;
+    }
+    this.builder.insertLabel('WithItem');
+    // the VM loads the iterator onto the top of the execution stack
+    this.builder.insertLoadInstruction('VARIABLE', iterator);
+    // the VM replaces the iterator with a boolean telling if there is another item to be retrieved
+    this.builder.insertCallInstruction('$hasNext');
+    // if the condition is not true, the VM branches to the end
+    this.builder.insertBranchInstruction('NOT TRUE', 'EndWith');
+    // the VM loads the iterator onto the top of the execution stack
+    this.builder.insertLoadInstruction('VARIABLE', iterator);
+    // the VM replaces the iterator with the next item in the sequence
+    this.builder.insertCallInstruction('$getNext');
+    // store the item that is on top of the execution stack in the variable
+    this.builder.insertStoreInstruction('VARIABLE', item);
+    // the VM executes the block using the item if needed
     this.visitBlock(ctx.block());
+    // all done, the VM jumps to the end of the statement
+    this.builder.insertJumpInstruction('INSTRUCTION', 'WithItem');
+    this.builder.insertLabel('EndWith');
 };
 
 

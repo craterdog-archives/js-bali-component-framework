@@ -1,0 +1,21 @@
+
+1.IfCondition1:
+LOAD LITERAL `true`
+BRANCH TO 1.IfCondition2 ON NOT TRUE
+
+1.1.EvaluateExpression:
+LOAD LITERAL `true`
+STORE VARIABLE $ignored
+JUMP TO INSTRUCTION 1.EndIf
+
+1.IfCondition2:
+LOAD LITERAL `false`
+BRANCH TO 1.EndIf ON NOT TRUE
+
+1.2.EvaluateExpression:
+LOAD LITERAL `false`
+STORE VARIABLE $ignored
+
+1.EndIf:
+SKIP INSTRUCTION
+

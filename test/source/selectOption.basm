@@ -1,0 +1,38 @@
+LOAD LITERAL `$selection`
+STORE VARIABLE $selection1
+
+1.SelectOption1:
+LOAD VARIABLE $selection1
+LOAD LITERAL `'alpha'`
+INVOKE INTRINSIC $matches WITH 2 ARGUMENTS
+BRANCH TO 1.SelectOption2 ON NOT TRUE
+
+1.1.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+JUMP TO INSTRUCTION 1.EndSelect
+
+1.SelectOption2:
+LOAD VARIABLE $selection1
+LOAD LITERAL `'beta'`
+INVOKE INTRINSIC $matches WITH 2 ARGUMENTS
+BRANCH TO 1.SelectOption3 ON NOT TRUE
+
+1.2.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+JUMP TO INSTRUCTION 1.EndSelect
+
+1.SelectOption3:
+LOAD VARIABLE $selection1
+LOAD LITERAL `'gamma'`
+INVOKE INTRINSIC $matches WITH 2 ARGUMENTS
+BRANCH TO 1.EndSelect ON NOT TRUE
+
+1.3.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $ignored
+
+1.EndSelect:
+SKIP INSTRUCTION
+

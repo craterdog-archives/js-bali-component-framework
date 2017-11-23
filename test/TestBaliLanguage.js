@@ -16,7 +16,7 @@ var testCase = require('nodeunit').testCase;
 module.exports = testCase({
     'Test Parse Elements': function(test) {
         test.expect(2);
-        var document = fs.readFileSync('test/elements.bali', 'utf8');
+        var document = fs.readFileSync('test/source/elements.bali', 'utf8');
         var tree = language.parseDocument(document);
         test.notEqual(tree, null, 'The parser returned a null tree.');
         var formatted = language.formatDocument(tree) + '\n';
@@ -25,7 +25,7 @@ module.exports = testCase({
     },
     'Test Parse Expressions': function(test) {
         test.expect(2);
-        var document = fs.readFileSync('test/expressions.bali', 'utf8');
+        var document = fs.readFileSync('test/source/expressions.bali', 'utf8');
         var tree = language.parseDocument(document);
         test.notEqual(tree, null, 'The parser returned a null tree.');
         var formatted = language.formatDocument(tree) + '\n';
@@ -34,7 +34,7 @@ module.exports = testCase({
     },
     'Test Parse Statements': function(test) {
         test.expect(2);
-        var document = fs.readFileSync('test/statements.bali', 'utf8');
+        var document = fs.readFileSync('test/source/statements.bali', 'utf8');
         var tree = language.parseDocument(document);
         test.notEqual(tree, null, 'The parser returned a null tree.');
         var formatted = language.formatDocument(tree) + '\n';
@@ -43,56 +43,45 @@ module.exports = testCase({
     },
     'Test Parse Documents': function(test) {
         test.expect(2);
-        var document = fs.readFileSync('test/documents.bali', 'utf8');
+        var document = fs.readFileSync('test/source/documents.bali', 'utf8');
         var tree = language.parseDocument(document);
         test.notEqual(tree, null, 'The parser returned a null tree.');
         var formatted = language.formatDocument(tree) + '\n';
         test.strictEqual(formatted, document, 'The formatter returned a different document.');
         test.done();
     },
-    'Test Compile If Then Statement': function(test) {
-        test.expect(1);
-        var block = fs.readFileSync('test/ifThen.bali', 'utf8');
-        var tree = language.parseBlock(block);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var asmcode = language.compileBlock(tree);
-        console.log('\nASSEMBLY CODE:\n' + asmcode);
-        test.done();
-    },
-    'Test Compile If Else Statement': function(test) {
-        test.expect(1);
-        var block = fs.readFileSync('test/ifElse.bali', 'utf8');
-        var tree = language.parseBlock(block);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var asmcode = language.compileBlock(tree);
-        console.log('\nASSEMBLY CODE:\n' + asmcode);
-        test.done();
-    },
-    'Test Compile If Else Finally Statement': function(test) {
-        test.expect(1);
-        var block = fs.readFileSync('test/ifElseFinally.bali', 'utf8');
-        var tree = language.parseBlock(block);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var asmcode = language.compileBlock(tree);
-        console.log('\nASSEMBLY CODE:\n' + asmcode);
-        test.done();
-    },
-    'Test Compile If Else If Statement': function(test) {
-        test.expect(1);
-        var block = fs.readFileSync('test/ifElseIf.bali', 'utf8');
-        var tree = language.parseBlock(block);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var asmcode = language.compileBlock(tree);
-        console.log('\nASSEMBLY CODE:\n' + asmcode);
-        test.done();
-    },
-    'Test Compile While Loop Statement': function(test) {
-        test.expect(1);
-        var block = fs.readFileSync('test/whileLoop.bali', 'utf8');
-        var tree = language.parseBlock(block);
-        test.notEqual(tree, null, 'The parser returned a null tree.');
-        var asmcode = language.compileBlock(tree);
-        console.log('\nASSEMBLY CODE:\n' + asmcode);
+    'Test Compiler': function(test) {
+        var source = [
+            'test/source/main',
+            'test/source/mainWithFinal',
+            'test/source/mainWithExceptions',
+            'test/source/mainWithExceptionsAndFinal',
+            'test/source/evaluateExpression',
+            'test/source/evaluateExpressionWithResult',
+            'test/source/ifThen',
+            'test/source/ifThenElse',
+            'test/source/ifThenElseIf',
+            'test/source/ifThenElseIfElse',
+            'test/source/selectOption',
+            'test/source/selectOptionElse',
+            'test/source/whileLoop',
+            'test/source/whileLoopWithLabel',
+            'test/source/withLoop',
+            'test/source/withLoopWithLabel',
+            'test/source/withEachLoop',
+            'test/source/withEachLoopWithLabel'
+        ];
+        test.expect(source.length);
+        for (var i = 0; i < source.length; i++) {
+            var baliFile = source[i] + '.bali';
+            var basmFile = source[i] + '.basm';
+            var block = fs.readFileSync(baliFile, 'utf8');
+            var tree = language.parseBlock(block);
+            test.notEqual(tree, null, 'The parser returned a null tree.');
+            var asmcode = language.compileBlock(tree);
+            fs.writeFileSync(basmFile, asmcode, 'utf8');
+            console.log('\n' + basmFile + ':\n' + asmcode);
+        }
         test.done();
     }
 });

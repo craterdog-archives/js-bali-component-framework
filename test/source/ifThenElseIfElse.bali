@@ -1,0 +1,9 @@
+{
+    if true then {
+        true
+    } else if false {
+        false
+    } else {
+        none
+    }
+}

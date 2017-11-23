@@ -1,0 +1,16 @@
+LOAD LITERAL `$sequence`
+CALL METHOD $createIterator WITH undefined ARGUMENTS
+STORE VARIABLE $iterator1
+
+1.WithItem:
+LOAD VARIABLE $iterator1
+CALL METHOD $hasNext WITH undefined ARGUMENTS
+BRANCH TO 1.EndWith ON NOT TRUE
+LOAD VARIABLE $iterator1
+CALL METHOD $getNext WITH undefined ARGUMENTS
+STORE VARIABLE $item2
+JUMP TO INSTRUCTION 1.WithItem
+
+1.EndWith:
+SKIP INSTRUCTION
+

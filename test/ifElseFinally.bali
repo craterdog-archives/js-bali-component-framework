@@ -1,9 +1,0 @@
-{
-    if false then {
-        $component := (3, 4i)
-    } else {
-        $foo := 1.2
-    } finish with {
-        $bar *= 5
-    }
-}
