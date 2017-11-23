@@ -1,7 +1,3 @@
-
-1.EvaluateExpression:
-LOAD LITERAL `none`
-STORE VARIABLE $ignored
 JUMP TO BLOCK 1.FinalClause
 JUMP TO INSTRUCTION 1.Done
 

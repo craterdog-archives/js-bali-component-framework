@@ -27,5 +27,5 @@ funxion: IDENTIFIER parameters;
 
 message: IDENTIFIER parameters;
 
-indices: structure;
+indices: '[' array ']';
 

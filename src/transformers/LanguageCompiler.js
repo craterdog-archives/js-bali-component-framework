@@ -73,7 +73,7 @@ CompilerVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype)
 CompilerVisitor.prototype.constructor = CompilerVisitor;
 
 
-CompilerVisitor.prototype.getResult = function(ctx) {
+CompilerVisitor.prototype.getResult = function() {
     this.builder.finalize();
     return this.builder.asmcode;
 };
@@ -96,38 +96,30 @@ CompilerVisitor.prototype.visitDocument = function(ctx) {
 
 // literal: element | structure | block
 CompilerVisitor.prototype.visitLiteral = function(ctx) {
-    // compile the concrete literal type
     this.visitChildren(ctx);
-    // the element or structure remains on the execution stack
-    // TODO: what happens if it is a block? bytcode remains on the execution stack?
 };
 
 
 // structure: '[' composite ']'
 CompilerVisitor.prototype.visitStructure = function(ctx) {
-    // compile the composite
     this.visitComposite(ctx.composite());
-    // the composite remains on the execution stack
 };
 
 
 // composite: range | array | table
 CompilerVisitor.prototype.visitComposite = function(ctx) {
-    // compile the concrete composite type
     this.visitChildren(ctx);
-    // the range, array, or table remains on the execution stack
 };
 
 
 // range: expression '..' expression
 CompilerVisitor.prototype.visitRange = function(ctx) {
-    // compile the starting range expression
+    // place the result of the starting range expression on the execution stack
     this.visitExpression(ctx.expression(0));
-    // compile the ending range expression
+    // place the result of the ending range expression on the execution stack
     this.visitExpression(ctx.expression(1));
     // replace the two range values on the execution stack with a new range component
     this.builder.insertInvokeInstruction('$range', 2);
-    // the range component remains on the execution stack
 };
 
 
@@ -186,7 +178,6 @@ CompilerVisitor.prototype.visitAssociation = function(ctx) {
     this.visitKey(ctx.key());
     // place the result of the value expression on the execution stack
     this.visitExpression(ctx.expression());
-    // the key and value remain on the execution stack
 };
 
 
@@ -207,25 +198,25 @@ CompilerVisitor.prototype.visitKey = function(ctx) {
 
 // parameters: '(' composite ')';
 CompilerVisitor.prototype.visitParameters = function(ctx) {
+    // place the parameters on the execution stack
     this.visitComposite(ctx.composite());
 };
 
 
 // script: SHELL statements EOF
 CompilerVisitor.prototype.visitScript = function(ctx) {
-    this.visitStatements(ctx.statements());
+    throw new Error('COMPILER: A script cannot be compiled, it must be interpreted.');
+    //this.visitStatements(ctx.statements());
 };
 
 
 // block: '{' statements '}'
 CompilerVisitor.prototype.visitBlock = function(ctx) {
-    // BLOCK INITIALIZATION
+    // create a new block context in the instruction builder
     this.builder.pushBlockContext();
-
-    // COMPILE THE STATEMENTS
+    // compile the statements
     this.visitStatements(ctx.statements());
-
-    // BLOCK INITIALIZATION
+    // throw away the current block context in the instruction builder
     this.builder.popBlockContext();
 };
 
@@ -246,7 +237,7 @@ CompilerVisitor.prototype.visitStatements = function(ctx) {
 // statement: mainClause exceptionClause* finalClause?
 CompilerVisitor.prototype.visitStatement = function(ctx) {
     var exceptionClauses = ctx.exceptionClause();
-    if (exceptionClauses.length === 0) exceptionClauses = null;
+    if (exceptionClauses.length === 0) exceptionClauses = null;  // change [] to null for truthiness
     var finalClause = ctx.finalClause();
 
     // COMPILE THE MAIN CLAUSE
@@ -299,7 +290,6 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
 // continueTo | breakFrom | returnResult | throwException | ifThen | selectFrom |
 // whileLoop | withLoop
 CompilerVisitor.prototype.visitMainClause = function(ctx) {
-    // compile the concrete clause type
     this.visitChildren(ctx);
 };
 
@@ -454,7 +444,9 @@ CompilerVisitor.prototype.visitTarget = function(ctx) {
 
 // component: variable indices
 CompilerVisitor.prototype.visitComponent = function(ctx) {
+    // place the value of the variable on the execution stack
     this.visitVariable(ctx.variable());
+    // replace the value of the variable on the execution stack with the indexed component
     this.visitIndices(ctx.indices());
 };
 
@@ -845,7 +837,7 @@ CompilerVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // variable: name
 CompilerVisitor.prototype.visitVariable = function(ctx) {
-    // load the variable onto the top of the execution stack
+    // load the value of the variable onto the top of the execution stack
     var variable = '$' + ctx.IDENTIFIER().getText();
     this.builder.insertLoadInstruction('VARIABLE', variable);
 };
@@ -863,9 +855,10 @@ CompilerVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// indices: structure
+// indices: '[' array ']'
 CompilerVisitor.prototype.visitIndices = function(ctx) {
-    this.visitStructure(ctx.structure());
+    // TODO: traverse the indices in the structure and retrieve all but the last one
+    //this.visitArray(ctx.array());
 };
 
 

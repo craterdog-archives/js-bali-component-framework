@@ -698,9 +698,11 @@ FormatterVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// indices: structure
+// indices: '[' array ']'
 FormatterVisitor.prototype.visitIndices = function(ctx) {
-    this.visitStructure(ctx.structure());
+    this.source += '[';
+    this.visitArray(ctx.array());
+    this.source += ']';
 };
 
 
