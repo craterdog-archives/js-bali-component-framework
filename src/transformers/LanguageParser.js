@@ -103,20 +103,20 @@ LanguageParser.prototype.parseRange = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali collection
+ * This method takes a source code string containing a Bali array
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
- * @returns {CollectionContext} The corresponding parse tree structure.
+ * @returns {ArrayContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseCollection = function(source) {
+LanguageParser.prototype.parseArray = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
     var parser = new grammar.BaliLanguageParser(tokens);
     parser.buildParseTrees = true;
-    var collection = parser.collection();
-    return collection;
+    var array = parser.array();
+    return array;
 };
 
 

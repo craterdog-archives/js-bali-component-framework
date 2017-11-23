@@ -1,5 +1,5 @@
 {
     while $condition do {
-        break;
+        break
     }
 }

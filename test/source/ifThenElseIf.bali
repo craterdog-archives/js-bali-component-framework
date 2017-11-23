@@ -1,7 +1,7 @@
 {
     if true then {
         true
-    } else if false {
+    } else if false then {
         false
     }
 }

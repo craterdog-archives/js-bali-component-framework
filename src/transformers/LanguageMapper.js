@@ -204,7 +204,7 @@ LanguageMapper.prototype.getBaliType = function(baliTree) {
     } else if (baliTree.structure()) {
         baliTree = baliTree.structure();
         baliTree = baliTree.getChild(0);  // get the composite between the brackets []
-        baliTree = baliTree.getChild(0);  // get the actual range, collection, or table
+        baliTree = baliTree.getChild(0);  // get the actual range, array, or table
     } else {
         baliTree = baliTree.block();
         throw new Error('MAPPER: Not yet implemented...');
@@ -248,8 +248,8 @@ LanguageMapper.prototype.getBaliType = function(baliTree) {
         case 'VersionContext':
             type = 'version';
             break;
-        case 'InlineCollectionContext':
-        case 'NewlineCollectionContext':
+        case 'InlineArrayContext':
+        case 'NewlineArrayContext':
             type = 'array';
             break;
         case 'InlineTableContext':
@@ -265,7 +265,7 @@ LanguageMapper.prototype.getBaliType = function(baliTree) {
 
 var HANDLER_MAP = {
     //'any': new AnyHandler(),
-    'array': new CollectionHandler(),
+    'array': new ArrayHandler(),
     'binary': new BinaryHandler(),
     'boolean': new ProbabilityHandler(),
     'moment': new MomentHandler(),
@@ -309,23 +309,23 @@ BinaryHandler.prototype.toBali = function(jsBinary) {
 };
 
 
-function CollectionHandler() {
+function ArrayHandler() {
     return this;
 }
-CollectionHandler.prototype.constructor = CollectionHandler;
+ArrayHandler.prototype.constructor = ArrayHandler;
 
 
-CollectionHandler.prototype.toJavaScript = function(baliDocument) {
+ArrayHandler.prototype.toJavaScript = function(baliDocument) {
     var jsArray = [];
     var baliLiteral = baliDocument.literal();
     var baliStructure = baliLiteral.structure();
     var baliComposite = baliStructure.composite();
-    var baliCollection = baliComposite.collection();
-    var type = baliCollection.constructor.name;
+    var baliArray = baliComposite.array();
+    var type = baliArray.constructor.name;
     switch (type) {
-        case 'InlineCollectionContext':
-        case 'NewlineCollectionContext':
-            var expressions = baliCollection.expression();
+        case 'InlineArrayContext':
+        case 'NewlineArrayContext':
+            var expressions = baliArray.expression();
             for (var i = 0; i < expressions.length; i++) {
                 var baliExpression = expressions[i];
                 var mapper = new LanguageMapper();
@@ -335,13 +335,13 @@ CollectionHandler.prototype.toJavaScript = function(baliDocument) {
             }
             break;
         default:
-            // empty collection
+            // empty array
     }
     return jsArray;
 };
 
 
-CollectionHandler.prototype.toBali = function(jsArray) {
+ArrayHandler.prototype.toBali = function(jsArray) {
     var baliDocument = new grammar.DocumentContext();
     var baliLiteral = new grammar.LiteralContext(null, baliDocument);
     baliDocument.addChild(baliLiteral);
@@ -349,15 +349,15 @@ CollectionHandler.prototype.toBali = function(jsArray) {
     baliLiteral.addChild(baliStructure);
     var baliComposite = new grammar.CompositeContext(null, baliStructure);
     baliStructure.addChild(baliComposite);
-    var baliCollection = new grammar.InlineCollectionContext(null, baliComposite);
-    baliComposite.addChild(baliCollection);
+    var baliArray = new grammar.InlineArrayContext(null, baliComposite);
+    baliComposite.addChild(baliArray);
     for (var i = 0; i < jsArray.length; i++) {
         var jsObject = jsArray[i];
         var mapper = new LanguageMapper();
         var type = mapper.getJavaScriptType(jsObject);
         var baliExpression = mapper.javaScriptToExpression(type, jsObject);
-        baliCollection.addChild(baliExpression);
-        baliExpression.parentCtx = baliCollection;
+        baliArray.addChild(baliExpression);
+        baliExpression.parentCtx = baliArray;
     }
     return baliDocument;
 };

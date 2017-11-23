@@ -111,11 +111,11 @@ CompilerVisitor.prototype.visitStructure = function(ctx) {
 };
 
 
-// composite: range | collection | table
+// composite: range | array | table
 CompilerVisitor.prototype.visitComposite = function(ctx) {
     // compile the concrete composite type
     this.visitChildren(ctx);
-    // the range, collection, or table remains on the execution stack
+    // the range, array, or table remains on the execution stack
 };
 
 
@@ -131,27 +131,27 @@ CompilerVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// collection:
+// array:
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
-//     /*empty collection*/
-CompilerVisitor.prototype.visitCollection = function(ctx) {
+//     /*empty array*/
+CompilerVisitor.prototype.visitArray = function(ctx) {
     // retrieve all the expressions
     var expressions = ctx.expression();
-    // record how many expressions there are in this collection
+    // record how many expressions there are in this array
     var size = expressions.length;
-    // place the size of the collection on the execution stack
+    // place the size of the array on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the execution stack with a new dynamic array of that size
-    this.builder.insertInvokeInstruction('$dynamicArray', 1);
+    // replace the size value on the execution stack with a new array of that size
+    this.builder.insertInvokeInstruction('$array', 1);
     // evaluate each expression
     for (var i = 0; i < expressions.length; i++) {
         // place the result of the next expression on the execution stack
         this.visitExpression(expressions[i]);
-        // add the result as the next item in the dynamic array on the execution stack
+        // add the result as the next item in the array on the execution stack
         this.builder.insertInvokeInstruction('$addItem', 2);
     }
-    // the dynamic array remains on the execution stack
+    // the array remains on the execution stack
 };
 
 
@@ -166,17 +166,17 @@ CompilerVisitor.prototype.visitTable = function(ctx) {
     var size = associations.length;
     // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the execution stack with a new hash table of that size
-    this.builder.insertInvokeInstruction('$hashTable', 1);
+    // replace the size value on the execution stack with a new table of that size
+    this.builder.insertInvokeInstruction('$table', 1);
     // evaluate each association
     for (var i = 0; i < associations.length; i++) {
         // place the key and value of the next association on the execution stack
         this.visitAssociation(associations[i]);
-        // add the key-value pair as the next association in the hash table on the execution stack
+        // add the key-value pair as the next association in the table on the execution stack
         this.builder.insertInvokeInstruction('$setValue', 3);
         // the key and value have been removed from the execution stack
     }
-    // the hash table remains on the execution stack
+    // the table remains on the execution stack
 };
 
 

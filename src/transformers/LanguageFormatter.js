@@ -99,7 +99,7 @@ FormatterVisitor.prototype.visitStructure = function(ctx) {
 };
 
 
-// composite: range | collection | table
+// composite: range | array | table
 FormatterVisitor.prototype.visitComposite = function(ctx) {
     this.visitChildren(ctx);
 };
@@ -115,13 +115,13 @@ FormatterVisitor.prototype.visitRange = function(ctx) {
 
 // HACK: this method is missing from the generated visitor!
 // SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-FormatterVisitor.prototype.visitCollection = function(ctx) {
+FormatterVisitor.prototype.visitArray = function(ctx) {
     ctx.accept(this);
 };
 
 
-// inlineCollection: expression (',' expression)*
-FormatterVisitor.prototype.visitInlineCollection = function(ctx) {
+// inlineArray: expression (',' expression)*
+FormatterVisitor.prototype.visitInlineArray = function(ctx) {
     var expressions = ctx.expression();  // retrieve all the expressions
     this.visitExpression(expressions[0]);
     for (var i = 1; i < expressions.length; i++) {
@@ -131,8 +131,8 @@ FormatterVisitor.prototype.visitInlineCollection = function(ctx) {
 };
 
 
-// newlineCollection: NEWLINE (expression NEWLINE)*
-FormatterVisitor.prototype.visitNewlineCollection = function(ctx) {
+// newlineArray: NEWLINE (expression NEWLINE)*
+FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
     var expressions = ctx.expression();  // retrieve all the expressions
     this.depth++;
     for (var i = 0; i < expressions.length; i++) {
@@ -144,8 +144,8 @@ FormatterVisitor.prototype.visitNewlineCollection = function(ctx) {
 };
 
 
-// emptyCollection: /*empty collection*/
-FormatterVisitor.prototype.visitEmptyCollection = function(ctx) {
+// emptyArray: /*empty array*/
+FormatterVisitor.prototype.visitEmptyArray = function(ctx) {
 };
 
 

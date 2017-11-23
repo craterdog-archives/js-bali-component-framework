@@ -12,14 +12,14 @@ structure: '[' composite ']';
 
 block: '{' statements '}';
 
-composite: range | collection | table;
+composite: range | array | table;
 
 range: expression '..' expression;
 
-collection:
-    expression (',' expression)* #inlineCollection |
-    NEWLINE (expression NEWLINE)* #newlineCollection |
-    /*empty collection*/ #emptyCollection
+array:
+    expression (',' expression)* #inlineArray |
+    NEWLINE (expression NEWLINE)* #newlineArray |
+    /*empty array*/ #emptyArray
 ;
 
 table:

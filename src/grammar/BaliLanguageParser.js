@@ -362,7 +362,7 @@ var symbolicNames = [ 'null', 'null', 'null', 'null', 'null', 'null', 'null',
                       "NEWLINE", "SPACE" ];
 
 var ruleNames =  [ "document", "literal", "parameters", "structure", "block", 
-                   "composite", "range", "collection", "table", "association", 
+                   "composite", "range", "array", "table", "association", 
                    "key", "script", "statements", "statement", "exceptionClause", 
                    "finalClause", "mainClause", "evaluateExpression", "assignee", 
                    "target", "component", "queueMessage", "recipient", "publishEvent", 
@@ -494,7 +494,7 @@ BaliLanguageParser.RULE_structure = 3;
 BaliLanguageParser.RULE_block = 4;
 BaliLanguageParser.RULE_composite = 5;
 BaliLanguageParser.RULE_range = 6;
-BaliLanguageParser.RULE_collection = 7;
+BaliLanguageParser.RULE_array = 7;
 BaliLanguageParser.RULE_table = 8;
 BaliLanguageParser.RULE_association = 9;
 BaliLanguageParser.RULE_key = 10;
@@ -972,8 +972,8 @@ CompositeContext.prototype.range = function() {
     return this.getTypedRuleContext(RangeContext,0);
 };
 
-CompositeContext.prototype.collection = function() {
-    return this.getTypedRuleContext(CollectionContext,0);
+CompositeContext.prototype.array = function() {
+    return this.getTypedRuleContext(ArrayContext,0);
 };
 
 CompositeContext.prototype.table = function() {
@@ -1022,7 +1022,7 @@ BaliLanguageParser.prototype.composite = function() {
         case 2:
             this.enterOuterAlt(localctx, 2);
             this.state = 142;
-            this.collection();
+            this.array();
             break;
 
         case 3:
@@ -1124,7 +1124,7 @@ BaliLanguageParser.prototype.range = function() {
     return localctx;
 };
 
-function CollectionContext(parser, parent, invokingState) {
+function ArrayContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1133,32 +1133,32 @@ function CollectionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_collection;
+    this.ruleIndex = BaliLanguageParser.RULE_array;
     return this;
 }
 
-CollectionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-CollectionContext.prototype.constructor = CollectionContext;
+ArrayContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ArrayContext.prototype.constructor = ArrayContext;
 
 
  
-CollectionContext.prototype.copyFrom = function(ctx) {
+ArrayContext.prototype.copyFrom = function(ctx) {
     antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
 };
 
 
-function InlineCollectionContext(parser, ctx) {
-	CollectionContext.call(this, parser);
-    CollectionContext.prototype.copyFrom.call(this, ctx);
+function InlineArrayContext(parser, ctx) {
+	ArrayContext.call(this, parser);
+    ArrayContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-InlineCollectionContext.prototype = Object.create(CollectionContext.prototype);
-InlineCollectionContext.prototype.constructor = InlineCollectionContext;
+InlineArrayContext.prototype = Object.create(ArrayContext.prototype);
+InlineArrayContext.prototype.constructor = InlineArrayContext;
 
-BaliLanguageParser.InlineCollectionContext = InlineCollectionContext;
+BaliLanguageParser.InlineArrayContext = InlineArrayContext;
 
-InlineCollectionContext.prototype.expression = function(i) {
+InlineArrayContext.prototype.expression = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1168,71 +1168,39 @@ InlineCollectionContext.prototype.expression = function(i) {
         return this.getTypedRuleContext(ExpressionContext,i);
     }
 };
-InlineCollectionContext.prototype.enterRule = function(listener) {
+InlineArrayContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterInlineCollection(this);
+        listener.enterInlineArray(this);
 	}
 };
 
-InlineCollectionContext.prototype.exitRule = function(listener) {
+InlineArrayContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitInlineCollection(this);
+        listener.exitInlineArray(this);
 	}
 };
 
-InlineCollectionContext.prototype.accept = function(visitor) {
+InlineArrayContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitInlineCollection(this);
+        return visitor.visitInlineArray(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
 
-function EmptyCollectionContext(parser, ctx) {
-	CollectionContext.call(this, parser);
-    CollectionContext.prototype.copyFrom.call(this, ctx);
+function NewlineArrayContext(parser, ctx) {
+	ArrayContext.call(this, parser);
+    ArrayContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-EmptyCollectionContext.prototype = Object.create(CollectionContext.prototype);
-EmptyCollectionContext.prototype.constructor = EmptyCollectionContext;
+NewlineArrayContext.prototype = Object.create(ArrayContext.prototype);
+NewlineArrayContext.prototype.constructor = NewlineArrayContext;
 
-BaliLanguageParser.EmptyCollectionContext = EmptyCollectionContext;
+BaliLanguageParser.NewlineArrayContext = NewlineArrayContext;
 
-EmptyCollectionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.enterEmptyCollection(this);
-	}
-};
-
-EmptyCollectionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.exitEmptyCollection(this);
-	}
-};
-
-EmptyCollectionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitEmptyCollection(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function NewlineCollectionContext(parser, ctx) {
-	CollectionContext.call(this, parser);
-    CollectionContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-NewlineCollectionContext.prototype = Object.create(CollectionContext.prototype);
-NewlineCollectionContext.prototype.constructor = NewlineCollectionContext;
-
-BaliLanguageParser.NewlineCollectionContext = NewlineCollectionContext;
-
-NewlineCollectionContext.prototype.NEWLINE = function(i) {
+NewlineArrayContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1244,7 +1212,7 @@ NewlineCollectionContext.prototype.NEWLINE = function(i) {
 };
 
 
-NewlineCollectionContext.prototype.expression = function(i) {
+NewlineArrayContext.prototype.expression = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1254,21 +1222,53 @@ NewlineCollectionContext.prototype.expression = function(i) {
         return this.getTypedRuleContext(ExpressionContext,i);
     }
 };
-NewlineCollectionContext.prototype.enterRule = function(listener) {
+NewlineArrayContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterNewlineCollection(this);
+        listener.enterNewlineArray(this);
 	}
 };
 
-NewlineCollectionContext.prototype.exitRule = function(listener) {
+NewlineArrayContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitNewlineCollection(this);
+        listener.exitNewlineArray(this);
 	}
 };
 
-NewlineCollectionContext.prototype.accept = function(visitor) {
+NewlineArrayContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitNewlineCollection(this);
+        return visitor.visitNewlineArray(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+function EmptyArrayContext(parser, ctx) {
+	ArrayContext.call(this, parser);
+    ArrayContext.prototype.copyFrom.call(this, ctx);
+    return this;
+}
+
+EmptyArrayContext.prototype = Object.create(ArrayContext.prototype);
+EmptyArrayContext.prototype.constructor = EmptyArrayContext;
+
+BaliLanguageParser.EmptyArrayContext = EmptyArrayContext;
+
+EmptyArrayContext.prototype.enterRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.enterEmptyArray(this);
+	}
+};
+
+EmptyArrayContext.prototype.exitRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.exitEmptyArray(this);
+	}
+};
+
+EmptyArrayContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof BaliLanguageVisitor ) {
+        return visitor.visitEmptyArray(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1276,12 +1276,12 @@ NewlineCollectionContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.CollectionContext = CollectionContext;
+BaliLanguageParser.ArrayContext = ArrayContext;
 
-BaliLanguageParser.prototype.collection = function() {
+BaliLanguageParser.prototype.array = function() {
 
-    var localctx = new CollectionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 14, BaliLanguageParser.RULE_collection);
+    var localctx = new ArrayContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 14, BaliLanguageParser.RULE_array);
     var _la = 0; // Token type
     try {
         this.state = 168;
@@ -1316,7 +1316,7 @@ BaliLanguageParser.prototype.collection = function() {
         case BaliLanguageParser.TEXT_BLOCK:
         case BaliLanguageParser.TEXT:
         case BaliLanguageParser.IDENTIFIER:
-            localctx = new InlineCollectionContext(this, localctx);
+            localctx = new InlineArrayContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 150;
             this.expression(0);
@@ -1334,7 +1334,7 @@ BaliLanguageParser.prototype.collection = function() {
             }
             break;
         case BaliLanguageParser.NEWLINE:
-            localctx = new NewlineCollectionContext(this, localctx);
+            localctx = new NewlineArrayContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 158;
             this.match(BaliLanguageParser.NEWLINE);
@@ -1353,7 +1353,7 @@ BaliLanguageParser.prototype.collection = function() {
             break;
         case BaliLanguageParser.T__1:
         case BaliLanguageParser.T__3:
-            localctx = new EmptyCollectionContext(this, localctx);
+            localctx = new EmptyArrayContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
             break;

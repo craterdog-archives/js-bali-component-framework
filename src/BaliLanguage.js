@@ -80,16 +80,16 @@ exports.parseRange = function(source) {
 
 
 /**
- * This function takes a source code string containing a Bali collection
+ * This function takes a source code string containing a Bali array
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
- * @returns {CollectionContext} The corresponding parse tree structure.
+ * @returns {ArrayContext} The corresponding parse tree structure.
  */
-exports.parseCollection = function(source) {
+exports.parseArray = function(source) {
     var parser = new Parser();
-    var collection = parser.parseDocument(source);
-    return collection;
+    var array = parser.parseDocument(source);
+    return array;
 };
 
 

@@ -1,5 +1,5 @@
 {
     label: while $condition do {
-        continue to label;
+        continue to label
     }
 }

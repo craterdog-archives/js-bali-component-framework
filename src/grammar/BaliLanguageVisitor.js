@@ -47,18 +47,18 @@ BaliLanguageVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#inlineCollection.
-BaliLanguageVisitor.prototype.visitInlineCollection = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#inlineArray.
+BaliLanguageVisitor.prototype.visitInlineArray = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#newlineCollection.
-BaliLanguageVisitor.prototype.visitNewlineCollection = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#newlineArray.
+BaliLanguageVisitor.prototype.visitNewlineArray = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#emptyCollection.
-BaliLanguageVisitor.prototype.visitEmptyCollection = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#emptyArray.
+BaliLanguageVisitor.prototype.visitEmptyArray = function(ctx) {
 };
 
 
