@@ -325,9 +325,9 @@ ArrayHandler.prototype.toJavaScript = function(baliDocument) {
     switch (type) {
         case 'InlineArrayContext':
         case 'NewlineArrayContext':
-            var expressions = baliArray.expression();
-            for (var i = 0; i < expressions.length; i++) {
-                var baliExpression = expressions[i];
+            var values = baliArray.value();
+            for (var i = 0; i < values.length; i++) {
+                var baliExpression = values[i].expression();
                 var mapper = new LanguageMapper();
                 type = mapper.getBaliType(baliExpression);
                 var jsObject = mapper.expressionToJavaScript(type, baliExpression);
@@ -356,8 +356,10 @@ ArrayHandler.prototype.toBali = function(jsArray) {
         var mapper = new LanguageMapper();
         var type = mapper.getJavaScriptType(jsObject);
         var baliExpression = mapper.javaScriptToExpression(type, jsObject);
-        baliArray.addChild(baliExpression);
-        baliExpression.parentCtx = baliArray;
+        var baliValue = new grammar.ValueContext(null, baliArray);
+        baliArray.addChild(baliValue);
+        baliValue.addChild(baliExpression);
+        baliExpression.parentCtx = baliValue;
     }
     return baliDocument;
 };
@@ -663,7 +665,7 @@ TableHandler.prototype.toJavaScript = function(baliDocument) {
                 var jsKey = mapper.keyToJavaScript(type, baliKey);
 
                 // transform the value
-                var baliExpression = baliAssociation.expression();
+                var baliExpression = baliAssociation.value().expression();
                 type = mapper.getBaliType(baliExpression);
                 var jsValue = mapper.expressionToJavaScript(type, baliExpression);
 
@@ -689,19 +691,22 @@ TableHandler.prototype.toBali = function(jsObject) {
     var baliTable = new grammar.InlineTableContext(null, baliComposite);
     baliComposite.addChild(baliTable);
     for (var jsKey in jsObject) {
-        var jsValue = jsObject[jsKey];
         var mapper = new LanguageMapper();
+        var baliAssociation = new grammar.AssociationContext(null, baliTable);
+        baliTable.addChild(baliAssociation);
+
         var type = mapper.getJavaScriptType(jsKey);
         var baliKey = mapper.javaScriptToKey(type, jsKey);
-        type = mapper.getJavaScriptType(jsValue);
-        var baliExpression = mapper.javaScriptToExpression(type, jsValue);
-        var baliAssociation = new grammar.AssociationContext(null, baliTable);
         baliAssociation.addChild(baliKey);
         baliKey.parentCtx = baliAssociation;
-        baliAssociation.addChild(baliExpression);
-        baliExpression.parentCtx = baliAssociation;
-        baliTable.addChild(baliAssociation);
-        baliAssociation.parentCtx = baliTable;
+
+        var baliValue = new grammar.ValueContext(null, baliAssociation);
+        baliAssociation.addChild(baliValue);
+        var jsValue = jsObject[jsKey];
+        type = mapper.getJavaScriptType(jsValue);
+        var baliExpression = mapper.javaScriptToExpression(type, jsValue);
+        baliValue.addChild(baliExpression);
+        baliExpression.parentCtx = baliValue;
     }
     return baliDocument;
 };

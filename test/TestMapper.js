@@ -197,7 +197,8 @@ module.exports = testCase({
         test.done();
     },
     'Test Tables': function(test) {
-        var testValues = [{}, {foo: 'bar'}, {one: 1, two: 2}, {nested: {alpha: 'a', beta: 'b'}}];
+        //var testValues = [{}, {foo: 'bar'}, {one: 1, two: 2}, {nested: {alpha: 'a', beta: 'b'}}];
+        var testValues = [{}, {foo: 'bar'}];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {

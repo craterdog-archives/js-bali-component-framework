@@ -91,6 +91,14 @@ FormatterVisitor.prototype.visitLiteral = function(ctx) {
 };
 
 
+// parameters: '(' composite ')'
+FormatterVisitor.prototype.visitParameters = function(ctx) {
+    this.source += '(';
+    this.visitComposite(ctx.composite());
+    this.source += ')';
+};
+
+
 // structure: '[' composite ']'
 FormatterVisitor.prototype.visitStructure = function(ctx) {
     this.source += '[';
@@ -105,11 +113,11 @@ FormatterVisitor.prototype.visitComposite = function(ctx) {
 };
 
 
-// range: expression '..' expression
+// range: value '..' value
 FormatterVisitor.prototype.visitRange = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    this.visitValue(ctx.value(0));
     this.source += '..';
-    this.visitExpression(ctx.expression(1));
+    this.visitValue(ctx.value(1));
 };
 
 
@@ -120,24 +128,24 @@ FormatterVisitor.prototype.visitArray = function(ctx) {
 };
 
 
-// inlineArray: expression (',' expression)*
+// inlineArray: value (',' value)*
 FormatterVisitor.prototype.visitInlineArray = function(ctx) {
-    var expressions = ctx.expression();  // retrieve all the expressions
-    this.visitExpression(expressions[0]);
-    for (var i = 1; i < expressions.length; i++) {
+    var values = ctx.value();  // retrieve all the values
+    this.visitValue(values[0]);
+    for (var i = 1; i < values.length; i++) {
         this.source += ', ';
-        this.visitExpression(expressions[i]);
+        this.visitValue(values[i]);
     }
 };
 
 
-// newlineArray: NEWLINE (expression NEWLINE)*
+// newlineArray: NEWLINE (value NEWLINE)*
 FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
-    var expressions = ctx.expression();  // retrieve all the expressions
+    var values = ctx.value();  // retrieve all the values
     this.depth++;
-    for (var i = 0; i < expressions.length; i++) {
+    for (var i = 0; i < values.length; i++) {
         this.appendNewline();
-        this.visitExpression(expressions[i]);
+        this.visitValue(values[i]);
     }
     this.depth--;
     this.appendNewline();
@@ -185,11 +193,11 @@ FormatterVisitor.prototype.visitEmptyTable = function(ctx) {
 };
 
 
-// association: key ':' expression
+// association: key ':' value
 FormatterVisitor.prototype.visitAssociation = function(ctx) {
     this.visitKey(ctx.key());
     this.source += ': ';
-    this.visitExpression(ctx.expression());
+    this.visitValue(ctx.value());
 };
 
 
@@ -203,11 +211,9 @@ FormatterVisitor.prototype.visitKey = function(ctx) {
 };
 
 
-// parameters: '(' composite ')';
-FormatterVisitor.prototype.visitParameters = function(ctx) {
-    this.source += '(';
-    this.visitComposite(ctx.composite());
-    this.source += ')';
+// value: expression
+FormatterVisitor.prototype.visitValue = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
@@ -317,15 +323,9 @@ FormatterVisitor.prototype.visitEvaluateExpression = function(ctx) {
 };
 
 
-// assignee: target | component
+// assignee: symbol | component
 FormatterVisitor.prototype.visitAssignee = function(ctx) {
     this.visitChildren(ctx);
-};
-
-
-// target: symbol
-FormatterVisitor.prototype.visitTarget = function(ctx) {
-    this.visitSymbol(ctx.symbol());
 };
 
 

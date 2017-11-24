@@ -19,9 +19,7 @@ mainClause:
 
 evaluateExpression: (assignee op=(':=' | '?=' | '+=' | '-=' | '*=' | '/=' | '//=' | '^=' | 'a=' | 's=' | 'o=' | 'x='))? expression;
 
-assignee: target | component;
-
-target: symbol;
+assignee: symbol | component;
 
 component: variable indices;
 

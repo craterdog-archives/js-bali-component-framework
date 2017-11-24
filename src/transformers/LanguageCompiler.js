@@ -100,6 +100,13 @@ CompilerVisitor.prototype.visitLiteral = function(ctx) {
 };
 
 
+// parameters: '(' composite ')'
+CompilerVisitor.prototype.visitParameters = function(ctx) {
+    // place the parameters on the execution stack
+    this.visitComposite(ctx.composite());
+};
+
+
 // structure: '[' composite ']'
 CompilerVisitor.prototype.visitStructure = function(ctx) {
     this.visitComposite(ctx.composite());
@@ -112,34 +119,34 @@ CompilerVisitor.prototype.visitComposite = function(ctx) {
 };
 
 
-// range: expression '..' expression
+// range: value '..' value
 CompilerVisitor.prototype.visitRange = function(ctx) {
-    // place the result of the starting range expression on the execution stack
-    this.visitExpression(ctx.expression(0));
-    // place the result of the ending range expression on the execution stack
-    this.visitExpression(ctx.expression(1));
+    // place the result of the starting range value on the execution stack
+    this.visitValue(ctx.value(0));
+    // place the result of the ending range value on the execution stack
+    this.visitValue(ctx.value(1));
     // replace the two range values on the execution stack with a new range component
     this.builder.insertInvokeInstruction('$range', 2);
 };
 
 
 // array:
-//     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     value (',' value)* |
+//     NEWLINE (value NEWLINE)* |
 //     /*empty array*/
 CompilerVisitor.prototype.visitArray = function(ctx) {
-    // retrieve all the expressions
-    var expressions = ctx.expression();
-    // record how many expressions there are in this array
-    var size = expressions.length;
+    // retrieve all the values
+    var values = ctx.value();
+    // record how many values there are in this array
+    var size = values.length;
     // place the size of the array on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
     // replace the size value on the execution stack with a new array of that size
     this.builder.insertInvokeInstruction('$array', 1);
-    // evaluate each expression
-    for (var i = 0; i < expressions.length; i++) {
-        // place the result of the next expression on the execution stack
-        this.visitExpression(expressions[i]);
+    // evaluate each value
+    for (var i = 0; i < values.length; i++) {
+        // place the result of the next value on the execution stack
+        this.visitValue(values[i]);
         // add the result as the next item in the array on the execution stack
         this.builder.insertInvokeInstruction('$addItem', 2);
     }
@@ -172,12 +179,12 @@ CompilerVisitor.prototype.visitTable = function(ctx) {
 };
 
 
-// association: key ':' expression
+// association: key ':' value
 CompilerVisitor.prototype.visitAssociation = function(ctx) {
     // place the key component on the execution stack
     this.visitKey(ctx.key());
-    // place the result of the value expression on the execution stack
-    this.visitExpression(ctx.expression());
+    // place the result of the value value on the execution stack
+    this.visitValue(ctx.value());
 };
 
 
@@ -196,10 +203,9 @@ CompilerVisitor.prototype.visitKey = function(ctx) {
 };
 
 
-// parameters: '(' composite ')';
-CompilerVisitor.prototype.visitParameters = function(ctx) {
-    // place the parameters on the execution stack
-    this.visitComposite(ctx.composite());
+// value: expression
+CompilerVisitor.prototype.visitValue = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
@@ -337,8 +343,8 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
     // COMPILE THE ASSIGNEE
     var assignee = ctx.assignee();
-    var target = assignee ? assignee.target() : null;
-    var symbol = target ? target.symbol().SYMBOL().getText() : '$ignored';
+    var symbol = assignee ? assignee.symbol() : null;
+    symbol = symbol ? symbol.SYMBOL().getText() : '$ignored';
     var component = assignee ? assignee.component() : null;
     var operator = assignee ? ctx.op.text : ':=';
 
@@ -430,15 +436,9 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
 };
 
 
-// assignee: target | component
+// assignee: symbol | component
 CompilerVisitor.prototype.visitAssignee = function(ctx) {
     this.visitChildren(ctx);
-};
-
-
-// target: symbol
-CompilerVisitor.prototype.visitTarget = function(ctx) {
-    this.visitSymbol(ctx.symbol());
 };
 
 

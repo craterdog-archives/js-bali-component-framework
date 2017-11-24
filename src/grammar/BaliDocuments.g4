@@ -14,11 +14,11 @@ block: '{' statements '}';
 
 composite: range | array | table;
 
-range: expression '..' expression;
+range: value '..' value;
 
 array:
-    expression (',' expression)* #inlineArray |
-    NEWLINE (expression NEWLINE)* #newlineArray |
+    value (',' value)* #inlineArray |
+    NEWLINE (value NEWLINE)* #newlineArray |
     /*empty array*/ #emptyArray
 ;
 
@@ -28,7 +28,8 @@ table:
     ':' /*empty table*/ #emptyTable
 ;
 
-association: key ':' expression;
+association: key ':' value;
 
 key: element parameters?;
 
+value: expression;

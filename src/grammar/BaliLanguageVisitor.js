@@ -87,6 +87,11 @@ BaliLanguageVisitor.prototype.visitKey = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#value.
+BaliLanguageVisitor.prototype.visitValue = function(ctx) {
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#script.
 BaliLanguageVisitor.prototype.visitScript = function(ctx) {
 };
@@ -134,11 +139,6 @@ BaliLanguageVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#assignee.
 BaliLanguageVisitor.prototype.visitAssignee = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#target.
-BaliLanguageVisitor.prototype.visitTarget = function(ctx) {
 };
 
 
