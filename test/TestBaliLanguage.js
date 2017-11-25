@@ -51,7 +51,9 @@ module.exports = testCase({
             'test/source/withLoop',
             'test/source/withLoopWithLabel',
             'test/source/withEachLoop',
-            'test/source/withEachLoopWithLabel'
+            'test/source/withEachLoopWithLabel',
+            'test/source/queueMessage',
+            'test/source/publishEvent'
         ];
         test.expect(source.length);
         for (var i = 0; i < source.length; i++) {

@@ -395,7 +395,7 @@ FormatterVisitor.prototype.visitBreakFrom = function(ctx) {
 };
 
 
-// label: name
+// label: IDENTIFIER
 FormatterVisitor.prototype.visitLabel = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
 };
@@ -678,20 +678,20 @@ FormatterVisitor.prototype.visitDefaultExpression = function(ctx) {
 };
 
 
-// variable: name
+// variable: IDENTIFIER
 FormatterVisitor.prototype.visitVariable = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
 };
 
 
-// funxion: name parameters
+// funxion: IDENTIFIER parameters
 FormatterVisitor.prototype.visitFunxion = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
 
-// message: name parameters
+// message: IDENTIFIER parameters
 FormatterVisitor.prototype.visitMessage = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());

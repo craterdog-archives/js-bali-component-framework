@@ -126,7 +126,7 @@ CompilerVisitor.prototype.visitRange = function(ctx) {
     // place the result of the ending range value on the execution stack
     this.visitValue(ctx.value(1));
     // replace the two range values on the execution stack with a new range component
-    this.builder.insertInvokeInstruction('$range', 2);
+    this.builder.insertInvokeInstruction('range', 2);
 };
 
 
@@ -142,15 +142,21 @@ CompilerVisitor.prototype.visitArray = function(ctx) {
     // place the size of the array on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
     // replace the size value on the execution stack with a new array of that size
-    this.builder.insertInvokeInstruction('$array', 1);
+    this.builder.insertInvokeInstruction('array', 1);
     // evaluate each value
     for (var i = 0; i < values.length; i++) {
         // place the result of the next value on the execution stack
         this.visitValue(values[i]);
         // add the result as the next item in the array on the execution stack
-        this.builder.insertInvokeInstruction('$addItem', 2);
+        this.builder.insertInvokeInstruction('addItem', 2);
     }
     // the array remains on the execution stack
+};
+CompilerVisitor.prototype.visitInlineArray = function(ctx) {
+    this.visitArray(ctx);
+};
+CompilerVisitor.prototype.visitNewlineArray = function(ctx) {
+    this.visitArray(ctx);
 };
 
 
@@ -166,16 +172,25 @@ CompilerVisitor.prototype.visitTable = function(ctx) {
     // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
     // replace the size value on the execution stack with a new table of that size
-    this.builder.insertInvokeInstruction('$table', 1);
+    this.builder.insertInvokeInstruction('table', 1);
     // evaluate each association
     for (var i = 0; i < associations.length; i++) {
         // place the key and value of the next association on the execution stack
         this.visitAssociation(associations[i]);
         // add the key-value pair as the next association in the table on the execution stack
-        this.builder.insertInvokeInstruction('$setValue', 3);
+        this.builder.insertInvokeInstruction('setValue', 3);
         // the key and value have been removed from the execution stack
     }
     // the table remains on the execution stack
+};
+CompilerVisitor.prototype.visitInlineTable = function(ctx) {
+    this.visitTable(ctx);
+};
+CompilerVisitor.prototype.visitNewlineTable = function(ctx) {
+    this.visitTable(ctx);
+};
+CompilerVisitor.prototype.visitEmptyTable = function(ctx) {
+    this.visitTable(ctx);
 };
 
 
@@ -311,7 +326,7 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
     // place exception template on the execution stack
     this.visitXception(ctx.xception());
     // compare template with actual exception
-    this.builder.insertInvokeInstruction('$matches', 2);
+    this.builder.insertInvokeInstruction('matches', 2);
     // the result of the comparison replaces the two operands on the execution stack
     this.builder.insertBranchInstruction('NOT TRUE', 'ExceptionClauseNoMatch' + clauseNumber);
     // the VM executes the exception handler block
@@ -363,7 +378,7 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
             this.builder.insertLoadInstruction('VARIABLE', parent);
             this.builder.insertLoadInstruction('VARIABLE', index);
             // load the value of the child onto the execution stack
-            this.builder.insertInvokeInstruction('$getValue', 2);
+            this.builder.insertInvokeInstruction('getValue', 2);
             // one copy of the parent and index have been replaced by the value of the child
         }
     } else if (operator !== ':=') {
@@ -381,57 +396,57 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
             break;
         case '?=':
             // if the current value of the variable is 'none' replace it with the expression
-            this.builder.insertInvokeInstruction('$default', 2);
+            this.builder.insertInvokeInstruction('default', 2);
             // the resulting value is now on top of the execution stack
             break;
         case '+=':
             // add the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$sum', 2);
+            this.builder.insertInvokeInstruction('sum', 2);
             // the sum of the values is now on top of the execution stack
             break;
         case '-=':
             // subtract the expression from the current value of the variable
-            this.builder.insertInvokeInstruction('$difference', 2);
+            this.builder.insertInvokeInstruction('difference', 2);
             // the difference between the values is now on top of the execution stack
             break;
         case '*=':
             // multiply the expression by the current value of the variable
-            this.builder.insertInvokeInstruction('$product', 2);
+            this.builder.insertInvokeInstruction('product', 2);
             // the product of the values is now on top of the execution stack
             break;
         case '/=':
             // divide the value of the variable by the expression
-            this.builder.insertInvokeInstruction('$quotient', 2);
+            this.builder.insertInvokeInstruction('quotient', 2);
             // the quotient of the values is now on top of the execution stack
             break;
         case '//=':
             // divide the value of the variable by the expression and leave the remainder
-            this.builder.insertInvokeInstruction('$remainder', 2);
+            this.builder.insertInvokeInstruction('remainder', 2);
             // the remainder of the values is now on top of the execution stack
             break;
         case '^=':
             // raise the value of the variable to the power of the expression
-            this.builder.insertInvokeInstruction('$exponential');
+            this.builder.insertInvokeInstruction('exponential');
             // the exponential of the values is now on top of the execution stack
             break;
         case 'a=':
             // determine the logical AND of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$and', 2);
+            this.builder.insertInvokeInstruction('and', 2);
             // the logical AND of the values is now on top of the execution stack
             break;
         case 's=':
             // determine the logical SANS of the current value of the variable and the expression
-            this.builder.insertInvokeInstruction('$sans', 2);
+            this.builder.insertInvokeInstruction('sans', 2);
             // the logical SANS of the values is now on top of the execution stack
             break;
         case 'o=':
             // determine the logical OR of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$or', 2);
+            this.builder.insertInvokeInstruction('or', 2);
             // the logical OR of the values is now on top of the execution stack
             break;
         case 'x=':
             // determine the logical XOR of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$xor', 2);
+            this.builder.insertInvokeInstruction('xor', 2);
             // the logical XOR of the values is now on top of the execution stack
             break;
         default:
@@ -440,7 +455,7 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
     if (component) {
         // store the result that is on top of the execution stack in the component
-        this.builder.insertInvokeInstruction('$setValue', 3);
+        this.builder.insertInvokeInstruction('setValue', 3);
     } else {
         // store the result that is on top of the execution stack in the variable
         this.builder.insertStoreInstruction('VARIABLE', symbol);
@@ -467,7 +482,7 @@ CompilerVisitor.prototype.visitComponent = function(ctx) {
         this.visitValue(index);
         if (i === indices.length - 1) break;  // leave the parent and final index on the stack
         // load the child component for that index onto the top of the execution stack
-        this.builder.insertInvokeInstruction('$getValue', 2);
+        this.builder.insertInvokeInstruction('getValue', 2);
     }
     // the parent component and index of the last child component are onto of the execution stack
 };
@@ -475,8 +490,14 @@ CompilerVisitor.prototype.visitComponent = function(ctx) {
 
 // queueMessage: 'queue' message 'for' recipient
 CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
-    this.visitMessage(ctx.message());
+    // place the value of the recipient onto the top of the execution stack
     this.visitRecipient(ctx.recipient());
+    // place the message and parameters onto the top of the execution stack
+    this.visitMessage(ctx.message());
+    // replace the recipient, message and parameters with a message component
+    this.builder.insertInvokeInstruction('message', 3);
+    // place the message on the message queue
+    this.builder.insertInvokeInstruction('queueMessage', 1);
 };
 
 
@@ -488,7 +509,10 @@ CompilerVisitor.prototype.visitRecipient = function(ctx) {
 
 // publishEvent: 'publish' event
 CompilerVisitor.prototype.visitPublishEvent = function(ctx) {
+    // place the value of the event onto the top of the execution stack
     this.visitEvent(ctx.event());
+    // place the event on the event queue
+    this.builder.insertInvokeInstruction('queueEvent', 1);
 };
 
 
@@ -523,7 +547,7 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
 };
 
 
-// label: name
+// label: IDENTIFIER
 CompilerVisitor.prototype.visitLabel = function(ctx) {
     // insert a custom label
     var label = ctx.IDENTIFIER().getText();
@@ -630,7 +654,7 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         // place the option value on top of the execution stack
         this.visitOption(options[i]);
         // the VM checks to see if the selection and option match
-        this.builder.insertInvokeInstruction('$matches', 2);
+        this.builder.insertInvokeInstruction('matches', 2);
         var nextLabel;
         if (i === options.length - 1) {
             // we are on the last options
@@ -857,7 +881,7 @@ CompilerVisitor.prototype.visitDefaultExpression = function(ctx) {
 };
 
 
-// variable: name
+// variable: IDENTIFIER
 CompilerVisitor.prototype.visitVariable = function(ctx) {
     // load the value of the variable onto the top of the execution stack
     var variable = '$' + ctx.IDENTIFIER().getText();
@@ -865,14 +889,18 @@ CompilerVisitor.prototype.visitVariable = function(ctx) {
 };
 
 
-// funxion: name parameters
+// funxion: IDENTIFIER parameters
 CompilerVisitor.prototype.visitFunxion = function(ctx) {
     this.visitParameters(ctx.parameters());
 };
 
 
-// message: name parameters
+// message: IDENTIFIER parameters
 CompilerVisitor.prototype.visitMessage = function(ctx) {
+    // load the message name onto the top of the execution stack
+    var message = ctx.IDENTIFIER().getText();
+    this.builder.insertLoadInstruction('LITERAL', message);
+    // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
 };
 
