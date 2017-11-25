@@ -10,7 +10,7 @@ BRANCH TO 1.ExceptionClauseNoMatch1 ON NOT TRUE
 
 1.2.EvaluateExpression:
 LOAD LITERAL `none`
-STORE VARIABLE $ignored
+STORE VARIABLE $result
 RETURN FROM HANDLER
 
 1.ExceptionClauseNoMatch1:
@@ -23,7 +23,7 @@ BRANCH TO 1.ExceptionClauseNoMatch3 ON NOT TRUE
 
 1.4.EvaluateExpression:
 LOAD LITERAL `none`
-STORE VARIABLE $ignored
+STORE VARIABLE $result
 RETURN FROM HANDLER
 
 1.ExceptionClauseNoMatch3:

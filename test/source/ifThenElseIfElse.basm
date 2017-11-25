@@ -5,7 +5,7 @@ BRANCH TO 1.IfCondition2 ON NOT TRUE
 
 1.1.EvaluateExpression:
 LOAD LITERAL `true`
-STORE VARIABLE $ignored
+STORE VARIABLE $result
 JUMP TO INSTRUCTION 1.EndIf
 
 1.IfCondition2:
@@ -14,7 +14,7 @@ BRANCH TO 1.ElseBlock ON NOT TRUE
 
 1.2.EvaluateExpression:
 LOAD LITERAL `false`
-STORE VARIABLE $ignored
+STORE VARIABLE $result
 JUMP TO INSTRUCTION 1.EndIf
 
 1.ElseBlock:
@@ -22,7 +22,7 @@ SKIP INSTRUCTION
 
 1.3.EvaluateExpression:
 LOAD LITERAL `none`
-STORE VARIABLE $ignored
+STORE VARIABLE $result
 
 1.EndIf:
 SKIP INSTRUCTION

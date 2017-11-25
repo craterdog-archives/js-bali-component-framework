@@ -1,4 +1,5 @@
 {
+    document[$customer, $order, 3] += 5
     $foo := bar
     $color ?= $violet
     $count += 2

@@ -341,28 +341,40 @@ CompilerVisitor.prototype.visitFinalClause = function(ctx) {
 CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
     this.builder.insertLabel('EvaluateExpression');
 
-    // COMPILE THE ASSIGNEE
     var assignee = ctx.assignee();
     var symbol = assignee ? assignee.symbol() : null;
-    symbol = symbol ? symbol.SYMBOL().getText() : '$ignored';
+    symbol = symbol ? symbol.SYMBOL().getText() : '$result';
     var component = assignee ? assignee.component() : null;
     var operator = assignee ? ctx.op.text : ':=';
+    var parent = '$component' + this.temporaryVariableCounter++;
+    var index = '$index' + this.temporaryVariableCounter++;
 
-    if (assignee && ctx.op.text !== ':=') {
-        if (component) {
-            // load the current value of the component onto the top of the execution stack
-            // TODO: HOW???
-        } else {
-            // load the current value of the target variable onto the top of the execution stack
-            this.builder.insertLoadInstruction('VARIABLE', symbol);
+    if (component) {
+        // load the parent of the component and index of the child onto the execution stack
+        this.visitComponent(component);
+        // save of the parent and index in temporary variables
+        this.builder.insertStoreInstruction('VARIABLE', index);
+        this.builder.insertStoreInstruction('VARIABLE', parent);
+        // load the parent and index back onto the execution stack for after the operation
+        this.builder.insertLoadInstruction('VARIABLE', parent);
+        this.builder.insertLoadInstruction('VARIABLE', index);
+        if (operator !== ':=') {
+            // load a second copy of the parent and index back onto the execution stack
+            this.builder.insertLoadInstruction('VARIABLE', parent);
+            this.builder.insertLoadInstruction('VARIABLE', index);
+            // load the value of the child onto the execution stack
+            this.builder.insertInvokeInstruction('$getValue', 2);
+            // one copy of the parent and index have been replaced by the value of the child
         }
+    } else if (operator !== ':=') {
+        // load the current value of the target variable onto the top of the execution stack
+        this.builder.insertLoadInstruction('VARIABLE', symbol);
     }
 
-    // COMPILE THE EXPRESSION
+    // load the value of the expression onto the top of the execution stack
     this.visitExpression(ctx.expression());
-    // the value of the expression remains on the execution stack
 
-    // COMPILE THE ASSIGNMENT
+    // replace the value on the top of the execution stack with the result of the operation
     switch (operator) {
         case ':=':
             // no operation, do nothing
@@ -428,7 +440,7 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
     if (component) {
         // store the result that is on top of the execution stack in the component
-        // TODO: HOW???
+        this.builder.insertInvokeInstruction('$setValue', 3);
     } else {
         // store the result that is on top of the execution stack in the variable
         this.builder.insertStoreInstruction('VARIABLE', symbol);
@@ -438,6 +450,7 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
 // assignee: symbol | component
 CompilerVisitor.prototype.visitAssignee = function(ctx) {
+    // never called...
     this.visitChildren(ctx);
 };
 
@@ -446,8 +459,17 @@ CompilerVisitor.prototype.visitAssignee = function(ctx) {
 CompilerVisitor.prototype.visitComponent = function(ctx) {
     // place the value of the variable on the execution stack
     this.visitVariable(ctx.variable());
-    // replace the value of the variable on the execution stack with the indexed component
-    this.visitIndices(ctx.indices());
+
+    var indices = ctx.indices().array().value();
+    for (var i = 0; i <indices.length; i++) {
+        var index = indices[i];
+        // load the value of the index expression onto the top of the execution stack
+        this.visitValue(index);
+        if (i === indices.length - 1) break;  // leave the parent and final index on the stack
+        // load the child component for that index onto the top of the execution stack
+        this.builder.insertInvokeInstruction('$getValue', 2);
+    }
+    // the parent component and index of the last child component are onto of the execution stack
 };
 
 
