@@ -282,9 +282,19 @@ FormatterVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// mainClause: evaluateExpression | queueMessage | publishEvent | waitForEvent |
-// continueTo | breakFrom | returnResult | throwException | ifThen | selectFrom |
-// whileLoop | withLoop
+// mainClause:
+//     evaluateExpression |
+//     publishEvent |
+//     queueMessage |
+//     waitForMessage |
+//     ifThen |
+//     selectFrom |
+//     whileLoop |
+//     withLoop |
+//     continueTo |
+//     breakFrom |
+//     returnResult |
+//     throwException
 FormatterVisitor.prototype.visitMainClause = function(ctx) {
     this.visitChildren(ctx);
 };
@@ -336,18 +346,17 @@ FormatterVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// queueMessage: 'queue' message 'for' recipient
-FormatterVisitor.prototype.visitQueueMessage = function(ctx) {
-    this.source += 'queue ';
-    this.visitMessage(ctx.message());
-    this.source += ' for ';
-    this.visitRecipient(ctx.recipient());
+// variable: IDENTIFIER
+FormatterVisitor.prototype.visitVariable = function(ctx) {
+    this.source += ctx.IDENTIFIER().getText();
 };
 
 
-// recipient: expression
-FormatterVisitor.prototype.visitRecipient = function(ctx) {
-    this.visitExpression(ctx.expression());
+// indices: '[' array ']'
+FormatterVisitor.prototype.visitIndices = function(ctx) {
+    this.source += '[';
+    this.visitArray(ctx.array());
+    this.source += ']';
 };
 
 
@@ -358,75 +367,32 @@ FormatterVisitor.prototype.visitPublishEvent = function(ctx) {
 };
 
 
-// waitForEvent: 'wait' 'for' symbol 'matching' event
-FormatterVisitor.prototype.visitWaitForEvent = function(ctx) {
-    this.source += 'wait for ';
-    this.visitSymbol(ctx.symbol());
-    this.source += ' matching ';
-    this.visitEvent(ctx.event());
-};
-
-
 // event: expression
 FormatterVisitor.prototype.visitEvent = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
-// continueTo: 'continue' ('to' label)?
-FormatterVisitor.prototype.visitContinueTo = function(ctx) {
-    this.source += 'continue';
-    var label = ctx.label();
-    if (label) {
-        this.source += ' to ';
-        this.visitLabel(label);
-    }
+// queueMessage: 'queue' message 'on' queue
+FormatterVisitor.prototype.visitQueueMessage = function(ctx) {
+    this.source += 'queue ';
+    this.visitMessage(ctx.message());
+    this.source += ' on ';
+    this.visitQueue(ctx.queue());
 };
 
 
-// breakFrom: 'break' ('from' label)?
-FormatterVisitor.prototype.visitBreakFrom = function(ctx) {
-    this.source += 'break';
-    var label = ctx.label();
-    if (label) {
-        this.source += ' from ';
-        this.visitLabel(label);
-    }
+// waitForMessage: 'wait' 'for' symbol 'from' queue
+FormatterVisitor.prototype.visitWaitForMessage = function(ctx) {
+    this.source += 'wait for ';
+    this.visitSymbol(ctx.symbol());
+    this.source += ' from ';
+    this.visitQueue(ctx.queue());
 };
 
 
-// label: IDENTIFIER
-FormatterVisitor.prototype.visitLabel = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
-};
-
-
-// returnResult: 'return' result?
-FormatterVisitor.prototype.visitReturnResult = function(ctx) {
-    this.source += 'return';
-    var result = ctx.result();
-    if (result) {
-        this.source += ' ';
-        this.visitResult(result);
-    }
-};
-
-
-// result: expression
-FormatterVisitor.prototype.visitResult = function(ctx) {
-    this.visitExpression(ctx.expression());
-};
-
-
-// throwException: 'throw' xception
-FormatterVisitor.prototype.visitThrowException = function(ctx) {
-    this.source += 'throw ';
-    this.visitXception(ctx.xception());
-};
-
-
-// xception: expression
-FormatterVisitor.prototype.visitXception = function(ctx) {
+// queue: expression
+FormatterVisitor.prototype.visitQueue = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
@@ -538,6 +504,64 @@ FormatterVisitor.prototype.visitWithLoop = function(ctx) {
 
 // sequence: expression
 FormatterVisitor.prototype.visitSequence = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
+// continueTo: 'continue' ('to' label)?
+FormatterVisitor.prototype.visitContinueTo = function(ctx) {
+    this.source += 'continue';
+    var label = ctx.label();
+    if (label) {
+        this.source += ' to ';
+        this.visitLabel(label);
+    }
+};
+
+
+// breakFrom: 'break' ('from' label)?
+FormatterVisitor.prototype.visitBreakFrom = function(ctx) {
+    this.source += 'break';
+    var label = ctx.label();
+    if (label) {
+        this.source += ' from ';
+        this.visitLabel(label);
+    }
+};
+
+
+// label: IDENTIFIER
+FormatterVisitor.prototype.visitLabel = function(ctx) {
+    this.source += ctx.IDENTIFIER().getText();
+};
+
+
+// returnResult: 'return' result?
+FormatterVisitor.prototype.visitReturnResult = function(ctx) {
+    this.source += 'return';
+    var result = ctx.result();
+    if (result) {
+        this.source += ' ';
+        this.visitResult(result);
+    }
+};
+
+
+// result: expression
+FormatterVisitor.prototype.visitResult = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
+// throwException: 'throw' xception
+FormatterVisitor.prototype.visitThrowException = function(ctx) {
+    this.source += 'throw ';
+    this.visitXception(ctx.xception());
+};
+
+
+// xception: expression
+FormatterVisitor.prototype.visitXception = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
@@ -678,12 +702,6 @@ FormatterVisitor.prototype.visitDefaultExpression = function(ctx) {
 };
 
 
-// variable: IDENTIFIER
-FormatterVisitor.prototype.visitVariable = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
-};
-
-
 // funxion: IDENTIFIER parameters
 FormatterVisitor.prototype.visitFunxion = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
@@ -695,14 +713,6 @@ FormatterVisitor.prototype.visitFunxion = function(ctx) {
 FormatterVisitor.prototype.visitMessage = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
-};
-
-
-// indices: '[' array ']'
-FormatterVisitor.prototype.visitIndices = function(ctx) {
-    this.source += '[';
-    this.visitArray(ctx.array());
-    this.source += ']';
 };
 
 

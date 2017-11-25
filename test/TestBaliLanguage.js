@@ -53,6 +53,7 @@ module.exports = testCase({
             'test/source/withEachLoop',
             'test/source/withEachLoopWithLabel',
             'test/source/queueMessage',
+            'test/source/waitForMessage',
             'test/source/publishEvent'
         ];
         test.expect(source.length);

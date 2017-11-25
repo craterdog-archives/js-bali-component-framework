@@ -21,11 +21,7 @@ expression:                                                        // Precedence
     expression '?' expression                                      #defaultExpression
 ;
 
-variable: IDENTIFIER;
-
 funxion: IDENTIFIER parameters;
 
 message: IDENTIFIER parameters;
-
-indices: '[' array ']';
 

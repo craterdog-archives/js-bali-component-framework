@@ -13,8 +13,8 @@
         } catch $exception matching [$type: "BadException"] with {
             continue to label
         }
-        queue message() for component finish with {
-            wait for $event matching template
+        queue message() on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9 finish with {
+            wait for $message from #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
         }
         if false then {
             $component := 0
@@ -54,13 +54,13 @@
     $publishEvent: {
         publish event
     }
-    $waitForEvent: {
-        wait for $event matching changeEvent
+    $waitForMessage: {
+        wait for $message from #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
     }
     $queueMessage: {
-        queue message() for <bali:/#N0N3>
-        queue message(1) for <bali:/#N0N3>
-        queue message($first: 1, $second: second, $third: "3rd") for <bali:/#N0N3>
+        queue message() on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
+        queue message(1) on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
+        queue message($first: 1, $second: second, $third: "3rd") on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
     }
     $returnResult: {
         return

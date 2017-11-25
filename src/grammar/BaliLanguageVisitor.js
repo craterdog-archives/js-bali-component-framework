@@ -147,13 +147,13 @@ BaliLanguageVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#queueMessage.
-BaliLanguageVisitor.prototype.visitQueueMessage = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#variable.
+BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#recipient.
-BaliLanguageVisitor.prototype.visitRecipient = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#indices.
+BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
@@ -162,48 +162,23 @@ BaliLanguageVisitor.prototype.visitPublishEvent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#waitForEvent.
-BaliLanguageVisitor.prototype.visitWaitForEvent = function(ctx) {
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#event.
 BaliLanguageVisitor.prototype.visitEvent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#continueTo.
-BaliLanguageVisitor.prototype.visitContinueTo = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#queueMessage.
+BaliLanguageVisitor.prototype.visitQueueMessage = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#breakFrom.
-BaliLanguageVisitor.prototype.visitBreakFrom = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#waitForMessage.
+BaliLanguageVisitor.prototype.visitWaitForMessage = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#label.
-BaliLanguageVisitor.prototype.visitLabel = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#returnResult.
-BaliLanguageVisitor.prototype.visitReturnResult = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#result.
-BaliLanguageVisitor.prototype.visitResult = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#throwException.
-BaliLanguageVisitor.prototype.visitThrowException = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#xception.
-BaliLanguageVisitor.prototype.visitXception = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#queue.
+BaliLanguageVisitor.prototype.visitQueue = function(ctx) {
 };
 
 
@@ -244,6 +219,41 @@ BaliLanguageVisitor.prototype.visitWithLoop = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#sequence.
 BaliLanguageVisitor.prototype.visitSequence = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#continueTo.
+BaliLanguageVisitor.prototype.visitContinueTo = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#breakFrom.
+BaliLanguageVisitor.prototype.visitBreakFrom = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#label.
+BaliLanguageVisitor.prototype.visitLabel = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#returnResult.
+BaliLanguageVisitor.prototype.visitReturnResult = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#result.
+BaliLanguageVisitor.prototype.visitResult = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#throwException.
+BaliLanguageVisitor.prototype.visitThrowException = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#xception.
+BaliLanguageVisitor.prototype.visitXception = function(ctx) {
 };
 
 
@@ -327,11 +337,6 @@ BaliLanguageVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#variable.
-BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#funxion.
 BaliLanguageVisitor.prototype.visitFunxion = function(ctx) {
 };
@@ -339,11 +344,6 @@ BaliLanguageVisitor.prototype.visitFunxion = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#message.
 BaliLanguageVisitor.prototype.visitMessage = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#indices.
-BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
 };
 
 

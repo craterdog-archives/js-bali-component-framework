@@ -307,9 +307,19 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// mainClause: evaluateExpression | queueMessage | publishEvent | waitForEvent |
-// continueTo | breakFrom | returnResult | throwException | ifThen | selectFrom |
-// whileLoop | withLoop
+// mainClause:
+//     evaluateExpression |
+//     publishEvent |
+//     queueMessage |
+//     waitForMessage |
+//     ifThen |
+//     selectFrom |
+//     whileLoop |
+//     withLoop |
+//     continueTo |
+//     breakFrom |
+//     returnResult |
+//     throwException
 CompilerVisitor.prototype.visitMainClause = function(ctx) {
     this.visitChildren(ctx);
 };
@@ -488,22 +498,18 @@ CompilerVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// queueMessage: 'queue' message 'for' recipient
-CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
-    // place the value of the recipient onto the top of the execution stack
-    this.visitRecipient(ctx.recipient());
-    // place the message and parameters onto the top of the execution stack
-    this.visitMessage(ctx.message());
-    // replace the recipient, message and parameters with a message component
-    this.builder.insertInvokeInstruction('message', 3);
-    // place the message on the message queue
-    this.builder.insertInvokeInstruction('queueMessage', 1);
+// variable: IDENTIFIER
+CompilerVisitor.prototype.visitVariable = function(ctx) {
+    // load the value of the variable onto the top of the execution stack
+    var variable = '$' + ctx.IDENTIFIER().getText();
+    this.builder.insertLoadInstruction('VARIABLE', variable);
 };
 
 
-// recipient: expression
-CompilerVisitor.prototype.visitRecipient = function(ctx) {
-    this.visitExpression(ctx.expression());
+// indices: '[' array ']'
+CompilerVisitor.prototype.visitIndices = function(ctx) {
+    // TODO: traverse the indices in the structure and retrieve all but the last one
+    //this.visitArray(ctx.array());
 };
 
 
@@ -516,68 +522,38 @@ CompilerVisitor.prototype.visitPublishEvent = function(ctx) {
 };
 
 
-// waitForEvent: 'wait' 'for' symbol 'matching' event
-CompilerVisitor.prototype.visitWaitForEvent = function(ctx) {
-    this.visitSymbol(ctx.symbol());
-    this.visitEvent(ctx.event());
-};
-
-
 // event: expression
 CompilerVisitor.prototype.visitEvent = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
-// continueTo: 'continue' ('to' label)?
-CompilerVisitor.prototype.visitContinueTo = function(ctx) {
-    var label = ctx.label();
-    if (label) {
-        this.visitLabel(label);
-    }
+// queueMessage: 'queue' message 'on' queue
+CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
+    // place the message and parameters onto the top of the execution stack
+    this.visitMessage(ctx.message());
+    // replace the message and parameters with a message component
+    this.builder.insertInvokeInstruction('message', 2);
+    // place the value of the queue onto the top of the execution stack
+    this.visitQueue(ctx.queue());
+    // place the message on the message queue
+    this.builder.insertInvokeInstruction('addItem', 2);
 };
 
 
-// breakFrom: 'break' ('from' label)?
-CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
-    var label = ctx.label();
-    if (label) {
-        this.visitLabel(label);
-    }
+// waitForMessage: 'wait' 'for' symbol 'from' queue
+CompilerVisitor.prototype.visitWaitForMessage = function(ctx) {
+    var symbol = ctx.symbol().SYMBOL().getText();
+    // place the value of the queue onto the top of the execution stack
+    this.visitQueue(ctx.queue());
+    // retrieve a message from the message queue and place it on top of the execution stack
+    this.builder.insertInvokeInstruction('removeItem', 1);  // blocks until a message is available
+    this.builder.insertStoreInstruction('VARIABLE', symbol);
 };
 
 
-// label: IDENTIFIER
-CompilerVisitor.prototype.visitLabel = function(ctx) {
-    // insert a custom label
-    var label = ctx.IDENTIFIER().getText();
-    this.builder.insertLabel('Custom' + label.charAt(0).toUpperCase() + label.slice(1));
-};
-
-
-// returnResult: 'return' result?
-CompilerVisitor.prototype.visitReturnResult = function(ctx) {
-    var result = ctx.result();
-    if (result) {
-        this.visitResult(result);
-    }
-};
-
-
-// result: expression
-CompilerVisitor.prototype.visitResult = function(ctx) {
-    this.visitExpression(ctx.expression());
-};
-
-
-// throwException: 'throw' xception
-CompilerVisitor.prototype.visitThrowException = function(ctx) {
-    this.visitXception(ctx.xception());
-};
-
-
-// xception: expression
-CompilerVisitor.prototype.visitXception = function(ctx) {
+// queue: expression
+CompilerVisitor.prototype.visitQueue = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
@@ -765,6 +741,59 @@ CompilerVisitor.prototype.visitSequence = function(ctx) {
 };
 
 
+// continueTo: 'continue' ('to' label)?
+CompilerVisitor.prototype.visitContinueTo = function(ctx) {
+    var label = ctx.label();
+    if (label) {
+        this.visitLabel(label);
+    }
+};
+
+
+// breakFrom: 'break' ('from' label)?
+CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
+    var label = ctx.label();
+    if (label) {
+        this.visitLabel(label);
+    }
+};
+
+
+// label: IDENTIFIER
+CompilerVisitor.prototype.visitLabel = function(ctx) {
+    // insert a custom label
+    var label = ctx.IDENTIFIER().getText();
+    this.builder.insertLabel('Custom' + label.charAt(0).toUpperCase() + label.slice(1));
+};
+
+
+// returnResult: 'return' result?
+CompilerVisitor.prototype.visitReturnResult = function(ctx) {
+    var result = ctx.result();
+    if (result) {
+        this.visitResult(result);
+    }
+};
+
+
+// result: expression
+CompilerVisitor.prototype.visitResult = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
+// throwException: 'throw' xception
+CompilerVisitor.prototype.visitThrowException = function(ctx) {
+    this.visitXception(ctx.xception());
+};
+
+
+// xception: expression
+CompilerVisitor.prototype.visitXception = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
 // HACK: this method is missing from the generated visitor!
 CompilerVisitor.prototype.visitExpression = function(ctx) {
     ctx.accept(this);
@@ -881,14 +910,6 @@ CompilerVisitor.prototype.visitDefaultExpression = function(ctx) {
 };
 
 
-// variable: IDENTIFIER
-CompilerVisitor.prototype.visitVariable = function(ctx) {
-    // load the value of the variable onto the top of the execution stack
-    var variable = '$' + ctx.IDENTIFIER().getText();
-    this.builder.insertLoadInstruction('VARIABLE', variable);
-};
-
-
 // funxion: IDENTIFIER parameters
 CompilerVisitor.prototype.visitFunxion = function(ctx) {
     this.visitParameters(ctx.parameters());
@@ -902,13 +923,6 @@ CompilerVisitor.prototype.visitMessage = function(ctx) {
     this.builder.insertLoadInstruction('LITERAL', message);
     // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
-};
-
-
-// indices: '[' array ']'
-CompilerVisitor.prototype.visitIndices = function(ctx) {
-    // TODO: traverse the indices in the structure and retrieve all but the last one
-    //this.visitArray(ctx.array());
 };
 
 
