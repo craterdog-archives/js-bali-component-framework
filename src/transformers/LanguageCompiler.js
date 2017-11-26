@@ -289,7 +289,7 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
         }
         // the VM will jump back here after the final clause is done if one exists
         // return from the method with the unhandled exception on top of the execution stack
-        this.builder.insertReturnInstruction('METHOD');
+        this.builder.insertReturnInstruction('EXCEPTION');
     }
 
     // COMPILE THE FINAL CLAUSE
@@ -484,17 +484,8 @@ CompilerVisitor.prototype.visitAssignee = function(ctx) {
 CompilerVisitor.prototype.visitComponent = function(ctx) {
     // place the value of the variable on the execution stack
     this.visitVariable(ctx.variable());
-
-    var indices = ctx.indices().array().value();
-    for (var i = 0; i <indices.length; i++) {
-        var index = indices[i];
-        // load the value of the index expression onto the top of the execution stack
-        this.visitValue(index);
-        if (i === indices.length - 1) break;  // leave the parent and final index on the stack
-        // load the child component for that index onto the top of the execution stack
-        this.builder.insertInvokeInstruction('getValue', 2);
-    }
-    // the parent component and index of the last child component are onto of the execution stack
+    // place the parent component and index of the last child component onto the execution stack
+    this.visitIndices(ctx.indices());
 };
 
 
@@ -508,8 +499,16 @@ CompilerVisitor.prototype.visitVariable = function(ctx) {
 
 // indices: '[' array ']'
 CompilerVisitor.prototype.visitIndices = function(ctx) {
-    // TODO: traverse the indices in the structure and retrieve all but the last one
-    //this.visitArray(ctx.array());
+    var indices = ctx.array().value();
+    for (var i = 0; i <indices.length; i++) {
+        var index = indices[i];
+        // load the value of the index expression onto the top of the execution stack
+        this.visitValue(index);
+        if (i === indices.length - 1) break;  // leave the parent and final index on the stack
+        // load the child component for that index onto the top of the execution stack
+        this.builder.insertInvokeInstruction('getValue', 2);
+    }
+    // the parent component and index of the last child component are on top of the execution stack
 };
 
 
@@ -771,25 +770,31 @@ CompilerVisitor.prototype.visitLabel = function(ctx) {
 CompilerVisitor.prototype.visitReturnResult = function(ctx) {
     var result = ctx.result();
     if (result) {
+        // place the result on the top of the execution stack
         this.visitResult(result);
     }
+    this.builder.insertReturnInstruction('METHOD');
 };
 
 
 // result: expression
 CompilerVisitor.prototype.visitResult = function(ctx) {
+    // place the value of the result on top of the execution stack
     this.visitExpression(ctx.expression());
 };
 
 
 // throwException: 'throw' xception
 CompilerVisitor.prototype.visitThrowException = function(ctx) {
+    // place the exception on the top of the execution stack
     this.visitXception(ctx.xception());
+    this.builder.insertJumpInstruction('HANDLER', 'ExceptionClauses');
 };
 
 
 // xception: expression
 CompilerVisitor.prototype.visitXception = function(ctx) {
+    // place the value of the exception on top of the execution stack
     this.visitExpression(ctx.expression());
 };
 
@@ -802,127 +807,256 @@ CompilerVisitor.prototype.visitExpression = function(ctx) {
 
 // documentExpression: document
 CompilerVisitor.prototype.visitDocumentExpression = function(ctx) {
+    // place the document on top of the execution stack
     this.visitDocument(ctx.document());
 };
 
 
 // variableExpression: variable
 CompilerVisitor.prototype.visitVariableExpression = function(ctx) {
+    // place the value of the variable on top of the execution stack
     this.visitVariable(ctx.variable());
 };
 
 
 // funxionExpression: funxion
 CompilerVisitor.prototype.visitFunxionExpression = function(ctx) {
+    // place the result of the function invocation on top of the execution stack
     this.visitFunxion(ctx.funxion());
 };
 
 
 // precedenceExpression: '(' expression ')'
 CompilerVisitor.prototype.visitPrecedenceExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
 };
 
 
 // dereferenceExpression: '@' expression
 CompilerVisitor.prototype.visitDereferenceExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // dereference the top value on the execution stack
+    this.builder.insertInvokeInstruction('dereference', 1);
 };
 
 
 // componentExpression: expression indices
 CompilerVisitor.prototype.visitComponentExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // load the parent of the component and index of the child onto the execution stack
     this.visitIndices(ctx.indices());
+    // retrieve the value of the child at the given index of the parent component
+    this.builder.insertInvokeInstruction('getValue', 2);
+    // the parent and index have been replaced by the value of the child
 };
 
 
 // messageExpression: expression '.' message
 CompilerVisitor.prototype.visitMessageExpression = function(ctx) {
+    // place the value of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // place the result of the sent message on top of the execution stack
     this.visitMessage(ctx.message());
 };
 
 
 // factorialExpression: expression '!'
 CompilerVisitor.prototype.visitFactorialExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // take the factorial of the top value on the execution stack
+    this.builder.insertInvokeInstruction('factorial', 1);
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
 CompilerVisitor.prototype.visitExponentialExpression = function(ctx) {
+    // place the result of the base expression on top of the execution stack
     this.visitExpression(ctx.expression(0));
+    // place the result of the exponent expression on top of the execution stack
     this.visitExpression(ctx.expression(1));
+    // raise the base to the exponent and place the result on top of the execution stack
+    this.builder.insertInvokeInstruction('exponential', 2);
 };
 
 
 // inversionExpression: op=('-' | '/' | '*') expression
 CompilerVisitor.prototype.visitInversionExpression = function(ctx) {
-    var operation = ctx.op.text;
-    var expression = ctx.expression();
-    if (operation === '-') {
-        if (expression.getText()[0] === "-") {
-            //this.asmcode += ' ';  // must insert a space before a negative value!
-        }
-    }
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // perform the unary operation
+    var operation = ctx.op.text;
+    switch (operation) {
+        case '-':
+            // take the additive inverse of the value on top of the execution stack
+            this.builder.insertInvokeInstruction('negative', 1);
+            break;
+        case '/':
+            // take the multiplicative inverse of the value on top of the execution stack
+            this.builder.insertInvokeInstruction('inverse', 1);
+            break;
+        case '*':
+            // take the complex conjugate of the value on top of the execution stack
+            this.builder.insertInvokeInstruction('conjugate', 1);
+            break;
+        default:
+            throw new Error('COMPILER: Invalid unary operator found: "' + operation + '"');
+    }
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 CompilerVisitor.prototype.visitArithmeticExpression = function(ctx) {
+    // place the result of the first operand expression on top of the execution stack
     this.visitExpression(ctx.expression(0));
+    // place the result of the second operand expression on top of the execution stack
     this.visitExpression(ctx.expression(1));
+    // perform the binary operation
+    var operation = ctx.op.text;
+    switch (operation) {
+        case '*':
+            // find the product of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('product', 2);
+            break;
+        case '/':
+            // find the quotient of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('quotient', 2);
+            break;
+        case '//':
+            // find the remainder of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('remainder', 2);
+            break;
+        case '+':
+            // find the sum of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('sum', 2);
+            break;
+        case '-':
+            // find the difference of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('difference', 2);
+            break;
+        default:
+            throw new Error('COMPILER: Invalid binary operator found: "' + operation + '"');
+    }
 };
 
 
 // magnitudeExpression: '|' expression '|'
 CompilerVisitor.prototype.visitMagnitudeExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // find the magnitude of the top value on the execution stack
+    this.builder.insertInvokeInstruction('magnitude', 1);
 };
 
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 CompilerVisitor.prototype.visitComparisonExpression = function(ctx) {
+    // place the result of the first operand expression on top of the execution stack
     this.visitExpression(ctx.expression(0));
+    // place the result of the second operand expression on top of the execution stack
     this.visitExpression(ctx.expression(1));
+    // perform the comparison operation
+    var operation = ctx.op.text;
+    switch (operation) {
+        case '<':
+            // determine whether or not the first value is less than the second value
+            this.builder.insertInvokeInstruction('less', 2);
+            break;
+        case '=':
+            // determine whether or not the first value is equal to the second value
+            this.builder.insertInvokeInstruction('equal', 2);
+            break;
+        case '>':
+            // determine whether or not the first value is more than the second value
+            this.builder.insertInvokeInstruction('more', 2);
+            break;
+        case 'is':
+            // determine whether or not the first value is the same value as the second value
+            this.builder.insertInvokeInstruction('is', 2);
+            break;
+        case 'matches':
+            // determine whether or not the first value matches the second value
+            this.builder.insertInvokeInstruction('matches', 2);
+            break;
+        default:
+            throw new Error('COMPILER: Invalid comparison operator found: "' + operation + '"');
+    }
 };
 
 
 // complementExpression: 'not' expression
 CompilerVisitor.prototype.visitComplementExpression = function(ctx) {
+    // place the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
+    // find the logical complement of the top value on the execution stack
+    this.builder.insertInvokeInstruction('complement', 1);
 };
 
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 CompilerVisitor.prototype.visitLogicalExpression = function(ctx) {
+    // place the result of the first operand expression on top of the execution stack
     this.visitExpression(ctx.expression(0));
+    // place the result of the second operand expression on top of the execution stack
     this.visitExpression(ctx.expression(1));
+    // perform the logical operation
+    var operation = ctx.op.text;
+    switch (operation) {
+        case 'and':
+            // find the logical AND of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('and', 2);
+            break;
+        case 'sans':
+            // find the logical SANS of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('sans', 2);
+            break;
+        case 'xor':
+            // find the logical XOR of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('xor', 2);
+            break;
+        case 'or':
+            // find the logical OR of the two values on top of the execution stack
+            this.builder.insertInvokeInstruction('or', 2);
+            break;
+        default:
+            throw new Error('COMPILER: Invalid logical operator found: "' + operation + '"');
+    }
 };
 
 
 // defaultExpression: expression '?' expression
 CompilerVisitor.prototype.visitDefaultExpression = function(ctx) {
+    // place the result of the first operand expression on top of the execution stack
     this.visitExpression(ctx.expression(0));
+    // place the result of the second operand expression on top of the execution stack
     this.visitExpression(ctx.expression(1));
+    // find the actual value of the top value on the execution stack
+    this.builder.insertInvokeInstruction('default', 2);
 };
 
 
 // funxion: IDENTIFIER parameters
 CompilerVisitor.prototype.visitFunxion = function(ctx) {
+    var name = ctx.IDENTIFIER().getText();
+    // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
+    // call the method associated with the function
+    this.builder.insertCallInstruction(name, 1);
+    // the result of the method call remains on the execution stack
 };
 
 
 // message: IDENTIFIER parameters
 CompilerVisitor.prototype.visitMessage = function(ctx) {
-    // load the message name onto the top of the execution stack
-    var message = ctx.IDENTIFIER().getText();
-    this.builder.insertLoadInstruction('LITERAL', message);
+    var name = ctx.IDENTIFIER().getText();
     // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
+    // call the method associated with the message
+    this.builder.insertCallInstruction(name, 2);  // the target component is the first parameter
+    // the result of the method call remains on the execution stack
 };
 
 
