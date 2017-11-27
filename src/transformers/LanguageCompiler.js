@@ -62,11 +62,7 @@ function CompilerVisitor(symbolTables) {
     if (!this.symbolTables.functions) this.symbolTables.functions = [];
     if (!this.symbolTables.messages) this.symbolTables.messages = [];
     this.builder = new InstructionBuilder();
-    this.clauseCounters = [];
-    this.clauseLabels = [];
-    this.loopLabels = [];
-    this.selectorFlags = [];
-    this.temporaryVariableCounter = 1;
+    this.temporaryVariableCount = 1;
     return this;
 }
 CompilerVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
@@ -250,7 +246,7 @@ CompilerVisitor.prototype.visitStatements = function(ctx) {
     var statements = ctx.statement();
     for (var i = 0; i < statements.length; i++) {
         this.visitStatement(statements[i]);
-        this.builder.incrementStatementCounter();
+        this.builder.incrementStatementCount();
     }
 };
 
@@ -258,24 +254,25 @@ CompilerVisitor.prototype.visitStatements = function(ctx) {
 // statement: mainClause exceptionClause* finalClause?
 CompilerVisitor.prototype.visitStatement = function(ctx) {
     var exceptionClauses = ctx.exceptionClause();
-    if (exceptionClauses.length === 0) exceptionClauses = null;  // change [] to null for truthiness
     var finalClause = ctx.finalClause();
+    var instructionPrefix = this.builder.getInstructionPrefix();
 
     // COMPILE THE MAIN CLAUSE
     this.visitMainClause(ctx.mainClause());
     // the main clause completed successfully
+    var finalLabel = instructionPrefix + (this.builder.getClauseNumber() + exceptionClauses.length) + '.FinalClause';
     if (finalClause) {
         // tell the VM to jump to the final clause block
-        this.builder.insertJumpInstruction('BLOCK', 'FinalClause');
+        this.builder.insertJumpInstruction('BLOCK', finalLabel);
     }
     // the VM will jump back here after the final clause is done if one exists
 
     // COMPILE THE EXCEPTION CLAUSES
-    if (exceptionClauses) {
+    if (exceptionClauses.length > 0) {
         // no exceptions occurred and final clause, if one exists, is done so jump to the end
-        this.builder.insertJumpInstruction('INSTRUCTION', 'Done');
+        this.builder.insertJumpInstruction('INSTRUCTION', instructionPrefix + 'Done');
         // when exceptions are thrown they will jump to here
-        this.builder.insertLabel('ExceptionClauses');
+        this.builder.insertLabel(instructionPrefix + 'ExceptionClauses');
         // each clause checks for a match and handles it if it matches
         for (var i = 0; i < exceptionClauses.length; i++) {
             // the VM checks to see if the exception matches the template and handles it if so
@@ -285,7 +282,7 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
         // an exception was thrown and no matching exception handler was found
         if (finalClause) {
             // tell the VM to jump to the final clause block
-            this.builder.insertJumpInstruction('BLOCK', 'FinalClause');
+            this.builder.insertJumpInstruction('BLOCK', finalLabel);
         }
         // the VM will jump back here after the final clause is done if one exists
         // return from the method with the unhandled exception on top of the execution stack
@@ -295,14 +292,14 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
     // COMPILE THE FINAL CLAUSE
     if (finalClause) {
         // no exceptions occurred and the final clause, is done so jump to the end
-        this.builder.insertJumpInstruction('INSTRUCTION', 'Done');
+        this.builder.insertJumpInstruction('INSTRUCTION', instructionPrefix + 'Done');
         // jumps to final clause end up here
         this.visitFinalClause(finalClause);
         // the VM jumped back to the next instruction after where the final clause was called
     }
 
-    if (exceptionClauses || finalClause) {
-        this.builder.insertLabel('Done');
+    if (exceptionClauses.length > 0 || finalClause) {
+        this.builder.insertLabel(instructionPrefix + 'Done');
     }
 };
 
@@ -327,8 +324,8 @@ CompilerVisitor.prototype.visitMainClause = function(ctx) {
 
 // exceptionClause: 'catch' symbol 'matching' xception 'with' block
 CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
-    var clauseNumber = this.builder.nextClauseNumber();
-    this.builder.insertLabel('ExceptionClause' + clauseNumber);
+    var clausePrefix = this.builder.getClausePrefix();
+    this.builder.insertLabel(clausePrefix + 'ExceptionClause');
     // retrieve the name of the symbol
     var symbol = ctx.symbol().SYMBOL().getText();
     // store the exception that is on top of the execution stack in the variable
@@ -338,13 +335,14 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
     // compare template with actual exception
     this.builder.insertInvokeInstruction('matches', 2);
     // the result of the comparison replaces the two operands on the execution stack
-    this.builder.insertBranchInstruction('NOT TRUE', 'ExceptionClauseNoMatch' + clauseNumber);
+    var label = this.builder.getClausePrefix() + 'ExceptionClauseNoMatch';
+    this.builder.insertBranchInstruction('NOT TRUE', label);
     // the VM executes the exception handler block
     this.visitBlock(ctx.block());
     // successfully handled the exception return VM to next statement after exception was thrown
     this.builder.insertReturnInstruction('HANDLER');
     // the handler did not match, try the next one
-    this.builder.insertLabel('ExceptionClauseNoMatch' + clauseNumber);
+    this.builder.insertLabel(clausePrefix + 'ExceptionClauseNoMatch');
     // load the exception from the variable back on top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', symbol);
 };
@@ -353,7 +351,9 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
 // finalClause: 'finish' 'with' block
 CompilerVisitor.prototype.visitFinalClause = function(ctx) {
     // jumps to final clause end up here
-    this.builder.insertLabel('FinalClause');
+    var clausePrefix = this.builder.getClausePrefix();
+
+    this.builder.insertLabel(clausePrefix + 'FinalClause');
     // the VM executes the final clause
     this.visitBlock(ctx.block());
     // tell the VM to return to the address on top of the jump stack
@@ -364,15 +364,15 @@ CompilerVisitor.prototype.visitFinalClause = function(ctx) {
 // evaluateExpression: (assignee op=(':=' | '?=' | '+=' | '-=' | '*=' | '/=' |
 // '//=' | '^=' | 'a=' | 's=' | 'o=' | 'x='))? expression
 CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
-    this.builder.insertLabel('EvaluateExpression');
-
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'EvaluateExpression');
     var assignee = ctx.assignee();
     var symbol = assignee ? assignee.symbol() : null;
     symbol = symbol ? symbol.SYMBOL().getText() : '$result';
     var component = assignee ? assignee.component() : null;
     var operator = assignee ? ctx.op.text : ':=';
-    var parent = '$component' + this.temporaryVariableCounter++;
-    var index = '$index' + this.temporaryVariableCounter++;
+    var parent = '$component' + this.temporaryVariableCount++;
+    var index = '$index' + this.temporaryVariableCount++;
 
     if (component) {
         // load the parent of the component and index of the child onto the execution stack
@@ -514,6 +514,8 @@ CompilerVisitor.prototype.visitIndices = function(ctx) {
 
 // publishEvent: 'publish' event
 CompilerVisitor.prototype.visitPublishEvent = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'PublishEvent');
     // place the value of the event onto the top of the execution stack
     this.visitEvent(ctx.event());
     // place the event on the event queue
@@ -529,6 +531,8 @@ CompilerVisitor.prototype.visitEvent = function(ctx) {
 
 // queueMessage: 'queue' message 'on' queue
 CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'QueueMessage');
     // place the message and parameters onto the top of the execution stack
     this.visitMessage(ctx.message());
     // replace the message and parameters with a message component
@@ -542,6 +546,8 @@ CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
 
 // waitForMessage: 'wait' 'for' symbol 'from' queue
 CompilerVisitor.prototype.visitWaitForMessage = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'WaitForMessage');
     var symbol = ctx.symbol().SYMBOL().getText();
     // place the value of the queue onto the top of the execution stack
     this.visitQueue(ctx.queue());
@@ -559,46 +565,50 @@ CompilerVisitor.prototype.visitQueue = function(ctx) {
 
 // ifThen: 'if' condition 'then' block ('else' 'if' condition 'then' block)* ('else' block)?
 CompilerVisitor.prototype.visitIfThen = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'IfThen');
     var conditions = ctx.condition();
     var blocks = ctx.block();
-    var hasElseBlock = blocks.length > conditions.length;
+    var hasElseClause = blocks.length > conditions.length;
+    var elseLabel = instructionPrefix + (conditions.length + 1) + '.ElseClause';
+    var endLabel = instructionPrefix + 'EndIf';
 
     // check each condition
     for (var i = 0; i < conditions.length; i++) {
-        var clauseNumber = i + 1;
-        this.builder.insertLabel('IfCondition' + clauseNumber);
+        var clausePrefix = this.builder.getClausePrefix();
+        this.builder.insertLabel(clausePrefix + 'IfCondition');
         // place the condition value on top of the execution stack
         this.visitCondition(conditions[i]);
         // the result of the condition expression is now on top of the execution stack
         var nextLabel;
         if (i === conditions.length - 1) {
             // we are on the last condition
-            if (hasElseBlock) {
-                nextLabel = 'ElseBlock';
+            if (hasElseClause) {
+                nextLabel = elseLabel;
             } else {
-                nextLabel = 'EndIf';
+                nextLabel = endLabel;
             }
         } else {
-            nextLabel = 'IfCondition' + (clauseNumber + 1);
+            nextLabel = instructionPrefix + (this.builder.getClauseNumber() + 1) + 'IfCondition';
         }
         // if the condition is not true, the VM branches to the next condition or the end
         this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
         // if the condition is true, then the VM enters the block
         this.visitBlock(blocks[i]);
         // all done
-        if (hasElseBlock || i < conditions.length - 1) {
+        if (hasElseClause || i < conditions.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('INSTRUCTION', 'EndIf');
+            this.builder.insertJumpInstruction('INSTRUCTION', endLabel);
         }
     }
 
     // compile the optional final else block
-    if (hasElseBlock) {
-        this.builder.insertLabel('ElseBlock');
+    if (hasElseClause) {
+        this.builder.insertLabel(elseLabel);
         this.visitBlock(blocks[blocks.length - 1]);
     }
 
-    this.builder.insertLabel('EndIf');
+    this.builder.insertLabel(endLabel);
 };
 
 
@@ -610,20 +620,24 @@ CompilerVisitor.prototype.visitCondition = function(ctx) {
 
 // selectFrom: 'select' selection 'from' (option 'do' block)+ ('else' block)?
 CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'SelectFrom');
     var options = ctx.option();
     var blocks = ctx.block();
-    var hasElseBlock = blocks.length > options.length;
+    var hasElseClause = blocks.length > options.length;
+    var elseLabel = instructionPrefix + (options.length + 1) + '.ElseClause';
+    var endLabel = instructionPrefix + 'EndSelect';
 
     // place the selection value on the top of the execution stack
     this.visitSelection(ctx.selection());
     // store off the selection value so that it can be used multiple times
-    var selection = '$selection' + this.temporaryVariableCounter++;
+    var selection = '$selection' + this.temporaryVariableCount++;
     this.builder.insertStoreInstruction('VARIABLE', selection);
 
     // check each option
     for (var i = 0; i < options.length; i++) {
-        var clauseNumber = i + 1;
-        this.builder.insertLabel('SelectOption' + clauseNumber);
+        var clausePrefix = this.builder.getClausePrefix();
+        this.builder.insertLabel(clausePrefix + 'SelectOption');
         // load the selection value onto the execution stack
         this.builder.insertLoadInstruction('VARIABLE', selection);
         // place the option value on top of the execution stack
@@ -633,32 +647,32 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         var nextLabel;
         if (i === options.length - 1) {
             // we are on the last options
-            if (hasElseBlock) {
-                nextLabel = 'ElseBlock';
+            if (hasElseClause) {
+                nextLabel = elseLabel;
             } else {
-                nextLabel = 'EndSelect';
+                nextLabel = endLabel;
             }
         } else {
-            nextLabel = 'SelectOption' + (clauseNumber + 1);
+            nextLabel = instructionPrefix + (this.builder.getClauseNumber() + 1) + 'SelectOption';
         }
         // if the option does not match, the VM branches to the next option or the end
         this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
         // if the option matches, then the VM enters the block
         this.visitBlock(blocks[i]);
         // all done
-        if (hasElseBlock || i < options.length - 1) {
+        if (hasElseClause || i < options.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('INSTRUCTION', 'EndSelect');
+            this.builder.insertJumpInstruction('INSTRUCTION', endLabel);
         }
     }
 
     // the VM executes the optional final else block
-    if (hasElseBlock) {
-        this.builder.insertLabel('ElseBlock');
+    if (hasElseClause) {
+        this.builder.insertLabel(elseLabel);
         this.visitBlock(blocks[blocks.length - 1]);
     }
 
-    this.builder.insertLabel('EndSelect');
+    this.builder.insertLabel(endLabel);
 };
 
 
@@ -676,50 +690,63 @@ CompilerVisitor.prototype.visitOption = function(ctx) {
 
 // whileLoop: (label ':')? 'while' condition 'do' block
 CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
-    var label = ctx.label();
-    if (label) {
-        this.visitLabel(label);
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    var loopLabel = ctx.label();
+    if (loopLabel) {
+        loopLabel = loopLabel.IDENTIFIER().getText();
+        loopLabel = loopLabel.charAt(0).toUpperCase() + loopLabel.slice(1);
+    } else {
+        loopLabel = 'WhileLoop';
     }
-    this.builder.insertLabel('WhileCondition');
+    this.builder.insertLabel(instructionPrefix + loopLabel);
+    this.builder.blocks.peek().loopLabel = loopLabel;
     // the VM places the result of the boolean condition on top of the execution stack
     this.visitCondition(ctx.condition());
     // if the condition is not true, the VM branches to the end
-    this.builder.insertBranchInstruction('NOT TRUE', 'EndWhile');
+    this.builder.insertBranchInstruction('NOT TRUE', instructionPrefix + 'EndWhile');
     // if the condition is true, then the VM enters the block
     this.visitBlock(ctx.block());
     // all done, the VM jumps to the end of the statement
-    this.builder.insertJumpInstruction('INSTRUCTION', 'WhileCondition');
-    this.builder.insertLabel('EndWhile');
+    this.builder.insertJumpInstruction('INSTRUCTION', loopLabel);
+    this.builder.insertLabel(instructionPrefix + 'EndWhile');
 };
 
 
 // withLoop: (label ':')? 'with' ('each' symbol 'in')? sequence 'do' block
 CompilerVisitor.prototype.visitWithLoop = function(ctx) {
-    var label = ctx.label();
-    if (label) {
-        this.visitLabel(label);
-    }
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'WithLoop');
     // the VM evaluates the sequence expression and places the result on top of the execution stack
     this.visitSequence(ctx.sequence());
     // The VM replaces the sequence with a new iterator for the sequence on the execution stack
     this.builder.insertCallInstruction('$createIterator');
     // The VM stores the iterater into a temporary variable
-    var iterator = '$iterator' + this.temporaryVariableCounter++;
+    var iterator = '$iterator' + this.temporaryVariableCount++;
     this.builder.insertStoreInstruction('VARIABLE', iterator);
     // retrieve the name of the symbol or make a temporary variable
     var item = ctx.symbol();
     if (item) {
         item = item.SYMBOL().getText();
     } else {
-        item = '$item' + this.temporaryVariableCounter++;
+        item = '$item' + this.temporaryVariableCount++;
     }
-    this.builder.insertLabel('WithItem');
+
+    // label the start of the loop
+    var loopLabel = ctx.label();
+    if (loopLabel) {
+        loopLabel = loopLabel.IDENTIFIER().getText();
+        loopLabel = loopLabel.charAt(0).toUpperCase() + loopLabel.slice(1);
+    } else {
+        loopLabel = 'WithItem';
+    }
+    this.builder.insertLabel(instructionPrefix + loopLabel);
+    this.builder.blocks.peek().loopLabel = loopLabel;
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with a boolean telling if there is another item to be retrieved
     this.builder.insertCallInstruction('$hasNext');
     // if the condition is not true, the VM branches to the end
-    this.builder.insertBranchInstruction('NOT TRUE', 'EndWith');
+    this.builder.insertBranchInstruction('NOT TRUE', instructionPrefix + 'EndWith');
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with the next item in the sequence
@@ -728,9 +755,10 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     this.builder.insertStoreInstruction('VARIABLE', item);
     // the VM executes the block using the item if needed
     this.visitBlock(ctx.block());
-    // all done, the VM jumps to the end of the statement
-    this.builder.insertJumpInstruction('INSTRUCTION', 'WithItem');
-    this.builder.insertLabel('EndWith');
+    // the VM jumps to the top of the loop
+    this.builder.insertJumpInstruction('INSTRUCTION', instructionPrefix + loopLabel);
+    // when all done, the VM jumps here
+    this.builder.insertInstructionLabel('EndWith');
 };
 
 
@@ -742,32 +770,41 @@ CompilerVisitor.prototype.visitSequence = function(ctx) {
 
 // continueTo: 'continue' ('to' label)?
 CompilerVisitor.prototype.visitContinueTo = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'ContinueTo');
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);
+    } else {
+        this.builder.insertJumpInstruction('INSTRUCTION', this.builder.blocks.peek().loopLabel);
     }
 };
 
 
 // breakFrom: 'break' ('from' label)?
 CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'BreakFrom');
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);
+    } else {
+        this.builder.insertReturnInstruction('BLOCK');
     }
 };
 
 
 // label: IDENTIFIER
 CompilerVisitor.prototype.visitLabel = function(ctx) {
-    // insert a custom label
-    var label = ctx.IDENTIFIER().getText();
-    this.builder.insertLabel('Custom' + label.charAt(0).toUpperCase() + label.slice(1));
+    // TODO: walk the block stack looking for the label
+    //var label = ctx.IDENTIFIER().getText();
 };
 
 
 // returnResult: 'return' result?
 CompilerVisitor.prototype.visitReturnResult = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'ReturnResult');
     var result = ctx.result();
     if (result) {
         // place the result on the top of the execution stack
@@ -786,6 +823,8 @@ CompilerVisitor.prototype.visitResult = function(ctx) {
 
 // throwException: 'throw' xception
 CompilerVisitor.prototype.visitThrowException = function(ctx) {
+    var instructionPrefix = this.builder.getInstructionPrefix();
+    this.builder.insertLabel(instructionPrefix + 'ThrowException');
     // place the exception on the top of the execution stack
     this.visitXception(ctx.xception());
     this.builder.insertJumpInstruction('HANDLER', 'ExceptionClauses');
@@ -1086,53 +1125,60 @@ function InstructionBuilder() {
 InstructionBuilder.prototype.constructor = InstructionBuilder;
 
 
-InstructionBuilder.prototype.generateLabel = function(label) {
-    return this.getPrefix() + label;
-};
-
-
-InstructionBuilder.prototype.getPrefix = function() {
-    var prefix = '';  // initial value
+InstructionBuilder.prototype.pushBlockContext = function() {
     if (this.blocks.length > 0) {
         var block = this.blocks.peek();
-        prefix = block.prefix + block.statementCounter + '.';
+        this.blocks.push({
+            clauseCount: 1,
+            statementCount: 1,
+            prefix: block.prefix + block.statementCount + '.' + block.clauseCount + '.'
+        });
+        block.clauseCount++;
+    } else {
+        this.blocks.push({
+            clauseCount: 1,
+            statementCount: 1,
+            prefix: ''
+        });
     }
-    return prefix;
-};
-
-
-InstructionBuilder.prototype.nextClauseNumber = function() {
-    var block = this.blocks.peek();
-    var counter = block.clauseCounter++;
-    return counter;
-};
-
-
-InstructionBuilder.prototype.pushBlockContext = function() {
-    var statementCounter = 1;
-    if (this.blocks.length > 0) statementCounter = this.blocks.peek().clauseCounter;
-    var block = {
-        prefix: this.getPrefix(),
-        statementCounter: statementCounter,
-        clauseCounter: 1
-    };
-    this.blocks.push(block);
 };
 
 
 InstructionBuilder.prototype.popBlockContext = function() {
     this.blocks.pop();
-    if (this.blocks.length > 0) this.blocks.peek().clauseCounter++;
 };
 
 
-InstructionBuilder.prototype.incrementStatementCounter = function() {
-    this.blocks.peek().statementCounter++;
+InstructionBuilder.prototype.getClauseNumber = function() {
+    var block = this.blocks.peek();
+    var number = block.clauseCount;
+    return number;
 };
 
 
-InstructionBuilder.prototype.incrementClauseCounter = function() {
-    this.blocks.peek().clauseCounter++;
+InstructionBuilder.prototype.getStatementNumber = function() {
+    var block = this.blocks.peek();
+    var number = block.statementCount;
+    return number;
+};
+
+
+InstructionBuilder.prototype.incrementStatementCount = function() {
+    var block = this.blocks.peek();
+    block.statementCount++;
+};
+
+
+InstructionBuilder.prototype.getInstructionPrefix = function() {
+    var block = this.blocks.peek();
+    var prefix = block.prefix + this.getStatementNumber() + '.';
+    return prefix;
+};
+
+
+InstructionBuilder.prototype.getClausePrefix = function() {
+    var prefix = this.getInstructionPrefix() + this.getClauseNumber() + '.';
+    return prefix;
 };
 
 
@@ -1143,7 +1189,7 @@ InstructionBuilder.prototype.insertLabel = function(label) {
     }
 
     // set the new label
-    this.nextLabel = this.generateLabel(label);
+    this.nextLabel = label;
 };
 
 
@@ -1231,7 +1277,7 @@ InstructionBuilder.prototype.insertBranchInstruction = function(condition, label
         case 'NOT TRUE':
         case 'NOT MORE THAN ZERO':
         case 'NOT EQUAL TO ZERO':
-            instruction = 'BRANCH TO ' + this.generateLabel(label) + ' ON ' + condition;
+            instruction = 'BRANCH TO ' + label + ' ON ' + condition;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a BRANCH instruction with an invalid condition: ' + condition);
@@ -1247,7 +1293,7 @@ InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
         case 'HANDLER':
         case 'STATEMENT':
         case 'INSTRUCTION':
-            instruction = 'JUMP TO ' + context + ' ' + this.generateLabel(label);
+            instruction = 'JUMP TO ' + context + ' ' + label;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a JUMP instruction with an invalid context: ' + context);

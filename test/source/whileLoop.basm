@@ -1,9 +1,14 @@
 
-1.WhileCondition:
-LOAD LITERAL `$condition`
-BRANCH TO 1.EndWhile ON NOT TRUE
-JUMP TO INSTRUCTION 1.WhileCondition
+1.1.WhileLoop:
+SKIP INSTRUCTION
 
-1.EndWhile:
+1.1.WhileCondition:
+LOAD LITERAL `$condition`
+BRANCH TO 1.1.EndWhile ON NOT TRUE
+
+1.1.1.BreakFrom:
+JUMP TO INSTRUCTION 1.1.WhileCondition
+
+1.1.EndWhile:
 SKIP INSTRUCTION
 

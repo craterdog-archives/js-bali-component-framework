@@ -1,18 +1,18 @@
 
-1.EvaluateExpression:
+1.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP TO BLOCK 1.FinalClause
-JUMP TO INSTRUCTION 1.Done
+JUMP TO BLOCK 1.1.FinalClause
+JUMP TO INSTRUCTION 1.1.Done
 
-1.FinalClause:
+1.1.FinalClause:
 SKIP INSTRUCTION
 
-1.1.EvaluateExpression:
+1.1.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
 RETURN FROM BLOCK
 
-1.Done:
+1.1.Done:
 SKIP INSTRUCTION
 

@@ -1,14 +1,17 @@
 
-1.CustomLabel:
+1.1.WhileLoop:
 SKIP INSTRUCTION
 
-1.WhileCondition:
+1.1.Label:
 LOAD LITERAL `$condition`
-BRANCH TO 1.EndWhile ON NOT TRUE
+BRANCH TO 1.1.EndWhile ON NOT TRUE
 
-1.1.CustomLabel:
-JUMP TO INSTRUCTION 1.WhileCondition
+1.1.1.ContinueTo:
+SKIP INSTRUCTION
 
-1.EndWhile:
+1.1.1.CustomLabel:
+JUMP TO INSTRUCTION 1.1.Label
+
+1.1.EndWhile:
 SKIP INSTRUCTION
 

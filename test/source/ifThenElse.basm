@@ -1,20 +1,20 @@
 
-1.IfCondition1:
+1.1.IfCondition1:
 LOAD LITERAL `true`
-BRANCH TO 1.ElseBlock ON NOT TRUE
+BRANCH TO 1.1.ElseBlock ON NOT TRUE
 
-1.1.EvaluateExpression:
+1.1.1.EvaluateExpression:
 LOAD LITERAL `true`
 STORE VARIABLE $result
-JUMP TO INSTRUCTION 1.EndIf
+JUMP TO INSTRUCTION 1.1.EndIf
 
-1.ElseBlock:
+1.1.ElseBlock:
 SKIP INSTRUCTION
 
-1.2.EvaluateExpression:
+1.2.1.EvaluateExpression:
 LOAD LITERAL `false`
 STORE VARIABLE $result
 
-1.EndIf:
+1.1.EndIf:
 SKIP INSTRUCTION
 
