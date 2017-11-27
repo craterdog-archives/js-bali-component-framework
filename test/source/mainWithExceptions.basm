@@ -1,17 +1,17 @@
 
-1.1.ThrowException:
+1.ThrowException:
 LOAD LITERAL `1`
 INVOKE INTRINSIC table WITH ARGUMENT
 LOAD LITERAL `$type`
 LOAD LITERAL `'whine'`
 INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-JUMP TO HANDLER 1.1.ExceptionClauses
-JUMP TO INSTRUCTION 1.1.Done
+JUMP TO HANDLER ExceptionClauses
+JUMP TO INSTRUCTION 1.Done
 
-1.1.ExceptionClauses:
+1.ExceptionClauses:
 SKIP INSTRUCTION
 
-1.1.ExceptionClause1:
+1.1.ExceptionClause:
 STORE VARIABLE $error
 LOAD LITERAL `1`
 INVOKE INTRINSIC table WITH ARGUMENT
@@ -19,17 +19,17 @@ LOAD LITERAL `$type`
 LOAD LITERAL `'bad'`
 INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
 INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-BRANCH TO 1.1.ExceptionClauseNoMatch1 ON NOT TRUE
+BRANCH TO 1.1.ExceptionClauseNoMatch ON NOT TRUE
 
 1.1.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
 RETURN FROM HANDLER
 
-1.1.ExceptionClauseNoMatch1:
+1.1.ExceptionClauseNoMatch:
 LOAD VARIABLE $error
 
-1.1.ExceptionClause2:
+1.2.ExceptionClause:
 STORE VARIABLE $error
 LOAD LITERAL `1`
 INVOKE INTRINSIC table WITH ARGUMENT
@@ -37,17 +37,17 @@ LOAD LITERAL `$type`
 LOAD LITERAL `'horrid'`
 INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
 INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-BRANCH TO 1.1.ExceptionClauseNoMatch2 ON NOT TRUE
+BRANCH TO 1.2.ExceptionClauseNoMatch ON NOT TRUE
 
 1.2.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
 RETURN FROM HANDLER
 
-1.1.ExceptionClauseNoMatch2:
+1.2.ExceptionClauseNoMatch:
 LOAD VARIABLE $error
 RETURN FROM EXCEPTION
 
-1.1.Done:
+1.Done:
 SKIP INSTRUCTION
 

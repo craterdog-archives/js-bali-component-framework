@@ -1,5 +1,5 @@
 
-1.1.EvaluateExpression:
+1.EvaluateExpression:
 LOAD VARIABLE $document
 LOAD LITERAL `$customer`
 INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
@@ -17,71 +17,71 @@ LOAD LITERAL `5`
 INVOKE INTRINSIC sum WITH 2 ARGUMENTS
 INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
 
-1.2.EvaluateExpression:
+2.EvaluateExpression:
 LOAD VARIABLE $bar
 STORE VARIABLE $foo
 
-1.3.EvaluateExpression:
+3.EvaluateExpression:
 LOAD VARIABLE $color
 LOAD LITERAL `$violet`
 INVOKE INTRINSIC default WITH 2 ARGUMENTS
 STORE VARIABLE $color
 
-1.4.EvaluateExpression:
+4.EvaluateExpression:
 LOAD VARIABLE $count
 LOAD LITERAL `2`
 INVOKE INTRINSIC sum WITH 2 ARGUMENTS
 STORE VARIABLE $count
 
-1.5.EvaluateExpression:
+5.EvaluateExpression:
 LOAD VARIABLE $count
 LOAD LITERAL `1`
 INVOKE INTRINSIC difference WITH 2 ARGUMENTS
 STORE VARIABLE $count
 
-1.6.EvaluateExpression:
+6.EvaluateExpression:
 LOAD VARIABLE $double
 LOAD LITERAL `2`
 INVOKE INTRINSIC product WITH 2 ARGUMENTS
 STORE VARIABLE $double
 
-1.7.EvaluateExpression:
+7.EvaluateExpression:
 LOAD VARIABLE $half
 LOAD LITERAL `2`
 INVOKE INTRINSIC quotient WITH 2 ARGUMENTS
 STORE VARIABLE $half
 
-1.8.EvaluateExpression:
+8.EvaluateExpression:
 LOAD VARIABLE $remainder
 LOAD LITERAL `13`
 INVOKE INTRINSIC remainder WITH 2 ARGUMENTS
 STORE VARIABLE $remainder
 
-1.9.EvaluateExpression:
+9.EvaluateExpression:
 LOAD VARIABLE $exponential
 LOAD VARIABLE $n
 INVOKE INTRINSIC exponential WITH undefined ARGUMENTS
 STORE VARIABLE $exponential
 
-1.10.EvaluateExpression:
+10.EvaluateExpression:
 LOAD VARIABLE $and
 LOAD LITERAL `'01011101'`
 INVOKE INTRINSIC and WITH 2 ARGUMENTS
 STORE VARIABLE $and
 
-1.11.EvaluateExpression:
+11.EvaluateExpression:
 LOAD VARIABLE $sans
 LOAD LITERAL `'01101001'`
 INVOKE INTRINSIC sans WITH 2 ARGUMENTS
 STORE VARIABLE $sans
 
-1.12.EvaluateExpression:
+12.EvaluateExpression:
 LOAD VARIABLE $or
 LOAD LITERAL `'11110000'`
 INVOKE INTRINSIC or WITH 2 ARGUMENTS
 STORE VARIABLE $or
 
-1.13.EvaluateExpression:
+13.EvaluateExpression:
 LOAD VARIABLE $xor
 LOAD LITERAL `'10010100'`
 INVOKE INTRINSIC xor WITH 2 ARGUMENTS

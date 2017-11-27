@@ -1,14 +1,12 @@
 
-1.1.WhileLoop:
-SKIP INSTRUCTION
-
-1.1.WhileCondition:
+1.WhileLoop:
 LOAD LITERAL `$condition`
-BRANCH TO 1.1.EndWhile ON NOT TRUE
+BRANCH TO 1.EndWhile ON NOT TRUE
 
 1.1.1.BreakFrom:
-JUMP TO INSTRUCTION 1.1.WhileCondition
+RETURN FROM BLOCK
+JUMP TO INSTRUCTION WhileLoop
 
-1.1.EndWhile:
+1.EndWhile:
 SKIP INSTRUCTION
 

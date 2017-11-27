@@ -33,7 +33,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Compiler': function(test) {
-        var source = [ /*
+        var source = [
             'test/source/main',
             'test/source/mainWithFinal',
             'test/source/mainWithExceptions',
@@ -54,7 +54,7 @@ module.exports = testCase({
             'test/source/withEachLoopWithLabel',
             'test/source/queueMessage',
             'test/source/waitForMessage',
-            'test/source/publishEvent' */
+            'test/source/publishEvent',
             'test/source/comprehensive'
         ];
         test.expect(source.length);
