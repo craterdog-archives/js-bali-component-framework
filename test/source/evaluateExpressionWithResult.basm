@@ -60,7 +60,7 @@ STORE VARIABLE $remainder
 9.EvaluateExpression:
 LOAD VARIABLE $exponential
 LOAD VARIABLE $n
-INVOKE INTRINSIC exponential WITH undefined ARGUMENTS
+INVOKE INTRINSIC exponential WITH 2 ARGUMENTS
 STORE VARIABLE $exponential
 
 10.EvaluateExpression:

@@ -1,21 +1,29 @@
 
 1.WithLoop:
 LOAD LITERAL `$sequence`
-CALL METHOD $createIterator WITH undefined ARGUMENTS
+CALL METHOD $createIterator WITH ARGUMENT
 STORE VARIABLE $iterator1
 
-1.WithItem:
+1.1.WithItem:
 LOAD VARIABLE $iterator1
-CALL METHOD $hasNext WITH undefined ARGUMENTS
+CALL METHOD $hasNext WITH ARGUMENT
 BRANCH TO 1.EndWith ON NOT TRUE
 LOAD VARIABLE $iterator1
-CALL METHOD $getNext WITH undefined ARGUMENTS
+CALL METHOD $getNext WITH ARGUMENT
 STORE VARIABLE $symbol
 
-1.1.1.ContinueTo:
-JUMP TO INSTRUCTION undefined
-JUMP TO INSTRUCTION 1.WithItem
+1.1.1.EvaluateExpression:
+LOAD LITERAL `true`
+STORE VARIABLE $result
 
-EndWith:
+1.1.2.ContinueTo:
+JUMP TO INSTRUCTION 1.1.WithItem
+
+1.1.3.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $result
+JUMP TO INSTRUCTION 1.1.WithItem
+
+1.EndWith:
 SKIP INSTRUCTION
 

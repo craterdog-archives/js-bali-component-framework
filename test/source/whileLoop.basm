@@ -1,11 +1,22 @@
 
 1.WhileLoop:
+SKIP INSTRUCTION
+
+1.1.WhileCondition:
 LOAD LITERAL `$condition`
 BRANCH TO 1.EndWhile ON NOT TRUE
 
-1.1.1.BreakFrom:
+1.1.1.EvaluateExpression:
+LOAD LITERAL `true`
+STORE VARIABLE $result
+
+1.1.2.BreakFrom:
 RETURN FROM BLOCK
-JUMP TO INSTRUCTION WhileLoop
+
+1.1.3.EvaluateExpression:
+LOAD LITERAL `none`
+STORE VARIABLE $result
+JUMP TO INSTRUCTION 1.1.WhileCondition
 
 1.EndWhile:
 SKIP INSTRUCTION
