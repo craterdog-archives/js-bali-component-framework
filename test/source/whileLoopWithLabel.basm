@@ -1,23 +1,26 @@
 
 1.WhileLoop:
-SKIP INSTRUCTION
+LOAD LITERAL `true`
+STORE VARIABLE $_continue_1_1.Label
 
 1.1.Label:
+LOAD VARIABLE $_continue_1_1.Label
 LOAD LITERAL `$condition`
-BRANCH TO 1.EndWhile ON NOT TRUE
+INVOKE INTRINSIC and WITH 2 ARGUMENTS
+JUMP ON FALSE TO 1.EndWhile
 
 1.1.1.EvaluateExpression:
 LOAD LITERAL `true`
 STORE VARIABLE $result
 
 1.1.2.ContinueTo:
-JUMP TO INSTRUCTION 1.1.Label
+JUMP ON ALL TO 1.EndWhile
 
 1.1.3.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP TO INSTRUCTION 1.1.Label
+JUMP ON ALL TO 1.1.Label
 
 1.EndWhile:
-SKIP INSTRUCTION
+RETURN FROM METHOD
 

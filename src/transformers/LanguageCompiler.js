@@ -69,12 +69,16 @@ CompilerVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype)
 CompilerVisitor.prototype.constructor = CompilerVisitor;
 
 
-/*
- * This method returns the resulting assembly source code after the compiler
- * is done walking the parse tree.
- * 
- * @returns {nm$_LanguageCompiler.CompilerVisitor.builder.asmcode}
- */
+CompilerVisitor.prototype.createTemporaryVariable = function(name) {
+    return '$_' + name + '_' + this.temporaryVariableCount++;
+};
+
+
+CompilerVisitor.prototype.createContinueVariable = function(loopLabel) {
+    return '$_continue_' + loopLabel.replace(/\./, '_');
+};
+
+
 CompilerVisitor.prototype.getResult = function() {
     this.builder.finalize();
     return this.builder.asmcode;
@@ -269,14 +273,14 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
     var finalLabel = statementPrefix + (this.builder.getClauseNumber() + exceptionClauses.length) + '.FinalClause';
     if (finalClause) {
         // tell the VM to jump to the final clause block
-        this.builder.insertJumpInstruction('BLOCK', finalLabel);
+        this.builder.insertJumpInstruction('ON INTERRUPT', finalLabel);
     }
     // the VM will jump back here after the final clause is done if one exists
 
     // COMPILE THE EXCEPTION CLAUSES
     if (exceptionClauses.length > 0) {
         // no exceptions occurred and final clause, if one exists, is done so jump to the end
-        this.builder.insertJumpInstruction('INSTRUCTION', statementPrefix + 'Done');
+        this.builder.insertJumpInstruction('ON ALL', statementPrefix + 'Done');
         // when exceptions are thrown they will jump to here
         this.builder.insertLabel(statementPrefix + 'ExceptionClauses');
         // each clause checks for a match and handles it if it matches
@@ -288,17 +292,17 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
         // an exception was thrown and no matching exception handler was found
         if (finalClause) {
             // tell the VM to jump to the final clause block
-            this.builder.insertJumpInstruction('BLOCK', finalLabel);
+            this.builder.insertJumpInstruction('ON INTERRUPT', finalLabel);
         }
         // the VM will jump back here after the final clause is done if one exists
         // return from the method with the unhandled exception on top of the execution stack
-        this.builder.insertReturnInstruction('EXCEPTION', 1);
+        this.builder.insertReturnInstruction('FROM INTERRUPT');
     }
 
     // COMPILE THE FINAL CLAUSE
     if (finalClause) {
         // no exceptions occurred and the final clause, is done so jump to the end
-        this.builder.insertJumpInstruction('INSTRUCTION', statementPrefix + 'Done');
+        this.builder.insertJumpInstruction('ON ALL', statementPrefix + 'Done');
         // jumps to final clause end up here
         this.visitFinalClause(finalClause);
         // the VM jumped back to the next instruction after where the final clause was called
@@ -342,11 +346,11 @@ CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
     this.builder.insertInvokeInstruction('matches', 2);
     // the result of the comparison replaces the two operands on the execution stack
     var label = this.builder.getClausePrefix() + 'ExceptionClauseNoMatch';
-    this.builder.insertBranchInstruction('NOT TRUE', label);
+    this.builder.insertJumpInstruction('ON FALSE', label);
     // the VM executes the exception handler block
     this.visitBlock(ctx.block());
     // successfully handled the exception return VM to next statement after exception was thrown
-    this.builder.insertReturnInstruction('HANDLER', 1);
+    this.builder.insertReturnInstruction('FROM INTERRUPT');
     // the handler did not match, try the next one
     this.builder.insertLabel(clausePrefix + 'ExceptionClauseNoMatch');
     // load the exception from the variable back on top of the execution stack
@@ -363,7 +367,7 @@ CompilerVisitor.prototype.visitFinalClause = function(ctx) {
     // the VM executes the final clause
     this.visitBlock(ctx.block());
     // tell the VM to return to the address on top of the jump stack
-    this.builder.insertReturnInstruction('BLOCK', 1);
+    this.builder.insertReturnInstruction('FROM INTERRUPT');
 };
 
 
@@ -377,8 +381,8 @@ CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
     symbol = symbol ? symbol.SYMBOL().getText() : '$result';
     var component = assignee ? assignee.component() : null;
     var operator = assignee ? ctx.op.text : ':=';
-    var parent = '$component' + this.temporaryVariableCount++;
-    var index = '$index' + this.temporaryVariableCount++;
+    var parent = this.createTemporaryVariable('component');
+    var index = this.createTemporaryVariable('index');
 
     if (component) {
         // load the parent of the component and index of the child onto the execution stack
@@ -578,6 +582,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
     var hasElseClause = blocks.length > conditions.length;
     var elseLabel = statementPrefix + (conditions.length + 1) + '.ElseClause';
     var endLabel = statementPrefix + 'EndIf';
+    this.builder.blocks.peek().endLabel = endLabel;
 
     // check each condition
     for (var i = 0; i < conditions.length; i++) {
@@ -598,13 +603,13 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
             nextLabel = statementPrefix + (this.builder.getClauseNumber() + 1) + 'IfCondition';
         }
         // if the condition is not true, the VM branches to the next condition or the end
-        this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
+        this.builder.insertJumpInstruction('ON FALSE', nextLabel);
         // if the condition is true, then the VM enters the block
         this.visitBlock(blocks[i]);
         // all done
         if (hasElseClause || i < conditions.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('INSTRUCTION', endLabel);
+            this.builder.insertJumpInstruction('ON ALL', endLabel);
         }
     }
 
@@ -633,11 +638,12 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
     var hasElseClause = blocks.length > options.length;
     var elseLabel = statementPrefix + (options.length + 1) + '.ElseClause';
     var endLabel = statementPrefix + 'EndSelect';
+    this.builder.blocks.peek().endLabel = endLabel;
 
     // place the selection value on the top of the execution stack
     this.visitSelection(ctx.selection());
     // store off the selection value so that it can be used multiple times
-    var selection = '$selection' + this.temporaryVariableCount++;
+    var selection = this.createTemporaryVariable('selection');
     this.builder.insertStoreInstruction('VARIABLE', selection);
 
     // check each option
@@ -662,13 +668,13 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
             nextLabel = statementPrefix + (this.builder.getClauseNumber() + 1) + 'SelectOption';
         }
         // if the option does not match, the VM branches to the next option or the end
-        this.builder.insertBranchInstruction('NOT TRUE', nextLabel);
+        this.builder.insertJumpInstruction('ON FALSE', nextLabel);
         // if the option matches, then the VM enters the block
         this.visitBlock(blocks[i]);
         // all done
         if (hasElseClause || i < options.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('INSTRUCTION', endLabel);
+            this.builder.insertJumpInstruction('ON ALL', endLabel);
         }
     }
 
@@ -698,6 +704,8 @@ CompilerVisitor.prototype.visitOption = function(ctx) {
 CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'WhileLoop');
+
+    // construct the labels
     var loopLabel = ctx.label();
     if (loopLabel) {
         loopLabel = loopLabel.IDENTIFIER().getText();
@@ -708,16 +716,30 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     var clausePrefix = this.builder.getClausePrefix();
     loopLabel = clausePrefix + loopLabel;
     var endLabel = statementPrefix + 'EndWhile';
-    this.builder.insertLabel(loopLabel);
+
+    // setup the compiler state for this loop
+    this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
+    var continueLoop = this.createContinueVariable(loopLabel);
+    this.builder.insertLoadInstruction('LITERAL', true);
+    this.builder.insertStoreInstruction('VARIABLE', continueLoop);
+
+    // label the start of the loop
+    this.builder.insertLabel(loopLabel);
+    // the VM places the value of the continue loop variable on top of the execution stack
+    this.builder.insertLoadInstruction('VARIABLE', continueLoop);
     // the VM places the result of the boolean condition on top of the execution stack
     this.visitCondition(ctx.condition());
-    // if the condition is not true, the VM branches to the end
-    this.builder.insertBranchInstruction('NOT TRUE', endLabel);
+
+    // the VM replaces the two values on the execution stack with the logical AND of the values
+    this.builder.insertInvokeInstruction('and', 2);
+
+    // if the condition is false or the continue flag is false, the VM branches to the end
+    this.builder.insertJumpInstruction('ON FALSE', endLabel);
     // if the condition is true, then the VM enters the block
     this.visitBlock(ctx.block());
     // all done, the VM jumps to the end of the statement
-    this.builder.insertJumpInstruction('INSTRUCTION', loopLabel);
+    this.builder.insertJumpInstruction('ON ALL', loopLabel);
     this.builder.insertLabel(endLabel);
 };
 
@@ -726,22 +748,23 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
 CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'WithLoop');
+
     // the VM evaluates the sequence expression and places the result on top of the execution stack
     this.visitSequence(ctx.sequence());
     // The VM replaces the sequence with a new iterator for the sequence on the execution stack
     this.builder.insertCallInstruction('$createIterator', 1);
     // The VM stores the iterater into a temporary variable
-    var iterator = '$iterator' + this.temporaryVariableCount++;
+    var iterator = this.createTemporaryVariable('iterator');
     this.builder.insertStoreInstruction('VARIABLE', iterator);
-    // retrieve the name of the symbol or make a temporary variable
+    // retrieve the name of the item variable or make a temporary variable for it
     var item = ctx.symbol();
     if (item) {
         item = item.SYMBOL().getText();
     } else {
-        item = '$item' + this.temporaryVariableCount++;
+        item = this.createTemporaryVariable('item');
     }
 
-    // label the start of the loop
+    // construct the labels
     var loopLabel = ctx.label();
     if (loopLabel) {
         loopLabel = loopLabel.IDENTIFIER().getText();
@@ -752,14 +775,28 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     var clausePrefix = this.builder.getClausePrefix();
     loopLabel = clausePrefix + loopLabel;
     var endLabel = statementPrefix + 'EndWith';
-    this.builder.insertLabel(loopLabel);
+
+    // setup the compiler state for this loop
+    this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
+    var continueLoop = this.createContinueVariable(loopLabel);
+    this.builder.insertLoadInstruction('LITERAL', true);
+    this.builder.insertStoreInstruction('VARIABLE', continueLoop);
+
+    // label the start of the loop
+    this.builder.insertLabel(loopLabel);
+    // the VM places the value of the continue loop variable on top of the execution stack
+    this.builder.insertLoadInstruction('VARIABLE', continueLoop);
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with a boolean telling if there is another item to be retrieved
     this.builder.insertCallInstruction('$hasNext', 1);
-    // if the condition is not true, the VM branches to the end
-    this.builder.insertBranchInstruction('NOT TRUE', endLabel);
+    // the VM replaces the two values on the execution stack with the logical AND of the values
+    this.builder.insertInvokeInstruction('and', 2);
+
+    // if the condition is false or the continue flag is false, the VM branches to the end
+    this.builder.insertJumpInstruction('ON FALSE', endLabel);
+
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with the next item in the sequence
@@ -769,7 +806,7 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     // the VM executes the block using the item if needed
     this.visitBlock(ctx.block());
     // the VM jumps to the top of the loop
-    this.builder.insertJumpInstruction('INSTRUCTION', loopLabel);
+    this.builder.insertJumpInstruction('ON ALL', loopLabel);
     // when all done, the VM jumps here
     this.builder.insertLabel(endLabel);
 };
@@ -786,27 +823,26 @@ CompilerVisitor.prototype.visitContinueTo = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'ContinueTo');
     var blocks = this.builder.blocks;
-    var loopLabel;
     var label = ctx.label();
     if (label) {
         label = label.IDENTIFIER().getText();
         label = label.charAt(0).toUpperCase() + label.slice(1);
-        var numberOfBlocks = blocks.length;
-        for (var i = 0; i < numberOfBlocks; i++) {
-            var block = blocks[numberOfBlocks - i - 1];  // work backwards
-            if (block.loopLabel && block.loopLabel.endsWith(label)) {
-                loopLabel = block.loopLabel;
-                break;
+    }
+    var numberOfBlocks = blocks.length;
+    for (var i = 0; i < numberOfBlocks; i++) {
+        var block = blocks[numberOfBlocks - i - 1];  // work backwards
+        var loopLabel = block.loopLabel;
+        if (loopLabel) {
+            if (label === undefined || label === null || loopLabel.endsWith(label)) {
+                this.builder.insertJumpInstruction('ON ALL', blocks[numberOfBlocks - 2].endLabel);
+                return;
             }
+            var continueLoop = this.createContinueVariable(loopLabel);
+            this.builder.insertLoadInstruction('LITERAL', false);
+            this.builder.insertStoreInstruction('VARIABLE', continueLoop);
         }
-    } else {
-        // grab the loop label from the parent block context
-        loopLabel = blocks[blocks.length - 2].loopLabel;
     }
-    if (loopLabel === undefined) {
-        throw new Error('COMPILER: An unknown label was found in a "continue to" statement: ' + loopLabel);
-    }
-    this.builder.insertJumpInstruction('INSTRUCTION', loopLabel);
+    throw new Error('COMPILER: An unknown label was found in a "continue to" statement: ' + label);
 };
 
 
@@ -815,26 +851,26 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'BreakFrom');
     var blocks = this.builder.blocks;
-    var depth;
     var label = ctx.label();
     if (label) {
         label = label.IDENTIFIER().getText();
         label = label.charAt(0).toUpperCase() + label.slice(1);
-        var numberOfBlocks = blocks.length;
-        for (var i = 0; i < numberOfBlocks; i++) {
-            var block = blocks[numberOfBlocks - i - 1];  // work backwards
-            if (block.loopLabel && block.loopLabel.endsWith(label)) {
-                depth = i;
-                break;
+    }
+    var numberOfBlocks = blocks.length;
+    for (var i = 0; i < numberOfBlocks; i++) {
+        var block = blocks[numberOfBlocks - i - 1];  // work backwards
+        var loopLabel = block.loopLabel;
+        if (loopLabel) {
+            var continueLoop = this.createContinueVariable(loopLabel);
+            this.builder.insertLoadInstruction('LITERAL', false);
+            this.builder.insertStoreInstruction('VARIABLE', continueLoop);
+            if (label === undefined || label === null || loopLabel.endsWith(label)) {
+                this.builder.insertJumpInstruction('ON ALL', blocks[numberOfBlocks - 2].endLabel);
+                return;
             }
         }
-        if (depth === undefined) {
-            throw new Error('COMPILER: An unknown label was found in a "break from" statement: ' + label);
-        }
-    } else {
-        depth = 1;
     }
-    this.builder.insertReturnInstruction('BLOCK', depth);
+    throw new Error('COMPILER: An unknown label was found in a "break from" statement: ' + label);
 };
 
 
@@ -853,8 +889,9 @@ CompilerVisitor.prototype.visitReturnResult = function(ctx) {
     if (result) {
         // place the result on the top of the execution stack
         this.visitResult(result);
+        this.builder.insertStoreInstruction('VARIABLE', '$result');
     }
-    this.builder.insertReturnInstruction('METHOD', 1);
+    this.builder.insertReturnInstruction('FROM INTERRUPT');
 };
 
 
@@ -871,7 +908,9 @@ CompilerVisitor.prototype.visitThrowException = function(ctx) {
     this.builder.insertLabel(statementPrefix + 'ThrowException');
     // place the exception on the top of the execution stack
     this.visitXception(ctx.xception());
-    this.builder.insertJumpInstruction('HANDLER', 'ExceptionClauses');
+    this.builder.insertStoreInstruction('VARIABLE', '$exception');
+    // TODO: How do we know the 'ExceptionClauses' label?
+    this.builder.insertJumpInstruction('ON INTERRUPT', 'ExceptionClauses');
 };
 
 
@@ -1377,35 +1416,16 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
 
 
 /*
- * This method inserts a 'branch' instruction into the assembly source code.
- */
-InstructionBuilder.prototype.insertBranchInstruction = function(condition, label) {
-    var instruction;
-    switch (condition) {
-        case 'NOT NONE':
-        case 'NOT TRUE':
-        case 'NOT MORE THAN ZERO':
-        case 'NOT EQUAL TO ZERO':
-            instruction = 'BRANCH TO ' + label + ' ON ' + condition;
-            break;
-        default:
-            throw new Error('COMPILER: Attempted to insert a BRANCH instruction with an invalid condition: ' + condition);
-    }
-    this.insertInstruction(instruction);
-};
-
-
-/*
  * This method inserts a 'jump' instruction into the assembly source code.
  */
 InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
     var instruction;
     switch (context) {
-        case 'BLOCK':
-        case 'HANDLER':
-        case 'STATEMENT':
-        case 'INSTRUCTION':
-            instruction = 'JUMP TO ' + context + ' ' + label;
+        case 'ON FALSE':
+        case 'ON NONE':
+        case 'ON ALL':
+        case 'ON INTERRUPT':
+            instruction = 'JUMP ' + context + ' TO ' + label;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a JUMP instruction with an invalid context: ' + context);
@@ -1436,17 +1456,12 @@ InstructionBuilder.prototype.insertCallInstruction = function(method, numberOfAr
 /*
  * This method inserts a 'return' instruction into the assembly source code.
  */
-InstructionBuilder.prototype.insertReturnInstruction = function(context, depth) {
+InstructionBuilder.prototype.insertReturnInstruction = function(context) {
     var instruction;
     switch (context) {
-        case 'METHOD':
-        case 'BLOCK':
-        case 'HANDLER':
-        case 'EXCEPTION':
-            instruction = 'RETURN FROM ' + context;
-            if (depth > 1) {
-                instruction += ' ' + depth + ' LEVELS';
-            }
+        case 'FROM METHOD':
+        case 'FROM INTERRUPT':
+            instruction = 'RETURN ' + context;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a RETURN instruction with an invalid context: ' + context);
@@ -1462,6 +1477,6 @@ InstructionBuilder.prototype.insertReturnInstruction = function(context, depth) 
 InstructionBuilder.prototype.finalize = function() {
     // check for existing label
     if (this.nextLabel) {
-        this.insertSkipInstruction();
+        this.insertReturnInstruction('FROM METHOD');
     }
 };
