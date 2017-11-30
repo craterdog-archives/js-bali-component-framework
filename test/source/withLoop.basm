@@ -4,10 +4,10 @@ LOAD LITERAL `$sequence`
 CALL METHOD $createIterator WITH ARGUMENT
 STORE VARIABLE $_iterator_1
 LOAD LITERAL `true`
-STORE VARIABLE $_continue_1_1.WithItem
+STORE VARIABLE $_continue_1_1_WithItem
 
 1.1.WithItem:
-LOAD VARIABLE $_continue_1_1.WithItem
+LOAD VARIABLE $_continue_1_1_WithItem
 LOAD VARIABLE $_iterator_1
 CALL METHOD $hasNext WITH ARGUMENT
 INVOKE INTRINSIC and WITH 2 ARGUMENTS

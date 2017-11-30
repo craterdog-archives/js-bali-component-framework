@@ -27,4 +27,28 @@
         queue wakeUp(foo, bar, baz, 5) on #RSTMWSC0HFY00QJP37QD3JA533NLKPP5
         publish [$type: $confirmation, $timestamp: now()]
     }
+    outer: while (true) do {
+        $foo := bar
+        if foo then {
+            break
+        } else {
+            with each $item in sequence do {
+                select selection from $first do {
+                    true
+                } $second do {
+                    false
+                } else {
+                    continue to outer
+                } finish with {
+                    $selectDone
+                }
+            } finish with {
+                $innerDone
+            }
+        } finish with {
+            $ifDone
+        }
+    } finish with {
+        $outerDone
+    }
 }

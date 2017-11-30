@@ -1,10 +1,10 @@
 
 1.WhileLoop:
 LOAD LITERAL `true`
-STORE VARIABLE $_continue_1_1.Label
+STORE VARIABLE $_continue_1_1_Label
 
 1.1.Label:
-LOAD VARIABLE $_continue_1_1.Label
+LOAD VARIABLE $_continue_1_1_Label
 LOAD LITERAL `$condition`
 INVOKE INTRINSIC and WITH 2 ARGUMENTS
 JUMP ON FALSE TO 1.EndWhile

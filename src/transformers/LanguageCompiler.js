@@ -75,7 +75,7 @@ CompilerVisitor.prototype.createTemporaryVariable = function(name) {
 
 
 CompilerVisitor.prototype.createContinueVariable = function(loopLabel) {
-    return '$_continue_' + loopLabel.replace(/\./, '_');
+    return '$_continue_' + loopLabel.replace(/\./g, '_');
 };
 
 
@@ -582,7 +582,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
     var hasElseClause = blocks.length > conditions.length;
     var elseLabel = statementPrefix + (conditions.length + 1) + '.ElseClause';
     var endLabel = statementPrefix + 'EndIf';
-    this.builder.blocks.peek().endLabel = endLabel;
+    this.builder.blocks.peek().endLabel = endLabel;  // required by 'break from' and 'continue to'
 
     // check each condition
     for (var i = 0; i < conditions.length; i++) {
@@ -638,7 +638,7 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
     var hasElseClause = blocks.length > options.length;
     var elseLabel = statementPrefix + (options.length + 1) + '.ElseClause';
     var endLabel = statementPrefix + 'EndSelect';
-    this.builder.blocks.peek().endLabel = endLabel;
+    this.builder.blocks.peek().endLabel = endLabel;  // required by 'break from' and 'continue to'
 
     // place the selection value on the top of the execution stack
     this.visitSelection(ctx.selection());
@@ -701,6 +701,13 @@ CompilerVisitor.prototype.visitOption = function(ctx) {
 
 
 // whileLoop: (label ':')? 'while' condition 'do' block
+/*
+ * This method utilizes a 'continueLoop' variable that can be set by the 'break from'
+ * and 'continue to' statements as an additional way to tell the loop when it is done.
+ * Although this may seem like a primitive way to implement the functionality it is
+ * necessary to ensure that all 'finish with' handlers are called when prematurely
+ * exiting a loop and its enclosing blocks.
+ */
 CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'WhileLoop');
@@ -717,7 +724,7 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     loopLabel = clausePrefix + loopLabel;
     var endLabel = statementPrefix + 'EndWhile';
 
-    // setup the compiler state for this loop
+    // setup the compiler state for this loop with respect to 'continue' and 'break' statements
     this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
     var continueLoop = this.createContinueVariable(loopLabel);
@@ -745,6 +752,13 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
 
 
 // withLoop: (label ':')? 'with' ('each' symbol 'in')? sequence 'do' block
+/*
+ * This method utilizes a 'continueLoop' variable that can be set by the 'break from'
+ * and 'continue to' statements as an additional way to tell the loop when it is done.
+ * Although this may seem like a primitive way to implement the functionality it is
+ * necessary to ensure that all 'finish with' handlers are called when prematurely
+ * exiting a loop and its enclosing blocks.
+ */
 CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'WithLoop');
@@ -776,7 +790,7 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     loopLabel = clausePrefix + loopLabel;
     var endLabel = statementPrefix + 'EndWith';
 
-    // setup the compiler state for this loop
+    // setup the compiler state for this loop with respect to 'continue' and 'break' statements
     this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
     var continueLoop = this.createContinueVariable(loopLabel);
@@ -819,6 +833,14 @@ CompilerVisitor.prototype.visitSequence = function(ctx) {
 
 
 // continueTo: 'continue' ('to' label)?
+/*
+ *  This method is implemented as if there is no 'continue to' statement type. The
+ *  reason is that great care must be taken when unwinding nested statements since
+ *  they may have 'finish with' clauses that must be executed regardless of how the
+ *  blocks are exited. This implementation may be less efficient but is much easier
+ *  to prove correct. It relies on a 'continueLoop' variable being checked in the
+ *  loop statements as a way to tell them to end when continueLoop === false.
+ */
 CompilerVisitor.prototype.visitContinueTo = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'ContinueTo');
@@ -834,19 +856,35 @@ CompilerVisitor.prototype.visitContinueTo = function(ctx) {
         var loopLabel = block.loopLabel;
         if (loopLabel) {
             if (label === undefined || label === null || loopLabel.endsWith(label)) {
-                this.builder.insertJumpInstruction('ON ALL', blocks[numberOfBlocks - 2].endLabel);
+                // found the matching enclosing loop
+                // the VM jumps to the end label of the parent block
+                // NOTE: we can't just jump straight to the matching loop or we will miss
+                // executing final handlers along the way
+                var endLabel = blocks[numberOfBlocks - 2].endLabel;
+                this.builder.insertJumpInstruction('ON ALL', endLabel);
                 return;
             }
+            // not yet found the matching enclosing loop so break out of this one
+            // the VM sets the 'continueLoop' variable for this block to 'false'
             var continueLoop = this.createContinueVariable(loopLabel);
             this.builder.insertLoadInstruction('LITERAL', false);
             this.builder.insertStoreInstruction('VARIABLE', continueLoop);
         }
     }
+    // if we get here there was no matching enclosing loop which should never happen
     throw new Error('COMPILER: An unknown label was found in a "continue to" statement: ' + label);
 };
 
 
 // breakFrom: 'break' ('from' label)?
+/*
+ *  This method is implemented as if there is no 'break from' statement type. The
+ *  reason is that great care must be taken when unwinding nested statements since
+ *  they may have 'finish with' clauses that must be executed regardless of how the
+ *  blocks are exited. This implementation may be less efficient but is much easier
+ *  to prove correct. It relies on a 'continueLoop' variable being checked in the
+ *  loop statements as a way to tell them to end when continueLoop === false.
+ */
 CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
     this.builder.insertLabel(statementPrefix + 'BreakFrom');
@@ -861,15 +899,23 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
         var block = blocks[numberOfBlocks - i - 1];  // work backwards
         var loopLabel = block.loopLabel;
         if (loopLabel) {
+            // for each enclosing loop we need to tell it that its done
+            // the VM sets the 'continueLoop' variable for this block to 'false'
             var continueLoop = this.createContinueVariable(loopLabel);
             this.builder.insertLoadInstruction('LITERAL', false);
             this.builder.insertStoreInstruction('VARIABLE', continueLoop);
             if (label === undefined || label === null || loopLabel.endsWith(label)) {
-                this.builder.insertJumpInstruction('ON ALL', blocks[numberOfBlocks - 2].endLabel);
+                // found the matching enclosing loop
+                // the VM jumps to the end label of the parent block
+                // NOTE: we can't just jump straight to the matching loop or we will miss
+                // executing final handlers along the way
+                var endLabel = blocks[numberOfBlocks - 2].endLabel;
+                this.builder.insertJumpInstruction('ON ALL', endLabel);
                 return;
             }
         }
     }
+    // if we get here there was no matching enclosing loop which should never happen
     throw new Error('COMPILER: An unknown label was found in a "break from" statement: ' + label);
 };
 
@@ -1279,6 +1325,7 @@ InstructionBuilder.prototype.getStatementNumber = function() {
 InstructionBuilder.prototype.incrementStatementCount = function() {
     var block = this.blocks.peek();
     block.statementCount++;
+    block.clauseCount = 1;
 };
 
 
