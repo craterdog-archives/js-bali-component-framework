@@ -16,12 +16,12 @@ STORE VARIABLE $result
 1.1.2.BreakFrom:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_1_1_WhileCondition
-JUMP ON ALL TO 1.EndWhile
+JUMP ON ANY TO 1.EndWhile
 
 1.1.3.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.1.WhileCondition
+JUMP ON ANY TO 1.1.WhileCondition
 
 1.EndWhile:
 RETURN FROM METHOD

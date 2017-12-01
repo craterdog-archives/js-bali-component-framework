@@ -280,7 +280,7 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
     // COMPILE THE EXCEPTION CLAUSES
     if (exceptionClauses.length > 0) {
         // no exceptions occurred and final clause, if one exists, is done so jump to the end
-        this.builder.insertJumpInstruction('ON ALL', statementPrefix + 'Done');
+        this.builder.insertJumpInstruction('ON ANY', statementPrefix + 'Done');
         // when exceptions are thrown they will jump to here
         this.builder.insertLabel(statementPrefix + 'ExceptionClauses');
         // each clause checks for a match and handles it if it matches
@@ -302,7 +302,7 @@ CompilerVisitor.prototype.visitStatement = function(ctx) {
     // COMPILE THE FINAL CLAUSE
     if (finalClause) {
         // no exceptions occurred and the final clause, is done so jump to the end
-        this.builder.insertJumpInstruction('ON ALL', statementPrefix + 'Done');
+        this.builder.insertJumpInstruction('ON ANY', statementPrefix + 'Done');
         // jumps to final clause end up here
         this.visitFinalClause(finalClause);
         // the VM jumped back to the next instruction after where the final clause was called
@@ -609,7 +609,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
         // all done
         if (hasElseClause || i < conditions.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('ON ALL', endLabel);
+            this.builder.insertJumpInstruction('ON ANY', endLabel);
         }
     }
 
@@ -674,7 +674,7 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         // all done
         if (hasElseClause || i < options.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('ON ALL', endLabel);
+            this.builder.insertJumpInstruction('ON ANY', endLabel);
         }
     }
 
@@ -746,7 +746,7 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     // if the condition is true, then the VM enters the block
     this.visitBlock(ctx.block());
     // all done, the VM jumps to the end of the statement
-    this.builder.insertJumpInstruction('ON ALL', loopLabel);
+    this.builder.insertJumpInstruction('ON ANY', loopLabel);
     this.builder.insertLabel(endLabel);
 };
 
@@ -766,7 +766,7 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     // the VM evaluates the sequence expression and places the result on top of the execution stack
     this.visitSequence(ctx.sequence());
     // The VM replaces the sequence with a new iterator for the sequence on the execution stack
-    this.builder.insertCallInstruction('$createIterator', 1);
+    this.builder.insertExecuteInstruction('$createIterator', 1);
     // The VM stores the iterater into a temporary variable
     var iterator = this.createTemporaryVariable('iterator');
     this.builder.insertStoreInstruction('VARIABLE', iterator);
@@ -804,7 +804,7 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with a boolean telling if there is another item to be retrieved
-    this.builder.insertCallInstruction('$hasNext', 1);
+    this.builder.insertExecuteInstruction('$hasNext', 1);
     // the VM replaces the two values on the execution stack with the logical AND of the values
     this.builder.insertInvokeInstruction('and', 2);
 
@@ -814,13 +814,13 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     // the VM loads the iterator onto the top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iterator);
     // the VM replaces the iterator with the next item in the sequence
-    this.builder.insertCallInstruction('$getNext', 1);
+    this.builder.insertExecuteInstruction('$getNext', 1);
     // store the item that is on top of the execution stack in the variable
     this.builder.insertStoreInstruction('VARIABLE', item);
     // the VM executes the block using the item if needed
     this.visitBlock(ctx.block());
     // the VM jumps to the top of the loop
-    this.builder.insertJumpInstruction('ON ALL', loopLabel);
+    this.builder.insertJumpInstruction('ON ANY', loopLabel);
     // when all done, the VM jumps here
     this.builder.insertLabel(endLabel);
 };
@@ -861,7 +861,7 @@ CompilerVisitor.prototype.visitContinueTo = function(ctx) {
                 // NOTE: we can't just jump straight to the matching loop or we will miss
                 // executing final handlers along the way
                 var endLabel = blocks[numberOfBlocks - 2].endLabel;
-                this.builder.insertJumpInstruction('ON ALL', endLabel);
+                this.builder.insertJumpInstruction('ON ANY', endLabel);
                 return;
             }
             // not yet found the matching enclosing loop so break out of this one
@@ -910,7 +910,7 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
                 // NOTE: we can't just jump straight to the matching loop or we will miss
                 // executing final handlers along the way
                 var endLabel = blocks[numberOfBlocks - 2].endLabel;
-                this.builder.insertJumpInstruction('ON ALL', endLabel);
+                this.builder.insertJumpInstruction('ON ANY', endLabel);
                 return;
             }
         }
@@ -1211,9 +1211,9 @@ CompilerVisitor.prototype.visitFunxion = function(ctx) {
     var name = ctx.IDENTIFIER().getText();
     // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
-    // call the method associated with the function
-    this.builder.insertCallInstruction(name, 1);
-    // the result of the method call remains on the execution stack
+    // execute the method associated with the function
+    this.builder.insertExecuteInstruction(name, 1);
+    // the result of the executed method remains on the execution stack
 };
 
 
@@ -1222,9 +1222,9 @@ CompilerVisitor.prototype.visitMessage = function(ctx) {
     var name = ctx.IDENTIFIER().getText();
     // load the parameters structure onto the top of the execution stack
     this.visitParameters(ctx.parameters());
-    // call the method associated with the message
-    this.builder.insertCallInstruction(name, 2);  // the target component is the first parameter
-    // the result of the method call remains on the execution stack
+    // execute the method associated with the message
+    this.builder.insertExecuteInstruction(name, 2);  // the target component is the first parameter
+    // the result of the executed method remains on the execution stack
 };
 
 
@@ -1412,8 +1412,6 @@ InstructionBuilder.prototype.insertRemoveInstruction = function(numberOfComponen
 InstructionBuilder.prototype.insertLoadInstruction = function(type, value) {
     var instruction;
     switch (type) {
-        case 'PARAMETER':
-        case 'ARGUMENT':
         case 'VARIABLE':
             instruction = 'LOAD ' + type + ' ' + value;
             break;
@@ -1463,6 +1461,25 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
 
 
 /*
+ * This method inserts a 'execute' instruction into the assembly source code.
+ */
+InstructionBuilder.prototype.insertExecuteInstruction = function(method, numberOfArguments) {
+    var instruction;
+    switch (numberOfArguments) {
+        case 0:
+            instruction = 'EXECUTE METHOD ' + method;
+            break;
+        case 1:
+            instruction = 'EXECUTE METHOD ' + method + ' WITH ARGUMENT';
+            break;
+        default:
+            instruction = 'EXECUTE METHOD ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+    }
+    this.insertInstruction(instruction);
+};
+
+
+/*
  * This method inserts a 'jump' instruction into the assembly source code.
  */
 InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
@@ -1470,31 +1487,12 @@ InstructionBuilder.prototype.insertJumpInstruction = function(context, label) {
     switch (context) {
         case 'ON FALSE':
         case 'ON NONE':
-        case 'ON ALL':
+        case 'ON ANY':
         case 'ON INTERRUPT':
             instruction = 'JUMP ' + context + ' TO ' + label;
             break;
         default:
             throw new Error('COMPILER: Attempted to insert a JUMP instruction with an invalid context: ' + context);
-    }
-    this.insertInstruction(instruction);
-};
-
-
-/*
- * This method inserts a 'call' instruction into the assembly source code.
- */
-InstructionBuilder.prototype.insertCallInstruction = function(method, numberOfArguments) {
-    var instruction;
-    switch (numberOfArguments) {
-        case 0:
-            instruction = 'CALL METHOD ' + method;
-            break;
-        case 1:
-            instruction = 'CALL METHOD ' + method + ' WITH ARGUMENT';
-            break;
-        default:
-            instruction = 'CALL METHOD ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
     }
     this.insertInstruction(instruction);
 };

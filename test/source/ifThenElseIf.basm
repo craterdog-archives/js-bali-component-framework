@@ -9,7 +9,7 @@ JUMP ON FALSE TO 1.2IfCondition
 1.1.1.EvaluateExpression:
 LOAD LITERAL `true`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.EndIf
+JUMP ON ANY TO 1.EndIf
 
 1.2.IfCondition:
 LOAD LITERAL `false`

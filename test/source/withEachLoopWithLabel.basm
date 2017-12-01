@@ -1,7 +1,7 @@
 
 1.WithLoop:
 LOAD LITERAL `$sequence`
-CALL METHOD $createIterator WITH ARGUMENT
+EXECUTE METHOD $createIterator WITH ARGUMENT
 STORE VARIABLE $_iterator_1
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_Label
@@ -9,11 +9,11 @@ STORE VARIABLE $_continue_1_1_Label
 1.1.Label:
 LOAD VARIABLE $_continue_1_1_Label
 LOAD VARIABLE $_iterator_1
-CALL METHOD $hasNext WITH ARGUMENT
+EXECUTE METHOD $hasNext WITH ARGUMENT
 INVOKE INTRINSIC and WITH 2 ARGUMENTS
 JUMP ON FALSE TO 1.EndWith
 LOAD VARIABLE $_iterator_1
-CALL METHOD $getNext WITH ARGUMENT
+EXECUTE METHOD $getNext WITH ARGUMENT
 STORE VARIABLE $symbol
 
 1.1.1.EvaluateExpression:
@@ -23,12 +23,12 @@ STORE VARIABLE $result
 1.1.2.BreakFrom:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_1_1_Label
-JUMP ON ALL TO 1.EndWith
+JUMP ON ANY TO 1.EndWith
 
 1.1.3.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.1.Label
+JUMP ON ANY TO 1.1.Label
 
 1.EndWith:
 RETURN FROM METHOD

@@ -14,12 +14,12 @@ LOAD LITERAL `true`
 STORE VARIABLE $result
 
 1.1.2.ContinueTo:
-JUMP ON ALL TO 1.EndWhile
+JUMP ON ANY TO 1.EndWhile
 
 1.1.3.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.1.Label
+JUMP ON ANY TO 1.1.Label
 
 1.EndWhile:
 RETURN FROM METHOD

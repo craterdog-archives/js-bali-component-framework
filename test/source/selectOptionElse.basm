@@ -12,7 +12,7 @@ JUMP ON FALSE TO 1.2SelectOption
 1.1.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.EndSelect
+JUMP ON ANY TO 1.EndSelect
 
 1.2.SelectOption:
 LOAD VARIABLE $_selection_1
@@ -23,7 +23,7 @@ JUMP ON FALSE TO 1.3SelectOption
 1.2.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.EndSelect
+JUMP ON ANY TO 1.EndSelect
 
 1.3.SelectOption:
 LOAD VARIABLE $_selection_1
@@ -34,7 +34,7 @@ JUMP ON FALSE TO 1.4.ElseClause
 1.3.1.EvaluateExpression:
 LOAD LITERAL `none`
 STORE VARIABLE $result
-JUMP ON ALL TO 1.EndSelect
+JUMP ON ANY TO 1.EndSelect
 
 1.4.ElseClause:
 SKIP INSTRUCTION
