@@ -1,5 +1,5 @@
 
 1.EvaluateExpression:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 

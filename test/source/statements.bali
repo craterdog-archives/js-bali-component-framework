@@ -13,8 +13,8 @@
         } catch $exception matching [$type: "BadException"] with {
             continue to label
         }
-        queue message() on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9 finish with {
-            wait for $message from #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
+        queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1> finish with {
+            wait for $message from <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
         }
         if false then {
             $component := 0
@@ -55,12 +55,12 @@
         publish event
     }
     $waitForMessage: {
-        wait for $message from #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
+        wait for $message from <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
     }
     $queueMessage: {
-        queue message() on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
-        queue message(1) on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
-        queue message($first: 1, $second: second, $third: "3rd") on #Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9
+        queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
+        queue message(1) on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
+        queue message($first: 1, $second: second, $third: "3rd") on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
     }
     $returnResult: {
         return

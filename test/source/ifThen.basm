@@ -8,7 +8,7 @@ JUMP ON FALSE TO 1.EndIf
 
 1.1.1.EvaluateExpression:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
 1.EndIf:
 RETURN FROM METHOD

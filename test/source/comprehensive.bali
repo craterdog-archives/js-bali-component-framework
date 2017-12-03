@@ -24,7 +24,7 @@
         ]
         throw exception
     } finish with {
-        queue wakeUp(foo, bar, baz, 5) on #RSTMWSC0HFY00QJP37QD3JA533NLKPP5
+        queue wakeUp(foo, bar, baz, 5) on <bali:/#RSTMWSC0HFY00QJP37QD3JA533NLKPP5v3.1>
         publish [$type: $confirmation, $timestamp: now()]
     }
     outer: while (true) do {
