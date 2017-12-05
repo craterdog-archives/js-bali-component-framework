@@ -1,18 +1,15 @@
 
-1.EvaluateExpression:
+1.EvaluateStatement:
 LOAD LITERAL `none`
 STORE VARIABLE $_result_
-JUMP ON INTERRUPT TO 1.1.FinalClause
-JUMP ON ANY TO 1.Done
 
-1.1.FinalClause:
+1.1.1.EvaluateStatement:
+LOAD LITERAL `none`
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
 SKIP INSTRUCTION
 
-1.1.1.EvaluateExpression:
-LOAD LITERAL `none`
-STORE VARIABLE $_result_
-RETURN FROM INTERRUPT
-
-1.Done:
+2.BlockEnd:
 RETURN FROM METHOD
 

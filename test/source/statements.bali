@@ -31,17 +31,6 @@
     }
     $assignValue: {
         $component := value
-        variable[1] ?= default
-        $component += add
-        variable[-1] -= subtract
-        $component *= times
-        variable[$index] /= divide
-        $component //= modulo
-        variable[<2017-04-01>] ^= exponential
-        $component a= land
-        $component s= lsans
-        $component o= lor
-        $component x= lxor
     }
     $continueLoop: {
         continue

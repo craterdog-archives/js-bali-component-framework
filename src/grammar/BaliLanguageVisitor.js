@@ -122,6 +122,11 @@ BaliLanguageVisitor.prototype.visitExceptionClause = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#template.
+BaliLanguageVisitor.prototype.visitTemplate = function(ctx) {
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#finalClause.
 BaliLanguageVisitor.prototype.visitFinalClause = function(ctx) {
 };
@@ -157,6 +162,36 @@ BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#checkoutDocument.
+BaliLanguageVisitor.prototype.visitCheckoutDocument = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#saveDraft.
+BaliLanguageVisitor.prototype.visitSaveDraft = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#discardDraft.
+BaliLanguageVisitor.prototype.visitDiscardDraft = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#commitDocument.
+BaliLanguageVisitor.prototype.visitCommitDocument = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#draft.
+BaliLanguageVisitor.prototype.visitDraft = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#location.
+BaliLanguageVisitor.prototype.visitLocation = function(ctx) {
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#publishEvent.
 BaliLanguageVisitor.prototype.visitPublishEvent = function(ctx) {
 };
@@ -174,6 +209,11 @@ BaliLanguageVisitor.prototype.visitQueueMessage = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#waitForMessage.
 BaliLanguageVisitor.prototype.visitWaitForMessage = function(ctx) {
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#message.
+BaliLanguageVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
@@ -272,11 +312,6 @@ BaliLanguageVisitor.prototype.visitMessageExpression = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#funxionExpression.
-BaliLanguageVisitor.prototype.visitFunxionExpression = function(ctx) {
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#comparisonExpression.
 BaliLanguageVisitor.prototype.visitComparisonExpression = function(ctx) {
 };
@@ -307,6 +342,11 @@ BaliLanguageVisitor.prototype.visitVariableExpression = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#functionExpression.
+BaliLanguageVisitor.prototype.visitFunctionExpression = function(ctx) {
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#precedenceExpression.
 BaliLanguageVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 };
@@ -334,16 +374,6 @@ BaliLanguageVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#complementExpression.
 BaliLanguageVisitor.prototype.visitComplementExpression = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#funxion.
-BaliLanguageVisitor.prototype.visitFunxion = function(ctx) {
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#message.
-BaliLanguageVisitor.prototype.visitMessage = function(ctx) {
 };
 
 

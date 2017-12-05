@@ -1,24 +1,30 @@
 grammar BaliStatements;
 
-import BaliExpressions;
+import BaliElements;
 
 
 script: SHELL statements EOF;
 
 statements:
-    statement (';' statement)* #inlineStatements |
-    NEWLINE (statement NEWLINE)* #newlineStatements |
+    statement (';' statement)*    #inlineStatements  |
+    NEWLINE (statement NEWLINE)*  #newlineStatements |
     /*empty statements*/ #emptyStatements
 ;
 
 statement: mainClause exceptionClause* finalClause?;
 
-exceptionClause: 'catch' symbol 'matching' xception 'with' block;
+exceptionClause: 'catch' symbol 'matching' template 'with' block;
+
+template: expression;
 
 finalClause: 'finish' 'with' block;
 
 mainClause:
     evaluateExpression |
+    checkoutDocument |
+    saveDraft |
+    discardDraft |
+    commitDocument |
     publishEvent |
     queueMessage |
     waitForMessage |
@@ -32,7 +38,7 @@ mainClause:
     throwException
 ;
 
-evaluateExpression: (assignee op=(':=' | '?=' | '+=' | '-=' | '*=' | '/=' | '//=' | '^=' | 'a=' | 's=' | 'o=' | 'x='))? expression;
+evaluateExpression: (assignee ':=')? expression;
 
 assignee: symbol | component;
 
@@ -42,6 +48,18 @@ variable: IDENTIFIER;
 
 indices: '[' array ']';
 
+checkoutDocument: 'checkout' symbol 'from' location;
+
+saveDraft: 'save' draft 'to' location;
+
+discardDraft: 'discard' location;
+
+commitDocument: 'commit' draft 'to' location;
+
+draft: expression;
+
+location: expression;
+
 publishEvent: 'publish' event;
 
 event: expression;
@@ -49,6 +67,8 @@ event: expression;
 queueMessage: 'queue' message 'on' queue;
 
 waitForMessage: 'wait' 'for' symbol 'from' queue;
+
+message: expression;
 
 queue: expression;
 
@@ -82,3 +102,21 @@ throwException: 'throw' xception;
 
 xception: expression;
 
+expression:                  // Precedence (highest to lowest)
+    document                                                       #documentExpression     |
+    variable                                                       #variableExpression     |
+    IDENTIFIER parameters                                          #functionExpression     |
+    '(' expression ')'                                             #precedenceExpression   |
+    '@' expression                                                 #dereferenceExpression  |
+    expression indices                                             #componentExpression    |
+    expression '.' IDENTIFIER parameters                           #messageExpression      |
+    expression '!'                                                 #factorialExpression    |
+    <assoc=right> expression '^' expression                        #exponentialExpression  |
+    op=('-' | '/' | '*') expression                                #inversionExpression    |
+    expression op=('*' | '/' | '//' | '+' | '-') expression        #arithmeticExpression   |
+    '|' expression '|'                                             #magnitudeExpression    |
+    expression op=('<' | '=' | '>' | 'is' | 'matches') expression  #comparisonExpression   |
+    'not' expression                                               #complementExpression   |
+    expression op=('and' | 'sans' | 'xor' | 'or') expression       #logicalExpression      |
+    expression '?' expression                                      #defaultExpression
+;

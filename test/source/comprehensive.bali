@@ -1,7 +1,7 @@
 {
     if a < b then {
         $a := b
-        $b += c
+        $b := c
         throw exception
     } else if a > 0 then {
         false
@@ -12,7 +12,7 @@
         (3, 4i)
         return
     } catch $exception matching [$type: $warning] with {
-        $count += 1
+        $count := count + 1
         [
             $message: "Something not too serious happened."
             $exception: exception
@@ -24,7 +24,7 @@
         ]
         throw exception
     } finish with {
-        queue wakeUp(foo, bar, baz, 5) on <bali:/#RSTMWSC0HFY00QJP37QD3JA533NLKPP5v3.1>
+        queue [foo, bar, baz, 5] on <bali:/#RSTMWSC0HFY00QJP37QD3JA533NLKPP5v3.1>
         publish [$type: $confirmation, $timestamp: now()]
     }
     outer: while (true) do {

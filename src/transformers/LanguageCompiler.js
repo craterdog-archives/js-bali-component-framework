@@ -87,15 +87,17 @@ CompilerVisitor.prototype.getResult = function() {
 
 // document: literal parameters?
 CompilerVisitor.prototype.visitDocument = function(ctx) {
-    // place the literal component on the execution stack
+    // the VM places the literal component on the execution stack
     this.visitLiteral(ctx.literal());
-    // place the parameters on the execution stack
+
+    // the VM places the parameters on the execution stack
     var parameters = ctx.parameters();
     if (parameters) {
         this.visitParameters(parameters);
         // TODO: what do we do with these if they exist?
         // If they remain on the execution stack how do we know they are there?
     }
+
     // the literal component remains on the execution stack
 };
 
@@ -108,7 +110,6 @@ CompilerVisitor.prototype.visitLiteral = function(ctx) {
 
 // parameters: '(' composite ')'
 CompilerVisitor.prototype.visitParameters = function(ctx) {
-    // place the parameters on the execution stack
     this.visitComposite(ctx.composite());
 };
 
@@ -127,42 +128,49 @@ CompilerVisitor.prototype.visitComposite = function(ctx) {
 
 // range: value '..' value
 CompilerVisitor.prototype.visitRange = function(ctx) {
-    // place the result of the starting range value on the execution stack
+    // the VM places the result of the starting range value on the execution stack
     this.visitValue(ctx.value(0));
-    // place the result of the ending range value on the execution stack
+
+    // the VM places the result of the ending range value on the execution stack
     this.visitValue(ctx.value(1));
-    // replace the two range values on the execution stack with a new range component
+
+    // the VM replaces the two range values on the execution stack with a new range component
     this.builder.insertInvokeInstruction('$range', 2);
 };
 
 
 // array:
-//     value (',' value)* |
+//     value (',' value)*       |
 //     NEWLINE (value NEWLINE)* |
 //     /*empty array*/
 CompilerVisitor.prototype.visitArray = function(ctx) {
-    // retrieve all the values
+    // the VM places the size of the array on the execution stack
     var values = ctx.value();
-    // record how many values there are in this array
     var size = values.length;
-    // place the size of the array on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the execution stack with a new array of that size
+
+    // the VM replaces the size value on the execution stack with a new array containing the items
     this.builder.insertInvokeInstruction('$array', 1);
-    // evaluate each value
     for (var i = 0; i < values.length; i++) {
-        // place the result of the next value on the execution stack
         this.visitValue(values[i]);
-        // add the result as the next item in the array on the execution stack
         this.builder.insertInvokeInstruction('$addItem', 2);
     }
+
     // the array remains on the execution stack
 };
+// THESE MUST BE HERE SINCE visitArray() IS NOT CALLED DIRECTLY
 CompilerVisitor.prototype.visitInlineArray = function(ctx) {
+    // delegate to general case
     this.visitArray(ctx);
 };
 CompilerVisitor.prototype.visitNewlineArray = function(ctx) {
+    // delegate to general case
     this.visitArray(ctx);
+};
+CompilerVisitor.prototype.visitEmptyArray = function(ctx) {
+    // the VM loads a new empty array onto the top of the execution stack
+    this.builder.insertLoadInstruction('LITERAL', 0);
+    this.builder.insertInvokeInstruction('$array', 1);
 };
 
 
@@ -171,24 +179,21 @@ CompilerVisitor.prototype.visitNewlineArray = function(ctx) {
 //     NEWLINE (association NEWLINE)* |
 //     ':' /*empty table*/
 CompilerVisitor.prototype.visitTable = function(ctx) {
-    // retrieve all the associations
+    // the VM places the size of the array on the execution stack
     var associations = ctx.association();
-    // record how many associations there are in this table
     var size = associations.length;
-    // place the size of the table on the execution stack
     this.builder.insertLoadInstruction('LITERAL', size);
-    // replace the size value on the execution stack with a new table of that size
+
+    // the VM replaces the size value on the execution stack with a new table containing the associations
     this.builder.insertInvokeInstruction('$table', 1);
-    // evaluate each association
     for (var i = 0; i < associations.length; i++) {
-        // place the key and value of the next association on the execution stack
         this.visitAssociation(associations[i]);
-        // add the key-value pair as the next association in the table on the execution stack
         this.builder.insertInvokeInstruction('$setValue', 3);
-        // the key and value have been removed from the execution stack
     }
+
     // the table remains on the execution stack
 };
+// THESE MUST BE HERE SINCE visitTable() IS NOT CALLED DIRECTLY
 CompilerVisitor.prototype.visitInlineTable = function(ctx) {
     this.visitTable(ctx);
 };
@@ -196,30 +201,35 @@ CompilerVisitor.prototype.visitNewlineTable = function(ctx) {
     this.visitTable(ctx);
 };
 CompilerVisitor.prototype.visitEmptyTable = function(ctx) {
-    this.visitTable(ctx);
+    // the VM loads a new empty table onto the top of the execution stack
+    this.builder.insertLoadInstruction('LITERAL', 0);
+    this.builder.insertInvokeInstruction('$table', 1);
 };
 
 
 // association: key ':' value
 CompilerVisitor.prototype.visitAssociation = function(ctx) {
-    // place the key component on the execution stack
+    // the VM places the key component on the execution stack
     this.visitKey(ctx.key());
-    // place the result of the value value on the execution stack
+
+    // the VM places the result of the value value on the execution stack
     this.visitValue(ctx.value());
 };
 
 
 // key: element parameters?
 CompilerVisitor.prototype.visitKey = function(ctx) {
-    // place the element component on the execution stack
+    // the VM places the element component on the execution stack
     this.visitElement(ctx.element());
-    // place the parameters on the execution stack
+
+    // the VM places the parameters on the execution stack
     var parameters = ctx.parameters();
     if (parameters) {
         this.visitParameters(parameters);
         // TODO: what do we do with these if they exist?
         // If they remain on the execution stack how do we know they are there?
     }
+
     // the element component remains on the execution stack
 };
 
@@ -239,83 +249,88 @@ CompilerVisitor.prototype.visitScript = function(ctx) {
 
 // block: '{' statements '}'
 CompilerVisitor.prototype.visitBlock = function(ctx) {
-    // create a new block context in the instruction builder
+    // create a new compiler block context in the instruction builder
     this.builder.pushBlockContext();
-    // compile the statements
+
+    // compile the statements in the block
     this.visitStatements(ctx.statements());
-    // throw away the current block context in the instruction builder
+
+    // throw away the current compiler block context in the instruction builder
     this.builder.popBlockContext();
 };
 
 
 // statements:
-//     statement (';' statement)* |
+//     statement (';' statement)*   |
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty statements*/
 CompilerVisitor.prototype.visitStatements = function(ctx) {
+    // record the label for the end of the block in the compiler block context
     var statements = ctx.statement();
+    var numberOfStatements = statements.length;
+    var block = this.builder.blocks.peek();
+    var blockEndLabel = block.prefix + (numberOfStatements + 1) + '.BlockEnd';
+    block.blockEndLabel = blockEndLabel;
+
+    // compile the statements
     for (var i = 0; i < statements.length; i++) {
         this.visitStatement(statements[i]);
         this.builder.incrementStatementCount();
     }
+
+    // the VM jumps here when flow is interrupted by 'return', 'throw', 'continue', and 'break'
+    this.builder.insertLabel(blockEndLabel);
 };
 
 
 // statement: mainClause exceptionClause* finalClause?
 CompilerVisitor.prototype.visitStatement = function(ctx) {
     var exceptionClauses = ctx.exceptionClause();
+    var numberOfClauses = exceptionClauses.length;
     var finalClause = ctx.finalClause();
     var statementPrefix = this.builder.getStatementPrefix();
+    var exceptionsLabel = statementPrefix + 'ExceptionClauses';
+    var statementEndLabel = statementPrefix;
+    statementEndLabel += finalClause ? 'FinalClause' : 'StatementEnd';
+    this.builder.blocks.peek().statementEndLabel = statementEndLabel;
 
-    // COMPILE THE MAIN CLAUSE
+    // the VM executes the main clause
     this.visitMainClause(ctx.mainClause());
-    // the main clause completed successfully
-    var finalLabel = statementPrefix + (this.builder.getClauseNumber() + exceptionClauses.length) + '.FinalClause';
-    if (finalClause) {
-        // tell the VM to jump to the final clause block
-        this.builder.insertJumpInstruction('ON INTERRUPT', finalLabel);
-    }
-    // the VM will jump back here after the final clause is done if one exists
 
-    // COMPILE THE EXCEPTION CLAUSES
     if (exceptionClauses.length > 0) {
-        // no exceptions occurred and final clause, if one exists, is done so jump to the end
-        this.builder.insertJumpInstruction('ON ANY', statementPrefix + 'Done');
-        // when exceptions are thrown they will jump to here
-        this.builder.insertLabel(statementPrefix + 'ExceptionClauses');
-        // each clause checks for a match and handles it if it matches
-        for (var i = 0; i < exceptionClauses.length; i++) {
-            // the VM checks to see if the exception matches the template and handles it if so
+        this.builder.insertLabel(exceptionsLabel);
+        for (var i = 0; i < numberOfClauses; i++) {
+            // the VM jumps past the exception clauses if there is no exception
+            this.builder.insertLoadInstruction('VARIABLE', '$_exception_');
+            this.builder.insertJumpInstruction('ON NONE', statementEndLabel);
+
+            // the VM attempts to handle the exception
+            this.builder.insertLoadInstruction('VARIABLE', '$_exception_');
             this.visitExceptionClause(exceptionClauses[i]);
-            // no match, check the next one
         }
-        // an exception was thrown and no matching exception handler was found
-        if (finalClause) {
-            // tell the VM to jump to the final clause block
-            this.builder.insertJumpInstruction('ON INTERRUPT', finalLabel);
-        }
-        // the VM will jump back here after the final clause is done if one exists
-        // return from the method with the unhandled exception on top of the execution stack
-        this.builder.insertReturnInstruction('FROM INTERRUPT');
     }
 
-    // COMPILE THE FINAL CLAUSE
+    if (this.builder.getClauseNumber() > 1) {
+        // the VM jumps to here when there is no exception
+        this.builder.insertLabel(statementEndLabel);
+    }
+
     if (finalClause) {
-        // no exceptions occurred and the final clause, is done so jump to the end
-        this.builder.insertJumpInstruction('ON ANY', statementPrefix + 'Done');
-        // jumps to final clause end up here
+        // the VM executes the final clause
         this.visitFinalClause(finalClause);
-        // the VM jumped back to the next instruction after where the final clause was called
     }
 
-    if (exceptionClauses.length > 0 || finalClause) {
-        this.builder.insertLabel(statementPrefix + 'Done');
-    }
+    // the VM jumps to a parent final or exception clauses if there is an exception
+
 };
 
 
 // mainClause:
 //     evaluateExpression |
+//     checkoutDocument |
+//     saveDraft |
+//     discardDraft |
+//     commitDocument |
 //     publishEvent |
 //     queueMessage |
 //     waitForMessage |
@@ -332,153 +347,104 @@ CompilerVisitor.prototype.visitMainClause = function(ctx) {
 };
 
 
-// exceptionClause: 'catch' symbol 'matching' xception 'with' block
+// exceptionClause: 'catch' symbol 'matching' template 'with' block
 CompilerVisitor.prototype.visitExceptionClause = function(ctx) {
     var clausePrefix = this.builder.getClausePrefix();
-    this.builder.insertLabel(clausePrefix + 'ExceptionClause');
-    // retrieve the name of the symbol
-    var symbol = ctx.symbol().SYMBOL().getText();
-    // store the exception that is on top of the execution stack in the variable
-    this.builder.insertStoreInstruction('VARIABLE', symbol);
-    // place exception template on the execution stack
-    this.visitXception(ctx.xception());
-    // compare template with actual exception
+    var exceptionLabel = clausePrefix + 'ExceptionClause';
+    var statementEndLabel = clausePrefix + 'ClauseEnd';
+    this.builder.insertLabel(exceptionLabel);
+
+    // the VM stores the exception that is on top of the execution stack in the variable
+    var exception = ctx.symbol().SYMBOL().getText();
+    this.builder.insertStoreInstruction('VARIABLE', exception);
+
+    // the VM compares the template with actual exception
+    this.builder.insertLoadInstruction('VARIABLE', exception);
+    this.visitXception(ctx.template());
     this.builder.insertInvokeInstruction('$matches', 2);
-    // the result of the comparison replaces the two operands on the execution stack
-    var label = this.builder.getClausePrefix() + 'ExceptionClauseNoMatch';
-    this.builder.insertJumpInstruction('ON FALSE', label);
-    // the VM executes the exception handler block
+
+    // the VM jumps past this exception handler if the template and exception did not match
+    this.builder.insertJumpInstruction('ON FALSE', statementEndLabel);
+
+    // the VM executes the exception handler
     this.visitBlock(ctx.block());
-    // successfully handled the exception return VM to next statement after exception was thrown
-    this.builder.insertReturnInstruction('FROM INTERRUPT');
-    // the handler did not match, try the next one
-    this.builder.insertLabel(clausePrefix + 'ExceptionClauseNoMatch');
-    // load the exception from the variable back on top of the execution stack
-    this.builder.insertLoadInstruction('VARIABLE', symbol);
+
+    // the VM clears the exception variable
+    this.builder.insertLoadInstruction('LITERAL', 'none');
+    this.builder.insertStoreInstruction('VARIABLE', '$_exception_');
+
+    // the VM jumps here if the exception did not match the template
+    this.builder.insertLabel(statementEndLabel);
+};
+
+
+// template: expression
+CompilerVisitor.prototype.visitTemplate = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
 // finalClause: 'finish' 'with' block
 CompilerVisitor.prototype.visitFinalClause = function(ctx) {
-    // jumps to final clause end up here
-    var clausePrefix = this.builder.getClausePrefix();
-
-    this.builder.insertLabel(clausePrefix + 'FinalClause');
-    // the VM executes the final clause
     this.visitBlock(ctx.block());
-    // tell the VM to return to the address on top of the jump stack
-    this.builder.insertReturnInstruction('FROM INTERRUPT');
 };
 
 
-// evaluateExpression: (assignee op=(':=' | '?=' | '+=' | '-=' | '*=' | '/=' |
-// '//=' | '^=' | 'a=' | 's=' | 'o=' | 'x='))? expression
+// evaluateExpression: (assignee ':=')? expression
 CompilerVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'EvaluateExpression');
+    this.builder.insertLabel(statementPrefix + 'EvaluateStatement');
+
     var assignee = ctx.assignee();
-    var symbol = assignee ? assignee.symbol() : null;
-    symbol = symbol ? symbol.SYMBOL().getText() : '$_result_';
+    var variable = assignee ? assignee.symbol() : null;
+    variable = variable ? variable.SYMBOL().getText() : '$_result_';
     var component = assignee ? assignee.component() : null;
-    var operator = assignee ? ctx.op.text : ':=';
     var parent = this.createTemporaryVariable('component');
     var index = this.createTemporaryVariable('index');
 
     if (component) {
         // load the parent of the component and index of the child onto the execution stack
         this.visitComponent(component);
+
         // save of the parent and index in temporary variables
         this.builder.insertStoreInstruction('VARIABLE', index);
         this.builder.insertStoreInstruction('VARIABLE', parent);
-        // load the parent and index back onto the execution stack for after the operation
-        this.builder.insertLoadInstruction('VARIABLE', parent);
-        this.builder.insertLoadInstruction('VARIABLE', index);
-        if (operator !== ':=') {
-            // load a second copy of the parent and index back onto the execution stack
-            this.builder.insertLoadInstruction('VARIABLE', parent);
-            this.builder.insertLoadInstruction('VARIABLE', index);
-            // load the value of the child onto the execution stack
-            this.builder.insertInvokeInstruction('$getValue', 2);
-            // one copy of the parent and index have been replaced by the value of the child
-        }
-    } else if (operator !== ':=') {
-        // load the current value of the target variable onto the top of the execution stack
-        this.builder.insertLoadInstruction('VARIABLE', symbol);
     }
 
     // load the value of the expression onto the top of the execution stack
     this.visitExpression(ctx.expression());
 
-    // replace the value on the top of the execution stack with the result of the operation
-    switch (operator) {
-        case ':=':
-            // no operation, do nothing
-            break;
-        case '?=':
-            // if the current value of the variable is 'none' replace it with the expression
-            this.builder.insertInvokeInstruction('$default', 2);
-            // the resulting value is now on top of the execution stack
-            break;
-        case '+=':
-            // add the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$sum', 2);
-            // the sum of the values is now on top of the execution stack
-            break;
-        case '-=':
-            // subtract the expression from the current value of the variable
-            this.builder.insertInvokeInstruction('$difference', 2);
-            // the difference between the values is now on top of the execution stack
-            break;
-        case '*=':
-            // multiply the expression by the current value of the variable
-            this.builder.insertInvokeInstruction('$product', 2);
-            // the product of the values is now on top of the execution stack
-            break;
-        case '/=':
-            // divide the value of the variable by the expression
-            this.builder.insertInvokeInstruction('$quotient', 2);
-            // the quotient of the values is now on top of the execution stack
-            break;
-        case '//=':
-            // divide the value of the variable by the expression and leave the remainder
-            this.builder.insertInvokeInstruction('$remainder', 2);
-            // the remainder of the values is now on top of the execution stack
-            break;
-        case '^=':
-            // raise the value of the variable to the power of the expression
-            this.builder.insertInvokeInstruction('$exponential', 2);
-            // the exponential of the values is now on top of the execution stack
-            break;
-        case 'a=':
-            // determine the logical AND of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$and', 2);
-            // the logical AND of the values is now on top of the execution stack
-            break;
-        case 's=':
-            // determine the logical SANS of the current value of the variable and the expression
-            this.builder.insertInvokeInstruction('$sans', 2);
-            // the logical SANS of the values is now on top of the execution stack
-            break;
-        case 'o=':
-            // determine the logical OR of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$or', 2);
-            // the logical OR of the values is now on top of the execution stack
-            break;
-        case 'x=':
-            // determine the logical XOR of the expression to the current value of the variable
-            this.builder.insertInvokeInstruction('$xor', 2);
-            // the logical XOR of the values is now on top of the execution stack
-            break;
-        default:
-            throw new Error('COMPILER: Invalid operator passed to an EvaluateExpression clause: ' + operator);
-    }
-
     if (component) {
-        // store the result that is on top of the execution stack in the component
-        this.builder.insertInvokeInstruction('$setValue', 3);
+        // the VM stores the value of the expression in a temporary variable
+        var value = this.createTemporaryVariable('value');
+        this.builder.insertStoreInstruction('VARIABLE', value);
+
+        // the VM stores the type of the parent in a temporary variable
+        this.builder.insertLoadInstruction('VARIABLE', parent);
+        this.builder.insertInvokeInstruction('$getType', 1);
+        var type = this.createTemporaryVariable('type');
+        this.builder.insertStoreInstruction('VARIABLE', type);
+
+        // the VM creates the parameters array in a temporary variable
+        var parameters = this.createTemporaryVariable('parameters');
+        this.builder.insertLoadInstruction('LITERAL', 2);  // the initial capacity of the array
+        this.builder.insertInvokeInstruction('$array', 1);
+        this.builder.insertLoadInstruction('VARIABLE', index);
+        this.builder.insertInvokeInstruction('$addItem', 2);
+        this.builder.insertLoadInstruction('VARIABLE', value);
+        this.builder.insertInvokeInstruction('$addItem', 2);
+        this.builder.insertStoreInstruction('VARIABLE', parameters);
+
+        // the VM loads the method context onto the execution stack
+        this.builder.insertLoadInstruction('VARIABLE', type);
+        this.builder.insertLoadInstruction('VARIABLE', parent);
+        this.builder.insertLoadInstruction('VARIABLE', parameters);
+
+        // the VM executes the parent.setValue(index, value) method
+        this.builder.insertExecuteInstruction('MESSAGE WITH PARAMETERS', '$setValue');
     } else {
-        // store the result that is on top of the execution stack in the variable
-        this.builder.insertStoreInstruction('VARIABLE', symbol);
+        // the VM stores the value that is on top of the execution stack in the variable
+        this.builder.insertStoreInstruction('VARIABLE', variable);
     }
 };
 
@@ -492,16 +458,17 @@ CompilerVisitor.prototype.visitAssignee = function(ctx) {
 
 // component: variable indices
 CompilerVisitor.prototype.visitComponent = function(ctx) {
-    // place the value of the variable on the execution stack
+    // the VM places the value of the variable on the execution stack
     this.visitVariable(ctx.variable());
-    // place the parent component and index of the last child component onto the execution stack
+
+    // the VM places the parent of the child component and index of the child onto the execution stack
     this.visitIndices(ctx.indices());
 };
 
 
 // variable: IDENTIFIER
 CompilerVisitor.prototype.visitVariable = function(ctx) {
-    // load the value of the variable onto the top of the execution stack
+    // the VM loads the value of the variable onto the top of the execution stack
     var variable = '$' + ctx.IDENTIFIER().getText();
     this.builder.insertLoadInstruction('VARIABLE', variable);
 };
@@ -509,26 +476,146 @@ CompilerVisitor.prototype.visitVariable = function(ctx) {
 
 // indices: '[' array ']'
 CompilerVisitor.prototype.visitIndices = function(ctx) {
+    // the VM stores the component that is on top of the execution stack in a temporary variable
+    var component = this.createTemporaryVariable('component');
+    this.builder.insertStoreInstruction('VARIABLE', component);
+
     var indices = ctx.array().value();
     for (var i = 0; i <indices.length; i++) {
-        var index = indices[i];
-        // load the value of the index expression onto the top of the execution stack
-        this.visitValue(index);
-        if (i === indices.length - 1) break;  // leave the parent and final index on the stack
-        // load the child component for that index onto the top of the execution stack
-        this.builder.insertInvokeInstruction('$getValue', 2);
+        var value = indices[i];
+
+        // the VM loads the component onto the top of the execution stack
+        this.builder.insertLoadInstruction('VARIABLE', component);
+
+        // the VM stores the value of the next index expression in a temporary variable
+        var index = this.createTemporaryVariable('index');
+        this.visitValue(value);
+        if (i === indices.length - 1) break;  // leave the last index on the execution stack and exit
+        this.builder.insertStoreInstruction('VARIABLE', index);
+        
+        // the VM stores a reference to the type of the component in a temporary variable
+        this.builder.insertLoadInstruction('VARIABLE', component);
+        this.builder.insertInvokeInstruction('$getType', 1);
+        var type = this.createTemporaryVariable('type');
+        this.builder.insertStoreInstruction('VARIABLE', type);
+
+        // the VM creates a parameters array in a temporary variable
+        var parameters = this.createTemporaryVariable('parameters');
+        this.builder.insertLoadInstruction('LITERAL', 1);  // the initial capacity of the array
+        this.builder.insertInvokeInstruction('$array', 1);
+        this.builder.insertLoadInstruction('VARIABLE', index);
+        this.builder.insertInvokeInstruction('$addItem', 2);
+        this.builder.insertStoreInstruction('VARIABLE', parameters);
+
+        // the VM loads the method context onto the execution stack
+        this.builder.insertLoadInstruction('VARIABLE', type);
+        this.builder.insertLoadInstruction('VARIABLE', component);
+        this.builder.insertLoadInstruction('VARIABLE', parameters);
+
+        // the VM executes the component.getValue(index) method
+        this.builder.insertExecuteInstruction('MESSAGE WITH PARAMETERS', '$getValue');
+        // NOTE: this must be an executed message rather than an intrinsic to handle any collection
+
+        // the VM stores the child component in the temporary variable
+        this.builder.insertStoreInstruction('VARIABLE', component);
     }
+
     // the parent component and index of the last child component are on top of the execution stack
+};
+
+
+// checkoutDocument: 'checkout' symbol 'from' location
+CompilerVisitor.prototype.visitCheckoutDocument = function(ctx) {
+    var statementPrefix = this.builder.getStatementPrefix();
+    this.builder.insertLabel(statementPrefix + 'CheckoutStatement');
+
+    // the VM stores the value of the reference to the location into a temporary variable
+    this.visitLocation(ctx.location());
+    var location = this.createTemporaryVariable('location');
+    this.builder.insertStoreInstruction('VARIABLE', location);
+
+    // the VM loads the document from the remote location onto the top of the execution stack
+    this.builder.insertLoadInstruction('DOCUMENT', location);
+
+    // the VM stores the document in the variable
+    var document = ctx.symbol().SYMBOL().getText();
+    this.builder.insertStoreInstruction('VARIABLE', document);
+};
+
+
+// saveDraft: 'save' draft 'to' location
+CompilerVisitor.prototype.visitSaveDraft = function(ctx) {
+    var statementPrefix = this.builder.getStatementPrefix();
+    this.builder.insertLabel(statementPrefix + 'SaveStatement');
+
+    // the VM stores the value of the reference to the location into a temporary variable
+    this.visitLocation(ctx.location());
+    var location = this.createTemporaryVariable('location');
+    this.builder.insertStoreInstruction('VARIABLE', location);
+
+    // the VM loads the value of the draft onto the top of the execution stack
+    this.visitDraft(ctx.draft());
+
+    // the VM stores the document on top of the execution stack into the remote location
+    this.builder.insertStoreInstruction('DRAFT', location);
+};
+
+
+// discardDraft: 'discard' location
+CompilerVisitor.prototype.visitDiscardDraft = function(ctx) {
+    var statementPrefix = this.builder.getStatementPrefix();
+    this.builder.insertLabel(statementPrefix + 'DiscardStatement');
+
+    // the VM stores the value of the reference to the location into a temporary variable
+    this.visitLocation(ctx.location());
+    var location = this.createTemporaryVariable('location');
+    this.builder.insertStoreInstruction('VARIABLE', location);
+
+    // the VM stores no document into the remote location
+    this.builder.insertLoadInstruction('LITERAL', 'none');
+    this.builder.insertStoreInstruction('DRAFT', location);
+};
+
+
+// commitDraft: 'commit' draft 'to' location
+CompilerVisitor.prototype.visitCommitDraft = function(ctx) {
+    var statementPrefix = this.builder.getStatementPrefix();
+    this.builder.insertLabel(statementPrefix + 'CommitStatement');
+
+    // the VM stores the value of the reference to the location into a temporary variable
+    this.visitLocation(ctx.location());
+    var location = this.createTemporaryVariable('location');
+    this.builder.insertStoreInstruction('VARIABLE', location);
+
+    // the VM loads the value of the draft onto the top of the execution stack
+    this.visitDraft(ctx.draft());
+
+    // the VM stores the document on top of the execution stack into the remote location
+    this.builder.insertStoreInstruction('DOCUMENT', location);
+};
+
+
+// draft: expression
+CompilerVisitor.prototype.visitDraft = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
+// location: expression
+CompilerVisitor.prototype.visitLocation = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
 // publishEvent: 'publish' event
 CompilerVisitor.prototype.visitPublishEvent = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'PublishEvent');
-    // place the value of the event onto the top of the execution stack
+    this.builder.insertLabel(statementPrefix + 'PublishStatement');
+
+    // the VM places the value of the event onto the top of the execution stack
     this.visitEvent(ctx.event());
-    // store the event on the event queue
+
+    // the VM stores the event on the event queue
     this.builder.insertStoreInstruction('MESSAGE', '$_eventQueue_');
 };
 
@@ -542,21 +629,15 @@ CompilerVisitor.prototype.visitEvent = function(ctx) {
 // queueMessage: 'queue' message 'on' queue
 CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'QueueMessage');
-    // place the value of the reference to the queue onto the top of the execution stack
+    this.builder.insertLabel(statementPrefix + 'QueueStatement');
+
+    // the VM stores the reference to the queue in a temporary variable
     this.visitQueue(ctx.queue());
-    // store the reference to the queue in a temporary variable
     var queue = this.createTemporaryVariable('queue');
     this.builder.insertStoreInstruction('VARIABLE', queue);
-    // place the message name and parameters onto the top of the execution stack
-    var symbol = '$' + ctx.message().IDENTIFIER().getText();
-    // load the symbol for the message onto the top of the execution stack
-    this.builder.insertLoadInstruction('LITERAL', symbol);
-    // load the parameters structure onto the top of the execution stack
-    this.visitParameters(ctx.message().parameters());
-    // replace the message name and parameters with a message component
-    this.builder.insertInvokeInstruction('$message', 2);
-    // store the message on the message queue
+
+    // the VM stores the message on the message queue
+    this.visitMessage(ctx.message());
     this.builder.insertStoreInstruction('MESSAGE', queue);
 };
 
@@ -564,17 +645,25 @@ CompilerVisitor.prototype.visitQueueMessage = function(ctx) {
 // waitForMessage: 'wait' 'for' symbol 'from' queue
 CompilerVisitor.prototype.visitWaitForMessage = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'WaitForMessage');
-    // place the value of the reference to the queue onto the top of the execution stack
+    this.builder.insertLabel(statementPrefix + 'WaitStatement');
+
+    // the VM stores the reference to the queue in a temporary variable
     this.visitQueue(ctx.queue());
-    // store the reference to the queue in a temporary variable
     var queue = this.createTemporaryVariable('queue');
     this.builder.insertStoreInstruction('VARIABLE', queue);
-    // retrieve a message from the message queue and place it on top of the execution stack
-    this.builder.insertLoadInstruction('MESSAGE', queue);  // blocks until a message is available
-    // store the message as the value of the symbol
-    var symbol = ctx.symbol().SYMBOL().getText();
-    this.builder.insertStoreInstruction('VARIABLE', symbol);
+
+    // the VM retrieves a message from the message queue and place it on top of the execution stack
+    this.builder.insertLoadInstruction('MESSAGE', queue);  // VM blocks until a message is available
+    //
+    // the VM stores the message as the value of the variable
+    var message = ctx.symbol().SYMBOL().getText();
+    this.builder.insertStoreInstruction('VARIABLE', message);
+};
+
+
+// message: expression
+CompilerVisitor.prototype.visitMessage = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
@@ -587,13 +676,12 @@ CompilerVisitor.prototype.visitQueue = function(ctx) {
 // ifThen: 'if' condition 'then' block ('else' 'if' condition 'then' block)* ('else' block)?
 CompilerVisitor.prototype.visitIfThen = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'IfThen');
+    this.builder.insertLabel(statementPrefix + 'IfStatement');
     var conditions = ctx.condition();
     var blocks = ctx.block();
     var hasElseClause = blocks.length > conditions.length;
     var elseLabel = statementPrefix + (conditions.length + 1) + '.ElseClause';
-    var endLabel = statementPrefix + 'EndIf';
-    this.builder.blocks.peek().endLabel = endLabel;  // required by 'break from' and 'continue to'
+    var statementEndLabel = this.builder.blocks.peek().statementEndLabel;
 
     // check each condition
     for (var i = 0; i < conditions.length; i++) {
@@ -608,7 +696,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
             if (hasElseClause) {
                 nextLabel = elseLabel;
             } else {
-                nextLabel = endLabel;
+                nextLabel = statementEndLabel;
             }
         } else {
             nextLabel = statementPrefix + (this.builder.getClauseNumber() + 1) + 'IfCondition';
@@ -620,7 +708,7 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
         // all done
         if (hasElseClause || i < conditions.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('ON ANY', endLabel);
+            this.builder.insertJumpInstruction('ON ANY', statementEndLabel);
         }
     }
 
@@ -629,8 +717,6 @@ CompilerVisitor.prototype.visitIfThen = function(ctx) {
         this.builder.insertLabel(elseLabel);
         this.visitBlock(blocks[blocks.length - 1]);
     }
-
-    this.builder.insertLabel(endLabel);
 };
 
 
@@ -643,13 +729,12 @@ CompilerVisitor.prototype.visitCondition = function(ctx) {
 // selectFrom: 'select' selection 'from' (option 'do' block)+ ('else' block)?
 CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'SelectFrom');
+    this.builder.insertLabel(statementPrefix + 'SelectStatement');
     var options = ctx.option();
     var blocks = ctx.block();
     var hasElseClause = blocks.length > options.length;
     var elseLabel = statementPrefix + (options.length + 1) + '.ElseClause';
-    var endLabel = statementPrefix + 'EndSelect';
-    this.builder.blocks.peek().endLabel = endLabel;  // required by 'break from' and 'continue to'
+    var statementEndLabel = this.builder.blocks.peek().statementEndLabel;
 
     // place the selection value on the top of the execution stack
     this.visitSelection(ctx.selection());
@@ -669,11 +754,11 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         this.builder.insertInvokeInstruction('$matches', 2);
         var nextLabel;
         if (i === options.length - 1) {
-            // we are on the last options
+            // we are on the last option
             if (hasElseClause) {
                 nextLabel = elseLabel;
             } else {
-                nextLabel = endLabel;
+                nextLabel = statementEndLabel;
             }
         } else {
             nextLabel = statementPrefix + (this.builder.getClauseNumber() + 1) + 'SelectOption';
@@ -685,7 +770,7 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         // all done
         if (hasElseClause || i < options.length - 1) {
             // not the last block so the VM jumps to the end of the statement
-            this.builder.insertJumpInstruction('ON ANY', endLabel);
+            this.builder.insertJumpInstruction('ON ANY', statementEndLabel);
         }
     }
 
@@ -694,8 +779,6 @@ CompilerVisitor.prototype.visitSelectFrom = function(ctx) {
         this.builder.insertLabel(elseLabel);
         this.visitBlock(blocks[blocks.length - 1]);
     }
-
-    this.builder.insertLabel(endLabel);
 };
 
 
@@ -721,7 +804,7 @@ CompilerVisitor.prototype.visitOption = function(ctx) {
  */
 CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'WhileLoop');
+    this.builder.insertLabel(statementPrefix + 'WhileStatement');
 
     // construct the labels
     var loopLabel = ctx.label();
@@ -733,10 +816,9 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     }
     var clausePrefix = this.builder.getClausePrefix();
     loopLabel = clausePrefix + loopLabel;
-    var endLabel = statementPrefix + 'EndWhile';
+    var statementEndLabel = this.builder.blocks.peek().statementEndLabel;
 
     // setup the compiler state for this loop with respect to 'continue' and 'break' statements
-    this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
     var continueLoop = this.createContinueVariable(loopLabel);
     this.builder.insertLoadInstruction('LITERAL', true);
@@ -753,12 +835,11 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
     this.builder.insertInvokeInstruction('$and', 2);
 
     // if the condition is false or the continue flag is false, the VM branches to the end
-    this.builder.insertJumpInstruction('ON FALSE', endLabel);
+    this.builder.insertJumpInstruction('ON FALSE', statementEndLabel);
     // if the condition is true, then the VM enters the block
     this.visitBlock(ctx.block());
     // all done, the VM jumps to the end of the statement
     this.builder.insertJumpInstruction('ON ANY', loopLabel);
-    this.builder.insertLabel(endLabel);
 };
 
 
@@ -772,7 +853,7 @@ CompilerVisitor.prototype.visitWhileLoop = function(ctx) {
  */
 CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'WithLoop');
+    this.builder.insertLabel(statementPrefix + 'WithStatement');
 
     // the VM evaluates the sequence expression and places the result on top of the execution stack
     this.visitSequence(ctx.sequence());
@@ -787,13 +868,12 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     var sequenceType = this.createTemporaryVariable('sequenceType');
     this.builder.insertStoreInstruction('VARIABLE', sequenceType);
 
-    // the VM loads the parameters onto the top of the execution stack
+    // the VM loads the method context onto the execution stack
     this.builder.insertLoadInstruction('VARIABLE', sequenceType);
     this.builder.insertLoadInstruction('VARIABLE', sequence);
-    this.builder.insertLoadInstruction('VARIABLE', '$_emptyArray_');
 
-    // The VM replaces on the execution stack the parameters with a new iterator for the sequence
-    this.builder.insertExecuteInstruction('$createIterator', 3);
+    // the VM executes the sequence.createIterator() method
+    this.builder.insertExecuteInstruction('MESSAGE', '$createIterator');
 
     // The VM stores the iterater in a temporary variable
     var iterator = this.createTemporaryVariable('iterator');
@@ -823,10 +903,9 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     }
     var clausePrefix = this.builder.getClausePrefix();
     loopLabel = clausePrefix + loopLabel;
-    var endLabel = statementPrefix + 'EndWith';
+    var statementEndLabel = this.builder.blocks.peek().statementEndLabel;
 
     // setup the compiler state for this loop with respect to 'continue' and 'break' statements
-    this.builder.blocks.peek().endLabel = endLabel;
     this.builder.blocks.peek().loopLabel = loopLabel;
     var continueLoop = this.createContinueVariable(loopLabel);
     this.builder.insertLoadInstruction('LITERAL', true);
@@ -838,27 +917,25 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
     // the VM places the value of the continue loop variable on top of the execution stack
     this.builder.insertLoadInstruction('VARIABLE', continueLoop);
 
-    // the VM loads the parameters onto the top of the execution stack
+    // the VM loads the method context onto the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iteratorType);
     this.builder.insertLoadInstruction('VARIABLE', iterator);
-    this.builder.insertLoadInstruction('VARIABLE', '$_emptyArray_');
 
-    // the VM replaces the parameters with a boolean telling if there is another item to be retrieved
-    this.builder.insertExecuteInstruction('$hasNext', 3);
+    // the VM executes the sequence.createIterator() method
+    this.builder.insertExecuteInstruction('MESSAGE', '$hasNext');
 
     // the VM replaces the two values on the execution stack with the logical AND of the values
     this.builder.insertInvokeInstruction('$and', 2);
 
     // if the condition is false or the continue flag is false, the VM branches to the end
-    this.builder.insertJumpInstruction('ON FALSE', endLabel);
+    this.builder.insertJumpInstruction('ON FALSE', statementEndLabel);
 
-    // the VM loads the parameters onto the top of the execution stack
+    // the VM loads the method context onto the execution stack
     this.builder.insertLoadInstruction('VARIABLE', iteratorType);
     this.builder.insertLoadInstruction('VARIABLE', iterator);
-    this.builder.insertLoadInstruction('VARIABLE', '$_emptyArray_');
 
-    // the VM replaces the parameters with the next item in the sequence
-    this.builder.insertExecuteInstruction('$getNext', 3);
+    // the VM executes the sequence.createIterator() method
+    this.builder.insertExecuteInstruction('MESSAGE', '$getNext');
 
     // the VM stores the item that is on top of the execution stack in the variable
     this.builder.insertStoreInstruction('VARIABLE', item);
@@ -868,9 +945,6 @@ CompilerVisitor.prototype.visitWithLoop = function(ctx) {
 
     // the VM jumps to the top of the loop
     this.builder.insertJumpInstruction('ON ANY', loopLabel);
-
-    // when all done, the VM jumps here
-    this.builder.insertLabel(endLabel);
 };
 
 
@@ -891,13 +965,16 @@ CompilerVisitor.prototype.visitSequence = function(ctx) {
  */
 CompilerVisitor.prototype.visitContinueTo = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'ContinueTo');
-    var blocks = this.builder.blocks;
+    this.builder.insertLabel(statementPrefix + 'ContinueStatement');
+
+    // convert the label if it exists to be a loop label suffix
     var label = ctx.label();
     if (label) {
         label = label.IDENTIFIER().getText();
         label = label.charAt(0).toUpperCase() + label.slice(1);
     }
+
+    var blocks = this.builder.blocks;
     var numberOfBlocks = blocks.length;
     for (var i = 0; i < numberOfBlocks; i++) {
         var block = blocks[numberOfBlocks - i - 1];  // work backwards
@@ -908,8 +985,8 @@ CompilerVisitor.prototype.visitContinueTo = function(ctx) {
                 // the VM jumps to the end label of the parent block
                 // NOTE: we can't just jump straight to the matching loop or we will miss
                 // executing final handlers along the way
-                var endLabel = blocks[numberOfBlocks - 2].endLabel;
-                this.builder.insertJumpInstruction('ON ANY', endLabel);
+                var blockEndLabel = this.builder.blocks.peek().blockEndLabel;
+                this.builder.insertJumpInstruction('ON ANY', blockEndLabel);
                 return;
             }
             // not yet found the matching enclosing loop so break out of this one
@@ -935,13 +1012,16 @@ CompilerVisitor.prototype.visitContinueTo = function(ctx) {
  */
 CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'BreakFrom');
-    var blocks = this.builder.blocks;
+    this.builder.insertLabel(statementPrefix + 'BreakStatement');
+
+    // convert the label if it exists to be a loop label suffix
     var label = ctx.label();
     if (label) {
         label = label.IDENTIFIER().getText();
         label = label.charAt(0).toUpperCase() + label.slice(1);
     }
+
+    var blocks = this.builder.blocks;
     var numberOfBlocks = blocks.length;
     for (var i = 0; i < numberOfBlocks; i++) {
         var block = blocks[numberOfBlocks - i - 1];  // work backwards
@@ -957,8 +1037,8 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
                 // the VM jumps to the end label of the parent block
                 // NOTE: we can't just jump straight to the matching loop or we will miss
                 // executing final handlers along the way
-                var endLabel = blocks[numberOfBlocks - 2].endLabel;
-                this.builder.insertJumpInstruction('ON ANY', endLabel);
+                var blockEndLabel = this.builder.blocks.peek().blockEndLabel;
+                this.builder.insertJumpInstruction('ON ANY', blockEndLabel);
                 return;
             }
         }
@@ -970,7 +1050,7 @@ CompilerVisitor.prototype.visitBreakFrom = function(ctx) {
 
 // label: IDENTIFIER
 CompilerVisitor.prototype.visitLabel = function(ctx) {
-    // TODO: walk the block stack looking for the label
+    // not called...
     //var label = ctx.IDENTIFIER().getText();
 };
 
@@ -978,20 +1058,23 @@ CompilerVisitor.prototype.visitLabel = function(ctx) {
 // returnResult: 'return' result?
 CompilerVisitor.prototype.visitReturnResult = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'ReturnResult');
+    this.builder.insertLabel(statementPrefix + 'ReturnStatement');
+
     var result = ctx.result();
     if (result) {
-        // place the result on the top of the execution stack
+        // the VM stores the result in a temporary variable
         this.visitResult(result);
         this.builder.insertStoreInstruction('VARIABLE', '$_result_');
     }
-    this.builder.insertReturnInstruction('FROM INTERRUPT');
+
+    // the VM jumps to the end of the block
+    var blockEndLabel = this.builder.blocks.peek().blockEndLabel;
+    this.builder.insertJumpInstruction('ON ANY', blockEndLabel);
 };
 
 
 // result: expression
 CompilerVisitor.prototype.visitResult = function(ctx) {
-    // place the value of the result on top of the execution stack
     this.visitExpression(ctx.expression());
 };
 
@@ -999,12 +1082,15 @@ CompilerVisitor.prototype.visitResult = function(ctx) {
 // throwException: 'throw' xception
 CompilerVisitor.prototype.visitThrowException = function(ctx) {
     var statementPrefix = this.builder.getStatementPrefix();
-    this.builder.insertLabel(statementPrefix + 'ThrowException');
-    // place the exception on the top of the execution stack
+    this.builder.insertLabel(statementPrefix + 'ThrowStatement');
+
+    // the VM stores the exception in a temporary variable
     this.visitXception(ctx.xception());
     this.builder.insertStoreInstruction('VARIABLE', '$_exception_');
-    // TODO: How do we know the 'ExceptionClauses' label?
-    this.builder.insertJumpInstruction('ON INTERRUPT', 'ExceptionClauses');
+
+    // the VM jumps to the end of the block
+    var blockEndLabel = this.builder.blocks.peek().blockEndLabel;
+    this.builder.insertJumpInstruction('ON ANY', blockEndLabel);
 };
 
 
@@ -1035,17 +1121,19 @@ CompilerVisitor.prototype.visitVariableExpression = function(ctx) {
 };
 
 
-// funxionExpression: funxion
-CompilerVisitor.prototype.visitFunxionExpression = function(ctx) {
-    // load a reference to the type of function library onto the top of the execution stack
-    // TODO: How do we find the type????
+// functionExpression: IDENTIFIER parameters
+CompilerVisitor.prototype.visitFunctionExpression = function(ctx) {
+    // the VM stores the type of the function in a temporary variable
+    var type = '$type'; // TODO: How do we find the type????
 
-    // place the parameters for the function on top of the execution stack
-    this.visitParameters(ctx.funxion().parameters());
+    // the VM loads the method context onto the execution stack
+    var parameters = ctx.parameters();
+    this.builder.insertLoadInstruction('VARIABLE', type);
+    this.visitParameters(parameters);
 
-    // execute the method associated with the function
-    var name = ctx.funxion().IDENTIFIER().getText();
-    this.builder.insertExecuteInstruction(name, 2);
+    // the VM executes the <functionName>(...) method
+    var functionName = '$' + ctx.IDENTIFIER().getText();
+    this.builder.insertExecuteInstruction('FUNCTION WITH PARAMETERS', functionName);
 
     // the result of the executed method remains on the execution stack
 };
@@ -1072,38 +1160,40 @@ CompilerVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // componentExpression: expression indices
 CompilerVisitor.prototype.visitComponentExpression = function(ctx) {
-    // place the result of the expression on top of the execution stack
+    // the VM places the result of the expression on top of the execution stack
     this.visitExpression(ctx.expression());
-    // load the parent of the component and index of the child onto the execution stack
+
+    // the VM places the parent of the child component and index of the child onto the execution stack
     this.visitIndices(ctx.indices());
-    // retrieve the value of the child at the given index of the parent component
+
+    // the VM retrieves the value of the child at the given index of the parent component
     this.builder.insertInvokeInstruction('$getValue', 2);
     // the parent and index have been replaced by the value of the child
 };
 
 
-// messageExpression: expression '.' message
+// messageExpression: expression '.' IDENTIFIER parameters
 CompilerVisitor.prototype.visitMessageExpression = function(ctx) {
-    // place the value of the target expression on top of the execution stack
+    // the VM stores the result of the target expression in a temporary variable
     this.visitExpression(ctx.expression());
-    
-    // the VM stores the target in a temporary variable
     var target = this.createTemporaryVariable('target');
     this.builder.insertStoreInstruction('VARIABLE', target);
 
-    // the VM places a reference to the type of the target on the execution stack
+    // the VM stores a reference to the type of the target in a temporary variable
     this.builder.insertLoadInstruction('VARIABLE', target);
     this.builder.insertInvokeInstruction('$getType', 1);
+    var type = this.createTemporaryVariable('type');
+    this.builder.insertStoreInstruction('VARIABLE', type);
 
-    // the VM places the target onto the top of the execution stack
+    // the VM loads the method context onto the execution stack
+    var parameters = ctx.parameters();
+    this.builder.insertLoadInstruction('VARIABLE', type);
     this.builder.insertLoadInstruction('VARIABLE', target);
-
-    // the VM places the parameter structure for the message on top of the execution stack
-    this.visitParameters(ctx.message().parameters());
+    this.visitParameters(parameters);
 
     // the VM executes the method associated with the message
-    var symbol = '$' + ctx.message().IDENTIFIER().getText();
-    this.builder.insertExecuteInstruction(symbol, 3);
+    var messageName = '$' + ctx.IDENTIFIER().getText();
+    this.builder.insertExecuteInstruction('MESSAGE WITH PARAMETERS', messageName);
 
     // the result of the executed method remains on the execution stack
 };
@@ -1281,22 +1371,6 @@ CompilerVisitor.prototype.visitDefaultExpression = function(ctx) {
     this.visitExpression(ctx.expression(1));
     // find the actual value of the top value on the execution stack
     this.builder.insertInvokeInstruction('$default', 2);
-};
-
-
-// funxion: IDENTIFIER parameters
-CompilerVisitor.prototype.visitFunxion = function(ctx) {
-    // not called
-    //var name = ctx.IDENTIFIER().getText();
-    //this.visitParameters(ctx.parameters());
-};
-
-
-// message: IDENTIFIER parameters
-CompilerVisitor.prototype.visitMessage = function(ctx) {
-    // not called
-    //var name = ctx.IDENTIFIER().getText();
-    //this.visitParameters(ctx.parameters());
 };
 
 
@@ -1527,10 +1601,10 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
             instruction = 'INVOKE INTRINSIC ' + intrinsic;
             break;
         case 1:
-            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH ARGUMENT';
+            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH PARAMETER';
             break;
         default:
-            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+            instruction = 'INVOKE INTRINSIC ' + intrinsic + ' WITH ' + numberOfArguments + ' PARAMETERS';
     }
     this.insertInstruction(instruction);
 };
@@ -1539,17 +1613,23 @@ InstructionBuilder.prototype.insertInvokeInstruction = function(intrinsic, numbe
 /*
  * This method inserts a 'execute' instruction into the assembly source code.
  */
-InstructionBuilder.prototype.insertExecuteInstruction = function(method, numberOfArguments) {
+InstructionBuilder.prototype.insertExecuteInstruction = function(context, method) {
     var instruction;
-    switch (numberOfArguments) {
-        case 0:
-            instruction = 'EXECUTE METHOD ' + method;
+    switch (context) {
+        case 'FUNCTION':
+            instruction = 'EXECUTE FUNCTION ' + method;
             break;
-        case 1:
-            instruction = 'EXECUTE METHOD ' + method + ' WITH ARGUMENT';
+        case 'FUNCTION WITH PARAMETERS':
+            instruction = 'EXECUTE FUNCTION ' + method + ' WITH PARAMETERS';
+            break;
+        case 'MESSAGE':
+            instruction = 'EXECUTE MESSAGE ' + method;
+            break;
+        case 'MESSAGE WITH PARAMETERS':
+            instruction = 'EXECUTE MESSAGE ' + method + ' WITH PARAMETERS';
             break;
         default:
-            instruction = 'EXECUTE METHOD ' + method + ' WITH ' + numberOfArguments + ' ARGUMENTS';
+            throw new Error('COMPILER: Attempted to insert an EXECUTE instruction with an invalid context: ' + context);
     }
     this.insertInstruction(instruction);
 };

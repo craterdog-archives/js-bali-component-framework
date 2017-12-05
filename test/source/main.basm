@@ -1,5 +1,8 @@
 
-1.EvaluateExpression:
+1.EvaluateStatement:
 LOAD LITERAL `none`
 STORE VARIABLE $_result_
+
+2.BlockEnd:
+RETURN FROM METHOD
 

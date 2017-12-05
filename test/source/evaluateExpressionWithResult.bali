@@ -1,15 +1,4 @@
 {
-    document[$customer, $order, 3] += 5
     $foo := bar
-    $color ?= $violet
-    $count += 2
-    $count -= 1
-    $double *=2
-    $half /= 2
-    $remainder //= 13
-    $exponential ^= n
-    $and a= '01011101'
-    $sans s= '01101001'
-    $or o= '11110000'
-    $xor x= '10010100'
+    document[$customer, $order, 3] := 5
 }

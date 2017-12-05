@@ -284,6 +284,10 @@ FormatterVisitor.prototype.visitStatement = function(ctx) {
 
 // mainClause:
 //     evaluateExpression |
+//     checkoutDocument |
+//     saveDraft |
+//     discardDraft |
+//     commitDocument |
 //     publishEvent |
 //     queueMessage |
 //     waitForMessage |
@@ -300,16 +304,21 @@ FormatterVisitor.prototype.visitMainClause = function(ctx) {
 };
 
 
-// exceptionClause: 'catch' symbol 'matching' xception 'with' block
+// exceptionClause: 'catch' symbol 'matching' template 'with' block
 FormatterVisitor.prototype.visitExceptionClause = function(ctx) {
     this.source += ' catch ';
     this.visitSymbol(ctx.symbol());
     this.source += ' matching ';
-    this.visitXception(ctx.xception());
+    this.visitXception(ctx.template());
     this.source += ' with ';
     this.visitBlock(ctx.block());
 };
 
+
+// template: expression
+FormatterVisitor.prototype.visitTemplate = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
 
 
 // finalClause: 'finish' 'with' block
@@ -319,15 +328,12 @@ FormatterVisitor.prototype.visitFinalClause = function(ctx) {
 };
 
 
-// evaluateExpression: (assignee op=(':=' | '?=' | '+=' | '-=' | '*=' | '/=' |
-// '//=' | '^=' | 'a=' | 's=' | 'o=' | 'x='))? expression
+// evaluateExpression: (assignee ':=')? expression
 FormatterVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var assignee = ctx.assignee();
     if (assignee) {
         this.visitAssignee(assignee);
-        this.source += ' ';
-        this.source += ctx.op.text;
-        this.source += ' ';
+        this.source += ' := ';
     }
     this.visitExpression(ctx.expression());
 };
@@ -360,6 +366,52 @@ FormatterVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
+// checkoutDocument: 'checkout' symbol 'from' location
+FormatterVisitor.prototype.visitCheckoutDocument = function(ctx) {
+    this.source += 'checkout ';
+    this.visitSymbol(ctx.symbol());
+    this.source += ' from ';
+    this.visitLocation(ctx.location());
+};
+
+
+// saveDraft: 'save' draft 'to' location
+FormatterVisitor.prototype.visitSaveDraft = function(ctx) {
+    this.source += 'save ';
+    this.visitDraft(ctx.draft());
+    this.source += ' to ';
+    this.visitLocation(ctx.location());
+};
+
+
+// discardDraft: 'discard' location
+FormatterVisitor.prototype.visitDiscardDraft = function(ctx) {
+    this.source += 'discard ';
+    this.visitLocation(ctx.location());
+};
+
+
+// commitDraft: 'commit' draft 'to' location
+FormatterVisitor.prototype.visitCommitDraft = function(ctx) {
+    this.source += 'commit ';
+    this.visitDraft(ctx.draft());
+    this.source += ' to ';
+    this.visitLocation(ctx.location());
+};
+
+
+// draft: expression
+FormatterVisitor.prototype.visitDraft = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
+// location: expression
+FormatterVisitor.prototype.visitLocation = function(ctx) {
+    this.visitExpression(ctx.expression());
+};
+
+
 // publishEvent: 'publish' event
 FormatterVisitor.prototype.visitPublishEvent = function(ctx) {
     this.source += 'publish ';
@@ -388,6 +440,12 @@ FormatterVisitor.prototype.visitWaitForMessage = function(ctx) {
     this.visitSymbol(ctx.symbol());
     this.source += ' from ';
     this.visitQueue(ctx.queue());
+};
+
+
+// message: expression
+FormatterVisitor.prototype.visitMessage = function(ctx) {
+    this.visitExpression(ctx.expression());
 };
 
 
@@ -584,9 +642,10 @@ FormatterVisitor.prototype.visitVariableExpression = function(ctx) {
 };
 
 
-// funxionExpression: funxion
-FormatterVisitor.prototype.visitFunxionExpression = function(ctx) {
-    this.visitFunxion(ctx.funxion());
+// functionExpression: IDENTIFIER parameters
+FormatterVisitor.prototype.visitFunctionExpression = function(ctx) {
+    this.source += ctx.IDENTIFIER().getText();
+    this.visitParameters(ctx.parameters());
 };
 
 
@@ -612,11 +671,12 @@ FormatterVisitor.prototype.visitComponentExpression = function(ctx) {
 };
 
 
-// messageExpression: expression '.' message
+// messageExpression: expression '.' IDENTIFIER parameters
 FormatterVisitor.prototype.visitMessageExpression = function(ctx) {
     this.visitExpression(ctx.expression());
     this.source += '.';
-    this.visitMessage(ctx.message());
+    this.source += ctx.IDENTIFIER().getText();
+    this.visitParameters(ctx.parameters());
 };
 
 
@@ -699,20 +759,6 @@ FormatterVisitor.prototype.visitDefaultExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ? ';
     this.visitExpression(ctx.expression(1));
-};
-
-
-// funxion: IDENTIFIER parameters
-FormatterVisitor.prototype.visitFunxion = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
-    this.visitParameters(ctx.parameters());
-};
-
-
-// message: IDENTIFIER parameters
-FormatterVisitor.prototype.visitMessage = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
-    this.visitParameters(ctx.parameters());
 };
 
 

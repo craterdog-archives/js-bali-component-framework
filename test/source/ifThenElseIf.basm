@@ -1,24 +1,32 @@
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
 JUMP ON FALSE TO 1.2IfCondition
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
 STORE VARIABLE $_result_
-JUMP ON ANY TO 1.EndIf
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.IfCondition:
 LOAD LITERAL `false`
-JUMP ON FALSE TO 1.EndIf
+JUMP ON FALSE TO 1.StatementEnd
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_result_
 
-1.EndIf:
+1.2.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 

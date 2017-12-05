@@ -1,714 +1,819 @@
+Running "clean:build" (clean) task
+>> 2 paths cleaned.
+
+Running "jshint:files" (jshint) task
+>> 34 files lint free.
+
+Running "nodeunit:tests" (nodeunit) task
+Testing TestAngle.js..OK
+Testing TestBaliLanguage.js.
 test/source/main.basm:
 
-1.EvaluateExpression:
+1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+2.BlockEnd:
+RETURN FROM METHOD
 
 
 
 test/source/mainWithFinal.basm:
 
-1.EvaluateExpression:
+1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON INTERRUPT TO 1.1.FinalClause
-JUMP ON ANY TO 1.Done
+STORE VARIABLE $_result_
 
-1.1.FinalClause:
+1.1.1.EvaluateStatement:
+LOAD LITERAL `none`
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
 SKIP INSTRUCTION
 
-1.1.1.EvaluateExpression:
-LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
-
-1.Done:
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/mainWithExceptions.basm:
 
-1.ThrowException:
+1.ThrowStatement:
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'whine'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE VARIABLE $exception
-JUMP ON INTERRUPT TO ExceptionClauses
-JUMP ON ANY TO 1.Done
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE VARIABLE $_exception_
+JUMP ON ANY TO 2.BlockEnd
 
 1.ExceptionClauses:
-SKIP INSTRUCTION
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.StatementEnd
+LOAD VARIABLE $_exception_
 
 1.1.ExceptionClause:
 STORE VARIABLE $error
+LOAD VARIABLE $error
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'bad'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.1.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.1.ClauseEnd
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-1.1.ExceptionClauseNoMatch:
-LOAD VARIABLE $error
+1.1.2.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
+
+1.1.ClauseEnd:
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.StatementEnd
+LOAD VARIABLE $_exception_
 
 1.2.ExceptionClause:
 STORE VARIABLE $error
+LOAD VARIABLE $error
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'horrid'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.2.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.2.ClauseEnd
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-1.2.ExceptionClauseNoMatch:
-LOAD VARIABLE $error
-RETURN FROM INTERRUPT
+1.2.2.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
 
-1.Done:
+1.2.ClauseEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/mainWithExceptionsAndFinal.basm:
 
-1.ThrowException:
+1.ThrowStatement:
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'whine'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE VARIABLE $exception
-JUMP ON INTERRUPT TO ExceptionClauses
-JUMP ON INTERRUPT TO 1.3.FinalClause
-JUMP ON ANY TO 1.Done
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE VARIABLE $_exception_
+JUMP ON ANY TO 2.BlockEnd
 
 1.ExceptionClauses:
-SKIP INSTRUCTION
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.FinalClause
+LOAD VARIABLE $_exception_
 
 1.1.ExceptionClause:
 STORE VARIABLE $error
+LOAD VARIABLE $error
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'bad'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.1.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.1.ClauseEnd
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-1.1.ExceptionClauseNoMatch:
-LOAD VARIABLE $error
+1.1.2.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
+
+1.1.ClauseEnd:
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.FinalClause
+LOAD VARIABLE $_exception_
 
 1.2.ExceptionClause:
 STORE VARIABLE $error
+LOAD VARIABLE $error
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `'horrid'`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.2.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.2.ClauseEnd
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-1.2.ExceptionClauseNoMatch:
-LOAD VARIABLE $error
-JUMP ON INTERRUPT TO 1.3.FinalClause
-RETURN FROM INTERRUPT
-JUMP ON ANY TO 1.Done
+1.2.2.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
 
-1.3.FinalClause:
+1.2.ClauseEnd:
 SKIP INSTRUCTION
 
-1.3.1.EvaluateExpression:
-LOAD LITERAL `none`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+1.FinalClause:
+SKIP INSTRUCTION
 
-1.Done:
+1.3.1.EvaluateStatement:
+LOAD LITERAL `none`
+STORE VARIABLE $_result_
+
+1.3.2.BlockEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/evaluateExpression.basm:
 
-1.EvaluateExpression:
+1.EvaluateStatement:
 LOAD LITERAL `2`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$foo`
 LOAD VARIABLE $bar
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$baz`
 LOAD LITERAL `5`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE VARIABLE $_result_
 
-2.EvaluateExpression:
+2.EvaluateStatement:
 LOAD VARIABLE $variable
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-3.EvaluateExpression:
+3.EvaluateStatement:
+LOAD VARIABLE $type
 LOAD LITERAL `1`
-INVOKE INTRINSIC array WITH ARGUMENT
+INVOKE INTRINSIC $array WITH PARAMETER
 LOAD LITERAL `13`
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-EXECUTE METHOD isPrime WITH 3 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+EXECUTE FUNCTION $isPrime WITH PARAMETERS
+STORE VARIABLE $_result_
 
-4.EvaluateExpression:
+4.EvaluateStatement:
 LOAD VARIABLE $a
 LOAD VARIABLE $b
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
+INVOKE INTRINSIC $sum WITH 2 PARAMETERS
 LOAD VARIABLE $c
-INVOKE INTRINSIC product WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $product WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-5.EvaluateExpression:
+5.EvaluateStatement:
 LOAD VARIABLE $reference
 STORE VARIABLE $_reference_11
 LOAD DOCUMENT $_reference_11
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-6.EvaluateExpression:
+6.EvaluateStatement:
 LOAD VARIABLE $customer
+STORE VARIABLE $_component_14
+LOAD VARIABLE $_component_14
 LOAD LITERAL `$order`
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-LOAD LITERAL `$item`
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-LOAD LITERAL `5`
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-STORE VARIABLE $result
-
-7.EvaluateExpression:
-LOAD VARIABLE $list
-STORE VARIABLE $_target_16
-LOAD VARIABLE $_target_16
-INVOKE INTRINSIC getType WITH ARGUMENT
-LOAD VARIABLE $_target_16
+STORE VARIABLE $_index_15
+LOAD VARIABLE $_component_14
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_16
 LOAD LITERAL `1`
-INVOKE INTRINSIC array WITH ARGUMENT
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $_index_15
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE VARIABLE $_parameters_17
+LOAD VARIABLE $_type_16
+LOAD VARIABLE $_component_14
+LOAD VARIABLE $_parameters_17
+EXECUTE MESSAGE $getValue WITH PARAMETERS
+STORE VARIABLE $_component_14
+LOAD VARIABLE $_component_14
+LOAD LITERAL `$item`
+STORE VARIABLE $_index_18
+LOAD VARIABLE $_component_14
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_19
+LOAD LITERAL `1`
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $_index_18
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE VARIABLE $_parameters_20
+LOAD VARIABLE $_type_19
+LOAD VARIABLE $_component_14
+LOAD VARIABLE $_parameters_20
+EXECUTE MESSAGE $getValue WITH PARAMETERS
+STORE VARIABLE $_component_14
+LOAD VARIABLE $_component_14
+LOAD LITERAL `5`
+INVOKE INTRINSIC $getValue WITH 2 PARAMETERS
+STORE VARIABLE $_result_
+
+7.EvaluateStatement:
+LOAD VARIABLE $list
+STORE VARIABLE $_target_24
+LOAD VARIABLE $_target_24
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_25
+LOAD VARIABLE $_type_25
+LOAD VARIABLE $_target_24
+LOAD LITERAL `1`
+INVOKE INTRINSIC $array WITH PARAMETER
 LOAD VARIABLE $item
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-EXECUTE METHOD addItem WITH 3 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+EXECUTE MESSAGE $addItem WITH PARAMETERS
+STORE VARIABLE $_result_
 
-8.EvaluateExpression:
+8.EvaluateStatement:
 LOAD LITERAL `23`
-INVOKE INTRINSIC factorial WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $factorial WITH PARAMETER
+STORE VARIABLE $_result_
 
-9.EvaluateExpression:
+9.EvaluateStatement:
 LOAD LITERAL `2`
 LOAD LITERAL `8`
-INVOKE INTRINSIC exponential WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $exponential WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-10.EvaluateExpression:
+10.EvaluateStatement:
 LOAD LITERAL `pi`
-INVOKE INTRINSIC negative WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $negative WITH PARAMETER
+STORE VARIABLE $_result_
 
-11.EvaluateExpression:
+11.EvaluateStatement:
 LOAD LITERAL `5`
-INVOKE INTRINSIC inverse WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $inverse WITH PARAMETER
+STORE VARIABLE $_result_
 
-12.EvaluateExpression:
+12.EvaluateStatement:
 LOAD LITERAL `(3, 4i)`
-INVOKE INTRINSIC conjugate WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $conjugate WITH PARAMETER
+STORE VARIABLE $_result_
 
-13.EvaluateExpression:
+13.EvaluateStatement:
 LOAD VARIABLE $x
 LOAD VARIABLE $y
-INVOKE INTRINSIC product WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $product WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-14.EvaluateExpression:
+14.EvaluateStatement:
 LOAD VARIABLE $a
 LOAD VARIABLE $b
-INVOKE INTRINSIC quotient WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $quotient WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-15.EvaluateExpression:
+15.EvaluateStatement:
 LOAD VARIABLE $c
 LOAD VARIABLE $d
-INVOKE INTRINSIC remainder WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $remainder WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-16.EvaluateExpression:
+16.EvaluateStatement:
 LOAD VARIABLE $x
 LOAD VARIABLE $y
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $sum WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-17.EvaluateExpression:
+17.EvaluateStatement:
 LOAD VARIABLE $w
 LOAD VARIABLE $z
-INVOKE INTRINSIC difference WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $difference WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-18.EvaluateExpression:
+18.EvaluateStatement:
 LOAD LITERAL `(3, 4i)`
-INVOKE INTRINSIC magnitude WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $magnitude WITH PARAMETER
+STORE VARIABLE $_result_
 
-19.EvaluateExpression:
+19.EvaluateStatement:
 LOAD VARIABLE $a
 LOAD VARIABLE $b
-INVOKE INTRINSIC less WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $less WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-20.EvaluateExpression:
+20.EvaluateStatement:
 LOAD VARIABLE $c
 LOAD VARIABLE $d
-INVOKE INTRINSIC equal WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $equal WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-21.EvaluateExpression:
+21.EvaluateStatement:
 LOAD VARIABLE $f
 LOAD VARIABLE $g
-INVOKE INTRINSIC more WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $more WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-22.EvaluateExpression:
+22.EvaluateStatement:
 LOAD VARIABLE $h
 LOAD VARIABLE $j
-INVOKE INTRINSIC is WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $is WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-23.EvaluateExpression:
+23.EvaluateStatement:
 LOAD VARIABLE $k
 LOAD VARIABLE $m
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-24.EvaluateExpression:
+24.EvaluateStatement:
 LOAD VARIABLE $p
-INVOKE INTRINSIC complement WITH ARGUMENT
-STORE VARIABLE $result
+INVOKE INTRINSIC $complement WITH PARAMETER
+STORE VARIABLE $_result_
 
-25.EvaluateExpression:
+25.EvaluateStatement:
 LOAD VARIABLE $a
 LOAD VARIABLE $b
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-26.EvaluateExpression:
+26.EvaluateStatement:
 LOAD VARIABLE $c
 LOAD VARIABLE $d
-INVOKE INTRINSIC sans WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $sans WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-27.EvaluateExpression:
+27.EvaluateStatement:
 LOAD VARIABLE $f
 LOAD VARIABLE $g
-INVOKE INTRINSIC xor WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $xor WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-28.EvaluateExpression:
+28.EvaluateStatement:
 LOAD VARIABLE $h
 LOAD VARIABLE $j
-INVOKE INTRINSIC or WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $or WITH 2 PARAMETERS
+STORE VARIABLE $_result_
 
-29.EvaluateExpression:
+29.EvaluateStatement:
 LOAD VARIABLE $foo
 LOAD LITERAL `5`
-INVOKE INTRINSIC default WITH 2 ARGUMENTS
-STORE VARIABLE $result
+INVOKE INTRINSIC $default WITH 2 PARAMETERS
+STORE VARIABLE $_result_
+
+30.BlockEnd:
+RETURN FROM METHOD
 
 
 
 test/source/evaluateExpressionWithResult.basm:
 
-1.EvaluateExpression:
-LOAD VARIABLE $document
-LOAD LITERAL `$customer`
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-LOAD LITERAL `$order`
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-LOAD LITERAL `3`
-STORE VARIABLE $_index_2
-STORE VARIABLE $_component_1
-LOAD VARIABLE $_component_1
-LOAD VARIABLE $_index_2
-LOAD VARIABLE $_component_1
-LOAD VARIABLE $_index_2
-INVOKE INTRINSIC getValue WITH 2 ARGUMENTS
-LOAD LITERAL `5`
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-
-2.EvaluateExpression:
+1.EvaluateStatement:
 LOAD VARIABLE $bar
 STORE VARIABLE $foo
 
-3.EvaluateExpression:
-LOAD VARIABLE $color
-LOAD LITERAL `$violet`
-INVOKE INTRINSIC default WITH 2 ARGUMENTS
-STORE VARIABLE $color
-
-4.EvaluateExpression:
-LOAD VARIABLE $count
-LOAD LITERAL `2`
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
-STORE VARIABLE $count
-
-5.EvaluateExpression:
-LOAD VARIABLE $count
+2.EvaluateStatement:
+LOAD VARIABLE $document
+STORE VARIABLE $_component_5
+LOAD VARIABLE $_component_5
+LOAD LITERAL `$customer`
+STORE VARIABLE $_index_6
+LOAD VARIABLE $_component_5
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_7
 LOAD LITERAL `1`
-INVOKE INTRINSIC difference WITH 2 ARGUMENTS
-STORE VARIABLE $count
-
-6.EvaluateExpression:
-LOAD VARIABLE $double
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $_index_6
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE VARIABLE $_parameters_8
+LOAD VARIABLE $_type_7
+LOAD VARIABLE $_component_5
+LOAD VARIABLE $_parameters_8
+EXECUTE MESSAGE $getValue WITH PARAMETERS
+STORE VARIABLE $_component_5
+LOAD VARIABLE $_component_5
+LOAD LITERAL `$order`
+STORE VARIABLE $_index_9
+LOAD VARIABLE $_component_5
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_10
+LOAD LITERAL `1`
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $_index_9
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE VARIABLE $_parameters_11
+LOAD VARIABLE $_type_10
+LOAD VARIABLE $_component_5
+LOAD VARIABLE $_parameters_11
+EXECUTE MESSAGE $getValue WITH PARAMETERS
+STORE VARIABLE $_component_5
+LOAD VARIABLE $_component_5
+LOAD LITERAL `3`
+STORE VARIABLE $_index_4
+STORE VARIABLE $_component_3
+LOAD LITERAL `5`
+STORE VARIABLE $_value_13
+LOAD VARIABLE $_component_3
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_14
 LOAD LITERAL `2`
-INVOKE INTRINSIC product WITH 2 ARGUMENTS
-STORE VARIABLE $double
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $_index_4
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+LOAD VARIABLE $_value_13
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE VARIABLE $_parameters_15
+LOAD VARIABLE $_type_14
+LOAD VARIABLE $_component_3
+LOAD VARIABLE $_parameters_15
+EXECUTE MESSAGE $setValue WITH PARAMETERS
 
-7.EvaluateExpression:
-LOAD VARIABLE $half
-LOAD LITERAL `2`
-INVOKE INTRINSIC quotient WITH 2 ARGUMENTS
-STORE VARIABLE $half
-
-8.EvaluateExpression:
-LOAD VARIABLE $remainder
-LOAD LITERAL `13`
-INVOKE INTRINSIC remainder WITH 2 ARGUMENTS
-STORE VARIABLE $remainder
-
-9.EvaluateExpression:
-LOAD VARIABLE $exponential
-LOAD VARIABLE $n
-INVOKE INTRINSIC exponential WITH 2 ARGUMENTS
-STORE VARIABLE $exponential
-
-10.EvaluateExpression:
-LOAD VARIABLE $and
-LOAD LITERAL `'01011101'`
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-STORE VARIABLE $and
-
-11.EvaluateExpression:
-LOAD VARIABLE $sans
-LOAD LITERAL `'01101001'`
-INVOKE INTRINSIC sans WITH 2 ARGUMENTS
-STORE VARIABLE $sans
-
-12.EvaluateExpression:
-LOAD VARIABLE $or
-LOAD LITERAL `'11110000'`
-INVOKE INTRINSIC or WITH 2 ARGUMENTS
-STORE VARIABLE $or
-
-13.EvaluateExpression:
-LOAD VARIABLE $xor
-LOAD LITERAL `'10010100'`
-INVOKE INTRINSIC xor WITH 2 ARGUMENTS
-STORE VARIABLE $xor
+3.BlockEnd:
+RETURN FROM METHOD
 
 
 
 test/source/ifThen.basm:
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
-JUMP ON FALSE TO 1.EndIf
+JUMP ON FALSE TO 1.StatementEnd
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndIf:
+1.1.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/ifThenElse.basm:
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
 JUMP ON FALSE TO 1.2.ElseClause
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.ElseClause:
 SKIP INSTRUCTION
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndIf:
+1.2.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/ifThenElseIf.basm:
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
 JUMP ON FALSE TO 1.2IfCondition
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.IfCondition:
 LOAD LITERAL `false`
-JUMP ON FALSE TO 1.EndIf
+JUMP ON FALSE TO 1.StatementEnd
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndIf:
+1.2.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/ifThenElseIfElse.basm:
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
 JUMP ON FALSE TO 1.2IfCondition
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.IfCondition:
 LOAD LITERAL `false`
 JUMP ON FALSE TO 1.3.ElseClause
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_result_
+
+1.2.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.3.ElseClause:
 SKIP INSTRUCTION
 
-1.3.1.EvaluateExpression:
+1.3.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndIf:
+1.3.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/selectOption.basm:
 
-1.SelectFrom:
+1.SelectStatement:
 LOAD LITERAL `$selection`
 STORE VARIABLE $_selection_1
 
 1.1.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'alpha'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.2SelectOption
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndSelect
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'beta'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.3SelectOption
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndSelect
+STORE VARIABLE $_result_
+
+1.2.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.3.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'gamma'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndSelect
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 
-1.3.1.EvaluateExpression:
+1.3.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndSelect:
+1.3.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/selectOptionElse.basm:
 
-1.SelectFrom:
+1.SelectStatement:
 LOAD LITERAL `$selection`
 STORE VARIABLE $_selection_1
 
 1.1.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'alpha'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.2SelectOption
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndSelect
+STORE VARIABLE $_result_
+
+1.1.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.2.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'beta'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.3SelectOption
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndSelect
+STORE VARIABLE $_result_
+
+1.2.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.3.SelectOption:
 LOAD VARIABLE $_selection_1
 LOAD LITERAL `'gamma'`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.4.ElseClause
 
-1.3.1.EvaluateExpression:
+1.3.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
-JUMP ON ANY TO 1.EndSelect
+STORE VARIABLE $_result_
+
+1.3.2.BlockEnd:
+JUMP ON ANY TO 1.StatementEnd
 
 1.4.ElseClause:
 SKIP INSTRUCTION
 
-1.4.1.EvaluateExpression:
+1.4.1.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.EndSelect:
+1.4.2.BlockEnd:
+SKIP INSTRUCTION
+
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/whileLoop.basm:
 
-1.WhileLoop:
+1.WhileStatement:
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_WhileCondition
 
 1.1.WhileCondition:
 LOAD VARIABLE $_continue_1_1_WhileCondition
 LOAD LITERAL `$condition`
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWhile
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.BreakFrom:
+1.1.2.BreakStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_1_1_WhileCondition
-JUMP ON ANY TO 1.EndWhile
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.WhileCondition
 
-1.EndWhile:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/whileLoopWithLabel.basm:
 
-1.WhileLoop:
+1.WhileStatement:
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_Label
 
 1.1.Label:
 LOAD VARIABLE $_continue_1_1_Label
 LOAD LITERAL `$condition`
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWhile
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.ContinueTo:
-JUMP ON ANY TO 1.EndWhile
+1.1.2.ContinueStatement:
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.Label
 
-1.EndWhile:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/withLoop.basm:
 
-1.WithLoop:
+1.WithStatement:
 LOAD LITERAL `$sequence`
 STORE VARIABLE $_sequence_1
 LOAD VARIABLE $_sequence_1
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequence_1
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $createIterator WITH 3 ARGUMENTS
+EXECUTE MESSAGE $createIterator
 STORE VARIABLE $_iterator_3
 LOAD VARIABLE $_iterator_3
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_iteratorType_4
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_WithItem
@@ -717,48 +822,50 @@ STORE VARIABLE $_continue_1_1_WithItem
 LOAD VARIABLE $_continue_1_1_WithItem
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $hasNext WITH 3 ARGUMENTS
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWith
+EXECUTE MESSAGE $hasNext
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $getNext WITH 3 ARGUMENTS
+EXECUTE MESSAGE $getNext
 STORE VARIABLE $_item_5
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.ContinueTo:
-JUMP ON ANY TO 1.EndWith
+1.1.2.ContinueStatement:
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.WithItem
 
-1.EndWith:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/withLoopWithLabel.basm:
 
-1.WithLoop:
+1.WithStatement:
 LOAD LITERAL `$sequence`
 STORE VARIABLE $_sequence_1
 LOAD VARIABLE $_sequence_1
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequence_1
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $createIterator WITH 3 ARGUMENTS
+EXECUTE MESSAGE $createIterator
 STORE VARIABLE $_iterator_3
 LOAD VARIABLE $_iterator_3
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_iteratorType_4
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_Label
@@ -767,50 +874,52 @@ STORE VARIABLE $_continue_1_1_Label
 LOAD VARIABLE $_continue_1_1_Label
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $hasNext WITH 3 ARGUMENTS
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWith
+EXECUTE MESSAGE $hasNext
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $getNext WITH 3 ARGUMENTS
+EXECUTE MESSAGE $getNext
 STORE VARIABLE $_item_5
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.BreakFrom:
+1.1.2.BreakStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_1_1_Label
-JUMP ON ANY TO 1.EndWith
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.Label
 
-1.EndWith:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/withEachLoop.basm:
 
-1.WithLoop:
+1.WithStatement:
 LOAD LITERAL `$sequence`
 STORE VARIABLE $_sequence_1
 LOAD VARIABLE $_sequence_1
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequence_1
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $createIterator WITH 3 ARGUMENTS
+EXECUTE MESSAGE $createIterator
 STORE VARIABLE $_iterator_3
 LOAD VARIABLE $_iterator_3
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_iteratorType_4
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_WithItem
@@ -819,48 +928,50 @@ STORE VARIABLE $_continue_1_1_WithItem
 LOAD VARIABLE $_continue_1_1_WithItem
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $hasNext WITH 3 ARGUMENTS
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWith
+EXECUTE MESSAGE $hasNext
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $getNext WITH 3 ARGUMENTS
+EXECUTE MESSAGE $getNext
 STORE VARIABLE $symbol
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.ContinueTo:
-JUMP ON ANY TO 1.EndWith
+1.1.2.ContinueStatement:
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.WithItem
 
-1.EndWith:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/withEachLoopWithLabel.basm:
 
-1.WithLoop:
+1.WithStatement:
 LOAD LITERAL `$sequence`
 STORE VARIABLE $_sequence_1
 LOAD VARIABLE $_sequence_1
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequenceType_2
 LOAD VARIABLE $_sequence_1
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $createIterator WITH 3 ARGUMENTS
+EXECUTE MESSAGE $createIterator
 STORE VARIABLE $_iterator_3
 LOAD VARIABLE $_iterator_3
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
 STORE VARIABLE $_iteratorType_4
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_1_1_Label
@@ -869,414 +980,452 @@ STORE VARIABLE $_continue_1_1_Label
 LOAD VARIABLE $_continue_1_1_Label
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $hasNext WITH 3 ARGUMENTS
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.EndWith
+EXECUTE MESSAGE $hasNext
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.StatementEnd
 LOAD VARIABLE $_iteratorType_4
 LOAD VARIABLE $_iterator_3
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $getNext WITH 3 ARGUMENTS
+EXECUTE MESSAGE $getNext
 STORE VARIABLE $symbol
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.1.2.BreakFrom:
+1.1.2.BreakStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_1_1_Label
-JUMP ON ANY TO 1.EndWith
+JUMP ON ANY TO 1.1.4.BlockEnd
 
-1.1.3.EvaluateExpression:
+1.1.3.EvaluateStatement:
 LOAD LITERAL `none`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
+
+1.1.4.BlockEnd:
 JUMP ON ANY TO 1.1.Label
 
-1.EndWith:
+1.StatementEnd:
+SKIP INSTRUCTION
+
+2.BlockEnd:
 RETURN FROM METHOD
 
 
 
 test/source/queueMessage.basm:
 
-1.QueueMessage:
+1.QueueStatement:
 LOAD LITERAL `<bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>`
 STORE VARIABLE $_queue_1
-LOAD LITERAL `doSomething`
-LOAD LITERAL `2`
-INVOKE INTRINSIC table WITH ARGUMENT
+LOAD LITERAL `1`
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$foo`
 LOAD VARIABLE $bar
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-LOAD LITERAL `$baz`
-LOAD LITERAL `5`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC message WITH 2 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 STORE MESSAGE $_queue_1
+
+2.BlockEnd:
+RETURN FROM METHOD
 
 
 
 test/source/waitForMessage.basm:
 
-1.WaitForMessage:
+1.WaitStatement:
 LOAD LITERAL `<bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>`
 STORE VARIABLE $_queue_1
 LOAD MESSAGE $_queue_1
 STORE VARIABLE $message
 
+2.BlockEnd:
+RETURN FROM METHOD
+
 
 
 test/source/publishEvent.basm:
 
-1.PublishEvent:
+1.PublishStatement:
 LOAD LITERAL `3`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `$changeEvent`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$key`
 LOAD LITERAL `$foo`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$value`
 LOAD LITERAL `5`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE MESSAGE $eventQueue
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE MESSAGE $_eventQueue_
+
+2.BlockEnd:
+RETURN FROM METHOD
 
 
 
 test/source/comprehensive.basm:
 
-1.IfThen:
+1.IfStatement:
 SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD VARIABLE $a
 LOAD VARIABLE $b
-INVOKE INTRINSIC less WITH 2 ARGUMENTS
+INVOKE INTRINSIC $less WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.2IfCondition
 
-1.1.1.EvaluateExpression:
+1.1.1.EvaluateStatement:
 LOAD VARIABLE $b
 STORE VARIABLE $a
 
-1.1.2.EvaluateExpression:
-LOAD VARIABLE $b
+1.1.2.EvaluateStatement:
 LOAD VARIABLE $c
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
 STORE VARIABLE $b
 
-1.1.3.ThrowException:
+1.1.3.ThrowStatement:
 LOAD VARIABLE $exception
-STORE VARIABLE $exception
-JUMP ON INTERRUPT TO ExceptionClauses
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_exception_
+JUMP ON ANY TO 1.1.4.BlockEnd
+
+1.1.4.BlockEnd:
+JUMP ON ANY TO 1.FinalClause
 
 1.2.IfCondition:
 LOAD VARIABLE $a
 LOAD LITERAL `0`
-INVOKE INTRINSIC more WITH 2 ARGUMENTS
+INVOKE INTRINSIC $more WITH 2 PARAMETERS
 JUMP ON FALSE TO 1.3.ElseClause
 
-1.2.1.EvaluateExpression:
+1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.2.2.EvaluateExpression:
+1.2.2.EvaluateStatement:
+LOAD VARIABLE $type
 LOAD LITERAL `1`
-INVOKE INTRINSIC array WITH ARGUMENT
+INVOKE INTRINSIC $array WITH PARAMETER
 LOAD VARIABLE $b
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-EXECUTE METHOD fibonacci WITH 3 ARGUMENTS
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+EXECUTE FUNCTION $fibonacci WITH PARAMETERS
 STORE VARIABLE $c
 
-1.2.3.ReturnResult:
+1.2.3.ReturnStatement:
 LOAD VARIABLE $c
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
-JUMP ON ANY TO 1.EndIf
+STORE VARIABLE $_result_
+JUMP ON ANY TO 1.2.4.BlockEnd
+
+1.2.4.BlockEnd:
+JUMP ON ANY TO 1.FinalClause
 
 1.3.ElseClause:
 SKIP INSTRUCTION
 
-1.3.1.EvaluateExpression:
+1.3.1.EvaluateStatement:
 LOAD VARIABLE $b
 STORE VARIABLE $_target_11
 LOAD VARIABLE $_target_11
-INVOKE INTRINSIC getType WITH ARGUMENT
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_type_12
+LOAD VARIABLE $_type_12
 LOAD VARIABLE $_target_11
 LOAD LITERAL `1`
-INVOKE INTRINSIC array WITH ARGUMENT
+INVOKE INTRINSIC $array WITH PARAMETER
 LOAD LITERAL `$tag`
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-EXECUTE METHOD find WITH 3 ARGUMENTS
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+EXECUTE MESSAGE $find WITH PARAMETERS
 STORE VARIABLE $d
 
-1.3.2.EvaluateExpression:
+1.3.2.EvaluateStatement:
 LOAD LITERAL `(3, 4i)`
-STORE VARIABLE $result
+STORE VARIABLE $_result_
 
-1.3.3.ReturnResult:
-RETURN FROM INTERRUPT
+1.3.3.ReturnStatement:
+JUMP ON ANY TO 1.3.4.BlockEnd
 
-1.EndIf:
-JUMP ON INTERRUPT TO 1.6.FinalClause
-JUMP ON ANY TO 1.Done
+1.3.4.BlockEnd:
+SKIP INSTRUCTION
 
 1.ExceptionClauses:
-SKIP INSTRUCTION
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.FinalClause
+LOAD VARIABLE $_exception_
 
 1.4.ExceptionClause:
 STORE VARIABLE $exception
+LOAD VARIABLE $exception
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `$warning`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.4.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.4.ClauseEnd
 
-1.4.1.EvaluateExpression:
+1.4.1.EvaluateStatement:
 LOAD VARIABLE $count
 LOAD LITERAL `1`
-INVOKE INTRINSIC sum WITH 2 ARGUMENTS
+INVOKE INTRINSIC $sum WITH 2 PARAMETERS
 STORE VARIABLE $count
 
-1.4.2.EvaluateExpression:
+1.4.2.EvaluateStatement:
 LOAD LITERAL `2`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$message`
 LOAD LITERAL `"Something not too serious happened."`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$exception`
 LOAD VARIABLE $exception
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE VARIABLE $_result_
 
-1.4.ExceptionClauseNoMatch:
-LOAD VARIABLE $exception
+1.4.3.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
+
+1.4.ClauseEnd:
+LOAD VARIABLE $_exception_
+JUMP ON NONE TO 1.FinalClause
+LOAD VARIABLE $_exception_
 
 1.5.ExceptionClause:
 STORE VARIABLE $exception
+LOAD VARIABLE $exception
 LOAD LITERAL `1`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `$moderate`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
-JUMP ON FALSE TO 1.5.ExceptionClauseNoMatch
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
+JUMP ON FALSE TO 1.5.ClauseEnd
 
-1.5.1.EvaluateExpression:
+1.5.1.EvaluateStatement:
 LOAD LITERAL `2`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$message`
 LOAD LITERAL `"Something serious happened."`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$exception`
 LOAD VARIABLE $exception
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 STORE VARIABLE $exception
 
-1.5.2.ThrowException:
+1.5.2.ThrowStatement:
 LOAD VARIABLE $exception
-STORE VARIABLE $exception
-JUMP ON INTERRUPT TO ExceptionClauses
-RETURN FROM INTERRUPT
+STORE VARIABLE $_exception_
+JUMP ON ANY TO 1.5.3.BlockEnd
 
-1.5.ExceptionClauseNoMatch:
-LOAD VARIABLE $exception
-JUMP ON INTERRUPT TO 1.6.FinalClause
-RETURN FROM INTERRUPT
-JUMP ON ANY TO 1.Done
+1.5.3.BlockEnd:
+LOAD LITERAL `none`
+STORE VARIABLE $_exception_
 
-1.6.FinalClause:
+1.5.ClauseEnd:
 SKIP INSTRUCTION
 
-1.6.1.QueueMessage:
-LOAD LITERAL `<bali:/#RSTMWSC0HFY00QJP37QD3JA533NLKPP5v3.1>`
-STORE VARIABLE $_queue_20
-LOAD LITERAL `wakeUp`
-LOAD LITERAL `4`
-INVOKE INTRINSIC array WITH ARGUMENT
-LOAD VARIABLE $foo
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-LOAD VARIABLE $bar
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-LOAD VARIABLE $baz
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-LOAD LITERAL `5`
-INVOKE INTRINSIC addItem WITH 2 ARGUMENTS
-INVOKE INTRINSIC message WITH 2 ARGUMENTS
-STORE MESSAGE $_queue_20
+1.FinalClause:
+SKIP INSTRUCTION
 
-1.6.2.PublishEvent:
+1.6.1.QueueStatement:
+LOAD LITERAL `<bali:/#RSTMWSC0HFY00QJP37QD3JA533NLKPP5v3.1>`
+STORE VARIABLE $_queue_21
+LOAD LITERAL `4`
+INVOKE INTRINSIC $array WITH PARAMETER
+LOAD VARIABLE $foo
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+LOAD VARIABLE $bar
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+LOAD VARIABLE $baz
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+LOAD LITERAL `5`
+INVOKE INTRINSIC $addItem WITH 2 PARAMETERS
+STORE MESSAGE $_queue_21
+
+1.6.2.PublishStatement:
 LOAD LITERAL `2`
-INVOKE INTRINSIC table WITH ARGUMENT
+INVOKE INTRINSIC $table WITH PARAMETER
 LOAD LITERAL `$type`
 LOAD LITERAL `$confirmation`
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 LOAD LITERAL `$timestamp`
-EXECUTE METHOD now WITH 3 ARGUMENTS
-INVOKE INTRINSIC setValue WITH 3 ARGUMENTS
-STORE MESSAGE $eventQueue
-RETURN FROM INTERRUPT
+LOAD VARIABLE $type
+LOAD LITERAL `0`
+INVOKE INTRINSIC $array WITH PARAMETER
+EXECUTE FUNCTION $now WITH PARAMETERS
+INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
+STORE MESSAGE $_eventQueue_
 
-1.Done:
+1.6.3.BlockEnd:
 SKIP INSTRUCTION
 
-2.WhileLoop:
+2.WhileStatement:
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_2_1_Outer
 
 2.1.Outer:
 LOAD VARIABLE $_continue_2_1_Outer
 LOAD LITERAL `true`
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 2.EndWhile
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 2.FinalClause
 
-2.1.1.EvaluateExpression:
+2.1.1.EvaluateStatement:
 LOAD VARIABLE $bar
 STORE VARIABLE $foo
 
-2.1.2.IfThen:
+2.1.2.IfStatement:
 SKIP INSTRUCTION
 
 2.1.2.1.IfCondition:
 LOAD VARIABLE $foo
 JUMP ON FALSE TO 2.1.2.2.ElseClause
 
-2.1.2.1.1.BreakFrom:
+2.1.2.1.1.BreakStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_2_1_Outer
-JUMP ON ANY TO 2.1.2.EndIf
-JUMP ON ANY TO 2.1.2.EndIf
+JUMP ON ANY TO 2.1.2.1.2.BlockEnd
+
+2.1.2.1.2.BlockEnd:
+JUMP ON ANY TO 2.1.2.FinalClause
 
 2.1.2.2.ElseClause:
 SKIP INSTRUCTION
 
-2.1.2.2.1.WithLoop:
+2.1.2.2.1.WithStatement:
 LOAD VARIABLE $sequence
-STORE VARIABLE $_sequence_23
-LOAD VARIABLE $_sequence_23
-INVOKE INTRINSIC getType WITH ARGUMENT
-STORE VARIABLE $_sequenceType_24
-LOAD VARIABLE $_sequenceType_24
-LOAD VARIABLE $_sequence_23
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $createIterator WITH 3 ARGUMENTS
-STORE VARIABLE $_iterator_25
-LOAD VARIABLE $_iterator_25
-INVOKE INTRINSIC getType WITH ARGUMENT
-STORE VARIABLE $_iteratorType_26
+STORE VARIABLE $_sequence_24
+LOAD VARIABLE $_sequence_24
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_sequenceType_25
+LOAD VARIABLE $_sequenceType_25
+LOAD VARIABLE $_sequence_24
+EXECUTE MESSAGE $createIterator
+STORE VARIABLE $_iterator_26
+LOAD VARIABLE $_iterator_26
+INVOKE INTRINSIC $getType WITH PARAMETER
+STORE VARIABLE $_iteratorType_27
 LOAD LITERAL `true`
 STORE VARIABLE $_continue_2_1_2_2_1_1_WithItem
 
 2.1.2.2.1.1.WithItem:
 LOAD VARIABLE $_continue_2_1_2_2_1_1_WithItem
-LOAD VARIABLE $_iteratorType_26
-LOAD VARIABLE $_iterator_25
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $hasNext WITH 3 ARGUMENTS
-INVOKE INTRINSIC and WITH 2 ARGUMENTS
-JUMP ON FALSE TO 2.1.2.2.1.EndWith
-LOAD VARIABLE $_iteratorType_26
-LOAD VARIABLE $_iterator_25
-LOAD VARIABLE $emptyArray
-EXECUTE METHOD $getNext WITH 3 ARGUMENTS
+LOAD VARIABLE $_iteratorType_27
+LOAD VARIABLE $_iterator_26
+EXECUTE MESSAGE $hasNext
+INVOKE INTRINSIC $and WITH 2 PARAMETERS
+JUMP ON FALSE TO 2.1.2.2.1.FinalClause
+LOAD VARIABLE $_iteratorType_27
+LOAD VARIABLE $_iterator_26
+EXECUTE MESSAGE $getNext
 STORE VARIABLE $item
 
-2.1.2.2.1.1.1.SelectFrom:
+2.1.2.2.1.1.1.SelectStatement:
 LOAD VARIABLE $selection
-STORE VARIABLE $_selection_27
+STORE VARIABLE $_selection_28
 
 2.1.2.2.1.1.1.1.SelectOption:
-LOAD VARIABLE $_selection_27
+LOAD VARIABLE $_selection_28
 LOAD LITERAL `$first`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 2.1.2.2.1.1.1.2SelectOption
 
-2.1.2.2.1.1.1.1.1.EvaluateExpression:
+2.1.2.2.1.1.1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
-STORE VARIABLE $result
-JUMP ON ANY TO 2.1.2.2.1.1.1.EndSelect
+STORE VARIABLE $_result_
+
+2.1.2.2.1.1.1.1.2.BlockEnd:
+JUMP ON ANY TO 2.1.2.2.1.1.1.FinalClause
 
 2.1.2.2.1.1.1.2.SelectOption:
-LOAD VARIABLE $_selection_27
+LOAD VARIABLE $_selection_28
 LOAD LITERAL `$second`
-INVOKE INTRINSIC matches WITH 2 ARGUMENTS
+INVOKE INTRINSIC $matches WITH 2 PARAMETERS
 JUMP ON FALSE TO 2.1.2.2.1.1.1.3.ElseClause
 
-2.1.2.2.1.1.1.2.1.EvaluateExpression:
+2.1.2.2.1.1.1.2.1.EvaluateStatement:
 LOAD LITERAL `false`
-STORE VARIABLE $result
-JUMP ON ANY TO 2.1.2.2.1.1.1.EndSelect
+STORE VARIABLE $_result_
+
+2.1.2.2.1.1.1.2.2.BlockEnd:
+JUMP ON ANY TO 2.1.2.2.1.1.1.FinalClause
 
 2.1.2.2.1.1.1.3.ElseClause:
 SKIP INSTRUCTION
 
-2.1.2.2.1.1.1.3.1.ContinueTo:
+2.1.2.2.1.1.1.3.1.ContinueStatement:
 LOAD LITERAL `false`
 STORE VARIABLE $_continue_2_1_2_2_1_1_WithItem
-JUMP ON ANY TO 2.1.2.2.1.1.1.EndSelect
+JUMP ON ANY TO 2.1.2.2.1.1.1.3.2.BlockEnd
 
-2.1.2.2.1.1.1.EndSelect:
-JUMP ON INTERRUPT TO 2.1.2.2.1.1.1.4.FinalClause
-JUMP ON ANY TO 2.1.2.2.1.1.1.Done
-
-2.1.2.2.1.1.1.4.FinalClause:
+2.1.2.2.1.1.1.3.2.BlockEnd:
 SKIP INSTRUCTION
 
-2.1.2.2.1.1.1.4.1.EvaluateExpression:
-LOAD LITERAL `$selectDone`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+2.1.2.2.1.1.1.FinalClause:
+SKIP INSTRUCTION
 
-2.1.2.2.1.1.1.Done:
+2.1.2.2.1.1.1.4.1.EvaluateStatement:
+LOAD LITERAL `$selectDone`
+STORE VARIABLE $_result_
+
+2.1.2.2.1.1.1.4.2.BlockEnd:
+SKIP INSTRUCTION
+
+2.1.2.2.1.1.2.BlockEnd:
 JUMP ON ANY TO 2.1.2.2.1.1.WithItem
 
-2.1.2.2.1.EndWith:
-JUMP ON INTERRUPT TO 2.1.2.2.1.2.FinalClause
-JUMP ON ANY TO 2.1.2.2.1.Done
-
-2.1.2.2.1.2.FinalClause:
+2.1.2.2.1.FinalClause:
 SKIP INSTRUCTION
 
-2.1.2.2.1.2.1.EvaluateExpression:
+2.1.2.2.1.2.1.EvaluateStatement:
 LOAD LITERAL `$innerDone`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-2.1.2.2.1.Done:
+2.1.2.2.1.2.2.BlockEnd:
 SKIP INSTRUCTION
 
-2.1.2.EndIf:
-JUMP ON INTERRUPT TO 2.1.2.3.FinalClause
-JUMP ON ANY TO 2.1.2.Done
-
-2.1.2.3.FinalClause:
+2.1.2.2.2.BlockEnd:
 SKIP INSTRUCTION
 
-2.1.2.3.1.EvaluateExpression:
+2.1.2.FinalClause:
+SKIP INSTRUCTION
+
+2.1.2.3.1.EvaluateStatement:
 LOAD LITERAL `$ifDone`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-2.1.2.Done:
+2.1.2.3.2.BlockEnd:
+SKIP INSTRUCTION
+
+2.1.3.BlockEnd:
 JUMP ON ANY TO 2.1.Outer
 
-2.EndWhile:
-JUMP ON INTERRUPT TO 2.2.FinalClause
-JUMP ON ANY TO 2.Done
-
-2.2.FinalClause:
+2.FinalClause:
 SKIP INSTRUCTION
 
-2.2.1.EvaluateExpression:
+2.2.1.EvaluateStatement:
 LOAD LITERAL `$outerDone`
-STORE VARIABLE $result
-RETURN FROM INTERRUPT
+STORE VARIABLE $_result_
 
-2.Done:
+2.2.2.BlockEnd:
+SKIP INSTRUCTION
+
+3.BlockEnd:
 RETURN FROM METHOD
 
+
+.OK
+Testing TestBinary.js.OK
+Testing TestComplex.js..OK
+Testing TestEncodingUtilities.js......OK
+Testing TestMapper.js.............OK
+Testing TestPercent.js.OK
+Testing TestProbability.js.OK
+Testing TestSecurityUtilities.js...OK
+Testing TestSymbol.js.OK
+Testing TestTag.js.OK
+Testing TestVersion.js.OK
+>> 832 assertions passed (3400ms)
+
+Running "concat:dist" (concat) task
+
+Running "uglify:dist" (uglify) task
+>> 1 file created 509.08 kB → 259.36 kB
+
+Done.
