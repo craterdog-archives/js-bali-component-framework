@@ -6,11 +6,11 @@ LOAD LITERAL `$type`
 LOAD LITERAL `'whine'`
 INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 STORE VARIABLE $_exception_
-JUMP ON ANY TO 2.BlockEnd
+JUMP TO 2.BlockEnd
 
 1.ExceptionClauses:
 LOAD VARIABLE $_exception_
-JUMP ON NONE TO 1.FinalClause
+JUMP TO 1.FinalClause ON NONE
 LOAD VARIABLE $_exception_
 
 1.1.ExceptionClause:
@@ -22,7 +22,7 @@ LOAD LITERAL `$type`
 LOAD LITERAL `'bad'`
 INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 INVOKE INTRINSIC $matches WITH 2 PARAMETERS
-JUMP ON FALSE TO 1.1.ClauseEnd
+JUMP TO 1.1.ClauseEnd ON FALSE
 
 1.1.1.EvaluateStatement:
 LOAD LITERAL `none`
@@ -34,7 +34,7 @@ STORE VARIABLE $_exception_
 
 1.1.ClauseEnd:
 LOAD VARIABLE $_exception_
-JUMP ON NONE TO 1.FinalClause
+JUMP TO 1.FinalClause ON NONE
 LOAD VARIABLE $_exception_
 
 1.2.ExceptionClause:
@@ -46,7 +46,7 @@ LOAD LITERAL `$type`
 LOAD LITERAL `'horrid'`
 INVOKE INTRINSIC $setValue WITH 3 PARAMETERS
 INVOKE INTRINSIC $matches WITH 2 PARAMETERS
-JUMP ON FALSE TO 1.2.ClauseEnd
+JUMP TO 1.2.ClauseEnd ON FALSE
 
 1.2.1.EvaluateStatement:
 LOAD LITERAL `none`
@@ -70,5 +70,5 @@ STORE VARIABLE $_result_
 SKIP INSTRUCTION
 
 2.BlockEnd:
-RETURN FROM METHOD
+SKIP INSTRUCTION
 

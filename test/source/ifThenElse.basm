@@ -4,14 +4,14 @@ SKIP INSTRUCTION
 
 1.1.IfCondition:
 LOAD LITERAL `true`
-JUMP ON FALSE TO 1.2.ElseClause
+JUMP TO 1.2.ElseClause ON FALSE
 
 1.1.1.EvaluateStatement:
 LOAD LITERAL `true`
 STORE VARIABLE $_result_
 
 1.1.2.BlockEnd:
-JUMP ON ANY TO 1.StatementEnd
+JUMP TO 1.StatementEnd
 
 1.2.ElseClause:
 SKIP INSTRUCTION
@@ -27,5 +27,5 @@ SKIP INSTRUCTION
 SKIP INSTRUCTION
 
 2.BlockEnd:
-RETURN FROM METHOD
+SKIP INSTRUCTION
 
