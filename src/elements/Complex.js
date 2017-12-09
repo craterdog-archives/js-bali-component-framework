@@ -8,6 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+/* global NaN, Infinity */
 var Angle = require('../elements/Angle').Angle;
 
 

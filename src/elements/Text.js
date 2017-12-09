@@ -9,12 +9,18 @@
  ************************************************************************/
 'use strict';
 
-exports.Angle = require('./Angle').Angle;
-exports.Binary = require('./Binary').Binary;
-exports.Complex = require('./Complex').Complex;
-exports.Percent = require('./Percent').Percent;
-exports.Probability = require('./Probability').Probability;
-exports.Symbol = require('./Symbol').Symbol;
-exports.Tag = require('./Tag').Tag;
-exports.Text = require('./Text').Text;
-exports.Version = require('./Version').Version;
+
+/*
+ * This element class captures the state and methods associated with a text string.
+ */
+function Text(string) {
+    this.string = string || '';
+    return this;
+}
+Text.prototype.constructor = Text;
+exports.Text = Text;
+
+
+Text.prototype.toString = function() {
+    return this.string;
+};

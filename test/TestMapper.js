@@ -12,6 +12,7 @@
 var moment = require('moment');
 var url = require('url');
 var elements = require('../src/elements');
+var Text = require('../src/elements/Text').Text;
 var language = require('../src/BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
@@ -154,8 +155,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = testValues[i];
-            var baliKey = language.javaScriptToKey('string', jsObject);
-            var jsResult = language.keyToJavaScript('string', baliKey);
+            var baliKey = language.javaScriptToKey('text', jsObject);
+            var jsResult = language.keyToJavaScript('text', baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -185,7 +186,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Collections': function(test) {
-        var testValues = [[], [1], ['one', 'two'], [[1, 2, 3], [4, 5]]];
+        var testValues = [[], [1], [new Text('one'), new Text('two')], [[1, 2, 3], [4, 5]]];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
@@ -197,8 +198,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Tables': function(test) {
-        //var testValues = [{}, {foo: 'bar'}, {one: 1, two: 2}, {nested: {alpha: 'a', beta: 'b'}}];
-        var testValues = [{}, {foo: 'bar'}];
+        var testValues = [{}, {foo: new Text('bar')}, {one: 1, two: 2}, {nested: {alpha: new Text('a'), beta: new Text('b')}}];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {

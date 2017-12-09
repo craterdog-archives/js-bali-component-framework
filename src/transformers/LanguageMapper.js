@@ -40,7 +40,9 @@ var Percent = require('../elements/Percent').Percent;
 var Probability = require('../elements/Probability').Probability;
 var Symbol = require('../elements/Symbol').Symbol;
 var Tag = require('../elements/Tag').Tag;
+var Text = require('../elements/Text').Text;
 var Version = require('../elements/Version').Version;
+/* global NaN, Infinity */
 
 
 /**
@@ -234,7 +236,7 @@ LanguageMapper.prototype.getBaliType = function(baliTree) {
             break;
         case 'InlineTextContext':
         case 'BlockTextContext':
-            type = 'string';
+            type = 'text';
             break;
         case 'SymbolContext':
             type = 'symbol';
@@ -273,6 +275,7 @@ var HANDLER_MAP = {
     'object': new TableHandler(),
     'percent': new PercentHandler(),
     'probability': new ProbabilityHandler(),
+    'text': new TextHandler(),
     'string': new TextHandler(),
     'symbol': new SymbolHandler(),
     'tag': new TagHandler(),
@@ -752,11 +755,13 @@ TextHandler.prototype.toJavaScript = function(baliDocument) {
         text = text.replace(/\\"/g, '"');  // remove escapes from double quotes
     }
     var jsString = text.substring(1, text.length - 1);  // remove the double quote delimiters
-    return jsString;
+    var jsText = new Text(jsString);
+    return jsText;
 };
 
 
-TextHandler.prototype.toBali = function(jsString) {
+TextHandler.prototype.toBali = function(jsObject) {
+    var jsString = jsObject.toString();
     if (jsString.length > 0 && jsString[0] !== '\n') {
         jsString = jsString.replace(/"/g, '\\"');  // escape any double quotes
     }
