@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-var security = require('../src/utilities/SecurityUtilities');
+var security = require('../../src/utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
 
 
