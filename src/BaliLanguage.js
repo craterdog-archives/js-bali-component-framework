@@ -18,7 +18,6 @@
 var Parser = require('./transformers/LanguageParser').LanguageParser;
 var Formatter = require('./transformers/LanguageFormatter').LanguageFormatter;
 var Mapper = require('./transformers/LanguageMapper').LanguageMapper;
-var Compiler = require('./transformers/LanguageCompiler').LanguageCompiler;
 
 
 // PUBLIC FUNCTIONS
@@ -250,18 +249,4 @@ exports.javaScriptToKey = function(type, jsObject) {
     var mapper = new Mapper();
     var baliKey = mapper.javaScriptToKey(type, jsObject);
     return baliKey;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * association key.
- * 
- * @param {BlockContext} baliBlock The Bali block context to be compiled.
- * @returns {string} The resulting BaliVM assembly source code.
- */
-exports.compileBlock = function(baliBlock) {
-    var compiler = new Compiler();
-    var asmcode = compiler.compileBlock(baliBlock);
-    return asmcode;
 };

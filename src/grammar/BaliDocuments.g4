@@ -1,6 +1,6 @@
 grammar BaliDocuments;
-
 import BaliStatements;
+
 
 document: literal parameters?;
 

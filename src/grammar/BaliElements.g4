@@ -1,6 +1,6 @@
 grammar BaliElements;
-
 import BaliTokens;
+
 
 element:
     any |

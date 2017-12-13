@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Symbol = require('../src/elements/Symbol').Symbol;
+var Symbol = require('../../src/elements/Symbol').Symbol;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

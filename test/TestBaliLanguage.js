@@ -31,43 +31,5 @@ module.exports = testCase({
             test.strictEqual(formatted, document, 'The formatter returned a different document.');
         }
         test.done();
-    },
-    'Test Compiler': function(test) {
-        var source = [
-            'test/source/main',
-            'test/source/mainWithFinal',
-            'test/source/mainWithExceptions',
-            'test/source/mainWithExceptionsAndFinal',
-            'test/source/evaluateExpression',
-            'test/source/evaluateExpressionWithResult',
-            'test/source/ifThen',
-            'test/source/ifThenElse',
-            'test/source/ifThenElseIf',
-            'test/source/ifThenElseIfElse',
-            'test/source/selectOption',
-            'test/source/selectOptionElse',
-            'test/source/whileLoop',
-            'test/source/whileLoopWithLabel',
-            'test/source/withLoop',
-            'test/source/withLoopWithLabel',
-            'test/source/withEachLoop',
-            'test/source/withEachLoopWithLabel',
-            'test/source/queueMessage',
-            'test/source/waitForMessage',
-            'test/source/publishEvent',
-            'test/source/comprehensive'
-        ];
-        test.expect(source.length);
-        for (var i = 0; i < source.length; i++) {
-            var baliFile = source[i] + '.bali';
-            var basmFile = source[i] + '.basm';
-            var block = fs.readFileSync(baliFile, 'utf8');
-            var tree = language.parseBlock(block);
-            test.notEqual(tree, null, 'The parser returned a null tree.');
-            var asmcode = language.compileBlock(tree);
-            fs.writeFileSync(basmFile, asmcode, 'utf8');
-            console.log('\n' + basmFile + ':\n' + asmcode);
-        }
-        test.done();
     }
 });

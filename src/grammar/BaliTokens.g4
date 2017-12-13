@@ -1,5 +1,6 @@
 grammar BaliTokens;
 
+
 /* TOKEN RULES
  It's important to remember that tokens are recognized by the
  lexer in the order declared. The longest first matching token
