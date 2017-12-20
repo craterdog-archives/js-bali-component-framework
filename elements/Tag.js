@@ -10,7 +10,7 @@
 'use strict';
 
 var codex = require('../utilities/EncodingUtilities');
-var security = require('../utilities/SecurityUtilities');
+var random = require('../utilities/RandomUtilities');
 
 
 /*
@@ -22,7 +22,7 @@ function Tag(parameter) {
     // default constructor generates a random tag with the default size
     if (typeof parameter === 'undefined' || parameter === null) {
         this.size = 20;
-        bytes = security.generateRandomBytes(this.size);
+        bytes = random.generateRandomBytes(this.size);
         this.hash = codex.bytesToInteger(bytes);
         this.base32 = codex.base32Encode(bytes);
         return this;
@@ -31,7 +31,7 @@ function Tag(parameter) {
     // constructor generates a random tag with the specified size
     if (typeof parameter === 'number') {
         this.size = parameter;
-        bytes = security.generateRandomBytes(this.size);
+        bytes = random.generateRandomBytes(this.size);
         this.hash = codex.bytesToInteger(bytes);
         this.base32 = codex.base32Encode(bytes);
         return this;

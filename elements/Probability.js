@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var security = require('../utilities/SecurityUtilities');
+var random = require('../utilities/RandomUtilities');
 
 
 function Probability(value) {
@@ -42,7 +42,7 @@ Probability.prototype.toString = function () {
 
 
 Probability.prototype.toBoolean = function () {
-    return security.coinToss(this.value);
+    return random.coinToss(this.value);
 };
 
 

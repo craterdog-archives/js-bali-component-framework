@@ -8,21 +8,15 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-
-var Binary = require('../../elements/Binary').Binary;
 var random = require('../../utilities/RandomUtilities');
 var testCase = require('nodeunit').testCase;
 
+
 module.exports = testCase({
-    'Test Constructor': function(test) {
+    'Test Coin Toss': function(test) {
         test.expect(2);
-        var empty = new Binary();
-        var string = empty.toString();
-        test.equal(string, '', "The binary should have been ''.");
-        var expected = random.generateRandomBytes(10);
-        var binary = new Binary(expected);
-        string = binary.toString();
-        test.equal(string, expected, "The binary should have been '" + expected + "'.");
+        test.ok(!random.coinToss(0));
+        test.ok(random.coinToss(1));
         test.done();
     }
 });
