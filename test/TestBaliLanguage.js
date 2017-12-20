@@ -10,7 +10,7 @@
 'use strict';
 
 var fs = require('fs');
-var language = require('../src/BaliLanguage');
+var language = require('../BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

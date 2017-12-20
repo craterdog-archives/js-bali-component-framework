@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Percent = require('../../src/elements/Percent').Percent;
+var Percent = require('../../elements/Percent').Percent;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

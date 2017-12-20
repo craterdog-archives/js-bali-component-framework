@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var Angle = require('../../src/elements/Angle').Angle;
-var Complex = require('../../src/elements/Complex').Complex;
+var Angle = require('../../elements/Angle').Angle;
+var Complex = require('../../elements/Complex').Complex;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

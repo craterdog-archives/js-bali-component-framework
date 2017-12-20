@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var Binary = require('../../src/elements/Binary').Binary;
-var security = require('../../src/utilities/SecurityUtilities');
+var Binary = require('../../elements/Binary').Binary;
+var security = require('../../utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

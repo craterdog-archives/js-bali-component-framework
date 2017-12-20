@@ -12,8 +12,8 @@ module.exports = function(grunt) {
     jshint: {
       files: [
         'Gruntfile.js',
-        'src/**/*.js',
-        'test/**/*.js'
+        '**/*.js',
+        '!node_modules/**/*.js'
       ],
       options: {
         node: true
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     // grunt-contrib-watch plugin configuration (monitor file changes)
     watch: {
       grammars: {
-        files: ['src/**/*.g4'],
+        files: ['**/*.g4'],
         tasks: ['clean', 'antlr4'],
         options: {
           spawn: true
@@ -43,11 +43,11 @@ module.exports = function(grunt) {
     clean: {
       generate: [
         '*.log',
-        'src/grammar/BaliLanguageLexer.js',
-        'src/grammar/BaliLanguageParser.js',
-        'src/grammar/BaliLanguageListener.js',
-        'src/grammar/BaliLanguageVisitor.js',
-        'src/grammar/*.tokens'
+        'grammar/BaliLanguageLexer.js',
+        'grammar/BaliLanguageParser.js',
+        'grammar/BaliLanguageListener.js',
+        'grammar/BaliLanguageVisitor.js',
+        'grammar/*.tokens'
       ],
       build: ['dist/*']
     },
@@ -55,7 +55,7 @@ module.exports = function(grunt) {
     // grunt-antlr4 plugin configuration (generate parser)
     antlr4: {
       generate: {
-        grammar: 'src/grammar/BaliLanguage.g4',
+        grammar: 'grammar/BaliLanguage.g4',
         options: {
           grammarLevel: {
             language: 'JavaScript'
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
       },
       dist: {
         // concatenate the source files and place the result in destination
-        src: ['src/**/*.js'],
+        src: ['**/*.js', '!node_modules/**/*.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },

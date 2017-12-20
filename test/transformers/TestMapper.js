@@ -11,9 +11,9 @@
 
 var moment = require('moment');
 var url = require('url');
-var elements = require('../../src/elements');
-var Text = require('../../src/elements/Text').Text;
-var language = require('../../src/BaliLanguage');
+var elements = require('../../elements');
+var Text = require('../../elements/Text').Text;
+var language = require('../../BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

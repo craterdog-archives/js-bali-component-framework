@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var codex = require('../../src/utilities/EncodingUtilities');
-var security = require('../../src/utilities/SecurityUtilities');
+var codex = require('../../utilities/EncodingUtilities');
+var security = require('../../utilities/SecurityUtilities');
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

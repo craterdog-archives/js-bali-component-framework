@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Probability = require('../../src/elements/Probability').Probability;
+var Probability = require('../../elements/Probability').Probability;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

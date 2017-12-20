@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Tag = require('../../src/elements/Tag').Tag;
+var Tag = require('../../elements/Tag').Tag;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
