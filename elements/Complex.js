@@ -9,7 +9,7 @@
  ************************************************************************/
 
 /* global NaN, Infinity */
-var Angle = require('../elements/Angle').Angle;
+var Angle = require('./Angle').Angle;
 
 
 /**

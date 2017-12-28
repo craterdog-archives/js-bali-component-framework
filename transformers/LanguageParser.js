@@ -157,6 +157,24 @@ LanguageParser.prototype.parseBlock = function(source) {
 
 
 /**
+ * This method takes a source code string containing a Bali key
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {KeyContext} The corresponding parse tree structure.
+ */
+LanguageParser.prototype.parseKey = function(source) {
+    var chars = new antlr.InputStream(source);
+    var lexer = new grammar.BaliLanguageLexer(chars);
+    var tokens = new antlr.CommonTokenStream(lexer);
+    var parser = new grammar.BaliLanguageParser(tokens);
+    parser.buildParseTrees = true;
+    var key = parser.key();
+    return key;
+};
+
+
+/**
  * This method takes a source code string containing a Bali expression
  * and parses it into the corresponding parse tree structure.
  * 

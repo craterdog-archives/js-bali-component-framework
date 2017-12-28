@@ -9,14 +9,19 @@
  ************************************************************************/
 'use strict';
 
-exports.Angle = require('./Angle').Angle;
-exports.Binary = require('./Binary').Binary;
-exports.Complex = require('./Complex').Complex;
-exports.Document = require('./Document').Document;
-exports.Percent = require('./Percent').Percent;
-exports.Probability = require('./Probability').Probability;
-exports.Range = require('./Range').Range;
-exports.Symbol = require('./Symbol').Symbol;
-exports.Tag = require('./Tag').Tag;
-exports.Text = require('./Text').Text;
-exports.Version = require('./Version').Version;
+
+/*
+ * This element class captures the state and methods associated with a range of values.
+ */
+function Range(firstValue, lastValue) {
+    this.firstValue = firstValue;
+    this.lastValue = lastValue;
+    return this;
+}
+Range.prototype.constructor = Range;
+exports.Range = Range;
+
+
+Range.prototype.toString = function() {
+    throw new Error('RANGE: The toString() method is only defined for elemental types.');
+};

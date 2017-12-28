@@ -14,17 +14,21 @@
  * into its corresponding javascript object, and vise versa.
  *    Bali Type    JavaScript Type(s)
  *    -----------  --------------------
- *    Any          undefined
- *    Tag          bali-language:Tag
- *    Symbol       bali-language:Symbol
- *    Moment       bali-language:Moment
- *    Reference    url
- *    Version      bali-language:Version
- *    Text         string
+ *    Any          undefined, bali-language:Any
+ *    Array        array
  *    Binary       bali-language:Binary
- *    Probability  bali-language:Probability, boolean
- *    Percent      bali-language:Percent
+ *    Document     bali-language:Document
+ *    Moment       moment:moment
  *    Number       number, js-big-integer:BigInteger, bali-language:Complex
+ *    Percent      bali-language:Percent
+ *    Probability  boolean, bali-language:Probability
+ *    Range        bali-language:Range
+ *    Reference    url:url
+ *    Symbol       bali-language:Symbol
+ *    Table        object
+ *    Tag          bali-language:Tag
+ *    Text         string, bali-language:Text
+ *    Version      bali-language:Version
  */
 var url = require('url');
 var moment = require('moment');
@@ -32,12 +36,15 @@ var antlr = require('antlr4');
 var grammar = require('../grammar').BaliLanguageParser;
 var codex = require('../utilities/EncodingUtilities');
 var language = require('../BaliLanguage');
-var Binary = require('../elements/Binary').Binary;
-var Integer = require("js-big-integer").BigInteger;
 var Angle = require('../elements/Angle').Angle;
+var Any = require('../elements/Any').Any;
+var Binary = require('../elements/Binary').Binary;
 var Complex = require('../elements/Complex').Complex;
+var Document = require('../elements/Document').Document;
+var Integer = require("js-big-integer").BigInteger;
 var Percent = require('../elements/Percent').Percent;
 var Probability = require('../elements/Probability').Probability;
+var Range = require('../elements/Range').Range;
 var Symbol = require('../elements/Symbol').Symbol;
 var Tag = require('../elements/Tag').Tag;
 var Text = require('../elements/Text').Text;
@@ -59,16 +66,39 @@ exports.LanguageMapper = LanguageMapper;
 
 
 /**
- * This function transforms a Bali document into its corresponding JavaScript
- * object.
+ * This function transforms a Bali parse tree node into its corresponding
+ * JavaScript object.
  * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {DocumentContext} baliDocument The Bali document to be transformed.
+ * @param {DocumentContext} baliNode The Bali parse tree node to be transformed.
  * @returns {object} The corresponding JavaScript object.
  */
-LanguageMapper.prototype.documentToJavaScript = function(type, baliDocument) {
-    var handler = HANDLER_MAP[type];
-    var jsObject = handler.toJavaScript(baliDocument);
+LanguageMapper.prototype.baliNodeToJavaScriptObject = function(baliNode) {
+    // HACK: unwrap unneeded parse tree layers from the node
+    loop: while (true) {
+        switch (baliNode.constructor.name) {
+            case 'ParametersContext':
+            case 'StructureContext':
+                baliNode = baliNode.composite();
+                break;
+            case 'LiteralContext':
+            case 'ElementContext':
+            case 'CompositeContext':
+            case 'ValueContext':
+            case 'DocumentExpressionContext':
+                baliNode = baliNode.getChild(0);
+                break;
+            case 'BlockContext':
+                throw new Error('MAPPER: Cannot map a block context.');
+            default:
+                break loop;
+        }
+    }
+
+    // map the bali node to its corresponding javascript object
+    var mapper = new LanguageMapper();
+    var handler = mapper.getBaliTypeHandler(baliNode);
+    var jsObject = handler.toJavaScript(baliNode);
+
     return jsObject;
 };
 
@@ -77,90 +107,14 @@ LanguageMapper.prototype.documentToJavaScript = function(type, baliDocument) {
  * This function transforms a JavaScript object into its corresponding Bali
  * document.
  * 
- * @param {string} type The type of handler to be used for the mapping.
  * @param {object} jsObject The JavaScript object to be transformed.
  * @returns {DocumentContext} The corresponding Bali document.
  */
-LanguageMapper.prototype.javaScriptToDocument = function(type, jsObject) {
-    var handler = HANDLER_MAP[type];
-    var baliDocument = handler.toBali(jsObject);
-    return baliDocument;
-};
-
-
-/**
- * This function transforms a Bali expression into its corresponding JavaScript
- * object.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {ExpressionContext} baliExpression The Bali expression to be transformed.
- * @returns {object} The corresponding JavaScript object.
- */
-LanguageMapper.prototype.expressionToJavaScript = function(type, baliExpression) {
-    var handler = HANDLER_MAP[type];
-    var baliDocument = baliExpression.document();  // strip off the expression wrapper
-    var jsObject = handler.toJavaScript(baliDocument);
-    return jsObject;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * expression.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {object} jsObject The JavaScript object to be transformed.
- * @returns {ExpressionContext} The corresponding Bali expression.
- */
-LanguageMapper.prototype.javaScriptToExpression = function(type, jsObject) {
-    var baliDocument = this.javaScriptToDocument(type, jsObject);
-    var baliExpression = new antlr.ParserRuleContext();  // HACK: since ExpressionContext() is not exported
-    baliExpression = new grammar.DocumentExpressionContext(null, baliExpression);
-    baliExpression.addChild(baliDocument);  // add on an expression wrapper
-    baliDocument.parentCtx = baliExpression;
-    return baliExpression;
-};
-
-
-/**
- * This function transforms a Bali association key into its corresponding JavaScript
- * object.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {KeyContext} baliKey The Bali association key to be transformed.
- * @returns {object} The corresponding JavaScript object.
- */
-LanguageMapper.prototype.keyToJavaScript = function(type, baliKey) {
-    var handler = HANDLER_MAP[type];
-    var baliElement = baliKey.element();  // strip off the key wrapper
-    var baliLiteral = new grammar.LiteralContext();
-    baliLiteral.addChild(baliElement);  // add on a literal wrapper
-    baliElement.parentCtx = baliLiteral;
-    var baliDocument = new grammar.DocumentContext();
-    baliDocument.addChild(baliLiteral);  // add on a document wrapper
-    baliLiteral.parentCtx = baliDocument;
-    var jsObject = handler.toJavaScript(baliDocument);
-    return jsObject;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * association key.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {object} jsObject The JavaScript object to be transformed.
- * @returns {KeyContext} The corresponding Bali association key.
- */
-LanguageMapper.prototype.javaScriptToKey = function(type, jsObject) {
-    var handler = HANDLER_MAP[type];
-    var baliDocument = handler.toBali(jsObject);
-    var baliLiteral = baliDocument.literal();  // strip off the document wrapper
-    var baliElement = baliLiteral.element();  // strip off the literal wrapper
-    var baliKey = new grammar.KeyContext();
-    baliKey.addChild(baliElement);  // add on a key wrapper
-    baliElement.parentCtx = baliKey;
-    return baliKey;
+LanguageMapper.prototype.javaScriptObjectToBaliDocument = function(jsObject) {
+    var mapper = new LanguageMapper();
+    var handler = mapper.getJavaScriptTypeHandler(jsObject);
+    var baliNode = handler.toBali(jsObject);
+    return baliNode;
 };
 
 
@@ -170,122 +124,152 @@ LanguageMapper.prototype.javaScriptToKey = function(type, jsObject) {
  * @param {object} jsObject The JavaScript object.
  * @returns {string} The handler type for the object.
  */
-LanguageMapper.prototype.getJavaScriptType = function(jsObject) {
-    var type = typeof jsObject;
-    if (type === 'object') {
+LanguageMapper.prototype.getJavaScriptTypeHandler = function(jsObject) {
+    var handlerType = typeof jsObject;
+    if (handlerType === 'object') {
         if (jsObject) {
-            type = jsObject.constructor.name.toLowerCase();
+            handlerType = jsObject.constructor.name.toLowerCase();
         } else {
-            type = 'null';  // addresses infamous null type bug in javascript
+            handlerType = 'undefined';  // addresses infamous null type bug in javascript
         }
     }
-    return type;
+    var handler = HANDLER_MAP[handlerType];
+    return handler;
 };
 
 
 /**
- * This function returns the handler type of a Bali parse tree node.
+ * This function returns the mapping handler of a Bali parse tree node.
  * 
- * @param {ParserContext} baliTree The Bali parse tree node.
- * @returns {string} The handler type for the tree node.
+ * @param {ParserContext} baliNode The Bali parse tree node.
+ * @returns {string} The mapping handler for the tree node.
  */
-LanguageMapper.prototype.getBaliType = function(baliTree) {
-    var type;
-    if (baliTree.constructor.name === 'DocumentExpressionContext') {
-        // the bali tree is a document expression
-        baliTree = baliTree.document();
-    }
-    if (baliTree.constructor.name === 'DocumentContext') {
-        // the bali tree is a document
-        baliTree = baliTree.literal();
-    }
-    // at this point the bali tree must be a literal
-    if (baliTree.element()) {
-        baliTree = baliTree.element();
-        baliTree = baliTree.getChild(0);  // get the actual element
-    } else if (baliTree.structure()) {
-        baliTree = baliTree.structure();
-        baliTree = baliTree.getChild(0);  // get the composite between the brackets []
-        baliTree = baliTree.getChild(0);  // get the actual range, array, or table
-    } else {
-        baliTree = baliTree.block();
-        throw new Error('MAPPER: Not yet implemented...');
-    }
-    var nodeType = baliTree.constructor.name;
+LanguageMapper.prototype.getBaliTypeHandler = function(baliNode) {
+    var handlerType;
+    var nodeType = baliNode.constructor.name;
     switch (nodeType) {
+        case 'NoneAnyContext':
+        case 'AnyAnyContext':
+            handlerType = 'any';
+            break;
         case 'BinaryContext':
-            type = 'binary';
+            handlerType = 'binary';
+            break;
+        case 'DocumentContext':
+            handlerType = 'document';
             break;
         case 'MomentContext':
-            type = 'moment';
+            handlerType = 'moment';
             break;
         case 'UndefinedNumberContext':
         case 'InfiniteNumberContext':
         case 'RealNumberContext':
         case 'ImaginaryNumberContext':
         case 'ComplexNumberContext':
-            type = 'number';
+            handlerType = 'number';
             break;
         case 'PercentContext':
-            type = 'percent';
+            handlerType = 'percent';
             break;
         case 'TrueProbabilityContext':
         case 'FalseProbabilityContext':
         case 'FractionalProbabilityContext':
-            type = 'probability';
+            handlerType = 'probability';
             break;
         case 'InlineTextContext':
         case 'BlockTextContext':
-            type = 'text';
+            handlerType = 'text';
             break;
         case 'SymbolContext':
-            type = 'symbol';
+            handlerType = 'symbol';
             break;
         case 'TagContext':
-            type = 'tag';
+            handlerType = 'tag';
             break;
         case 'ReferenceContext':
-            type = 'url';
+            handlerType = 'reference';
             break;
         case 'VersionContext':
-            type = 'version';
+            handlerType = 'version';
+            break;
+        case 'RangeContext':
+            handlerType = 'range';
             break;
         case 'InlineArrayContext':
         case 'NewlineArrayContext':
-            type = 'array';
+            handlerType = 'array';
             break;
         case 'InlineTableContext':
         case 'NewlineTableContext':
-            type = 'object';
+            handlerType = 'table';
             break;
+        default:
+            throw new Error('MAPPER: An invalid Bali node type was passed: ' + nodeType);
     }
-    return type;
+    var handler = HANDLER_MAP[handlerType];
+    return handler;
 };
 
 
 // PRIVATE CONSTANTS
 
 var HANDLER_MAP = {
-    //'any': new AnyHandler(),
+    'any': new AnyHandler(),
     'array': new ArrayHandler(),
     'binary': new BinaryHandler(),
     'boolean': new ProbabilityHandler(),
+    'complex': new NumberHandler(),
+    'document': new DocumentHandler(),
+    'integer': new NumberHandler(),
     'moment': new MomentHandler(),
     'number': new NumberHandler(),
     'object': new TableHandler(),
     'percent': new PercentHandler(),
     'probability': new ProbabilityHandler(),
-    'text': new TextHandler(),
+    'range': new RangeHandler(),
+    'reference': new ReferenceHandler(),
     'string': new TextHandler(),
     'symbol': new SymbolHandler(),
+    'table': new TableHandler(),
     'tag': new TagHandler(),
+    'text': new TextHandler(),
+    'undefined': new AnyHandler(),
     'url': new ReferenceHandler(),
     'version': new VersionHandler()
-    //'undefined': new AnyHandler()
 };
 
 
 // PRIVATE HANDLER CLASSES
+
+function AnyHandler() {
+    return this;
+}
+AnyHandler.prototype.constructor = AnyHandler;
+
+
+AnyHandler.prototype.toJavaScript = function(baliAny) {
+    var nodeType = baliAny.constructor.name;
+    var value;
+    switch (nodeType) {
+        case 'NoneAnyContext':
+            value = 'none';
+            break;
+        case 'AnyAnyContext':
+            value = 'any';
+            break;
+        default:
+            throw new Error('ANY: An invalid context type was found: ' + nodeType);
+    }
+    return new Any(value);
+};
+
+
+AnyHandler.prototype.toBali = function(jsAny) {
+    if (!jsAny) jsAny = 'none';
+    var baliDocument = language.parseDocument(jsAny);
+    return baliDocument;
+};
+
 
 function BinaryHandler() {
     return this;
@@ -293,10 +277,7 @@ function BinaryHandler() {
 BinaryHandler.prototype.constructor = BinaryHandler;
 
 
-BinaryHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliBinary = baliElement.binary();
+BinaryHandler.prototype.toJavaScript = function(baliBinary) {
     var binary = baliBinary.BINARY().getText();
     var base64 = binary.substring(1, binary.length - 1);  // remove the single quote delimiters
     var jsString = codex.base64Decode(base64);
@@ -318,12 +299,8 @@ function ArrayHandler() {
 ArrayHandler.prototype.constructor = ArrayHandler;
 
 
-ArrayHandler.prototype.toJavaScript = function(baliDocument) {
+ArrayHandler.prototype.toJavaScript = function(baliArray) {
     var jsArray = [];
-    var baliLiteral = baliDocument.literal();
-    var baliStructure = baliLiteral.structure();
-    var baliComposite = baliStructure.composite();
-    var baliArray = baliComposite.array();
     var type = baliArray.constructor.name;
     switch (type) {
         case 'InlineArrayContext':
@@ -332,8 +309,7 @@ ArrayHandler.prototype.toJavaScript = function(baliDocument) {
             for (var i = 0; i < values.length; i++) {
                 var baliExpression = values[i].expression();
                 var mapper = new LanguageMapper();
-                type = mapper.getBaliType(baliExpression);
-                var jsObject = mapper.expressionToJavaScript(type, baliExpression);
+                var jsObject = mapper.baliNodeToJavaScriptObject(baliExpression);
                 jsArray.push(jsObject);
             }
             break;
@@ -357,13 +333,61 @@ ArrayHandler.prototype.toBali = function(jsArray) {
     for (var i = 0; i < jsArray.length; i++) {
         var jsObject = jsArray[i];
         var mapper = new LanguageMapper();
-        var type = mapper.getJavaScriptType(jsObject);
-        var baliExpression = mapper.javaScriptToExpression(type, jsObject);
+        var baliItem = mapper.javaScriptObjectToBaliDocument(jsObject);
+        var baliExpression = new antlr.ParserRuleContext();  // HACK: since ExpressionContext() is not exported
+        baliExpression = new grammar.DocumentExpressionContext(null, baliExpression);
+        baliExpression.addChild(baliItem);  // add on an expression wrapper
+        baliItem.parentCtx = baliExpression;
         var baliValue = new grammar.ValueContext(null, baliArray);
         baliArray.addChild(baliValue);
         baliValue.addChild(baliExpression);
         baliExpression.parentCtx = baliValue;
     }
+    return baliDocument;
+};
+
+
+function DocumentHandler() {
+    return this;
+}
+DocumentHandler.prototype.constructor = DocumentHandler;
+
+
+DocumentHandler.prototype.toJavaScript = function(baliDocument) {
+    var mapper = new LanguageMapper();
+
+    // convert the bali literal into a javascript object
+    var baliLiteral = baliDocument.literal();
+    var jsLiteral = mapper.baliNodeToJavaScriptObject(baliLiteral);
+
+    // convert the bali parameters into a javascript object
+    var baliParameters = baliDocument.parameters();
+    if (baliParameters) {
+        var jsParameters = mapper.baliNodeToJavaScriptObject(baliParameters);
+        var jsDocument = new Document(jsLiteral, jsParameters);
+        // since there are parameters we must wrap them in a javascript document
+        return jsDocument;
+    }
+
+    // no parameters so just return the javascript literal
+    return jsLiteral;
+};
+
+
+DocumentHandler.prototype.toBali = function(jsObject) {
+    var mapper = new LanguageMapper();
+
+    // convert javascript literal into a bali document
+    var jsLiteral = jsObject.literal;
+    var baliDocument = mapper.javaScriptObjectToBaliDocument(jsLiteral);
+    var baliParameters = new grammar.ParametersContext(null, baliDocument);
+    baliDocument.addChild(baliParameters);
+
+    // add the javascript parameters into the bali document
+    var jsParameters = jsObject.parameters;
+    var baliComposite = mapper.javaScriptObjectToBaliDocument(jsParameters).structure().composite();
+    baliParameters.addChild(baliComposite);
+
     return baliDocument;
 };
 
@@ -374,10 +398,7 @@ function MomentHandler() {
 MomentHandler.prototype.constructor = MomentHandler;
 
 
-MomentHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliMoment = baliElement.moment();
+MomentHandler.prototype.toJavaScript = function(baliMoment) {
     var jsString = baliMoment.MOMENT().getText();
     jsString = jsString.substring(1, jsString.length - 1);  // remove the angle bracket delimiters
     return moment(jsString);
@@ -398,10 +419,7 @@ function NumberHandler() {
 NumberHandler.prototype.constructor = NumberHandler;
 
 
-NumberHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliNumber = baliElement.number();
+NumberHandler.prototype.toJavaScript = function(baliNumber) {
     var baliReal;
     var baliImaginary;
     var nodeType = baliNumber.constructor.name;
@@ -533,10 +551,7 @@ function PercentHandler() {
 PercentHandler.prototype.constructor = PercentHandler;
 
 
-PercentHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliPercent = baliElement.percent();
+PercentHandler.prototype.toJavaScript = function(baliPercent) {
     var baliReal = baliPercent.real();
     var jsPercent = baliRealToJsNumber(baliReal);
     return new Percent(jsPercent);
@@ -556,10 +571,7 @@ function ProbabilityHandler() {
 ProbabilityHandler.prototype.constructor = ProbabilityHandler;
 
 
-ProbabilityHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliProbability = baliElement.probability();
+ProbabilityHandler.prototype.toJavaScript = function(baliProbability) {
     var nodeType = baliProbability.constructor.name;
     var probability;
     switch (nodeType) {
@@ -601,10 +613,7 @@ function ReferenceHandler() {
 ReferenceHandler.prototype.constructor = ReferenceHandler;
 
 
-ReferenceHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliReference = baliElement.reference();
+ReferenceHandler.prototype.toJavaScript = function(baliReference) {
     var baliResource = baliReference.RESOURCE().getText();
     var jsString = baliResource.substring(1, baliResource.length - 1);  // remove the angle bracket delimiters
     return url.parse(jsString);
@@ -625,10 +634,7 @@ function SymbolHandler() {
 SymbolHandler.prototype.constructor = SymbolHandler;
 
 
-SymbolHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliSymbol = baliElement.symbol();
+SymbolHandler.prototype.toJavaScript = function(baliSymbol) {
     var symbol = baliSymbol.SYMBOL().getText().replace(/\$/g, '');  // strip off the $
     return new Symbol(symbol);
 };
@@ -641,18 +647,60 @@ SymbolHandler.prototype.toBali = function(jsSymbol) {
 };
 
 
+function RangeHandler() {
+    return this;
+}
+RangeHandler.prototype.constructor = RangeHandler;
+
+
+RangeHandler.prototype.toJavaScript = function(baliRange) {
+    var first = baliRange.value(0);
+    var last = baliRange.value(1);
+    var jsRange = new Range(first, last);
+    return jsRange;
+};
+
+
+RangeHandler.prototype.toBali = function(jsRange) {
+    var baliDocument = new grammar.DocumentContext();
+    var baliLiteral = new grammar.LiteralContext(null, baliDocument);
+    baliDocument.addChild(baliLiteral);
+    var baliStructure = new grammar.StructureContext(null, baliLiteral);
+    baliLiteral.addChild(baliStructure);
+    var baliComposite = new grammar.CompositeContext(null, baliStructure);
+    baliStructure.addChild(baliComposite);
+    var baliRange = new grammar.RangeContext(null, baliComposite);
+    baliComposite.addChild(baliRange);
+
+    var jsObject = jsRange.firstValue;
+    var mapper = new LanguageMapper();
+    var baliExpression = mapper.javaScriptToExpression(jsObject);
+    var baliValue = new grammar.ValueContext(null, baliRange);
+    baliRange.addChild(baliValue);
+    baliValue.addChild(baliExpression);
+    baliExpression.parentCtx = baliValue;
+
+    jsObject = jsRange.secondValue;
+    mapper = new LanguageMapper();
+    baliExpression = mapper.javaScriptToExpression(jsObject);
+    baliValue = new grammar.ValueContext(null, baliRange);
+    baliRange.addChild(baliValue);
+    baliValue.addChild(baliExpression);
+    baliExpression.parentCtx = baliValue;
+
+    return baliDocument;
+};
+
+
 function TableHandler() {
     return this;
 }
 TableHandler.prototype.constructor = TableHandler;
 
 
-TableHandler.prototype.toJavaScript = function(baliDocument) {
+TableHandler.prototype.toJavaScript = function(baliTable) {
+    var mapper = new LanguageMapper();
     var jsObject = {};
-    var baliLiteral = baliDocument.literal();
-    var baliStructure = baliLiteral.structure();
-    var baliComposite = baliStructure.composite();
-    var baliTable = baliComposite.table();
     var type = baliTable.constructor.name;
     switch (type) {
         case 'InlineTableContext':
@@ -661,16 +709,14 @@ TableHandler.prototype.toJavaScript = function(baliDocument) {
             for (var i = 0; i < associations.length; i++) {
                 var baliAssociation = associations[i];
 
-                // transform the key
+                // convert the bali key into a javascript string since only strings are
+                // allowed as javascript object keys
                 var baliKey = baliAssociation.key();
-                var mapper = new LanguageMapper();
-                type = mapper.getBaliType(baliKey);
-                var jsKey = mapper.keyToJavaScript(type, baliKey);
+                var jsKey = language.formatDocument(baliKey);
 
-                // transform the value
-                var baliExpression = baliAssociation.value().expression();
-                type = mapper.getBaliType(baliExpression);
-                var jsValue = mapper.expressionToJavaScript(type, baliExpression);
+                // convert the bali value into a javascript object
+                var baliValue = baliAssociation.value();
+                var jsValue = mapper.baliNodeToJavaScriptObject(baliValue);
 
                 // add the key-value pair
                 jsObject[jsKey] = jsValue;
@@ -684,6 +730,7 @@ TableHandler.prototype.toJavaScript = function(baliDocument) {
 
 
 TableHandler.prototype.toBali = function(jsObject) {
+    var mapper = new LanguageMapper();
     var baliDocument = new grammar.DocumentContext();
     var baliLiteral = new grammar.LiteralContext(null, baliDocument);
     baliDocument.addChild(baliLiteral);
@@ -694,22 +741,21 @@ TableHandler.prototype.toBali = function(jsObject) {
     var baliTable = new grammar.InlineTableContext(null, baliComposite);
     baliComposite.addChild(baliTable);
     for (var jsKey in jsObject) {
-        var mapper = new LanguageMapper();
         var baliAssociation = new grammar.AssociationContext(null, baliTable);
         baliTable.addChild(baliAssociation);
 
-        var type = mapper.getJavaScriptType(jsKey);
-        var baliKey = mapper.javaScriptToKey(type, jsKey);
+        var baliKey = language.parseKey(jsKey);
         baliAssociation.addChild(baliKey);
         baliKey.parentCtx = baliAssociation;
 
         var baliValue = new grammar.ValueContext(null, baliAssociation);
         baliAssociation.addChild(baliValue);
-        var jsValue = jsObject[jsKey];
-        type = mapper.getJavaScriptType(jsValue);
-        var baliExpression = mapper.javaScriptToExpression(type, jsValue);
+        var baliExpression = new grammar.DocumentExpressionContext(null, baliValue);
         baliValue.addChild(baliExpression);
-        baliExpression.parentCtx = baliValue;
+        var jsValue = jsObject[jsKey];
+        var baliItem = mapper.javaScriptObjectToBaliDocument(jsValue);
+        baliExpression.addChild(baliItem);
+        baliItem.parentCtx = baliExpression;
     }
     return baliDocument;
 };
@@ -721,10 +767,7 @@ function TagHandler() {
 TagHandler.prototype.constructor = TagHandler;
 
 
-TagHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliTag = baliElement.tag();
+TagHandler.prototype.toJavaScript = function(baliTag) {
     var tag = baliTag.TAG().getText().replace(/#/g, '');  // strip off the #
     return new Tag(tag);
 };
@@ -743,10 +786,7 @@ function TextHandler() {
 TextHandler.prototype.constructor = TextHandler;
 
 
-TextHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliText = baliElement.text();
+TextHandler.prototype.toJavaScript = function(baliText) {
     var text;
     if (baliText.constructor.name === 'BlockTextContext') {
         text = baliText.TEXT_BLOCK().getText();
@@ -777,10 +817,7 @@ function VersionHandler() {
 VersionHandler.prototype.constructor = VersionHandler;
 
 
-VersionHandler.prototype.toJavaScript = function(baliDocument) {
-    var baliLiteral = baliDocument.literal();
-    var baliElement = baliLiteral.element();
-    var baliVersion = baliElement.version();
+VersionHandler.prototype.toJavaScript = function(baliVersion) {
     var version = baliVersion.VERSION().getText().replace(/v/g, '');  // strip off the 'v'
     return new Version(version);
 };

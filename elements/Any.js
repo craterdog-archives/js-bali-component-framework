@@ -9,14 +9,29 @@
  ************************************************************************/
 'use strict';
 
-exports.Angle = require('./Angle').Angle;
-exports.Binary = require('./Binary').Binary;
-exports.Complex = require('./Complex').Complex;
-exports.Document = require('./Document').Document;
-exports.Percent = require('./Percent').Percent;
-exports.Probability = require('./Probability').Probability;
-exports.Range = require('./Range').Range;
-exports.Symbol = require('./Symbol').Symbol;
-exports.Tag = require('./Tag').Tag;
-exports.Text = require('./Text').Text;
-exports.Version = require('./Version').Version;
+
+/*
+ * This element class captures the state and methods associated with a symbol.
+ */
+function Any(value) {
+    if (!value) {
+        this.value = 'none';
+    } else {
+        switch (value) {
+            case 'none':
+            case 'any':
+                this.value = value;
+                break;
+            default:
+                throw new Error('ANY: An invalid value was passed into the constructor: ' + value);
+        }
+    }
+    return this;
+}
+Any.prototype.constructor = Any;
+exports.Any = Any;
+
+
+Any.prototype.toString = function() {
+    return this.value;
+};

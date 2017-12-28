@@ -45,7 +45,7 @@ exports.parseDocument = function(source) {
  */
 exports.parseElement = function(source) {
     var parser = new Parser();
-    var element = parser.parseDocument(source);
+    var element = parser.parseElement(source);
     return element;
 };
 
@@ -59,7 +59,7 @@ exports.parseElement = function(source) {
  */
 exports.parseStructure = function(source) {
     var parser = new Parser();
-    var structure = parser.parseDocument(source);
+    var structure = parser.parseStructure(source);
     return structure;
 };
 
@@ -73,7 +73,7 @@ exports.parseStructure = function(source) {
  */
 exports.parseRange = function(source) {
     var parser = new Parser();
-    var range = parser.parseDocument(source);
+    var range = parser.parseRange(source);
     return range;
 };
 
@@ -87,7 +87,7 @@ exports.parseRange = function(source) {
  */
 exports.parseArray = function(source) {
     var parser = new Parser();
-    var array = parser.parseDocument(source);
+    var array = parser.parseArray(source);
     return array;
 };
 
@@ -101,7 +101,7 @@ exports.parseArray = function(source) {
  */
 exports.parseTable = function(source) {
     var parser = new Parser();
-    var table = parser.parseDocument(source);
+    var table = parser.parseTable(source);
     return table;
 };
 
@@ -115,8 +115,22 @@ exports.parseTable = function(source) {
  */
 exports.parseBlock = function(source) {
     var parser = new Parser();
-    var block = parser.parseDocument(source);
+    var block = parser.parseBlock(source);
     return block;
+};
+
+
+/**
+ * This function takes a source code string containing a Bali key
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {KeyContext} The corresponding parse tree structure.
+ */
+exports.parseKey = function(source) {
+    var parser = new Parser();
+    var key = parser.parseKey(source);
+    return key;
 };
 
 
@@ -129,7 +143,7 @@ exports.parseBlock = function(source) {
  */
 exports.parseExpression = function(source) {
     var parser = new Parser();
-    var expression = parser.parseDocument(source);
+    var expression = parser.parseExpression(source);
     return expression;
 };
 
@@ -163,16 +177,15 @@ exports.formatDocumentWithPadding = function(baliDocument, padding) {
 
 
 /**
- * This function transforms a Bali document into its corresponding JavaScript
- * object.
+ * This function transforms a Bali parse tree node into its corresponding
+ * JavaScript object.
  * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {DocumentContext} baliDocument The Bali document to be transformed.
+ * @param {DocumentContext} baliNode The Bali parse tree node to be transformed.
  * @returns {object} The corresponding JavaScript object.
  */
-exports.documentToJavaScript = function(type, baliDocument) {
+exports.baliNodeToJavaScriptObject = function(baliNode) {
     var mapper = new Mapper();
-    var jsObject = mapper.documentToJavaScript(type, baliDocument);
+    var jsObject = mapper.baliNodeToJavaScriptObject(baliNode);
     return jsObject;
 };
 
@@ -181,72 +194,11 @@ exports.documentToJavaScript = function(type, baliDocument) {
  * This function transforms a JavaScript object into its corresponding Bali
  * document.
  * 
- * @param {string} type The type of handler to be used for the mapping.
  * @param {object} jsObject The JavaScript object to be transformed.
  * @returns {DocumentContext} The corresponding Bali document.
  */
-exports.javaScriptToDocument = function(type, jsObject) {
+exports.javaScriptObjectToBaliDocument = function(jsObject) {
     var mapper = new Mapper();
-    var baliDocument = mapper.javaScriptToDocument(type, jsObject);
+    var baliDocument = mapper.javaScriptObjectToBaliDocument(jsObject);
     return baliDocument;
-};
-
-
-/**
- * This function transforms a Bali expression into its corresponding JavaScript
- * object.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {ExpressionContext} baliExpression The Bali expression to be transformed.
- * @returns {object} The corresponding JavaScript object.
- */
-exports.expressionToJavaScript = function(type, baliExpression) {
-    var mapper = new Mapper();
-    var jsObject = mapper.expressionToJavaScript(type, baliExpression);
-    return jsObject;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * expression.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {object} jsObject The JavaScript object to be transformed.
- * @returns {ExpressionContext} The corresponding Bali expression.
- */
-exports.javaScriptToExpression = function(type, jsObject) {
-    var mapper = new Mapper();
-    var baliExpression = mapper.javaScriptToExpression(type, jsObject);
-    return baliExpression;
-};
-
-
-/**
- * This function transforms a Bali association key into its corresponding JavaScript
- * object.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {KeyContext} baliKey The Bali association key to be transformed.
- * @returns {object} The corresponding JavaScript object.
- */
-exports.keyToJavaScript = function(type, baliKey) {
-    var mapper = new Mapper();
-    var jsObject = mapper.keyToJavaScript(type, baliKey);
-    return jsObject;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * association key.
- * 
- * @param {string} type The type of handler to be used for the mapping.
- * @param {object} jsObject The JavaScript object to be transformed.
- * @returns {KeyContext} The corresponding Bali association key.
- */
-exports.javaScriptToKey = function(type, jsObject) {
-    var mapper = new Mapper();
-    var baliKey = mapper.javaScriptToKey(type, jsObject);
-    return baliKey;
 };

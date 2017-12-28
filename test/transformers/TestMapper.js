@@ -16,6 +16,7 @@ var Text = require('../../elements/Text').Text;
 var language = require('../../BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
+/* global Infinity, NaN */
 module.exports = testCase({
     'Test Binaries': function(test) {
         var testValues = ['', 'Pretend this is a binary string.'];
@@ -23,8 +24,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Binary(testValues[i]);
-            var baliDocument = language.javaScriptToDocument('binary', jsObject);
-            var jsResult = language.documentToJavaScript('binary', baliDocument);
+            var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -35,8 +36,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Probability(testValues[i]);
-            var baliDocument = language.javaScriptToDocument('boolean', jsObject);
-            var jsResult = language.documentToJavaScript('boolean', baliDocument);
+            var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -47,8 +48,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Complex(testValues[i]);
-            var baliExpression = language.javaScriptToExpression('number', jsObject);
-            var jsResult = language.expressionToJavaScript('number', baliExpression);
+            var baliExpression = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliExpression);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -59,8 +60,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Percent(testValues[i]);
-            var baliDocument = language.javaScriptToDocument('percent', jsObject);
-            var jsResult = language.documentToJavaScript('percent', baliDocument);
+            var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -71,8 +72,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Probability(testValues[i]);
-            var baliDocument = language.javaScriptToDocument('probability', jsObject);
-            var jsResult = language.documentToJavaScript('probability', baliDocument);
+            var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -90,8 +91,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = url.parse(testValues[i]);
-            var baliKey = language.javaScriptToKey('url', jsObject);
-            var jsResult = language.keyToJavaScript('url', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -102,8 +103,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Symbol(testValues[i]);
-            var baliKey = language.javaScriptToKey('symbol', jsObject);
-            var jsResult = language.keyToJavaScript('symbol', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -143,8 +144,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Tag(testValues[i]);
-            var baliKey = language.javaScriptToKey('tag', jsObject);
-            var jsResult = language.keyToJavaScript('tag', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -155,8 +156,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = testValues[i];
-            var baliKey = language.javaScriptToKey('text', jsObject);
-            var jsResult = language.keyToJavaScript('text', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -167,8 +168,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = moment(testValues[i]);
-            var baliKey = language.javaScriptToKey('moment', jsObject);
-            var jsResult = language.keyToJavaScript('moment', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -179,8 +180,8 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = new elements.Version(testValues[i]);
-            var baliKey = language.javaScriptToKey('version', jsObject);
-            var jsResult = language.keyToJavaScript('version', baliKey);
+            var baliKey = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliKey);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
         }
         test.done();
@@ -191,20 +192,20 @@ module.exports = testCase({
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = testValues[i];
-            var baliExpression = language.javaScriptToExpression('array', jsObject);
-            var jsResult = language.expressionToJavaScript('array', baliExpression);
+            var baliExpression = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliExpression);
             test.deepEqual(jsResult, jsObject, "The round trip conversion didn't match.");
         }
         test.done();
     },
     'Test Tables': function(test) {
-        var testValues = [{}, {foo: new Text('bar')}, {one: 1, two: 2}, {nested: {alpha: new Text('a'), beta: new Text('b')}}];
+        var testValues = [{}, {'$foo': new Text('bar')}, {'$one': 1, '$two': 2}, {'$nested': {'$alpha': new Text('a'), '$beta': new Text('b')}}];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
             var jsObject = testValues[i];
-            var baliExpression = language.javaScriptToExpression('object', jsObject);
-            var jsResult = language.expressionToJavaScript('object', baliExpression);
+            var baliExpression = language.javaScriptObjectToBaliDocument(jsObject);
+            var jsResult = language.baliNodeToJavaScriptObject(baliExpression);
             test.deepEqual(jsResult, jsObject, "The round trip conversion didn't match.");
         }
         test.done();
