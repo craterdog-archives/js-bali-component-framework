@@ -9,39 +9,31 @@
  ************************************************************************/
 'use strict';
 
-var Version = require('../../elements/Version').Version;
+var Range = require('../../elements/Range').Range;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(7);
-        var empty = new Version();
-        var string = empty.toString();
-        test.equal(string, '1', "1 The version strings didn't match.");
-        var major = new Version('42');
-        string = major.toString();
-        test.equal(string, '42', "2 The version strings didn't match.");
-        var minor = new Version('41.6');
-        string = minor.toString();
-        test.equal(string, '41.6', "3 The version strings didn't match.");
-        var bug = new Version('2.13.5');
-        string = bug.toString();
-        test.equal(string, '2.13.5', "4 The version strings didn't match.");
+        test.expect(5);
         test.throws(
             function() {
-                new Version('1.');
+                var empty = new Range();
             }
         );
         test.throws(
             function() {
-                new Version('1.0');
+                var single = new Range(1);
             }
         );
         test.throws(
             function() {
-                new Version('1.0.2');
+                var range = new Range(1, 25);
+                var string = range.toString();
             }
         );
+        var range = new Range(1, 5);
+        test.equal(range.firstValue, 1, 'The first value in the range should have been 1.');
+        test.equal(range.lastValue, 5, 'The last value in the range should have been 5.');
         test.done();
     }
 });

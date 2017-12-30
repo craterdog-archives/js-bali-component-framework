@@ -11,19 +11,46 @@
 
 
 /*
- * This element class captures the state and methods associated with a symbol.
+ * This element class captures the state and methods associated with a
+ * symbol element.
  */
-function Symbol(string) {
-    this.string = string || '';
-    if (!/^[a-zA-Z][0-9a-zA-Z]*$/g.test(this.string)) {
-        throw 'A symbol must contain at least one character and cannot contain white space: ' + this.string;
+
+
+/**
+ * This constructor creates a new symbol element.
+ * 
+ * @param {string} value The value of the symbol.
+ * @returns {Symbol} The new symbol element.
+ */
+function Symbol(value) {
+    if (!value) {
+        throw new Error('SYMBOL: A symbol cannot be null.');
     }
+    if (!/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
+        throw new Error("SYMBOL: A symbol must begin with a '$' and contain at least one character and cannot contain white space: " + this.value);
+    }
+    this.value = value;
     return this;
 }
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
 
+/**
+ * This method returns a string representation of the symbol element.
+ * 
+ * @returns {string} The string representation of the symbol element.
+ */
 Symbol.prototype.toString = function() {
-    return this.string;
+    return this.value;
+};
+
+
+/**
+ * This method returns the identifier part of the symbol element.
+ * 
+ * @returns {string} The the identifier part of the symbol element.
+ */
+Symbol.prototype.toIdentifier = function() {
+    return this.value.substring(1);
 };

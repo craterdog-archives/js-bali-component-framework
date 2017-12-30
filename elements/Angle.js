@@ -7,38 +7,46 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
+
+/*
+ * This class captures the state and methods associated with an angle.
+ */
 
 
 /**
  * This constructor creates an immutable instance of an angle in radians.
  * 
  * @constructor
- * @param {number} value
+ * @param {number|string} value
  * @returns {Angle}
  */
 function Angle(value) {
-
-    // Angle(real): constructor generates a new angle normalized to the range (-pi..pi].
-    if (typeof value === 'number') {
-        if (!isFinite(value)) {
-            throw 'An angle must be a valid number: ' + value;
-        }
-        var twoPi = 2 * Math.PI;
-        if (value <= -Math.PI || value > Math.PI) {
-            value %= twoPi;  // make in range (-2pi..2pi)
-        }
-        if (value > Math.PI) {
-            value -= twoPi;  // make in the range (-pi..pi]
-        }
-        if (value <= -Math.PI) {
-            value += twoPi;  // make in the range (-pi..pi]
-        }
-        if (value === -0) value = 0;
-        this.value = value;
-        return this;
+    if (typeof value === 'undefined' || value === null) value = 0;  // default value
+    var type = typeof value;
+    switch (type) {
+        case 'number':
+            if (!isFinite(value)) throw new Error('ANGLE: An angle must be a valid number: ' + value);
+            break;
+        case 'string':
+            if (value === 'pi' || value === '-pi') {
+                value = Math.PI;
+            } else {
+                value = Number(value);
+            }
+            break;
+        default:
+            throw new Error('ANGLE: An invalid value type was passed to the constructor: ' + type);
     }
-
-    throw 'Unsupported constructor called: new Angle(' + value + ')';
+    var twoPi = 2 * Math.PI;
+    if (value <= -Math.PI || value > Math.PI) value %= twoPi;  // make in range (-2pi..2pi)
+    if (value > Math.PI) value -= twoPi;  // make in the range (-pi..pi]
+    if (value <= -Math.PI) value += twoPi;  // make in the range (-pi..pi]
+    if (value === -0) value = 0;  // normalize to positive zero
+    if (typeof Angle.ZERO !== 'undefined' && value === 0) return Angle.ZERO;
+    if (typeof Angle.PI !== 'undefined' && value === Math.PI) return Angle.PI;
+    this.value = value;
+    return this;
 }
 Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
@@ -64,6 +72,7 @@ Angle.prototype.toNumber = function() {
 };
 
 
+// common constants
 Angle.ZERO = new Angle(0);
 Angle.PI = new Angle(Math.PI);
 

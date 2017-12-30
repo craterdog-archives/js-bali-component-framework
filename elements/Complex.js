@@ -7,15 +7,21 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
-/* global NaN, Infinity */
+/*
+ * This element class captures the state and methods associated with a
+ * complex number element.
+ */
 var Angle = require('./Angle').Angle;
+/* global NaN, Infinity */
 
 
 /**
- * This constructor creates an immutable instance of a complex number.  The
- * allowed ways to call it include:
+ * This constructor creates an immutable instance of a complex number element.
+ * The allowed ways to call it include:
  * <pre><code>
+ * new Complex()
  * new Complex(realPart, imaginaryPart)
  * new Complex(magnitude, angle)
  * new Complex('(3, 4i)')  // rectangular form
@@ -23,40 +29,59 @@ var Angle = require('./Angle').Angle;
  * </code></pre>
  * 
  * @constructor
- * @param {number or string} numberOrString
- * @param {number or Angle} optionalNumberOrAngle
+ * @param {number|string} numberOrString
+ * @param {number|Angle} optionalNumberOrAngle
  * @returns {Complex}
  */
 function Complex(numberOrString, optionalNumberOrAngle) {
-    this.format = 'rectangular';  // by default
+    this.format = 'rectangular';  // rectangular coordinates by default
+
+    // Complex(): constructor generates the default complex value of zero
+    if (typeof numberOrString === 'undefined' || numberOrString === null) numberOrString = 0;
 
     // Complex(real): constructor generates a complex number with only a real part
-    if (typeof numberOrString === 'number' && (typeof optionalNumberOrAngle === 'undefined' || optionalNumberOrAngle === null)) {
+    if (typeof numberOrString === 'number' && !optionalNumberOrAngle) {
         var number = numberOrString;
         if (isNaN(number)) {
-            this.real = NaN;
-            this.imaginary = NaN;
-            this.magnitude = NaN;
-            this.angle = new Angle(0);
-        } else if (isZero(number)) {  // handles -0 too
-            this.real = 0;
-            this.imaginary = 0;
-            this.magnitude = 0;
-            this.angle = new Angle(0);
-        } else if (isInfinite(number)) {
-            this.real = Infinity;
-            this.imaginary = Infinity;
-            this.magnitude = Infinity;
-            this.angle = new Angle(0);
-        } else {
-            this.real = number;
-            this.imaginary = 0;
+            if (!Complex.NAN) {
+                this.real = NaN;
+                this.imaginary = NaN;
+                this.magnitude = NaN;
+                this.angle = new Angle(0);
+                return this;
+            } else {
+                return Complex.NAN;
+            }
         }
+        if (isZero(number)) {  // handles -0 too
+            if (!Complex.ZERO) {
+                this.real = 0;
+                this.imaginary = 0;
+                this.magnitude = 0;
+                this.angle = new Angle(0);
+                return this;
+            } else {
+                return Complex.ZERO;
+            }
+        }
+        if (isInfinite(number)) {
+            if (!Complex.INFINITY) {
+                this.real = Infinity;
+                this.imaginary = Infinity;
+                this.magnitude = Infinity;
+                this.angle = new Angle(0);
+                return this;
+            } else {
+                return Complex.INFINITY;
+            }
+        }
+        this.real = number;
+        this.imaginary = 0;
         return this;
     }
 
     // Complex(string): constructor generates a complex number from a string
-    if (typeof numberOrString === 'string' && (typeof optionalNumberOrAngle === 'undefined' || optionalNumberOrAngle === null)) {
+    if (typeof numberOrString === 'string' && !optionalNumberOrAngle) {
         var string = numberOrString;
         var complex = parse(string);
         if (complex.real) {
@@ -88,7 +113,7 @@ function Complex(numberOrString, optionalNumberOrAngle) {
     }
 
     // Complex(magnitude, angle): constructor generates a complex number with a magnitude and angle
-    if (typeof numberOrString === 'number' && typeof optionalNumberOrAngle === 'object' && optionalNumberOrAngle.constructor.name === 'Angle') {
+    if (typeof numberOrString === 'number' && optionalNumberOrAngle && optionalNumberOrAngle.constructor.name === 'Angle') {
         this.format = 'polar';
         var magnitude = numberOrString;
         var angle = optionalNumberOrAngle;
@@ -110,7 +135,7 @@ function Complex(numberOrString, optionalNumberOrAngle) {
         return this;
     }
 
-    throw 'Unsupported constructor called: new Complex(' + numberOrString + ', ' + optionalNumberOrAngle + ')';
+    throw new Error('COMPLEX: Invalid arguments passed to the constructor: ' + numberOrString + ', ' + optionalNumberOrAngle);
 }
 Complex.prototype.constructor = Complex;
 exports.Complex = Complex;

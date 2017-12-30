@@ -9,7 +9,6 @@
  ************************************************************************/
 'use strict';
 
-
 /*
  * This element class captures the state and methods associated with a document. A
  * document is a literal value plus optional parameters.

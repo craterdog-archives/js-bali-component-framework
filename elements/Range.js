@@ -11,9 +11,22 @@
 
 
 /*
- * This element class captures the state and methods associated with a range of values.
+ * This element class captures the state and methods associated with a
+ * range element.
+ */
+
+
+/**
+ * This constructor creates a new range element.
+ * 
+ * @param {number|string|object} firstValue The first value in the range.
+ * @param {number|string|object} lastValue The last value in the range.
+ * @returns {Range} The new range element.
  */
 function Range(firstValue, lastValue) {
+    if (typeof lastValue === 'undefined' || lastValue === null) {
+        throw new Error('RANGE: The range constructor requires two values.');
+    }
     this.firstValue = firstValue;
     this.lastValue = lastValue;
     return this;
@@ -22,6 +35,11 @@ Range.prototype.constructor = Range;
 exports.Range = Range;
 
 
+/**
+ * This method returns a string representation of the range element.
+ * 
+ * @returns {string} The string representation of the range element.
+ */
 Range.prototype.toString = function() {
     throw new Error('RANGE: The toString() method is only defined for elemental types.');
 };

@@ -9,32 +9,54 @@
  ************************************************************************/
 'use strict';
 
+/*
+ * This element class captures the state and methods associated with a
+ * percent element.
+ */
 
+
+/**
+ * This constructor creates a new percent element.
+ * 
+ * @param {number|string} value The value of the percent.
+ * @returns {Percent} The new percent element.
+ */
 function Percent(value) {
-
-    // constructor generates a percent based on a numeric value
-    if (typeof value === 'number') {
-        this.value = value;
-        return this;
+    var type = typeof value;
+    switch (type) {
+        case 'undefined':
+            this.value = 0;
+            break;
+        case 'number':
+            this.value = value;
+            break;
+        case 'string':
+            this.value = Number(value.replace(/%/g, ''));  // strip off the %
+            break;
+        default:
+            throw new Error('PERCENT: An invalid value type was passed into the constructor: ' + type);
     }
-
-    // constructor generates a percent based on a string value
-    if (typeof value === 'string') {
-        this.value = Number(value.replace(/%/g, ''));  // strip off the %
-        return this;
-    }
-
+    return this;
 }
 Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
 
 
+/**
+ * This method returns a string representation of the percent element.
+ * 
+ * @returns {string} The string representation of the percent element.
+ */
 Percent.prototype.toString = function () {
     return this.value.toString() + '%';  // append the %
 };
 
 
+/**
+ * This method returns the numeric value of the percent element, e.g. 25% => 0.25
+ * 
+ * @returns {number} The numeric value of the percent element.
+ */
 Percent.prototype.toNumber = function () {
     return this.value / 100;
 };
-

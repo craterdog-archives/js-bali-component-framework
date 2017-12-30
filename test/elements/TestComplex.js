@@ -12,18 +12,21 @@
 var Angle = require('../../elements/Angle').Angle;
 var Complex = require('../../elements/Complex').Complex;
 var testCase = require('nodeunit').testCase;
+/* global NaN, Infinity */
+
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(7);
+        test.expect(8);
 
-        test.strictEqual(new Complex(NaN).toString(), Complex.NAN.toString(), "The complex should have been Complex.NAN.");
-        test.strictEqual(new Complex(0).toNumber(), Complex.ZERO.toNumber(), "The complex should have been Complex.ZERO.");
-        test.strictEqual(new Complex(-0).toNumber(), Complex.ZERO.toNumber(), "The complex should have been Complex.ZERO.");
-        test.strictEqual(new Complex(5).toNumber(), 5, "The complex should have been 5.");
-        test.strictEqual(new Complex(-5).toNumber(), -5, "The complex should have been -5.");
-        test.strictEqual(new Complex(Infinity).toNumber(), Complex.INFINITY.toNumber(), "The complex should have been Complex.INFINITY.");
-        test.strictEqual(new Complex(-Infinity).toNumber(), Complex.INFINITY.toNumber(), "The complex should have been Complex.INFINITY.");
+        test.strictEqual(new Complex().toString(), Complex.ZERO.toString(), "1 The complex should have been Complex.ZERO.");
+        test.strictEqual(new Complex(NaN).toString(), Complex.NAN.toString(), "2 The complex should have been Complex.NAN.");
+        test.strictEqual(new Complex(0).toNumber(), Complex.ZERO.toNumber(), "3 The complex should have been Complex.ZERO.");
+        test.strictEqual(new Complex(-0).toNumber(), Complex.ZERO.toNumber(), "4 The complex should have been Complex.ZERO.");
+        test.strictEqual(new Complex(5).toNumber(), 5, "5 The complex should have been 5.");
+        test.strictEqual(new Complex(-5).toNumber(), -5, "6 The complex should have been -5.");
+        test.strictEqual(new Complex(Infinity).toNumber(), Complex.INFINITY.toNumber(), "7 The complex should have been Complex.INFINITY.");
+        test.strictEqual(new Complex(-Infinity).toNumber(), Complex.INFINITY.toNumber(), "8 The complex should have been Complex.INFINITY.");
 
         test.done();
     },
@@ -32,6 +35,7 @@ module.exports = testCase({
             Complex.NAN,
             Complex.ZERO,
             Complex.INFINITY,
+            new Complex(),
             new Complex(-5),
             new Complex(5),
             new Complex(-3, 4),
@@ -52,12 +56,14 @@ module.exports = testCase({
             false,
             false,
             false,
+            false,
             false
         ];
         var isZeroValues = [
             false,
             true,
             false,
+            true,
             false,
             false,
             false,
@@ -78,12 +84,14 @@ module.exports = testCase({
             false,
             false,
             false,
+            false,
             false
         ];
         var realValues = [
             NaN,
             0,
             Infinity,
+            0,
             -5,
             5,
             -3,
@@ -99,6 +107,7 @@ module.exports = testCase({
             Infinity,
             0,
             0,
+            0,
             4,
             1,
             0.8414709848078965,
@@ -110,6 +119,7 @@ module.exports = testCase({
             NaN,
             0,
             Infinity,
+            0,
             5,
             5,
             5,
@@ -120,6 +130,7 @@ module.exports = testCase({
             5
         ];
         var angleValues = [
+            0,
             0,
             0,
             0,
@@ -136,6 +147,7 @@ module.exports = testCase({
             'NaN',
             '0',
             'Infinity',
+            '0',
             '(-5, 0i)',
             '(5, 0i)',
             '(-3, 4i)',
@@ -149,6 +161,7 @@ module.exports = testCase({
             'NaN',
             '0',
             'Infinity',
+            '0',
             '(-5, 0i)',
             '(5, 0i)',
             '(-3, 4i)',
@@ -162,6 +175,7 @@ module.exports = testCase({
             'NaN',
             '0',
             'Infinity',
+            '0',
             '(5 e^3.141592653589793i)',
             '(5 e^0i)',
             '(5 e^2.214297435588181i)',

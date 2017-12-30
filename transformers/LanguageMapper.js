@@ -279,16 +279,12 @@ BinaryHandler.prototype.constructor = BinaryHandler;
 
 BinaryHandler.prototype.toJavaScript = function(baliBinary) {
     var binary = baliBinary.BINARY().getText();
-    var base64 = binary.substring(1, binary.length - 1);  // remove the single quote delimiters
-    var jsString = codex.base64Decode(base64);
-    return new Binary(jsString);
+    return new Binary(binary, 'autodetect');
 };
 
 
 BinaryHandler.prototype.toBali = function(jsBinary) {
-    var base64 = codex.base64Encode(jsBinary.toString());
-    var binary = "'" + base64 + "'";  // add the single quote delimiters
-    var baliDocument = language.parseDocument(binary);
+    var baliDocument = language.parseDocument(jsBinary.toString());
     return baliDocument;
 };
 
@@ -589,20 +585,7 @@ ProbabilityHandler.prototype.toJavaScript = function(baliProbability) {
 
 
 ProbabilityHandler.prototype.toBali = function(jsProbability) {
-    var probability = jsProbability.toString();
-    switch (probability) {
-        case '1':
-        case 'true':
-            probability = 'true';
-            break;
-        case '0':
-        case 'false':
-            probability = 'false';
-            break;
-        default:
-            probability = probability.substring(1);  // strip off leading zero before decimal point
-    }
-    var baliDocument = language.parseDocument(probability);
+    var baliDocument = language.parseDocument(jsProbability.toString());
     return baliDocument;
 };
 
@@ -635,13 +618,13 @@ SymbolHandler.prototype.constructor = SymbolHandler;
 
 
 SymbolHandler.prototype.toJavaScript = function(baliSymbol) {
-    var symbol = baliSymbol.SYMBOL().getText().replace(/\$/g, '');  // strip off the $
+    var symbol = baliSymbol.SYMBOL().getText();
     return new Symbol(symbol);
 };
 
 
 SymbolHandler.prototype.toBali = function(jsSymbol) {
-    var symbol = '$' + jsSymbol.toString();  // prepend a $
+    var symbol = jsSymbol.toString();
     var baliDocument = language.parseDocument(symbol);
     return baliDocument;
 };
@@ -768,13 +751,13 @@ TagHandler.prototype.constructor = TagHandler;
 
 
 TagHandler.prototype.toJavaScript = function(baliTag) {
-    var tag = baliTag.TAG().getText().replace(/#/g, '');  // strip off the #
+    var tag = baliTag.TAG().getText();
     return new Tag(tag);
 };
 
 
 TagHandler.prototype.toBali = function(jsTag) {
-    var tag = '#' + jsTag.toString();  // prepend a #
+    var tag = jsTag.toString();
     var baliDocument = language.parseDocument(tag);
     return baliDocument;
 };

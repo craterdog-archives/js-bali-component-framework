@@ -9,29 +9,47 @@
  ************************************************************************/
 'use strict';
 
-
 /*
- * This element class captures the state and methods associated with a symbol.
+ * This element class captures the state and methods associated with an
+ * any element.
+ */
+
+
+/**
+ * This constructor creates a new any element.
+ * 
+ * @constructor
+ * @param {string} value The value of the any element.
+ * @returns {Any} The new any element.
  */
 function Any(value) {
-    if (!value) {
-        this.value = 'none';
-    } else {
-        switch (value) {
-            case 'none':
-            case 'any':
-                this.value = value;
-                break;
-            default:
-                throw new Error('ANY: An invalid value was passed into the constructor: ' + value);
-        }
+    if (!value) value = 'none';  // default value
+    switch (value) {
+        case 'none':
+        case 'any':
+            break;
+        default:
+            throw new Error('ANY: An invalid value was passed into the constructor: ' + value);
     }
+    if (typeof Any.NONE !== 'undefined' && value === 'none') return Any.NONE;
+    if (typeof Any.ANY !== 'undefined' && value === 'any') return Any.ANY;
+    this.value = value;
     return this;
 }
 Any.prototype.constructor = Any;
 exports.Any = Any;
 
 
+/**
+ * This method returns the string value of the any type.
+ * 
+ * @returns {string} The string value of the any type.
+ */
 Any.prototype.toString = function() {
     return this.value;
 };
+
+
+// common constants
+Any.NONE = new Any('none');
+Any.ANY = new Any('any');
