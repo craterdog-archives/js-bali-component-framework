@@ -28,7 +28,7 @@ module.exports = testCase({
         var symbol = new Symbol('$foobar');
         var string = symbol.toString();
         test.equal(string, '$foobar', "The symbol should have been '$foobar'.");
-        var identifier = symbol.toIdentifier();
+        var identifier = symbol.getIdentifier();
         test.equal(identifier, 'foobar', "The identifier should have been 'foobar'.");
         test.done();
     }

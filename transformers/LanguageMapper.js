@@ -770,14 +770,8 @@ TextHandler.prototype.constructor = TextHandler;
 
 
 TextHandler.prototype.toJavaScript = function(baliText) {
-    var text;
-    if (baliText.constructor.name === 'BlockTextContext') {
-        text = baliText.TEXT_BLOCK().getText();
-    } else {
-        text = baliText.TEXT().getText();
-        text = text.replace(/\\"/g, '"');  // remove escapes from double quotes
-    }
-    var jsString = text.substring(1, text.length - 1);  // remove the double quote delimiters
+    // NOTE: getChild() works for both TEXT() and TEXT_BLOCK()
+    var jsString = baliText.getChild(0).getText();
     var jsText = new Text(jsString);
     return jsText;
 };
@@ -785,11 +779,7 @@ TextHandler.prototype.toJavaScript = function(baliText) {
 
 TextHandler.prototype.toBali = function(jsObject) {
     var jsString = jsObject.toString();
-    if (jsString.length > 0 && jsString[0] !== '\n') {
-        jsString = jsString.replace(/"/g, '\\"');  // escape any double quotes
-    }
-    var text = '"' + jsString + '"';  // add the double quote delimiters
-    var baliDocument = language.parseDocument(text);
+    var baliDocument = language.parseDocument(jsString);
     return baliDocument;
 };
 
@@ -801,13 +791,13 @@ VersionHandler.prototype.constructor = VersionHandler;
 
 
 VersionHandler.prototype.toJavaScript = function(baliVersion) {
-    var version = baliVersion.VERSION().getText().replace(/v/g, '');  // strip off the 'v'
+    var version = baliVersion.VERSION().getText();
     return new Version(version);
 };
 
 
 VersionHandler.prototype.toBali = function(jsVersion) {
-    var version = 'v' + jsVersion.toString();  // prepend a 'v'
+    var version = jsVersion.toString();
     var baliDocument = language.parseDocument(version);
     return baliDocument;
 };

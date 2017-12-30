@@ -18,6 +18,13 @@ var codex = require('../utilities/EncodingUtilities');
 
 /**
  * This constructor creates a new binary string element.
+ * The allowed ways to call it include:
+ * <pre><code>
+ * new Binary()  // creates an empty byte string with base set to 64
+ * new Binary(value)  // e.g. new Binary('%áå´\r!µ±Å\u0015W²»Âö\t>w\u0010')
+ * new Binary(encoded, base)  // e.g. new Binary('25E1E5B40D21B5B1C51557B292BBC2F6093E7710', 16)
+ * new Binary(encoded, 'autodetect')  // e.g. new Binary('10101', 16)
+ * </code></pre>
  * 
  * @constructor
  * @param {string} valueOrEncoded The raw byte string or encoded value of the binary string.
@@ -156,4 +163,14 @@ Binary.prototype.toBase32 = function(indentation) {
  */
 Binary.prototype.toBase64 = function(indentation) {
     return "'" + codex.base64Encode(this.value, indentation) + "'";
+};
+
+
+/**
+ * This method returns the raw byte string for the binary string.
+ * 
+ * @returns {string} The raw byte string.
+ */
+Binary.prototype.getRawBytes = function() {
+    return this.value;
 };

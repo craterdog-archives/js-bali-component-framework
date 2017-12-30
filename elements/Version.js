@@ -11,12 +11,21 @@
 
 
 /*
- * This element class captures the state and methods associated with a version string.
+ * This element class captures the state and methods associated with a
+ * version element.
  */
-function Version(string) {
-    this.string = string ? string : '1';  // default value
-    if (!/^([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(this.string)) {
-        throw new Error('VERSION: A version string must contain at least one version and cannot contain white space: ' + this.string);
+
+
+/**
+ * This constructor creates a new version element.
+ * 
+ * @param {string} value The value of the version.
+ * @returns {Symbol} The new version element.
+ */
+function Version(value) {
+    this.value = value ? value : 'v1';  // default value
+    if (!/^v([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(this.value)) {
+        throw new Error('VERSION: A version string must begin with "v" and contain at least one version and cannot contain white space: ' + this.value);
     }
     return this;
 }
@@ -25,5 +34,5 @@ exports.Version = Version;
 
 
 Version.prototype.toString = function() {
-    return this.string;
+    return this.value;
 };

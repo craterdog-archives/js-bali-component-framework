@@ -67,11 +67,11 @@ Tag.prototype.toString = function() {
 
 
 /**
- * This method returns a string representation of the tag element.
+ * This method returns the raw byte string for the tag element.
  * 
- * @returns {string} The string representation of the tag element.
+ * @returns {string} The raw byte string for the tag element.
  */
-Tag.prototype.toBytes = function() {
+Tag.prototype.getBytes = function() {
     // not called very often so do it on demand
     return codex.base32Decode(this.value.substring(1));
 };

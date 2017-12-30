@@ -151,7 +151,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Texts': function(test) {
-        var testValues = ['', '"', '""', '"Hello World!"', '\nIt\'s a "text block"...\n'];
+        var testValues = ['""', /*'"\""', '"\"\""',*/ '"Hello World!"', '"\nIt\'s a \"text block\"...\n"'];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
@@ -175,7 +175,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Versions': function(test) {
-        var testValues = ['', '1', '2.3', '4.5.6'];
+        var testValues = ['', 'v1', 'v2.3', 'v4.5.6'];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
@@ -186,8 +186,8 @@ module.exports = testCase({
         }
         test.done();
     },
-    'Test Collections': function(test) {
-        var testValues = [[], [1], [new Text('one'), new Text('two')], [[1, 2, 3], [4, 5]]];
+    'Test Arrays': function(test) {
+        var testValues = [[], [1], [new Text('"one"'), new Text('"two"')], [[1, 2, 3], [4, 5]]];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
@@ -199,7 +199,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Tables': function(test) {
-        var testValues = [{}, {'$foo': new Text('bar')}, {'$one': 1, '$two': 2}, {'$nested': {'$alpha': new Text('a'), '$beta': new Text('b')}}];
+        var testValues = [{}, {'$foo': new Text('"bar"')}, {'$one': 1, '$two': 2}, {'$nested': {'$alpha': new Text('"a"'), '$beta': new Text('"b"')}}];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {

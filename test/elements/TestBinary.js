@@ -26,7 +26,7 @@ module.exports = testCase({
 
         var expected = random.generateRandomBytes(2000);
         var binary = new Binary(expected);
-        test.equal(binary.value, expected, "The raw byte strings don't match.");
+        test.equal(binary.getRawBytes(), expected, "The raw byte strings don't match.");
         test.equal(binary.base, 64, "The default encoding base is incorrect.");
 
         expected = "'0123456789abcdefghijklmnopqrstuvwxyz'";

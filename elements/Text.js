@@ -9,18 +9,42 @@
  ************************************************************************/
 'use strict';
 
-
 /*
- * This element class captures the state and methods associated with a text string.
+ * This element class captures the state and methods associated with a
+ * text string element.
  */
-function Text(string) {
-    this.string = string || '';
+
+
+/**
+ * This constructor creates a new text string element.
+ * 
+ * @constructor
+ * @param {string} value The value of the text string (embedded in double quotes).
+ * @returns {Text} The new text string.
+ */
+function Text(value) {
+    this.value = value || '""';  // default is the empty text string
     return this;
 }
 Text.prototype.constructor = Text;
 exports.Text = Text;
 
 
+/**
+ * This method returns the text string embedded in double quotes.
+ * 
+ * @returns {string} The text string embedded in double quotes.
+ */
 Text.prototype.toString = function() {
-    return this.string;
+    return this.value;
+};
+
+
+/**
+ * This method returns the raw javascript string.
+ * 
+ * @returns {string} The raw javascript string.
+ */
+Text.prototype.getRawString = function() {
+    return this.value.slice(1, -1);  // strip off the double quotes
 };

@@ -51,6 +51,6 @@ Symbol.prototype.toString = function() {
  * 
  * @returns {string} The the identifier part of the symbol element.
  */
-Symbol.prototype.toIdentifier = function() {
+Symbol.prototype.getIdentifier = function() {
     return this.value.substring(1);
 };
