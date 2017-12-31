@@ -23,31 +23,17 @@
  *    Percent      bali-language:Percent
  *    Probability  boolean, bali-language:Probability
  *    Range        bali-language:Range
- *    Reference    url:url
+ *    Reference    bali-language:Reference
  *    Symbol       bali-language:Symbol
  *    Table        object
  *    Tag          bali-language:Tag
  *    Text         string, bali-language:Text
  *    Version      bali-language:Version
  */
-var url = require('url');
 var antlr = require('antlr4');
 var grammar = require('../grammar').BaliLanguageParser;
 var language = require('../BaliLanguage');
-var Angle = require('../elements/Angle').Angle;
-var Any = require('../elements/Any').Any;
-var Binary = require('../elements/Binary').Binary;
-var Complex = require('../elements/Complex').Complex;
-var Document = require('../elements/Document').Document;
-var Integer = require("js-big-integer").BigInteger;
-var Moment = require('../elements/Moment').Moment;
-var Percent = require('../elements/Percent').Percent;
-var Probability = require('../elements/Probability').Probability;
-var Range = require('../elements/Range').Range;
-var Symbol = require('../elements/Symbol').Symbol;
-var Tag = require('../elements/Tag').Tag;
-var Text = require('../elements/Text').Text;
-var Version = require('../elements/Version').Version;
+var elements = require('../elements');
 /* global NaN, Infinity */
 
 
@@ -233,7 +219,6 @@ var HANDLER_MAP = {
     'tag': new TagHandler(),
     'text': new TextHandler(),
     'undefined': new AnyHandler(),
-    'url': new ReferenceHandler(),
     'version': new VersionHandler()
 };
 
@@ -259,7 +244,7 @@ AnyHandler.prototype.toJavaScript = function(baliAny) {
         default:
             throw new Error('ANY: An invalid context type was found: ' + nodeType);
     }
-    return new Any(value);
+    return new elements.Any(value);
 };
 
 
@@ -278,7 +263,7 @@ BinaryHandler.prototype.constructor = BinaryHandler;
 
 BinaryHandler.prototype.toJavaScript = function(baliBinary) {
     var binary = baliBinary.BINARY().getText();
-    return new Binary(binary, 'autodetect');
+    return new elements.Binary(binary, 'autodetect');
 };
 
 
@@ -359,7 +344,7 @@ DocumentHandler.prototype.toJavaScript = function(baliDocument) {
     var baliParameters = baliDocument.parameters();
     if (baliParameters) {
         var jsParameters = mapper.baliNodeToJavaScriptObject(baliParameters);
-        var jsDocument = new Document(jsLiteral, jsParameters);
+        var jsDocument = new elements.Document(jsLiteral, jsParameters);
         // since there are parameters we must wrap them in a javascript document
         return jsDocument;
     }
@@ -395,7 +380,7 @@ MomentHandler.prototype.constructor = MomentHandler;
 
 MomentHandler.prototype.toJavaScript = function(baliMoment) {
     var moment = baliMoment.MOMENT().getText();
-    return new Moment(moment);
+    return new elements.Moment(moment);
 };
 
 
@@ -427,7 +412,7 @@ NumberHandler.prototype.toJavaScript = function(baliNumber) {
         case 'ImaginaryNumberContext':
             baliImaginary = baliNumber.imaginary();
             var jsNumber = baliImaginaryToJsNumber(baliImaginary);
-            return new Complex(0, jsNumber);
+            return new elements.Complex(0, jsNumber);
         case 'ComplexNumberContext':
             baliReal = baliNumber.real();
             var jsReal = baliRealToJsNumber(baliReal);
@@ -435,9 +420,9 @@ NumberHandler.prototype.toJavaScript = function(baliNumber) {
             var jsImaginary = baliImaginaryToJsNumber(baliImaginary);
             var delimiter = baliNumber.del.text;
             if (delimiter === ',') {
-                return new Complex(jsReal, jsImaginary);
+                return new elements.Complex(jsReal, jsImaginary);
             } else {
-                return new Complex(jsReal, new Angle(jsImaginary));
+                return new elements.Complex(jsReal, new elements.Angle(jsImaginary));
             }
             break;
             
@@ -547,7 +532,7 @@ PercentHandler.prototype.constructor = PercentHandler;
 PercentHandler.prototype.toJavaScript = function(baliPercent) {
     var baliReal = baliPercent.real();
     var jsPercent = baliRealToJsNumber(baliReal);
-    return new Percent(jsPercent);
+    return new elements.Percent(jsPercent);
 };
 
 
@@ -577,7 +562,7 @@ ProbabilityHandler.prototype.toJavaScript = function(baliProbability) {
         default:
             probability = Number('0' + baliProbability.FRACTION().getText());  // add leading zero before decimal point
     }
-    return new Probability(probability);
+    return new elements.Probability(probability);
 };
 
 
@@ -594,16 +579,14 @@ ReferenceHandler.prototype.constructor = ReferenceHandler;
 
 
 ReferenceHandler.prototype.toJavaScript = function(baliReference) {
-    var baliResource = baliReference.RESOURCE().getText();
-    var jsString = baliResource.substring(1, baliResource.length - 1);  // remove the angle bracket delimiters
-    return url.parse(jsString);
+    var reference = baliReference.RESOURCE().getText();
+    return new elements.Reference(reference);
 };
 
 
-ReferenceHandler.prototype.toBali = function(jsUrl) {
-    var jsString = jsUrl.href;
-    var baliReference = '<' + jsString + '>';  // add the angle bracket delimiters
-    var baliDocument = language.parseDocument(baliReference);
+ReferenceHandler.prototype.toBali = function(jsReference) {
+    var reference = jsReference.toString();
+    var baliDocument = language.parseDocument(reference);
     return baliDocument;
 };
 
@@ -616,7 +599,7 @@ SymbolHandler.prototype.constructor = SymbolHandler;
 
 SymbolHandler.prototype.toJavaScript = function(baliSymbol) {
     var symbol = baliSymbol.SYMBOL().getText();
-    return new Symbol(symbol);
+    return new elements.Symbol(symbol);
 };
 
 
@@ -636,7 +619,7 @@ RangeHandler.prototype.constructor = RangeHandler;
 RangeHandler.prototype.toJavaScript = function(baliRange) {
     var first = baliRange.value(0);
     var last = baliRange.value(1);
-    var jsRange = new Range(first, last);
+    var jsRange = new elements.Range(first, last);
     return jsRange;
 };
 
@@ -749,7 +732,7 @@ TagHandler.prototype.constructor = TagHandler;
 
 TagHandler.prototype.toJavaScript = function(baliTag) {
     var tag = baliTag.TAG().getText();
-    return new Tag(tag);
+    return new elements.Tag(tag);
 };
 
 
@@ -769,7 +752,7 @@ TextHandler.prototype.constructor = TextHandler;
 TextHandler.prototype.toJavaScript = function(baliText) {
     // NOTE: getChild() works for both TEXT() and TEXT_BLOCK()
     var jsString = baliText.getChild(0).getText();
-    var jsText = new Text(jsString);
+    var jsText = new elements.Text(jsString);
     return jsText;
 };
 
@@ -789,7 +772,7 @@ VersionHandler.prototype.constructor = VersionHandler;
 
 VersionHandler.prototype.toJavaScript = function(baliVersion) {
     var version = baliVersion.VERSION().getText();
-    return new Version(version);
+    return new elements.Version(version);
 };
 
 

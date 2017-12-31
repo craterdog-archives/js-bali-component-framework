@@ -9,30 +9,33 @@
  ************************************************************************/
 'use strict';
 
-var Symbol = require('../../elements/Symbol').Symbol;
+var Reference = require('../../elements/Reference').Reference;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(4);
+        test.expect(7);
 
         test.throws(
             function() {
-                var empty = new Symbol();
+                var empty = new Reference();
             }
         );
 
-        test.throws(
-            function() {
-                var bad = new Symbol('White Space');
-            }
-        );
-
-        var symbol = new Symbol('$foobar');
-        var string = symbol.toString();
-        test.equal(string, '$foobar', "The symbol should have been '$foobar'.");
-        var identifier = symbol.getIdentifier();
-        test.equal(identifier, 'foobar', "The identifier should have been 'foobar'.");
+        var tests = [
+            '<https://google.com/>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
+            '<bali:/bali/elements/Text>',
+            '<bali:/bali/elements/Text?version=6.12.1>',
+            '<bali:/abcCorp/reports/2010/Q3>'
+        ];
+        for (var i = 0; i < tests.length; i++) {
+            var expected = tests[i];
+            var reference = new Reference(expected);
+            var string = reference.toString();
+            test.equal(string, expected, "" + (i + 1) + " The references didn't match.");
+        }
 
         test.done();
     }

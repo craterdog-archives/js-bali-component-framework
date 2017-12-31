@@ -9,9 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var url = require('url');
-var elements = require('../../elements');
 var language = require('../../BaliLanguage');
+var elements = require('../../elements');
 var testCase = require('nodeunit').testCase;
 
 /* global Infinity, NaN */
@@ -78,17 +77,17 @@ module.exports = testCase({
     },
     'Test References': function(test) {
         var testValues = [
-            'https://google.com',
-            'bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM',
-            'bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1',
-            'bali:/bali/elements/Text',
-            'bali:/bali/elements/Text?version=6.12.1',
-            'bali:/abcCorp/reports/2010/Q3'
+            '<https://google.com>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
+            '<bali:/bali/elements/Text>',
+            '<bali:/bali/elements/Text?version=6.12.1>',
+            '<bali:/abcCorp/reports/2010/Q3>'
         ];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
-            var jsObject = url.parse(testValues[i]);
+            var jsObject = new elements.Reference(testValues[i]);
             var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
             var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
