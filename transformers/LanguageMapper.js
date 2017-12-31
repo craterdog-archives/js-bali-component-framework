@@ -18,7 +18,7 @@
  *    Array        array
  *    Binary       bali-language:Binary
  *    Document     bali-language:Document
- *    Moment       moment:moment
+ *    Moment       bali-language:Moment
  *    Number       number, js-big-integer:BigInteger, bali-language:Complex
  *    Percent      bali-language:Percent
  *    Probability  boolean, bali-language:Probability
@@ -31,10 +31,8 @@
  *    Version      bali-language:Version
  */
 var url = require('url');
-var moment = require('moment');
 var antlr = require('antlr4');
 var grammar = require('../grammar').BaliLanguageParser;
-var codex = require('../utilities/EncodingUtilities');
 var language = require('../BaliLanguage');
 var Angle = require('../elements/Angle').Angle;
 var Any = require('../elements/Any').Any;
@@ -42,6 +40,7 @@ var Binary = require('../elements/Binary').Binary;
 var Complex = require('../elements/Complex').Complex;
 var Document = require('../elements/Document').Document;
 var Integer = require("js-big-integer").BigInteger;
+var Moment = require('../elements/Moment').Moment;
 var Percent = require('../elements/Percent').Percent;
 var Probability = require('../elements/Probability').Probability;
 var Range = require('../elements/Range').Range;
@@ -395,16 +394,14 @@ MomentHandler.prototype.constructor = MomentHandler;
 
 
 MomentHandler.prototype.toJavaScript = function(baliMoment) {
-    var jsString = baliMoment.MOMENT().getText();
-    jsString = jsString.substring(1, jsString.length - 1);  // remove the angle bracket delimiters
-    return moment(jsString);
+    var moment = baliMoment.MOMENT().getText();
+    return new Moment(moment);
 };
 
 
 MomentHandler.prototype.toBali = function(jsMoment) {
-    var jsString = jsMoment.format('YYYY-MM-DDTHH:mm:ss.SSS');
-    var baliMoment = '<' + jsString + '>';  // add the angle bracket delimiters
-    var baliDocument = language.parseDocument(baliMoment);
+    var moment = jsMoment.toString();
+    var baliDocument = language.parseDocument(moment);
     return baliDocument;
 };
 

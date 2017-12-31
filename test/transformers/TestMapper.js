@@ -9,10 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var moment = require('moment');
 var url = require('url');
 var elements = require('../../elements');
-var Text = require('../../elements/Text').Text;
 var language = require('../../BaliLanguage');
 var testCase = require('nodeunit').testCase;
 
@@ -163,11 +161,11 @@ module.exports = testCase({
         test.done();
     },
     'Test Moments': function(test) {
-        var testValues = ['2017-10-30T19:10:01.257'];
+        var testValues = ['<2017-10-30T19:10:01.257>'];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
-            var jsObject = moment(testValues[i]);
+            var jsObject = new elements.Moment(testValues[i]);
             var baliDocument = language.javaScriptObjectToBaliDocument(jsObject);
             var jsResult = language.baliNodeToJavaScriptObject(baliDocument);
             test.strictEqual(jsResult.toString(), jsObject.toString(), "The round trip conversion didn't match.");
@@ -187,7 +185,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Arrays': function(test) {
-        var testValues = [[], [1], [new Text('"one"'), new Text('"two"')], [[1, 2, 3], [4, 5]]];
+        var testValues = [[], [1], [new elements.Text('"one"'), new elements.Text('"two"')], [[1, 2, 3], [4, 5]]];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
@@ -199,7 +197,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Tables': function(test) {
-        var testValues = [{}, {'$foo': new Text('"bar"')}, {'$one': 1, '$two': 2}, {'$nested': {'$alpha': new Text('"a"'), '$beta': new Text('"b"')}}];
+        var testValues = [{}, {'$foo': new elements.Text('"bar"')}, {'$one': 1, '$two': 2}, {'$nested': {'$alpha': new elements.Text('"a"'), '$beta': new elements.Text('"b"')}}];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {
