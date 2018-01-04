@@ -137,6 +137,10 @@ LanguageMapper.prototype.getBaliTypeHandler = function(baliNode) {
         case 'AnyAnyContext':
             handlerType = 'any';
             break;
+        case 'InlineArrayContext':
+        case 'NewlineArrayContext':
+            handlerType = 'array';
+            break;
         case 'BinaryContext':
             handlerType = 'binary';
             break;
@@ -161,32 +165,28 @@ LanguageMapper.prototype.getBaliTypeHandler = function(baliNode) {
         case 'FractionalProbabilityContext':
             handlerType = 'probability';
             break;
-        case 'InlineTextContext':
-        case 'BlockTextContext':
-            handlerType = 'text';
-            break;
-        case 'SymbolContext':
-            handlerType = 'symbol';
-            break;
-        case 'TagContext':
-            handlerType = 'tag';
+        case 'RangeContext':
+            handlerType = 'range';
             break;
         case 'ReferenceContext':
             handlerType = 'reference';
             break;
-        case 'VersionContext':
-            handlerType = 'version';
-            break;
-        case 'RangeContext':
-            handlerType = 'range';
-            break;
-        case 'InlineArrayContext':
-        case 'NewlineArrayContext':
-            handlerType = 'array';
+        case 'SymbolContext':
+            handlerType = 'symbol';
             break;
         case 'InlineTableContext':
         case 'NewlineTableContext':
             handlerType = 'table';
+            break;
+        case 'TagContext':
+            handlerType = 'tag';
+            break;
+        case 'InlineTextContext':
+        case 'BlockTextContext':
+            handlerType = 'text';
+            break;
+        case 'VersionContext':
+            handlerType = 'version';
             break;
         default:
             throw new Error('MAPPER: An invalid Bali node type was passed: ' + nodeType);
@@ -255,24 +255,6 @@ AnyHandler.prototype.toBali = function(jsAny) {
 };
 
 
-function BinaryHandler() {
-    return this;
-}
-BinaryHandler.prototype.constructor = BinaryHandler;
-
-
-BinaryHandler.prototype.toJavaScript = function(baliBinary) {
-    var binary = baliBinary.BINARY().getText();
-    return new elements.Binary(binary, 'autodetect');
-};
-
-
-BinaryHandler.prototype.toBali = function(jsBinary) {
-    var baliDocument = language.parseDocument(jsBinary.toString());
-    return baliDocument;
-};
-
-
 function ArrayHandler() {
     return this;
 }
@@ -323,6 +305,24 @@ ArrayHandler.prototype.toBali = function(jsArray) {
         baliValue.addChild(baliExpression);
         baliExpression.parentCtx = baliValue;
     }
+    return baliDocument;
+};
+
+
+function BinaryHandler() {
+    return this;
+}
+BinaryHandler.prototype.constructor = BinaryHandler;
+
+
+BinaryHandler.prototype.toJavaScript = function(baliBinary) {
+    var binary = baliBinary.BINARY().getText();
+    return new elements.Binary(binary, 'autodetect');
+};
+
+
+BinaryHandler.prototype.toBali = function(jsBinary) {
+    var baliDocument = language.parseDocument(jsBinary.toString());
     return baliDocument;
 };
 
@@ -572,44 +572,6 @@ ProbabilityHandler.prototype.toBali = function(jsProbability) {
 };
 
 
-function ReferenceHandler() {
-    return this;
-}
-ReferenceHandler.prototype.constructor = ReferenceHandler;
-
-
-ReferenceHandler.prototype.toJavaScript = function(baliReference) {
-    var reference = baliReference.RESOURCE().getText();
-    return new elements.Reference(reference);
-};
-
-
-ReferenceHandler.prototype.toBali = function(jsReference) {
-    var reference = jsReference.toString();
-    var baliDocument = language.parseDocument(reference);
-    return baliDocument;
-};
-
-
-function SymbolHandler() {
-    return this;
-}
-SymbolHandler.prototype.constructor = SymbolHandler;
-
-
-SymbolHandler.prototype.toJavaScript = function(baliSymbol) {
-    var symbol = baliSymbol.SYMBOL().getText();
-    return new elements.Symbol(symbol);
-};
-
-
-SymbolHandler.prototype.toBali = function(jsSymbol) {
-    var symbol = jsSymbol.toString();
-    var baliDocument = language.parseDocument(symbol);
-    return baliDocument;
-};
-
-
 function RangeHandler() {
     return this;
 }
@@ -651,6 +613,44 @@ RangeHandler.prototype.toBali = function(jsRange) {
     baliValue.addChild(baliExpression);
     baliExpression.parentCtx = baliValue;
 
+    return baliDocument;
+};
+
+
+function ReferenceHandler() {
+    return this;
+}
+ReferenceHandler.prototype.constructor = ReferenceHandler;
+
+
+ReferenceHandler.prototype.toJavaScript = function(baliReference) {
+    var reference = baliReference.RESOURCE().getText();
+    return new elements.Reference(reference);
+};
+
+
+ReferenceHandler.prototype.toBali = function(jsReference) {
+    var reference = jsReference.toString();
+    var baliDocument = language.parseDocument(reference);
+    return baliDocument;
+};
+
+
+function SymbolHandler() {
+    return this;
+}
+SymbolHandler.prototype.constructor = SymbolHandler;
+
+
+SymbolHandler.prototype.toJavaScript = function(baliSymbol) {
+    var symbol = baliSymbol.SYMBOL().getText();
+    return new elements.Symbol(symbol);
+};
+
+
+SymbolHandler.prototype.toBali = function(jsSymbol) {
+    var symbol = jsSymbol.toString();
+    var baliDocument = language.parseDocument(symbol);
     return baliDocument;
 };
 
