@@ -12,7 +12,7 @@
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
 exports.Complex = require('./Complex').Complex;
-exports.Document = require('./Document').Document;
+exports.Composite = require('./Composite').Composite;
 exports.Moment = require('./Moment').Moment;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;

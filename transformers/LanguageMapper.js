@@ -15,17 +15,17 @@
  *    Bali Type    JavaScript Type(s)
  *    -----------  --------------------
  *    Any          undefined, bali-language:Any
- *    Array        array
+ *    Array        array, bali-language:Array
  *    Binary       bali-language:Binary
  *    Document     bali-language:Document
  *    Moment       bali-language:Moment
- *    Number       number, js-big-integer:BigInteger, bali-language:Complex
+ *    Number       number, js-big-integer:BigInteger, bali-language:Number
  *    Percent      bali-language:Percent
  *    Probability  boolean, bali-language:Probability
  *    Range        bali-language:Range
  *    Reference    bali-language:Reference
  *    Symbol       bali-language:Symbol
- *    Table        object
+ *    Table        object, bali-language:Table
  *    Tag          bali-language:Tag
  *    Text         string, bali-language:Text
  *    Version      bali-language:Version
@@ -114,6 +114,9 @@ LanguageMapper.prototype.getJavaScriptTypeHandler = function(jsObject) {
     if (handlerType === 'object') {
         if (jsObject) {
             handlerType = jsObject.constructor.name.toLowerCase();
+            if (handlerType === 'composite') {
+                handlerType = jsObject.value.constructor.name.toLowerCase();
+            }
         } else {
             handlerType = 'undefined';  // addresses infamous null type bug in javascript
         }
@@ -139,6 +142,7 @@ LanguageMapper.prototype.getBaliTypeHandler = function(baliNode) {
             break;
         case 'InlineArrayContext':
         case 'NewlineArrayContext':
+        case 'EmptyArrayContext':
             handlerType = 'array';
             break;
         case 'BinaryContext':
@@ -176,6 +180,7 @@ LanguageMapper.prototype.getBaliTypeHandler = function(baliNode) {
             break;
         case 'InlineTableContext':
         case 'NewlineTableContext':
+        case 'EmptyTableContext':
             handlerType = 'table';
             break;
         case 'TagContext':
@@ -264,25 +269,21 @@ ArrayHandler.prototype.constructor = ArrayHandler;
 ArrayHandler.prototype.toJavaScript = function(baliArray) {
     var jsArray = [];
     var type = baliArray.constructor.name;
-    switch (type) {
-        case 'InlineArrayContext':
-        case 'NewlineArrayContext':
-            var values = baliArray.value();
-            for (var i = 0; i < values.length; i++) {
-                var baliExpression = values[i].expression();
-                var mapper = new LanguageMapper();
-                var jsObject = mapper.baliNodeToJavaScriptObject(baliExpression);
-                jsArray.push(jsObject);
-            }
-            break;
-        default:
-            // empty array
+    if (type !== 'EmptyArrayContext') {
+        var values = baliArray.value();
+        for (var i = 0; i < values.length; i++) {
+            var baliExpression = values[i].expression();
+            var mapper = new LanguageMapper();
+            var jsObject = mapper.baliNodeToJavaScriptObject(baliExpression);
+            jsArray.push(jsObject);
+        }
     }
-    return jsArray;
+    var jsComposite = new elements.Composite(jsArray, type);
+    return jsComposite;
 };
 
 
-ArrayHandler.prototype.toBali = function(jsArray) {
+ArrayHandler.prototype.toBali = function(jsComposite) {
     var baliDocument = new grammar.DocumentContext();
     var baliLiteral = new grammar.LiteralContext(null, baliDocument);
     baliDocument.addChild(baliLiteral);
@@ -290,8 +291,23 @@ ArrayHandler.prototype.toBali = function(jsArray) {
     baliLiteral.addChild(baliStructure);
     var baliComposite = new grammar.CompositeContext(null, baliStructure);
     baliStructure.addChild(baliComposite);
-    var baliArray = new grammar.InlineArrayContext(null, baliComposite);
+    var baliArray;
+    var type = jsComposite.type;
+    switch (type) {
+        case 'InlineArrayContext':
+            baliArray = new grammar.InlineArrayContext(null, baliComposite);
+            break;
+        case 'NewlineArrayContext':
+            baliArray = new grammar.NewlineArrayContext(null, baliComposite);
+            break;
+        case 'EmptyArrayContext':
+            baliArray = new grammar.EmptyArrayContext(null, baliComposite);
+            break;
+        default:
+            throw new Error('ARRAY: An invalid composite context type was passed: ' + type);
+    }
     baliComposite.addChild(baliArray);
+    var jsArray = jsComposite.value;
     for (var i = 0; i < jsArray.length; i++) {
         var jsObject = jsArray[i];
         var mapper = new LanguageMapper();
@@ -439,40 +455,17 @@ NumberHandler.prototype.toBali = function(jsNumber) {
         type = jsNumber.constructor.name.toLowerCase();
     }
 
-    var string = jsNumber.toString();
+    var string;
     switch (type) {
         case 'number':
-            switch (string) {
-                case 'Infinity':
-                case '-Infinity':
-                    string = 'infinity';
-                    break;
-                case 'NaN':
-                    string = 'undefined';
-                    break;
-                default:
-                    // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
-                    string = string.replace(/e/g, 'E');
-            }
+            string = jsNumberToString(jsNumber);
             break;
-
         case 'biginteger':
-            // nothing to do
+            // TODO: add support for big integers
             break;
-
         case 'complex':
-            // handle special cases
-            if (jsNumber.isNaN()) {
-                string = 'undefined';
-            } else if (jsNumber.isInfinite()) {
-                string = 'infinity';
-            } else {
-                string = jsNumber.toString();
-                // must replace the 'e' in the exponents with 'E' but not affect the 'e^'
-                string = string.replace(/e([^^])/g, 'E$1');
-            }
+            string = jsNumber.toString();
             break;
-
         default:
             throw new Error('MAPPER: Unexpected JavaScript number type: ' + type);
     }
@@ -480,6 +473,42 @@ NumberHandler.prototype.toBali = function(jsNumber) {
     var baliDocument = language.parseDocument(string);
     return baliDocument;
 };
+
+
+function jsNumberToString(jsNumber) {
+    var string = jsNumber.toString();
+    switch (string) {
+        case '-2.718281828459045':
+            string = '-e';
+            break;
+        case '2.718281828459045':
+            string = 'e';
+            break;
+        case '-3.141592653589793':
+            string = '-pi';
+            break;
+        case '3.141592653589793':
+            string = 'pi';
+            break;
+        case '-1.618033988749895':
+            string = '-phi';
+            break;
+        case '1.618033988749895':
+            string = 'phi';
+            break;
+        case 'Infinity':
+        case '-Infinity':
+            string = 'infinity';
+            break;
+        case 'NaN':
+            string = 'undefined';
+            break;
+        default:
+            // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
+            string = string.replace(/e/g, 'E');
+    }
+    return string;
+}
 
 
 function baliRealToJsNumber(baliReal) {
@@ -662,37 +691,48 @@ TableHandler.prototype.constructor = TableHandler;
 
 
 TableHandler.prototype.toJavaScript = function(baliTable) {
+    /*
+    var jsArray = [];
+    var type = baliArray.constructor.name;
+    if (type !== 'EmptyArrayContext') {
+        var values = baliArray.value();
+        for (var i = 0; i < values.length; i++) {
+            var baliExpression = values[i].expression();
+            var mapper = new LanguageMapper();
+            var jsObject = mapper.baliNodeToJavaScriptObject(baliExpression);
+            jsArray.push(jsObject);
+        }
+    }
+    var jsComposite = new elements.Composite(jsArray, type);
+    return jsComposite;
+    */
     var mapper = new LanguageMapper();
     var jsObject = {};
     var type = baliTable.constructor.name;
-    switch (type) {
-        case 'InlineTableContext':
-        case 'NewlineTableContext':
-            var associations = baliTable.association();
-            for (var i = 0; i < associations.length; i++) {
-                var baliAssociation = associations[i];
+    if (type !== 'EmptyTableContext') {
+        var associations = baliTable.association();
+        for (var i = 0; i < associations.length; i++) {
+            var baliAssociation = associations[i];
 
-                // convert the bali key into a javascript string since only strings are
-                // allowed as javascript object keys
-                var baliKey = baliAssociation.key();
-                var jsKey = language.formatDocument(baliKey);
+            // convert the bali key into a javascript string since only strings are
+            // allowed as javascript object keys
+            var baliKey = baliAssociation.key();
+            var jsKey = language.formatDocument(baliKey);
 
-                // convert the bali value into a javascript object
-                var baliValue = baliAssociation.value();
-                var jsValue = mapper.baliNodeToJavaScriptObject(baliValue);
+            // convert the bali value into a javascript object
+            var baliValue = baliAssociation.value();
+            var jsValue = mapper.baliNodeToJavaScriptObject(baliValue);
 
-                // add the key-value pair
-                jsObject[jsKey] = jsValue;
-            }
-            break;
-        default:
-            // empty table
+            // add the key-value pair
+            jsObject[jsKey] = jsValue;
+        }
     }
-    return jsObject;
+    var jsComposite = new elements.Composite(jsObject, type);
+    return jsComposite;
 };
 
 
-TableHandler.prototype.toBali = function(jsObject) {
+TableHandler.prototype.toBali = function(jsComposite) {
     var mapper = new LanguageMapper();
     var baliDocument = new grammar.DocumentContext();
     var baliLiteral = new grammar.LiteralContext(null, baliDocument);
@@ -701,9 +741,24 @@ TableHandler.prototype.toBali = function(jsObject) {
     baliLiteral.addChild(baliStructure);
     var baliComposite = new grammar.CompositeContext(null, baliStructure);
     baliStructure.addChild(baliComposite);
-    var baliTable = new grammar.InlineTableContext(null, baliComposite);
+    var baliTable;
+    var type = jsComposite.type;
+    switch (type) {
+        case 'InlineTableContext':
+            baliTable = new grammar.InlineTableContext(null, baliComposite);
+            break;
+        case 'NewlineTableContext':
+            baliTable = new grammar.NewlineTableContext(null, baliComposite);
+            break;
+        case 'EmptyTableContext':
+            baliTable = new grammar.EmptyTableContext(null, baliComposite);
+            break;
+        default:
+            throw new Error('ARRAY: An invalid composite context type was passed: ' + type);
+    }
     baliComposite.addChild(baliTable);
-    for (var jsKey in jsObject) {
+    var jsTable = jsComposite.value;
+    for (var jsKey in jsTable) {
         var baliAssociation = new grammar.AssociationContext(null, baliTable);
         baliTable.addChild(baliAssociation);
 
@@ -715,7 +770,7 @@ TableHandler.prototype.toBali = function(jsObject) {
         baliAssociation.addChild(baliValue);
         var baliExpression = new grammar.DocumentExpressionContext(null, baliValue);
         baliValue.addChild(baliExpression);
-        var jsValue = jsObject[jsKey];
+        var jsValue = jsTable[jsKey];
         var baliItem = mapper.javaScriptObjectToBaliDocument(jsValue);
         baliExpression.addChild(baliItem);
         baliItem.parentCtx = baliExpression;

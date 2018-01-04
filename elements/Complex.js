@@ -246,17 +246,13 @@ Complex.prototype.toRectangular = function() {
     if (this.isNaN()) return 'NaN';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'Infinity';
+    if (this.getRealPart() === 0) return imaginaryToBaliString(this.getImaginaryPart());
+    if (this.getImaginaryPart() === 0) return realToBaliString(this.getRealPart());
     var string = '(';
-    var real = this.getRealPart();
-    var imaginary = this.getImaginaryPart();
-    string += real;
+    string += realToBaliString(this.getRealPart());
     string += ', ';
-    if (imaginary === -1) {
-        string += '-';  // use -i instead of -1i
-    } else if (imaginary !== 1) {
-        string += imaginary;
-    }
-    string += 'i)';
+    string += imaginaryToBaliString(this.getImaginaryPart());
+    string += ')';
     return string;
 };
 
@@ -270,17 +266,12 @@ Complex.prototype.toPolar = function() {
     if (this.isNaN()) return 'NaN';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'Infinity';
+    if (this.getAngle() === Angle.ZERO) return realToBaliString(this.getRealPart());
     var string = '(';
-    var magnitude = this.getMagnitude();
-    var angle = this.getAngle().toNumber();
-    string += magnitude;
+    string += realToBaliString(this.getMagnitude());
     string += ' e^';
-    if (angle === -1) {
-        string += '-';  // use -i instead of -1i
-    } else if (angle !== 1) {
-        string += angle;
-    }
-    string += 'i)';
+    string += imaginaryToBaliString(this.getAngle());
+    string += ')';
     return string;
 };
 
@@ -385,4 +376,79 @@ function parse(string) {
         }
     }
     return complex;
+}
+
+
+/**
+ * This function returns the Bali string representation of a real number.
+ * 
+ * @param {number} real The real number.
+ * @returns {string} The Bali string for that number.
+ */
+function realToBaliString(real) {
+    var string = real.toString();
+    switch (string) {
+        case '-2.718281828459045':
+            string = '-e';
+            break;
+        case '2.718281828459045':
+            string = 'e';
+            break;
+        case '-3.141592653589793':
+            string = '-pi';
+            break;
+        case '3.141592653589793':
+            string = 'pi';
+            break;
+        case '-1.618033988749895':
+            string = '-phi';
+            break;
+        case '1.618033988749895':
+            string = 'phi';
+            break;
+        case 'Infinity':
+        case '-Infinity':
+            string = 'infinity';
+            break;
+        case 'NaN':
+            string = 'undefined';
+            break;
+        default:
+            // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
+            string = string.replace(/e/g, 'E');
+    }
+    return string;
+}
+
+
+/**
+ * This function returns the Bali string representation of an imaginary number.
+ * 
+ * @param {number} imaginary The imaginary number.
+ * @returns {string} The Bali string for that number.
+ */
+function imaginaryToBaliString(imaginary) {
+    var string = realToBaliString(imaginary);
+    switch (string) {
+        case '-1':
+            string = '-i';
+            break;
+        case '1':
+            string = 'i';
+            break;
+        case '-e':
+        case 'e':
+        case '-pi':
+        case 'pi':
+        case '-phi':
+        case 'phi':
+            string += ' i';
+            break;
+        case 'infinity':
+        case 'undefined':
+            break;
+        default:
+            string += 'i';
+    }
+    return string;
 }
