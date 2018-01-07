@@ -32,12 +32,12 @@ exports.ObjectToDocument = ObjectToDocument;
 
 
 /**
- * This function takes a Bali document and formats it as source code. Each
+ * This function takes a JavaScript object and formats it as a Bali document. Each
  * line will be prepended with the specified padding string.
  * 
- * @param {DocumentContext} baliDocument The Bali document to be formatted.
+ * @param {DocumentContext} object The JavaScript object to be formatted.
  * @param {string} padding The string that should be prepended to each line.
- * @returns {string} The formatted source code string.
+ * @returns {string} The formatted document.
  */
 ObjectToDocument.prototype.generateDocument = function(object, padding) {
     var visitor = new TransformingVisitor(padding);
@@ -81,6 +81,12 @@ TransformingVisitor.prototype.getPadding = function() {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitAngle = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -90,6 +96,12 @@ TransformingVisitor.prototype.visitAngle = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitAny = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -99,6 +111,12 @@ TransformingVisitor.prototype.visitAny = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitBinary = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -108,6 +126,12 @@ TransformingVisitor.prototype.visitBinary = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitComplex = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -126,6 +150,12 @@ TransformingVisitor.prototype.visitComposite = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitMoment = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -135,6 +165,12 @@ TransformingVisitor.prototype.visitMoment = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitPercent = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -144,6 +180,12 @@ TransformingVisitor.prototype.visitPercent = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitProbability = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -153,6 +195,12 @@ TransformingVisitor.prototype.visitProbability = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitRange = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -162,6 +210,12 @@ TransformingVisitor.prototype.visitRange = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitReference = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -171,6 +225,12 @@ TransformingVisitor.prototype.visitReference = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitSymbol = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -180,6 +240,12 @@ TransformingVisitor.prototype.visitSymbol = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitTag = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -189,6 +255,12 @@ TransformingVisitor.prototype.visitTag = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitText = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };
 
 
@@ -198,4 +270,10 @@ TransformingVisitor.prototype.visitText = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitVersion = function(element) {
+    this.document += element.toString();
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
 };

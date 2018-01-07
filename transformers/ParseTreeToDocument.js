@@ -75,13 +75,6 @@ TransformingVisitor.prototype.getPadding = function() {
 };
 
 
-// HACK: this method is missing from the generated visitor!
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitAny = function(ctx) {
-    ctx.accept(this);
-};
-
-
 // anyAny: 'any'
 TransformingVisitor.prototype.visitAnyAny = function(ctx) {
     this.document += 'any';
@@ -90,18 +83,11 @@ TransformingVisitor.prototype.visitAnyAny = function(ctx) {
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    ctx.expression(0).accept(this);
     this.document += ' ';
     this.document += ctx.op.text;
     this.document += ' ';
-    this.visitExpression(ctx.expression(1));
-};
-
-
-// HACK: this method is missing from the generated visitor!
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitArray = function(ctx) {
-    ctx.accept(this);
+    ctx.expression(1).accept(this);
 };
 
 
@@ -113,9 +99,9 @@ TransformingVisitor.prototype.visitAssignee = function(ctx) {
 
 // association: key ':' value
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
-    this.visitKey(ctx.key());
+    ctx.key().accept(this);
     this.document += ': ';
-    this.visitValue(ctx.value());
+    ctx.value().accept(this);
 };
 
 
@@ -128,7 +114,7 @@ TransformingVisitor.prototype.visitBinary = function(ctx) {
 // block: '{' statements '}'
 TransformingVisitor.prototype.visitBlock = function(ctx) {
     this.document += '{';
-    this.visitStatements(ctx.statements());
+    ctx.statements().accept(this);
     this.document += '}';
 };
 
@@ -145,7 +131,7 @@ TransformingVisitor.prototype.visitBreakFrom = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.document += ' from ';
-        this.visitLabel(label);
+        label.accept(this);
     }
 };
 
@@ -153,63 +139,63 @@ TransformingVisitor.prototype.visitBreakFrom = function(ctx) {
 // checkoutDocument: 'checkout' symbol 'from' location
 TransformingVisitor.prototype.visitCheckoutDocument = function(ctx) {
     this.document += 'checkout ';
-    this.visitSymbol(ctx.symbol());
+    ctx.symbol().accept(this);
     this.document += ' from ';
-    this.visitLocation(ctx.location());
+    ctx.location().accept(this);
 };
 
 
 // commitDraft: 'commit' draft 'to' location
 TransformingVisitor.prototype.visitCommitDraft = function(ctx) {
     this.document += 'commit ';
-    this.visitDraft(ctx.draft());
+    ctx.draft().accept(this);
     this.document += ' to ';
-    this.visitLocation(ctx.location());
+    ctx.location().accept(this);
 };
 
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 TransformingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    ctx.expression(0).accept(this);
     this.document += ' ';
     this.document += ctx.op.text;
     this.document += ' ';
-    this.visitExpression(ctx.expression(1));
+    ctx.expression(1).accept(this);
 };
 
 
 // complementExpression: 'not' expression
 TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
     this.document += 'not ';
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // complexNumber: '(' real del=(',' | 'e^') imaginary ')'
 TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     this.document += '(';
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
     var delimiter = ctx.del.text;
     this.document += delimiter;
     if (delimiter === ',') {
         this.document += " ";
     }
-    this.visitImaginary(ctx.imaginary());
+    ctx.imaginary().accept(this);
     this.document += ')';
 };
 
 
 // component: variable indices
 TransformingVisitor.prototype.visitComponent = function(ctx) {
-    this.visitVariable(ctx.variable());
-    this.visitIndices(ctx.indices());
+    ctx.variable().accept(this);
+    ctx.indices().accept(this);
 };
 
 
 // componentExpression: expression indices
 TransformingVisitor.prototype.visitComponentExpression = function(ctx) {
-    this.visitExpression(ctx.expression());
-    this.visitIndices(ctx.indices());
+    ctx.expression().accept(this);
+    ctx.indices().accept(this);
 };
 
 
@@ -221,7 +207,7 @@ TransformingVisitor.prototype.visitComposite = function(ctx) {
 
 // condition: expression
 TransformingVisitor.prototype.visitCondition = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
@@ -240,52 +226,52 @@ TransformingVisitor.prototype.visitContinueTo = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.document += ' to ';
-        this.visitLabel(label);
+        label.accept(this);
     }
 };
 
 
 // defaultExpression: expression '?' expression
 TransformingVisitor.prototype.visitDefaultExpression = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    ctx.expression(0).accept(this);
     this.document += ' ? ';
-    this.visitExpression(ctx.expression(1));
+    ctx.expression(1).accept(this);
 };
 
 
 // dereferenceExpression: '@' expression
 TransformingVisitor.prototype.visitDereferenceExpression = function(ctx) {
     this.document += '@';
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // discardDraft: 'discard' location
 TransformingVisitor.prototype.visitDiscardDraft = function(ctx) {
     this.document += 'discard ';
-    this.visitLocation(ctx.location());
+    ctx.location().accept(this);
 };
 
 
 // document: literal parameters?
 TransformingVisitor.prototype.visitDocument = function(ctx) {
-    this.visitLiteral(ctx.literal());
+    ctx.literal().accept(this);
     var parameters = ctx.parameters();
     if (parameters) {
-        this.visitParameters(parameters);
+        parameters.accept(this);
     }
 };
 
 
 // documentExpression: document
 TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
-    this.visitDocument(ctx.document());
+    ctx.document().accept(this);
 };
 
 
 // draft: expression
 TransformingVisitor.prototype.visitDraft = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
@@ -316,53 +302,47 @@ TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
 TransformingVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var assignee = ctx.assignee();
     if (assignee) {
-        this.visitAssignee(assignee);
+        assignee.accept(this);
         this.document += ' := ';
     }
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // event: expression
 TransformingVisitor.prototype.visitEvent = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // xception: expression
 TransformingVisitor.prototype.visitXception = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // exceptionClause: 'catch' symbol 'matching' template 'with' block
 TransformingVisitor.prototype.visitExceptionClause = function(ctx) {
     this.document += ' catch ';
-    this.visitSymbol(ctx.symbol());
+    ctx.symbol().accept(this);
     this.document += ' matching ';
-    this.visitXception(ctx.template());
+    ctx.template().accept(this);
     this.document += ' with ';
-    this.visitBlock(ctx.block());
+    ctx.block().accept(this);
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
 TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    ctx.expression(0).accept(this);
     this.document += ' ^ ';
-    this.visitExpression(ctx.expression(1));
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitExpression = function(ctx) {
-    ctx.accept(this);
+    ctx.expression(1).accept(this);
 };
 
 
 // factorialExpression: expression '!'
 TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
     this.document += '!';
 };
 
@@ -376,7 +356,7 @@ TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
 // finalClause: 'finish' 'with' block
 TransformingVisitor.prototype.visitFinalClause = function(ctx) {
     this.document += ' finish with ';
-    this.visitBlock(ctx.block());
+    ctx.block().accept(this);
 };
 
 
@@ -389,7 +369,7 @@ TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
 // functionExpression: IDENTIFIER parameters
 TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
     this.document += ctx.IDENTIFIER().getText();
-    this.visitParameters(ctx.parameters());
+    ctx.parameters().accept(this);
 };
 
 
@@ -400,22 +380,22 @@ TransformingVisitor.prototype.visitIfThen = function(ctx) {
 
     // handle first condition
     this.document += 'if ';
-    this.visitCondition(conditions[0]);
+    conditions[0].accept(this);
     this.document += ' then ';
-    this.visitBlock(blocks[0]);
+    blocks[0].accept(this);
 
     // handle optional additional conditions
     for (var i = 1; i < conditions.length; i++) {
         this.document += ' else if ';
-        this.visitCondition(conditions[i]);
+        conditions[i].accept(this);
         this.document += ' then ';
-        this.visitBlock(blocks[i]);
+        blocks[i].accept(this);
     }
 
     // handle the optional final else block
     if (blocks.length > conditions.length) {
         this.document += ' else ';
-        this.visitBlock(blocks[blocks.length - 1]);
+        blocks[blocks.length - 1].accept(this);
     }
 };
 
@@ -425,7 +405,7 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
     var real = ctx.real();
     var sign = ctx.sign;
     if (real) {
-        this.visitReal(real);
+        ctx.real().accept(this);
         if (real.con) {
             this.document += ' ';
         }
@@ -438,14 +418,14 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
 
 // imaginaryNumber: imaginary
 TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
-    this.visitImaginary(ctx.imaginary());
+    ctx.imaginary().accept(this);
 };
 
 
 // indices: '[' array ']'
 TransformingVisitor.prototype.visitIndices = function(ctx) {
     this.document += '[';
-    this.visitArray(ctx.array());
+    ctx.array().accept(this);
     this.document += ']';
 };
 
@@ -459,10 +439,10 @@ TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
 // inlineArray: value (',' value)*
 TransformingVisitor.prototype.visitInlineArray = function(ctx) {
     var values = ctx.value();  // retrieve all the values
-    this.visitValue(values[0]);
+    values[0].accept(this);
     for (var i = 1; i < values.length; i++) {
         this.document += ', ';
-        this.visitValue(values[i]);
+        values[i].accept(this);
     }
 };
 
@@ -470,10 +450,10 @@ TransformingVisitor.prototype.visitInlineArray = function(ctx) {
 // inlineStatements: statement (';' statement)*
 TransformingVisitor.prototype.visitInlineStatements = function(ctx) {
     var statements = ctx.statement();  // retrieve all the statements
-    this.visitStatement(statements[0]);
+    statements[0].accept(this);
     for (var i = 1; i < statements.length; i++) {
         this.document += '; ';
-        this.visitStatement(statements[i]);
+        statements[i].accept(this);
     }
 };
 
@@ -481,10 +461,10 @@ TransformingVisitor.prototype.visitInlineStatements = function(ctx) {
 // inlineTable: association (',' association)*
 TransformingVisitor.prototype.visitInlineTable = function(ctx) {
     var associations = ctx.association();  // retrieve all the associations
-    this.visitAssociation(associations[0]);
+    associations[0].accept(this);
     for (var i = 1; i < associations.length; i++) {
         this.document += ', ';
-        this.visitAssociation(associations[i]);
+        associations[i].accept(this);
     }
 };
 
@@ -505,16 +485,16 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
             this.document += ' ';  // must insert a space before a negative value!
         }
     }
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // key: element parameters?
 TransformingVisitor.prototype.visitKey = function(ctx) {
-    this.visitElement(ctx.element());
+    ctx.element().accept(this);
     var parameters = ctx.parameters();
     if (parameters) {
-        this.visitParameters(parameters);
+        parameters.accept(this);
     }
 };
 
@@ -533,24 +513,24 @@ TransformingVisitor.prototype.visitLiteral = function(ctx) {
 
 // location: expression
 TransformingVisitor.prototype.visitLocation = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 TransformingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    this.visitExpression(ctx.expression(0));
+    ctx.expression(0).accept(this);
     this.document += ' ';
     this.document += ctx.op.text;
     this.document += ' ';
-    this.visitExpression(ctx.expression(1));
+    ctx.expression(1).accept(this);
 };
 
 
 // magnitudeExpression: '|' expression '|'
 TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     this.document += '|';
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
     this.document += '|';
 };
 
@@ -579,16 +559,16 @@ TransformingVisitor.prototype.visitMainClause = function(ctx) {
 
 // message: expression
 TransformingVisitor.prototype.visitMessage = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // messageExpression: expression '.' IDENTIFIER parameters
 TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
     this.document += '.';
     this.document += ctx.IDENTIFIER().getText();
-    this.visitParameters(ctx.parameters());
+    ctx.parameters().accept(this);
 };
 
 
@@ -604,7 +584,7 @@ TransformingVisitor.prototype.visitNewlineArray = function(ctx) {
     this.depth++;
     for (var i = 0; i < values.length; i++) {
         this.appendNewline();
-        this.visitValue(values[i]);
+        values[i].accept(this);
     }
     this.depth--;
     this.appendNewline();
@@ -617,7 +597,7 @@ TransformingVisitor.prototype.visitNewlineStatements = function(ctx) {
     this.depth++;
     for (var i = 0; i < statements.length; i++) {
         this.appendNewline();
-        this.visitStatement(statements[i]);
+        statements[i].accept(this);
     }
     this.depth--;
     this.appendNewline();
@@ -630,7 +610,7 @@ TransformingVisitor.prototype.visitNewlineTable = function(ctx) {
     this.depth++;
     for (var i = 0; i < associations.length; i++) {
         this.appendNewline();
-        this.visitAssociation(associations[i]);
+        associations[i].accept(this);
     }
     this.depth--;
     this.appendNewline();
@@ -643,29 +623,23 @@ TransformingVisitor.prototype.visitNoneAny = function(ctx) {
 };
 
 
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitNumber = function(ctx) {
-    ctx.accept(this);
-};
-
-
 // option: expression
 TransformingVisitor.prototype.visitOption = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // parameters: '(' composite ')'
 TransformingVisitor.prototype.visitParameters = function(ctx) {
     this.document += '(';
-    this.visitComposite(ctx.composite());
+    ctx.composite().accept(this);
     this.document += ')';
 };
 
 
 // percent: real '%'
 TransformingVisitor.prototype.visitPercent = function(ctx) {
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
     this.document += '%';
 };
 
@@ -673,56 +647,44 @@ TransformingVisitor.prototype.visitPercent = function(ctx) {
 // precedenceExpression: '(' expression ')'
 TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     this.document += '(';
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
     this.document += ')';
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitProbability = function(ctx) {
-    ctx.accept(this);
 };
 
 
 // publishEvent: 'publish' event
 TransformingVisitor.prototype.visitPublishEvent = function(ctx) {
     this.document += 'publish ';
-    this.visitEvent(ctx.event());
+    ctx.event().accept(this);
 };
 
 
 // queue: expression
 TransformingVisitor.prototype.visitQueue = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // queueMessage: 'queue' message 'on' queue
 TransformingVisitor.prototype.visitQueueMessage = function(ctx) {
     this.document += 'queue ';
-    this.visitMessage(ctx.message());
+    ctx.message().accept(this);
     this.document += ' on ';
-    this.visitQueue(ctx.queue());
+    ctx.queue().accept(this);
 };
 
 
 // range: value '..' value
 TransformingVisitor.prototype.visitRange = function(ctx) {
-    this.visitValue(ctx.value(0));
+    ctx.value(0).accept(this);
     this.document += '..';
-    this.visitValue(ctx.value(1));
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitReal = function(ctx) {
-    ctx.accept(this);
+    ctx.value(1).accept(this);
 };
 
 
 // realNumber: real
 TransformingVisitor.prototype.visitRealNumber = function(ctx) {
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
 };
 
 
@@ -734,7 +696,7 @@ TransformingVisitor.prototype.visitReference = function(ctx) {
 
 // result: expression
 TransformingVisitor.prototype.visitResult = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
@@ -744,7 +706,7 @@ TransformingVisitor.prototype.visitReturnResult = function(ctx) {
     var result = ctx.result();
     if (result) {
         this.document += ' ';
-        this.visitResult(result);
+        result.accept(this);
     }
 };
 
@@ -752,16 +714,16 @@ TransformingVisitor.prototype.visitReturnResult = function(ctx) {
 // saveDraft: 'save' draft 'to' location
 TransformingVisitor.prototype.visitSaveDraft = function(ctx) {
     this.document += 'save ';
-    this.visitDraft(ctx.draft());
+    ctx.draft().accept(this);
     this.document += ' to ';
-    this.visitLocation(ctx.location());
+    ctx.location().accept(this);
 };
 
 
 // script: SHELL statements EOF
 TransformingVisitor.prototype.visitScript = function(ctx) {
     this.document += ctx.SHELL().getText();
-    this.visitStatements(ctx.statements());
+    ctx.statements().accept(this);
     this.document += ctx.EOF().getText();
 };
 
@@ -773,61 +735,55 @@ TransformingVisitor.prototype.visitSelectFrom = function(ctx) {
 
     // handle the selection
     this.document += 'select ';
-    this.visitSelection(ctx.selection());
+    ctx.selection().accept(this);
     this.document += ' from';
 
     // handle option blocks
     for (var i = 0; i < options.length; i++) {
         this.document += ' ';
-        this.visitOption(options[i]);
+        options[i].accept(this);
         this.document += ' do ';
-        this.visitBlock(blocks[i]);
+        blocks[i].accept(this);
     }
 
     // handle the optional final else block
     if (blocks.length > options.length) {
         this.document += ' else ';
-        this.visitBlock(blocks[blocks.length - 1]);
+        blocks[blocks.length - 1].accept(this);
     }
 };
 
 
 // selection: expression
 TransformingVisitor.prototype.visitSelection = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // sequence: expression
 TransformingVisitor.prototype.visitSequence = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
 // statement: mainClause exceptionClause* finalClause?
 TransformingVisitor.prototype.visitStatement = function(ctx) {
-    this.visitMainClause(ctx.mainClause());
+    ctx.mainClause().accept(this);
     var exceptionClauses = ctx.exceptionClause();
     for (var i = 0; i < exceptionClauses.length; i++) {
-        this.visitExceptionClause(exceptionClauses[i]);
+        exceptionClauses[i].accept(this);
     }
     var finalClause = ctx.finalClause();
     if (finalClause) {
-        this.visitFinalClause(finalClause);
+        finalClause.accept(this);
     }
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitStatements = function(ctx) {
-    ctx.accept(this);
 };
 
 
 // structure: '[' composite ']'
 TransformingVisitor.prototype.visitStructure = function(ctx) {
     this.document += '[';
-    this.visitComposite(ctx.composite());
+    ctx.composite().accept(this);
     this.document += ']';
 };
 
@@ -835,12 +791,6 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
 // symbol: SYMBOL
 TransformingVisitor.prototype.visitSymbol = function(ctx) {
     this.document += ctx.SYMBOL().getText();
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitTable = function(ctx) {
-    ctx.accept(this);
 };
 
 
@@ -852,20 +802,14 @@ TransformingVisitor.prototype.visitTag = function(ctx) {
 
 // template: expression
 TransformingVisitor.prototype.visitTemplate = function(ctx) {
-    this.visitExpression(ctx.expression());
-};
-
-
-// HACK: this method is missing from the generated visitor!
-TransformingVisitor.prototype.visitText = function(ctx) {
-    ctx.accept(this);
+    ctx.expression().accept(this);
 };
 
 
 // throwException: 'throw' xception
 TransformingVisitor.prototype.visitThrowException = function(ctx) {
     this.document += 'throw ';
-    this.visitXception(ctx.xception());
+    ctx.xception().accept(this);
 };
 
 
@@ -883,7 +827,7 @@ TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
 
 // value: expression
 TransformingVisitor.prototype.visitValue = function(ctx) {
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
@@ -895,7 +839,7 @@ TransformingVisitor.prototype.visitVariable = function(ctx) {
 
 // variableExpression: variable
 TransformingVisitor.prototype.visitVariableExpression = function(ctx) {
-    this.visitVariable(ctx.variable());
+    ctx.variable().accept(this);
 };
 
 
@@ -914,9 +858,9 @@ TransformingVisitor.prototype.visitVersion = function(ctx) {
 // waitForMessage: 'wait' 'for' symbol 'from' queue
 TransformingVisitor.prototype.visitWaitForMessage = function(ctx) {
     this.document += 'wait for ';
-    this.visitSymbol(ctx.symbol());
+    ctx.symbol().accept(this);
     this.document += ' from ';
-    this.visitQueue(ctx.queue());
+    ctx.queue().accept(this);
 };
 
 
@@ -924,13 +868,13 @@ TransformingVisitor.prototype.visitWaitForMessage = function(ctx) {
 TransformingVisitor.prototype.visitWhileLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
-        this.visitLabel(label);
+        label.accept(this);
         this.document += ': ';
     }
     this.document += 'while ';
-    this.visitCondition(ctx.condition());
+    ctx.condition().accept(this);
     this.document += ' do ';
-    this.visitBlock(ctx.block());
+    ctx.block().accept(this);
 };
 
 
@@ -938,17 +882,17 @@ TransformingVisitor.prototype.visitWhileLoop = function(ctx) {
 TransformingVisitor.prototype.visitWithLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
-        this.visitLabel(label);
+        label.accept(this);
         this.document += ': ';
     }
     this.document += 'with ';
     var symbol = ctx.symbol();
     if (symbol) {
         this.document += 'each ';
-        this.visitSymbol(symbol);
+        symbol.accept(this);
         this.document += ' in ';
     }
-    this.visitSequence(ctx.sequence());
+    ctx.sequence().accept(this);
     this.document += ' do ';
-    this.visitBlock(ctx.block());
+    ctx.block().accept(this);
 };
