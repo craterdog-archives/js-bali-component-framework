@@ -10,6 +10,7 @@
 'use strict';
 
 exports.Angle = require('./Angle').Angle;
+exports.Any = require('./Any').Any;
 exports.Binary = require('./Binary').Binary;
 exports.Complex = require('./Complex').Complex;
 exports.Composite = require('./Composite').Composite;

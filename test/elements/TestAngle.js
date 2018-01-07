@@ -48,7 +48,7 @@ module.exports = testCase({
         test.done();
     },
     'Test Functions': function(test) {
-        var testValues = [Angle.ZERO, Angle.PI, new Angle(-Math.PI), new Angle(-Math.PI / 3)];
+        var testValues = [Angle.ZERO, Angle.PI, new Angle(-Math.PI), new Angle(Math.PI / 2), new Angle(-Math.PI / 2), new Angle(-Math.PI / 3)];
         var tests = testValues.length;
         test.expect(tests);
         for (var i = 0; i < tests; i++) {

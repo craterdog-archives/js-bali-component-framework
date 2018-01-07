@@ -19,41 +19,41 @@ var random = require('../utilities/RandomUtilities');
 /**
  * This constructor creates a new probability element.
  * 
- * @param {number|string} value The value of the probability.
+ * @param {number|string|boolean} value The value of the probability.
  * @returns {Probability} The new probability element.
  */
 function Probability(value) {
+    if (!value) value = false;  // default value
 
     var type = typeof value;
     switch (type) {
-        case 'undefined':
-            this.value = 0;
-            break;
         case 'boolean':
             if (value) {
-                this.value = 1;
+                value = 1;
             } else {
-                this.value = 0;
+                value = 0;
             }
             break;
         case 'number':
-            this.value = value;
             break;
         case 'string':
             if (value === 'true') {
-                this.value = 1;
+                value = 1;
             } else if (value === 'false') {
-                this.value = 0;
+                value = 0;
             } else {
-                this.value = Number('0' + value);
+                value = Number('0' + value);
             }
             break;
         default:
             throw new Error('PROBABILITY: An invalid value type was passed into the constructor: ' + type);
     }
-    if (this.value < 0 || this.value > 1) {
-        throw new Error('PROBABILITY: A probability must be in the range [0..1]: ' + this.value);
+    if (value < 0 || value > 1) {
+        throw new Error('PROBABILITY: A probability must be in the range [0..1]: ' + value);
     }
+    if (typeof Probability.FALSE !== 'undefined' && value === 'false') return Probability.FALSE;
+    if (typeof Probability.TRUE !== 'undefined' && value === 'true') return Probability.TRUE;
+    this.value = value;
     return this;
 
 }
@@ -92,4 +92,9 @@ Probability.prototype.toBoolean = function () {
 Probability.prototype.toNumber = function () {
     return this.value;
 };
+
+
+// common constants
+Probability.FALSE = new Probability('false');
+Probability.TRUE = new Probability('true');
 

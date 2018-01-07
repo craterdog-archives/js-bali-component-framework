@@ -20,7 +20,7 @@ module.exports = testCase({
         test.expect(8);
 
         test.strictEqual(new Complex().toString(), Complex.ZERO.toString(), "1 The complex should have been Complex.ZERO.");
-        test.strictEqual(new Complex(NaN).toString(), Complex.NAN.toString(), "2 The complex should have been Complex.NAN.");
+        test.strictEqual(new Complex(NaN).toString(), Complex.UNDEFINED.toString(), "2 The complex should have been Complex.UNDEFINED.");
         test.strictEqual(new Complex(0).toNumber(), Complex.ZERO.toNumber(), "3 The complex should have been Complex.ZERO.");
         test.strictEqual(new Complex(-0).toNumber(), Complex.ZERO.toNumber(), "4 The complex should have been Complex.ZERO.");
         test.strictEqual(new Complex(5).toNumber(), 5, "5 The complex should have been 5.");
@@ -32,7 +32,7 @@ module.exports = testCase({
     },
     'Test Methods': function(test) {
         var testValues = [
-            Complex.NAN,
+            Complex.UNDEFINED,
             Complex.ZERO,
             Complex.INFINITY,
             new Complex(),
@@ -42,11 +42,19 @@ module.exports = testCase({
             new Complex(-1, 1),
             new Complex(1, new Angle(1)),
             new Complex(5, Angle.PI),
-            new Complex('(1.23e-56, -7.8e90i'),
-            new Complex('(5 e^3.141592653589793i')
+            new Complex('1'),
+            new Complex('-1'),
+            new Complex('i'),
+            new Complex('-i'),
+            new Complex('(1.23E-56, -7.8E90i)'),
+            new Complex('(5 e^3.141592653589793i)')
         ];
-        var isNanValues = [
+        var isUndefinedValues = [
             true,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -71,12 +79,20 @@ module.exports = testCase({
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
             false
         ];
         var isInfiniteValues = [
             false,
             false,
             true,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -98,7 +114,11 @@ module.exports = testCase({
             -1,
             0.5403023058681398,
             -5,
-            1.23e-56,
+            1,
+            -1,
+            0,
+            0,
+            1.23E-56,
             -5
         ];
         var imaginaryValues = [
@@ -112,7 +132,11 @@ module.exports = testCase({
             1,
             0.8414709848078965,
             0,
-            -7.8e90,
+            0,
+            0,
+            1,
+            -1,
+            -7.8E90,
             0
         ];
         var magnitudeValues = [
@@ -126,7 +150,11 @@ module.exports = testCase({
             1.4142135623730951,
             1,
             5,
-            7.8e90,
+            1,
+            1,
+            1,
+            1,
+            7.8E90,
             5
         ];
         var angleValues = [
@@ -140,13 +168,17 @@ module.exports = testCase({
             2.356194490192345,
             1,
             3.141592653589793,
+            0,
+            3.141592653589793,
+            1.5707963267948966,
+            -1.5707963267948966,
             -1.5707963267948966,
             3.141592653589793
         ];
         var stringValues = [
-            'NaN',
+            'undefined',
             '0',
-            'Infinity',
+            'infinity',
             '0',
             '-5',
             '5',
@@ -154,13 +186,17 @@ module.exports = testCase({
             '(-1, i)',
             '(1 e^i)',
             '(5 e^pi i)',
-            '(1.23E-56, -7.8E+90i)',
+            '1',
+            '-1',
+            'i',
+            '-i',
+            '(1.23E-56, -7.8E90i)',
             '(5 e^pi i)'
         ];
         var rectangularValues = [
-            'NaN',
+            'undefined',
             '0',
-            'Infinity',
+            'infinity',
             '0',
             '-5',
             '5',
@@ -168,13 +204,17 @@ module.exports = testCase({
             '(-1, i)',
             '(0.5403023058681398, 0.8414709848078965i)',
             '-5',
-            '(1.23E-56, -7.8E+90i)',
+            '1',
+            '-1',
+            'i',
+            '-i',
+            '(1.23E-56, -7.8E90i)',
             '-5'
         ];
         var polarValues = [
-            'NaN',
+            'undefined',
             '0',
-            'Infinity',
+            'infinity',
             '0',
             '(5 e^pi i)',
             '5',
@@ -182,14 +222,18 @@ module.exports = testCase({
             '(1.4142135623730951 e^2.356194490192345i)',
             '(1 e^i)',
             '(5 e^pi i)',
-            '(7.8E+90 e^-1.5707963267948966i)',
+            '1',
+            '(1 e^pi i)',
+            '(1 e^1.5707963267948966i)',
+            '(1 e^-1.5707963267948966i)',
+            '(7.8E90 e^-1.5707963267948966i)',
             '(5 e^pi i)'
         ];
         var tests = testValues.length;
         test.expect(10 * tests);
         for (var i = 0; i < tests; i++) {
             var complex = testValues[i];
-            test.strictEqual(complex.isNaN(), isNanValues[i]);
+            test.strictEqual(complex.isUndefined(), isUndefinedValues[i]);
             test.strictEqual(complex.isZero(), isZeroValues[i]);
             test.strictEqual(complex.isInfinite(), isInfiniteValues[i]);
             test.strictEqual(complex.getRealPart().toString(), realValues[i].toString());

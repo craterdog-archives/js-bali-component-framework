@@ -115,7 +115,20 @@ LanguageMapper.prototype.getJavaScriptTypeHandler = function(jsObject) {
         if (jsObject) {
             handlerType = jsObject.constructor.name.toLowerCase();
             if (handlerType === 'composite') {
-                handlerType = jsObject.value.constructor.name.toLowerCase();
+                switch (jsObject.type) {
+                    case 'InlineArrayContext':
+                    case 'NewlineArrayContext':
+                    case 'EmptyArrayContext':
+                        handlerType = 'array';
+                        break;
+                    case 'InlineTableContext':
+                    case 'NewlineTableContext':
+                    case 'EmptyTableContext':
+                        handlerType = 'table';
+                        break;
+                    default:
+                        throw new Error('MAPPER: An invalid composite type was passed: ' + jsObject.type);
+                }
             }
         } else {
             handlerType = 'undefined';  // addresses infamous null type bug in javascript
@@ -628,7 +641,7 @@ RangeHandler.prototype.toBali = function(jsRange) {
 
     var jsObject = jsRange.firstValue;
     var mapper = new LanguageMapper();
-    var baliExpression = mapper.javaScriptToExpression(jsObject);
+    var baliExpression = mapper.javaScriptObjectToBaliDocument(jsObject);
     var baliValue = new grammar.ValueContext(null, baliRange);
     baliRange.addChild(baliValue);
     baliValue.addChild(baliExpression);
@@ -636,7 +649,7 @@ RangeHandler.prototype.toBali = function(jsRange) {
 
     jsObject = jsRange.secondValue;
     mapper = new LanguageMapper();
-    baliExpression = mapper.javaScriptToExpression(jsObject);
+    baliExpression = mapper.javaScriptObjectToBaliDocument(jsObject);
     baliValue = new grammar.ValueContext(null, baliRange);
     baliRange.addChild(baliValue);
     baliValue.addChild(baliExpression);
@@ -691,21 +704,6 @@ TableHandler.prototype.constructor = TableHandler;
 
 
 TableHandler.prototype.toJavaScript = function(baliTable) {
-    /*
-    var jsArray = [];
-    var type = baliArray.constructor.name;
-    if (type !== 'EmptyArrayContext') {
-        var values = baliArray.value();
-        for (var i = 0; i < values.length; i++) {
-            var baliExpression = values[i].expression();
-            var mapper = new LanguageMapper();
-            var jsObject = mapper.baliNodeToJavaScriptObject(baliExpression);
-            jsArray.push(jsObject);
-        }
-    }
-    var jsComposite = new elements.Composite(jsArray, type);
-    return jsComposite;
-    */
     var mapper = new LanguageMapper();
     var jsObject = {};
     var type = baliTable.constructor.name;
@@ -754,7 +752,7 @@ TableHandler.prototype.toBali = function(jsComposite) {
             baliTable = new grammar.EmptyTableContext(null, baliComposite);
             break;
         default:
-            throw new Error('ARRAY: An invalid composite context type was passed: ' + type);
+            throw new Error('TABLE: An invalid composite context type was passed: ' + type);
     }
     baliComposite.addChild(baliTable);
     var jsTable = jsComposite.value;

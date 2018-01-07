@@ -18,6 +18,7 @@
 var Parser = require('./transformers/LanguageParser').LanguageParser;
 var Formatter = require('./transformers/LanguageFormatter').LanguageFormatter;
 var Mapper = require('./transformers/LanguageMapper').LanguageMapper;
+var ParseTreeToObject = require('./transformers/ParseTreeToObject').ParseTreeToObject;
 
 
 // PUBLIC FUNCTIONS
@@ -184,8 +185,8 @@ exports.formatDocumentWithPadding = function(baliDocument, padding) {
  * @returns {object} The corresponding JavaScript object.
  */
 exports.baliNodeToJavaScriptObject = function(baliNode) {
-    var mapper = new Mapper();
-    var jsObject = mapper.baliNodeToJavaScriptObject(baliNode);
+    var transformer = new ParseTreeToObject();
+    var jsObject = transformer.generateJavaScriptObject(baliNode);
     return jsObject;
 };
 

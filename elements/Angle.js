@@ -121,10 +121,11 @@ Angle.cosine = function(angle) {
  */
 Angle.arctangent = function(ratioOrY, optionalX) {
     var angle;
-    if (optionalX) {
+    if (typeof optionalX !== 'undefined' && optionalX !== null) {
         var y = ratioOrY;
         var x = optionalX;
-        angle = new Angle(Math.atan2(y, x));
+        angle = Math.atan2(y, x);
+        angle = new Angle(angle);
     } else {
         var ratio = ratioOrY;
         angle = new Angle(Math.atan(ratio));

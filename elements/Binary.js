@@ -34,7 +34,7 @@ var codex = require('../utilities/EncodingUtilities');
  */
 function Binary(valueOrEncoded, optionalBase) {
     valueOrEncoded = valueOrEncoded || '';  // default to empty byte string
-    if (optionalBase) {
+    if (optionalBase) {  // base zero not allowed so this is ok
         // decode the value
         var encoded = valueOrEncoded.slice(1, -1);  // strip off the single quotes
         switch (optionalBase) {

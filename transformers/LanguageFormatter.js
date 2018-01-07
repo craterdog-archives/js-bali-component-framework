@@ -88,12 +88,6 @@ FormatterVisitor.prototype.visitAnyAny = function(ctx) {
 };
 
 
-// noneAny: 'none'
-FormatterVisitor.prototype.visitNoneAny = function(ctx) {
-    this.source += 'none';
-};
-
-
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 FormatterVisitor.prototype.visitArithmeticExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
@@ -108,35 +102,6 @@ FormatterVisitor.prototype.visitArithmeticExpression = function(ctx) {
 // SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
 FormatterVisitor.prototype.visitArray = function(ctx) {
     ctx.accept(this);
-};
-
-
-// inlineArray: value (',' value)*
-FormatterVisitor.prototype.visitInlineArray = function(ctx) {
-    var values = ctx.value();  // retrieve all the values
-    this.visitValue(values[0]);
-    for (var i = 1; i < values.length; i++) {
-        this.source += ', ';
-        this.visitValue(values[i]);
-    }
-};
-
-
-// newlineArray: NEWLINE (value NEWLINE)*
-FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
-    var values = ctx.value();  // retrieve all the values
-    this.depth++;
-    for (var i = 0; i < values.length; i++) {
-        this.appendNewline();
-        this.visitValue(values[i]);
-    }
-    this.depth--;
-    this.appendNewline();
-};
-
-
-// emptyArray: /*empty array*/
-FormatterVisitor.prototype.visitEmptyArray = function(ctx) {
 };
 
 
@@ -165,6 +130,12 @@ FormatterVisitor.prototype.visitBlock = function(ctx) {
     this.source += '{';
     this.visitStatements(ctx.statements());
     this.source += '}';
+};
+
+
+// blockText: TEXT_BLOCK
+FormatterVisitor.prototype.visitBlockText = function(ctx) {
+    this.source += ctx.TEXT_BLOCK().getText();
 };
 
 
@@ -214,6 +185,20 @@ FormatterVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
+// complexNumber: '(' real del=(',' | 'e^') imaginary ')'
+FormatterVisitor.prototype.visitComplexNumber = function(ctx) {
+    this.source += '(';
+    this.visitReal(ctx.real());
+    var delimiter = ctx.del.text;
+    this.source += delimiter;
+    if (delimiter === ',') {
+        this.source += " ";
+    }
+    this.visitImaginary(ctx.imaginary());
+    this.source += ')';
+};
+
+
 // component: variable indices
 FormatterVisitor.prototype.visitComponent = function(ctx) {
     this.visitVariable(ctx.variable());
@@ -237,6 +222,15 @@ FormatterVisitor.prototype.visitComposite = function(ctx) {
 // condition: expression
 FormatterVisitor.prototype.visitCondition = function(ctx) {
     this.visitExpression(ctx.expression());
+};
+
+
+// constantReal: sign='-'? con=('e' | 'pi' | 'phi')
+FormatterVisitor.prototype.visitConstantReal = function(ctx) {
+    if (ctx.sign) {
+        this.source += '-';
+    }
+    this.source += ctx.con.text;
 };
 
 
@@ -302,6 +296,22 @@ FormatterVisitor.prototype.visitElement = function(ctx) {
 };
 
 
+// emptyArray: /*empty array*/
+FormatterVisitor.prototype.visitEmptyArray = function(ctx) {
+};
+
+
+// emptyStatements: /*empty statements*/
+FormatterVisitor.prototype.visitEmptyStatements = function(ctx) {
+};
+
+
+// emptyTable: ':' /*empty table*/
+FormatterVisitor.prototype.visitEmptyTable = function(ctx) {
+    this.source += ':';
+};
+
+
 // evaluateExpression: (assignee ':=')? expression
 FormatterVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var assignee = ctx.assignee();
@@ -357,10 +367,22 @@ FormatterVisitor.prototype.visitFactorialExpression = function(ctx) {
 };
 
 
+// falseProbability: 'false'
+FormatterVisitor.prototype.visitFalseProbability = function(ctx) {
+    this.source += 'false';
+};
+
+
 // finalClause: 'finish' 'with' block
 FormatterVisitor.prototype.visitFinalClause = function(ctx) {
     this.source += ' finish with ';
     this.visitBlock(ctx.block());
+};
+
+
+// fractionalProbability: FRACTION
+FormatterVisitor.prototype.visitFractionalProbability = function(ctx) {
+    this.source += ctx.FRACTION().getText();
 };
 
 
@@ -414,11 +436,62 @@ FormatterVisitor.prototype.visitImaginary = function(ctx) {
 };
 
 
+// imaginaryNumber: imaginary
+FormatterVisitor.prototype.visitImaginaryNumber = function(ctx) {
+    this.visitImaginary(ctx.imaginary());
+};
+
+
 // indices: '[' array ']'
 FormatterVisitor.prototype.visitIndices = function(ctx) {
     this.source += '[';
     this.visitArray(ctx.array());
     this.source += ']';
+};
+
+
+// infiniteNumber: 'infinity'
+FormatterVisitor.prototype.visitInfiniteNumber = function(ctx) {
+    this.source += 'infinity';
+};
+
+
+// inlineArray: value (',' value)*
+FormatterVisitor.prototype.visitInlineArray = function(ctx) {
+    var values = ctx.value();  // retrieve all the values
+    this.visitValue(values[0]);
+    for (var i = 1; i < values.length; i++) {
+        this.source += ', ';
+        this.visitValue(values[i]);
+    }
+};
+
+
+// inlineStatements: statement (';' statement)*
+FormatterVisitor.prototype.visitInlineStatements = function(ctx) {
+    var statements = ctx.statement();  // retrieve all the statements
+    this.visitStatement(statements[0]);
+    for (var i = 1; i < statements.length; i++) {
+        this.source += '; ';
+        this.visitStatement(statements[i]);
+    }
+};
+
+
+// inlineTable: association (',' association)*
+FormatterVisitor.prototype.visitInlineTable = function(ctx) {
+    var associations = ctx.association();  // retrieve all the associations
+    this.visitAssociation(associations[0]);
+    for (var i = 1; i < associations.length; i++) {
+        this.source += ', ';
+        this.visitAssociation(associations[i]);
+    }
+};
+
+
+// inlineText: TEXT
+FormatterVisitor.prototype.visitInlineText = function(ctx) {
+    this.source += ctx.TEXT().getText();
 };
 
 
@@ -525,47 +598,54 @@ FormatterVisitor.prototype.visitMoment = function(ctx) {
 };
 
 
+// newlineArray: NEWLINE (value NEWLINE)*
+FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
+    var values = ctx.value();  // retrieve all the values
+    this.depth++;
+    for (var i = 0; i < values.length; i++) {
+        this.appendNewline();
+        this.visitValue(values[i]);
+    }
+    this.depth--;
+    this.appendNewline();
+};
+
+
+// newlineStatements: NEWLINE (statement NEWLINE)*
+FormatterVisitor.prototype.visitNewlineStatements = function(ctx) {
+    var statements = ctx.statement();  // retrieve all the statements
+    this.depth++;
+    for (var i = 0; i < statements.length; i++) {
+        this.appendNewline();
+        this.visitStatement(statements[i]);
+    }
+    this.depth--;
+    this.appendNewline();
+};
+
+
+// newlineTable: NEWLINE (association NEWLINE)*
+FormatterVisitor.prototype.visitNewlineTable = function(ctx) {
+    var associations = ctx.association();  // retrieve all the associations
+    this.depth++;
+    for (var i = 0; i < associations.length; i++) {
+        this.appendNewline();
+        this.visitAssociation(associations[i]);
+    }
+    this.depth--;
+    this.appendNewline();
+};
+
+
+// noneAny: 'none'
+FormatterVisitor.prototype.visitNoneAny = function(ctx) {
+    this.source += 'none';
+};
+
+
 // HACK: this method is missing from the generated visitor!
 FormatterVisitor.prototype.visitNumber = function(ctx) {
     ctx.accept(this);
-};
-
-
-// undefinedNumber: 'undefined'
-FormatterVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    this.source += 'undefined';
-};
-
-
-// infiniteNumber: 'infinity'
-FormatterVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    this.source += 'infinity';
-};
-
-
-// realNumber: real
-FormatterVisitor.prototype.visitRealNumber = function(ctx) {
-    this.visitReal(ctx.real());
-};
-
-
-// imaginaryNumber: imaginary
-FormatterVisitor.prototype.visitImaginaryNumber = function(ctx) {
-    this.visitImaginary(ctx.imaginary());
-};
-
-
-// complexNumber: '(' real del=(',' | 'e^') imaginary ')'
-FormatterVisitor.prototype.visitComplexNumber = function(ctx) {
-    this.source += '(';
-    this.visitReal(ctx.real());
-    var delimiter = ctx.del.text;
-    this.source += delimiter;
-    if (delimiter === ',') {
-        this.source += " ";
-    }
-    this.visitImaginary(ctx.imaginary());
-    this.source += ')';
 };
 
 
@@ -601,24 +681,6 @@ FormatterVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 // HACK: this method is missing from the generated visitor!
 FormatterVisitor.prototype.visitProbability = function(ctx) {
     ctx.accept(this);
-};
-
-
-// trueProbability: 'true'
-FormatterVisitor.prototype.visitTrueProbability = function(ctx) {
-    this.source += 'true';
-};
-
-
-// falseProbability: 'false'
-FormatterVisitor.prototype.visitFalseProbability = function(ctx) {
-    this.source += 'false';
-};
-
-
-// fractionalProbability: FRACTION
-FormatterVisitor.prototype.visitFractionalProbability = function(ctx) {
-    this.source += ctx.FRACTION().getText();
 };
 
 
@@ -658,18 +720,9 @@ FormatterVisitor.prototype.visitReal = function(ctx) {
 };
 
 
-// constantReal: sign='-'? con=('e' | 'pi' | 'phi')
-FormatterVisitor.prototype.visitConstantReal = function(ctx) {
-    if (ctx.sign) {
-        this.source += '-';
-    }
-    this.source += ctx.con.text;
-};
-
-
-// variableReal: FLOAT
-FormatterVisitor.prototype.visitVariableReal = function(ctx) {
-    this.source += ctx.FLOAT().getText();
+// realNumber: real
+FormatterVisitor.prototype.visitRealNumber = function(ctx) {
+    this.visitReal(ctx.real());
 };
 
 
@@ -693,13 +746,6 @@ FormatterVisitor.prototype.visitReturnResult = function(ctx) {
         this.source += ' ';
         this.visitResult(result);
     }
-};
-
-
-// throwException: 'throw' xception
-FormatterVisitor.prototype.visitThrowException = function(ctx) {
-    this.source += 'throw ';
-    this.visitXception(ctx.xception());
 };
 
 
@@ -778,35 +824,6 @@ FormatterVisitor.prototype.visitStatements = function(ctx) {
 };
 
 
-// inlineStatements: statement (';' statement)*
-FormatterVisitor.prototype.visitInlineStatements = function(ctx) {
-    var statements = ctx.statement();  // retrieve all the statements
-    this.visitStatement(statements[0]);
-    for (var i = 1; i < statements.length; i++) {
-        this.source += '; ';
-        this.visitStatement(statements[i]);
-    }
-};
-
-
-// newlineStatements: NEWLINE (statement NEWLINE)*
-FormatterVisitor.prototype.visitNewlineStatements = function(ctx) {
-    var statements = ctx.statement();  // retrieve all the statements
-    this.depth++;
-    for (var i = 0; i < statements.length; i++) {
-        this.appendNewline();
-        this.visitStatement(statements[i]);
-    }
-    this.depth--;
-    this.appendNewline();
-};
-
-
-// emptyStatements: /*empty statements*/
-FormatterVisitor.prototype.visitEmptyStatements = function(ctx) {
-};
-
-
 // structure: '[' composite ']'
 FormatterVisitor.prototype.visitStructure = function(ctx) {
     this.source += '[';
@@ -824,36 +841,6 @@ FormatterVisitor.prototype.visitSymbol = function(ctx) {
 // HACK: this method is missing from the generated visitor!
 FormatterVisitor.prototype.visitTable = function(ctx) {
     ctx.accept(this);
-};
-
-
-// inlineTable: association (',' association)*
-FormatterVisitor.prototype.visitInlineTable = function(ctx) {
-    var associations = ctx.association();  // retrieve all the associations
-    this.visitAssociation(associations[0]);
-    for (var i = 1; i < associations.length; i++) {
-        this.source += ', ';
-        this.visitAssociation(associations[i]);
-    }
-};
-
-
-// newlineTable: NEWLINE (association NEWLINE)*
-FormatterVisitor.prototype.visitNewlineTable = function(ctx) {
-    var associations = ctx.association();  // retrieve all the associations
-    this.depth++;
-    for (var i = 0; i < associations.length; i++) {
-        this.appendNewline();
-        this.visitAssociation(associations[i]);
-    }
-    this.depth--;
-    this.appendNewline();
-};
-
-
-// emptyTable: ':' /*empty table*/
-FormatterVisitor.prototype.visitEmptyTable = function(ctx) {
-    this.source += ':';
 };
 
 
@@ -875,15 +862,22 @@ FormatterVisitor.prototype.visitText = function(ctx) {
 };
 
 
-// inlineText: TEXT
-FormatterVisitor.prototype.visitInlineText = function(ctx) {
-    this.source += ctx.TEXT().getText();
+// throwException: 'throw' xception
+FormatterVisitor.prototype.visitThrowException = function(ctx) {
+    this.source += 'throw ';
+    this.visitXception(ctx.xception());
 };
 
 
-// blockText: TEXT_BLOCK
-FormatterVisitor.prototype.visitBlockText = function(ctx) {
-    this.source += ctx.TEXT_BLOCK().getText();
+// trueProbability: 'true'
+FormatterVisitor.prototype.visitTrueProbability = function(ctx) {
+    this.source += 'true';
+};
+
+
+// undefinedNumber: 'undefined'
+FormatterVisitor.prototype.visitUndefinedNumber = function(ctx) {
+    this.source += 'undefined';
 };
 
 
@@ -902,6 +896,12 @@ FormatterVisitor.prototype.visitVariable = function(ctx) {
 // variableExpression: variable
 FormatterVisitor.prototype.visitVariableExpression = function(ctx) {
     this.visitVariable(ctx.variable());
+};
+
+
+// variableReal: FLOAT
+FormatterVisitor.prototype.visitVariableReal = function(ctx) {
+    this.source += ctx.FLOAT().getText();
 };
 
 
