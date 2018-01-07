@@ -41,6 +41,16 @@ exports.Any = Any;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Any.prototype.accept = function(visitor) {
+    visitor.visitAny(this);
+};
+
+
+/**
  * This method returns the string value of the any type.
  * 
  * @returns {string} The string value of the any type.

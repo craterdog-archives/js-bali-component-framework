@@ -147,6 +147,16 @@ exports.Complex = Complex;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Complex.prototype.accept = function(visitor) {
+    visitor.visitComplex(this);
+};
+
+
+/**
  * This method normalizes the magnitude and angle if the complex number is in polar form.
  */
 Complex.prototype.normalize = function() {

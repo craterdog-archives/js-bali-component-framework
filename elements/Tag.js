@@ -61,6 +61,21 @@ Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
 
 
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Tag.prototype.accept = function(visitor) {
+    visitor.visitTag(this);
+};
+
+
+/**
+ * This method returns a string representation of the tag element.
+ * 
+ * @returns {string} The string representation of the tag element.
+ */
 Tag.prototype.toString = function() {
     return this.value;
 };

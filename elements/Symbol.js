@@ -37,6 +37,16 @@ exports.Symbol = Symbol;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Symbol.prototype.accept = function(visitor) {
+    visitor.visitSymbol(this);
+};
+
+
+/**
  * This method returns a string representation of the symbol element.
  * 
  * @returns {string} The string representation of the symbol element.

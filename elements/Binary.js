@@ -91,6 +91,16 @@ exports.Binary = Binary;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Binary.prototype.accept = function(visitor) {
+    visitor.visitBinary(this);
+};
+
+
+/**
  * This method returns the encoded binary string using the preferred base encoding.
  * 
  * @returns {string} The encoded binary string.

@@ -33,6 +33,16 @@ Composite.prototype.constructor = Composite;
 exports.Composite = Composite;
 
 
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Composite.prototype.accept = function(visitor) {
+    visitor.visitComposite(this);
+};
+
+
 Composite.prototype.toString = function() {
     throw new Error('COMPOSITE: The toString() method is only defined for elemental types.');
 };

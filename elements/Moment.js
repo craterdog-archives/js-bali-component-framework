@@ -54,6 +54,16 @@ exports.Moment = Moment;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Moment.prototype.accept = function(visitor) {
+    visitor.visitMoment(this);
+};
+
+
+/**
  * This method returns a string representation of the moment element.
  * 
  * @returns {string} The string representation of the moment element.

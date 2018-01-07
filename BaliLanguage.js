@@ -18,7 +18,7 @@
 var DocumentToParseTree = require('./transformers/DocumentToParseTree').DocumentToParseTree;
 var ParseTreeToDocument = require('./transformers/ParseTreeToDocument').ParseTreeToDocument;
 var ParseTreeToObject = require('./transformers/ParseTreeToObject').ParseTreeToObject;
-//var ObjectToDocument = require('./transformers/ObjectToDocument').ObjectToDocument;
+var ObjectToDocument = require('./transformers/ObjectToDocument').ObjectToDocument;
 
 
 // PUBLIC FUNCTIONS
@@ -184,9 +184,9 @@ exports.generateObject = function(tree) {
  * 
  * @param {object} object The JavaScript object to be transformed.
  * @returns {DocumentContext} The corresponding Bali document.
+ */
 exports.generateDocument = function(object) {
     var transformer = new ObjectToDocument();
-    var document = transformer.javaScriptObjectToBaliDocument(object);
+    var document = transformer.generateDocument(object);
     return document;
 };
- */

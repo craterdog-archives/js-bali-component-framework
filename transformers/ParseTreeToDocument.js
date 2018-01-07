@@ -42,7 +42,7 @@ exports.ParseTreeToDocument = ParseTreeToDocument;
 ParseTreeToDocument.prototype.formatDocument = function(baliDocument, padding) {
     var visitor = new TransformingVisitor(padding);
     baliDocument.accept(visitor);
-    return visitor.source;
+    return visitor.document;
 };
 
 
@@ -51,7 +51,7 @@ ParseTreeToDocument.prototype.formatDocument = function(baliDocument, padding) {
 function TransformingVisitor(padding) {
     grammar.BaliLanguageVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
-    this.source = '';
+    this.document = '';
     this.depth = 0;
     return this;
 }
@@ -61,8 +61,8 @@ TransformingVisitor.prototype.indentation = '    ';  // indentation per level
 
 
 TransformingVisitor.prototype.appendNewline = function() {
-    this.source += '\n';
-    this.source += this.getPadding();
+    this.document += '\n';
+    this.document += this.getPadding();
 };
 
 
@@ -84,16 +84,16 @@ TransformingVisitor.prototype.visitAny = function(ctx) {
 
 // anyAny: 'any'
 TransformingVisitor.prototype.visitAnyAny = function(ctx) {
-    this.source += 'any';
+    this.document += 'any';
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
-    this.source += ' ';
-    this.source += ctx.op.text;
-    this.source += ' ';
+    this.document += ' ';
+    this.document += ctx.op.text;
+    this.document += ' ';
     this.visitExpression(ctx.expression(1));
 };
 
@@ -114,37 +114,37 @@ TransformingVisitor.prototype.visitAssignee = function(ctx) {
 // association: key ':' value
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     this.visitKey(ctx.key());
-    this.source += ': ';
+    this.document += ': ';
     this.visitValue(ctx.value());
 };
 
 
 // binary: BINARY
 TransformingVisitor.prototype.visitBinary = function(ctx) {
-    this.source += ctx.BINARY().getText();
+    this.document += ctx.BINARY().getText();
 };
 
 
 // block: '{' statements '}'
 TransformingVisitor.prototype.visitBlock = function(ctx) {
-    this.source += '{';
+    this.document += '{';
     this.visitStatements(ctx.statements());
-    this.source += '}';
+    this.document += '}';
 };
 
 
 // blockText: TEXT_BLOCK
 TransformingVisitor.prototype.visitBlockText = function(ctx) {
-    this.source += ctx.TEXT_BLOCK().getText();
+    this.document += ctx.TEXT_BLOCK().getText();
 };
 
 
 // breakFrom: 'break' ('from' label)?
 TransformingVisitor.prototype.visitBreakFrom = function(ctx) {
-    this.source += 'break';
+    this.document += 'break';
     var label = ctx.label();
     if (label) {
-        this.source += ' from ';
+        this.document += ' from ';
         this.visitLabel(label);
     }
 };
@@ -152,18 +152,18 @@ TransformingVisitor.prototype.visitBreakFrom = function(ctx) {
 
 // checkoutDocument: 'checkout' symbol 'from' location
 TransformingVisitor.prototype.visitCheckoutDocument = function(ctx) {
-    this.source += 'checkout ';
+    this.document += 'checkout ';
     this.visitSymbol(ctx.symbol());
-    this.source += ' from ';
+    this.document += ' from ';
     this.visitLocation(ctx.location());
 };
 
 
 // commitDraft: 'commit' draft 'to' location
 TransformingVisitor.prototype.visitCommitDraft = function(ctx) {
-    this.source += 'commit ';
+    this.document += 'commit ';
     this.visitDraft(ctx.draft());
-    this.source += ' to ';
+    this.document += ' to ';
     this.visitLocation(ctx.location());
 };
 
@@ -171,31 +171,31 @@ TransformingVisitor.prototype.visitCommitDraft = function(ctx) {
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 TransformingVisitor.prototype.visitComparisonExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
-    this.source += ' ';
-    this.source += ctx.op.text;
-    this.source += ' ';
+    this.document += ' ';
+    this.document += ctx.op.text;
+    this.document += ' ';
     this.visitExpression(ctx.expression(1));
 };
 
 
 // complementExpression: 'not' expression
 TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
-    this.source += 'not ';
+    this.document += 'not ';
     this.visitExpression(ctx.expression());
 };
 
 
 // complexNumber: '(' real del=(',' | 'e^') imaginary ')'
 TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
-    this.source += '(';
+    this.document += '(';
     this.visitReal(ctx.real());
     var delimiter = ctx.del.text;
-    this.source += delimiter;
+    this.document += delimiter;
     if (delimiter === ',') {
-        this.source += " ";
+        this.document += " ";
     }
     this.visitImaginary(ctx.imaginary());
-    this.source += ')';
+    this.document += ')';
 };
 
 
@@ -228,18 +228,18 @@ TransformingVisitor.prototype.visitCondition = function(ctx) {
 // constantReal: sign='-'? con=('e' | 'pi' | 'phi')
 TransformingVisitor.prototype.visitConstantReal = function(ctx) {
     if (ctx.sign) {
-        this.source += '-';
+        this.document += '-';
     }
-    this.source += ctx.con.text;
+    this.document += ctx.con.text;
 };
 
 
 // continueTo: 'continue' ('to' label)?
 TransformingVisitor.prototype.visitContinueTo = function(ctx) {
-    this.source += 'continue';
+    this.document += 'continue';
     var label = ctx.label();
     if (label) {
-        this.source += ' to ';
+        this.document += ' to ';
         this.visitLabel(label);
     }
 };
@@ -248,21 +248,21 @@ TransformingVisitor.prototype.visitContinueTo = function(ctx) {
 // defaultExpression: expression '?' expression
 TransformingVisitor.prototype.visitDefaultExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
-    this.source += ' ? ';
+    this.document += ' ? ';
     this.visitExpression(ctx.expression(1));
 };
 
 
 // dereferenceExpression: '@' expression
 TransformingVisitor.prototype.visitDereferenceExpression = function(ctx) {
-    this.source += '@';
+    this.document += '@';
     this.visitExpression(ctx.expression());
 };
 
 
 // discardDraft: 'discard' location
 TransformingVisitor.prototype.visitDiscardDraft = function(ctx) {
-    this.source += 'discard ';
+    this.document += 'discard ';
     this.visitLocation(ctx.location());
 };
 
@@ -308,7 +308,7 @@ TransformingVisitor.prototype.visitEmptyStatements = function(ctx) {
 
 // emptyTable: ':' /*empty table*/
 TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
-    this.source += ':';
+    this.document += ':';
 };
 
 
@@ -317,7 +317,7 @@ TransformingVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var assignee = ctx.assignee();
     if (assignee) {
         this.visitAssignee(assignee);
-        this.source += ' := ';
+        this.document += ' := ';
     }
     this.visitExpression(ctx.expression());
 };
@@ -337,11 +337,11 @@ TransformingVisitor.prototype.visitXception = function(ctx) {
 
 // exceptionClause: 'catch' symbol 'matching' template 'with' block
 TransformingVisitor.prototype.visitExceptionClause = function(ctx) {
-    this.source += ' catch ';
+    this.document += ' catch ';
     this.visitSymbol(ctx.symbol());
-    this.source += ' matching ';
+    this.document += ' matching ';
     this.visitXception(ctx.template());
-    this.source += ' with ';
+    this.document += ' with ';
     this.visitBlock(ctx.block());
 };
 
@@ -349,7 +349,7 @@ TransformingVisitor.prototype.visitExceptionClause = function(ctx) {
 // exponentialExpression: <assoc=right> expression '^' expression
 TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
-    this.source += ' ^ ';
+    this.document += ' ^ ';
     this.visitExpression(ctx.expression(1));
 };
 
@@ -363,32 +363,32 @@ TransformingVisitor.prototype.visitExpression = function(ctx) {
 // factorialExpression: expression '!'
 TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
     this.visitExpression(ctx.expression());
-    this.source += '!';
+    this.document += '!';
 };
 
 
 // falseProbability: 'false'
 TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
-    this.source += 'false';
+    this.document += 'false';
 };
 
 
 // finalClause: 'finish' 'with' block
 TransformingVisitor.prototype.visitFinalClause = function(ctx) {
-    this.source += ' finish with ';
+    this.document += ' finish with ';
     this.visitBlock(ctx.block());
 };
 
 
 // fractionalProbability: FRACTION
 TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
-    this.source += ctx.FRACTION().getText();
+    this.document += ctx.FRACTION().getText();
 };
 
 
 // functionExpression: IDENTIFIER parameters
 TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
+    this.document += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
@@ -399,22 +399,22 @@ TransformingVisitor.prototype.visitIfThen = function(ctx) {
     var blocks = ctx.block();
 
     // handle first condition
-    this.source += 'if ';
+    this.document += 'if ';
     this.visitCondition(conditions[0]);
-    this.source += ' then ';
+    this.document += ' then ';
     this.visitBlock(blocks[0]);
 
     // handle optional additional conditions
     for (var i = 1; i < conditions.length; i++) {
-        this.source += ' else if ';
+        this.document += ' else if ';
         this.visitCondition(conditions[i]);
-        this.source += ' then ';
+        this.document += ' then ';
         this.visitBlock(blocks[i]);
     }
 
     // handle the optional final else block
     if (blocks.length > conditions.length) {
-        this.source += ' else ';
+        this.document += ' else ';
         this.visitBlock(blocks[blocks.length - 1]);
     }
 };
@@ -427,12 +427,12 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
     if (real) {
         this.visitReal(real);
         if (real.con) {
-            this.source += ' ';
+            this.document += ' ';
         }
     } else if (sign) {
-        this.source += '-';
+        this.document += '-';
     }
-    this.source += 'i';
+    this.document += 'i';
 };
 
 
@@ -444,15 +444,15 @@ TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
 
 // indices: '[' array ']'
 TransformingVisitor.prototype.visitIndices = function(ctx) {
-    this.source += '[';
+    this.document += '[';
     this.visitArray(ctx.array());
-    this.source += ']';
+    this.document += ']';
 };
 
 
 // infiniteNumber: 'infinity'
 TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    this.source += 'infinity';
+    this.document += 'infinity';
 };
 
 
@@ -461,7 +461,7 @@ TransformingVisitor.prototype.visitInlineArray = function(ctx) {
     var values = ctx.value();  // retrieve all the values
     this.visitValue(values[0]);
     for (var i = 1; i < values.length; i++) {
-        this.source += ', ';
+        this.document += ', ';
         this.visitValue(values[i]);
     }
 };
@@ -472,7 +472,7 @@ TransformingVisitor.prototype.visitInlineStatements = function(ctx) {
     var statements = ctx.statement();  // retrieve all the statements
     this.visitStatement(statements[0]);
     for (var i = 1; i < statements.length; i++) {
-        this.source += '; ';
+        this.document += '; ';
         this.visitStatement(statements[i]);
     }
 };
@@ -483,7 +483,7 @@ TransformingVisitor.prototype.visitInlineTable = function(ctx) {
     var associations = ctx.association();  // retrieve all the associations
     this.visitAssociation(associations[0]);
     for (var i = 1; i < associations.length; i++) {
-        this.source += ', ';
+        this.document += ', ';
         this.visitAssociation(associations[i]);
     }
 };
@@ -491,7 +491,7 @@ TransformingVisitor.prototype.visitInlineTable = function(ctx) {
 
 // inlineText: TEXT
 TransformingVisitor.prototype.visitInlineText = function(ctx) {
-    this.source += ctx.TEXT().getText();
+    this.document += ctx.TEXT().getText();
 };
 
 
@@ -499,10 +499,10 @@ TransformingVisitor.prototype.visitInlineText = function(ctx) {
 TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
     var operation = ctx.op.text;
     var expression = ctx.expression();
-    this.source += operation;
+    this.document += operation;
     if (operation === '-') {
         if (expression.getText()[0] === "-") {
-            this.source += ' ';  // must insert a space before a negative value!
+            this.document += ' ';  // must insert a space before a negative value!
         }
     }
     this.visitExpression(ctx.expression());
@@ -521,7 +521,7 @@ TransformingVisitor.prototype.visitKey = function(ctx) {
 
 // label: IDENTIFIER
 TransformingVisitor.prototype.visitLabel = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
+    this.document += ctx.IDENTIFIER().getText();
 };
 
 
@@ -540,18 +540,18 @@ TransformingVisitor.prototype.visitLocation = function(ctx) {
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 TransformingVisitor.prototype.visitLogicalExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
-    this.source += ' ';
-    this.source += ctx.op.text;
-    this.source += ' ';
+    this.document += ' ';
+    this.document += ctx.op.text;
+    this.document += ' ';
     this.visitExpression(ctx.expression(1));
 };
 
 
 // magnitudeExpression: '|' expression '|'
 TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
-    this.source += '|';
+    this.document += '|';
     this.visitExpression(ctx.expression());
-    this.source += '|';
+    this.document += '|';
 };
 
 
@@ -586,15 +586,15 @@ TransformingVisitor.prototype.visitMessage = function(ctx) {
 // messageExpression: expression '.' IDENTIFIER parameters
 TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
     this.visitExpression(ctx.expression());
-    this.source += '.';
-    this.source += ctx.IDENTIFIER().getText();
+    this.document += '.';
+    this.document += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
 
 // moment: MOMENT
 TransformingVisitor.prototype.visitMoment = function(ctx) {
-    this.source += ctx.MOMENT().getText();
+    this.document += ctx.MOMENT().getText();
 };
 
 
@@ -639,7 +639,7 @@ TransformingVisitor.prototype.visitNewlineTable = function(ctx) {
 
 // noneAny: 'none'
 TransformingVisitor.prototype.visitNoneAny = function(ctx) {
-    this.source += 'none';
+    this.document += 'none';
 };
 
 
@@ -657,24 +657,24 @@ TransformingVisitor.prototype.visitOption = function(ctx) {
 
 // parameters: '(' composite ')'
 TransformingVisitor.prototype.visitParameters = function(ctx) {
-    this.source += '(';
+    this.document += '(';
     this.visitComposite(ctx.composite());
-    this.source += ')';
+    this.document += ')';
 };
 
 
 // percent: real '%'
 TransformingVisitor.prototype.visitPercent = function(ctx) {
     this.visitReal(ctx.real());
-    this.source += '%';
+    this.document += '%';
 };
 
 
 // precedenceExpression: '(' expression ')'
 TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
-    this.source += '(';
+    this.document += '(';
     this.visitExpression(ctx.expression());
-    this.source += ')';
+    this.document += ')';
 };
 
 
@@ -686,7 +686,7 @@ TransformingVisitor.prototype.visitProbability = function(ctx) {
 
 // publishEvent: 'publish' event
 TransformingVisitor.prototype.visitPublishEvent = function(ctx) {
-    this.source += 'publish ';
+    this.document += 'publish ';
     this.visitEvent(ctx.event());
 };
 
@@ -699,9 +699,9 @@ TransformingVisitor.prototype.visitQueue = function(ctx) {
 
 // queueMessage: 'queue' message 'on' queue
 TransformingVisitor.prototype.visitQueueMessage = function(ctx) {
-    this.source += 'queue ';
+    this.document += 'queue ';
     this.visitMessage(ctx.message());
-    this.source += ' on ';
+    this.document += ' on ';
     this.visitQueue(ctx.queue());
 };
 
@@ -709,7 +709,7 @@ TransformingVisitor.prototype.visitQueueMessage = function(ctx) {
 // range: value '..' value
 TransformingVisitor.prototype.visitRange = function(ctx) {
     this.visitValue(ctx.value(0));
-    this.source += '..';
+    this.document += '..';
     this.visitValue(ctx.value(1));
 };
 
@@ -728,7 +728,7 @@ TransformingVisitor.prototype.visitRealNumber = function(ctx) {
 
 // reference: RESOURCE
 TransformingVisitor.prototype.visitReference = function(ctx) {
-    this.source += ctx.RESOURCE().getText();
+    this.document += ctx.RESOURCE().getText();
 };
 
 
@@ -740,10 +740,10 @@ TransformingVisitor.prototype.visitResult = function(ctx) {
 
 // returnResult: 'return' result?
 TransformingVisitor.prototype.visitReturnResult = function(ctx) {
-    this.source += 'return';
+    this.document += 'return';
     var result = ctx.result();
     if (result) {
-        this.source += ' ';
+        this.document += ' ';
         this.visitResult(result);
     }
 };
@@ -751,18 +751,18 @@ TransformingVisitor.prototype.visitReturnResult = function(ctx) {
 
 // saveDraft: 'save' draft 'to' location
 TransformingVisitor.prototype.visitSaveDraft = function(ctx) {
-    this.source += 'save ';
+    this.document += 'save ';
     this.visitDraft(ctx.draft());
-    this.source += ' to ';
+    this.document += ' to ';
     this.visitLocation(ctx.location());
 };
 
 
 // script: SHELL statements EOF
 TransformingVisitor.prototype.visitScript = function(ctx) {
-    this.source += ctx.SHELL().getText();
+    this.document += ctx.SHELL().getText();
     this.visitStatements(ctx.statements());
-    this.source += ctx.EOF().getText();
+    this.document += ctx.EOF().getText();
 };
 
 
@@ -772,21 +772,21 @@ TransformingVisitor.prototype.visitSelectFrom = function(ctx) {
     var blocks = ctx.block();
 
     // handle the selection
-    this.source += 'select ';
+    this.document += 'select ';
     this.visitSelection(ctx.selection());
-    this.source += ' from';
+    this.document += ' from';
 
     // handle option blocks
     for (var i = 0; i < options.length; i++) {
-        this.source += ' ';
+        this.document += ' ';
         this.visitOption(options[i]);
-        this.source += ' do ';
+        this.document += ' do ';
         this.visitBlock(blocks[i]);
     }
 
     // handle the optional final else block
     if (blocks.length > options.length) {
-        this.source += ' else ';
+        this.document += ' else ';
         this.visitBlock(blocks[blocks.length - 1]);
     }
 };
@@ -826,15 +826,15 @@ TransformingVisitor.prototype.visitStatements = function(ctx) {
 
 // structure: '[' composite ']'
 TransformingVisitor.prototype.visitStructure = function(ctx) {
-    this.source += '[';
+    this.document += '[';
     this.visitComposite(ctx.composite());
-    this.source += ']';
+    this.document += ']';
 };
 
 
 // symbol: SYMBOL
 TransformingVisitor.prototype.visitSymbol = function(ctx) {
-    this.source += ctx.SYMBOL().getText();
+    this.document += ctx.SYMBOL().getText();
 };
 
 
@@ -846,7 +846,7 @@ TransformingVisitor.prototype.visitTable = function(ctx) {
 
 // tag: TAG
 TransformingVisitor.prototype.visitTag = function(ctx) {
-    this.source += ctx.TAG().getText();
+    this.document += ctx.TAG().getText();
 };
 
 
@@ -864,20 +864,20 @@ TransformingVisitor.prototype.visitText = function(ctx) {
 
 // throwException: 'throw' xception
 TransformingVisitor.prototype.visitThrowException = function(ctx) {
-    this.source += 'throw ';
+    this.document += 'throw ';
     this.visitXception(ctx.xception());
 };
 
 
 // trueProbability: 'true'
 TransformingVisitor.prototype.visitTrueProbability = function(ctx) {
-    this.source += 'true';
+    this.document += 'true';
 };
 
 
 // undefinedNumber: 'undefined'
 TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    this.source += 'undefined';
+    this.document += 'undefined';
 };
 
 
@@ -889,7 +889,7 @@ TransformingVisitor.prototype.visitValue = function(ctx) {
 
 // variable: IDENTIFIER
 TransformingVisitor.prototype.visitVariable = function(ctx) {
-    this.source += ctx.IDENTIFIER().getText();
+    this.document += ctx.IDENTIFIER().getText();
 };
 
 
@@ -901,21 +901,21 @@ TransformingVisitor.prototype.visitVariableExpression = function(ctx) {
 
 // variableReal: FLOAT
 TransformingVisitor.prototype.visitVariableReal = function(ctx) {
-    this.source += ctx.FLOAT().getText();
+    this.document += ctx.FLOAT().getText();
 };
 
 
 // version: VERSION
 TransformingVisitor.prototype.visitVersion = function(ctx) {
-    this.source += ctx.VERSION().getText();
+    this.document += ctx.VERSION().getText();
 };
 
 
 // waitForMessage: 'wait' 'for' symbol 'from' queue
 TransformingVisitor.prototype.visitWaitForMessage = function(ctx) {
-    this.source += 'wait for ';
+    this.document += 'wait for ';
     this.visitSymbol(ctx.symbol());
-    this.source += ' from ';
+    this.document += ' from ';
     this.visitQueue(ctx.queue());
 };
 
@@ -925,11 +925,11 @@ TransformingVisitor.prototype.visitWhileLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);
-        this.source += ': ';
+        this.document += ': ';
     }
-    this.source += 'while ';
+    this.document += 'while ';
     this.visitCondition(ctx.condition());
-    this.source += ' do ';
+    this.document += ' do ';
     this.visitBlock(ctx.block());
 };
 
@@ -939,16 +939,16 @@ TransformingVisitor.prototype.visitWithLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);
-        this.source += ': ';
+        this.document += ': ';
     }
-    this.source += 'with ';
+    this.document += 'with ';
     var symbol = ctx.symbol();
     if (symbol) {
-        this.source += 'each ';
+        this.document += 'each ';
         this.visitSymbol(symbol);
-        this.source += ' in ';
+        this.document += ' in ';
     }
     this.visitSequence(ctx.sequence());
-    this.source += ' do ';
+    this.document += ' do ';
     this.visitBlock(ctx.block());
 };

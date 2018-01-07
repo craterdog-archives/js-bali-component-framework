@@ -33,6 +33,21 @@ Version.prototype.constructor = Version;
 exports.Version = Version;
 
 
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Version.prototype.accept = function(visitor) {
+    visitor.visitVersion(this);
+};
+
+
+/**
+ * This method returns the version string.
+ * 
+ * @returns {string} The version string.
+ */
 Version.prototype.toString = function() {
     return this.value;
 };

@@ -34,6 +34,16 @@ exports.Reference = Reference;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Reference.prototype.accept = function(visitor) {
+    visitor.visitReference(this);
+};
+
+
+/**
  * This method returns a string representation of the reference element.
  * 
  * @returns {string} The string representation of the reference element.

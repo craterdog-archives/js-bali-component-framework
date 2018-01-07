@@ -14,6 +14,7 @@ exports.Any = require('./Any').Any;
 exports.Binary = require('./Binary').Binary;
 exports.Complex = require('./Complex').Complex;
 exports.Composite = require('./Composite').Composite;
+exports.ElementVisitor = require('./ElementVisitor').ElementVisitor;
 exports.Moment = require('./Moment').Moment;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;

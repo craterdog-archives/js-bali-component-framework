@@ -31,6 +31,16 @@ exports.Text = Text;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Text.prototype.accept = function(visitor) {
+    visitor.visitText(this);
+};
+
+
+/**
  * This method returns the text string embedded in double quotes.
  * 
  * @returns {string} The text string embedded in double quotes.

@@ -53,6 +53,16 @@ exports.Angle = Angle;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Angle.prototype.accept = function(visitor) {
+    visitor.visitAngle(this);
+};
+
+
+/**
  * This method returns a string version of the angle.
  * 
  * @returns {string}

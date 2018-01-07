@@ -43,6 +43,16 @@ exports.Percent = Percent;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Percent.prototype.accept = function(visitor) {
+    visitor.visitPercent(this);
+};
+
+
+/**
  * This method returns a string representation of the percent element.
  * 
  * @returns {string} The string representation of the percent element.

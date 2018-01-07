@@ -36,6 +36,16 @@ exports.Range = Range;
 
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ */
+Range.prototype.accept = function(visitor) {
+    visitor.visitRange(this);
+};
+
+
+/**
  * This method returns a string representation of the range element.
  * 
  * @returns {string} The string representation of the range element.
