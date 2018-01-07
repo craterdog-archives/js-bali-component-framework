@@ -14,7 +14,7 @@
  * complex number element.
  */
 var Angle = require('./Angle').Angle;
-var Parser = require('../transformers/LanguageParser').LanguageParser;
+var DocumentToParseTree = require('../transformers/DocumentToParseTree').DocumentToParseTree;
 /* global NaN, Infinity */
 
 
@@ -71,7 +71,7 @@ function Complex(numberOrString, optionalNumberOrAngle) {
     } else if (typeof numberOrString === 'string' && !optionalNumberOrAngle) {
         // Complex(string): constructor generates a complex number from a string
         var string = numberOrString;
-        number = new Parser().parseElement(string).number();
+        number = new DocumentToParseTree().parseElement(string).number();
         var nodeType = number.constructor.name;
         switch (nodeType) {
             case 'UndefinedNumberContext':

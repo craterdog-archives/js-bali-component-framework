@@ -22,13 +22,13 @@ var grammar = require('../grammar');
  * This constructor creates a new formatter with the specified padding.
  * 
  * @constructor
- * @returns {LanguageFormatter} The new formatter.
+ * @returns {ParseTreeToDocument} The new formatter.
  */
-function LanguageFormatter() {
+function ParseTreeToDocument() {
     return this;
 }
-LanguageFormatter.prototype.constructor = LanguageFormatter;
-exports.LanguageFormatter = LanguageFormatter;
+ParseTreeToDocument.prototype.constructor = ParseTreeToDocument;
+exports.ParseTreeToDocument = ParseTreeToDocument;
 
 
 /**
@@ -39,8 +39,8 @@ exports.LanguageFormatter = LanguageFormatter;
  * @param {string} padding The string that should be prepended to each line.
  * @returns {string} The formatted source code string.
  */
-LanguageFormatter.prototype.formatDocument = function(baliDocument, padding) {
-    var visitor = new FormatterVisitor(padding);
+ParseTreeToDocument.prototype.formatDocument = function(baliDocument, padding) {
+    var visitor = new TransformingVisitor(padding);
     baliDocument.accept(visitor);
     return visitor.source;
 };
@@ -48,28 +48,28 @@ LanguageFormatter.prototype.formatDocument = function(baliDocument, padding) {
 
 // PRIVATE CLASSES
 
-function FormatterVisitor(padding) {
+function TransformingVisitor(padding) {
     grammar.BaliLanguageVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
     this.source = '';
     this.depth = 0;
     return this;
 }
-FormatterVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
-FormatterVisitor.prototype.constructor = FormatterVisitor;
-FormatterVisitor.prototype.indentation = '    ';  // indentation per level
+TransformingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
+TransformingVisitor.prototype.constructor = TransformingVisitor;
+TransformingVisitor.prototype.indentation = '    ';  // indentation per level
 
 
-FormatterVisitor.prototype.appendNewline = function() {
+TransformingVisitor.prototype.appendNewline = function() {
     this.source += '\n';
     this.source += this.getPadding();
 };
 
 
-FormatterVisitor.prototype.getPadding = function() {
+TransformingVisitor.prototype.getPadding = function() {
     var padding = this.padding;
     for (var i = 0; i < this.depth; i++) {
-        padding += FormatterVisitor.prototype.indentation;
+        padding += TransformingVisitor.prototype.indentation;
     }
     return padding;
 };
@@ -77,19 +77,19 @@ FormatterVisitor.prototype.getPadding = function() {
 
 // HACK: this method is missing from the generated visitor!
 // SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-FormatterVisitor.prototype.visitAny = function(ctx) {
+TransformingVisitor.prototype.visitAny = function(ctx) {
     ctx.accept(this);
 };
 
 
 // anyAny: 'any'
-FormatterVisitor.prototype.visitAnyAny = function(ctx) {
+TransformingVisitor.prototype.visitAnyAny = function(ctx) {
     this.source += 'any';
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
-FormatterVisitor.prototype.visitArithmeticExpression = function(ctx) {
+TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ';
     this.source += ctx.op.text;
@@ -100,19 +100,19 @@ FormatterVisitor.prototype.visitArithmeticExpression = function(ctx) {
 
 // HACK: this method is missing from the generated visitor!
 // SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-FormatterVisitor.prototype.visitArray = function(ctx) {
+TransformingVisitor.prototype.visitArray = function(ctx) {
     ctx.accept(this);
 };
 
 
 // assignee: symbol | component
-FormatterVisitor.prototype.visitAssignee = function(ctx) {
+TransformingVisitor.prototype.visitAssignee = function(ctx) {
     this.visitChildren(ctx);
 };
 
 
 // association: key ':' value
-FormatterVisitor.prototype.visitAssociation = function(ctx) {
+TransformingVisitor.prototype.visitAssociation = function(ctx) {
     this.visitKey(ctx.key());
     this.source += ': ';
     this.visitValue(ctx.value());
@@ -120,13 +120,13 @@ FormatterVisitor.prototype.visitAssociation = function(ctx) {
 
 
 // binary: BINARY
-FormatterVisitor.prototype.visitBinary = function(ctx) {
+TransformingVisitor.prototype.visitBinary = function(ctx) {
     this.source += ctx.BINARY().getText();
 };
 
 
 // block: '{' statements '}'
-FormatterVisitor.prototype.visitBlock = function(ctx) {
+TransformingVisitor.prototype.visitBlock = function(ctx) {
     this.source += '{';
     this.visitStatements(ctx.statements());
     this.source += '}';
@@ -134,13 +134,13 @@ FormatterVisitor.prototype.visitBlock = function(ctx) {
 
 
 // blockText: TEXT_BLOCK
-FormatterVisitor.prototype.visitBlockText = function(ctx) {
+TransformingVisitor.prototype.visitBlockText = function(ctx) {
     this.source += ctx.TEXT_BLOCK().getText();
 };
 
 
 // breakFrom: 'break' ('from' label)?
-FormatterVisitor.prototype.visitBreakFrom = function(ctx) {
+TransformingVisitor.prototype.visitBreakFrom = function(ctx) {
     this.source += 'break';
     var label = ctx.label();
     if (label) {
@@ -151,7 +151,7 @@ FormatterVisitor.prototype.visitBreakFrom = function(ctx) {
 
 
 // checkoutDocument: 'checkout' symbol 'from' location
-FormatterVisitor.prototype.visitCheckoutDocument = function(ctx) {
+TransformingVisitor.prototype.visitCheckoutDocument = function(ctx) {
     this.source += 'checkout ';
     this.visitSymbol(ctx.symbol());
     this.source += ' from ';
@@ -160,7 +160,7 @@ FormatterVisitor.prototype.visitCheckoutDocument = function(ctx) {
 
 
 // commitDraft: 'commit' draft 'to' location
-FormatterVisitor.prototype.visitCommitDraft = function(ctx) {
+TransformingVisitor.prototype.visitCommitDraft = function(ctx) {
     this.source += 'commit ';
     this.visitDraft(ctx.draft());
     this.source += ' to ';
@@ -169,7 +169,7 @@ FormatterVisitor.prototype.visitCommitDraft = function(ctx) {
 
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
-FormatterVisitor.prototype.visitComparisonExpression = function(ctx) {
+TransformingVisitor.prototype.visitComparisonExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ';
     this.source += ctx.op.text;
@@ -179,14 +179,14 @@ FormatterVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 
 // complementExpression: 'not' expression
-FormatterVisitor.prototype.visitComplementExpression = function(ctx) {
+TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
     this.source += 'not ';
     this.visitExpression(ctx.expression());
 };
 
 
 // complexNumber: '(' real del=(',' | 'e^') imaginary ')'
-FormatterVisitor.prototype.visitComplexNumber = function(ctx) {
+TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     this.source += '(';
     this.visitReal(ctx.real());
     var delimiter = ctx.del.text;
@@ -200,33 +200,33 @@ FormatterVisitor.prototype.visitComplexNumber = function(ctx) {
 
 
 // component: variable indices
-FormatterVisitor.prototype.visitComponent = function(ctx) {
+TransformingVisitor.prototype.visitComponent = function(ctx) {
     this.visitVariable(ctx.variable());
     this.visitIndices(ctx.indices());
 };
 
 
 // componentExpression: expression indices
-FormatterVisitor.prototype.visitComponentExpression = function(ctx) {
+TransformingVisitor.prototype.visitComponentExpression = function(ctx) {
     this.visitExpression(ctx.expression());
     this.visitIndices(ctx.indices());
 };
 
 
 // composite: range | array | table
-FormatterVisitor.prototype.visitComposite = function(ctx) {
+TransformingVisitor.prototype.visitComposite = function(ctx) {
     this.visitChildren(ctx);
 };
 
 
 // condition: expression
-FormatterVisitor.prototype.visitCondition = function(ctx) {
+TransformingVisitor.prototype.visitCondition = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // constantReal: sign='-'? con=('e' | 'pi' | 'phi')
-FormatterVisitor.prototype.visitConstantReal = function(ctx) {
+TransformingVisitor.prototype.visitConstantReal = function(ctx) {
     if (ctx.sign) {
         this.source += '-';
     }
@@ -235,7 +235,7 @@ FormatterVisitor.prototype.visitConstantReal = function(ctx) {
 
 
 // continueTo: 'continue' ('to' label)?
-FormatterVisitor.prototype.visitContinueTo = function(ctx) {
+TransformingVisitor.prototype.visitContinueTo = function(ctx) {
     this.source += 'continue';
     var label = ctx.label();
     if (label) {
@@ -246,7 +246,7 @@ FormatterVisitor.prototype.visitContinueTo = function(ctx) {
 
 
 // defaultExpression: expression '?' expression
-FormatterVisitor.prototype.visitDefaultExpression = function(ctx) {
+TransformingVisitor.prototype.visitDefaultExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ? ';
     this.visitExpression(ctx.expression(1));
@@ -254,21 +254,21 @@ FormatterVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 
 // dereferenceExpression: '@' expression
-FormatterVisitor.prototype.visitDereferenceExpression = function(ctx) {
+TransformingVisitor.prototype.visitDereferenceExpression = function(ctx) {
     this.source += '@';
     this.visitExpression(ctx.expression());
 };
 
 
 // discardDraft: 'discard' location
-FormatterVisitor.prototype.visitDiscardDraft = function(ctx) {
+TransformingVisitor.prototype.visitDiscardDraft = function(ctx) {
     this.source += 'discard ';
     this.visitLocation(ctx.location());
 };
 
 
 // document: literal parameters?
-FormatterVisitor.prototype.visitDocument = function(ctx) {
+TransformingVisitor.prototype.visitDocument = function(ctx) {
     this.visitLiteral(ctx.literal());
     var parameters = ctx.parameters();
     if (parameters) {
@@ -278,42 +278,42 @@ FormatterVisitor.prototype.visitDocument = function(ctx) {
 
 
 // documentExpression: document
-FormatterVisitor.prototype.visitDocumentExpression = function(ctx) {
+TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
     this.visitDocument(ctx.document());
 };
 
 
 // draft: expression
-FormatterVisitor.prototype.visitDraft = function(ctx) {
+TransformingVisitor.prototype.visitDraft = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // element: any | tag | symbol | moment | reference | version | text | binary |
 //  probability | percent | number
-FormatterVisitor.prototype.visitElement = function(ctx) {
+TransformingVisitor.prototype.visitElement = function(ctx) {
     this.visitChildren(ctx);
 };
 
 
 // emptyArray: /*empty array*/
-FormatterVisitor.prototype.visitEmptyArray = function(ctx) {
+TransformingVisitor.prototype.visitEmptyArray = function(ctx) {
 };
 
 
 // emptyStatements: /*empty statements*/
-FormatterVisitor.prototype.visitEmptyStatements = function(ctx) {
+TransformingVisitor.prototype.visitEmptyStatements = function(ctx) {
 };
 
 
 // emptyTable: ':' /*empty table*/
-FormatterVisitor.prototype.visitEmptyTable = function(ctx) {
+TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
     this.source += ':';
 };
 
 
 // evaluateExpression: (assignee ':=')? expression
-FormatterVisitor.prototype.visitEvaluateExpression = function(ctx) {
+TransformingVisitor.prototype.visitEvaluateExpression = function(ctx) {
     var assignee = ctx.assignee();
     if (assignee) {
         this.visitAssignee(assignee);
@@ -324,19 +324,19 @@ FormatterVisitor.prototype.visitEvaluateExpression = function(ctx) {
 
 
 // event: expression
-FormatterVisitor.prototype.visitEvent = function(ctx) {
+TransformingVisitor.prototype.visitEvent = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // xception: expression
-FormatterVisitor.prototype.visitXception = function(ctx) {
+TransformingVisitor.prototype.visitXception = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // exceptionClause: 'catch' symbol 'matching' template 'with' block
-FormatterVisitor.prototype.visitExceptionClause = function(ctx) {
+TransformingVisitor.prototype.visitExceptionClause = function(ctx) {
     this.source += ' catch ';
     this.visitSymbol(ctx.symbol());
     this.source += ' matching ';
@@ -347,7 +347,7 @@ FormatterVisitor.prototype.visitExceptionClause = function(ctx) {
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-FormatterVisitor.prototype.visitExponentialExpression = function(ctx) {
+TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ^ ';
     this.visitExpression(ctx.expression(1));
@@ -355,46 +355,46 @@ FormatterVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitExpression = function(ctx) {
+TransformingVisitor.prototype.visitExpression = function(ctx) {
     ctx.accept(this);
 };
 
 
 // factorialExpression: expression '!'
-FormatterVisitor.prototype.visitFactorialExpression = function(ctx) {
+TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
     this.visitExpression(ctx.expression());
     this.source += '!';
 };
 
 
 // falseProbability: 'false'
-FormatterVisitor.prototype.visitFalseProbability = function(ctx) {
+TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
     this.source += 'false';
 };
 
 
 // finalClause: 'finish' 'with' block
-FormatterVisitor.prototype.visitFinalClause = function(ctx) {
+TransformingVisitor.prototype.visitFinalClause = function(ctx) {
     this.source += ' finish with ';
     this.visitBlock(ctx.block());
 };
 
 
 // fractionalProbability: FRACTION
-FormatterVisitor.prototype.visitFractionalProbability = function(ctx) {
+TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
     this.source += ctx.FRACTION().getText();
 };
 
 
 // functionExpression: IDENTIFIER parameters
-FormatterVisitor.prototype.visitFunctionExpression = function(ctx) {
+TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
     this.visitParameters(ctx.parameters());
 };
 
 
 // ifThen: 'if' condition 'then' block ('else' 'if' condition 'then' block)* ('else' block)?
-FormatterVisitor.prototype.visitIfThen = function(ctx) {
+TransformingVisitor.prototype.visitIfThen = function(ctx) {
     var conditions = ctx.condition();
     var blocks = ctx.block();
 
@@ -421,7 +421,7 @@ FormatterVisitor.prototype.visitIfThen = function(ctx) {
 
 
 // imaginary: (real | sign='-')? 'i'
-FormatterVisitor.prototype.visitImaginary = function(ctx) {
+TransformingVisitor.prototype.visitImaginary = function(ctx) {
     var real = ctx.real();
     var sign = ctx.sign;
     if (real) {
@@ -437,13 +437,13 @@ FormatterVisitor.prototype.visitImaginary = function(ctx) {
 
 
 // imaginaryNumber: imaginary
-FormatterVisitor.prototype.visitImaginaryNumber = function(ctx) {
+TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     this.visitImaginary(ctx.imaginary());
 };
 
 
 // indices: '[' array ']'
-FormatterVisitor.prototype.visitIndices = function(ctx) {
+TransformingVisitor.prototype.visitIndices = function(ctx) {
     this.source += '[';
     this.visitArray(ctx.array());
     this.source += ']';
@@ -451,13 +451,13 @@ FormatterVisitor.prototype.visitIndices = function(ctx) {
 
 
 // infiniteNumber: 'infinity'
-FormatterVisitor.prototype.visitInfiniteNumber = function(ctx) {
+TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     this.source += 'infinity';
 };
 
 
 // inlineArray: value (',' value)*
-FormatterVisitor.prototype.visitInlineArray = function(ctx) {
+TransformingVisitor.prototype.visitInlineArray = function(ctx) {
     var values = ctx.value();  // retrieve all the values
     this.visitValue(values[0]);
     for (var i = 1; i < values.length; i++) {
@@ -468,7 +468,7 @@ FormatterVisitor.prototype.visitInlineArray = function(ctx) {
 
 
 // inlineStatements: statement (';' statement)*
-FormatterVisitor.prototype.visitInlineStatements = function(ctx) {
+TransformingVisitor.prototype.visitInlineStatements = function(ctx) {
     var statements = ctx.statement();  // retrieve all the statements
     this.visitStatement(statements[0]);
     for (var i = 1; i < statements.length; i++) {
@@ -479,7 +479,7 @@ FormatterVisitor.prototype.visitInlineStatements = function(ctx) {
 
 
 // inlineTable: association (',' association)*
-FormatterVisitor.prototype.visitInlineTable = function(ctx) {
+TransformingVisitor.prototype.visitInlineTable = function(ctx) {
     var associations = ctx.association();  // retrieve all the associations
     this.visitAssociation(associations[0]);
     for (var i = 1; i < associations.length; i++) {
@@ -490,13 +490,13 @@ FormatterVisitor.prototype.visitInlineTable = function(ctx) {
 
 
 // inlineText: TEXT
-FormatterVisitor.prototype.visitInlineText = function(ctx) {
+TransformingVisitor.prototype.visitInlineText = function(ctx) {
     this.source += ctx.TEXT().getText();
 };
 
 
 // inversionExpression: op=('-' | '/' | '*') expression
-FormatterVisitor.prototype.visitInversionExpression = function(ctx) {
+TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
     var operation = ctx.op.text;
     var expression = ctx.expression();
     this.source += operation;
@@ -510,7 +510,7 @@ FormatterVisitor.prototype.visitInversionExpression = function(ctx) {
 
 
 // key: element parameters?
-FormatterVisitor.prototype.visitKey = function(ctx) {
+TransformingVisitor.prototype.visitKey = function(ctx) {
     this.visitElement(ctx.element());
     var parameters = ctx.parameters();
     if (parameters) {
@@ -520,25 +520,25 @@ FormatterVisitor.prototype.visitKey = function(ctx) {
 
 
 // label: IDENTIFIER
-FormatterVisitor.prototype.visitLabel = function(ctx) {
+TransformingVisitor.prototype.visitLabel = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
 };
 
 
 // literal: element | structure | block
-FormatterVisitor.prototype.visitLiteral = function(ctx) {
+TransformingVisitor.prototype.visitLiteral = function(ctx) {
     this.visitChildren(ctx);
 };
 
 
 // location: expression
-FormatterVisitor.prototype.visitLocation = function(ctx) {
+TransformingVisitor.prototype.visitLocation = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
-FormatterVisitor.prototype.visitLogicalExpression = function(ctx) {
+TransformingVisitor.prototype.visitLogicalExpression = function(ctx) {
     this.visitExpression(ctx.expression(0));
     this.source += ' ';
     this.source += ctx.op.text;
@@ -548,7 +548,7 @@ FormatterVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 
 // magnitudeExpression: '|' expression '|'
-FormatterVisitor.prototype.visitMagnitudeExpression = function(ctx) {
+TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     this.source += '|';
     this.visitExpression(ctx.expression());
     this.source += '|';
@@ -572,19 +572,19 @@ FormatterVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 //     breakFrom |
 //     returnResult |
 //     throwException
-FormatterVisitor.prototype.visitMainClause = function(ctx) {
+TransformingVisitor.prototype.visitMainClause = function(ctx) {
     this.visitChildren(ctx);
 };
 
 
 // message: expression
-FormatterVisitor.prototype.visitMessage = function(ctx) {
+TransformingVisitor.prototype.visitMessage = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // messageExpression: expression '.' IDENTIFIER parameters
-FormatterVisitor.prototype.visitMessageExpression = function(ctx) {
+TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
     this.visitExpression(ctx.expression());
     this.source += '.';
     this.source += ctx.IDENTIFIER().getText();
@@ -593,13 +593,13 @@ FormatterVisitor.prototype.visitMessageExpression = function(ctx) {
 
 
 // moment: MOMENT
-FormatterVisitor.prototype.visitMoment = function(ctx) {
+TransformingVisitor.prototype.visitMoment = function(ctx) {
     this.source += ctx.MOMENT().getText();
 };
 
 
 // newlineArray: NEWLINE (value NEWLINE)*
-FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
+TransformingVisitor.prototype.visitNewlineArray = function(ctx) {
     var values = ctx.value();  // retrieve all the values
     this.depth++;
     for (var i = 0; i < values.length; i++) {
@@ -612,7 +612,7 @@ FormatterVisitor.prototype.visitNewlineArray = function(ctx) {
 
 
 // newlineStatements: NEWLINE (statement NEWLINE)*
-FormatterVisitor.prototype.visitNewlineStatements = function(ctx) {
+TransformingVisitor.prototype.visitNewlineStatements = function(ctx) {
     var statements = ctx.statement();  // retrieve all the statements
     this.depth++;
     for (var i = 0; i < statements.length; i++) {
@@ -625,7 +625,7 @@ FormatterVisitor.prototype.visitNewlineStatements = function(ctx) {
 
 
 // newlineTable: NEWLINE (association NEWLINE)*
-FormatterVisitor.prototype.visitNewlineTable = function(ctx) {
+TransformingVisitor.prototype.visitNewlineTable = function(ctx) {
     var associations = ctx.association();  // retrieve all the associations
     this.depth++;
     for (var i = 0; i < associations.length; i++) {
@@ -638,25 +638,25 @@ FormatterVisitor.prototype.visitNewlineTable = function(ctx) {
 
 
 // noneAny: 'none'
-FormatterVisitor.prototype.visitNoneAny = function(ctx) {
+TransformingVisitor.prototype.visitNoneAny = function(ctx) {
     this.source += 'none';
 };
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitNumber = function(ctx) {
+TransformingVisitor.prototype.visitNumber = function(ctx) {
     ctx.accept(this);
 };
 
 
 // option: expression
-FormatterVisitor.prototype.visitOption = function(ctx) {
+TransformingVisitor.prototype.visitOption = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // parameters: '(' composite ')'
-FormatterVisitor.prototype.visitParameters = function(ctx) {
+TransformingVisitor.prototype.visitParameters = function(ctx) {
     this.source += '(';
     this.visitComposite(ctx.composite());
     this.source += ')';
@@ -664,14 +664,14 @@ FormatterVisitor.prototype.visitParameters = function(ctx) {
 
 
 // percent: real '%'
-FormatterVisitor.prototype.visitPercent = function(ctx) {
+TransformingVisitor.prototype.visitPercent = function(ctx) {
     this.visitReal(ctx.real());
     this.source += '%';
 };
 
 
 // precedenceExpression: '(' expression ')'
-FormatterVisitor.prototype.visitPrecedenceExpression = function(ctx) {
+TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     this.source += '(';
     this.visitExpression(ctx.expression());
     this.source += ')';
@@ -679,26 +679,26 @@ FormatterVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitProbability = function(ctx) {
+TransformingVisitor.prototype.visitProbability = function(ctx) {
     ctx.accept(this);
 };
 
 
 // publishEvent: 'publish' event
-FormatterVisitor.prototype.visitPublishEvent = function(ctx) {
+TransformingVisitor.prototype.visitPublishEvent = function(ctx) {
     this.source += 'publish ';
     this.visitEvent(ctx.event());
 };
 
 
 // queue: expression
-FormatterVisitor.prototype.visitQueue = function(ctx) {
+TransformingVisitor.prototype.visitQueue = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // queueMessage: 'queue' message 'on' queue
-FormatterVisitor.prototype.visitQueueMessage = function(ctx) {
+TransformingVisitor.prototype.visitQueueMessage = function(ctx) {
     this.source += 'queue ';
     this.visitMessage(ctx.message());
     this.source += ' on ';
@@ -707,7 +707,7 @@ FormatterVisitor.prototype.visitQueueMessage = function(ctx) {
 
 
 // range: value '..' value
-FormatterVisitor.prototype.visitRange = function(ctx) {
+TransformingVisitor.prototype.visitRange = function(ctx) {
     this.visitValue(ctx.value(0));
     this.source += '..';
     this.visitValue(ctx.value(1));
@@ -715,31 +715,31 @@ FormatterVisitor.prototype.visitRange = function(ctx) {
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitReal = function(ctx) {
+TransformingVisitor.prototype.visitReal = function(ctx) {
     ctx.accept(this);
 };
 
 
 // realNumber: real
-FormatterVisitor.prototype.visitRealNumber = function(ctx) {
+TransformingVisitor.prototype.visitRealNumber = function(ctx) {
     this.visitReal(ctx.real());
 };
 
 
 // reference: RESOURCE
-FormatterVisitor.prototype.visitReference = function(ctx) {
+TransformingVisitor.prototype.visitReference = function(ctx) {
     this.source += ctx.RESOURCE().getText();
 };
 
 
 // result: expression
-FormatterVisitor.prototype.visitResult = function(ctx) {
+TransformingVisitor.prototype.visitResult = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // returnResult: 'return' result?
-FormatterVisitor.prototype.visitReturnResult = function(ctx) {
+TransformingVisitor.prototype.visitReturnResult = function(ctx) {
     this.source += 'return';
     var result = ctx.result();
     if (result) {
@@ -750,7 +750,7 @@ FormatterVisitor.prototype.visitReturnResult = function(ctx) {
 
 
 // saveDraft: 'save' draft 'to' location
-FormatterVisitor.prototype.visitSaveDraft = function(ctx) {
+TransformingVisitor.prototype.visitSaveDraft = function(ctx) {
     this.source += 'save ';
     this.visitDraft(ctx.draft());
     this.source += ' to ';
@@ -759,7 +759,7 @@ FormatterVisitor.prototype.visitSaveDraft = function(ctx) {
 
 
 // script: SHELL statements EOF
-FormatterVisitor.prototype.visitScript = function(ctx) {
+TransformingVisitor.prototype.visitScript = function(ctx) {
     this.source += ctx.SHELL().getText();
     this.visitStatements(ctx.statements());
     this.source += ctx.EOF().getText();
@@ -767,7 +767,7 @@ FormatterVisitor.prototype.visitScript = function(ctx) {
 
 
 // selectFrom: 'select' selection 'from' (option 'do' block)+ ('else' block)?
-FormatterVisitor.prototype.visitSelectFrom = function(ctx) {
+TransformingVisitor.prototype.visitSelectFrom = function(ctx) {
     var options = ctx.option();
     var blocks = ctx.block();
 
@@ -793,19 +793,19 @@ FormatterVisitor.prototype.visitSelectFrom = function(ctx) {
 
 
 // selection: expression
-FormatterVisitor.prototype.visitSelection = function(ctx) {
+TransformingVisitor.prototype.visitSelection = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // sequence: expression
-FormatterVisitor.prototype.visitSequence = function(ctx) {
+TransformingVisitor.prototype.visitSequence = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // statement: mainClause exceptionClause* finalClause?
-FormatterVisitor.prototype.visitStatement = function(ctx) {
+TransformingVisitor.prototype.visitStatement = function(ctx) {
     this.visitMainClause(ctx.mainClause());
     var exceptionClauses = ctx.exceptionClause();
     for (var i = 0; i < exceptionClauses.length; i++) {
@@ -819,13 +819,13 @@ FormatterVisitor.prototype.visitStatement = function(ctx) {
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitStatements = function(ctx) {
+TransformingVisitor.prototype.visitStatements = function(ctx) {
     ctx.accept(this);
 };
 
 
 // structure: '[' composite ']'
-FormatterVisitor.prototype.visitStructure = function(ctx) {
+TransformingVisitor.prototype.visitStructure = function(ctx) {
     this.source += '[';
     this.visitComposite(ctx.composite());
     this.source += ']';
@@ -833,86 +833,86 @@ FormatterVisitor.prototype.visitStructure = function(ctx) {
 
 
 // symbol: SYMBOL
-FormatterVisitor.prototype.visitSymbol = function(ctx) {
+TransformingVisitor.prototype.visitSymbol = function(ctx) {
     this.source += ctx.SYMBOL().getText();
 };
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitTable = function(ctx) {
+TransformingVisitor.prototype.visitTable = function(ctx) {
     ctx.accept(this);
 };
 
 
 // tag: TAG
-FormatterVisitor.prototype.visitTag = function(ctx) {
+TransformingVisitor.prototype.visitTag = function(ctx) {
     this.source += ctx.TAG().getText();
 };
 
 
 // template: expression
-FormatterVisitor.prototype.visitTemplate = function(ctx) {
+TransformingVisitor.prototype.visitTemplate = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // HACK: this method is missing from the generated visitor!
-FormatterVisitor.prototype.visitText = function(ctx) {
+TransformingVisitor.prototype.visitText = function(ctx) {
     ctx.accept(this);
 };
 
 
 // throwException: 'throw' xception
-FormatterVisitor.prototype.visitThrowException = function(ctx) {
+TransformingVisitor.prototype.visitThrowException = function(ctx) {
     this.source += 'throw ';
     this.visitXception(ctx.xception());
 };
 
 
 // trueProbability: 'true'
-FormatterVisitor.prototype.visitTrueProbability = function(ctx) {
+TransformingVisitor.prototype.visitTrueProbability = function(ctx) {
     this.source += 'true';
 };
 
 
 // undefinedNumber: 'undefined'
-FormatterVisitor.prototype.visitUndefinedNumber = function(ctx) {
+TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     this.source += 'undefined';
 };
 
 
 // value: expression
-FormatterVisitor.prototype.visitValue = function(ctx) {
+TransformingVisitor.prototype.visitValue = function(ctx) {
     this.visitExpression(ctx.expression());
 };
 
 
 // variable: IDENTIFIER
-FormatterVisitor.prototype.visitVariable = function(ctx) {
+TransformingVisitor.prototype.visitVariable = function(ctx) {
     this.source += ctx.IDENTIFIER().getText();
 };
 
 
 // variableExpression: variable
-FormatterVisitor.prototype.visitVariableExpression = function(ctx) {
+TransformingVisitor.prototype.visitVariableExpression = function(ctx) {
     this.visitVariable(ctx.variable());
 };
 
 
 // variableReal: FLOAT
-FormatterVisitor.prototype.visitVariableReal = function(ctx) {
+TransformingVisitor.prototype.visitVariableReal = function(ctx) {
     this.source += ctx.FLOAT().getText();
 };
 
 
 // version: VERSION
-FormatterVisitor.prototype.visitVersion = function(ctx) {
+TransformingVisitor.prototype.visitVersion = function(ctx) {
     this.source += ctx.VERSION().getText();
 };
 
 
 // waitForMessage: 'wait' 'for' symbol 'from' queue
-FormatterVisitor.prototype.visitWaitForMessage = function(ctx) {
+TransformingVisitor.prototype.visitWaitForMessage = function(ctx) {
     this.source += 'wait for ';
     this.visitSymbol(ctx.symbol());
     this.source += ' from ';
@@ -921,7 +921,7 @@ FormatterVisitor.prototype.visitWaitForMessage = function(ctx) {
 
 
 // whileLoop: (label ':')? 'while' condition 'do' block
-FormatterVisitor.prototype.visitWhileLoop = function(ctx) {
+TransformingVisitor.prototype.visitWhileLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);
@@ -935,7 +935,7 @@ FormatterVisitor.prototype.visitWhileLoop = function(ctx) {
 
 
 // withLoop: (label ':')? 'with' ('each' symbol 'in')? sequence 'do' block
-FormatterVisitor.prototype.visitWithLoop = function(ctx) {
+TransformingVisitor.prototype.visitWithLoop = function(ctx) {
     var label = ctx.label();
     if (label) {
         this.visitLabel(label);

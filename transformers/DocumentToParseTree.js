@@ -21,13 +21,13 @@ var grammar = require('../grammar');
  * This constructor creates a new parser with the specified padding.
  * 
  * @constructor
- * @returns {LanguageParser} The new parser.
+ * @returns {DocumentToParseTree} The new parser.
  */
-function LanguageParser() {
+function DocumentToParseTree() {
     return this;
 }
-LanguageParser.prototype.constructor = LanguageParser;
-exports.LanguageParser = LanguageParser;
+DocumentToParseTree.prototype.constructor = DocumentToParseTree;
+exports.DocumentToParseTree = DocumentToParseTree;
 
 
 /**
@@ -37,7 +37,7 @@ exports.LanguageParser = LanguageParser;
  * @param {string} source The source code string.
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseDocument = function(source) {
+DocumentToParseTree.prototype.parseDocument = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -55,7 +55,7 @@ LanguageParser.prototype.parseDocument = function(source) {
  * @param {string} source The source code string.
  * @returns {ElementContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseElement = function(source) {
+DocumentToParseTree.prototype.parseElement = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -73,7 +73,7 @@ LanguageParser.prototype.parseElement = function(source) {
  * @param {string} source The source code string.
  * @returns {StructureContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseStructure = function(source) {
+DocumentToParseTree.prototype.parseStructure = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -91,7 +91,7 @@ LanguageParser.prototype.parseStructure = function(source) {
  * @param {string} source The source code string.
  * @returns {RangeContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseRange = function(source) {
+DocumentToParseTree.prototype.parseRange = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -109,7 +109,7 @@ LanguageParser.prototype.parseRange = function(source) {
  * @param {string} source The source code string.
  * @returns {ArrayContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseArray = function(source) {
+DocumentToParseTree.prototype.parseArray = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -127,7 +127,7 @@ LanguageParser.prototype.parseArray = function(source) {
  * @param {string} source The source code string.
  * @returns {TableContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseTable = function(source) {
+DocumentToParseTree.prototype.parseTable = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -145,7 +145,7 @@ LanguageParser.prototype.parseTable = function(source) {
  * @param {string} source The source code string.
  * @returns {BlockContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseBlock = function(source) {
+DocumentToParseTree.prototype.parseBlock = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -163,7 +163,7 @@ LanguageParser.prototype.parseBlock = function(source) {
  * @param {string} source The source code string.
  * @returns {KeyContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseKey = function(source) {
+DocumentToParseTree.prototype.parseKey = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
@@ -181,7 +181,7 @@ LanguageParser.prototype.parseKey = function(source) {
  * @param {string} source The source code string.
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
-LanguageParser.prototype.parseExpression = function(source) {
+DocumentToParseTree.prototype.parseExpression = function(source) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliLanguageLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
