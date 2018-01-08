@@ -9,31 +9,31 @@
  ************************************************************************/
 'use strict';
 
-var Symbol = require('../../elements/Symbol').Symbol;
+var Range = require('../../objects/Range').Range;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(4);
-
+        test.expect(5);
         test.throws(
             function() {
-                var empty = new Symbol();
+                var empty = new Range();
             }
         );
-
         test.throws(
             function() {
-                var bad = new Symbol('White Space');
+                var single = new Range(1);
             }
         );
-
-        var symbol = new Symbol('$foobar');
-        var string = symbol.toString();
-        test.equal(string, '$foobar', "The symbol should have been '$foobar'.");
-        var identifier = symbol.getIdentifier();
-        test.equal(identifier, 'foobar', "The identifier should have been 'foobar'.");
-
+        test.throws(
+            function() {
+                var range = new Range(1, 25);
+                var string = range.toString();
+            }
+        );
+        var range = new Range(1, 5);
+        test.equal(range.firstValue, 1, 'The first value in the range should have been 1.');
+        test.equal(range.lastValue, 5, 'The last value in the range should have been 5.');
         test.done();
     }
 });

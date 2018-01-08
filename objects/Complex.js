@@ -149,7 +149,7 @@ exports.Complex = Complex;
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {ElementVisitor} visitor The visitor that wants to visit this element.
+ * @param {ObjectVisitor} visitor The visitor that wants to visit this element.
  */
 Complex.prototype.accept = function(visitor) {
     visitor.visitComplex(this);

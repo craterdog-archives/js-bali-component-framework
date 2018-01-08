@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 
-var Angle = require('../../elements/Angle').Angle;
-var Complex = require('../../elements/Complex').Complex;
+var Angle = require('../../objects/Angle').Angle;
+var Complex = require('../../objects/Complex').Complex;
 var testCase = require('nodeunit').testCase;
 /* global NaN, Infinity */
 

@@ -15,7 +15,7 @@
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
  */
-var elements = require('../elements');
+var objects = require('../objects');
 
 
 /**
@@ -49,13 +49,13 @@ ObjectToDocument.prototype.generateDocument = function(object, padding) {
 // PRIVATE CLASSES
 
 function TransformingVisitor(padding) {
-    elements.ElementVisitor.call(this);
+    objects.ObjectVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
     this.document = '';
     this.depth = 0;
     return this;
 }
-TransformingVisitor.prototype = Object.create(elements.ElementVisitor.prototype);
+TransformingVisitor.prototype = Object.create(objects.ObjectVisitor.prototype);
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 TransformingVisitor.prototype.indentation = '    ';  // indentation per level
 
@@ -75,6 +75,15 @@ TransformingVisitor.prototype.getPadding = function() {
 };
 
 
+TransformingVisitor.prototype.addParameters = function(element) {
+    if (element.parameters) {
+        this.document += '(';
+        this.visitComposite(element.parameters);
+        this.document += ')';
+    }
+};
+
+
 /**
  * This visits the specified element.
  * 
@@ -82,11 +91,7 @@ TransformingVisitor.prototype.getPadding = function() {
  */
 TransformingVisitor.prototype.visitAngle = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -97,11 +102,7 @@ TransformingVisitor.prototype.visitAngle = function(element) {
  */
 TransformingVisitor.prototype.visitAny = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -112,11 +113,7 @@ TransformingVisitor.prototype.visitAny = function(element) {
  */
 TransformingVisitor.prototype.visitBinary = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -127,11 +124,7 @@ TransformingVisitor.prototype.visitBinary = function(element) {
  */
 TransformingVisitor.prototype.visitComplex = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -141,6 +134,64 @@ TransformingVisitor.prototype.visitComplex = function(element) {
  * @param {object} element The element to be visited.
  */
 TransformingVisitor.prototype.visitComposite = function(element) {
+    var i;
+    var array;
+    var table;
+    var associations;
+    var type = element.type;
+    switch (type) {
+        case 'RangeContext':
+            var range = element.value;
+            range.accept(this);
+            break;
+        case 'InlineArrayContext':
+            array = element.value;
+            array[0].accept(this);
+            for (i = 1; i < array.length; i++) {
+                this.document += ', ';
+                array[i].accept(this);
+            }
+            break;
+        case 'NewlineArrayContext':
+            array = element.value;
+            this.depth++;
+            for (i = 0; i < array.length; i++) {
+                this.appendNewline();
+                array[i].accept(this);
+            }
+            this.depth--;
+            this.appendNewline();
+            break;
+        case 'EmptyArrayContext':
+            // nothing to do
+            break;
+        case 'InlineTableContext':
+            table = element.value;
+            associations = table.association();
+            associations[0].accept(this);
+            for (i = 1; i < associations.length; i++) {
+                this.document += ', ';
+                associations[i].accept(this);
+            }
+            break;
+        case 'NewlineTableContext':
+            table = element.value;
+            associations = table.association();
+            this.depth++;
+            for (i = 0; i < associations.length; i++) {
+                this.appendNewline();
+                associations[i].accept(this);
+            }
+            this.depth--;
+            this.appendNewline();
+            break;
+        case 'EmptyTableContext':
+            this.document += ':';
+            break;
+        default:
+            throw new Error('TRANSFORMER: An invalid composite type was found: ' + type);
+    }
+    this.addParameters(element);
 };
 
 
@@ -151,11 +202,7 @@ TransformingVisitor.prototype.visitComposite = function(element) {
  */
 TransformingVisitor.prototype.visitMoment = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -166,11 +213,7 @@ TransformingVisitor.prototype.visitMoment = function(element) {
  */
 TransformingVisitor.prototype.visitPercent = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -181,11 +224,7 @@ TransformingVisitor.prototype.visitPercent = function(element) {
  */
 TransformingVisitor.prototype.visitProbability = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -196,11 +235,7 @@ TransformingVisitor.prototype.visitProbability = function(element) {
  */
 TransformingVisitor.prototype.visitRange = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -211,11 +246,7 @@ TransformingVisitor.prototype.visitRange = function(element) {
  */
 TransformingVisitor.prototype.visitReference = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -226,11 +257,7 @@ TransformingVisitor.prototype.visitReference = function(element) {
  */
 TransformingVisitor.prototype.visitSymbol = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -241,11 +268,7 @@ TransformingVisitor.prototype.visitSymbol = function(element) {
  */
 TransformingVisitor.prototype.visitTag = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -256,11 +279,7 @@ TransformingVisitor.prototype.visitTag = function(element) {
  */
 TransformingVisitor.prototype.visitText = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };
 
 
@@ -271,9 +290,5 @@ TransformingVisitor.prototype.visitText = function(element) {
  */
 TransformingVisitor.prototype.visitVersion = function(element) {
     this.document += element.toString();
-    if (element.parameters) {
-        this.document += '(';
-        this.visitComposite(element.parameters);
-        this.document += ')';
-    }
+    this.addParameters(element);
 };

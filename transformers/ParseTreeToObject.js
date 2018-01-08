@@ -15,7 +15,7 @@
  * JavaScript object.
  */
 var grammar = require('../grammar');
-var elements = require('../elements');
+var objects = require('../objects');
 
 
 /**
@@ -55,18 +55,9 @@ TransformingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.protot
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 
 
-// HACK: this method is missing from the generated visitor!
-// It is needed when a rule has multiple NAMED options and is itself one
-// of multiple options.
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitAny = function(ctx) {
-    ctx.accept(this);
-};
-
-
 // anyAny: 'any'
 TransformingVisitor.prototype.visitAnyAny = function(ctx) {
-    this.result = elements.Any.ANY;
+    this.result = objects.Any.ANY;
 };
 
 
@@ -87,7 +78,7 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
             value.push(this.result);
         }
     }
-    var composite = new elements.Composite(value, type);
+    var composite = new objects.Composite(value, type);
     this.result = composite;
 };
 
@@ -111,7 +102,7 @@ TransformingVisitor.prototype.visitAssociation = function(ctx) {
 
 // binary: BINARY
 TransformingVisitor.prototype.visitBinary = function(ctx) {
-    this.result = new elements.Binary(ctx.BINARY().getText());
+    this.result = new objects.Binary(ctx.BINARY().getText());
 };
 
 
@@ -123,7 +114,7 @@ TransformingVisitor.prototype.visitBlock = function(ctx) {
 
 // blockText: TEXT_BLOCK
 TransformingVisitor.prototype.visitBlockText = function(ctx) {
-    this.result = new elements.Text(ctx.TEXT_BLOCK().getText());
+    this.result = new objects.Text(ctx.TEXT_BLOCK().getText());
 };
 
 
@@ -166,7 +157,7 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     ctx.imaginary().accept(this);
     string += this.result;
     string += ')';
-    this.result = new elements.Complex(string);
+    this.result = new objects.Complex(string);
 };
 
 
@@ -314,15 +305,6 @@ TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
 };
 
 
-// HACK: this method is missing from the generated visitor!
-// It is needed when a rule has multiple NAMED options and is itself one
-// of multiple options.
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitExpression = function(ctx) {
-    ctx.accept(this);
-};
-
-
 // factorialExpression: expression '!'
 TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
     throw new Error('TRANSFORMER: Bali expressions cannot be transformed into JavaScript objects.');
@@ -331,7 +313,7 @@ TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 // falseProbability: 'false'
 TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
-    this.result = elements.Probability.FALSE;
+    this.result = objects.Probability.FALSE;
 };
 
 
@@ -343,7 +325,7 @@ TransformingVisitor.prototype.visitFinalClause = function(ctx) {
 
 // fractionalProbability: FRACTION
 TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
-    this.result = new elements.Probability(ctx.FRACTION().getText());
+    this.result = new objects.Probability(ctx.FRACTION().getText());
 };
 
 
@@ -384,7 +366,7 @@ TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     ctx.imaginary().accept(this);
     string += this.result;
     string += ')';
-    this.result = new elements.Complex(string);
+    this.result = new objects.Complex(string);
 };
 
 
@@ -396,7 +378,7 @@ TransformingVisitor.prototype.visitIndices = function(ctx) {
 
 // infiniteNumber: 'infinity'
 TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    this.result = elements.Complex.INFINITY;
+    this.result = objects.Complex.INFINITY;
 };
 
 
@@ -422,7 +404,7 @@ TransformingVisitor.prototype.visitInlineTable = function(ctx) {
 
 // inlineText: TEXT
 TransformingVisitor.prototype.visitInlineText = function(ctx) {
-    this.result = new elements.Text(ctx.TEXT().getText());
+    this.result = new objects.Text(ctx.TEXT().getText());
 };
 
 
@@ -512,7 +494,7 @@ TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
 
 // moment: MOMENT
 TransformingVisitor.prototype.visitMoment = function(ctx) {
-    this.result = new elements.Moment(ctx.MOMENT().getText());
+    this.result = new objects.Moment(ctx.MOMENT().getText());
 };
 
 
@@ -538,17 +520,7 @@ TransformingVisitor.prototype.visitNewlineTable = function(ctx) {
 
 // noneAny: 'none'
 TransformingVisitor.prototype.visitNoneAny = function(ctx) {
-    this.result = elements.Any.NONE;
-};
-
-
-// HACK: this method is missing from the generated visitor!
-// It is needed when a rule has multiple NAMED options and is itself one
-// of multiple options.
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitNumber = function(ctx) {
-    // delegate to concrete type
-    ctx.accept(this);
+    this.result = objects.Any.NONE;
 };
 
 
@@ -570,7 +542,7 @@ TransformingVisitor.prototype.visitPercent = function(ctx) {
     ctx.real().accept(this);
     var string = this.result;
     string += '%';
-    this.result = new elements.Percent(string);
+    this.result = new objects.Percent(string);
 };
 
 
@@ -604,30 +576,20 @@ TransformingVisitor.prototype.visitRange = function(ctx) {
     var firstValue = this.result;
     ctx.value(1).accept(this);
     var lastValue = this.result;
-    this.result = new elements.Range(firstValue, lastValue);
-};
-
-
-// HACK: this method is missing from the generated visitor!
-// It is needed when a rule has multiple NAMED options and is itself one
-// of multiple options.
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitReal = function(ctx) {
-    // delegate to concrete type
-    ctx.accept(this);
+    this.result = new objects.Range(firstValue, lastValue);
 };
 
 
 // realNumber: real
 TransformingVisitor.prototype.visitRealNumber = function(ctx) {
     ctx.real().accept(this);
-    this.result = new elements.Complex(this.result);
+    this.result = new objects.Complex(this.result);
 };
 
 
 // reference: RESOURCE
 TransformingVisitor.prototype.visitReference = function(ctx) {
-    this.result = new elements.Reference(ctx.RESOURCE().getText());
+    this.result = new objects.Reference(ctx.RESOURCE().getText());
 };
 
 
@@ -688,7 +650,7 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
 
 // symbol: SYMBOL
 TransformingVisitor.prototype.visitSymbol = function(ctx) {
-    this.result = new elements.Symbol(ctx.SYMBOL().getText());
+    this.result = new objects.Symbol(ctx.SYMBOL().getText());
 };
 
 
@@ -704,30 +666,20 @@ TransformingVisitor.prototype.visitTable = function(ctx) {
             value.push(this.result);
         }
     }
-    var composite = new elements.Composite(value, type);
+    var composite = new objects.Composite(value, type);
     this.result = composite;
 };
 
 
 // tag: TAG
 TransformingVisitor.prototype.visitTag = function(ctx) {
-    this.result = new elements.Tag(ctx.TAG().getText());
+    this.result = new objects.Tag(ctx.TAG().getText());
 };
 
 
 // template: expression
 TransformingVisitor.prototype.visitTemplate = function(ctx) {
     throw new Error('TRANSFORMER: Bali statements cannot be transformed into JavaScript objects.');
-};
-
-
-// HACK: this method is missing from the generated visitor!
-// It is needed when a rule has multiple NAMED options and is itself one
-// of multiple options.
-// SEE: https://stackoverflow.com/questions/36758475/antlr4-javascript-target-issue-with-visitor-and-labeled-alternative
-TransformingVisitor.prototype.visitText = function(ctx) {
-    // delegate to concrete type
-    ctx.accept(this);
 };
 
 
@@ -739,13 +691,13 @@ TransformingVisitor.prototype.visitThrowException = function(ctx) {
 
 // trueProbability: 'true'
 TransformingVisitor.prototype.visitTrueProbability = function(ctx) {
-    this.result = elements.Probability.TRUE;
+    this.result = objects.Probability.TRUE;
 };
 
 
 // undefinedNumber: 'undefined'
 TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    this.result = elements.Complex.UNDEFINED;
+    this.result = objects.Complex.UNDEFINED;
 };
 
 
@@ -776,7 +728,7 @@ TransformingVisitor.prototype.visitVariableReal = function(ctx) {
 
 // version: VERSION
 TransformingVisitor.prototype.visitVersion = function(ctx) {
-    this.result = new elements.Version(ctx.VERSION().getText());
+    this.result = new objects.Version(ctx.VERSION().getText());
 };
 
 

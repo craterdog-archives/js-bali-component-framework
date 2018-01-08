@@ -9,33 +9,24 @@
  ************************************************************************/
 'use strict';
 
-var Reference = require('../../elements/Reference').Reference;
+var Any = require('../../objects/Any').Any;
 var testCase = require('nodeunit').testCase;
+/* global NaN, Infinity */
+
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(7);
+        test.expect(4);
+
+        test.strictEqual(new Any().toString(), Any.NONE.toString(), "1 The any value should have been Any.NONE.");
+        test.strictEqual(new Any('none').toString(), Any.NONE.toString(), "2 The any value should have been Any.NONE.");
+        test.strictEqual(new Any('any').toString(), Any.ANY.toString(), "3 The any value should have been Any.ANY.");
 
         test.throws(
             function() {
-                var empty = new Reference();
+                new Any('foobar');
             }
         );
-
-        var tests = [
-            '<https://google.com/>',
-            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
-            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
-            '<bali:/bali/elements/Text>',
-            '<bali:/bali/elements/Text?version=6.12.1>',
-            '<bali:/abcCorp/reports/2010/Q3>'
-        ];
-        for (var i = 0; i < tests.length; i++) {
-            var expected = tests[i];
-            var reference = new Reference(expected);
-            var string = reference.toString();
-            test.equal(string, expected, "" + (i + 1) + " The references didn't match.");
-        }
 
         test.done();
     }

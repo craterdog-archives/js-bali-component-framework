@@ -9,31 +9,34 @@
  ************************************************************************/
 'use strict';
 
-var Range = require('../../elements/Range').Range;
+var Reference = require('../../objects/Reference').Reference;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(5);
+        test.expect(7);
+
         test.throws(
             function() {
-                var empty = new Range();
+                var empty = new Reference();
             }
         );
-        test.throws(
-            function() {
-                var single = new Range(1);
-            }
-        );
-        test.throws(
-            function() {
-                var range = new Range(1, 25);
-                var string = range.toString();
-            }
-        );
-        var range = new Range(1, 5);
-        test.equal(range.firstValue, 1, 'The first value in the range should have been 1.');
-        test.equal(range.lastValue, 5, 'The last value in the range should have been 5.');
+
+        var tests = [
+            '<https://google.com/>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
+            '<bali:/#RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
+            '<bali:/bali/elements/Text>',
+            '<bali:/bali/elements/Text?version=6.12.1>',
+            '<bali:/abcCorp/reports/2010/Q3>'
+        ];
+        for (var i = 0; i < tests.length; i++) {
+            var expected = tests[i];
+            var reference = new Reference(expected);
+            var string = reference.toString();
+            test.equal(string, expected, "" + (i + 1) + " The references didn't match.");
+        }
+
         test.done();
     }
 });

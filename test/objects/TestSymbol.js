@@ -9,24 +9,30 @@
  ************************************************************************/
 'use strict';
 
-var Any = require('../../elements/Any').Any;
+var Symbol = require('../../objects/Symbol').Symbol;
 var testCase = require('nodeunit').testCase;
-/* global NaN, Infinity */
-
 
 module.exports = testCase({
     'Test Constructor': function(test) {
         test.expect(4);
 
-        test.strictEqual(new Any().toString(), Any.NONE.toString(), "1 The any value should have been Any.NONE.");
-        test.strictEqual(new Any('none').toString(), Any.NONE.toString(), "2 The any value should have been Any.NONE.");
-        test.strictEqual(new Any('any').toString(), Any.ANY.toString(), "3 The any value should have been Any.ANY.");
+        test.throws(
+            function() {
+                var empty = new Symbol();
+            }
+        );
 
         test.throws(
             function() {
-                new Any('foobar');
+                var bad = new Symbol('White Space');
             }
         );
+
+        var symbol = new Symbol('$foobar');
+        var string = symbol.toString();
+        test.equal(string, '$foobar', "The symbol should have been '$foobar'.");
+        var identifier = symbol.getIdentifier();
+        test.equal(identifier, 'foobar', "The identifier should have been 'foobar'.");
 
         test.done();
     }

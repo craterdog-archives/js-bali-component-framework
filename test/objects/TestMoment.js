@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Moment = require('../../elements/Moment').Moment;
+var Moment = require('../../objects/Moment').Moment;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

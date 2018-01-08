@@ -19,13 +19,13 @@
 /**
  * This constructor creates a new element visitor.
  * 
- * @returns {ElementVisitor} The new element visitor.
+ * @returns {ObjectVisitor} The new element visitor.
  */
-function ElementVisitor() {
+function ObjectVisitor() {
     return this;
 }
-ElementVisitor.prototype.constructor = ElementVisitor;
-exports.ElementVisitor = ElementVisitor;
+ObjectVisitor.prototype.constructor = ObjectVisitor;
+exports.ObjectVisitor = ObjectVisitor;
 
 
 /**
@@ -33,7 +33,7 @@ exports.ElementVisitor = ElementVisitor;
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitAngle = function(element) {
+ObjectVisitor.prototype.visitAngle = function(element) {
 };
 
 
@@ -42,7 +42,7 @@ ElementVisitor.prototype.visitAngle = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitAny = function(element) {
+ObjectVisitor.prototype.visitAny = function(element) {
 };
 
 
@@ -51,7 +51,7 @@ ElementVisitor.prototype.visitAny = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitBinary = function(element) {
+ObjectVisitor.prototype.visitBinary = function(element) {
 };
 
 
@@ -60,7 +60,7 @@ ElementVisitor.prototype.visitBinary = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitComplex = function(element) {
+ObjectVisitor.prototype.visitComplex = function(element) {
 };
 
 
@@ -69,7 +69,7 @@ ElementVisitor.prototype.visitComplex = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitComposite = function(element) {
+ObjectVisitor.prototype.visitComposite = function(element) {
 };
 
 
@@ -78,7 +78,7 @@ ElementVisitor.prototype.visitComposite = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitMoment = function(element) {
+ObjectVisitor.prototype.visitMoment = function(element) {
 };
 
 
@@ -87,7 +87,7 @@ ElementVisitor.prototype.visitMoment = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitPercent = function(element) {
+ObjectVisitor.prototype.visitPercent = function(element) {
 };
 
 
@@ -96,7 +96,7 @@ ElementVisitor.prototype.visitPercent = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitProbability = function(element) {
+ObjectVisitor.prototype.visitProbability = function(element) {
 };
 
 
@@ -105,7 +105,7 @@ ElementVisitor.prototype.visitProbability = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitRange = function(element) {
+ObjectVisitor.prototype.visitRange = function(element) {
 };
 
 
@@ -114,7 +114,7 @@ ElementVisitor.prototype.visitRange = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitReference = function(element) {
+ObjectVisitor.prototype.visitReference = function(element) {
 };
 
 
@@ -123,7 +123,7 @@ ElementVisitor.prototype.visitReference = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitSymbol = function(element) {
+ObjectVisitor.prototype.visitSymbol = function(element) {
 };
 
 
@@ -132,7 +132,7 @@ ElementVisitor.prototype.visitSymbol = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitTag = function(element) {
+ObjectVisitor.prototype.visitTag = function(element) {
 };
 
 
@@ -141,7 +141,7 @@ ElementVisitor.prototype.visitTag = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitText = function(element) {
+ObjectVisitor.prototype.visitText = function(element) {
 };
 
 
@@ -150,5 +150,5 @@ ElementVisitor.prototype.visitText = function(element) {
  * 
  * @param {object} element The element to be visited.
  */
-ElementVisitor.prototype.visitVersion = function(element) {
+ObjectVisitor.prototype.visitVersion = function(element) {
 };
