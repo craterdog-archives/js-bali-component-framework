@@ -83,7 +83,7 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
     if (type !== 'EmptyArrayContext') {
         var values = ctx.value();
         for (var i = 0; i < values.length; i++) {
-            this.visitValue(values[i]);
+            values[i].accept(this);
             value.push(this.result);
         }
     }
@@ -100,9 +100,9 @@ TransformingVisitor.prototype.visitAssignee = function(ctx) {
 
 // association: key ':' value
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
-    this.visitKey(ctx.key());
+    ctx.key().accept(this);
     var key = this.result;
-    this.visitValue(ctx.value());
+    ctx.value().accept(this);
     var value = this.result;
     var association = { key: key, value: value };
     this.result = association;
@@ -160,10 +160,10 @@ TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
 // complexNumber: '(' real del=(',' | 'e^') imaginary ')'
 TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     var string = '(';
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
     string += this.result;
     string += ctx.del.text;
-    this.visitImaginary(ctx.imaginary());
+    ctx.imaginary().accept(this);
     string += this.result;
     string += ')';
     this.result = new elements.Complex(string);
@@ -232,11 +232,11 @@ TransformingVisitor.prototype.visitDiscardDraft = function(ctx) {
 
 // document: literal parameters?
 TransformingVisitor.prototype.visitDocument = function(ctx) {
-    this.visitLiteral(ctx.literal());
+    ctx.literal().accept(this);
     var literal = this.result;
     var parameters = ctx.parameters();
     if (parameters) {
-        this.visitParameters(parameters);
+        parameters.accept(this);
         literal.parameters = this.result;
     }
     this.result = literal;
@@ -245,7 +245,7 @@ TransformingVisitor.prototype.visitDocument = function(ctx) {
 
 // documentExpression: document
 TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
-    this.visitDocument(ctx.document());
+    ctx.document().accept(this);
 };
 
 
@@ -365,7 +365,7 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
     var real = ctx.real();
     var sign = ctx.sign;
     if (real) {
-        this.visitReal(real);
+        real.accept(this);
         string += this.result;
         if (real.con) {
             string += ' ';
@@ -381,7 +381,7 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
 // imaginaryNumber: imaginary
 TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     var string = '(0, ';
-    this.visitImaginary(ctx.imaginary());
+    ctx.imaginary().accept(this);
     string += this.result;
     string += ')';
     this.result = new elements.Complex(string);
@@ -434,11 +434,11 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
 
 // key: element parameters?
 TransformingVisitor.prototype.visitKey = function(ctx) {
-    this.visitElement(ctx.element());
+    ctx.element().accept(this);
     var element = this.result;
     var parameters = ctx.parameters();
     if (parameters) {
-        this.visitParameters(parameters);
+        parameters.accept(this);
         element.parameters = this.result;
     }
     this.result = element;
@@ -561,13 +561,13 @@ TransformingVisitor.prototype.visitOption = function(ctx) {
 // parameters: '(' composite ')'
 TransformingVisitor.prototype.visitParameters = function(ctx) {
     // delegate to child
-    this.visitComposite(ctx.composite());
+    ctx.composite().accept(this);
 };
 
 
 // percent: real '%'
 TransformingVisitor.prototype.visitPercent = function(ctx) {
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
     var string = this.result;
     string += '%';
     this.result = new elements.Percent(string);
@@ -600,9 +600,9 @@ TransformingVisitor.prototype.visitQueueMessage = function(ctx) {
 
 // range: value '..' value
 TransformingVisitor.prototype.visitRange = function(ctx) {
-    this.visitValue(ctx.value(0));
+    ctx.value(0).accept(this);
     var firstValue = this.result;
-    this.visitValue(ctx.value(1));
+    ctx.value(1).accept(this);
     var lastValue = this.result;
     this.result = new elements.Range(firstValue, lastValue);
 };
@@ -620,7 +620,7 @@ TransformingVisitor.prototype.visitReal = function(ctx) {
 
 // realNumber: real
 TransformingVisitor.prototype.visitRealNumber = function(ctx) {
-    this.visitReal(ctx.real());
+    ctx.real().accept(this);
     this.result = new elements.Complex(this.result);
 };
 
@@ -682,7 +682,7 @@ TransformingVisitor.prototype.visitStatement = function(ctx) {
 // structure: '[' composite ']'
 TransformingVisitor.prototype.visitStructure = function(ctx) {
     // delegate to child
-    this.visitComposite(ctx.composite());
+    ctx.composite().accept(this);
 };
 
 
@@ -700,7 +700,7 @@ TransformingVisitor.prototype.visitTable = function(ctx) {
     if (type !== 'EmptyTableContext') {
         var associations = ctx.association();
         for (var i = 0; i < associations.length; i++) {
-            this.visitAssociation(associations[i]);
+            associations[i].accept(this);
             value.push(this.result);
         }
     }
@@ -752,7 +752,7 @@ TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
 // value: expression
 TransformingVisitor.prototype.visitValue = function(ctx) {
     // delegate to child
-    this.visitExpression(ctx.expression());
+    ctx.expression().accept(this);
 };
 
 
