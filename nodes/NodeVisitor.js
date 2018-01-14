@@ -28,11 +28,6 @@ NodeVisitor.prototype.constructor = NodeVisitor;
 exports.NodeVisitor = NodeVisitor;
 
 
-// any: 'none' | 'any'
-NodeVisitor.prototype.visitAny = function(terminal) {
-};
-
-
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 NodeVisitor.prototype.visitArithmeticExpression = function(tree) {
 };
@@ -48,11 +43,6 @@ NodeVisitor.prototype.visitArray = function(tree) {
 
 // association: key ':' expression
 NodeVisitor.prototype.visitAssociation = function(tree) {
-};
-
-
-// binary: BINARY
-NodeVisitor.prototype.visitBinary = function(terminal) {
 };
 
 
@@ -113,6 +103,22 @@ NodeVisitor.prototype.visitDereferenceExpression = function(tree) {
 
 // discardClause: 'discard' expression
 NodeVisitor.prototype.visitDiscardClause = function(tree) {
+};
+
+
+// element:
+//     any |
+//     tag |
+//     symbol |
+//     time |
+//     reference |
+//     version |
+//     text |
+//     binary |
+//     probability |
+//     percent |
+//     number
+NodeVisitor.prototype.visitElement = function(terminal) {
 };
 
 
@@ -191,33 +197,13 @@ NodeVisitor.prototype.visitName = function(terminal) {
 };
 
 
-// number:
-//     'undefined' |
-//     'infinity' |
-//     real |
-//     imaginary |
-//     '(' real (',' | 'e^') imaginary ')'
-NodeVisitor.prototype.visitNumber = function(terminal) {
-};
-
-
 // parameters: '(' composite ')'
 NodeVisitor.prototype.visitParameters = function(tree) {
 };
 
 
-// percent: real '%'
-NodeVisitor.prototype.visitPercent = function(terminal) {
-};
-
-
 // precedenceExpression: '(' expression ')'
 NodeVisitor.prototype.visitPrecedenceExpression = function(tree) {
-};
-
-
-// probability: 'true' | 'false' | FRACTION
-NodeVisitor.prototype.visitProbability = function(terminal) {
 };
 
 
@@ -241,11 +227,6 @@ NodeVisitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 NodeVisitor.prototype.visitRange = function(tree) {
-};
-
-
-// reference: RESOURCE
-NodeVisitor.prototype.visitReference = function(terminal) {
 };
 
 
@@ -274,11 +255,6 @@ NodeVisitor.prototype.visitStructure = function(tree) {
 };
 
 
-// symbol: SYMBOL
-NodeVisitor.prototype.visitSymbol = function(terminal) {
-};
-
-
 // table:
 //     association (',' association)* |
 //     NEWLINE (association NEWLINE)* |
@@ -287,18 +263,8 @@ NodeVisitor.prototype.visitTable = function(tree) {
 };
 
 
-// tag: TAG
-NodeVisitor.prototype.visitTag = function(terminal) {
-};
-
-
 // task: SHELL procedure EOF
 NodeVisitor.prototype.visitTask = function(tree) {
-};
-
-
-// text: TEXT | TEXT_BLOCK
-NodeVisitor.prototype.visitText = function(terminal) {
 };
 
 
@@ -307,18 +273,8 @@ NodeVisitor.prototype.visitThrowClause = function(tree) {
 };
 
 
-// time: MOMENT | DURATION
-NodeVisitor.prototype.visitTime = function(terminal) {
-};
-
-
 // variable: IDENTIFIER
 NodeVisitor.prototype.visitVariable = function(terminal) {
-};
-
-
-// version: VERSION
-NodeVisitor.prototype.visitVersion = function(terminal) {
 };
 
 

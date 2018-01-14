@@ -15,8 +15,8 @@
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
  */
-var trees = require('../trees');
-var types = require('../trees/NodeTypes');
+var nodes = require('../nodes');
+var types = require('../nodes/NodeTypes');
 
 
 /**
@@ -50,13 +50,13 @@ DocumentFormatter.prototype.formatDocument = function(baliDocument, padding) {
 // PRIVATE CLASSES
 
 function TransformingVisitor(padding) {
-    trees.NodeVisitor.call(this);
+    nodes.NodeVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
     this.document = '';
     this.depth = 0;
     return this;
 }
-TransformingVisitor.prototype = Object.create(trees.NodeVisitor.prototype);
+TransformingVisitor.prototype = Object.create(nodes.NodeVisitor.prototype);
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 TransformingVisitor.prototype.indentation = '    ';  // indentation per level
 
@@ -73,15 +73,6 @@ TransformingVisitor.prototype.getPadding = function() {
         padding += TransformingVisitor.prototype.indentation;
     }
     return padding;
-};
-
-
-// any: 'none' | 'any'
-TransformingVisitor.prototype.visitAny = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
@@ -125,15 +116,6 @@ TransformingVisitor.prototype.visitAssociation = function(tree) {
     tree.children[0].accept(this);
     this.document += ': ';
     tree.children[1].accept(this);
-};
-
-
-// binary: BINARY
-TransformingVisitor.prototype.visitBinary = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
@@ -236,6 +218,26 @@ TransformingVisitor.prototype.visitDereferenceExpression = function(tree) {
 TransformingVisitor.prototype.visitDiscardClause = function(tree) {
     this.document += 'discard ';
     tree.children[0].accept(this);
+};
+
+
+// element:
+//     any |
+//     tag |
+//     symbol |
+//     time |
+//     reference |
+//     version |
+//     text |
+//     binary |
+//     probability |
+//     percent |
+//     number
+TransformingVisitor.prototype.visitElement = function(terminal) {
+    this.document += terminal.value;
+    if (terminal.parameters) {
+        terminal.parameters.accept(this);
+    }
 };
 
 
@@ -388,20 +390,6 @@ TransformingVisitor.prototype.visitName = function(terminal) {
 };
 
 
-// number:
-//     'undefined' |
-//     'infinity' |
-//     real |
-//     imaginary |
-//     '(' real (',' | 'e^') imaginary ')'
-TransformingVisitor.prototype.visitNumber = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
-};
-
-
 // parameters: '(' composite ')'
 TransformingVisitor.prototype.visitParameters = function(tree) {
     this.document += '(';
@@ -410,29 +398,11 @@ TransformingVisitor.prototype.visitParameters = function(tree) {
 };
 
 
-// percent: real '%'
-TransformingVisitor.prototype.visitPercent = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
-};
-
-
 // precedenceExpression: '(' expression ')'
 TransformingVisitor.prototype.visitPrecedenceExpression = function(tree) {
     this.document += '(';
     tree.children[0].accept(this);
     this.document += ')';
-};
-
-
-// probability: 'true' | 'false' | FRACTION
-TransformingVisitor.prototype.visitProbability = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
@@ -482,15 +452,6 @@ TransformingVisitor.prototype.visitRange = function(tree) {
     tree.children[0].accept(this);
     this.document += '..';
     tree.children[1].accept(this);
-};
-
-
-// reference: RESOURCE
-TransformingVisitor.prototype.visitReference = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
@@ -556,15 +517,6 @@ TransformingVisitor.prototype.visitStructure = function(tree) {
 };
 
 
-// symbol: SYMBOL
-TransformingVisitor.prototype.visitSymbol = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
-};
-
-
 // table:
 //     association (',' association)* |
 //     NEWLINE (association NEWLINE)* |
@@ -593,29 +545,11 @@ TransformingVisitor.prototype.visitTable = function(tree) {
 };
 
 
-// tag: TAG
-TransformingVisitor.prototype.visitTag = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
-};
-
-
 // task: SHELL procedure EOF
 TransformingVisitor.prototype.visitTask = function(tree) {
     this.document += tree.shell;
     tree.children[0].accept(this);
     this.document += tree.EOF;
-};
-
-
-// text: TEXT | TEXT_BLOCK
-TransformingVisitor.prototype.visitText = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
@@ -626,27 +560,9 @@ TransformingVisitor.prototype.visitThrowClause = function(tree) {
 };
 
 
-// time: MOMENT | DURATION
-TransformingVisitor.prototype.visitTime = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
-};
-
-
 // variable: IDENTIFIER
 TransformingVisitor.prototype.visitVariable = function(terminal) {
     this.document += terminal.value;
-};
-
-
-// version: VERSION
-TransformingVisitor.prototype.visitVersion = function(terminal) {
-    this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 

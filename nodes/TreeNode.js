@@ -10,6 +10,7 @@
 'use strict';
 
 var types = require('./NodeTypes');
+var DocumentFormatter = require('../transformers/DocumentFormatter').DocumentFormatter;
 
 
 /*
@@ -203,5 +204,7 @@ TreeNode.prototype.addChild = function(node) {
  * @returns {string} The string representation of this node.
  */
 TreeNode.prototype.toString = function() {
-    throw new Error('TREE: The toString() method is only defined for terminal nodes.');
+    var formatter = new DocumentFormatter();
+    var string = formatter.formatDocument(this);
+    return string;
 };

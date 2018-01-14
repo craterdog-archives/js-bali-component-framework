@@ -48,10 +48,17 @@ exports.TerminalNode = TerminalNode;
 TerminalNode.prototype.accept = function(visitor) {
     switch(this.type) {
         case types.ANY:
-            visitor.visitAny(this);
-            break;
         case types.BINARY:
-            visitor.visitBinary(this);
+        case types.NUMBER:
+        case types.PERCENT:
+        case types.PROBABILITY:
+        case types.REFERENCE:
+        case types.SYMBOL:
+        case types.TAG:
+        case types.TEXT:
+        case types.TIME:
+        case types.VERSION:
+            visitor.visitElement(this);
             break;
         case types.LABEL:
             visitor.visitLabel(this);
@@ -59,35 +66,8 @@ TerminalNode.prototype.accept = function(visitor) {
         case types.NAME:
             visitor.visitName(this);
             break;
-        case types.NUMBER:
-            visitor.visitNumber(this);
-            break;
-        case types.PERCENT:
-            visitor.visitPercent(this);
-            break;
-        case types.PROBABILITY:
-            visitor.visitProbability(this);
-            break;
-        case types.REFERENCE:
-            visitor.visitReference(this);
-            break;
-        case types.SYMBOL:
-            visitor.visitSymbol(this);
-            break;
-        case types.TAG:
-            visitor.visitTag(this);
-            break;
-        case types.TEXT:
-            visitor.visitText(this);
-            break;
-        case types.TIME:
-            visitor.visitTime(this);
-            break;
         case types.VARIABLE:
             visitor.visitVariable(this);
-            break;
-        case types.VERSION:
-            visitor.visitVersion(this);
             break;
         default:
 
