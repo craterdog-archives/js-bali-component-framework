@@ -9,88 +9,92 @@ grammar BaliTokens;
  "fragment" keyword.
 */
 
-SHELL: '^#!' LINE ;
+SHELL: '^#!' LINE;
 
-COMMENT: ('--' LINE) -> channel(HIDDEN) ;
+COMMENT: ('--' LINE) -> channel(HIDDEN);
 
-COMMENT_BLOCK: ('/*' CHARACTER*? '*/') -> channel(HIDDEN) ;
+COMMENT_BLOCK: ('/*' CHARACTER*? '*/') -> channel(HIDDEN);
 
-TAG: '#' BASE32* ;
+TAG: '#' BASE32*;
 
-SYMBOL: '$' IDENTIFIER ;
+SYMBOL: '$' IDENTIFIER;
 
-FRACTION: '.' ('0'..'9')* '1'..'9' ;
+FRACTION: '.' ('0'..'9')* '1'..'9';
 
-FLOAT: INTEGER FRACTION? ('E' INTEGER)? ;
+CONSTANT: 'e' | 'pi' | 'phi';
 
-MOMENT: '<' YEARS '>' ;
+FLOAT: INTEGER FRACTION? ('E' INTEGER)?;
 
-RESOURCE: '<' SCHEME ':' CONTEXT '>' ;
+MOMENT: '<' '-'? YEARS ('-' MONTHS ('-' DAYS (' ' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
+
+DURATION: '<~' (((((YEARS '-')? MONTHS '-')? DAYS ' ')? HOURS ':')? MINUTES ':')? SECONDS FRACTION? '~>';
+
+RESOURCE: '<' SCHEME ':' CONTEXT '>';
 
 // a version like v123 takes precedence over an identifier
-VERSION: 'v' NATURAL ('.' NATURAL)* ;
+VERSION: 'v' NATURAL ('.' NATURAL)*;
 
-BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'' ;
+BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
 // a text block takes precedence over a regular text string
-TEXT_BLOCK: '"' NEWLINE CHARACTER*? NEWLINE '"' ;
+TEXT_BLOCK: '"' NEWLINE CHARACTER*? NEWLINE '"';
 
-TEXT: '"' (ESCAPE | CHARACTER)*? '"' ;
+TEXT: '"' (ESCAPE | CHARACTER)*? '"';
 
-IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')* ;
+IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
 
-NEWLINE: '\r'? '\n' ;
+NEWLINE: '\r'? '\n';
 
-SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN) ;
-
-fragment
-LINE: CHARACTER*? NEWLINE ;
+SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
 
 fragment
-CHARACTER: . ;
+LINE: CHARACTER*? NEWLINE;
 
 fragment
-NATURAL: '1'..'9' ('0'..'9')* ;
+CHARACTER: .;
 
 fragment
-INTEGER: '0' | '-'? NATURAL ;
+NATURAL: '1'..'9' ('0'..'9')*;
 
 fragment
-SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')* ;
+INTEGER: '0' | '-'? NATURAL;
 
 fragment
-CONTEXT: ('!'..'=' | '?'..'~')* ;
+SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
 
 fragment
-YEARS: INTEGER ('-' MONTHS)? ;
+CONTEXT: ('!'..'=' | '?'..'~')*;
 
 fragment
-MONTHS: (('0' '0'..'9') | ('1' '0'..'2')) ('-' DAYS)? ;
+YEARS: NATURAL;
 
 fragment
-DAYS: (('0'..'2' '0'..'9') | ('3' '0'..'1')) ('T' HOURS)? ;
+MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));
 
 fragment
-HOURS: (('0'..'1' '0'..'9') | ('2' '0'..'3')) (':' MINUTES)? ;
+DAYS: (('0'..'2' '0'..'9') | ('3' '0'..'1'));
 
 fragment
-MINUTES: ('0'..'5' '0'..'9') (':' SECONDS)? ;
+HOURS: (('0'..'1' '0'..'9') | ('2' '0'..'3'));
+
+fragment
+MINUTES: ('0'..'5' '0'..'9');
 
 // must include 60 to handle leap seconds
 fragment
-SECONDS: (('0'..'5' '0'..'9') | '60') FRACTION? ;
+SECONDS: (('0'..'5' '0'..'9') | '60');
 
 fragment
-BASE16: '0'..'9' | 'A'..'F' ;
+BASE16: '0'..'9' | 'A'..'F';
 
 // avoid confusion and offensive strings by eliminating 'E', 'I', 'O', and 'U'
 fragment
-BASE32: '0'..'9' | 'A'..'D' | 'F'..'H' | 'J'..'N' | 'P'..'T' | 'V'..'Z' ;
+BASE32: '0'..'9' | 'A'..'D' | 'F'..'H' | 'J'..'N' | 'P'..'T' | 'V'..'Z';
 
 fragment
-BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/' ;
+BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/';
 
 // replace with actual characters when read
 fragment
-ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '"' | '\\') ;
+ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '"' | '\\');
 

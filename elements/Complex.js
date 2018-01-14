@@ -13,8 +13,9 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
+var antlr = require('antlr4');
+var grammar = require('../grammar');
 var Angle = require('./Angle').Angle;
-var DocumentToParseTree = require('../transformers/DocumentToParseTree').DocumentToParseTree;
 /* global NaN, Infinity */
 
 
@@ -71,7 +72,12 @@ function Complex(numberOrString, optionalNumberOrAngle) {
     } else if (typeof numberOrString === 'string' && !optionalNumberOrAngle) {
         // Complex(string): constructor generates a complex number from a string
         var string = numberOrString;
-        number = new DocumentToParseTree().parseElement(string).number();
+        var chars = new antlr.InputStream(string);
+        var lexer = new grammar.BaliLanguageLexer(chars);
+        var tokens = new antlr.CommonTokenStream(lexer);
+        var parser = new grammar.BaliLanguageParser(tokens);
+        parser.buildParseTrees = true;
+        number = parser.number();
         var nodeType = number.constructor.name;
         switch (nodeType) {
             case 'UndefinedNumberContext':
@@ -418,7 +424,7 @@ function imaginaryToString(imaginary) {
 function realToNumber(baliReal) {
     var jsNumber;
     if (baliReal.constructor.name === 'ConstantRealContext') {
-        var constant = baliReal.con.text;
+        var constant = baliReal.CONSTANT().getText();
         switch (constant) {
             case 'e':
                 jsNumber = 2.718281828459045;
@@ -448,8 +454,7 @@ function imaginaryToNumber(baliImaginary) {
     var jsNumber = 1;
     if (real) {
         jsNumber = realToNumber(real);
-    }
-    if (sign) {
+    } else if (sign) {
         jsNumber = -jsNumber;
     }
     return jsNumber;

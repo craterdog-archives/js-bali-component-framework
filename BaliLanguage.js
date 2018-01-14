@@ -15,10 +15,8 @@
  * about the Bali language refer to the Reference Guide at:
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
-var DocumentToParseTree = require('./transformers/DocumentToParseTree').DocumentToParseTree;
-var ParseTreeToDocument = require('./transformers/ParseTreeToDocument').ParseTreeToDocument;
-var ParseTreeToObject = require('./transformers/ParseTreeToObject').ParseTreeToObject;
-var ObjectToDocument = require('./transformers/ObjectToDocument').ObjectToDocument;
+var DocumentParser = require('./transformers/DocumentParser').DocumentParser;
+var DocumentFormatter = require('./transformers/DocumentFormatter').DocumentFormatter;
 
 
 // PUBLIC FUNCTIONS
@@ -31,8 +29,8 @@ var ObjectToDocument = require('./transformers/ObjectToDocument').ObjectToDocume
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
 exports.parseDocument = function(document) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseDocument(document);
+    var parser = new DocumentParser();
+    var tree = parser.parseDocument(document);
     return tree;
 };
 
@@ -45,8 +43,8 @@ exports.parseDocument = function(document) {
  * @returns {ElementContext} The corresponding parse tree structure.
  */
 exports.parseElement = function(element) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseElement(element);
+    var parser = new DocumentParser();
+    var tree = parser.parseElement(element);
     return tree;
 };
 
@@ -59,8 +57,8 @@ exports.parseElement = function(element) {
  * @returns {StructureContext} The corresponding parse tree structure.
  */
 exports.parseStructure = function(structure) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseStructure(structure);
+    var parser = new DocumentParser();
+    var tree = parser.parseStructure(structure);
     return tree;
 };
 
@@ -73,8 +71,8 @@ exports.parseStructure = function(structure) {
  * @returns {RangeContext} The corresponding parse tree structure.
  */
 exports.parseRange = function(range) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseRange(range);
+    var parser = new DocumentParser();
+    var tree = parser.parseRange(range);
     return tree;
 };
 
@@ -87,8 +85,8 @@ exports.parseRange = function(range) {
  * @returns {ArrayContext} The corresponding parse tree structure.
  */
 exports.parseArray = function(array) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseArray(array);
+    var parser = new DocumentParser();
+    var tree = parser.parseArray(array);
     return tree;
 };
 
@@ -101,8 +99,8 @@ exports.parseArray = function(array) {
  * @returns {TableContext} The corresponding parse tree structure.
  */
 exports.parseTable = function(table) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseTable(table);
+    var parser = new DocumentParser();
+    var tree = parser.parseTable(table);
     return tree;
 };
 
@@ -115,22 +113,8 @@ exports.parseTable = function(table) {
  * @returns {BlockContext} The corresponding parse tree structure.
  */
 exports.parseBlock = function(block) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseBlock(block);
-    return tree;
-};
-
-
-/**
- * This function takes a source code string containing a Bali key
- * and parses it into the corresponding parse tree structure.
- * 
- * @param {string} key The Bali key to be parsed.
- * @returns {KeyContext} The corresponding parse tree structure.
- */
-exports.parseKey = function(key) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseKey(key);
+    var parser = new DocumentParser();
+    var tree = parser.parseBlock(block);
     return tree;
 };
 
@@ -143,8 +127,8 @@ exports.parseKey = function(key) {
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
 exports.parseExpression = function(expression) {
-    var transformer = new DocumentToParseTree();
-    var tree = transformer.parseExpression(expression);
+    var parser = new DocumentParser();
+    var tree = parser.parseExpression(expression);
     return tree;
 };
 
@@ -158,35 +142,7 @@ exports.parseExpression = function(expression) {
  */
 exports.formatDocument = function(tree, optionalPadding) {
     var padding = optionalPadding || '';
-    var transformer = new ParseTreeToDocument();
-    var document = transformer.formatDocument(tree, padding);
-    return document;
-};
-
-
-/**
- * This function transforms a Bali parse tree into its corresponding
- * JavaScript object.
- * 
- * @param {DocumentContext} tree The Bali parse tree to be transformed.
- * @returns {object} The corresponding JavaScript object.
- */
-exports.generateObject = function(tree) {
-    var transformer = new ParseTreeToObject();
-    var object = transformer.generateObject(tree);
-    return object;
-};
-
-
-/**
- * This function transforms a JavaScript object into its corresponding Bali
- * document.
- * 
- * @param {object} object The JavaScript object to be transformed.
- * @returns {DocumentContext} The corresponding Bali document.
- */
-exports.generateDocument = function(object) {
-    var transformer = new ObjectToDocument();
-    var document = transformer.generateDocument(object);
+    var formatter = new DocumentFormatter();
+    var document = formatter.formatDocument(tree, padding);
     return document;
 };

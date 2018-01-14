@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Reference = require('../../objects/Reference').Reference;
+var Reference = require('../../elements/Reference').Reference;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

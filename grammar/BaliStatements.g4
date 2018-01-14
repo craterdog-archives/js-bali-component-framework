@@ -2,42 +2,32 @@ grammar BaliStatements;
 import BaliElements;
 
 
-script: SHELL statements EOF;
+statement: attemptClause handleClause* finishClause?;
 
-statements:
-    statement (';' statement)*    #inlineStatements  |
-    NEWLINE (statement NEWLINE)*  #newlineStatements |
-    /*empty statements*/ #emptyStatements
+attemptClause:
+    evaluateClause |
+    checkoutClause |
+    saveClause |
+    discardClause |
+    commitClause |
+    publishClause |
+    queueClause |
+    waitClause |
+    ifClause |
+    selectClause |
+    whileClause |
+    withClause |
+    continueClause |
+    breakClause |
+    returnClause |
+    throwClause
 ;
 
-statement: mainClause exceptionClause* finalClause?;
+handleClause: 'handle' symbol 'matching' expression 'with' block;
 
-exceptionClause: 'catch' symbol 'matching' template 'with' block;
+finishClause: 'finish' 'with' block;
 
-template: expression;
-
-finalClause: 'finish' 'with' block;
-
-mainClause:
-    evaluateExpression |
-    checkoutDocument |
-    saveDraft |
-    discardDraft |
-    commitDocument |
-    publishEvent |
-    queueMessage |
-    waitForMessage |
-    ifThen |
-    selectFrom |
-    whileLoop |
-    withLoop |
-    continueTo |
-    breakFrom |
-    returnResult |
-    throwException
-;
-
-evaluateExpression: (assignee ':=')? expression;
+evaluateClause: (assignee ':=')? expression;
 
 assignee: symbol | component;
 
@@ -47,68 +37,46 @@ variable: IDENTIFIER;
 
 indices: '[' array ']';
 
-checkoutDocument: 'checkout' symbol 'from' location;
+checkoutClause: 'checkout' symbol 'from' expression;
 
-saveDraft: 'save' draft 'to' location;
+saveClause: 'save' expression 'to' expression;
 
-discardDraft: 'discard' location;
+discardClause: 'discard' expression;
 
-commitDocument: 'commit' draft 'to' location;
+commitClause: 'commit' expression 'to' expression;
 
-draft: expression;
+publishClause: 'publish' expression;
 
-location: expression;
+queueClause: 'queue' expression 'on' expression;
 
-publishEvent: 'publish' event;
+waitClause: 'wait' 'for' symbol 'from' expression;
 
-event: expression;
+ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?;
 
-queueMessage: 'queue' message 'on' queue;
+selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?;
 
-waitForMessage: 'wait' 'for' symbol 'from' queue;
+whileClause: (label ':')? 'while' expression 'do' block;
 
-message: expression;
+withClause: (label ':')? 'with' ('each' symbol 'in')? expression 'do' block;
 
-queue: expression;
+continueClause: 'continue' ('to' label)?;
 
-ifThen: 'if' condition 'then' block ('else' 'if' condition 'then' block)* ('else' block)?;
+breakClause: 'break' ('from' label)?;
 
-condition: expression;
+returnClause: 'return' expression?;
 
-selectFrom: 'select' selection 'from' (option 'do' block)+ ('else' block)?;
-
-selection: expression;
-
-option: expression;
-
-whileLoop: (label ':')? 'while' condition 'do' block;
-
-withLoop: (label ':')? 'with' ('each' symbol 'in')? sequence 'do' block;
-
-sequence: expression;
-
-continueTo: 'continue' ('to' label)?;
-
-breakFrom: 'break' ('from' label)?;
+throwClause: 'throw' expression;
 
 label: IDENTIFIER;
-
-returnResult: 'return' result?;
-
-result: expression;
-
-throwException: 'throw' xception;
-
-xception: expression;
 
 expression:                  // Precedence (highest to lowest)
     document                                                       #documentExpression     |
     variable                                                       #variableExpression     |
-    IDENTIFIER parameters                                          #functionExpression     |
+    invocation                                                     #functionExpression     |
     '(' expression ')'                                             #precedenceExpression   |
     '@' expression                                                 #dereferenceExpression  |
+    expression '.' invocation                                      #messageExpression      |
     expression indices                                             #componentExpression    |
-    expression '.' IDENTIFIER parameters                           #messageExpression      |
     expression '!'                                                 #factorialExpression    |
     <assoc=right> expression '^' expression                        #exponentialExpression  |
     op=('-' | '/' | '*') expression                                #inversionExpression    |
@@ -119,3 +87,5 @@ expression:                  // Precedence (highest to lowest)
     expression op=('and' | 'sans' | 'xor' | 'or') expression       #logicalExpression      |
     expression '?' expression                                      #defaultExpression
 ;
+
+invocation: IDENTIFIER parameters;

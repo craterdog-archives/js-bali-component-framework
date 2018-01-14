@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Version = require('../../objects/Version').Version;
+var Version = require('../../elements/Version').Version;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

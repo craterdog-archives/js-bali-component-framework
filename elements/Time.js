@@ -12,7 +12,7 @@
 
 /*
  * This element class captures the state and methods associated with a
- * moment element.
+ * time element.
  */
 var moment = require('moment');
 var FORMATS = [
@@ -22,17 +22,19 @@ var FORMATS = [
     '<Y-MM-DDTHH>',
     '<Y-MM-DDTHH:mm>',
     '<Y-MM-DDTHH:mm:ss>',
-    '<Y-MM-DDTHH:mm:ss.SSS>'
+    '<Y-MM-DDTHH:mm:60>',  // HACK:JavaScript doesn't handle leap seconds
+    '<Y-MM-DDTHH:mm:ss.SSS>',
+    '<Y-MM-DDTHH:mm:60.SSS>'  // HACK:JavaScript doesn't handle leap seconds
 ];
 
 
 /**
- * This constructor creates a new moment element.
+ * This constructor creates a new time element.
  * 
- * @param {string} value The value of the moment.
- * @returns {Moment} The new moment element.
+ * @param {string} value The value of the time.
+ * @returns {Time} The new time element.
  */
-function Moment(value) {
+function Time(value) {
     if (value) {
         for (var i = 0; i < FORMATS.length; i++) {
             var attempt = moment(value, FORMATS[i], true);  // true means strict mode
@@ -45,12 +47,12 @@ function Moment(value) {
         if (!this.value) throw new Error('MOMENT: An invalid value was passed to the constructor: ' + value);
     } else {
         this.value = moment();  // use the current date and time
-        this.format = FORMATS[6];  // full date time format
+        this.format = FORMATS[7];  // full date time format
     }
     return this;
 }
-Moment.prototype.constructor = Moment;
-exports.Moment = Moment;
+Time.prototype.constructor = Time;
+exports.Time = Time;
 
 
 /**
@@ -58,16 +60,16 @@ exports.Moment = Moment;
  * 
  * @param {ObjectVisitor} visitor The visitor that wants to visit this element.
  */
-Moment.prototype.accept = function(visitor) {
-    visitor.visitMoment(this);
+Time.prototype.accept = function(visitor) {
+    visitor.visitTime(this);
 };
 
 
 /**
- * This method returns a string representation of the moment element.
+ * This method returns a string representation of the time element.
  * 
- * @returns {string} The string representation of the moment element.
+ * @returns {string} The string representation of the time element.
  */
-Moment.prototype.toString = function() {
+Time.prototype.toString = function() {
     return this.value.format(this.format);
 };

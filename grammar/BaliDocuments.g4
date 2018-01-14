@@ -10,15 +10,15 @@ parameters: '(' composite ')';
 
 structure: '[' composite ']';
 
-block: '{' statements '}';
+block: '{' method '}';
 
 composite: range | array | table;
 
-range: value '..' value;
+range: expression '..' expression;
 
 array:
-    value (',' value)* #inlineArray |
-    NEWLINE (value NEWLINE)* #newlineArray |
+    expression (',' expression)* #inlineArray |
+    NEWLINE (expression NEWLINE)* #newlineArray |
     /*empty array*/ #emptyArray
 ;
 
@@ -28,8 +28,14 @@ table:
     ':' /*empty table*/ #emptyTable
 ;
 
-association: key ':' value;
+association: key ':' expression;
 
 key: element parameters?;
 
-value: expression;
+script: SHELL method EOF;
+
+method:
+    statement (';' statement)*    #inlineMethod  |
+    NEWLINE (statement NEWLINE)*  #newlineMethod |
+    /*empty method*/ #emptyMethod
+;

@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Binary = require('../../objects/Binary').Binary;
+var Binary = require('../../elements/Binary').Binary;
 var random = require('../../utilities/RandomUtilities');
 var codex = require('../../utilities/EncodingUtilities');
 var testCase = require('nodeunit').testCase;

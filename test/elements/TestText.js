@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Text = require('../../objects/Text').Text;
+var Text = require('../../elements/Text').Text;
 var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({

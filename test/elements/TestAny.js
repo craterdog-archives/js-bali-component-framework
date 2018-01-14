@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Any = require('../../objects/Any').Any;
+var Any = require('../../elements/Any').Any;
 var testCase = require('nodeunit').testCase;
 /* global NaN, Infinity */
 

@@ -6,7 +6,7 @@ element:
     any |
     tag |
     symbol |
-    moment |
+    time |
     reference |
     version |
     text |
@@ -17,47 +17,49 @@ element:
 ;
 
 any:
-    'none'  #noneAny  |
+    'none'  #noneAny |
     'any'   #anyAny
 ;
 
-tag: TAG ;
+tag: TAG;
 
-symbol: SYMBOL ;
+symbol: SYMBOL;
 
-moment: MOMENT ;
-
-reference: RESOURCE ;
-
-version: VERSION ;
-
-text:
-    TEXT        #inlineText  |
-    TEXT_BLOCK  #blockText
+time:
+    MOMENT    #momentTime   |
+    DURATION  #durationTime
 ;
 
-binary: BINARY ;
+reference: RESOURCE;
+
+version: VERSION;
+
+text:
+    TEXT        #inlineText |
+    TEXT_BLOCK  #newlineText
+;
+
+binary: BINARY;
 
 probability:
-    'true'    #trueProbability   |
-    'false'   #falseProbability  |
+    'true'    #trueProbability       |
+    'false'   #falseProbability      |
     FRACTION  #fractionalProbability
 ;
 
-percent: real '%' ;
-
-real:
-    sign='-'? con=('e' | 'pi' | 'phi')  #constantReal  |
-    FLOAT                               #variableReal
-;
-
-imaginary: (real | sign='-')? 'i' ;
+percent: real '%';
 
 number:
-    'undefined'                              #undefinedNumber  |
-    'infinity'                               #infiniteNumber   |
-    real                                     #realNumber       |
-    imaginary                                #imaginaryNumber  |
+    'undefined'                              #undefinedNumber |
+    'infinity'                               #infiniteNumber  |
+    real                                     #realNumber      |
+    imaginary                                #imaginaryNumber |
     '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
 ;
 
+real:
+    sign='-'? CONSTANT  #constantReal |
+    FLOAT               #variableReal
+;
+
+imaginary: (real | sign='-')? 'i';
