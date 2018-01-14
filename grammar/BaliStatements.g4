@@ -29,14 +29,6 @@ finishClause: 'finish' 'with' block;
 
 evaluateClause: (assignee ':=')? expression;
 
-assignee: symbol | component;
-
-component: variable indices;
-
-variable: IDENTIFIER;
-
-indices: '[' array ']';
-
 checkoutClause: 'checkout' symbol 'from' expression;
 
 saveClause: 'save' expression 'to' expression;
@@ -67,8 +59,6 @@ returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
 
-label: IDENTIFIER;
-
 expression:                  // Precedence (highest to lowest)
     document                                                       #documentExpression     |
     variable                                                       #variableExpression     |
@@ -88,4 +78,16 @@ expression:                  // Precedence (highest to lowest)
     expression '?' expression                                      #defaultExpression
 ;
 
-invocation: IDENTIFIER parameters;
+invocation: name parameters;
+
+assignee: symbol | component;
+
+component: variable indices;
+
+indices: '[' array ']';
+
+label: IDENTIFIER;
+
+name: IDENTIFIER;
+
+variable: IDENTIFIER;

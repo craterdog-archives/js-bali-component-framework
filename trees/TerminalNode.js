@@ -56,6 +56,9 @@ TerminalNode.prototype.accept = function(visitor) {
         case types.LABEL:
             visitor.visitLabel(this);
             break;
+        case types.NAME:
+            visitor.visitName(this);
+            break;
         case types.NUMBER:
             visitor.visitNumber(this);
             break;

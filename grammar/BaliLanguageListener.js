@@ -146,39 +146,39 @@ BaliLanguageListener.prototype.exitKey = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#script.
-BaliLanguageListener.prototype.enterScript = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#task.
+BaliLanguageListener.prototype.enterTask = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#script.
-BaliLanguageListener.prototype.exitScript = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#inlineMethod.
-BaliLanguageListener.prototype.enterInlineMethod = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#inlineMethod.
-BaliLanguageListener.prototype.exitInlineMethod = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#task.
+BaliLanguageListener.prototype.exitTask = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#newlineMethod.
-BaliLanguageListener.prototype.enterNewlineMethod = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#inlineProcedure.
+BaliLanguageListener.prototype.enterInlineProcedure = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#newlineMethod.
-BaliLanguageListener.prototype.exitNewlineMethod = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#inlineProcedure.
+BaliLanguageListener.prototype.exitInlineProcedure = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#emptyMethod.
-BaliLanguageListener.prototype.enterEmptyMethod = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#newlineProcedure.
+BaliLanguageListener.prototype.enterNewlineProcedure = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#emptyMethod.
-BaliLanguageListener.prototype.exitEmptyMethod = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#newlineProcedure.
+BaliLanguageListener.prototype.exitNewlineProcedure = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#emptyProcedure.
+BaliLanguageListener.prototype.enterEmptyProcedure = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#emptyProcedure.
+BaliLanguageListener.prototype.exitEmptyProcedure = function(ctx) {
 };
 
 
@@ -224,42 +224,6 @@ BaliLanguageListener.prototype.enterEvaluateClause = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageListener.prototype.exitEvaluateClause = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#assignee.
-BaliLanguageListener.prototype.enterAssignee = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#assignee.
-BaliLanguageListener.prototype.exitAssignee = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#component.
-BaliLanguageListener.prototype.enterComponent = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#component.
-BaliLanguageListener.prototype.exitComponent = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#variable.
-BaliLanguageListener.prototype.enterVariable = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#variable.
-BaliLanguageListener.prototype.exitVariable = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#indices.
-BaliLanguageListener.prototype.enterIndices = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#indices.
-BaliLanguageListener.prototype.exitIndices = function(ctx) {
 };
 
 
@@ -395,15 +359,6 @@ BaliLanguageListener.prototype.enterThrowClause = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#throwClause.
 BaliLanguageListener.prototype.exitThrowClause = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#label.
-BaliLanguageListener.prototype.enterLabel = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#label.
-BaliLanguageListener.prototype.exitLabel = function(ctx) {
 };
 
 
@@ -557,6 +512,60 @@ BaliLanguageListener.prototype.enterInvocation = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#invocation.
 BaliLanguageListener.prototype.exitInvocation = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#assignee.
+BaliLanguageListener.prototype.enterAssignee = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#assignee.
+BaliLanguageListener.prototype.exitAssignee = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#component.
+BaliLanguageListener.prototype.enterComponent = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#component.
+BaliLanguageListener.prototype.exitComponent = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#indices.
+BaliLanguageListener.prototype.enterIndices = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#indices.
+BaliLanguageListener.prototype.exitIndices = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#label.
+BaliLanguageListener.prototype.enterLabel = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#label.
+BaliLanguageListener.prototype.exitLabel = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#name.
+BaliLanguageListener.prototype.enterName = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#name.
+BaliLanguageListener.prototype.exitName = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#variable.
+BaliLanguageListener.prototype.enterVariable = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#variable.
+BaliLanguageListener.prototype.exitVariable = function(ctx) {
 };
 
 

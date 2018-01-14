@@ -20,6 +20,7 @@ var TERMINAL_TYPES = [
     'any',
     'binary',
     'label',
+    'name',
     'number',
     'percent',
     'probability',
@@ -62,19 +63,19 @@ var TREE_TYPES = [
     'logicalExpression',
     'magnitudeExpression',
     'messageExpression',
-    'method',
     'parameters',
     'precedenceExpression',
+    'procedure',
     'publishClause',
     'queueClause',
     'range',
     'returnClause',
     'saveClause',
-    'script',
     'selectClause',
     'statement',
     'structure',
     'table',
+    'task',
     'throwClause',
     'waitClause',
     'whileClause',
@@ -112,25 +113,26 @@ exports.LABEL = TERMINAL_TYPES.indexOf('label');
 exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
 exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
 exports.MESSAGE_EXPRESSION = TREE_TYPES.indexOf('messageExpression');
-exports.METHOD = TREE_TYPES.indexOf('method');
+exports.NAME = TERMINAL_TYPES.indexOf('name');
 exports.NUMBER = TERMINAL_TYPES.indexOf('number');
 exports.PARAMETERS = TREE_TYPES.indexOf('parameters');
 exports.PERCENT = TERMINAL_TYPES.indexOf('percent');
 exports.PRECEDENCE_EXPRESSION = TREE_TYPES.indexOf('precedenceExpression');
 exports.PROBABILITY = TERMINAL_TYPES.indexOf('probability');
+exports.PROCEDURE = TREE_TYPES.indexOf('procedure');
 exports.PUBLISH_CLAUSE = TREE_TYPES.indexOf('publishClause');
 exports.QUEUE_CLAUSE = TREE_TYPES.indexOf('queueClause');
 exports.RANGE = TREE_TYPES.indexOf('range');
 exports.REFERENCE = TERMINAL_TYPES.indexOf('reference');
 exports.RETURN_CLAUSE = TREE_TYPES.indexOf('returnClause');
 exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
-exports.SCRIPT = TREE_TYPES.indexOf('script');
 exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
 exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');
 exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
 exports.TABLE = TREE_TYPES.indexOf('table');
 exports.TAG = TERMINAL_TYPES.indexOf('tag');
+exports.TASK = TREE_TYPES.indexOf('task');
 exports.TEXT = TERMINAL_TYPES.indexOf('text');
 exports.THROW_CLAUSE = TREE_TYPES.indexOf('throwClause');
 exports.TIME = TERMINAL_TYPES.indexOf('time');

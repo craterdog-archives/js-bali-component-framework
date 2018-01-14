@@ -56,7 +56,7 @@ NodeVisitor.prototype.visitBinary = function(terminal) {
 };
 
 
-// block: '{' method '}'
+// block: '{' procedure '}'
 NodeVisitor.prototype.visitBlock = function(tree) {
 };
 
@@ -161,7 +161,7 @@ NodeVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// invocation: IDENTIFIER parameters
+// invocation: name parameters
 NodeVisitor.prototype.visitInvocation = function(tree) {
 };
 
@@ -186,11 +186,8 @@ NodeVisitor.prototype.visitMessageExpression = function(tree) {
 };
 
 
-// method:
-//     statement (';' statement)* |
-//     NEWLINE (statement NEWLINE)* |
-//     /*empty method*/
-NodeVisitor.prototype.visitMethod = function(tree) {
+// name: IDENTIFIER
+NodeVisitor.prototype.visitName = function(terminal) {
 };
 
 
@@ -224,6 +221,14 @@ NodeVisitor.prototype.visitProbability = function(terminal) {
 };
 
 
+// procedure:
+//     statement (';' statement)* |
+//     NEWLINE (statement NEWLINE)* |
+//     /*empty procedure*/
+NodeVisitor.prototype.visitProcedure = function(tree) {
+};
+
+
 // publishClause: 'publish' expression
 NodeVisitor.prototype.visitPublishClause = function(tree) {
 };
@@ -251,11 +256,6 @@ NodeVisitor.prototype.visitReturnClause = function(tree) {
 
 // saveClause: 'save' expression 'to' expression
 NodeVisitor.prototype.visitSaveClause = function(tree) {
-};
-
-
-// script: SHELL method EOF
-NodeVisitor.prototype.visitScript = function(tree) {
 };
 
 
@@ -289,6 +289,11 @@ NodeVisitor.prototype.visitTable = function(tree) {
 
 // tag: TAG
 NodeVisitor.prototype.visitTag = function(terminal) {
+};
+
+
+// task: SHELL procedure EOF
+NodeVisitor.prototype.visitTask = function(tree) {
 };
 
 

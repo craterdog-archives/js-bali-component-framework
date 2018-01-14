@@ -102,26 +102,26 @@ BaliLanguageVisitor.prototype.visitKey = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#script.
-BaliLanguageVisitor.prototype.visitScript = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#task.
+BaliLanguageVisitor.prototype.visitTask = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#inlineMethod.
-BaliLanguageVisitor.prototype.visitInlineMethod = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#inlineProcedure.
+BaliLanguageVisitor.prototype.visitInlineProcedure = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#newlineMethod.
-BaliLanguageVisitor.prototype.visitNewlineMethod = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#newlineProcedure.
+BaliLanguageVisitor.prototype.visitNewlineProcedure = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#emptyMethod.
-BaliLanguageVisitor.prototype.visitEmptyMethod = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#emptyProcedure.
+BaliLanguageVisitor.prototype.visitEmptyProcedure = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -152,30 +152,6 @@ BaliLanguageVisitor.prototype.visitFinishClause = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageVisitor.prototype.visitEvaluateClause = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#assignee.
-BaliLanguageVisitor.prototype.visitAssignee = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#component.
-BaliLanguageVisitor.prototype.visitComponent = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#variable.
-BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#indices.
-BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -266,12 +242,6 @@ BaliLanguageVisitor.prototype.visitReturnClause = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#throwClause.
 BaliLanguageVisitor.prototype.visitThrowClause = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#label.
-BaliLanguageVisitor.prototype.visitLabel = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -374,6 +344,42 @@ BaliLanguageVisitor.prototype.visitComplementExpression = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#invocation.
 BaliLanguageVisitor.prototype.visitInvocation = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#assignee.
+BaliLanguageVisitor.prototype.visitAssignee = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#component.
+BaliLanguageVisitor.prototype.visitComponent = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#indices.
+BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#label.
+BaliLanguageVisitor.prototype.visitLabel = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#name.
+BaliLanguageVisitor.prototype.visitName = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#variable.
+BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
   return this.visitChildren(ctx);
 };
 

@@ -137,7 +137,7 @@ TransformingVisitor.prototype.visitBinary = function(terminal) {
 };
 
 
-// block: '{' method '}'
+// block: '{' procedure '}'
 TransformingVisitor.prototype.visitBlock = function(tree) {
     this.document += '{';
     tree.children[0].accept(this);
@@ -343,10 +343,10 @@ TransformingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// invocation: IDENTIFIER parameters
+// invocation: name parameters
 TransformingVisitor.prototype.visitInvocation = function(tree) {
-    this.document += tree.method;
     tree.children[0].accept(this);
+    tree.children[1].accept(this);
 };
 
 
@@ -382,28 +382,9 @@ TransformingVisitor.prototype.visitMessageExpression = function(tree) {
 };
 
 
-// method:
-//     statement (';' statement)* |
-//     NEWLINE (statement NEWLINE)* |
-//     /*empty method*/
-TransformingVisitor.prototype.visitMethod = function(tree) {
-    var statements = tree.children;
-    if (statements.length === 0 && tree.isSimple) return;
-    if (tree.isSimple) {
-        statements[0].accept(this);
-        for (var i = 1; i < statements.length; i++) {
-            this.document += '; ';
-            statements[i].accept(this);
-        }
-    } else {
-        this.depth++;
-        for (var j = 0; j < statements.length; j++) {
-            this.appendNewline();
-            statements[j].accept(this);
-        }
-        this.depth--;
-        this.appendNewline();
-    }
+// name: IDENTIFIER
+TransformingVisitor.prototype.visitName = function(terminal) {
+    this.document += terminal.value;
 };
 
 
@@ -451,6 +432,31 @@ TransformingVisitor.prototype.visitProbability = function(terminal) {
     this.document += terminal.value;
     if (terminal.parameters) {
         terminal.parameters.accept(this);
+    }
+};
+
+
+// procedure:
+//     statement (';' statement)* |
+//     NEWLINE (statement NEWLINE)* |
+//     /*empty procedure*/
+TransformingVisitor.prototype.visitProcedure = function(tree) {
+    var statements = tree.children;
+    if (statements.length === 0 && tree.isSimple) return;
+    if (tree.isSimple) {
+        statements[0].accept(this);
+        for (var i = 1; i < statements.length; i++) {
+            this.document += '; ';
+            statements[i].accept(this);
+        }
+    } else {
+        this.depth++;
+        for (var j = 0; j < statements.length; j++) {
+            this.appendNewline();
+            statements[j].accept(this);
+        }
+        this.depth--;
+        this.appendNewline();
     }
 };
 
@@ -504,14 +510,6 @@ TransformingVisitor.prototype.visitSaveClause = function(tree) {
     tree.children[0].accept(this);
     this.document += ' to ';
     tree.children[1].accept(this);
-};
-
-
-// script: SHELL method EOF
-TransformingVisitor.prototype.visitScript = function(tree) {
-    this.document += tree.shell;
-    tree.children[0].accept(this);
-    this.document += tree.EOF;
 };
 
 
@@ -601,6 +599,14 @@ TransformingVisitor.prototype.visitTag = function(terminal) {
     if (terminal.parameters) {
         terminal.parameters.accept(this);
     }
+};
+
+
+// task: SHELL procedure EOF
+TransformingVisitor.prototype.visitTask = function(tree) {
+    this.document += tree.shell;
+    tree.children[0].accept(this);
+    this.document += tree.EOF;
 };
 
 

@@ -10,7 +10,7 @@ parameters: '(' composite ')';
 
 structure: '[' composite ']';
 
-block: '{' method '}';
+block: '{' procedure '}';
 
 composite: range | array | table;
 
@@ -32,10 +32,10 @@ association: key ':' expression;
 
 key: element parameters?;
 
-script: SHELL method EOF;
+task: SHELL procedure EOF;
 
-method:
-    statement (';' statement)*    #inlineMethod  |
-    NEWLINE (statement NEWLINE)*  #newlineMethod |
-    /*empty method*/ #emptyMethod
+procedure:
+    statement (';' statement)*    #inlineProcedure  |
+    NEWLINE (statement NEWLINE)*  #newlineProcedure |
+    /*empty procedure*/ #emptyProcedure
 ;

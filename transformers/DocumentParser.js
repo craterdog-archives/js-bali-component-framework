@@ -245,10 +245,10 @@ TransformingVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
-// block: '{' method '}'
+// block: '{' procedure '}'
 TransformingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new trees.TreeNode(types.BLOCK);
-    ctx.method().accept(this);
+    ctx.procedure().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -453,10 +453,10 @@ TransformingVisitor.prototype.visitEmptyArray = function(ctx) {
 };
 
 
-// emptyMethod: /*empty method*/
-TransformingVisitor.prototype.visitEmptyMethod = function(ctx) {
+// emptyProcedure: /*empty procedure*/
+TransformingVisitor.prototype.visitEmptyProcedure = function(ctx) {
     // delegate to abstract type
-    this.visitMethod(ctx);
+    this.visitProcedure(ctx);
 };
 
 
@@ -620,10 +620,10 @@ TransformingVisitor.prototype.visitInlineArray = function(ctx) {
 };
 
 
-// inlineMethod: statement (';' statement)*
-TransformingVisitor.prototype.visitInlineMethod = function(ctx) {
+// inlineProcedure: statement (';' statement)*
+TransformingVisitor.prototype.visitInlineProcedure = function(ctx) {
     // delegate to abstract type
-    this.visitMethod(ctx);
+    this.visitProcedure(ctx);
 };
 
 
@@ -652,10 +652,11 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
 };
 
 
-// invocation: IDENTIFIER parameters
+// invocation: name parameters
 TransformingVisitor.prototype.visitInvocation = function(ctx) {
     var tree = new trees.TreeNode(types.INVOCATION);
-    tree.method = ctx.IDENTIFIER().getText();
+    ctx.name().accept(this);
+    tree.addChild(this.result);
     ctx.parameters().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -747,26 +748,18 @@ TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
 };
 
 
-// treat all methods the same
-TransformingVisitor.prototype.visitMethod = function(ctx) {
-    var tree = new trees.TreeNode(types.METHOD);
-    var type = ctx.constructor.name;
-    if (type !== 'EmptyMethodContext') {
-        var statements = ctx.statement();
-        for (var i = 0; i < statements.length; i++) {
-            statements[i].accept(this);
-            tree.addChild(this.result);
-        }
-    }
-    if (type !== 'NewlineMethodContext') tree.isSimple = true;
-    this.result = tree;
-};
-
-
 // momentTime: MOMENT
 TransformingVisitor.prototype.visitMomentTime = function(ctx) {
     var value = ctx.MOMENT().getText();
     var terminal = new trees.TerminalNode(types.TIME, value);
+    this.result = terminal;
+};
+
+
+// name: IDENTIFIER
+TransformingVisitor.prototype.visitName = function(ctx) {
+    var value = ctx.IDENTIFIER().getText();
+    var terminal = new trees.TerminalNode(types.NAME, value);
     this.result = terminal;
 };
 
@@ -778,10 +771,10 @@ TransformingVisitor.prototype.visitNewlineArray = function(ctx) {
 };
 
 
-// newlineMethod: NEWLINE (statement NEWLINE)*
-TransformingVisitor.prototype.visitNewlineMethod = function(ctx) {
+// newlineProcedure: NEWLINE (statement NEWLINE)*
+TransformingVisitor.prototype.visitNewlineProcedure = function(ctx) {
     // delegate to abstract type
-    this.visitMethod(ctx);
+    this.visitProcedure(ctx);
 };
 
 
@@ -831,6 +824,22 @@ TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     var tree = new trees.TreeNode(types.PRECEDENCE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
+    this.result = tree;
+};
+
+
+// treat all procedure the same
+TransformingVisitor.prototype.visitProcedure = function(ctx) {
+    var tree = new trees.TreeNode(types.PROCEDURE);
+    var type = ctx.constructor.name;
+    if (type !== 'EmptyProcedureContext') {
+        var statements = ctx.statement();
+        for (var i = 0; i < statements.length; i++) {
+            statements[i].accept(this);
+            tree.addChild(this.result);
+        }
+    }
+    if (type !== 'NewlineProcedureContext') tree.isSimple = true;
     this.result = tree;
 };
 
@@ -905,17 +914,6 @@ TransformingVisitor.prototype.visitSaveClause = function(ctx) {
     tree.addChild(this.result);
     expressions[1].accept(this);
     tree.addChild(this.result);
-    this.result = tree;
-};
-
-
-// script: SHELL method EOF
-TransformingVisitor.prototype.visitScript = function(ctx) {
-    var tree = new trees.TreeNode(types.SCRIPT);
-    tree.shell = ctx.SHELL().getText();
-    ctx.method().accept(this);
-    tree.addChild(this.result);
-    tree.EOF = ctx.EOF().getText();
     this.result = tree;
 };
 
@@ -1005,6 +1003,17 @@ TransformingVisitor.prototype.visitTag = function(ctx) {
     var value = ctx.TAG().getText();
     var terminal = new trees.TerminalNode(types.TAG, value);
     this.result = terminal;
+};
+
+
+// task: SHELL procedure EOF
+TransformingVisitor.prototype.visitTask = function(ctx) {
+    var tree = new trees.TreeNode(types.SCRIPT);
+    tree.shell = ctx.SHELL().getText();
+    ctx.procedure().accept(this);
+    tree.addChild(this.result);
+    tree.EOF = ctx.EOF().getText();
+    this.result = tree;
 };
 
 

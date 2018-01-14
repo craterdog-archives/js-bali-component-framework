@@ -127,14 +127,14 @@ TreeNode.prototype.accept = function(visitor) {
         case types.MESSAGE_EXPRESSION:
             visitor.visitMessageExpression(this);
             break;
-        case types.METHOD:
-            visitor.visitMethod(this);
-            break;
         case types.PARAMETERS:
             visitor.visitParameters(this);
             break;
         case types.PRECEDENCE_EXPRESSION:
             visitor.visitPrecedenceExpression(this);
+            break;
+        case types.PROCEDURE:
+            visitor.visitProcedure(this);
             break;
         case types.PUBLISH_CLAUSE:
             visitor.visitPublishClause(this);
@@ -151,9 +151,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.SAVE_CLAUSE:
             visitor.visitSaveClause(this);
             break;
-        case types.SCRIPT:
-            visitor.visitScript(this);
-            break;
         case types.SELECT_CLAUSE:
             visitor.visitSelectClause(this);
             break;
@@ -165,6 +162,9 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.TABLE:
             visitor.visitTable(this);
+            break;
+        case types.TASK:
+            visitor.visitTask(this);
             break;
         case types.THROW_CLAUSE:
             visitor.visitThrowClause(this);
