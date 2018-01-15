@@ -9,13 +9,11 @@
  ************************************************************************/
 'use strict';
 
-var types = require('./NodeTypes');
-var DocumentFormatter = require('../transformers/DocumentFormatter').DocumentFormatter;
-
-
 /*
  * This class captures the state and methods associated with a parse tree node.
  */
+var types = require('./NodeTypes');
+var DocumentFormatter = require('../transformers/DocumentFormatter').DocumentFormatter;
 
 
 /**
@@ -188,7 +186,7 @@ TreeNode.prototype.accept = function(visitor) {
 /**
  * This method adds a child node to this tree node.
  * 
- * @param {TreeNode|TerminalNode} node The node to be added a the next child of this tree node.
+ * @param {TreeNode|TerminalNode} node The node to be added as the next child of this tree node.
  */
 TreeNode.prototype.addChild = function(node) {
     if (!node || (node.constructor.name !== 'TreeNode' && node.constructor.name !== 'TerminalNode')) {
