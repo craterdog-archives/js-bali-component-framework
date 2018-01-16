@@ -24,12 +24,6 @@ BaliLanguageVisitor.prototype.visitStructure = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#block.
-BaliLanguageVisitor.prototype.visitBlock = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#parameters.
 BaliLanguageVisitor.prototype.visitParameters = function(ctx) {
   return this.visitChildren(ctx);
@@ -92,6 +86,12 @@ BaliLanguageVisitor.prototype.visitKey = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#task.
 BaliLanguageVisitor.prototype.visitTask = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#block.
+BaliLanguageVisitor.prototype.visitBlock = function(ctx) {
   return this.visitChildren(ctx);
 };
 

@@ -21,8 +21,6 @@ document: (
 
 structure: '[' (range | array | table) ']';
 
-block: '{' procedure '}';
-
 parameters: '(' (range | array | table) ')';
 
 range: expression '..' expression;
@@ -56,6 +54,8 @@ key: (
 ) parameters?;
 
 task: SHELL procedure EOF;
+
+block: '{' procedure '}';
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |
