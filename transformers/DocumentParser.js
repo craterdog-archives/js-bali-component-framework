@@ -218,13 +218,6 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
 };
 
 
-// assignee: symbol | component
-TransformingVisitor.prototype.visitAssignee = function(ctx) {
-    // delegate to concrete type
-    this.visitChildren(ctx);
-};
-
-
 // association: key ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new nodes.TreeNode(types.ASSOCIATION);
@@ -349,13 +342,6 @@ TransformingVisitor.prototype.visitComponentExpression = function(ctx) {
 };
 
 
-// composite: range | array | table
-TransformingVisitor.prototype.visitComposite = function(ctx) {
-    // delegate to concrete type
-    this.visitChildren(ctx);
-};
-
-
 // constantReal: sign='-'? CONSTANT
 TransformingVisitor.prototype.visitConstantReal = function(ctx) {
     var string = '';
@@ -409,17 +395,31 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: literal parameters?
+// document: (
+//    any |
+//    tag |
+//    symbol |
+//    time |
+//    reference |
+//    version |
+//    text |
+//    binary |
+//    probability |
+//    percent |
+//    number |
+//    structure |
+//    block
+//) parameters?;
 TransformingVisitor.prototype.visitDocument = function(ctx) {
     // skip this level and add optional parameters directly to the document
-    ctx.literal().accept(this);
-    var literal = this.result;
+    ctx.children[0].accept(this);
+    var document = this.result;
     var parameters = ctx.parameters();
     if (parameters) {
         parameters.accept(this);
-        literal.parameters = this.result;
+        document.parameters = this.result;
     }
-    this.result = literal;
+    this.result = document;
 };
 
 
@@ -467,12 +467,11 @@ TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
 };
 
 
-// evaluateClause: (assignee ':=')? expression
+// evaluateClause: ((symbol | component) ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(ctx) {
     var tree = new nodes.TreeNode(types.EVALUATE_CLAUSE);
-    var assignee = ctx.assignee();
-    if (assignee) {
-        assignee.accept(this);
+    if (ctx.children.length > 1) {
+        ctx.children[0].accept(this);
         tree.addChild(this.result);
     }
     ctx.expression().accept(this);
@@ -663,17 +662,28 @@ TransformingVisitor.prototype.visitInvocation = function(ctx) {
 };
 
 
-// key: element parameters?
+// key: (
+//     any |
+//     tag |
+//     symbol |
+//     time |
+//     reference |
+//     version |
+//     text |
+//     binary |
+//     probability |
+//     percent |
+//     number
+// ) parameters?;
 TransformingVisitor.prototype.visitKey = function(ctx) {
-    // skip this level and add optional parameters directly to the element
-    ctx.element().accept(this);
-    var element = this.result;
+    ctx.children[0].accept(this);
+    var key = this.result;
     var parameters = ctx.parameters();
     if (parameters) {
         parameters.accept(this);
-        element.parameters = this.result;
+        key.parameters = this.result;
     }
-    this.result = element;
+    this.result = key;
 };
 
 
@@ -682,13 +692,6 @@ TransformingVisitor.prototype.visitLabel = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new nodes.TerminalNode(types.LABEL, value);
     this.result = terminal;
-};
-
-
-// literal: element | structure | block
-TransformingVisitor.prototype.visitLiteral = function(ctx) {
-    // delegate to concrete type
-    this.visitChildren(ctx);
 };
 
 
@@ -711,29 +714,6 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// attemptClause:
-//     evaluateClause |
-//     checkoutClause |
-//     saveClause |
-//     discardClause |
-//     commitClause |
-//     publishClause |
-//     queueClause |
-//     waitClause |
-//     ifClause |
-//     selectClause |
-//     whileClause |
-//     withClause |
-//     continueClause |
-//     breakClause |
-//     returnClause |
-//     throwClause
-TransformingVisitor.prototype.visitAttemptClause = function(ctx) {
-    // delegate to concrete type
-    this.visitChildren(ctx);
 };
 
 
@@ -801,10 +781,10 @@ TransformingVisitor.prototype.visitNoneAny = function(ctx) {
 };
 
 
-// parameters: '(' composite ')'
+// parameters: '(' (range | array | table) ')'
 TransformingVisitor.prototype.visitParameters = function(ctx) {
     var tree = new nodes.TreeNode(types.PARAMETERS);
-    ctx.composite().accept(this);
+    ctx.children[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -942,13 +922,29 @@ TransformingVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// statement: attemptClause handleClause* finishClause?
+// statement: (
+//     evaluateClause |
+//     checkoutClause |
+//     saveClause |
+//     discardClause |
+//     commitClause |
+//     publishClause |
+//     queueClause |
+//     waitClause |
+//     ifClause |
+//     selectClause |
+//     whileClause |
+//     withClause |
+//     continueClause |
+//     breakClause |
+//     returnClause |
+//     throwClause
+//) handleClause* finishClause?
 TransformingVisitor.prototype.visitStatement = function(ctx) {
     var tree = new nodes.TreeNode(types.STATEMENT);
-    var attemptClause = ctx.attemptClause();
     var handleClauses = ctx.handleClause();
     var finishClause = ctx.finishClause();
-    attemptClause.accept(this);
+    ctx.children[0].accept(this);
     tree.addChild(this.result);
     for (var i = 0; i < handleClauses.length; i++) {
         handleClauses[i].accept(this);
@@ -962,10 +958,10 @@ TransformingVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// structure: '[' composite ']'
+// structure: '[' (range | array | table) ']'
 TransformingVisitor.prototype.visitStructure = function(ctx) {
     var tree = new nodes.TreeNode(types.STRUCTURE);
-    ctx.composite().accept(this);
+    ctx.children[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
