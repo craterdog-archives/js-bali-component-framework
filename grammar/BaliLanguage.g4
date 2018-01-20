@@ -7,7 +7,8 @@ document: (
     any |
     tag |
     symbol |
-    time |
+    moment |
+    duration |
     reference |
     version |
     text |
@@ -43,7 +44,8 @@ key: (
     any |
     tag |
     symbol |
-    time |
+    moment |
+    duration |
     reference |
     version |
     text |
@@ -167,10 +169,9 @@ tag: TAG;
 
 symbol: SYMBOL;
 
-time:
-    MOMENT    #momentTime   |
-    DURATION  #durationTime
-;
+moment: MOMENT;
+
+duration: DURATION ;
 
 reference: RESOURCE;
 
@@ -233,9 +234,12 @@ CONSTANT: 'e' | 'pi' | 'phi';
 
 FLOAT: INTEGER FRACTION? ('E' INTEGER)?;
 
-MOMENT: '<' '-'? YEARS ('-' MONTHS ('-' DAYS (' ' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
+MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
-DURATION: '<~' (((((YEARS '-')? MONTHS '-')? DAYS ' ')? HOURS ':')? MINUTES ':')? SECONDS FRACTION? '~>';
+DURATION:
+    '~P' SPAN 'W' |
+    '~P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)?
+; 
 
 RESOURCE: '<' SCHEME ':' CONTEXT '>';
 
@@ -268,13 +272,16 @@ fragment
 INTEGER: '0' | '-'? NATURAL;
 
 fragment
+SPAN: NATURAL FRACTION?;
+
+fragment
 SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
 
 fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;
 
 fragment
-YEARS: NATURAL;
+YEARS: INTEGER;
 
 fragment
 MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));

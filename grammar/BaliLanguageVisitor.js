@@ -384,14 +384,14 @@ BaliLanguageVisitor.prototype.visitSymbol = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#momentTime.
-BaliLanguageVisitor.prototype.visitMomentTime = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageVisitor.prototype.visitMoment = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#durationTime.
-BaliLanguageVisitor.prototype.visitDurationTime = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#duration.
+BaliLanguageVisitor.prototype.visitDuration = function(ctx) {
   return this.visitChildren(ctx);
 };
 

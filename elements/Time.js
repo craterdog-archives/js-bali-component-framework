@@ -24,7 +24,14 @@ var FORMATS = [
     '<Y-MM-DDTHH:mm:ss>',
     '<Y-MM-DDTHH:mm:60>',  // HACK:JavaScript doesn't handle leap seconds
     '<Y-MM-DDTHH:mm:ss.SSS>',
-    '<Y-MM-DDTHH:mm:60.SSS>'  // HACK:JavaScript doesn't handle leap seconds
+    '<Y-MM-DDTHH:mm:60.SSS>',  // HACK:JavaScript doesn't handle leap seconds
+    '~Y-MM-DDTHH:mm:ss.SSS',
+    '~MM-DDTHH:mm:ss.SSS',
+    '~DDTHH:mm:ss.SSS',
+    '~HH:mm:ss.SSS',
+    '~mm:ss.SSS',
+    '~ss.SSS',
+    '~ss',
 ];
 
 

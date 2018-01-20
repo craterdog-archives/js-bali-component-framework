@@ -19,7 +19,9 @@ var TERMINAL_TYPES = [
     'invalid',  // unit based indexing for Bali
     'any',
     'binary',
+    'duration',
     'label',
+    'moment',
     'name',
     'number',
     'percent',
@@ -28,7 +30,6 @@ var TERMINAL_TYPES = [
     'symbol',
     'tag',
     'text',
-    'time',
     'variable',
     'version'
 ];
@@ -99,6 +100,7 @@ exports.CONTINUE_CLAUSE = TREE_TYPES.indexOf('continueClause');
 exports.DEFAULT_EXPRESSION = TREE_TYPES.indexOf('defaultExpression');
 exports.DEREFERENCE_EXPRESSION = TREE_TYPES.indexOf('dereferenceExpression');
 exports.DISCARD_CLAUSE = TREE_TYPES.indexOf('discardClause');
+exports.DURATION = TERMINAL_TYPES.indexOf('duration');
 exports.EVALUATE_CLAUSE = TREE_TYPES.indexOf('evaluateClause');
 exports.EXPONENTIAL_EXPRESSION = TREE_TYPES.indexOf('exponentialExpression');
 exports.FACTORIAL_EXPRESSION = TREE_TYPES.indexOf('factorialExpression');
@@ -113,6 +115,7 @@ exports.LABEL = TERMINAL_TYPES.indexOf('label');
 exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
 exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
 exports.MESSAGE_EXPRESSION = TREE_TYPES.indexOf('messageExpression');
+exports.MOMENT = TERMINAL_TYPES.indexOf('moment');
 exports.NAME = TERMINAL_TYPES.indexOf('name');
 exports.NUMBER = TERMINAL_TYPES.indexOf('number');
 exports.PARAMETERS = TREE_TYPES.indexOf('parameters');
@@ -135,7 +138,6 @@ exports.TAG = TERMINAL_TYPES.indexOf('tag');
 exports.TASK = TREE_TYPES.indexOf('task');
 exports.TEXT = TERMINAL_TYPES.indexOf('text');
 exports.THROW_CLAUSE = TREE_TYPES.indexOf('throwClause');
-exports.TIME = TERMINAL_TYPES.indexOf('time');
 exports.VARIABLE = TERMINAL_TYPES.indexOf('variable');
 exports.VERSION = TERMINAL_TYPES.indexOf('version');
 exports.WAIT_CLAUSE = TREE_TYPES.indexOf('waitClause');

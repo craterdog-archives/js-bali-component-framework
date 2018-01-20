@@ -49,6 +49,8 @@ TerminalNode.prototype.accept = function(visitor) {
     switch(this.type) {
         case types.ANY:
         case types.BINARY:
+        case types.DURATION:
+        case types.MOMENT:
         case types.NUMBER:
         case types.PERCENT:
         case types.PROBABILITY:
@@ -56,7 +58,6 @@ TerminalNode.prototype.accept = function(visitor) {
         case types.SYMBOL:
         case types.TAG:
         case types.TEXT:
-        case types.TIME:
         case types.VERSION:
             visitor.visitElement(this);
             break;

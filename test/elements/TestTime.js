@@ -14,7 +14,7 @@ var testCase = require('nodeunit').testCase;
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(9);
+        test.expect(16);
 
         var time = new Time();
         var string = time.toString();
@@ -28,7 +28,14 @@ module.exports = testCase({
             '<2017-12-30>',
             '<2017-12>',
             '<2017>',
-            '<-10000>'
+            '<-10000>',
+            '~2017-12-30T17:38:35.726',
+            '~12-30T17:38:35.726',
+            '~30T17:38:35.726',
+            '~17:38:35.726',
+            '~38:35.726',
+            '~35.726',
+            '~35'
         ];
         for (var i = 0; i < tests.length; i++) {
             var expected = tests[i];

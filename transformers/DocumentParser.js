@@ -399,7 +399,8 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 //    any |
 //    tag |
 //    symbol |
-//    time |
+//    moment |
+//    duration |
 //    reference |
 //    version |
 //    text |
@@ -430,15 +431,15 @@ TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
 };
 
 
-// durationTime: DURATION
-TransformingVisitor.prototype.visitDurationTime = function(ctx) {
+// duration: DURATION
+TransformingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
-    var terminal = new nodes.TerminalNode(types.TIME, value);
+    var terminal = new nodes.TerminalNode(types.DURATION, value);
     this.result = terminal;
 };
 
 
-// element: any | tag | symbol | time | reference | version | text | binary |
+// element: any | tag | symbol | moment | duration | reference | version | text | binary |
 //  probability | percent | number
 TransformingVisitor.prototype.visitElement = function(ctx) {
     // delegate to concrete type
@@ -666,7 +667,8 @@ TransformingVisitor.prototype.visitInvocation = function(ctx) {
 //     any |
 //     tag |
 //     symbol |
-//     time |
+//     moment |
+//     duration |
 //     reference |
 //     version |
 //     text |
@@ -728,10 +730,10 @@ TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
 };
 
 
-// momentTime: MOMENT
-TransformingVisitor.prototype.visitMomentTime = function(ctx) {
+// moment: MOMENT
+TransformingVisitor.prototype.visitMoment = function(ctx) {
     var value = ctx.MOMENT().getText();
-    var terminal = new nodes.TerminalNode(types.TIME, value);
+    var terminal = new nodes.TerminalNode(types.MOMENT, value);
     this.result = terminal;
 };
 

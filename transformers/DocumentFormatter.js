@@ -225,7 +225,8 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 //     any |
 //     tag |
 //     symbol |
-//     time |
+//     moment |
+//     duration |
 //     reference |
 //     version |
 //     text |

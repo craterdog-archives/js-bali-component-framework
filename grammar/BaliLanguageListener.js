@@ -569,21 +569,21 @@ BaliLanguageListener.prototype.exitSymbol = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#momentTime.
-BaliLanguageListener.prototype.enterMomentTime = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageListener.prototype.enterMoment = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#momentTime.
-BaliLanguageListener.prototype.exitMomentTime = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageListener.prototype.exitMoment = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#durationTime.
-BaliLanguageListener.prototype.enterDurationTime = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#duration.
+BaliLanguageListener.prototype.enterDuration = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#durationTime.
-BaliLanguageListener.prototype.exitDurationTime = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#duration.
+BaliLanguageListener.prototype.exitDuration = function(ctx) {
 };
 
 
