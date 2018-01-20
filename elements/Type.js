@@ -11,16 +11,16 @@
 
 /*
  * This element class captures the state and methods associated with an
- * any element.
+ * type element.
  */
 
 
 /**
- * This constructor creates a new any element.
+ * This constructor creates a new type element.
  * 
  * @constructor
- * @param {string} value The value of the any element.
- * @returns {Type} The new any element.
+ * @param {string} value The value of the type element.
+ * @returns {Type} The new type element.
  */
 function Type(value) {
     if (!value) value = 'none';  // default value
@@ -51,9 +51,9 @@ Type.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the string value of the any type.
+ * This method returns the string value of the type type.
  * 
- * @returns {string} The string value of the any type.
+ * @returns {string} The string value of the type type.
  */
 Type.prototype.toString = function() {
     return this.value;

@@ -12,7 +12,7 @@
 
 /*
  * This element class captures the state and methods associated with a
- * time element.
+ * moment element.
  */
 var moment = require('moment');
 var FORMATS = [
@@ -24,24 +24,17 @@ var FORMATS = [
     '<Y-MM-DDTHH:mm:ss>',
     '<Y-MM-DDTHH:mm:60>',  // HACK:JavaScript doesn't handle leap seconds
     '<Y-MM-DDTHH:mm:ss.SSS>',
-    '<Y-MM-DDTHH:mm:60.SSS>',  // HACK:JavaScript doesn't handle leap seconds
-    '~Y-MM-DDTHH:mm:ss.SSS',
-    '~MM-DDTHH:mm:ss.SSS',
-    '~DDTHH:mm:ss.SSS',
-    '~HH:mm:ss.SSS',
-    '~mm:ss.SSS',
-    '~ss.SSS',
-    '~ss',
+    '<Y-MM-DDTHH:mm:60.SSS>'  // HACK:JavaScript doesn't handle leap seconds
 ];
 
 
 /**
- * This constructor creates a new time element.
+ * This constructor creates a new moment element.
  * 
- * @param {string} value The value of the time.
- * @returns {Time} The new time element.
+ * @param {string} value The value of the moment.
+ * @returns {Moment} The new moment element.
  */
-function Time(value) {
+function Moment(value) {
     if (value) {
         for (var i = 0; i < FORMATS.length; i++) {
             var attempt = moment(value, FORMATS[i], true);  // true means strict mode
@@ -53,13 +46,13 @@ function Time(value) {
         }
         if (!this.value) throw new Error('MOMENT: An invalid value was passed to the constructor: ' + value);
     } else {
-        this.value = moment();  // use the current date and time
-        this.format = FORMATS[7];  // full date time format
+        this.value = moment();  // use the current date and moment
+        this.format = FORMATS[7];  // full date moment format
     }
     return this;
 }
-Time.prototype.constructor = Time;
-exports.Time = Time;
+Moment.prototype.constructor = Moment;
+exports.Moment = Moment;
 
 
 /**
@@ -67,16 +60,16 @@ exports.Time = Time;
  * 
  * @param {ObjectVisitor} visitor The visitor that wants to visit this element.
  */
-Time.prototype.accept = function(visitor) {
-    visitor.visitTime(this);
+Moment.prototype.accept = function(visitor) {
+    visitor.visitMoment(this);
 };
 
 
 /**
- * This method returns a string representation of the time element.
+ * This method returns a string representation of the moment element.
  * 
- * @returns {string} The string representation of the time element.
+ * @returns {string} The string representation of the moment element.
  */
-Time.prototype.toString = function() {
+Moment.prototype.toString = function() {
     return this.value.format(this.format);
 };

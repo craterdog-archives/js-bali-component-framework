@@ -36,20 +36,6 @@ exports.parseDocument = function(document) {
 
 
 /**
- * This function takes a source code string containing a Bali element
- * and parses it into the corresponding parse tree structure.
- * 
- * @param {string} element The Bali element to be parsed.
- * @returns {ElementContext} The corresponding parse tree structure.
- */
-exports.parseElement = function(element) {
-    var parser = new DocumentParser();
-    var tree = parser.parseElement(element);
-    return tree;
-};
-
-
-/**
  * This function takes a source code string containing a Bali structure
  * and parses it into the corresponding parse tree structure.
  * 

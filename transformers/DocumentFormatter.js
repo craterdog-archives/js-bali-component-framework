@@ -222,18 +222,18 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 
 
 // element:
-//     any |
-//     tag |
-//     symbol |
-//     moment |
-//     duration |
-//     reference |
-//     version |
-//     text |
 //     binary |
-//     probability |
+//     duration |
+//     moment |
+//     number |
 //     percent |
-//     number
+//     probability |
+//     reference |
+//     symbol |
+//     tag |
+//     text |
+//     type |
+//     version
 TransformingVisitor.prototype.visitElement = function(terminal) {
     this.document += terminal.value;
     if (terminal.parameters) {

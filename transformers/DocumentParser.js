@@ -48,21 +48,6 @@ DocumentParser.prototype.parseDocument = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali element
- * and parses it into the corresponding parse tree structure.
- * 
- * @param {string} source The source code string.
- * @returns {ElementContext} The corresponding parse tree structure.
- */
-DocumentParser.prototype.parseElement = function(source) {
-    var parser = initializeParser(source);
-    var antlrTree = parser.element();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
  * This method takes a source code string containing a Bali structure
  * and parses it into the corresponding parse tree structure.
  * 
@@ -310,12 +295,17 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     if (delimiter === ',') delimiter += ' ';
     var value = '(';
     ctx.real().accept(this);
-    value += this.result;
+    var real = this.result;
+    value += real;
     value += delimiter;
     ctx.imaginary().accept(this);
-    value += this.result;
+    var imaginary = this.result;
+    value += imaginary;
     value += ')';
     var terminal = new nodes.TerminalNode(types.NUMBER, value);
+    terminal.real = real;
+    terminal.delimiter = delimiter;
+    terminal.imaginary = imaginary;
     this.result = terminal;
 };
 
@@ -436,14 +426,6 @@ TransformingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
     var terminal = new nodes.TerminalNode(types.DURATION, value);
     this.result = terminal;
-};
-
-
-// element: any | tag | symbol | moment | duration | reference | version | text | binary |
-//  probability | percent | number
-TransformingVisitor.prototype.visitElement = function(ctx) {
-    // delegate to concrete type
-    this.visitChildren(ctx);
 };
 
 

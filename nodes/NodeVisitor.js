@@ -106,22 +106,6 @@ NodeVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// element:
-//     any |
-//     tag |
-//     symbol |
-//     time |
-//     reference |
-//     version |
-//     text |
-//     binary |
-//     probability |
-//     percent |
-//     number
-NodeVisitor.prototype.visitElement = function(terminal) {
-};
-
-
 // evaluateClause: (assignee ':=')? expression
 NodeVisitor.prototype.visitEvaluateClause = function(tree) {
 };

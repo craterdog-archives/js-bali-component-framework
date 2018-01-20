@@ -18,9 +18,9 @@ module.exports = testCase({
     'Test Constructor': function(test) {
         test.expect(4);
 
-        test.strictEqual(new Type().toString(), Type.NONE.toString(), "1 The any value should have been Type.NONE.");
-        test.strictEqual(new Type('none').toString(), Type.NONE.toString(), "2 The any value should have been Type.NONE.");
-        test.strictEqual(new Type('any').toString(), Type.ANY.toString(), "3 The any value should have been Type.ANY.");
+        test.strictEqual(new Type().toString(), Type.NONE.toString(), "1 The type value should have been Type.NONE.");
+        test.strictEqual(new Type('none').toString(), Type.NONE.toString(), "2 The type value should have been Type.NONE.");
+        test.strictEqual(new Type('any').toString(), Type.ANY.toString(), "3 The type value should have been Type.ANY.");
 
         test.throws(
             function() {

@@ -9,37 +9,31 @@
  ************************************************************************/
 'use strict';
 
-var Time = require('../../elements/Time').Time;
+var Moment = require('../../elements/Moment').Moment;
 var testCase = require('nodeunit').testCase;
+
+var tests = [
+    '<2017-12-30T17:38:35.726>',
+    '<2017-12-30T17:38:35>',
+    '<2017-12-30T17:38>',
+    '<2017-12-30T17>',
+    '<2017-12-30>',
+    '<2017-12>',
+    '<2017>',
+    '<-10000>'
+];
 
 module.exports = testCase({
     'Test Constructor': function(test) {
-        test.expect(16);
+        test.expect(tests.length + 1);
 
-        var time = new Time();
+        var time = new Moment();
         var string = time.toString();
         test.equal(string.length, 25, 'The time should have been 25 characters long: ' + string);
 
-        var tests = [
-            '<2017-12-30T17:38:35.726>',
-            '<2017-12-30T17:38:35>',
-            '<2017-12-30T17:38>',
-            '<2017-12-30T17>',
-            '<2017-12-30>',
-            '<2017-12>',
-            '<2017>',
-            '<-10000>',
-            '~2017-12-30T17:38:35.726',
-            '~12-30T17:38:35.726',
-            '~30T17:38:35.726',
-            '~17:38:35.726',
-            '~38:35.726',
-            '~35.726',
-            '~35'
-        ];
         for (var i = 0; i < tests.length; i++) {
             var expected = tests[i];
-            time = new Time(expected);
+            time = new Moment(expected);
             string = time.toString();
             test.equal(string, expected, "" + (i + 1) + " The times didn't match.");
         }
