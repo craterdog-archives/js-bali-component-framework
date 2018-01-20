@@ -182,10 +182,10 @@ TransformingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.protot
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 
 
-// anyAny: 'any'
-TransformingVisitor.prototype.visitAnyAny = function(ctx) {
+// anyType: 'any'
+TransformingVisitor.prototype.visitAnyType = function(ctx) {
     var value = 'any';
-    this.result = new nodes.TerminalNode(types.ANY, value);
+    this.result = new nodes.TerminalNode(types.TYPE, value);
 };
 
 
@@ -776,10 +776,10 @@ TransformingVisitor.prototype.visitNewlineText = function(ctx) {
 };
 
 
-// noneAny: 'none'
-TransformingVisitor.prototype.visitNoneAny = function(ctx) {
+// noneType: 'none'
+TransformingVisitor.prototype.visitNoneType = function(ctx) {
     var value = 'none';
-    this.result = new nodes.TerminalNode(types.ANY, value);
+    this.result = new nodes.TerminalNode(types.TYPE, value);
 };
 
 

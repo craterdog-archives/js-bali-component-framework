@@ -17,7 +17,6 @@
 
 var TERMINAL_TYPES = [
     'invalid',  // unit based indexing for Bali
-    'any',
     'binary',
     'duration',
     'label',
@@ -30,6 +29,7 @@ var TERMINAL_TYPES = [
     'symbol',
     'tag',
     'text',
+    'type',
     'variable',
     'version'
 ];
@@ -83,7 +83,6 @@ var TREE_TYPES = [
     'withClause'
 ];
 
-exports.ANY = TERMINAL_TYPES.indexOf('any');
 exports.ARITHMETIC_EXPRESSION = TREE_TYPES.indexOf('arithmeticExpression');
 exports.ARRAY = TREE_TYPES.indexOf('array');
 exports.ASSOCIATION = TREE_TYPES.indexOf('association');
@@ -138,6 +137,7 @@ exports.TAG = TERMINAL_TYPES.indexOf('tag');
 exports.TASK = TREE_TYPES.indexOf('task');
 exports.TEXT = TERMINAL_TYPES.indexOf('text');
 exports.THROW_CLAUSE = TREE_TYPES.indexOf('throwClause');
+exports.TYPE = TERMINAL_TYPES.indexOf('type');
 exports.VARIABLE = TERMINAL_TYPES.indexOf('variable');
 exports.VERSION = TERMINAL_TYPES.indexOf('version');
 exports.WAIT_CLAUSE = TREE_TYPES.indexOf('waitClause');

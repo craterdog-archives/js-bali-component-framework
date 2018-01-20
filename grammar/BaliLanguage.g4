@@ -4,20 +4,20 @@ grammar BaliLanguage;
 // Documents
 
 document: (
-    any |
-    tag |
-    symbol |
-    moment |
-    duration |
-    reference |
-    version |
-    text |
     binary |
-    probability |
-    percent |
+    block |
+    duration |
+    moment |
     number |
+    percent |
+    probability |
+    reference |
     structure |
-    block
+    symbol |
+    tag |
+    text |
+    type |
+    version
 ) parameters?;
 
 structure: '[' (range | array | table) ']';
@@ -41,18 +41,18 @@ table:
 association: key ':' expression;
 
 key: (
-    any |
-    tag |
-    symbol |
-    moment |
-    duration |
-    reference |
-    version |
-    text |
     binary |
-    probability |
+    duration |
+    moment |
+    number |
     percent |
-    number
+    probability |
+    reference |
+    symbol |
+    tag |
+    text |
+    type |
+    version
 ) parameters?;
 
 task: SHELL procedure EOF;
@@ -160,37 +160,13 @@ name: IDENTIFIER;
 
 // Elements
 
-any:
-    'none'  #noneAny |
-    'any'   #anyAny
-;
-
-tag: TAG;
-
-symbol: SYMBOL;
-
-moment: MOMENT;
+binary: BINARY;
 
 duration: DURATION ;
 
-reference: RESOURCE;
+imaginary: (real | sign='-')? 'i';
 
-version: VERSION;
-
-text:
-    TEXT        #inlineText |
-    TEXT_BLOCK  #newlineText
-;
-
-binary: BINARY;
-
-probability:
-    'true'    #trueProbability       |
-    'false'   #falseProbability      |
-    FRACTION  #fractionalProbability
-;
-
-percent: real '%';
+moment: MOMENT;
 
 number:
     'undefined'                              #undefinedNumber |
@@ -200,12 +176,36 @@ number:
     '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
 ;
 
+percent: real '%';
+
+probability:
+    'true'    #trueProbability       |
+    'false'   #falseProbability      |
+    FRACTION  #fractionalProbability
+;
+
 real:
     sign='-'? CONSTANT  #constantReal |
     FLOAT               #variableReal
 ;
 
-imaginary: (real | sign='-')? 'i';
+reference: RESOURCE;
+
+symbol: SYMBOL;
+
+tag: TAG;
+
+text:
+    TEXT        #inlineText |
+    TEXT_BLOCK  #newlineText
+;
+
+type:
+    'none'  #noneType |
+    'any'   #anyType
+;
+
+version: VERSION;
 
 
 // Tokens

@@ -20,24 +20,24 @@
  * 
  * @constructor
  * @param {string} value The value of the any element.
- * @returns {Any} The new any element.
+ * @returns {Type} The new any element.
  */
-function Any(value) {
+function Type(value) {
     if (!value) value = 'none';  // default value
     switch (value) {
         case 'none':
         case 'any':
             break;
         default:
-            throw new Error('ANY: An invalid value was passed into the constructor: ' + value);
+            throw new Error('TYPE: An invalid value was passed into the constructor: ' + value);
     }
-    if (typeof Any.NONE !== 'undefined' && value === 'none') return Any.NONE;
-    if (typeof Any.ANY !== 'undefined' && value === 'any') return Any.ANY;
+    if (typeof Type.NONE !== 'undefined' && value === 'none') return Type.NONE;
+    if (typeof Type.ANY !== 'undefined' && value === 'any') return Type.ANY;
     this.value = value;
     return this;
 }
-Any.prototype.constructor = Any;
-exports.Any = Any;
+Type.prototype.constructor = Type;
+exports.Type = Type;
 
 
 /**
@@ -45,8 +45,8 @@ exports.Any = Any;
  * 
  * @param {ObjectVisitor} visitor The visitor that wants to visit this element.
  */
-Any.prototype.accept = function(visitor) {
-    visitor.visitAny(this);
+Type.prototype.accept = function(visitor) {
+    visitor.visitType(this);
 };
 
 
@@ -55,11 +55,11 @@ Any.prototype.accept = function(visitor) {
  * 
  * @returns {string} The string value of the any type.
  */
-Any.prototype.toString = function() {
+Type.prototype.toString = function() {
     return this.value;
 };
 
 
 // common constants
-Any.NONE = new Any('none');
-Any.ANY = new Any('any');
+Type.NONE = new Type('none');
+Type.ANY = new Type('any');

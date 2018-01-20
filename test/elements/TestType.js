@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Any = require('../../elements/Any').Any;
+var Type = require('../../elements/Type').Type;
 var testCase = require('nodeunit').testCase;
 /* global NaN, Infinity */
 
@@ -18,13 +18,13 @@ module.exports = testCase({
     'Test Constructor': function(test) {
         test.expect(4);
 
-        test.strictEqual(new Any().toString(), Any.NONE.toString(), "1 The any value should have been Any.NONE.");
-        test.strictEqual(new Any('none').toString(), Any.NONE.toString(), "2 The any value should have been Any.NONE.");
-        test.strictEqual(new Any('any').toString(), Any.ANY.toString(), "3 The any value should have been Any.ANY.");
+        test.strictEqual(new Type().toString(), Type.NONE.toString(), "1 The any value should have been Type.NONE.");
+        test.strictEqual(new Type('none').toString(), Type.NONE.toString(), "2 The any value should have been Type.NONE.");
+        test.strictEqual(new Type('any').toString(), Type.ANY.toString(), "3 The any value should have been Type.ANY.");
 
         test.throws(
             function() {
-                new Any('foobar');
+                new Type('foobar');
             }
         );
 

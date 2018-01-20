@@ -360,32 +360,8 @@ BaliLanguageVisitor.prototype.visitName = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#noneAny.
-BaliLanguageVisitor.prototype.visitNoneAny = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#anyAny.
-BaliLanguageVisitor.prototype.visitAnyAny = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#tag.
-BaliLanguageVisitor.prototype.visitTag = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#symbol.
-BaliLanguageVisitor.prototype.visitSymbol = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#moment.
-BaliLanguageVisitor.prototype.visitMoment = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#binary.
+BaliLanguageVisitor.prototype.visitBinary = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -396,56 +372,14 @@ BaliLanguageVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#reference.
-BaliLanguageVisitor.prototype.visitReference = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#imaginary.
+BaliLanguageVisitor.prototype.visitImaginary = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#version.
-BaliLanguageVisitor.prototype.visitVersion = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#inlineText.
-BaliLanguageVisitor.prototype.visitInlineText = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#newlineText.
-BaliLanguageVisitor.prototype.visitNewlineText = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#binary.
-BaliLanguageVisitor.prototype.visitBinary = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#trueProbability.
-BaliLanguageVisitor.prototype.visitTrueProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#falseProbability.
-BaliLanguageVisitor.prototype.visitFalseProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#fractionalProbability.
-BaliLanguageVisitor.prototype.visitFractionalProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#percent.
-BaliLanguageVisitor.prototype.visitPercent = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#moment.
+BaliLanguageVisitor.prototype.visitMoment = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -480,6 +414,30 @@ BaliLanguageVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#percent.
+BaliLanguageVisitor.prototype.visitPercent = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#trueProbability.
+BaliLanguageVisitor.prototype.visitTrueProbability = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#falseProbability.
+BaliLanguageVisitor.prototype.visitFalseProbability = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#fractionalProbability.
+BaliLanguageVisitor.prototype.visitFractionalProbability = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#constantReal.
 BaliLanguageVisitor.prototype.visitConstantReal = function(ctx) {
   return this.visitChildren(ctx);
@@ -492,8 +450,50 @@ BaliLanguageVisitor.prototype.visitVariableReal = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#imaginary.
-BaliLanguageVisitor.prototype.visitImaginary = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#reference.
+BaliLanguageVisitor.prototype.visitReference = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#symbol.
+BaliLanguageVisitor.prototype.visitSymbol = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#tag.
+BaliLanguageVisitor.prototype.visitTag = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#inlineText.
+BaliLanguageVisitor.prototype.visitInlineText = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#newlineText.
+BaliLanguageVisitor.prototype.visitNewlineText = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#noneType.
+BaliLanguageVisitor.prototype.visitNoneType = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#anyType.
+BaliLanguageVisitor.prototype.visitAnyType = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#version.
+BaliLanguageVisitor.prototype.visitVersion = function(ctx) {
   return this.visitChildren(ctx);
 };
 
