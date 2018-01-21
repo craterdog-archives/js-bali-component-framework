@@ -5,7 +5,7 @@ grammar BaliLanguage;
 
 document: NEWLINE* literal NEWLINE* EOF;
 
-literal: ( element | structure | block);
+literal: (element | structure | block);
 
 structure: '[' composite ']' parameters?;
 
@@ -151,7 +151,7 @@ element: (
 
 binary: BINARY;
 
-duration: DURATION ;
+duration: DURATION;
 
 imaginary: (real | sign='-')? 'i';
 
