@@ -51,11 +51,11 @@ var TREE_TYPES = [
     'defaultExpression',
     'dereferenceExpression',
     'discardClause',
+    'document',
     'evaluateClause',
     'exponentialExpression',
     'factorialExpression',
     'finishClause',
-    'functionExpression',
     'handleClause',
     'ifClause',
     'indices',
@@ -99,12 +99,12 @@ exports.CONTINUE_CLAUSE = TREE_TYPES.indexOf('continueClause');
 exports.DEFAULT_EXPRESSION = TREE_TYPES.indexOf('defaultExpression');
 exports.DEREFERENCE_EXPRESSION = TREE_TYPES.indexOf('dereferenceExpression');
 exports.DISCARD_CLAUSE = TREE_TYPES.indexOf('discardClause');
+exports.DOCUMENT = TERMINAL_TYPES.indexOf('document');
 exports.DURATION = TERMINAL_TYPES.indexOf('duration');
 exports.EVALUATE_CLAUSE = TREE_TYPES.indexOf('evaluateClause');
 exports.EXPONENTIAL_EXPRESSION = TREE_TYPES.indexOf('exponentialExpression');
 exports.FACTORIAL_EXPRESSION = TREE_TYPES.indexOf('factorialExpression');
 exports.FINISH_CLAUSE = TREE_TYPES.indexOf('finishClause');
-exports.FUNCTION_EXPRESSION = TREE_TYPES.indexOf('functionExpression');
 exports.HANDLE_CLAUSE = TREE_TYPES.indexOf('handleClause');
 exports.IF_CLAUSE = TREE_TYPES.indexOf('ifClause');
 exports.INDICES = TREE_TYPES.indexOf('indices');

@@ -20,6 +20,15 @@ BaliLanguageListener.prototype.exitDocument = function(ctx) {
 };
 
 
+// Enter a parse tree produced by BaliLanguageParser#literal.
+BaliLanguageListener.prototype.enterLiteral = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#literal.
+BaliLanguageListener.prototype.exitLiteral = function(ctx) {
+};
+
+
 // Enter a parse tree produced by BaliLanguageParser#structure.
 BaliLanguageListener.prototype.enterStructure = function(ctx) {
 };
@@ -371,15 +380,6 @@ BaliLanguageListener.prototype.exitIndices = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#documentExpression.
-BaliLanguageListener.prototype.enterDocumentExpression = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#documentExpression.
-BaliLanguageListener.prototype.exitDocumentExpression = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#defaultExpression.
 BaliLanguageListener.prototype.enterDefaultExpression = function(ctx) {
 };
@@ -485,6 +485,15 @@ BaliLanguageListener.prototype.enterComponentExpression = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#componentExpression.
 BaliLanguageListener.prototype.exitComponentExpression = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#literalExpression.
+BaliLanguageListener.prototype.enterLiteralExpression = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#literalExpression.
+BaliLanguageListener.prototype.exitLiteralExpression = function(ctx) {
 };
 
 

@@ -111,7 +111,7 @@ TransformingVisitor.prototype.visitArray = function(tree) {
 };
 
 
-// association: key ':' expression
+// association: element ':' expression
 TransformingVisitor.prototype.visitAssociation = function(tree) {
     tree.children[0].accept(this);
     this.document += ': ';
@@ -119,13 +119,13 @@ TransformingVisitor.prototype.visitAssociation = function(tree) {
 };
 
 
-// block: '{' procedure '}'
+// block: '{' procedure '}' parameters?
 TransformingVisitor.prototype.visitBlock = function(tree) {
     this.document += '{';
     tree.children[0].accept(this);
     this.document += '}';
-    if (tree.parameters) {
-        tree.parameters.accept(this);
+    if (tree.children.length > 1) {
+        tree.children[1].accept(this);
     }
 };
 
@@ -221,7 +221,14 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// element:
+// document: literal EOF
+TransformingVisitor.prototype.visitDocument = function(tree) {
+    tree.children[0].accept(this);
+    this.document += tree.EOF;
+};
+
+
+// element: (
 //     binary |
 //     duration |
 //     moment |
@@ -234,6 +241,7 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 //     text |
 //     type |
 //     version
+//) parameters?
 TransformingVisitor.prototype.visitElement = function(terminal) {
     this.document += terminal.value;
     if (terminal.parameters) {
@@ -242,7 +250,7 @@ TransformingVisitor.prototype.visitElement = function(terminal) {
 };
 
 
-// evaluateClause: (assignee ':=')? expression
+// evaluateClause: ((symbol | component) ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
     tree.children[0].accept(this);
     if (tree.children.length > 1) {
@@ -281,12 +289,6 @@ TransformingVisitor.prototype.visitFactorialExpression = function(tree) {
 // finishClause: 'finish' 'with' block
 TransformingVisitor.prototype.visitFinishClause = function(tree) {
     this.document += ' finish with ';
-    tree.children[0].accept(this);
-};
-
-
-// functionExpression: invocation
-TransformingVisitor.prototype.visitFunctionExpression = function(tree) {
     tree.children[0].accept(this);
 };
 
@@ -507,13 +509,13 @@ TransformingVisitor.prototype.visitStatement = function(tree) {
 };
 
 
-// structure: '[' composite ']'
+// structure: '[' composite ']' parameters?
 TransformingVisitor.prototype.visitStructure = function(tree) {
     this.document += '[';
     tree.children[0].accept(this);
     this.document += ']';
-    if (tree.parameters) {
-        tree.parameters.accept(this);
+    if (tree.children.length > 1) {
+        tree.children[1].accept(this);
     }
 };
 

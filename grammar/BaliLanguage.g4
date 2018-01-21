@@ -3,9 +3,11 @@ grammar BaliLanguage;
 
 // Documents
 
-document: ( element | structure | block) parameters?;
+document: NEWLINE* literal NEWLINE* EOF;
 
-structure: '[' composite ']';
+literal: ( element | structure | block);
+
+structure: '[' composite ']' parameters?;
 
 parameters: '(' composite ')';
 
@@ -25,11 +27,11 @@ table:
     ':' /*empty table*/ #emptyTable
 ;
 
-association: element parameters? ':' expression;
+association: element ':' expression;
 
-task: SHELL procedure EOF;
+task: SHELL NEWLINE* procedure NEWLINE* EOF;
 
-block: '{' procedure '}';
+block: '{' procedure '}' parameters?;
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |
@@ -107,7 +109,7 @@ indices: '[' array ']';
 // Expressions
 
 expression:                  // Precedence (highest to lowest)
-    document                                                       #documentExpression     |
+    literal                                                        #literalExpression      |
     variable                                                       #variableExpression     |
     invocation                                                     #functionExpression     |
     '(' expression ')'                                             #precedenceExpression   |
@@ -132,7 +134,7 @@ name: IDENTIFIER;
 
 // Elements
 
-element:
+element: (
     binary |
     duration |
     moment |
@@ -145,7 +147,7 @@ element:
     text |
     type |
     version
-;
+) parameters?;
 
 binary: BINARY;
 

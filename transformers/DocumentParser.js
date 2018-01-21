@@ -218,20 +218,13 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
 };
 
 
-// association: element parameters? ':' expression
+// association: element ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new nodes.TreeNode(types.ASSOCIATION);
     ctx.element().accept(this);
-    var element = this.result;
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        element.parameters = this.result;
-    }
-    tree.addChild(element);
+    tree.addChild(this.result);
     ctx.expression().accept(this);
-    var expression = this.result;
-    tree.addChild(expression);
+    tree.addChild(this.result);
     this.result = tree;
 };
 
@@ -245,11 +238,16 @@ TransformingVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
-// block: '{' procedure '}'
+// block: '{' procedure '}' parameters?
 TransformingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new nodes.TreeNode(types.BLOCK);
     ctx.procedure().accept(this);
     tree.addChild(this.result);
+    var parameters = ctx.parameters();
+    if (parameters) {
+        parameters.accept(this);
+        tree.addChild(this.result);
+    }
     this.result = tree;
 };
 
@@ -407,24 +405,13 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: (element | structure | block) parameters?
-TransformingVisitor.prototype.visitDocument = function(ctx) {
-    // skip this level and add optional parameters directly to the child
-    ctx.children[0].accept(this);
-    var document = this.result;
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        document.parameters = this.result;
-    }
-    this.result = document;
-};
-
-
-// documentExpression: document
-TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
-    // delegate to the child
-    ctx.document().accept(this);
+// document: NEWLINE* literal NEWLINE* EOF
+TransformingVisitor.prototype.visitTask = function(ctx) {
+    var tree = new nodes.TreeNode(types.DOCUMENT);
+    ctx.literal().accept(this);
+    tree.addChild(this.result);
+    tree.EOF = ctx.EOF().getText();
+    this.result = tree;
 };
 
 
@@ -432,6 +419,33 @@ TransformingVisitor.prototype.visitDocumentExpression = function(ctx) {
 TransformingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
     var terminal = new nodes.TerminalNode(types.DURATION, value);
+    this.result = terminal;
+};
+
+
+// element: (
+//    binary |
+//    duration |
+//    moment |
+//    number |
+//    percent |
+//    probability |
+//    reference |
+//    symbol |
+//    tag |
+//    text |
+//    type |
+//    version
+//) parameters?
+TransformingVisitor.prototype.visitElement = function(ctx) {
+    // skip this level and add optional parameters directly to the concrete element
+    ctx.children[0].accept(this);
+    var terminal = this.result;
+    var parameters = ctx.parameters();
+    if (parameters) {
+        parameters.accept(this);
+        terminal.parameters = this.result;
+    }
     this.result = terminal;
 };
 
@@ -512,15 +526,6 @@ TransformingVisitor.prototype.visitFinishClause = function(ctx) {
 TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var value = ctx.FRACTION().getText();
     this.result = new nodes.TerminalNode(types.PROBABILITY, value);
-};
-
-
-// functionExpression: invocation
-TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    var tree = new nodes.TreeNode(types.FUNCTION_EXPRESSION);
-    ctx.invocation().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
 };
 
 
@@ -746,10 +751,10 @@ TransformingVisitor.prototype.visitNoneType = function(ctx) {
 };
 
 
-// parameters: '(' (range | array | table) ')'
+// parameters: '(' composite ')'
 TransformingVisitor.prototype.visitParameters = function(ctx) {
     var tree = new nodes.TreeNode(types.PARAMETERS);
-    ctx.children[1].accept(this);
+    ctx.composite().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -923,11 +928,16 @@ TransformingVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// structure: '[' (range | array | table) ']'
+// structure: '[' composite ']' parameters?
 TransformingVisitor.prototype.visitStructure = function(ctx) {
     var tree = new nodes.TreeNode(types.STRUCTURE);
-    ctx.children[1].accept(this);
+    ctx.composite().accept(this);
     tree.addChild(this.result);
+    var parameters = ctx.parameters();
+    if (parameters) {
+        parameters.accept(this);
+        tree.addChild(this.result);
+    }
     this.result = tree;
 };
 
@@ -964,7 +974,7 @@ TransformingVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// task: SHELL procedure EOF
+// task: SHELL NEWLINE* procedure NEWLINE* EOF
 TransformingVisitor.prototype.visitTask = function(ctx) {
     var tree = new nodes.TreeNode(types.SCRIPT);
     tree.shell = ctx.SHELL().getText();
@@ -1005,13 +1015,6 @@ TransformingVisitor.prototype.visitVariable = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new nodes.TerminalNode(types.VARIABLE, value);
     this.result = terminal;
-};
-
-
-// variableExpression: variable
-TransformingVisitor.prototype.visitVariableExpression = function(ctx) {
-    // delegate to the child
-    ctx.variable().accept(this);
 };
 
 

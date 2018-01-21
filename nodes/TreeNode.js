@@ -87,6 +87,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.DISCARD_CLAUSE:
             visitor.visitDiscardClause(this);
             break;
+        case types.DOCUMENT:
+            visitor.visitDocument(this);
+            break;
         case types.EVALUATE_CLAUSE:
             visitor.visitEvaluateClause(this);
             break;
@@ -98,9 +101,6 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.FINISH_CLAUSE:
             visitor.visitFinishClause(this);
-            break;
-        case types.FUNCTION_EXPRESSION:
-            visitor.visitFunctionExpression(this);
             break;
         case types.HANDLE_CLAUSE:
             visitor.visitHandleClause(this);
@@ -178,7 +178,7 @@ TreeNode.prototype.accept = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-
+            throw new Error('TREE: An invalid tree node type was passed: ' + this.type);
     }
 };
 

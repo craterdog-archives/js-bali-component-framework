@@ -18,6 +18,12 @@ BaliLanguageVisitor.prototype.visitDocument = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#literal.
+BaliLanguageVisitor.prototype.visitLiteral = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#structure.
 BaliLanguageVisitor.prototype.visitStructure = function(ctx) {
   return this.visitChildren(ctx);
@@ -252,12 +258,6 @@ BaliLanguageVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#documentExpression.
-BaliLanguageVisitor.prototype.visitDocumentExpression = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#defaultExpression.
 BaliLanguageVisitor.prototype.visitDefaultExpression = function(ctx) {
   return this.visitChildren(ctx);
@@ -326,6 +326,12 @@ BaliLanguageVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#componentExpression.
 BaliLanguageVisitor.prototype.visitComponentExpression = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#literalExpression.
+BaliLanguageVisitor.prototype.visitLiteralExpression = function(ctx) {
   return this.visitChildren(ctx);
 };
 
