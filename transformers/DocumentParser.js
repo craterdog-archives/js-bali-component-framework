@@ -206,10 +206,17 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
 // association: key ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new nodes.TreeNode(types.ASSOCIATION);
-    ctx.key().accept(this);
-    tree.addChild(this.result);
+    ctx.element().accept(this);
+    var element = this.result;
+    var parameters = ctx.parameters();
+    if (parameters) {
+        parameters.accept(this);
+        element.parameters = this.result;
+    }
+    tree.addChild(element);
     ctx.expression().accept(this);
-    tree.addChild(this.result);
+    var expression = this.result;
+    tree.addChild(expression);
     this.result = tree;
 };
 
@@ -642,32 +649,6 @@ TransformingVisitor.prototype.visitInvocation = function(ctx) {
     ctx.parameters().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// key: (
-//     any |
-//     tag |
-//     symbol |
-//     moment |
-//     duration |
-//     reference |
-//     version |
-//     text |
-//     binary |
-//     probability |
-//     percent |
-//     number
-// ) parameters?;
-TransformingVisitor.prototype.visitKey = function(ctx) {
-    ctx.children[0].accept(this);
-    var key = this.result;
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        key.parameters = this.result;
-    }
-    this.result = key;
 };
 
 

@@ -30,6 +30,12 @@ BaliLanguageVisitor.prototype.visitParameters = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#composite.
+BaliLanguageVisitor.prototype.visitComposite = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#range.
 BaliLanguageVisitor.prototype.visitRange = function(ctx) {
   return this.visitChildren(ctx);
@@ -74,12 +80,6 @@ BaliLanguageVisitor.prototype.visitEmptyTable = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#association.
 BaliLanguageVisitor.prototype.visitAssociation = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#key.
-BaliLanguageVisitor.prototype.visitKey = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -356,6 +356,12 @@ BaliLanguageVisitor.prototype.visitInvocation = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#name.
 BaliLanguageVisitor.prototype.visitName = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#element.
+BaliLanguageVisitor.prototype.visitElement = function(ctx) {
   return this.visitChildren(ctx);
 };
 

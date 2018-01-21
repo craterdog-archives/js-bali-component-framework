@@ -3,26 +3,13 @@ grammar BaliLanguage;
 
 // Documents
 
-document: (
-    binary |
-    block |
-    duration |
-    moment |
-    number |
-    percent |
-    probability |
-    reference |
-    structure |
-    symbol |
-    tag |
-    text |
-    type |
-    version
-) parameters?;
+document: ( element | structure | block) parameters?;
 
-structure: '[' (range | array | table) ']';
+structure: '[' composite ']';
 
-parameters: '(' (range | array | table) ')';
+parameters: '(' composite ')';
+
+composite: range | array | table;
 
 range: expression '..' expression;
 
@@ -38,22 +25,7 @@ table:
     ':' /*empty table*/ #emptyTable
 ;
 
-association: key ':' expression;
-
-key: (
-    binary |
-    duration |
-    moment |
-    number |
-    percent |
-    probability |
-    reference |
-    symbol |
-    tag |
-    text |
-    type |
-    version
-) parameters?;
+association: element parameters? ':' expression;
 
 task: SHELL procedure EOF;
 
@@ -159,6 +131,21 @@ name: IDENTIFIER;
 
 
 // Elements
+
+element:
+    binary |
+    duration |
+    moment |
+    number |
+    percent |
+    probability |
+    reference |
+    symbol |
+    tag |
+    text |
+    type |
+    version
+;
 
 binary: BINARY;
 
