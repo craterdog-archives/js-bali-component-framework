@@ -48,6 +48,21 @@ DocumentParser.prototype.parseDocument = function(source) {
 
 
 /**
+ * This method takes a source code string containing a Bali element
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ElementContext} The corresponding parse tree structure.
+ */
+DocumentParser.prototype.parseElement = function(source) {
+    var parser = initializeParser(source);
+    var antlrTree = parser.element();
+    var baliTree = convertParseTree(antlrTree);
+    return baliTree;
+};
+
+
+/**
  * This method takes a source code string containing a Bali structure
  * and parses it into the corresponding parse tree structure.
  * 
@@ -187,7 +202,7 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 };
 
 
-// treat all arrays the same
+// array: expression*
 TransformingVisitor.prototype.visitArray = function(ctx) {
     var tree = new nodes.TreeNode(types.ARRAY);
     var type = ctx.constructor.name;
@@ -203,7 +218,7 @@ TransformingVisitor.prototype.visitArray = function(ctx) {
 };
 
 
-// association: key ':' expression
+// association: element parameters? ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new nodes.TreeNode(types.ASSOCIATION);
     ctx.element().accept(this);
@@ -392,24 +407,9 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: (
-//    any |
-//    tag |
-//    symbol |
-//    moment |
-//    duration |
-//    reference |
-//    version |
-//    text |
-//    binary |
-//    probability |
-//    percent |
-//    number |
-//    structure |
-//    block
-//) parameters?;
+// document: (element | structure | block) parameters?
 TransformingVisitor.prototype.visitDocument = function(ctx) {
-    // skip this level and add optional parameters directly to the document
+    // skip this level and add optional parameters directly to the child
     ctx.children[0].accept(this);
     var document = this.result;
     var parameters = ctx.parameters();
@@ -773,7 +773,7 @@ TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 };
 
 
-// treat all procedure the same
+// procedure: statement*
 TransformingVisitor.prototype.visitProcedure = function(ctx) {
     var tree = new nodes.TreeNode(types.PROCEDURE);
     var type = ctx.constructor.name;
@@ -940,7 +940,7 @@ TransformingVisitor.prototype.visitSymbol = function(ctx) {
 };
 
 
-// treat all tables the same
+// table: association*
 TransformingVisitor.prototype.visitTable = function(ctx) {
     var tree = new nodes.TreeNode(types.TABLE);
     var type = ctx.constructor.name;
