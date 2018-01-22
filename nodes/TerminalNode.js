@@ -56,8 +56,8 @@ TerminalNode.prototype.accept = function(visitor) {
         case types.REFERENCE:
         case types.SYMBOL:
         case types.TAG:
+        case types.TEMPLATE:
         case types.TEXT:
-        case types.TYPE:
         case types.VERSION:
             visitor.visitElement(this);
             break;

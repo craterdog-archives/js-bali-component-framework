@@ -3,9 +3,9 @@ grammar BaliLanguage;
 
 // Documents
 
-document: NEWLINE* literal NEWLINE* EOF;
+document: NEWLINE* component NEWLINE* EOF;
 
-literal: (element | structure | block);
+component: (element | structure | block);
 
 structure: '[' composite ']' parameters?;
 
@@ -65,7 +65,7 @@ handleClause: 'handle' symbol 'matching' expression 'with' block;
 
 finishClause: 'finish' 'with' block;
 
-evaluateClause: ((symbol | component) ':=')? expression;
+evaluateClause: ((symbol | variable indices) ':=')? expression;
 
 checkoutClause: 'checkout' symbol 'from' expression;
 
@@ -97,8 +97,6 @@ returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
 
-component: variable indices;
-
 label: IDENTIFIER;
 
 variable: IDENTIFIER;
@@ -109,13 +107,13 @@ indices: '[' array ']';
 // Expressions
 
 expression:                  // Precedence (highest to lowest)
-    literal                                                        #literalExpression      |
+    component                                                      #componentExpression    |
     variable                                                       #variableExpression     |
     invocation                                                     #functionExpression     |
     '(' expression ')'                                             #precedenceExpression   |
     '@' expression                                                 #dereferenceExpression  |
     expression '.' invocation                                      #messageExpression      |
-    expression indices                                             #componentExpression    |
+    expression indices                                             #subcomponentExpression |
     expression '!'                                                 #factorialExpression    |
     <assoc=right> expression '^' expression                        #exponentialExpression  |
     op=('-' | '/' | '*') expression                                #inversionExpression    |
@@ -144,8 +142,8 @@ element: (
     reference |
     symbol |
     tag |
+    template |
     text |
-    type |
     version
 ) parameters?;
 
@@ -184,14 +182,14 @@ symbol: SYMBOL;
 
 tag: TAG;
 
+template:
+    'none'  #noneTemplate |
+    'any'   #anyTemplate
+;
+
 text:
     TEXT        #inlineText |
     TEXT_BLOCK  #newlineText
-;
-
-type:
-    'none'  #noneType |
-    'any'   #anyType
 ;
 
 version: VERSION;

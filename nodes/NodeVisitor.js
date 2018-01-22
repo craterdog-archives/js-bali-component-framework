@@ -76,16 +76,6 @@ NodeVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: variable indices
-NodeVisitor.prototype.visitComponent = function(tree) {
-};
-
-
-// componentExpression: expression indices
-NodeVisitor.prototype.visitComponentExpression = function(tree) {
-};
-
-
 // continueClause: 'continue' ('to' label)?
 NodeVisitor.prototype.visitContinueClause = function(tree) {
 };
@@ -236,6 +226,11 @@ NodeVisitor.prototype.visitStatement = function(tree) {
 
 // structure: '[' composite ']'
 NodeVisitor.prototype.visitStructure = function(tree) {
+};
+
+
+// subcomponentExpression: expression indices
+NodeVisitor.prototype.visitSubcomponentExpression = function(tree) {
 };
 
 

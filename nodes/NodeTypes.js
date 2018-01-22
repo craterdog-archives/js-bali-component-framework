@@ -28,8 +28,8 @@ var TERMINAL_TYPES = [
     'reference',
     'symbol',
     'tag',
+    'template',
     'text',
-    'type',
     'variable',
     'version'
 ];
@@ -45,8 +45,6 @@ var TREE_TYPES = [
     'commitClause',
     'comparisonExpression',
     'complementExpression',
-    'component',
-    'componentExpression',
     'continueClause',
     'defaultExpression',
     'dereferenceExpression',
@@ -75,6 +73,8 @@ var TREE_TYPES = [
     'selectClause',
     'statement',
     'structure',
+    'subcomponent',
+    'subcomponentExpression',
     'table',
     'task',
     'throwClause',
@@ -93,8 +93,6 @@ exports.CHECKOUT_CLAUSE = TREE_TYPES.indexOf('checkoutClause');
 exports.COMMIT_CLAUSE = TREE_TYPES.indexOf('commitClause');
 exports.COMPARISON_EXPRESSION = TREE_TYPES.indexOf('comparisonExpression');
 exports.COMPLEMENT_EXPRESSION = TREE_TYPES.indexOf('complementExpression');
-exports.COMPONENT = TREE_TYPES.indexOf('component');
-exports.COMPONENT_EXPRESSION = TREE_TYPES.indexOf('componentExpression');
 exports.CONTINUE_CLAUSE = TREE_TYPES.indexOf('continueClause');
 exports.DEFAULT_EXPRESSION = TREE_TYPES.indexOf('defaultExpression');
 exports.DEREFERENCE_EXPRESSION = TREE_TYPES.indexOf('dereferenceExpression');
@@ -131,13 +129,15 @@ exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
 exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
 exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');
+exports.SUBCOMPONENT = TREE_TYPES.indexOf('subcomponent');
+exports.SUBCOMPONENT_EXPRESSION = TREE_TYPES.indexOf('subcomponentExpression');
 exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
 exports.TABLE = TREE_TYPES.indexOf('table');
 exports.TAG = TERMINAL_TYPES.indexOf('tag');
 exports.TASK = TREE_TYPES.indexOf('task');
+exports.TEMPLATE = TERMINAL_TYPES.indexOf('template');
 exports.TEXT = TERMINAL_TYPES.indexOf('text');
 exports.THROW_CLAUSE = TREE_TYPES.indexOf('throwClause');
-exports.TYPE = TERMINAL_TYPES.indexOf('type');
 exports.VARIABLE = TERMINAL_TYPES.indexOf('variable');
 exports.VERSION = TERMINAL_TYPES.indexOf('version');
 exports.WAIT_CLAUSE = TREE_TYPES.indexOf('waitClause');

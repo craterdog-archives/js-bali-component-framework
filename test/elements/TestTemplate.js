@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var Type = require('../../elements/Type').Type;
+var Template = require('../../elements/Template').Template;
 var testCase = require('nodeunit').testCase;
 /* global NaN, Infinity */
 
@@ -18,13 +18,13 @@ module.exports = testCase({
     'Test Constructor': function(test) {
         test.expect(4);
 
-        test.strictEqual(new Type().toString(), Type.NONE.toString(), "1 The type value should have been Type.NONE.");
-        test.strictEqual(new Type('none').toString(), Type.NONE.toString(), "2 The type value should have been Type.NONE.");
-        test.strictEqual(new Type('any').toString(), Type.ANY.toString(), "3 The type value should have been Type.ANY.");
+        test.strictEqual(new Template().toString(), Template.NONE.toString(), "1 The template value should have been Template.NONE.");
+        test.strictEqual(new Template('none').toString(), Template.NONE.toString(), "2 The template value should have been Template.NONE.");
+        test.strictEqual(new Template('any').toString(), Template.ANY.toString(), "3 The template value should have been Template.ANY.");
 
         test.throws(
             function() {
-                new Type('foobar');
+                new Template('foobar');
             }
         );
 

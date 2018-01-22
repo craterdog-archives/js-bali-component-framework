@@ -175,20 +175,6 @@ TransformingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: variable indices
-TransformingVisitor.prototype.visitComponent = function(tree) {
-    tree.children[0].accept(this);
-    tree.children[1].accept(this);
-};
-
-
-// componentExpression: expression indices
-TransformingVisitor.prototype.visitComponentExpression = function(tree) {
-    tree.children[0].accept(this);
-    tree.children[1].accept(this);
-};
-
-
 // continueClause: 'continue' ('to' label)?
 TransformingVisitor.prototype.visitContinueClause = function(tree) {
     this.document += 'continue';
@@ -238,8 +224,8 @@ TransformingVisitor.prototype.visitDocument = function(tree) {
 //     reference |
 //     symbol |
 //     tag |
+//     template |
 //     text |
-//     type |
 //     version
 //) parameters?
 TransformingVisitor.prototype.visitElement = function(terminal) {
@@ -250,19 +236,33 @@ TransformingVisitor.prototype.visitElement = function(terminal) {
 };
 
 
-// evaluateClause: ((symbol | component) ':=')? expression
+// evaluateClause: ((symbol | variable indices) ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
-    tree.children[0].accept(this);
-    if (tree.children.length > 1) {
-        this.document += ' := ';
-        tree.children[1].accept(this);
+    var children = tree.children;
+    switch (children.length) {
+        case 3:
+            children[0].accept(this);  // variable
+            children[1].accept(this);  // indices
+            this.document += ' := ';
+            children[2].accept(this);  // expression
+            break;
+        case 2:
+            children[0].accept(this);  // symbol
+            this.document += ' := ';
+            children[1].accept(this);  // expression
+            break;
+        case 1:
+            children[0].accept(this);  // expression
+            break;
+        default:
+            throw new Error('FORMATTER: An invalid evaluate clause has too many children: ' + children.length);
     }
 };
 
 
-// exceptionClause: 'catch' symbol 'matching' expression 'with' block
+// handleClause: 'handle' symbol 'matching' expression 'with' block
 TransformingVisitor.prototype.visitExceptionClause = function(tree) {
-    this.document += ' catch ';
+    this.document += ' handle ';
     tree.children[0].accept(this);
     this.document += ' matching ';
     tree.children[1].accept(this);
@@ -517,6 +517,13 @@ TransformingVisitor.prototype.visitStructure = function(tree) {
     if (tree.children.length > 1) {
         tree.children[1].accept(this);
     }
+};
+
+
+// subcomponentExpression: expression indices
+TransformingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+    tree.children[0].accept(this);
+    tree.children[1].accept(this);
 };
 
 

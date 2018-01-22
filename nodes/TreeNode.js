@@ -69,12 +69,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.COMPLEMENT_EXPRESSION:
             visitor.visitComplementExpression(this);
             break;
-        case types.COMPONENT:
-            visitor.visitComponent(this);
-            break;
-        case types.COMPONENT_EXPRESSION:
-            visitor.visitComponentExpression(this);
-            break;
         case types.CONTINUE_CLAUSE:
             visitor.visitContinueClause(this);
             break;
@@ -158,6 +152,9 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.STRUCTURE:
             visitor.visitStructure(this);
+            break;
+        case types.SUBCOMPONENT_EXPRESSION:
+            visitor.visitSubcomponentExpression(this);
             break;
         case types.TABLE:
             visitor.visitTable(this);

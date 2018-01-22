@@ -182,10 +182,10 @@ TransformingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.protot
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 
 
-// anyType: 'any'
-TransformingVisitor.prototype.visitAnyType = function(ctx) {
+// anyTemplate: 'any'
+TransformingVisitor.prototype.visitAnyTemplate = function(ctx) {
     var value = 'any';
-    this.result = new nodes.TerminalNode(types.TYPE, value);
+    this.result = new nodes.TerminalNode(types.TEMPLATE, value);
 };
 
 
@@ -330,20 +330,9 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: variable indices
-TransformingVisitor.prototype.visitComponent = function(ctx) {
-    var tree = new nodes.TreeNode(types.COMPONENT);
-    ctx.variable().accept(this);
-    tree.addChild(this.result);
-    ctx.indices().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
-};
-
-
-// componentExpression: expression indices
-TransformingVisitor.prototype.visitComponentExpression = function(ctx) {
-    var tree = new nodes.TreeNode(types.COMPONENT_EXPRESSION);
+// subcomponentExpression: expression indices
+TransformingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
+    var tree = new nodes.TreeNode(types.SUBCOMPONENT_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -471,12 +460,20 @@ TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
 };
 
 
-// evaluateClause: ((symbol | component) ':=')? expression
+// evaluateClause: ((symbol | variable indices) ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(ctx) {
     var tree = new nodes.TreeNode(types.EVALUATE_CLAUSE);
-    if (ctx.children.length > 1) {
-        ctx.children[0].accept(this);
-        tree.addChild(this.result);
+    switch (ctx.children.length) {
+        case 4:
+            ctx.variable().accept(this);
+            tree.addChild(this.result);
+            ctx.indices().accept(this);
+            tree.addChild(this.result);
+            break;
+        case 3:
+            ctx.symbol().accept(this);
+            tree.addChild(this.result);
+            break;
     }
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -744,10 +741,10 @@ TransformingVisitor.prototype.visitNewlineText = function(ctx) {
 };
 
 
-// noneType: 'none'
-TransformingVisitor.prototype.visitNoneType = function(ctx) {
+// noneTemplate: 'none'
+TransformingVisitor.prototype.visitNoneTemplate = function(ctx) {
     var value = 'none';
-    this.result = new nodes.TerminalNode(types.TYPE, value);
+    this.result = new nodes.TerminalNode(types.TEMPLATE, value);
 };
 
 
@@ -938,6 +935,17 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
         parameters.accept(this);
         tree.addChild(this.result);
     }
+    this.result = tree;
+};
+
+
+// subcomponent: variable indices
+TransformingVisitor.prototype.visitSubcomponent = function(ctx) {
+    var tree = new nodes.TreeNode(types.SUBCOMPONENT);
+    ctx.variable().accept(this);
+    tree.addChild(this.result);
+    ctx.indices().accept(this);
+    tree.addChild(this.result);
     this.result = tree;
 };
 

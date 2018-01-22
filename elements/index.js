@@ -10,7 +10,6 @@
 'use strict';
 
 exports.Angle = require('./Angle').Angle;
-exports.Any = require('./Any').Any;
 exports.Binary = require('./Binary').Binary;
 exports.Complex = require('./Complex').Complex;
 exports.ObjectVisitor = require('./ObjectVisitor').ObjectVisitor;
@@ -20,5 +19,6 @@ exports.Probability = require('./Probability').Probability;
 exports.Reference = require('./Reference').Reference;
 exports.Symbol = require('./Symbol').Symbol;
 exports.Tag = require('./Tag').Tag;
+exports.Template = require('./Template').Template;
 exports.Text = require('./Text').Text;
 exports.Version = require('./Version').Version;

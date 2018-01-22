@@ -11,33 +11,33 @@
 
 /*
  * This element class captures the state and methods associated with an
- * type element.
+ * template element.
  */
 
 
 /**
- * This constructor creates a new type element.
+ * This constructor creates a new template element.
  * 
  * @constructor
- * @param {string} value The value of the type element.
- * @returns {Type} The new type element.
+ * @param {string} value The value of the template element.
+ * @returns {Template} The new template element.
  */
-function Type(value) {
+function Template(value) {
     if (!value) value = 'none';  // default value
     switch (value) {
         case 'none':
         case 'any':
             break;
         default:
-            throw new Error('TYPE: An invalid value was passed into the constructor: ' + value);
+            throw new Error('TEMPLATE: An invalid value was passed into the constructor: ' + value);
     }
-    if (typeof Type.NONE !== 'undefined' && value === 'none') return Type.NONE;
-    if (typeof Type.ANY !== 'undefined' && value === 'any') return Type.ANY;
+    if (typeof Template.NONE !== 'undefined' && value === 'none') return Template.NONE;
+    if (typeof Template.ANY !== 'undefined' && value === 'any') return Template.ANY;
     this.value = value;
     return this;
 }
-Type.prototype.constructor = Type;
-exports.Type = Type;
+Template.prototype.constructor = Template;
+exports.Template = Template;
 
 
 /**
@@ -45,21 +45,21 @@ exports.Type = Type;
  * 
  * @param {ObjectVisitor} visitor The visitor that wants to visit this element.
  */
-Type.prototype.accept = function(visitor) {
-    visitor.visitType(this);
+Template.prototype.accept = function(visitor) {
+    visitor.visitTemplate(this);
 };
 
 
 /**
- * This method returns the string value of the type type.
+ * This method returns the string value of the template type.
  * 
- * @returns {string} The string value of the type type.
+ * @returns {string} The string value of the template type.
  */
-Type.prototype.toString = function() {
+Template.prototype.toString = function() {
     return this.value;
 };
 
 
 // common constants
-Type.NONE = new Type('none');
-Type.ANY = new Type('any');
+Template.NONE = new Template('none');
+Template.ANY = new Template('any');
