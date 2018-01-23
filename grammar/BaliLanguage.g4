@@ -61,10 +61,6 @@ statement: (
     throwClause
 ) handleClause* finishClause?;
 
-handleClause: 'handle' symbol 'matching' expression 'with' block;
-
-finishClause: 'finish' 'with' block;
-
 evaluateClause: ((symbol | variable indices) ':=')? expression;
 
 checkoutClause: 'checkout' symbol 'from' expression;
@@ -96,6 +92,10 @@ breakClause: 'break' ('from' label)?;
 returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
+
+handleClause: 'handle' symbol 'matching' expression 'with' block;
+
+finishClause: 'finish' 'with' block;
 
 label: IDENTIFIER;
 
