@@ -207,7 +207,7 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// document: literal EOF
+// document: NEWLINE* component NEWLINE* EOF
 TransformingVisitor.prototype.visitDocument = function(tree) {
     tree.children[0].accept(this);
     this.document += tree.EOF;
@@ -257,17 +257,6 @@ TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
         default:
             throw new Error('FORMATTER: An invalid evaluate clause has too many children: ' + children.length);
     }
-};
-
-
-// handleClause: 'handle' symbol 'matching' expression 'with' block
-TransformingVisitor.prototype.visitExceptionClause = function(tree) {
-    this.document += ' handle ';
-    tree.children[0].accept(this);
-    this.document += ' matching ';
-    tree.children[1].accept(this);
-    this.document += ' with ';
-    tree.children[2].accept(this);
 };
 
 

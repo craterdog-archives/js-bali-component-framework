@@ -182,24 +182,6 @@ BaliLanguageListener.prototype.exitStatement = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#handleClause.
-BaliLanguageListener.prototype.enterHandleClause = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#handleClause.
-BaliLanguageListener.prototype.exitHandleClause = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#finishClause.
-BaliLanguageListener.prototype.enterFinishClause = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#finishClause.
-BaliLanguageListener.prototype.exitFinishClause = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageListener.prototype.enterEvaluateClause = function(ctx) {
 };
@@ -341,6 +323,24 @@ BaliLanguageListener.prototype.enterThrowClause = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#throwClause.
 BaliLanguageListener.prototype.exitThrowClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#handleClause.
+BaliLanguageListener.prototype.enterHandleClause = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#handleClause.
+BaliLanguageListener.prototype.exitHandleClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#finishClause.
+BaliLanguageListener.prototype.enterFinishClause = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#finishClause.
+BaliLanguageListener.prototype.exitFinishClause = function(ctx) {
 };
 
 

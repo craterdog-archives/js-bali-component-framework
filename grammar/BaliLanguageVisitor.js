@@ -126,18 +126,6 @@ BaliLanguageVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#handleClause.
-BaliLanguageVisitor.prototype.visitHandleClause = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliLanguageParser#finishClause.
-BaliLanguageVisitor.prototype.visitFinishClause = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageVisitor.prototype.visitEvaluateClause = function(ctx) {
   return this.visitChildren(ctx);
@@ -230,6 +218,18 @@ BaliLanguageVisitor.prototype.visitReturnClause = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#throwClause.
 BaliLanguageVisitor.prototype.visitThrowClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#handleClause.
+BaliLanguageVisitor.prototype.visitHandleClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#finishClause.
+BaliLanguageVisitor.prototype.visitFinishClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 
