@@ -236,19 +236,19 @@ TransformingVisitor.prototype.visitElement = function(terminal) {
 TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
     var children = tree.children;
     switch (children.length) {
-        case 3:
-            children[0].accept(this);  // variable
-            children[1].accept(this);  // indices
-            this.document += ' := ';
-            children[2].accept(this);  // expression
+        case 1:
+            children[0].accept(this);  // expression
             break;
         case 2:
             children[0].accept(this);  // symbol
             this.document += ' := ';
             children[1].accept(this);  // expression
             break;
-        case 1:
-            children[0].accept(this);  // expression
+        case 3:
+            children[0].accept(this);  // variable
+            children[1].accept(this);  // indices
+            this.document += ' := ';
+            children[2].accept(this);  // expression
             break;
         default:
             throw new Error('FORMATTER: An invalid evaluate clause has too many children: ' + children.length);
@@ -444,7 +444,7 @@ TransformingVisitor.prototype.visitRange = function(tree) {
 };
 
 
-// returnClause: 'return' result?
+// returnClause: 'return' expression?
 TransformingVisitor.prototype.visitReturnClause = function(tree) {
     this.document += 'return';
     if (tree.children.length > 0) {
@@ -454,7 +454,7 @@ TransformingVisitor.prototype.visitReturnClause = function(tree) {
 };
 
 
-// saveClause: 'save' draft 'to' location
+// saveClause: 'save' expression 'to' expression
 TransformingVisitor.prototype.visitSaveClause = function(tree) {
     this.document += 'save ';
     tree.children[0].accept(this);

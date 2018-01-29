@@ -713,7 +713,6 @@ BaliLanguageParser.prototype.component = function() {
     var localctx = new ComponentContext(this, this._ctx, this.state);
     this.enterRule(localctx, 2, BaliLanguageParser.RULE_component);
     try {
-        this.enterOuterAlt(localctx, 1);
         this.state = 120;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
@@ -738,14 +737,17 @@ BaliLanguageParser.prototype.component = function() {
         case BaliLanguageParser.BINARY:
         case BaliLanguageParser.TEXT_BLOCK:
         case BaliLanguageParser.TEXT:
+            this.enterOuterAlt(localctx, 1);
             this.state = 117;
             this.element();
             break;
         case BaliLanguageParser.T__0:
+            this.enterOuterAlt(localctx, 2);
             this.state = 118;
             this.structure();
             break;
         case BaliLanguageParser.T__7:
+            this.enterOuterAlt(localctx, 3);
             this.state = 119;
             this.block();
             break;

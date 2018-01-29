@@ -73,7 +73,6 @@ var TREE_TYPES = [
     'selectClause',
     'statement',
     'structure',
-    'subcomponent',
     'subcomponentExpression',
     'table',
     'task',
@@ -129,7 +128,6 @@ exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
 exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
 exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');
-exports.SUBCOMPONENT = TREE_TYPES.indexOf('subcomponent');
 exports.SUBCOMPONENT_EXPRESSION = TREE_TYPES.indexOf('subcomponentExpression');
 exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
 exports.TABLE = TREE_TYPES.indexOf('table');

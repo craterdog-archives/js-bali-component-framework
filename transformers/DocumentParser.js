@@ -421,8 +421,8 @@ TransformingVisitor.prototype.visitDuration = function(ctx) {
 //    reference |
 //    symbol |
 //    tag |
+//    template |
 //    text |
-//    type |
 //    version
 //) parameters?
 TransformingVisitor.prototype.visitElement = function(ctx) {
@@ -776,7 +776,10 @@ TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 };
 
 
-// procedure: statement*
+// procedure:
+//     statement (';' statement)*   |
+//     NEWLINE (statement NEWLINE)* |
+//     /*empty statements*/
 TransformingVisitor.prototype.visitProcedure = function(ctx) {
     var tree = new nodes.TreeNode(types.PROCEDURE);
     var type = ctx.constructor.name;
@@ -940,17 +943,6 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
 };
 
 
-// subcomponent: variable indices
-TransformingVisitor.prototype.visitSubcomponent = function(ctx) {
-    var tree = new nodes.TreeNode(types.SUBCOMPONENT);
-    ctx.variable().accept(this);
-    tree.addChild(this.result);
-    ctx.indices().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
-};
-
-
 // symbol: SYMBOL
 TransformingVisitor.prototype.visitSymbol = function(ctx) {
     var value = ctx.SYMBOL().getText();
@@ -959,7 +951,10 @@ TransformingVisitor.prototype.visitSymbol = function(ctx) {
 };
 
 
-// table: association*
+// table:
+//     association (',' association)* |
+//     NEWLINE (association NEWLINE)* |
+//     ':' /*empty table*/
 TransformingVisitor.prototype.visitTable = function(ctx) {
     var tree = new nodes.TreeNode(types.TABLE);
     var type = ctx.constructor.name;

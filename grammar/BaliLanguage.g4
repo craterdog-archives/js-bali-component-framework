@@ -5,7 +5,7 @@ grammar BaliLanguage;
 
 document: NEWLINE* component NEWLINE* EOF;
 
-component: (element | structure | block);
+component: element | structure | block;
 
 structure: '[' composite ']' parameters?;
 
