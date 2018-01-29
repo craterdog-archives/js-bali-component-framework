@@ -526,6 +526,17 @@ TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
 };
 
 
+// functionExpression: name parameters
+TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
+    var tree = new nodes.TreeNode(types.FUNCTION_EXPRESSION);
+    ctx.name().accept(this);
+    tree.addChild(this.result);
+    ctx.parameters().accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
+};
+
+
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 TransformingVisitor.prototype.visitHandleClause = function(ctx) {
     var tree = new nodes.TreeNode(types.HANDLE_CLAUSE);
@@ -643,17 +654,6 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
 };
 
 
-// invocation: name parameters
-TransformingVisitor.prototype.visitInvocation = function(ctx) {
-    var tree = new nodes.TreeNode(types.INVOCATION);
-    ctx.name().accept(this);
-    tree.addChild(this.result);
-    ctx.parameters().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
-};
-
-
 // label: IDENTIFIER
 TransformingVisitor.prototype.visitLabel = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
@@ -684,12 +684,14 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 };
 
 
-// messageExpression: expression '.' invocation
+// messageExpression: expression '.' name parameters
 TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
     var tree = new nodes.TreeNode(types.MESSAGE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    ctx.invocation().accept(this);
+    ctx.name().accept(this);
+    tree.addChild(this.result);
+    ctx.parameters().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };

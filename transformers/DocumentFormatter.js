@@ -15,7 +15,6 @@
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
  */
-var nodes = require('../nodes');
 var types = require('../nodes/NodeTypes');
 
 
@@ -50,13 +49,11 @@ DocumentFormatter.prototype.formatDocument = function(baliDocument, padding) {
 // PRIVATE CLASSES
 
 function TransformingVisitor(padding) {
-    nodes.NodeVisitor.call(this);
     this.padding = padding === undefined ? '' : padding;
     this.document = '';
     this.depth = 0;
     return this;
 }
-TransformingVisitor.prototype = Object.create(nodes.NodeVisitor.prototype);
 TransformingVisitor.prototype.constructor = TransformingVisitor;
 TransformingVisitor.prototype.indentation = '    ';  // indentation per level
 
@@ -282,6 +279,13 @@ TransformingVisitor.prototype.visitFinishClause = function(tree) {
 };
 
 
+// functionExpression: name parameters
+TransformingVisitor.prototype.visitFunctionExpression = function(tree) {
+    tree.children[0].accept(this);
+    tree.children[1].accept(this);
+};
+
+
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 TransformingVisitor.prototype.visitHandleClause = function(tree) {
     this.document += ' handle ';
@@ -337,13 +341,6 @@ TransformingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// invocation: name parameters
-TransformingVisitor.prototype.visitInvocation = function(tree) {
-    tree.children[0].accept(this);
-    tree.children[1].accept(this);
-};
-
-
 // label: IDENTIFIER
 TransformingVisitor.prototype.visitLabel = function(terminal) {
     this.document += terminal.value;
@@ -368,11 +365,12 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(tree) {
 };
 
 
-// messageExpression: expression '.' invocation
+// messageExpression: expression '.' name parameters
 TransformingVisitor.prototype.visitMessageExpression = function(tree) {
     tree.children[0].accept(this);
     this.document += '.';
     tree.children[1].accept(this);
+    tree.children[2].accept(this);
 };
 
 
@@ -490,7 +488,24 @@ TransformingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: attemptClause handleClause* finishClause?
+// statement: (
+//     evaluateClause |
+//     checkoutClause |
+//     saveClause |
+//     discardClause |
+//     commitClause |
+//     publishClause |
+//     queueClause |
+//     waitClause |
+//     ifClause |
+//     selectClause |
+//     whileClause |
+//     withClause |
+//     continueClause |
+//     breakClause |
+//     returnClause |
+//     throwClause
+// ) handleClause* finishClause?
 TransformingVisitor.prototype.visitStatement = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);
@@ -544,7 +559,7 @@ TransformingVisitor.prototype.visitTable = function(tree) {
 };
 
 
-// task: SHELL procedure EOF
+// task: SHELL NEWLINE* procedure NEWLINE* EOF
 TransformingVisitor.prototype.visitTask = function(tree) {
     this.document += tree.shell;
     tree.children[0].accept(this);

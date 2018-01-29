@@ -109,10 +109,10 @@ indices: '[' array ']';
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression    |
     variable                                                       #variableExpression     |
-    invocation                                                     #functionExpression     |
+    name parameters                                                #functionExpression     |
     '(' expression ')'                                             #precedenceExpression   |
     '@' expression                                                 #dereferenceExpression  |
-    expression '.' invocation                                      #messageExpression      |
+    expression '.' name parameters                                 #messageExpression      |
     expression indices                                             #subcomponentExpression |
     expression '!'                                                 #factorialExpression    |
     <assoc=right> expression '^' expression                        #exponentialExpression  |
@@ -124,8 +124,6 @@ expression:                  // Precedence (highest to lowest)
     expression op=('and' | 'sans' | 'xor' | 'or') expression       #logicalExpression      |
     expression '?' expression                                      #defaultExpression
 ;
-
-invocation: name parameters;
 
 name: IDENTIFIER;
 

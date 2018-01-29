@@ -348,12 +348,6 @@ BaliLanguageVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#invocation.
-BaliLanguageVisitor.prototype.visitInvocation = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#name.
 BaliLanguageVisitor.prototype.visitName = function(ctx) {
   return this.visitChildren(ctx);

@@ -10,6 +10,5 @@
 'use strict';
 
 exports.NodeTypes = require('./NodeTypes').NodeTypes;
-exports.NodeVisitor = require('./NodeVisitor').NodeVisitor;
 exports.TerminalNode = require('./TerminalNode').TerminalNode;
 exports.TreeNode = require('./TreeNode').TreeNode;

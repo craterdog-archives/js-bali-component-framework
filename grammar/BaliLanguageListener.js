@@ -515,15 +515,6 @@ BaliLanguageListener.prototype.exitComplementExpression = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#invocation.
-BaliLanguageListener.prototype.enterInvocation = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#invocation.
-BaliLanguageListener.prototype.exitInvocation = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#name.
 BaliLanguageListener.prototype.enterName = function(ctx) {
 };

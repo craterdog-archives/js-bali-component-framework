@@ -96,6 +96,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.FINISH_CLAUSE:
             visitor.visitFinishClause(this);
             break;
+        case types.FUNCTION_EXPRESSION:
+            visitor.visitFunctionExpression(this);
+            break;
         case types.HANDLE_CLAUSE:
             visitor.visitHandleClause(this);
             break;
@@ -107,9 +110,6 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.INVERSION_EXPRESSION:
             visitor.visitInversionExpression(this);
-            break;
-        case types.INVOCATION:
-            visitor.visitInvocation(this);
             break;
         case types.LOGICAL_EXPRESSION:
             visitor.visitLogicalExpression(this);
