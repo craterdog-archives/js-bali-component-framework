@@ -394,12 +394,11 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: NEWLINE* literal NEWLINE* EOF
-TransformingVisitor.prototype.visitTask = function(ctx) {
+// document: NEWLINE* component NEWLINE* EOF
+TransformingVisitor.prototype.visitDocument = function(ctx) {
     var tree = new nodes.TreeNode(types.DOCUMENT);
-    ctx.literal().accept(this);
+    ctx.component().accept(this);
     tree.addChild(this.result);
-    tree.EOF = ctx.EOF().getText();
     this.result = tree;
 };
 
@@ -986,11 +985,10 @@ TransformingVisitor.prototype.visitTag = function(ctx) {
 
 // task: SHELL NEWLINE* procedure NEWLINE* EOF
 TransformingVisitor.prototype.visitTask = function(ctx) {
-    var tree = new nodes.TreeNode(types.SCRIPT);
+    var tree = new nodes.TreeNode(types.TASK);
     tree.shell = ctx.SHELL().getText();
     ctx.procedure().accept(this);
     tree.addChild(this.result);
-    tree.EOF = ctx.EOF().getText();
     this.result = tree;
 };
 

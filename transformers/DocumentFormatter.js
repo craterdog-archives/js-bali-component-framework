@@ -207,7 +207,6 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 // document: NEWLINE* component NEWLINE* EOF
 TransformingVisitor.prototype.visitDocument = function(tree) {
     tree.children[0].accept(this);
-    this.document += tree.EOF;
 };
 
 
@@ -563,7 +562,6 @@ TransformingVisitor.prototype.visitTable = function(tree) {
 TransformingVisitor.prototype.visitTask = function(tree) {
     this.document += tree.shell;
     tree.children[0].accept(this);
-    this.document += tree.EOF;
 };
 
 
