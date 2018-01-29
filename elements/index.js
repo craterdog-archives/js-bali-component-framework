@@ -12,7 +12,6 @@
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
 exports.Complex = require('./Complex').Complex;
-exports.ObjectVisitor = require('./ObjectVisitor').ObjectVisitor;
 exports.Moment = require('./Moment').Moment;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
