@@ -15,7 +15,7 @@
  * the corresponding Bali source document. An optional padding may be
  * specified that is prepended to each line of the Bali document.
  */
-var types = require('../nodes/NodeTypes');
+var types = require('../syntax/NodeTypes');
 
 
 /**
