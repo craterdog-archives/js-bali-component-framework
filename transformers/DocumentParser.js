@@ -525,14 +525,22 @@ TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
 };
 
 
-// functionExpression: name parameters
+// functionExpression: function parameters
 TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.FUNCTION_EXPRESSION);
-    ctx.name().accept(this);
+    ctx.funxtion().accept(this);
     tree.addChild(this.result);
     ctx.parameters().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+// funxtion: IDENTIFIER
+TransformingVisitor.prototype.visitFunxtion = function(ctx) {
+    var value = ctx.IDENTIFIER().getText();
+    var terminal = new syntax.TerminalNode(types.FUNCTION, value);
+    this.result = terminal;
 };
 
 
@@ -683,12 +691,20 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 };
 
 
-// messageExpression: expression '.' name parameters
+// message: IDENTIFIER
+TransformingVisitor.prototype.visitMessage = function(ctx) {
+    var value = ctx.IDENTIFIER().getText();
+    var terminal = new syntax.TerminalNode(types.MESSAGE, value);
+    this.result = terminal;
+};
+
+
+// messageExpression: expression '.' message parameters
 TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.MESSAGE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    ctx.name().accept(this);
+    ctx.message().accept(this);
     tree.addChild(this.result);
     ctx.parameters().accept(this);
     tree.addChild(this.result);
@@ -700,14 +716,6 @@ TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
 TransformingVisitor.prototype.visitMoment = function(ctx) {
     var value = ctx.MOMENT().getText();
     var terminal = new syntax.TerminalNode(types.MOMENT, value);
-    this.result = terminal;
-};
-
-
-// name: IDENTIFIER
-TransformingVisitor.prototype.visitName = function(ctx) {
-    var value = ctx.IDENTIFIER().getText();
-    var terminal = new syntax.TerminalNode(types.NAME, value);
     this.result = terminal;
 };
 

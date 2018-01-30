@@ -515,12 +515,21 @@ BaliLanguageListener.prototype.exitComplementExpression = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#name.
-BaliLanguageListener.prototype.enterName = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#funxtion.
+BaliLanguageListener.prototype.enterFunxtion = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#name.
-BaliLanguageListener.prototype.exitName = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#funxtion.
+BaliLanguageListener.prototype.exitFunxtion = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#message.
+BaliLanguageListener.prototype.enterMessage = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#message.
+BaliLanguageListener.prototype.exitMessage = function(ctx) {
 };
 
 

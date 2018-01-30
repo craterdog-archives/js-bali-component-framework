@@ -19,9 +19,10 @@ var TERMINAL_TYPES = [
     'invalid',  // unit based indexing for Bali
     'binary',
     'duration',
+    'function',
     'label',
     'moment',
-    'name',
+    'message',
     'number',
     'percent',
     'probability',
@@ -102,6 +103,7 @@ exports.EVALUATE_CLAUSE = TREE_TYPES.indexOf('evaluateClause');
 exports.EXPONENTIAL_EXPRESSION = TREE_TYPES.indexOf('exponentialExpression');
 exports.FACTORIAL_EXPRESSION = TREE_TYPES.indexOf('factorialExpression');
 exports.FINISH_CLAUSE = TREE_TYPES.indexOf('finishClause');
+exports.FUNCTION = TERMINAL_TYPES.indexOf('function');
 exports.FUNCTION_EXPRESSION = TREE_TYPES.indexOf('functionExpression');
 exports.HANDLE_CLAUSE = TREE_TYPES.indexOf('handleClause');
 exports.IF_CLAUSE = TREE_TYPES.indexOf('ifClause');
@@ -110,9 +112,9 @@ exports.INVERSION_EXPRESSION = TREE_TYPES.indexOf('inversionExpression');
 exports.LABEL = TERMINAL_TYPES.indexOf('label');
 exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
 exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
+exports.MESSAGE = TERMINAL_TYPES.indexOf('message');
 exports.MESSAGE_EXPRESSION = TREE_TYPES.indexOf('messageExpression');
 exports.MOMENT = TERMINAL_TYPES.indexOf('moment');
-exports.NAME = TERMINAL_TYPES.indexOf('name');
 exports.NUMBER = TERMINAL_TYPES.indexOf('number');
 exports.PARAMETERS = TREE_TYPES.indexOf('parameters');
 exports.PERCENT = TERMINAL_TYPES.indexOf('percent');

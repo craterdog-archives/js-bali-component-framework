@@ -278,7 +278,13 @@ TransformingVisitor.prototype.visitFinishClause = function(tree) {
 };
 
 
-// functionExpression: name parameters
+// function: IDENTIFIER
+TransformingVisitor.prototype.visitFunction = function(terminal) {
+    this.document += terminal.value;
+};
+
+
+// functionExpression: function parameters
 TransformingVisitor.prototype.visitFunctionExpression = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
@@ -364,18 +370,18 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(tree) {
 };
 
 
-// messageExpression: expression '.' name parameters
+// message: IDENTIFIER
+TransformingVisitor.prototype.visitMessage = function(terminal) {
+    this.document += terminal.value;
+};
+
+
+// messageExpression: expression '.' message parameters
 TransformingVisitor.prototype.visitMessageExpression = function(tree) {
     tree.children[0].accept(this);
     this.document += '.';
     tree.children[1].accept(this);
     tree.children[2].accept(this);
-};
-
-
-// name: IDENTIFIER
-TransformingVisitor.prototype.visitName = function(terminal) {
-    this.document += terminal.value;
 };
 
 

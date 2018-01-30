@@ -61,11 +61,14 @@ TerminalNode.prototype.accept = function(visitor) {
         case types.VERSION:
             visitor.visitElement(this);
             break;
+        case types.FUNCTION:
+            visitor.visitFunction(this);
+            break;
         case types.LABEL:
             visitor.visitLabel(this);
             break;
-        case types.NAME:
-            visitor.visitName(this);
+        case types.MESSAGE:
+            visitor.visitMessage(this);
             break;
         case types.VARIABLE:
             visitor.visitVariable(this);
