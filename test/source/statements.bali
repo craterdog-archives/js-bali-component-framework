@@ -40,11 +40,21 @@
         break
         break from label
     }
+    $lifecycle: {
+        checkout $document from <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        save document to <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        commit document to <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        checkout documents[i] from <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        save documents[i] to <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        commit documents[i] to <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        discard <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+    }
     $publishEvent: {
         publish event
     }
     $waitForMessage: {
         wait for $message from <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
+        wait for messages[$foo, 5] from <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
     }
     $queueMessage: {
         queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>

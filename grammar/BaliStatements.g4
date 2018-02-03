@@ -24,7 +24,7 @@ statement: (
 
 evaluateClause: ((symbol | variable indices) ':=')? expression;
 
-checkoutClause: 'checkout' symbol 'from' expression;
+checkoutClause: 'checkout' (symbol | variable indices) 'from' expression;
 
 saveClause: 'save' expression 'to' expression;
 
@@ -36,7 +36,7 @@ publishClause: 'publish' expression;
 
 queueClause: 'queue' expression 'on' expression;
 
-waitClause: 'wait' 'for' symbol 'from' expression;
+waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression;
 
 ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?;
 

@@ -1,7 +1,0 @@
-{
-    label: while $condition do {
-        true
-        continue to label
-        none
-    }
-}

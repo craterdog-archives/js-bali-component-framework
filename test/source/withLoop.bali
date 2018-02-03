@@ -1,7 +1,0 @@
-{
-    with $sequence do {
-        true
-        continue
-        none
-    }
-}

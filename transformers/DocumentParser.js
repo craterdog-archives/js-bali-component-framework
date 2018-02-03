@@ -264,11 +264,21 @@ TransformingVisitor.prototype.visitBreakClause = function(ctx) {
 };
 
 
-// checkoutClause: 'checkout' symbol 'from' expression
+// checkoutClause: 'checkout' (symbol | variable indices) 'from' expression
 TransformingVisitor.prototype.visitCheckoutClause = function(ctx) {
     var tree = new syntax.TreeNode(types.CHECKOUT_CLAUSE);
-    ctx.symbol().accept(this);
-    tree.addChild(this.result);
+    switch (ctx.children.length) {
+        case 5:
+            ctx.variable().accept(this);
+            tree.addChild(this.result);
+            ctx.indices().accept(this);
+            tree.addChild(this.result);
+            break;
+        case 4:
+            ctx.symbol().accept(this);
+            tree.addChild(this.result);
+            break;
+    }
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -1043,11 +1053,21 @@ TransformingVisitor.prototype.visitVersion = function(ctx) {
 };
 
 
-// waitClause: 'wait' 'for' symbol 'from' expression
+// waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression
 TransformingVisitor.prototype.visitWaitClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WAIT_CLAUSE);
-    ctx.symbol().accept(this);
-    tree.addChild(this.result);
+    switch (ctx.children.length) {
+        case 6:
+            ctx.variable().accept(this);
+            tree.addChild(this.result);
+            ctx.indices().accept(this);
+            tree.addChild(this.result);
+            break;
+        case 5:
+            ctx.symbol().accept(this);
+            tree.addChild(this.result);
+            break;
+    }
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;

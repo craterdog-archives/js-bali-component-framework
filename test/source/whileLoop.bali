@@ -1,7 +1,0 @@
-{
-    while $condition do {
-        true
-        break
-        none
-    }
-}

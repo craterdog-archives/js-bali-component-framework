@@ -137,12 +137,25 @@ TransformingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' symbol 'from' expression
+// checkoutClause: 'checkout' (symbol | variable indices) 'from' expression
 TransformingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.document += 'checkout ';
-    tree.children[0].accept(this);
-    this.document += ' from ';
-    tree.children[1].accept(this);
+    var children = tree.children;
+    switch (children.length) {
+        case 2:
+            children[0].accept(this);  // symbol
+            this.document += ' from ';
+            children[1].accept(this);  // expression
+            break;
+        case 3:
+            children[0].accept(this);  // variable
+            children[1].accept(this);  // indices
+            this.document += ' from ';
+            children[2].accept(this);  // expression
+            break;
+        default:
+            throw new Error('FORMATTER: An invalid checkout clause has the wrong number of children: ' + children.length);
+    }
 };
 
 
@@ -584,12 +597,25 @@ TransformingVisitor.prototype.visitVariable = function(terminal) {
 };
 
 
-// waitClause: 'wait' 'for' symbol 'from' expression
+// waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression
 TransformingVisitor.prototype.visitWaitClause = function(tree) {
     this.document += 'wait for ';
-    tree.children[0].accept(this);
-    this.document += ' from ';
-    tree.children[1].accept(this);
+    var children = tree.children;
+    switch (children.length) {
+        case 2:
+            children[0].accept(this);  // symbol
+            this.document += ' from ';
+            children[1].accept(this);  // expression
+            break;
+        case 3:
+            children[0].accept(this);  // variable
+            children[1].accept(this);  // indices
+            this.document += ' from ';
+            children[2].accept(this);  // expression
+            break;
+        default:
+            throw new Error('FORMATTER: An invalid wait for clause has the wrong number of children: ' + children.length);
+    }
 };
 
 
