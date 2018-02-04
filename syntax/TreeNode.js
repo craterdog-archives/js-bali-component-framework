@@ -138,6 +138,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.RANGE:
             visitor.visitRange(this);
             break;
+        case types.RECIPIENT:
+            visitor.visitRecipient(this);
+            break;
         case types.RETURN_CLAUSE:
             visitor.visitReturnClause(this);
             break;

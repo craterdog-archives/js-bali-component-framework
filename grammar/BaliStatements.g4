@@ -22,9 +22,9 @@ statement: (
     throwClause
 ) handleClause* finishClause?;
 
-evaluateClause: ((symbol | variable indices) ':=')? expression;
+evaluateClause: (recipient ':=')? expression;
 
-checkoutClause: 'checkout' (symbol | variable indices) 'from' expression;
+checkoutClause: 'checkout' recipient 'from' expression;
 
 saveClause: 'save' expression 'to' expression;
 
@@ -36,7 +36,7 @@ publishClause: 'publish' expression;
 
 queueClause: 'queue' expression 'on' expression;
 
-waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression;
+waitClause: 'wait' 'for' recipient 'from' expression;
 
 ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?;
 
@@ -59,6 +59,8 @@ handleClause: 'handle' symbol 'matching' expression 'with' block;
 finishClause: 'finish' 'with' block;
 
 label: IDENTIFIER;
+
+recipient: symbol | variable indices;
 
 variable: IDENTIFIER;
 

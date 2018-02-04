@@ -70,6 +70,7 @@ var TREE_TYPES = [
     'publishClause',
     'queueClause',
     'range',
+    'recipient',
     'returnClause',
     'saveClause',
     'selectClause',
@@ -125,6 +126,7 @@ exports.PROCEDURE = TREE_TYPES.indexOf('procedure');
 exports.PUBLISH_CLAUSE = TREE_TYPES.indexOf('publishClause');
 exports.QUEUE_CLAUSE = TREE_TYPES.indexOf('queueClause');
 exports.RANGE = TREE_TYPES.indexOf('range');
+exports.RECIPIENT = TREE_TYPES.indexOf('recipient');
 exports.REFERENCE = TERMINAL_TYPES.indexOf('reference');
 exports.RETURN_CLAUSE = TREE_TYPES.indexOf('returnClause');
 exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');

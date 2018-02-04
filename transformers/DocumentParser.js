@@ -267,21 +267,11 @@ TransformingVisitor.prototype.visitCatalog = function(ctx) {
 };
 
 
-// checkoutClause: 'checkout' (symbol | variable indices) 'from' expression
+// checkoutClause: 'checkout' recipient 'from' expression
 TransformingVisitor.prototype.visitCheckoutClause = function(ctx) {
     var tree = new syntax.TreeNode(types.CHECKOUT_CLAUSE);
-    switch (ctx.children.length) {
-        case 5:
-            ctx.variable().accept(this);
-            tree.addChild(this.result);
-            ctx.indices().accept(this);
-            tree.addChild(this.result);
-            break;
-        case 4:
-            ctx.symbol().accept(this);
-            tree.addChild(this.result);
-            break;
-    }
+    ctx.recipient().accept(this);
+    tree.addChild(this.result);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -461,20 +451,13 @@ TransformingVisitor.prototype.visitEmptyProcedure = function(ctx) {
 
 
 
-// evaluateClause: ((symbol | variable indices) ':=')? expression
+// evaluateClause: (recipient ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(ctx) {
     var tree = new syntax.TreeNode(types.EVALUATE_CLAUSE);
-    switch (ctx.children.length) {
-        case 4:
-            ctx.variable().accept(this);
-            tree.addChild(this.result);
-            ctx.indices().accept(this);
-            tree.addChild(this.result);
-            break;
-        case 3:
-            ctx.symbol().accept(this);
-            tree.addChild(this.result);
-            break;
+    var recipient = ctx.recipient();
+    if (recipient) {
+        ctx.recipient().accept(this);
+        tree.addChild(this.result);
     }
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -866,6 +849,23 @@ TransformingVisitor.prototype.visitRealNumber = function(ctx) {
 };
 
 
+// recipient: symbol | variable indices
+TransformingVisitor.prototype.visitRecipient = function(ctx) {
+    var tree = new syntax.TreeNode(types.RECIPIENT);
+    var symbol = ctx.symbol();
+    if (symbol) {
+        ctx.symbol().accept(this);
+        tree.addChild(this.result);
+    } else {
+        ctx.variable().accept(this);
+        tree.addChild(this.result);
+        ctx.indices().accept(this);
+        tree.addChild(this.result);
+        }
+    this.result = tree;
+};
+
+
 // reference: RESOURCE
 TransformingVisitor.prototype.visitReference = function(ctx) {
     var value = ctx.RESOURCE().getText();
@@ -1056,21 +1056,11 @@ TransformingVisitor.prototype.visitVersion = function(ctx) {
 };
 
 
-// waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression
+// waitClause: 'wait' 'for' recipient 'from' expression
 TransformingVisitor.prototype.visitWaitClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WAIT_CLAUSE);
-    switch (ctx.children.length) {
-        case 6:
-            ctx.variable().accept(this);
-            tree.addChild(this.result);
-            ctx.indices().accept(this);
-            tree.addChild(this.result);
-            break;
-        case 5:
-            ctx.symbol().accept(this);
-            tree.addChild(this.result);
-            break;
-    }
+    ctx.recipient().accept(this);
+    tree.addChild(this.result);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;

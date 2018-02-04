@@ -240,6 +240,12 @@ BaliLanguageVisitor.prototype.visitLabel = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#recipient.
+BaliLanguageVisitor.prototype.visitRecipient = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#variable.
 BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
   return this.visitChildren(ctx);

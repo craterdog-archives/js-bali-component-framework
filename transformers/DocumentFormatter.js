@@ -140,25 +140,12 @@ TransformingVisitor.prototype.visitCatalog = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' (symbol | variable indices) 'from' expression
+// checkoutClause: 'checkout' recipient 'from' expression
 TransformingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.document += 'checkout ';
-    var children = tree.children;
-    switch (children.length) {
-        case 2:
-            children[0].accept(this);  // symbol
-            this.document += ' from ';
-            children[1].accept(this);  // expression
-            break;
-        case 3:
-            children[0].accept(this);  // variable
-            children[1].accept(this);  // indices
-            this.document += ' from ';
-            children[2].accept(this);  // expression
-            break;
-        default:
-            throw new Error('FORMATTER: An invalid checkout clause has the wrong number of children: ' + children.length);
-    }
+    tree.children[0].accept(this);  // recipient
+    this.document += ' from ';
+    tree.children[1].accept(this);  // expression
 };
 
 
@@ -248,26 +235,14 @@ TransformingVisitor.prototype.visitElement = function(terminal) {
 };
 
 
-// evaluateClause: ((symbol | variable indices) ':=')? expression
+// evaluateClause: (recipient ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
-    var children = tree.children;
-    switch (children.length) {
-        case 1:
-            children[0].accept(this);  // expression
-            break;
-        case 2:
-            children[0].accept(this);  // symbol
-            this.document += ' := ';
-            children[1].accept(this);  // expression
-            break;
-        case 3:
-            children[0].accept(this);  // variable
-            children[1].accept(this);  // indices
-            this.document += ' := ';
-            children[2].accept(this);  // expression
-            break;
-        default:
-            throw new Error('FORMATTER: An invalid evaluate clause has too many children: ' + children.length);
+    if (tree.children.length > 1) {
+        tree.children[0].accept(this);  // recipient
+        this.document += ' := ';
+        tree.children[1].accept(this);  // expression
+    } else {
+        tree.children[0].accept(this);  // expression
     }
 };
 
@@ -491,6 +466,15 @@ TransformingVisitor.prototype.visitRange = function(tree) {
 };
 
 
+// recipient: symbol | variable indices
+TransformingVisitor.prototype.visitRecipient = function(tree) {
+    var children = tree.children;
+    for (var i = 0; i < children.length; i++) {
+        children[i].accept(this);
+    }
+};
+
+
 // returnClause: 'return' expression?
 TransformingVisitor.prototype.visitReturnClause = function(tree) {
     this.document += 'return';
@@ -597,25 +581,12 @@ TransformingVisitor.prototype.visitVariable = function(terminal) {
 };
 
 
-// waitClause: 'wait' 'for' (symbol | variable indices) 'from' expression
+// waitClause: 'wait' 'for' recipient 'from' expression
 TransformingVisitor.prototype.visitWaitClause = function(tree) {
     this.document += 'wait for ';
-    var children = tree.children;
-    switch (children.length) {
-        case 2:
-            children[0].accept(this);  // symbol
-            this.document += ' from ';
-            children[1].accept(this);  // expression
-            break;
-        case 3:
-            children[0].accept(this);  // variable
-            children[1].accept(this);  // indices
-            this.document += ' from ';
-            children[2].accept(this);  // expression
-            break;
-        default:
-            throw new Error('FORMATTER: An invalid wait for clause has the wrong number of children: ' + children.length);
-    }
+    tree.children[0].accept(this);  // recipient
+    this.document += ' from ';
+    tree.children[1].accept(this);  // expression
 };
 
 
