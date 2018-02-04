@@ -65,57 +65,57 @@ BaliLanguageListener.prototype.exitRange = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#inlineArray.
-BaliLanguageListener.prototype.enterInlineArray = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#inlineList.
+BaliLanguageListener.prototype.enterInlineList = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#inlineArray.
-BaliLanguageListener.prototype.exitInlineArray = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#newlineArray.
-BaliLanguageListener.prototype.enterNewlineArray = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#newlineArray.
-BaliLanguageListener.prototype.exitNewlineArray = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#inlineList.
+BaliLanguageListener.prototype.exitInlineList = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#emptyArray.
-BaliLanguageListener.prototype.enterEmptyArray = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#newlineList.
+BaliLanguageListener.prototype.enterNewlineList = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#emptyArray.
-BaliLanguageListener.prototype.exitEmptyArray = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#inlineTable.
-BaliLanguageListener.prototype.enterInlineTable = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#inlineTable.
-BaliLanguageListener.prototype.exitInlineTable = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#newlineList.
+BaliLanguageListener.prototype.exitNewlineList = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#newlineTable.
-BaliLanguageListener.prototype.enterNewlineTable = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#emptyList.
+BaliLanguageListener.prototype.enterEmptyList = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#newlineTable.
-BaliLanguageListener.prototype.exitNewlineTable = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#emptyList.
+BaliLanguageListener.prototype.exitEmptyList = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#emptyTable.
-BaliLanguageListener.prototype.enterEmptyTable = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#inlineCatalog.
+BaliLanguageListener.prototype.enterInlineCatalog = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#emptyTable.
-BaliLanguageListener.prototype.exitEmptyTable = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#inlineCatalog.
+BaliLanguageListener.prototype.exitInlineCatalog = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#newlineCatalog.
+BaliLanguageListener.prototype.enterNewlineCatalog = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#newlineCatalog.
+BaliLanguageListener.prototype.exitNewlineCatalog = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#emptyCatalog.
+BaliLanguageListener.prototype.enterEmptyCatalog = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#emptyCatalog.
+BaliLanguageListener.prototype.exitEmptyCatalog = function(ctx) {
 };
 
 

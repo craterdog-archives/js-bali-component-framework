@@ -11,20 +11,20 @@ structure: '[' composite ']' parameters?;
 
 parameters: '(' composite ')';
 
-composite: range | array | table;
+composite: range | list | catalog;
 
 range: expression '..' expression;
 
-array:
-    expression (',' expression)* #inlineArray |
-    NEWLINE (expression NEWLINE)* #newlineArray |
-    /*empty array*/ #emptyArray
+list:
+    expression (',' expression)* #inlineList |
+    NEWLINE (expression NEWLINE)* #newlineList |
+    /*empty list*/ #emptyList
 ;
 
-table:
-    association (',' association)* #inlineTable |
-    NEWLINE (association NEWLINE)* #newlineTable |
-    ':' /*empty table*/ #emptyTable
+catalog:
+    association (',' association)* #inlineCatalog |
+    NEWLINE (association NEWLINE)* #newlineCatalog |
+    ':' /*empty catalog*/ #emptyCatalog
 ;
 
 association: element ':' expression;

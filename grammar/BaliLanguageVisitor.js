@@ -48,38 +48,38 @@ BaliLanguageVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#inlineArray.
-BaliLanguageVisitor.prototype.visitInlineArray = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#inlineList.
+BaliLanguageVisitor.prototype.visitInlineList = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#newlineArray.
-BaliLanguageVisitor.prototype.visitNewlineArray = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#newlineList.
+BaliLanguageVisitor.prototype.visitNewlineList = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#emptyArray.
-BaliLanguageVisitor.prototype.visitEmptyArray = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#emptyList.
+BaliLanguageVisitor.prototype.visitEmptyList = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#inlineTable.
-BaliLanguageVisitor.prototype.visitInlineTable = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#inlineCatalog.
+BaliLanguageVisitor.prototype.visitInlineCatalog = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#newlineTable.
-BaliLanguageVisitor.prototype.visitNewlineTable = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#newlineCatalog.
+BaliLanguageVisitor.prototype.visitNewlineCatalog = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#emptyTable.
-BaliLanguageVisitor.prototype.visitEmptyTable = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#emptyCatalog.
+BaliLanguageVisitor.prototype.visitEmptyCatalog = function(ctx) {
   return this.visitChildren(ctx);
 };
 

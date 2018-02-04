@@ -183,8 +183,8 @@ structure
 parameters
 composite
 range
-array
-table
+list
+catalog
 association
 task
 block

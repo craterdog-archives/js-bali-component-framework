@@ -83,31 +83,6 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(tree) {
 };
 
 
-// array:
-//     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
-//     /*empty array*/
-TransformingVisitor.prototype.visitArray = function(tree) {
-    var expressions = tree.children;
-    if (expressions.length === 0) return;
-    if (tree.isSimple) {
-        expressions[0].accept(this);
-        for (var i = 1; i < expressions.length; i++) {
-            this.document += ', ';
-            expressions[i].accept(this);
-        }
-    } else {
-        this.depth++;
-        for (var j = 0; j < expressions.length; j++) {
-            this.appendNewline();
-            expressions[j].accept(this);
-        }
-        this.depth--;
-        this.appendNewline();
-    }
-};
-
-
 // association: element ':' expression
 TransformingVisitor.prototype.visitAssociation = function(tree) {
     tree.children[0].accept(this);
@@ -133,6 +108,34 @@ TransformingVisitor.prototype.visitBreakClause = function(tree) {
     if (tree.children.length > 0) {
         this.document += ' from ';
         tree.children[0].accept(this);
+    }
+};
+
+
+// catalog:
+//     association (',' association)* |
+//     NEWLINE (association NEWLINE)* |
+//     ':' /*empty catalog*/
+TransformingVisitor.prototype.visitCatalog = function(tree) {
+    var associations = tree.children;
+    if (associations.length === 0) {
+        this.document += ':';  // empty catalog
+        return;
+    }
+    if (tree.isSimple) {
+        associations[0].accept(this);
+        for (var i = 1; i < associations.length; i++) {
+            this.document += ', ';
+            associations[i].accept(this);
+        }
+    } else {
+        this.depth++;
+        for (var j = 0; j < associations.length; j++) {
+            this.appendNewline();
+            associations[j].accept(this);
+        }
+        this.depth--;
+        this.appendNewline();
     }
 };
 
@@ -338,7 +341,7 @@ TransformingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// indices: '[' array ']'
+// indices: '[' list ']'
 TransformingVisitor.prototype.visitIndices = function(tree) {
     this.document += '[';
     tree.children[0].accept(this);
@@ -362,6 +365,31 @@ TransformingVisitor.prototype.visitInversionExpression = function(tree) {
 // label: IDENTIFIER
 TransformingVisitor.prototype.visitLabel = function(terminal) {
     this.document += terminal.value;
+};
+
+
+// list:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
+TransformingVisitor.prototype.visitList = function(tree) {
+    var expressions = tree.children;
+    if (expressions.length === 0) return;
+    if (tree.isSimple) {
+        expressions[0].accept(this);
+        for (var i = 1; i < expressions.length; i++) {
+            this.document += ', ';
+            expressions[i].accept(this);
+        }
+    } else {
+        this.depth++;
+        for (var j = 0; j < expressions.length; j++) {
+            this.appendNewline();
+            expressions[j].accept(this);
+        }
+        this.depth--;
+        this.appendNewline();
+    }
 };
 
 
@@ -546,34 +574,6 @@ TransformingVisitor.prototype.visitStructure = function(tree) {
 TransformingVisitor.prototype.visitSubcomponentExpression = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
-};
-
-
-// table:
-//     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
-//     ':' /*empty table*/
-TransformingVisitor.prototype.visitTable = function(tree) {
-    var associations = tree.children;
-    if (associations.length === 0) {
-        this.document += ':';  // empty table
-        return;
-    }
-    if (tree.isSimple) {
-        associations[0].accept(this);
-        for (var i = 1; i < associations.length; i++) {
-            this.document += ', ';
-            associations[i].accept(this);
-        }
-    } else {
-        this.depth++;
-        for (var j = 0; j < associations.length; j++) {
-            this.appendNewline();
-            associations[j].accept(this);
-        }
-        this.depth--;
-        this.appendNewline();
-    }
 };
 
 

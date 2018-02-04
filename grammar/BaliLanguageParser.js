@@ -390,7 +390,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "SPACE" ];
 
 var ruleNames =  [ "document", "component", "structure", "parameters", "composite", 
-                   "range", "array", "table", "association", "task", "block", 
+                   "range", "list", "catalog", "association", "task", "block", 
                    "procedure", "statement", "evaluateClause", "checkoutClause", 
                    "saveClause", "discardClause", "commitClause", "publishClause", 
                    "queueClause", "waitClause", "ifClause", "selectClause", 
@@ -513,8 +513,8 @@ BaliLanguageParser.RULE_structure = 2;
 BaliLanguageParser.RULE_parameters = 3;
 BaliLanguageParser.RULE_composite = 4;
 BaliLanguageParser.RULE_range = 5;
-BaliLanguageParser.RULE_array = 6;
-BaliLanguageParser.RULE_table = 7;
+BaliLanguageParser.RULE_list = 6;
+BaliLanguageParser.RULE_catalog = 7;
 BaliLanguageParser.RULE_association = 8;
 BaliLanguageParser.RULE_task = 9;
 BaliLanguageParser.RULE_block = 10;
@@ -953,12 +953,12 @@ CompositeContext.prototype.range = function() {
     return this.getTypedRuleContext(RangeContext,0);
 };
 
-CompositeContext.prototype.array = function() {
-    return this.getTypedRuleContext(ArrayContext,0);
+CompositeContext.prototype.list = function() {
+    return this.getTypedRuleContext(ListContext,0);
 };
 
-CompositeContext.prototype.table = function() {
-    return this.getTypedRuleContext(TableContext,0);
+CompositeContext.prototype.catalog = function() {
+    return this.getTypedRuleContext(CatalogContext,0);
 };
 
 CompositeContext.prototype.enterRule = function(listener) {
@@ -1004,13 +1004,13 @@ BaliLanguageParser.prototype.composite = function() {
         case 2:
             this.enterOuterAlt(localctx, 2);
             this.state = 135;
-            this.array();
+            this.list();
             break;
 
         case 3:
             this.enterOuterAlt(localctx, 3);
             this.state = 136;
-            this.table();
+            this.catalog();
             break;
 
         }
@@ -1106,7 +1106,7 @@ BaliLanguageParser.prototype.range = function() {
     return localctx;
 };
 
-function ArrayContext(parser, parent, invokingState) {
+function ListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1115,74 +1115,32 @@ function ArrayContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_array;
+    this.ruleIndex = BaliLanguageParser.RULE_list;
     return this;
 }
 
-ArrayContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-ArrayContext.prototype.constructor = ArrayContext;
+ListContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ListContext.prototype.constructor = ListContext;
 
 
  
-ArrayContext.prototype.copyFrom = function(ctx) {
+ListContext.prototype.copyFrom = function(ctx) {
     antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
 };
 
 
-function InlineArrayContext(parser, ctx) {
-	ArrayContext.call(this, parser);
-    ArrayContext.prototype.copyFrom.call(this, ctx);
+function NewlineListContext(parser, ctx) {
+	ListContext.call(this, parser);
+    ListContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-InlineArrayContext.prototype = Object.create(ArrayContext.prototype);
-InlineArrayContext.prototype.constructor = InlineArrayContext;
+NewlineListContext.prototype = Object.create(ListContext.prototype);
+NewlineListContext.prototype.constructor = NewlineListContext;
 
-BaliLanguageParser.InlineArrayContext = InlineArrayContext;
+BaliLanguageParser.NewlineListContext = NewlineListContext;
 
-InlineArrayContext.prototype.expression = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(ExpressionContext);
-    } else {
-        return this.getTypedRuleContext(ExpressionContext,i);
-    }
-};
-InlineArrayContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.enterInlineArray(this);
-	}
-};
-
-InlineArrayContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.exitInlineArray(this);
-	}
-};
-
-InlineArrayContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitInlineArray(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function NewlineArrayContext(parser, ctx) {
-	ArrayContext.call(this, parser);
-    ArrayContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-NewlineArrayContext.prototype = Object.create(ArrayContext.prototype);
-NewlineArrayContext.prototype.constructor = NewlineArrayContext;
-
-BaliLanguageParser.NewlineArrayContext = NewlineArrayContext;
-
-NewlineArrayContext.prototype.NEWLINE = function(i) {
+NewlineListContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1194,7 +1152,7 @@ NewlineArrayContext.prototype.NEWLINE = function(i) {
 };
 
 
-NewlineArrayContext.prototype.expression = function(i) {
+NewlineListContext.prototype.expression = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1204,53 +1162,95 @@ NewlineArrayContext.prototype.expression = function(i) {
         return this.getTypedRuleContext(ExpressionContext,i);
     }
 };
-NewlineArrayContext.prototype.enterRule = function(listener) {
+NewlineListContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterNewlineArray(this);
+        listener.enterNewlineList(this);
 	}
 };
 
-NewlineArrayContext.prototype.exitRule = function(listener) {
+NewlineListContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitNewlineArray(this);
+        listener.exitNewlineList(this);
 	}
 };
 
-NewlineArrayContext.prototype.accept = function(visitor) {
+NewlineListContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitNewlineArray(this);
+        return visitor.visitNewlineList(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
 
-function EmptyArrayContext(parser, ctx) {
-	ArrayContext.call(this, parser);
-    ArrayContext.prototype.copyFrom.call(this, ctx);
+function EmptyListContext(parser, ctx) {
+	ListContext.call(this, parser);
+    ListContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-EmptyArrayContext.prototype = Object.create(ArrayContext.prototype);
-EmptyArrayContext.prototype.constructor = EmptyArrayContext;
+EmptyListContext.prototype = Object.create(ListContext.prototype);
+EmptyListContext.prototype.constructor = EmptyListContext;
 
-BaliLanguageParser.EmptyArrayContext = EmptyArrayContext;
+BaliLanguageParser.EmptyListContext = EmptyListContext;
 
-EmptyArrayContext.prototype.enterRule = function(listener) {
+EmptyListContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterEmptyArray(this);
+        listener.enterEmptyList(this);
 	}
 };
 
-EmptyArrayContext.prototype.exitRule = function(listener) {
+EmptyListContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitEmptyArray(this);
+        listener.exitEmptyList(this);
 	}
 };
 
-EmptyArrayContext.prototype.accept = function(visitor) {
+EmptyListContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitEmptyArray(this);
+        return visitor.visitEmptyList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+function InlineListContext(parser, ctx) {
+	ListContext.call(this, parser);
+    ListContext.prototype.copyFrom.call(this, ctx);
+    return this;
+}
+
+InlineListContext.prototype = Object.create(ListContext.prototype);
+InlineListContext.prototype.constructor = InlineListContext;
+
+BaliLanguageParser.InlineListContext = InlineListContext;
+
+InlineListContext.prototype.expression = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(ExpressionContext);
+    } else {
+        return this.getTypedRuleContext(ExpressionContext,i);
+    }
+};
+InlineListContext.prototype.enterRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.enterInlineList(this);
+	}
+};
+
+InlineListContext.prototype.exitRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.exitInlineList(this);
+	}
+};
+
+InlineListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof BaliLanguageVisitor ) {
+        return visitor.visitInlineList(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1258,12 +1258,12 @@ EmptyArrayContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.ArrayContext = ArrayContext;
+BaliLanguageParser.ListContext = ListContext;
 
-BaliLanguageParser.prototype.array = function() {
+BaliLanguageParser.prototype.list = function() {
 
-    var localctx = new ArrayContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 12, BaliLanguageParser.RULE_array);
+    var localctx = new ListContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 12, BaliLanguageParser.RULE_list);
     var _la = 0; // Token type
     try {
         this.state = 161;
@@ -1298,7 +1298,7 @@ BaliLanguageParser.prototype.array = function() {
         case BaliLanguageParser.TEXT_BLOCK:
         case BaliLanguageParser.TEXT:
         case BaliLanguageParser.IDENTIFIER:
-            localctx = new InlineArrayContext(this, localctx);
+            localctx = new InlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 143;
             this.expression(0);
@@ -1316,7 +1316,7 @@ BaliLanguageParser.prototype.array = function() {
             }
             break;
         case BaliLanguageParser.NEWLINE:
-            localctx = new NewlineArrayContext(this, localctx);
+            localctx = new NewlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 151;
             this.match(BaliLanguageParser.NEWLINE);
@@ -1335,7 +1335,7 @@ BaliLanguageParser.prototype.array = function() {
             break;
         case BaliLanguageParser.T__1:
         case BaliLanguageParser.T__3:
-            localctx = new EmptyArrayContext(this, localctx);
+            localctx = new EmptyListContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
             break;
@@ -1356,7 +1356,7 @@ BaliLanguageParser.prototype.array = function() {
     return localctx;
 };
 
-function TableContext(parser, parent, invokingState) {
+function CatalogContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1365,64 +1365,74 @@ function TableContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_table;
+    this.ruleIndex = BaliLanguageParser.RULE_catalog;
     return this;
 }
 
-TableContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-TableContext.prototype.constructor = TableContext;
+CatalogContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+CatalogContext.prototype.constructor = CatalogContext;
 
 
  
-TableContext.prototype.copyFrom = function(ctx) {
+CatalogContext.prototype.copyFrom = function(ctx) {
     antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
 };
 
 
-function EmptyTableContext(parser, ctx) {
-	TableContext.call(this, parser);
-    TableContext.prototype.copyFrom.call(this, ctx);
+function InlineCatalogContext(parser, ctx) {
+	CatalogContext.call(this, parser);
+    CatalogContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-EmptyTableContext.prototype = Object.create(TableContext.prototype);
-EmptyTableContext.prototype.constructor = EmptyTableContext;
+InlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
+InlineCatalogContext.prototype.constructor = InlineCatalogContext;
 
-BaliLanguageParser.EmptyTableContext = EmptyTableContext;
+BaliLanguageParser.InlineCatalogContext = InlineCatalogContext;
 
-EmptyTableContext.prototype.enterRule = function(listener) {
+InlineCatalogContext.prototype.association = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(AssociationContext);
+    } else {
+        return this.getTypedRuleContext(AssociationContext,i);
+    }
+};
+InlineCatalogContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterEmptyTable(this);
+        listener.enterInlineCatalog(this);
 	}
 };
 
-EmptyTableContext.prototype.exitRule = function(listener) {
+InlineCatalogContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitEmptyTable(this);
+        listener.exitInlineCatalog(this);
 	}
 };
 
-EmptyTableContext.prototype.accept = function(visitor) {
+InlineCatalogContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitEmptyTable(this);
+        return visitor.visitInlineCatalog(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
 
-function NewlineTableContext(parser, ctx) {
-	TableContext.call(this, parser);
-    TableContext.prototype.copyFrom.call(this, ctx);
+function NewlineCatalogContext(parser, ctx) {
+	CatalogContext.call(this, parser);
+    CatalogContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-NewlineTableContext.prototype = Object.create(TableContext.prototype);
-NewlineTableContext.prototype.constructor = NewlineTableContext;
+NewlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
+NewlineCatalogContext.prototype.constructor = NewlineCatalogContext;
 
-BaliLanguageParser.NewlineTableContext = NewlineTableContext;
+BaliLanguageParser.NewlineCatalogContext = NewlineCatalogContext;
 
-NewlineTableContext.prototype.NEWLINE = function(i) {
+NewlineCatalogContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1434,7 +1444,7 @@ NewlineTableContext.prototype.NEWLINE = function(i) {
 };
 
 
-NewlineTableContext.prototype.association = function(i) {
+NewlineCatalogContext.prototype.association = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1444,63 +1454,53 @@ NewlineTableContext.prototype.association = function(i) {
         return this.getTypedRuleContext(AssociationContext,i);
     }
 };
-NewlineTableContext.prototype.enterRule = function(listener) {
+NewlineCatalogContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterNewlineTable(this);
+        listener.enterNewlineCatalog(this);
 	}
 };
 
-NewlineTableContext.prototype.exitRule = function(listener) {
+NewlineCatalogContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitNewlineTable(this);
+        listener.exitNewlineCatalog(this);
 	}
 };
 
-NewlineTableContext.prototype.accept = function(visitor) {
+NewlineCatalogContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitNewlineTable(this);
+        return visitor.visitNewlineCatalog(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
 
-function InlineTableContext(parser, ctx) {
-	TableContext.call(this, parser);
-    TableContext.prototype.copyFrom.call(this, ctx);
+function EmptyCatalogContext(parser, ctx) {
+	CatalogContext.call(this, parser);
+    CatalogContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-InlineTableContext.prototype = Object.create(TableContext.prototype);
-InlineTableContext.prototype.constructor = InlineTableContext;
+EmptyCatalogContext.prototype = Object.create(CatalogContext.prototype);
+EmptyCatalogContext.prototype.constructor = EmptyCatalogContext;
 
-BaliLanguageParser.InlineTableContext = InlineTableContext;
+BaliLanguageParser.EmptyCatalogContext = EmptyCatalogContext;
 
-InlineTableContext.prototype.association = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(AssociationContext);
-    } else {
-        return this.getTypedRuleContext(AssociationContext,i);
-    }
-};
-InlineTableContext.prototype.enterRule = function(listener) {
+EmptyCatalogContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterInlineTable(this);
+        listener.enterEmptyCatalog(this);
 	}
 };
 
-InlineTableContext.prototype.exitRule = function(listener) {
+EmptyCatalogContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitInlineTable(this);
+        listener.exitEmptyCatalog(this);
 	}
 };
 
-InlineTableContext.prototype.accept = function(visitor) {
+EmptyCatalogContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitInlineTable(this);
+        return visitor.visitEmptyCatalog(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1508,12 +1508,12 @@ InlineTableContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.TableContext = TableContext;
+BaliLanguageParser.CatalogContext = CatalogContext;
 
-BaliLanguageParser.prototype.table = function() {
+BaliLanguageParser.prototype.catalog = function() {
 
-    var localctx = new TableContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 14, BaliLanguageParser.RULE_table);
+    var localctx = new CatalogContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 14, BaliLanguageParser.RULE_catalog);
     var _la = 0; // Token type
     try {
         this.state = 181;
@@ -1540,7 +1540,7 @@ BaliLanguageParser.prototype.table = function() {
         case BaliLanguageParser.BINARY:
         case BaliLanguageParser.TEXT_BLOCK:
         case BaliLanguageParser.TEXT:
-            localctx = new InlineTableContext(this, localctx);
+            localctx = new InlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 163;
             this.association();
@@ -1558,7 +1558,7 @@ BaliLanguageParser.prototype.table = function() {
             }
             break;
         case BaliLanguageParser.NEWLINE:
-            localctx = new NewlineTableContext(this, localctx);
+            localctx = new NewlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 171;
             this.match(BaliLanguageParser.NEWLINE);
@@ -1576,7 +1576,7 @@ BaliLanguageParser.prototype.table = function() {
             }
             break;
         case BaliLanguageParser.T__6:
-            localctx = new EmptyTableContext(this, localctx);
+            localctx = new EmptyCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 180;
             this.match(BaliLanguageParser.T__6);
@@ -4063,8 +4063,8 @@ function IndicesContext(parser, parent, invokingState) {
 IndicesContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 IndicesContext.prototype.constructor = IndicesContext;
 
-IndicesContext.prototype.array = function() {
-    return this.getTypedRuleContext(ArrayContext,0);
+IndicesContext.prototype.list = function() {
+    return this.getTypedRuleContext(ListContext,0);
 };
 
 IndicesContext.prototype.enterRule = function(listener) {
@@ -4101,7 +4101,7 @@ BaliLanguageParser.prototype.indices = function() {
         this.state = 402;
         this.match(BaliLanguageParser.T__0);
         this.state = 403;
-        this.array();
+        this.list();
         this.state = 404;
         this.match(BaliLanguageParser.T__1);
     } catch (re) {

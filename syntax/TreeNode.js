@@ -45,9 +45,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
-        case types.ARRAY:
-            visitor.visitArray(this);
-            break;
         case types.ASSOCIATION:
             visitor.visitAssociation(this);
             break;
@@ -111,6 +108,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.INVERSION_EXPRESSION:
             visitor.visitInversionExpression(this);
             break;
+        case types.LIST:
+            visitor.visitList(this);
+            break;
         case types.LOGICAL_EXPRESSION:
             visitor.visitLogicalExpression(this);
             break;
@@ -156,8 +156,8 @@ TreeNode.prototype.accept = function(visitor) {
         case types.SUBCOMPONENT_EXPRESSION:
             visitor.visitSubcomponentExpression(this);
             break;
-        case types.TABLE:
-            visitor.visitTable(this);
+        case types.CATALOG:
+            visitor.visitCatalog(this);
             break;
         case types.TASK:
             visitor.visitTask(this);

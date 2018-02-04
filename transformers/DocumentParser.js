@@ -93,30 +93,30 @@ DocumentParser.prototype.parseRange = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali array
+ * This method takes a source code string containing a Bali list
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
- * @returns {ArrayContext} The corresponding parse tree structure.
+ * @returns {ListContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseArray = function(source) {
+DocumentParser.prototype.parseList = function(source) {
     var parser = initializeParser(source);
-    var antlrTree = parser.array();
+    var antlrTree = parser.list();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
 };
 
 
 /**
- * This method takes a source code string containing a Bali table
+ * This method takes a source code string containing a Bali catalog
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
- * @returns {TableContext} The corresponding parse tree structure.
+ * @returns {CatalogContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseTable = function(source) {
+DocumentParser.prototype.parseCatalog = function(source) {
     var parser = initializeParser(source);
-    var antlrTree = parser.table();
+    var antlrTree = parser.catalog();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
 };
@@ -202,22 +202,6 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 };
 
 
-// array: expression*
-TransformingVisitor.prototype.visitArray = function(ctx) {
-    var tree = new syntax.TreeNode(types.ARRAY);
-    var type = ctx.constructor.name;
-    if (type !== 'EmptyArrayContext') {
-        var expressions = ctx.expression();
-        for (var i = 0; i < expressions.length; i++) {
-            expressions[i].accept(this);
-            tree.addChild(this.result);
-        }
-    }
-    if (type !== 'NewlineArrayContext') tree.isSimple = true;
-    this.result = tree;
-};
-
-
 // association: element ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new syntax.TreeNode(types.ASSOCIATION);
@@ -260,6 +244,25 @@ TransformingVisitor.prototype.visitBreakClause = function(ctx) {
         label.accept(this);
         tree.addChild(this.result);
     }
+    this.result = tree;
+};
+
+
+// catalog:
+//     association (',' association)* |
+//     NEWLINE (association NEWLINE)* |
+//     ':' /*empty catalog*/
+TransformingVisitor.prototype.visitCatalog = function(ctx) {
+    var tree = new syntax.TreeNode(types.CATALOG);
+    var type = ctx.constructor.name;
+    if (type !== 'EmptyCatalogContext') {
+        var associations = ctx.association();
+        for (var i = 0; i < associations.length; i++) {
+            associations[i].accept(this);
+            tree.addChild(this.result);
+        }
+    }
+    if (type !== 'NewlineCatalogContext') tree.isSimple = true;
     this.result = tree;
 };
 
@@ -337,17 +340,6 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
     terminal.delimiter = delimiter;
     terminal.imaginary = imaginary;
     this.result = terminal;
-};
-
-
-// subcomponentExpression: expression indices
-TransformingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
-    var tree = new syntax.TreeNode(types.SUBCOMPONENT_EXPRESSION);
-    ctx.expression().accept(this);
-    tree.addChild(this.result);
-    ctx.indices().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
 };
 
 
@@ -448,10 +440,16 @@ TransformingVisitor.prototype.visitElement = function(ctx) {
 };
 
 
-// emptyArray: /*empty array*/
-TransformingVisitor.prototype.visitEmptyArray = function(ctx) {
+// emptyCatalog: ':' /*empty catalog*/
+TransformingVisitor.prototype.visitEmptyCatalog = function(ctx) {
     // delegate to abstract type
-    this.visitArray(ctx);
+    this.visitCatalog(ctx);
+};
+
+// emptyList: /*empty list*/
+TransformingVisitor.prototype.visitEmptyList = function(ctx) {
+    // delegate to abstract type
+    this.visitList(ctx);
 };
 
 
@@ -461,12 +459,6 @@ TransformingVisitor.prototype.visitEmptyProcedure = function(ctx) {
     this.visitProcedure(ctx);
 };
 
-
-// emptyTable: ':' /*empty table*/
-TransformingVisitor.prototype.visitEmptyTable = function(ctx) {
-    // delegate to abstract type
-    this.visitTable(ctx);
-};
 
 
 // evaluateClause: ((symbol | variable indices) ':=')? expression
@@ -615,10 +607,10 @@ TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
 };
 
 
-// indices: '[' array ']'
+// indices: '[' list ']'
 TransformingVisitor.prototype.visitIndices = function(ctx) {
     var tree = new syntax.TreeNode(types.INDICES);
-    ctx.array().accept(this);
+    ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -632,10 +624,10 @@ TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
 };
 
 
-// inlineArray: expression (',' expression)*
-TransformingVisitor.prototype.visitInlineArray = function(ctx) {
+// inlineList: expression (',' expression)*
+TransformingVisitor.prototype.visitInlineList = function(ctx) {
     // delegate to abstract type
-    this.visitArray(ctx);
+    this.visitList(ctx);
 };
 
 
@@ -646,10 +638,10 @@ TransformingVisitor.prototype.visitInlineProcedure = function(ctx) {
 };
 
 
-// inlineTable: association (',' association)*
-TransformingVisitor.prototype.visitInlineTable = function(ctx) {
+// inlineCatalog: association (',' association)*
+TransformingVisitor.prototype.visitInlineCatalog = function(ctx) {
     // delegate to abstract type
-    this.visitTable(ctx);
+    this.visitCatalog(ctx);
 };
 
 
@@ -676,6 +668,25 @@ TransformingVisitor.prototype.visitLabel = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new syntax.TerminalNode(types.LABEL, value);
     this.result = terminal;
+};
+
+
+// list:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
+TransformingVisitor.prototype.visitList = function(ctx) {
+    var tree = new syntax.TreeNode(types.LIST);
+    var type = ctx.constructor.name;
+    if (type !== 'EmptyListContext') {
+        var expressions = ctx.expression();
+        for (var i = 0; i < expressions.length; i++) {
+            expressions[i].accept(this);
+            tree.addChild(this.result);
+        }
+    }
+    if (type !== 'NewlineListContext') tree.isSimple = true;
+    this.result = tree;
 };
 
 
@@ -730,10 +741,10 @@ TransformingVisitor.prototype.visitMoment = function(ctx) {
 };
 
 
-// newlineArray: NEWLINE (expression NEWLINE)*
-TransformingVisitor.prototype.visitNewlineArray = function(ctx) {
+// newlineList: NEWLINE (expression NEWLINE)*
+TransformingVisitor.prototype.visitNewlineList = function(ctx) {
     // delegate to abstract type
-    this.visitArray(ctx);
+    this.visitList(ctx);
 };
 
 
@@ -744,10 +755,10 @@ TransformingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 };
 
 
-// newlineTable: NEWLINE (association NEWLINE)*
-TransformingVisitor.prototype.visitNewlineTable = function(ctx) {
+// newlineCatalog: NEWLINE (association NEWLINE)*
+TransformingVisitor.prototype.visitNewlineCatalog = function(ctx) {
     // delegate to abstract type
-    this.visitTable(ctx);
+    this.visitCatalog(ctx);
 };
 
 
@@ -961,30 +972,22 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
 };
 
 
+// subcomponentExpression: expression indices
+TransformingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
+    var tree = new syntax.TreeNode(types.SUBCOMPONENT_EXPRESSION);
+    ctx.expression().accept(this);
+    tree.addChild(this.result);
+    ctx.indices().accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
+};
+
+
 // symbol: SYMBOL
 TransformingVisitor.prototype.visitSymbol = function(ctx) {
     var value = ctx.SYMBOL().getText();
     var terminal = new syntax.TerminalNode(types.SYMBOL, value);
     this.result = terminal;
-};
-
-
-// table:
-//     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
-//     ':' /*empty table*/
-TransformingVisitor.prototype.visitTable = function(ctx) {
-    var tree = new syntax.TreeNode(types.TABLE);
-    var type = ctx.constructor.name;
-    if (type !== 'EmptyTableContext') {
-        var associations = ctx.association();
-        for (var i = 0; i < associations.length; i++) {
-            associations[i].accept(this);
-            tree.addChild(this.result);
-        }
-    }
-    if (type !== 'NewlineTableContext') tree.isSimple = true;
-    this.result = tree;
 };
 
 

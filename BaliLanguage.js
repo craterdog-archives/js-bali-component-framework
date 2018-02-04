@@ -78,29 +78,29 @@ exports.parseRange = function(range) {
 
 
 /**
- * This function takes a source code string containing a Bali array
+ * This function takes a source code string containing a Bali list
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} array The Bali array to be parsed.
- * @returns {ArrayContext} The corresponding parse tree structure.
+ * @param {string} list The Bali list to be parsed.
+ * @returns {ListContext} The corresponding parse tree structure.
  */
-exports.parseArray = function(array) {
+exports.parseList = function(list) {
     var parser = new DocumentParser();
-    var tree = parser.parseArray(array);
+    var tree = parser.parseList(list);
     return tree;
 };
 
 
 /**
- * This function takes a source code string containing a Bali table
+ * This function takes a source code string containing a Bali catalog
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} table The Bali table to be parsed.
- * @returns {TableContext} The corresponding parse tree structure.
+ * @param {string} catalog The Bali catalog to be parsed.
+ * @returns {CatalogContext} The corresponding parse tree structure.
  */
-exports.parseTable = function(table) {
+exports.parseCatalog = function(catalog) {
     var parser = new DocumentParser();
-    var tree = parser.parseTable(table);
+    var tree = parser.parseCatalog(catalog);
     return tree;
 };
 

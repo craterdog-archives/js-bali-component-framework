@@ -62,5 +62,5 @@ label: IDENTIFIER;
 
 variable: IDENTIFIER;
 
-indices: '[' array ']';
+indices: '[' list ']';
 

@@ -38,10 +38,10 @@ var TERMINAL_TYPES = [
 var TREE_TYPES = [
     'invalid',  // unit based indexing for Bali
     'arithmeticExpression',
-    'array',
     'association',
     'block',
     'breakClause',
+    'catalog',
     'checkoutClause',
     'commitClause',
     'comparisonExpression',
@@ -60,6 +60,7 @@ var TREE_TYPES = [
     'ifClause',
     'indices',
     'inversionExpression',
+    'list',
     'logicalExpression',
     'magnitudeExpression',
     'messageExpression',
@@ -75,7 +76,6 @@ var TREE_TYPES = [
     'statement',
     'structure',
     'subcomponentExpression',
-    'table',
     'task',
     'throwClause',
     'waitClause',
@@ -84,11 +84,11 @@ var TREE_TYPES = [
 ];
 
 exports.ARITHMETIC_EXPRESSION = TREE_TYPES.indexOf('arithmeticExpression');
-exports.ARRAY = TREE_TYPES.indexOf('array');
 exports.ASSOCIATION = TREE_TYPES.indexOf('association');
 exports.BINARY = TERMINAL_TYPES.indexOf('binary');
 exports.BLOCK = TREE_TYPES.indexOf('block');
 exports.BREAK_CLAUSE = TREE_TYPES.indexOf('breakClause');
+exports.CATALOG = TREE_TYPES.indexOf('catalog');
 exports.CHECKOUT_CLAUSE = TREE_TYPES.indexOf('checkoutClause');
 exports.COMMIT_CLAUSE = TREE_TYPES.indexOf('commitClause');
 exports.COMPARISON_EXPRESSION = TREE_TYPES.indexOf('comparisonExpression');
@@ -110,6 +110,7 @@ exports.IF_CLAUSE = TREE_TYPES.indexOf('ifClause');
 exports.INDICES = TREE_TYPES.indexOf('indices');
 exports.INVERSION_EXPRESSION = TREE_TYPES.indexOf('inversionExpression');
 exports.LABEL = TERMINAL_TYPES.indexOf('label');
+exports.LIST = TREE_TYPES.indexOf('list');
 exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
 exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
 exports.MESSAGE = TERMINAL_TYPES.indexOf('message');
@@ -132,7 +133,6 @@ exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');
 exports.SUBCOMPONENT_EXPRESSION = TREE_TYPES.indexOf('subcomponentExpression');
 exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
-exports.TABLE = TREE_TYPES.indexOf('table');
 exports.TAG = TERMINAL_TYPES.indexOf('tag');
 exports.TASK = TREE_TYPES.indexOf('task');
 exports.TEMPLATE = TERMINAL_TYPES.indexOf('template');
