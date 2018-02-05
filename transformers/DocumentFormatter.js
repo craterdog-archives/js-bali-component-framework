@@ -91,13 +91,14 @@ TransformingVisitor.prototype.visitAssociation = function(tree) {
 };
 
 
-// block: '{' procedure '}' parameters?
+// block: '{' procedure '}'
 TransformingVisitor.prototype.visitBlock = function(tree) {
     this.document += '{';
     tree.children[0].accept(this);
     this.document += '}';
-    if (tree.children.length > 1) {
-        tree.children[1].accept(this);
+    var parameters = tree.parameters;
+    if (parameters) {
+        parameters.accept(this);
     }
 };
 
@@ -209,11 +210,11 @@ TransformingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* component NEWLINE* EOF
 TransformingVisitor.prototype.visitDocument = function(tree) {
-    tree.children[0].accept(this);
+    tree.children[0].accept(this);  // component
 };
 
 
-// element: (
+// element:
 //     binary |
 //     duration |
 //     moment |
@@ -226,7 +227,6 @@ TransformingVisitor.prototype.visitDocument = function(tree) {
 //     template |
 //     text |
 //     version
-//) parameters?
 TransformingVisitor.prototype.visitElement = function(terminal) {
     this.document += terminal.value;
     if (terminal.parameters) {
@@ -543,13 +543,13 @@ TransformingVisitor.prototype.visitStatement = function(tree) {
 };
 
 
-// structure: '[' composite ']' parameters?
+// structure: '[' composite ']'
 TransformingVisitor.prototype.visitStructure = function(tree) {
     this.document += '[';
     tree.children[0].accept(this);
     this.document += ']';
-    if (tree.children.length > 1) {
-        tree.children[1].accept(this);
+    if (tree.parameters) {
+        tree.parameters.accept(this);
     }
 };
 

@@ -5,9 +5,9 @@ import BaliStatements;
 
 document: NEWLINE* component NEWLINE* EOF;
 
-component: element | structure | block;
+component: (element | structure | block) parameters?;
 
-structure: '[' composite ']' parameters?;
+structure: '[' composite ']';
 
 parameters: '(' composite ')';
 
@@ -27,11 +27,11 @@ catalog:
     ':' /*empty catalog*/ #emptyCatalog
 ;
 
-association: element ':' expression;
+association: component ':' expression;
 
 task: SHELL NEWLINE* procedure NEWLINE* EOF;
 
-block: '{' procedure '}' parameters?;
+block: '{' procedure '}';
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |

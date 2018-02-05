@@ -3,7 +3,7 @@ grammar BaliElements;
 import BaliTokens;
 
 
-element: (
+element:
     binary |
     duration |
     moment |
@@ -16,7 +16,7 @@ element: (
     template |
     text |
     version
-) parameters?;
+;
 
 binary: BINARY;
 

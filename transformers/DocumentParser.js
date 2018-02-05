@@ -202,10 +202,10 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 };
 
 
-// association: element ':' expression
+// association: component ':' expression
 TransformingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new syntax.TreeNode(types.ASSOCIATION);
-    ctx.element().accept(this);
+    ctx.component().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -222,16 +222,11 @@ TransformingVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
-// block: '{' procedure '}' parameters?
+// block: '{' procedure '}'
 TransformingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new syntax.TreeNode(types.BLOCK);
     ctx.procedure().accept(this);
     tree.addChild(this.result);
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        tree.addChild(this.result);
-    }
     this.result = tree;
 };
 
@@ -333,6 +328,19 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
+// component: (element | structure | block) parameters?
+TransformingVisitor.prototype.visitComponent = function(ctx) {
+    ctx.children[0].accept(this);
+    var parameters = ctx.parameters();
+    if (parameters) {
+        var component = this.result;
+        parameters.accept(this);
+        component.parameters = this.result;
+        this.result = component;
+    }
+};
+
+
 // constantReal: sign='-'? CONSTANT
 TransformingVisitor.prototype.visitConstantReal = function(ctx) {
     var string = '';
@@ -399,33 +407,6 @@ TransformingVisitor.prototype.visitDocument = function(ctx) {
 TransformingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
     var terminal = new syntax.TerminalNode(types.DURATION, value);
-    this.result = terminal;
-};
-
-
-// element: (
-//    binary |
-//    duration |
-//    moment |
-//    number |
-//    percent |
-//    probability |
-//    reference |
-//    symbol |
-//    tag |
-//    template |
-//    text |
-//    version
-//) parameters?
-TransformingVisitor.prototype.visitElement = function(ctx) {
-    // skip this level and add optional parameters directly to the concrete element
-    ctx.children[0].accept(this);
-    var terminal = this.result;
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        terminal.parameters = this.result;
-    }
     this.result = terminal;
 };
 
@@ -506,7 +487,8 @@ TransformingVisitor.prototype.visitFinishClause = function(ctx) {
 // fractionalProbability: FRACTION
 TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var value = ctx.FRACTION().getText();
-    this.result = new syntax.TerminalNode(types.PROBABILITY, value);
+    var terminal = new syntax.TerminalNode(types.PROBABILITY, value);
+    this.result = terminal;
 };
 
 
@@ -874,6 +856,14 @@ TransformingVisitor.prototype.visitReference = function(ctx) {
 };
 
 
+// regexTemplate: REGEX
+TransformingVisitor.prototype.visitRegexTemplate = function(ctx) {
+    var value = ctx.REGEX().getText();
+    var terminal = new syntax.TerminalNode(types.TEMPLATE, value);
+    this.result = terminal;
+};
+
+
 // returnClause: 'return' expression?
 TransformingVisitor.prototype.visitReturnClause = function(ctx) {
     var tree = new syntax.TreeNode(types.RETURN_CLAUSE);
@@ -958,16 +948,11 @@ TransformingVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// structure: '[' composite ']' parameters?
+// structure: '[' composite ']'
 TransformingVisitor.prototype.visitStructure = function(ctx) {
     var tree = new syntax.TreeNode(types.STRUCTURE);
     ctx.composite().accept(this);
     tree.addChild(this.result);
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
-        tree.addChild(this.result);
-    }
     this.result = tree;
 };
 
