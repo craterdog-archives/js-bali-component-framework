@@ -24,15 +24,15 @@
   },
   "homepage": "https://github.com/craterdog-bali/js-bali-language#readme",
   "devDependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.2",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-nodeunit": "^1.0.0",
-    "grunt-contrib-uglify": "^3.1.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-watch": "^1.0.1"
   },
   "dependencies": {
-    "antlr4": "^4.7.0"
+    "antlr4": "^4.7.1"
   }
 }
