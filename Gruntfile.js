@@ -22,26 +22,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // grunt-contrib-watch plugin configuration (monitor file changes)
-    watch: {
-      grammars: {
-        files: ['**/*.g4'],
-        tasks: ['clean', 'antlr4'],
-        options: {
-          spawn: true
-        }
-      },
-      scripts: {
-        files: ['<%= jshint.files %>'],
-        tasks: ['clean', 'jshint', 'mochaTest', 'concat', 'uglify'],
-        test: 'mocha',
-        options: {
-          spawn: true,
-          reload: true
-        }
-      }
-    },
-
     // grunt-contrib-clean plugin configuration (clean up files)
     clean: {
       generate: [
