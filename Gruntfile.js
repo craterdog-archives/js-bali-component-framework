@@ -90,7 +90,10 @@ module.exports = function(grunt) {
       },
       dist: {
         // concatenate the source files and place the result in destination
-        src: ['**/*.js', '!node_modules/**/*.js'],
+        src: [
+          '**/*.js',
+          '!node_modules/**/*.js'  // must be last in the list
+        ],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
