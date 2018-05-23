@@ -33,7 +33,8 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: ['<%= jshint.files %>'],
-        tasks: ['clean', 'jshint', 'nodeunit', 'concat', 'uglify'],
+        tasks: ['clean', 'jshint', 'mochaTest', 'concat', 'uglify'],
+        test: 'mocha',
         options: {
           spawn: true,
           reload: true
@@ -72,9 +73,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // grunt-contrib-nodeunit plugin configuration (unit testing)
-    nodeunit: {
-      tests: 'test/**/*.js'
+    // grunt-mocha-test plugin configuration (unit testing)
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/**/*.js']
+      }
     },
 
     // grunt-contrib-concat plugin configuration (file concatenation)
@@ -105,13 +111,13 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('generate', 'Generate the parser code.', ['clean:generate', 'antlr4']);
-  grunt.registerTask('build', 'Build the library.', ['clean:build', 'jshint', 'nodeunit', 'concat', 'uglify']);
-  grunt.registerTask('default', 'The default task.', ['clean:build', 'jshint', 'nodeunit', 'concat', 'uglify']);
+  grunt.registerTask('build', 'Build the library.', ['clean:build', 'jshint', 'mochaTest', 'concat', 'uglify']);
+  grunt.registerTask('default', 'Default targets.', ['generate', 'build']);
 
   grunt.registerMultiTask('antlr4', 'Task for antlr4 parser/lexer generation in JS', function () {
     var commandLine = ['-jar', 'lib/antlr-4.7.1-complete.jar'];
