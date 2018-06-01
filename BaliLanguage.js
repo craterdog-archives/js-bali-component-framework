@@ -29,8 +29,7 @@ var formatter = require('./transformers/DocumentFormatter');
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
 exports.parseDocument = function(document) {
-    var tree = parser.parseDocument(document);
-    return tree;
+    return parser.parseDocument(document);
 };
 
 
@@ -42,8 +41,7 @@ exports.parseDocument = function(document) {
  * @returns {ElementContext} The corresponding parse tree structure.
  */
 exports.parseElement = function(element) {
-    var tree = parser.parseElement(element);
-    return tree;
+    return parser.parseElement(element);
 };
 
 
@@ -55,8 +53,7 @@ exports.parseElement = function(element) {
  * @returns {StructureContext} The corresponding parse tree structure.
  */
 exports.parseStructure = function(structure) {
-    var tree = parser.parseStructure(structure);
-    return tree;
+    return parser.parseStructure(structure);
 };
 
 
@@ -68,8 +65,7 @@ exports.parseStructure = function(structure) {
  * @returns {RangeContext} The corresponding parse tree structure.
  */
 exports.parseRange = function(range) {
-    var tree = parser.parseRange(range);
-    return tree;
+    return parser.parseRange(range);
 };
 
 
@@ -81,8 +77,7 @@ exports.parseRange = function(range) {
  * @returns {ListContext} The corresponding parse tree structure.
  */
 exports.parseList = function(list) {
-    var tree = parser.parseList(list);
-    return tree;
+    return parser.parseList(list);
 };
 
 
@@ -94,8 +89,7 @@ exports.parseList = function(list) {
  * @returns {CatalogContext} The corresponding parse tree structure.
  */
 exports.parseCatalog = function(catalog) {
-    var tree = parser.parseCatalog(catalog);
-    return tree;
+    return parser.parseCatalog(catalog);
 };
 
 
@@ -107,8 +101,7 @@ exports.parseCatalog = function(catalog) {
  * @returns {BlockContext} The corresponding parse tree structure.
  */
 exports.parseBlock = function(block) {
-    var tree = parser.parseBlock(block);
-    return tree;
+    return parser.parseBlock(block);
 };
 
 
@@ -120,20 +113,18 @@ exports.parseBlock = function(block) {
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
 exports.parseExpression = function(expression) {
-    var tree = parser.parseExpression(expression);
-    return tree;
+    return parser.parseExpression(expression);
 };
 
 
 /**
- * This function takes a Bali document and formats it as source code.
+ * This function formats a parse tree produced by the DocumentParser and
+ * generates a canonical version of the corresponding Bali document.
  * 
  * @param {DocumentContext} tree The Bali parse tree to be formatted.
  * @param {string} optionalPadding An optional string that will be prepended to each line.
  * @returns {string} The formatted Bali document.
  */
 exports.formatDocument = function(tree, optionalPadding) {
-    var padding = optionalPadding || '';
-    var document = formatter.formatDocument(tree, padding);
-    return document;
+    return formatter.formatDocument(tree, optionalPadding);
 };
