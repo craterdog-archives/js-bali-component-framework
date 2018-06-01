@@ -15,8 +15,8 @@
  * about the Bali language refer to the Reference Guide at:
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
-var DocumentParser = require('./transformers/DocumentParser').DocumentParser;
-var DocumentFormatter = require('./transformers/DocumentFormatter').DocumentFormatter;
+var parser = require('./transformers/DocumentParser');
+var formatter = require('./transformers/DocumentFormatter');
 
 
 // PUBLIC FUNCTIONS
@@ -29,7 +29,6 @@ var DocumentFormatter = require('./transformers/DocumentFormatter').DocumentForm
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
 exports.parseDocument = function(document) {
-    var parser = new DocumentParser();
     var tree = parser.parseDocument(document);
     return tree;
 };
@@ -43,7 +42,6 @@ exports.parseDocument = function(document) {
  * @returns {ElementContext} The corresponding parse tree structure.
  */
 exports.parseElement = function(element) {
-    var parser = new DocumentParser();
     var tree = parser.parseElement(element);
     return tree;
 };
@@ -57,7 +55,6 @@ exports.parseElement = function(element) {
  * @returns {StructureContext} The corresponding parse tree structure.
  */
 exports.parseStructure = function(structure) {
-    var parser = new DocumentParser();
     var tree = parser.parseStructure(structure);
     return tree;
 };
@@ -71,7 +68,6 @@ exports.parseStructure = function(structure) {
  * @returns {RangeContext} The corresponding parse tree structure.
  */
 exports.parseRange = function(range) {
-    var parser = new DocumentParser();
     var tree = parser.parseRange(range);
     return tree;
 };
@@ -85,7 +81,6 @@ exports.parseRange = function(range) {
  * @returns {ListContext} The corresponding parse tree structure.
  */
 exports.parseList = function(list) {
-    var parser = new DocumentParser();
     var tree = parser.parseList(list);
     return tree;
 };
@@ -99,7 +94,6 @@ exports.parseList = function(list) {
  * @returns {CatalogContext} The corresponding parse tree structure.
  */
 exports.parseCatalog = function(catalog) {
-    var parser = new DocumentParser();
     var tree = parser.parseCatalog(catalog);
     return tree;
 };
@@ -113,7 +107,6 @@ exports.parseCatalog = function(catalog) {
  * @returns {BlockContext} The corresponding parse tree structure.
  */
 exports.parseBlock = function(block) {
-    var parser = new DocumentParser();
     var tree = parser.parseBlock(block);
     return tree;
 };
@@ -127,7 +120,6 @@ exports.parseBlock = function(block) {
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
 exports.parseExpression = function(expression) {
-    var parser = new DocumentParser();
     var tree = parser.parseExpression(expression);
     return tree;
 };
@@ -142,7 +134,6 @@ exports.parseExpression = function(expression) {
  */
 exports.formatDocument = function(tree, optionalPadding) {
     var padding = optionalPadding || '';
-    var formatter = new DocumentFormatter();
     var document = formatter.formatDocument(tree, padding);
     return document;
 };

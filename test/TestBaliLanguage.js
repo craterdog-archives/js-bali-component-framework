@@ -8,8 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var fs = require('fs');
 var language = require('../BaliLanguage');
+var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 

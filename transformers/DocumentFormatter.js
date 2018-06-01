@@ -9,26 +9,12 @@
  ************************************************************************/
 'use strict';
 
-/*
- * This class defines a formatting visitor that "walks" a parse tree
- * produced by the BaliLanguageParser and generates a canonical version of
- * the corresponding Bali source document. An optional padding may be
- * specified that is prepended to each line of the Bali document.
+/**
+ * This library provides functions that format a parse tree produced
+ * by the DocumentParser and generates a canonical version of
+ * the corresponding Bali document.
  */
 var types = require('../syntax/NodeTypes');
-
-
-/**
- * This constructor creates a new formatter with the specified padding.
- * 
- * @constructor
- * @returns {DocumentFormatter} The new formatter.
- */
-function DocumentFormatter() {
-    return this;
-}
-DocumentFormatter.prototype.constructor = DocumentFormatter;
-exports.DocumentFormatter = DocumentFormatter;
 
 
 /**
@@ -39,7 +25,7 @@ exports.DocumentFormatter = DocumentFormatter;
  * @param {string} padding The string that should be prepended to each line.
  * @returns {string} The formatted source code string.
  */
-DocumentFormatter.prototype.formatDocument = function(baliDocument, padding) {
+exports.formatDocument = function(baliDocument, padding) {
     var visitor = new TransformingVisitor(padding);
     baliDocument.accept(visitor);
     return visitor.document;

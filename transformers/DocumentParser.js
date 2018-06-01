@@ -9,9 +9,9 @@
  ************************************************************************/
 'use strict';
 
-/*
- * This class defines a parser that reads in Bali Document Language™
- * source code and generates the corresponding parse tree.
+/**
+ * This library provides functions that parse a Bali document and
+ * produce the corresponding parse tree structure.
  */
 var antlr = require('antlr4');
 var grammar = require('../grammar');
@@ -20,26 +20,13 @@ var types = require('../syntax/NodeTypes');
 
 
 /**
- * This constructor creates a new parser with the specified padding.
- * 
- * @constructor
- * @returns {DocumentParser} The new parser.
- */
-function DocumentParser() {
-    return this;
-}
-DocumentParser.prototype.constructor = DocumentParser;
-exports.DocumentParser = DocumentParser;
-
-
-/**
- * This method takes a source code string containing a Bali document
+ * This function takes a source code string containing a Bali document
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseDocument = function(source) {
+exports.parseDocument = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.document();
     var baliTree = convertParseTree(antlrTree);
@@ -48,13 +35,13 @@ DocumentParser.prototype.parseDocument = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali element
+ * This function takes a source code string containing a Bali element
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {ElementContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseElement = function(source) {
+exports.parseElement = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.element();
     var baliTree = convertParseTree(antlrTree);
@@ -63,13 +50,13 @@ DocumentParser.prototype.parseElement = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali structure
+ * This function takes a source code string containing a Bali structure
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {StructureContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseStructure = function(source) {
+exports.parseStructure = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.structure();
     var baliTree = convertParseTree(antlrTree);
@@ -78,13 +65,13 @@ DocumentParser.prototype.parseStructure = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali range
+ * This function takes a source code string containing a Bali range
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {RangeContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseRange = function(source) {
+exports.parseRange = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.range();
     var baliTree = convertParseTree(antlrTree);
@@ -93,13 +80,13 @@ DocumentParser.prototype.parseRange = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali list
+ * This function takes a source code string containing a Bali list
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {ListContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseList = function(source) {
+exports.parseList = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.list();
     var baliTree = convertParseTree(antlrTree);
@@ -108,13 +95,13 @@ DocumentParser.prototype.parseList = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali catalog
+ * This function takes a source code string containing a Bali catalog
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {CatalogContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseCatalog = function(source) {
+exports.parseCatalog = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.catalog();
     var baliTree = convertParseTree(antlrTree);
@@ -123,13 +110,13 @@ DocumentParser.prototype.parseCatalog = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali block
+ * This function takes a source code string containing a Bali block
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {BlockContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseBlock = function(source) {
+exports.parseBlock = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.block();
     var baliTree = convertParseTree(antlrTree);
@@ -138,13 +125,13 @@ DocumentParser.prototype.parseBlock = function(source) {
 
 
 /**
- * This method takes a source code string containing a Bali expression
+ * This function takes a source code string containing a Bali expression
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
-DocumentParser.prototype.parseExpression = function(source) {
+exports.parseExpression = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.expression();
     var baliTree = convertParseTree(antlrTree);
