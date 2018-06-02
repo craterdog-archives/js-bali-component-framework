@@ -13,9 +13,7 @@
         } handle $exception matching [$type: "BadException"] with {
             continue to label
         }
-        queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1> finish with {
-            wait for $message from <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
-        }
+        queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
         if false then {
             $component := 0
         } else if component < 5 then {
@@ -25,8 +23,6 @@
         } handle $exception matching template with {
             publish exception
             throw exception
-        } finish with {
-            $done := true
         }
     }
     $assignValue: {

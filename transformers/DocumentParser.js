@@ -462,15 +462,6 @@ TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
 };
 
 
-// finishClause: 'finish' 'with' block
-TransformingVisitor.prototype.visitFinishClause = function(ctx) {
-    var tree = new syntax.TreeNode(types.FINISH_CLAUSE);
-    ctx.block().accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
-};
-
-
 // fractionalProbability: FRACTION
 TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var value = ctx.FRACTION().getText();
@@ -916,19 +907,14 @@ TransformingVisitor.prototype.visitSelectClause = function(ctx) {
 //     breakClause |
 //     returnClause |
 //     throwClause
-//) handleClause* finishClause?
+//) handleClause*
 TransformingVisitor.prototype.visitStatement = function(ctx) {
     var tree = new syntax.TreeNode(types.STATEMENT);
     var handleClauses = ctx.handleClause();
-    var finishClause = ctx.finishClause();
     ctx.children[0].accept(this);
     tree.addChild(this.result);
     for (var i = 0; i < handleClauses.length; i++) {
         handleClauses[i].accept(this);
-        tree.addChild(this.result);
-    }
-    if (finishClause) {
-        finishClause.accept(this);
         tree.addChild(this.result);
     }
     this.result = tree;

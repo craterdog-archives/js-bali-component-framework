@@ -335,15 +335,6 @@ BaliLanguageListener.prototype.exitHandleClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#finishClause.
-BaliLanguageListener.prototype.enterFinishClause = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#finishClause.
-BaliLanguageListener.prototype.exitFinishClause = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#label.
 BaliLanguageListener.prototype.enterLabel = function(ctx) {
 };

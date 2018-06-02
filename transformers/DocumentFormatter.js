@@ -248,13 +248,6 @@ TransformingVisitor.prototype.visitFactorialExpression = function(tree) {
 };
 
 
-// finishClause: 'finish' 'with' block
-TransformingVisitor.prototype.visitFinishClause = function(tree) {
-    this.document += ' finish with ';
-    tree.children[0].accept(this);
-};
-
-
 // function: IDENTIFIER
 TransformingVisitor.prototype.visitFunction = function(terminal) {
     this.document += terminal.value;
@@ -521,7 +514,7 @@ TransformingVisitor.prototype.visitSelectClause = function(tree) {
 //     breakClause |
 //     returnClause |
 //     throwClause
-// ) handleClause* finishClause?
+// ) handleClause*
 TransformingVisitor.prototype.visitStatement = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);

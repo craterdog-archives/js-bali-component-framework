@@ -54,7 +54,6 @@ var TREE_TYPES = [
     'evaluateClause',
     'exponentialExpression',
     'factorialExpression',
-    'finishClause',
     'functionExpression',
     'handleClause',
     'ifClause',
@@ -103,7 +102,6 @@ exports.DURATION = TERMINAL_TYPES.indexOf('duration');
 exports.EVALUATE_CLAUSE = TREE_TYPES.indexOf('evaluateClause');
 exports.EXPONENTIAL_EXPRESSION = TREE_TYPES.indexOf('exponentialExpression');
 exports.FACTORIAL_EXPRESSION = TREE_TYPES.indexOf('factorialExpression');
-exports.FINISH_CLAUSE = TREE_TYPES.indexOf('finishClause');
 exports.FUNCTION = TERMINAL_TYPES.indexOf('function');
 exports.FUNCTION_EXPRESSION = TREE_TYPES.indexOf('functionExpression');
 exports.HANDLE_CLAUSE = TREE_TYPES.indexOf('handleClause');

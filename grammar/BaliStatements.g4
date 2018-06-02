@@ -20,7 +20,7 @@ statement: (
     breakClause |
     returnClause |
     throwClause
-) handleClause* finishClause?;
+) handleClause*;
 
 evaluateClause: (recipient ':=')? expression;
 
@@ -55,8 +55,6 @@ returnClause: 'return' expression?;
 throwClause: 'throw' expression;
 
 handleClause: 'handle' symbol 'matching' expression 'with' block;
-
-finishClause: 'finish' 'with' block;
 
 label: IDENTIFIER;
 
