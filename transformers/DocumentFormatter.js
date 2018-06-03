@@ -89,13 +89,9 @@ TransformingVisitor.prototype.visitBlock = function(tree) {
 };
 
 
-// breakClause: 'break' ('from' label)?
+// breakClause: 'break' 'loop'
 TransformingVisitor.prototype.visitBreakClause = function(tree) {
-    this.document += 'break';
-    if (tree.children.length > 0) {
-        this.document += ' from ';
-        tree.children[0].accept(this);
-    }
+    this.document += 'break loop';
 };
 
 
@@ -162,13 +158,9 @@ TransformingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// continueClause: 'continue' ('to' label)?
+// continueClause: 'continue' 'loop'
 TransformingVisitor.prototype.visitContinueClause = function(tree) {
-    this.document += 'continue';
-    if (tree.children.length > 0) {
-        this.document += ' to ';
-        tree.children[0].accept(this);
-    }
+    this.document += 'continue loop';
 };
 
 
@@ -313,12 +305,6 @@ TransformingVisitor.prototype.visitInversionExpression = function(tree) {
         }
     }
     tree.children[0].accept(this);
-};
-
-
-// label: IDENTIFIER
-TransformingVisitor.prototype.visitLabel = function(terminal) {
-    this.document += terminal.value;
 };
 
 
@@ -569,14 +555,9 @@ TransformingVisitor.prototype.visitWaitClause = function(tree) {
 };
 
 
-// whileClause: (label ':')? 'while' expression 'do' block
+// whileClause: 'while' expression 'do' block
 TransformingVisitor.prototype.visitWhileClause = function(tree) {
     var children = tree.children;
-    if (children[0].type === types.LABEL) {
-        children[0].accept(this);
-        this.document += ': ';
-        children = children.slice(1);  // remove the first child
-    }
     this.document += 'while ';
     children[0].accept(this);
     this.document += ' do ';
@@ -584,14 +565,9 @@ TransformingVisitor.prototype.visitWhileClause = function(tree) {
 };
 
 
-// withClause: (label ':')? 'with' ('each' symbol 'in')? expression 'do' block
+// withClause: 'with' ('each' symbol 'in')? expression 'do' block
 TransformingVisitor.prototype.visitWithClause = function(tree) {
     var children = tree.children;
-    if (children[0].type === types.LABEL) {
-        children[0].accept(this);
-        this.document += ': ';
-        children = children.slice(1);  // remove the first child
-    }
     this.document += 'with ';
     if (children[0].type === types.SYMBOL) {
         this.document += 'each ';

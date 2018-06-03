@@ -8,10 +8,10 @@
         }
     ]
     $statement: {
-        label: while condition do {
-            break from label
+        while condition do {
+            break loop
         } handle $exception matching [$type: "BadException"] with {
-            continue to label
+            continue loop
         }
         queue message() on <bali:/#Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
         if false then {
@@ -29,12 +29,10 @@
         $component := value
     }
     $continueLoop: {
-        continue
-        continue to label
+        continue loop
     }
     $breakLoop: {
-        break
-        break from label
+        break loop
     }
     $lifecycle: {
         checkout $document from <bali:/#MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
@@ -107,7 +105,7 @@
             }
         }
         $withLabel: {
-            label: while condition do {
+            while condition do {
             }
         }
     ]
@@ -117,7 +115,7 @@
             }
         }
         $withLabel: {
-            label: with [1..10] do {
+            with [1..10] do {
             }
         }
         $withEach: {
@@ -125,7 +123,7 @@
             }
         }
         $withLabelAndEach: {
-            label: with each $item in list do {
+            with each $item in list do {
             }
         }
     ]

@@ -218,14 +218,9 @@ TransformingVisitor.prototype.visitBlock = function(ctx) {
 };
 
 
-// breakClause: 'break' ('from' label)?
+// breakClause: 'break' 'loop'
 TransformingVisitor.prototype.visitBreakClause = function(ctx) {
     var tree = new syntax.TreeNode(types.BREAK_CLAUSE);
-    var label = ctx.label();
-    if (label) {
-        label.accept(this);
-        tree.addChild(this.result);
-    }
     this.result = tree;
 };
 
@@ -339,14 +334,9 @@ TransformingVisitor.prototype.visitConstantReal = function(ctx) {
 };
 
 
-// continueClause: 'continue' ('to' label)?
+// continueClause: 'continue' 'loop'
 TransformingVisitor.prototype.visitContinueClause = function(ctx) {
     var tree = new syntax.TreeNode(types.CONTINUE_CLAUSE);
-    var label = ctx.label();
-    if (label) {
-        label.accept(this);
-        tree.addChild(this.result);
-    }
     this.result = tree;
 };
 
@@ -603,14 +593,6 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// label: IDENTIFIER
-TransformingVisitor.prototype.visitLabel = function(ctx) {
-    var value = ctx.IDENTIFIER().getText();
-    var terminal = new syntax.TerminalNode(types.LABEL, value);
-    this.result = terminal;
 };
 
 
@@ -1025,14 +1007,9 @@ TransformingVisitor.prototype.visitWaitClause = function(ctx) {
 };
 
 
-// whileClause: (label ':')? 'while' expression 'do' block
+// whileClause: 'while' expression 'do' block
 TransformingVisitor.prototype.visitWhileClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WHILE_CLAUSE);
-    var label = ctx.label();
-    if (label) {
-        label.accept(this);
-        tree.addChild(this.result);
-    }
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -1041,14 +1018,9 @@ TransformingVisitor.prototype.visitWhileClause = function(ctx) {
 };
 
 
-// withClause: (label ':')? 'with' ('each' symbol 'in')? expression 'do' block
+// withClause: 'with' ('each' symbol 'in')? expression 'do' block
 TransformingVisitor.prototype.visitWithClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WITH_CLAUSE);
-    var label = ctx.label();
-    if (label) {
-        label.accept(this);
-        tree.addChild(this.result);
-    }
     var symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);

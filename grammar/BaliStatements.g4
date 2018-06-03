@@ -42,21 +42,19 @@ ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('
 
 selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?;
 
-whileClause: (label ':')? 'while' expression 'do' block;
+whileClause: 'while' expression 'do' block;
 
-withClause: (label ':')? 'with' ('each' symbol 'in')? expression 'do' block;
+withClause: 'with' ('each' symbol 'in')? expression 'do' block;
 
-continueClause: 'continue' ('to' label)?;
+continueClause: 'continue' 'loop';
 
-breakClause: 'break' ('from' label)?;
+breakClause: 'break' 'loop';
 
 returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
 
 handleClause: 'handle' symbol 'matching' expression 'with' block;
-
-label: IDENTIFIER;
 
 recipient: symbol | variable indices;
 

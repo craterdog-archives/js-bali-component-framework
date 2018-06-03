@@ -20,7 +20,6 @@ var TERMINAL_TYPES = [
     'binary',
     'duration',
     'function',
-    'label',
     'moment',
     'message',
     'number',
@@ -108,7 +107,6 @@ exports.HANDLE_CLAUSE = TREE_TYPES.indexOf('handleClause');
 exports.IF_CLAUSE = TREE_TYPES.indexOf('ifClause');
 exports.INDICES = TREE_TYPES.indexOf('indices');
 exports.INVERSION_EXPRESSION = TREE_TYPES.indexOf('inversionExpression');
-exports.LABEL = TERMINAL_TYPES.indexOf('label');
 exports.LIST = TREE_TYPES.indexOf('list');
 exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
 exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
