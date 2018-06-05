@@ -33,6 +33,7 @@ var TERMINAL_TYPES = [
     'variable',
     'version'
 ];
+exports.TERMINAL_TYPES = TERMINAL_TYPES;
 
 var TREE_TYPES = [
     'invalid',  // unit based indexing for Bali
@@ -81,6 +82,7 @@ var TREE_TYPES = [
     'whileClause',
     'withClause'
 ];
+exports.TREE_TYPES = TREE_TYPES;
 
 exports.ARITHMETIC_EXPRESSION = TREE_TYPES.indexOf('arithmeticExpression');
 exports.ASSOCIATION = TREE_TYPES.indexOf('association');
