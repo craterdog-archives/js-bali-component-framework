@@ -23,7 +23,7 @@ describe('Bali Document Language™', function() {
             expect(elements).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(elements);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree) + '\n';
+            var formatted = language.formatDocument(tree);
             expect(formatted).to.equal(elements);
         });
 
@@ -33,7 +33,7 @@ describe('Bali Document Language™', function() {
             expect(expressions).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(expressions);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree) + '\n';
+            var formatted = language.formatDocument(tree);
             expect(formatted).to.equal(expressions);
         });
 
@@ -43,7 +43,7 @@ describe('Bali Document Language™', function() {
             expect(statements).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(statements);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree) + '\n';
+            var formatted = language.formatDocument(tree);
             expect(formatted).to.equal(statements);
         });
 
@@ -53,7 +53,7 @@ describe('Bali Document Language™', function() {
             expect(documents).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(documents);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree) + '\n';
+            var formatted = language.formatDocument(tree);
             expect(formatted).to.equal(documents);
         });
 

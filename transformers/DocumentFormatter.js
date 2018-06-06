@@ -28,7 +28,7 @@ var types = require('../syntax/NodeTypes');
 exports.formatDocument = function(baliDocument, padding) {
     var visitor = new TransformingVisitor(padding);
     baliDocument.accept(visitor);
-    return visitor.document;
+    return visitor.document + '\n';
 };
 
 
