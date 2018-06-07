@@ -46,6 +46,7 @@ var TREE_TYPES = [
     'commitClause',
     'comparisonExpression',
     'complementExpression',
+    'component',
     'continueClause',
     'defaultExpression',
     'dereferenceExpression',
@@ -94,6 +95,7 @@ exports.CHECKOUT_CLAUSE = TREE_TYPES.indexOf('checkoutClause');
 exports.COMMIT_CLAUSE = TREE_TYPES.indexOf('commitClause');
 exports.COMPARISON_EXPRESSION = TREE_TYPES.indexOf('comparisonExpression');
 exports.COMPLEMENT_EXPRESSION = TREE_TYPES.indexOf('complementExpression');
+exports.COMPONENT = TREE_TYPES.indexOf('component');
 exports.CONTINUE_CLAUSE = TREE_TYPES.indexOf('continueClause');
 exports.DEFAULT_EXPRESSION = TREE_TYPES.indexOf('defaultExpression');
 exports.DEREFERENCE_EXPRESSION = TREE_TYPES.indexOf('dereferenceExpression');

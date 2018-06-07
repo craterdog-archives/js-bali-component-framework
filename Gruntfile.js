@@ -30,6 +30,7 @@ module.exports = function(grunt) {
         'grammar/BaliLanguageParser.js',
         'grammar/BaliLanguageListener.js',
         'grammar/BaliLanguageVisitor.js',
+        'grammar/*.interp',
         'grammar/*.tokens'
       ],
       build: ['dist/*']

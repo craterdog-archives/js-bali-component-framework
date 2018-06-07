@@ -310,16 +310,17 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: (element | structure | block) parameters?
+// component: item parameters?
 TransformingVisitor.prototype.visitComponent = function(ctx) {
+    var tree = new syntax.TreeNode(types.COMPONENT);
     ctx.children[0].accept(this);
+    tree.addChild(this.result);
     var parameters = ctx.parameters();
     if (parameters) {
-        var component = this.result;
         parameters.accept(this);
-        component.parameters = this.result;
-        this.result = component;
+        tree.addChild(this.result);
     }
+    this.result = tree;
 };
 
 

@@ -82,10 +82,6 @@ TransformingVisitor.prototype.visitBlock = function(tree) {
     this.document += '{';
     tree.children[0].accept(this);
     this.document += '}';
-    var parameters = tree.parameters;
-    if (parameters) {
-        parameters.accept(this);
-    }
 };
 
 
@@ -158,6 +154,14 @@ TransformingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
+// component: item parameters?
+TransformingVisitor.prototype.visitComponent = function(tree) {
+    for (var i = 0; i < tree.children.length; i++) {
+        tree.children[i].accept(this);
+    }
+};
+
+
 // continueClause: 'continue' 'loop'
 TransformingVisitor.prototype.visitContinueClause = function(tree) {
     this.document += 'continue loop';
@@ -207,20 +211,15 @@ TransformingVisitor.prototype.visitDocument = function(tree) {
 //     version
 TransformingVisitor.prototype.visitElement = function(terminal) {
     this.document += terminal.value;
-    if (terminal.parameters) {
-        terminal.parameters.accept(this);
-    }
 };
 
 
 // evaluateClause: (recipient ':=')? expression
 TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
+    tree.children[0].accept(this);
     if (tree.children.length > 1) {
-        tree.children[0].accept(this);  // recipient
         this.document += ' := ';
-        tree.children[1].accept(this);  // expression
-    } else {
-        tree.children[0].accept(this);  // expression
+        tree.children[1].accept(this);
     }
 };
 
@@ -299,9 +298,12 @@ TransformingVisitor.prototype.visitIndices = function(tree) {
 TransformingVisitor.prototype.visitInversionExpression = function(tree) {
     this.document += tree.operator;
     var expression = tree.children[0];
+    // must insert a space before a negative number or constant!
     if (tree.operator === '-') {
-        if (expression.type === types.NUMBER && expression.value[0] === "-") {
-            this.document += ' ';  // must insert a space before a negative value!
+        if (expression.type === types.COMPONENT &&
+                expression.children[0].type === types.NUMBER &&
+                expression.children[0].value[0] === "-") {
+            this.document += ' ';  // must insert a space before a negative number or constant!
         }
     }
     tree.children[0].accept(this);
@@ -513,9 +515,6 @@ TransformingVisitor.prototype.visitStructure = function(tree) {
     this.document += '[';
     tree.children[0].accept(this);
     this.document += ']';
-    if (tree.parameters) {
-        tree.parameters.accept(this);
-    }
 };
 
 
@@ -568,14 +567,14 @@ TransformingVisitor.prototype.visitWhileClause = function(tree) {
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 TransformingVisitor.prototype.visitWithClause = function(tree) {
     var children = tree.children;
+    var count = children.length;
     this.document += 'with ';
-    if (children[0].type === types.SYMBOL) {
+    if (count > 2) {
         this.document += 'each ';
         children[0].accept(this);
         this.document += ' in ';
-        children = children.slice(1);  // remove the first child
     }
-    children[0].accept(this);
+    children[count - 2].accept(this);
     this.document += ' do ';
-    children[1].accept(this);
+    children[count - 1].accept(this);
 };

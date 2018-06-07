@@ -5,7 +5,9 @@ import BaliStatements;
 
 document: NEWLINE* component NEWLINE* EOF;
 
-component: (element | structure | block) parameters?;
+component: item parameters?;
+
+item: element | structure | block;
 
 structure: '[' composite ']';
 
