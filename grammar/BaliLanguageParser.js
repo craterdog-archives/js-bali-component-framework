@@ -7,7 +7,7 @@ var BaliLanguageVisitor = require('./BaliLanguageVisitor').BaliLanguageVisitor;
 var grammarFileName = "BaliLanguage.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
-    "\u0003X\u01f5\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003V\u01f5\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
     "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
@@ -100,10 +100,10 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002Z\u01db\u0003\u0002\u0002\u0002\\\u01e2\u0003\u0002\u0002",
     "\u0002^\u01e4\u0003\u0002\u0002\u0002`\u01e6\u0003\u0002\u0002\u0002",
     "b\u01e8\u0003\u0002\u0002\u0002d\u01ec\u0003\u0002\u0002\u0002f\u01f0",
-    "\u0003\u0002\u0002\u0002h\u01f2\u0003\u0002\u0002\u0002jl\u0007W\u0002",
+    "\u0003\u0002\u0002\u0002h\u01f2\u0003\u0002\u0002\u0002jl\u0007U\u0002",
     "\u0002kj\u0003\u0002\u0002\u0002lo\u0003\u0002\u0002\u0002mk\u0003\u0002",
     "\u0002\u0002mn\u0003\u0002\u0002\u0002np\u0003\u0002\u0002\u0002om\u0003",
-    "\u0002\u0002\u0002pt\u0005\u0004\u0003\u0002qs\u0007W\u0002\u0002rq",
+    "\u0002\u0002\u0002pt\u0005\u0004\u0003\u0002qs\u0007U\u0002\u0002rq",
     "\u0003\u0002\u0002\u0002sv\u0003\u0002\u0002\u0002tr\u0003\u0002\u0002",
     "\u0002tu\u0003\u0002\u0002\u0002uw\u0003\u0002\u0002\u0002vt\u0003\u0002",
     "\u0002\u0002wx\u0007\u0002\u0002\u0003x\u0003\u0003\u0002\u0002\u0002",
@@ -125,8 +125,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0095\u0097\u0005F$\u0002\u0096\u0094\u0003\u0002\u0002\u0002\u0097",
     "\u009a\u0003\u0002\u0002\u0002\u0098\u0096\u0003\u0002\u0002\u0002\u0098",
     "\u0099\u0003\u0002\u0002\u0002\u0099\u00a6\u0003\u0002\u0002\u0002\u009a",
-    "\u0098\u0003\u0002\u0002\u0002\u009b\u00a1\u0007W\u0002\u0002\u009c",
-    "\u009d\u0005F$\u0002\u009d\u009e\u0007W\u0002\u0002\u009e\u00a0\u0003",
+    "\u0098\u0003\u0002\u0002\u0002\u009b\u00a1\u0007U\u0002\u0002\u009c",
+    "\u009d\u0005F$\u0002\u009d\u009e\u0007U\u0002\u0002\u009e\u00a0\u0003",
     "\u0002\u0002\u0002\u009f\u009c\u0003\u0002\u0002\u0002\u00a0\u00a3\u0003",
     "\u0002\u0002\u0002\u00a1\u009f\u0003\u0002\u0002\u0002\u00a1\u00a2\u0003",
     "\u0002\u0002\u0002\u00a2\u00a6\u0003\u0002\u0002\u0002\u00a3\u00a1\u0003",
@@ -137,8 +137,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0014\u000b\u0002\u00aa\u00a8\u0003\u0002\u0002\u0002\u00ab\u00ae\u0003",
     "\u0002\u0002\u0002\u00ac\u00aa\u0003\u0002\u0002\u0002\u00ac\u00ad\u0003",
     "\u0002\u0002\u0002\u00ad\u00ba\u0003\u0002\u0002\u0002\u00ae\u00ac\u0003",
-    "\u0002\u0002\u0002\u00af\u00b5\u0007W\u0002\u0002\u00b0\u00b1\u0005",
-    "\u0014\u000b\u0002\u00b1\u00b2\u0007W\u0002\u0002\u00b2\u00b4\u0003",
+    "\u0002\u0002\u0002\u00af\u00b5\u0007U\u0002\u0002\u00b0\u00b1\u0005",
+    "\u0014\u000b\u0002\u00b1\u00b2\u0007U\u0002\u0002\u00b2\u00b4\u0003",
     "\u0002\u0002\u0002\u00b3\u00b0\u0003\u0002\u0002\u0002\u00b4\u00b7\u0003",
     "\u0002\u0002\u0002\u00b5\u00b3\u0003\u0002\u0002\u0002\u00b5\u00b6\u0003",
     "\u0002\u0002\u0002\u00b6\u00ba\u0003\u0002\u0002\u0002\u00b7\u00b5\u0003",
@@ -147,11 +147,11 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u0002\u00ba\u0013\u0003\u0002\u0002\u0002\u00bb\u00bc\u0005",
     "\u0004\u0003\u0002\u00bc\u00bd\u0007\t\u0002\u0002\u00bd\u00be\u0005",
     "F$\u0002\u00be\u0015\u0003\u0002\u0002\u0002\u00bf\u00c3\u0007G\u0002",
-    "\u0002\u00c0\u00c2\u0007W\u0002\u0002\u00c1\u00c0\u0003\u0002\u0002",
+    "\u0002\u00c0\u00c2\u0007U\u0002\u0002\u00c1\u00c0\u0003\u0002\u0002",
     "\u0002\u00c2\u00c5\u0003\u0002\u0002\u0002\u00c3\u00c1\u0003\u0002\u0002",
     "\u0002\u00c3\u00c4\u0003\u0002\u0002\u0002\u00c4\u00c6\u0003\u0002\u0002",
     "\u0002\u00c5\u00c3\u0003\u0002\u0002\u0002\u00c6\u00ca\u0005\u001a\u000e",
-    "\u0002\u00c7\u00c9\u0007W\u0002\u0002\u00c8\u00c7\u0003\u0002\u0002",
+    "\u0002\u00c7\u00c9\u0007U\u0002\u0002\u00c8\u00c7\u0003\u0002\u0002",
     "\u0002\u00c9\u00cc\u0003\u0002\u0002\u0002\u00ca\u00c8\u0003\u0002\u0002",
     "\u0002\u00ca\u00cb\u0003\u0002\u0002\u0002\u00cb\u00cd\u0003\u0002\u0002",
     "\u0002\u00cc\u00ca\u0003\u0002\u0002\u0002\u00cd\u00ce\u0007\u0002\u0002",
@@ -162,8 +162,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u00d6\u00d4\u0003\u0002\u0002\u0002\u00d7\u00da\u0003\u0002\u0002",
     "\u0002\u00d8\u00d6\u0003\u0002\u0002\u0002\u00d8\u00d9\u0003\u0002\u0002",
     "\u0002\u00d9\u00e6\u0003\u0002\u0002\u0002\u00da\u00d8\u0003\u0002\u0002",
-    "\u0002\u00db\u00e1\u0007W\u0002\u0002\u00dc\u00dd\u0005\u001c\u000f",
-    "\u0002\u00dd\u00de\u0007W\u0002\u0002\u00de\u00e0\u0003\u0002\u0002",
+    "\u0002\u00db\u00e1\u0007U\u0002\u0002\u00dc\u00dd\u0005\u001c\u000f",
+    "\u0002\u00dd\u00de\u0007U\u0002\u0002\u00de\u00e0\u0003\u0002\u0002",
     "\u0002\u00df\u00dc\u0003\u0002\u0002\u0002\u00e0\u00e3\u0003\u0002\u0002",
     "\u0002\u00e1\u00df\u0003\u0002\u0002\u0002\u00e1\u00e2\u0003\u0002\u0002",
     "\u0002\u00e2\u00e6\u0003\u0002\u0002\u0002\u00e3\u00e1\u0003\u0002\u0002",
@@ -246,7 +246,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u0002\u016c\u0171\u0005`1\u0002\u016d\u016e\u0005B\"\u0002",
     "\u016e\u016f\u0005D#\u0002\u016f\u0171\u0003\u0002\u0002\u0002\u0170",
     "\u016c\u0003\u0002\u0002\u0002\u0170\u016d\u0003\u0002\u0002\u0002\u0171",
-    "A\u0003\u0002\u0002\u0002\u0172\u0173\u0007V\u0002\u0002\u0173C\u0003",
+    "A\u0003\u0002\u0002\u0002\u0172\u0173\u0007T\u0002\u0002\u0173C\u0003",
     "\u0002\u0002\u0002\u0174\u0175\u0007\u0003\u0002\u0002\u0175\u0176\u0005",
     "\u0010\t\u0002\u0176\u0177\u0007\u0004\u0002\u0002\u0177E\u0003\u0002",
     "\u0002\u0002\u0178\u0179\b$\u0001\u0002\u0179\u018d\u0005\u0004\u0003",
@@ -279,8 +279,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u01a6\u01a4\u0003\u0002\u0002\u0002\u01a7\u01aa\u0003\u0002",
     "\u0002\u0002\u01a8\u01a6\u0003\u0002\u0002\u0002\u01a8\u01a9\u0003\u0002",
     "\u0002\u0002\u01a9G\u0003\u0002\u0002\u0002\u01aa\u01a8\u0003\u0002",
-    "\u0002\u0002\u01ab\u01ac\u0007V\u0002\u0002\u01acI\u0003\u0002\u0002",
-    "\u0002\u01ad\u01ae\u0007V\u0002\u0002\u01aeK\u0003\u0002\u0002\u0002",
+    "\u0002\u0002\u01ab\u01ac\u0007T\u0002\u0002\u01acI\u0003\u0002\u0002",
+    "\u0002\u01ad\u01ae\u0007T\u0002\u0002\u01aeK\u0003\u0002\u0002\u0002",
     "\u01af\u01bc\u0005N(\u0002\u01b0\u01bc\u0005P)\u0002\u01b1\u01bc\u0005",
     "T+\u0002\u01b2\u01bc\u0005V,\u0002\u01b3\u01bc\u0005X-\u0002\u01b4\u01bc",
     "\u0005Z.\u0002\u01b5\u01bc\u0005^0\u0002\u01b6\u01bc\u0005`1\u0002\u01b7",
@@ -292,12 +292,12 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01b6\u0003\u0002\u0002\u0002\u01bb\u01b7\u0003\u0002\u0002\u0002\u01bb",
     "\u01b8\u0003\u0002\u0002\u0002\u01bb\u01b9\u0003\u0002\u0002\u0002\u01bb",
     "\u01ba\u0003\u0002\u0002\u0002\u01bcM\u0003\u0002\u0002\u0002\u01bd",
-    "\u01be\u0007S\u0002\u0002\u01beO\u0003\u0002\u0002\u0002\u01bf\u01c0",
-    "\u0007P\u0002\u0002\u01c0Q\u0003\u0002\u0002\u0002\u01c1\u01c4\u0005",
+    "\u01be\u0007Q\u0002\u0002\u01beO\u0003\u0002\u0002\u0002\u01bf\u01c0",
+    "\u0007N\u0002\u0002\u01c0Q\u0003\u0002\u0002\u0002\u01c1\u01c4\u0005",
     "\\/\u0002\u01c2\u01c4\u0007-\u0002\u0002\u01c3\u01c1\u0003\u0002\u0002",
     "\u0002\u01c3\u01c2\u0003\u0002\u0002\u0002\u01c3\u01c4\u0003\u0002\u0002",
     "\u0002\u01c4\u01c5\u0003\u0002\u0002\u0002\u01c5\u01c6\u0007>\u0002",
-    "\u0002\u01c6S\u0003\u0002\u0002\u0002\u01c7\u01c8\u0007O\u0002\u0002",
+    "\u0002\u01c6S\u0003\u0002\u0002\u0002\u01c7\u01c8\u0007M\u0002\u0002",
     "\u01c8U\u0003\u0002\u0002\u0002\u01c9\u01d4\u0007?\u0002\u0002\u01ca",
     "\u01d4\u0007@\u0002\u0002\u01cb\u01d4\u0005\\/\u0002\u01cc\u01d4\u0005",
     "R*\u0002\u01cd\u01ce\u0007\u0005\u0002\u0002\u01ce\u01cf\u0005\\/\u0002",
@@ -308,21 +308,21 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003\u0002\u0002\u0002\u01d4W\u0003\u0002\u0002\u0002\u01d5\u01d6",
     "\u0005\\/\u0002\u01d6\u01d7\u0007B\u0002\u0002\u01d7Y\u0003\u0002\u0002",
     "\u0002\u01d8\u01dc\u0007C\u0002\u0002\u01d9\u01dc\u0007D\u0002\u0002",
-    "\u01da\u01dc\u0007L\u0002\u0002\u01db\u01d8\u0003\u0002\u0002\u0002",
+    "\u01da\u01dc\u0007J\u0002\u0002\u01db\u01d8\u0003\u0002\u0002\u0002",
     "\u01db\u01d9\u0003\u0002\u0002\u0002\u01db\u01da\u0003\u0002\u0002\u0002",
     "\u01dc[\u0003\u0002\u0002\u0002\u01dd\u01df\u0007-\u0002\u0002\u01de",
     "\u01dd\u0003\u0002\u0002\u0002\u01de\u01df\u0003\u0002\u0002\u0002\u01df",
-    "\u01e0\u0003\u0002\u0002\u0002\u01e0\u01e3\u0007M\u0002\u0002\u01e1",
-    "\u01e3\u0007N\u0002\u0002\u01e2\u01de\u0003\u0002\u0002\u0002\u01e2",
+    "\u01e0\u0003\u0002\u0002\u0002\u01e0\u01e3\u0007K\u0002\u0002\u01e1",
+    "\u01e3\u0007L\u0002\u0002\u01e2\u01de\u0003\u0002\u0002\u0002\u01e2",
     "\u01e1\u0003\u0002\u0002\u0002\u01e3]\u0003\u0002\u0002\u0002\u01e4",
-    "\u01e5\u0007Q\u0002\u0002\u01e5_\u0003\u0002\u0002\u0002\u01e6\u01e7",
-    "\u0007K\u0002\u0002\u01e7a\u0003\u0002\u0002\u0002\u01e8\u01e9\u0007",
-    "J\u0002\u0002\u01e9c\u0003\u0002\u0002\u0002\u01ea\u01ed\u0007E\u0002",
+    "\u01e5\u0007O\u0002\u0002\u01e5_\u0003\u0002\u0002\u0002\u01e6\u01e7",
+    "\u0007I\u0002\u0002\u01e7a\u0003\u0002\u0002\u0002\u01e8\u01e9\u0007",
+    "H\u0002\u0002\u01e9c\u0003\u0002\u0002\u0002\u01ea\u01ed\u0007E\u0002",
     "\u0002\u01eb\u01ed\u0007F\u0002\u0002\u01ec\u01ea\u0003\u0002\u0002",
     "\u0002\u01ec\u01eb\u0003\u0002\u0002\u0002\u01ede\u0003\u0002\u0002",
-    "\u0002\u01ee\u01f1\u0007U\u0002\u0002\u01ef\u01f1\u0007T\u0002\u0002",
+    "\u0002\u01ee\u01f1\u0007S\u0002\u0002\u01ef\u01f1\u0007R\u0002\u0002",
     "\u01f0\u01ee\u0003\u0002\u0002\u0002\u01f0\u01ef\u0003\u0002\u0002\u0002",
-    "\u01f1g\u0003\u0002\u0002\u0002\u01f2\u01f3\u0007R\u0002\u0002\u01f3",
+    "\u01f1g\u0003\u0002\u0002\u0002\u01f2\u01f3\u0007P\u0002\u0002\u01f3",
     "i\u0003\u0002\u0002\u0002\'mt{\u0080\u008d\u0098\u00a1\u00a5\u00ac\u00b5",
     "\u00b9\u00c3\u00ca\u00d8\u00e1\u00e5\u00f7\u00fc\u0102\u0132\u0137\u0142",
     "\u0146\u0152\u0160\u0170\u018c\u01a6\u01a8\u01bb\u01c3\u01d3\u01db\u01de",
@@ -355,11 +355,10 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
-                      null, null, null, null, null, null, "SHELL", "COMMENT", 
-                      "COMMENT_BLOCK", "TAG", "SYMBOL", "FRACTION", "CONSTANT", 
-                      "FLOAT", "MOMENT", "DURATION", "RESOURCE", "VERSION", 
-                      "BINARY", "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", 
-                      "SPACE" ];
+                      null, null, null, null, null, null, "SHELL", "TAG", 
+                      "SYMBOL", "FRACTION", "CONSTANT", "FLOAT", "MOMENT", 
+                      "DURATION", "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
+                      "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
 var ruleNames =  [ "document", "component", "item", "structure", "parameters", 
                    "composite", "range", "list", "catalog", "association", 
@@ -461,23 +460,21 @@ BaliLanguageParser.T__65 = 66;
 BaliLanguageParser.T__66 = 67;
 BaliLanguageParser.T__67 = 68;
 BaliLanguageParser.SHELL = 69;
-BaliLanguageParser.COMMENT = 70;
-BaliLanguageParser.COMMENT_BLOCK = 71;
-BaliLanguageParser.TAG = 72;
-BaliLanguageParser.SYMBOL = 73;
-BaliLanguageParser.FRACTION = 74;
-BaliLanguageParser.CONSTANT = 75;
-BaliLanguageParser.FLOAT = 76;
-BaliLanguageParser.MOMENT = 77;
-BaliLanguageParser.DURATION = 78;
-BaliLanguageParser.RESOURCE = 79;
-BaliLanguageParser.VERSION = 80;
-BaliLanguageParser.BINARY = 81;
-BaliLanguageParser.TEXT_BLOCK = 82;
-BaliLanguageParser.TEXT = 83;
-BaliLanguageParser.IDENTIFIER = 84;
-BaliLanguageParser.NEWLINE = 85;
-BaliLanguageParser.SPACE = 86;
+BaliLanguageParser.TAG = 70;
+BaliLanguageParser.SYMBOL = 71;
+BaliLanguageParser.FRACTION = 72;
+BaliLanguageParser.CONSTANT = 73;
+BaliLanguageParser.FLOAT = 74;
+BaliLanguageParser.MOMENT = 75;
+BaliLanguageParser.DURATION = 76;
+BaliLanguageParser.RESOURCE = 77;
+BaliLanguageParser.VERSION = 78;
+BaliLanguageParser.BINARY = 79;
+BaliLanguageParser.TEXT_BLOCK = 80;
+BaliLanguageParser.TEXT = 81;
+BaliLanguageParser.IDENTIFIER = 82;
+BaliLanguageParser.NEWLINE = 83;
+BaliLanguageParser.SPACE = 84;
 
 BaliLanguageParser.RULE_document = 0;
 BaliLanguageParser.RULE_component = 1;
@@ -1362,7 +1359,7 @@ BaliLanguageParser.prototype.list = function() {
             this.state = 159;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliLanguageParser.TAG - 72)) | (1 << (BaliLanguageParser.SYMBOL - 72)) | (1 << (BaliLanguageParser.FRACTION - 72)) | (1 << (BaliLanguageParser.CONSTANT - 72)) | (1 << (BaliLanguageParser.FLOAT - 72)) | (1 << (BaliLanguageParser.MOMENT - 72)) | (1 << (BaliLanguageParser.DURATION - 72)) | (1 << (BaliLanguageParser.RESOURCE - 72)) | (1 << (BaliLanguageParser.VERSION - 72)) | (1 << (BaliLanguageParser.BINARY - 72)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 72)) | (1 << (BaliLanguageParser.TEXT - 72)) | (1 << (BaliLanguageParser.IDENTIFIER - 72)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)) | (1 << (BaliLanguageParser.TAG - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliLanguageParser.SYMBOL - 71)) | (1 << (BaliLanguageParser.FRACTION - 71)) | (1 << (BaliLanguageParser.CONSTANT - 71)) | (1 << (BaliLanguageParser.FLOAT - 71)) | (1 << (BaliLanguageParser.MOMENT - 71)) | (1 << (BaliLanguageParser.DURATION - 71)) | (1 << (BaliLanguageParser.RESOURCE - 71)) | (1 << (BaliLanguageParser.VERSION - 71)) | (1 << (BaliLanguageParser.BINARY - 71)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 71)) | (1 << (BaliLanguageParser.TEXT - 71)) | (1 << (BaliLanguageParser.IDENTIFIER - 71)))) !== 0)) {
                 this.state = 154;
                 this.expression(0);
                 this.state = 155;
@@ -1606,7 +1603,7 @@ BaliLanguageParser.prototype.catalog = function() {
             this.state = 179;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliLanguageParser.T__42 - 43)) | (1 << (BaliLanguageParser.T__59 - 43)) | (1 << (BaliLanguageParser.T__60 - 43)) | (1 << (BaliLanguageParser.T__61 - 43)) | (1 << (BaliLanguageParser.T__64 - 43)) | (1 << (BaliLanguageParser.T__65 - 43)) | (1 << (BaliLanguageParser.T__66 - 43)) | (1 << (BaliLanguageParser.T__67 - 43)) | (1 << (BaliLanguageParser.TAG - 43)) | (1 << (BaliLanguageParser.SYMBOL - 43)) | (1 << (BaliLanguageParser.FRACTION - 43)))) !== 0) || ((((_la - 75)) & ~0x1f) == 0 && ((1 << (_la - 75)) & ((1 << (BaliLanguageParser.CONSTANT - 75)) | (1 << (BaliLanguageParser.FLOAT - 75)) | (1 << (BaliLanguageParser.MOMENT - 75)) | (1 << (BaliLanguageParser.DURATION - 75)) | (1 << (BaliLanguageParser.RESOURCE - 75)) | (1 << (BaliLanguageParser.VERSION - 75)) | (1 << (BaliLanguageParser.BINARY - 75)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 75)) | (1 << (BaliLanguageParser.TEXT - 75)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliLanguageParser.T__42 - 43)) | (1 << (BaliLanguageParser.T__59 - 43)) | (1 << (BaliLanguageParser.T__60 - 43)) | (1 << (BaliLanguageParser.T__61 - 43)) | (1 << (BaliLanguageParser.T__64 - 43)) | (1 << (BaliLanguageParser.T__65 - 43)) | (1 << (BaliLanguageParser.T__66 - 43)) | (1 << (BaliLanguageParser.T__67 - 43)) | (1 << (BaliLanguageParser.TAG - 43)) | (1 << (BaliLanguageParser.SYMBOL - 43)) | (1 << (BaliLanguageParser.FRACTION - 43)) | (1 << (BaliLanguageParser.CONSTANT - 43)) | (1 << (BaliLanguageParser.FLOAT - 43)))) !== 0) || ((((_la - 75)) & ~0x1f) == 0 && ((1 << (_la - 75)) & ((1 << (BaliLanguageParser.MOMENT - 75)) | (1 << (BaliLanguageParser.DURATION - 75)) | (1 << (BaliLanguageParser.RESOURCE - 75)) | (1 << (BaliLanguageParser.VERSION - 75)) | (1 << (BaliLanguageParser.BINARY - 75)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 75)) | (1 << (BaliLanguageParser.TEXT - 75)))) !== 0)) {
                 this.state = 174;
                 this.association();
                 this.state = 175;
@@ -3195,7 +3192,7 @@ BaliLanguageParser.prototype.selectClause = function() {
             this.state = 320; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliLanguageParser.TAG - 72)) | (1 << (BaliLanguageParser.SYMBOL - 72)) | (1 << (BaliLanguageParser.FRACTION - 72)) | (1 << (BaliLanguageParser.CONSTANT - 72)) | (1 << (BaliLanguageParser.FLOAT - 72)) | (1 << (BaliLanguageParser.MOMENT - 72)) | (1 << (BaliLanguageParser.DURATION - 72)) | (1 << (BaliLanguageParser.RESOURCE - 72)) | (1 << (BaliLanguageParser.VERSION - 72)) | (1 << (BaliLanguageParser.BINARY - 72)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 72)) | (1 << (BaliLanguageParser.TEXT - 72)) | (1 << (BaliLanguageParser.IDENTIFIER - 72)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)) | (1 << (BaliLanguageParser.TAG - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliLanguageParser.SYMBOL - 71)) | (1 << (BaliLanguageParser.FRACTION - 71)) | (1 << (BaliLanguageParser.CONSTANT - 71)) | (1 << (BaliLanguageParser.FLOAT - 71)) | (1 << (BaliLanguageParser.MOMENT - 71)) | (1 << (BaliLanguageParser.DURATION - 71)) | (1 << (BaliLanguageParser.RESOURCE - 71)) | (1 << (BaliLanguageParser.VERSION - 71)) | (1 << (BaliLanguageParser.BINARY - 71)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 71)) | (1 << (BaliLanguageParser.TEXT - 71)) | (1 << (BaliLanguageParser.IDENTIFIER - 71)))) !== 0));
         this.state = 324;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -3580,7 +3577,7 @@ BaliLanguageParser.prototype.returnClause = function() {
         this.state = 350;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliLanguageParser.TAG - 72)) | (1 << (BaliLanguageParser.SYMBOL - 72)) | (1 << (BaliLanguageParser.FRACTION - 72)) | (1 << (BaliLanguageParser.CONSTANT - 72)) | (1 << (BaliLanguageParser.FLOAT - 72)) | (1 << (BaliLanguageParser.MOMENT - 72)) | (1 << (BaliLanguageParser.DURATION - 72)) | (1 << (BaliLanguageParser.RESOURCE - 72)) | (1 << (BaliLanguageParser.VERSION - 72)) | (1 << (BaliLanguageParser.BINARY - 72)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 72)) | (1 << (BaliLanguageParser.TEXT - 72)) | (1 << (BaliLanguageParser.IDENTIFIER - 72)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliLanguageParser.T__38 - 39)) | (1 << (BaliLanguageParser.T__42 - 39)) | (1 << (BaliLanguageParser.T__43 - 39)) | (1 << (BaliLanguageParser.T__44 - 39)) | (1 << (BaliLanguageParser.T__47 - 39)) | (1 << (BaliLanguageParser.T__53 - 39)) | (1 << (BaliLanguageParser.T__59 - 39)) | (1 << (BaliLanguageParser.T__60 - 39)) | (1 << (BaliLanguageParser.T__61 - 39)) | (1 << (BaliLanguageParser.T__64 - 39)) | (1 << (BaliLanguageParser.T__65 - 39)) | (1 << (BaliLanguageParser.T__66 - 39)) | (1 << (BaliLanguageParser.T__67 - 39)) | (1 << (BaliLanguageParser.TAG - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliLanguageParser.SYMBOL - 71)) | (1 << (BaliLanguageParser.FRACTION - 71)) | (1 << (BaliLanguageParser.CONSTANT - 71)) | (1 << (BaliLanguageParser.FLOAT - 71)) | (1 << (BaliLanguageParser.MOMENT - 71)) | (1 << (BaliLanguageParser.DURATION - 71)) | (1 << (BaliLanguageParser.RESOURCE - 71)) | (1 << (BaliLanguageParser.VERSION - 71)) | (1 << (BaliLanguageParser.BINARY - 71)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 71)) | (1 << (BaliLanguageParser.TEXT - 71)) | (1 << (BaliLanguageParser.IDENTIFIER - 71)))) !== 0)) {
             this.state = 349;
             this.expression(0);
         }

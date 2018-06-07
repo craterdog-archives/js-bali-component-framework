@@ -11,10 +11,6 @@ grammar BaliTokens;
 
 SHELL: '^#!' LINE;
 
-COMMENT: ('--' LINE) -> channel(HIDDEN);
-
-COMMENT_BLOCK: ('/*' CHARACTER*? '*/') -> channel(HIDDEN);
-
 TAG: '#' BASE32*;
 
 SYMBOL: '$' IDENTIFIER;
