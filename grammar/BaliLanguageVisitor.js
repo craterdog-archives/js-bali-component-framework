@@ -132,6 +132,12 @@ BaliLanguageVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#mainClause.
+BaliLanguageVisitor.prototype.visitMainClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageVisitor.prototype.visitEvaluateClause = function(ctx) {
   return this.visitChildren(ctx);

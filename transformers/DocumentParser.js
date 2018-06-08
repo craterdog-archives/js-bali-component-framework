@@ -873,29 +873,12 @@ TransformingVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// statement: (
-//     evaluateClause |
-//     checkoutClause |
-//     saveClause |
-//     discardClause |
-//     commitClause |
-//     publishClause |
-//     queueClause |
-//     waitClause |
-//     ifClause |
-//     selectClause |
-//     whileClause |
-//     withClause |
-//     continueClause |
-//     breakClause |
-//     returnClause |
-//     throwClause
-//) handleClause*
+// statement: mainClause handleClause*
 TransformingVisitor.prototype.visitStatement = function(ctx) {
     var tree = new syntax.TreeNode(types.STATEMENT);
-    var handleClauses = ctx.handleClause();
-    ctx.children[0].accept(this);
+    ctx.mainClause().accept(this);
     tree.addChild(this.result);
+    var handleClauses = ctx.handleClause();
     for (var i = 0; i < handleClauses.length; i++) {
         handleClauses[i].accept(this);
         tree.addChild(this.result);

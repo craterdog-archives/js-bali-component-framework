@@ -3,7 +3,9 @@ grammar BaliStatements;
 import BaliExpressions;
 
 
-statement: (
+statement: mainClause handleClause*;
+
+mainClause:
     evaluateClause |
     checkoutClause |
     saveClause |
@@ -20,7 +22,7 @@ statement: (
     breakClause |
     returnClause |
     throwClause
-) handleClause*;
+;
 
 evaluateClause: (recipient ':=')? expression;
 

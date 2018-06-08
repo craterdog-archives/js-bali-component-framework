@@ -485,24 +485,7 @@ TransformingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: (
-//     evaluateClause |
-//     checkoutClause |
-//     saveClause |
-//     discardClause |
-//     commitClause |
-//     publishClause |
-//     queueClause |
-//     waitClause |
-//     ifClause |
-//     selectClause |
-//     whileClause |
-//     withClause |
-//     continueClause |
-//     breakClause |
-//     returnClause |
-//     throwClause
-// ) handleClause*
+// statement: mainClause handleClause*
 TransformingVisitor.prototype.visitStatement = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);

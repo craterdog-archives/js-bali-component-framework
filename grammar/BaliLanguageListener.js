@@ -191,6 +191,15 @@ BaliLanguageListener.prototype.exitStatement = function(ctx) {
 };
 
 
+// Enter a parse tree produced by BaliLanguageParser#mainClause.
+BaliLanguageListener.prototype.enterMainClause = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#mainClause.
+BaliLanguageListener.prototype.exitMainClause = function(ctx) {
+};
+
+
 // Enter a parse tree produced by BaliLanguageParser#evaluateClause.
 BaliLanguageListener.prototype.enterEvaluateClause = function(ctx) {
 };
