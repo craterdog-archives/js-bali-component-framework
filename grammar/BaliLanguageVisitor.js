@@ -246,6 +246,12 @@ BaliLanguageVisitor.prototype.visitRecipient = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#subcomponent.
+BaliLanguageVisitor.prototype.visitSubcomponent = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#variable.
 BaliLanguageVisitor.prototype.visitVariable = function(ctx) {
   return this.visitChildren(ctx);

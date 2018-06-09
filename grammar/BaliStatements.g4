@@ -58,7 +58,9 @@ throwClause: 'throw' expression;
 
 handleClause: 'handle' symbol 'matching' expression 'with' block;
 
-recipient: symbol | variable indices;
+recipient: symbol | subcomponent;
+
+subcomponent: variable indices;
 
 variable: IDENTIFIER;
 

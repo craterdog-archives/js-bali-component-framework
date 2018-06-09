@@ -135,9 +135,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.RANGE:
             visitor.visitRange(this);
             break;
-        case types.RECIPIENT:
-            visitor.visitRecipient(this);
-            break;
         case types.RETURN_CLAUSE:
             visitor.visitReturnClause(this);
             break;
@@ -152,6 +149,9 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.STRUCTURE:
             visitor.visitStructure(this);
+            break;
+        case types.SUBCOMPONENT:
+            visitor.visitSubcomponent(this);
             break;
         case types.SUBCOMPONENT_EXPRESSION:
             visitor.visitSubcomponentExpression(this);

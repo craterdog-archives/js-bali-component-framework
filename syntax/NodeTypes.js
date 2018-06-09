@@ -70,12 +70,12 @@ var TREE_TYPES = [
     'publishClause',
     'queueClause',
     'range',
-    'recipient',
     'returnClause',
     'saveClause',
     'selectClause',
     'statement',
     'structure',
+    'subcomponent',
     'subcomponentExpression',
     'task',
     'throwClause',
@@ -126,13 +126,13 @@ exports.PROCEDURE = TREE_TYPES.indexOf('procedure');
 exports.PUBLISH_CLAUSE = TREE_TYPES.indexOf('publishClause');
 exports.QUEUE_CLAUSE = TREE_TYPES.indexOf('queueClause');
 exports.RANGE = TREE_TYPES.indexOf('range');
-exports.RECIPIENT = TREE_TYPES.indexOf('recipient');
 exports.REFERENCE = TERMINAL_TYPES.indexOf('reference');
 exports.RETURN_CLAUSE = TREE_TYPES.indexOf('returnClause');
 exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
 exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
 exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');
+exports.SUBCOMPONENT = TREE_TYPES.indexOf('subcomponent');
 exports.SUBCOMPONENT_EXPRESSION = TREE_TYPES.indexOf('subcomponentExpression');
 exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
 exports.TAG = TERMINAL_TYPES.indexOf('tag');

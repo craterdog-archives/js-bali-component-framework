@@ -433,15 +433,6 @@ TransformingVisitor.prototype.visitRange = function(tree) {
 };
 
 
-// recipient: symbol | variable indices
-TransformingVisitor.prototype.visitRecipient = function(tree) {
-    var children = tree.children;
-    for (var i = 0; i < children.length; i++) {
-        children[i].accept(this);
-    }
-};
-
-
 // returnClause: 'return' expression?
 TransformingVisitor.prototype.visitReturnClause = function(tree) {
     this.document += 'return';
@@ -498,6 +489,13 @@ TransformingVisitor.prototype.visitStructure = function(tree) {
     this.document += '[';
     tree.children[0].accept(this);
     this.document += ']';
+};
+
+
+// subcomponent: variable indices
+TransformingVisitor.prototype.visitSubcomponent = function(tree) {
+    tree.children[0].accept(this);
+    tree.children[1].accept(this);
 };
 
 
