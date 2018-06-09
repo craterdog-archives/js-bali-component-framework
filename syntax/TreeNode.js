@@ -23,9 +23,6 @@ var DocumentFormatter = require('../transformers/DocumentFormatter').DocumentFor
  * @returns {TreeNode} The new tree node.
  */
 function TreeNode(type) {
-    if (!type || typeof type !== 'number') {
-        throw new Error('TREE: The type of the tree node passed to the constructor must be a number.');
-    }
     this.type = type;
     this.isSimple = false;  // default for tree nodes
     this.children = [];
@@ -92,9 +89,6 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.FACTORIAL_EXPRESSION:
             visitor.visitFactorialExpression(this);
-            break;
-        case types.FINISH_CLAUSE:
-            visitor.visitFinishClause(this);
             break;
         case types.FUNCTION_EXPRESSION:
             visitor.visitFunctionExpression(this);

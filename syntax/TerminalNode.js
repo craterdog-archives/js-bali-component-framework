@@ -25,12 +25,6 @@ var types = require('./NodeTypes');
  * @returns {TerminalNode} The new terminal node.
  */
 function TerminalNode(type, value) {
-    if (!type || typeof type !== 'number') {
-        throw new Error('TREE: The type of the terminal node passed to the constructor must be a number.');
-    }
-    if (!value || typeof value !== 'string') {
-        throw new Error('TREE: The value of the terminal node passed to the constructor must be a string.');
-    }
     this.type = type;
     this.isSimple = true;  // default for terminal nodes
     this.value = value;
@@ -63,9 +57,6 @@ TerminalNode.prototype.accept = function(visitor) {
             break;
         case types.FUNCTION:
             visitor.visitFunction(this);
-            break;
-        case types.LABEL:
-            visitor.visitLabel(this);
             break;
         case types.MESSAGE:
             visitor.visitMessage(this);

@@ -28,7 +28,7 @@ var types = require('../syntax/NodeTypes');
 exports.formatDocument = function(baliDocument, padding) {
     var visitor = new TransformingVisitor(padding);
     baliDocument.accept(visitor);
-    return visitor.document + '\n';
+    return visitor.document + '\n';  // POSIX requires all lines end with a line feed
 };
 
 
@@ -69,7 +69,7 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(tree) {
 };
 
 
-// association: element ':' expression
+// association: component ':' expression
 TransformingVisitor.prototype.visitAssociation = function(tree) {
     tree.children[0].accept(this);
     this.document += ': ';

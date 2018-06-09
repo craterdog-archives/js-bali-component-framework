@@ -12,3 +12,4 @@
 exports.NodeTypes = require('./NodeTypes').NodeTypes;
 exports.TerminalNode = require('./TerminalNode').TerminalNode;
 exports.TreeNode = require('./TreeNode').TreeNode;
+exports.NodeUtilities = require('./NodeUtilities').NodeUtilities;
