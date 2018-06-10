@@ -15,53 +15,53 @@
  * about the Bali language refer to the Reference Guide at:
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
-var parser = require('./transformers/DocumentParser');
-var formatter = require('./transformers/DocumentFormatter');
+var parser = require('./transformers/LanguageParser');
+var formatter = require('./transformers/ParseTreeFormatter');
 var utilities = require('./syntax/NodeUtilities');
 
 
-exports.parseDocument = function(document) {
-    return parser.parseDocument(document);
+exports.parseDocument = function(source) {
+    return parser.parseDocument(source);
 };
 
 
-exports.parseElement = function(element) {
-    return parser.parseElement(element);
+exports.parseElement = function(source) {
+    return parser.parseElement(source);
 };
 
 
-exports.parseStructure = function(structure) {
-    return parser.parseStructure(structure);
+exports.parseStructure = function(source) {
+    return parser.parseStructure(source);
 };
 
 
-exports.parseRange = function(range) {
-    return parser.parseRange(range);
+exports.parseRange = function(source) {
+    return parser.parseRange(source);
 };
 
 
-exports.parseList = function(list) {
-    return parser.parseList(list);
+exports.parseList = function(source) {
+    return parser.parseList(source);
 };
 
 
-exports.parseCatalog = function(catalog) {
-    return parser.parseCatalog(catalog);
+exports.parseCatalog = function(source) {
+    return parser.parseCatalog(source);
 };
 
 
-exports.parseProcedure = function(procedure) {
-    return parser.parseProcedure(procedure);
+exports.parseProcedure = function(source) {
+    return parser.parseProcedure(source);
 };
 
 
-exports.parseExpression = function(expression) {
-    return parser.parseExpression(expression);
+exports.parseExpression = function(source) {
+    return parser.parseExpression(source);
 };
 
 
-exports.formatDocument = function(tree, optionalPadding) {
-    return formatter.formatDocument(tree, optionalPadding);
+exports.formatParseTree = function(tree, optionalPadding) {
+    return formatter.formatParseTree(tree, optionalPadding);
 };
 
 

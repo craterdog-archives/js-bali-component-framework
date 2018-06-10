@@ -11,83 +11,83 @@
 
 /**
  * This library provides functions that format a parse tree produced
- * by the DocumentParser and generates a canonical version of
- * the corresponding Bali document.
+ * by the LanguageParser and generates a canonical version of
+ * the corresponding source code.
  */
 var types = require('../syntax/NodeTypes');
 
 
 /**
- * This function takes a Bali document and formats it as source code. Each
- * line will be prepended with the specified padding string.
+ * This function takes a Bali parse tree and formats it as source code. Each
+ * resulting line will be prepended with the specified padding string.
  * 
- * @param {DocumentContext} baliDocument The Bali document to be formatted.
+ * @param {TreeNode} tree The parse tree to be formatted.
  * @param {string} padding The string that should be prepended to each line.
  * @returns {string} The formatted source code string.
  */
-exports.formatDocument = function(baliDocument, padding) {
-    var visitor = new TransformingVisitor(padding);
-    baliDocument.accept(visitor);
-    return visitor.document + '\n';  // POSIX requires all lines end with a line feed
+exports.formatParseTree = function(tree, padding) {
+    var visitor = new FormattingVisitor(padding);
+    tree.accept(visitor);
+    return visitor.source;
 };
 
 
 // PRIVATE CLASSES
 
-function TransformingVisitor(padding) {
+function FormattingVisitor(padding) {
     this.padding = padding === undefined ? '' : padding;
-    this.document = '';
+    this.source = '';
     this.depth = 0;
     return this;
 }
-TransformingVisitor.prototype.constructor = TransformingVisitor;
-TransformingVisitor.prototype.indentation = '    ';  // indentation per level
+FormattingVisitor.prototype.constructor = FormattingVisitor;
+FormattingVisitor.prototype.indentation = '    ';  // indentation per level
 
 
-TransformingVisitor.prototype.appendNewline = function() {
-    this.document += '\n';
-    this.document += this.getPadding();
+FormattingVisitor.prototype.appendNewline = function() {
+    this.source += '\n';
+    this.source += this.getPadding();
 };
 
 
-TransformingVisitor.prototype.getPadding = function() {
+FormattingVisitor.prototype.getPadding = function() {
     var padding = this.padding;
     for (var i = 0; i < this.depth; i++) {
-        padding += TransformingVisitor.prototype.indentation;
+        padding += FormattingVisitor.prototype.indentation;
     }
     return padding;
 };
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
-TransformingVisitor.prototype.visitArithmeticExpression = function(tree) {
+FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += ' ';
-    this.document += tree.operator;
-    this.document += ' ';
+    this.source += ' ';
+    this.source += tree.operator;
+    this.source += ' ';
     tree.children[1].accept(this);
 };
 
 
 // association: component ':' expression
-TransformingVisitor.prototype.visitAssociation = function(tree) {
+FormattingVisitor.prototype.visitAssociation = function(tree) {
     tree.children[0].accept(this);
-    this.document += ': ';
+    this.source += ': ';
     tree.children[1].accept(this);
 };
 
 
 // block: '{' procedure '}'
-TransformingVisitor.prototype.visitBlock = function(tree) {
-    this.document += '{';
+FormattingVisitor.prototype.visitBlock = function(tree) {
+    this.source += '{';
     tree.children[0].accept(this);
-    this.document += '}';
+    this.source += '}';
 };
 
 
 // breakClause: 'break' 'loop'
-TransformingVisitor.prototype.visitBreakClause = function(tree) {
-    this.document += 'break loop';
+FormattingVisitor.prototype.visitBreakClause = function(tree) {
+    this.source += 'break loop';
 };
 
 
@@ -95,16 +95,16 @@ TransformingVisitor.prototype.visitBreakClause = function(tree) {
 //     association (',' association)* |
 //     NEWLINE (association NEWLINE)* |
 //     ':' /*empty catalog*/
-TransformingVisitor.prototype.visitCatalog = function(tree) {
+FormattingVisitor.prototype.visitCatalog = function(tree) {
     var associations = tree.children;
     if (associations.length === 0) {
-        this.document += ':';  // empty catalog
+        this.source += ':';  // empty catalog
         return;
     }
     if (tree.isSimple) {
         associations[0].accept(this);
         for (var i = 1; i < associations.length; i++) {
-            this.document += ', ';
+            this.source += ', ';
             associations[i].accept(this);
         }
     } else {
@@ -120,50 +120,50 @@ TransformingVisitor.prototype.visitCatalog = function(tree) {
 
 
 // checkoutClause: 'checkout' recipient 'from' expression
-TransformingVisitor.prototype.visitCheckoutClause = function(tree) {
-    this.document += 'checkout ';
+FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
+    this.source += 'checkout ';
     tree.children[0].accept(this);  // recipient
-    this.document += ' from ';
+    this.source += ' from ';
     tree.children[1].accept(this);  // expression
 };
 
 
 // code: '{' procedure '}'
-TransformingVisitor.prototype.visitCode = function(tree) {
-    this.document += '{';
+FormattingVisitor.prototype.visitCode = function(tree) {
+    this.source += '{';
     tree.children[0].accept(this);
-    this.document += '}';
+    this.source += '}';
 };
 
 
 // commitClause: 'commit' expression 'to' expression
-TransformingVisitor.prototype.visitCommitClause = function(tree) {
-    this.document += 'commit ';
+FormattingVisitor.prototype.visitCommitClause = function(tree) {
+    this.source += 'commit ';
     tree.children[0].accept(this);
-    this.document += ' to ';
+    this.source += ' to ';
     tree.children[1].accept(this);
 };
 
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
-TransformingVisitor.prototype.visitComparisonExpression = function(tree) {
+FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += ' ';
-    this.document += tree.operator;
-    this.document += ' ';
+    this.source += ' ';
+    this.source += tree.operator;
+    this.source += ' ';
     tree.children[1].accept(this);
 };
 
 
 // complementExpression: 'not' expression
-TransformingVisitor.prototype.visitComplementExpression = function(tree) {
-    this.document += 'not ';
+FormattingVisitor.prototype.visitComplementExpression = function(tree) {
+    this.source += 'not ';
     tree.children[0].accept(this);
 };
 
 
 // component: item parameters?
-TransformingVisitor.prototype.visitComponent = function(tree) {
+FormattingVisitor.prototype.visitComponent = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);
     }
@@ -171,35 +171,35 @@ TransformingVisitor.prototype.visitComponent = function(tree) {
 
 
 // continueClause: 'continue' 'loop'
-TransformingVisitor.prototype.visitContinueClause = function(tree) {
-    this.document += 'continue loop';
+FormattingVisitor.prototype.visitContinueClause = function(tree) {
+    this.source += 'continue loop';
 };
 
 
 // defaultExpression: expression '?' expression
-TransformingVisitor.prototype.visitDefaultExpression = function(tree) {
+FormattingVisitor.prototype.visitDefaultExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += ' ? ';
+    this.source += ' ? ';
     tree.children[1].accept(this);
 };
 
 
 // dereferenceExpression: '@' expression
-TransformingVisitor.prototype.visitDereferenceExpression = function(tree) {
-    this.document += '@';
+FormattingVisitor.prototype.visitDereferenceExpression = function(tree) {
+    this.source += '@';
     tree.children[0].accept(this);
 };
 
 
 // discardClause: 'discard' expression
-TransformingVisitor.prototype.visitDiscardClause = function(tree) {
-    this.document += 'discard ';
+FormattingVisitor.prototype.visitDiscardClause = function(tree) {
+    this.source += 'discard ';
     tree.children[0].accept(this);
 };
 
 
 // document: NEWLINE* component NEWLINE* EOF
-TransformingVisitor.prototype.visitDocument = function(tree) {
+FormattingVisitor.prototype.visitDocument = function(tree) {
     tree.children[0].accept(this);  // component
 };
 
@@ -217,77 +217,77 @@ TransformingVisitor.prototype.visitDocument = function(tree) {
 //     template |
 //     text |
 //     version
-TransformingVisitor.prototype.visitElement = function(terminal) {
-    this.document += terminal.value;
+FormattingVisitor.prototype.visitElement = function(terminal) {
+    this.source += terminal.value;
 };
 
 
 // evaluateClause: (recipient ':=')? expression
-TransformingVisitor.prototype.visitEvaluateClause = function(tree) {
+FormattingVisitor.prototype.visitEvaluateClause = function(tree) {
     tree.children[0].accept(this);
     if (tree.children.length > 1) {
-        this.document += ' := ';
+        this.source += ' := ';
         tree.children[1].accept(this);
     }
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-TransformingVisitor.prototype.visitExponentialExpression = function(tree) {
+FormattingVisitor.prototype.visitExponentialExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += ' ^ ';
+    this.source += ' ^ ';
     tree.children[1].accept(this);
 };
 
 
 // factorialExpression: expression '!'
-TransformingVisitor.prototype.visitFactorialExpression = function(tree) {
+FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += '!';
+    this.source += '!';
 };
 
 
 // function: IDENTIFIER
-TransformingVisitor.prototype.visitFunction = function(terminal) {
-    this.document += terminal.value;
+FormattingVisitor.prototype.visitFunction = function(terminal) {
+    this.source += terminal.value;
 };
 
 
 // functionExpression: function parameters
-TransformingVisitor.prototype.visitFunctionExpression = function(tree) {
+FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
-TransformingVisitor.prototype.visitHandleClause = function(tree) {
-    this.document += ' handle ';
+FormattingVisitor.prototype.visitHandleClause = function(tree) {
+    this.source += ' handle ';
     tree.children[0].accept(this);
-    this.document += ' matching ';
+    this.source += ' matching ';
     tree.children[1].accept(this);
-    this.document += ' with ';
+    this.source += ' with ';
     tree.children[2].accept(this);
 };
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-TransformingVisitor.prototype.visitIfClause = function(tree) {
+FormattingVisitor.prototype.visitIfClause = function(tree) {
     // handle first condition
-    this.document += 'if ';
+    this.source += 'if ';
     tree.children[0].accept(this);
-    this.document += ' then ';
+    this.source += ' then ';
     tree.children[1].accept(this);
 
     // handle optional additional conditions
     for (var i = 2; i < tree.children.length; i += 2) {
         if (i === tree.children.length - 1) {
-            this.document += ' else ';
+            this.source += ' else ';
             tree.children[i].accept(this);
         } else {
-            this.document += ' else if ';
+            this.source += ' else if ';
             tree.children[i].accept(this);
-            this.document += ' then ';
+            this.source += ' then ';
             tree.children[i + 1].accept(this);
         }
     }
@@ -295,23 +295,23 @@ TransformingVisitor.prototype.visitIfClause = function(tree) {
 
 
 // indices: '[' list ']'
-TransformingVisitor.prototype.visitIndices = function(tree) {
-    this.document += '[';
+FormattingVisitor.prototype.visitIndices = function(tree) {
+    this.source += '[';
     tree.children[0].accept(this);
-    this.document += ']';
+    this.source += ']';
 };
 
 
 // inversionExpression: ('-' | '/' | '*') expression
-TransformingVisitor.prototype.visitInversionExpression = function(tree) {
-    this.document += tree.operator;
+FormattingVisitor.prototype.visitInversionExpression = function(tree) {
+    this.source += tree.operator;
     var expression = tree.children[0];
     // must insert a space before a negative number or constant!
     if (tree.operator === '-') {
         if (expression.type === types.COMPONENT &&
                 expression.children[0].type === types.NUMBER &&
                 expression.children[0].value[0] === "-") {
-            this.document += ' ';  // must insert a space before a negative number or constant!
+            this.source += ' ';  // must insert a space before a negative number or constant!
         }
     }
     tree.children[0].accept(this);
@@ -322,13 +322,13 @@ TransformingVisitor.prototype.visitInversionExpression = function(tree) {
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
 //     /*empty list*/
-TransformingVisitor.prototype.visitList = function(tree) {
+FormattingVisitor.prototype.visitList = function(tree) {
     var expressions = tree.children;
     if (expressions.length === 0) return;
     if (tree.isSimple) {
         expressions[0].accept(this);
         for (var i = 1; i < expressions.length; i++) {
-            this.document += ', ';
+            this.source += ', ';
             expressions[i].accept(this);
         }
     } else {
@@ -344,51 +344,51 @@ TransformingVisitor.prototype.visitList = function(tree) {
 
 
 // logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
-TransformingVisitor.prototype.visitLogicalExpression = function(tree) {
+FormattingVisitor.prototype.visitLogicalExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += ' ';
-    this.document += tree.operator;
-    this.document += ' ';
+    this.source += ' ';
+    this.source += tree.operator;
+    this.source += ' ';
     tree.children[1].accept(this);
 };
 
 
 // magnitudeExpression: '|' expression '|'
-TransformingVisitor.prototype.visitMagnitudeExpression = function(tree) {
-    this.document += '|';
+FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
+    this.source += '|';
     tree.children[0].accept(this);
-    this.document += '|';
+    this.source += '|';
 };
 
 
 // message: IDENTIFIER
-TransformingVisitor.prototype.visitMessage = function(terminal) {
-    this.document += terminal.value;
+FormattingVisitor.prototype.visitMessage = function(terminal) {
+    this.source += terminal.value;
 };
 
 
 // messageExpression: expression '.' message parameters
-TransformingVisitor.prototype.visitMessageExpression = function(tree) {
+FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     tree.children[0].accept(this);
-    this.document += '.';
+    this.source += '.';
     tree.children[1].accept(this);
     tree.children[2].accept(this);
 };
 
 
 // parameters: '(' composite ')'
-TransformingVisitor.prototype.visitParameters = function(tree) {
-    this.document += '(';
+FormattingVisitor.prototype.visitParameters = function(tree) {
+    this.source += '(';
     tree.children[0].accept(this);
-    this.document += ')';
+    this.source += ')';
 };
 
 
 // precedenceExpression: '(' expression ')'
-TransformingVisitor.prototype.visitPrecedenceExpression = function(tree) {
-    this.document += '(';
+FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
+    this.source += '(';
     tree.children[0].accept(this);
-    this.document += ')';
+    this.source += ')';
 };
 
 
@@ -396,13 +396,13 @@ TransformingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     statement (';' statement)* |
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty procedure*/
-TransformingVisitor.prototype.visitProcedure = function(tree) {
+FormattingVisitor.prototype.visitProcedure = function(tree) {
     var statements = tree.children;
     if (statements.length === 0 && tree.isSimple) return;
     if (tree.isSimple) {
         statements[0].accept(this);
         for (var i = 1; i < statements.length; i++) {
-            this.document += '; ';
+            this.source += '; ';
             statements[i].accept(this);
         }
     } else {
@@ -418,66 +418,66 @@ TransformingVisitor.prototype.visitProcedure = function(tree) {
 
 
 // publishClause: 'publish' expression
-TransformingVisitor.prototype.visitPublishClause = function(tree) {
-    this.document += 'publish ';
+FormattingVisitor.prototype.visitPublishClause = function(tree) {
+    this.source += 'publish ';
     tree.children[0].accept(this);
 };
 
 
 // queueClause: 'queue' expression 'on' expression
-TransformingVisitor.prototype.visitQueueClause = function(tree) {
-    this.document += 'queue ';
+FormattingVisitor.prototype.visitQueueClause = function(tree) {
+    this.source += 'queue ';
     tree.children[0].accept(this);
-    this.document += ' on ';
+    this.source += ' on ';
     tree.children[1].accept(this);
 };
 
 
 // range: expression '..' expression
-TransformingVisitor.prototype.visitRange = function(tree) {
+FormattingVisitor.prototype.visitRange = function(tree) {
     tree.children[0].accept(this);
-    this.document += '..';
+    this.source += '..';
     tree.children[1].accept(this);
 };
 
 
 // returnClause: 'return' expression?
-TransformingVisitor.prototype.visitReturnClause = function(tree) {
-    this.document += 'return';
+FormattingVisitor.prototype.visitReturnClause = function(tree) {
+    this.source += 'return';
     if (tree.children.length > 0) {
-        this.document += ' ';
+        this.source += ' ';
         tree.children[0].accept(this);
     }
 };
 
 
 // saveClause: 'save' expression 'to' expression
-TransformingVisitor.prototype.visitSaveClause = function(tree) {
-    this.document += 'save ';
+FormattingVisitor.prototype.visitSaveClause = function(tree) {
+    this.source += 'save ';
     tree.children[0].accept(this);
-    this.document += ' to ';
+    this.source += ' to ';
     tree.children[1].accept(this);
 };
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-TransformingVisitor.prototype.visitSelectClause = function(tree) {
+FormattingVisitor.prototype.visitSelectClause = function(tree) {
     var expressions = tree.children;
 
     // handle the selection
-    this.document += 'select ';
+    this.source += 'select ';
     expressions[0].accept(this);
-    this.document += ' from';
+    this.source += ' from';
 
     // handle option blocks
     for (var i = 1; i < expressions.length; i += 2) {
         if (i === expressions.length - 1) {
-            this.document += ' else ';
+            this.source += ' else ';
             expressions[i].accept(this);
         } else {
-            this.document += ' ';
+            this.source += ' ';
             expressions[i].accept(this);
-            this.document += ' do ';
+            this.source += ' do ';
             expressions[i + 1].accept(this);
         }
     }
@@ -485,7 +485,7 @@ TransformingVisitor.prototype.visitSelectClause = function(tree) {
 
 
 // statement: mainClause handleClause*
-TransformingVisitor.prototype.visitStatement = function(tree) {
+FormattingVisitor.prototype.visitStatement = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);
     }
@@ -493,77 +493,77 @@ TransformingVisitor.prototype.visitStatement = function(tree) {
 
 
 // structure: '[' composite ']'
-TransformingVisitor.prototype.visitStructure = function(tree) {
-    this.document += '[';
+FormattingVisitor.prototype.visitStructure = function(tree) {
+    this.source += '[';
     tree.children[0].accept(this);
-    this.document += ']';
+    this.source += ']';
 };
 
 
 // subcomponent: variable indices
-TransformingVisitor.prototype.visitSubcomponent = function(tree) {
+FormattingVisitor.prototype.visitSubcomponent = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
 };
 
 
 // subcomponentExpression: expression indices
-TransformingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
 };
 
 
 // task: SHELL NEWLINE* procedure NEWLINE* EOF
-TransformingVisitor.prototype.visitTask = function(tree) {
-    this.document += tree.shell;
+FormattingVisitor.prototype.visitTask = function(tree) {
+    this.source += tree.shell;
     tree.children[0].accept(this);
 };
 
 
 // throwClause: 'throw' expression
-TransformingVisitor.prototype.visitThrowClause = function(tree) {
-    this.document += 'throw ';
+FormattingVisitor.prototype.visitThrowClause = function(tree) {
+    this.source += 'throw ';
     tree.children[0].accept(this);
 };
 
 
 // variable: IDENTIFIER
-TransformingVisitor.prototype.visitVariable = function(terminal) {
-    this.document += terminal.value;
+FormattingVisitor.prototype.visitVariable = function(terminal) {
+    this.source += terminal.value;
 };
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
-TransformingVisitor.prototype.visitWaitClause = function(tree) {
-    this.document += 'wait for ';
+FormattingVisitor.prototype.visitWaitClause = function(tree) {
+    this.source += 'wait for ';
     tree.children[0].accept(this);  // recipient
-    this.document += ' from ';
+    this.source += ' from ';
     tree.children[1].accept(this);  // expression
 };
 
 
 // whileClause: 'while' expression 'do' block
-TransformingVisitor.prototype.visitWhileClause = function(tree) {
+FormattingVisitor.prototype.visitWhileClause = function(tree) {
     var children = tree.children;
-    this.document += 'while ';
+    this.source += 'while ';
     children[0].accept(this);
-    this.document += ' do ';
+    this.source += ' do ';
     children[1].accept(this);
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-TransformingVisitor.prototype.visitWithClause = function(tree) {
+FormattingVisitor.prototype.visitWithClause = function(tree) {
     var children = tree.children;
     var count = children.length;
-    this.document += 'with ';
+    this.source += 'with ';
     if (count > 2) {
-        this.document += 'each ';
+        this.source += 'each ';
         children[0].accept(this);
-        this.document += ' in ';
+        this.source += ' in ';
     }
     children[count - 2].accept(this);
-    this.document += ' do ';
+    this.source += ' do ';
     children[count - 1].accept(this);
 };

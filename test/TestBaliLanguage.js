@@ -19,42 +19,46 @@ describe('Bali Document Language™', function() {
 
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
-            var elements = fs.readFileSync(file, 'utf8');
-            expect(elements).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(elements);
+            // strip off the POSIX newline terminator so that the round-trip comparison will work
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            expect(source).to.exist;  // jshint ignore:line
+            var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree);
-            expect(formatted).to.equal(elements);
+            var formatted = language.formatParseTree(tree);
+            expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
-            var expressions = fs.readFileSync(file, 'utf8');
-            expect(expressions).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(expressions);
+            // strip off the POSIX newline terminator so that the round-trip comparison will work
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            expect(source).to.exist;  // jshint ignore:line
+            var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree);
-            expect(formatted).to.equal(expressions);
+            var formatted = language.formatParseTree(tree);
+            expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
-            var statements = fs.readFileSync(file, 'utf8');
-            expect(statements).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(statements);
+            // strip off the POSIX newline terminator so that the round-trip comparison will work
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            expect(source).to.exist;  // jshint ignore:line
+            var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree);
-            expect(formatted).to.equal(statements);
+            var formatted = language.formatParseTree(tree);
+            expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same documents', function() {
             var file = 'test/source/documents.bali';
-            var documents = fs.readFileSync(file, 'utf8');
-            expect(documents).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(documents);
+            // strip off the POSIX newline terminator so that the round-trip comparison will work
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            expect(source).to.exist;  // jshint ignore:line
+            var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatDocument(tree);
-            expect(formatted).to.equal(documents);
+            var formatted = language.formatParseTree(tree);
+            expect(formatted).to.equal(source);
         });
 
     });

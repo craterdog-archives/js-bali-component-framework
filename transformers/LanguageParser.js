@@ -152,7 +152,7 @@ function initializeParser(source) {
 
 
 function convertParseTree(antlrTree) {
-    var visitor = new TransformingVisitor();
+    var visitor = new ParsingVisitor();
     antlrTree.accept(visitor);
     var baliTree = visitor.result;
     return baliTree;
@@ -161,23 +161,23 @@ function convertParseTree(antlrTree) {
 
 // PRIVATE CLASSES
 
-function TransformingVisitor() {
+function ParsingVisitor() {
     grammar.BaliLanguageVisitor.call(this);
     return this;
 }
-TransformingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
-TransformingVisitor.prototype.constructor = TransformingVisitor;
+ParsingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
+ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
 // anyTemplate: 'any'
-TransformingVisitor.prototype.visitAnyTemplate = function(ctx) {
+ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
     var value = 'any';
     this.result = new syntax.TerminalNode(types.TEMPLATE, value);
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
-TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
+ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.ARITHMETIC_EXPRESSION);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -190,7 +190,7 @@ TransformingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 
 
 // association: component ':' expression
-TransformingVisitor.prototype.visitAssociation = function(ctx) {
+ParsingVisitor.prototype.visitAssociation = function(ctx) {
     var tree = new syntax.TreeNode(types.ASSOCIATION);
     ctx.component().accept(this);
     tree.addChild(this.result);
@@ -201,7 +201,7 @@ TransformingVisitor.prototype.visitAssociation = function(ctx) {
 
 
 // binary: BINARY
-TransformingVisitor.prototype.visitBinary = function(ctx) {
+ParsingVisitor.prototype.visitBinary = function(ctx) {
     var value = ctx.BINARY().getText();
     var terminal = new syntax.TerminalNode(types.BINARY, value);
     if (value.length > 82) terminal.isSimple = false;  // binaries are formatted in 80 character blocks
@@ -210,7 +210,7 @@ TransformingVisitor.prototype.visitBinary = function(ctx) {
 
 
 // block: '{' procedure '}'
-TransformingVisitor.prototype.visitBlock = function(ctx) {
+ParsingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new syntax.TreeNode(types.BLOCK);
     ctx.procedure().accept(this);
     tree.addChild(this.result);
@@ -219,7 +219,7 @@ TransformingVisitor.prototype.visitBlock = function(ctx) {
 
 
 // breakClause: 'break' 'loop'
-TransformingVisitor.prototype.visitBreakClause = function(ctx) {
+ParsingVisitor.prototype.visitBreakClause = function(ctx) {
     var tree = new syntax.TreeNode(types.BREAK_CLAUSE);
     this.result = tree;
 };
@@ -229,7 +229,7 @@ TransformingVisitor.prototype.visitBreakClause = function(ctx) {
 //     association (',' association)* |
 //     NEWLINE (association NEWLINE)* |
 //     ':' /*empty catalog*/
-TransformingVisitor.prototype.visitCatalog = function(ctx) {
+ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var tree = new syntax.TreeNode(types.CATALOG);
     var type = ctx.constructor.name;
     if (type !== 'EmptyCatalogContext') {
@@ -245,7 +245,7 @@ TransformingVisitor.prototype.visitCatalog = function(ctx) {
 
 
 // checkoutClause: 'checkout' recipient 'from' expression
-TransformingVisitor.prototype.visitCheckoutClause = function(ctx) {
+ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     var tree = new syntax.TreeNode(types.CHECKOUT_CLAUSE);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
@@ -256,7 +256,7 @@ TransformingVisitor.prototype.visitCheckoutClause = function(ctx) {
 
 
 // code: '{' procedure '}'
-TransformingVisitor.prototype.visitCode = function(ctx) {
+ParsingVisitor.prototype.visitCode = function(ctx) {
     var tree = new syntax.TreeNode(types.CODE);
     ctx.procedure().accept(this);
     tree.addChild(this.result);
@@ -265,7 +265,7 @@ TransformingVisitor.prototype.visitCode = function(ctx) {
 
 
 // commitClause: 'commit' expression 'to' expression
-TransformingVisitor.prototype.visitCommitClause = function(ctx) {
+ParsingVisitor.prototype.visitCommitClause = function(ctx) {
     var tree = new syntax.TreeNode(types.COMMIT_CLAUSE);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -277,7 +277,7 @@ TransformingVisitor.prototype.visitCommitClause = function(ctx) {
 
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
-TransformingVisitor.prototype.visitComparisonExpression = function(ctx) {
+ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPARISON_EXPRESSION);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -290,7 +290,7 @@ TransformingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 
 // complementExpression: 'not' expression
-TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
+ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPLEMENT_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -299,7 +299,7 @@ TransformingVisitor.prototype.visitComplementExpression = function(ctx) {
 
 
 // complexNumber: '(' real del=(',' | 'e^') imaginary ')'
-TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
+ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var delimiter = ctx.del.text;
     if (delimiter === ',') delimiter += ' ';
     var value = '(';
@@ -320,7 +320,7 @@ TransformingVisitor.prototype.visitComplexNumber = function(ctx) {
 
 
 // component: item parameters?
-TransformingVisitor.prototype.visitComponent = function(ctx) {
+ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPONENT);
     ctx.children[0].accept(this);
     tree.addChild(this.result);
@@ -334,7 +334,7 @@ TransformingVisitor.prototype.visitComponent = function(ctx) {
 
 
 // constantReal: sign='-'? CONSTANT
-TransformingVisitor.prototype.visitConstantReal = function(ctx) {
+ParsingVisitor.prototype.visitConstantReal = function(ctx) {
     var string = '';
     if (ctx.sign) {
         string += '-';
@@ -345,14 +345,14 @@ TransformingVisitor.prototype.visitConstantReal = function(ctx) {
 
 
 // continueClause: 'continue' 'loop'
-TransformingVisitor.prototype.visitContinueClause = function(ctx) {
+ParsingVisitor.prototype.visitContinueClause = function(ctx) {
     var tree = new syntax.TreeNode(types.CONTINUE_CLAUSE);
     this.result = tree;
 };
 
 
 // defaultExpression: expression '?' expression
-TransformingVisitor.prototype.visitDefaultExpression = function(ctx) {
+ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.DEFAULT_EXPRESSION);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -364,7 +364,7 @@ TransformingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 
 // dereferenceExpression: '@' expression
-TransformingVisitor.prototype.visitDereferenceExpression = function(ctx) {
+ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.DEREFERENCE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -373,7 +373,7 @@ TransformingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 
 // discardClause: 'discard' expression
-TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
+ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
     var tree = new syntax.TreeNode(types.DISCARD_CLAUSE);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -382,7 +382,7 @@ TransformingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 
 // document: NEWLINE* component NEWLINE* EOF
-TransformingVisitor.prototype.visitDocument = function(ctx) {
+ParsingVisitor.prototype.visitDocument = function(ctx) {
     var tree = new syntax.TreeNode(types.DOCUMENT);
     ctx.component().accept(this);
     tree.addChild(this.result);
@@ -391,7 +391,7 @@ TransformingVisitor.prototype.visitDocument = function(ctx) {
 
 
 // duration: DURATION
-TransformingVisitor.prototype.visitDuration = function(ctx) {
+ParsingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
     var terminal = new syntax.TerminalNode(types.DURATION, value);
     this.result = terminal;
@@ -399,20 +399,20 @@ TransformingVisitor.prototype.visitDuration = function(ctx) {
 
 
 // emptyCatalog: ':' /*empty catalog*/
-TransformingVisitor.prototype.visitEmptyCatalog = function(ctx) {
+ParsingVisitor.prototype.visitEmptyCatalog = function(ctx) {
     // delegate to abstract type
     this.visitCatalog(ctx);
 };
 
 // emptyList: /*empty list*/
-TransformingVisitor.prototype.visitEmptyList = function(ctx) {
+ParsingVisitor.prototype.visitEmptyList = function(ctx) {
     // delegate to abstract type
     this.visitList(ctx);
 };
 
 
 // emptyProcedure: /*empty procedure*/
-TransformingVisitor.prototype.visitEmptyProcedure = function(ctx) {
+ParsingVisitor.prototype.visitEmptyProcedure = function(ctx) {
     // delegate to abstract type
     this.visitProcedure(ctx);
 };
@@ -420,7 +420,7 @@ TransformingVisitor.prototype.visitEmptyProcedure = function(ctx) {
 
 
 // evaluateClause: (recipient ':=')? expression
-TransformingVisitor.prototype.visitEvaluateClause = function(ctx) {
+ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     var tree = new syntax.TreeNode(types.EVALUATE_CLAUSE);
     var recipient = ctx.recipient();
     if (recipient) {
@@ -434,7 +434,7 @@ TransformingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
+ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.EXPONENTIAL_EXPRESSION);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -446,7 +446,7 @@ TransformingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 
 // factorialExpression: expression '!'
-TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
+ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.FACTORIAL_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -455,7 +455,7 @@ TransformingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 
 // falseProbability: 'false'
-TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
+ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
     var value = 'false';
     var terminal = new syntax.TerminalNode(types.PROBABILITY, value);
     this.result = terminal;
@@ -463,7 +463,7 @@ TransformingVisitor.prototype.visitFalseProbability = function(ctx) {
 
 
 // fractionalProbability: FRACTION
-TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
+ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var value = ctx.FRACTION().getText();
     var terminal = new syntax.TerminalNode(types.PROBABILITY, value);
     this.result = terminal;
@@ -471,7 +471,7 @@ TransformingVisitor.prototype.visitFractionalProbability = function(ctx) {
 
 
 // functionExpression: function parameters
-TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
+ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.FUNCTION_EXPRESSION);
     ctx.funxtion().accept(this);
     tree.addChild(this.result);
@@ -482,7 +482,7 @@ TransformingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 
 // funxtion: IDENTIFIER
-TransformingVisitor.prototype.visitFunxtion = function(ctx) {
+ParsingVisitor.prototype.visitFunxtion = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new syntax.TerminalNode(types.FUNCTION, value);
     this.result = terminal;
@@ -490,7 +490,7 @@ TransformingVisitor.prototype.visitFunxtion = function(ctx) {
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
-TransformingVisitor.prototype.visitHandleClause = function(ctx) {
+ParsingVisitor.prototype.visitHandleClause = function(ctx) {
     var tree = new syntax.TreeNode(types.HANDLE_CLAUSE);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
@@ -503,7 +503,7 @@ TransformingVisitor.prototype.visitHandleClause = function(ctx) {
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-TransformingVisitor.prototype.visitIfClause = function(ctx) {
+ParsingVisitor.prototype.visitIfClause = function(ctx) {
     var tree = new syntax.TreeNode(types.IF_CLAUSE);
     var expressions = ctx.expression();
     var blocks = ctx.block();
@@ -523,7 +523,7 @@ TransformingVisitor.prototype.visitIfClause = function(ctx) {
 
 
 // imaginary: (real | sign='-')? 'i'
-TransformingVisitor.prototype.visitImaginary = function(ctx) {
+ParsingVisitor.prototype.visitImaginary = function(ctx) {
     var string = '';
     var real = ctx.real();
     var sign = ctx.sign;
@@ -542,7 +542,7 @@ TransformingVisitor.prototype.visitImaginary = function(ctx) {
 
 
 // imaginaryNumber: imaginary
-TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
+ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     ctx.imaginary().accept(this);
     var value = this.result;
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
@@ -551,7 +551,7 @@ TransformingVisitor.prototype.visitImaginaryNumber = function(ctx) {
 
 
 // indices: '[' list ']'
-TransformingVisitor.prototype.visitIndices = function(ctx) {
+ParsingVisitor.prototype.visitIndices = function(ctx) {
     var tree = new syntax.TreeNode(types.INDICES);
     ctx.list().accept(this);
     tree.addChild(this.result);
@@ -560,7 +560,7 @@ TransformingVisitor.prototype.visitIndices = function(ctx) {
 
 
 // infiniteNumber: 'infinity'
-TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
+ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     var value = 'infinity';
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
     this.result = terminal;
@@ -568,28 +568,28 @@ TransformingVisitor.prototype.visitInfiniteNumber = function(ctx) {
 
 
 // inlineList: expression (',' expression)*
-TransformingVisitor.prototype.visitInlineList = function(ctx) {
+ParsingVisitor.prototype.visitInlineList = function(ctx) {
     // delegate to abstract type
     this.visitList(ctx);
 };
 
 
 // inlineProcedure: statement (';' statement)*
-TransformingVisitor.prototype.visitInlineProcedure = function(ctx) {
+ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
     // delegate to abstract type
     this.visitProcedure(ctx);
 };
 
 
 // inlineCatalog: association (',' association)*
-TransformingVisitor.prototype.visitInlineCatalog = function(ctx) {
+ParsingVisitor.prototype.visitInlineCatalog = function(ctx) {
     // delegate to abstract type
     this.visitCatalog(ctx);
 };
 
 
 // inlineText: TEXT
-TransformingVisitor.prototype.visitInlineText = function(ctx) {
+ParsingVisitor.prototype.visitInlineText = function(ctx) {
     var value = ctx.TEXT().getText();
     var terminal = new syntax.TerminalNode(types.TEXT, value);
     this.result = terminal;
@@ -597,7 +597,7 @@ TransformingVisitor.prototype.visitInlineText = function(ctx) {
 
 
 // inversionExpression: op=('-' | '/' | '*') expression
-TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
+ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.INVERSION_EXPRESSION);
     tree.operator = ctx.op.text;
     ctx.expression().accept(this);
@@ -610,7 +610,7 @@ TransformingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
 //     /*empty list*/
-TransformingVisitor.prototype.visitList = function(ctx) {
+ParsingVisitor.prototype.visitList = function(ctx) {
     var tree = new syntax.TreeNode(types.LIST);
     var type = ctx.constructor.name;
     if (type !== 'EmptyListContext') {
@@ -626,7 +626,7 @@ TransformingVisitor.prototype.visitList = function(ctx) {
 
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
-TransformingVisitor.prototype.visitLogicalExpression = function(ctx) {
+ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.LOGICAL_EXPRESSION);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -639,7 +639,7 @@ TransformingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 
 // magnitudeExpression: '|' expression '|'
-TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
+ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.MAGNITUDE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -648,7 +648,7 @@ TransformingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 
 // message: IDENTIFIER
-TransformingVisitor.prototype.visitMessage = function(ctx) {
+ParsingVisitor.prototype.visitMessage = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new syntax.TerminalNode(types.MESSAGE, value);
     this.result = terminal;
@@ -656,7 +656,7 @@ TransformingVisitor.prototype.visitMessage = function(ctx) {
 
 
 // messageExpression: expression '.' message parameters
-TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
+ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.MESSAGE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -669,7 +669,7 @@ TransformingVisitor.prototype.visitMessageExpression = function(ctx) {
 
 
 // moment: MOMENT
-TransformingVisitor.prototype.visitMoment = function(ctx) {
+ParsingVisitor.prototype.visitMoment = function(ctx) {
     var value = ctx.MOMENT().getText();
     var terminal = new syntax.TerminalNode(types.MOMENT, value);
     this.result = terminal;
@@ -677,28 +677,28 @@ TransformingVisitor.prototype.visitMoment = function(ctx) {
 
 
 // newlineList: NEWLINE (expression NEWLINE)*
-TransformingVisitor.prototype.visitNewlineList = function(ctx) {
+ParsingVisitor.prototype.visitNewlineList = function(ctx) {
     // delegate to abstract type
     this.visitList(ctx);
 };
 
 
 // newlineProcedure: NEWLINE (statement NEWLINE)*
-TransformingVisitor.prototype.visitNewlineProcedure = function(ctx) {
+ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
     // delegate to abstract type
     this.visitProcedure(ctx);
 };
 
 
 // newlineCatalog: NEWLINE (association NEWLINE)*
-TransformingVisitor.prototype.visitNewlineCatalog = function(ctx) {
+ParsingVisitor.prototype.visitNewlineCatalog = function(ctx) {
     // delegate to abstract type
     this.visitCatalog(ctx);
 };
 
 
 // newlineText: TEXT_BLOCK
-TransformingVisitor.prototype.visitNewlineText = function(ctx) {
+ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var value = ctx.TEXT_BLOCK().getText();
     var terminal = new syntax.TerminalNode(types.TEXT, value);
     terminal.isSimple = false;
@@ -707,14 +707,14 @@ TransformingVisitor.prototype.visitNewlineText = function(ctx) {
 
 
 // noneTemplate: 'none'
-TransformingVisitor.prototype.visitNoneTemplate = function(ctx) {
+ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
     var value = 'none';
     this.result = new syntax.TerminalNode(types.TEMPLATE, value);
 };
 
 
 // parameters: '(' composite ')'
-TransformingVisitor.prototype.visitParameters = function(ctx) {
+ParsingVisitor.prototype.visitParameters = function(ctx) {
     var tree = new syntax.TreeNode(types.PARAMETERS);
     ctx.composite().accept(this);
     tree.addChild(this.result);
@@ -723,7 +723,7 @@ TransformingVisitor.prototype.visitParameters = function(ctx) {
 
 
 // percent: real '%'
-TransformingVisitor.prototype.visitPercent = function(ctx) {
+ParsingVisitor.prototype.visitPercent = function(ctx) {
     ctx.real().accept(this);
     var value = this.result + '%';
     var terminal = new syntax.TerminalNode(types.PERCENT, value);
@@ -732,7 +732,7 @@ TransformingVisitor.prototype.visitPercent = function(ctx) {
 
 
 // precedenceExpression: '(' expression ')'
-TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
+ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.PRECEDENCE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -744,7 +744,7 @@ TransformingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 //     statement (';' statement)*   |
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty statements*/
-TransformingVisitor.prototype.visitProcedure = function(ctx) {
+ParsingVisitor.prototype.visitProcedure = function(ctx) {
     var tree = new syntax.TreeNode(types.PROCEDURE);
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
@@ -760,7 +760,7 @@ TransformingVisitor.prototype.visitProcedure = function(ctx) {
 
 
 // publishClause: 'publish' expression
-TransformingVisitor.prototype.visitPublishClause = function(ctx) {
+ParsingVisitor.prototype.visitPublishClause = function(ctx) {
     var tree = new syntax.TreeNode(types.PUBLISH_CLAUSE);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -769,7 +769,7 @@ TransformingVisitor.prototype.visitPublishClause = function(ctx) {
 
 
 // queueClause: 'queue' expression 'on' expression
-TransformingVisitor.prototype.visitQueueClause = function(ctx) {
+ParsingVisitor.prototype.visitQueueClause = function(ctx) {
     var tree = new syntax.TreeNode(types.QUEUE_CLAUSE);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -781,7 +781,7 @@ TransformingVisitor.prototype.visitQueueClause = function(ctx) {
 
 
 // range: expression '..' expression
-TransformingVisitor.prototype.visitRange = function(ctx) {
+ParsingVisitor.prototype.visitRange = function(ctx) {
     var tree = new syntax.TreeNode(types.RANGE);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -793,7 +793,7 @@ TransformingVisitor.prototype.visitRange = function(ctx) {
 
 
 // realNumber: real
-TransformingVisitor.prototype.visitRealNumber = function(ctx) {
+ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     ctx.real().accept(this);
     var value = this.result;
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
@@ -802,7 +802,7 @@ TransformingVisitor.prototype.visitRealNumber = function(ctx) {
 
 
 // reference: RESOURCE
-TransformingVisitor.prototype.visitReference = function(ctx) {
+ParsingVisitor.prototype.visitReference = function(ctx) {
     var value = ctx.RESOURCE().getText();
     var terminal = new syntax.TerminalNode(types.REFERENCE, value);
     this.result = terminal;
@@ -810,7 +810,7 @@ TransformingVisitor.prototype.visitReference = function(ctx) {
 
 
 // regexTemplate: REGEX
-TransformingVisitor.prototype.visitRegexTemplate = function(ctx) {
+ParsingVisitor.prototype.visitRegexTemplate = function(ctx) {
     var value = ctx.REGEX().getText();
     var terminal = new syntax.TerminalNode(types.TEMPLATE, value);
     this.result = terminal;
@@ -818,7 +818,7 @@ TransformingVisitor.prototype.visitRegexTemplate = function(ctx) {
 
 
 // returnClause: 'return' expression?
-TransformingVisitor.prototype.visitReturnClause = function(ctx) {
+ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     var tree = new syntax.TreeNode(types.RETURN_CLAUSE);
     var expression = ctx.expression();
     if (expression) {
@@ -830,7 +830,7 @@ TransformingVisitor.prototype.visitReturnClause = function(ctx) {
 
 
 // saveClause: 'save' expression 'to' expression
-TransformingVisitor.prototype.visitSaveClause = function(ctx) {
+ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     var tree = new syntax.TreeNode(types.SAVE_CLAUSE);
     var expressions = ctx.expression();
     expressions[0].accept(this);
@@ -842,7 +842,7 @@ TransformingVisitor.prototype.visitSaveClause = function(ctx) {
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-TransformingVisitor.prototype.visitSelectClause = function(ctx) {
+ParsingVisitor.prototype.visitSelectClause = function(ctx) {
     var tree = new syntax.TreeNode(types.SELECT_CLAUSE);
     var expressions = ctx.expression();
     var selector = expressions[0];
@@ -866,7 +866,7 @@ TransformingVisitor.prototype.visitSelectClause = function(ctx) {
 
 
 // statement: mainClause handleClause*
-TransformingVisitor.prototype.visitStatement = function(ctx) {
+ParsingVisitor.prototype.visitStatement = function(ctx) {
     var tree = new syntax.TreeNode(types.STATEMENT);
     ctx.mainClause().accept(this);
     tree.addChild(this.result);
@@ -880,7 +880,7 @@ TransformingVisitor.prototype.visitStatement = function(ctx) {
 
 
 // structure: '[' composite ']'
-TransformingVisitor.prototype.visitStructure = function(ctx) {
+ParsingVisitor.prototype.visitStructure = function(ctx) {
     var tree = new syntax.TreeNode(types.STRUCTURE);
     ctx.composite().accept(this);
     tree.addChild(this.result);
@@ -889,7 +889,7 @@ TransformingVisitor.prototype.visitStructure = function(ctx) {
 
 
 // subcomponent: variable indices
-TransformingVisitor.prototype.visitSubcomponent = function(ctx) {
+ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
     var tree = new syntax.TreeNode(types.SUBCOMPONENT);
     ctx.variable().accept(this);
     tree.addChild(this.result);
@@ -900,7 +900,7 @@ TransformingVisitor.prototype.visitSubcomponent = function(ctx) {
 
 
 // subcomponentExpression: expression indices
-TransformingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
+ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
     var tree = new syntax.TreeNode(types.SUBCOMPONENT_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -911,7 +911,7 @@ TransformingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 
 
 // symbol: SYMBOL
-TransformingVisitor.prototype.visitSymbol = function(ctx) {
+ParsingVisitor.prototype.visitSymbol = function(ctx) {
     var value = ctx.SYMBOL().getText();
     var terminal = new syntax.TerminalNode(types.SYMBOL, value);
     this.result = terminal;
@@ -919,7 +919,7 @@ TransformingVisitor.prototype.visitSymbol = function(ctx) {
 
 
 // tag: TAG
-TransformingVisitor.prototype.visitTag = function(ctx) {
+ParsingVisitor.prototype.visitTag = function(ctx) {
     var value = ctx.TAG().getText();
     var terminal = new syntax.TerminalNode(types.TAG, value);
     this.result = terminal;
@@ -927,7 +927,7 @@ TransformingVisitor.prototype.visitTag = function(ctx) {
 
 
 // task: SHELL NEWLINE* procedure NEWLINE* EOF
-TransformingVisitor.prototype.visitTask = function(ctx) {
+ParsingVisitor.prototype.visitTask = function(ctx) {
     var tree = new syntax.TreeNode(types.TASK);
     tree.shell = ctx.SHELL().getText();
     ctx.procedure().accept(this);
@@ -937,7 +937,7 @@ TransformingVisitor.prototype.visitTask = function(ctx) {
 
 
 // throwClause: 'throw' expression
-TransformingVisitor.prototype.visitThrowClause = function(ctx) {
+ParsingVisitor.prototype.visitThrowClause = function(ctx) {
     var tree = new syntax.TreeNode(types.THROW_CLAUSE);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -946,7 +946,7 @@ TransformingVisitor.prototype.visitThrowClause = function(ctx) {
 
 
 // trueProbability: 'true'
-TransformingVisitor.prototype.visitTrueProbability = function(ctx) {
+ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
     var value = 'true';
     var terminal = new syntax.TerminalNode(types.PROBABILITY, value);
     this.result = terminal;
@@ -954,7 +954,7 @@ TransformingVisitor.prototype.visitTrueProbability = function(ctx) {
 
 
 // undefinedNumber: 'undefined'
-TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
+ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     var value = 'undefined';
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
     this.result = terminal;
@@ -962,7 +962,7 @@ TransformingVisitor.prototype.visitUndefinedNumber = function(ctx) {
 
 
 // variable: IDENTIFIER
-TransformingVisitor.prototype.visitVariable = function(ctx) {
+ParsingVisitor.prototype.visitVariable = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
     var terminal = new syntax.TerminalNode(types.VARIABLE, value);
     this.result = terminal;
@@ -970,13 +970,13 @@ TransformingVisitor.prototype.visitVariable = function(ctx) {
 
 
 // variableReal: FLOAT
-TransformingVisitor.prototype.visitVariableReal = function(ctx) {
+ParsingVisitor.prototype.visitVariableReal = function(ctx) {
     this.result = ctx.FLOAT().getText();
 };
 
 
 // version: VERSION
-TransformingVisitor.prototype.visitVersion = function(ctx) {
+ParsingVisitor.prototype.visitVersion = function(ctx) {
     var value = ctx.VERSION().getText();
     var terminal = new syntax.TerminalNode(types.VERSION, value);
     this.result = terminal;
@@ -984,7 +984,7 @@ TransformingVisitor.prototype.visitVersion = function(ctx) {
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
-TransformingVisitor.prototype.visitWaitClause = function(ctx) {
+ParsingVisitor.prototype.visitWaitClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WAIT_CLAUSE);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
@@ -995,7 +995,7 @@ TransformingVisitor.prototype.visitWaitClause = function(ctx) {
 
 
 // whileClause: 'while' expression 'do' block
-TransformingVisitor.prototype.visitWhileClause = function(ctx) {
+ParsingVisitor.prototype.visitWhileClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WHILE_CLAUSE);
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -1006,7 +1006,7 @@ TransformingVisitor.prototype.visitWhileClause = function(ctx) {
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-TransformingVisitor.prototype.visitWithClause = function(ctx) {
+ParsingVisitor.prototype.visitWithClause = function(ctx) {
     var tree = new syntax.TreeNode(types.WITH_CLAUSE);
     var symbol = ctx.symbol();
     if (symbol) {

@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-var parser = require('../transformers/DocumentParser');
+var parser = require('../transformers/LanguageParser');
 var NodeTypes = require('./NodeTypes');
 var TreeNode = require('./TreeNode').TreeNode;
 
