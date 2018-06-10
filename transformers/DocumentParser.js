@@ -110,15 +110,15 @@ exports.parseCatalog = function(source) {
 
 
 /**
- * This function takes a source code string containing a Bali block
+ * This function takes a source code string containing a Bali procedure
  * and parses it into the corresponding parse tree structure.
  * 
  * @param {string} source The source code string.
  * @returns {BlockContext} The corresponding parse tree structure.
  */
-exports.parseBlock = function(source) {
+exports.parseProcedure = function(source) {
     var parser = initializeParser(source);
-    var antlrTree = parser.block();
+    var antlrTree = parser.procedure();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
 };

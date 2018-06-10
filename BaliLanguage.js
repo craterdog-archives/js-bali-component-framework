@@ -50,8 +50,8 @@ exports.parseCatalog = function(catalog) {
 };
 
 
-exports.parseBlock = function(block) {
-    return parser.parseBlock(block);
+exports.parseProcedure = function(procedure) {
+    return parser.parseProcedure(procedure);
 };
 
 
