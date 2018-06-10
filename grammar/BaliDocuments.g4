@@ -7,7 +7,7 @@ document: NEWLINE* component NEWLINE* EOF;
 
 component: item parameters?;
 
-item: element | structure | block;
+item: element | structure | code;
 
 structure: '[' composite ']';
 
@@ -31,9 +31,9 @@ catalog:
 
 association: component ':' expression;
 
-task: SHELL NEWLINE* procedure NEWLINE* EOF;
+code: '{' procedure '}';
 
-block: '{' procedure '}';
+task: SHELL NEWLINE* procedure NEWLINE* EOF;
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |

@@ -255,6 +255,15 @@ TransformingVisitor.prototype.visitCheckoutClause = function(ctx) {
 };
 
 
+// code: '{' procedure '}'
+TransformingVisitor.prototype.visitCode = function(ctx) {
+    var tree = new syntax.TreeNode(types.CODE);
+    ctx.procedure().accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
+};
+
+
 // commitClause: 'commit' expression 'to' expression
 TransformingVisitor.prototype.visitCommitClause = function(ctx) {
     var tree = new syntax.TreeNode(types.COMMIT_CLAUSE);

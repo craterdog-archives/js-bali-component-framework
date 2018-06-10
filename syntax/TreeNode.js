@@ -54,6 +54,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.CHECKOUT_CLAUSE:
             visitor.visitCheckoutClause(this);
             break;
+        case types.CODE:
+            visitor.visitCode(this);
+            break;
         case types.COMMIT_CLAUSE:
             visitor.visitCommitClause(this);
             break;

@@ -128,6 +128,14 @@ TransformingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
+// code: '{' procedure '}'
+TransformingVisitor.prototype.visitCode = function(tree) {
+    this.document += '{';
+    tree.children[0].accept(this);
+    this.document += '}';
+};
+
+
 // commitClause: 'commit' expression 'to' expression
 TransformingVisitor.prototype.visitCommitClause = function(tree) {
     this.document += 'commit ';

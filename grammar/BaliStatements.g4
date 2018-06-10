@@ -62,6 +62,8 @@ recipient: symbol | subcomponent;
 
 subcomponent: variable indices;
 
+block: '{' procedure '}';
+
 variable: IDENTIFIER;
 
 indices: '[' list ']';

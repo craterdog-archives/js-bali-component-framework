@@ -43,6 +43,7 @@ var TREE_TYPES = [
     'breakClause',
     'catalog',
     'checkoutClause',
+    'code',
     'commitClause',
     'comparisonExpression',
     'complementExpression',
@@ -92,6 +93,7 @@ exports.BLOCK = TREE_TYPES.indexOf('block');
 exports.BREAK_CLAUSE = TREE_TYPES.indexOf('breakClause');
 exports.CATALOG = TREE_TYPES.indexOf('catalog');
 exports.CHECKOUT_CLAUSE = TREE_TYPES.indexOf('checkoutClause');
+exports.CODE = TREE_TYPES.indexOf('code');
 exports.COMMIT_CLAUSE = TREE_TYPES.indexOf('commitClause');
 exports.COMPARISON_EXPRESSION = TREE_TYPES.indexOf('comparisonExpression');
 exports.COMPLEMENT_EXPRESSION = TREE_TYPES.indexOf('complementExpression');

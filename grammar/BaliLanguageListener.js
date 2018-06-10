@@ -137,21 +137,21 @@ BaliLanguageListener.prototype.exitAssociation = function(ctx) {
 };
 
 
+// Enter a parse tree produced by BaliLanguageParser#code.
+BaliLanguageListener.prototype.enterCode = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#code.
+BaliLanguageListener.prototype.exitCode = function(ctx) {
+};
+
+
 // Enter a parse tree produced by BaliLanguageParser#task.
 BaliLanguageListener.prototype.enterTask = function(ctx) {
 };
 
 // Exit a parse tree produced by BaliLanguageParser#task.
 BaliLanguageListener.prototype.exitTask = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliLanguageParser#block.
-BaliLanguageListener.prototype.enterBlock = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#block.
-BaliLanguageListener.prototype.exitBlock = function(ctx) {
 };
 
 
@@ -368,6 +368,15 @@ BaliLanguageListener.prototype.enterSubcomponent = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#subcomponent.
 BaliLanguageListener.prototype.exitSubcomponent = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#block.
+BaliLanguageListener.prototype.enterBlock = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#block.
+BaliLanguageListener.prototype.exitBlock = function(ctx) {
 };
 
 
