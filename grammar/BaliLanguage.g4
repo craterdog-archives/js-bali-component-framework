@@ -1,3 +1,3 @@
 grammar BaliLanguage;
 
-import BaliDocuments;
+import BaliComponents;

@@ -1,6 +1,6 @@
 grammar BaliDocuments;
 
-import BaliStatements;
+import BaliProcedures;
 
 
 document: NEWLINE* component NEWLINE* EOF;
@@ -32,12 +32,4 @@ catalog:
 association: component ':' expression;
 
 code: '{' procedure '}';
-
-task: SHELL NEWLINE* procedure NEWLINE* EOF;
-
-procedure:
-    statement (';' statement)*    #inlineProcedure  |
-    NEWLINE (statement NEWLINE)*  #newlineProcedure |
-    /*empty procedure*/ #emptyProcedure
-;
 
