@@ -162,7 +162,7 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: item parameters?
+// component: object parameters?
 FormattingVisitor.prototype.visitComponent = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);

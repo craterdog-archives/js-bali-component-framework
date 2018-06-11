@@ -5,9 +5,9 @@ import BaliStatements;
 
 document: NEWLINE* component NEWLINE* EOF;
 
-component: item parameters?;
+component: object parameters?;
 
-item: element | structure | code;
+object: element | structure | code;
 
 structure: '[' composite ']';
 

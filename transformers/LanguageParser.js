@@ -319,7 +319,7 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: item parameters?
+// component: object parameters?
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPONENT);
     ctx.children[0].accept(this);

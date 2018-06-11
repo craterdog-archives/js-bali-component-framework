@@ -191,10 +191,10 @@ SearchingVisitor.prototype.constructor = SearchingVisitor;
 SearchingVisitor.prototype.visitAssociation = function(tree) {
     var component = tree.children[0];
     var expression = tree.children[1];
-    var item = component.children[0];
-    //if (item.type !== NodeTypes.STRUCTURE &&
-            //item.type !== NodeTypes.BLOCK &&
-    if (item.value === this.value) {
+    var object = component.children[0];
+    //if (object.type !== NodeTypes.STRUCTURE &&
+            //object.type !== NodeTypes.BLOCK &&
+    if (object.value === this.value) {
         this.result = expression;
     } else if (expression.type === NodeTypes.COMPONENT) {
         expression.accept(this);
@@ -214,11 +214,11 @@ SearchingVisitor.prototype.visitCatalog = function(tree) {
 };
 
 
-// component: item parameters?
+// component: object parameters?
 SearchingVisitor.prototype.visitComponent = function(tree) {
-    var item = tree.children[0];
-    if (item.type === NodeTypes.STRUCTURE) {
-        item.accept(this);
+    var object = tree.children[0];
+    if (object.type === NodeTypes.STRUCTURE) {
+        object.accept(this);
     }
 };
 

@@ -366,7 +366,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "DURATION", "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
                       "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
-var ruleNames =  [ "document", "component", "item", "structure", "parameters", 
+var ruleNames =  [ "document", "component", "object", "structure", "parameters", 
                    "composite", "range", "list", "catalog", "association", 
                    "code", "task", "procedure", "statement", "mainClause", 
                    "evaluateClause", "checkoutClause", "saveClause", "discardClause", 
@@ -485,7 +485,7 @@ BaliLanguageParser.SPACE = 84;
 
 BaliLanguageParser.RULE_document = 0;
 BaliLanguageParser.RULE_component = 1;
-BaliLanguageParser.RULE_item = 2;
+BaliLanguageParser.RULE_object = 2;
 BaliLanguageParser.RULE_structure = 3;
 BaliLanguageParser.RULE_parameters = 4;
 BaliLanguageParser.RULE_composite = 5;
@@ -661,8 +661,8 @@ function ComponentContext(parser, parent, invokingState) {
 ComponentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ComponentContext.prototype.constructor = ComponentContext;
 
-ComponentContext.prototype.item = function() {
-    return this.getTypedRuleContext(ItemContext,0);
+ComponentContext.prototype.object = function() {
+    return this.getTypedRuleContext(ObjectContext,0);
 };
 
 ComponentContext.prototype.parameters = function() {
@@ -701,7 +701,7 @@ BaliLanguageParser.prototype.component = function() {
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 125;
-        this.item();
+        this.object();
         this.state = 127;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,2,this._ctx);
@@ -724,7 +724,7 @@ BaliLanguageParser.prototype.component = function() {
     return localctx;
 };
 
-function ItemContext(parser, parent, invokingState) {
+function ObjectContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -733,40 +733,40 @@ function ItemContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_item;
+    this.ruleIndex = BaliLanguageParser.RULE_object;
     return this;
 }
 
-ItemContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-ItemContext.prototype.constructor = ItemContext;
+ObjectContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ObjectContext.prototype.constructor = ObjectContext;
 
-ItemContext.prototype.element = function() {
+ObjectContext.prototype.element = function() {
     return this.getTypedRuleContext(ElementContext,0);
 };
 
-ItemContext.prototype.structure = function() {
+ObjectContext.prototype.structure = function() {
     return this.getTypedRuleContext(StructureContext,0);
 };
 
-ItemContext.prototype.code = function() {
+ObjectContext.prototype.code = function() {
     return this.getTypedRuleContext(CodeContext,0);
 };
 
-ItemContext.prototype.enterRule = function(listener) {
+ObjectContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterItem(this);
+        listener.enterObject(this);
 	}
 };
 
-ItemContext.prototype.exitRule = function(listener) {
+ObjectContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitItem(this);
+        listener.exitObject(this);
 	}
 };
 
-ItemContext.prototype.accept = function(visitor) {
+ObjectContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitItem(this);
+        return visitor.visitObject(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -775,12 +775,12 @@ ItemContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.ItemContext = ItemContext;
+BaliLanguageParser.ObjectContext = ObjectContext;
 
-BaliLanguageParser.prototype.item = function() {
+BaliLanguageParser.prototype.object = function() {
 
-    var localctx = new ItemContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 4, BaliLanguageParser.RULE_item);
+    var localctx = new ObjectContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 4, BaliLanguageParser.RULE_object);
     try {
         this.state = 132;
         this._errHandler.sync(this);

@@ -29,12 +29,12 @@ BaliLanguageListener.prototype.exitComponent = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#item.
-BaliLanguageListener.prototype.enterItem = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#object.
+BaliLanguageListener.prototype.enterObject = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#item.
-BaliLanguageListener.prototype.exitItem = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#object.
+BaliLanguageListener.prototype.exitObject = function(ctx) {
 };
 
 
