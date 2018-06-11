@@ -290,21 +290,21 @@ BaliLanguageListener.prototype.exitSelectClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#whileClause.
-BaliLanguageListener.prototype.enterWhileClause = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#whileClause.
-BaliLanguageListener.prototype.exitWhileClause = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#withClause.
 BaliLanguageListener.prototype.enterWithClause = function(ctx) {
 };
 
 // Exit a parse tree produced by BaliLanguageParser#withClause.
 BaliLanguageListener.prototype.exitWithClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#whileClause.
+BaliLanguageListener.prototype.enterWhileClause = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#whileClause.
+BaliLanguageListener.prototype.exitWhileClause = function(ctx) {
 };
 
 

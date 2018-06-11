@@ -16,8 +16,8 @@ mainClause:
     waitClause |
     ifClause |
     selectClause |
-    whileClause |
     withClause |
+    whileClause |
     continueClause |
     breakClause |
     returnClause |
@@ -44,9 +44,9 @@ ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('
 
 selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?;
 
-whileClause: 'while' expression 'do' block;
-
 withClause: 'with' ('each' symbol 'in')? expression 'do' block;
+
+whileClause: 'while' expression 'do' block;
 
 continueClause: 'continue' 'loop';
 

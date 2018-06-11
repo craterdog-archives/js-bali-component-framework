@@ -55,8 +55,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u001a\u0003\u001a\u0003\u001a\u0003\u001a\u0006\u001a\u0148\n\u001a",
     "\r\u001a\u000e\u001a\u0149\u0003\u001a\u0003\u001a\u0005\u001a\u014e",
     "\n\u001a\u0003\u001b\u0003\u001b\u0003\u001b\u0003\u001b\u0003\u001b",
-    "\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0005\u001c",
-    "\u015a\n\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003",
+    "\u0005\u001b\u0155\n\u001b\u0003\u001b\u0003\u001b\u0003\u001b\u0003",
+    "\u001b\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0003",
     "\u001d\u0003\u001d\u0003\u001d\u0003\u001e\u0003\u001e\u0003\u001e\u0003",
     "\u001f\u0003\u001f\u0005\u001f\u0168\n\u001f\u0003 \u0003 \u0003 \u0003",
     "!\u0003!\u0003!\u0003!\u0003!\u0003!\u0003!\u0003\"\u0003\"\u0005\"",
@@ -90,7 +90,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002&\u0117\u0003\u0002\u0002\u0002(\u011a\u0003\u0002\u0002",
     "\u0002*\u011f\u0003\u0002\u0002\u0002,\u0122\u0003\u0002\u0002\u0002",
     ".\u0127\u0003\u0002\u0002\u00020\u012d\u0003\u0002\u0002\u00022\u0140",
-    "\u0003\u0002\u0002\u00024\u014f\u0003\u0002\u0002\u00026\u0154\u0003",
+    "\u0003\u0002\u0002\u00024\u014f\u0003\u0002\u0002\u00026\u015a\u0003",
     "\u0002\u0002\u00028\u015f\u0003\u0002\u0002\u0002:\u0162\u0003\u0002",
     "\u0002\u0002<\u0165\u0003\u0002\u0002\u0002>\u0169\u0003\u0002\u0002",
     "\u0002@\u016c\u0003\u0002\u0002\u0002B\u0175\u0003\u0002\u0002\u0002",
@@ -229,13 +229,13 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0147\u0003\u0002\u0002\u0002\u0149\u014a\u0003\u0002\u0002\u0002\u014a",
     "\u014d\u0003\u0002\u0002\u0002\u014b\u014c\u0007\u001b\u0002\u0002\u014c",
     "\u014e\u0005F$\u0002\u014d\u014b\u0003\u0002\u0002\u0002\u014d\u014e",
-    "\u0003\u0002\u0002\u0002\u014e3\u0003\u0002\u0002\u0002\u014f\u0150",
-    "\u0007\u001e\u0002\u0002\u0150\u0151\u0005L\'\u0002\u0151\u0152\u0007",
-    "\u001d\u0002\u0002\u0152\u0153\u0005F$\u0002\u01535\u0003\u0002\u0002",
-    "\u0002\u0154\u0159\u0007\u001f\u0002\u0002\u0155\u0156\u0007 \u0002",
-    "\u0002\u0156\u0157\u0005f4\u0002\u0157\u0158\u0007!\u0002\u0002\u0158",
-    "\u015a\u0003\u0002\u0002\u0002\u0159\u0155\u0003\u0002\u0002\u0002\u0159",
-    "\u015a\u0003\u0002\u0002\u0002\u015a\u015b\u0003\u0002\u0002\u0002\u015b",
+    "\u0003\u0002\u0002\u0002\u014e3\u0003\u0002\u0002\u0002\u014f\u0154",
+    "\u0007\u001e\u0002\u0002\u0150\u0151\u0007\u001f\u0002\u0002\u0151\u0152",
+    "\u0005f4\u0002\u0152\u0153\u0007 \u0002\u0002\u0153\u0155\u0003\u0002",
+    "\u0002\u0002\u0154\u0150\u0003\u0002\u0002\u0002\u0154\u0155\u0003\u0002",
+    "\u0002\u0002\u0155\u0156\u0003\u0002\u0002\u0002\u0156\u0157\u0005L",
+    "\'\u0002\u0157\u0158\u0007\u001d\u0002\u0002\u0158\u0159\u0005F$\u0002",
+    "\u01595\u0003\u0002\u0002\u0002\u015a\u015b\u0007!\u0002\u0002\u015b",
     "\u015c\u0005L\'\u0002\u015c\u015d\u0007\u001d\u0002\u0002\u015d\u015e",
     "\u0005F$\u0002\u015e7\u0003\u0002\u0002\u0002\u015f\u0160\u0007\"\u0002",
     "\u0002\u0160\u0161\u0007#\u0002\u0002\u01619\u0003\u0002\u0002\u0002",
@@ -245,7 +245,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u0002\u0168=\u0003\u0002\u0002\u0002\u0169\u016a\u0007",
     "&\u0002\u0002\u016a\u016b\u0005L\'\u0002\u016b?\u0003\u0002\u0002\u0002",
     "\u016c\u016d\u0007\'\u0002\u0002\u016d\u016e\u0005f4\u0002\u016e\u016f",
-    "\u0007(\u0002\u0002\u016f\u0170\u0005L\'\u0002\u0170\u0171\u0007\u001f",
+    "\u0007(\u0002\u0002\u016f\u0170\u0005L\'\u0002\u0170\u0171\u0007\u001e",
     "\u0002\u0002\u0171\u0172\u0005F$\u0002\u0172A\u0003\u0002\u0002\u0002",
     "\u0173\u0176\u0005f4\u0002\u0174\u0176\u0005D#\u0002\u0175\u0173\u0003",
     "\u0002\u0002\u0002\u0175\u0174\u0003\u0002\u0002\u0002\u0176C\u0003",
@@ -331,7 +331,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u01fdm\u0003\u0002\u0002\u0002\u01fe\u01ff\u0007P\u0002\u0002",
     "\u01ffo\u0003\u0002\u0002\u0002\'sz\u0081\u0086\u0093\u009e\u00a7\u00ab",
     "\u00b2\u00bb\u00bf\u00cd\u00d4\u00de\u00e7\u00eb\u00f1\u0104\u0109\u0139",
-    "\u013e\u0149\u014d\u0159\u0167\u0175\u0198\u01b2\u01b4\u01c7\u01cf\u01df",
+    "\u013e\u0149\u014d\u0154\u0167\u0175\u0198\u01b2\u01b4\u01c7\u01cf\u01df",
     "\u01e7\u01ea\u01ee\u01f8\u01fc"].join("");
 
 
@@ -345,11 +345,11 @@ var literalNames = [ null, "'['", "']'", "'('", "')'", "'..'", "','", "':'",
                      "'{'", "'}'", "';'", "':='", "'checkout'", "'from'", 
                      "'save'", "'to'", "'discard'", "'commit'", "'publish'", 
                      "'queue'", "'on'", "'wait'", "'for'", "'if'", "'then'", 
-                     "'else'", "'select'", "'do'", "'while'", "'with'", 
-                     "'each'", "'in'", "'continue'", "'loop'", "'break'", 
-                     "'return'", "'throw'", "'handle'", "'matching'", "'@'", 
-                     "'.'", "'!'", "'^'", "'-'", "'/'", "'*'", "'//'", "'+'", 
-                     "'|'", "'<'", "'='", "'>'", "'is'", "'matches'", "'not'", 
+                     "'else'", "'select'", "'do'", "'with'", "'each'", "'in'", 
+                     "'while'", "'continue'", "'loop'", "'break'", "'return'", 
+                     "'throw'", "'handle'", "'matching'", "'@'", "'.'", 
+                     "'!'", "'^'", "'-'", "'/'", "'*'", "'//'", "'+'", "'|'", 
+                     "'<'", "'='", "'>'", "'is'", "'matches'", "'not'", 
                      "'and'", "'sans'", "'xor'", "'or'", "'?'", "'i'", "'undefined'", 
                      "'infinity'", "'e^'", "'%'", "'true'", "'false'", "'none'", 
                      "'any'" ];
@@ -371,7 +371,7 @@ var ruleNames =  [ "document", "component", "object", "structure", "parameters",
                    "code", "task", "procedure", "statement", "mainClause", 
                    "evaluateClause", "checkoutClause", "saveClause", "discardClause", 
                    "commitClause", "publishClause", "queueClause", "waitClause", 
-                   "ifClause", "selectClause", "whileClause", "withClause", 
+                   "ifClause", "selectClause", "withClause", "whileClause", 
                    "continueClause", "breakClause", "returnClause", "throwClause", 
                    "handleClause", "recipient", "subcomponent", "block", 
                    "variable", "indices", "expression", "funxtion", "message", 
@@ -508,8 +508,8 @@ BaliLanguageParser.RULE_queueClause = 21;
 BaliLanguageParser.RULE_waitClause = 22;
 BaliLanguageParser.RULE_ifClause = 23;
 BaliLanguageParser.RULE_selectClause = 24;
-BaliLanguageParser.RULE_whileClause = 25;
-BaliLanguageParser.RULE_withClause = 26;
+BaliLanguageParser.RULE_withClause = 25;
+BaliLanguageParser.RULE_whileClause = 26;
 BaliLanguageParser.RULE_continueClause = 27;
 BaliLanguageParser.RULE_breakClause = 28;
 BaliLanguageParser.RULE_returnClause = 29;
@@ -2098,7 +2098,7 @@ BaliLanguageParser.prototype.procedure = function() {
             this.state = 229;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7) | (1 << BaliLanguageParser.T__11) | (1 << BaliLanguageParser.T__13) | (1 << BaliLanguageParser.T__15) | (1 << BaliLanguageParser.T__16) | (1 << BaliLanguageParser.T__17) | (1 << BaliLanguageParser.T__18) | (1 << BaliLanguageParser.T__20) | (1 << BaliLanguageParser.T__22) | (1 << BaliLanguageParser.T__25) | (1 << BaliLanguageParser.T__27) | (1 << BaliLanguageParser.T__28))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (BaliLanguageParser.T__31 - 32)) | (1 << (BaliLanguageParser.T__33 - 32)) | (1 << (BaliLanguageParser.T__34 - 32)) | (1 << (BaliLanguageParser.T__35 - 32)) | (1 << (BaliLanguageParser.T__38 - 32)) | (1 << (BaliLanguageParser.T__42 - 32)) | (1 << (BaliLanguageParser.T__43 - 32)) | (1 << (BaliLanguageParser.T__44 - 32)) | (1 << (BaliLanguageParser.T__47 - 32)) | (1 << (BaliLanguageParser.T__53 - 32)) | (1 << (BaliLanguageParser.T__59 - 32)) | (1 << (BaliLanguageParser.T__60 - 32)) | (1 << (BaliLanguageParser.T__61 - 32)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (BaliLanguageParser.T__64 - 65)) | (1 << (BaliLanguageParser.T__65 - 65)) | (1 << (BaliLanguageParser.T__66 - 65)) | (1 << (BaliLanguageParser.T__67 - 65)) | (1 << (BaliLanguageParser.TAG - 65)) | (1 << (BaliLanguageParser.SYMBOL - 65)) | (1 << (BaliLanguageParser.FRACTION - 65)) | (1 << (BaliLanguageParser.CONSTANT - 65)) | (1 << (BaliLanguageParser.FLOAT - 65)) | (1 << (BaliLanguageParser.MOMENT - 65)) | (1 << (BaliLanguageParser.DURATION - 65)) | (1 << (BaliLanguageParser.RESOURCE - 65)) | (1 << (BaliLanguageParser.VERSION - 65)) | (1 << (BaliLanguageParser.BINARY - 65)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 65)) | (1 << (BaliLanguageParser.TEXT - 65)) | (1 << (BaliLanguageParser.IDENTIFIER - 65)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliLanguageParser.T__0) | (1 << BaliLanguageParser.T__2) | (1 << BaliLanguageParser.T__7) | (1 << BaliLanguageParser.T__11) | (1 << BaliLanguageParser.T__13) | (1 << BaliLanguageParser.T__15) | (1 << BaliLanguageParser.T__16) | (1 << BaliLanguageParser.T__17) | (1 << BaliLanguageParser.T__18) | (1 << BaliLanguageParser.T__20) | (1 << BaliLanguageParser.T__22) | (1 << BaliLanguageParser.T__25) | (1 << BaliLanguageParser.T__27) | (1 << BaliLanguageParser.T__30))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (BaliLanguageParser.T__31 - 32)) | (1 << (BaliLanguageParser.T__33 - 32)) | (1 << (BaliLanguageParser.T__34 - 32)) | (1 << (BaliLanguageParser.T__35 - 32)) | (1 << (BaliLanguageParser.T__38 - 32)) | (1 << (BaliLanguageParser.T__42 - 32)) | (1 << (BaliLanguageParser.T__43 - 32)) | (1 << (BaliLanguageParser.T__44 - 32)) | (1 << (BaliLanguageParser.T__47 - 32)) | (1 << (BaliLanguageParser.T__53 - 32)) | (1 << (BaliLanguageParser.T__59 - 32)) | (1 << (BaliLanguageParser.T__60 - 32)) | (1 << (BaliLanguageParser.T__61 - 32)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (BaliLanguageParser.T__64 - 65)) | (1 << (BaliLanguageParser.T__65 - 65)) | (1 << (BaliLanguageParser.T__66 - 65)) | (1 << (BaliLanguageParser.T__67 - 65)) | (1 << (BaliLanguageParser.TAG - 65)) | (1 << (BaliLanguageParser.SYMBOL - 65)) | (1 << (BaliLanguageParser.FRACTION - 65)) | (1 << (BaliLanguageParser.CONSTANT - 65)) | (1 << (BaliLanguageParser.FLOAT - 65)) | (1 << (BaliLanguageParser.MOMENT - 65)) | (1 << (BaliLanguageParser.DURATION - 65)) | (1 << (BaliLanguageParser.RESOURCE - 65)) | (1 << (BaliLanguageParser.VERSION - 65)) | (1 << (BaliLanguageParser.BINARY - 65)) | (1 << (BaliLanguageParser.TEXT_BLOCK - 65)) | (1 << (BaliLanguageParser.TEXT - 65)) | (1 << (BaliLanguageParser.IDENTIFIER - 65)))) !== 0)) {
                 this.state = 224;
                 this.statement();
                 this.state = 225;
@@ -2275,12 +2275,12 @@ MainClauseContext.prototype.selectClause = function() {
     return this.getTypedRuleContext(SelectClauseContext,0);
 };
 
-MainClauseContext.prototype.whileClause = function() {
-    return this.getTypedRuleContext(WhileClauseContext,0);
-};
-
 MainClauseContext.prototype.withClause = function() {
     return this.getTypedRuleContext(WithClauseContext,0);
+};
+
+MainClauseContext.prototype.whileClause = function() {
+    return this.getTypedRuleContext(WhileClauseContext,0);
 };
 
 MainClauseContext.prototype.continueClause = function() {
@@ -2413,12 +2413,12 @@ BaliLanguageParser.prototype.mainClause = function() {
         case BaliLanguageParser.T__27:
             this.enterOuterAlt(localctx, 11);
             this.state = 252;
-            this.whileClause();
+            this.withClause();
             break;
-        case BaliLanguageParser.T__28:
+        case BaliLanguageParser.T__30:
             this.enterOuterAlt(localctx, 12);
             this.state = 253;
-            this.withClause();
+            this.whileClause();
             break;
         case BaliLanguageParser.T__31:
             this.enterOuterAlt(localctx, 13);
@@ -3309,83 +3309,6 @@ BaliLanguageParser.prototype.selectClause = function() {
     return localctx;
 };
 
-function WhileClauseContext(parser, parent, invokingState) {
-	if(parent===undefined) {
-	    parent = null;
-	}
-	if(invokingState===undefined || invokingState===null) {
-		invokingState = -1;
-	}
-	antlr4.ParserRuleContext.call(this, parent, invokingState);
-    this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_whileClause;
-    return this;
-}
-
-WhileClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-WhileClauseContext.prototype.constructor = WhileClauseContext;
-
-WhileClauseContext.prototype.expression = function() {
-    return this.getTypedRuleContext(ExpressionContext,0);
-};
-
-WhileClauseContext.prototype.block = function() {
-    return this.getTypedRuleContext(BlockContext,0);
-};
-
-WhileClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.enterWhileClause(this);
-	}
-};
-
-WhileClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliLanguageListener ) {
-        listener.exitWhileClause(this);
-	}
-};
-
-WhileClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitWhileClause(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-
-
-BaliLanguageParser.WhileClauseContext = WhileClauseContext;
-
-BaliLanguageParser.prototype.whileClause = function() {
-
-    var localctx = new WhileClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 50, BaliLanguageParser.RULE_whileClause);
-    try {
-        this.enterOuterAlt(localctx, 1);
-        this.state = 333;
-        this.match(BaliLanguageParser.T__27);
-        this.state = 334;
-        this.expression(0);
-        this.state = 335;
-        this.match(BaliLanguageParser.T__26);
-        this.state = 336;
-        this.block();
-    } catch (re) {
-    	if(re instanceof antlr4.error.RecognitionException) {
-	        localctx.exception = re;
-	        this._errHandler.reportError(this, re);
-	        this._errHandler.recover(this, re);
-	    } else {
-	    	throw re;
-	    }
-    } finally {
-        this.exitRule();
-    }
-    return localctx;
-};
-
 function WithClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3442,24 +3365,101 @@ BaliLanguageParser.WithClauseContext = WithClauseContext;
 BaliLanguageParser.prototype.withClause = function() {
 
     var localctx = new WithClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 52, BaliLanguageParser.RULE_withClause);
+    this.enterRule(localctx, 50, BaliLanguageParser.RULE_withClause);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
+        this.state = 333;
+        this.match(BaliLanguageParser.T__27);
         this.state = 338;
-        this.match(BaliLanguageParser.T__28);
-        this.state = 343;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===BaliLanguageParser.T__29) {
-            this.state = 339;
-            this.match(BaliLanguageParser.T__29);
-            this.state = 340;
+        if(_la===BaliLanguageParser.T__28) {
+            this.state = 334;
+            this.match(BaliLanguageParser.T__28);
+            this.state = 335;
             this.symbol();
-            this.state = 341;
-            this.match(BaliLanguageParser.T__30);
+            this.state = 336;
+            this.match(BaliLanguageParser.T__29);
         }
 
+        this.state = 340;
+        this.expression(0);
+        this.state = 341;
+        this.match(BaliLanguageParser.T__26);
+        this.state = 342;
+        this.block();
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function WhileClauseContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = BaliLanguageParser.RULE_whileClause;
+    return this;
+}
+
+WhileClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+WhileClauseContext.prototype.constructor = WhileClauseContext;
+
+WhileClauseContext.prototype.expression = function() {
+    return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+WhileClauseContext.prototype.block = function() {
+    return this.getTypedRuleContext(BlockContext,0);
+};
+
+WhileClauseContext.prototype.enterRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.enterWhileClause(this);
+	}
+};
+
+WhileClauseContext.prototype.exitRule = function(listener) {
+    if(listener instanceof BaliLanguageListener ) {
+        listener.exitWhileClause(this);
+	}
+};
+
+WhileClauseContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof BaliLanguageVisitor ) {
+        return visitor.visitWhileClause(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+
+
+BaliLanguageParser.WhileClauseContext = WhileClauseContext;
+
+BaliLanguageParser.prototype.whileClause = function() {
+
+    var localctx = new WhileClauseContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 52, BaliLanguageParser.RULE_whileClause);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 344;
+        this.match(BaliLanguageParser.T__30);
         this.state = 345;
         this.expression(0);
         this.state = 346;
@@ -3825,7 +3825,7 @@ BaliLanguageParser.prototype.handleClause = function() {
         this.state = 365;
         this.expression(0);
         this.state = 366;
-        this.match(BaliLanguageParser.T__28);
+        this.match(BaliLanguageParser.T__27);
         this.state = 367;
         this.block();
     } catch (re) {

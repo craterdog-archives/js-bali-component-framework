@@ -198,14 +198,14 @@ BaliLanguageVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#whileClause.
-BaliLanguageVisitor.prototype.visitWhileClause = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#withClause.
+BaliLanguageVisitor.prototype.visitWithClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#withClause.
-BaliLanguageVisitor.prototype.visitWithClause = function(ctx) {
+// Visit a parse tree produced by BaliLanguageParser#whileClause.
+BaliLanguageVisitor.prototype.visitWhileClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 
