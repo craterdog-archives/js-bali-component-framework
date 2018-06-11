@@ -22,7 +22,11 @@ expression:                  // Precedence (highest to lowest)
     expression '?' expression                                      #defaultExpression
 ;
 
+variable: IDENTIFIER;
+
 funxtion: IDENTIFIER;
 
 message: IDENTIFIER;
+
+indices: '[' list ']';
 

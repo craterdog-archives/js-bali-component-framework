@@ -32,6 +32,10 @@ mainClause:
     throwClause
 ;
 
+handleClause: 'handle' symbol 'matching' expression 'with' block;
+
+block: '{' procedure '}';
+
 evaluateClause: (recipient ':=')? expression;
 
 checkoutClause: 'checkout' recipient 'from' expression;
@@ -64,15 +68,7 @@ returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
 
-handleClause: 'handle' symbol 'matching' expression 'with' block;
-
 recipient: symbol | subcomponent;
 
 subcomponent: variable indices;
-
-block: '{' procedure '}';
-
-variable: IDENTIFIER;
-
-indices: '[' list ']';
 
