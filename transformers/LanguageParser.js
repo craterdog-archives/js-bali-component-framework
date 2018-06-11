@@ -713,10 +713,10 @@ ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
 };
 
 
-// parameters: '(' composite ')'
+// parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     var tree = new syntax.TreeNode(types.PARAMETERS);
-    ctx.composite().accept(this);
+    ctx.collection().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -879,10 +879,10 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// structure: '[' composite ']'
+// structure: '[' collection ']'
 ParsingVisitor.prototype.visitStructure = function(ctx) {
     var tree = new syntax.TreeNode(types.STRUCTURE);
-    ctx.composite().accept(this);
+    ctx.collection().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };

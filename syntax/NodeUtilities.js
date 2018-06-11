@@ -245,7 +245,7 @@ SearchingVisitor.prototype.visitList = function(tree) {
 };
 
 
-// structure: '[' composite ']'
+// structure: '[' collection ']'
 SearchingVisitor.prototype.visitStructure = function(tree) {
     var structure = tree.children[0];
     if (structure.type !== NodeTypes.RANGE) {

@@ -9,11 +9,11 @@ component: object parameters?;
 
 object: element | structure | code;
 
-structure: '[' composite ']';
+structure: '[' collection ']';
 
-parameters: '(' composite ')';
+parameters: '(' collection ')';
 
-composite: range | list | catalog;
+collection: range | list | catalog;
 
 range: expression '..' expression;
 

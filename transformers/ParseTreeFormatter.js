@@ -376,7 +376,7 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 };
 
 
-// parameters: '(' composite ')'
+// parameters: '(' collection ')'
 FormattingVisitor.prototype.visitParameters = function(tree) {
     this.source += '(';
     tree.children[0].accept(this);
@@ -492,7 +492,7 @@ FormattingVisitor.prototype.visitStatement = function(tree) {
 };
 
 
-// structure: '[' composite ']'
+// structure: '[' collection ']'
 FormattingVisitor.prototype.visitStructure = function(tree) {
     this.source += '[';
     tree.children[0].accept(this);

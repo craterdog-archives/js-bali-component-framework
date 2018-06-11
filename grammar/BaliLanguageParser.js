@@ -367,7 +367,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
 var ruleNames =  [ "document", "component", "object", "structure", "parameters", 
-                   "composite", "range", "list", "catalog", "association", 
+                   "collection", "range", "list", "catalog", "association", 
                    "code", "task", "procedure", "statement", "mainClause", 
                    "handleClause", "block", "evaluateClause", "checkoutClause", 
                    "saveClause", "discardClause", "commitClause", "publishClause", 
@@ -488,7 +488,7 @@ BaliLanguageParser.RULE_component = 1;
 BaliLanguageParser.RULE_object = 2;
 BaliLanguageParser.RULE_structure = 3;
 BaliLanguageParser.RULE_parameters = 4;
-BaliLanguageParser.RULE_composite = 5;
+BaliLanguageParser.RULE_collection = 5;
 BaliLanguageParser.RULE_range = 6;
 BaliLanguageParser.RULE_list = 7;
 BaliLanguageParser.RULE_catalog = 8;
@@ -853,8 +853,8 @@ function StructureContext(parser, parent, invokingState) {
 StructureContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StructureContext.prototype.constructor = StructureContext;
 
-StructureContext.prototype.composite = function() {
-    return this.getTypedRuleContext(CompositeContext,0);
+StructureContext.prototype.collection = function() {
+    return this.getTypedRuleContext(CollectionContext,0);
 };
 
 StructureContext.prototype.enterRule = function(listener) {
@@ -891,7 +891,7 @@ BaliLanguageParser.prototype.structure = function() {
         this.state = 134;
         this.match(BaliLanguageParser.T__0);
         this.state = 135;
-        this.composite();
+        this.collection();
         this.state = 136;
         this.match(BaliLanguageParser.T__1);
     } catch (re) {
@@ -924,8 +924,8 @@ function ParametersContext(parser, parent, invokingState) {
 ParametersContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ParametersContext.prototype.constructor = ParametersContext;
 
-ParametersContext.prototype.composite = function() {
-    return this.getTypedRuleContext(CompositeContext,0);
+ParametersContext.prototype.collection = function() {
+    return this.getTypedRuleContext(CollectionContext,0);
 };
 
 ParametersContext.prototype.enterRule = function(listener) {
@@ -962,7 +962,7 @@ BaliLanguageParser.prototype.parameters = function() {
         this.state = 138;
         this.match(BaliLanguageParser.T__2);
         this.state = 139;
-        this.composite();
+        this.collection();
         this.state = 140;
         this.match(BaliLanguageParser.T__3);
     } catch (re) {
@@ -979,7 +979,7 @@ BaliLanguageParser.prototype.parameters = function() {
     return localctx;
 };
 
-function CompositeContext(parser, parent, invokingState) {
+function CollectionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -988,40 +988,40 @@ function CompositeContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliLanguageParser.RULE_composite;
+    this.ruleIndex = BaliLanguageParser.RULE_collection;
     return this;
 }
 
-CompositeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-CompositeContext.prototype.constructor = CompositeContext;
+CollectionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+CollectionContext.prototype.constructor = CollectionContext;
 
-CompositeContext.prototype.range = function() {
+CollectionContext.prototype.range = function() {
     return this.getTypedRuleContext(RangeContext,0);
 };
 
-CompositeContext.prototype.list = function() {
+CollectionContext.prototype.list = function() {
     return this.getTypedRuleContext(ListContext,0);
 };
 
-CompositeContext.prototype.catalog = function() {
+CollectionContext.prototype.catalog = function() {
     return this.getTypedRuleContext(CatalogContext,0);
 };
 
-CompositeContext.prototype.enterRule = function(listener) {
+CollectionContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.enterComposite(this);
+        listener.enterCollection(this);
 	}
 };
 
-CompositeContext.prototype.exitRule = function(listener) {
+CollectionContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliLanguageListener ) {
-        listener.exitComposite(this);
+        listener.exitCollection(this);
 	}
 };
 
-CompositeContext.prototype.accept = function(visitor) {
+CollectionContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliLanguageVisitor ) {
-        return visitor.visitComposite(this);
+        return visitor.visitCollection(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1030,12 +1030,12 @@ CompositeContext.prototype.accept = function(visitor) {
 
 
 
-BaliLanguageParser.CompositeContext = CompositeContext;
+BaliLanguageParser.CollectionContext = CollectionContext;
 
-BaliLanguageParser.prototype.composite = function() {
+BaliLanguageParser.prototype.collection = function() {
 
-    var localctx = new CompositeContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 10, BaliLanguageParser.RULE_composite);
+    var localctx = new CollectionContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 10, BaliLanguageParser.RULE_collection);
     try {
         this.state = 145;
         this._errHandler.sync(this);

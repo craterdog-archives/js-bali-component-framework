@@ -56,12 +56,12 @@ BaliLanguageListener.prototype.exitParameters = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#composite.
-BaliLanguageListener.prototype.enterComposite = function(ctx) {
+// Enter a parse tree produced by BaliLanguageParser#collection.
+BaliLanguageListener.prototype.enterCollection = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliLanguageParser#composite.
-BaliLanguageListener.prototype.exitComposite = function(ctx) {
+// Exit a parse tree produced by BaliLanguageParser#collection.
+BaliLanguageListener.prototype.exitCollection = function(ctx) {
 };
 
 
