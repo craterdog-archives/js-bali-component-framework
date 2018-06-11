@@ -659,15 +659,6 @@ BaliLanguageListener.prototype.exitPercent = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliLanguageParser#trueProbability.
-BaliLanguageListener.prototype.enterTrueProbability = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#trueProbability.
-BaliLanguageListener.prototype.exitTrueProbability = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#falseProbability.
 BaliLanguageListener.prototype.enterFalseProbability = function(ctx) {
 };
@@ -683,6 +674,15 @@ BaliLanguageListener.prototype.enterFractionalProbability = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#fractionalProbability.
 BaliLanguageListener.prototype.exitFractionalProbability = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#trueProbability.
+BaliLanguageListener.prototype.enterTrueProbability = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#trueProbability.
+BaliLanguageListener.prototype.exitTrueProbability = function(ctx) {
 };
 
 

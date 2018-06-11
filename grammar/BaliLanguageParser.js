@@ -313,8 +313,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01d7\u0003\u0002\u0002\u0002\u01df\u01d8\u0003\u0002\u0002\u0002\u01df",
     "\u01d9\u0003\u0002\u0002\u0002\u01e0]\u0003\u0002\u0002\u0002\u01e1",
     "\u01e2\u0005b2\u0002\u01e2\u01e3\u0007B\u0002\u0002\u01e3_\u0003\u0002",
-    "\u0002\u0002\u01e4\u01e8\u0007C\u0002\u0002\u01e5\u01e8\u0007D\u0002",
-    "\u0002\u01e6\u01e8\u0007J\u0002\u0002\u01e7\u01e4\u0003\u0002\u0002",
+    "\u0002\u0002\u01e4\u01e8\u0007C\u0002\u0002\u01e5\u01e8\u0007J\u0002",
+    "\u0002\u01e6\u01e8\u0007D\u0002\u0002\u01e7\u01e4\u0003\u0002\u0002",
     "\u0002\u01e7\u01e5\u0003\u0002\u0002\u0002\u01e7\u01e6\u0003\u0002\u0002",
     "\u0002\u01e8a\u0003\u0002\u0002\u0002\u01e9\u01eb\u0007-\u0002\u0002",
     "\u01ea\u01e9\u0003\u0002\u0002\u0002\u01ea\u01eb\u0003\u0002\u0002\u0002",
@@ -351,7 +351,7 @@ var literalNames = [ null, "'['", "']'", "'('", "')'", "'..'", "','", "':'",
                      "'^'", "'-'", "'/'", "'*'", "'//'", "'+'", "'|'", "'<'", 
                      "'='", "'>'", "'is'", "'matches'", "'not'", "'and'", 
                      "'sans'", "'xor'", "'or'", "'?'", "'i'", "'undefined'", 
-                     "'infinity'", "'e^'", "'%'", "'true'", "'false'", "'none'", 
+                     "'infinity'", "'e^'", "'%'", "'false'", "'true'", "'none'", 
                      "'any'" ];
 
 var symbolicNames = [ null, null, null, null, null, null, null, null, null, 
@@ -6193,22 +6193,22 @@ BaliLanguageParser.prototype.probability = function() {
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case BaliLanguageParser.T__64:
-            localctx = new TrueProbabilityContext(this, localctx);
+            localctx = new FalseProbabilityContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 482;
             this.match(BaliLanguageParser.T__64);
             break;
-        case BaliLanguageParser.T__65:
-            localctx = new FalseProbabilityContext(this, localctx);
-            this.enterOuterAlt(localctx, 2);
-            this.state = 483;
-            this.match(BaliLanguageParser.T__65);
-            break;
         case BaliLanguageParser.FRACTION:
             localctx = new FractionalProbabilityContext(this, localctx);
+            this.enterOuterAlt(localctx, 2);
+            this.state = 483;
+            this.match(BaliLanguageParser.FRACTION);
+            break;
+        case BaliLanguageParser.T__65:
+            localctx = new TrueProbabilityContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 484;
-            this.match(BaliLanguageParser.FRACTION);
+            this.match(BaliLanguageParser.T__65);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);

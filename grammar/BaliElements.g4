@@ -37,9 +37,9 @@ number:
 percent: real '%';
 
 probability:
-    'true'    #trueProbability       |
     'false'   #falseProbability      |
-    FRACTION  #fractionalProbability
+    FRACTION  #fractionalProbability |
+    'true'    #trueProbability
 ;
 
 real:

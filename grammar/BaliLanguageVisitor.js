@@ -444,12 +444,6 @@ BaliLanguageVisitor.prototype.visitPercent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliLanguageParser#trueProbability.
-BaliLanguageVisitor.prototype.visitTrueProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#falseProbability.
 BaliLanguageVisitor.prototype.visitFalseProbability = function(ctx) {
   return this.visitChildren(ctx);
@@ -458,6 +452,12 @@ BaliLanguageVisitor.prototype.visitFalseProbability = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#fractionalProbability.
 BaliLanguageVisitor.prototype.visitFractionalProbability = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#trueProbability.
+BaliLanguageVisitor.prototype.visitTrueProbability = function(ctx) {
   return this.visitChildren(ctx);
 };
 
