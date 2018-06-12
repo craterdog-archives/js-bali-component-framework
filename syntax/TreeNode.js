@@ -177,8 +177,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.WITH_CLAUSE:
             visitor.visitWithClause(this);
             break;
-        default:
-            throw new Error('TREE: An invalid tree node type was passed: ' + this.type);
     }
 };
 
@@ -189,9 +187,6 @@ TreeNode.prototype.accept = function(visitor) {
  * @param {TreeNode|TerminalNode} node The node to be added as the next child of this tree node.
  */
 TreeNode.prototype.addChild = function(node) {
-    if (!node || (node.constructor.name !== 'TreeNode' && node.constructor.name !== 'TerminalNode')) {
-        throw new Error("TREE: The child node must be of type 'TreeNode' or 'TerminalNode'.");
-    }
     this.children.push(node);
 };
 
