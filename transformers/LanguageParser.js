@@ -35,6 +35,36 @@ exports.parseDocument = function(source) {
 
 
 /**
+ * This function takes a source code string containing a Bali component
+ * and parses it into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ComponentContext} The corresponding parse tree structure.
+ */
+exports.parseComponent = function(source) {
+    var parser = initializeParser(source);
+    var antlrTree = parser.component();
+    var baliTree = convertParseTree(antlrTree);
+    return baliTree;
+};
+
+
+/**
+ * This function takes a source code string containing Bali parameters
+ * and parses them into the corresponding parse tree structure.
+ * 
+ * @param {string} source The source code string.
+ * @returns {ParametersContext} The corresponding parse tree structure.
+ */
+exports.parseParameters = function(source) {
+    var parser = initializeParser(source);
+    var antlrTree = parser.parameters();
+    var baliTree = convertParseTree(antlrTree);
+    return baliTree;
+};
+
+
+/**
  * This function takes a source code string containing a Bali element
  * and parses it into the corresponding parse tree structure.
  * 

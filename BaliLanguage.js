@@ -25,6 +25,16 @@ exports.parseDocument = function(source) {
 };
 
 
+exports.parseComponent = function(source) {
+    return parser.parseComponent(source);
+};
+
+
+exports.parseParameters = function(source) {
+    return parser.parseParameters(source);
+};
+
+
 exports.parseElement = function(source) {
     return parser.parseElement(source);
 };
