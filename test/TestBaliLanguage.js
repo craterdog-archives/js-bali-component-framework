@@ -19,8 +19,7 @@ describe('Bali Document Language™', function() {
 
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
-            // strip off the POSIX newline terminator so that the round-trip comparison will work
-            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
@@ -30,8 +29,7 @@ describe('Bali Document Language™', function() {
 
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
-            // strip off the POSIX newline terminator so that the round-trip comparison will work
-            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
@@ -41,8 +39,7 @@ describe('Bali Document Language™', function() {
 
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
-            // strip off the POSIX newline terminator so that the round-trip comparison will work
-            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
@@ -52,8 +49,7 @@ describe('Bali Document Language™', function() {
 
         it('should parse and format the same documents', function() {
             var file = 'test/source/documents.bali';
-            // strip off the POSIX newline terminator so that the round-trip comparison will work
-            var source = fs.readFileSync(file, 'utf8').slice(0, -1);
+            var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line

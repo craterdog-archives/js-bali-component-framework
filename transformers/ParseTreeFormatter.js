@@ -201,6 +201,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 // document: NEWLINE* component NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
     tree.children[0].accept(this);  // component
+    this.source += '\n';  //POSIX requires a newline terminator of stored documents
 };
 
 
@@ -518,6 +519,7 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 FormattingVisitor.prototype.visitTask = function(tree) {
     this.source += tree.shell;
     tree.children[0].accept(this);
+    this.source += '\n';  //POSIX requires a newline terminator of stored tasks
 };
 
 
