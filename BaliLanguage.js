@@ -90,6 +90,11 @@ exports.setValueForKey = function(tree, key, value) {
 };
 
 
+exports.deleteKey = function(tree, key) {
+    return utilities.deleteKey(tree, key);
+};
+
+
 exports.iterator = function(tree) {
     return utilities.iterator(tree);
 };

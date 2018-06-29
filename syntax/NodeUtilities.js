@@ -122,6 +122,45 @@ exports.setValueForKey = function(tree, key, value) {
 
 
 /**
+ * This function takes a Bali parse tree for a catalog structure and sets
+ * the value of a key. The structure of the catalog structure is:
+ * COMPONENT
+ *   STRUCTURE
+ *     CATALOG
+ *       ASSOCIATION
+ *         COMPONENT
+ *           SYMBOL (key)
+ *         EXPRESSION (value)
+ *       ASSOCIATION
+ *         COMPONENT
+ *           SYMBOL (key)
+ *         EXPRESSION (value)
+ *       ...
+ * 
+ * @param {TreeNode} tree The parse tree for the catalog structure.
+ * @param {string} key The string form of the element type key.
+ * @returns {TreeNode} The tree node for the removed value.
+ */
+exports.deleteKey = function(tree, key) {
+    var association, component, symbol;
+    var structure = tree.children[0];
+    var catalog = structure.children[0];
+
+    // find the key in the catalog
+    var associations = catalog.children;
+    for (var i = 0; i < associations.length; i++) {
+        association = associations[i];
+        component = association.children[0];
+        symbol = component.children[0];
+        if (symbol.value === key) {
+            associations.splice(i, 1);  // remove this association
+            return;
+        }
+    }
+};
+
+
+/**
  * This function constructs an iterator for the specified list component.
  * 
  * @param {TreeNode} tree The parse tree node containing the list.
