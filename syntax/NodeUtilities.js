@@ -21,8 +21,8 @@ var TreeNode = require('./TreeNode').TreeNode;
  *     SYMBOL (key)
  *   EXPRESSION (value)
  *
- * @param {string} key The symbol that is the key for the association.
- * @param {object} value The string or node value for the association.
+ * @param {String} key The symbol that is the key for the association.
+ * @param {String|TreeNode} value The string or node value for the association.
  * @return {TreeNode} The new tree node for the association.
  */
 exports.association = function(key, value) {
@@ -61,7 +61,7 @@ exports.association = function(key, value) {
  *   EXPRESSION (value)
  * 
  * @param {TreeNode} tree The parse tree to be searched.
- * @param {string} key The string form of the element type key.
+ * @param {String} key The string form of the element type key.
  * @returns {TreeNode} The tree node associated with the key.
  */
 exports.getValueForKey = function(tree, key) {
@@ -88,7 +88,7 @@ exports.getValueForKey = function(tree, key) {
  *       ...
  * 
  * @param {TreeNode} tree The parse tree for the catalog structure.
- * @param {string} key The string form of the element type key.
+ * @param {String} key The string form of the element type key.
  * @param {TreeNode} value The tree node for the value.
  */
 exports.setValueForKey = function(tree, key, value) {
@@ -138,7 +138,7 @@ exports.setValueForKey = function(tree, key, value) {
  *       ...
  * 
  * @param {TreeNode} tree The parse tree for the catalog structure.
- * @param {string} key The string form of the element type key.
+ * @param {String} key The string form of the element type key.
  * @returns {TreeNode} The tree node for the removed value.
  */
 exports.deleteKey = function(tree, key) {
@@ -164,7 +164,7 @@ exports.deleteKey = function(tree, key) {
  * This function constructs an iterator for the specified list component.
  * 
  * @param {TreeNode} tree The parse tree node containing the list.
- * @returns {object} The new iterator.
+ * @returns {Iterator} The new iterator.
  */
 exports.iterator = function(tree) {
     var structure = tree.children[0];
@@ -179,7 +179,7 @@ exports.iterator = function(tree) {
  * associated with the specified index.
  * 
  * @param {TreeNode} tree The parse tree list.
- * @param {number} index The index of the desired component.
+ * @param {Number} index The index of the desired component.
  * @returns {TreeNode} The tree node associated with the index.
  */
 exports.valueForIndex = function(tree, index) {

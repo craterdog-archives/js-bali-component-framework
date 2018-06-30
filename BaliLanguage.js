@@ -16,7 +16,7 @@
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
 var parser = require('./transformers/LanguageParser');
-var formatter = require('./transformers/ParseTreeFormatter');
+var formatter = require('./transformers/LanguageFormatter');
 var utilities = require('./syntax/NodeUtilities');
 
 

@@ -21,7 +21,7 @@ var types = require('./NodeTypes');
  * This constructor creates a new terminal node.
  * 
  * @param {number} type The type of the terminal node.
- * @param {string} value The string representation of the terminal node.
+ * @param {String} value The string representation of the terminal node.
  * @returns {TerminalNode} The new terminal node.
  */
 function TerminalNode(type, value) {
@@ -73,7 +73,7 @@ TerminalNode.prototype.accept = function(visitor) {
 /**
  * This method returns a string representation of this node.
  * 
- * @returns {string} The string representation of this node.
+ * @returns {String} The string representation of this node.
  */
 TerminalNode.prototype.toString = function() {
     return this.value;

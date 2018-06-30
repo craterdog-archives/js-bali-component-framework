@@ -13,7 +13,7 @@
  * This class captures the state and methods associated with a parse tree node.
  */
 var types = require('./NodeTypes');
-var ParseTreeFormatter = require('../transformers/ParseTreeFormatter').ParseTreeFormatter;
+var formatter = require('../transformers/LanguageFormatter');
 
 
 /**
@@ -194,10 +194,9 @@ TreeNode.prototype.addChild = function(node) {
 /**
  * This method returns a string representation of this node.
  * 
- * @returns {string} The string representation of this node.
+ * @returns {String} The string representation of this node.
  */
 TreeNode.prototype.toString = function() {
-    var formatter = new ParseTreeFormatter();
-    var string = formatter.formatDocument(this);
+    var string = formatter.formatParseTree(this);
     return string;
 };

@@ -23,7 +23,7 @@ var types = require('../syntax/NodeTypes');
  * This function takes a source code string containing a Bali document
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {DocumentContext} The corresponding parse tree structure.
  */
 exports.parseDocument = function(source) {
@@ -38,7 +38,7 @@ exports.parseDocument = function(source) {
  * This function takes a source code string containing a Bali component
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {ComponentContext} The corresponding parse tree structure.
  */
 exports.parseComponent = function(source) {
@@ -53,7 +53,7 @@ exports.parseComponent = function(source) {
  * This function takes a source code string containing Bali parameters
  * and parses them into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {ParametersContext} The corresponding parse tree structure.
  */
 exports.parseParameters = function(source) {
@@ -68,7 +68,7 @@ exports.parseParameters = function(source) {
  * This function takes a source code string containing a Bali element
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {ElementContext} The corresponding parse tree structure.
  */
 exports.parseElement = function(source) {
@@ -83,7 +83,7 @@ exports.parseElement = function(source) {
  * This function takes a source code string containing a Bali structure
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {StructureContext} The corresponding parse tree structure.
  */
 exports.parseStructure = function(source) {
@@ -98,7 +98,7 @@ exports.parseStructure = function(source) {
  * This function takes a source code string containing a Bali range
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {RangeContext} The corresponding parse tree structure.
  */
 exports.parseRange = function(source) {
@@ -113,7 +113,7 @@ exports.parseRange = function(source) {
  * This function takes a source code string containing a Bali list
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {ListContext} The corresponding parse tree structure.
  */
 exports.parseList = function(source) {
@@ -128,7 +128,7 @@ exports.parseList = function(source) {
  * This function takes a source code string containing a Bali catalog
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {CatalogContext} The corresponding parse tree structure.
  */
 exports.parseCatalog = function(source) {
@@ -143,7 +143,7 @@ exports.parseCatalog = function(source) {
  * This function takes a source code string containing a Bali procedure
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {BlockContext} The corresponding parse tree structure.
  */
 exports.parseProcedure = function(source) {
@@ -158,7 +158,7 @@ exports.parseProcedure = function(source) {
  * This function takes a source code string containing a Bali expression
  * and parses it into the corresponding parse tree structure.
  * 
- * @param {string} source The source code string.
+ * @param {String} source The source code string.
  * @returns {ExpressionContext} The corresponding parse tree structure.
  */
 exports.parseExpression = function(source) {
