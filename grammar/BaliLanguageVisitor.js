@@ -42,6 +42,12 @@ BaliLanguageVisitor.prototype.visitParameters = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#seal.
+BaliLanguageVisitor.prototype.visitSeal = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#collection.
 BaliLanguageVisitor.prototype.visitCollection = function(ctx) {
   return this.visitChildren(ctx);

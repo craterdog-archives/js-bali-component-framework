@@ -5,13 +5,15 @@ import BaliProcedures;
 
 document: NEWLINE* component NEWLINE* EOF;
 
-component: object parameters?;
+component: object parameters? seal*;
 
 object: element | structure | code;
 
 structure: '[' collection ']';
 
 parameters: '(' collection ')';
+
+seal: reference binary;
 
 collection: range | list | catalog;
 

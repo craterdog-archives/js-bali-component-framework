@@ -73,6 +73,7 @@ var TREE_TYPES = [
     'range',
     'returnClause',
     'saveClause',
+    'seal',
     'selectClause',
     'statement',
     'structure',
@@ -131,6 +132,7 @@ exports.RANGE = TREE_TYPES.indexOf('range');
 exports.REFERENCE = TERMINAL_TYPES.indexOf('reference');
 exports.RETURN_CLAUSE = TREE_TYPES.indexOf('returnClause');
 exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
+exports.SEAL = TREE_TYPES.indexOf('seal');
 exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
 exports.STATEMENT = TREE_TYPES.indexOf('statement');
 exports.STRUCTURE = TREE_TYPES.indexOf('structure');

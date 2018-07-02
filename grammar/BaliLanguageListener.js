@@ -56,6 +56,15 @@ BaliLanguageListener.prototype.exitParameters = function(ctx) {
 };
 
 
+// Enter a parse tree produced by BaliLanguageParser#seal.
+BaliLanguageListener.prototype.enterSeal = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#seal.
+BaliLanguageListener.prototype.exitSeal = function(ctx) {
+};
+
+
 // Enter a parse tree produced by BaliLanguageParser#collection.
 BaliLanguageListener.prototype.enterCollection = function(ctx) {
 };

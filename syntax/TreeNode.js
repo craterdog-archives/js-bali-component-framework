@@ -144,6 +144,9 @@ TreeNode.prototype.accept = function(visitor) {
         case types.SAVE_CLAUSE:
             visitor.visitSaveClause(this);
             break;
+        case types.SEAL:
+            visitor.visitSeal(this);
+            break;
         case types.SELECT_CLAUSE:
             visitor.visitSelectClause(this);
             break;

@@ -162,7 +162,7 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: object parameters?
+// component: object parameters? seal*
 FormattingVisitor.prototype.visitComponent = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);
@@ -457,6 +457,15 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.source += 'save ';
     tree.children[0].accept(this);
     this.source += ' to ';
+    tree.children[1].accept(this);
+};
+
+
+// seal: reference binary
+FormattingVisitor.prototype.visitSeal = function(tree) {
+    this.source += ' ';
+    tree.children[0].accept(this);
+    this.source += ' ';
     tree.children[1].accept(this);
 };
 

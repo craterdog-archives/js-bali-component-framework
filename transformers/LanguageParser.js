@@ -349,15 +349,13 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: object parameters?
+// component: object parameters? seal*
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPONENT);
-    ctx.children[0].accept(this);
-    tree.addChild(this.result);
-    var parameters = ctx.parameters();
-    if (parameters) {
-        parameters.accept(this);
+    for (var i = 0; i < ctx.children.length; i++) {
+        ctx.children[i].accept(this);
         tree.addChild(this.result);
+
     }
     this.result = tree;
 };
@@ -866,6 +864,17 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
+};
+
+
+// seal: reference binary
+ParsingVisitor.prototype.visitSeal = function(ctx) {
+    var tree = new syntax.TreeNode(types.SEAL);
+    ctx.reference().accept(this);
+    tree.addChild(this.result);
+    ctx.binary().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };

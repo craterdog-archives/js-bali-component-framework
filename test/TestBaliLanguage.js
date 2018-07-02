@@ -48,7 +48,7 @@ describe('Bali Document Language™', function() {
         });
 
         it('should parse and format the same documents', function() {
-            var file = 'test/source/documents.bali';
+            var file = 'test/source/components.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = language.parseDocument(source);
