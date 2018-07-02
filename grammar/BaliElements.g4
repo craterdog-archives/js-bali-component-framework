@@ -30,11 +30,11 @@ imaginary: (real | sign='-')? 'i';
 moment: MOMENT;
 
 number:
-    'undefined'                                            #undefinedNumber |
-    'infinity'                                             #infiniteNumber  |
-    real                                                   #realNumber      |
-    imaginary                                              #imaginaryNumber |
-    '(' real (del=',' imaginary | del='e^' angle 'i') ')'  #complexNumber
+    'undefined'                              #undefinedNumber |
+    'infinity'                               #infiniteNumber  |
+    real                                     #realNumber      |
+    imaginary                                #imaginaryNumber |
+    '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
 ;
 
 percent: real '%';

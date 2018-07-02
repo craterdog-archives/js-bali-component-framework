@@ -337,25 +337,23 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// complexNumber: '(' real (del=',' imaginary | del='e^' angle 'i') ')'  #complexNumber
+// complexNumber: '(' real del=(',' | 'e^') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var delimiter = ctx.del.text;
     var value = '(';
     ctx.real().accept(this);
     var real = this.result;
-    var imaginary;
-    var angle;
     value += real;
     value += delimiter;
+    ctx.imaginary().accept(this);
+    var imaginary;
+    var angle;
     if (delimiter === ',') {
-        ctx.imaginary().accept(this);
         imaginary = this.result;
         value += ' ' + imaginary;
     } else {
-        ctx.angle().accept(this);
         angle = this.result;
         value += angle;
-        value += ' i';
     }
     value += ')';
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
