@@ -578,6 +578,15 @@ BaliLanguageListener.prototype.exitElement = function(ctx) {
 };
 
 
+// Enter a parse tree produced by BaliLanguageParser#angle.
+BaliLanguageListener.prototype.enterAngle = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#angle.
+BaliLanguageListener.prototype.exitAngle = function(ctx) {
+};
+
+
 // Enter a parse tree produced by BaliLanguageParser#binary.
 BaliLanguageListener.prototype.enterBinary = function(ctx) {
 };

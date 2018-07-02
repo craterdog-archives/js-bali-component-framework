@@ -17,6 +17,7 @@
 
 var TERMINAL_TYPES = [
     'invalid',  // unit based indexing for Bali
+    'angle',
     'binary',
     'duration',
     'function',
@@ -87,6 +88,7 @@ var TREE_TYPES = [
 ];
 exports.TREE_TYPES = TREE_TYPES;
 
+exports.ANGLE = TREE_TYPES.indexOf('angle');
 exports.ARITHMETIC_EXPRESSION = TREE_TYPES.indexOf('arithmeticExpression');
 exports.ASSOCIATION = TREE_TYPES.indexOf('association');
 exports.BINARY = TERMINAL_TYPES.indexOf('binary');

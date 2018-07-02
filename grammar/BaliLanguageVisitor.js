@@ -390,6 +390,12 @@ BaliLanguageVisitor.prototype.visitElement = function(ctx) {
 };
 
 
+// Visit a parse tree produced by BaliLanguageParser#angle.
+BaliLanguageVisitor.prototype.visitAngle = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by BaliLanguageParser#binary.
 BaliLanguageVisitor.prototype.visitBinary = function(ctx) {
   return this.visitChildren(ctx);

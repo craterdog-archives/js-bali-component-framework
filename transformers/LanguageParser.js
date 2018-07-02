@@ -199,6 +199,15 @@ ParsingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
+// angle: '~' real
+ParsingVisitor.prototype.visitAngle = function(ctx) {
+    ctx.real().accept(this);
+    var value = '~' + this.result;
+    var terminal = new syntax.TerminalNode(types.ANGLE, value);
+    this.result = terminal;
+};
+
+
 // anyTemplate: 'any'
 ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
     var value = 'any';
@@ -328,23 +337,31 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// complexNumber: '(' real del=(',' | 'e^') imaginary ')'
+// complexNumber: '(' real (del=',' imaginary | del='e^' angle 'i') ')'  #complexNumber
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var delimiter = ctx.del.text;
-    if (delimiter === ',') delimiter += ' ';
     var value = '(';
     ctx.real().accept(this);
     var real = this.result;
+    var imaginary;
+    var angle;
     value += real;
     value += delimiter;
-    ctx.imaginary().accept(this);
-    var imaginary = this.result;
-    value += imaginary;
+    if (delimiter === ',') {
+        ctx.imaginary().accept(this);
+        imaginary = this.result;
+        value += ' ' + imaginary;
+    } else {
+        ctx.angle().accept(this);
+        angle = this.result;
+        value += angle;
+        value += ' i';
+    }
     value += ')';
     var terminal = new syntax.TerminalNode(types.NUMBER, value);
     terminal.real = real;
-    terminal.delimiter = delimiter;
     terminal.imaginary = imaginary;
+    terminal.angle = angle;
     this.result = terminal;
 };
 

@@ -123,6 +123,6 @@ Regards,
         ]
         $imaginary: [42i, -pi i, -i]
         $rectangular: (-1, -phi i)
-        $polar: (1.2e^pi i)
+        $polar: (1.2e^~pi i)
     ]
 ]

@@ -4,6 +4,7 @@ import BaliTokens;
 
 
 element:
+    angle |
     binary |
     duration |
     moment |
@@ -18,6 +19,8 @@ element:
     version
 ;
 
+angle: '~' real;
+
 binary: BINARY;
 
 duration: DURATION;
@@ -27,11 +30,11 @@ imaginary: (real | sign='-')? 'i';
 moment: MOMENT;
 
 number:
-    'undefined'                              #undefinedNumber |
-    'infinity'                               #infiniteNumber  |
-    real                                     #realNumber      |
-    imaginary                                #imaginaryNumber |
-    '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
+    'undefined'                                            #undefinedNumber |
+    'infinity'                                             #infiniteNumber  |
+    real                                                   #realNumber      |
+    imaginary                                              #imaginaryNumber |
+    '(' real (del=',' imaginary | del='e^' angle 'i') ')'  #complexNumber
 ;
 
 percent: real '%';

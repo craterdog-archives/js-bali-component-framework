@@ -41,6 +41,7 @@ exports.TerminalNode = TerminalNode;
  */
 TerminalNode.prototype.accept = function(visitor) {
     switch(this.type) {
+        case types.ANGLE:
         case types.BINARY:
         case types.DURATION:
         case types.MOMENT:
