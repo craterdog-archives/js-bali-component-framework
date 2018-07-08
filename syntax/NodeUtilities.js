@@ -279,13 +279,9 @@ exports.deleteKey = function(tree, key) {
  * @returns {Array} An array of seals.
  */
 exports.getSeals = function(document) {
-    var component = document.children[0];
     var seals = [];
-    for (var i = 1; i < component.children.length; i++) {
-        var child = component.children[i];
-        if (child.type === NodeTypes.SEAL) {
-            seals.push(child);
-        }
+    for (var i = 1; i < document.children.length; i++) {
+        seals.push(document.children[i]);
     }
     return seals;
 };
@@ -300,13 +296,12 @@ exports.getSeals = function(document) {
  * @param {String} binary A base 64 encoded string containing the signature for the seal.
  */
 exports.addSeal = function(document, reference, binary) {
-    var component = document.children[0];
     var seal = new TreeNode(NodeTypes.SEAL);
     var citation = new TerminalNode(NodeTypes.REFERENCE, reference);
     seal.addChild(citation);
     var signature = new TerminalNode(NodeTypes.BINARY, binary);
     seal.addChild(signature);
-    component.addChild(seal);
+    document.addChild(seal);
 };
 
 
@@ -318,16 +313,13 @@ exports.addSeal = function(document, reference, binary) {
  * @returns {Object} An object containing the new document and separate seal.
  */
 exports.removeSeal = function(document) {
-    var component = document.children[0];
-    var documentCopy = new TreeNode(NodeTypes.DOCUMENT);
-    var componentCopy = new TreeNode(NodeTypes.COMPONENT);
-    documentCopy.addChild(componentCopy);
-    for (var i = 0; i < component.children.length - 1; i++) {
-        componentCopy.addChild(component.children[i]);
+    var copy = new TreeNode(NodeTypes.DOCUMENT);
+    for (var i = 0; i < document.children.length - 1; i++) {
+        copy.addChild(document.children[i]);
     }
     var result = {
-        document: documentCopy,
-        seal: component.children[component.children.length - 1]
+        document: copy,
+        seal: document.children[document.children.length - 1]
     };
     return result;
 };
