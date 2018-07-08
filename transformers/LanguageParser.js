@@ -364,13 +364,12 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: object parameters? seal*
+// component: object parameters?
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new syntax.TreeNode(types.COMPONENT);
     for (var i = 0; i < ctx.children.length; i++) {
         ctx.children[i].accept(this);
-        tree.addChild(this.result);
-
+    tree.addChild(this.result);
     }
     this.result = tree;
 };
@@ -424,11 +423,16 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: NEWLINE* component NEWLINE* EOF
+// document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
     var tree = new syntax.TreeNode(types.DOCUMENT);
     ctx.component().accept(this);
     tree.addChild(this.result);
+    var seals = ctx.seal();
+    for (var i = 0; i < seals.length; i++) {
+        seals[i].accept(this);
+        tree.addChild(this.result);
+    }
     this.result = tree;
 };
 
@@ -980,12 +984,17 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// task: SHELL NEWLINE* procedure NEWLINE* EOF
+// task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitTask = function(ctx) {
     var tree = new syntax.TreeNode(types.TASK);
     tree.shell = ctx.SHELL().getText();
     ctx.procedure().accept(this);
     tree.addChild(this.result);
+    var seals = ctx.seal();
+    for (var i = 0; i < seals.length; i++) {
+        seals[i].accept(this);
+        tree.addChild(this.result);
+    }
     this.result = tree;
 };
 

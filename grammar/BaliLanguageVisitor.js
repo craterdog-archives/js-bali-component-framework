@@ -12,12 +12,6 @@ function BaliLanguageVisitor() {
 BaliLanguageVisitor.prototype = Object.create(antlr4.tree.ParseTreeVisitor.prototype);
 BaliLanguageVisitor.prototype.constructor = BaliLanguageVisitor;
 
-// Visit a parse tree produced by BaliLanguageParser#document.
-BaliLanguageVisitor.prototype.visitDocument = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by BaliLanguageParser#component.
 BaliLanguageVisitor.prototype.visitComponent = function(ctx) {
   return this.visitChildren(ctx);
@@ -104,6 +98,12 @@ BaliLanguageVisitor.prototype.visitAssociation = function(ctx) {
 
 // Visit a parse tree produced by BaliLanguageParser#code.
 BaliLanguageVisitor.prototype.visitCode = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by BaliLanguageParser#document.
+BaliLanguageVisitor.prototype.visitDocument = function(ctx) {
   return this.visitChildren(ctx);
 };
 

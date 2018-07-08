@@ -11,15 +11,6 @@ function BaliLanguageListener() {
 BaliLanguageListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 BaliLanguageListener.prototype.constructor = BaliLanguageListener;
 
-// Enter a parse tree produced by BaliLanguageParser#document.
-BaliLanguageListener.prototype.enterDocument = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliLanguageParser#document.
-BaliLanguageListener.prototype.exitDocument = function(ctx) {
-};
-
-
 // Enter a parse tree produced by BaliLanguageParser#component.
 BaliLanguageListener.prototype.enterComponent = function(ctx) {
 };
@@ -152,6 +143,15 @@ BaliLanguageListener.prototype.enterCode = function(ctx) {
 
 // Exit a parse tree produced by BaliLanguageParser#code.
 BaliLanguageListener.prototype.exitCode = function(ctx) {
+};
+
+
+// Enter a parse tree produced by BaliLanguageParser#document.
+BaliLanguageListener.prototype.enterDocument = function(ctx) {
+};
+
+// Exit a parse tree produced by BaliLanguageParser#document.
+BaliLanguageListener.prototype.exitDocument = function(ctx) {
 };
 
 

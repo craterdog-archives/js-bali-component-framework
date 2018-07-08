@@ -75,6 +75,36 @@ exports.formatParseTree = function(tree, optionalPadding) {
 };
 
 
+exports.list = function(tree) {
+    return utilities.list(tree);
+};
+
+
+exports.iterator = function(tree) {
+    return utilities.iterator(tree);
+};
+
+
+exports.getValueForIndex = function(tree, index) {
+    return utilities.getValueForIndex(tree, index);
+};
+
+
+exports.setValueForIndex = function(tree, index, value) {
+    return utilities.getValueForIndex(tree, index, value);
+};
+
+
+exports.addValue = function(tree, value) {
+    return utilities.addValue(tree, value);
+};
+
+
+exports.catalog = function(tree) {
+    return utilities.catalog(tree);
+};
+
+
 exports.association = function(key, value) {
     return utilities.association(key, value);
 };
@@ -95,12 +125,17 @@ exports.deleteKey = function(tree, key) {
 };
 
 
-exports.iterator = function(tree) {
-    return utilities.iterator(tree);
+exports.getSeals = function(tree) {
+    return utilities.getSeals(tree);
 };
 
 
-exports.valueForIndex = function(tree, index) {
-    return utilities.valueForIndex(tree, index);
+exports.addSeal = function(tree, reference, binary) {
+    return utilities.addSeal(tree, reference, binary);
+};
+
+
+exports.removeSeal = function(tree) {
+    return utilities.removeSeal(tree);
 };
 

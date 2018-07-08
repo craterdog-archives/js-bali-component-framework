@@ -11,6 +11,117 @@
 var parser = require('../transformers/LanguageParser');
 var NodeTypes = require('./NodeTypes');
 var TreeNode = require('./TreeNode').TreeNode;
+var TerminalNode = require('./TerminalNode').TerminalNode;
+
+
+/**
+ * This function returns a new list structure parse tree.  The structure
+ * of the resulting tree is:
+ * COMPONENT
+ *   STRUCTURE
+ *     LIST
+ * 
+ * @returns The new parse tree for the list structure.
+ */
+exports.list = function() {
+    var list = new TreeNode(NodeTypes.LIST);
+    var structure = new TreeNode(NodeTypes.STRUCTURE);
+    var component = new TreeNode(NodeTypes.COMPONENT);
+    component.addChild(structure);
+    structure.addChild(list);
+    return component;
+};
+
+
+/**
+ * This function constructs an iterator for the specified list component.
+ * 
+ * @param {TreeNode} tree The parse tree node containing the list.
+ * @returns {Iterator} The new iterator.
+ */
+exports.iterator = function(tree) {
+    var structure = tree.children[0];
+    var list = structure.children[0];
+    var iterator = new ListIterator(list);
+    return iterator;
+};
+
+
+/**
+ * This function takes a Bali parse tree list and returns the expression
+ * associated with the specified index.
+ * 
+ * @param {TreeNode} tree The parse tree list.
+ * @param {Number} index The index of the desired component.
+ * @returns {TreeNode} The tree node associated with the index.
+ */
+exports.getValueForIndex = function(tree, index) {
+    var component = tree.children[0];
+    var structure = component.children[0];
+    var list = structure.children[0];
+    var expressions = list.children;
+    if (index < expressions.length) {
+        return expressions[index];
+    } else {
+        return undefined;
+    }
+};
+
+
+/**
+ * This function takes a Bali parse tree list and returns the expression
+ * associated with the specified index.
+ * 
+ * @param {TreeNode} tree The parse tree list.
+ * @param {Number} index The index of the component to be replaced.
+ * @param {TreeNode} value The tree node value to be set at the index.
+ * @returns {TreeNode} The old tree node associated with the index.
+ */
+exports.setValueForIndex = function(tree, index, value) {
+    var component = tree.children[0];
+    var structure = component.children[0];
+    var list = structure.children[0];
+    var expressions = list.children;
+    var old = expressions[index];
+    expressions[index] = value;
+    return old;
+};
+
+
+/**
+ * This function takes a Bali parse tree list and returns the expression
+ * associated with the specified index.
+ * 
+ * @param {TreeNode} tree The parse tree list.
+ * @param {TreeNode} value The tree node value to be added to the list.
+ */
+exports.addValue = function(tree, value) {
+    var component = tree.children[0];
+    var structure = component.children[0];
+    var list = structure.children[0];
+    var expressions = list.children;
+    expressions.push(value);
+};
+
+
+/**
+/**
+ * This function returns a new catalog structure parse tree.  The structure
+ * of the resulting tree is:
+ * COMPONENT
+ *   STRUCTURE
+ *     CATALOG
+ * 
+ * @returns The new parse tree for the catalog structure.
+ */
+exports.catalog = function() {
+    var catalog = new TreeNode(NodeTypes.CATALOG);
+    var structure = new TreeNode(NodeTypes.STRUCTURE);
+    var component = new TreeNode(NodeTypes.COMPONENT);
+    component.addChild(structure);
+    structure.addChild(catalog);
+    return component;
+};
 
 
 /**
@@ -161,37 +272,64 @@ exports.deleteKey = function(tree, key) {
 
 
 /**
- * This function constructs an iterator for the specified list component.
+ * This function takes a Bali parse tree for a document and returns the list of seals
+ * associated with it.
  * 
- * @param {TreeNode} tree The parse tree node containing the list.
- * @returns {Iterator} The new iterator.
+ * @param {TreeNode} document The parse tree for the document.
+ * @returns {Array} An array of seals.
  */
-exports.iterator = function(tree) {
-    var structure = tree.children[0];
-    var list = structure.children[0];
-    var iterator = new ListIterator(list);
-    return iterator;
+exports.getSeals = function(document) {
+    var component = document.children[0];
+    var seals = [];
+    for (var i = 1; i < component.children.length; i++) {
+        var child = component.children[i];
+        if (child.type === NodeTypes.SEAL) {
+            seals.push(child);
+        }
+    }
+    return seals;
 };
 
 
 /**
- * This function takes a Bali parse tree list and returns the expression
- * associated with the specified index.
+ * This function takes a Bali parse tree for a document and adds a notary seal to the end
+ * of it.
  * 
- * @param {TreeNode} tree The parse tree list.
- * @param {Number} index The index of the desired component.
- * @returns {TreeNode} The tree node associated with the index.
+ * @param {TreeNode} document The parse tree for the document.
+ * @param {String} reference A reference to the validation certificate for the seal.
+ * @param {String} binary A base 64 encoded string containing the signature for the seal.
  */
-exports.valueForIndex = function(tree, index) {
-    var component = tree.children[0];
-    var structure = component.children[0];
-    var list = structure.children[0];
-    var expressions = list.children;
-    if (index < expressions.length) {
-        return expressions[index];
-    } else {
-        return undefined;
+exports.addSeal = function(document, reference, binary) {
+    var component = document.children[0];
+    var seal = new TreeNode(NodeTypes.SEAL);
+    var citation = new TerminalNode(NodeTypes.REFERENCE, reference);
+    seal.addChild(citation);
+    var signature = new TerminalNode(NodeTypes.BINARY, binary);
+    seal.addChild(signature);
+    component.addChild(seal);
+};
+
+
+/**
+ * This function takes a Bali parse tree for a document and splits it into a copy of the
+ * document without the last notary seal and the notary seal.
+ * 
+ * @param {TreeNode} document The parse tree for the document.
+ * @returns {Object} An object containing the new document and separate seal.
+ */
+exports.removeSeal = function(document) {
+    var component = document.children[0];
+    var documentCopy = new TreeNode(NodeTypes.DOCUMENT);
+    var componentCopy = new TreeNode(NodeTypes.COMPONENT);
+    documentCopy.addChild(componentCopy);
+    for (var i = 0; i < component.children.length - 1; i++) {
+        componentCopy.addChild(component.children[i]);
     }
+    var result = {
+        document: documentCopy,
+        seal: component.children[component.children.length - 1]
+    };
+    return result;
 };
 
 

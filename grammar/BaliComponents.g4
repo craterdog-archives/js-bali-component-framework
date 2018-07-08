@@ -3,9 +3,7 @@ grammar BaliDocuments;
 import BaliProcedures;
 
 
-document: NEWLINE* component NEWLINE* EOF;
-
-component: object parameters? seal*;
+component: object parameters?;
 
 object: element | structure | code;
 
@@ -34,4 +32,8 @@ catalog:
 association: component ':' expression;
 
 code: '{' procedure '}';
+
+document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF;
+
+task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF;
 

@@ -3,8 +3,6 @@ grammar BaliStatements;
 import BaliExpressions;
 
 
-task: SHELL NEWLINE* procedure NEWLINE* EOF;
-
 procedure:
     statement (';' statement)*    #inlineProcedure  |
     NEWLINE (statement NEWLINE)*  #newlineProcedure |

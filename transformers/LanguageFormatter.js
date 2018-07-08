@@ -162,7 +162,7 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: object parameters? seal*
+// component: object parameters?
 FormattingVisitor.prototype.visitComponent = function(tree) {
     for (var i = 0; i < tree.children.length; i++) {
         tree.children[i].accept(this);
@@ -198,9 +198,13 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// document: NEWLINE* component NEWLINE* EOF
+// document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
     tree.children[0].accept(this);  // component
+    for (var i = 1; i < tree.children.length; i++) {
+        this.source += '\n';
+        tree.children[i].accept(this);  // seal
+    }
     this.source += '\n';  //POSIX requires a newline terminator of stored documents
 };
 
@@ -463,7 +467,6 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
 
 // seal: reference binary
 FormattingVisitor.prototype.visitSeal = function(tree) {
-    this.source += ' ';
     tree.children[0].accept(this);
     this.source += ' ';
     tree.children[1].accept(this);
@@ -524,10 +527,14 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 };
 
 
-// task: SHELL NEWLINE* procedure NEWLINE* EOF
+// task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitTask = function(tree) {
     this.source += tree.shell;
     tree.children[0].accept(this);
+    for (var i = 1; i < tree.children.length; i++) {
+        this.source += '\n';
+        tree.children[i].accept(this);  // seal
+    }
     this.source += '\n';  //POSIX requires a newline terminator of stored tasks
 };
 
