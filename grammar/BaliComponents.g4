@@ -1,4 +1,4 @@
-grammar BaliDocuments;
+grammar BaliComponents;
 
 import BaliProcedures;
 
@@ -33,7 +33,7 @@ association: component ':' expression;
 
 code: '{' procedure '}';
 
-document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF;
+document: NEWLINE* component (NEWLINE seal)+ NEWLINE* EOF;
 
-task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF;
+task: SHELL NEWLINE* procedure (NEWLINE seal)+ NEWLINE* EOF;
 

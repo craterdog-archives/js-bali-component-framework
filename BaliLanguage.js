@@ -135,7 +135,16 @@ exports.addSeal = function(tree, reference, binary) {
 };
 
 
-exports.removeSeal = function(tree) {
-    return utilities.removeSeal(tree);
+exports.getBody = function(tree) {
+    return utilities.getBody(tree);
 };
 
+
+exports.getCitation = function(tree) {
+    return utilities.getCitation(tree);
+};
+
+
+exports.getSignature = function(tree) {
+    return utilities.getSignature(tree);
+};
