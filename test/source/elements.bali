@@ -19,10 +19,10 @@
         <http://www.google.com>
         <bali:/?name=bali.types.Text>
         <bali:/?name=bali.types.Text&version=5>
-        <bali:/ADXVRN30RQWLMV01NWSKLRN8WF?name=bali.types.Text&version=5>
-        <bali:/ADXVRN30RQWLMV01NWSKLRN8WF?name=bali.types.Text>
-        <bali:/ADXVRN30RQWLMV01NWSKLRN8WF?version=5>
-        <bali:/ADXVRN30RQWLMV01NWSKLRN8WF>
+        <bali:ADXVRN30RQWLMV01NWSKLRN8WF?name=bali.types.Text&version=5>
+        <bali:ADXVRN30RQWLMV01NWSKLRN8WF?name=bali.types.Text>
+        <bali:ADXVRN30RQWLMV01NWSKLRN8WF?version=5>
+        <bali:ADXVRN30RQWLMV01NWSKLRN8WF>
     ]
     $version: [
         v1
