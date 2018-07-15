@@ -423,9 +423,14 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
     var tree = new syntax.TreeNode(types.DOCUMENT);
+    var reference = ctx.reference();
+    if (reference) {
+        reference.accept(this);
+        tree.addChild(this.result);
+    }
     ctx.component().accept(this);
     tree.addChild(this.result);
     var seals = ctx.seal();
@@ -984,10 +989,15 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF
+// task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitTask = function(ctx) {
     var tree = new syntax.TreeNode(types.TASK);
     tree.shell = ctx.SHELL().getText();
+    var reference = ctx.reference();
+    if (reference) {
+        reference.accept(this);
+        tree.addChild(this.result);
+    }
     ctx.procedure().accept(this);
     tree.addChild(this.result);
     var seals = ctx.seal();

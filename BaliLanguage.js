@@ -75,6 +75,11 @@ exports.formatParseTree = function(tree, optionalPadding) {
 };
 
 
+exports.document = function(tree) {
+    return utilities.document(tree);
+};
+
+
 exports.list = function(tree) {
     return utilities.list(tree);
 };

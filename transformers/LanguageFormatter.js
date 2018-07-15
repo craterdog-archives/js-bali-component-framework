@@ -198,14 +198,12 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// document: NEWLINE* component (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
-    tree.children[0].accept(this);  // component
-    for (var i = 1; i < tree.children.length; i++) {
+    for (var i = 0; i < tree.children.length; i++) {
+        tree.children[i].accept(this);
         this.source += '\n';
-        tree.children[i].accept(this);  // seal
     }
-    this.source += '\n';  //POSIX requires a newline terminator of stored documents
 };
 
 
@@ -527,15 +525,13 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 };
 
 
-// task: SHELL NEWLINE* procedure (NEWLINE seal)* NEWLINE* EOF
+// task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitTask = function(tree) {
     this.source += tree.shell;
-    tree.children[0].accept(this);
-    for (var i = 1; i < tree.children.length; i++) {
+    for (var i = 0; i < tree.children.length; i++) {
+        tree.children[i].accept(this);
         this.source += '\n';
-        tree.children[i].accept(this);  // seal
     }
-    this.source += '\n';  //POSIX requires a newline terminator of stored tasks
 };
 
 

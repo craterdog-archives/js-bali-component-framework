@@ -15,6 +15,20 @@ var TerminalNode = require('./TerminalNode').TerminalNode;
 
 
 /**
+ * This function returns a new document parse tree containing the specified
+ * component parse tree.
+ * 
+ * @param {TreeNode} component The parse tree node for the component.
+ * @returns The new parse tree for the document.
+ */
+exports.document = function(component) {
+    var document = new TreeNode(NodeTypes.DOCUMENT);
+    document.addChild(component);
+    return document;
+};
+
+
+/**
  * This function returns a new list structure parse tree.  The structure
  * of the resulting tree is:
  * COMPONENT

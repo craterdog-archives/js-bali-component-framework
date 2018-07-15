@@ -33,7 +33,7 @@ association: component ':' expression;
 
 code: '{' procedure '}';
 
-document: NEWLINE* component (NEWLINE seal)+ NEWLINE* EOF;
+document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF;
 
-task: SHELL NEWLINE* procedure (NEWLINE seal)+ NEWLINE* EOF;
+task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF;
 
