@@ -14,6 +14,52 @@ var TreeNode = require('./TreeNode').TreeNode;
 var TerminalNode = require('./TerminalNode').TerminalNode;
 
 
+exports.isDocument = function(document) {
+    if (!document) return false;
+    try {
+        var type = document.constructor.name;
+        if (type === 'String') {
+            document = parser.parseDocument(document);
+        }
+        return document.constructor.name === 'TreeNode' && document.type === NodeTypes.DOCUMENT;
+    } catch (e) {
+        return false;
+    }
+};
+
+
+exports.isReference = function(reference) {
+    if (!reference) return false;
+    try {
+        var type = reference.constructor.name;
+        if (type === 'URL') {
+            reference = '<' + reference.toString().replace(/%23/, '#') + '>';
+            type = reference.constructor.name;
+        }
+        if (type === 'String') {
+            reference = parser.parseElement(reference);
+        }
+        return reference.constructor.name === 'TerminalNode' && reference.type === NodeTypes.REFERENCE;
+    } catch (e) {
+        return false;
+    }
+};
+
+
+exports.isVersion = function(version) {
+    if (!version) return false;
+    try {
+        var type = version.constructor.name;
+        if (type === 'String') {
+            version = parser.parseElement(version);
+        }
+        return version.constructor.name === 'TerminalNode' && version.type === NodeTypes.VERSION;
+    } catch (e) {
+        return false;
+    }
+};
+
+
 /**
  * This function returns a new document parse tree containing the specified
  * component parse tree.

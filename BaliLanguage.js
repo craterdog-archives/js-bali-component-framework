@@ -75,6 +75,21 @@ exports.formatParseTree = function(tree, optionalPadding) {
 };
 
 
+exports.isDocument = function(document) {
+    return utilities.isDocument(document);
+};
+
+
+exports.isReference = function(reference) {
+    return utilities.isReference(reference);
+};
+
+
+exports.isVersion = function(version) {
+    return utilities.isVersion(version);
+};
+
+
 exports.document = function(tree) {
     return utilities.document(tree);
 };
