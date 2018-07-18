@@ -150,26 +150,31 @@ exports.deleteKey = function(tree, key) {
 };
 
 
-exports.getSeals = function(tree) {
-    return utilities.getSeals(tree);
+exports.getBody = function(document) {
+    return utilities.getBody(document);
 };
 
 
-exports.addSeal = function(tree, reference, binary) {
-    return utilities.addSeal(tree, reference, binary);
+exports.getSeal = function(document) {
+    return utilities.getSeal(document);
 };
 
 
-exports.getBody = function(tree) {
-    return utilities.getBody(tree);
+exports.getSeals = function(document) {
+    return utilities.getSeals(document);
 };
 
 
-exports.getCitation = function(tree) {
-    return utilities.getCitation(tree);
+exports.getCitation = function(seal) {
+    return utilities.getCitation(seal);
 };
 
 
-exports.getSignature = function(tree) {
-    return utilities.getSignature(tree);
+exports.getSignature = function(seal) {
+    return utilities.getSignature(seal);
 };
+
+exports.addSeal = function(document, reference, binary) {
+    return utilities.addSeal(document, reference, binary);
+};
+

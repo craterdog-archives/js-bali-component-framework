@@ -347,6 +347,35 @@ exports.deleteKey = function(tree, key) {
 
 
 /**
+ * This function takes a Bali parse tree for a document and returns the body of the
+ * document without the last notary seal.
+ * 
+ * @param {TreeNode} document The parse tree for the document.
+ * @returns {TreeNode} The body of the document without the last seal.
+ */
+exports.getBody = function(document) {
+    var body = new TreeNode(NodeTypes.DOCUMENT);
+    for (var i = 0; i < document.children.length - 1; i++) {
+        body.addChild(document.children[i]);
+    }
+    return body;
+};
+
+
+/**
+ * This function takes a Bali parse tree for a document and returns the last seal
+ * associated with it.
+ * 
+ * @param {TreeNode} document The parse tree for the document.
+ * @returns {TreeNode} The last seal on the document.
+ */
+exports.getSeal = function(document) {
+    var seal = document.children[document.children.length - 1];
+    return seal;
+};
+
+
+/**
  * This function takes a Bali parse tree for a document and returns the list of seals
  * associated with it.
  * 
@@ -355,10 +384,38 @@ exports.deleteKey = function(tree, key) {
  */
 exports.getSeals = function(document) {
     var seals = [];
-    for (var i = 1; i < document.children.length; i++) {
-        seals.push(document.children[i]);
+    var iterator = new ListIterator(document);
+    while (iterator.hasNext()) {
+        var child = iterator.getNext();
+        if (child.type === NodeTypes.SEAL) seals.push(child);
     }
     return seals;
+};
+
+
+/**
+ * This function takes a Bali parse tree for a notary seal and retrieves the citation
+ * to the notary certificate for the notary seal.
+ * 
+ * @param {TreeNode} seal The parse tree for the notary seal.
+ * @returns {Reference} A citation to the notary certificate.
+ */
+exports.getCitation = function(seal) {
+    var citation = seal.children[0];
+    return citation;
+};
+
+
+/**
+ * This function takes a Bali parse tree for a notary seal and retrieves the signature
+ * part of the notary seal.
+ * 
+ * @param {TreeNode} seal The parse tree for the notary seal.
+ * @returns {Binary} The signature part of the notary seal.
+ */
+exports.getSignature = function(seal) {
+    var signature = seal.children[1];
+    return signature;
 };
 
 
@@ -377,50 +434,6 @@ exports.addSeal = function(document, reference, binary) {
     var signature = new TerminalNode(NodeTypes.BINARY, binary);
     seal.addChild(signature);
     document.addChild(seal);
-};
-
-
-/**
- * This function takes a Bali parse tree for a document and returns the body of the
- * document without the last notary seal.
- * 
- * @param {TreeNode} document The parse tree for the document.
- * @returns {TreeNode} The body of the document without the last seal.
- */
-exports.getBody = function(document) {
-    var body = new TreeNode(NodeTypes.DOCUMENT);
-    for (var i = 0; i < document.children.length - 1; i++) {
-        body.addChild(document.children[i]);
-    }
-    return body;
-};
-
-
-/**
- * This function takes a Bali parse tree for a document and retrieves the citation
- * to the notary certificate for the notary seal on the document.
- * 
- * @param {TreeNode} document The parse tree for the document.
- * @returns {Reference} A citation to the notary certificate.
- */
-exports.getCitation = function(document) {
-    var seal = document.children[document.children.length - 1];
-    var citation = seal.children[0];
-    return citation;
-};
-
-
-/**
- * This function takes a Bali parse tree for a document and retrieves the signature
- * part of the notary seal on the document.
- * 
- * @param {TreeNode} document The parse tree for the document.
- * @returns {Binary} The signature part of the notary seal.
- */
-exports.getSignature = function(document) {
-    var seal = document.children[document.children.length - 1];
-    var signature = seal.children[1];
-    return signature;
 };
 
 
