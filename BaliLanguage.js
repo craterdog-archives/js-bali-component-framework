@@ -95,6 +95,11 @@ exports.document = function(tree) {
 };
 
 
+exports.tag = function() {
+    return utilities.tag();
+};
+
+
 exports.list = function(tree) {
     return utilities.list(tree);
 };

@@ -8,6 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
+var random = require('bali-utilities/RandomUtilities');
+var codex = require('bali-utilities/EncodingUtilities');
 var parser = require('../transformers/LanguageParser');
 var NodeTypes = require('./NodeTypes');
 var TreeNode = require('./TreeNode').TreeNode;
@@ -71,6 +73,19 @@ exports.document = function(component) {
     var document = new TreeNode(NodeTypes.DOCUMENT);
     document.addChild(component);
     return document;
+};
+
+
+/**
+ * This function returns a new unique tag.
+ * 
+ * @returns The terminal node for the new tag.
+ */
+exports.tag = function() {
+    var bytes = random.generateRandomBytes(20);
+    var value = '#' + codex.base32Encode(bytes);
+    var tag = new TerminalNode(NodeTypes.TAG, value);
+    return tag;
 };
 
 
