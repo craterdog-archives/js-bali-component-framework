@@ -425,20 +425,24 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 // document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
-    var tree = new syntax.TreeNode(types.DOCUMENT);
+    var previousVersion;
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
-        tree.addChild(this.result);
+        previousVersion = this.result;
     }
+
     ctx.component().accept(this);
-    tree.addChild(this.result);
+    var body = this.result;
+
+    var document = new syntax.RootNode(types.DOCUMENT, body, previousVersion);
+
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {
         seals[i].accept(this);
-        tree.addChild(this.result);
+        document.addSeal(this.result);
     }
-    this.result = tree;
+    this.result = document;
 };
 
 
@@ -991,21 +995,25 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 
 // task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitTask = function(ctx) {
-    var tree = new syntax.TreeNode(types.TASK);
-    tree.shell = ctx.SHELL().getText();
+    var previousVersion;
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
-        tree.addChild(this.result);
+        previousVersion = this.result;
     }
+
     ctx.procedure().accept(this);
-    tree.addChild(this.result);
+    var body = this.result;
+
+    var task = new syntax.RootNode(types.TASK, body, previousVersion);
+    task.shell = ctx.SHELL().getText();
+
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {
         seals[i].accept(this);
-        tree.addChild(this.result);
+        task.addSeal(this.result);
     }
-    this.result = tree;
+    this.result = task;
 };
 
 

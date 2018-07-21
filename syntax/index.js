@@ -10,6 +10,7 @@
 'use strict';
 
 exports.NodeTypes = require('./NodeTypes').NodeTypes;
+exports.NodeUtilities = require('./NodeUtilities').NodeUtilities;
+exports.RootNode = require('./RootNode').RootNode;
 exports.TerminalNode = require('./TerminalNode').TerminalNode;
 exports.TreeNode = require('./TreeNode').TreeNode;
-exports.NodeUtilities = require('./NodeUtilities').NodeUtilities;

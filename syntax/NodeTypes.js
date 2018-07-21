@@ -14,32 +14,12 @@
  * This module captures the type information about the parse tree nodes.
  */
 
-
-var TERMINAL_TYPES = [
-    'invalid',  // unit based indexing for Bali
+var NODE_TYPES = [
+    'invalid',  // ordinal (unit based) indexing for Bali
     'angle',
-    'binary',
-    'duration',
-    'function',
-    'message',
-    'moment',
-    'number',
-    'percent',
-    'probability',
-    'reference',
-    'symbol',
-    'tag',
-    'template',
-    'text',
-    'variable',
-    'version'
-];
-exports.TERMINAL_TYPES = TERMINAL_TYPES;
-
-var TREE_TYPES = [
-    'invalid',  // unit based indexing for Bali
     'arithmeticExpression',
     'association',
+    'binary',
     'block',
     'breakClause',
     'catalog',
@@ -54,9 +34,11 @@ var TREE_TYPES = [
     'dereferenceExpression',
     'discardClause',
     'document',
+    'duration',
     'evaluateClause',
     'exponentialExpression',
     'factorialExpression',
+    'function',
     'functionExpression',
     'handleClause',
     'ifClause',
@@ -65,13 +47,19 @@ var TREE_TYPES = [
     'list',
     'logicalExpression',
     'magnitudeExpression',
+    'message',
     'messageExpression',
+    'moment',
+    'number',
     'parameters',
+    'percent',
     'precedenceExpression',
+    'probability',
     'procedure',
     'publishClause',
     'queueClause',
     'range',
+    'reference',
     'returnClause',
     'saveClause',
     'seal',
@@ -80,74 +68,81 @@ var TREE_TYPES = [
     'structure',
     'subcomponent',
     'subcomponentExpression',
+    'symbol',
+    'tag',
     'task',
+    'template',
+    'text',
     'throwClause',
+    'variable',
+    'version',
     'waitClause',
     'whileClause',
     'withClause'
 ];
-exports.TREE_TYPES = TREE_TYPES;
+exports.NODE_TYPES = NODE_TYPES;
 
-exports.ANGLE = TREE_TYPES.indexOf('angle');
-exports.ARITHMETIC_EXPRESSION = TREE_TYPES.indexOf('arithmeticExpression');
-exports.ASSOCIATION = TREE_TYPES.indexOf('association');
-exports.BINARY = TERMINAL_TYPES.indexOf('binary');
-exports.BLOCK = TREE_TYPES.indexOf('block');
-exports.BREAK_CLAUSE = TREE_TYPES.indexOf('breakClause');
-exports.CATALOG = TREE_TYPES.indexOf('catalog');
-exports.CHECKOUT_CLAUSE = TREE_TYPES.indexOf('checkoutClause');
-exports.CODE = TREE_TYPES.indexOf('code');
-exports.COMMIT_CLAUSE = TREE_TYPES.indexOf('commitClause');
-exports.COMPARISON_EXPRESSION = TREE_TYPES.indexOf('comparisonExpression');
-exports.COMPLEMENT_EXPRESSION = TREE_TYPES.indexOf('complementExpression');
-exports.COMPONENT = TREE_TYPES.indexOf('component');
-exports.CONTINUE_CLAUSE = TREE_TYPES.indexOf('continueClause');
-exports.DEFAULT_EXPRESSION = TREE_TYPES.indexOf('defaultExpression');
-exports.DEREFERENCE_EXPRESSION = TREE_TYPES.indexOf('dereferenceExpression');
-exports.DISCARD_CLAUSE = TREE_TYPES.indexOf('discardClause');
-exports.DOCUMENT = TREE_TYPES.indexOf('document');
-exports.DURATION = TERMINAL_TYPES.indexOf('duration');
-exports.EVALUATE_CLAUSE = TREE_TYPES.indexOf('evaluateClause');
-exports.EXPONENTIAL_EXPRESSION = TREE_TYPES.indexOf('exponentialExpression');
-exports.FACTORIAL_EXPRESSION = TREE_TYPES.indexOf('factorialExpression');
-exports.FUNCTION = TERMINAL_TYPES.indexOf('function');
-exports.FUNCTION_EXPRESSION = TREE_TYPES.indexOf('functionExpression');
-exports.HANDLE_CLAUSE = TREE_TYPES.indexOf('handleClause');
-exports.IF_CLAUSE = TREE_TYPES.indexOf('ifClause');
-exports.INDICES = TREE_TYPES.indexOf('indices');
-exports.INVERSION_EXPRESSION = TREE_TYPES.indexOf('inversionExpression');
-exports.LIST = TREE_TYPES.indexOf('list');
-exports.LOGICAL_EXPRESSION = TREE_TYPES.indexOf('logicalExpression');
-exports.MAGNITUDE_EXPRESSION = TREE_TYPES.indexOf('magnitudeExpression');
-exports.MESSAGE = TERMINAL_TYPES.indexOf('message');
-exports.MESSAGE_EXPRESSION = TREE_TYPES.indexOf('messageExpression');
-exports.MOMENT = TERMINAL_TYPES.indexOf('moment');
-exports.NUMBER = TERMINAL_TYPES.indexOf('number');
-exports.PARAMETERS = TREE_TYPES.indexOf('parameters');
-exports.PERCENT = TERMINAL_TYPES.indexOf('percent');
-exports.PRECEDENCE_EXPRESSION = TREE_TYPES.indexOf('precedenceExpression');
-exports.PROBABILITY = TERMINAL_TYPES.indexOf('probability');
-exports.PROCEDURE = TREE_TYPES.indexOf('procedure');
-exports.PUBLISH_CLAUSE = TREE_TYPES.indexOf('publishClause');
-exports.QUEUE_CLAUSE = TREE_TYPES.indexOf('queueClause');
-exports.RANGE = TREE_TYPES.indexOf('range');
-exports.REFERENCE = TERMINAL_TYPES.indexOf('reference');
-exports.RETURN_CLAUSE = TREE_TYPES.indexOf('returnClause');
-exports.SAVE_CLAUSE = TREE_TYPES.indexOf('saveClause');
-exports.SEAL = TREE_TYPES.indexOf('seal');
-exports.SELECT_CLAUSE = TREE_TYPES.indexOf('selectClause');
-exports.STATEMENT = TREE_TYPES.indexOf('statement');
-exports.STRUCTURE = TREE_TYPES.indexOf('structure');
-exports.SUBCOMPONENT = TREE_TYPES.indexOf('subcomponent');
-exports.SUBCOMPONENT_EXPRESSION = TREE_TYPES.indexOf('subcomponentExpression');
-exports.SYMBOL = TERMINAL_TYPES.indexOf('symbol');
-exports.TAG = TERMINAL_TYPES.indexOf('tag');
-exports.TASK = TREE_TYPES.indexOf('task');
-exports.TEMPLATE = TERMINAL_TYPES.indexOf('template');
-exports.TEXT = TERMINAL_TYPES.indexOf('text');
-exports.THROW_CLAUSE = TREE_TYPES.indexOf('throwClause');
-exports.VARIABLE = TERMINAL_TYPES.indexOf('variable');
-exports.VERSION = TERMINAL_TYPES.indexOf('version');
-exports.WAIT_CLAUSE = TREE_TYPES.indexOf('waitClause');
-exports.WHILE_CLAUSE = TREE_TYPES.indexOf('whileClause');
-exports.WITH_CLAUSE = TREE_TYPES.indexOf('withClause');
+
+exports.ANGLE = NODE_TYPES.indexOf('angle');
+exports.ARITHMETIC_EXPRESSION = NODE_TYPES.indexOf('arithmeticExpression');
+exports.ASSOCIATION = NODE_TYPES.indexOf('association');
+exports.BINARY = NODE_TYPES.indexOf('binary');
+exports.BLOCK = NODE_TYPES.indexOf('block');
+exports.BREAK_CLAUSE = NODE_TYPES.indexOf('breakClause');
+exports.CATALOG = NODE_TYPES.indexOf('catalog');
+exports.CHECKOUT_CLAUSE = NODE_TYPES.indexOf('checkoutClause');
+exports.CODE = NODE_TYPES.indexOf('code');
+exports.COMMIT_CLAUSE = NODE_TYPES.indexOf('commitClause');
+exports.COMPARISON_EXPRESSION = NODE_TYPES.indexOf('comparisonExpression');
+exports.COMPLEMENT_EXPRESSION = NODE_TYPES.indexOf('complementExpression');
+exports.COMPONENT = NODE_TYPES.indexOf('component');
+exports.CONTINUE_CLAUSE = NODE_TYPES.indexOf('continueClause');
+exports.DEFAULT_EXPRESSION = NODE_TYPES.indexOf('defaultExpression');
+exports.DEREFERENCE_EXPRESSION = NODE_TYPES.indexOf('dereferenceExpression');
+exports.DISCARD_CLAUSE = NODE_TYPES.indexOf('discardClause');
+exports.DOCUMENT = NODE_TYPES.indexOf('document');
+exports.DURATION = NODE_TYPES.indexOf('duration');
+exports.EVALUATE_CLAUSE = NODE_TYPES.indexOf('evaluateClause');
+exports.EXPONENTIAL_EXPRESSION = NODE_TYPES.indexOf('exponentialExpression');
+exports.FACTORIAL_EXPRESSION = NODE_TYPES.indexOf('factorialExpression');
+exports.FUNCTION = NODE_TYPES.indexOf('function');
+exports.FUNCTION_EXPRESSION = NODE_TYPES.indexOf('functionExpression');
+exports.HANDLE_CLAUSE = NODE_TYPES.indexOf('handleClause');
+exports.IF_CLAUSE = NODE_TYPES.indexOf('ifClause');
+exports.INDICES = NODE_TYPES.indexOf('indices');
+exports.INVERSION_EXPRESSION = NODE_TYPES.indexOf('inversionExpression');
+exports.LIST = NODE_TYPES.indexOf('list');
+exports.LOGICAL_EXPRESSION = NODE_TYPES.indexOf('logicalExpression');
+exports.MAGNITUDE_EXPRESSION = NODE_TYPES.indexOf('magnitudeExpression');
+exports.MESSAGE = NODE_TYPES.indexOf('message');
+exports.MESSAGE_EXPRESSION = NODE_TYPES.indexOf('messageExpression');
+exports.MOMENT = NODE_TYPES.indexOf('moment');
+exports.NUMBER = NODE_TYPES.indexOf('number');
+exports.PARAMETERS = NODE_TYPES.indexOf('parameters');
+exports.PERCENT = NODE_TYPES.indexOf('percent');
+exports.PRECEDENCE_EXPRESSION = NODE_TYPES.indexOf('precedenceExpression');
+exports.PROBABILITY = NODE_TYPES.indexOf('probability');
+exports.PROCEDURE = NODE_TYPES.indexOf('procedure');
+exports.PUBLISH_CLAUSE = NODE_TYPES.indexOf('publishClause');
+exports.QUEUE_CLAUSE = NODE_TYPES.indexOf('queueClause');
+exports.RANGE = NODE_TYPES.indexOf('range');
+exports.REFERENCE = NODE_TYPES.indexOf('reference');
+exports.RETURN_CLAUSE = NODE_TYPES.indexOf('returnClause');
+exports.SAVE_CLAUSE = NODE_TYPES.indexOf('saveClause');
+exports.SEAL = NODE_TYPES.indexOf('seal');
+exports.SELECT_CLAUSE = NODE_TYPES.indexOf('selectClause');
+exports.STATEMENT = NODE_TYPES.indexOf('statement');
+exports.STRUCTURE = NODE_TYPES.indexOf('structure');
+exports.SUBCOMPONENT = NODE_TYPES.indexOf('subcomponent');
+exports.SUBCOMPONENT_EXPRESSION = NODE_TYPES.indexOf('subcomponentExpression');
+exports.SYMBOL = NODE_TYPES.indexOf('symbol');
+exports.TAG = NODE_TYPES.indexOf('tag');
+exports.TASK = NODE_TYPES.indexOf('task');
+exports.TEMPLATE = NODE_TYPES.indexOf('template');
+exports.TEXT = NODE_TYPES.indexOf('text');
+exports.THROW_CLAUSE = NODE_TYPES.indexOf('throwClause');
+exports.VARIABLE = NODE_TYPES.indexOf('variable');
+exports.VERSION = NODE_TYPES.indexOf('version');
+exports.WAIT_CLAUSE = NODE_TYPES.indexOf('waitClause');
+exports.WHILE_CLAUSE = NODE_TYPES.indexOf('whileClause');
+exports.WITH_CLAUSE = NODE_TYPES.indexOf('withClause');

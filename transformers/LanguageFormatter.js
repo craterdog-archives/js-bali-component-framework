@@ -200,8 +200,14 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
-    for (var i = 0; i < tree.children.length; i++) {
-        tree.children[i].accept(this);
+    if (tree.previousVersion) {
+        tree.previousVersion.accept(this);
+        this.source += '\n';
+    }
+    tree.body.accept(this);
+    this.source += '\n';
+    for (var i = 0; i < tree.seals.length; i++) {
+        tree.seals[i].accept(this);
         this.source += '\n';
     }
 };
@@ -528,8 +534,14 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 // task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitTask = function(tree) {
     this.source += tree.shell;
-    for (var i = 0; i < tree.children.length; i++) {
-        tree.children[i].accept(this);
+    if (tree.previousVersion) {
+        tree.previousVersion.accept(this);
+        this.source += '\n';
+    }
+    tree.body.accept(this);
+    this.source += '\n';
+    for (var i = 0; i < tree.seals.length; i++) {
+        tree.seals[i].accept(this);
         this.source += '\n';
     }
 };

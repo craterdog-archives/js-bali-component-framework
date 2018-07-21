@@ -19,7 +19,7 @@ var formatter = require('../transformers/LanguageFormatter');
 /**
  * This constructor creates a new tree node.
  * 
- * @param {number} type The type of the tree node.
+ * @param {Number} type The type of the tree node.
  * @returns {TreeNode} The new tree node.
  */
 function TreeNode(type) {
@@ -80,9 +80,6 @@ TreeNode.prototype.accept = function(visitor) {
             break;
         case types.DISCARD_CLAUSE:
             visitor.visitDiscardClause(this);
-            break;
-        case types.DOCUMENT:
-            visitor.visitDocument(this);
             break;
         case types.EVALUATE_CLAUSE:
             visitor.visitEvaluateClause(this);
@@ -165,9 +162,6 @@ TreeNode.prototype.accept = function(visitor) {
         case types.CATALOG:
             visitor.visitCatalog(this);
             break;
-        case types.TASK:
-            visitor.visitTask(this);
-            break;
         case types.THROW_CLAUSE:
             visitor.visitThrowClause(this);
             break;
@@ -180,6 +174,8 @@ TreeNode.prototype.accept = function(visitor) {
         case types.WITH_CLAUSE:
             visitor.visitWithClause(this);
             break;
+        default:
+            throw new Error('SYNTAX: An invalid tree node type was found: ' + this.type);
     }
 };
 

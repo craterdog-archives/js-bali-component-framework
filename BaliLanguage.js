@@ -150,8 +150,8 @@ exports.deleteKey = function(tree, key) {
 };
 
 
-exports.getBody = function(document) {
-    return utilities.getBody(document);
+exports.removeSeal = function(document) {
+    return utilities.removeSeal(document);
 };
 
 
