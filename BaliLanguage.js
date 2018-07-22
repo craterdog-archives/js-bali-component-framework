@@ -20,161 +20,336 @@ var formatter = require('./transformers/LanguageFormatter');
 var utilities = require('./syntax/NodeUtilities');
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * document.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting document.
+ */
 exports.parseDocument = function(source) {
     return parser.parseDocument(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * component.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting component.
+ */
 exports.parseComponent = function(source) {
     return parser.parseComponent(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * parameters.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting parameters.
+ */
 exports.parseParameters = function(source) {
     return parser.parseParameters(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * element.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting element.
+ */
 exports.parseElement = function(source) {
     return parser.parseElement(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * structure.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting structure.
+ */
 exports.parseStructure = function(source) {
     return parser.parseStructure(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * range.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting range.
+ */
 exports.parseRange = function(source) {
     return parser.parseRange(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * list.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting list.
+ */
 exports.parseList = function(source) {
     return parser.parseList(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * catalog.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting catalog.
+ */
 exports.parseCatalog = function(source) {
     return parser.parseCatalog(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * procedure.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting procedure.
+ */
 exports.parseProcedure = function(source) {
     return parser.parseProcedure(source);
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * expression.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {Document} The resulting expression.
+ */
 exports.parseExpression = function(source) {
     return parser.parseExpression(source);
 };
 
 
+/**
+ * This function formats the specified parse tree object as Bali source string.
+ * 
+ * @param {Object} tree The parse tree to be formatted.
+ * @param {String} optionalPadding An optional string that is used
+ * to prefix each line of the resulting string.
+ * @returns {String} The resulting source string.
+ */
 exports.formatParseTree = function(tree, optionalPadding) {
     return formatter.formatParseTree(tree, optionalPadding);
 };
 
 
-exports.isDocument = function(document) {
-    return utilities.isDocument(document);
+/**
+ * This function returns whether or not the specified object is a
+ * document.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a document.
+ */
+exports.isDocument = function(object) {
+    return utilities.isDocument(object);
 };
 
 
-exports.isReference = function(reference) {
-    return utilities.isReference(reference);
-};
-
-
-exports.isVersion = function(version) {
-    return utilities.isVersion(version);
-};
-
-
-exports.document = function(tree) {
-    return utilities.document(tree);
-};
-
-
-exports.tag = function() {
-    return utilities.tag();
-};
-
-
-exports.list = function(tree) {
-    return utilities.list(tree);
-};
-
-
-exports.iterator = function(tree) {
-    return utilities.iterator(tree);
-};
-
-
-exports.getValueForIndex = function(tree, index) {
-    return utilities.getValueForIndex(tree, index);
-};
-
-
-exports.setValueForIndex = function(tree, index, value) {
-    return utilities.getValueForIndex(tree, index, value);
-};
-
-
-exports.addValue = function(tree, value) {
-    return utilities.addValue(tree, value);
-};
-
-
-exports.catalog = function(tree) {
-    return utilities.catalog(tree);
-};
-
-
-exports.association = function(key, value) {
-    return utilities.association(key, value);
-};
-
-
-exports.getValueForKey = function(tree, key) {
-    return utilities.getValueForKey(tree, key);
-};
-
-
-exports.setValueForKey = function(tree, key, value) {
-    return utilities.setValueForKey(tree, key, value);
-};
-
-
-exports.deleteKey = function(tree, key) {
-    return utilities.deleteKey(tree, key);
-};
-
-
-exports.removeSeal = function(document) {
-    return utilities.removeSeal(document);
-};
-
-
+/**
+ * This function returns the last notary seal attached to a document.
+ * 
+ * @param {Document} document The document.
+ * @returns {Seal} The last notary seal attached to the document.
+ */
 exports.getSeal = function(document) {
     return utilities.getSeal(document);
 };
 
 
+/**
+ * This function returns the list of notary seals attached to a document.
+ * 
+ * @param {Document} document The document.
+ * @returns {Array} An array of notary seals.
+ */
 exports.getSeals = function(document) {
     return utilities.getSeals(document);
 };
 
 
+/**
+ * This function attaches a new notary seal to a document.
+ * 
+ * @param {Document} document The document.
+ * @param {String} reference A reference to the validation certificate for the seal.
+ * @param {String} binary A base 64 encoded string containing the signature for the seal.
+ */
+exports.addSeal = function(document, reference, binary) {
+    return utilities.addSeal(document, reference, binary);
+};
+
+
+/**
+ * This function returns a copy of a document without its last notary seal.
+ * 
+ * @param {Document} document The document.
+ * @returns {Document} A copy of the document without the last seal.
+ */
+exports.removeSeal = function(document) {
+    return utilities.removeSeal(document);
+};
+
+
+/**
+ * This function retrieves the citation referring to the notary certificate for a
+ *  notary seal.
+ * 
+ * @param {Seal} seal The notary seal.
+ * @returns {Citation} A citation to the notary certificate that created the notary seal.
+ */
 exports.getCitation = function(seal) {
     return utilities.getCitation(seal);
 };
 
 
+/**
+ * This function retrieves the digital signature of the document that was notarized.
+ * 
+ * @param {Seal} seal The notary seal.
+ * @returns {Binary} The base 32 encoded binary for the digital signature.
+ */
 exports.getSignature = function(seal) {
     return utilities.getSignature(seal);
 };
 
-exports.addSeal = function(document, reference, binary) {
-    return utilities.addSeal(document, reference, binary);
+
+/**
+ * This function constructs an iterator for the specified list.
+ * 
+ * @param {List} list The list.
+ * @returns {Iterator} The new iterator.
+ */
+exports.iterator = function(list) {
+    return utilities.iterator(list);
 };
 
+
+/**
+ * This function retrieves from a list the value associated with the
+ * specified index.
+ * 
+ * @param {List} list The list.
+ * @param {Number} index The ordinal based index of the desired value.
+ * @returns {Component} The value associated with the index.
+ */
+exports.getValueForIndex = function(list, index) {
+    return utilities.getValueForIndex(list, index);
+};
+
+
+/**
+ * This function sets in a list the value associated with the specified index.
+ * 
+ * @param {List} list The list.
+ * @param {Number} index The ordinal based index of the value.
+ * @param {Component} value The value to be associated with the index.
+ * @returns {Component} The old value associated with the index.
+ */
+exports.setValueForIndex = function(list, index, value) {
+    return utilities.getValueForIndex(list, index, value);
+};
+
+
+/**
+ * This function adds a new value to a list.
+ * 
+ * @param {List} list The list.
+ * @param {Component} value The value to be added to the list.
+ */
+exports.addValue = function(list, value) {
+    return utilities.addValue(list, value);
+};
+
+
+/**
+ * This function retrieves from a catalog the value associated with the
+ * specified key.
+ * 
+ * @param {Catalog} catalog The catalog.
+ * @param {String} key The string form of the key.
+ * @returns {Component} The value associated with the key.
+ */
+exports.getValueForKey = function(catalog, key) {
+    return utilities.getValueForKey(catalog, key);
+};
+
+
+/**
+ * This function sets in a catalog a value associated with the
+ * specified key.
+ * 
+ * @param {Catalog} catalog The catalog.
+ * @param {String} key The string form of the key.
+ * @param {Component} value The value to be associated with the key.
+ * @returns {Component} The old value associated with the key.
+ */
+exports.setValueForKey = function(catalog, key, value) {
+    return utilities.setValueForKey(catalog, key, value);
+};
+
+
+/**
+ * This function removes from a catalog the value associated with the
+ * specified key.
+ * 
+ * @param {Catalog} catalog The catalog.
+ * @param {String} key The string form of the key.
+ * @returns {Component} The value associated with the key.
+ */
+exports.deleteKey = function(catalog, key) {
+    return utilities.deleteKey(catalog, key);
+};
+
+
+/**
+ * This function returns whether or not the specified object is a
+ * reference.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a reference.
+ */
+exports.isReference = function(object) {
+    return utilities.isReference(object);
+};
+
+
+/**
+ * This function returns whether or not the specified object is a
+ * version string.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a version string.
+ */
+exports.isVersion = function(object) {
+    return utilities.isVersion(object);
+};
+
+
+/**
+ * This function creates a new unique random tag.
+ * 
+ * @returns {Tag} The new tag.
+ */
+exports.tag = function() {
+    return utilities.tag();
+};

@@ -12,19 +12,11 @@
 /**
  * This library provides functions that format a parse tree produced
  * by the LanguageParser and generates a canonical version of
- * the corresponding source code.
+ * the corresponding source string.
  */
 var types = require('../syntax/NodeTypes');
 
 
-/**
- * This function takes a Bali parse tree and formats it as source code. Each
- * resulting line will be prepended with the specified padding string.
- * 
- * @param {TreeNode} tree The parse tree to be formatted.
- * @param {String} padding The string that should be prepended to each line.
- * @returns {String} The formatted source code string.
- */
 exports.formatParseTree = function(tree, padding) {
     var visitor = new FormattingVisitor(padding);
     tree.accept(visitor);
