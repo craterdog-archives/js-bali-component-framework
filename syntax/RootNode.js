@@ -21,15 +21,15 @@ var formatter = require('../transformers/LanguageFormatter');
  * 
  * @param {Number} type The type of the root node.
  * @param {TreeNode} body The parse tree node for the body of the root node.
- * @param {TerminalNode} previousVersion The parse tree node for the previous version
- * citation part of the root node.
+ * @param {TerminalNode} previousCitation The parse tree node for the citation
+ * to the previous version of the document.
  * @returns {RootNode} The new parse root node.
  */
-function RootNode(type, body, previousVersion) {
+function RootNode(type, body, previousCitation) {
     this.type = type;
     this.isSimple = false;
     this.body = body;
-    this.previousVersion = previousVersion;
+    this.previousCitation = previousCitation;
     this.seals = [];
     return this;
 }

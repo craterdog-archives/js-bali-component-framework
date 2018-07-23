@@ -166,6 +166,18 @@ exports.isDocument = function(object) {
 
 
 /**
+ * This function returns the citation to the previous version of the
+ * document if one exists.
+ * 
+ * @param {Document} document The document.
+ * @returns {Citation} A citation to the previous version of the document.
+ */
+exports.getPreviousCitation = function(document) {
+    return utilities.getPreviousCitation(document);
+};
+
+
+/**
  * This function returns the last notary seal attached to a document.
  * 
  * @param {Document} document The document.

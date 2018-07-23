@@ -33,6 +33,11 @@ exports.isDocument = function(document) {
 };
 
 
+exports.getPreviousCitation = function(root) {
+    return root.previousCitation;
+};
+
+
 exports.getSeal = function(root) {
     var seal = root.seals[root.seals.length - 1];
     return seal;
@@ -56,7 +61,7 @@ exports.addSeal = function(root, citation, signature) {
 
 
 exports.removeSeal = function(root) {
-    var copy = new RootNode(root.type, root.body, root.previousVersion);
+    var copy = new RootNode(root.type, root.body, root.previousCitation);
     for (var i = 0; i < root.seals.length - 1; i++) {
         copy.addSeal(root.seals[i]);
     }

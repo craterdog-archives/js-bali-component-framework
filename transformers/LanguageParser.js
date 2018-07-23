@@ -357,17 +357,17 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 // document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
-    var previousVersion;
+    var previousCitation;
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
-        previousVersion = this.result;
+        previousCitation = this.result;
     }
 
     ctx.component().accept(this);
     var body = this.result;
 
-    var document = new RootNode(types.DOCUMENT, body, previousVersion);
+    var document = new RootNode(types.DOCUMENT, body, previousCitation);
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {
@@ -927,17 +927,17 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 
 // task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitTask = function(ctx) {
-    var previousVersion;
+    var previousCitation;
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
-        previousVersion = this.result;
+        previousCitation = this.result;
     }
 
     ctx.procedure().accept(this);
     var body = this.result;
 
-    var task = new RootNode(types.TASK, body, previousVersion);
+    var task = new RootNode(types.TASK, body, previousCitation);
     task.shell = ctx.SHELL().getText();
 
     var seals = ctx.seal();
