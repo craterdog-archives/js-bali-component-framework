@@ -123,6 +123,17 @@ exports.addValue = function(component, value) {
 
 // CATALOGS
 
+exports.getStringForKey = function(component, key) {
+    var visitor = new SearchingVisitor(key);
+    component.accept(visitor);
+    if (visitor.result) {
+        return visitor.result.toString();
+    } else {
+        return undefined;
+    }
+};
+
+
 exports.getValueForKey = function(component, key) {
     var visitor = new SearchingVisitor(key);
     component.accept(visitor);

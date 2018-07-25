@@ -294,6 +294,19 @@ exports.addValue = function(list, value) {
 
 
 /**
+ * This function retrieves from a catalog the string value associated with the
+ * specified key.
+ * 
+ * @param {Catalog} catalog The catalog.
+ * @param {String} key The string form of the key.
+ * @returns {Component} The string value associated with the key.
+ */
+exports.getStringForKey = function(catalog, key) {
+    return utilities.getStringForKey(catalog, key);
+};
+
+
+/**
  * This function retrieves from a catalog the value associated with the
  * specified key.
  * 
