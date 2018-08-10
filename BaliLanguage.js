@@ -178,6 +178,18 @@ exports.getPreviousCitation = function(document) {
 
 
 /**
+ * This function sets the citation to the previous version of the
+ * document to the specified value.
+ * 
+ * @param {Document} document The document.
+ * @param {Citation} previousCitation A citation to the previous version of the document.
+ */
+exports.setPreviousCitation = function(document, previousCitation) {
+    return utilities.setPreviousCitation(document, previousCitation);
+};
+
+
+/**
  * This function returns the last notary seal attached to a document.
  * 
  * @param {Document} document The document.

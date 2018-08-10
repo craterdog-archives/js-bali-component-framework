@@ -38,6 +38,11 @@ exports.getPreviousCitation = function(root) {
 };
 
 
+exports.setPreviousCitation = function(root, previousCitation) {
+    root.previousCitation = previousCitation;
+};
+
+
 exports.getSeal = function(root) {
     var seal = root.seals[root.seals.length - 1];
     return seal;
