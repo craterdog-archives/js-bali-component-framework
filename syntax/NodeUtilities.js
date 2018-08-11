@@ -43,6 +43,16 @@ exports.setPreviousCitation = function(root, previousCitation) {
 };
 
 
+exports.getBody = function(root) {
+    return root.body;
+};
+
+
+exports.setBody = function(root, body) {
+    root.body = body;
+};
+
+
 exports.getSeal = function(root) {
     var seal = root.seals[root.seals.length - 1];
     return seal;
@@ -158,7 +168,7 @@ exports.setValueForKey = function(component, key, value) {
 
     // convert the value into an element component if it is a string
     if (typeof(value) === 'string' || value instanceof String) {
-        element = parser.parseComponent(value);
+        value = parser.parseComponent(value);
     }
 
     // check to see if the symbol already exists in the catalog

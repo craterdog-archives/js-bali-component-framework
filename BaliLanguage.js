@@ -190,6 +190,28 @@ exports.setPreviousCitation = function(document, previousCitation) {
 
 
 /**
+ * This function returns the body of the document.
+ * 
+ * @param {Document} document The document.
+ * @returns {TreeNode} The body of the document.
+ */
+exports.getBody = function(document) {
+    return utilities.getBody(document);
+};
+
+
+/**
+ * This function sets the body of the document to the specified value.
+ * 
+ * @param {Document} document The document.
+ * @param {TreeNode} body The new body of the document.
+ */
+exports.setBody = function(document, body) {
+    return utilities.setBody(document, body);
+};
+
+
+/**
  * This function returns the last notary seal attached to a document.
  * 
  * @param {Document} document The document.
