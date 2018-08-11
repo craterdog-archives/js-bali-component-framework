@@ -215,6 +215,20 @@ exports.deleteKey = function(component, key) {
 
 // ELEMENTS
 
+exports.isTag = function(tag) {
+    if (!tag) return false;
+    try {
+        var type = tag.constructor.name;
+        if (type === 'String') {
+            tag = parser.parseElement(tag);
+        }
+        return tag.constructor.name === 'TerminalNode' && tag.type === NodeTypes.TAG;
+    } catch (e) {
+        return false;
+    }
+};
+
+
 exports.tag = function() {
     var bytes = random.generateRandomBytes(20);
     var value = '#' + codex.base32Encode(bytes);

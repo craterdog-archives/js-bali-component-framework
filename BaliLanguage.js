@@ -405,6 +405,18 @@ exports.isVersion = function(object) {
 
 
 /**
+ * This function returns whether or not the specified object is a
+ * tag.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a tag.
+ */
+exports.isTag = function(object) {
+    return utilities.isTag(object);
+};
+
+
+/**
  * This function creates a new unique random tag.
  * 
  * @returns {Tag} The new tag.
