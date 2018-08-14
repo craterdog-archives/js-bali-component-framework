@@ -185,6 +185,7 @@ exports.getValueForKey = function(component, key) {
 
 
 exports.setValueForKey = function(component, key, value) {
+    if (component.type === NodeTypes.DOCUMENT) component = component.body;
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
@@ -257,8 +258,7 @@ exports.isTag = function(tag) {
 
 exports.tag = function() {
     var bytes = random.generateRandomBytes(20);
-    var value = '#' + codex.base32Encode(bytes);
-    var tag = new TerminalNode(NodeTypes.TAG, value);
+    var tag = '#' + codex.base32Encode(bytes);
     return tag;
 };
 

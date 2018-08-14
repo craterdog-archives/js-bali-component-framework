@@ -442,9 +442,9 @@ exports.isTag = function(object) {
 
 
 /**
- * This function creates a new unique random tag.
+ * This function creates a string version of a new unique random tag.
  * 
- * @returns {Tag} The new tag.
+ * @returns {String} The new tag.
  */
 exports.tag = function() {
     return utilities.tag();
