@@ -19,7 +19,7 @@ describe('Bali Document Language™', function() {
 
         it('should print out random tags', function() {
             for (var i = 0; i < 10; i++) {
-                console.log('tag: ' + language.tag());
+                console.log('        tag: ' + language.tag());
             }
         });
 
