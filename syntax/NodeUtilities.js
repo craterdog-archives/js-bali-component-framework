@@ -22,8 +22,7 @@ var TerminalNode = require('./TerminalNode').TerminalNode;
 exports.isDocument = function(document) {
     if (!document) return false;
     try {
-        var type = document.constructor.name;
-        if (type === 'String') {
+        if (document.constructor.name === 'String') {
             document = parser.parseDocument(document);
         }
         return document.constructor.name === 'RootNode' && document.type === NodeTypes.DOCUMENT;
@@ -39,6 +38,9 @@ exports.getPreviousCitation = function(root) {
 
 
 exports.setPreviousCitation = function(root, previousCitation) {
+    if (previousCitation.constructor.name === 'String') {
+        previousCitation = parser.parseElement(previousCitation);
+    }
     root.previousCitation = previousCitation;
 };
 
@@ -49,6 +51,9 @@ exports.getBody = function(root) {
 
 
 exports.setBody = function(root, body) {
+    if (body.constructor.name === 'String') {
+        body = parser.parseComponent(body);
+    }
     root.body = body;
 };
 
@@ -66,20 +71,23 @@ exports.getSeals = function(root) {
 
 
 exports.addSeal = function(root, citation, signature) {
+    if (citation.constructor.name === 'String') {
+        citation = parser.parseElement(citation);
+    }
+    if (signature.constructor.name === 'String') {
+        signature = parser.parseElement(signature);
+    }
     var seal = new TreeNode(NodeTypes.SEAL);
-    citation = new TerminalNode(NodeTypes.REFERENCE, citation);
     seal.addChild(citation);
-    signature = new TerminalNode(NodeTypes.BINARY, signature);
     seal.addChild(signature);
     root.addSeal(seal);
 };
 
 
 exports.removeSeal = function(root) {
-    var copy = new RootNode(root.type, root.body, root.previousCitation);
-    for (var i = 0; i < root.seals.length - 1; i++) {
-        copy.addSeal(root.seals[i]);
-    }
+    var source = root.toString();
+    var copy = parser.parseDocument(source);
+    copy.seals.pop();
     return copy;
 };
 
@@ -119,6 +127,9 @@ exports.getValueForIndex = function(component, index) {
 
 
 exports.setValueForIndex = function(component, index, value) {
+    if (value.constructor.name === 'String') {
+        value = parser.parseComponent(value);
+    }
     var structure = component.children[0];
     var list = structure.children[0];
     var expressions = list.children;
@@ -129,6 +140,9 @@ exports.setValueForIndex = function(component, index, value) {
 
 
 exports.addValue = function(component, value) {
+    if (value.constructor.name === 'String') {
+        value = parser.parseComponent(value);
+    }
     var structure = component.children[0];
     var list = structure.children[0];
     var expressions = list.children;
@@ -157,19 +171,15 @@ exports.getValueForKey = function(component, key) {
 
 
 exports.setValueForKey = function(component, key, value) {
-    var association, element, symbol, old;
-    var structure = component.children[0];
-    var catalog = structure.children[0];
-
-    // convert the key into an element if it is a string
-    if (typeof(key) === 'string' || key instanceof String) {
+    if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
-
-    // convert the value into an element component if it is a string
-    if (typeof(value) === 'string' || value instanceof String) {
+    if (value.constructor.name === 'String') {
         value = parser.parseComponent(value);
     }
+    var association, symbol, old;
+    var structure = component.children[0];
+    var catalog = structure.children[0];
 
     // check to see if the symbol already exists in the catalog
     var associations = catalog.children;
@@ -195,6 +205,9 @@ exports.setValueForKey = function(component, key, value) {
 
 
 exports.deleteKey = function(component, key) {
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
     var association, symbol;
     var structure = component.children[0];
     var catalog = structure.children[0];
@@ -205,7 +218,7 @@ exports.deleteKey = function(component, key) {
         association = associations[i];
         component = association.children[0];
         symbol = component.children[0];
-        if (symbol.value === key) {
+        if (symbol.value === key.value) {
             associations.splice(i, 1);  // remove this association
             return;
         }
@@ -218,8 +231,7 @@ exports.deleteKey = function(component, key) {
 exports.isTag = function(tag) {
     if (!tag) return false;
     try {
-        var type = tag.constructor.name;
-        if (type === 'String') {
+        if (tag.constructor.name === 'String') {
             tag = parser.parseElement(tag);
         }
         return tag.constructor.name === 'TerminalNode' && tag.type === NodeTypes.TAG;
@@ -258,8 +270,7 @@ exports.isReference = function(reference) {
 exports.isVersion = function(version) {
     if (!version) return false;
     try {
-        var type = version.constructor.name;
-        if (type === 'String') {
+        if (version.constructor.name === 'String') {
             version = parser.parseElement(version);
         }
         return version.constructor.name === 'TerminalNode' && version.type === NodeTypes.VERSION;
