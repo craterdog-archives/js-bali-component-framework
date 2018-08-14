@@ -32,8 +32,23 @@ exports.isDocument = function(document) {
 };
 
 
+exports.copyDocument = function(document) {
+    var source = document.toString();
+    var copy = parser.parseDocument(source);
+    return copy;
+};
+
+
+exports.draftDocument = function(document) {
+    var source = document.body.toString();
+    var body = parser.parseComponent(source);
+    var draft = new RootNode(NodeTypes.DOCUMENT, body);
+    return draft;
+};
+
+
 exports.getPreviousCitation = function(root) {
-    return root.previousCitation;
+    return root.previousCitation.value;
 };
 
 
@@ -85,21 +100,20 @@ exports.addSeal = function(root, citation, signature) {
 
 
 exports.removeSeal = function(root) {
-    var source = root.toString();
-    var copy = parser.parseDocument(source);
+    var copy = exports.copyDocument(root);
     copy.seals.pop();
     return copy;
 };
 
 
 exports.getCitation = function(seal) {
-    var citation = seal.children[0];
+    var citation = seal.children[0].value;
     return citation;
 };
 
 
 exports.getSignature = function(seal) {
-    var signature = seal.children[1];
+    var signature = seal.children[1].value;
     return signature;
 };
 

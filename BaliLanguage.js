@@ -166,11 +166,34 @@ exports.isDocument = function(object) {
 
 
 /**
- * This function returns the citation to the previous version of the
- * document if one exists.
+ * This function returns a (deep) copy of the specified document.
  * 
  * @param {Document} document The document.
- * @returns {Citation} A citation to the previous version of the document.
+ * @returns {Document} A deep copy of the document.
+ */
+exports.copyDocument = function(document) {
+    return utilities.copyDocument(document);
+};
+
+
+/**
+ * This function returns a draft copy of the specified document. The previous version
+ * citation and seals from the original document have been removed from the draft copy.
+ * 
+ * @param {Document} document The document.
+ * @returns {Document} A draft copy of the document.
+ */
+exports.draftDocument = function(document) {
+    return utilities.draftDocument(document);
+};
+
+
+/**
+ * This function returns a string version of the citation to the previous
+ * version of the document if one exists.
+ * 
+ * @param {Document} document The document.
+ * @returns {String} A string version of the citation to the previous version of the document.
  */
 exports.getPreviousCitation = function(document) {
     return utilities.getPreviousCitation(document);
@@ -257,11 +280,12 @@ exports.removeSeal = function(document) {
 
 
 /**
- * This function retrieves the citation referring to the notary certificate for a
- *  notary seal.
+ * This function retrieves a string version of the citation referring to a
+ * notary certificate for a notary seal.
  * 
  * @param {Seal} seal The notary seal.
- * @returns {Citation} A citation to the notary certificate that created the notary seal.
+ * @returns {String} A string version of the citation to the notary certificate
+ * that created the notary seal.
  */
 exports.getCitation = function(seal) {
     return utilities.getCitation(seal);
@@ -269,10 +293,11 @@ exports.getCitation = function(seal) {
 
 
 /**
- * This function retrieves the digital signature of the document that was notarized.
+ * This function retrieves a string version of the digital signature of the document
+ * that was notarized.
  * 
  * @param {Seal} seal The notary seal.
- * @returns {Binary} The base 32 encoded binary for the digital signature.
+ * @returns {String} A string version of the base 32 encoded binary for the digital signature.
  */
 exports.getSignature = function(seal) {
     return utilities.getSignature(seal);
