@@ -17,7 +17,7 @@
  */
 var parser = require('./transformers/LanguageParser');
 var formatter = require('./transformers/LanguageFormatter');
-var utilities = require('./syntax/NodeUtilities');
+var utilities = require('./utilities/NodeUtilities');
 
 
 /**

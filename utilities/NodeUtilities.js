@@ -8,13 +8,12 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-var random = require('bali-utilities/RandomUtilities');
-var codex = require('bali-utilities/EncodingUtilities');
 var parser = require('../transformers/LanguageParser');
-var NodeTypes = require('./NodeTypes');
-var RootNode = require('./RootNode').RootNode;
-var TreeNode = require('./TreeNode').TreeNode;
-var TerminalNode = require('./TerminalNode').TerminalNode;
+var NodeTypes = require('../syntax/NodeTypes');
+var RootNode = require('../syntax/RootNode').RootNode;
+var TreeNode = require('../syntax/TreeNode').TreeNode;
+var random = require('./RandomUtilities');
+var codex = require('./EncodingUtilities');
 
 
 // DOCUMENTS
