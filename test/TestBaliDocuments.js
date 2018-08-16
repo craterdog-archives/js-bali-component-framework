@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var language = require('../BaliDocument');
+var documents = require('../BaliDocuments');
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
@@ -19,7 +19,7 @@ describe('Bali Document Notation™', function() {
 
         it('should print out random tags', function() {
             for (var i = 0; i < 10; i++) {
-                console.log('        tag: ' + language.tag());
+                console.log('        tag: ' + documents.tag());
             }
         });
 
@@ -27,9 +27,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/elements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(source);
+            var tree = documents.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatParseTree(tree);
+            var formatted = documents.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -37,9 +37,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/expressions.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(source);
+            var tree = documents.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatParseTree(tree);
+            var formatted = documents.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -47,9 +47,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/statements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(source);
+            var tree = documents.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatParseTree(tree);
+            var formatted = documents.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -57,9 +57,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/components.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = language.parseDocument(source);
+            var tree = documents.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = language.formatParseTree(tree);
+            var formatted = documents.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
