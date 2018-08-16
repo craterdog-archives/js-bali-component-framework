@@ -1,4 +1,4 @@
-grammar BaliStatements;
+grammar BaliProcedures;
 
 import BaliExpressions;
 

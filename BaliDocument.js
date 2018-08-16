@@ -11,12 +11,12 @@
 
 /*
  * This module provides useful functions for parsing and manipulating documents
- * that are written using the Bali Document Language™. For more information
+ * that are written using the Bali Document Notation™. For more information
  * about the Bali language refer to the Reference Guide at:
  * <https://github.com/craterdog-bali/bali-reference-guide/wiki>.
  */
-var parser = require('./transformers/LanguageParser');
-var formatter = require('./transformers/LanguageFormatter');
+var parser = require('./transformers/DocumentParser');
+var formatter = require('./transformers/DocumentFormatter');
 var utilities = require('./utilities/NodeUtilities');
 
 

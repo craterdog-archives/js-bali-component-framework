@@ -11,8 +11,6 @@ structure: '[' collection ']';
 
 parameters: '(' collection ')';
 
-seal: reference binary;
-
 collection: range | list | catalog;
 
 range: expression '..' expression;
@@ -32,8 +30,4 @@ catalog:
 association: component ':' expression;
 
 code: '{' procedure '}';
-
-document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF;
-
-task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF;
 

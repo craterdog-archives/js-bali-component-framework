@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-var parser = require('../transformers/LanguageParser');
+var parser = require('../transformers/DocumentParser');
 var NodeTypes = require('../syntax/NodeTypes');
 var RootNode = require('../syntax/RootNode').RootNode;
 var TreeNode = require('../syntax/TreeNode').TreeNode;
@@ -39,9 +39,10 @@ exports.copyDocument = function(document) {
 
 
 exports.draftDocument = function(document) {
-    var source = document.body.toString();
-    var body = parser.parseComponent(source);
-    var draft = new RootNode(NodeTypes.DOCUMENT, body);
+    var source = document.toString();
+    var draft = parser.parseDocument(source);
+    draft.previousCitation = undefined;
+    draft.seals = [];
     return draft;
 };
 
@@ -65,9 +66,6 @@ exports.getBody = function(root) {
 
 
 exports.setBody = function(root, body) {
-    if (body.constructor.name === 'String') {
-        body = parser.parseComponent(body);
-    }
     root.body = body;
 };
 

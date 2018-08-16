@@ -105,9 +105,9 @@ exports.parseExpression = function(source) {
 
 function initializeParser(source) {
     var chars = new antlr.InputStream(source);
-    var lexer = new grammar.BaliLanguageLexer(chars);
+    var lexer = new grammar.BaliDocumentLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliLanguageParser(tokens);
+    var parser = new grammar.BaliDocumentParser(tokens);
     parser.buildParseTrees = true;
     return parser;
 }
@@ -124,10 +124,10 @@ function convertParseTree(antlrTree) {
 // PRIVATE CLASSES
 
 function ParsingVisitor() {
-    grammar.BaliLanguageVisitor.call(this);
+    grammar.BaliDocumentVisitor.call(this);
     return this;
 }
-ParsingVisitor.prototype = Object.create(grammar.BaliLanguageVisitor.prototype);
+ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
@@ -355,7 +355,7 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
     var previousCitation;
     var reference = ctx.reference();
@@ -364,7 +364,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
         previousCitation = this.result;
     }
 
-    ctx.component().accept(this);
+    ctx.body().accept(this);
     var body = this.result;
 
     var document = new RootNode(types.DOCUMENT, body, previousCitation);
@@ -922,30 +922,6 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
     var value = ctx.TAG().getText();
     var terminal = new TerminalNode(types.TAG, value);
     this.result = terminal;
-};
-
-
-// task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
-ParsingVisitor.prototype.visitTask = function(ctx) {
-    var previousCitation;
-    var reference = ctx.reference();
-    if (reference) {
-        reference.accept(this);
-        previousCitation = this.result;
-    }
-
-    ctx.procedure().accept(this);
-    var body = this.result;
-
-    var task = new RootNode(types.TASK, body, previousCitation);
-    task.shell = ctx.SHELL().getText();
-
-    var seals = ctx.seal();
-    for (var i = 0; i < seals.length; i++) {
-        seals[i].accept(this);
-        task.addSeal(this.result);
-    }
-    this.result = task;
 };
 
 

@@ -1,7 +1,7 @@
 {
   "name": "bali-language",
   "version": "1.0.0",
-  "description": "This library provides a JavaScript based parser and formatter for the Bali Document Language™.",
+  "description": "This library provides a JavaScript based parser and formatter for the Bali Document Notation™.",
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",

@@ -11,7 +11,7 @@
 
 /**
  * This library provides functions that format a parse tree produced
- * by the LanguageParser and generates a canonical version of
+ * by the DocumentParser and generates a canonical version of
  * the corresponding source string.
  */
 var types = require('../syntax/NodeTypes');
@@ -190,7 +190,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
     if (tree.previousCitation) {
         tree.previousCitation.accept(this);
@@ -520,22 +520,6 @@ FormattingVisitor.prototype.visitSubcomponent = function(tree) {
 FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
     tree.children[0].accept(this);
     tree.children[1].accept(this);
-};
-
-
-// task: SHELL NEWLINE* (reference NEWLINE)? procedure (NEWLINE seal)* NEWLINE* EOF
-FormattingVisitor.prototype.visitTask = function(tree) {
-    this.source += tree.shell;
-    if (tree.previousCitation) {
-        tree.previousCitation.accept(this);
-        this.source += '\n';
-    }
-    tree.body.accept(this);
-    this.source += '\n';
-    for (var i = 0; i < tree.seals.length; i++) {
-        tree.seals[i].accept(this);
-        this.source += '\n';
-    }
 };
 
 

@@ -8,12 +8,12 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var language = require('../BaliLanguage');
+var language = require('../BaliDocument');
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 
-describe('Bali Document Language™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test Parser and Formatter', function() {
 

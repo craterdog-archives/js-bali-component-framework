@@ -1,4 +1,4 @@
-// Generated from grammar/BaliLanguage.g4 by ANTLR 4.7.1
+// Generated from grammar/BaliDocument.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
@@ -486,113 +486,113 @@ var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
 
 var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
 
-function BaliLanguageLexer(input) {
+function BaliDocumentLexer(input) {
 	antlr4.Lexer.call(this, input);
     this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
     return this;
 }
 
-BaliLanguageLexer.prototype = Object.create(antlr4.Lexer.prototype);
-BaliLanguageLexer.prototype.constructor = BaliLanguageLexer;
+BaliDocumentLexer.prototype = Object.create(antlr4.Lexer.prototype);
+BaliDocumentLexer.prototype.constructor = BaliDocumentLexer;
 
-Object.defineProperty(BaliLanguageLexer.prototype, "atn", {
+Object.defineProperty(BaliDocumentLexer.prototype, "atn", {
         get : function() {
                 return atn;
         }
 });
 
-BaliLanguageLexer.EOF = antlr4.Token.EOF;
-BaliLanguageLexer.T__0 = 1;
-BaliLanguageLexer.T__1 = 2;
-BaliLanguageLexer.T__2 = 3;
-BaliLanguageLexer.T__3 = 4;
-BaliLanguageLexer.T__4 = 5;
-BaliLanguageLexer.T__5 = 6;
-BaliLanguageLexer.T__6 = 7;
-BaliLanguageLexer.T__7 = 8;
-BaliLanguageLexer.T__8 = 9;
-BaliLanguageLexer.T__9 = 10;
-BaliLanguageLexer.T__10 = 11;
-BaliLanguageLexer.T__11 = 12;
-BaliLanguageLexer.T__12 = 13;
-BaliLanguageLexer.T__13 = 14;
-BaliLanguageLexer.T__14 = 15;
-BaliLanguageLexer.T__15 = 16;
-BaliLanguageLexer.T__16 = 17;
-BaliLanguageLexer.T__17 = 18;
-BaliLanguageLexer.T__18 = 19;
-BaliLanguageLexer.T__19 = 20;
-BaliLanguageLexer.T__20 = 21;
-BaliLanguageLexer.T__21 = 22;
-BaliLanguageLexer.T__22 = 23;
-BaliLanguageLexer.T__23 = 24;
-BaliLanguageLexer.T__24 = 25;
-BaliLanguageLexer.T__25 = 26;
-BaliLanguageLexer.T__26 = 27;
-BaliLanguageLexer.T__27 = 28;
-BaliLanguageLexer.T__28 = 29;
-BaliLanguageLexer.T__29 = 30;
-BaliLanguageLexer.T__30 = 31;
-BaliLanguageLexer.T__31 = 32;
-BaliLanguageLexer.T__32 = 33;
-BaliLanguageLexer.T__33 = 34;
-BaliLanguageLexer.T__34 = 35;
-BaliLanguageLexer.T__35 = 36;
-BaliLanguageLexer.T__36 = 37;
-BaliLanguageLexer.T__37 = 38;
-BaliLanguageLexer.T__38 = 39;
-BaliLanguageLexer.T__39 = 40;
-BaliLanguageLexer.T__40 = 41;
-BaliLanguageLexer.T__41 = 42;
-BaliLanguageLexer.T__42 = 43;
-BaliLanguageLexer.T__43 = 44;
-BaliLanguageLexer.T__44 = 45;
-BaliLanguageLexer.T__45 = 46;
-BaliLanguageLexer.T__46 = 47;
-BaliLanguageLexer.T__47 = 48;
-BaliLanguageLexer.T__48 = 49;
-BaliLanguageLexer.T__49 = 50;
-BaliLanguageLexer.T__50 = 51;
-BaliLanguageLexer.T__51 = 52;
-BaliLanguageLexer.T__52 = 53;
-BaliLanguageLexer.T__53 = 54;
-BaliLanguageLexer.T__54 = 55;
-BaliLanguageLexer.T__55 = 56;
-BaliLanguageLexer.T__56 = 57;
-BaliLanguageLexer.T__57 = 58;
-BaliLanguageLexer.T__58 = 59;
-BaliLanguageLexer.T__59 = 60;
-BaliLanguageLexer.T__60 = 61;
-BaliLanguageLexer.T__61 = 62;
-BaliLanguageLexer.T__62 = 63;
-BaliLanguageLexer.T__63 = 64;
-BaliLanguageLexer.T__64 = 65;
-BaliLanguageLexer.T__65 = 66;
-BaliLanguageLexer.T__66 = 67;
-BaliLanguageLexer.T__67 = 68;
-BaliLanguageLexer.T__68 = 69;
-BaliLanguageLexer.SHELL = 70;
-BaliLanguageLexer.TAG = 71;
-BaliLanguageLexer.SYMBOL = 72;
-BaliLanguageLexer.FRACTION = 73;
-BaliLanguageLexer.CONSTANT = 74;
-BaliLanguageLexer.FLOAT = 75;
-BaliLanguageLexer.MOMENT = 76;
-BaliLanguageLexer.DURATION = 77;
-BaliLanguageLexer.RESOURCE = 78;
-BaliLanguageLexer.VERSION = 79;
-BaliLanguageLexer.BINARY = 80;
-BaliLanguageLexer.TEXT_BLOCK = 81;
-BaliLanguageLexer.TEXT = 82;
-BaliLanguageLexer.IDENTIFIER = 83;
-BaliLanguageLexer.NEWLINE = 84;
-BaliLanguageLexer.SPACE = 85;
+BaliDocumentLexer.EOF = antlr4.Token.EOF;
+BaliDocumentLexer.T__0 = 1;
+BaliDocumentLexer.T__1 = 2;
+BaliDocumentLexer.T__2 = 3;
+BaliDocumentLexer.T__3 = 4;
+BaliDocumentLexer.T__4 = 5;
+BaliDocumentLexer.T__5 = 6;
+BaliDocumentLexer.T__6 = 7;
+BaliDocumentLexer.T__7 = 8;
+BaliDocumentLexer.T__8 = 9;
+BaliDocumentLexer.T__9 = 10;
+BaliDocumentLexer.T__10 = 11;
+BaliDocumentLexer.T__11 = 12;
+BaliDocumentLexer.T__12 = 13;
+BaliDocumentLexer.T__13 = 14;
+BaliDocumentLexer.T__14 = 15;
+BaliDocumentLexer.T__15 = 16;
+BaliDocumentLexer.T__16 = 17;
+BaliDocumentLexer.T__17 = 18;
+BaliDocumentLexer.T__18 = 19;
+BaliDocumentLexer.T__19 = 20;
+BaliDocumentLexer.T__20 = 21;
+BaliDocumentLexer.T__21 = 22;
+BaliDocumentLexer.T__22 = 23;
+BaliDocumentLexer.T__23 = 24;
+BaliDocumentLexer.T__24 = 25;
+BaliDocumentLexer.T__25 = 26;
+BaliDocumentLexer.T__26 = 27;
+BaliDocumentLexer.T__27 = 28;
+BaliDocumentLexer.T__28 = 29;
+BaliDocumentLexer.T__29 = 30;
+BaliDocumentLexer.T__30 = 31;
+BaliDocumentLexer.T__31 = 32;
+BaliDocumentLexer.T__32 = 33;
+BaliDocumentLexer.T__33 = 34;
+BaliDocumentLexer.T__34 = 35;
+BaliDocumentLexer.T__35 = 36;
+BaliDocumentLexer.T__36 = 37;
+BaliDocumentLexer.T__37 = 38;
+BaliDocumentLexer.T__38 = 39;
+BaliDocumentLexer.T__39 = 40;
+BaliDocumentLexer.T__40 = 41;
+BaliDocumentLexer.T__41 = 42;
+BaliDocumentLexer.T__42 = 43;
+BaliDocumentLexer.T__43 = 44;
+BaliDocumentLexer.T__44 = 45;
+BaliDocumentLexer.T__45 = 46;
+BaliDocumentLexer.T__46 = 47;
+BaliDocumentLexer.T__47 = 48;
+BaliDocumentLexer.T__48 = 49;
+BaliDocumentLexer.T__49 = 50;
+BaliDocumentLexer.T__50 = 51;
+BaliDocumentLexer.T__51 = 52;
+BaliDocumentLexer.T__52 = 53;
+BaliDocumentLexer.T__53 = 54;
+BaliDocumentLexer.T__54 = 55;
+BaliDocumentLexer.T__55 = 56;
+BaliDocumentLexer.T__56 = 57;
+BaliDocumentLexer.T__57 = 58;
+BaliDocumentLexer.T__58 = 59;
+BaliDocumentLexer.T__59 = 60;
+BaliDocumentLexer.T__60 = 61;
+BaliDocumentLexer.T__61 = 62;
+BaliDocumentLexer.T__62 = 63;
+BaliDocumentLexer.T__63 = 64;
+BaliDocumentLexer.T__64 = 65;
+BaliDocumentLexer.T__65 = 66;
+BaliDocumentLexer.T__66 = 67;
+BaliDocumentLexer.T__67 = 68;
+BaliDocumentLexer.T__68 = 69;
+BaliDocumentLexer.SHELL = 70;
+BaliDocumentLexer.TAG = 71;
+BaliDocumentLexer.SYMBOL = 72;
+BaliDocumentLexer.FRACTION = 73;
+BaliDocumentLexer.CONSTANT = 74;
+BaliDocumentLexer.FLOAT = 75;
+BaliDocumentLexer.MOMENT = 76;
+BaliDocumentLexer.DURATION = 77;
+BaliDocumentLexer.RESOURCE = 78;
+BaliDocumentLexer.VERSION = 79;
+BaliDocumentLexer.BINARY = 80;
+BaliDocumentLexer.TEXT_BLOCK = 81;
+BaliDocumentLexer.TEXT = 82;
+BaliDocumentLexer.IDENTIFIER = 83;
+BaliDocumentLexer.NEWLINE = 84;
+BaliDocumentLexer.SPACE = 85;
 
-BaliLanguageLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
+BaliDocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 
-BaliLanguageLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
+BaliDocumentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
 
-BaliLanguageLexer.prototype.literalNames = [ null, "'['", "']'", "'('", 
+BaliDocumentLexer.prototype.literalNames = [ null, "'['", "']'", "'('", 
                                              "')'", "'..'", "','", "':'", 
                                              "'{'", "'}'", "';'", "'handle'", 
                                              "'matching'", "'with'", "':='", 
@@ -614,7 +614,7 @@ BaliLanguageLexer.prototype.literalNames = [ null, "'['", "']'", "'('",
                                              "'e^'", "'%'", "'false'", "'true'", 
                                              "'none'", "'any'" ];
 
-BaliLanguageLexer.prototype.symbolicNames = [ null, null, null, null, null, 
+BaliDocumentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
                                               null, null, null, null, null, 
                                               null, null, null, null, null, 
                                               null, null, null, null, null, 
@@ -635,7 +635,7 @@ BaliLanguageLexer.prototype.symbolicNames = [ null, null, null, null, null,
                                               "TEXT", "IDENTIFIER", "NEWLINE", 
                                               "SPACE" ];
 
-BaliLanguageLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", 
+BaliDocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", 
                                           "T__4", "T__5", "T__6", "T__7", 
                                           "T__8", "T__9", "T__10", "T__11", 
                                           "T__12", "T__13", "T__14", "T__15", 
@@ -664,9 +664,9 @@ BaliLanguageLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3",
                                           "SECONDS", "BASE16", "BASE32", 
                                           "BASE64", "ESCAPE" ];
 
-BaliLanguageLexer.prototype.grammarFileName = "BaliLanguage.g4";
+BaliDocumentLexer.prototype.grammarFileName = "BaliDocument.g4";
 
 
 
-exports.BaliLanguageLexer = BaliLanguageLexer;
+exports.BaliDocumentLexer = BaliDocumentLexer;
 

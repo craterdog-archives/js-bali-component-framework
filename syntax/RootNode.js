@@ -13,7 +13,7 @@
  * This class captures the state and methods associated with a Bali root node.
  */
 var types = require('./NodeTypes');
-var formatter = require('../transformers/LanguageFormatter');
+var formatter = require('../transformers/DocumentFormatter');
 
 
 /**
