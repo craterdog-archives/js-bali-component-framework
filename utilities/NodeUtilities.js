@@ -47,42 +47,42 @@ exports.draftDocument = function(document) {
 };
 
 
-exports.getPreviousCitation = function(root) {
-    return root.previousCitation.value;
+exports.getPreviousCitation = function(document) {
+    return document.previousCitation ? document.previousCitation.value : undefined;
 };
 
 
-exports.setPreviousCitation = function(root, previousCitation) {
+exports.setPreviousCitation = function(document, previousCitation) {
     if (previousCitation.constructor.name === 'String') {
         previousCitation = parser.parseElement(previousCitation);
     }
-    root.previousCitation = previousCitation;
+    document.previousCitation = previousCitation;
 };
 
 
-exports.getBody = function(root) {
-    return root.body;
+exports.getBody = function(document) {
+    return document.body;
 };
 
 
-exports.setBody = function(root, body) {
-    root.body = body;
+exports.setBody = function(document, body) {
+    document.body = body;
 };
 
 
-exports.getSeal = function(root) {
-    var seal = root.seals[root.seals.length - 1];
+exports.getSeal = function(document) {
+    var seal = document.seals[document.seals.length - 1];
     return seal;
 };
 
 
-exports.getSeals = function(root) {
-    var seals = root.seals.splice(0);  // copy the array
+exports.getSeals = function(document) {
+    var seals = document.seals.splice(0);  // copy the array
     return seals;
 };
 
 
-exports.addSeal = function(root, citation, signature) {
+exports.addSeal = function(document, citation, signature) {
     if (citation.constructor.name === 'String') {
         citation = parser.parseElement(citation);
     }
@@ -92,12 +92,12 @@ exports.addSeal = function(root, citation, signature) {
     var seal = new TreeNode(NodeTypes.SEAL);
     seal.addChild(citation);
     seal.addChild(signature);
-    root.addSeal(seal);
+    document.addSeal(seal);
 };
 
 
-exports.removeSeal = function(root) {
-    var copy = exports.copyDocument(root);
+exports.removeSeal = function(document) {
+    var copy = exports.copyDocument(document);
     copy.seals.pop();
     return copy;
 };
