@@ -77,7 +77,7 @@ exports.getSeal = function(document) {
 
 
 exports.getSeals = function(document) {
-    var seals = document.seals.splice(0);  // copy the array
+    var seals = document.seals.slice(0);  // copy the array
     return seals;
 };
 
