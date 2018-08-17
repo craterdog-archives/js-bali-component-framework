@@ -440,12 +440,3 @@ exports.isTag = function(object) {
     return utilities.isTag(object);
 };
 
-
-/**
- * This function creates a string version of a new unique random tag.
- * 
- * @returns {String} The new tag.
- */
-exports.tag = function() {
-    return utilities.tag();
-};

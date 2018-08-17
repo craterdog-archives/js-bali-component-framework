@@ -16,6 +16,12 @@ describe('Bali Virtual Machine™', function() {
 
     describe('Test random number utilities', function() {
 
+        it('should print out random tags', function() {
+            for (var i = 0; i < 10; i++) {
+                console.log('        tag: ' + random.generateTag());
+            }
+        });
+
         it('should test extreme coin tosses', function() {
             expect(random.coinToss(0)).is.false;  // jshint ignore:line
             expect(random.coinToss(1)).is.true;  // jshint ignore:line
@@ -25,7 +31,7 @@ describe('Bali Virtual Machine™', function() {
             var gotZero = false;
             var gotTwo = false;
             for (var i = 0; i < 100; i++) {
-                var index = random.generateRandomIndex(3);
+                var index = random.generateIndex(3);
                 expect(index >= 0).is.true;  // jshint ignore:line
                 expect(index < 3).is.true;  // jshint ignore:line
                 if (index === 0) gotZero = true;

@@ -19,7 +19,7 @@ var codex = require('./EncodingUtilities');
  * @param {Number} numberOfBytes The number of bytes in the desired binary string.
  * @return {Buffer} The data buffer containing random bytes.
  */
-exports.generateRandomBytes = function(numberOfBytes) {
+exports.generateBytes = function(numberOfBytes) {
     var buffer = crypto.randomBytes(numberOfBytes);
     return buffer;
 };
@@ -30,8 +30,8 @@ exports.generateRandomBytes = function(numberOfBytes) {
  *
  * @return {Number} The random integer.
  */
-exports.generateRandomInteger = function() {
-    var integer = codex.bytesToInteger(exports.generateRandomBytes(4));
+exports.generateInteger = function() {
+    var integer = codex.bytesToInteger(exports.generateBytes(4));
     return integer;
 };
 
@@ -42,10 +42,22 @@ exports.generateRandomInteger = function() {
  * @param {Number} length The length of the collection being indexed.
  * @return {Number} The random index.
  */
-exports.generateRandomIndex = function(length) {
-    var randomInteger = exports.generateRandomInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
+exports.generateIndex = function(length) {
+    var randomInteger = exports.generateInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
     var index = randomInteger % length;
     return index;
+};
+
+
+/**
+ * This function returns a random tag.
+ *
+ * @return {String} The random tag.
+ */
+exports.generateTag = function() {
+    var bytes = exports.generateBytes(20);
+    var tag = '#' + codex.base32Encode(bytes);
+    return tag;
 };
 
 
@@ -57,7 +69,7 @@ exports.generateRandomIndex = function(length) {
  * @return {Boolean} The result of the coin toss.
  */
 exports.coinToss = function(probability) {
-    var randomInteger = exports.generateRandomInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
+    var randomInteger = exports.generateInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
     var toss = randomInteger / 2147483648;  // convert to range [0.0..1.0)
     return toss < probability;  // true: [0.0..probability) and false: [probability..1.0]
 };

@@ -253,13 +253,6 @@ exports.isTag = function(tag) {
 };
 
 
-exports.tag = function() {
-    var bytes = random.generateRandomBytes(20);
-    var tag = '#' + codex.base32Encode(bytes);
-    return tag;
-};
-
-
 exports.isReference = function(reference) {
     if (!reference) return false;
     try {

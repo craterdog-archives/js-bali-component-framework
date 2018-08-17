@@ -17,12 +17,6 @@ describe('Bali Document Notation™', function() {
 
     describe('Test Parser and Formatter', function() {
 
-        it('should print out random tags', function() {
-            for (var i = 0; i < 10; i++) {
-                console.log('        tag: ' + documents.tag());
-            }
-        });
-
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
             var source = fs.readFileSync(file, 'utf8');
