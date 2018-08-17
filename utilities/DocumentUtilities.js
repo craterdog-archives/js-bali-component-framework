@@ -10,10 +10,7 @@
 'use strict';
 var parser = require('../transformers/DocumentParser');
 var NodeTypes = require('../syntax/NodeTypes');
-var RootNode = require('../syntax/RootNode').RootNode;
 var TreeNode = require('../syntax/TreeNode').TreeNode;
-var random = require('./RandomUtilities');
-var codex = require('./EncodingUtilities');
 
 
 // DOCUMENTS

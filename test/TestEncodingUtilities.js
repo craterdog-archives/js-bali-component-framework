@@ -9,7 +9,6 @@
  ************************************************************************/
 
 var codex = require('../utilities/EncodingUtilities');
-var random = require('../utilities/RandomUtilities');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 
@@ -19,7 +18,7 @@ describe('Bali Virtual Machine™', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {
-                var expectedBuffer = random.generateBytes(4);
+                var expectedBuffer = codex.randomBytes(4);
                 var expectedInteger = codex.bytesToInteger(expectedBuffer);
                 buffer = codex.integerToBytes(expectedInteger);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -30,7 +29,7 @@ describe('Bali Virtual Machine™', function() {
 
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
-                var expectedBuffer = random.generateBytes(i);
+                var expectedBuffer = codex.randomBytes(i);
                 var expectedBase2 = codex.base2Encode(expectedBuffer, '    ');
                 var buffer = codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -41,7 +40,7 @@ describe('Bali Virtual Machine™', function() {
 
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
-                var expectedBuffer = random.generateBytes(i);
+                var expectedBuffer = codex.randomBytes(i);
                 var expectedBase16 = codex.base16Encode(expectedBuffer, '    ');
                 var buffer = codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -52,7 +51,7 @@ describe('Bali Virtual Machine™', function() {
 
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
-                var expectedBuffer = random.generateBytes(i);
+                var expectedBuffer = codex.randomBytes(i);
                 var expectedBase32 = codex.base32Encode(expectedBuffer, '    ');
                 var buffer = codex.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -63,7 +62,7 @@ describe('Bali Virtual Machine™', function() {
 
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
-                var expectedBuffer = random.generateBytes(i);
+                var expectedBuffer = codex.randomBytes(i);
                 var expectedBase64 = codex.base64Encode(expectedBuffer, '    ');
                 var buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());

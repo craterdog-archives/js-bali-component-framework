@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var random = require('../utilities/RandomUtilities');
+var codex = require('../utilities/EncodingUtilities');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 
@@ -18,20 +18,20 @@ describe('Bali Virtual Machine™', function() {
 
         it('should print out random tags', function() {
             for (var i = 0; i < 10; i++) {
-                console.log('        tag: ' + random.generateTag());
+                console.log('        tag: ' + codex.randomTag());
             }
         });
 
         it('should test extreme coin tosses', function() {
-            expect(random.coinToss(0)).is.false;  // jshint ignore:line
-            expect(random.coinToss(1)).is.true;  // jshint ignore:line
+            expect(codex.coinToss(0)).is.false;  // jshint ignore:line
+            expect(codex.coinToss(1)).is.true;  // jshint ignore:line
         });
 
         it('should test endpoints of random indexes', function() {
             var gotZero = false;
             var gotTwo = false;
             for (var i = 0; i < 100; i++) {
-                var index = random.generateIndex(3);
+                var index = codex.randomIndex(3);
                 expect(index >= 0).is.true;  // jshint ignore:line
                 expect(index < 3).is.true;  // jshint ignore:line
                 if (index === 0) gotZero = true;
