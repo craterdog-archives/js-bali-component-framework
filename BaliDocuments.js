@@ -178,7 +178,7 @@ exports.copyDocument = function(document) {
 
 /**
  * This function returns a draft copy of the specified document. The previous version
- * citation and seals from the original document have been removed from the draft copy.
+ * reference and seals from the original document have been removed from the draft copy.
  * 
  * @param {Document} document The document.
  * @returns {Document} A draft copy of the document.
@@ -189,26 +189,26 @@ exports.draftDocument = function(document) {
 
 
 /**
- * This function returns a string version of the citation to the previous
+ * This function returns a string version of the reference to the previous
  * version of the document if one exists.
  * 
  * @param {Document} document The document.
- * @returns {String} A string version of the citation to the previous version of the document.
+ * @returns {String} A string version of the reference to the previous version of the document.
  */
-exports.getPreviousCitation = function(document) {
-    return utilities.getPreviousCitation(document);
+exports.getPreviousReference = function(document) {
+    return utilities.getPreviousReference(document);
 };
 
 
 /**
- * This function sets the citation to the previous version of the
+ * This function sets the reference to the previous version of the
  * document to the specified value.
  * 
  * @param {Document} document The document.
- * @param {Citation} previousCitation A citation to the previous version of the document.
+ * @param {String} previousReference A reference to the previous version of the document.
  */
-exports.setPreviousCitation = function(document, previousCitation) {
-    return utilities.setPreviousCitation(document, previousCitation);
+exports.setPreviousReference = function(document, previousReference) {
+    return utilities.setPreviousReference(document, previousReference);
 };
 
 
@@ -280,15 +280,15 @@ exports.removeSeal = function(document) {
 
 
 /**
- * This function retrieves a string version of the citation referring to a
+ * This function retrieves a string version of the reference referring to a
  * notary certificate for a notary seal.
  * 
  * @param {Seal} seal The notary seal.
- * @returns {String} A string version of the citation to the notary certificate
+ * @returns {String} A string version of the reference to the notary certificate
  * that created the notary seal.
  */
-exports.getCitation = function(seal) {
-    return utilities.getCitation(seal);
+exports.getReference = function(seal) {
+    return utilities.getReference(seal);
 };
 
 

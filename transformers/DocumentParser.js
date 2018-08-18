@@ -357,17 +357,17 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 // document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
-    var previousCitation;
+    var previousReference;
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
-        previousCitation = this.result;
+        previousReference = this.result;
     }
 
     ctx.body().accept(this);
     var body = this.result;
 
-    var document = new RootNode(types.DOCUMENT, body, previousCitation);
+    var document = new RootNode(types.DOCUMENT, body, previousReference);
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {

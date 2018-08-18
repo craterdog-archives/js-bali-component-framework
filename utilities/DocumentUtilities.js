@@ -38,22 +38,22 @@ exports.copyDocument = function(document) {
 exports.draftDocument = function(document) {
     var source = document.toString();
     var draft = parser.parseDocument(source);
-    draft.previousCitation = undefined;
+    draft.previousReference = undefined;
     draft.seals = [];
     return draft;
 };
 
 
-exports.getPreviousCitation = function(document) {
-    return document.previousCitation ? document.previousCitation.value : undefined;
+exports.getPreviousReference = function(document) {
+    return document.previousReference ? document.previousReference.value : undefined;
 };
 
 
-exports.setPreviousCitation = function(document, previousCitation) {
-    if (previousCitation.constructor.name === 'String') {
-        previousCitation = parser.parseElement(previousCitation);
+exports.setPreviousReference = function(document, previousReference) {
+    if (previousReference.constructor.name === 'String') {
+        previousReference = parser.parseElement(previousReference);
     }
-    document.previousCitation = previousCitation;
+    document.previousReference = previousReference;
 };
 
 
@@ -79,15 +79,15 @@ exports.getSeals = function(document) {
 };
 
 
-exports.addSeal = function(document, citation, signature) {
-    if (citation.constructor.name === 'String') {
-        citation = parser.parseElement(citation);
+exports.addSeal = function(document, reference, signature) {
+    if (reference.constructor.name === 'String') {
+        reference = parser.parseElement(reference);
     }
     if (signature.constructor.name === 'String') {
         signature = parser.parseElement(signature);
     }
     var seal = new TreeNode(NodeTypes.SEAL);
-    seal.addChild(citation);
+    seal.addChild(reference);
     seal.addChild(signature);
     document.addSeal(seal);
 };
@@ -100,9 +100,9 @@ exports.removeSeal = function(document) {
 };
 
 
-exports.getCitation = function(seal) {
-    var citation = seal.children[0].value;
-    return citation;
+exports.getReference = function(seal) {
+    var reference = seal.children[0].value;
+    return reference;
 };
 
 

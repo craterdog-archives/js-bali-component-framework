@@ -192,8 +192,8 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
-    if (tree.previousCitation) {
-        tree.previousCitation.accept(this);
+    if (tree.previousReference) {
+        tree.previousReference.accept(this);
         this.source += '\n';
     }
     tree.body.accept(this);
