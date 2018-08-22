@@ -14,7 +14,7 @@
  * by the DocumentParser and generates a canonical version of
  * the corresponding source string.
  */
-var types = require('../syntax/NodeTypes');
+var types = require('../nodes/Types');
 
 
 exports.formatParseTree = function(tree, padding) {

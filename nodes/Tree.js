@@ -12,7 +12,7 @@
 /*
  * This class captures the state and methods associated with a parse tree node.
  */
-var types = require('./NodeTypes');
+var types = require('./Types');
 var formatter = require('../transformers/DocumentFormatter');
 
 
@@ -20,16 +20,16 @@ var formatter = require('../transformers/DocumentFormatter');
  * This constructor creates a new tree node.
  * 
  * @param {Number} type The type of the tree node.
- * @returns {TreeNode} The new tree node.
+ * @returns {Tree} The new tree node.
  */
-function TreeNode(type) {
+function Tree(type) {
     this.type = type;
     this.isSimple = false;  // default for tree nodes
     this.children = [];
     return this;
 }
-TreeNode.prototype.constructor = TreeNode;
-exports.TreeNode = TreeNode;
+Tree.prototype.constructor = Tree;
+exports.Tree = Tree;
 
 
 /**
@@ -37,7 +37,7 @@ exports.TreeNode = TreeNode;
  * 
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
-TreeNode.prototype.accept = function(visitor) {
+Tree.prototype.accept = function(visitor) {
     switch(this.type) {
         case types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
@@ -183,9 +183,9 @@ TreeNode.prototype.accept = function(visitor) {
 /**
  * This method adds a child node to this tree node.
  * 
- * @param {TreeNode|TerminalNode} node The node to be added as the next child of this tree node.
+ * @param {Tree|Terminal} node The node to be added as the next child of this tree node.
  */
-TreeNode.prototype.addChild = function(node) {
+Tree.prototype.addChild = function(node) {
     this.children.push(node);
 };
 
@@ -195,7 +195,7 @@ TreeNode.prototype.addChild = function(node) {
  * 
  * @returns {String} The string representation of this node.
  */
-TreeNode.prototype.toString = function() {
+Tree.prototype.toString = function() {
     var string = formatter.formatParseTree(this);
     return string;
 };

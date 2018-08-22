@@ -216,7 +216,7 @@ exports.setPreviousReference = function(document, previousReference) {
  * This function returns the body of the document.
  * 
  * @param {Document} document The document.
- * @returns {TreeNode} The body of the document.
+ * @returns {Tree} The body of the document.
  */
 exports.getBody = function(document) {
     return utilities.getBody(document);
@@ -227,7 +227,7 @@ exports.getBody = function(document) {
  * This function sets the body of the document to the specified value.
  * 
  * @param {Document} document The document.
- * @param {TreeNode} body The new body of the document.
+ * @param {Tree} body The new body of the document.
  */
 exports.setBody = function(document, body) {
     return utilities.setBody(document, body);

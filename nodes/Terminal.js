@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-var types = require('./NodeTypes');
+var types = require('./Types');
 
 
 /*
@@ -22,16 +22,16 @@ var types = require('./NodeTypes');
  * 
  * @param {number} type The type of the terminal node.
  * @param {String} value The string representation of the terminal node.
- * @returns {TerminalNode} The new terminal node.
+ * @returns {Terminal} The new terminal node.
  */
-function TerminalNode(type, value) {
+function Terminal(type, value) {
     this.type = type;
     this.isSimple = true;  // default for terminal nodes
     this.value = value;
     return this;
 }
-TerminalNode.prototype.constructor = TerminalNode;
-exports.TerminalNode = TerminalNode;
+Terminal.prototype.constructor = Terminal;
+exports.Terminal = Terminal;
 
 
 /**
@@ -39,7 +39,7 @@ exports.TerminalNode = TerminalNode;
  * 
  * @param {NodeVisitor} visitor The visitor that wants to visit this terminal node.
  */
-TerminalNode.prototype.accept = function(visitor) {
+Terminal.prototype.accept = function(visitor) {
     switch(this.type) {
         case types.ANGLE:
         case types.BINARY:
@@ -76,6 +76,6 @@ TerminalNode.prototype.accept = function(visitor) {
  * 
  * @returns {String} The string representation of this node.
  */
-TerminalNode.prototype.toString = function() {
+Terminal.prototype.toString = function() {
     return this.value;
 };

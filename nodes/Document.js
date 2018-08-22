@@ -12,7 +12,7 @@
 /*
  * This class captures the state and methods associated with a Bali document.
  */
-var types = require('./NodeTypes');
+var types = require('./Types');
 var formatter = require('../transformers/DocumentFormatter');
 
 
@@ -20,8 +20,8 @@ var formatter = require('../transformers/DocumentFormatter');
  * This constructor creates a new document.
  * 
  * @param {Number} type The type of the document.
- * @param {TreeNode} body The parse tree node for the body of the document.
- * @param {TerminalNode} previousReference The parse tree node for the reference
+ * @param {Tree} body The parse tree node for the body of the document.
+ * @param {Terminal} previousReference The parse tree node for the reference
  * to the previous version of the document.
  * @returns {Document} The new parse document.
  */
@@ -56,7 +56,7 @@ Document.prototype.accept = function(visitor) {
 /**
  * This method adds a notary seal to the list of seals for this document.
  * 
- * @param {TreeNode} seal The parse tree node defining the seal to be added to the document.
+ * @param {Tree} seal The parse tree node defining the seal to be added to the document.
  */
 Document.prototype.addSeal = function(seal) {
     this.seals.push(seal);

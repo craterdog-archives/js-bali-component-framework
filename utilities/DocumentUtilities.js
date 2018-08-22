@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 var parser = require('../transformers/DocumentParser');
-var NodeTypes = require('../syntax/NodeTypes');
-var TreeNode = require('../syntax/TreeNode').TreeNode;
+var types = require('../nodes/Types');
+var Tree = require('../nodes/Tree').Tree;
 
 
 // DOCUMENTS
@@ -21,7 +21,7 @@ exports.isDocument = function(document) {
         if (document.constructor.name === 'String') {
             document = parser.parseDocument(document);
         }
-        return document.constructor.name === 'Document' && document.type === NodeTypes.DOCUMENT;
+        return document.constructor.name === 'Document' && document.type === types.DOCUMENT;
     } catch (e) {
         return false;
     }
@@ -86,7 +86,7 @@ exports.addSeal = function(document, reference, signature) {
     if (signature.constructor.name === 'String') {
         signature = parser.parseElement(signature);
     }
-    var seal = new TreeNode(NodeTypes.SEAL);
+    var seal = new Tree(types.SEAL);
     seal.addChild(reference);
     seal.addChild(signature);
     document.addSeal(seal);
@@ -179,7 +179,7 @@ exports.getValueForKey = function(component, key) {
 
 
 exports.setValueForKey = function(component, key, value) {
-    if (component.type === NodeTypes.DOCUMENT) component = component.body;
+    if (component.type === types.DOCUMENT) component = component.body;
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
@@ -204,7 +204,7 @@ exports.setValueForKey = function(component, key, value) {
     }
 
     // add a new association to the catalog
-    association = new TreeNode(NodeTypes.ASSOCIATION);
+    association = new Tree(types.ASSOCIATION);
     association.addChild(key);
     association.addChild(value);
     catalog.addChild(association);
@@ -243,7 +243,7 @@ exports.isTag = function(tag) {
         if (tag.constructor.name === 'String') {
             tag = parser.parseElement(tag);
         }
-        return tag.constructor.name === 'TerminalNode' && tag.type === NodeTypes.TAG;
+        return tag.constructor.name === 'Terminal' && tag.type === types.TAG;
     } catch (e) {
         return false;
     }
@@ -261,7 +261,7 @@ exports.isReference = function(reference) {
         if (type === 'String') {
             reference = parser.parseElement(reference);
         }
-        return reference.constructor.name === 'TerminalNode' && reference.type === NodeTypes.REFERENCE;
+        return reference.constructor.name === 'Terminal' && reference.type === types.REFERENCE;
     } catch (e) {
         return false;
     }
@@ -274,7 +274,7 @@ exports.isVersion = function(version) {
         if (version.constructor.name === 'String') {
             version = parser.parseElement(version);
         }
-        return version.constructor.name === 'TerminalNode' && version.type === NodeTypes.VERSION;
+        return version.constructor.name === 'Terminal' && version.type === types.VERSION;
     } catch (e) {
         return false;
     }
@@ -317,11 +317,10 @@ SearchingVisitor.prototype.visitAssociation = function(association) {
     var component = association.children[0];
     var expression = association.children[1];
     var object = component.children[0];
-    //if (object.type !== NodeTypes.STRUCTURE &&
-            //object.type !== NodeTypes.BLOCK &&
-    if (object.value === this.value) {
+    if (object.type !== types.STRUCTURE && object.type !== types.CODE &&
+            object.value === this.value) {
         this.result = expression;
-    } else if (expression.type === NodeTypes.COMPONENT) {
+    } else if (expression.type === types.COMPONENT) {
         expression.accept(this);
     }
 };
@@ -342,7 +341,7 @@ SearchingVisitor.prototype.visitCatalog = function(catalog) {
 // component: object parameters?
 SearchingVisitor.prototype.visitComponent = function(component) {
     var object = component.children[0];
-    if (object.type === NodeTypes.STRUCTURE) {
+    if (object.type === types.STRUCTURE) {
         object.accept(this);
     }
 };
@@ -363,7 +362,7 @@ SearchingVisitor.prototype.visitList = function(list) {
     var expressions = list.children;
     for (var i = 1; i < expressions.length; i++) {
         var expression = expressions[i];
-        if (expression.type === NodeTypes.COMPONENT) {
+        if (expression.type === types.COMPONENT) {
             expression.accept(this);
         }
     }
@@ -373,7 +372,7 @@ SearchingVisitor.prototype.visitList = function(list) {
 // structure: '[' collection ']'
 SearchingVisitor.prototype.visitStructure = function(structure) {
     var collection = structure.children[0];
-    if (collection.type !== NodeTypes.RANGE) {
+    if (collection.type !== types.RANGE) {
         collection.accept(this);
     }
 };
