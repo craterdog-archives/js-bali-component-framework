@@ -70,7 +70,6 @@ var NODE_TYPES = [
     'subcomponentExpression',
     'symbol',
     'tag',
-    'task',
     'template',
     'text',
     'throwClause',
@@ -137,7 +136,6 @@ exports.SUBCOMPONENT = NODE_TYPES.indexOf('subcomponent');
 exports.SUBCOMPONENT_EXPRESSION = NODE_TYPES.indexOf('subcomponentExpression');
 exports.SYMBOL = NODE_TYPES.indexOf('symbol');
 exports.TAG = NODE_TYPES.indexOf('tag');
-exports.TASK = NODE_TYPES.indexOf('task');
 exports.TEMPLATE = NODE_TYPES.indexOf('template');
 exports.TEXT = NODE_TYPES.indexOf('text');
 exports.THROW_CLAUSE = NODE_TYPES.indexOf('throwClause');

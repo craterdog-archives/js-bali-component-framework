@@ -15,7 +15,7 @@
  */
 var antlr = require('antlr4');
 var grammar = require('../grammar');
-var RootNode = require('../syntax/RootNode').RootNode;
+var Document = require('../syntax/Document').Document;
 var TreeNode = require('../syntax/TreeNode').TreeNode;
 var TerminalNode = require('../syntax/TerminalNode').TerminalNode;
 var types = require('../syntax/NodeTypes');
@@ -367,7 +367,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
     ctx.body().accept(this);
     var body = this.result;
 
-    var document = new RootNode(types.DOCUMENT, body, previousReference);
+    var document = new Document(types.DOCUMENT, body, previousReference);
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {

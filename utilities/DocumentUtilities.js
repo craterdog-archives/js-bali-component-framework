@@ -21,7 +21,7 @@ exports.isDocument = function(document) {
         if (document.constructor.name === 'String') {
             document = parser.parseDocument(document);
         }
-        return document.constructor.name === 'RootNode' && document.type === NodeTypes.DOCUMENT;
+        return document.constructor.name === 'Document' && document.type === NodeTypes.DOCUMENT;
     } catch (e) {
         return false;
     }

@@ -206,6 +206,7 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
 
 
 // element:
+//     angle |
 //     binary |
 //     duration |
 //     moment |
