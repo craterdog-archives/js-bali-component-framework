@@ -35,10 +35,10 @@ exports.copyDocument = function(document) {
 };
 
 
-exports.draftDocument = function(document) {
+exports.draftDocument = function(citation, document) {
     var source = document.toString();
     var draft = parser.parseDocument(source);
-    draft.previousReference = undefined;
+    draft.previousReference = citation.toReference();
     draft.seals = [];
     return draft;
 };
@@ -49,21 +49,8 @@ exports.getPreviousReference = function(document) {
 };
 
 
-exports.setPreviousReference = function(document, previousReference) {
-    if (previousReference.constructor.name === 'String') {
-        previousReference = parser.parseElement(previousReference);
-    }
-    document.previousReference = previousReference;
-};
-
-
 exports.getBody = function(document) {
     return document.body;
-};
-
-
-exports.setBody = function(document, body) {
-    document.body = body;
 };
 
 
