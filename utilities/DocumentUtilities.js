@@ -36,6 +36,9 @@ exports.copyDocument = function(document) {
 
 
 exports.draftDocument = function(reference, document) {
+    if (reference.constructor.name === 'String') {
+        reference = parser.parseElement(reference);
+    }
     var source = document.toString();
     var draft = parser.parseDocument(source);
     draft.previousReference = reference;
