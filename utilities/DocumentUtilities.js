@@ -35,10 +35,10 @@ exports.copyDocument = function(document) {
 };
 
 
-exports.draftDocument = function(citation, document) {
+exports.draftDocument = function(reference, document) {
     var source = document.toString();
     var draft = parser.parseDocument(source);
-    draft.previousReference = citation.toReference();
+    draft.previousReference = reference;
     draft.seals = [];
     return draft;
 };

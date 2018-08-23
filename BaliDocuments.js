@@ -180,11 +180,12 @@ exports.copyDocument = function(document) {
  * This function returns a draft copy of the specified document. The previous version
  * reference and seals from the original document have been removed from the draft copy.
  * 
+ * @param {String} reference A reference to the document.
  * @param {Document} document The document.
  * @returns {Document} A draft copy of the document.
  */
-exports.draftDocument = function(document) {
-    return utilities.draftDocument(document);
+exports.draftDocument = function(reference, document) {
+    return utilities.draftDocument(reference, document);
 };
 
 
