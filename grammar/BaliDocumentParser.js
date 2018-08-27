@@ -373,18 +373,19 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
                       "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
-var ruleNames =  [ "document", "body", "seal", "component", "object", "structure", 
-                   "parameters", "collection", "range", "list", "catalog", 
-                   "association", "code", "procedure", "statement", "mainClause", 
-                   "handleClause", "block", "evaluateClause", "checkoutClause", 
-                   "saveClause", "discardClause", "commitClause", "publishClause", 
-                   "queueClause", "waitClause", "ifClause", "selectClause", 
-                   "withClause", "whileClause", "continueClause", "breakClause", 
-                   "returnClause", "throwClause", "recipient", "subcomponent", 
-                   "expression", "variable", "funxtion", "message", "indices", 
-                   "element", "angle", "binary", "duration", "imaginary", 
-                   "moment", "number", "percent", "probability", "real", 
-                   "reference", "symbol", "tag", "template", "text", "version" ];
+var ruleNames =  [ "document", "content", "seal", "component", "object", 
+                   "structure", "parameters", "collection", "range", "list", 
+                   "catalog", "association", "code", "procedure", "statement", 
+                   "mainClause", "handleClause", "block", "evaluateClause", 
+                   "checkoutClause", "saveClause", "discardClause", "commitClause", 
+                   "publishClause", "queueClause", "waitClause", "ifClause", 
+                   "selectClause", "withClause", "whileClause", "continueClause", 
+                   "breakClause", "returnClause", "throwClause", "recipient", 
+                   "subcomponent", "expression", "variable", "funxtion", 
+                   "message", "indices", "element", "angle", "binary", "duration", 
+                   "imaginary", "moment", "number", "percent", "probability", 
+                   "real", "reference", "symbol", "tag", "template", "text", 
+                   "version" ];
 
 function BaliDocumentParser (input) {
 	antlr4.Parser.call(this, input);
@@ -492,7 +493,7 @@ BaliDocumentParser.NEWLINE = 84;
 BaliDocumentParser.SPACE = 85;
 
 BaliDocumentParser.RULE_document = 0;
-BaliDocumentParser.RULE_body = 1;
+BaliDocumentParser.RULE_content = 1;
 BaliDocumentParser.RULE_seal = 2;
 BaliDocumentParser.RULE_component = 3;
 BaliDocumentParser.RULE_object = 4;
@@ -565,8 +566,8 @@ function DocumentContext(parser, parent, invokingState) {
 DocumentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 DocumentContext.prototype.constructor = DocumentContext;
 
-DocumentContext.prototype.body = function() {
-    return this.getTypedRuleContext(BodyContext,0);
+DocumentContext.prototype.content = function() {
+    return this.getTypedRuleContext(ContentContext,0);
 };
 
 DocumentContext.prototype.EOF = function() {
@@ -656,7 +657,7 @@ BaliDocumentParser.prototype.document = function() {
 
         }
         this.state = 125;
-        this.body();
+        this.content();
         this.state = 130;
         this._errHandler.sync(this);
         var _alt = this._interp.adaptivePredict(this._input,2,this._ctx)
@@ -698,7 +699,7 @@ BaliDocumentParser.prototype.document = function() {
     return localctx;
 };
 
-function BodyContext(parser, parent, invokingState) {
+function ContentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -707,36 +708,36 @@ function BodyContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_body;
+    this.ruleIndex = BaliDocumentParser.RULE_content;
     return this;
 }
 
-BodyContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-BodyContext.prototype.constructor = BodyContext;
+ContentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ContentContext.prototype.constructor = ContentContext;
 
-BodyContext.prototype.component = function() {
+ContentContext.prototype.component = function() {
     return this.getTypedRuleContext(ComponentContext,0);
 };
 
-BodyContext.prototype.procedure = function() {
+ContentContext.prototype.procedure = function() {
     return this.getTypedRuleContext(ProcedureContext,0);
 };
 
-BodyContext.prototype.enterRule = function(listener) {
+ContentContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.enterBody(this);
+        listener.enterContent(this);
 	}
 };
 
-BodyContext.prototype.exitRule = function(listener) {
+ContentContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.exitBody(this);
+        listener.exitContent(this);
 	}
 };
 
-BodyContext.prototype.accept = function(visitor) {
+ContentContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitBody(this);
+        return visitor.visitContent(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -745,12 +746,12 @@ BodyContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.BodyContext = BodyContext;
+BaliDocumentParser.ContentContext = ContentContext;
 
-BaliDocumentParser.prototype.body = function() {
+BaliDocumentParser.prototype.content = function() {
 
-    var localctx = new BodyContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 2, BaliDocumentParser.RULE_body);
+    var localctx = new ContentContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 2, BaliDocumentParser.RULE_content);
     try {
         this.state = 143;
         this._errHandler.sync(this);

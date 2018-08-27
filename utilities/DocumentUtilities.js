@@ -21,84 +21,10 @@ exports.isDocument = function(document) {
         if (document.constructor.name === 'String') {
             document = parser.parseDocument(document);
         }
-        return document.constructor.name === 'Document' && document.type === types.DOCUMENT;
+        return document.constructor.name === 'Document';
     } catch (e) {
         return false;
     }
-};
-
-
-exports.copyDocument = function(document) {
-    var source = document.toString();
-    var copy = parser.parseDocument(source);
-    return copy;
-};
-
-
-exports.draftDocument = function(reference, document) {
-    if (reference.constructor.name === 'String') {
-        reference = parser.parseElement(reference);
-    }
-    var source = document.toString();
-    var draft = parser.parseDocument(source);
-    draft.previousReference = reference;
-    draft.seals = [];
-    return draft;
-};
-
-
-exports.getPreviousReference = function(document) {
-    return document.previousReference ? document.previousReference.value : undefined;
-};
-
-
-exports.getBody = function(document) {
-    return document.body;
-};
-
-
-exports.getSeal = function(document) {
-    var seal = document.seals[document.seals.length - 1];
-    return seal;
-};
-
-
-exports.getSeals = function(document) {
-    var seals = document.seals.slice(0);  // copy the array
-    return seals;
-};
-
-
-exports.addSeal = function(document, reference, signature) {
-    if (reference.constructor.name === 'String') {
-        reference = parser.parseElement(reference);
-    }
-    if (signature.constructor.name === 'String') {
-        signature = parser.parseElement(signature);
-    }
-    var seal = new Tree(types.SEAL);
-    seal.addChild(reference);
-    seal.addChild(signature);
-    document.addSeal(seal);
-};
-
-
-exports.removeSeal = function(document) {
-    var copy = exports.copyDocument(document);
-    copy.seals.pop();
-    return copy;
-};
-
-
-exports.getReference = function(seal) {
-    var reference = seal.children[0].value;
-    return reference;
-};
-
-
-exports.getSignature = function(seal) {
-    var signature = seal.children[1].value;
-    return signature;
 };
 
 
@@ -169,7 +95,7 @@ exports.getValueForKey = function(component, key) {
 
 
 exports.setValueForKey = function(component, key, value) {
-    if (component.type === types.DOCUMENT) component = component.body;
+    if (component.constructor.name === 'Document') component = component.documentContent;
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
@@ -339,7 +265,7 @@ SearchingVisitor.prototype.visitComponent = function(component) {
 
 // document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
 SearchingVisitor.prototype.visitDocument = function(document) {
-    var component = document.body;
+    var component = document.documentContent;
     component.accept(this);
 };
 

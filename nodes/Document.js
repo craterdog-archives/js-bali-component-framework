@@ -12,29 +12,85 @@
 /*
  * This class captures the state and methods associated with a Bali document.
  */
-var types = require('./Types');
+var parser = require('../transformers/DocumentParser');
 var formatter = require('../transformers/DocumentFormatter');
 
 
 /**
  * This constructor creates a new document.
  * 
- * @param {Number} type The type of the document.
- * @param {Tree} body The parse tree node for the body of the document.
+ * @param {Tree} documentContent The parse tree node for the content of the document.
  * @param {Terminal} previousReference The parse tree node for the reference
- * to the previous version of the document.
+ * to the previous version of the document if one exists.
  * @returns {Document} The new parse document.
  */
-function Document(type, body, previousReference) {
-    this.type = type;
-    this.isSimple = false;
-    this.body = body;
+function Document(documentContent, previousReference) {
+    if (documentContent.constructor.name === 'String') {
+        documentContent = parser.parseComponent(documentContent);
+    }
+    if (previousReference && previousReference.constructor.name === 'String') {
+        previousReference = parser.parseElement(previousReference);
+    }
+    this.documentContent = documentContent;
     this.previousReference = previousReference;
-    this.seals = [];
+    this.notarySeals = [];
     return this;
 }
 Document.prototype.constructor = Document;
 exports.Document = Document;
+
+
+Document.prototype.getSeal = function() {
+    var seal = this.notarySeals[this.notarySeals.length - 1];
+    return seal;
+};
+
+
+Document.prototype.getSeals = function() {
+    var notarySeals = this.notarySeals.slice(0);  // copy the array
+    return notarySeals;
+};
+
+
+Document.prototype.addSeal = function(previousReference, digitalSignature) {
+    if (previousReference.constructor.name === 'String') {
+        previousReference = parser.parseElement(previousReference);
+    }
+    if (digitalSignature.constructor.name === 'String') {
+        digitalSignature = parser.parseElement(digitalSignature);
+    }
+    var seal = {
+        certificateReference: previousReference,
+        digitalSignature: digitalSignature
+    };
+    this.notarySeals.push(seal);
+};
+
+
+Document.prototype.copy = function() {
+    var source = this.toString();
+    var copy = parser.parseDocument(source);
+    return copy;
+};
+
+
+Document.prototype.draft = function(previousReference) {
+    if (previousReference.constructor.name === 'String') {
+        previousReference = parser.parseElement(previousReference);
+    }
+    var source = this.toString();
+    var draft = parser.parseDocument(source);
+    draft.previousReference = previousReference;
+    draft.notarySeals = [];
+    return draft;
+};
+
+
+Document.unsealed = function() {
+    var copy = this.copy();
+    copy.notarySeals.pop();
+    return copy;
+};
 
 
 /**
@@ -43,23 +99,7 @@ exports.Document = Document;
  * @param {NodeVisitor} visitor The visitor that wants to visit this document.
  */
 Document.prototype.accept = function(visitor) {
-    switch(this.type) {
-        case types.DOCUMENT:
-            visitor.visitDocument(this);
-            break;
-        default:
-            throw new Error('SYNTAX: An invalid document type was found: ' + this.type);
-    }
-};
-
-
-/**
- * This method adds a notary seal to the list of seals for this document.
- * 
- * @param {Tree} seal The parse tree node defining the seal to be added to the document.
- */
-Document.prototype.addSeal = function(seal) {
-    this.seals.push(seal);
+    visitor.visitDocument(this);
 };
 
 

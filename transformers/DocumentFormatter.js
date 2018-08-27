@@ -190,16 +190,18 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
     if (tree.previousReference) {
         tree.previousReference.accept(this);
         this.source += '\n';
     }
-    tree.body.accept(this);
+    tree.documentContent.accept(this);
     this.source += '\n';
-    for (var i = 0; i < tree.seals.length; i++) {
-        tree.seals[i].accept(this);
+    for (var i = 0; i < tree.notarySeals.length; i++) {
+        tree.notarySeals[i].certificateReference.accept(this);
+        this.source += ' ';
+        tree.notarySeals[i].digitalSignature.accept(this);
         this.source += '\n';
     }
 };
@@ -458,14 +460,6 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.source += 'save ';
     tree.children[0].accept(this);
     this.source += ' to ';
-    tree.children[1].accept(this);
-};
-
-
-// seal: reference binary
-FormattingVisitor.prototype.visitSeal = function(tree) {
-    tree.children[0].accept(this);
-    this.source += ' ';
     tree.children[1].accept(this);
 };
 

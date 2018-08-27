@@ -355,7 +355,7 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: NEWLINE* (reference NEWLINE)? body (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
     var previousReference;
     var reference = ctx.reference();
@@ -364,15 +364,18 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
         previousReference = this.result;
     }
 
-    ctx.body().accept(this);
-    var body = this.result;
+    ctx.content().accept(this);
+    var documentContent = this.result;
 
-    var document = new Document(types.DOCUMENT, body, previousReference);
+    var document = new Document(documentContent, previousReference);
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {
-        seals[i].accept(this);
-        document.addSeal(this.result);
+        seals[i].reference().accept(this);
+        var certificateReference = this.result;
+        seals[i].binary().accept(this);
+        var digitalSignature = this.result;
+        document.addSeal(certificateReference, digitalSignature);
     }
     this.result = document;
 };
@@ -824,17 +827,6 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
-    tree.addChild(this.result);
-    this.result = tree;
-};
-
-
-// seal: reference binary
-ParsingVisitor.prototype.visitSeal = function(ctx) {
-    var tree = new Tree(types.SEAL);
-    ctx.reference().accept(this);
-    tree.addChild(this.result);
-    ctx.binary().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };

@@ -20,12 +20,12 @@ BaliDocumentListener.prototype.exitDocument = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliDocumentParser#body.
-BaliDocumentListener.prototype.enterBody = function(ctx) {
+// Enter a parse tree produced by BaliDocumentParser#content.
+BaliDocumentListener.prototype.enterContent = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliDocumentParser#body.
-BaliDocumentListener.prototype.exitBody = function(ctx) {
+// Exit a parse tree produced by BaliDocumentParser#content.
+BaliDocumentListener.prototype.exitContent = function(ctx) {
 };
 
 
