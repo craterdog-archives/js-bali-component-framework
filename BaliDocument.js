@@ -26,7 +26,8 @@ var Tree = require('./nodes/Tree').Tree;
  * @returns {BaliDocument} The resulting document.
  */
 exports.fromSource = function(source) {
-    return parser.parseDocument(source);
+    var document = parser.parseDocument(source);
+    return document;
 };
 
 
@@ -146,7 +147,7 @@ BaliDocument.prototype.accept = function(visitor) {
  * @returns {String} The resulting source string.
  */
 BaliDocument.prototype.toSource = function(optionalPadding) {
-    var source = formatter.formatParseTree(this, optionalPadding);
+    var source = formatter.formatTree(this, optionalPadding);
     return source;
 };
 
@@ -157,7 +158,7 @@ BaliDocument.prototype.toSource = function(optionalPadding) {
  * @returns {String} The string representation of this document.
  */
 BaliDocument.prototype.toString = function() {
-    var string = formatter.formatParseTree(this);
+    var string = formatter.formatTree(this);
     return string;
 };
 

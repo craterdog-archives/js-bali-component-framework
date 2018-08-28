@@ -17,7 +17,7 @@
 var types = require('../nodes/Types');
 
 
-exports.formatParseTree = function(tree, padding) {
+exports.formatTree = function(tree, padding) {
     var visitor = new FormattingVisitor(padding);
     tree.accept(visitor);
     return visitor.source;

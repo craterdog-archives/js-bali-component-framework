@@ -24,7 +24,7 @@ describe('Bali Document Notation™', function() {
             expect(source).to.exist;  // jshint ignore:line
             var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatParseTree(tree);
+            var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -34,7 +34,7 @@ describe('Bali Document Notation™', function() {
             expect(source).to.exist;  // jshint ignore:line
             var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatParseTree(tree);
+            var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -44,7 +44,7 @@ describe('Bali Document Notation™', function() {
             expect(source).to.exist;  // jshint ignore:line
             var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatParseTree(tree);
+            var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -54,7 +54,7 @@ describe('Bali Document Notation™', function() {
             expect(source).to.exist;  // jshint ignore:line
             var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatParseTree(tree);
+            var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 

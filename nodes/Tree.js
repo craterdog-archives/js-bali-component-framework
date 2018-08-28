@@ -193,6 +193,6 @@ Tree.prototype.addChild = function(node) {
  * @returns {String} The string representation of this node.
  */
 Tree.prototype.toString = function() {
-    var string = formatter.formatParseTree(this);
+    var string = formatter.formatTree(this);
     return string;
 };
