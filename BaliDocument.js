@@ -15,7 +15,6 @@
 var parser = require('./transformers/DocumentParser');
 var formatter = require('./transformers/DocumentFormatter');
 var types = require('./nodes/Types');
-var Tree = require('./nodes/Tree').Tree;
 
 
 /**
@@ -26,31 +25,12 @@ var Tree = require('./nodes/Tree').Tree;
  * @returns {BaliDocument} The resulting document.
  */
 exports.fromSource = function(source) {
-    var document = parser.parseDocument(source);
-    return document;
-};
-
-
-/**
- * This function creates a new Bali document from its content and optional previous
- * version reference.
- * 
- * @param {Tree} documentContent The parse tree node for the content of the document.
- * @param {Terminal} previousReference The parse tree node for the reference
- * to the previous version of the document if one exists.
- * @returns {BaliDocument} The new Bali document.
- */
-exports.fromContent = function(documentContent, previousReference) {
-    var document = new BaliDocument();
-    if (documentContent.constructor.name === 'String') {
-        documentContent = parser.parseComponent(documentContent);
+    var document;
+    if (source) {
+        document = parser.parseDocument(source);
+    } else {
+        document = new BaliDocument();
     }
-    if (previousReference && previousReference.constructor.name === 'String') {
-        previousReference = parser.parseElement(previousReference);
-    }
-    document.documentContent = documentContent;
-    document.previousReference = previousReference;
-    document.notarySeals = [];
     return document;
 };
 
@@ -81,6 +61,7 @@ exports.isDocument = function(object) {
  * @returns {BaliDocument} The new Bali document.
  */
 function BaliDocument() {
+    this.notarySeals = [];
     return this;
 }
 BaliDocument.prototype.constructor = BaliDocument;

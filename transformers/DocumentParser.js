@@ -437,7 +437,9 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
     ctx.content().accept(this);
     var documentContent = this.result;
 
-    var document = BaliDocument.fromContent(documentContent, previousReference);
+    var document = BaliDocument.fromSource();
+    document.documentContent = documentContent;
+    document.previousReference = previousReference;
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {

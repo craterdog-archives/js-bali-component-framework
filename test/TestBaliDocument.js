@@ -36,9 +36,8 @@ describe('Bali Document Notation™', function() {
         });
 
         it('should create a draft of a document', function() {
-            var previousReference = document.previousReference;
-            document = baliDocument.fromContent(document.documentContent, previousReference);
-            var draft = document.draft(previousReference);
+            document.notarySeals = [];
+            var draft = document.draft(document.previousReference);
             expect(draft).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(draft)).to.equal(true);
             expect(draft.toSource()).to.equal(document.toString());
