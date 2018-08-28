@@ -8,7 +8,8 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var documents = require('../BaliDocuments');
+var parser = require('../transformers/DocumentParser');
+var formatter = require('../transformers/DocumentFormatter');
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
@@ -21,9 +22,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/elements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = documents.parseDocument(source);
+            var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = documents.formatParseTree(tree);
+            var formatted = formatter.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -31,9 +32,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/expressions.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = documents.parseDocument(source);
+            var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = documents.formatParseTree(tree);
+            var formatted = formatter.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -41,9 +42,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/statements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = documents.parseDocument(source);
+            var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = documents.formatParseTree(tree);
+            var formatted = formatter.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -51,9 +52,9 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/components.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = documents.parseDocument(source);
+            var tree = parser.parseDocument(source);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = documents.formatParseTree(tree);
+            var formatted = formatter.formatParseTree(tree);
             expect(formatted).to.equal(source);
         });
 

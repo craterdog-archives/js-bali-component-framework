@@ -13,7 +13,7 @@
         } handle $exception matching [$type: "BadException"] with {
             continue loop
         }
-        queue message() on <bali:Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
+        queue message() on <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         if false then {
             $component := 0
         } else if component < 5 then {
@@ -35,25 +35,25 @@
         break loop
     }
     $lifecycle: {
-        checkout $document from <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        save document to <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        commit document to <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        checkout documents[i] from <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        save documents[i] to <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        commit documents[i] to <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
-        discard <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        checkout $document from <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
+        save document to <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        commit document to <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        checkout documents[i] from <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
+        save documents[i] to <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        commit documents[i] to <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        discard <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
     $publishEvent: {
         publish event
     }
     $waitForMessage: {
-        wait for $message from <bali:Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
-        wait for messages[$foo, 5] from <bali:MJ0YKAX450LD84TCFJ7CNJ5CX8ZAPZ1Qv3.1>
+        wait for $message from <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        wait for messages[$foo, 5] from <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
     $queueMessage: {
-        queue message() on <bali:Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
-        queue message(1) on <bali:Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
-        queue message($first: 1, $second: second, $third: "3rd") on <bali:Z9L4CT371Q9J6ZMDRSFZJ3RXSH39LVK9v3.1>
+        queue message() on <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        queue message(1) on <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        queue message($first: 1, $second: second, $third: "3rd") on <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
     $returnResult: {
         return
@@ -128,10 +128,3 @@
         }
     ]
 ]
-<bali:CT41AC8K5AZBMJF88W60F40SZQCMA0XNv1.3> '
-    p+MCxk21YeGOs9v+N6loxH4xxp36HBhP6+6KXiNwmC+tNQKAY4bkzmeExImIsB3ZTTDAw6g9c8slT1Zt
-    5YwErkyPdSBBzIlWg6NAEcpDVB/05mqBEa5rRSm6hIG05LleW3DUZ0nimfmqQ3lAC/OXoryNo9Fg256k
-    +fqGZejyvQlyBgtiQwbuSI/E5SuBBHZMuL+kPRiRYwipcHe9oa8fLmyKr6+s4/NZBR88h5TWMiQcmFX3
-    oVeSayBkzOv/k45bmIDqDH9w5DxjJbC2F6xrx7Nd30ti+v6fV1bEBt5b3Pzd00ptwBRDP9aenDJ3Y0rV
-    ZgvEUwlEHcHs7ZWzMhawG7H8SsIyMm0MT4brkn9kSoVyCbjKTCPedlbmDjR2MikZbwnk82wYFduWV2k=
-'

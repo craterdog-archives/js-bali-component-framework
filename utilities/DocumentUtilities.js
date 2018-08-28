@@ -13,23 +13,14 @@ var types = require('../nodes/Types');
 var Tree = require('../nodes/Tree').Tree;
 
 
-// DOCUMENTS
-
-exports.isDocument = function(document) {
-    if (!document) return false;
-    try {
-        if (document.constructor.name === 'String') {
-            document = parser.parseDocument(document);
-        }
-        return document.constructor.name === 'Document';
-    } catch (e) {
-        return false;
-    }
-};
-
-
 // LISTS
 
+/**
+ * This function constructs an iterator for the specified list.
+ * 
+ * @param {Tree} component The list.
+ * @returns {Iterator} The new iterator.
+ */
 exports.iterator = function(component) {
     var structure = component.children[0];
     var list = structure.children[0];
@@ -38,6 +29,14 @@ exports.iterator = function(component) {
 };
 
 
+/**
+ * This function retrieves from a list the value associated with the
+ * specified index.
+ * 
+ * @param {Tree} component The list.
+ * @param {Number} index The ordinal based index of the desired value.
+ * @returns {Component} The value associated with the index.
+ */
 exports.getValueForIndex = function(component, index) {
     var structure = component.children[0];
     var list = structure.children[0];
@@ -50,6 +49,14 @@ exports.getValueForIndex = function(component, index) {
 };
 
 
+/**
+ * This function sets in a list the value associated with the specified index.
+ * 
+ * @param {Tree} component The list.
+ * @param {Number} index The ordinal based index of the value.
+ * @param {Component} value The value to be associated with the index.
+ * @returns {Component} The old value associated with the index.
+ */
 exports.setValueForIndex = function(component, index, value) {
     if (value.constructor.name === 'String') {
         value = parser.parseComponent(value);
@@ -63,6 +70,12 @@ exports.setValueForIndex = function(component, index, value) {
 };
 
 
+/**
+ * This function adds a new value to a list.
+ * 
+ * @param {Tree} component The list.
+ * @param {Component} value The value to be added to the list.
+ */
 exports.addValue = function(component, value) {
     if (value.constructor.name === 'String') {
         value = parser.parseComponent(value);
@@ -74,123 +87,67 @@ exports.addValue = function(component, value) {
 };
 
 
-// CATALOGS
-
-exports.getStringForKey = function(component, key) {
-    var visitor = new SearchingVisitor(key);
-    component.accept(visitor);
-    if (visitor.result) {
-        return visitor.result.toString();
-    } else {
-        return undefined;
-    }
-};
-
-
-exports.getValueForKey = function(component, key) {
-    var visitor = new SearchingVisitor(key);
-    component.accept(visitor);
-    return visitor.result;
-};
-
-
-exports.setValueForKey = function(component, key, value) {
-    if (component.constructor.name === 'Document') component = component.documentContent;
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    if (value.constructor.name === 'String') {
-        value = parser.parseComponent(value);
-    }
-    var association, symbol, old;
-    var structure = component.children[0];
-    var catalog = structure.children[0];
-
-    // check to see if the symbol already exists in the catalog
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        association = associations[i];
-        component = association.children[0];
-        symbol = component.children[0];
-        if (association.children[0].children[0].value === key.children[0].value) {
-            old = association.children[1];
-            association.children[1] = value;
-            return old;
-        }
-    }
-
-    // add a new association to the catalog
-    association = new Tree(types.ASSOCIATION);
-    association.addChild(key);
-    association.addChild(value);
-    catalog.addChild(association);
-
-    return old;
-};
-
-
-exports.deleteKey = function(component, key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var association, symbol;
-    var structure = component.children[0];
-    var catalog = structure.children[0];
-
-    // find the key in the catalog
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        association = associations[i];
-        component = association.children[0];
-        symbol = component.children[0];
-        if (symbol.value === key.value) {
-            associations.splice(i, 1);  // remove this association
-            return;
-        }
-    }
-};
-
-
 // ELEMENTS
 
-exports.isTag = function(tag) {
-    if (!tag) return false;
+/**
+ * This function returns whether or not the specified object is a
+ * tag.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a tag.
+ */
+exports.isTag = function(object) {
+    if (!object) return false;
     try {
-        if (tag.constructor.name === 'String') {
-            tag = parser.parseElement(tag);
+        if (object.constructor.name === 'String') {
+            object = parser.parseElement(object);
         }
-        return tag.constructor.name === 'Terminal' && tag.type === types.TAG;
+        return object.constructor.name === 'Terminal' && object.type === types.TAG;
     } catch (e) {
         return false;
     }
 };
 
 
-exports.isReference = function(reference) {
-    if (!reference) return false;
+/**
+ * This function returns whether or not the specified object is a
+ * reference.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a reference.
+ */
+exports.isReference = function(object) {
+    if (!object) return false;
     try {
-        var type = reference.constructor.name;
+        var type = object.constructor.name;
         if (type === 'URL') {
-            reference = '<' + reference.toString().replace(/%23/, '#') + '>';
-            type = reference.constructor.name;
+            object = '<' + object.toString().replace(/%23/, '#') + '>';
+            type = object.constructor.name;
         }
         if (type === 'String') {
-            reference = parser.parseElement(reference);
+            object = parser.parseElement(object);
         }
-        return reference.constructor.name === 'Terminal' && reference.type === types.REFERENCE;
+        return object.constructor.name === 'Terminal' && object.type === types.REFERENCE;
     } catch (e) {
         return false;
     }
 };
 
 
-exports.isVersion = function(version) {
-    if (!version) return false;
+/**
+ * This function returns whether or not the specified object is a
+ * version string.
+ * 
+ * @param {Object} object The object to be checked.
+ * @returns {Boolean} Whether or not the object is a version string.
+ */
+exports.isVersion = function(object) {
+    if (!object) return false;
     try {
-        if (version.constructor.name === 'String') {
-            version = parser.parseElement(version);
+        if (object.constructor.name === 'String') {
+            object = parser.parseElement(object);
         }
-        return version.constructor.name === 'Terminal' && version.type === types.VERSION;
+        return object.constructor.name === 'Terminal' && object.type === types.VERSION;
     } catch (e) {
         return false;
     }
@@ -217,78 +174,5 @@ ListIterator.prototype.getNext = function() {
         return this.expressions[this.index++];
     } else {
         return undefined;
-    }
-};
-
-
-function SearchingVisitor(value) {
-    this.value = value;
-    return this;
-}
-SearchingVisitor.prototype.constructor = SearchingVisitor;
-
-
-// association: component ':' expression
-SearchingVisitor.prototype.visitAssociation = function(association) {
-    var component = association.children[0];
-    var expression = association.children[1];
-    var object = component.children[0];
-    if (object.type !== types.STRUCTURE && object.type !== types.CODE &&
-            object.value === this.value) {
-        this.result = expression;
-    } else if (expression.type === types.COMPONENT) {
-        expression.accept(this);
-    }
-};
-
-
-// catalog:
-//     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
-//     ':' /*empty catalog*/
-SearchingVisitor.prototype.visitCatalog = function(catalog) {
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        associations[i].accept(this);
-    }
-};
-
-
-// component: object parameters?
-SearchingVisitor.prototype.visitComponent = function(component) {
-    var object = component.children[0];
-    if (object.type === types.STRUCTURE) {
-        object.accept(this);
-    }
-};
-
-
-// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
-SearchingVisitor.prototype.visitDocument = function(document) {
-    var component = document.documentContent;
-    component.accept(this);
-};
-
-
-// list:
-//     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
-//     /*empty list*/
-SearchingVisitor.prototype.visitList = function(list) {
-    var expressions = list.children;
-    for (var i = 1; i < expressions.length; i++) {
-        var expression = expressions[i];
-        if (expression.type === types.COMPONENT) {
-            expression.accept(this);
-        }
-    }
-};
-
-
-// structure: '[' collection ']'
-SearchingVisitor.prototype.visitStructure = function(structure) {
-    var collection = structure.children[0];
-    if (collection.type !== types.RANGE) {
-        collection.accept(this);
     }
 };

@@ -15,12 +15,19 @@
  */
 var antlr = require('antlr4');
 var grammar = require('../grammar');
-var Document = require('../nodes/Document').Document;
+var BaliDocument = require('../BaliDocument');
 var Tree = require('../nodes/Tree').Tree;
 var Terminal = require('../nodes/Terminal').Terminal;
 var types = require('../nodes/Types');
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * document.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting document.
+ */
 exports.parseDocument = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.document();
@@ -29,6 +36,13 @@ exports.parseDocument = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * component.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting component.
+ */
 exports.parseComponent = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.component();
@@ -37,6 +51,13 @@ exports.parseComponent = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * parameters.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting parameters.
+ */
 exports.parseParameters = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.parameters();
@@ -45,6 +66,13 @@ exports.parseParameters = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * element.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting element.
+ */
 exports.parseElement = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.element();
@@ -53,6 +81,13 @@ exports.parseElement = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * structure.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting structure.
+ */
 exports.parseStructure = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.structure();
@@ -61,6 +96,13 @@ exports.parseStructure = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * range.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting range.
+ */
 exports.parseRange = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.range();
@@ -69,6 +111,13 @@ exports.parseRange = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * list.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting list.
+ */
 exports.parseList = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.list();
@@ -77,6 +126,13 @@ exports.parseList = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * catalog.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting catalog.
+ */
 exports.parseCatalog = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.catalog();
@@ -85,6 +141,13 @@ exports.parseCatalog = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * procedure.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting procedure.
+ */
 exports.parseProcedure = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.procedure();
@@ -93,6 +156,13 @@ exports.parseProcedure = function(source) {
 };
 
 
+/**
+ * This function parses a Bali source string and returns the corresponding
+ * expression.
+ * 
+ * @param {String} source The Bali source string.
+ * @returns {BaliDocument} The resulting expression.
+ */
 exports.parseExpression = function(source) {
     var parser = initializeParser(source);
     var antlrTree = parser.expression();
@@ -367,7 +437,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
     ctx.content().accept(this);
     var documentContent = this.result;
 
-    var document = new Document(documentContent, previousReference);
+    var document = BaliDocument.fromContent(documentContent, previousReference);
 
     var seals = ctx.seal();
     for (var i = 0; i < seals.length; i++) {
