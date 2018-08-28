@@ -86,6 +86,83 @@ BaliDocument.prototype.constructor = BaliDocument;
 
 
 /**
+ * This function returns a (deep) copy of the document.
+ * 
+ * @returns {BaliDocument} A deep copy of the document.
+ */
+BaliDocument.prototype.copy = function() {
+    var source = this.toString();
+    var copy = parser.parseDocument(source);
+    return copy;
+};
+
+
+/**
+ * This function returns a draft copy of the document. The previous version reference
+ * and seals from the original document have been removed from the draft copy.
+ * 
+ * @param {String} previousReference A reference to the document.
+ * @returns {BaliDocument} A draft copy of the document.
+ */
+BaliDocument.prototype.draft = function(previousReference) {
+    if (previousReference.constructor.name === 'String') {
+        previousReference = parser.parseElement(previousReference);
+    }
+    var source = this.toString();
+    var draft = parser.parseDocument(source);
+    draft.previousReference = previousReference;
+    draft.notarySeals = [];
+    return draft;
+};
+
+
+/**
+ * This function returns a copy of the document without its last notary seal.
+ * 
+ * @returns {BaliDocument} A copy of the document without the last seal.
+ */
+BaliDocument.prototype.unsealed = function() {
+    var copy = this.copy();
+    copy.notarySeals.pop();
+    return copy;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {NodeVisitor} visitor The visitor that wants to visit this document.
+ */
+BaliDocument.prototype.accept = function(visitor) {
+    visitor.visitDocument(this);
+};
+
+
+/**
+ * This function formats the specified parse tree object as Bali source string.
+ * 
+ * @param {String} optionalPadding An optional string that is used
+ * to prefix each line of the resulting string.
+ * @returns {String} The resulting source string.
+ */
+BaliDocument.prototype.toSource = function(optionalPadding) {
+    var source = formatter.formatParseTree(this, optionalPadding);
+    return source;
+};
+
+
+/**
+ * This method returns a string representation of this document.
+ * 
+ * @returns {String} The string representation of this document.
+ */
+BaliDocument.prototype.toString = function() {
+    var string = formatter.formatParseTree(this);
+    return string;
+};
+
+
+/**
  * This function retrieves from a document the string value associated with the
  * specified key.
  * 
@@ -141,32 +218,6 @@ BaliDocument.prototype.setValueForKey = function(key, value) {
     var visitor = new SearchingVisitor(key, value);
     this.accept(visitor);
     return visitor.result;
-    /*
-    var association, symbol, old;
-    var structure = this.documentContent.children[0];
-    var catalog = structure.children[0];
-
-    // check to see if the symbol already exists in the catalog
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        association = associations[i];
-        var component = association.children[0];
-        symbol = component.children[0];
-        if (association.children[0].children[0].value === key.children[0].value) {
-            old = association.children[1];
-            association.children[1] = value;
-            return old;
-        }
-    }
-
-    // add a new association to the catalog
-    association = new Tree(types.ASSOCIATION);
-    association.addChild(key);
-    association.addChild(value);
-    catalog.addChild(association);
-
-    return old;
-    */
 };
 
 
@@ -181,21 +232,9 @@ BaliDocument.prototype.deleteKey = function(key) {
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
-    var association, symbol;
-    var structure = this.documentContent.children[0];
-    var catalog = structure.children[0];
-
-    // find the key in the catalog
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        association = associations[i];
-        var component = association.children[0];
-        symbol = component.children[0];
-        if (symbol.value === key.value) {
-            associations.splice(i, 1);  // remove this association
-            return;
-        }
-    }
+    var visitor = new SearchingVisitor(key, null, true);
+    this.accept(visitor);
+    return visitor.result;
 };
 
 
@@ -204,7 +243,7 @@ BaliDocument.prototype.deleteKey = function(key) {
  * 
  * @returns {Seal} The last notary seal attached to the document.
  */
-BaliDocument.prototype.getSeal = function() {
+BaliDocument.prototype.getLastSeal = function() {
     var seal = this.notarySeals[this.notarySeals.length - 1];
     return seal;
 };
@@ -242,107 +281,15 @@ BaliDocument.prototype.addSeal = function(previousReference, digitalSignature) {
 };
 
 
-/**
- * This function returns a (deep) copy of the document.
- * 
- * @returns {BaliDocument} A deep copy of the document.
- */
-BaliDocument.prototype.copy = function() {
-    var source = this.toString();
-    var copy = parser.parseDocument(source);
-    return copy;
-};
-
-
-/**
- * This function returns a draft copy of the document. The previous version reference
- * and seals from the original document have been removed from the draft copy.
- * 
- * @param {String} previousReference A reference to the document.
- * @returns {BaliDocument} A draft copy of the document.
- */
-BaliDocument.prototype.draft = function(previousReference) {
-    if (previousReference.constructor.name === 'String') {
-        previousReference = parser.parseElement(previousReference);
-    }
-    var source = this.toString();
-    var draft = parser.parseDocument(source);
-    draft.previousReference = previousReference;
-    draft.notarySeals = [];
-    return draft;
-};
-
-
-/**
- * This function returns a copy of the document without its last notary seal.
- * 
- * @returns {BaliDocument} A copy of the document without the last seal.
- */
-BaliDocument.unsealed = function() {
-    var copy = this.copy();
-    copy.notarySeals.pop();
-    return copy;
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {NodeVisitor} visitor The visitor that wants to visit this document.
- */
-BaliDocument.prototype.accept = function(visitor) {
-    visitor.visitDocument(this);
-};
-
-
-/**
- * This function formats the specified parse tree object as Bali source string.
- * 
- * @param {String} optionalPadding An optional string that is used
- * to prefix each line of the resulting string.
- * @returns {String} The resulting source string.
- */
-BaliDocument.prototype.toSource = function(optionalPadding) {
-    var source = formatter.formatParseTree(this, optionalPadding);
-    return source;
-};
-
-
-/**
- * This method returns a string representation of this document.
- * 
- * @returns {String} The string representation of this document.
- */
-BaliDocument.prototype.toString = function() {
-    var string = formatter.formatParseTree(this);
-    return string;
-};
-
-
 // PRIVATE CLASSES
 
-function SearchingVisitor(key, value) {
+function SearchingVisitor(key, value, remove) {
     this.key = key;
     this.value = value;
+    this.remove = remove;
     return this;
 }
 SearchingVisitor.prototype.constructor = SearchingVisitor;
-
-
-// association: component ':' expression
-SearchingVisitor.prototype.visitAssociation = function(association) {
-    var component = association.children[0];
-    var expression = association.children[1];
-    var object = component.children[0];
-    if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value === this.key) {
-        this.result = expression;
-        if (this.value) {
-            association.children[1] = this.value;
-        }
-    } else if (expression.type === types.COMPONENT) {
-        expression.accept(this);
-    }
-};
 
 
 // catalog:
@@ -352,7 +299,20 @@ SearchingVisitor.prototype.visitAssociation = function(association) {
 SearchingVisitor.prototype.visitCatalog = function(catalog) {
     var associations = catalog.children;
     for (var i = 0; i < associations.length; i++) {
-        associations[i].accept(this);
+        var association = associations[i];
+        var component = association.children[0];
+        var expression = association.children[1];
+        var object = component.children[0];
+        if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value.toString() === this.key.toString()) {
+            this.result = expression;
+            if (this.remove) {
+                associations.splice(i, 1);
+            } else if (this.value) {
+                association.children[1] = this.value;
+            }
+        } else if (expression.type === types.COMPONENT) {
+            expression.accept(this);
+        }
         if (this.result) break;
     }
 };
@@ -367,10 +327,10 @@ SearchingVisitor.prototype.visitComponent = function(component) {
 };
 
 
-// document: NEWLINE* (reference NEWLINE)? component (NEWLINE seal)* NEWLINE* EOF
+// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 SearchingVisitor.prototype.visitDocument = function(document) {
-    var component = document.documentContent;
-    component.accept(this);
+    var content = document.documentContent;
+    content.accept(this);
 };
 
 
@@ -380,7 +340,7 @@ SearchingVisitor.prototype.visitDocument = function(document) {
 //     /*empty list*/
 SearchingVisitor.prototype.visitList = function(list) {
     var expressions = list.children;
-    for (var i = 1; i < expressions.length; i++) {
+    for (var i = 0; i < expressions.length; i++) {
         var expression = expressions[i];
         if (expression.type === types.COMPONENT) {
             expression.accept(this);
