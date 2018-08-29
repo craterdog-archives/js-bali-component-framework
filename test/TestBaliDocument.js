@@ -54,15 +54,56 @@ describe('Bali Document Notation™', function() {
 
     });
 
-    describe('Test Document Content Access', function() {
+    describe('Test Document List Access', function() {
+        var item;
+        var list = document.getValue('$list');
+        expect(list).to.exist;  // jshint ignore:line
+
+        it('should retrieve list items', function() {
+            item = list.getItem(0);
+            expect(item).to.exist;  // jshint ignore:line
+            var iterator = list.iterator();
+            expect(iterator).to.exist;  // jshint ignore:line
+            expect(item.element().toString()).to.equal(iterator.getNext().element().toString());
+        });
+
+        it('should add list items', function() {
+            var newItem = parser.parseComponent('$element2');
+            list.addItem(newItem);
+            item = list.getItem(2);
+            expect(item.element().toString()).to.equal(newItem.element().toString());
+        });
+
+        it('should update list items', function() {
+            item = list.getItem(1);
+            expect(item).to.exist;  // jshint ignore:line
+            var newItem = parser.parseComponent('$element');
+            var oldItem = list.setItem(1, newItem);
+            expect(oldItem).to.exist;  // jshint ignore:line
+            expect(oldItem.element().toString()).to.equal(item.element().toString());
+            item = list.getItem(1);
+            expect(item.element().toString()).to.equal(newItem.element().toString());
+        });
+
+        it('should remove list items', function() {
+            item = list.getItem(2);
+            expect(item).to.exist;  // jshint ignore:line
+            var oldItem = list.removeItem(2);
+            expect(oldItem).to.exist;  // jshint ignore:line
+            expect(oldItem.element().toString()).to.equal(item.element().toString());
+        });
+
+    });
+
+    describe('Test Document Catalog Access', function() {
         var stringKey = '$foo';
         var key = parser.parseElement(stringKey);
         expect(key).to.exist;  // jshint ignore:line
         var value;
 
         it('should retrieve attribute values', function() {
-            var stringValue = document.getStringForKey(key);
-            value = document.getValueForKey(stringKey);
+            var stringValue = document.getString(key);
+            value = document.getValue(stringKey);
             expect(value).to.exist;  // jshint ignore:line
             expect(value.toString()).to.equal(stringValue);
         });
@@ -70,19 +111,19 @@ describe('Bali Document Notation™', function() {
         it('should set new attribute values', function() {
             var newKey = parser.parseElement('$new');
             var stringValue = value.toString();
-            var oldValue = document.setValueForKey(newKey, value);
+            var oldValue = document.setValue(newKey, value);
             expect(oldValue).to.not.exist;  // jshint ignore:line
-            value = document.getValueForKey(newKey);
+            value = document.getValue(newKey);
             expect(value).to.exist;  // jshint ignore:line
             expect(value.toString()).to.equal(stringValue);
         });
 
         it('should update attribute values', function() {
             var stringValue = '$baz';
-            var oldValue = document.setValueForKey(stringKey, stringValue);
+            var oldValue = document.setValue(stringKey, stringValue);
             expect(oldValue).to.exist;  // jshint ignore:line
             expect(oldValue.toString()).to.equal(value.toString());
-            value = document.getValueForKey(stringKey);
+            value = document.getValue(stringKey);
             expect(value).to.exist;  // jshint ignore:line
             expect(value.toString()).to.equal(stringValue);
         });

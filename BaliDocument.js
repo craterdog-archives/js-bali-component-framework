@@ -14,9 +14,6 @@
  */
 var parser = require('./transformers/DocumentParser');
 var formatter = require('./transformers/DocumentFormatter');
-var scanner = require('./transformers/DocumentScanner');
-var Tree = require('./nodes/Tree').Tree;
-var types = require('./nodes/Types');
 
 
 /**
@@ -146,6 +143,78 @@ BaliDocument.prototype.toString = function() {
 };
 
 
+// ELEMENTS
+
+/**
+ * This function drills down a tree node to find it's terminal node and returns that element.
+ * 
+ * @returns {Terminal} The terminal node containing the element value.
+ */
+BaliDocument.prototype.element = function() {
+    return this.documentContent.element();
+};
+
+
+// LISTS
+
+/**
+ * This function constructs an iterator for the specified list or catalog. If a catalog
+ * is specified, the iterator returns the associations in the catalog.
+ * 
+ * @returns {ListIterator} The new iterator.
+ */
+BaliDocument.prototype.iterator = function() {
+    return this.documentContent.iterator();
+};
+
+
+/**
+ * This function retrieves from a list the item associated with the
+ * specified index.
+ * 
+ * @param {Number} index The ordinal based index of the desired item.
+ * @returns {Component} The item associated with the index.
+ */
+BaliDocument.prototype.getItem = function(index) {
+    return this.documentContent.getItem(index);
+};
+
+
+/**
+ * This function sets in a list the item associated with the specified index.
+ * 
+ * @param {Number} index The ordinal based index of the item.
+ * @param {Component} item The item to be associated with the index.
+ * @returns {Component} The old item associated with the index.
+ */
+BaliDocument.prototype.setItem = function(index, item) {
+    return this.documentContent.setItem(index, item);
+};
+
+
+/**
+ * This function adds a new item to a list.
+ * 
+ * @param {Component} item The item to be added to the list.
+ */
+BaliDocument.prototype.addItem = function(item) {
+    return this.documentContent.addItem(item);
+};
+
+
+/**
+ * This function removes an existing item from a list.
+ * 
+ * @param {Number} index The index of the item to be removed from the list.
+ * @returns {Component} The old item associated with the index.
+ */
+BaliDocument.prototype.removeItem = function(index) {
+    return this.documentContent.removeItem(index);
+};
+
+
+// CATALOGS
+
 /**
  * This function retrieves from a document the string value associated with the
  * specified key.
@@ -153,8 +222,8 @@ BaliDocument.prototype.toString = function() {
  * @param {String} key The string form of the key.
  * @returns {Component} The string value associated with the key.
  */
-BaliDocument.prototype.getStringForKey = function(key) {
-    return this.documentContent.getStringForKey(key);
+BaliDocument.prototype.getString = function(key) {
+    return this.documentContent.getString(key);
 };
 
 
@@ -165,8 +234,8 @@ BaliDocument.prototype.getStringForKey = function(key) {
  * @param {String} key The string form of the key.
  * @returns {Component} The value associated with the key.
  */
-BaliDocument.prototype.getValueForKey = function(key) {
-    return this.documentContent.getValueForKey(key);
+BaliDocument.prototype.getValue = function(key) {
+    return this.documentContent.getValue(key);
 };
 
 
@@ -178,8 +247,8 @@ BaliDocument.prototype.getValueForKey = function(key) {
  * @param {Component} value The value to be associated with the key.
  * @returns {Component} The old value associated with the key.
  */
-BaliDocument.prototype.setValueForKey = function(key, value) {
-    return this.documentContent.setValueForKey(key, value);
+BaliDocument.prototype.setValue = function(key, value) {
+    return this.documentContent.setValue(key, value);
 };
 
 
@@ -194,6 +263,8 @@ BaliDocument.prototype.deleteKey = function(key) {
     return this.documentContent.deleteKey(key);
 };
 
+
+// NOTARY SEALS
 
 /**
  * This function returns the last notary seal attached to the document.

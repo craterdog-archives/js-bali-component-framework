@@ -200,6 +200,132 @@ Tree.prototype.toString = function() {
 };
 
 
+// ELEMENTS
+
+/**
+ * This function drills down a tree node to find it's terminal node and returns that element.
+ * 
+ * @returns {Terminal} The terminal node containing the element value.
+ */
+Tree.prototype.element = function() {
+    var node = this;
+    while (node.constructor.name === 'Tree') {
+        node = node.children[0];
+    }
+    return node;
+};
+
+
+// LISTS
+
+/**
+ * This function constructs an iterator for the specified list or catalog. If a catalog
+ * is specified, the iterator returns the associations in the catalog.
+ * 
+ * @returns {ListIterator} The new iterator.
+ */
+Tree.prototype.iterator = function() {
+    var iterator;
+    if (this.type === types.COMPONENT) {
+        var object = this.children[0];
+        if (object.type === types.STRUCTURE) {
+            var collection = object.children[0];
+            if (collection.type === types.LIST) {
+                iterator = new ListIterator(collection);
+            }
+        }
+    }
+    return iterator;
+};
+
+
+/**
+ * This function retrieves from a list the item associated with the
+ * specified index.
+ * 
+ * @param {Number} index The ordinal based index of the desired item.
+ * @returns {Component} The item associated with the index.
+ */
+Tree.prototype.getItem = function(index) {
+    var item;
+    if (this.type === types.COMPONENT) {
+        var object = this.children[0];
+        if (object.type === types.STRUCTURE) {
+            var collection = object.children[0];
+            if (collection.type === types.LIST) {
+                item = collection.children[index];
+            }
+        }
+    }
+    return item;
+};
+
+
+/**
+ * This function sets in a list the item associated with the specified index.
+ * 
+ * @param {Number} index The ordinal based index of the item.
+ * @param {Component} item The item to be associated with the index.
+ * @returns {Component} The old item associated with the index.
+ */
+Tree.prototype.setItem = function(index, item) {
+    var old;
+    if (this.type === types.COMPONENT) {
+        var object = this.children[0];
+        if (object.type === types.STRUCTURE) {
+            var collection = object.children[0];
+            if (collection.type === types.LIST) {
+                old = collection.children[index];
+                collection.children[index] = item;
+            }
+        }
+    }
+    return old;
+};
+
+
+/**
+ * This function adds a new item to a list.
+ * 
+ * @param {Component} item The item to be added to the list.
+ */
+Tree.prototype.addItem = function(item) {
+    if (this.type === types.COMPONENT) {
+        var object = this.children[0];
+        if (object.type === types.STRUCTURE) {
+            var collection = object.children[0];
+            if (collection.type === types.LIST) {
+                collection.children.push(item);
+            }
+        }
+    }
+};
+
+
+/**
+ * This function removes an existing item from a list.
+ * 
+ * @param {Number} index The index of the item to be removed from the list.
+ * @returns {Component} The old item associated with the index.
+ */
+Tree.prototype.removeItem = function(index) {
+    var old;
+    if (this.type === types.COMPONENT) {
+        var object = this.children[0];
+        if (object.type === types.STRUCTURE) {
+            var collection = object.children[0];
+            if (collection.type === types.LIST) {
+                old = collection.children[index];
+                collection.children.splice(index, 1);
+            }
+        }
+    }
+    return old;
+};
+
+
+// CATALOGS
+
 /**
  * This function retrieves from a document the string value associated with the
  * specified key.
@@ -207,7 +333,7 @@ Tree.prototype.toString = function() {
  * @param {String} key The string form of the key.
  * @returns {Component} The string value associated with the key.
  */
-Tree.prototype.getStringForKey = function(key) {
+Tree.prototype.getString = function(key) {
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
@@ -227,7 +353,7 @@ Tree.prototype.getStringForKey = function(key) {
  * @param {String} key The string form of the key.
  * @returns {Component} The value associated with the key.
  */
-Tree.prototype.getValueForKey = function(key) {
+Tree.prototype.getValue = function(key) {
     if (key.constructor.name === 'String') {
         key = parser.parseComponent(key);
     }
@@ -244,7 +370,7 @@ Tree.prototype.getValueForKey = function(key) {
  * @param {Component} value The value to be associated with the key.
  * @returns {Component} The old value associated with the key.
  */
-Tree.prototype.setValueForKey = function(key, value) {
+Tree.prototype.setValue = function(key, value) {
     key = parser.parseComponent(key.toString());
     value = parser.parseExpression(value.toString());
     var result = scanner.scanTree(this, key, value);
@@ -280,3 +406,26 @@ Tree.prototype.deleteKey = function(key) {
     return result;
 };
 
+
+// PRIVATE CLASSES
+
+function ListIterator(list) {
+    this.expressions = list.children;
+    this.index = 0;
+    return this;
+}
+ListIterator.prototype.constructor = ListIterator;
+
+
+ListIterator.prototype.hasNext = function() {
+    return this.index < this.expressions.length;
+};
+
+
+ListIterator.prototype.getNext = function() {
+    if (this.index < this.expressions.length) {
+        return this.expressions[this.index++];
+    } else {
+        return undefined;
+    }
+};
