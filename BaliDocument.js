@@ -14,6 +14,7 @@
  */
 var parser = require('./transformers/DocumentParser');
 var formatter = require('./transformers/DocumentFormatter');
+var scanner = require('./transformers/DocumentScanner');
 var Tree = require('./nodes/Tree').Tree;
 var types = require('./nodes/Types');
 
@@ -153,16 +154,7 @@ BaliDocument.prototype.toString = function() {
  * @returns {Component} The string value associated with the key.
  */
 BaliDocument.prototype.getStringForKey = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var visitor = new SearchingVisitor(key);
-    this.accept(visitor);
-    if (visitor.result) {
-        return visitor.result.toString();
-    } else {
-        return undefined;
-    }
+    return this.documentContent.getStringForKey(key);
 };
 
 
@@ -174,12 +166,7 @@ BaliDocument.prototype.getStringForKey = function(key) {
  * @returns {Component} The value associated with the key.
  */
 BaliDocument.prototype.getValueForKey = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var visitor = new SearchingVisitor(key);
-    this.accept(visitor);
-    return visitor.result;
+    return this.documentContent.getValueForKey(key);
 };
 
 
@@ -192,24 +179,7 @@ BaliDocument.prototype.getValueForKey = function(key) {
  * @returns {Component} The old value associated with the key.
  */
 BaliDocument.prototype.setValueForKey = function(key, value) {
-    key = parser.parseComponent(key.toString());
-    value = parser.parseExpression(value.toString());
-    var visitor = new SearchingVisitor(key, value);
-    this.accept(visitor);
-    var previousValue = visitor.result;
-    if (!previousValue) {
-        // insert as a new association in the top level catalog
-        if (this.documentContent.type === types.COMPONENT &&
-                this.documentContent.children[0].type === types.STRUCTURE &&
-                this.documentContent.children[0].children[0].type === types.CATALOG) {
-            var catalog = this.documentContent.children[0].children[0];
-            var association = new Tree(types.ASSOCIATION);
-            association.addChild(key);
-            association.addChild(value);
-            catalog.addChild(association);
-        }
-    }
-    return previousValue;
+    return this.documentContent.setValueForKey(key, value);
 };
 
 
@@ -221,12 +191,7 @@ BaliDocument.prototype.setValueForKey = function(key, value) {
  * @returns {Component} The value associated with the key.
  */
 BaliDocument.prototype.deleteKey = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var visitor = new SearchingVisitor(key, null, true);
-    this.accept(visitor);
-    return visitor.result;
+    return this.documentContent.deleteKey(key);
 };
 
 
@@ -270,82 +235,4 @@ BaliDocument.prototype.addSeal = function(previousReference, digitalSignature) {
         digitalSignature: digitalSignature
     };
     this.notarySeals.push(seal);
-};
-
-
-// PRIVATE CLASSES
-
-function SearchingVisitor(key, value, remove) {
-    this.key = key;
-    this.value = value;
-    this.remove = remove;
-    return this;
-}
-SearchingVisitor.prototype.constructor = SearchingVisitor;
-
-
-// catalog:
-//     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
-//     ':' /*empty catalog*/
-SearchingVisitor.prototype.visitCatalog = function(catalog) {
-    var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        var association = associations[i];
-        var component = association.children[0];
-        var expression = association.children[1];
-        var object = component.children[0];
-        if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value.toString() === this.key.toString()) {
-            this.result = expression;
-            if (this.remove) {
-                associations.splice(i, 1);
-            } else if (this.value) {
-                association.children[1] = this.value;
-            }
-        } else if (expression.type === types.COMPONENT) {
-            expression.accept(this);
-        }
-        if (this.result) break;
-    }
-};
-
-
-// component: object parameters?
-SearchingVisitor.prototype.visitComponent = function(component) {
-    var object = component.children[0];
-    if (object.type === types.STRUCTURE) {
-        object.accept(this);
-    }
-};
-
-
-// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
-SearchingVisitor.prototype.visitDocument = function(document) {
-    var documentContent = document.documentContent;
-    documentContent.accept(this);
-};
-
-
-// list:
-//     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
-//     /*empty list*/
-SearchingVisitor.prototype.visitList = function(list) {
-    var expressions = list.children;
-    for (var i = 0; i < expressions.length; i++) {
-        var expression = expressions[i];
-        if (expression.type === types.COMPONENT) {
-            expression.accept(this);
-        }
-        if (this.result) break;
-    }
-};
-
-
-// structure: '[' collection ']'
-SearchingVisitor.prototype.visitStructure = function(structure) {
-    var collection = structure.children[0];
-    if (collection.type !== types.RANGE) {
-        collection.accept(this);
-    }
 };

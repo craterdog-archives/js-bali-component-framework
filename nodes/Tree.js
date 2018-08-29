@@ -13,7 +13,9 @@
  * This class captures the state and methods associated with a parse tree node.
  */
 var types = require('./Types');
+var parser = require('../transformers/DocumentParser');
 var formatter = require('../transformers/DocumentFormatter');
+var scanner = require('../transformers/DocumentScanner');
 
 
 /**
@@ -196,3 +198,85 @@ Tree.prototype.toString = function() {
     var string = formatter.formatTree(this);
     return string;
 };
+
+
+/**
+ * This function retrieves from a document the string value associated with the
+ * specified key.
+ * 
+ * @param {String} key The string form of the key.
+ * @returns {Component} The string value associated with the key.
+ */
+Tree.prototype.getStringForKey = function(key) {
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
+    var result = scanner.scanTree(this, key);
+    if (result) {
+        return result.toString();
+    } else {
+        return undefined;
+    }
+};
+
+
+/**
+ * This function retrieves from a document the value associated with the
+ * specified key.
+ * 
+ * @param {String} key The string form of the key.
+ * @returns {Component} The value associated with the key.
+ */
+Tree.prototype.getValueForKey = function(key) {
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
+    var result = scanner.scanTree(this, key);
+    return result;
+};
+
+
+/**
+ * This function sets in a document a value associated with the
+ * specified key.
+ * 
+ * @param {String} key The string form of the key.
+ * @param {Component} value The value to be associated with the key.
+ * @returns {Component} The old value associated with the key.
+ */
+Tree.prototype.setValueForKey = function(key, value) {
+    key = parser.parseComponent(key.toString());
+    value = parser.parseExpression(value.toString());
+    var result = scanner.scanTree(this, key, value);
+    var previousValue = result;
+    if (!previousValue) {
+        // insert as a new association in the top level catalog
+        if (this.type === types.COMPONENT &&
+                this.children[0].type === types.STRUCTURE &&
+                this.children[0].children[0].type === types.CATALOG) {
+            var catalog = this.children[0].children[0];
+            var association = new Tree(types.ASSOCIATION);
+            association.addChild(key);
+            association.addChild(value);
+            catalog.addChild(association);
+        }
+    }
+    return previousValue;
+};
+
+
+/**
+ * This function removes from a document the value associated with the
+ * specified key.
+ * 
+ * @param {String} key The string form of the key.
+ * @returns {Component} The value associated with the key.
+ */
+Tree.prototype.deleteKey = function(key) {
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
+    var result = scanner.scanTree(this, key, null, true);
+    return result;
+};
+
