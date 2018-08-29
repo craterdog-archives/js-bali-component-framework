@@ -192,12 +192,8 @@ BaliDocument.prototype.getValueForKey = function(key) {
  * @returns {Component} The old value associated with the key.
  */
 BaliDocument.prototype.setValueForKey = function(key, value) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    if (value.constructor.name === 'String') {
-        value = parser.parseExpression(value);
-    }
+    key = parser.parseComponent(key.toString());
+    value = parser.parseExpression(value.toString());
     var visitor = new SearchingVisitor(key, value);
     this.accept(visitor);
     var previousValue = visitor.result;

@@ -67,6 +67,16 @@ describe('Bali Document Notation™', function() {
             expect(value.toString()).to.equal(stringValue);
         });
 
+        it('should set new attribute values', function() {
+            var newKey = parser.parseElement('$new');
+            var stringValue = value.toString();
+            var oldValue = document.setValueForKey(newKey, value);
+            expect(oldValue).to.not.exist;  // jshint ignore:line
+            value = document.getValueForKey(newKey);
+            expect(value).to.exist;  // jshint ignore:line
+            expect(value.toString()).to.equal(stringValue);
+        });
+
         it('should update attribute values', function() {
             var stringValue = '$baz';
             var oldValue = document.setValueForKey(stringKey, stringValue);
