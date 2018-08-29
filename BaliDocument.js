@@ -14,6 +14,7 @@
  */
 var parser = require('./transformers/DocumentParser');
 var formatter = require('./transformers/DocumentFormatter');
+var Tree = require('./nodes/Tree').Tree;
 var types = require('./nodes/Types');
 
 
@@ -199,7 +200,20 @@ BaliDocument.prototype.setValueForKey = function(key, value) {
     }
     var visitor = new SearchingVisitor(key, value);
     this.accept(visitor);
-    return visitor.result;
+    var previousValue = visitor.result;
+    if (!previousValue) {
+        // insert as a new association in the top level catalog
+        if (this.documentContent.type === types.COMPONENT &&
+                this.documentContent.children[0].type === types.STRUCTURE &&
+                this.documentContent.children[0].children[0].type === types.CATALOG) {
+            var catalog = this.documentContent.children[0].children[0];
+            var association = new Tree(types.ASSOCIATION);
+            association.addChild(key);
+            association.addChild(value);
+            catalog.addChild(association);
+        }
+    }
+    return previousValue;
 };
 
 
@@ -311,8 +325,8 @@ SearchingVisitor.prototype.visitComponent = function(component) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 SearchingVisitor.prototype.visitDocument = function(document) {
-    var content = document.documentContent;
-    content.accept(this);
+    var documentContent = document.documentContent;
+    documentContent.accept(this);
 };
 
 
