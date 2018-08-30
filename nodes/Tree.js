@@ -230,10 +230,7 @@ Tree.prototype.iterator = function() {
         var object = this.children[0];
         if (object.type === types.STRUCTURE) {
             var collection = object.children[0];
-            console.log('type: ' + collection.type);
-            //if (collection.type === types.LIST) {
-                iterator = new ListIterator(collection);
-            //}
+            iterator = new ListIterator(collection);
         }
     }
     return iterator;
