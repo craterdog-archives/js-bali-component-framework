@@ -34,6 +34,22 @@ function ScanningVisitor(key, value, remove) {
 ScanningVisitor.prototype.constructor = ScanningVisitor;
 
 
+// association: component ':' expression
+ScanningVisitor.prototype.visitAssociation = function(association) {
+    var component = association.children[0];
+    var expression = association.children[1];
+    var object = component.children[0];
+    if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value.toString() === this.key.toString()) {
+        this.result = expression;
+        if (this.value) {
+            association.children[1] = this.value;
+        }
+    } else if (expression.type === types.COMPONENT) {
+        expression.accept(this);
+    }
+};
+
+
 // catalog:
 //     association (',' association)* |
 //     NEWLINE (association NEWLINE)* |
@@ -42,20 +58,13 @@ ScanningVisitor.prototype.visitCatalog = function(catalog) {
     var associations = catalog.children;
     for (var i = 0; i < associations.length; i++) {
         var association = associations[i];
-        var component = association.children[0];
-        var expression = association.children[1];
-        var object = component.children[0];
-        if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value.toString() === this.key.toString()) {
-            this.result = expression;
+        association.accept(this);
+        if (this.result) {
             if (this.remove) {
                 associations.splice(i, 1);
-            } else if (this.value) {
-                association.children[1] = this.value;
             }
-        } else if (expression.type === types.COMPONENT) {
-            expression.accept(this);
+            break;
         }
-        if (this.result) break;
     }
 };
 
