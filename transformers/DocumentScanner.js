@@ -39,7 +39,7 @@ ScanningVisitor.prototype.visitAssociation = function(association) {
     var component = association.children[0];
     var expression = association.children[1];
     var object = component.children[0];
-    if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.value.toString() === this.key.toString()) {
+    if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.toBali() === this.key.toBali()) {
         this.result = expression;
         if (this.value) {
             association.children[1] = this.value;

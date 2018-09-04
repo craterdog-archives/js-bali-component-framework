@@ -199,10 +199,8 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
     tree.documentContent.accept(this);
     this.source += '\n';
     for (var i = 0; i < tree.notarySeals.length; i++) {
-        tree.notarySeals[i].certificateReference.accept(this);
-        this.source += ' ';
-        tree.notarySeals[i].digitalSignature.accept(this);
-        this.source += '\n';
+        var seal = tree.notarySeals[i];
+        seal.accept(this);
     }
 };
 
@@ -461,6 +459,15 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
     tree.children[0].accept(this);
     this.source += ' to ';
     tree.children[1].accept(this);
+};
+
+
+// seal: reference binary
+FormattingVisitor.prototype.visitSeal = function(tree) {
+    tree.certificateReference.accept(this);
+    this.source += ' ';
+    tree.digitalSignature.accept(this);
+    this.source += '\n';
 };
 
 

@@ -140,3 +140,15 @@ exports.VERSION = NODE_TYPES.indexOf('version');
 exports.WAIT_CLAUSE = NODE_TYPES.indexOf('waitClause');
 exports.WHILE_CLAUSE = NODE_TYPES.indexOf('whileClause');
 exports.WITH_CLAUSE = NODE_TYPES.indexOf('withClause');
+
+
+exports.isType = function(object, type) {
+    if (!object) return false;
+    try {
+        return (object.constructor.name === 'Terminal' ||
+                object.constructor.name === 'Tree') &&
+                object.type === type;
+    } catch (e) {
+        return false;
+    }
+};

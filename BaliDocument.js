@@ -14,6 +14,8 @@
  */
 var parser = require('./transformers/DocumentParser');
 var formatter = require('./transformers/DocumentFormatter');
+var types = require('./nodes/Types');
+var BaliSeal = require('./BaliSeal');
 
 
 /**
@@ -42,15 +44,11 @@ exports.fromSource = function(source) {
  * @returns {Boolean} Whether or not the object is a document.
  */
 exports.isDocument = function(object) {
-    if (!object) return false;
-    try {
-        if (object.constructor.name === 'String') {
-            object = parser.parseDocument(object);
-        }
-        return object.constructor.name === 'BaliDocument';
-    } catch (e) {
-        return false;
-    }
+    return object && object.constructor.name === 'BaliDocument' &&
+            (object.previousReference === undefined || types.isType(object.previousReference, types.REFERENCE)) &&
+            object.documentContent && (types.isType(object.documentContent, types.COMPONENT) ||
+            types.isType(object.documentContent, types.PROCEDURE)) &&
+            object.notarySeals && object.notarySeals.constructor.name === 'Array';
 };
 
 
@@ -72,7 +70,7 @@ BaliDocument.prototype.constructor = BaliDocument;
  * @returns {BaliDocument} A deep copy of the document.
  */
 BaliDocument.prototype.copy = function() {
-    var source = this.toString();
+    var source = this.toBali();
     var copy = parser.parseDocument(source);
     return copy;
 };
@@ -89,7 +87,7 @@ BaliDocument.prototype.draft = function(previousReference) {
     if (previousReference.constructor.name === 'String') {
         previousReference = parser.parseElement(previousReference);
     }
-    var source = this.toString();
+    var source = this.toBali();
     var draft = parser.parseDocument(source);
     draft.previousReference = previousReference;
     draft.notarySeals = [];
@@ -127,6 +125,7 @@ BaliDocument.prototype.accept = function(visitor) {
  * @returns {String} The Bali string representation of this document.
  */
 BaliDocument.prototype.toBali = function(padding) {
+    padding = padding ? padding : '';
     var string = formatter.formatTree(this, padding);
     return string;
 };
@@ -291,19 +290,16 @@ BaliDocument.prototype.getSeals = function() {
 /**
  * This function attaches a new notary seal to the document.
  * 
- * @param {String} previousReference A reference to the validation certificate for the seal.
+ * @param {String} certificateReference A reference to the validation certificate for the seal.
  * @param {String} digitalSignature A base 64 encoded string containing the signature for the seal.
  */
-BaliDocument.prototype.addSeal = function(previousReference, digitalSignature) {
-    if (previousReference.constructor.name === 'String') {
-        previousReference = parser.parseElement(previousReference);
+BaliDocument.prototype.addSeal = function(certificateReference, digitalSignature) {
+    if (certificateReference.constructor.name === 'String') {
+        certificateReference = parser.parseElement(certificateReference);
     }
     if (digitalSignature.constructor.name === 'String') {
         digitalSignature = parser.parseElement(digitalSignature);
     }
-    var seal = {
-        certificateReference: previousReference,
-        digitalSignature: digitalSignature
-    };
+    var seal = BaliSeal.fromScratch(certificateReference, digitalSignature);
     this.notarySeals.push(seal);
 };
