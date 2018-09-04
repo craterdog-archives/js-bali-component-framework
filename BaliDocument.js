@@ -72,7 +72,7 @@ BaliDocument.prototype.constructor = BaliDocument;
  * @returns {BaliDocument} A deep copy of the document.
  */
 BaliDocument.prototype.copy = function() {
-    var source = this.toBali();
+    var source = this.toString();
     var copy = parser.parseDocument(source);
     return copy;
 };
@@ -89,7 +89,7 @@ BaliDocument.prototype.draft = function(previousReference) {
     if (previousReference.constructor.name === 'String') {
         previousReference = parser.parseElement(previousReference);
     }
-    var source = this.toBali();
+    var source = this.toString();
     var draft = parser.parseDocument(source);
     draft.previousReference = previousReference;
     draft.notarySeals = [];
