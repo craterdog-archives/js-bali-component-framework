@@ -72,7 +72,7 @@ BaliDocument.prototype.constructor = BaliDocument;
  * @returns {BaliDocument} A deep copy of the document.
  */
 BaliDocument.prototype.copy = function() {
-    var source = this.toString();
+    var source = this.toBali();
     var copy = parser.parseDocument(source);
     return copy;
 };
@@ -89,7 +89,7 @@ BaliDocument.prototype.draft = function(previousReference) {
     if (previousReference.constructor.name === 'String') {
         previousReference = parser.parseElement(previousReference);
     }
-    var source = this.toString();
+    var source = this.toBali();
     var draft = parser.parseDocument(source);
     draft.previousReference = previousReference;
     draft.notarySeals = [];
@@ -120,15 +120,15 @@ BaliDocument.prototype.accept = function(visitor) {
 
 
 /**
- * This function formats the specified parse tree object as Bali source string.
+ * This method returns a Bali string representation of this document.
  * 
- * @param {String} optionalPadding An optional string that is used
- * to prefix each line of the resulting string.
- * @returns {String} The resulting source string.
+ * @param {String} padding Optional padding spaces to be prepended to
+ * each line of the output string.
+ * @returns {String} The Bali string representation of this document.
  */
-BaliDocument.prototype.toSource = function(optionalPadding) {
-    var source = formatter.formatTree(this, optionalPadding);
-    return source;
+BaliDocument.prototype.toBali = function(padding) {
+    var string = formatter.formatTree(this, padding);
+    return string;
 };
 
 

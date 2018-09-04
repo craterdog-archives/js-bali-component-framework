@@ -190,9 +190,22 @@ Tree.prototype.addChild = function(node) {
 
 
 /**
- * This method returns a string representation of this node.
+ * This method returns a Bali string representation of this tree node.
  * 
- * @returns {String} The string representation of this node.
+ * @param {String} padding Optional padding spaces to be prepended to
+ * each line of the output string.
+ * @returns {String} The Bali string representation of this tree node.
+ */
+Tree.prototype.toBali = function(padding) {
+    var string = formatter.formatTree(this, padding);
+    return string;
+};
+
+
+/**
+ * This method returns a string representation of this tree node.
+ * 
+ * @returns {String} The string representation of this tree node.
  */
 Tree.prototype.toString = function() {
     var string = formatter.formatTree(this);
@@ -325,7 +338,7 @@ Tree.prototype.removeItem = function(index) {
 // CATALOGS
 
 /**
- * This function retrieves from a document the string value associated with the
+ * This function retrieves from a tree node the string value associated with the
  * specified key.
  * 
  * @param {String} key The string form of the key.
@@ -345,7 +358,7 @@ Tree.prototype.getString = function(key) {
 
 
 /**
- * This function retrieves from a document the value associated with the
+ * This function retrieves from a tree node the value associated with the
  * specified key.
  * 
  * @param {String} key The string form of the key.
@@ -361,7 +374,7 @@ Tree.prototype.getValue = function(key) {
 
 
 /**
- * This function sets in a document a value associated with the
+ * This function sets in a tree node a value associated with the
  * specified key.
  * 
  * @param {String} key The string form of the key.
@@ -390,7 +403,7 @@ Tree.prototype.setValue = function(key, value) {
 
 
 /**
- * This function removes from a document the value associated with the
+ * This function removes from a tree node the value associated with the
  * specified key.
  * 
  * @param {String} key The string form of the key.

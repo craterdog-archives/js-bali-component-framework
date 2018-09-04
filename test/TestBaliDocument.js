@@ -25,14 +25,14 @@ describe('Bali Document Notation™', function() {
         it('should create a document from source', function() {
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toSource()).to.equal(source);
+            expect(document.toString()).to.equal(source);
         });
 
         it('should create a copy of a document', function() {
             document = document.copy();
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toSource()).to.equal(source);
+            expect(document.toString()).to.equal(source);
         });
 
         it('should create a draft of a document', function() {
@@ -40,7 +40,7 @@ describe('Bali Document Notation™', function() {
             var draft = document.draft(document.previousReference);
             expect(draft).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(draft)).to.equal(true);
-            expect(draft.toSource()).to.equal(document.toString());
+            expect(draft.toString()).to.equal(document.toString());
             document = baliDocument.fromSource(source);
         });
 
@@ -64,14 +64,14 @@ describe('Bali Document Notation™', function() {
             expect(item).to.exist;  // jshint ignore:line
             var iterator = list.iterator();
             expect(iterator).to.exist;  // jshint ignore:line
-            expect(item.element().toString()).to.equal(iterator.getNext().element().toString());
+            expect(item.toString()).to.equal(iterator.getNext().toString());
         });
 
         it('should add list items', function() {
             var newItem = parser.parseComponent('$element2');
             list.addItem(newItem);
             item = list.getItem(2);
-            expect(item.element().toString()).to.equal(newItem.element().toString());
+            expect(item.toString()).to.equal(newItem.toString());
         });
 
         it('should update list items', function() {
@@ -80,9 +80,9 @@ describe('Bali Document Notation™', function() {
             var newItem = parser.parseComponent('$element');
             var oldItem = list.setItem(1, newItem);
             expect(oldItem).to.exist;  // jshint ignore:line
-            expect(oldItem.element().toString()).to.equal(item.element().toString());
+            expect(oldItem.toString()).to.equal(item.toString());
             item = list.getItem(1);
-            expect(item.element().toString()).to.equal(newItem.element().toString());
+            expect(item.toString()).to.equal(newItem.toString());
         });
 
         it('should remove list items', function() {
@@ -90,7 +90,7 @@ describe('Bali Document Notation™', function() {
             expect(item).to.exist;  // jshint ignore:line
             var oldItem = list.removeItem(2);
             expect(oldItem).to.exist;  // jshint ignore:line
-            expect(oldItem.element().toString()).to.equal(item.element().toString());
+            expect(oldItem.toString()).to.equal(item.toString());
         });
 
     });

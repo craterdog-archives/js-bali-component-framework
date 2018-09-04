@@ -72,10 +72,23 @@ Terminal.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns a string representation of this node.
+ * This method returns a Bali string representation of this terminal node.
  * 
- * @returns {String} The string representation of this node.
+ * @param {String} padding Optional padding spaces to be prepended to
+ * each line of the output string.
+ * @returns {String} The Bali string representation of this terminal node.
+ */
+Terminal.prototype.toBali = function(padding) {
+    return this.value;
+};
+
+
+/**
+ * This method returns a string representation of this terminal node.
+ * 
+ * @returns {String} The string representation of this terminal node.
  */
 Terminal.prototype.toString = function() {
     return this.value;
 };
+
