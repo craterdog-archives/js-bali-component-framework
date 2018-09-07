@@ -95,16 +95,16 @@ FormattingVisitor.prototype.visitCatalog = function(tree) {
     }
     if (tree.isSimple) {
         associations[0].accept(this);
-        for (var i = 1; i < associations.length; i++) {
+        associations.slice(1).forEach(function(association) {
             this.source += ', ';
-            associations[i].accept(this);
-        }
+            association.accept(this);
+        }, this);
     } else {
         this.depth++;
-        for (var j = 0; j < associations.length; j++) {
+        associations.forEach(function(association) {
             this.appendNewline();
-            associations[j].accept(this);
-        }
+            association.accept(this);
+        }, this);
         this.depth--;
         this.appendNewline();
     }
@@ -156,9 +156,9 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 
 // component: object parameters?
 FormattingVisitor.prototype.visitComponent = function(tree) {
-    for (var i = 0; i < tree.children.length; i++) {
-        tree.children[i].accept(this);
-    }
+    tree.children.forEach(function(child) {
+        child.accept(this);
+    }, this);
 };
 
 
@@ -198,10 +198,9 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
     }
     tree.documentContent.accept(this);
     this.source += '\n';
-    for (var i = 0; i < tree.notarySeals.length; i++) {
-        var seal = tree.notarySeals[i];
+    tree.notarySeals.forEach(function(seal) {
         seal.accept(this);
-    }
+    }, this);
 };
 
 
@@ -329,16 +328,16 @@ FormattingVisitor.prototype.visitList = function(tree) {
     if (expressions.length === 0) return;
     if (tree.isSimple) {
         expressions[0].accept(this);
-        for (var i = 1; i < expressions.length; i++) {
+        expressions.slice(1).forEach(function(expression) {
             this.source += ', ';
-            expressions[i].accept(this);
-        }
+            expression.accept(this);
+        }, this);
     } else {
         this.depth++;
-        for (var j = 0; j < expressions.length; j++) {
+        expressions.forEach(function(expression) {
             this.appendNewline();
-            expressions[j].accept(this);
-        }
+            expression.accept(this);
+        }, this);
         this.depth--;
         this.appendNewline();
     }
@@ -403,16 +402,16 @@ FormattingVisitor.prototype.visitProcedure = function(tree) {
     if (statements.length === 0 && tree.isSimple) return;
     if (tree.isSimple) {
         statements[0].accept(this);
-        for (var i = 1; i < statements.length; i++) {
+        statements.slice(1).forEach(function(statement) {
             this.source += '; ';
-            statements[i].accept(this);
-        }
+            statement.accept(this);
+        }, this);
     } else {
         this.depth++;
-        for (var j = 0; j < statements.length; j++) {
+        statements.forEach(function(statement) {
             this.appendNewline();
-            statements[j].accept(this);
-        }
+            statement.accept(this);
+        }, this);
         this.depth--;
         this.appendNewline();
     }
@@ -497,9 +496,9 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 
 // statement: mainClause handleClause*
 FormattingVisitor.prototype.visitStatement = function(tree) {
-    for (var i = 0; i < tree.children.length; i++) {
-        tree.children[i].accept(this);
-    }
+    tree.children.forEach(function(child) {
+        child.accept(this);
+    }, this);
 };
 
 

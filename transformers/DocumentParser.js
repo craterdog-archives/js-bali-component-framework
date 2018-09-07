@@ -275,10 +275,10 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyCatalogContext') {
         var associations = ctx.association();
-        for (var i = 0; i < associations.length; i++) {
-            associations[i].accept(this);
+        associations.forEach(function(association) {
+            association.accept(this);
             tree.addChild(this.result);
-        }
+        }, this);
     }
     if (type !== 'NewlineCatalogContext') tree.isSimple = true;
     this.result = tree;
@@ -369,10 +369,10 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 // component: object parameters?
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new Tree(types.COMPONENT);
-    for (var i = 0; i < ctx.children.length; i++) {
-        ctx.children[i].accept(this);
-    tree.addChild(this.result);
-    }
+    ctx.children.forEach(function(child) {
+        child.accept(this);
+        tree.addChild(this.result);
+    }, this);
     this.result = tree;
 };
 
@@ -442,13 +442,13 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
     document.previousReference = previousReference;
 
     var seals = ctx.seal();
-    for (var i = 0; i < seals.length; i++) {
-        seals[i].reference().accept(this);
+    seals.forEach(function(seal) {
+        seal.reference().accept(this);
         var certificateReference = this.result;
-        seals[i].binary().accept(this);
+        seal.binary().accept(this);
         var digitalSignature = this.result;
         document.addSeal(certificateReference, digitalSignature);
-    }
+    }, this);
     this.result = document;
 };
 
@@ -678,10 +678,10 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyListContext') {
         var expressions = ctx.expression();
-        for (var i = 0; i < expressions.length; i++) {
-            expressions[i].accept(this);
+        expressions.forEach(function(expression) {
+            expression.accept(this);
             tree.addChild(this.result);
-        }
+        }, this);
     }
     if (type !== 'NewlineListContext') tree.isSimple = true;
     this.result = tree;
@@ -812,10 +812,10 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
         var statements = ctx.statement();
-        for (var i = 0; i < statements.length; i++) {
-            statements[i].accept(this);
+        statements.forEach(function(statement) {
+            statement.accept(this);
             tree.addChild(this.result);
-        }
+        }, this);
     }
     if (type !== 'NewlineProcedureContext') tree.isSimple = true;
     this.result = tree;
@@ -934,10 +934,10 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
     ctx.mainClause().accept(this);
     tree.addChild(this.result);
     var handleClauses = ctx.handleClause();
-    for (var i = 0; i < handleClauses.length; i++) {
-        handleClauses[i].accept(this);
+    handleClauses.forEach(function(clause) {
+        clause.accept(this);
         tree.addChild(this.result);
-    }
+    }, this);
     this.result = tree;
 };
 

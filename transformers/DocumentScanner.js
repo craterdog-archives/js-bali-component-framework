@@ -56,14 +56,13 @@ ScanningVisitor.prototype.visitAssociation = function(association) {
 //     ':' /*empty catalog*/
 ScanningVisitor.prototype.visitCatalog = function(catalog) {
     var associations = catalog.children;
-    for (var i = 0; i < associations.length; i++) {
-        var association = associations[i];
+    var index = associations.findIndex(function(association) {
         association.accept(this);
-        if (this.result) {
-            if (this.remove) {
-                associations.splice(i, 1);
-            }
-            break;
+        return this.result;
+    }, this);
+    if (index > -1) {
+        if (this.remove) {
+            associations.splice(index, 1);
         }
     }
 };
@@ -116,13 +115,12 @@ ScanningVisitor.prototype.visitElement = function(element) {
 //     /*empty list*/
 ScanningVisitor.prototype.visitList = function(list) {
     var expressions = list.children;
-    for (var i = 0; i < expressions.length; i++) {
-        var expression = expressions[i];
+    expressions.find(function(expression) {
         if (expression.type === types.COMPONENT) {
             expression.accept(this);
         }
-        if (this.result) break;
-    }
+        return this.result;
+    }, this);
 };
 
 

@@ -101,9 +101,7 @@ exports.base2Encode = function(buffer, indentation) {
     }
 
     // encode each byte
-    for (var i = 0; i < length; i++) {
-        var byte = buffer[i];
-
+    buffer.forEach(function(byte, index) {
         // encode each bit
         for (var b = 7; b >= 0; b--) {
             var mask = 1 << b;
@@ -112,12 +110,11 @@ exports.base2Encode = function(buffer, indentation) {
         }
 
         // format as indented 80 character blocks
-        if (i < length - 1 && i % 10 === 9) {
+        if (index < length - 1 && index % 10 === 9) {
             base2 += '\n';
             base2 += indentation;
         }
-
-    }
+    });
 
     return base2;
 };
@@ -192,9 +189,7 @@ exports.base16Encode = function(buffer, indentation) {
     }
 
     // encode each byte
-    for (var i = 0; i < length; i++) {
-        var byte = buffer[i];
-
+    buffer.forEach(function(byte, index) {
         // encode high order nybble
         var highOrderNybble = (byte & 0xF0) >>> 4;
         base16 += base16LookupTable[highOrderNybble];
@@ -204,12 +199,11 @@ exports.base16Encode = function(buffer, indentation) {
         base16 += base16LookupTable[lowOrderNybble];
 
         // format as indented 80 character blocks
-        if (i < length - 1 && i % 40 === 39) {
+        if (index < length - 1 && index % 40 === 39) {
             base16 += '\n';
             base16 += indentation;
         }
-
-    }
+    });
 
     return base16;
 };
