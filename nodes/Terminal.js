@@ -78,7 +78,7 @@ Terminal.prototype.accept = function(visitor) {
  * each line of the output string.
  * @returns {String} The Bali string representation of this terminal node.
  */
-Terminal.prototype.toBali = function(padding) {
+Terminal.prototype.toSource = function(padding) {
     return this.value;
 };
 

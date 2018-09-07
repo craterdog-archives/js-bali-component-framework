@@ -70,7 +70,7 @@ BaliDocument.prototype.constructor = BaliDocument;
  * @returns {BaliDocument} A deep copy of the document.
  */
 BaliDocument.prototype.copy = function() {
-    var source = this.toBali();
+    var source = this.toSource();
     var copy = parser.parseDocument(source);
     return copy;
 };
@@ -87,7 +87,7 @@ BaliDocument.prototype.draft = function(previousReference) {
     if (previousReference.constructor.name === 'String') {
         previousReference = parser.parseElement(previousReference);
     }
-    var source = this.toBali();
+    var source = this.toSource();
     var draft = parser.parseDocument(source);
     draft.previousReference = previousReference;
     draft.notarySeals = [];
@@ -124,7 +124,7 @@ BaliDocument.prototype.accept = function(visitor) {
  * each line of the output string.
  * @returns {String} The Bali string representation of this document.
  */
-BaliDocument.prototype.toBali = function(padding) {
+BaliDocument.prototype.toSource = function(padding) {
     padding = padding ? padding : '';
     var string = formatter.formatTree(this, padding);
     return string;

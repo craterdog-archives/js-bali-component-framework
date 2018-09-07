@@ -81,7 +81,7 @@ BaliSeal.prototype.accept = function(visitor) {
  * each line of the output string.
  * @returns {String} The Bali string representation of this notary seal.
  */
-BaliSeal.prototype.toBali = function(padding) {
+BaliSeal.prototype.toSource = function(padding) {
     padding = padding ? padding : '';
     var string = formatter.formatTree(this, padding);
     return string;

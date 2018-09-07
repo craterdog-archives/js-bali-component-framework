@@ -196,7 +196,7 @@ Tree.prototype.addChild = function(node) {
  * each line of the output string.
  * @returns {String} The Bali string representation of this tree node.
  */
-Tree.prototype.toBali = function(padding) {
+Tree.prototype.toSource = function(padding) {
     padding = padding ? padding : '';
     var string = formatter.formatTree(this, padding);
     return string;
@@ -351,7 +351,7 @@ Tree.prototype.getString = function(key) {
     }
     var result = scanner.scanTree(this, key);
     if (result) {
-        return result.toBali();
+        return result.toSource();
     } else {
         return undefined;
     }
@@ -384,7 +384,7 @@ Tree.prototype.getValue = function(key) {
  */
 Tree.prototype.setValue = function(key, value) {
     // NOTE: we must convert the these to a string first to make sure they end up as
-    // components and not as terminals.  Also, we cannot call toBali() since they maybe
+    // components and not as terminals.  Also, we cannot call toSource() since they maybe
     // strings.
     key = parser.parseComponent(key.toString());
     value = parser.parseExpression(value.toString());

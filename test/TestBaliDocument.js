@@ -25,14 +25,14 @@ describe('Bali Document Notation™', function() {
         it('should create a document from source', function() {
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toBali()).to.equal(source);
+            expect(document.toSource()).to.equal(source);
         });
 
         it('should create a copy of a document', function() {
             document = document.copy();
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toBali()).to.equal(source);
+            expect(document.toSource()).to.equal(source);
         });
 
         it('should create a draft of a document', function() {
@@ -40,7 +40,7 @@ describe('Bali Document Notation™', function() {
             var draft = document.draft(document.previousReference);
             expect(draft).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(draft)).to.equal(true);
-            expect(draft.toBali()).to.equal(document.toBali());
+            expect(draft.toSource()).to.equal(document.toSource());
             document = baliDocument.fromSource(source);
         });
 
@@ -49,7 +49,7 @@ describe('Bali Document Notation™', function() {
             expect(unsealed).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(unsealed)).to.equal(true);
             expect(unsealed.notarySeals.length).to.equal(1);
-            expect(document.notarySeals[0].toBali()).to.equal(unsealed.notarySeals[0].toBali());
+            expect(document.notarySeals[0].toSource()).to.equal(unsealed.notarySeals[0].toSource());
         });
 
     });
@@ -64,14 +64,14 @@ describe('Bali Document Notation™', function() {
             expect(item).to.exist;  // jshint ignore:line
             var iterator = list.iterator();
             expect(iterator).to.exist;  // jshint ignore:line
-            expect(item.toBali()).to.equal(iterator.getNext().toBali());
+            expect(item.toSource()).to.equal(iterator.getNext().toSource());
         });
 
         it('should add list items', function() {
             var newItem = parser.parseComponent('$element2');
             list.addItem(newItem);
             item = list.getItem(2);
-            expect(item.toBali()).to.equal(newItem.toBali());
+            expect(item.toSource()).to.equal(newItem.toSource());
         });
 
         it('should update list items', function() {
@@ -80,9 +80,9 @@ describe('Bali Document Notation™', function() {
             var newItem = parser.parseComponent('$element');
             var oldItem = list.setItem(1, newItem);
             expect(oldItem).to.exist;  // jshint ignore:line
-            expect(oldItem.toBali()).to.equal(item.toBali());
+            expect(oldItem.toSource()).to.equal(item.toSource());
             item = list.getItem(1);
-            expect(item.toBali()).to.equal(newItem.toBali());
+            expect(item.toSource()).to.equal(newItem.toSource());
         });
 
         it('should remove list items', function() {
@@ -90,7 +90,7 @@ describe('Bali Document Notation™', function() {
             expect(item).to.exist;  // jshint ignore:line
             var oldItem = list.removeItem(2);
             expect(oldItem).to.exist;  // jshint ignore:line
-            expect(oldItem.toBali()).to.equal(item.toBali());
+            expect(oldItem.toSource()).to.equal(item.toSource());
         });
 
     });
@@ -105,33 +105,33 @@ describe('Bali Document Notation™', function() {
             var stringValue = document.getString(key);
             value = document.getValue(stringKey);
             expect(value).to.exist;  // jshint ignore:line
-            expect(value.toBali()).to.equal(stringValue);
+            expect(value.toSource()).to.equal(stringValue);
         });
 
         it('should set new attribute values', function() {
             var newKey = parser.parseElement('$new');
-            var stringValue = value.toBali();
+            var stringValue = value.toSource();
             var oldValue = document.setValue(newKey, value);
             expect(oldValue).to.not.exist;  // jshint ignore:line
             value = document.getValue(newKey);
             expect(value).to.exist;  // jshint ignore:line
-            expect(value.toBali()).to.equal(stringValue);
+            expect(value.toSource()).to.equal(stringValue);
         });
 
         it('should update attribute values', function() {
             var stringValue = '$baz';
             var oldValue = document.setValue(stringKey, stringValue);
             expect(oldValue).to.exist;  // jshint ignore:line
-            expect(oldValue.toBali()).to.equal(value.toBali());
+            expect(oldValue.toSource()).to.equal(value.toSource());
             value = document.getValue(stringKey);
             expect(value).to.exist;  // jshint ignore:line
-            expect(value.toBali()).to.equal(stringValue);
+            expect(value.toSource()).to.equal(stringValue);
         });
 
         it('should delete attribute values', function() {
             var oldValue = document.deleteKey(key);
             expect(oldValue).to.exist;  // jshint ignore:line
-            expect(oldValue.toBali()).to.equal(value.toBali());
+            expect(oldValue.toSource()).to.equal(value.toSource());
         });
 
     });
@@ -141,8 +141,8 @@ describe('Bali Document Notation™', function() {
         it('should retrieve the last notary seal', function() {
             var seal = document.getLastSeal();
             expect(seal).to.exist;  // jshint ignore:line
-            expect(seal.certificateReference.toBali()).to.equal(document.notarySeals[document.notarySeals.length - 1].certificateReference.toBali());
-            expect(seal.digitalSignature.toBali()).to.equal(document.notarySeals[document.notarySeals.length - 1].digitalSignature.toBali());
+            expect(seal.certificateReference.toSource()).to.equal(document.notarySeals[document.notarySeals.length - 1].certificateReference.toSource());
+            expect(seal.digitalSignature.toSource()).to.equal(document.notarySeals[document.notarySeals.length - 1].digitalSignature.toSource());
         });
 
         it('should add a new notary seal', function() {
@@ -162,8 +162,8 @@ describe('Bali Document Notation™', function() {
             expect(seals.length).to.equal(3);
             for (var i = 0; i < seals.length; i++) {
                 var seal = seals[i];
-                expect(seal.certificateReference.toBali()).to.equal(document.notarySeals[i].certificateReference.toBali());
-                expect(seal.digitalSignature.toBali()).to.equal(document.notarySeals[i].digitalSignature.toBali());
+                expect(seal.certificateReference.toSource()).to.equal(document.notarySeals[i].certificateReference.toSource());
+                expect(seal.digitalSignature.toSource()).to.equal(document.notarySeals[i].digitalSignature.toSource());
             }
         });
 
