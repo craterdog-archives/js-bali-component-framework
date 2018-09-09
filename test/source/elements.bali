@@ -30,13 +30,13 @@
         "This is a single line text string."
         "This is a string with \"quotes\" in it."
         "
-Dear {party[guest]},
-
-Please join us for this "special" day.
-
-Regards,
-{party[host]}
-"
+            Dear {party[guest]},
+            
+            Please join us for this "special" day.
+            
+            Regards,
+            {party[host]}
+        "
     ]
     $binary: [
         ''($base: 2)

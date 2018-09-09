@@ -36,7 +36,7 @@ VERSION: 'v' NATURAL ('.' NATURAL)*;
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
 // a text block takes precedence over a regular text string
-TEXT_BLOCK: '"' NEWLINE CHARACTER*? NEWLINE '"';
+TEXT_BLOCK: '"' NEWLINE CHARACTER*? NEWLINE SPACE* '"';
 
 TEXT: '"' (ESCAPE | CHARACTER)*? '"';
 

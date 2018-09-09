@@ -79,7 +79,11 @@ Terminal.prototype.accept = function(visitor) {
  * @returns {String} The Bali string representation of this terminal node.
  */
 Terminal.prototype.toSource = function(padding) {
-    return this.value;
+    var source = this.value;
+    if (padding && (source.startsWith('"\n') || source.startsWith("'\n"))) {
+        source = source.replace(/\n/g, '\n' + padding);
+    }
+    return source;
 };
 
 

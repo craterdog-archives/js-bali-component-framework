@@ -195,10 +195,21 @@ function convertParseTree(antlrTree) {
 
 function ParsingVisitor() {
     grammar.BaliDocumentVisitor.call(this);
+    this.depth = 0;
     return this;
 }
 ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
+ParsingVisitor.indentation = '    ';  // indentation per level
+
+
+ParsingVisitor.prototype.getPadding = function() {
+    var padding = '';
+    for (var i = 0; i < this.depth; i++) {
+        padding += ParsingVisitor.indentation;
+    }
+    return padding;
+};
 
 
 // angle: '~' real
@@ -244,6 +255,9 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     var value = ctx.BINARY().getText();
+    var padding = this.getPadding();
+    var regex = new RegExp('\\n' + padding, 'g');
+    value = value.replace(regex, '\n');
     var terminal = new Terminal(types.BINARY, value);
     if (value.length > 82) terminal.isSimple = false;  // binaries are formatted in 80 character blocks
     this.result = terminal;
@@ -275,10 +289,12 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyCatalogContext') {
         var associations = ctx.association();
+        this.depth++;
         associations.forEach(function(association) {
             association.accept(this);
             tree.addChild(this.result);
         }, this);
+        this.depth--;
     }
     if (type !== 'NewlineCatalogContext') tree.isSimple = true;
     this.result = tree;
@@ -678,10 +694,12 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyListContext') {
         var expressions = ctx.expression();
+        this.depth++;
         expressions.forEach(function(expression) {
             expression.accept(this);
             tree.addChild(this.result);
         }, this);
+        this.depth--;
     }
     if (type !== 'NewlineListContext') tree.isSimple = true;
     this.result = tree;
@@ -763,6 +781,9 @@ ParsingVisitor.prototype.visitNewlineCatalog = function(ctx) {
 // newlineText: TEXT_BLOCK
 ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var value = ctx.TEXT_BLOCK().getText();
+    var padding = this.getPadding();
+    var regex = new RegExp('\\n' + padding, 'g');
+    value = value.replace(regex, '\n');
     var terminal = new Terminal(types.TEXT, value);
     terminal.isSimple = false;
     this.result = terminal;
@@ -812,10 +833,12 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
         var statements = ctx.statement();
+        this.depth++;
         statements.forEach(function(statement) {
             statement.accept(this);
             tree.addChild(this.result);
         }, this);
+        this.depth--;
     }
     if (type !== 'NewlineProcedureContext') tree.isSimple = true;
     this.result = tree;

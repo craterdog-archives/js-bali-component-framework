@@ -33,7 +33,7 @@ function FormattingVisitor(padding) {
     return this;
 }
 FormattingVisitor.prototype.constructor = FormattingVisitor;
-FormattingVisitor.prototype.indentation = '    ';  // indentation per level
+FormattingVisitor.indentation = '    ';  // indentation per level
 
 
 FormattingVisitor.prototype.appendNewline = function() {
@@ -45,7 +45,7 @@ FormattingVisitor.prototype.appendNewline = function() {
 FormattingVisitor.prototype.getPadding = function() {
     var padding = this.padding;
     for (var i = 0; i < this.depth; i++) {
-        padding += FormattingVisitor.prototype.indentation;
+        padding += FormattingVisitor.indentation;
     }
     return padding;
 };
@@ -219,7 +219,8 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
 //     text |
 //     version
 FormattingVisitor.prototype.visitElement = function(terminal) {
-    this.source += terminal.value;
+    var padding = this.getPadding();
+    this.source += terminal.toSource(padding);
 };
 
 
