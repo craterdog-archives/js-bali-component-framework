@@ -197,10 +197,11 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
         this.source += '\n';
     }
     tree.documentContent.accept(this);
-    this.source += '\n';
     tree.notarySeals.forEach(function(seal) {
+        this.source += '\n';
         seal.accept(this);
     }, this);
+    this.source += '\n';  // required POSIX EOF (do not remove!)
 };
 
 
@@ -467,7 +468,6 @@ FormattingVisitor.prototype.visitSeal = function(tree) {
     tree.certificateReference.accept(this);
     this.source += ' ';
     tree.digitalSignature.accept(this);
-    this.source += '\n';
 };
 
 
