@@ -14,6 +14,7 @@
  * produce the corresponding parse tree structure.
  */
 var antlr = require('antlr4');
+var ErrorStrategy = require('antlr4/error/ErrorStrategy');
 var grammar = require('../grammar');
 var BaliDocument = require('../BaliDocument');
 var Tree = require('../nodes/Tree').Tree;
@@ -179,8 +180,19 @@ function initializeParser(source) {
     var tokens = new antlr.CommonTokenStream(lexer);
     var parser = new grammar.BaliDocumentParser(tokens);
     parser.buildParseTrees = true;
+    parser.removeErrorListeners();
+    parser.addErrorListener(new BaliErrorListener());
+    parser._errHandler = new BaliErrorStrategy();
+    //parser.verbose = true;
+    //parser._interp.predictionMode = antlr.atn.PredictionMode.LL_EXACT_AMBIG_DETECTION;
     return parser;
 }
+
+
+// override the recover method in the lexer to fail fast
+grammar.BaliDocumentLexer.prototype.recover = function(e) {
+    throw new antlr.error.ParseCancellationException(e);
+};
 
 
 function convertParseTree(antlrTree) {
@@ -1082,4 +1094,199 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
     ctx.block().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+function BaliErrorStrategy() {
+    ErrorStrategy.DefaultErrorStrategy.call(this);
+    return this;
+}
+BaliErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
+BaliErrorStrategy.prototype.constructor = BaliErrorStrategy;
+
+
+BaliErrorStrategy.prototype.recover = function(recognizer, e) {
+    var context = recognizer._ctx;
+    while (context !== null) {
+        context.exception = e;
+        context = context.parentCtx;
+    }
+    throw new antlr.error.ParseCancellationException(e);
+};
+
+
+BaliErrorStrategy.prototype.recoverInline = function(recognizer) {
+    this.recover(recognizer, new antlr.error.InputMismatchException(recognizer));
+};
+
+
+BaliErrorStrategy.prototype.sync = function(recognizer) {
+    // ignore
+};
+
+
+BaliErrorStrategy.prototype.reportNoViableAlternative = function(recognizer, e) {
+    if (recognizer.verbose) {
+        var tokens = recognizer.getTokenStream();
+        var input;
+        if(tokens !== null) {
+            if (e.startToken.type===antlr.Token.EOF) {
+                input = "<EOF>";
+            } else {
+                input = tokens.getText(new antlr.Interval(e.startToken.tokenIndex, e.offendingToken.tokenIndex));
+            }
+        } else {
+            input = "<unknown>";
+        }
+        var message = "INVALID INPUT: input=" + this.escapeWSAndQuote(input);
+        recognizer.notifyErrorListeners(message, e.offendingToken, e);
+    }
+};
+
+
+BaliErrorStrategy.prototype.reportInputMismatch = function(recognizer, e) {
+    if (recognizer.verbose) {
+        var message = "MISMATCHED TOKEN: token=" + this.getTokenErrorDisplay(e.offendingToken) +
+              " expecting=" + e.getExpectedTokens().toString(recognizer.literalNames, recognizer.symbolicNames);
+        recognizer.notifyErrorListeners(message, e.offendingToken, e);
+    }
+};
+
+
+BaliErrorStrategy.prototype.reportFailedPredicate = function(recognizer, e) {
+    if (recognizer.verbose) {
+        var ruleName = recognizer.ruleNames[recognizer._ctx.ruleIndex];
+        var message = "PREDICATE FAILED: rule=" + ruleName + " " + e.message;
+        recognizer.notifyErrorListeners(message, e.offendingToken, e);
+    }
+};
+
+
+BaliErrorStrategy.prototype.reportUnwantedToken = function(recognizer) {
+    if (recognizer.verbose) {
+        if (this.inErrorRecoveryMode(recognizer)) {
+            return;
+        }
+        this.beginErrorCondition(recognizer);
+        var t = recognizer.getCurrentToken();
+        var tokenName = this.getTokenErrorDisplay(t);
+        var expecting = this.getExpectedTokens(recognizer);
+        var message = "EXTRA TOKEN: token=" + tokenName + " expecting " +
+            expecting.toString(recognizer.literalNames, recognizer.symbolicNames);
+        recognizer.notifyErrorListeners(message, t, null);
+    }
+};
+
+
+BaliErrorStrategy.prototype.reportMissingToken = function(recognizer) {
+    if (recognizer.verbose) {
+        if ( this.inErrorRecoveryMode(recognizer)) {
+            return;
+        }
+        this.beginErrorCondition(recognizer);
+        var t = recognizer.getCurrentToken();
+        var expecting = this.getExpectedTokens(recognizer);
+        var message = "MISSING TOKEN: token=" + expecting.toString(recognizer.literalNames, recognizer.symbolicNames) +
+              " at " + this.getTokenErrorDisplay(t);
+        recognizer.notifyErrorListeners(message, t, null);
+    }
+};
+
+
+function BaliErrorListener() {
+    antlr.error.ErrorListener.call(this);
+    // whether all ambiguities or only exact ambiguities are reported.
+    this.exactOnly = false;
+    return this;
+}
+BaliErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
+BaliErrorListener.prototype.constructor = BaliErrorListener;
+
+
+BaliErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
+    // log the error message
+    console.log(message.slice(0, 160));
+    // log the lines before and after the invalid line and highlight the invalid token
+    var lines = offendingToken.getInputStream().toString().split('\n');
+    if (lineNumber > 1) console.log(lines[lineNumber - 2]);
+    console.log(lines[lineNumber - 1]);
+    var line = '';
+    for (var i = 0; i < columnNumber; i++) {
+        line += ' ';
+    }
+    var start = offendingToken.start;
+    var stop = offendingToken.stop;
+    while (start++ <= stop) {
+        line += '^';
+    }
+    console.log(line);
+    if (lineNumber < lines.length) console.log(lines[lineNumber]);
+    // log the error stack
+    if (e) console.log(e.stack);
+};
+
+
+BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
+    if (recognizer.verbose) {
+        var message = 'AMBIGUITY: rule=' + this.getDecisionDescription(recognizer, dfa) +
+                ': alternatives=' + this.getConflictingAlts(ambigAlts, configs);
+        recognizer.notifyErrorListeners(message);
+    }
+};
+
+
+BaliErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
+};
+
+
+BaliErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
+    if (recognizer.verbose) {
+        var message = 'CONTEXT SENSITIVE: rule=' + this.getDecisionDescription(recognizer, dfa) + ', input="' +
+                recognizer.getTokenStream().getText(new antlr.Interval(startIndex, stopIndex)) + '"';
+        recognizer.notifyErrorListeners(message);
+    }
+};
+
+
+BaliErrorListener.prototype.getDecisionDescription = function(recognizer, dfa) {
+    var decision = dfa.decision;
+    var ruleIndex = dfa.atnStartState.ruleIndex;
+
+    var ruleNames = recognizer.ruleNames;
+    if (ruleIndex < 0 || ruleIndex >= ruleNames.length) {
+        return "" + decision;
+    }
+    var ruleName = ruleNames[ruleIndex] || null;
+    if (ruleName === null || ruleName.length === 0) {
+        return "" + decision;
+    }
+    return "" + decision + " (" + ruleName + ")";
+};
+
+
+BaliErrorListener.prototype.getConflictingAlts = function(reportedAlts, configs) {
+    if (reportedAlts !== null) {
+        return reportedAlts;
+    }
+    var result = new antlr.Utils.BitSet();
+    for (var i = 0; i < configs.items.length; i++) {
+        result.add(configs.items[i].alt);
+    }
+    return "{" + result.values().join(", ") + "}";
+};
+
+
+BaliErrorListener.prototype.enterEveryRule = function(context) {
+};
+
+
+BaliErrorListener.prototype.visitTerminal = function(node) {
+};
+
+
+BaliErrorListener.prototype.visitErrorNode = function(node) {
+};
+
+
+BaliErrorListener.prototype.exitEveryRule = function(context) {
 };
