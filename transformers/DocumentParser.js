@@ -362,14 +362,17 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     ctx.real().accept(this);
     var real = this.result;
     value += real;
-    value += delimiter;
     ctx.imaginary().accept(this);
     var imaginary;
     var angle;
     if (delimiter === ',') {
+        // rectangular form
+        value += delimiter + ' ';
         imaginary = this.result;
-        value += ' ' + imaginary;
+        value += imaginary;
     } else {
+        // polar form
+        value += ' ' + delimiter;
         angle = this.result;
         value += angle;
     }
