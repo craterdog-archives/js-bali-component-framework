@@ -360,27 +360,12 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var delimiter = ctx.del.text;
     var value = '(';
     ctx.real().accept(this);
-    var real = this.result;
-    value += real;
+    value += this.result;
+    value += delimiter === ',' ? ', ' : ' e^';
     ctx.imaginary().accept(this);
-    var imaginary;
-    var angle;
-    if (delimiter === ',') {
-        // rectangular form
-        value += delimiter + ' ';
-        imaginary = this.result;
-        value += imaginary;
-    } else {
-        // polar form
-        value += ' ' + delimiter;
-        angle = this.result;
-        value += angle;
-    }
+    value += this.result;
     value += ')';
     var terminal = new Terminal(types.NUMBER, value);
-    terminal.real = real;
-    terminal.imaginary = imaginary;
-    terminal.angle = angle;
     this.result = terminal;
 };
 
