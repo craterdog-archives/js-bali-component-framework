@@ -27,10 +27,12 @@ var types = require('../nodes/Types');
  * document.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting document.
  */
-exports.parseDocument = function(source) {
-    var parser = initializeParser(source);
+exports.parseDocument = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.document();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -42,10 +44,12 @@ exports.parseDocument = function(source) {
  * component.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting component.
  */
-exports.parseComponent = function(source) {
-    var parser = initializeParser(source);
+exports.parseComponent = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.component();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -57,10 +61,12 @@ exports.parseComponent = function(source) {
  * parameters.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting parameters.
  */
-exports.parseParameters = function(source) {
-    var parser = initializeParser(source);
+exports.parseParameters = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.parameters();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -72,10 +78,12 @@ exports.parseParameters = function(source) {
  * element.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting element.
  */
-exports.parseElement = function(source) {
-    var parser = initializeParser(source);
+exports.parseElement = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.element();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -87,10 +95,12 @@ exports.parseElement = function(source) {
  * structure.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting structure.
  */
-exports.parseStructure = function(source) {
-    var parser = initializeParser(source);
+exports.parseStructure = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.structure();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -102,10 +112,12 @@ exports.parseStructure = function(source) {
  * range.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting range.
  */
-exports.parseRange = function(source) {
-    var parser = initializeParser(source);
+exports.parseRange = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.range();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -117,10 +129,12 @@ exports.parseRange = function(source) {
  * list.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting list.
  */
-exports.parseList = function(source) {
-    var parser = initializeParser(source);
+exports.parseList = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.list();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -132,10 +146,12 @@ exports.parseList = function(source) {
  * catalog.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting catalog.
  */
-exports.parseCatalog = function(source) {
-    var parser = initializeParser(source);
+exports.parseCatalog = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.catalog();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -147,10 +163,12 @@ exports.parseCatalog = function(source) {
  * procedure.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting procedure.
  */
-exports.parseProcedure = function(source) {
-    var parser = initializeParser(source);
+exports.parseProcedure = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.procedure();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -162,10 +180,12 @@ exports.parseProcedure = function(source) {
  * expression.
  * 
  * @param {String} source The Bali source string.
+ * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
+ * default is false.
  * @returns {BaliDocument} The resulting expression.
  */
-exports.parseExpression = function(source) {
-    var parser = initializeParser(source);
+exports.parseExpression = function(source, debug) {
+    var parser = initializeParser(source, debug);
     var antlrTree = parser.expression();
     var baliTree = convertParseTree(antlrTree);
     return baliTree;
@@ -174,17 +194,19 @@ exports.parseExpression = function(source) {
 
 // PRIVATE FUNCTIONS
 
-function initializeParser(source) {
+function initializeParser(source, debug) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliDocumentLexer(chars);
     var tokens = new antlr.CommonTokenStream(lexer);
     var parser = new grammar.BaliDocumentParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
-    parser.addErrorListener(new BaliErrorListener());
-    parser._errHandler = new BaliErrorStrategy();
-    //parser.verbose = true;
-    //parser._interp.predictionMode = antlr.atn.PredictionMode.LL_EXACT_AMBIG_DETECTION;
+    parser.addErrorListener(new BaliErrorListener(debug));
+    parser._errHandler = new BaliErrorStrategy(debug);
+    if (debug) {
+        parser.verbose = true;
+        parser._interp.predictionMode = antlr.atn.PredictionMode.LL_EXACT_AMBIG_DETECTION;
+    }
     return parser;
 }
 

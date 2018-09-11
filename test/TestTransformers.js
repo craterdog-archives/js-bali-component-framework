@@ -15,6 +15,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 
 describe('Bali Document Notation™', function() {
+    var DEBUG = true;
 
     describe('Test Parser and Formatter', function() {
 
@@ -22,7 +23,7 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/elements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source);
+            var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
@@ -32,7 +33,7 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/expressions.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source);
+            var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
@@ -42,7 +43,7 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/statements.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source);
+            var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
@@ -52,7 +53,7 @@ describe('Bali Document Notation™', function() {
             var file = 'test/source/components.bali';
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source);
+            var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
