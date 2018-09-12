@@ -137,8 +137,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u00a7\u00ab\u0005\u0012\n\u0002\u00a8\u00ab\u0005\u0014\u000b",
     "\u0002\u00a9\u00ab\u0005\u0016\f\u0002\u00aa\u00a7\u0003\u0002\u0002",
     "\u0002\u00aa\u00a8\u0003\u0002\u0002\u0002\u00aa\u00a9\u0003\u0002\u0002",
-    "\u0002\u00ab\u0011\u0003\u0002\u0002\u0002\u00ac\u00ad\u0005J&\u0002",
-    "\u00ad\u00ae\u0007\u0007\u0002\u0002\u00ae\u00af\u0005J&\u0002\u00af",
+    "\u0002\u00ab\u0011\u0003\u0002\u0002\u0002\u00ac\u00ad\u0005`1\u0002",
+    "\u00ad\u00ae\u0007\u0007\u0002\u0002\u00ae\u00af\u0005`1\u0002\u00af",
     "\u0013\u0003\u0002\u0002\u0002\u00b0\u00b5\u0005J&\u0002\u00b1\u00b2",
     "\u0007\b\u0002\u0002\u00b2\u00b4\u0005J&\u0002\u00b3\u00b1\u0003\u0002",
     "\u0002\u0002\u00b4\u00b7\u0003\u0002\u0002\u0002\u00b5\u00b3\u0003\u0002",
@@ -1303,14 +1303,14 @@ function RangeContext(parser, parent, invokingState) {
 RangeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 RangeContext.prototype.constructor = RangeContext;
 
-RangeContext.prototype.expression = function(i) {
+RangeContext.prototype.number = function(i) {
     if(i===undefined) {
         i = null;
     }
     if(i===null) {
-        return this.getTypedRuleContexts(ExpressionContext);
+        return this.getTypedRuleContexts(NumberContext);
     } else {
-        return this.getTypedRuleContext(ExpressionContext,i);
+        return this.getTypedRuleContext(NumberContext,i);
     }
 };
 
@@ -1346,11 +1346,11 @@ BaliDocumentParser.prototype.range = function() {
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 170;
-        this.expression(0);
+        this.number();
         this.state = 171;
         this.match(BaliDocumentParser.T__4);
         this.state = 172;
-        this.expression(0);
+        this.number();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
