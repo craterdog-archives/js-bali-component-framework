@@ -2,14 +2,7 @@
 [
     $element: $foo
     $catalog: [
-        $list: [
-            [
-                $foo: $bar
-            ]
-            [
-                $bar: $baz
-            ]
-        ]
+        $list: [[$foo: $bar], [$bar: $baz]]
     ]
 ]
 <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v2.3,$digest:none]> '

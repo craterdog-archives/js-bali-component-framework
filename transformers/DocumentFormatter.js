@@ -201,7 +201,7 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
         this.source += '\n';
         seal.accept(this);
     }, this);
-    this.source += '\n';  // required POSIX EOF (do not remove!)
+    this.source += '\n';  // required POSIX EOL at end of file (do not remove!)
 };
 
 
@@ -401,7 +401,7 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     var statements = tree.children;
-    if (statements.length === 0 && tree.isSimple) return;
+    if (statements.length === 0) return;
     if (tree.isSimple) {
         statements[0].accept(this);
         statements.slice(1).forEach(function(statement) {

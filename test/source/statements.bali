@@ -1,8 +1,6 @@
 [
     $block: [
         $empty: {}
-        $empty: {
-        }
         $single: {
             $x := value
         }

@@ -7,43 +7,26 @@
     ]
     $list: [
         [1, 2, 3]
-        [
-            $alpha
-            $beta
-            $gamma
-            $delta
-        ]($type: Set)
+        [$alpha, $beta, $gamma, $delta]($type: Set)
         [
             none
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
             $symbol
             <2017-07-04>
-            <https://google.com>
+            <https://google.com/>
             v123
             "text"
             '011010110101000'
             true
             -pi
             (3, 4i)
-            [
-                "one"
-                "two"
-                "three"
-            ]
-            [
-                $foo: bar
-                $bar: 25
-                $baz: none
-            ]
+            ["one", "two", "three"]
+            [$foo: bar, $bar: 25, $baz: none]
         ]
     ]
     $catalog: [
         [$a: "a", $b: "b", $c: "c"]
-        [
-            "certain": true
-            "iffy": .5
-            "impossible": false
-        ]
+        ["certain": true, "iffy": .5, "impossible": false]
         [
             none: none
             #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN
@@ -57,11 +40,7 @@
             -pi: -3.14159265
             (1, 2i): (1.3 e^pi i)
             $sequence: ["short", "sequence"]
-            $table: [
-                $a: pi
-                $b: -e
-                $c: phi
-            ]
+            $table: [$a: pi, $b: -e, $c: phi]
         ]
     ]($type: $foo)
     $code: [

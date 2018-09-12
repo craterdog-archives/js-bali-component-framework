@@ -3,19 +3,13 @@
         $element: {
             $expression := [1, 2, 3][2]
             $expression := [1, 2, 3].reverse()
-            $expression := products[
-                $yoyo
-                "Duncan"
-            ].calculateUPC()
+            $expression := products[$yoyo, "Duncan"].calculateUPC()
             $expression := products.sort()
         }
         $function: {
             $expression := random(count)[1]
             $expression := random($count: 16).sort(increasing)
-            $expression := random(16).sort(
-                numeric
-                increasing
-            )
+            $expression := random(16).sort(numeric, increasing)
             $expression := random(16).sort()[-x]
         }
         $grouping: {
