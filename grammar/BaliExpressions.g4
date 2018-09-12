@@ -3,6 +3,9 @@ grammar BaliExpressions;
 import BaliElements;
 
 
+// AMBIGUITY: A component could be a negative constant (i.e. -pi) which
+// is ambiguous with the negative inversion operation (i.e. - pi). The
+// negative constant takes precedence over the inversion operator.
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression    |
     variable                                                       #variableExpression     |

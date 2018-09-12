@@ -401,7 +401,7 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     var statements = tree.children;
-    if (statements.length === 0) return;
+    if (statements.length === 0 && tree.isSimple) return;
     if (tree.isSimple) {
         statements[0].accept(this);
         statements.slice(1).forEach(function(statement) {

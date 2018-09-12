@@ -1,5 +1,9 @@
 [
-    $structure: [["A".."Z"], [], [:]]
+    $structure: [
+        ["A".."Z"]
+        []
+        [:]
+    ]
     $range: [
         [3..7]
         ["a".."z"]
@@ -32,7 +36,7 @@
             #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN
             $foo: $bar
             <2017-04-01>("Hong Kong"): $date
-            <https://craterdog.com>: <bali:[$protocol:v1,$tag:%23G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+            <https://craterdog.com>: <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"
             'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '111010110101100100001'($base: 16)
@@ -44,8 +48,12 @@
         ]
     ]($type: $foo)
     $code: [
-        {}
-        {$foo := bar; $bar := baz}
+        {
+        }
+        {
+            $foo := bar
+            $bar := baz
+        }
         {
             if condition then {
                 $x := y

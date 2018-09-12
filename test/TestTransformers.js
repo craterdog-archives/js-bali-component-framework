@@ -15,7 +15,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 
 describe('Bali Document Notation™', function() {
-    var DEBUG = true;
+    var DEBUG = false;  // change to true to check for ambiguities in the grammar
 
     describe('Test Parser and Formatter', function() {
 
