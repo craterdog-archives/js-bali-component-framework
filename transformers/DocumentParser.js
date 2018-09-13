@@ -225,32 +225,6 @@ function convertParseTree(antlrTree) {
 }
 
 
-function calculateSimplicity(tree) {
-    // assume the node is complex by default
-    var isSimple = false;
-
-    // nodes with no children use their default simplicity setting
-    if (!tree.children) return tree.isSimple;
-    var size = tree.children.length;
-
-    // nodes with five or more children are complex
-    if (size > 5) return false;
-
-    // nodes with a single terminal child have the same simplicity as the child (transitivity)
-    if (size === 1) {
-        var child = tree.children[0];
-        return (child instanceof Terminal || child.type === types.ASSOCIATION || child.children.length === 1) && child.isSimple;
-    }
-
-    // if any of the children are complex the node is complex
-    tree.children.find(function(node) {
-        isSimple = node.isSimple;
-        return !isSimple;
-    });
-
-    return isSimple;
-}
-
 // PRIVATE CLASSES
 
 function ParsingVisitor() {
@@ -297,7 +271,7 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     tree.operator = ctx.op.text;
     expressions[1].accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -309,7 +283,7 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
     tree.addChild(this.result);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -357,7 +331,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
         }, this);
         this.depth--;
     }
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -403,7 +377,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     tree.operator = ctx.op.text;
     expressions[1].accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -413,7 +387,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
     var tree = new Tree(types.COMPLEMENT_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -440,7 +414,7 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
         child.accept(this);
         tree.addChild(this.result);
     }, this);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -471,7 +445,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
     tree.addChild(this.result);
     expressions[1].accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -481,7 +455,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
     var tree = new Tree(types.DEREFERENCE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -574,7 +548,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
     tree.addChild(this.result);
     expressions[1].accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -584,7 +558,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
     var tree = new Tree(types.FACTORIAL_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -612,7 +586,7 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     tree.addChild(this.result);
     ctx.parameters().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -691,7 +665,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
     var tree = new Tree(types.INDICES);
     ctx.list().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -739,7 +713,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     tree.operator = ctx.op.text;
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -760,7 +734,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
         }, this);
         this.depth--;
     }
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -774,7 +748,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     tree.operator = ctx.op.text;
     expressions[1].accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -784,7 +758,7 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     var tree = new Tree(types.MAGNITUDE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -806,7 +780,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     tree.addChild(this.result);
     ctx.parameters().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -864,7 +838,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
     var tree = new Tree(types.PARAMETERS);
     ctx.collection().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -883,7 +857,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     var tree = new Tree(types.PRECEDENCE_EXPRESSION);
     ctx.expression().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 
@@ -1055,7 +1029,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
     tree.addChild(this.result);
     ctx.indices().accept(this);
     tree.addChild(this.result);
-    tree.isSimple = calculateSimplicity(tree);
+    tree.calculateSimplicity();
     this.result = tree;
 };
 

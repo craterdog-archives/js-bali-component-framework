@@ -13,6 +13,7 @@
  * This class captures the state and methods associated with a parse tree node.
  */
 var types = require('./Types');
+var Terminal = require('./Terminal').Terminal;
 var parser = require('../transformers/DocumentParser');
 var formatter = require('../transformers/DocumentFormatter');
 var scanner = require('../transformers/DocumentScanner');
@@ -32,6 +33,37 @@ function Tree(type) {
 }
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
+
+
+Tree.prototype.calculateSimplicity = function() {
+    // assume the node is complex by default
+    var isSimple = false;
+
+    // nodes with no children use their default simplicity setting
+    if (!this.children) return;
+    var size = this.children.length;
+
+    // nodes with five or more children are complex
+    if (size > 5) {
+        this.isSimple = false;
+        return;
+    }
+
+    // nodes with a single terminal child have the same simplicity as the child (transitivity)
+    if (size === 1) {
+        var child = this.children[0];
+        this.isSimple = (child instanceof Terminal || child.type === types.ASSOCIATION || child.children.length === 1) && child.isSimple;
+        return;
+    }
+
+    // if any of the children are complex the node is complex
+    this.children.find(function(node) {
+        isSimple = node.isSimple;
+        return !isSimple;
+    });
+
+    this.isSimple = isSimple;
+};
 
 
 /**
