@@ -26,7 +26,7 @@ var types = require('./Types');
  */
 function Terminal(type, value) {
     this.type = type;
-    this.isSimple = true;  // default for terminal nodes
+    this.isSimple = value.length < 16;
     this.value = value;
     return this;
 }

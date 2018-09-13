@@ -13,7 +13,7 @@ parameters: '(' collection ')';
 
 collection: range | list | catalog;
 
-range: number '..' number;
+range: expression '..' expression;
 
 list:
     expression (',' expression)* #inlineList |

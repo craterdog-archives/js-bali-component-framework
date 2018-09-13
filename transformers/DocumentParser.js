@@ -321,8 +321,6 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     var regex = new RegExp('\\n' + padding, 'g');
     value = value.replace(regex, '\n');
     var terminal = new Terminal(types.BINARY, value);
-    //if (value.length > 82) terminal.isSimple = false;  // binaries are formatted in 80 character blocks
-    terminal.isSimple = false;  // binaries tend to be long
     this.result = terminal;
 };
 
@@ -339,7 +337,6 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
     var tree = new Tree(types.BREAK_CLAUSE);
-    tree.isSimple = true;
     this.result = tree;
 };
 
@@ -462,7 +459,6 @@ ParsingVisitor.prototype.visitConstantReal = function(ctx) {
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
     var tree = new Tree(types.CONTINUE_CLAUSE);
-    tree.isSimple = true;
     this.result = tree;
 };
 
@@ -819,7 +815,6 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     var value = ctx.MOMENT().getText();
     var terminal = new Terminal(types.MOMENT, value);
-    terminal.isSimple = false;  // moments tend to be long
     this.result = terminal;
 };
 
@@ -934,13 +929,13 @@ ParsingVisitor.prototype.visitQueueClause = function(ctx) {
 };
 
 
-// range: number '..' number
+// range: expression '..' expression
 ParsingVisitor.prototype.visitRange = function(ctx) {
     var tree = new Tree(types.RANGE);
-    var numbers = ctx.number();
-    numbers[0].accept(this);
+    var expressions = ctx.expression();
+    expressions[0].accept(this);
     tree.addChild(this.result);
-    numbers[1].accept(this);
+    expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -959,7 +954,6 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
 ParsingVisitor.prototype.visitReference = function(ctx) {
     var value = ctx.RESOURCE().getText();
     var terminal = new Terminal(types.REFERENCE, value);
-    terminal.isSimple = false;  // references tend to be long
     this.result = terminal;
 };
 
@@ -1078,7 +1072,6 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 ParsingVisitor.prototype.visitTag = function(ctx) {
     var value = ctx.TAG().getText();
     var terminal = new Terminal(types.TAG, value);
-    terminal.isSimple = false;  // tags tend to be long
     this.result = terminal;
 };
 

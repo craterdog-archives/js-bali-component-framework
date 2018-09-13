@@ -77,7 +77,12 @@
             8fqGZejyvQlyBgtiQwbuSI/E5SuBBHZMuL+kPRiRYwipcHe9oa8fLmyKr6+s4/NZBR88h5TWMiQcmF==
         '
     ]
-    $probability: [false, .1234567890123456, .5, true]
+    $probability: [
+        false
+        .1234567890123456
+        .5
+        true
+    ]
     $percent: [
         0%
         0.1%
