@@ -363,7 +363,7 @@ exports.base64Encode = function(buffer, indentation) {
     if (length === 0) return "";  // empty binary string
 
     // format as indented 80 character blocks
-    if (length > 50) {
+    if (length > 60) {
         base64 += '\n';
     }
     base64 += buffer.toString('base64');

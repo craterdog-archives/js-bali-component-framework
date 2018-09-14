@@ -40,7 +40,6 @@ Tree.prototype.calculateSimplicity = function() {
     var isSimple = false;
 
     // nodes with no children use their default simplicity setting
-    if (!this.children) return;
     var size = this.children.length;
 
     // nodes with five or more children are complex
