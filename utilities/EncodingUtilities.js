@@ -190,7 +190,7 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    if (string.length < 80) return string;
+    if (string.length <= 80) return string;
     var base16 = '';
     for (var j = 0; j < string.length; j += 80) {
         base16 += '\n' + indentation;
@@ -283,7 +283,7 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    if (string.length < 80) return string;
+    if (string.length <= 80) return string;
     var base32 = '';
     for (var j = 0; j < string.length; j += 80) {
         base32 += '\n' + indentation;
@@ -349,7 +349,7 @@ exports.base64Encode = function(buffer, indentation) {
     var string = buffer.toString('base64');
 
     // break the string into formatted lines
-    if (string.length < 80) return string;
+    if (string.length <= 80) return string;
     var base64 = '';
     for (var i = 0; i < string.length; i += 80) {
         base64 += '\n' + indentation;
