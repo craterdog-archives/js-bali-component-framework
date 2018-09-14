@@ -178,33 +178,24 @@ var base16LookupTable = "0123456789ABCDEF";
 exports.base16Encode = function(buffer, indentation) {
 
     // validate the parameters
-    var base16 = '';
+    var string = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
-    var length = buffer.length;
-    if (length === 0) return base16;  // empty binary string
 
-    if (length > 40) {
-        base16 += '\n';
-        base16 += indentation;
-    }
-
-    // encode each byte
-    buffer.forEach(function(byte, index) {
-        // encode high order nybble
+    // encode the bytes
+    buffer.forEach(function(byte) {
         var highOrderNybble = (byte & 0xF0) >>> 4;
-        base16 += base16LookupTable[highOrderNybble];
-
-        // encode low order nybble
+        string += base16LookupTable[highOrderNybble];
         var lowOrderNybble = byte & 0x0F;
-        base16 += base16LookupTable[lowOrderNybble];
-
-        // format as indented 80 character blocks
-        if (index < length - 1 && index % 40 === 39) {
-            base16 += '\n';
-            base16 += indentation;
-        }
+        string += base16LookupTable[lowOrderNybble];
     });
 
+    // break the string into formatted lines
+    if (string.length < 80) return string;
+    var base16 = '';
+    for (var j = 0; j < string.length; j += 80) {
+        base16 += '\n' + indentation;
+        base16 += string.substring(j, j + 80);
+    }
     return base16;
 };
 
@@ -274,35 +265,30 @@ var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
 exports.base32Encode = function(buffer, indentation) {
 
     // validate the parameters
-    var base32 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
-    var length = buffer.length;
-    if (length === 0) return "";  // empty binary string
-
-    if (length > 50) {
-        base32 += '\n';
-        base32 += indentation;
-    }
 
     // encode each byte
+    var string = '';
+    var length = buffer.length;
     for (var i = 0; i < length; i++) {
-        var previousByte = buffer[i - 1];
+        var previousByte = buffer[i - 1];  // ignored when i is zero
         var currentByte = buffer[i];
 
         // encode next one or two 5 bit chunks
-        base32 = base32EncodeNextChucks(previousByte, currentByte, i, base32);
-
-        // format as indented 80 character blocks
-        if (i < length - 1 && i % 50 === 49) {
-            base32 += '\n';
-            base32 += indentation;
-        }
-
+        string = base32EncodeNextChucks(previousByte, currentByte, i, string);
     }
 
     // encode the last chunk
     var lastByte = buffer[length - 1];
-    base32 = base32EncodeLastChunk(lastByte, length - 1, base32);
+    string = base32EncodeLastChunk(lastByte, length - 1, string);
+
+    // break the string into formatted lines
+    if (string.length < 80) return string;
+    var base32 = '';
+    for (var j = 0; j < string.length; j += 80) {
+        base32 += '\n' + indentation;
+        base32 += string.substring(j, j + 80);
+    }
     return base32;
 };
 
@@ -317,7 +303,7 @@ exports.base32Encode = function(buffer, indentation) {
 exports.base32Decode = function(base32) {
 
     // validate the base 32 encoded string
-    base32 = base32.replace(/\s/g, "");  // strip out whitespace
+    base32 = base32.replace(/\s/g, '');  // strip out whitespace
     base32 = base32.toUpperCase();
     var length = base32.length;
 
@@ -357,22 +343,18 @@ exports.base32Decode = function(base32) {
 exports.base64Encode = function(buffer, indentation) {
 
     // validate the parameters
-    var base64 = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
-    var length = buffer.length;
-    if (length === 0) return "";  // empty binary string
 
     // format as indented 80 character blocks
-    if (length > 60) {
-        base64 += '\n';
-    }
-    base64 += buffer.toString('base64');
+    var string = buffer.toString('base64');
 
-    // insert indentations
-    if (indentation) {
-        base64 = base64.replace(/\n/g, '\n' + indentation);
+    // break the string into formatted lines
+    if (string.length < 80) return string;
+    var base64 = '';
+    for (var i = 0; i < string.length; i += 80) {
+        base64 += '\n' + indentation;
+        base64 += string.substring(i, i + 80);
     }
-
     return base64;
 };
 
