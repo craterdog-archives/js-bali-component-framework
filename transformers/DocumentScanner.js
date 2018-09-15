@@ -38,8 +38,8 @@ ScanningVisitor.prototype.constructor = ScanningVisitor;
 ScanningVisitor.prototype.visitAssociation = function(association) {
     var component = association.children[0];
     var expression = association.children[1];
-    var object = component.children[0];
-    if (object.type !== types.STRUCTURE && object.type !== types.CODE && object.toSource() === this.key.toSource()) {
+    var state = component.children[0];
+    if (state.type !== types.STRUCTURE && state.type !== types.CODE && state.toSource() === this.key.toSource()) {
         this.result = expression;
         if (this.value) {
             association.children[1] = this.value;
@@ -74,11 +74,11 @@ ScanningVisitor.prototype.visitCode = function(code) {
 };
 
 
-// component: object parameters?
+// component: state parameters?
 ScanningVisitor.prototype.visitComponent = function(component) {
-    var object = component.children[0];
-    if (object.type === types.STRUCTURE) {
-        object.accept(this);
+    var state = component.children[0];
+    if (state.type === types.STRUCTURE) {
+        state.accept(this);
     }
 };
 

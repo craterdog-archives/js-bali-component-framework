@@ -373,19 +373,18 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
                       "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
-var ruleNames =  [ "document", "content", "seal", "component", "object", 
-                   "structure", "parameters", "collection", "range", "list", 
-                   "catalog", "association", "code", "procedure", "statement", 
-                   "mainClause", "handleClause", "block", "evaluateClause", 
-                   "checkoutClause", "saveClause", "discardClause", "commitClause", 
-                   "publishClause", "queueClause", "waitClause", "ifClause", 
-                   "selectClause", "withClause", "whileClause", "continueClause", 
-                   "breakClause", "returnClause", "throwClause", "recipient", 
-                   "subcomponent", "expression", "variable", "funxtion", 
-                   "message", "indices", "element", "angle", "binary", "duration", 
-                   "imaginary", "moment", "number", "percent", "probability", 
-                   "real", "reference", "symbol", "tag", "template", "text", 
-                   "version" ];
+var ruleNames =  [ "document", "content", "seal", "component", "st8", "structure", 
+                   "parameters", "collection", "range", "list", "catalog", 
+                   "association", "code", "procedure", "statement", "mainClause", 
+                   "handleClause", "block", "evaluateClause", "checkoutClause", 
+                   "saveClause", "discardClause", "commitClause", "publishClause", 
+                   "queueClause", "waitClause", "ifClause", "selectClause", 
+                   "withClause", "whileClause", "continueClause", "breakClause", 
+                   "returnClause", "throwClause", "recipient", "subcomponent", 
+                   "expression", "variable", "funxtion", "message", "indices", 
+                   "element", "angle", "binary", "duration", "imaginary", 
+                   "moment", "number", "percent", "probability", "real", 
+                   "reference", "symbol", "tag", "template", "text", "version" ];
 
 function BaliDocumentParser (input) {
 	antlr4.Parser.call(this, input);
@@ -496,7 +495,7 @@ BaliDocumentParser.RULE_document = 0;
 BaliDocumentParser.RULE_content = 1;
 BaliDocumentParser.RULE_seal = 2;
 BaliDocumentParser.RULE_component = 3;
-BaliDocumentParser.RULE_object = 4;
+BaliDocumentParser.RULE_st8 = 4;
 BaliDocumentParser.RULE_structure = 5;
 BaliDocumentParser.RULE_parameters = 6;
 BaliDocumentParser.RULE_collection = 7;
@@ -873,8 +872,8 @@ function ComponentContext(parser, parent, invokingState) {
 ComponentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ComponentContext.prototype.constructor = ComponentContext;
 
-ComponentContext.prototype.object = function() {
-    return this.getTypedRuleContext(ObjectContext,0);
+ComponentContext.prototype.st8 = function() {
+    return this.getTypedRuleContext(St8Context,0);
 };
 
 ComponentContext.prototype.parameters = function() {
@@ -913,7 +912,7 @@ BaliDocumentParser.prototype.component = function() {
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 148;
-        this.object();
+        this.st8();
         this.state = 150;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,5,this._ctx);
@@ -936,7 +935,7 @@ BaliDocumentParser.prototype.component = function() {
     return localctx;
 };
 
-function ObjectContext(parser, parent, invokingState) {
+function St8Context(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -945,40 +944,40 @@ function ObjectContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_object;
+    this.ruleIndex = BaliDocumentParser.RULE_st8;
     return this;
 }
 
-ObjectContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-ObjectContext.prototype.constructor = ObjectContext;
+St8Context.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+St8Context.prototype.constructor = St8Context;
 
-ObjectContext.prototype.element = function() {
+St8Context.prototype.element = function() {
     return this.getTypedRuleContext(ElementContext,0);
 };
 
-ObjectContext.prototype.structure = function() {
+St8Context.prototype.structure = function() {
     return this.getTypedRuleContext(StructureContext,0);
 };
 
-ObjectContext.prototype.code = function() {
+St8Context.prototype.code = function() {
     return this.getTypedRuleContext(CodeContext,0);
 };
 
-ObjectContext.prototype.enterRule = function(listener) {
+St8Context.prototype.enterRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.enterObject(this);
+        listener.enterSt8(this);
 	}
 };
 
-ObjectContext.prototype.exitRule = function(listener) {
+St8Context.prototype.exitRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.exitObject(this);
+        listener.exitSt8(this);
 	}
 };
 
-ObjectContext.prototype.accept = function(visitor) {
+St8Context.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitObject(this);
+        return visitor.visitSt8(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -987,12 +986,12 @@ ObjectContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ObjectContext = ObjectContext;
+BaliDocumentParser.St8Context = St8Context;
 
-BaliDocumentParser.prototype.object = function() {
+BaliDocumentParser.prototype.st8 = function() {
 
-    var localctx = new ObjectContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 8, BaliDocumentParser.RULE_object);
+    var localctx = new St8Context(this, this._ctx, this.state);
+    this.enterRule(localctx, 8, BaliDocumentParser.RULE_st8);
     try {
         this.state = 155;
         this._errHandler.sync(this);

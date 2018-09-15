@@ -270,9 +270,9 @@ Tree.prototype.element = function() {
 Tree.prototype.iterator = function() {
     var iterator;
     if (this.type === types.COMPONENT) {
-        var object = this.children[0];
-        if (object.type === types.STRUCTURE) {
-            var collection = object.children[0];
+        var state = this.children[0];
+        if (state.type === types.STRUCTURE) {
+            var collection = state.children[0];
             iterator = new ListIterator(collection);
         }
     }
@@ -290,9 +290,9 @@ Tree.prototype.iterator = function() {
 Tree.prototype.getItem = function(index) {
     var item;
     if (this.type === types.COMPONENT) {
-        var object = this.children[0];
-        if (object.type === types.STRUCTURE) {
-            var collection = object.children[0];
+        var state = this.children[0];
+        if (state.type === types.STRUCTURE) {
+            var collection = state.children[0];
             if (collection.type === types.LIST) {
                 item = collection.children[index];
             }
@@ -312,9 +312,9 @@ Tree.prototype.getItem = function(index) {
 Tree.prototype.setItem = function(index, item) {
     var old;
     if (this.type === types.COMPONENT) {
-        var object = this.children[0];
-        if (object.type === types.STRUCTURE) {
-            var collection = object.children[0];
+        var state = this.children[0];
+        if (state.type === types.STRUCTURE) {
+            var collection = state.children[0];
             if (collection.type === types.LIST) {
                 old = collection.children[index];
                 collection.children[index] = item;
@@ -332,9 +332,9 @@ Tree.prototype.setItem = function(index, item) {
  */
 Tree.prototype.addItem = function(item) {
     if (this.type === types.COMPONENT) {
-        var object = this.children[0];
-        if (object.type === types.STRUCTURE) {
-            var collection = object.children[0];
+        var state = this.children[0];
+        if (state.type === types.STRUCTURE) {
+            var collection = state.children[0];
             if (collection.type === types.LIST) {
                 collection.children.push(item);
             }
@@ -352,9 +352,9 @@ Tree.prototype.addItem = function(item) {
 Tree.prototype.removeItem = function(index) {
     var old;
     if (this.type === types.COMPONENT) {
-        var object = this.children[0];
-        if (object.type === types.STRUCTURE) {
-            var collection = object.children[0];
+        var state = this.children[0];
+        if (state.type === types.STRUCTURE) {
+            var collection = state.children[0];
             if (collection.type === types.LIST) {
                 old = collection.children[index];
                 collection.children.splice(index, 1);

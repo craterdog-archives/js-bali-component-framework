@@ -36,8 +36,8 @@ BaliDocumentVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliDocumentParser#object.
-BaliDocumentVisitor.prototype.visitObject = function(ctx) {
+// Visit a parse tree produced by BaliDocumentParser#st8.
+BaliDocumentVisitor.prototype.visitSt8 = function(ctx) {
   return this.visitChildren(ctx);
 };
 

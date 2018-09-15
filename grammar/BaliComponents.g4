@@ -3,9 +3,9 @@ grammar BaliComponents;
 import BaliProcedures;
 
 
-component: object parameters?;
+component: st8 parameters?;
 
-object: element | structure | code;
+st8: element | structure | code;
 
 structure: '[' collection ']';
 

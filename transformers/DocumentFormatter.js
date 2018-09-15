@@ -154,7 +154,7 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
-// component: object parameters?
+// component: state parameters?
 FormattingVisitor.prototype.visitComponent = function(tree) {
     tree.children.forEach(function(child) {
         child.accept(this);

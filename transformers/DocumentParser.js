@@ -407,7 +407,7 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: object parameters?
+// component: state parameters?
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new Tree(types.COMPONENT);
     ctx.children.forEach(function(child) {
