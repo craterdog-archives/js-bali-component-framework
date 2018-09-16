@@ -332,8 +332,6 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             tree.size += 2;
         }, this);
         this.depth--;
-    } else {
-        tree.size += 1;  // for single colon in empty catalog
     }
     this.result = tree;
 };
@@ -412,7 +410,6 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var tree = new Tree(types.COMPONENT, 0);
     ctx.children.forEach(function(child) {
-        tree.size += 1;
         child.accept(this);
         tree.addChild(this.result);
     }, this);

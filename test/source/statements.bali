@@ -6,9 +6,7 @@
     $statement: {
         while condition do {
             break loop
-        } handle $exception matching [
-            $type: "BadException"
-        ] with {
+        } handle $exception matching [$type: "BadException"] with {
             continue loop
         }
         queue message() on <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
