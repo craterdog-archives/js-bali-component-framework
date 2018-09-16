@@ -23,44 +23,17 @@ var scanner = require('../transformers/DocumentScanner');
  * This constructor creates a new tree node.
  * 
  * @param {Number} type The type of the tree node.
+ * @param {Number} size The initial size of the tree node.
  * @returns {Tree} The new tree node.
  */
-function Tree(type) {
+function Tree(type, size) {
     this.type = type;
-    this.isSimple = false;  // default for tree nodes
+    this.size = size;
     this.children = [];
     return this;
 }
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
-
-
-Tree.prototype.calculateSimplicity = function() {
-    // assume the node is complex by default
-    var isSimple = false;
-
-    // nodes with five or more children are complex
-    var size = this.children.length;
-    if (size > 5) {
-        this.isSimple = false;
-        return;
-    }
-
-    // nodes with a single terminal child have the same simplicity as the child (transitivity)
-    if (size === 1) {
-        var child = this.children[0];
-        this.isSimple = (child instanceof Terminal || child.type === types.ASSOCIATION || child.children.length === 1) && child.isSimple;
-        return;
-    }
-
-    // if any of the children are complex the node is complex
-    this.children.find(function(node) {
-        isSimple = node.isSimple;
-        return !isSimple;
-    });
-
-    this.isSimple = isSimple;
-};
 
 
 /**
@@ -215,6 +188,7 @@ Tree.prototype.accept = function(visitor) {
  */
 Tree.prototype.addChild = function(node) {
     this.children.push(node);
+    this.size += node.size;
 };
 
 
@@ -317,7 +291,9 @@ Tree.prototype.setItem = function(index, item) {
             var collection = state.children[0];
             if (collection.type === types.LIST) {
                 old = collection.children[index];
+                collection.size -= old.size;
                 collection.children[index] = item;
+                collection.size += item.size;
             }
         }
     }
@@ -336,7 +312,7 @@ Tree.prototype.addItem = function(item) {
         if (state.type === types.STRUCTURE) {
             var collection = state.children[0];
             if (collection.type === types.LIST) {
-                collection.children.push(item);
+                collection.addChild(item);
             }
         }
     }
@@ -358,6 +334,7 @@ Tree.prototype.removeItem = function(index) {
             if (collection.type === types.LIST) {
                 old = collection.children[index];
                 collection.children.splice(index, 1);
+                collection.size -= old.size;
             }
         }
     }
@@ -425,10 +402,11 @@ Tree.prototype.setValue = function(key, value) {
                 this.children[0].type === types.STRUCTURE &&
                 this.children[0].children[0].type === types.CATALOG) {
             var catalog = this.children[0].children[0];
-            var association = new Tree(types.ASSOCIATION);
+            var association = new Tree(types.ASSOCIATION, 2);
             association.addChild(key);
             association.addChild(value);
             catalog.addChild(association);
+            this.children[0].size += association.size;
         }
     }
     return previousValue;

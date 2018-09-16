@@ -42,7 +42,9 @@ ScanningVisitor.prototype.visitAssociation = function(association) {
     if (state.type !== types.STRUCTURE && state.type !== types.CODE && state.toSource() === this.key.toSource()) {
         this.result = expression;
         if (this.value) {
+            association.size -= state.size;
             association.children[1] = this.value;
+            association.size += this.value.size;
         }
     } else if (expression.type === types.COMPONENT) {
         expression.accept(this);
@@ -62,6 +64,7 @@ ScanningVisitor.prototype.visitCatalog = function(catalog) {
     }, this);
     if (index > -1) {
         if (this.remove) {
+            catalog.size -= associations[index].size;
             associations.splice(index, 1);
         }
     }

@@ -18,9 +18,7 @@
             $expression := ([1, 2] + [2, 3]).reverse(foo, bar)[2]
         }
     ]
-    $dereference: {
-        $expression := @result
-    }
+    $dereference: {$expression := @result}
     $factorial: {
         $expression := dereference!
     }
@@ -86,7 +84,11 @@
             $expression := complement and [1, 2, 3]
         }
         $sans: {
-            $expression := complement sans [$a: "a", $b: "b", $c: "c"]
+            $expression := complement sans [
+                $a: "a"
+                $b: "b"
+                $c: "c"
+            ]
         }
         $or: {
             $expression := complement or value

@@ -9,7 +9,11 @@
         <1962-04-01T06:31>("San Francisco")
         <1962-04-01T06:31:40>
         <1962-04-01T06:31:40.726>
-        <1962-04-01T06:31:60.726>($city: "Denver", $region: "Colorado", $country: "USA")
+        <1962-04-01T06:31:60.726>(
+            $city: "Denver"
+            $region: "Colorado"
+            $country: "USA"
+        )
     ]
     $reference: [
         <http://www.google.com/>
@@ -93,7 +97,13 @@
     ]
     $number: [
         $natural: 42
-        $integer: [undefined, 0, 1, -5, infinity]
+        $integer: [
+            undefined
+            0
+            1
+            -5
+            infinity
+        ]
         $real: [
             e
             -e
