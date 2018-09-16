@@ -407,6 +407,7 @@ Tree.prototype.setValue = function(key, value) {
             association.addChild(value);
             catalog.addChild(association);
             this.children[0].size += association.size;
+            this.size += association.size;
         }
     }
     return previousValue;
