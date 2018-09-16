@@ -36,10 +36,7 @@
     ]
     $binary: [
         ''($base: 2)
-        '
-        '
-        '='
-        '=='
+        ''
         '00101101100111010100000101001111101111010011011100011110000000000100011001001101'($base: 16)
         '
             11001110010101001111110000011000110100111001011011000000001101011110101001000000
@@ -76,10 +73,7 @@
             oVeSayBkzOv/k45bmIDqDH9w5DxjJbC2F6xrx7Nd30ti+v6fV1bEBt5b3Pzd00ptwBRDP9aenDJ3Y0rV
             ZgvEUwlEHcHs7ZWzMhawG7H8SsIyMm0MT4brkn9kSoVyCbjKTCPedlbmDjR2MikZbwnk82wYFduWV2k=
         '
-        '8fqGZejyvQlyBgtiQwbuSI/E5SuBBHZMuL+kPRiRYwipcHe9oa8fLmyKr6+s4/NZBR88h5TWMiQcmF=='
-        '
-            8fqGZejyvQlyBgtiQwbuSI/E5SuBBHZMuL+kPRiRYwipcHe9oa8fLmyKr6+s4/NZBR88h5TWMiQcmF==
-        '
+        '8fqGZejyvQlyBgtiQwbuSI/E5SuBBHZMuL+kPRiRYwipcHe9oa8fLmyKr6+s4/NZBR88h5TWMiQcmA=='
     ]
     $probability: [
         false
