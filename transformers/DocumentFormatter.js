@@ -26,8 +26,6 @@ exports.formatTree = function(tree, padding) {
 
 // PRIVATE CLASSES
 
-var MAX_SIZE = 25;
-
 function FormattingVisitor(padding) {
     this.padding = padding === undefined ? '' : padding;
     this.source = '';
@@ -95,7 +93,7 @@ FormattingVisitor.prototype.visitCatalog = function(tree) {
         this.source += ':';  // empty catalog
         return;
     }
-    if (tree.size < MAX_SIZE) {
+    if (tree.size < types.MAXIMUM_LENGTH) {
         associations[0].accept(this);
         associations.slice(1).forEach(function(association) {
             this.source += ', ';
@@ -330,7 +328,7 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 FormattingVisitor.prototype.visitList = function(tree) {
     var expressions = tree.children;
     if (expressions.length === 0) return;
-    if (tree.size < MAX_SIZE) {
+    if (tree.size < types.MAXIMUM_LENGTH) {
         expressions[0].accept(this);
         expressions.slice(1).forEach(function(expression) {
             this.source += ', ';
@@ -403,8 +401,8 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     var statements = tree.children;
-    if (statements.length === 0 && tree.size < MAX_SIZE) return;
-    if (tree.size < MAX_SIZE) {
+    if (statements.length === 0 && tree.size < types.MAXIMUM_LENGTH) return;
+    if (tree.size < types.MAXIMUM_LENGTH) {
         statements[0].accept(this);
         statements.slice(1).forEach(function(statement) {
             this.source += '; ';

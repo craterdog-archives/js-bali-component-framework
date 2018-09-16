@@ -303,8 +303,9 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new Tree(types.BLOCK, 2);
     ctx.procedure().accept(this);
-    tree.addChild(this.result);
-    this.result.size = 100;
+    var procedure = this.result;
+    procedure.size = types.MAXIMUM_LENGTH;  // force the procedure in a block NOT to be formatted inline
+    tree.addChild(procedure);
     this.result = tree;
 };
 
@@ -332,6 +333,8 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             tree.size += 2;
         }, this);
         this.depth--;
+    } else {
+        tree.size += 1;  // for the single colon in an empty catalog
     }
     this.result = tree;
 };
@@ -371,11 +374,12 @@ ParsingVisitor.prototype.visitCommitClause = function(ctx) {
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    var tree = new Tree(types.COMPARISON_EXPRESSION, 9);
+    var tree = new Tree(types.COMPARISON_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
+    tree.size += tree.operator.length;
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -595,7 +599,7 @@ ParsingVisitor.prototype.visitFunxtion = function(ctx) {
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    var tree = new Tree(types.HANDLE_CLAUSE, 100);
+    var tree = new Tree(types.HANDLE_CLAUSE, types.MAXIMUM_LENGTH);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -608,7 +612,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    var tree = new Tree(types.IF_CLAUSE, 100);
+    var tree = new Tree(types.IF_CLAUSE, types.MAXIMUM_LENGTH);
     var expressions = ctx.expression();
     var blocks = ctx.block();
     var hasElseBlock = blocks.length > expressions.length;
@@ -810,7 +814,7 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var regex = new RegExp('\\n' + padding, 'g');
     value = value.replace(regex, '\n');
     var terminal = new Terminal(types.TEXT, value);
-    terminal.size = 100;
+    terminal.size = types.MAXIMUM_LENGTH;  // force a text block not to be formatted inline
     this.result = terminal;
 };
 
@@ -955,7 +959,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    var tree = new Tree(types.SELECT_CLAUSE, 100);
+    var tree = new Tree(types.SELECT_CLAUSE, types.MAXIMUM_LENGTH);
     var expressions = ctx.expression();
     var selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -1099,7 +1103,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    var tree = new Tree(types.WHILE_CLAUSE, 100);
+    var tree = new Tree(types.WHILE_CLAUSE, types.MAXIMUM_LENGTH);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -1110,7 +1114,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    var tree = new Tree(types.WITH_CLAUSE, 100);
+    var tree = new Tree(types.WITH_CLAUSE, types.MAXIMUM_LENGTH);
     var symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);

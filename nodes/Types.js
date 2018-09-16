@@ -14,6 +14,9 @@
  * This module captures the type information about the parse tree nodes.
  */
 
+// the maximum number of characters that an inline formatted component can have
+exports.MAXIMUM_LENGTH = 25;
+
 var NODE_TYPES = [
     'invalid',  // ordinal (unit based) indexing for Bali
     'angle',
