@@ -264,11 +264,12 @@ ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    var tree = new Tree(types.ARITHMETIC_EXPRESSION, 3);
+    var tree = new Tree(types.ARITHMETIC_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
+    tree.size += tree.operator.length;
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -304,7 +305,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
     var tree = new Tree(types.BLOCK, 2);
     ctx.procedure().accept(this);
     var procedure = this.result;
-    procedure.size = types.MAXIMUM_LENGTH;  // force the procedure in a block NOT to be formatted inline
+    procedure.size = types.TOO_BIG;  // force the procedure in a block NOT to be formatted inline
     tree.addChild(procedure);
     this.result = tree;
 };
@@ -330,8 +331,9 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
         associations.forEach(function(association) {
             association.accept(this);
             tree.addChild(this.result);
-            tree.size += 2;
+            tree.size += 2;  // for the ', ' after each association
         }, this);
+        tree.size -= 2;  // remove the ', ' after the last association
         this.depth--;
     } else {
         tree.size += 1;  // for the single colon in an empty catalog
@@ -482,8 +484,8 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
     var documentContent = this.result;
 
     var document = BaliDocument.fromSource();
-    document.documentContent = documentContent;
     document.previousReference = previousReference;
+    document.documentContent = documentContent;
 
     var seals = ctx.seal();
     seals.forEach(function(seal) {
@@ -533,7 +535,7 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     if (recipient) {
         ctx.recipient().accept(this);
         tree.addChild(this.result);
-        tree.size += 4;
+        tree.size += 4;  // for the ' := ' after the recipient
     }
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -599,7 +601,7 @@ ParsingVisitor.prototype.visitFunxtion = function(ctx) {
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    var tree = new Tree(types.HANDLE_CLAUSE, types.MAXIMUM_LENGTH);
+    var tree = new Tree(types.HANDLE_CLAUSE, types.TOO_BIG);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -612,7 +614,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    var tree = new Tree(types.IF_CLAUSE, types.MAXIMUM_LENGTH);
+    var tree = new Tree(types.IF_CLAUSE, types.TOO_BIG);
     var expressions = ctx.expression();
     var blocks = ctx.block();
     var hasElseBlock = blocks.length > expressions.length;
@@ -706,8 +708,9 @@ ParsingVisitor.prototype.visitInlineText = function(ctx) {
 
 // inversionExpression: op=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
-    var tree = new Tree(types.INVERSION_EXPRESSION, 1);
+    var tree = new Tree(types.INVERSION_EXPRESSION, 0);
     tree.operator = ctx.op.text;
+    tree.size += tree.operator.length;
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -727,8 +730,9 @@ ParsingVisitor.prototype.visitList = function(ctx) {
         expressions.forEach(function(expression) {
             expression.accept(this);
             tree.addChild(this.result);
-            tree.size += 2;
+            tree.size += 2;  // for the ', ' after each item
         }, this);
+        tree.size -= 2;  // remove the ', ' after the last item
         this.depth--;
     }
     this.result = tree;
@@ -737,11 +741,12 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    var tree = new Tree(types.LOGICAL_EXPRESSION, 6);
+    var tree = new Tree(types.LOGICAL_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
+    tree.size += tree.operator.length;
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -814,7 +819,7 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var regex = new RegExp('\\n' + padding, 'g');
     value = value.replace(regex, '\n');
     var terminal = new Terminal(types.TEXT, value);
-    terminal.size = types.MAXIMUM_LENGTH;  // force a text block not to be formatted inline
+    terminal.size = types.TOO_BIG;  // force a text block not to be formatted inline
     this.result = terminal;
 };
 
@@ -866,8 +871,9 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
         statements.forEach(function(statement) {
             statement.accept(this);
             tree.addChild(this.result);
-            tree.size += 2;
+            tree.size += 2;  // for the '; ' after each statement
         }, this);
+        tree.size -= 2;  // remove the '; ' after the last statement
         this.depth--;
     }
     this.result = tree;
@@ -937,9 +943,9 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     var tree = new Tree(types.RETURN_CLAUSE, 6);
     var expression = ctx.expression();
     if (expression) {
+        tree.size += 1;  // for the ' ' before the expression
         expression.accept(this);
         tree.addChild(this.result);
-        tree.size += 1;
     }
     this.result = tree;
 };
@@ -959,7 +965,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    var tree = new Tree(types.SELECT_CLAUSE, types.MAXIMUM_LENGTH);
+    var tree = new Tree(types.SELECT_CLAUSE, types.TOO_BIG);
     var expressions = ctx.expression();
     var selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -988,9 +994,9 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
     tree.addChild(this.result);
     var handleClauses = ctx.handleClause();
     handleClauses.forEach(function(clause) {
+        tree.size += 1;  // for the ' ' before each clause
         clause.accept(this);
         tree.addChild(this.result);
-        tree.size += 1;
     }, this);
     this.result = tree;
 };
@@ -1103,7 +1109,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    var tree = new Tree(types.WHILE_CLAUSE, types.MAXIMUM_LENGTH);
+    var tree = new Tree(types.WHILE_CLAUSE, types.TOO_BIG);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -1114,7 +1120,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    var tree = new Tree(types.WITH_CLAUSE, types.MAXIMUM_LENGTH);
+    var tree = new Tree(types.WITH_CLAUSE, types.TOO_BIG);
     var symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);

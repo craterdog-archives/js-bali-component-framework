@@ -93,7 +93,7 @@ FormattingVisitor.prototype.visitCatalog = function(tree) {
         this.source += ':';  // empty catalog
         return;
     }
-    if (tree.size < types.MAXIMUM_LENGTH) {
+    if (tree.size < types.TOO_BIG) {
         associations[0].accept(this);
         associations.slice(1).forEach(function(association) {
             this.source += ', ';
@@ -192,6 +192,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
+    //console.log('JSON: ' + JSON.stringify(tree, null, 2));
     if (tree.previousReference) {
         tree.previousReference.accept(this);
         this.source += '\n';
@@ -328,7 +329,7 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 FormattingVisitor.prototype.visitList = function(tree) {
     var expressions = tree.children;
     if (expressions.length === 0) return;
-    if (tree.size < types.MAXIMUM_LENGTH) {
+    if (tree.size < types.TOO_BIG) {
         expressions[0].accept(this);
         expressions.slice(1).forEach(function(expression) {
             this.source += ', ';
@@ -401,8 +402,8 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     var statements = tree.children;
-    if (statements.length === 0 && tree.size < types.MAXIMUM_LENGTH) return;
-    if (tree.size < types.MAXIMUM_LENGTH) {
+    if (statements.length === 0 && tree.size < types.TOO_BIG) return;
+    if (tree.size < types.TOO_BIG) {
         statements[0].accept(this);
         statements.slice(1).forEach(function(statement) {
             this.source += '; ';

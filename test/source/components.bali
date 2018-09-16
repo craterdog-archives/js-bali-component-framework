@@ -53,19 +53,12 @@
             -pi: -3.14159265
             (1, 2i): (1.3 e^pi i)
             $sequence: ["short", "sequence"]
-            $table: [
-                $a: pi
-                $b: -e
-                $c: phi
-            ]
+            $table: [$a: pi, $b: -e, $c: phi]
         ]
     ]($type: $foo)
     $code: [
         {}
-        {
-            $foo := bar
-            $bar := baz
-        }
+        {$foo := bar; $bar := baz}
         {
             if condition then {
                 $x := y
