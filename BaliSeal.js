@@ -77,13 +77,13 @@ BaliSeal.prototype.accept = function(visitor) {
 /**
  * This method returns a Bali string representation of this notary seal.
  * 
- * @param {String} padding Optional padding spaces to be prepended to
+ * @param {String} indentation Optional indentation spaces to be prepended to
  * each line of the output string.
  * @returns {String} The Bali string representation of this notary seal.
  */
-BaliSeal.prototype.toSource = function(padding) {
-    padding = padding ? padding : '';
-    var string = formatter.formatTree(this, padding);
+BaliSeal.prototype.toSource = function(indentation) {
+    indentation = indentation ? indentation : '';
+    var string = formatter.formatTree(this, indentation);
     return string;
 };
 

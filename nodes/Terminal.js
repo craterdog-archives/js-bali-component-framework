@@ -74,14 +74,14 @@ Terminal.prototype.accept = function(visitor) {
 /**
  * This method returns a Bali string representation of this terminal node.
  * 
- * @param {String} padding Optional padding spaces to be prepended to
+ * @param {String} indentation Optional indentation spaces to be prepended to
  * each line of the output string.
  * @returns {String} The Bali string representation of this terminal node.
  */
-Terminal.prototype.toSource = function(padding) {
+Terminal.prototype.toSource = function(indentation) {
     var source = this.value;
-    if (padding && (source.startsWith('"\n') || source.startsWith("'\n"))) {
-        source = source.replace(/\n/g, '\n' + padding);
+    if (indentation && (source.startsWith('"\n') || source.startsWith("'\n"))) {
+        source = source.replace(/\n/g, '\n' + indentation);
     }
     return source;
 };

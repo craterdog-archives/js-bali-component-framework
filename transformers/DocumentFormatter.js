@@ -17,8 +17,8 @@
 var types = require('../nodes/Types');
 
 
-exports.formatTree = function(tree, padding) {
-    var visitor = new FormattingVisitor(padding);
+exports.formatTree = function(tree, indentation) {
+    var visitor = new FormattingVisitor(indentation);
     tree.accept(visitor);
     return visitor.source;
 };
@@ -26,8 +26,8 @@ exports.formatTree = function(tree, padding) {
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(padding) {
-    this.padding = padding === undefined ? '' : padding;
+function FormattingVisitor(indentation) {
+    this.indentation = indentation ? indentation : '';
     this.source = '';
     this.depth = 0;
     return this;
@@ -38,16 +38,16 @@ FormattingVisitor.indentation = '    ';  // indentation per level
 
 FormattingVisitor.prototype.appendNewline = function() {
     this.source += '\n';
-    this.source += this.getPadding();
+    this.source += this.getIndentation();
 };
 
 
-FormattingVisitor.prototype.getPadding = function() {
-    var padding = this.padding;
+FormattingVisitor.prototype.getIndentation = function() {
+    var indentation = this.indentation;
     for (var i = 0; i < this.depth; i++) {
-        padding += FormattingVisitor.indentation;
+        indentation += FormattingVisitor.indentation;
     }
-    return padding;
+    return indentation;
 };
 
 
@@ -221,8 +221,8 @@ FormattingVisitor.prototype.visitDocument = function(tree) {
 //     text |
 //     version
 FormattingVisitor.prototype.visitElement = function(terminal) {
-    var padding = this.getPadding();
-    this.source += terminal.toSource(padding);
+    var indentation = this.getIndentation();
+    this.source += terminal.toSource(indentation);
 };
 
 

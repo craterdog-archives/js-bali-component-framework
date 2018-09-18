@@ -238,12 +238,12 @@ ParsingVisitor.prototype.constructor = ParsingVisitor;
 ParsingVisitor.INDENTATION = '    ';  // indentation per level
 
 
-ParsingVisitor.prototype.getPadding = function() {
-    var padding = '';
+ParsingVisitor.prototype.getIndentation = function() {
+    var indentation = '';
     for (var i = 0; i < this.depth; i++) {
-        padding += ParsingVisitor.INDENTATION;
+        indentation += ParsingVisitor.INDENTATION;
     }
-    return padding;
+    return indentation;
 };
 
 
@@ -819,8 +819,8 @@ ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 // newlineText: TEXT_BLOCK
 ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var value = ctx.TEXT_BLOCK().getText();
-    var padding = this.getPadding();
-    var regex = new RegExp('\\n' + padding, 'g');
+    var indentation = this.getIndentation();
+    var regex = new RegExp('\\n' + indentation, 'g');
     value = value.replace(regex, '\n');
     var terminal = new Terminal(types.TEXT, value);
     terminal.size = types.TOO_BIG;  // force a text block not to be formatted inline
