@@ -80,14 +80,16 @@ var LINE_WIDTH = 60;
  * This function returns a formatted version of a string with LINE_WIDTH characters per line.
  * 
  * @param {String} string The string to be formatted.
+ * @param {String} indentation The string to be prepended to each line of the result.
  * @returns {String} The formatted string.
  */
-exports.formatLines = function(string) {
+exports.formatLines = function(string, indentation) {
+    indentation = indentation ? indentation : '';
     var formatted = '';
     var length = string.length;
     if (length > LINE_WIDTH) {
         for (var index = 0; index < length; index += LINE_WIDTH) {
-            formatted += '\n    ';
+            formatted += '\n    ' + indentation;
             formatted += string.substring(index, index + LINE_WIDTH);
         }
         formatted += '\n';
@@ -113,10 +115,10 @@ var base2LookupTable = "01";
  */
 exports.base2Encode = function(buffer, indentation) {
     // validate the parameters
-    var string = '';
-    if (typeof indentation === 'undefined' || indentation === null) indentation = '';
+    indentation = indentation ? indentation : '';
 
     // encode each byte
+    var string = '';
     buffer.forEach(function(byte) {
         // encode each bit
         for (var b = 7; b >= 0; b--) {
@@ -127,7 +129,7 @@ exports.base2Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    var base2 = exports.formatLines(string);
+    var base2 = exports.formatLines(string, indentation);
     return base2;
 };
 
@@ -188,10 +190,10 @@ var base16LookupTable = "0123456789ABCDEF";
  */
 exports.base16Encode = function(buffer, indentation) {
     // validate the parameters
-    var string = '';
-    if (typeof indentation === 'undefined' || indentation === null) indentation = '';
+    indentation = indentation ? indentation : '';
 
     // encode the bytes
+    var string = '';
     buffer.forEach(function(byte) {
         var highOrderNybble = (byte & 0xF0) >>> 4;
         string += base16LookupTable[highOrderNybble];
@@ -200,7 +202,7 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    var base16 = exports.formatLines(string);
+    var base16 = exports.formatLines(string, indentation);
     return base16;
 };
 
@@ -268,7 +270,7 @@ var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
  */
 exports.base32Encode = function(buffer, indentation) {
     // validate the parameters
-    if (typeof indentation === 'undefined' || indentation === null) indentation = '';
+    indentation = indentation ? indentation : '';
 
     // encode each byte
     var string = '';
@@ -286,7 +288,7 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    var base32 = exports.formatLines(string);
+    var base32 = exports.formatLines(string, indentation);
     return base32;
 };
 
@@ -339,13 +341,13 @@ exports.base32Decode = function(base32) {
  */
 exports.base64Encode = function(buffer, indentation) {
     // validate the parameters
-    if (typeof indentation === 'undefined' || indentation === null) indentation = '';
+    indentation = indentation ? indentation : '';
 
     // format as indented 80 character blocks
     var string = buffer.toString('base64');
 
     // break the string into formatted lines
-    var base64 = exports.formatLines(string);
+    var base64 = exports.formatLines(string, indentation);
     return base64;
 };
 
