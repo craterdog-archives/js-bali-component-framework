@@ -26,6 +26,8 @@ exports.formatTree = function(tree, indentation) {
 
 // PRIVATE CLASSES
 
+var INDENTATION = '    ';
+
 function FormattingVisitor(indentation) {
     this.indentation = indentation ? indentation : '';
     this.source = '';
@@ -33,7 +35,6 @@ function FormattingVisitor(indentation) {
     return this;
 }
 FormattingVisitor.prototype.constructor = FormattingVisitor;
-FormattingVisitor.indentation = '    ';  // indentation per level
 
 
 FormattingVisitor.prototype.appendNewline = function() {
@@ -45,7 +46,7 @@ FormattingVisitor.prototype.appendNewline = function() {
 FormattingVisitor.prototype.getIndentation = function() {
     var indentation = this.indentation;
     for (var i = 0; i < this.depth; i++) {
-        indentation += FormattingVisitor.indentation;
+        indentation += INDENTATION;
     }
     return indentation;
 };

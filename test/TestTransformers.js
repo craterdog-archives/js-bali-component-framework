@@ -28,6 +28,10 @@ describe('Bali Document Notation™', function() {
             var formatted = formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
+            tree = parser.parseDocument(formatted, DEBUG);
+            expect(tree).to.exist;  // jshint ignore:line
+            formatted = formatter.formatTree(tree);
+            expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same expressions', function() {
@@ -38,6 +42,10 @@ describe('Bali Document Notation™', function() {
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(source);
+            tree = parser.parseDocument(formatted, DEBUG);
+            expect(tree).to.exist;  // jshint ignore:line
+            formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
@@ -50,6 +58,10 @@ describe('Bali Document Notation™', function() {
             var formatted = formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
+            tree = parser.parseDocument(formatted, DEBUG);
+            expect(tree).to.exist;  // jshint ignore:line
+            formatted = formatter.formatTree(tree);
+            expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same components', function() {
@@ -60,6 +72,10 @@ describe('Bali Document Notation™', function() {
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(source);
+            tree = parser.parseDocument(formatted, DEBUG);
+            expect(tree).to.exist;  // jshint ignore:line
+            formatted = formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 

@@ -228,6 +228,8 @@ function convertParseTree(antlrTree) {
 
 // PRIVATE CLASSES
 
+var INDENTATION = '    ';
+
 function ParsingVisitor() {
     grammar.BaliDocumentVisitor.call(this);
     this.depth = 0;
@@ -235,13 +237,12 @@ function ParsingVisitor() {
 }
 ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
-ParsingVisitor.INDENTATION = '    ';  // indentation per level
 
 
 ParsingVisitor.prototype.getIndentation = function() {
     var indentation = '';
     for (var i = 0; i < this.depth; i++) {
-        indentation += ParsingVisitor.INDENTATION;
+        indentation += INDENTATION;
     }
     return indentation;
 };
