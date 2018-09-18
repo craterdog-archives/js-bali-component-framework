@@ -88,33 +88,28 @@ var base2LookupTable = "01";
  * @return {String} The base 2 encoded string.
  */
 exports.base2Encode = function(buffer, indentation) {
-
     // validate the parameters
-    var base2 = '';
+    var string = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
-    var length = buffer.length;
-    if (length === 0) return "";  // empty binary string
-
-    if (length > 10) {
-        base2 += '\n';
-        base2 += indentation;
-    }
 
     // encode each byte
-    buffer.forEach(function(byte, index) {
+    buffer.forEach(function(byte) {
         // encode each bit
         for (var b = 7; b >= 0; b--) {
             var mask = 1 << b;
             var bit = (byte & mask) >>> b;
-            base2 += base2LookupTable[bit];
-        }
-
-        // format as indented 80 character blocks
-        if (index < length - 1 && index % 10 === 9) {
-            base2 += '\n';
-            base2 += indentation;
+            string += base2LookupTable[bit];
         }
     });
+
+    // break the string into formatted lines
+    var length = string.length;
+    if (length <= 80) return string;
+    var base2 = '';
+    for (var index = 0; index < length; index += 80) {
+        base2 += '\n' + indentation;
+        base2 += string.substring(index, index + 80);
+    }
 
     return base2;
 };
@@ -128,7 +123,6 @@ exports.base2Encode = function(buffer, indentation) {
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
 exports.base2Decode = function(base2) {
-
     // validate the base 2 encoded string
     base2 = base2.replace(/\s/g, "");  // strip out whitespace
     var length = base2.length;
@@ -176,7 +170,6 @@ var base16LookupTable = "0123456789ABCDEF";
  * @return {String} The base 16 encoded string.
  */
 exports.base16Encode = function(buffer, indentation) {
-
     // validate the parameters
     var string = '';
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
@@ -190,11 +183,12 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    if (string.length <= 80) return string;
+    var length = string.length;
+    if (length <= 80) return string;
     var base16 = '';
-    for (var j = 0; j < string.length; j += 80) {
+    for (var index = 0; index < length; index += 80) {
         base16 += '\n' + indentation;
-        base16 += string.substring(j, j + 80);
+        base16 += string.substring(index, index + 80);
     }
     return base16;
 };
@@ -208,7 +202,6 @@ exports.base16Encode = function(buffer, indentation) {
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
 exports.base16Decode = function(base16) {
-
     // validate the base 16 encoded string
     base16 = base16.replace(/\s/g, "");  // strip out whitespace
     base16 = base16.toUpperCase();
@@ -263,7 +256,6 @@ var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
  * @return {String} The base 32 encoded string.
  */
 exports.base32Encode = function(buffer, indentation) {
-
     // validate the parameters
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
 
@@ -283,11 +275,12 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    if (string.length <= 80) return string;
+    length = string.length;
+    if (length <= 80) return string;
     var base32 = '';
-    for (var j = 0; j < string.length; j += 80) {
+    for (var index = 0; index < length; index += 80) {
         base32 += '\n' + indentation;
-        base32 += string.substring(j, j + 80);
+        base32 += string.substring(index, index + 80);
     }
     return base32;
 };
@@ -301,7 +294,6 @@ exports.base32Encode = function(buffer, indentation) {
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
 exports.base32Decode = function(base32) {
-
     // validate the base 32 encoded string
     base32 = base32.replace(/\s/g, '');  // strip out whitespace
     base32 = base32.toUpperCase();
@@ -341,7 +333,6 @@ exports.base32Decode = function(base32) {
  * @return {String} The base 64 encoded string.
  */
 exports.base64Encode = function(buffer, indentation) {
-
     // validate the parameters
     if (typeof indentation === 'undefined' || indentation === null) indentation = '';
 
@@ -349,11 +340,12 @@ exports.base64Encode = function(buffer, indentation) {
     var string = buffer.toString('base64');
 
     // break the string into formatted lines
-    if (string.length <= 80) return string;
+    var length = string.length;
+    if (length <= 80) return string;
     var base64 = '';
-    for (var i = 0; i < string.length; i += 80) {
+    for (var index = 0; index < length; index += 80) {
         base64 += '\n' + indentation;
-        base64 += string.substring(i, i + 80);
+        base64 += string.substring(index, index + 80);
     }
     return base64;
 };

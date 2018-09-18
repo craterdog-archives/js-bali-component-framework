@@ -234,13 +234,14 @@ function ParsingVisitor() {
 }
 ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
-ParsingVisitor.indentation = '    ';  // indentation per level
+ParsingVisitor.INDENTATION = '    ';  // indentation per level
+ParsingVisitor.LINE_WIDTH = 80;  // characters per line
 
 
 ParsingVisitor.prototype.getPadding = function() {
     var padding = '';
     for (var i = 0; i < this.depth; i++) {
-        padding += ParsingVisitor.indentation;
+        padding += ParsingVisitor.INDENTATION;
     }
     return padding;
 };
@@ -291,10 +292,24 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
-    var value = ctx.BINARY().getText();
-    var padding = this.getPadding();
-    var regex = new RegExp('\\n' + padding, 'g');
-    value = value.replace(regex, '\n');
+    var string = ctx.BINARY().getText();
+    string = string.slice(1, -1);  // strip off the "'" delimiters
+    string = string.replace(/\s/g, '');  // strip out all whitespace
+
+    // break the string into canonical formatted lines of LINE_WIDTH characters
+    var value = "'";
+    var length = string.length;
+    if (length > ParsingVisitor.LINE_WIDTH) {
+        for (var index = 0; index < length; index += ParsingVisitor.LINE_WIDTH) {
+            value += '\n' + ParsingVisitor.INDENTATION;
+            value += string.substring(index, index + ParsingVisitor.LINE_WIDTH);
+        }
+        value += '\n';
+    } else {
+        value += string;
+    }
+    value += "'";
+
     var terminal = new Terminal(types.BINARY, value);
     this.result = terminal;
 };
