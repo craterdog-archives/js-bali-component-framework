@@ -20,6 +20,7 @@ var BaliDocument = require('../BaliDocument');
 var Tree = require('../nodes/Tree').Tree;
 var Terminal = require('../nodes/Terminal').Terminal;
 var types = require('../nodes/Types');
+var codex = require('../utilities/EncodingUtilities');
 
 
 /**
@@ -235,7 +236,6 @@ function ParsingVisitor() {
 ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 ParsingVisitor.INDENTATION = '    ';  // indentation per level
-ParsingVisitor.LINE_WIDTH = 80;  // characters per line
 
 
 ParsingVisitor.prototype.getPadding = function() {
@@ -296,19 +296,8 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     string = string.slice(1, -1);  // strip off the "'" delimiters
     string = string.replace(/\s/g, '');  // strip out all whitespace
 
-    // break the string into canonical formatted lines of LINE_WIDTH characters
-    var value = "'";
-    var length = string.length;
-    if (length > ParsingVisitor.LINE_WIDTH) {
-        for (var index = 0; index < length; index += ParsingVisitor.LINE_WIDTH) {
-            value += '\n' + ParsingVisitor.INDENTATION;
-            value += string.substring(index, index + ParsingVisitor.LINE_WIDTH);
-        }
-        value += '\n';
-    } else {
-        value += string;
-    }
-    value += "'";
+    // break the string into canonical formatted lines of characters
+    var value = "'" + codex.formatLines(string) + "'";
 
     var terminal = new Terminal(types.BINARY, value);
     this.result = terminal;

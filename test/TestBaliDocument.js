@@ -25,14 +25,17 @@ describe('Bali Document Notation™', function() {
         it('should create a document from source', function() {
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toSource()).to.equal(source);
+            var formatted = document.toSource();
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(source);
         });
 
         it('should create a copy of a document', function() {
             document = document.copy();
             expect(document).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(document)).to.equal(true);
-            expect(document.toSource()).to.equal(source);
+            var formatted = document.toSource();
+            expect(formatted).to.equal(source);
         });
 
         it('should create a draft of a document', function() {

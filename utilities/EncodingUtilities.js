@@ -74,6 +74,30 @@ exports.coinToss = function(probability) {
 };
 
 
+var LINE_WIDTH = 60;
+
+/**
+ * This function returns a formatted version of a string with LINE_WIDTH characters per line.
+ * 
+ * @param {String} string The string to be formatted.
+ * @returns {String} The formatted string.
+ */
+exports.formatLines = function(string) {
+    var formatted = '';
+    var length = string.length;
+    if (length > LINE_WIDTH) {
+        for (var index = 0; index < length; index += LINE_WIDTH) {
+            formatted += '\n    ';
+            formatted += string.substring(index, index + LINE_WIDTH);
+        }
+        formatted += '\n';
+    } else {
+        formatted += string;
+    }
+    return formatted;
+};
+
+
 /**
  * This private string acts as a lookup table for mapping one bit values to base 2
  * characters. 
@@ -103,14 +127,7 @@ exports.base2Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    var length = string.length;
-    if (length <= 80) return string;
-    var base2 = '';
-    for (var index = 0; index < length; index += 80) {
-        base2 += '\n' + indentation;
-        base2 += string.substring(index, index + 80);
-    }
-
+    var base2 = exports.formatLines(string);
     return base2;
 };
 
@@ -124,7 +141,7 @@ exports.base2Encode = function(buffer, indentation) {
  */
 exports.base2Decode = function(base2) {
     // validate the base 2 encoded string
-    base2 = base2.replace(/\s/g, "");  // strip out whitespace
+    base2 = base2.replace(/\s/g, '');  // strip out whitespace
     var length = base2.length;
     if (length % 8 !== 0) {
         throw new Error("ENCODING: The base 2 string must have a number of characters that is divisible by 8: " + base2);
@@ -183,13 +200,7 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    var length = string.length;
-    if (length <= 80) return string;
-    var base16 = '';
-    for (var index = 0; index < length; index += 80) {
-        base16 += '\n' + indentation;
-        base16 += string.substring(index, index + 80);
-    }
+    var base16 = exports.formatLines(string);
     return base16;
 };
 
@@ -203,7 +214,7 @@ exports.base16Encode = function(buffer, indentation) {
  */
 exports.base16Decode = function(base16) {
     // validate the base 16 encoded string
-    base16 = base16.replace(/\s/g, "");  // strip out whitespace
+    base16 = base16.replace(/\s/g, '');  // strip out whitespace
     base16 = base16.toUpperCase();
     var length = base16.length;
     if (length % 2 !== 0) {
@@ -275,13 +286,7 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    length = string.length;
-    if (length <= 80) return string;
-    var base32 = '';
-    for (var index = 0; index < length; index += 80) {
-        base32 += '\n' + indentation;
-        base32 += string.substring(index, index + 80);
-    }
+    var base32 = exports.formatLines(string);
     return base32;
 };
 
@@ -340,13 +345,7 @@ exports.base64Encode = function(buffer, indentation) {
     var string = buffer.toString('base64');
 
     // break the string into formatted lines
-    var length = string.length;
-    if (length <= 80) return string;
-    var base64 = '';
-    for (var index = 0; index < length; index += 80) {
-        base64 += '\n' + indentation;
-        base64 += string.substring(index, index + 80);
-    }
+    var base64 = exports.formatLines(string);
     return base64;
 };
 

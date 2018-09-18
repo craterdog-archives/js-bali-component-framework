@@ -26,6 +26,7 @@ describe('Bali Document Notation™', function() {
             var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
+            //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
         });
 
@@ -36,6 +37,7 @@ describe('Bali Document Notation™', function() {
             var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
+            //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
         });
 
@@ -46,6 +48,7 @@ describe('Bali Document Notation™', function() {
             var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
+            //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
         });
 
@@ -56,6 +59,7 @@ describe('Bali Document Notation™', function() {
             var tree = parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
             var formatted = formatter.formatTree(tree);
+            //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
         });
 
