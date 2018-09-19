@@ -213,7 +213,7 @@ function initializeParser(source, debug) {
 
 // override the recover method in the lexer to fail fast
 grammar.BaliDocumentLexer.prototype.recover = function(e) {
-    var error = new Error('LEXER: Invalid input was detected, aborted scanning the input.');
+    var error = new Error('LEXER: Invalid input was detected, aborted scanning the input: ' + e.input);
     throw error;
 };
 
