@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var baliDocument = require('../BaliDocument');
+var BaliDocument = require('../BaliDocument');
 var parser = require('../transformers/DocumentParser');
 var fs = require('fs');
 var mocha = require('mocha');
@@ -18,13 +18,13 @@ describe('Bali Document Notation™', function() {
     var file = 'test/source/document.bali';
     var source = fs.readFileSync(file, 'utf8');
     expect(source).to.exist;  // jshint ignore:line
-    var document = baliDocument.fromSource(source);
+    var document = BaliDocument.fromSource(source);
 
     describe('Test Document Creation', function() {
 
         it('should create a document from source', function() {
             expect(document).to.exist;  // jshint ignore:line
-            expect(baliDocument.isDocument(document)).to.equal(true);
+            expect(BaliDocument.isDocument(document)).to.equal(true);
             var formatted = document.toSource();
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
@@ -33,7 +33,7 @@ describe('Bali Document Notation™', function() {
         it('should create a copy of a document', function() {
             document = document.copy();
             expect(document).to.exist;  // jshint ignore:line
-            expect(baliDocument.isDocument(document)).to.equal(true);
+            expect(BaliDocument.isDocument(document)).to.equal(true);
             var formatted = document.toSource();
             expect(formatted).to.equal(source);
         });
@@ -41,16 +41,16 @@ describe('Bali Document Notation™', function() {
         it('should create a draft of a document', function() {
             var draft = document.draft(document.getPreviousReference());
             expect(draft).to.exist;  // jshint ignore:line
-            expect(baliDocument.isDocument(draft)).to.equal(true);
+            expect(BaliDocument.isDocument(draft)).to.equal(true);
             document.clearNotarySeals();
             expect(draft.toSource()).to.equal(document.toSource());
-            document = baliDocument.fromSource(source);
+            document = BaliDocument.fromSource(source);
         });
 
         it('should create an unsealed copy of a document', function() {
             var unsealed = document.unsealed();
             expect(unsealed).to.exist;  // jshint ignore:line
-            expect(baliDocument.isDocument(unsealed)).to.equal(true);
+            expect(BaliDocument.isDocument(unsealed)).to.equal(true);
             expect(unsealed.getNotarySeals().length).to.equal(1);
             expect(document.getNotarySeal(0).toSource()).to.equal(unsealed.getNotarySeal(0).toSource());
         });

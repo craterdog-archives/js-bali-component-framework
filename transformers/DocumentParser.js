@@ -16,10 +16,9 @@
 var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
 var grammar = require('../grammar');
-var types = require('../nodes/Types');
+var types = require('../Types');
 var codex = require('../utilities/EncodingUtilities');
-var Tree = require('../nodes/Tree').Tree;
-var Terminal = require('../nodes/Terminal').Terminal;
+var BaliDocument = require('../BaliDocument');
 
 
 /**
@@ -268,7 +267,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     ctx.real().accept(this);
     var value = '~' + this.result;
-    var terminal = new Terminal(types.ANGLE, value);
+    var terminal = new BaliDocument.Terminal(types.ANGLE, value);
     this.result = terminal;
 };
 
@@ -276,13 +275,13 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 // anyTemplate: 'any'
 ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
     var value = 'any';
-    this.result = new Terminal(types.TEMPLATE, value);
+    this.result = new BaliDocument.Terminal(types.TEMPLATE, value);
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    var tree = new Tree(types.ARITHMETIC_EXPRESSION, 2);
+    var tree = new BaliDocument.Tree(types.ARITHMETIC_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -296,7 +295,7 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 
 // association: component ':' expression
 ParsingVisitor.prototype.visitAssociation = function(ctx) {
-    var tree = new Tree(types.ASSOCIATION, 2);
+    var tree = new BaliDocument.Tree(types.ASSOCIATION, 2);
     ctx.component().accept(this);
     var key = this.result;
     tree.addChild(key);
@@ -316,14 +315,14 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     // break the string into canonical formatted lines of characters
     var value = "'" + codex.formatLines(string) + "'";
 
-    var terminal = new Terminal(types.BINARY, value);
+    var terminal = new BaliDocument.Terminal(types.BINARY, value);
     this.result = terminal;
 };
 
 
 // block: '{' procedure '}'
 ParsingVisitor.prototype.visitBlock = function(ctx) {
-    var tree = new Tree(types.BLOCK, 2);
+    var tree = new BaliDocument.Tree(types.BLOCK, 2);
     ctx.procedure().accept(this);
     var procedure = this.result;
     procedure.size = types.TOO_BIG;  // force the procedure in a block NOT to be formatted inline
@@ -334,7 +333,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
-    var tree = new Tree(types.BREAK_CLAUSE, 10);
+    var tree = new BaliDocument.Tree(types.BREAK_CLAUSE, 10);
     this.result = tree;
 };
 
@@ -344,7 +343,7 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     NEWLINE (association NEWLINE)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
-    var tree = new Tree(types.CATALOG, 0);
+    var tree = new BaliDocument.Tree(types.CATALOG, 0);
     var type = ctx.constructor.name;
     if (type !== 'EmptyCatalogContext') {
         var associations = ctx.association();
@@ -365,7 +364,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
-    var tree = new Tree(types.CHECKOUT_CLAUSE, 15);
+    var tree = new BaliDocument.Tree(types.CHECKOUT_CLAUSE, 15);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -376,7 +375,7 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 
 // code: '{' procedure '}'
 ParsingVisitor.prototype.visitCode = function(ctx) {
-    var tree = new Tree(types.CODE, 2);
+    var tree = new BaliDocument.Tree(types.CODE, 2);
     ctx.procedure().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -385,7 +384,7 @@ ParsingVisitor.prototype.visitCode = function(ctx) {
 
 // commitClause: 'commit' expression 'to' expression
 ParsingVisitor.prototype.visitCommitClause = function(ctx) {
-    var tree = new Tree(types.COMMIT_CLAUSE, 11);
+    var tree = new BaliDocument.Tree(types.COMMIT_CLAUSE, 11);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -397,7 +396,7 @@ ParsingVisitor.prototype.visitCommitClause = function(ctx) {
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    var tree = new Tree(types.COMPARISON_EXPRESSION, 2);
+    var tree = new BaliDocument.Tree(types.COMPARISON_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -411,7 +410,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 // complementExpression: 'not' expression
 ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
-    var tree = new Tree(types.COMPLEMENT_EXPRESSION, 4);
+    var tree = new BaliDocument.Tree(types.COMPLEMENT_EXPRESSION, 4);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -428,14 +427,14 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     ctx.imaginary().accept(this);
     value += this.result;
     value += ')';
-    var terminal = new Terminal(types.NUMBER, value);
+    var terminal = new BaliDocument.Terminal(types.NUMBER, value);
     this.result = terminal;
 };
 
 
 // component: state parameters?
 ParsingVisitor.prototype.visitComponent = function(ctx) {
-    var tree = new Tree(types.COMPONENT, 0);
+    var tree = new BaliDocument.Tree(types.COMPONENT, 0);
     ctx.children.forEach(function(child) {
         child.accept(this);
         tree.addChild(this.result);
@@ -457,14 +456,14 @@ ParsingVisitor.prototype.visitConstantReal = function(ctx) {
 
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
-    var tree = new Tree(types.CONTINUE_CLAUSE, 13);
+    var tree = new BaliDocument.Tree(types.CONTINUE_CLAUSE, 13);
     this.result = tree;
 };
 
 
 // defaultExpression: expression '?' expression
 ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
-    var tree = new Tree(types.DEFAULT_EXPRESSION, 3);
+    var tree = new BaliDocument.Tree(types.DEFAULT_EXPRESSION, 3);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -476,7 +475,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // dereferenceExpression: '@' expression
 ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
-    var tree = new Tree(types.DEREFERENCE_EXPRESSION, 1);
+    var tree = new BaliDocument.Tree(types.DEREFERENCE_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -485,7 +484,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // discardClause: 'discard' expression
 ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
-    var tree = new Tree(types.DISCARD_CLAUSE, 8);
+    var tree = new BaliDocument.Tree(types.DISCARD_CLAUSE, 8);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -494,7 +493,7 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
-    var tree = new Tree(types.DOCUMENT, 0);
+    var tree = new BaliDocument.Tree(types.DOCUMENT, 0);
     var reference = ctx.reference();
     if (reference) {
         reference.accept(this);
@@ -516,7 +515,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     var value = ctx.DURATION().getText();
-    var terminal = new Terminal(types.DURATION, value);
+    var terminal = new BaliDocument.Terminal(types.DURATION, value);
     this.result = terminal;
 };
 
@@ -544,7 +543,7 @@ ParsingVisitor.prototype.visitEmptyProcedure = function(ctx) {
 
 // evaluateClause: (recipient ':=')? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
-    var tree = new Tree(types.EVALUATE_CLAUSE, 0);
+    var tree = new BaliDocument.Tree(types.EVALUATE_CLAUSE, 0);
     var recipient = ctx.recipient();
     if (recipient) {
         ctx.recipient().accept(this);
@@ -559,7 +558,7 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 // exponentialExpression: <assoc=right> expression '^' expression
 ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
-    var tree = new Tree(types.EXPONENTIAL_EXPRESSION, 3);
+    var tree = new BaliDocument.Tree(types.EXPONENTIAL_EXPRESSION, 3);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -571,7 +570,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
-    var tree = new Tree(types.FACTORIAL_EXPRESSION, 1);
+    var tree = new BaliDocument.Tree(types.FACTORIAL_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -581,7 +580,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 // falseProbability: 'false'
 ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
     var value = 'false';
-    var terminal = new Terminal(types.PROBABILITY, value);
+    var terminal = new BaliDocument.Terminal(types.PROBABILITY, value);
     this.result = terminal;
 };
 
@@ -589,14 +588,14 @@ ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
 // fractionalProbability: FRACTION
 ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var value = ctx.FRACTION().getText();
-    var terminal = new Terminal(types.PROBABILITY, value);
+    var terminal = new BaliDocument.Terminal(types.PROBABILITY, value);
     this.result = terminal;
 };
 
 
 // functionExpression: function parameters
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    var tree = new Tree(types.FUNCTION_EXPRESSION, 0);
+    var tree = new BaliDocument.Tree(types.FUNCTION_EXPRESSION, 0);
     ctx.funxtion().accept(this);
     tree.addChild(this.result);
     ctx.parameters().accept(this);
@@ -608,14 +607,14 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 // funxtion: IDENTIFIER
 ParsingVisitor.prototype.visitFunxtion = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
-    var terminal = new Terminal(types.FUNCTION, value);
+    var terminal = new BaliDocument.Terminal(types.FUNCTION, value);
     this.result = terminal;
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    var tree = new Tree(types.HANDLE_CLAUSE, types.TOO_BIG);
+    var tree = new BaliDocument.Tree(types.HANDLE_CLAUSE, types.TOO_BIG);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -628,7 +627,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    var tree = new Tree(types.IF_CLAUSE, types.TOO_BIG);
+    var tree = new BaliDocument.Tree(types.IF_CLAUSE, types.TOO_BIG);
     var expressions = ctx.expression();
     var blocks = ctx.block();
     var hasElseBlock = blocks.length > expressions.length;
@@ -669,14 +668,14 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     ctx.imaginary().accept(this);
     var value = this.result;
-    var terminal = new Terminal(types.NUMBER, value);
+    var terminal = new BaliDocument.Terminal(types.NUMBER, value);
     this.result = terminal;
 };
 
 
 // indices: '[' list ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
-    var tree = new Tree(types.INDICES, 2);
+    var tree = new BaliDocument.Tree(types.INDICES, 2);
     ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -686,7 +685,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     var value = 'infinity';
-    var terminal = new Terminal(types.NUMBER, value);
+    var terminal = new BaliDocument.Terminal(types.NUMBER, value);
     this.result = terminal;
 };
 
@@ -715,14 +714,14 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 // inlineText: TEXT
 ParsingVisitor.prototype.visitInlineText = function(ctx) {
     var value = ctx.TEXT().getText();
-    var terminal = new Terminal(types.TEXT, value);
+    var terminal = new BaliDocument.Terminal(types.TEXT, value);
     this.result = terminal;
 };
 
 
 // inversionExpression: op=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
-    var tree = new Tree(types.INVERSION_EXPRESSION, 0);
+    var tree = new BaliDocument.Tree(types.INVERSION_EXPRESSION, 0);
     tree.operator = ctx.op.text;
     tree.size += tree.operator.length;
     ctx.expression().accept(this);
@@ -736,7 +735,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     NEWLINE (expression NEWLINE)* |
 //     /*empty list*/
 ParsingVisitor.prototype.visitList = function(ctx) {
-    var tree = new Tree(types.LIST, 0);
+    var tree = new BaliDocument.Tree(types.LIST, 0);
     var type = ctx.constructor.name;
     if (type !== 'EmptyListContext') {
         var expressions = ctx.expression();
@@ -755,7 +754,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    var tree = new Tree(types.LOGICAL_EXPRESSION, 2);
+    var tree = new BaliDocument.Tree(types.LOGICAL_EXPRESSION, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -769,7 +768,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 // magnitudeExpression: '|' expression '|'
 ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
-    var tree = new Tree(types.MAGNITUDE_EXPRESSION, 2);
+    var tree = new BaliDocument.Tree(types.MAGNITUDE_EXPRESSION, 2);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -779,14 +778,14 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
-    var terminal = new Terminal(types.MESSAGE, value);
+    var terminal = new BaliDocument.Terminal(types.MESSAGE, value);
     this.result = terminal;
 };
 
 
 // messageExpression: expression '.' message parameters
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
-    var tree = new Tree(types.MESSAGE_EXPRESSION, 1);
+    var tree = new BaliDocument.Tree(types.MESSAGE_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.message().accept(this);
@@ -800,7 +799,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     var value = ctx.MOMENT().getText();
-    var terminal = new Terminal(types.MOMENT, value);
+    var terminal = new BaliDocument.Terminal(types.MOMENT, value);
     this.result = terminal;
 };
 
@@ -832,7 +831,7 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
     var indentation = this.getIndentation();
     var regex = new RegExp('\\n' + indentation, 'g');
     value = value.replace(regex, '\n');
-    var terminal = new Terminal(types.TEXT, value);
+    var terminal = new BaliDocument.Terminal(types.TEXT, value);
     terminal.size = types.TOO_BIG;  // force a text block not to be formatted inline
     this.result = terminal;
 };
@@ -841,13 +840,13 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
 // noneTemplate: 'none'
 ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
     var value = 'none';
-    this.result = new Terminal(types.TEMPLATE, value);
+    this.result = new BaliDocument.Terminal(types.TEMPLATE, value);
 };
 
 
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
-    var tree = new Tree(types.PARAMETERS, 2);
+    var tree = new BaliDocument.Tree(types.PARAMETERS, 2);
     ctx.collection().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -858,14 +857,14 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     ctx.real().accept(this);
     var value = this.result + '%';
-    var terminal = new Terminal(types.PERCENT, value);
+    var terminal = new BaliDocument.Terminal(types.PERCENT, value);
     this.result = terminal;
 };
 
 
 // precedenceExpression: '(' expression ')'
 ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
-    var tree = new Tree(types.PRECEDENCE_EXPRESSION, 2);
+    var tree = new BaliDocument.Tree(types.PRECEDENCE_EXPRESSION, 2);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -877,7 +876,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    var tree = new Tree(types.PROCEDURE, 0);
+    var tree = new BaliDocument.Tree(types.PROCEDURE, 0);
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
         var statements = ctx.statement();
@@ -896,7 +895,7 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
 
 // publishClause: 'publish' expression
 ParsingVisitor.prototype.visitPublishClause = function(ctx) {
-    var tree = new Tree(types.PUBLISH_CLAUSE, 8);
+    var tree = new BaliDocument.Tree(types.PUBLISH_CLAUSE, 8);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -905,7 +904,7 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 
 // queueClause: 'queue' expression 'on' expression
 ParsingVisitor.prototype.visitQueueClause = function(ctx) {
-    var tree = new Tree(types.QUEUE_CLAUSE, 10);
+    var tree = new BaliDocument.Tree(types.QUEUE_CLAUSE, 10);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -917,7 +916,7 @@ ParsingVisitor.prototype.visitQueueClause = function(ctx) {
 
 // range: expression '..' expression
 ParsingVisitor.prototype.visitRange = function(ctx) {
-    var tree = new Tree(types.RANGE, 2);
+    var tree = new BaliDocument.Tree(types.RANGE, 2);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -931,7 +930,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     ctx.real().accept(this);
     var value = this.result;
-    var terminal = new Terminal(types.NUMBER, value);
+    var terminal = new BaliDocument.Terminal(types.NUMBER, value);
     this.result = terminal;
 };
 
@@ -939,7 +938,7 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     var value = ctx.RESOURCE().getText();
-    var terminal = new Terminal(types.REFERENCE, value);
+    var terminal = new BaliDocument.Terminal(types.REFERENCE, value);
     this.result = terminal;
 };
 
@@ -947,14 +946,14 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 // regexTemplate: REGEX
 ParsingVisitor.prototype.visitRegexTemplate = function(ctx) {
     var value = ctx.REGEX().getText();
-    var terminal = new Terminal(types.TEMPLATE, value);
+    var terminal = new BaliDocument.Terminal(types.TEMPLATE, value);
     this.result = terminal;
 };
 
 
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
-    var tree = new Tree(types.RETURN_CLAUSE, 6);
+    var tree = new BaliDocument.Tree(types.RETURN_CLAUSE, 6);
     var expression = ctx.expression();
     if (expression) {
         tree.size += 1;  // for the ' ' before the expression
@@ -967,7 +966,7 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 
 // saveClause: 'save' expression 'to' expression
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
-    var tree = new Tree(types.SAVE_CLAUSE, 9);
+    var tree = new BaliDocument.Tree(types.SAVE_CLAUSE, 9);
     var expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -979,7 +978,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // seal: reference binary
 ParsingVisitor.prototype.visitSeal = function(ctx) {
-    var tree = new Tree(types.SEAL, 0);
+    var tree = new BaliDocument.Tree(types.SEAL, 0);
     ctx.reference().accept(this);
     tree.addChild(this.result);
     ctx.binary().accept(this);
@@ -990,7 +989,7 @@ ParsingVisitor.prototype.visitSeal = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    var tree = new Tree(types.SELECT_CLAUSE, types.TOO_BIG);
+    var tree = new BaliDocument.Tree(types.SELECT_CLAUSE, types.TOO_BIG);
     var expressions = ctx.expression();
     var selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -1014,7 +1013,7 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 
 // statement: mainClause handleClause*
 ParsingVisitor.prototype.visitStatement = function(ctx) {
-    var tree = new Tree(types.STATEMENT, 0);
+    var tree = new BaliDocument.Tree(types.STATEMENT, 0);
     ctx.mainClause().accept(this);
     tree.addChild(this.result);
     var handleClauses = ctx.handleClause();
@@ -1029,7 +1028,7 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 
 // structure: '[' collection ']'
 ParsingVisitor.prototype.visitStructure = function(ctx) {
-    var tree = new Tree(types.STRUCTURE, 2);
+    var tree = new BaliDocument.Tree(types.STRUCTURE, 2);
     ctx.collection().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -1038,7 +1037,7 @@ ParsingVisitor.prototype.visitStructure = function(ctx) {
 
 // subcomponent: variable indices
 ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
-    var tree = new Tree(types.SUBCOMPONENT, 0);
+    var tree = new BaliDocument.Tree(types.SUBCOMPONENT, 0);
     ctx.variable().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -1049,7 +1048,7 @@ ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
 
 // subcomponentExpression: expression indices
 ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
-    var tree = new Tree(types.SUBCOMPONENT_EXPRESSION, 0);
+    var tree = new BaliDocument.Tree(types.SUBCOMPONENT_EXPRESSION, 0);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -1061,7 +1060,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
     var value = ctx.SYMBOL().getText();
-    var terminal = new Terminal(types.SYMBOL, value);
+    var terminal = new BaliDocument.Terminal(types.SYMBOL, value);
     this.result = terminal;
 };
 
@@ -1069,14 +1068,14 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
     var value = ctx.TAG().getText();
-    var terminal = new Terminal(types.TAG, value);
+    var terminal = new BaliDocument.Terminal(types.TAG, value);
     this.result = terminal;
 };
 
 
 // throwClause: 'throw' expression
 ParsingVisitor.prototype.visitThrowClause = function(ctx) {
-    var tree = new Tree(types.THROW_CLAUSE, 6);
+    var tree = new BaliDocument.Tree(types.THROW_CLAUSE, 6);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -1086,7 +1085,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 // trueProbability: 'true'
 ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
     var value = 'true';
-    var terminal = new Terminal(types.PROBABILITY, value);
+    var terminal = new BaliDocument.Terminal(types.PROBABILITY, value);
     this.result = terminal;
 };
 
@@ -1094,7 +1093,7 @@ ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     var value = 'undefined';
-    var terminal = new Terminal(types.NUMBER, value);
+    var terminal = new BaliDocument.Terminal(types.NUMBER, value);
     this.result = terminal;
 };
 
@@ -1102,7 +1101,7 @@ ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
     var value = ctx.IDENTIFIER().getText();
-    var terminal = new Terminal(types.VARIABLE, value);
+    var terminal = new BaliDocument.Terminal(types.VARIABLE, value);
     this.result = terminal;
 };
 
@@ -1116,14 +1115,14 @@ ParsingVisitor.prototype.visitVariableReal = function(ctx) {
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     var value = ctx.VERSION().getText();
-    var terminal = new Terminal(types.VERSION, value);
+    var terminal = new BaliDocument.Terminal(types.VERSION, value);
     this.result = terminal;
 };
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 ParsingVisitor.prototype.visitWaitClause = function(ctx) {
-    var tree = new Tree(types.WAIT_CLAUSE, 15);
+    var tree = new BaliDocument.Tree(types.WAIT_CLAUSE, 15);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -1134,7 +1133,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    var tree = new Tree(types.WHILE_CLAUSE, types.TOO_BIG);
+    var tree = new BaliDocument.Tree(types.WHILE_CLAUSE, types.TOO_BIG);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -1145,7 +1144,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    var tree = new Tree(types.WITH_CLAUSE, types.TOO_BIG);
+    var tree = new BaliDocument.Tree(types.WITH_CLAUSE, types.TOO_BIG);
     var symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);
