@@ -224,12 +224,13 @@ BaliDocument.prototype.getLastSeal = function() {
 /**
  * This method appends a notary seal to the end of the document.
  * 
- * @param {String|Tree} seal The notary seal to be appended to the document.
+ * @param {String|Terminal} certificateReference A reference to the certificate that can be used
+ * to validate the digital signature.
+ * @param {String|Terminal} digitalSignature The Base 32 encoded binary data for the digital
+ * signature of the notary seal.
  */
-BaliDocument.prototype.addNotarySeal = function(seal) {
-    if (seal.constructor.name === 'String') {
-        seal = parser.parseSeal(seal);
-    }
+BaliDocument.prototype.addNotarySeal = function(certificateReference, digitalSignature) {
+    var seal = parser.parseSeal(certificateReference.toString() + ' ' + digitalSignature.toString());
     this.tree.children.push(seal);
 };
 
