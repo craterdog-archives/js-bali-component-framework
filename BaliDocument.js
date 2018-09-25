@@ -217,7 +217,8 @@ BaliDocument.prototype.getNotarySeal = function(index) {
  */
 BaliDocument.prototype.getLastSeal = function() {
     var size = this.tree.children.length;
-    return this.tree.children[size - 1];
+    var seal = this.tree.children[size - 1];
+    if (seal.type === types.SEAL) return seal;
 };
 
 
