@@ -193,7 +193,6 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
-    //console.log('JSON: ' + JSON.stringify(tree, null, 2));
     var index = 0;
 
     // format the previous reference if one exists
