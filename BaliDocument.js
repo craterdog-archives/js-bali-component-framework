@@ -12,10 +12,8 @@
 /*
  * This class captures the state and methods associated with a Bali document.
  */
-var parser = require('./transformers/DocumentParser');
-var formatter = require('./transformers/DocumentFormatter');
 var types = require('./nodes/Types');
-var BaliSeal = require('./BaliSeal');
+var parser = require('./transformers/DocumentParser');
 
 
 /**
@@ -25,15 +23,11 @@ var BaliSeal = require('./BaliSeal');
  * @param {String} source The Bali source string.
  * @returns {BaliDocument} The resulting document.
  */
-exports.fromSource = function(source) {
-    var document;
-    if (source) {
-        document = parser.parseDocument(source);
-    } else {
-        document = new BaliDocument();
-    }
+function fromSource(source) {
+    var document = new BaliDocument(parser.parseDocument(source));
     return document;
-};
+}
+exports.fromSource = fromSource;
 
 
 /**
@@ -43,25 +37,63 @@ exports.fromSource = function(source) {
  * @param {Object} object The object to be checked.
  * @returns {Boolean} Whether or not the object is a document.
  */
-exports.isDocument = function(object) {
-    return object && object.constructor.name === 'BaliDocument' &&
-            (object.previousReference === undefined || types.isType(object.previousReference, types.REFERENCE)) &&
-            object.documentContent && (types.isType(object.documentContent, types.COMPONENT) ||
-            types.isType(object.documentContent, types.PROCEDURE)) &&
-            object.notarySeals && object.notarySeals.constructor.name === 'Array';
-};
+function isDocument(object) {
+    if (!object || object.constructor.name !== 'BaliDocument') return false;
+    if (!types.isType(object.tree, types.DOCUMENT)) return false;
+    if (!types.isType(object.getPreviousReference(), types.REFERENCE)) return false;
+    if (!types.isType(object.getDocumentContent(), types.COMPONENT) &&
+        !types.isType(object.getDocumentContent(), types.PROCEDURE)) return false;
+    if (!object.getNotarySeals() || object.getNotarySeals().constructor.name !== 'Array') return false;
+    return true;
+}
+exports.isDocument = isDocument;
 
 
 /**
  * This constructor returns a new Bali document.
  * 
+ * @param {Tree} tree The parse tree for the document.
  * @returns {BaliDocument} The new Bali document.
  */
-function BaliDocument() {
-    this.notarySeals = [];
+function BaliDocument(tree) {
+    this.tree = tree;
     return this;
 }
 BaliDocument.prototype.constructor = BaliDocument;
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {NodeVisitor} visitor The visitor that wants to visit this document.
+ */
+BaliDocument.prototype.accept = function(visitor) {
+    visitor.visitDocument(this.tree);
+};
+
+
+/**
+ * This method returns a string representation of this document.
+ * 
+ * @returns {String} The string representation of this document.
+ */
+BaliDocument.prototype.toString = function() {
+    var string = this.tree.toSource();
+    return string;
+};
+
+
+/**
+ * This method returns a Bali string representation of this document.
+ * 
+ * @param {String} indentation Optional indentation spaces to be prepended to
+ * each line of the output string.
+ * @returns {String} The Bali string representation of this document.
+ */
+BaliDocument.prototype.toSource = function(indentation) {
+    var string = this.tree.toSource(indentation);
+    return string;
+};
 
 
 /**
@@ -71,7 +103,7 @@ BaliDocument.prototype.constructor = BaliDocument;
  */
 BaliDocument.prototype.copy = function() {
     var source = this.toSource();
-    var copy = parser.parseDocument(source);
+    var copy = fromSource(source);
     return copy;
 };
 
@@ -84,13 +116,10 @@ BaliDocument.prototype.copy = function() {
  * @returns {BaliDocument} A draft copy of the document.
  */
 BaliDocument.prototype.draft = function(previousReference) {
-    if (previousReference.constructor.name === 'String') {
-        previousReference = parser.parseElement(previousReference);
-    }
     var source = this.toSource();
-    var draft = parser.parseDocument(source);
-    draft.previousReference = previousReference;
-    draft.notarySeals = [];
+    var draft = fromSource(source);
+    draft.setPreviousReference(previousReference);
+    draft.clearNotarySeals();
     return draft;
 };
 
@@ -102,117 +131,135 @@ BaliDocument.prototype.draft = function(previousReference) {
  */
 BaliDocument.prototype.unsealed = function() {
     var copy = this.copy();
-    copy.notarySeals.pop();
+    copy.tree.children.pop();
     return copy;
 };
 
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
+ * This method returns a reference to the previous version of the document if one exists.
  * 
- * @param {NodeVisitor} visitor The visitor that wants to visit this document.
+ * @returns {Terminal} The reference to the previous version of the document.
  */
-BaliDocument.prototype.accept = function(visitor) {
-    visitor.visitDocument(this);
+BaliDocument.prototype.getPreviousReference = function() {
+    if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
+        return this.tree.children[0];
+    }
 };
 
 
 /**
- * This method returns a Bali string representation of this document.
+ * This method sets the reference to the previous version of the document.
  * 
- * @param {String} indentation Optional indentation spaces to be prepended to
- * each line of the output string.
- * @returns {String} The Bali string representation of this document.
+ * @param {String|Terminal} reference The reference to the previous version of the document.
  */
-BaliDocument.prototype.toSource = function(indentation) {
-    indentation = indentation ? indentation : '';
-    var string = formatter.formatTree(this, indentation);
-    return string;
+BaliDocument.prototype.setPreviousReference = function(reference) {
+    if (reference.constructor.name === 'String') {
+        reference = parser.parseElement(reference);
+    }
+    if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
+        this.tree.children[0] = reference;  // replace the existing previous reference
+    } else {
+        this.tree.children.splice(0, 0, reference);  // insert the reference at the beginning
+    }
 };
 
 
 /**
- * This method returns a string representation of this document.
+ * This method returns the document content.
  * 
- * @returns {String} The string representation of this document.
+ * @returns {Tree} The component or procedure that makes up the document content.
  */
-BaliDocument.prototype.toString = function() {
-    var string = formatter.formatTree(this);
-    return string;
-};
-
-
-// ELEMENTS
-
-/**
- * This function drills down a tree node to find it's terminal node and returns that element.
- * 
- * @returns {Terminal} The terminal node containing the element value.
- */
-BaliDocument.prototype.element = function() {
-    return this.documentContent.element();
-};
-
-
-// LISTS
-
-/**
- * This function constructs an iterator for the specified list or catalog. If a catalog
- * is specified, the iterator returns the associations in the catalog.
- * 
- * @returns {ListIterator} The new iterator.
- */
-BaliDocument.prototype.iterator = function() {
-    return this.documentContent.iterator();
+BaliDocument.prototype.getDocumentContent = function() {
+    if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
+        return this.tree.children[1];
+    } else {
+        return this.tree.children[0];
+    }
 };
 
 
 /**
- * This function retrieves from a list the item associated with the
- * specified index.
+ * This method sets the document content.
  * 
- * @param {Number} index The ordinal based index of the desired item.
- * @returns {Component} The item associated with the index.
+ * @param {String|Tree} content The component or procedure that makes up the document content.
  */
-BaliDocument.prototype.getItem = function(index) {
-    return this.documentContent.getItem(index);
+BaliDocument.prototype.setDocumentContent = function(content) {
+    if (content.constructor.name === 'String') {
+        content = parser.parseComponent(content);
+    }
+    if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
+        this.tree.children[1] = content;
+    } else {
+        this.tree.children[0] = content;
+    }
 };
 
 
 /**
- * This function sets in a list the item associated with the specified index.
+ * This method returns the notary seal on the document at the specified index.
  * 
- * @param {Number} index The ordinal based index of the item.
- * @param {Component} item The item to be associated with the index.
- * @returns {Component} The old item associated with the index.
+ * @param {Number} index The zero based index of the desired notary seal.
+ * @returns {Tree} The requested notary seal.
  */
-BaliDocument.prototype.setItem = function(index, item) {
-    return this.documentContent.setItem(index, item);
+BaliDocument.prototype.getNotarySeal = function(index) {
+    var first = this.tree.children.findIndex(function(child) {
+        return child.type === types.SEAL;
+    });
+    return this.tree.children[first + index];  // JS zero based indexing
 };
 
 
 /**
- * This function adds a new item to a list.
+ * This method returns the last notary seal on the document.
  * 
- * @param {Component} item The item to be added to the list.
+ * @returns {Tree} The last notary seal.
  */
-BaliDocument.prototype.addItem = function(item) {
-    return this.documentContent.addItem(item);
+BaliDocument.prototype.getLastSeal = function() {
+    var size = this.tree.children.length;
+    return this.tree.children[size - 1];
 };
 
 
 /**
- * This function removes an existing item from a list.
+ * This method appends a notary seal to the end of the document.
  * 
- * @param {Number} index The index of the item to be removed from the list.
- * @returns {Component} The old item associated with the index.
+ * @param {String|Tree} seal The notary seal to be appended to the document.
  */
-BaliDocument.prototype.removeItem = function(index) {
-    return this.documentContent.removeItem(index);
+BaliDocument.prototype.addNotarySeal = function(seal) {
+    if (seal.constructor.name === 'String') {
+        seal = parser.parseSeal(seal);
+    }
+    this.tree.children.push(seal);
 };
 
 
-// CATALOGS
+/**
+ * This method returns an array containing the notary seals for the document.
+ * 
+ * @returns {Array} An array containing the notary seals for the document.
+ */
+BaliDocument.prototype.getNotarySeals = function() {
+    var seals = [];
+    this.tree.children.forEach(function(child) {
+        if (child.type === types.SEAL) {
+            seals.push(child);
+        }
+    });
+    return seals;
+};
+
+
+/**
+ * This method removes all notary seals from the document.
+ */
+BaliDocument.prototype.clearNotarySeals = function() {
+    var index = this.tree.children.findIndex(function(child) {
+        return child.type === types.SEAL;
+    });
+    this.tree.children.splice(index);  // remove the chilfren that are seals
+};
+
 
 /**
  * This function retrieves from a document the string value associated with the
@@ -222,7 +269,10 @@ BaliDocument.prototype.removeItem = function(index) {
  * @returns {Component} The string value associated with the key.
  */
 BaliDocument.prototype.getString = function(key) {
-    return this.documentContent.getString(key);
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
+    return this.getDocumentContent().getString(key);
 };
 
 
@@ -234,7 +284,10 @@ BaliDocument.prototype.getString = function(key) {
  * @returns {Component} The value associated with the key.
  */
 BaliDocument.prototype.getValue = function(key) {
-    return this.documentContent.getValue(key);
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
+    }
+    return this.getDocumentContent().getValue(key);
 };
 
 
@@ -247,7 +300,12 @@ BaliDocument.prototype.getValue = function(key) {
  * @returns {Component} The old value associated with the key.
  */
 BaliDocument.prototype.setValue = function(key, value) {
-    return this.documentContent.setValue(key, value);
+    // NOTE: we must convert the these to a string first to make sure they end up as
+    // components and not as terminals.  Also, we cannot call toSource() since they maybe
+    // strings.
+    key = parser.parseComponent(key.toString());
+    value = parser.parseExpression(value.toString());
+    return this.getDocumentContent().setValue(key, value);
 };
 
 
@@ -259,47 +317,8 @@ BaliDocument.prototype.setValue = function(key, value) {
  * @returns {Component} The value associated with the key.
  */
 BaliDocument.prototype.deleteKey = function(key) {
-    return this.documentContent.deleteKey(key);
-};
-
-
-// NOTARY SEALS
-
-/**
- * This function returns the last notary seal attached to the document.
- * 
- * @returns {Seal} The last notary seal attached to the document.
- */
-BaliDocument.prototype.getLastSeal = function() {
-    var seal = this.notarySeals[this.notarySeals.length - 1];
-    return seal;
-};
-
-
-/**
- * This function returns the list of notary seals attached to the document.
- * 
- * @returns {Array} An array containing the notary seals.
- */
-BaliDocument.prototype.getSeals = function() {
-    var notarySeals = this.notarySeals.slice(0);  // copy the array
-    return notarySeals;
-};
-
-
-/**
- * This function attaches a new notary seal to the document.
- * 
- * @param {String} certificateReference A reference to the validation certificate for the seal.
- * @param {String} digitalSignature A base 64 encoded string containing the signature for the seal.
- */
-BaliDocument.prototype.addSeal = function(certificateReference, digitalSignature) {
-    if (certificateReference.constructor.name === 'String') {
-        certificateReference = parser.parseElement(certificateReference);
+    if (key.constructor.name === 'String') {
+        key = parser.parseComponent(key);
     }
-    if (digitalSignature.constructor.name === 'String') {
-        digitalSignature = parser.parseElement(digitalSignature);
-    }
-    var seal = BaliSeal.fromScratch(certificateReference, digitalSignature);
-    this.notarySeals.push(seal);
+    return this.getDocumentContent().deleteKey(key);
 };

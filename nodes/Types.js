@@ -36,6 +36,7 @@ var NODE_TYPES = [
     'defaultExpression',
     'dereferenceExpression',
     'discardClause',
+    'document',
     'duration',
     'evaluateClause',
     'exponentialExpression',
@@ -64,6 +65,7 @@ var NODE_TYPES = [
     'reference',
     'returnClause',
     'saveClause',
+    'seal',
     'selectClause',
     'statement',
     'structure',
@@ -100,6 +102,7 @@ exports.CONTINUE_CLAUSE = NODE_TYPES.indexOf('continueClause');
 exports.DEFAULT_EXPRESSION = NODE_TYPES.indexOf('defaultExpression');
 exports.DEREFERENCE_EXPRESSION = NODE_TYPES.indexOf('dereferenceExpression');
 exports.DISCARD_CLAUSE = NODE_TYPES.indexOf('discardClause');
+exports.DOCUMENT = NODE_TYPES.indexOf('document');
 exports.DURATION = NODE_TYPES.indexOf('duration');
 exports.EVALUATE_CLAUSE = NODE_TYPES.indexOf('evaluateClause');
 exports.EXPONENTIAL_EXPRESSION = NODE_TYPES.indexOf('exponentialExpression');
@@ -128,6 +131,7 @@ exports.RANGE = NODE_TYPES.indexOf('range');
 exports.REFERENCE = NODE_TYPES.indexOf('reference');
 exports.RETURN_CLAUSE = NODE_TYPES.indexOf('returnClause');
 exports.SAVE_CLAUSE = NODE_TYPES.indexOf('saveClause');
+exports.SEAL = NODE_TYPES.indexOf('seal');
 exports.SELECT_CLAUSE = NODE_TYPES.indexOf('selectClause');
 exports.STATEMENT = NODE_TYPES.indexOf('statement');
 exports.STRUCTURE = NODE_TYPES.indexOf('structure');

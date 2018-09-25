@@ -39,10 +39,10 @@ describe('Bali Document Notation™', function() {
         });
 
         it('should create a draft of a document', function() {
-            document.notarySeals = [];
-            var draft = document.draft(document.previousReference);
+            var draft = document.draft(document.getPreviousReference());
             expect(draft).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(draft)).to.equal(true);
+            document.clearNotarySeals();
             expect(draft.toSource()).to.equal(document.toSource());
             document = baliDocument.fromSource(source);
         });
@@ -51,8 +51,8 @@ describe('Bali Document Notation™', function() {
             var unsealed = document.unsealed();
             expect(unsealed).to.exist;  // jshint ignore:line
             expect(baliDocument.isDocument(unsealed)).to.equal(true);
-            expect(unsealed.notarySeals.length).to.equal(1);
-            expect(document.notarySeals[0].toSource()).to.equal(unsealed.notarySeals[0].toSource());
+            expect(unsealed.getNotarySeals().length).to.equal(1);
+            expect(document.getNotarySeal(0).toSource()).to.equal(unsealed.getNotarySeal(0).toSource());
         });
 
     });
@@ -142,32 +142,26 @@ describe('Bali Document Notation™', function() {
     describe('Test Document Seal Access', function() {
 
         it('should retrieve the last notary seal', function() {
-            var seal = document.getLastSeal();
-            expect(seal).to.exist;  // jshint ignore:line
-            expect(seal.certificateReference.toSource()).to.equal(document.notarySeals[document.notarySeals.length - 1].certificateReference.toSource());
-            expect(seal.digitalSignature.toSource()).to.equal(document.notarySeals[document.notarySeals.length - 1].digitalSignature.toSource());
+            var size = document.tree.children.length;
+            var lastSeal = document.getLastSeal();
+            expect(lastSeal).to.exist;  // jshint ignore:line
+            var expectedSeal = document.tree.children[size - 1];
+            expect(expectedSeal).to.exist;  // jshint ignore:line
+            expect(lastSeal.children[0].toSource()).to.equal(expectedSeal.children[0].toSource());
+            expect(lastSeal.children[1].toSource()).to.equal(expectedSeal.children[1].toSource());
         });
 
         it('should add a new notary seal', function() {
-            var previousReference = "<bali:[$protocol:v1,$tag:#4Z46DL76YDRSSYW6HNDVSL66XV69TTS6,$version:v1,$digest:'C3RXCMQ1YJH2TPP7CJNAHRW9JH103ZW8XC26KY47NNQKCF969GBS076NZ7G2DG18KLP5K55H4Q8GSSK1MJJYT5BZX8BMQ1WXDDWKSZH']>";
-            var digitalSignature = "'\n" +
+            var seal = "<bali:[$protocol:v1,$tag:#4Z46DL76YDRSSYW6HNDVSL66XV69TTS6,$version:v1,$digest:'C3RXCMQ1YJH2TPP7CJNAHRW9JH103ZW8XC26KY47NNQKCF969GBS076NZ7G2DG18KLP5K55H4Q8GSSK1MJJYT5BZX8BMQ1WXDDWKSZH']> ";
+            seal += "'\n" +
                     "    620RF0K2049Z3JCBCK512JWMNQVW5NLAL8Q3N76XKXCJ2HDKA44QPGFNTYTANX5XRS0FLHB4FDTMC69H\n" +
                     "    DYMVAKDQ0RLZF5RP25W8PRTVY45TCYZ7N0142PMAKPWSJT3LZC078VY2HH104826PP9XX56PCT0S0YT0\n" +
                     "    PLQGACSS3BCJX4JAWX892H71JL3HKXYSFSC78G7YM2DJKPYZXBCBLPBSJLN9Y\n" +
                     "'";
-            document.addSeal(previousReference, digitalSignature);
-            expect(document.notarySeals.length).to.equal(3);
-        });
-
-        it('should retrieve all the notary seals', function() {
-            var seals = document.getSeals();
+            document.addNotarySeal(seal);
+            var seals = document.getNotarySeals();
             expect(seals).to.exist;  // jshint ignore:line
             expect(seals.length).to.equal(3);
-            for (var i = 0; i < seals.length; i++) {
-                var seal = seals[i];
-                expect(seal.certificateReference.toSource()).to.equal(document.notarySeals[i].certificateReference.toSource());
-                expect(seal.digitalSignature.toSource()).to.equal(document.notarySeals[i].digitalSignature.toSource());
-            }
         });
 
     });

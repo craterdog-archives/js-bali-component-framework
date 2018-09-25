@@ -194,15 +194,22 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(tree) {
     //console.log('JSON: ' + JSON.stringify(tree, null, 2));
-    if (tree.previousReference) {
-        tree.previousReference.accept(this);
+    var index = 0;
+
+    // format the previous reference if one exists
+    if (tree.children.length > 1 && tree.children[1].type !== types.SEAL) {
+        tree.children[index++].accept(this);
         this.source += '\n';
     }
-    tree.documentContent.accept(this);
-    tree.notarySeals.forEach(function(seal) {
+
+    // format the document content
+    tree.children[index++].accept(this);
+
+    // format the notary seals
+    while (index < tree.children.length) {
         this.source += '\n';
-        seal.accept(this);
-    }, this);
+        tree.children[index++].accept(this);
+    }
     this.source += '\n';  // required POSIX EOL at end of file (do not remove!)
 };
 
@@ -467,9 +474,9 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
 
 // seal: reference binary
 FormattingVisitor.prototype.visitSeal = function(tree) {
-    tree.certificateReference.accept(this);
+    tree.children[0].accept(this);
     this.source += ' ';
-    tree.digitalSignature.accept(this);
+    tree.children[1].accept(this);
 };
 
 

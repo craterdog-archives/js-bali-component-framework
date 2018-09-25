@@ -13,10 +13,7 @@
  * This class captures the state and methods associated with a parse tree node.
  */
 var types = require('./Types');
-var Terminal = require('./Terminal').Terminal;
-var parser = require('../transformers/DocumentParser');
 var formatter = require('../transformers/DocumentFormatter');
-var scanner = require('../transformers/DocumentScanner');
 
 
 /**
@@ -55,6 +52,9 @@ Tree.prototype.accept = function(visitor) {
         case types.BREAK_CLAUSE:
             visitor.visitBreakClause(this);
             break;
+        case types.CATALOG:
+            visitor.visitCatalog(this);
+            break;
         case types.CHECKOUT_CLAUSE:
             visitor.visitCheckoutClause(this);
             break;
@@ -84,6 +84,9 @@ Tree.prototype.accept = function(visitor) {
             break;
         case types.DISCARD_CLAUSE:
             visitor.visitDiscardClause(this);
+            break;
+        case types.DOCUMENT:
+            visitor.visitDocument(this);
             break;
         case types.EVALUATE_CLAUSE:
             visitor.visitEvaluateClause(this);
@@ -145,6 +148,9 @@ Tree.prototype.accept = function(visitor) {
         case types.SAVE_CLAUSE:
             visitor.visitSaveClause(this);
             break;
+        case types.SEAL:
+            visitor.visitSeal(this);
+            break;
         case types.SELECT_CLAUSE:
             visitor.visitSelectClause(this);
             break;
@@ -159,9 +165,6 @@ Tree.prototype.accept = function(visitor) {
             break;
         case types.SUBCOMPONENT_EXPRESSION:
             visitor.visitSubcomponentExpression(this);
-            break;
-        case types.CATALOG:
-            visitor.visitCatalog(this);
             break;
         case types.THROW_CLAUSE:
             visitor.visitThrowClause(this);
@@ -212,7 +215,7 @@ Tree.prototype.toSource = function(indentation) {
  * @returns {String} The string representation of this tree node.
  */
 Tree.prototype.toString = function() {
-    var string = formatter.formatTree(this);
+    var string = this.toSource();
     return string;
 };
 
@@ -352,10 +355,7 @@ Tree.prototype.removeItem = function(index) {
  * @returns {Component} The string value associated with the key.
  */
 Tree.prototype.getString = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var result = scanner.scanTree(this, key);
+    var result = scanTree(this, key);
     if (result) {
         return result.toSource();
     } else {
@@ -372,10 +372,7 @@ Tree.prototype.getString = function(key) {
  * @returns {Component} The value associated with the key.
  */
 Tree.prototype.getValue = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var result = scanner.scanTree(this, key);
+    var result = scanTree(this, key);
     return result;
 };
 
@@ -389,12 +386,7 @@ Tree.prototype.getValue = function(key) {
  * @returns {Component} The old value associated with the key.
  */
 Tree.prototype.setValue = function(key, value) {
-    // NOTE: we must convert the these to a string first to make sure they end up as
-    // components and not as terminals.  Also, we cannot call toSource() since they maybe
-    // strings.
-    key = parser.parseComponent(key.toString());
-    value = parser.parseExpression(value.toString());
-    var result = scanner.scanTree(this, key, value);
+    var result = scanTree(this, key, value);
     var previousValue = result;
     if (!previousValue) {
         // insert as a new association in the top level catalog
@@ -422,10 +414,7 @@ Tree.prototype.setValue = function(key, value) {
  * @returns {Component} The value associated with the key.
  */
 Tree.prototype.deleteKey = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
-    var result = scanner.scanTree(this, key, null, true);
+    var result = scanTree(this, key, null, true);
     return result;
 };
 
@@ -450,5 +439,139 @@ ListIterator.prototype.getNext = function() {
         return this.expressions[this.index++];
     } else {
         return undefined;
+    }
+};
+
+
+function scanTree(tree, key, value, remove) {
+    var visitor = new ScanningVisitor(key, value, remove);
+    tree.accept(visitor);
+    return visitor.result;
+}
+
+
+function ScanningVisitor(key, value, remove) {
+    this.key = key;
+    this.value = value;
+    this.remove = remove;
+    return this;
+}
+ScanningVisitor.prototype.constructor = ScanningVisitor;
+
+
+// association: component ':' expression
+ScanningVisitor.prototype.visitAssociation = function(association) {
+    var component = association.children[0];
+    var expression = association.children[1];
+    var state = component.children[0];
+    if (state.type !== types.STRUCTURE && state.type !== types.CODE && state.toSource() === this.key.toSource()) {
+        this.result = expression;
+        if (this.value) {
+            association.size -= state.size;
+            association.children[1] = this.value;
+            association.size += this.value.size;
+        }
+    } else if (expression.type === types.COMPONENT) {
+        expression.accept(this);
+    }
+};
+
+
+// catalog:
+//     association (',' association)* |
+//     NEWLINE (association NEWLINE)* |
+//     ':' /*empty catalog*/
+ScanningVisitor.prototype.visitCatalog = function(catalog) {
+    var associations = catalog.children;
+    var index = associations.findIndex(function(association) {
+        association.accept(this);
+        return this.result;
+    }, this);
+    if (index > -1) {
+        if (this.remove) {
+            catalog.size -= associations[index].size;
+            associations.splice(index, 1);
+        }
+    }
+};
+
+
+// code: '{' procedure '}'
+ScanningVisitor.prototype.visitCode = function(code) {
+    // ignore
+};
+
+
+// component: state parameters?
+ScanningVisitor.prototype.visitComponent = function(component) {
+    var state = component.children[0];
+    if (state.type === types.STRUCTURE) {
+        state.accept(this);
+    }
+};
+
+
+// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
+ScanningVisitor.prototype.visitDocument = function(document) {
+    document.children.forEach(function(child) {
+        child.accept(this);
+    }, this);
+};
+
+
+// element:
+//     angle |
+//     binary |
+//     duration |
+//     moment |
+//     number |
+//     percent |
+//     probability |
+//     reference |
+//     symbol |
+//     tag |
+//     template |
+//     text |
+//     version
+ScanningVisitor.prototype.visitElement = function(element) {
+    // ignore
+};
+
+
+// list:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
+ScanningVisitor.prototype.visitList = function(list) {
+    var expressions = list.children;
+    expressions.find(function(expression) {
+        if (expression.type === types.COMPONENT) {
+            expression.accept(this);
+        }
+        return this.result;
+    }, this);
+};
+
+
+// procedure:
+//     statement (';' statement)* |
+//     NEWLINE (statement NEWLINE)* |
+//     /*empty procedure*/
+ScanningVisitor.prototype.visitProcedure = function(procedure) {
+    // ignore
+};
+
+
+// seal: reference binary
+ScanningVisitor.prototype.visitSeal = function(seal) {
+    // ignore
+};
+
+
+// structure: '[' collection ']'
+ScanningVisitor.prototype.visitStructure = function(structure) {
+    var collection = structure.children[0];
+    if (collection.type !== types.RANGE) {
+        collection.accept(this);
     }
 };
