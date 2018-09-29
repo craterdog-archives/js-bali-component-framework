@@ -99,20 +99,18 @@ describe('Bali Document Notation™', function() {
     });
 
     describe('Test Document Catalog Access', function() {
-        var stringKey = '$foo';
-        var key = parser.parseElement(stringKey);
-        expect(key).to.exist;  // jshint ignore:line
+        var key = '$foo';
         var value;
 
         it('should retrieve attribute values', function() {
             var stringValue = document.getString(key);
-            value = document.getValue(stringKey);
+            value = document.getValue(key);
             expect(value).to.exist;  // jshint ignore:line
             expect(value.toSource()).to.equal(stringValue);
         });
 
         it('should set new attribute values', function() {
-            var newKey = parser.parseElement('$new');
+            var newKey = '$new';
             var stringValue = value.toSource();
             var oldValue = document.setValue(newKey, value);
             expect(oldValue).to.not.exist;  // jshint ignore:line
@@ -123,10 +121,10 @@ describe('Bali Document Notation™', function() {
 
         it('should update attribute values', function() {
             var stringValue = '$baz';
-            var oldValue = document.setValue(stringKey, stringValue);
+            var oldValue = document.setValue(key, stringValue);
             expect(oldValue).to.exist;  // jshint ignore:line
             expect(oldValue.toSource()).to.equal(value.toSource());
-            value = document.getValue(stringKey);
+            value = document.getValue(key);
             expect(value).to.exist;  // jshint ignore:line
             expect(value.toSource()).to.equal(stringValue);
         });

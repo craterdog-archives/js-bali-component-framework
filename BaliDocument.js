@@ -157,7 +157,7 @@ Document.prototype.getPreviousReference = function() {
  */
 Document.prototype.setPreviousReference = function(reference) {
     if (reference.constructor.name === 'String') {
-        reference = parser.parseElement(reference);
+        reference = new Terminal(types.REFERENCE, reference);
     }
     if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
         this.tree.children[0] = reference;  // replace the existing previous reference
@@ -184,12 +184,9 @@ Document.prototype.getDocumentContent = function() {
 /**
  * This method sets the document content.
  * 
- * @param {String|Tree} content The component or procedure that makes up the document content.
+ * @param {Tree} content The component or procedure that makes up the document content.
  */
 Document.prototype.setDocumentContent = function(content) {
-    if (content.constructor.name === 'String') {
-        content = parser.parseComponent(content);
-    }
     if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
         this.tree.children[1] = content;
     } else {
@@ -233,7 +230,15 @@ Document.prototype.getLastSeal = function() {
  * signature of the notary seal.
  */
 Document.prototype.addNotarySeal = function(certificateReference, digitalSignature) {
-    var seal = parser.parseSeal(certificateReference.toString() + ' ' + digitalSignature.toString());
+    if (certificateReference.constructor.name === 'String') {
+        certificateReference = new Terminal(types.REFERENCE, certificateReference);
+    }
+    if (digitalSignature.constructor.name === 'String') {
+        digitalSignature = new Terminal(types.BINARY, digitalSignature);
+    }
+    var seal = new Tree(types.SEAL);
+    seal.addChild(certificateReference);
+    seal.addChild(digitalSignature);
     this.tree.children.push(seal);
 };
 
@@ -273,9 +278,6 @@ Document.prototype.clearNotarySeals = function() {
  * @returns {Component} The string value associated with the key.
  */
 Document.prototype.getString = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
     return this.getDocumentContent().getString(key);
 };
 
@@ -288,9 +290,6 @@ Document.prototype.getString = function(key) {
  * @returns {Component} The value associated with the key.
  */
 Document.prototype.getValue = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
     return this.getDocumentContent().getValue(key);
 };
 
@@ -304,11 +303,6 @@ Document.prototype.getValue = function(key) {
  * @returns {Component} The old value associated with the key.
  */
 Document.prototype.setValue = function(key, value) {
-    // NOTE: we must convert the these to a string first to make sure they end up as
-    // components and not as terminals.  Also, we cannot call toSource() since they maybe
-    // strings.
-    key = parser.parseComponent(key.toString());
-    value = parser.parseExpression(value.toString());
     return this.getDocumentContent().setValue(key, value);
 };
 
@@ -321,9 +315,6 @@ Document.prototype.setValue = function(key, value) {
  * @returns {Component} The value associated with the key.
  */
 Document.prototype.deleteKey = function(key) {
-    if (key.constructor.name === 'String') {
-        key = parser.parseComponent(key);
-    }
     return this.getDocumentContent().deleteKey(key);
 };
 
@@ -774,10 +765,11 @@ Tree.prototype.getValue = function(key) {
  * specified key.
  * 
  * @param {String} key The string form of the key.
- * @param {Component} value The value to be associated with the key.
+ * @param {String|Component} value The value to be associated with the key.
  * @returns {Component} The old value associated with the key.
  */
 Tree.prototype.setValue = function(key, value) {
+    value = parser.parseExpression(value.toString());
     var result = scanTree(this, key, value);
     var previousValue = result;
     if (!previousValue) {
@@ -787,6 +779,7 @@ Tree.prototype.setValue = function(key, value) {
                 this.children[0].children[0].type === types.CATALOG) {
             var catalog = this.children[0].children[0];
             var association = new Tree(types.ASSOCIATION, 2);
+            key = parser.parseComponent(key.toString());
             association.addChild(key);
             association.addChild(value);
             catalog.addChild(association);
@@ -856,7 +849,7 @@ ScanningVisitor.prototype.visitAssociation = function(association) {
     var component = association.children[0];
     var expression = association.children[1];
     var state = component.children[0];
-    if (state.type !== types.STRUCTURE && state.type !== types.CODE && state.toSource() === this.key.toSource()) {
+    if (state.type !== types.STRUCTURE && state.type !== types.CODE && state.toSource() === this.key) {
         this.result = expression;
         if (this.value) {
             association.size -= state.size;
