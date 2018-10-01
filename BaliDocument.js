@@ -41,7 +41,7 @@ exports.fromSource = fromSource;
 function isDocument(object) {
     if (!object || object.constructor.name !== 'Document') return false;
     if (!types.isType(object.tree, types.DOCUMENT)) return false;
-    if (!types.isType(object.getPreviousReference(), types.REFERENCE)) return false;
+    if (!types.isType(object.getPreviousCitation(), types.REFERENCE)) return false;
     if (!types.isType(object.getDocumentContent(), types.COMPONENT) &&
         !types.isType(object.getDocumentContent(), types.PROCEDURE)) return false;
     if (!object.getNotarySeals() || object.getNotarySeals().constructor.name !== 'Array') return false;
@@ -143,7 +143,7 @@ Document.prototype.unsealed = function() {
  * 
  * @returns {Terminal} The reference to the previous version of the document.
  */
-Document.prototype.getPreviousReference = function() {
+Document.prototype.getPreviousCitation = function() {
     if (this.tree.children.length > 1 && this.tree.children[1].type !== types.SEAL) {
         return this.tree.children[0];
     }
@@ -299,7 +299,7 @@ Document.prototype.getValue = function(key) {
  * specified key.
  * 
  * @param {String} key The string form of the key.
- * @param {Component} value The value to be associated with the key.
+ * @param {String|Component} value The value to be associated with the key.
  * @returns {Component} The old value associated with the key.
  */
 Document.prototype.setValue = function(key, value) {
