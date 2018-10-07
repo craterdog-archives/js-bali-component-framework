@@ -13,8 +13,8 @@
  * This class captures the state and methods associated with a Bali document.
  */
 var types = require('./Types');
-var parser = require('./transformers/DocumentParser');
-var formatter = require('./transformers/DocumentFormatter');
+var formatter = require('./DocumentFormatter');
+var parser = require('./DocumentParser');
 
 
 /**

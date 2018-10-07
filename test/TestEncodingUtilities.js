@@ -8,11 +8,11 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var codex = require('../utilities/EncodingUtilities');
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var codex = require('../src/EncodingUtilities');
 
-describe('Bali Virtual Machine™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test random number utilities', function() {
 

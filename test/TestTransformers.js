@@ -8,11 +8,11 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var parser = require('../transformers/DocumentParser');
-var formatter = require('../transformers/DocumentFormatter');
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var formatter = require('../src/DocumentFormatter');
+var parser = require('../src/DocumentParser');
 
 describe('Bali Document Notation™', function() {
     var DEBUG = false;  // change to true to check for ambiguities in the grammar

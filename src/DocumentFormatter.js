@@ -14,7 +14,7 @@
  * by the DocumentParser and generates a canonical version of
  * the corresponding source string.
  */
-var types = require('../Types');
+var types = require('./Types');
 
 
 exports.formatTree = function(tree, indentation) {
