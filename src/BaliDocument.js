@@ -644,7 +644,7 @@ Tree.prototype.iterator = function() {
  * This function retrieves from a list the item associated with the
  * specified index.
  * 
- * @param {Number} index The ordinal based index of the desired item.
+ * @param {Number} index The index of the desired item.
  * @returns {Component} The item associated with the index.
  */
 Tree.prototype.getItem = function(index) {
@@ -665,7 +665,7 @@ Tree.prototype.getItem = function(index) {
 /**
  * This function sets in a list the item associated with the specified index.
  * 
- * @param {Number} index The ordinal based index of the item.
+ * @param {Number} index The index of the item.
  * @param {Component} item The item to be associated with the index.
  * @returns {Component} The old item associated with the index.
  */
