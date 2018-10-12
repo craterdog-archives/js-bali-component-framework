@@ -60,7 +60,27 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec'
         },
-        src: ['test/*.js']
+        src: [
+          'test/TestAngle.js',
+          'test/TestBinary.js',
+          'test/TestCatalog.js',
+          'test/TestComplex.js',
+          'test/TestDuration.js',
+          'test/TestEncodingUtilities.js',
+          'test/TestList.js',
+          'test/TestMoment.js',
+          'test/TestPercent.js',
+          'test/TestProbability.js',
+          'test/TestRange.js',
+          'test/TestReference.js',
+          'test/TestSet.js',
+          'test/TestStack.js',
+          'test/TestSymbol.js',
+          'test/TestTag.js',
+          'test/TestTemplate.js',
+          'test/TestText.js',
+          'test/TestVersion.js'
+        ]
       }
     },
 

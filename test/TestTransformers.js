@@ -11,8 +11,8 @@
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var formatter = require('../src/DocumentFormatter');
-var parser = require('../src/DocumentParser');
+var formatter = require('../src/transformers/DocumentFormatter');
+var parser = require('../src/transformers/DocumentParser');
 
 describe('Bali Document Notation™', function() {
     var DEBUG = false;  // change to true to check for ambiguities in the grammar
