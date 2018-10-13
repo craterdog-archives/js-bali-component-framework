@@ -28,7 +28,7 @@
     $inversion: [
         $negative: {
             $expression := -exponential
-            $expression := - -pi
+            $expression := --pi
         }
         $inverse: {
             $expression := /exponential

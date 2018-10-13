@@ -18,15 +18,23 @@ var Composite = require('../abstractions/Composite').Composite;
 var OrderedCollection = require('../abstractions/OrderedCollection').OrderedCollection;
 
 
-// PUBLIC FUNCTIONS
+/**
+ * The constructor creates a new empty set.
+ * 
+ * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @returns {Set} The new set.
+ */
+function Set(parameters) {
+    OrderedCollection.call(this, types.SET, parameters);
+    this.tree = new RandomizedTree();
+    return this;
+}
+Set.prototype = Object.create(OrderedCollection.prototype);
+Set.prototype.constructor = Set;
+exports.Set = Set;
 
-exports.fromScratch = function(parameters) {
-    var set = new Set(parameters);
-    return set;
-};
 
-
-exports.fromCollection = function(collection, parameters) {
+Set.fromCollection = function(collection, parameters) {
     var set = new Set(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -59,8 +67,8 @@ exports.fromCollection = function(collection, parameters) {
  * @param {Set} set2 The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-exports.and = function(set1, set2) {
-    var result = exports.fromScratch();
+Set.and = function(set1, set2) {
+    var result = new Set();
     var iterator = set1.iterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
@@ -80,8 +88,8 @@ exports.and = function(set1, set2) {
  * @param {Set} set2 The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-exports.sans = function(set1, set2) {
-    var result = exports.fromCollection(set1);
+Set.sans = function(set1, set2) {
+    var result = Set.fromCollection(set1);
     result.removeItems(set2);
     return result;
 };
@@ -95,8 +103,8 @@ exports.sans = function(set1, set2) {
  * @param {Set} set2 The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-exports.or = function(set1, set2) {
-    var result = exports.fromCollection(set1);
+Set.or = function(set1, set2) {
+    var result = Set.fromCollection(set1);
     result.addItems(set2);
     return result;
 };
@@ -110,8 +118,8 @@ exports.or = function(set1, set2) {
  * @param {Set} set2 The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-exports.xor = function(set1, set2) {
-    var result = exports.fromScratch();
+Set.xor = function(set1, set2) {
+    var result = new Set();
     var iterator1 = set1.iterator();
     var item1;
     var iterator2 = set2.iterator();
@@ -145,21 +153,6 @@ exports.xor = function(set1, set2) {
     }
     return result;
 };
-
-
-/**
- * The constructor creates a new empty set.
- * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
- * @returns {Set} The new set.
- */
-function Set(parameters) {
-    OrderedCollection.call(this, types.SET, parameters);
-    this.tree = new RandomizedTree();
-    return this;
-}
-Set.prototype = Object.create(OrderedCollection.prototype);
-Set.prototype.constructor = Set;
 
 
 // PUBLIC METHODS
@@ -231,8 +224,8 @@ Set.prototype.getItem = function(index) {
  * @returns {Number} The index of the specified item.
  */
 Set.prototype.getIndex = function(item) {
-    var component = Composite.asComponent(item);
-    var index = this.tree.index(component) + 1;  // convert to Bali ordinal based indexing
+    item = Composite.asComponent(item);
+    var index = this.tree.index(item) + 1;  // convert to Bali ordinal based indexing
     return index;
 };
 
@@ -262,8 +255,8 @@ Set.prototype.addItem = function(item) {
  * @returns {Boolean} Whether or not the item was removed.
  */
 Set.prototype.removeItem = function(item) {
-    var component = Composite.asComponent(item);
-    var result = this.tree.remove(component);
+    item = Composite.asComponent(item);
+    var result = this.tree.remove(item);
     if (result) {
         this.length -= item.length;
         if (this.getSize() > 0) this.length -= 2;  // account for the ', ' separator

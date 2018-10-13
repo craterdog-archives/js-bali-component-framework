@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-exports.abstractions = require('./src/abstractions');
-exports.elements = require('./src/elements');
-exports.composites = require('./src/composites');
-exports.transformers = require('./src/transformers');
+exports.formatter = require('./DocumentFormatter');
+exports.parser = require('./DocumentParser');
+exports.codex = require('./Codex');
+

@@ -31,3 +31,14 @@ function Code(source, parameters) {
 Code.prototype = Object.create(Element.prototype);
 Code.prototype.constructor = Code;
 exports.Code = Code;
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Code.prototype.accept = function(visitor) {
+    visitor.visitCode(this);
+};
+

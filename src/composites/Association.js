@@ -22,7 +22,7 @@ function Association(key, value) {
     Composite.call(this, types.ASSOCIATION);
     this.key = Composite.asComponent(key);
     this.value = Composite.asComponent(value);
-    this.length += key.length + value.length;
+    this.length += this.key.length + this.value.length;
     this.length += 2;  // account for the ': ' separator
     return this;
 }

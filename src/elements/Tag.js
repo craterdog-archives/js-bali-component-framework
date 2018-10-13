@@ -14,7 +14,7 @@
  * tag element.
  */
 var types = require('../abstractions/Types');
-var codex = require('../transformers/EncodingUtilities');
+var codex = require('../utilities/Codex');
 var Element = require('../abstractions/Element').Element;
 
 

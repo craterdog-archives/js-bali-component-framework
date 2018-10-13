@@ -30,8 +30,6 @@ var types = require('../abstractions/Types');
 var Component = require('../abstractions/Component').Component;
 
 
-// PUBLIC METHODS
-
 /**
  * The constructor for the Iterator class.
  * 
@@ -49,6 +47,8 @@ Iterator.prototype = Object.create(Component.prototype);
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
 
+
+// PUBLIC METHODS
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

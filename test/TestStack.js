@@ -10,9 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var List = require('../src/composites/List');
-var Set = require('../src/composites/Set');
-var Stack = require('../src/composites/Stack');
+var composites = require('../src/composites');
 
 
 describe('Bali Primitive Types™', function() {
@@ -21,7 +19,7 @@ describe('Bali Primitive Types™', function() {
     describe('Test the stack constructors.', function() {
 
         it('should create an empty stack', function() {
-            var stack = Stack.fromScratch();
+            var stack = new composites.Stack();
             expect(stack).to.exist;  // jshint ignore:line
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -31,7 +29,7 @@ describe('Bali Primitive Types™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             stack.removeAll();
-            var copy = Stack.fromScratch();
+            var copy = new composites.Stack();
             expect(copy).to.exist;  // jshint ignore:line
             expect(stack.equalTo(copy)).to.equal(true);
             var signum = stack.compareTo(copy);
@@ -39,7 +37,7 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create an empty stack with small capacity', function() {
-            var stack = Stack.fromScratch();
+            var stack = new composites.Stack();
             stack.capacity = 1;
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -58,7 +56,7 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a stack from an array', function() {
-            var stack = Stack.fromCollection(array);
+            var stack = composites.Stack.fromCollection(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +74,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a stack from a list', function() {
-            var list = List.fromCollection(array);
-            stack = Stack.fromCollection(list);
+            var list = composites.List.fromCollection(array);
+            stack = composites.Stack.fromCollection(list);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -95,8 +93,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a stack from a set', function() {
-            var set = Set.fromCollection(array);
-            var stack = Stack.fromCollection(set);
+            var set = composites.Set.fromCollection(array);
+            var stack = composites.Stack.fromCollection(set);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -114,8 +112,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a stack from a stack', function() {
-            var stack = Stack.fromCollection(array);
-            stack = Stack.fromCollection(stack);
+            var stack = composites.Stack.fromCollection(array);
+            stack = composites.Stack.fromCollection(stack);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -137,7 +135,7 @@ describe('Bali Primitive Types™', function() {
     describe('Test the stack methods.', function() {
 
         it('should be able to push and pop items from a stack', function() {
-            var stack = Stack.fromCollection(array);
+            var stack = composites.Stack.fromCollection(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -176,7 +174,7 @@ describe('Bali Primitive Types™', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             // REMEMBER: The iterator for a stack iterates through the items in LIFO order
-            var stack = Stack.fromScratch();
+            var stack = new composites.Stack();
             var index;
             var item;
             // place the items on the stack in order

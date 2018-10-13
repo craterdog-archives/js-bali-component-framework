@@ -13,7 +13,7 @@
  * This abstract class defines the invariant methods that all components must support.
  */
 var types = require('./Types');
-var formatter = require('../transformers/DocumentFormatter');
+var formatter = require('../utilities/DocumentFormatter');
 
 
 /**

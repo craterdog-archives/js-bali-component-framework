@@ -17,18 +17,6 @@ var Composite = require('../abstractions/Composite').Composite;
 var Complex = require('../elements/Complex').Complex;
 
 
-exports.fromEndPoints = function(first, last, parameters) {
-    var range = new Range(first, last, parameters);
-    return range;
-};
-
-
-exports.fromLastPoint = function(last, parameters) {
-    var range = new Range(1, last, parameters);
-    return range;
-};
-
-
 /**
  * The constructor for the range class takes a first and last number.
  * 
@@ -39,19 +27,42 @@ exports.fromLastPoint = function(last, parameters) {
  */
 function Range(first, last, parameters) {
     Composite.call(this, types.RANGE, parameters);
-    if (first.constructor.name !== 'Number' || last.constructor.name !== 'Number') {
-        throw new Error('RANGE: The endpoints for a range must be integers.');
-    }
-    this.firstNumber = first;
-    this.lastNumber = last;
-    this.first = new Complex(first.toString());
-    this.last = new Complex(last.toString());
+    this.first = Composite.asComponent(first);
+    this.last = Composite.asComponent(last);
     this.length += 2;  // account for the '[]' delimiters
     this.length += this.first.length + this.last.length + 2;  // account for the '..' separator
     return this;
 }
 Range.prototype = Object.create(Composite.prototype);
 Range.prototype.constructor = Range;
+exports.Range = Range;
+
+
+/**
+ * This function creates a new range with the specified first and last integer values.
+ * 
+ * @param {Number} first The first integer in the range.
+ * @param {Number} last The last integer in the range.
+ * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
+ * @returns {Range} The new range.
+ */
+Range.fromEndPoints = function(first, last, parameters) {
+    var range = new Range(first, last, parameters);
+    return range;
+};
+
+
+/**
+ * This function creates a new range from 1 to the specified last integer value.
+ * 
+ * @param {Number} last The last integer in the range.
+ * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
+ * @returns {Range} The new range.
+ */
+Range.fromLastPoint = function(last, parameters) {
+    var range = new Range(1, last, parameters);
+    return range;
+};
 
 
 // PUBLIC METHODS
@@ -72,7 +83,7 @@ Range.prototype.accept = function(visitor) {
  * @returns {Number} The number of numbers that fall in this range.
  */
 Range.prototype.getSize = function() {
-    var size = this.lastNumber - this.firstNumber + 1;
+    var size = this.last.toNumber() - this.first.toNumber() + 1;
     return size;
 };
 
@@ -84,8 +95,9 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.toArray = function() {
     var array = [];
-    var index = this.firstNumber;
-    while (index <= this.lastNumber) array.push(index++);
+    var index = this.first.toNumber();
+    var last = this.last.toNumber();
+    while (index <= last) array.push(index++);
     return array;
 };
 
@@ -140,14 +152,14 @@ RangeIterator.prototype.hasNext = function() {
 RangeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the range.');
     this.slot--;
-    var number = this.range.firstNumber + this.slot;
+    var number = this.range.first.toNumber() + this.slot;
     return number;
 };
 
 
 RangeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the range.');
-    var number = this.range.firstNumber + this.slot;
+    var number = this.range.first.toNumber() + this.slot;
     this.slot++;
     return number;
 };

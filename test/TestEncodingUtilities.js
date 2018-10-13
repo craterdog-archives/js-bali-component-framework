@@ -10,7 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var codex = require('../src/transformers/EncodingUtilities');
+var codex = require('../src/utilities/Codex');
 
 describe('Bali Document Notation™', function() {
 

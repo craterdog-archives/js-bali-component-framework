@@ -15,7 +15,7 @@
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
-var codex = require('../transformers/EncodingUtilities');
+var codex = require('../utilities/Codex');
 
 
 /**

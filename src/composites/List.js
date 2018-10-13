@@ -25,15 +25,22 @@ var Composite = require('../abstractions/Composite').Composite;
 var SortableCollection = require('../abstractions/SortableCollection').SortableCollection;
 
 
-// PUBLIC FUNCTIONS
+/**
+ * The constructor creates a new empty list.
+ * 
+ * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @returns {List} The new list.
+ */
+function List(parameters) {
+    SortableCollection.call(this, types.LIST, parameters);
+    return this;
+}
+List.prototype = Object.create(SortableCollection.prototype);
+List.prototype.constructor = List;
+exports.List = List;
 
-exports.fromScratch = function(parameters) {
-    var list = new List(parameters);
-    return list;
-};
 
-
-exports.fromCollection = function(collection, parameters) {
+List.fromCollection = function(collection, parameters) {
     var list = new List(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -66,25 +73,11 @@ exports.fromCollection = function(collection, parameters) {
  * @param {List} list2 The second list whose items are to be concatenated.
  * @returns {List} The resulting list.
  */
-exports.concatenation = function(list1, list2) {
-    var result = exports.fromCollection(list1);
+List.concatenation = function(list1, list2) {
+    var result = List.fromCollection(list1);
     result.addItems(list2);
     return result;
 };
-
-
-/**
- * The constructor creates a new empty list.
- * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
- * @returns {List} The new list.
- */
-function List(parameters) {
-    SortableCollection.call(this, types.LIST, parameters);
-    return this;
-}
-List.prototype = Object.create(SortableCollection.prototype);
-List.prototype.constructor = List;
 
 
 // PUBLIC METHODS
@@ -107,8 +100,8 @@ List.prototype.emptyCopy = function() {
  * @returns {Boolean} Whether or not a new item was added, which it always will have been.
  */
 List.prototype.addItem = function(item) {
-    var component = Composite.asComponent(item);
-    this.array.push(component);
+    item = Composite.asComponent(item);
+    this.array.push(item);
     this.length += item.length;
     if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
     return true;
@@ -123,10 +116,10 @@ List.prototype.addItem = function(item) {
  * @param {Component} item The new item to be inserted into this list.
  */
 List.prototype.insertItem = function(index, item) {
-    var component = Composite.asComponent(item);
+    item = Composite.asComponent(item);
     index = this.normalizedIndex(index);
     index--;  // convert to javascript zero based indexing
-    this.array.splice(index, 0, component);
+    this.array.splice(index, 0, item);
     this.length += item.length;
     if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
 };

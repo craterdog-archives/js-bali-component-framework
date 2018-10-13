@@ -10,25 +10,21 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var Association = require('../src/composites/Association').Association;
-var Catalog = require('../src/composites/Catalog');
-var List = require('../src/composites/List');
-var Set = require('../src/composites/Set');
-var Stack = require('../src/composites/Stack');
+var composites = require('../src/composites');
 
 
 describe('Bali Primitive Types™', function() {
     var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
-    var association1 = new Association(1, 'alpha');
-    var association2 = new Association(2, 'beta');
-    var association3 = new Association(3, 'delta');
-    var association4 = new Association(4, 'epsilon');
-    var association5 = new Association(5, 'gamma');
+    var association1 = new composites.Association(1, 'alpha');
+    var association2 = new composites.Association(2, 'beta');
+    var association3 = new composites.Association(3, 'delta');
+    var association4 = new composites.Association(4, 'epsilon');
+    var association5 = new composites.Association(5, 'gamma');
 
     describe('Test the catalog constructors.', function() {
 
         it('should create an empty catalog', function() {
-            var catalog = Catalog.fromScratch();
+            var catalog = new composites.Catalog();
             expect(catalog).to.exist;  // jshint ignore:line
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -46,7 +42,7 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a catalog from an array', function() {
-            var catalog = Catalog.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(array);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -77,8 +73,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a catalog from a list', function() {
-            var list = List.fromCollection(array);
-            var catalog = Catalog.fromCollection(list);
+            var list = composites.List.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -109,8 +105,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a catalog from a set', function() {
-            var set = Set.fromCollection(array);
-            var catalog = Catalog.fromCollection(set);
+            var set = composites.Set.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(set);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -141,8 +137,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a catalog from a stack', function() {
-            var stack = Stack.fromCollection(array);
-            var catalog = Catalog.fromCollection(stack);
+            var stack = composites.Stack.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(stack);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -180,7 +176,7 @@ describe('Bali Primitive Types™', function() {
                 epsilon: 'epsilon',
                 gamma: 'gamma'
             };
-            var catalog = Catalog.fromCollection(object);
+            var catalog = composites.Catalog.fromCollection(object);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(Object.keys(object).length);
@@ -211,8 +207,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a catalog from a catalog', function() {
-            var catalog = Catalog.fromCollection(array);
-            catalog = Catalog.fromCollection(catalog);
+            var catalog = composites.Catalog.fromCollection(array);
+            catalog = composites.Catalog.fromCollection(catalog);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -247,13 +243,13 @@ describe('Bali Primitive Types™', function() {
     describe('Test the catalog methods.', function() {
 
         it('should be able to call the Collection class methods on the catalog', function() {
-            var catalog1 = Catalog.fromScratch();
-            catalog1.addItem(new Association(1, 'alpha'));
-            catalog1.addItem(new Association(2, 'beta'));
-            catalog1.addItem(new Association(3, 'delta'));
-            var catalog2 = Catalog.fromScratch();
-            catalog2.addItem(new Association(4, 'epsilon'));
-            catalog2.addItem(new Association(5, 'gamma'));
+            var catalog1 = new composites.Catalog();
+            catalog1.addItem(new composites.Association(1, 'alpha'));
+            catalog1.addItem(new composites.Association(2, 'beta'));
+            catalog1.addItem(new composites.Association(3, 'delta'));
+            var catalog2 = new composites.Catalog();
+            catalog2.addItem(new composites.Association(4, 'epsilon'));
+            catalog2.addItem(new composites.Association(5, 'gamma'));
             catalog1.addItems(catalog2);
             size = catalog1.getSize();
             expect(size).to.equal(array.length);
@@ -277,8 +273,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should be able to add and remove associations from a catalog', function() {
-            var list = List.fromCollection(array);
-            var catalog = Catalog.fromCollection(list);
+            var list = composites.List.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -343,15 +339,15 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should be able to perform catalog operations on catalogs', function() {
-            var catalog1 = Catalog.fromScratch();
+            var catalog1 = new composites.Catalog();
             catalog1.addItem(association1);
             catalog1.addItem(association2);
             catalog1.addItem(association3);
-            var catalog2 = Catalog.fromScratch();
+            var catalog2 = new composites.Catalog();
             catalog2.addItem(association4);
             catalog2.addItem(association5);
-            var catalog3 = Catalog.fromCollection(array);
-            var catalog4 = Catalog.concatenation(catalog1, catalog2);
+            var catalog3 = composites.Catalog.fromCollection(array);
+            var catalog4 = composites.Catalog.concatenation(catalog1, catalog2);
             expect(catalog4.equalTo(catalog3)).to.equal(true);
         });
 
@@ -360,7 +356,7 @@ describe('Bali Primitive Types™', function() {
     describe('Test the catalog iterators.', function() {
 
         it('should iterate over a catalog forwards and backwards', function() {
-            var catalog = Catalog.fromCollection(array);
+            var catalog = composites.Catalog.fromCollection(array);
             var iterator = catalog.iterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

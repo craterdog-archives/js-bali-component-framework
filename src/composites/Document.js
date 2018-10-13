@@ -13,11 +13,10 @@
  * This class captures the state and methods associated with a Bali document.
  */
 var types = require('../abstractions/Types');
+var Composite = require('../abstractions/Composite').Composite;
 var Binary = require('../elements/Binary').Binary;
 var Reference = require('../elements/Reference').Reference;
-var Composite = require('../abstractions/Composite').Composite;
-var Composite = require('../abstractions/Composite').Composite;
-var parser = require('../transformers/DocumentParser');
+var parser = require('../utilities/DocumentParser');
 
 
 // PUBLIC FUNCTIONS

@@ -18,13 +18,21 @@ var Composite = require('../abstractions/Composite').Composite;
 var Association = require('../composites/Association').Association;
 
 
-exports.fromScratch = function() {
-    var parameters = new Parameters();
-    return parameters;
-};
+/**
+ * The constructor creates a new empty parameter list.
+ */
+function Parameters() {
+    Composite.call(this, types.PARAMETERS);
+    this.array = [];
+    this.length += 2;  // account for the '()' delimiters
+    return this;
+}
+Parameters.prototype = Object.create(Composite.prototype);
+Parameters.prototype.constructor = Parameters;
+exports.Parameters = Parameters;
 
 
-exports.fromCollection = function(collection) {
+Parameters.fromCollection = function(collection) {
     var parameters = new Parameters();
     var iterator;
     var type = collection.constructor.name;
@@ -63,20 +71,6 @@ exports.fromCollection = function(collection) {
     }
     return parameters;
 };
-
-
-/**
- * The constructor creates a new empty parameter list.
- */
-function Parameters() {
-    Composite.call(this, types.PARAMETERS);
-    this.array = [];
-    this.length += 2;  // account for the '()' delimiters
-    return this;
-}
-Parameters.prototype = Object.create(Composite.prototype);
-Parameters.prototype.constructor = Parameters;
-exports.Parameters = Parameters;
 
 
 // PUBLIC METHODS
@@ -122,7 +116,11 @@ Parameters.prototype.toArray = function() {
 Parameters.prototype.addParameter = function(key, value) {
     var parameter = new Association(key, value);
     this.array.push(parameter);
-    this.length += parameter.length;
+    if (this.isList) {
+        this.length += parameter.value.length;
+    } else {
+        this.length += parameter.length;
+    }
     if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
 };
 

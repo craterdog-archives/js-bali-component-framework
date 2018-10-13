@@ -17,18 +17,27 @@
 var types = require('../abstractions/Types');
 var SortableCollection = require('../abstractions/SortableCollection').SortableCollection;
 var Association = require('./Association').Association;
-var List = require('./List');
+var List = require('./List').List;
 
 
-// PUBLIC FUNCTIONS
+/**
+ * The constructor creates a new empty catalog.
+ * 
+ * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @returns {Catalog} The new catalog.
+ */
+function Catalog(parameters) {
+    SortableCollection.call(this, types.CATALOG, parameters);
+    this.map = {};  // maps key strings to associations
+    this.length += 1;  // account for the ':' in the empty catalog
+    return this;
+}
+Catalog.prototype = Object.create(SortableCollection.prototype);
+Catalog.prototype.constructor = Catalog;
+exports.Catalog = Catalog;
 
-exports.fromScratch = function(parameters) {
-    var catalog = new Catalog(parameters);
-    return catalog;
-};
 
-
-exports.fromCollection = function(collection, parameters) {
+Catalog.fromCollection = function(collection, parameters) {
     var catalog = new Catalog(parameters);
     var index = 1;
     var iterator;
@@ -76,8 +85,8 @@ exports.fromCollection = function(collection, parameters) {
  * @param {Catalog} catalog2 The second catalog whose items are to be concatenated.
  * @returns {Catalog} The resulting catalog.
  */
-exports.concatenation = function(catalog1, catalog2) {
-    var result = exports.fromCollection(catalog1);
+Catalog.concatenation = function(catalog1, catalog2) {
+    var result = Catalog.fromCollection(catalog1);
     result.addItems(catalog2);
     return result;
 };
@@ -91,8 +100,8 @@ exports.concatenation = function(catalog1, catalog2) {
  * @param keys The collection of keys for the associates to be saved.
  * @returns The resulting catalog.
  */
-exports.reduction = function(catalog, keys) {
-    var result = exports.fromScratch();
+Catalog.reduction = function(catalog, keys) {
+    var result = new Catalog();
     var iterator = keys.iterator();
     while (iterator.hasNext()) {
         var key = iterator.getNext();
@@ -103,22 +112,6 @@ exports.reduction = function(catalog, keys) {
     }
     return result;
 };
-
-
-/**
- * The constructor creates a new empty catalog.
- * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
- * @returns {Catalog} The new catalog.
- */
-function Catalog(parameters) {
-    SortableCollection.call(this, types.CATALOG, parameters);
-    this.map = {};  // maps key strings to associations
-    this.length += 1;  // account for the ':' in the empty catalog
-    return this;
-}
-Catalog.prototype = Object.create(SortableCollection.prototype);
-Catalog.prototype.constructor = Catalog;
 
 
 // PUBLIC METHODS
@@ -147,16 +140,14 @@ Catalog.prototype.addItem = function(association) {
     var index = association.key.toString();
     var candidate = this.map[index];
     if (candidate) {
-        var value = association.value;
-        this.length -= candidate.value;
-        candidate.setValue(value);
-        this.length += value;
+        this.length -= candidate.length;
+        candidate.setValue(association.value);
     } else {
         this.map[index] = association;
         this.array.push(association);
-        this.length += association.length;
         if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
     }
+    this.length += association.length;
     return true;
 };
 
@@ -282,7 +273,7 @@ Catalog.prototype.removeValue = function(key) {
  * @returns {SortableCollection} A sortable collection of the keys for this catalog.
  */
 Catalog.prototype.getKeys = function() {
-    var keys = List.fromScratch();
+    var keys = new List();
     this.array.forEach(function(association) {
         var key = association.key;
         keys.addItem(key);
@@ -297,7 +288,7 @@ Catalog.prototype.getKeys = function() {
  * @returns {SortableCollection} A sortable collection of the values for this catalog.
  */
 Catalog.prototype.getValues = function() {
-    var values = List.fromScratch();
+    var values = new List();
     this.array.forEach(function(association) {
         var value = association.value;
         values.addItem(value);
@@ -312,7 +303,7 @@ Catalog.prototype.getValues = function() {
  * @returns {SortableCollection} A sortable collection of the associations for this catalog.
  */
 Catalog.prototype.getAssociations = function() {
-    var associations = List.fromScratch();
+    var associations = new List();
     this.array.forEach(function(association) {
         associations.addItem(association);
     });

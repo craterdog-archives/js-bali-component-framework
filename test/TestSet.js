@@ -10,9 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var List = require('../src/composites/List');
-var Set = require('../src/composites/Set');
-var Stack = require('../src/composites/Stack');
+var composites = require('../src/composites');
 
 
 describe('Bali Primitive Types™', function() {
@@ -21,7 +19,7 @@ describe('Bali Primitive Types™', function() {
     describe('Test the set constructors.', function() {
 
         it('should create an empty set', function() {
-            var set = Set.fromScratch();
+            var set = new composites.Set();
             expect(set).to.exist;  // jshint ignore:line
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -39,7 +37,7 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a set from an array', function() {
-            var set = Set.fromCollection(array);
+            var set = composites.Set.fromCollection(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -57,8 +55,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a set from a list', function() {
-            var list = List.fromCollection(array);
-            var set = Set.fromCollection(list);
+            var list = composites.List.fromCollection(array);
+            var set = composites.Set.fromCollection(list);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +74,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a set from a set', function() {
-            var set = Set.fromCollection(array);
-            set = Set.fromCollection(set);
+            var set = composites.Set.fromCollection(array);
+            set = composites.Set.fromCollection(set);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -95,8 +93,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should create a set from a stack', function() {
-            var stack = Stack.fromCollection(array);
-            var set = Set.fromCollection(stack);
+            var stack = composites.Stack.fromCollection(array);
+            var set = composites.Set.fromCollection(stack);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -118,11 +116,11 @@ describe('Bali Primitive Types™', function() {
     describe('Test the set methods.', function() {
 
         it('should be able to call the Collection class methods on the set', function() {
-            var set1 = Set.fromScratch();
+            var set1 = new composites.Set();
             set1.addItem('alpha');
             set1.addItem('beta');
             set1.addItem('delta');
-            var set2 = Set.fromScratch();
+            var set2 = new composites.Set();
             set2.addItem('epsilon');
             set2.addItem('gamma');
             set1.addItems(set2);
@@ -148,7 +146,7 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should be able to add and remove items from a set', function() {
-            var set = Set.fromCollection(array);
+            var set = composites.Set.fromCollection(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -175,34 +173,34 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should be able to perform set operations on sets', function() {
-            var set1 = Set.fromScratch();
+            var set1 = new composites.Set();
             set1.addItem('alpha');
             set1.addItem('beta');
             set1.addItem('delta');
-            var set2 = Set.fromScratch();
+            var set2 = new composites.Set();
             set2.addItem('beta');
             set2.addItem('delta');
             set2.addItem('epsilon');
             set2.addItem('gamma');
-            var set3 = Set.fromScratch();
+            var set3 = new composites.Set();
             set3.addItem('beta');
             set3.addItem('delta');
-            expect(Set.and(set1, set2).equalTo(set3)).to.equal(true);
-            var set4 = Set.fromScratch();
+            expect(composites.Set.and(set1, set2).equalTo(set3)).to.equal(true);
+            var set4 = new composites.Set();
             set4.addItem('alpha');
-            expect(Set.sans(set1, set2).equalTo(set4)).to.equal(true);
-            var set5 = Set.fromScratch();
+            expect(composites.Set.sans(set1, set2).equalTo(set4)).to.equal(true);
+            var set5 = new composites.Set();
             set5.addItem('alpha');
             set5.addItem('beta');
             set5.addItem('delta');
             set5.addItem('epsilon');
             set5.addItem('gamma');
-            expect(Set.or(set1, set2).equalTo(set5)).to.equal(true);
-            var set6 = Set.fromScratch();
+            expect(composites.Set.or(set1, set2).equalTo(set5)).to.equal(true);
+            var set6 = new composites.Set();
             set6.addItem('alpha');
             set6.addItem('epsilon');
             set6.addItem('gamma');
-            expect(Set.xor(set1, set2).equalTo(set6)).to.equal(true);
+            expect(composites.Set.xor(set1, set2).equalTo(set6)).to.equal(true);
         });
 
     });
@@ -210,7 +208,7 @@ describe('Bali Primitive Types™', function() {
     describe('Test the set iterators.', function() {
 
         it('should iterate over a set forwards and backwards', function() {
-            var set = Set.fromCollection(array);
+            var set = composites.Set.fromCollection(array);
             var iterator = set.iterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

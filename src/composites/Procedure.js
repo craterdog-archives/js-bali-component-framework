@@ -22,14 +22,6 @@ var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 
 
-// PUBLIC FUNCTIONS
-
-exports.fromScratch = function() {
-    var procedure = new Procedure();
-    return procedure;
-};
-
-
 /**
  * The constructor creates a new empty procedure.
  * 
@@ -43,9 +35,20 @@ function Procedure(parameters) {
 }
 Procedure.prototype = Object.create(Composite.prototype);
 Procedure.prototype.constructor = Procedure;
+exports.Procedure = Procedure;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this procedure.
+ */
+Procedure.prototype.accept = function(visitor) {
+    visitor.visitProcedure(this);
+};
+
 
 /**
  * This method returns the number of statements that are currently in the procedure.

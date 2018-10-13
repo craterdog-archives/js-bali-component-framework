@@ -79,7 +79,8 @@ module.exports = function(grunt) {
           'test/TestTag.js',
           'test/TestTemplate.js',
           'test/TestText.js',
-          'test/TestVersion.js'
+          'test/TestVersion.js',
+          'test/TestTransformers.js'
         ]
       }
     },

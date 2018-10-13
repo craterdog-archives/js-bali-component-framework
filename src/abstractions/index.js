@@ -9,7 +9,11 @@
  ************************************************************************/
 'use strict';
 
-exports.abstractions = require('./src/abstractions');
-exports.elements = require('./src/elements');
-exports.composites = require('./src/composites');
-exports.transformers = require('./src/transformers');
+exports.types = require('./Types');
+exports.Component = require('./Component').Component;
+exports.Element = require('./Element').Element;
+exports.Composite = require('./Composite').Composite;
+exports.Collection = require('./Collection').Collection;
+exports.SortableCollection = require('./SortableCollection').SortableCollection;
+exports.OrderedCollection = require('./OrderedCollection').OrderedCollection;
+

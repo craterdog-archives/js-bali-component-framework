@@ -110,7 +110,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
     if (!collection.isEmpty()) {
         var iterator = collection.iterator();
         var item;
-        if (collection.getSize() < types.TOO_BIG) {
+        if (collection.length < types.TOO_BIG) {
             // inline the items
             item = iterator.getNext();
             item.accept(this);
@@ -312,14 +312,10 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     this.source += tree.operator;
     var expression = tree.children[0];
-    // must insert a space before a negative number or constant!
-    if (tree.operator === '-') {
-        if (expression.type === types.COMPONENT &&
-                expression.children[0].type === types.NUMBER &&
-                expression.children[0].value[0] === "-") {
+    // must insert a space before another inversion expression to avoid confusion
+        if (expression.type === types.INVERSION_EXPRESSION) {
             this.source += ' ';  // must insert a space before a negative number or constant!
         }
-    }
     tree.children[0].accept(this);
 };
 
@@ -395,7 +391,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
     if (!parameters.isEmpty()) {
         var iterator = parameters.iterator();
         var parameter;
-        if (parameters.getSize() < types.TOO_BIG) {
+        if (parameters.length < types.TOO_BIG) {
             // inline the parameters
             parameter = iterator.getNext();
             if (parameters.isList) parameter = parameter.value;
@@ -444,7 +440,7 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     if (!procedure.isEmpty()) {
         var iterator = procedure.iterator();
         var statement;
-        if (procedure.size < types.TOO_BIG) {
+        if (procedure.length < types.TOO_BIG) {
             // inline the statements
             statement = iterator.getNext();
             statement.accept(this);
@@ -464,6 +460,8 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
             this.depth--;
             this.appendNewline();
         }
+    } else if (procedure.length >= types.TOO_BIG) {
+        this.appendNewline();
     }
     if (procedure.inBrackets) {
         this.source += '}';
@@ -492,9 +490,9 @@ FormattingVisitor.prototype.visitRange = function(range) {
     if (range.inBrackets) {
         this.source += '[';
     }
-    range.firstValue.accept(this);
+    range.first.accept(this);
     this.source += '..';
-    range.lastValue.accept(this);
+    range.last.accept(this);
     if (range.inBrackets) {
         this.source += ']';
     }

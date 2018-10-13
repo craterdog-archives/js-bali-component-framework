@@ -28,13 +28,25 @@ Array.prototype.peek = function() {
 };
 
 
-exports.fromScratch = function(parameters) {
-    var stack = new Stack(parameters);
-    return stack;
-};
+/**
+ * The constructor creates a new empty stack.
+ * 
+ * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @returns {Stack} The new stack.
+ */
+function Stack(parameters) {
+    Composite.call(this, types.STACK, parameters);
+    this.capacity = 1024;
+    this.array = [];
+    this.length += 2;  // account for the '{' '}' delimiters
+    return this;
+}
+Stack.prototype = Object.create(Composite.prototype);
+Stack.prototype.constructor = Stack;
+exports.Stack = Stack;
 
 
-exports.fromCollection = function(collection, parameters) {
+Stack.fromCollection = function(collection, parameters) {
     var stack = new Stack(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -57,23 +69,6 @@ exports.fromCollection = function(collection, parameters) {
     }
     return stack;
 };
-
-
-/**
- * The constructor creates a new empty stack.
- * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
- * @returns {Stack} The new stack.
- */
-function Stack(parameters) {
-    Composite.call(this, types.STACK, parameters);
-    this.capacity = 1024;
-    this.array = [];
-    this.length += 2;  // account for the '{' '}' delimiters
-    return this;
-}
-Stack.prototype = Object.create(Composite.prototype);
-Stack.prototype.constructor = Stack;
 
 
 // PUBLIC METHODS

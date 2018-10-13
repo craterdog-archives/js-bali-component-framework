@@ -12,9 +12,9 @@
 /**
  * This abstract class defines the invariant methods that all composite components must support.
  */
-var parser = require('../transformers/DocumentParser');
 var Component = require('./Component').Component;
 var Iterator = require('../composites/Iterator').Iterator;
+var parser = require('../utilities/DocumentParser');
 
 /**
  * The constructor for the Composite class.
@@ -146,9 +146,12 @@ Composite.asComponent = function(value) {
             component = parser.parseExpression(value);
             break;
         case 'Boolean':
-        case 'Number':
             // parse it's string value
             component = parser.parseElement(String(value));
+            break;
+        case 'Number':
+            // parse it's uppercase string value to handle exponents correctly
+            component = parser.parseElement(String(value).toUpperCase());
             break;
         default:
             // it's already a component, leave it as is

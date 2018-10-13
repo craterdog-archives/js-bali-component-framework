@@ -10,7 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var Range = require('../src/composites/Range');
+var Range = require('../src/composites/Range').Range;
 
 
 describe('Bali Primitive Types™', function() {
@@ -52,10 +52,6 @@ describe('Bali Primitive Types™', function() {
             expect(iterator.getNext()).to.equal(5);
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);
-        });
-
-        it('should throw exception for non-integer endpoints', function() {
-            expect(function() {Range.fromEndPoints('first', 'last');}).to.throw(Error, 'RANGE: The endpoints for a range must be integers.');
         });
 
     });

@@ -24,7 +24,7 @@ exports.typeName = function(type) {
 
 
 exports.typeBySymbol = function(symbol) {
-    var name = symbol.slice(1);  // remove the '$'
+    var name = symbol.toString().slice(1);  // remove the '$'
     return TYPES.indexOf(name);
 };
 

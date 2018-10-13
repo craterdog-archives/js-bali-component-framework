@@ -11,8 +11,7 @@
 var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var formatter = require('../src/transformers/DocumentFormatter');
-var parser = require('../src/transformers/DocumentParser');
+var utilities = require('../src/utilities');
 
 describe('Bali Document Notation™', function() {
     var DEBUG = false;  // change to true to check for ambiguities in the grammar
@@ -21,61 +20,65 @@ describe('Bali Document Notation™', function() {
 
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
+            console.error(file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source, DEBUG);
+            var tree = utilities.parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatTree(tree);
+            var formatted = utilities.formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = parser.parseDocument(formatted, DEBUG);
+            tree = utilities.parser.parseDocument(formatted, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            formatted = formatter.formatTree(tree);
+            formatted = utilities.formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
+            console.error(file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source, DEBUG);
+            var tree = utilities.parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatTree(tree);
+            var formatted = utilities.formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = parser.parseDocument(formatted, DEBUG);
+            tree = utilities.parser.parseDocument(formatted, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            formatted = formatter.formatTree(tree);
+            formatted = utilities.formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
+            console.error(file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source, DEBUG);
+            var tree = utilities.parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatTree(tree);
+            var formatted = utilities.formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = parser.parseDocument(formatted, DEBUG);
+            tree = utilities.parser.parseDocument(formatted, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            formatted = formatter.formatTree(tree);
+            formatted = utilities.formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same components', function() {
             var file = 'test/source/components.bali';
+            console.error(file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = parser.parseDocument(source, DEBUG);
+            var tree = utilities.parser.parseDocument(source, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            var formatted = formatter.formatTree(tree);
+            var formatted = utilities.formatter.formatTree(tree);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = parser.parseDocument(formatted, DEBUG);
+            tree = utilities.parser.parseDocument(formatted, DEBUG);
             expect(tree).to.exist;  // jshint ignore:line
-            formatted = formatter.formatTree(tree);
+            formatted = utilities.formatter.formatTree(tree);
             expect(formatted).to.equal(source);
         });
 

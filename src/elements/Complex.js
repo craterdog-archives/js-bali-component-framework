@@ -36,7 +36,7 @@ var Angle = require('./Angle').Angle;
  * @returns {Complex} The new complex element.
  */
 function Complex(value, parameters) {
-    Element.call(this, types.COMPLEX, parameters);
+    Element.call(this, types.NUMBER, parameters);
     value = value || '0';  // default to zero
     this.format = 'rectangular';  // rectangular coordinates by default
     var real;

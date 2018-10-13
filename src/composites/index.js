@@ -9,7 +9,16 @@
  ************************************************************************/
 'use strict';
 
-exports.abstractions = require('./src/abstractions');
-exports.elements = require('./src/elements');
-exports.composites = require('./src/composites');
-exports.transformers = require('./src/transformers');
+exports.Association = require('./Association').Association;
+exports.Document = require('./Document').Document;
+exports.Seal = require('./Seal').Seal;
+exports.Parameters = require('./Parameters').Parameters;
+exports.Iterator = require('./Iterator').Iterator;
+exports.Range = require('./Range').Range;
+exports.List = require('./List').List;
+exports.Set = require('./Set').Set;
+exports.Stack = require('./Stack').Stack;
+exports.Catalog = require('./Catalog').Catalog;
+exports.Tree = require('./Tree').Tree;
+exports.Procedure = require('./Procedure').Procedure;
+
