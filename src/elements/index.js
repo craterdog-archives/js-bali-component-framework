@@ -11,7 +11,6 @@
 
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
-exports.Code = require('./Code').Code;
 exports.Complex = require('./Complex').Complex;
 exports.Duration = require('./Duration').Duration;
 exports.Identifier = require('./Identifier').Identifier;
@@ -19,6 +18,7 @@ exports.Moment = require('./Moment').Moment;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
 exports.Reference = require('./Reference').Reference;
+exports.Source = require('./Source').Source;
 exports.Symbol = require('./Symbol').Symbol;
 exports.Tag = require('./Tag').Tag;
 exports.Template = require('./Template').Template;

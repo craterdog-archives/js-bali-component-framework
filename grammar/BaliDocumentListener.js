@@ -47,12 +47,12 @@ BaliDocumentListener.prototype.exitComponent = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliDocumentParser#st8.
-BaliDocumentListener.prototype.enterSt8 = function(ctx) {
+// Enter a parse tree produced by BaliDocumentParser#value.
+BaliDocumentListener.prototype.enterValue = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliDocumentParser#st8.
-BaliDocumentListener.prototype.exitSt8 = function(ctx) {
+// Exit a parse tree produced by BaliDocumentParser#value.
+BaliDocumentListener.prototype.exitValue = function(ctx) {
 };
 
 
@@ -155,12 +155,12 @@ BaliDocumentListener.prototype.exitAssociation = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliDocumentParser#code.
-BaliDocumentListener.prototype.enterCode = function(ctx) {
+// Enter a parse tree produced by BaliDocumentParser#source.
+BaliDocumentListener.prototype.enterSource = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliDocumentParser#code.
-BaliDocumentListener.prototype.exitCode = function(ctx) {
+// Exit a parse tree produced by BaliDocumentParser#source.
+BaliDocumentListener.prototype.exitSource = function(ctx) {
 };
 
 

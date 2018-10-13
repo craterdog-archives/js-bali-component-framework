@@ -36,8 +36,8 @@ BaliDocumentVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliDocumentParser#st8.
-BaliDocumentVisitor.prototype.visitSt8 = function(ctx) {
+// Visit a parse tree produced by BaliDocumentParser#value.
+BaliDocumentVisitor.prototype.visitValue = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -108,8 +108,8 @@ BaliDocumentVisitor.prototype.visitAssociation = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliDocumentParser#code.
-BaliDocumentVisitor.prototype.visitCode = function(ctx) {
+// Visit a parse tree produced by BaliDocumentParser#source.
+BaliDocumentVisitor.prototype.visitSource = function(ctx) {
   return this.visitChildren(ctx);
 };
 

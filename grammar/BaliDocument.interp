@@ -179,7 +179,7 @@ document
 content
 seal
 component
-st8
+value
 structure
 parameters
 collection
@@ -187,7 +187,7 @@ range
 list
 catalog
 association
-code
+source
 procedure
 statement
 mainClause

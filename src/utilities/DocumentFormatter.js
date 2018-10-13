@@ -95,10 +95,10 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// code: '{' procedure '}'
-FormattingVisitor.prototype.visitCode = function(code) {
+// source: '{' procedure '}'
+FormattingVisitor.prototype.visitSource = function(source) {
     // delegate to element
-    this.visitElement(code);
+    this.visitElement(source);
 };
 
 

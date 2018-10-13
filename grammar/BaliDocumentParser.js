@@ -373,18 +373,19 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
                       "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
-var ruleNames =  [ "document", "content", "seal", "component", "st8", "structure", 
-                   "parameters", "collection", "range", "list", "catalog", 
-                   "association", "code", "procedure", "statement", "mainClause", 
-                   "handleClause", "block", "evaluateClause", "checkoutClause", 
-                   "saveClause", "discardClause", "commitClause", "publishClause", 
-                   "queueClause", "waitClause", "ifClause", "selectClause", 
-                   "withClause", "whileClause", "continueClause", "breakClause", 
-                   "returnClause", "throwClause", "recipient", "subcomponent", 
-                   "expression", "variable", "funxtion", "message", "indices", 
-                   "element", "angle", "binary", "duration", "imaginary", 
-                   "moment", "number", "percent", "probability", "real", 
-                   "reference", "symbol", "tag", "template", "text", "version" ];
+var ruleNames =  [ "document", "content", "seal", "component", "value", 
+                   "structure", "parameters", "collection", "range", "list", 
+                   "catalog", "association", "source", "procedure", "statement", 
+                   "mainClause", "handleClause", "block", "evaluateClause", 
+                   "checkoutClause", "saveClause", "discardClause", "commitClause", 
+                   "publishClause", "queueClause", "waitClause", "ifClause", 
+                   "selectClause", "withClause", "whileClause", "continueClause", 
+                   "breakClause", "returnClause", "throwClause", "recipient", 
+                   "subcomponent", "expression", "variable", "funxtion", 
+                   "message", "indices", "element", "angle", "binary", "duration", 
+                   "imaginary", "moment", "number", "percent", "probability", 
+                   "real", "reference", "symbol", "tag", "template", "text", 
+                   "version" ];
 
 function BaliDocumentParser (input) {
 	antlr4.Parser.call(this, input);
@@ -495,7 +496,7 @@ BaliDocumentParser.RULE_document = 0;
 BaliDocumentParser.RULE_content = 1;
 BaliDocumentParser.RULE_seal = 2;
 BaliDocumentParser.RULE_component = 3;
-BaliDocumentParser.RULE_st8 = 4;
+BaliDocumentParser.RULE_value = 4;
 BaliDocumentParser.RULE_structure = 5;
 BaliDocumentParser.RULE_parameters = 6;
 BaliDocumentParser.RULE_collection = 7;
@@ -503,7 +504,7 @@ BaliDocumentParser.RULE_range = 8;
 BaliDocumentParser.RULE_list = 9;
 BaliDocumentParser.RULE_catalog = 10;
 BaliDocumentParser.RULE_association = 11;
-BaliDocumentParser.RULE_code = 12;
+BaliDocumentParser.RULE_source = 12;
 BaliDocumentParser.RULE_procedure = 13;
 BaliDocumentParser.RULE_statement = 14;
 BaliDocumentParser.RULE_mainClause = 15;
@@ -872,8 +873,8 @@ function ComponentContext(parser, parent, invokingState) {
 ComponentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ComponentContext.prototype.constructor = ComponentContext;
 
-ComponentContext.prototype.st8 = function() {
-    return this.getTypedRuleContext(St8Context,0);
+ComponentContext.prototype.value = function() {
+    return this.getTypedRuleContext(ValueContext,0);
 };
 
 ComponentContext.prototype.parameters = function() {
@@ -912,7 +913,7 @@ BaliDocumentParser.prototype.component = function() {
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 148;
-        this.st8();
+        this.value();
         this.state = 150;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,5,this._ctx);
@@ -935,7 +936,7 @@ BaliDocumentParser.prototype.component = function() {
     return localctx;
 };
 
-function St8Context(parser, parent, invokingState) {
+function ValueContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -944,40 +945,40 @@ function St8Context(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_st8;
+    this.ruleIndex = BaliDocumentParser.RULE_value;
     return this;
 }
 
-St8Context.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-St8Context.prototype.constructor = St8Context;
+ValueContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ValueContext.prototype.constructor = ValueContext;
 
-St8Context.prototype.element = function() {
+ValueContext.prototype.element = function() {
     return this.getTypedRuleContext(ElementContext,0);
 };
 
-St8Context.prototype.structure = function() {
+ValueContext.prototype.structure = function() {
     return this.getTypedRuleContext(StructureContext,0);
 };
 
-St8Context.prototype.code = function() {
-    return this.getTypedRuleContext(CodeContext,0);
+ValueContext.prototype.source = function() {
+    return this.getTypedRuleContext(SourceContext,0);
 };
 
-St8Context.prototype.enterRule = function(listener) {
+ValueContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.enterSt8(this);
+        listener.enterValue(this);
 	}
 };
 
-St8Context.prototype.exitRule = function(listener) {
+ValueContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.exitSt8(this);
+        listener.exitValue(this);
 	}
 };
 
-St8Context.prototype.accept = function(visitor) {
+ValueContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitSt8(this);
+        return visitor.visitValue(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -986,12 +987,12 @@ St8Context.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.St8Context = St8Context;
+BaliDocumentParser.ValueContext = ValueContext;
 
-BaliDocumentParser.prototype.st8 = function() {
+BaliDocumentParser.prototype.value = function() {
 
-    var localctx = new St8Context(this, this._ctx, this.state);
-    this.enterRule(localctx, 8, BaliDocumentParser.RULE_st8);
+    var localctx = new ValueContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 8, BaliDocumentParser.RULE_value);
     try {
         this.state = 155;
         this._errHandler.sync(this);
@@ -1030,7 +1031,7 @@ BaliDocumentParser.prototype.st8 = function() {
         case BaliDocumentParser.T__7:
             this.enterOuterAlt(localctx, 3);
             this.state = 154;
-            this.code();
+            this.source();
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -1935,7 +1936,7 @@ BaliDocumentParser.prototype.association = function() {
     return localctx;
 };
 
-function CodeContext(parser, parent, invokingState) {
+function SourceContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1944,32 +1945,32 @@ function CodeContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_code;
+    this.ruleIndex = BaliDocumentParser.RULE_source;
     return this;
 }
 
-CodeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-CodeContext.prototype.constructor = CodeContext;
+SourceContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+SourceContext.prototype.constructor = SourceContext;
 
-CodeContext.prototype.procedure = function() {
+SourceContext.prototype.procedure = function() {
     return this.getTypedRuleContext(ProcedureContext,0);
 };
 
-CodeContext.prototype.enterRule = function(listener) {
+SourceContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.enterCode(this);
+        listener.enterSource(this);
 	}
 };
 
-CodeContext.prototype.exitRule = function(listener) {
+SourceContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.exitCode(this);
+        listener.exitSource(this);
 	}
 };
 
-CodeContext.prototype.accept = function(visitor) {
+SourceContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitCode(this);
+        return visitor.visitSource(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1978,12 +1979,12 @@ CodeContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.CodeContext = CodeContext;
+BaliDocumentParser.SourceContext = SourceContext;
 
-BaliDocumentParser.prototype.code = function() {
+BaliDocumentParser.prototype.source = function() {
 
-    var localctx = new CodeContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 24, BaliDocumentParser.RULE_code);
+    var localctx = new SourceContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 24, BaliDocumentParser.RULE_source);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 218;

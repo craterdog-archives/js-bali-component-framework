@@ -9,7 +9,7 @@
  ************************************************************************/
 
 /*
- * This class defines a block of code that can be executed on the Bali Virtual Machine™.
+ * This class defines a block of source code that can be executed on the Bali Virtual Machine™.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
@@ -21,16 +21,16 @@ var Element = require('../abstractions/Element').Element;
  * @param {String} source The string value of the source code.
  * @param {Parameters} parameters Optional parameters used to parameterize this source
  * code element. 
- * @returns {Code} The new source code element.
+ * @returns {Source} The new source code element.
  */
-function Code(source, parameters) {
-    Element.call(this, types.CODE, parameters);
+function Source(source, parameters) {
+    Element.call(this, types.SOURCE, parameters);
     this.setSource(source);
     return this;
 }
-Code.prototype = Object.create(Element.prototype);
-Code.prototype.constructor = Code;
-exports.Code = Code;
+Source.prototype = Object.create(Element.prototype);
+Source.prototype.constructor = Source;
+exports.Source = Source;
 
 
 /**
@@ -38,7 +38,7 @@ exports.Code = Code;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
-Code.prototype.accept = function(visitor) {
-    visitor.visitCode(this);
+Source.prototype.accept = function(visitor) {
+    visitor.visitSource(this);
 };
 

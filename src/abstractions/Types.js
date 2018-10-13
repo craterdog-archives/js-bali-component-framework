@@ -51,7 +51,6 @@ var MAP = {
     BreakClause:                  '#PNB84XL3428Y4Z9Y29N11RC6WAWFJNRY',
     Catalog:                      '#4XR1NCZKATC5DPT2WAVQH89Q6Y4BCLP6',
     CheckoutClause:               '#2YWBP7TAKQ72MBL1AA55MP34DG9KGVHH',
-    Code:                         '#S07XBYZN98PWJZSS7NCXLAH86FG78F2C',
     CommitClause:                 '#',
     ComparisonExpression:         '#',
     ComplementExpression:         '#',
@@ -92,6 +91,7 @@ var MAP = {
     Seal:                         '#',
     SelectClause:                 '#',
     Set:                          '#',
+    Source:                       '#S07XBYZN98PWJZSS7NCXLAH86FG78F2C',
     Stack:                        '#',
     Statement:                    '#',
     Subcomponent:                 '#',
@@ -119,7 +119,6 @@ exports.BLOCK = TYPES.indexOf('Block');
 exports.BREAK_CLAUSE = TYPES.indexOf('BreakClause');
 exports.CATALOG = TYPES.indexOf('Catalog');
 exports.CHECKOUT_CLAUSE = TYPES.indexOf('CheckoutClause');
-exports.CODE = TYPES.indexOf('Code');
 exports.COMMIT_CLAUSE = TYPES.indexOf('CommitClause');
 exports.COMPARISON_EXPRESSION = TYPES.indexOf('ComparisonExpression');
 exports.COMPLEMENT_EXPRESSION = TYPES.indexOf('ComplementExpression');
@@ -160,6 +159,7 @@ exports.SAVE_CLAUSE = TYPES.indexOf('SaveClause');
 exports.SEAL = TYPES.indexOf('Seal');
 exports.SELECT_CLAUSE = TYPES.indexOf('SelectClause');
 exports.SET = TYPES.indexOf('Set');
+exports.SOURCE = TYPES.indexOf('Source');
 exports.STACK = TYPES.indexOf('Stack');
 exports.STATEMENT = TYPES.indexOf('Statement');
 exports.SUBCOMPONENT = TYPES.indexOf('Subcomponent');

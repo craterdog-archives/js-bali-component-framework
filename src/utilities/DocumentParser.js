@@ -379,15 +379,15 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 };
 
 
-// code: '{' procedure '}'
-ParsingVisitor.prototype.visitCode = function(ctx) {
+// source: '{' procedure '}'
+ParsingVisitor.prototype.visitSource = function(ctx) {
     var parameters = this.parameters;
     ctx.procedure().accept(this);
     var procedure = this.result;
     procedure.inBrackets = true;
     var source = procedure.toSource();
-    var code = new elements.Code(source, parameters);
-    this.result = code;
+    source = new elements.Source(source, parameters);
+    this.result = source;
 };
 
 
@@ -442,16 +442,23 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 };
 
 
-// component: state parameters?
+// component: value parameters?
+// NOTE: the parameters really belong to the value and are maintained by the value objects.
+//       There is no component object per se, this method is really only necessary to
+//       process the parameters if they do exist and save them off for the value to find
+//       during its processing. The value object often needs to know what the parameters
+//       are during its initialization.
 ParsingVisitor.prototype.visitComponent = function(ctx) {
-    this.parameters = undefined;
-    if (ctx.children.length > 1) {
+    var parameters = ctx.parameters();
+    this.parameters = undefined;  // must clear it first to avoid it propagating for recursive parameters
+    if (parameters) {
         // this is a parameterized component so parse the parameters first
-        ctx.children[1].accept(this);
-        this.parameters = this.result;
+        parameters.accept(this);
+        this.parameters = this.result;  // save off the parameters for the value object
     }
-    ctx.children[0].accept(this);
-    this.parameters = undefined;
+    var value = ctx.value();
+    value.accept(this);
+    this.parameters = undefined;  // must clear it afterwards so non-components don't see it
 };
 
 
