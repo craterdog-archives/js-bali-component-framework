@@ -1,40 +1,5 @@
 [
     $angle: [~-0.5, ~pi, ~0, ~0.666]
-    $none: [none, any]
-    $token: #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
-    $symbol: $symbol
-    $time: [
-        <-10000-01-01T00:00:00>("Atlantis")
-        <1962-04-01>("New York City")
-        <1962-04-01T06>
-        <1962-04-01T06:31>("San Francisco")
-        <1962-04-01T06:31:40>
-        <1962-04-01T06:31:40.726>
-        <1962-04-01T06:31:60.726>(
-            $city: "Denver"
-            $region: "Colorado"
-            $country: "USA"
-        )
-    ]
-    $reference: [
-        <http://www.google.com/>
-        <bali:[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:none]>
-        <bali:[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
-        <bali:[$protocol:v1,$name:"/acme/types/Customer",$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
-    ]
-    $version: [v1, v1.2, v25.1.37]
-    $text: [
-        "This is a single line text string."
-        "This is a string with \"quotes\" in it."
-        "
-            Dear {party[guest]},
-            
-            Please join us for this "special" day.
-            
-            Regards,
-            {party[host]}
-        "
-    ]
     $binary: [
         ''($base: 2)
         ''
@@ -100,19 +65,32 @@
             4/NZBR88h5TWMiQcmA==
         '
     ]
-    $probability: [
-        false
-        .1234567890123456
-        .5
-        true
+    $duration: [
+        ~P0D
+        ~P12345Y
+        ~P2Y3M7D
+        ~P2Y3M7DT8H
+        ~P2Y3M7DT8H29M
+        ~P2Y3M7DT8H29M54S
+        ~P3M7DT8H29M54.321S
+        ~P7DT8H29M54.321S
+        ~PT8H29M54.321S
+        ~PT29M54.321S
+        ~PT54.321S
+        ~PT54S
     ]
-    $percent: [
-        0%
-        0.1%
-        -25%
-        8.3E-12%
-        100%
-        110%
+    $moment: [
+        <-10000-01-01T00:00:00>("Atlantis")
+        <1962-04-01>("New York City")
+        <1962-04-01T06>
+        <1962-04-01T06:31>("San Francisco")
+        <1962-04-01T06:31:40>
+        <1962-04-01T06:31:40.726>
+        <1962-04-01T06:31:60.726>(
+            $city: "Denver"
+            $region: "Colorado"
+            $country: "USA"
+        )
     ]
     $number: [
         $natural: 42
@@ -130,6 +108,7 @@
             -pi
             phi
             -phi
+            -0.5
             -3.14159265
             1.234E-56
         ]
@@ -137,4 +116,40 @@
         $rectangular: (-1, -phi i)
         $polar: (1.2 e^~pi i)
     ]
+    $percent: [
+        0%
+        0.1%
+        -25%
+        8.3E-12%
+        100%
+        110%
+    ]
+    $probability: [
+        false
+        .1234567890123456
+        .5
+        true
+    ]
+    $reference: [
+        <http://www.google.com/>
+        <bali:[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:none]>
+        <bali:[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
+        <bali:[$protocol:v1,$name:"/acme/types/Customer",$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
+    ]
+    $symbol: $symbol
+    $template: [none, any]
+    $text: [
+        "This is a single line text string."
+        "This is a string with \"quotes\" in it."
+        "
+            Dear {party[guest]},
+            
+            Please join us for this "special" day.
+            
+            Regards,
+            {party[host]}
+        "
+    ]
+    $token: #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
+    $version: [v1, v1.2, v25.1.37]
 ]

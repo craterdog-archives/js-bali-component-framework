@@ -59,7 +59,7 @@ fragment
 INTEGER: '0' | '-'? NATURAL;
 
 fragment
-SPAN: NATURAL FRACTION?;
+SPAN: ('0' | NATURAL) FRACTION?;
 
 fragment
 SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
