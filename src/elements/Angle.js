@@ -33,10 +33,10 @@ function Angle(value, parameters) {
             if (!isFinite(value)) throw new Error('ANGLE: An angle must be a valid number: ' + value);
             break;
         case 'string':
-            if (value === 'pi' || value === '-pi') {
+            if (value === '~pi' || value === '~-pi') {
                 value = Math.PI;
             } else {
-                value = Number(value);
+                value = Number(value.replace(/~/g, ''));  // strip off the ~
             }
             break;
         default:
@@ -50,7 +50,7 @@ function Angle(value, parameters) {
     if (typeof Angle.ZERO !== 'undefined' && value === 0) return Angle.ZERO;
     if (typeof Angle.PI !== 'undefined' && value === Math.PI) return Angle.PI;
     this.value = value;
-    var source = '~' + value;
+    var source = '~' + Element.realToSource(value);
     source = source.replace(/e\+?/g, 'E');  // convert to Bali exponential format
     this.setSource(source);
     return this;

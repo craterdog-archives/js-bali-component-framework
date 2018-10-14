@@ -25,8 +25,8 @@ describe('Bali Primitive Types™', function() {
         });
 
         it('should construct and equal pi', function() {
-            expect(new Angle('pi').toNumber()).to.equal(Angle.PI.toNumber());
-            expect(new Angle('-pi').toNumber()).to.equal(Angle.PI.toNumber());
+            expect(new Angle('~pi').toNumber()).to.equal(Angle.PI.toNumber());
+            expect(new Angle('~-pi').toNumber()).to.equal(Angle.PI.toNumber());
             expect(new Angle(Math.PI).toNumber()).to.equal(Angle.PI.toNumber());
             expect(new Angle(-Math.PI).toNumber()).to.equal(Angle.PI.toNumber());
         });

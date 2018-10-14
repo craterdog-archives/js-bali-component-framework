@@ -32,6 +32,49 @@ Element.prototype.constructor = Element;
 exports.Element = Element;
 
 
+
+/**
+ * This function returns the Bali source code representation of a real number.
+ * 
+ * @param {number} real The real number.
+ * @returns {String} The Bali source code for that number.
+ */
+Element.realToSource = function(real) {
+    var source = real.toString();
+    switch (source) {
+        case '-2.718281828459045':
+            source = '-e';
+            break;
+        case '2.718281828459045':
+            source = 'e';
+            break;
+        case '-3.141592653589793':
+            source = '-pi';
+            break;
+        case '3.141592653589793':
+            source = 'pi';
+            break;
+        case '-1.618033988749895':
+            source = '-phi';
+            break;
+        case '1.618033988749895':
+            source = 'phi';
+            break;
+        case 'Infinity':
+        case '-Infinity':
+            source = 'infinity';
+            break;
+        case 'NaN':
+            source = 'undefined';
+            break;
+        default:
+            // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
+            source = source.replace(/e\+?/g, 'E');
+    }
+    return source;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -95,4 +138,3 @@ Element.prototype.compareTo = function(that) {
 Element.prototype.comparedWith = function(that) {
     return this.toSource().localeCompare(that.toSource());
 };
-

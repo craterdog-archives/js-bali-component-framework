@@ -1,4 +1,5 @@
 [
+    $angle: [~pi, ~0, ~0.666]
     $none: [none, any]
     $token: #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
     $symbol: $symbol

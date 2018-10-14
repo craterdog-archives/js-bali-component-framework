@@ -221,7 +221,7 @@ Complex.prototype.comparedWith = function(that) {
 
 
 /**
- * This method returns a string version of the complex number in retangular form.
+ * This method returns the Bali source code version of the complex number in retangular form.
  * 
  * @returns {String}
  */
@@ -229,19 +229,19 @@ Complex.prototype.toRectangular = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'infinity';
-    if (this.getRealPart() === 0) return imaginaryToString(this.getImaginaryPart());
-    if (this.getImaginaryPart() === 0) return realToString(this.getRealPart());
-    var string = '(';
-    string += realToString(this.getRealPart());
-    string += ', ';
-    string += imaginaryToString(this.getImaginaryPart());
-    string += ')';
-    return string;
+    if (this.getRealPart() === 0) return imaginaryToSource(this.getImaginaryPart());
+    if (this.getImaginaryPart() === 0) return Element.realToSource(this.getRealPart());
+    var source = '(';
+    source += Element.realToSource(this.getRealPart());
+    source += ', ';
+    source += imaginaryToSource(this.getImaginaryPart());
+    source += ')';
+    return source;
 };
 
 
 /**
- * This method returns a string version of the complex number in polar form.
+ * This method returns a the Bali source code of the complex number in polar form.
  * 
  * @returns {String}
  */
@@ -249,13 +249,13 @@ Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'infinity';
-    if (this.getAngle() === Angle.ZERO) return realToString(this.getRealPart());
-    var string = '(';
-    string += realToString(this.getMagnitude());
-    string += ' e^';
-    string += imaginaryToString(this.getAngle());
-    string += ')';
-    return string;
+    if (this.getAngle() === Angle.ZERO) return Element.realToSource(this.getRealPart());
+    var source = '(';
+    source += Element.realToSource(this.getMagnitude());
+    source += ' e^';
+    source += imaginaryToSource(this.getAngle().value);
+    source += ')';
+    return source;
 };
 
 
@@ -283,62 +283,14 @@ function lockOnPole(number) {
 }
 
 
-/**
- * This function returns the Bali string representation of a real number.
- * 
- * @param {number} real The real number.
- * @returns {String} The Bali string for that number.
- */
-function realToString(real) {
-    var string = real.toString();
-    switch (string) {
-        case '-2.718281828459045':
-            string = '-e';
-            break;
-        case '2.718281828459045':
-            string = 'e';
-            break;
-        case '-3.141592653589793':
-            string = '-pi';
-            break;
-        case '3.141592653589793':
-            string = 'pi';
-            break;
-        case '-1.618033988749895':
-            string = '-phi';
-            break;
-        case '1.618033988749895':
-            string = 'phi';
-            break;
-        case 'Infinity':
-        case '-Infinity':
-            string = 'infinity';
-            break;
-        case 'NaN':
-            string = 'undefined';
-            break;
-        default:
-            // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
-            string = string.replace(/e\+?/g, 'E');
-    }
-    return string;
-}
-
-
-/**
- * This function returns the Bali string representation of an imaginary number.
- * 
- * @param {number} imaginary The imaginary number.
- * @returns {String} The Bali string for that number.
- */
-function imaginaryToString(imaginary) {
-    var string = realToString(imaginary);
-    switch (string) {
+function imaginaryToSource(imaginary) {
+    var source = Element.realToSource(imaginary);
+    switch (source) {
         case '-1':
-            string = '-i';
+            source = '-i';
             break;
         case '1':
-            string = 'i';
+            source = 'i';
             break;
         case '-e':
         case 'e':
@@ -346,22 +298,26 @@ function imaginaryToString(imaginary) {
         case 'pi':
         case '-phi':
         case 'phi':
-            string += ' i';
+            source += ' i';
             break;
         case 'infinity':
         case 'undefined':
             break;
         default:
-            string += 'i';
+            source += 'i';
     }
-    return string;
+    return source;
 }
 
 
-function realToNumber(baliReal) {
+// NOTE: the following functions take Bali parse tree nodes and covert them into
+// Javascript numbers.
+
+
+function realToNumber(realNode) {
     var jsNumber;
-    if (baliReal.constructor.name === 'ConstantRealContext') {
-        var constant = baliReal.CONSTANT().getText();
+    if (realNode.constructor.name === 'ConstantRealContext') {
+        var constant = realNode.CONSTANT().getText();
         switch (constant) {
             case 'e':
                 jsNumber = 2.718281828459045;
@@ -373,21 +329,21 @@ function realToNumber(baliReal) {
                 jsNumber = 1.618033988749895;
                 break;
         }
-        if (baliReal.sign) {
+        if (realNode.sign) {
             jsNumber = -jsNumber;
         }
         return jsNumber;
     } else {
-        var string = baliReal.FLOAT().getText();
+        var string = realNode.FLOAT().getText();
         jsNumber = Number(string);
         return jsNumber;
     }
 }
 
 
-function imaginaryToNumber(baliImaginary) {
-    var real = baliImaginary.real();
-    var sign = baliImaginary.sign;
+function imaginaryToNumber(imaginaryNode) {
+    var real = imaginaryNode.real();
+    var sign = imaginaryNode.sign;
     var jsNumber = 1;
     if (real) {
         jsNumber = realToNumber(real);
