@@ -34,7 +34,7 @@ number:
     'infinity'                               #infiniteNumber  |
     real                                     #realNumber      |
     imaginary                                #imaginaryNumber |
-    '(' real del=(',' | 'e^') imaginary ')'  #complexNumber
+    '(' real del=(',' | 'e^~') imaginary ')'  #complexNumber
 ;
 
 percent: real '%';

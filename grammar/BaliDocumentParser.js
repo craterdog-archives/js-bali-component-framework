@@ -358,8 +358,8 @@ var literalNames = [ null, "'['", "']'", "'('", "')'", "'..'", "','", "':'",
                      "'^'", "'-'", "'/'", "'*'", "'//'", "'+'", "'|'", "'<'", 
                      "'='", "'>'", "'is'", "'matches'", "'not'", "'and'", 
                      "'sans'", "'xor'", "'or'", "'?'", "'~'", "'i'", "'undefined'", 
-                     "'infinity'", "'e^'", "'%'", "'false'", "'true'", "'none'", 
-                     "'any'" ];
+                     "'infinity'", "'e^~'", "'%'", "'false'", "'true'", 
+                     "'none'", "'any'" ];
 
 var symbolicNames = [ null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 

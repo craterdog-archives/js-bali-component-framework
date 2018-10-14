@@ -27,7 +27,7 @@ var Angle = require('./Angle').Angle;
  * <pre><code>
  * new Complex()  // defaults to zero
  * new Complex('(3, 4i)')  // rectangular form
- * new Complex('(12.3e-45 e^3.1415926i)')  // polar form
+ * new Complex('(12.3e-45 e^~3.1415926i)')  // polar form
  * </code></pre>
  * 
  * @constructor
@@ -252,7 +252,7 @@ Complex.prototype.toPolar = function() {
     if (this.getAngle() === Angle.ZERO) return Element.realToSource(this.getRealPart());
     var source = '(';
     source += Element.realToSource(this.getMagnitude());
-    source += ' e^';
+    source += ' e^~';
     source += imaginaryToSource(this.getAngle().value);
     source += ')';
     return source;

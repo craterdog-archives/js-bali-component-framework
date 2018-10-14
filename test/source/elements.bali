@@ -1,5 +1,5 @@
 [
-    $angle: [~pi, ~0, ~0.666]
+    $angle: [~-0.5, ~pi, ~0, ~0.666]
     $none: [none, any]
     $token: #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
     $symbol: $symbol
@@ -135,6 +135,6 @@
         ]
         $imaginary: [42i, -pi i, -i]
         $rectangular: (-1, -phi i)
-        $polar: (1.2 e^pi i)
+        $polar: (1.2 e^~pi i)
     ]
 ]

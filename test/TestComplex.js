@@ -74,7 +74,7 @@ var testValues = [
     new Complex('i'),
     new Complex('-i'),
     new Complex('(1.23E-56, -7.8E90i)'),
-    new Complex('(5 e^3.141592653589793i)')
+    new Complex('(5 e^~3.141592653589793i)')
 ];
 var isUndefinedValues = [
     true,
@@ -186,7 +186,7 @@ var stringValues = [
     'i',
     '-i',
     '(1.23E-56, -7.8E90i)',
-    '(5 e^pi i)'
+    '(5 e^~pi i)'
 ];
 var rectangularValues = [
     'undefined',
@@ -207,12 +207,12 @@ var polarValues = [
     '0',
     'infinity',
     '0',
-    '(5 e^pi i)',
+    '(5 e^~pi i)',
     '5',
     '1',
-    '(1 e^pi i)',
-    '(1 e^1.5707963267948966i)',
-    '(1 e^-1.5707963267948966i)',
-    '(7.8E90 e^-1.5707963267948966i)',
-    '(5 e^pi i)'
+    '(1 e^~pi i)',
+    '(1 e^~1.5707963267948966i)',
+    '(1 e^~-1.5707963267948966i)',
+    '(7.8E90 e^~-1.5707963267948966i)',
+    '(5 e^~pi i)'
 ];

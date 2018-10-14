@@ -19,7 +19,7 @@ FRACTION: '.' ('0'..'9')* '1'..'9';
 
 CONSTANT: 'e' | 'pi' | 'phi';
 
-FLOAT: INTEGER FRACTION? ('E' INTEGER)?;
+FLOAT: (INTEGER FRACTION? | '-0' FRACTION) ('E' INTEGER)?;
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 

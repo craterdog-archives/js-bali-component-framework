@@ -63,6 +63,8 @@ describe('Bali Primitive Types™', function() {
                 Angle.PI,
                 new Angle(-Math.PI),
                 new Angle(Math.PI / 2),
+                new Angle('~-0.5'),
+                new Angle('~0.5'),
                 new Angle(-Math.PI / 2),
                 new Angle(-Math.PI / 3)
             ];

@@ -426,14 +426,14 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// complexNumber: '(' real del=(',' | 'e^') imaginary ')'
+// complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var parameters = this.parameters;
     var delimiter = ctx.del.text;
     var value = '(';
     ctx.real().accept(this);
     value += this.result;
-    value += delimiter === ',' ? ', ' : ' e^';
+    value += delimiter === ',' ? ', ' : ' e^~';
     ctx.imaginary().accept(this);
     value += this.result;
     value += ')';
@@ -1285,7 +1285,7 @@ BaliErrorStrategy.prototype.reportNoViableAlternative = function(recognizer, e) 
     } else {
         token = "<unknown>";
     }
-    var message = 'PARSER: An invalid token was encountered: ' + this.getTokenErrorDisplay(e.offendingToken);
+    var message = 'PARSER: An invalid token was encountered: ' + this.getTokenErrorDisplay(token);
     recognizer.notifyErrorListeners(message, e.offendingToken, e);
 };
 
