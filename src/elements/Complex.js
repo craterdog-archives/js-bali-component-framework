@@ -316,7 +316,7 @@ function imaginaryToSource(imaginary) {
 
 function realToNumber(realNode) {
     var jsNumber;
-    if (realNode.constructor.name === 'ConstantRealContext') {
+    if (realNode.CONSTANT()) {
         var constant = realNode.CONSTANT().getText();
         switch (constant) {
             case 'e':
@@ -329,15 +329,16 @@ function realToNumber(realNode) {
                 jsNumber = 1.618033988749895;
                 break;
         }
-        if (realNode.sign) {
-            jsNumber = -jsNumber;
-        }
-        return jsNumber;
-    } else {
+    } else if (realNode.FLOAT()) {
         var string = realNode.FLOAT().getText();
         jsNumber = Number(string);
-        return jsNumber;
+    } else {
+        jsNumber = 0;
     }
+    if (realNode.sign) {
+        jsNumber = -jsNumber;
+    }
+    return jsNumber;
 }
 
 

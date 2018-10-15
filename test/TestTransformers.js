@@ -14,7 +14,7 @@ var expect = require('chai').expect;
 var utilities = require('../src/utilities');
 
 describe('Bali Document Notation™', function() {
-    var DEBUG = false;  // change to true to check for ambiguities in the grammar
+    var DEBUG = true;  // change to true to check for ambiguities in the grammar
 
     describe('Test Parser and Formatter', function() {
 

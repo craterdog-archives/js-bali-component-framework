@@ -462,17 +462,6 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// constantReal: sign='-'? CONSTANT
-ParsingVisitor.prototype.visitConstantReal = function(ctx) {
-    var string = '';
-    if (ctx.sign) {
-        string += '-';
-    }
-    string += ctx.CONSTANT().getText();
-    this.result = string;
-};
-
-
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
     var tree = new composites.Tree(types.CONTINUE_CLAUSE, 13);
@@ -674,7 +663,7 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
     if (real) {
         real.accept(this);
         string += this.result;
-        if (real.constructor.name === 'ConstantRealContext') {
+        if (real.CONSTANT()) {
             string += ' ';
         }
     } else if (sign) {
@@ -991,6 +980,23 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
+// real: '0' | (sign='-'? (FLOAT | CONSTANT))
+ParsingVisitor.prototype.visitReal = function(ctx) {
+    var string = '';
+    if (ctx.sign) {
+        string += '-';
+    }
+    if (ctx.FLOAT()) {
+        string += ctx.FLOAT().getText();
+    } else if (ctx.CONSTANT()) {
+        string += ctx.CONSTANT().getText();
+    } else {
+        string += '0';
+    }
+    this.result = string;
+};
+
+
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     var parameters = this.parameters;
@@ -1170,12 +1176,6 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 };
 
 
-// variableReal: FLOAT
-ParsingVisitor.prototype.visitVariableReal = function(ctx) {
-    this.result = ctx.FLOAT().getText();
-};
-
-
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     var parameters = this.parameters;
@@ -1258,7 +1258,8 @@ BaliErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    var error = new Error('PARSER: Invalid input was detected, aborted parsing the input: ' + e);
+    var token = this.getTokenErrorDisplay(e.offendingToken);
+    var error = new Error('PARSER: An invalid token was encountered: ' + token);
     throw error;
 };
 

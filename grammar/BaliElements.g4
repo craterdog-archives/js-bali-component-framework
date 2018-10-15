@@ -45,10 +45,7 @@ probability:
     'true'    #trueProbability
 ;
 
-real:
-    sign='-'? CONSTANT  #constantReal |
-    FLOAT               #variableReal
-;
+real: '0' | (sign='-'? (CONSTANT | FLOAT));
 
 reference: RESOURCE;
 

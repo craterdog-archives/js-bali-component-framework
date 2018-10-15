@@ -704,21 +704,12 @@ BaliDocumentListener.prototype.exitTrueProbability = function(ctx) {
 };
 
 
-// Enter a parse tree produced by BaliDocumentParser#constantReal.
-BaliDocumentListener.prototype.enterConstantReal = function(ctx) {
+// Enter a parse tree produced by BaliDocumentParser#real.
+BaliDocumentListener.prototype.enterReal = function(ctx) {
 };
 
-// Exit a parse tree produced by BaliDocumentParser#constantReal.
-BaliDocumentListener.prototype.exitConstantReal = function(ctx) {
-};
-
-
-// Enter a parse tree produced by BaliDocumentParser#variableReal.
-BaliDocumentListener.prototype.enterVariableReal = function(ctx) {
-};
-
-// Exit a parse tree produced by BaliDocumentParser#variableReal.
-BaliDocumentListener.prototype.exitVariableReal = function(ctx) {
+// Exit a parse tree produced by BaliDocumentParser#real.
+BaliDocumentListener.prototype.exitReal = function(ctx) {
 };
 
 

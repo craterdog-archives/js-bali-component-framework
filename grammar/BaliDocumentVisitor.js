@@ -474,14 +474,8 @@ BaliDocumentVisitor.prototype.visitTrueProbability = function(ctx) {
 };
 
 
-// Visit a parse tree produced by BaliDocumentParser#constantReal.
-BaliDocumentVisitor.prototype.visitConstantReal = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by BaliDocumentParser#variableReal.
-BaliDocumentVisitor.prototype.visitVariableReal = function(ctx) {
+// Visit a parse tree produced by BaliDocumentParser#real.
+BaliDocumentVisitor.prototype.visitReal = function(ctx) {
   return this.visitChildren(ctx);
 };
 

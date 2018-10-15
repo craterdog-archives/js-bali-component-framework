@@ -7,7 +7,7 @@ var BaliDocumentVisitor = require('./BaliDocumentVisitor').BaliDocumentVisitor;
 var grammarFileName = "BaliDocument.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
-    "\u0003W\u020c\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003X\u020c\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
     "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
@@ -74,77 +74,77 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     ",\u0003,\u0003-\u0003-\u0003.\u0003.\u0003/\u0003/\u0005/\u01db\n/\u0003",
     "/\u0003/\u00030\u00030\u00031\u00031\u00031\u00031\u00031\u00031\u0003",
     "1\u00031\u00031\u00031\u00051\u01eb\n1\u00032\u00032\u00032\u00033\u0003",
-    "3\u00033\u00053\u01f3\n3\u00034\u00054\u01f6\n4\u00034\u00034\u0005",
+    "3\u00033\u00053\u01f3\n3\u00034\u00034\u00054\u01f7\n4\u00034\u0005",
     "4\u01fa\n4\u00035\u00035\u00036\u00036\u00037\u00037\u00038\u00038\u0005",
     "8\u0204\n8\u00039\u00039\u00059\u0208\n9\u0003:\u0003:\u0003:\u0002",
     "\u0003J;\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018",
     "\u001a\u001c\u001e \"$&(*,.02468:<>@BDFHJLNPRTVXZ\\^`bdfhjlnpr\u0002",
-    "\u0007\u0003\u0002-/\u0003\u0002-1\u0003\u000237\u0003\u00029<\u0004",
-    "\u0002\b\bBB\u0002\u0227\u0002w\u0003\u0002\u0002\u0002\u0004\u0091",
-    "\u0003\u0002\u0002\u0002\u0006\u0093\u0003\u0002\u0002\u0002\b\u0096",
-    "\u0003\u0002\u0002\u0002\n\u009d\u0003\u0002\u0002\u0002\f\u009f\u0003",
-    "\u0002\u0002\u0002\u000e\u00a3\u0003\u0002\u0002\u0002\u0010\u00aa\u0003",
-    "\u0002\u0002\u0002\u0012\u00ac\u0003\u0002\u0002\u0002\u0014\u00c2\u0003",
-    "\u0002\u0002\u0002\u0016\u00d6\u0003\u0002\u0002\u0002\u0018\u00d8\u0003",
-    "\u0002\u0002\u0002\u001a\u00dc\u0003\u0002\u0002\u0002\u001c\u00f2\u0003",
-    "\u0002\u0002\u0002\u001e\u00f4\u0003\u0002\u0002\u0002 \u010b\u0003",
-    "\u0002\u0002\u0002\"\u010d\u0003\u0002\u0002\u0002$\u0114\u0003\u0002",
-    "\u0002\u0002&\u011b\u0003\u0002\u0002\u0002(\u011f\u0003\u0002\u0002",
-    "\u0002*\u0124\u0003\u0002\u0002\u0002,\u0129\u0003\u0002\u0002\u0002",
-    ".\u012c\u0003\u0002\u0002\u00020\u0131\u0003\u0002\u0002\u00022\u0134",
-    "\u0003\u0002\u0002\u00024\u0139\u0003\u0002\u0002\u00026\u013f\u0003",
-    "\u0002\u0002\u00028\u0152\u0003\u0002\u0002\u0002:\u0161\u0003\u0002",
-    "\u0002\u0002<\u016c\u0003\u0002\u0002\u0002>\u0171\u0003\u0002\u0002",
-    "\u0002@\u0174\u0003\u0002\u0002\u0002B\u0177\u0003\u0002\u0002\u0002",
-    "D\u017b\u0003\u0002\u0002\u0002F\u0180\u0003\u0002\u0002\u0002H\u0182",
-    "\u0003\u0002\u0002\u0002J\u0199\u0003\u0002\u0002\u0002L\u01b8\u0003",
-    "\u0002\u0002\u0002N\u01ba\u0003\u0002\u0002\u0002P\u01bc\u0003\u0002",
-    "\u0002\u0002R\u01be\u0003\u0002\u0002\u0002T\u01cf\u0003\u0002\u0002",
-    "\u0002V\u01d1\u0003\u0002\u0002\u0002X\u01d4\u0003\u0002\u0002\u0002",
-    "Z\u01d6\u0003\u0002\u0002\u0002\\\u01da\u0003\u0002\u0002\u0002^\u01de",
-    "\u0003\u0002\u0002\u0002`\u01ea\u0003\u0002\u0002\u0002b\u01ec\u0003",
-    "\u0002\u0002\u0002d\u01f2\u0003\u0002\u0002\u0002f\u01f9\u0003\u0002",
-    "\u0002\u0002h\u01fb\u0003\u0002\u0002\u0002j\u01fd\u0003\u0002\u0002",
-    "\u0002l\u01ff\u0003\u0002\u0002\u0002n\u0203\u0003\u0002\u0002\u0002",
-    "p\u0207\u0003\u0002\u0002\u0002r\u0209\u0003\u0002\u0002\u0002tv\u0007",
-    "V\u0002\u0002ut\u0003\u0002\u0002\u0002vy\u0003\u0002\u0002\u0002wu",
-    "\u0003\u0002\u0002\u0002wx\u0003\u0002\u0002\u0002x}\u0003\u0002\u0002",
-    "\u0002yw\u0003\u0002\u0002\u0002z{\u0005h5\u0002{|\u0007V\u0002\u0002",
-    "|~\u0003\u0002\u0002\u0002}z\u0003\u0002\u0002\u0002}~\u0003\u0002\u0002",
-    "\u0002~\u007f\u0003\u0002\u0002\u0002\u007f\u0084\u0005\u0004\u0003",
-    "\u0002\u0080\u0081\u0007V\u0002\u0002\u0081\u0083\u0005\u0006\u0004",
-    "\u0002\u0082\u0080\u0003\u0002\u0002\u0002\u0083\u0086\u0003\u0002\u0002",
-    "\u0002\u0084\u0082\u0003\u0002\u0002\u0002\u0084\u0085\u0003\u0002\u0002",
-    "\u0002\u0085\u008a\u0003\u0002\u0002\u0002\u0086\u0084\u0003\u0002\u0002",
-    "\u0002\u0087\u0089\u0007V\u0002\u0002\u0088\u0087\u0003\u0002\u0002",
-    "\u0002\u0089\u008c\u0003\u0002\u0002\u0002\u008a\u0088\u0003\u0002\u0002",
-    "\u0002\u008a\u008b\u0003\u0002\u0002\u0002\u008b\u008d\u0003\u0002\u0002",
-    "\u0002\u008c\u008a\u0003\u0002\u0002\u0002\u008d\u008e\u0007\u0002\u0002",
-    "\u0003\u008e\u0003\u0003\u0002\u0002\u0002\u008f\u0092\u0005\b\u0005",
-    "\u0002\u0090\u0092\u0005\u001c\u000f\u0002\u0091\u008f\u0003\u0002\u0002",
-    "\u0002\u0091\u0090\u0003\u0002\u0002\u0002\u0092\u0005\u0003\u0002\u0002",
-    "\u0002\u0093\u0094\u0005h5\u0002\u0094\u0095\u0005X-\u0002\u0095\u0007",
-    "\u0003\u0002\u0002\u0002\u0096\u0098\u0005\n\u0006\u0002\u0097\u0099",
-    "\u0005\u000e\b\u0002\u0098\u0097\u0003\u0002\u0002\u0002\u0098\u0099",
-    "\u0003\u0002\u0002\u0002\u0099\t\u0003\u0002\u0002\u0002\u009a\u009e",
-    "\u0005T+\u0002\u009b\u009e\u0005\f\u0007\u0002\u009c\u009e\u0005\u001a",
-    "\u000e\u0002\u009d\u009a\u0003\u0002\u0002\u0002\u009d\u009b\u0003\u0002",
-    "\u0002\u0002\u009d\u009c\u0003\u0002\u0002\u0002\u009e\u000b\u0003\u0002",
-    "\u0002\u0002\u009f\u00a0\u0007\u0003\u0002\u0002\u00a0\u00a1\u0005\u0010",
-    "\t\u0002\u00a1\u00a2\u0007\u0004\u0002\u0002\u00a2\r\u0003\u0002\u0002",
-    "\u0002\u00a3\u00a4\u0007\u0005\u0002\u0002\u00a4\u00a5\u0005\u0010\t",
-    "\u0002\u00a5\u00a6\u0007\u0006\u0002\u0002\u00a6\u000f\u0003\u0002\u0002",
-    "\u0002\u00a7\u00ab\u0005\u0012\n\u0002\u00a8\u00ab\u0005\u0014\u000b",
-    "\u0002\u00a9\u00ab\u0005\u0016\f\u0002\u00aa\u00a7\u0003\u0002\u0002",
-    "\u0002\u00aa\u00a8\u0003\u0002\u0002\u0002\u00aa\u00a9\u0003\u0002\u0002",
-    "\u0002\u00ab\u0011\u0003\u0002\u0002\u0002\u00ac\u00ad\u0005J&\u0002",
-    "\u00ad\u00ae\u0007\u0007\u0002\u0002\u00ae\u00af\u0005J&\u0002\u00af",
-    "\u0013\u0003\u0002\u0002\u0002\u00b0\u00b5\u0005J&\u0002\u00b1\u00b2",
-    "\u0007\b\u0002\u0002\u00b2\u00b4\u0005J&\u0002\u00b3\u00b1\u0003\u0002",
-    "\u0002\u0002\u00b4\u00b7\u0003\u0002\u0002\u0002\u00b5\u00b3\u0003\u0002",
-    "\u0002\u0002\u00b5\u00b6\u0003\u0002\u0002\u0002\u00b6\u00c3\u0003\u0002",
-    "\u0002\u0002\u00b7\u00b5\u0003\u0002\u0002\u0002\u00b8\u00be\u0007V",
-    "\u0002\u0002\u00b9\u00ba\u0005J&\u0002\u00ba\u00bb\u0007V\u0002\u0002",
+    "\b\u0003\u0002-/\u0003\u0002-1\u0003\u000237\u0003\u00029<\u0004\u0002",
+    "\b\bBB\u0003\u0002MN\u0002\u0227\u0002w\u0003\u0002\u0002\u0002\u0004",
+    "\u0091\u0003\u0002\u0002\u0002\u0006\u0093\u0003\u0002\u0002\u0002\b",
+    "\u0096\u0003\u0002\u0002\u0002\n\u009d\u0003\u0002\u0002\u0002\f\u009f",
+    "\u0003\u0002\u0002\u0002\u000e\u00a3\u0003\u0002\u0002\u0002\u0010\u00aa",
+    "\u0003\u0002\u0002\u0002\u0012\u00ac\u0003\u0002\u0002\u0002\u0014\u00c2",
+    "\u0003\u0002\u0002\u0002\u0016\u00d6\u0003\u0002\u0002\u0002\u0018\u00d8",
+    "\u0003\u0002\u0002\u0002\u001a\u00dc\u0003\u0002\u0002\u0002\u001c\u00f2",
+    "\u0003\u0002\u0002\u0002\u001e\u00f4\u0003\u0002\u0002\u0002 \u010b",
+    "\u0003\u0002\u0002\u0002\"\u010d\u0003\u0002\u0002\u0002$\u0114\u0003",
+    "\u0002\u0002\u0002&\u011b\u0003\u0002\u0002\u0002(\u011f\u0003\u0002",
+    "\u0002\u0002*\u0124\u0003\u0002\u0002\u0002,\u0129\u0003\u0002\u0002",
+    "\u0002.\u012c\u0003\u0002\u0002\u00020\u0131\u0003\u0002\u0002\u0002",
+    "2\u0134\u0003\u0002\u0002\u00024\u0139\u0003\u0002\u0002\u00026\u013f",
+    "\u0003\u0002\u0002\u00028\u0152\u0003\u0002\u0002\u0002:\u0161\u0003",
+    "\u0002\u0002\u0002<\u016c\u0003\u0002\u0002\u0002>\u0171\u0003\u0002",
+    "\u0002\u0002@\u0174\u0003\u0002\u0002\u0002B\u0177\u0003\u0002\u0002",
+    "\u0002D\u017b\u0003\u0002\u0002\u0002F\u0180\u0003\u0002\u0002\u0002",
+    "H\u0182\u0003\u0002\u0002\u0002J\u0199\u0003\u0002\u0002\u0002L\u01b8",
+    "\u0003\u0002\u0002\u0002N\u01ba\u0003\u0002\u0002\u0002P\u01bc\u0003",
+    "\u0002\u0002\u0002R\u01be\u0003\u0002\u0002\u0002T\u01cf\u0003\u0002",
+    "\u0002\u0002V\u01d1\u0003\u0002\u0002\u0002X\u01d4\u0003\u0002\u0002",
+    "\u0002Z\u01d6\u0003\u0002\u0002\u0002\\\u01da\u0003\u0002\u0002\u0002",
+    "^\u01de\u0003\u0002\u0002\u0002`\u01ea\u0003\u0002\u0002\u0002b\u01ec",
+    "\u0003\u0002\u0002\u0002d\u01f2\u0003\u0002\u0002\u0002f\u01f9\u0003",
+    "\u0002\u0002\u0002h\u01fb\u0003\u0002\u0002\u0002j\u01fd\u0003\u0002",
+    "\u0002\u0002l\u01ff\u0003\u0002\u0002\u0002n\u0203\u0003\u0002\u0002",
+    "\u0002p\u0207\u0003\u0002\u0002\u0002r\u0209\u0003\u0002\u0002\u0002",
+    "tv\u0007W\u0002\u0002ut\u0003\u0002\u0002\u0002vy\u0003\u0002\u0002",
+    "\u0002wu\u0003\u0002\u0002\u0002wx\u0003\u0002\u0002\u0002x}\u0003\u0002",
+    "\u0002\u0002yw\u0003\u0002\u0002\u0002z{\u0005h5\u0002{|\u0007W\u0002",
+    "\u0002|~\u0003\u0002\u0002\u0002}z\u0003\u0002\u0002\u0002}~\u0003\u0002",
+    "\u0002\u0002~\u007f\u0003\u0002\u0002\u0002\u007f\u0084\u0005\u0004",
+    "\u0003\u0002\u0080\u0081\u0007W\u0002\u0002\u0081\u0083\u0005\u0006",
+    "\u0004\u0002\u0082\u0080\u0003\u0002\u0002\u0002\u0083\u0086\u0003\u0002",
+    "\u0002\u0002\u0084\u0082\u0003\u0002\u0002\u0002\u0084\u0085\u0003\u0002",
+    "\u0002\u0002\u0085\u008a\u0003\u0002\u0002\u0002\u0086\u0084\u0003\u0002",
+    "\u0002\u0002\u0087\u0089\u0007W\u0002\u0002\u0088\u0087\u0003\u0002",
+    "\u0002\u0002\u0089\u008c\u0003\u0002\u0002\u0002\u008a\u0088\u0003\u0002",
+    "\u0002\u0002\u008a\u008b\u0003\u0002\u0002\u0002\u008b\u008d\u0003\u0002",
+    "\u0002\u0002\u008c\u008a\u0003\u0002\u0002\u0002\u008d\u008e\u0007\u0002",
+    "\u0002\u0003\u008e\u0003\u0003\u0002\u0002\u0002\u008f\u0092\u0005\b",
+    "\u0005\u0002\u0090\u0092\u0005\u001c\u000f\u0002\u0091\u008f\u0003\u0002",
+    "\u0002\u0002\u0091\u0090\u0003\u0002\u0002\u0002\u0092\u0005\u0003\u0002",
+    "\u0002\u0002\u0093\u0094\u0005h5\u0002\u0094\u0095\u0005X-\u0002\u0095",
+    "\u0007\u0003\u0002\u0002\u0002\u0096\u0098\u0005\n\u0006\u0002\u0097",
+    "\u0099\u0005\u000e\b\u0002\u0098\u0097\u0003\u0002\u0002\u0002\u0098",
+    "\u0099\u0003\u0002\u0002\u0002\u0099\t\u0003\u0002\u0002\u0002\u009a",
+    "\u009e\u0005T+\u0002\u009b\u009e\u0005\f\u0007\u0002\u009c\u009e\u0005",
+    "\u001a\u000e\u0002\u009d\u009a\u0003\u0002\u0002\u0002\u009d\u009b\u0003",
+    "\u0002\u0002\u0002\u009d\u009c\u0003\u0002\u0002\u0002\u009e\u000b\u0003",
+    "\u0002\u0002\u0002\u009f\u00a0\u0007\u0003\u0002\u0002\u00a0\u00a1\u0005",
+    "\u0010\t\u0002\u00a1\u00a2\u0007\u0004\u0002\u0002\u00a2\r\u0003\u0002",
+    "\u0002\u0002\u00a3\u00a4\u0007\u0005\u0002\u0002\u00a4\u00a5\u0005\u0010",
+    "\t\u0002\u00a5\u00a6\u0007\u0006\u0002\u0002\u00a6\u000f\u0003\u0002",
+    "\u0002\u0002\u00a7\u00ab\u0005\u0012\n\u0002\u00a8\u00ab\u0005\u0014",
+    "\u000b\u0002\u00a9\u00ab\u0005\u0016\f\u0002\u00aa\u00a7\u0003\u0002",
+    "\u0002\u0002\u00aa\u00a8\u0003\u0002\u0002\u0002\u00aa\u00a9\u0003\u0002",
+    "\u0002\u0002\u00ab\u0011\u0003\u0002\u0002\u0002\u00ac\u00ad\u0005J",
+    "&\u0002\u00ad\u00ae\u0007\u0007\u0002\u0002\u00ae\u00af\u0005J&\u0002",
+    "\u00af\u0013\u0003\u0002\u0002\u0002\u00b0\u00b5\u0005J&\u0002\u00b1",
+    "\u00b2\u0007\b\u0002\u0002\u00b2\u00b4\u0005J&\u0002\u00b3\u00b1\u0003",
+    "\u0002\u0002\u0002\u00b4\u00b7\u0003\u0002\u0002\u0002\u00b5\u00b3\u0003",
+    "\u0002\u0002\u0002\u00b5\u00b6\u0003\u0002\u0002\u0002\u00b6\u00c3\u0003",
+    "\u0002\u0002\u0002\u00b7\u00b5\u0003\u0002\u0002\u0002\u00b8\u00be\u0007",
+    "W\u0002\u0002\u00b9\u00ba\u0005J&\u0002\u00ba\u00bb\u0007W\u0002\u0002",
     "\u00bb\u00bd\u0003\u0002\u0002\u0002\u00bc\u00b9\u0003\u0002\u0002\u0002",
     "\u00bd\u00c0\u0003\u0002\u0002\u0002\u00be\u00bc\u0003\u0002\u0002\u0002",
     "\u00be\u00bf\u0003\u0002\u0002\u0002\u00bf\u00c3\u0003\u0002\u0002\u0002",
@@ -155,8 +155,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u00c8\u0005\u0018\r\u0002\u00c7\u00c5\u0003\u0002\u0002\u0002\u00c8",
     "\u00cb\u0003\u0002\u0002\u0002\u00c9\u00c7\u0003\u0002\u0002\u0002\u00c9",
     "\u00ca\u0003\u0002\u0002\u0002\u00ca\u00d7\u0003\u0002\u0002\u0002\u00cb",
-    "\u00c9\u0003\u0002\u0002\u0002\u00cc\u00d2\u0007V\u0002\u0002\u00cd",
-    "\u00ce\u0005\u0018\r\u0002\u00ce\u00cf\u0007V\u0002\u0002\u00cf\u00d1",
+    "\u00c9\u0003\u0002\u0002\u0002\u00cc\u00d2\u0007W\u0002\u0002\u00cd",
+    "\u00ce\u0005\u0018\r\u0002\u00ce\u00cf\u0007W\u0002\u0002\u00cf\u00d1",
     "\u0003\u0002\u0002\u0002\u00d0\u00cd\u0003\u0002\u0002\u0002\u00d1\u00d4",
     "\u0003\u0002\u0002\u0002\u00d2\u00d0\u0003\u0002\u0002\u0002\u00d2\u00d3",
     "\u0003\u0002\u0002\u0002\u00d3\u00d7\u0003\u0002\u0002\u0002\u00d4\u00d2",
@@ -171,8 +171,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u00e3\u00e1\u0003\u0002\u0002\u0002\u00e4\u00e7\u0003\u0002\u0002",
     "\u0002\u00e5\u00e3\u0003\u0002\u0002\u0002\u00e5\u00e6\u0003\u0002\u0002",
     "\u0002\u00e6\u00f3\u0003\u0002\u0002\u0002\u00e7\u00e5\u0003\u0002\u0002",
-    "\u0002\u00e8\u00ee\u0007V\u0002\u0002\u00e9\u00ea\u0005\u001e\u0010",
-    "\u0002\u00ea\u00eb\u0007V\u0002\u0002\u00eb\u00ed\u0003\u0002\u0002",
+    "\u0002\u00e8\u00ee\u0007W\u0002\u0002\u00e9\u00ea\u0005\u001e\u0010",
+    "\u0002\u00ea\u00eb\u0007W\u0002\u0002\u00eb\u00ed\u0003\u0002\u0002",
     "\u0002\u00ec\u00e9\u0003\u0002\u0002\u0002\u00ed\u00f0\u0003\u0002\u0002",
     "\u0002\u00ee\u00ec\u0003\u0002\u0002\u0002\u00ee\u00ef\u0003\u0002\u0002",
     "\u0002\u00ef\u00f3\u0003\u0002\u0002\u0002\u00f0\u00ee\u0003\u0002\u0002",
@@ -287,9 +287,9 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01b3\u01af\u0003\u0002\u0002\u0002\u01b3\u01b1\u0003\u0002\u0002\u0002",
     "\u01b4\u01b7\u0003\u0002\u0002\u0002\u01b5\u01b3\u0003\u0002\u0002\u0002",
     "\u01b5\u01b6\u0003\u0002\u0002\u0002\u01b6K\u0003\u0002\u0002\u0002",
-    "\u01b7\u01b5\u0003\u0002\u0002\u0002\u01b8\u01b9\u0007U\u0002\u0002",
-    "\u01b9M\u0003\u0002\u0002\u0002\u01ba\u01bb\u0007U\u0002\u0002\u01bb",
-    "O\u0003\u0002\u0002\u0002\u01bc\u01bd\u0007U\u0002\u0002\u01bdQ\u0003",
+    "\u01b7\u01b5\u0003\u0002\u0002\u0002\u01b8\u01b9\u0007V\u0002\u0002",
+    "\u01b9M\u0003\u0002\u0002\u0002\u01ba\u01bb\u0007V\u0002\u0002\u01bb",
+    "O\u0003\u0002\u0002\u0002\u01bc\u01bd\u0007V\u0002\u0002\u01bdQ\u0003",
     "\u0002\u0002\u0002\u01be\u01bf\u0007\u0003\u0002\u0002\u01bf\u01c0\u0005",
     "\u0014\u000b\u0002\u01c0\u01c1\u0007\u0004\u0002\u0002\u01c1S\u0003",
     "\u0002\u0002\u0002\u01c2\u01d0\u0005V,\u0002\u01c3\u01d0\u0005X-\u0002",
@@ -305,13 +305,13 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01cf\u01cc\u0003\u0002\u0002\u0002\u01cf\u01cd\u0003\u0002\u0002\u0002",
     "\u01cf\u01ce\u0003\u0002\u0002\u0002\u01d0U\u0003\u0002\u0002\u0002",
     "\u01d1\u01d2\u0007>\u0002\u0002\u01d2\u01d3\u0005f4\u0002\u01d3W\u0003",
-    "\u0002\u0002\u0002\u01d4\u01d5\u0007R\u0002\u0002\u01d5Y\u0003\u0002",
-    "\u0002\u0002\u01d6\u01d7\u0007O\u0002\u0002\u01d7[\u0003\u0002\u0002",
+    "\u0002\u0002\u0002\u01d4\u01d5\u0007S\u0002\u0002\u01d5Y\u0003\u0002",
+    "\u0002\u0002\u01d6\u01d7\u0007P\u0002\u0002\u01d7[\u0003\u0002\u0002",
     "\u0002\u01d8\u01db\u0005f4\u0002\u01d9\u01db\u0007-\u0002\u0002\u01da",
     "\u01d8\u0003\u0002\u0002\u0002\u01da\u01d9\u0003\u0002\u0002\u0002\u01da",
     "\u01db\u0003\u0002\u0002\u0002\u01db\u01dc\u0003\u0002\u0002\u0002\u01dc",
     "\u01dd\u0007?\u0002\u0002\u01dd]\u0003\u0002\u0002\u0002\u01de\u01df",
-    "\u0007N\u0002\u0002\u01df_\u0003\u0002\u0002\u0002\u01e0\u01eb\u0007",
+    "\u0007O\u0002\u0002\u01df_\u0003\u0002\u0002\u0002\u01e0\u01eb\u0007",
     "@\u0002\u0002\u01e1\u01eb\u0007A\u0002\u0002\u01e2\u01eb\u0005f4\u0002",
     "\u01e3\u01eb\u0005\\/\u0002\u01e4\u01e5\u0007\u0005\u0002\u0002\u01e5",
     "\u01e6\u0005f4\u0002\u01e6\u01e7\t\u0006\u0002\u0002\u01e7\u01e8\u0005",
@@ -321,25 +321,25 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u01ea\u01e4\u0003\u0002\u0002\u0002\u01eba\u0003\u0002",
     "\u0002\u0002\u01ec\u01ed\u0005f4\u0002\u01ed\u01ee\u0007C\u0002\u0002",
     "\u01eec\u0003\u0002\u0002\u0002\u01ef\u01f3\u0007D\u0002\u0002\u01f0",
-    "\u01f3\u0007K\u0002\u0002\u01f1\u01f3\u0007E\u0002\u0002\u01f2\u01ef",
+    "\u01f3\u0007L\u0002\u0002\u01f1\u01f3\u0007E\u0002\u0002\u01f2\u01ef",
     "\u0003\u0002\u0002\u0002\u01f2\u01f0\u0003\u0002\u0002\u0002\u01f2\u01f1",
-    "\u0003\u0002\u0002\u0002\u01f3e\u0003\u0002\u0002\u0002\u01f4\u01f6",
-    "\u0007-\u0002\u0002\u01f5\u01f4\u0003\u0002\u0002\u0002\u01f5\u01f6",
-    "\u0003\u0002\u0002\u0002\u01f6\u01f7\u0003\u0002\u0002\u0002\u01f7\u01fa",
-    "\u0007L\u0002\u0002\u01f8\u01fa\u0007M\u0002\u0002\u01f9\u01f5\u0003",
-    "\u0002\u0002\u0002\u01f9\u01f8\u0003\u0002\u0002\u0002\u01fag\u0003",
-    "\u0002\u0002\u0002\u01fb\u01fc\u0007P\u0002\u0002\u01fci\u0003\u0002",
-    "\u0002\u0002\u01fd\u01fe\u0007J\u0002\u0002\u01fek\u0003\u0002\u0002",
-    "\u0002\u01ff\u0200\u0007I\u0002\u0002\u0200m\u0003\u0002\u0002\u0002",
-    "\u0201\u0204\u0007F\u0002\u0002\u0202\u0204\u0007G\u0002\u0002\u0203",
+    "\u0003\u0002\u0002\u0002\u01f3e\u0003\u0002\u0002\u0002\u01f4\u01fa",
+    "\u0007F\u0002\u0002\u01f5\u01f7\u0007-\u0002\u0002\u01f6\u01f5\u0003",
+    "\u0002\u0002\u0002\u01f6\u01f7\u0003\u0002\u0002\u0002\u01f7\u01f8\u0003",
+    "\u0002\u0002\u0002\u01f8\u01fa\t\u0007\u0002\u0002\u01f9\u01f4\u0003",
+    "\u0002\u0002\u0002\u01f9\u01f6\u0003\u0002\u0002\u0002\u01fag\u0003",
+    "\u0002\u0002\u0002\u01fb\u01fc\u0007Q\u0002\u0002\u01fci\u0003\u0002",
+    "\u0002\u0002\u01fd\u01fe\u0007K\u0002\u0002\u01fek\u0003\u0002\u0002",
+    "\u0002\u01ff\u0200\u0007J\u0002\u0002\u0200m\u0003\u0002\u0002\u0002",
+    "\u0201\u0204\u0007G\u0002\u0002\u0202\u0204\u0007H\u0002\u0002\u0203",
     "\u0201\u0003\u0002\u0002\u0002\u0203\u0202\u0003\u0002\u0002\u0002\u0204",
-    "o\u0003\u0002\u0002\u0002\u0205\u0208\u0007T\u0002\u0002\u0206\u0208",
-    "\u0007S\u0002\u0002\u0207\u0205\u0003\u0002\u0002\u0002\u0207\u0206",
+    "o\u0003\u0002\u0002\u0002\u0205\u0208\u0007U\u0002\u0002\u0206\u0208",
+    "\u0007T\u0002\u0002\u0207\u0205\u0003\u0002\u0002\u0002\u0207\u0206",
     "\u0003\u0002\u0002\u0002\u0208q\u0003\u0002\u0002\u0002\u0209\u020a",
-    "\u0007Q\u0002\u0002\u020as\u0003\u0002\u0002\u0002(w}\u0084\u008a\u0091",
+    "\u0007R\u0002\u0002\u020as\u0003\u0002\u0002\u0002(w}\u0084\u008a\u0091",
     "\u0098\u009d\u00aa\u00b5\u00be\u00c2\u00c9\u00d2\u00d6\u00e5\u00ee\u00f2",
     "\u00f8\u010b\u011b\u014b\u0150\u015b\u015f\u0166\u0179\u0180\u0199\u01b3",
-    "\u01b5\u01cf\u01da\u01ea\u01f2\u01f5\u01f9\u0203\u0207"].join("");
+    "\u01b5\u01cf\u01da\u01ea\u01f2\u01f6\u01f9\u0203\u0207"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -359,7 +359,7 @@ var literalNames = [ null, "'['", "']'", "'('", "')'", "'..'", "','", "':'",
                      "'='", "'>'", "'is'", "'matches'", "'not'", "'and'", 
                      "'sans'", "'xor'", "'or'", "'?'", "'~'", "'i'", "'undefined'", 
                      "'infinity'", "'e^~'", "'%'", "'false'", "'true'", 
-                     "'none'", "'any'" ];
+                     "'0'", "'none'", "'any'" ];
 
 var symbolicNames = [ null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
@@ -368,7 +368,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
-                      null, null, null, null, null, null, null, "SHELL", 
+                      null, null, null, null, null, null, null, null, "SHELL", 
                       "TAG", "SYMBOL", "FRACTION", "CONSTANT", "FLOAT", 
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
                       "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
@@ -475,22 +475,23 @@ BaliDocumentParser.T__65 = 66;
 BaliDocumentParser.T__66 = 67;
 BaliDocumentParser.T__67 = 68;
 BaliDocumentParser.T__68 = 69;
-BaliDocumentParser.SHELL = 70;
-BaliDocumentParser.TAG = 71;
-BaliDocumentParser.SYMBOL = 72;
-BaliDocumentParser.FRACTION = 73;
-BaliDocumentParser.CONSTANT = 74;
-BaliDocumentParser.FLOAT = 75;
-BaliDocumentParser.MOMENT = 76;
-BaliDocumentParser.DURATION = 77;
-BaliDocumentParser.RESOURCE = 78;
-BaliDocumentParser.VERSION = 79;
-BaliDocumentParser.BINARY = 80;
-BaliDocumentParser.TEXT_BLOCK = 81;
-BaliDocumentParser.TEXT = 82;
-BaliDocumentParser.IDENTIFIER = 83;
-BaliDocumentParser.NEWLINE = 84;
-BaliDocumentParser.SPACE = 85;
+BaliDocumentParser.T__69 = 70;
+BaliDocumentParser.SHELL = 71;
+BaliDocumentParser.TAG = 72;
+BaliDocumentParser.SYMBOL = 73;
+BaliDocumentParser.FRACTION = 74;
+BaliDocumentParser.CONSTANT = 75;
+BaliDocumentParser.FLOAT = 76;
+BaliDocumentParser.MOMENT = 77;
+BaliDocumentParser.DURATION = 78;
+BaliDocumentParser.RESOURCE = 79;
+BaliDocumentParser.VERSION = 80;
+BaliDocumentParser.BINARY = 81;
+BaliDocumentParser.TEXT_BLOCK = 82;
+BaliDocumentParser.TEXT = 83;
+BaliDocumentParser.IDENTIFIER = 84;
+BaliDocumentParser.NEWLINE = 85;
+BaliDocumentParser.SPACE = 86;
 
 BaliDocumentParser.RULE_document = 0;
 BaliDocumentParser.RULE_content = 1;
@@ -1007,6 +1008,7 @@ BaliDocumentParser.prototype.value = function() {
         case BaliDocumentParser.T__66:
         case BaliDocumentParser.T__67:
         case BaliDocumentParser.T__68:
+        case BaliDocumentParser.T__69:
         case BaliDocumentParser.TAG:
         case BaliDocumentParser.SYMBOL:
         case BaliDocumentParser.FRACTION:
@@ -1545,6 +1547,7 @@ BaliDocumentParser.prototype.list = function() {
         case BaliDocumentParser.T__66:
         case BaliDocumentParser.T__67:
         case BaliDocumentParser.T__68:
+        case BaliDocumentParser.T__69:
         case BaliDocumentParser.TAG:
         case BaliDocumentParser.SYMBOL:
         case BaliDocumentParser.FRACTION:
@@ -1583,7 +1586,7 @@ BaliDocumentParser.prototype.list = function() {
             this.state = 188;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.CONSTANT - 71)) | (1 << (BaliDocumentParser.FLOAT - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)) | (1 << (BaliDocumentParser.T__69 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliDocumentParser.TAG - 72)) | (1 << (BaliDocumentParser.SYMBOL - 72)) | (1 << (BaliDocumentParser.FRACTION - 72)) | (1 << (BaliDocumentParser.CONSTANT - 72)) | (1 << (BaliDocumentParser.FLOAT - 72)) | (1 << (BaliDocumentParser.MOMENT - 72)) | (1 << (BaliDocumentParser.DURATION - 72)) | (1 << (BaliDocumentParser.RESOURCE - 72)) | (1 << (BaliDocumentParser.VERSION - 72)) | (1 << (BaliDocumentParser.BINARY - 72)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 72)) | (1 << (BaliDocumentParser.TEXT - 72)) | (1 << (BaliDocumentParser.IDENTIFIER - 72)))) !== 0)) {
                 this.state = 183;
                 this.expression(0);
                 this.state = 184;
@@ -1791,6 +1794,7 @@ BaliDocumentParser.prototype.catalog = function() {
         case BaliDocumentParser.T__66:
         case BaliDocumentParser.T__67:
         case BaliDocumentParser.T__68:
+        case BaliDocumentParser.T__69:
         case BaliDocumentParser.TAG:
         case BaliDocumentParser.SYMBOL:
         case BaliDocumentParser.FRACTION:
@@ -1828,7 +1832,7 @@ BaliDocumentParser.prototype.catalog = function() {
             this.state = 208;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliDocumentParser.T__42 - 43)) | (1 << (BaliDocumentParser.T__59 - 43)) | (1 << (BaliDocumentParser.T__60 - 43)) | (1 << (BaliDocumentParser.T__61 - 43)) | (1 << (BaliDocumentParser.T__62 - 43)) | (1 << (BaliDocumentParser.T__65 - 43)) | (1 << (BaliDocumentParser.T__66 - 43)) | (1 << (BaliDocumentParser.T__67 - 43)) | (1 << (BaliDocumentParser.T__68 - 43)) | (1 << (BaliDocumentParser.TAG - 43)) | (1 << (BaliDocumentParser.SYMBOL - 43)) | (1 << (BaliDocumentParser.FRACTION - 43)) | (1 << (BaliDocumentParser.CONSTANT - 43)))) !== 0) || ((((_la - 75)) & ~0x1f) == 0 && ((1 << (_la - 75)) & ((1 << (BaliDocumentParser.FLOAT - 75)) | (1 << (BaliDocumentParser.MOMENT - 75)) | (1 << (BaliDocumentParser.DURATION - 75)) | (1 << (BaliDocumentParser.RESOURCE - 75)) | (1 << (BaliDocumentParser.VERSION - 75)) | (1 << (BaliDocumentParser.BINARY - 75)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 75)) | (1 << (BaliDocumentParser.TEXT - 75)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliDocumentParser.T__42 - 43)) | (1 << (BaliDocumentParser.T__59 - 43)) | (1 << (BaliDocumentParser.T__60 - 43)) | (1 << (BaliDocumentParser.T__61 - 43)) | (1 << (BaliDocumentParser.T__62 - 43)) | (1 << (BaliDocumentParser.T__65 - 43)) | (1 << (BaliDocumentParser.T__66 - 43)) | (1 << (BaliDocumentParser.T__67 - 43)) | (1 << (BaliDocumentParser.T__68 - 43)) | (1 << (BaliDocumentParser.T__69 - 43)) | (1 << (BaliDocumentParser.TAG - 43)) | (1 << (BaliDocumentParser.SYMBOL - 43)) | (1 << (BaliDocumentParser.FRACTION - 43)))) !== 0) || ((((_la - 75)) & ~0x1f) == 0 && ((1 << (_la - 75)) & ((1 << (BaliDocumentParser.CONSTANT - 75)) | (1 << (BaliDocumentParser.FLOAT - 75)) | (1 << (BaliDocumentParser.MOMENT - 75)) | (1 << (BaliDocumentParser.DURATION - 75)) | (1 << (BaliDocumentParser.RESOURCE - 75)) | (1 << (BaliDocumentParser.VERSION - 75)) | (1 << (BaliDocumentParser.BINARY - 75)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 75)) | (1 << (BaliDocumentParser.TEXT - 75)))) !== 0)) {
                 this.state = 203;
                 this.association();
                 this.state = 204;
@@ -2198,7 +2202,7 @@ BaliDocumentParser.prototype.procedure = function() {
             this.state = 236;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7) | (1 << BaliDocumentParser.T__12) | (1 << BaliDocumentParser.T__14) | (1 << BaliDocumentParser.T__16) | (1 << BaliDocumentParser.T__18) | (1 << BaliDocumentParser.T__19) | (1 << BaliDocumentParser.T__20) | (1 << BaliDocumentParser.T__21) | (1 << BaliDocumentParser.T__23) | (1 << BaliDocumentParser.T__25) | (1 << BaliDocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliDocumentParser.T__32 - 33)) | (1 << (BaliDocumentParser.T__33 - 33)) | (1 << (BaliDocumentParser.T__35 - 33)) | (1 << (BaliDocumentParser.T__36 - 33)) | (1 << (BaliDocumentParser.T__37 - 33)) | (1 << (BaliDocumentParser.T__38 - 33)) | (1 << (BaliDocumentParser.T__42 - 33)) | (1 << (BaliDocumentParser.T__43 - 33)) | (1 << (BaliDocumentParser.T__44 - 33)) | (1 << (BaliDocumentParser.T__47 - 33)) | (1 << (BaliDocumentParser.T__53 - 33)) | (1 << (BaliDocumentParser.T__59 - 33)) | (1 << (BaliDocumentParser.T__60 - 33)) | (1 << (BaliDocumentParser.T__61 - 33)) | (1 << (BaliDocumentParser.T__62 - 33)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (BaliDocumentParser.T__65 - 66)) | (1 << (BaliDocumentParser.T__66 - 66)) | (1 << (BaliDocumentParser.T__67 - 66)) | (1 << (BaliDocumentParser.T__68 - 66)) | (1 << (BaliDocumentParser.TAG - 66)) | (1 << (BaliDocumentParser.SYMBOL - 66)) | (1 << (BaliDocumentParser.FRACTION - 66)) | (1 << (BaliDocumentParser.CONSTANT - 66)) | (1 << (BaliDocumentParser.FLOAT - 66)) | (1 << (BaliDocumentParser.MOMENT - 66)) | (1 << (BaliDocumentParser.DURATION - 66)) | (1 << (BaliDocumentParser.RESOURCE - 66)) | (1 << (BaliDocumentParser.VERSION - 66)) | (1 << (BaliDocumentParser.BINARY - 66)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 66)) | (1 << (BaliDocumentParser.TEXT - 66)) | (1 << (BaliDocumentParser.IDENTIFIER - 66)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7) | (1 << BaliDocumentParser.T__12) | (1 << BaliDocumentParser.T__14) | (1 << BaliDocumentParser.T__16) | (1 << BaliDocumentParser.T__18) | (1 << BaliDocumentParser.T__19) | (1 << BaliDocumentParser.T__20) | (1 << BaliDocumentParser.T__21) | (1 << BaliDocumentParser.T__23) | (1 << BaliDocumentParser.T__25) | (1 << BaliDocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliDocumentParser.T__32 - 33)) | (1 << (BaliDocumentParser.T__33 - 33)) | (1 << (BaliDocumentParser.T__35 - 33)) | (1 << (BaliDocumentParser.T__36 - 33)) | (1 << (BaliDocumentParser.T__37 - 33)) | (1 << (BaliDocumentParser.T__38 - 33)) | (1 << (BaliDocumentParser.T__42 - 33)) | (1 << (BaliDocumentParser.T__43 - 33)) | (1 << (BaliDocumentParser.T__44 - 33)) | (1 << (BaliDocumentParser.T__47 - 33)) | (1 << (BaliDocumentParser.T__53 - 33)) | (1 << (BaliDocumentParser.T__59 - 33)) | (1 << (BaliDocumentParser.T__60 - 33)) | (1 << (BaliDocumentParser.T__61 - 33)) | (1 << (BaliDocumentParser.T__62 - 33)))) !== 0) || ((((_la - 66)) & ~0x1f) == 0 && ((1 << (_la - 66)) & ((1 << (BaliDocumentParser.T__65 - 66)) | (1 << (BaliDocumentParser.T__66 - 66)) | (1 << (BaliDocumentParser.T__67 - 66)) | (1 << (BaliDocumentParser.T__68 - 66)) | (1 << (BaliDocumentParser.T__69 - 66)) | (1 << (BaliDocumentParser.TAG - 66)) | (1 << (BaliDocumentParser.SYMBOL - 66)) | (1 << (BaliDocumentParser.FRACTION - 66)) | (1 << (BaliDocumentParser.CONSTANT - 66)) | (1 << (BaliDocumentParser.FLOAT - 66)) | (1 << (BaliDocumentParser.MOMENT - 66)) | (1 << (BaliDocumentParser.DURATION - 66)) | (1 << (BaliDocumentParser.RESOURCE - 66)) | (1 << (BaliDocumentParser.VERSION - 66)) | (1 << (BaliDocumentParser.BINARY - 66)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 66)) | (1 << (BaliDocumentParser.TEXT - 66)) | (1 << (BaliDocumentParser.IDENTIFIER - 66)))) !== 0)) {
                 this.state = 231;
                 this.statement();
                 this.state = 232;
@@ -2449,6 +2453,7 @@ BaliDocumentParser.prototype.mainClause = function() {
         case BaliDocumentParser.T__66:
         case BaliDocumentParser.T__67:
         case BaliDocumentParser.T__68:
+        case BaliDocumentParser.T__69:
         case BaliDocumentParser.TAG:
         case BaliDocumentParser.SYMBOL:
         case BaliDocumentParser.FRACTION:
@@ -3541,7 +3546,7 @@ BaliDocumentParser.prototype.selectClause = function() {
             this.state = 345; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.CONSTANT - 71)) | (1 << (BaliDocumentParser.FLOAT - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)) | (1 << (BaliDocumentParser.T__69 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliDocumentParser.TAG - 72)) | (1 << (BaliDocumentParser.SYMBOL - 72)) | (1 << (BaliDocumentParser.FRACTION - 72)) | (1 << (BaliDocumentParser.CONSTANT - 72)) | (1 << (BaliDocumentParser.FLOAT - 72)) | (1 << (BaliDocumentParser.MOMENT - 72)) | (1 << (BaliDocumentParser.DURATION - 72)) | (1 << (BaliDocumentParser.RESOURCE - 72)) | (1 << (BaliDocumentParser.VERSION - 72)) | (1 << (BaliDocumentParser.BINARY - 72)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 72)) | (1 << (BaliDocumentParser.TEXT - 72)) | (1 << (BaliDocumentParser.IDENTIFIER - 72)))) !== 0));
         this.state = 349;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -3926,7 +3931,7 @@ BaliDocumentParser.prototype.returnClause = function() {
         this.state = 375;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.CONSTANT - 71)) | (1 << (BaliDocumentParser.FLOAT - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__62 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)) | (1 << (BaliDocumentParser.T__69 - 39)))) !== 0) || ((((_la - 72)) & ~0x1f) == 0 && ((1 << (_la - 72)) & ((1 << (BaliDocumentParser.TAG - 72)) | (1 << (BaliDocumentParser.SYMBOL - 72)) | (1 << (BaliDocumentParser.FRACTION - 72)) | (1 << (BaliDocumentParser.CONSTANT - 72)) | (1 << (BaliDocumentParser.FLOAT - 72)) | (1 << (BaliDocumentParser.MOMENT - 72)) | (1 << (BaliDocumentParser.DURATION - 72)) | (1 << (BaliDocumentParser.RESOURCE - 72)) | (1 << (BaliDocumentParser.VERSION - 72)) | (1 << (BaliDocumentParser.BINARY - 72)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 72)) | (1 << (BaliDocumentParser.TEXT - 72)) | (1 << (BaliDocumentParser.IDENTIFIER - 72)))) !== 0)) {
             this.state = 374;
             this.expression(0);
         }
@@ -6417,88 +6422,41 @@ function RealContext(parser, parent, invokingState) {
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
     this.ruleIndex = BaliDocumentParser.RULE_real;
+    this.sign = null; // Token
     return this;
 }
 
 RealContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 RealContext.prototype.constructor = RealContext;
 
-
- 
-RealContext.prototype.copyFrom = function(ctx) {
-    antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
-};
-
-
-function VariableRealContext(parser, ctx) {
-	RealContext.call(this, parser);
-    RealContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-VariableRealContext.prototype = Object.create(RealContext.prototype);
-VariableRealContext.prototype.constructor = VariableRealContext;
-
-BaliDocumentParser.VariableRealContext = VariableRealContext;
-
-VariableRealContext.prototype.FLOAT = function() {
-    return this.getToken(BaliDocumentParser.FLOAT, 0);
-};
-VariableRealContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
-        listener.enterVariableReal(this);
-	}
-};
-
-VariableRealContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
-        listener.exitVariableReal(this);
-	}
-};
-
-VariableRealContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitVariableReal(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function ConstantRealContext(parser, ctx) {
-	RealContext.call(this, parser);
-    this.sign = null; // Token;
-    RealContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-ConstantRealContext.prototype = Object.create(RealContext.prototype);
-ConstantRealContext.prototype.constructor = ConstantRealContext;
-
-BaliDocumentParser.ConstantRealContext = ConstantRealContext;
-
-ConstantRealContext.prototype.CONSTANT = function() {
+RealContext.prototype.CONSTANT = function() {
     return this.getToken(BaliDocumentParser.CONSTANT, 0);
 };
-ConstantRealContext.prototype.enterRule = function(listener) {
+
+RealContext.prototype.FLOAT = function() {
+    return this.getToken(BaliDocumentParser.FLOAT, 0);
+};
+
+RealContext.prototype.enterRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.enterConstantReal(this);
+        listener.enterReal(this);
 	}
 };
 
-ConstantRealContext.prototype.exitRule = function(listener) {
+RealContext.prototype.exitRule = function(listener) {
     if(listener instanceof BaliDocumentListener ) {
-        listener.exitConstantReal(this);
+        listener.exitReal(this);
 	}
 };
 
-ConstantRealContext.prototype.accept = function(visitor) {
+RealContext.prototype.accept = function(visitor) {
     if ( visitor instanceof BaliDocumentVisitor ) {
-        return visitor.visitConstantReal(this);
+        return visitor.visitReal(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
+
 
 
 
@@ -6513,26 +6471,32 @@ BaliDocumentParser.prototype.real = function() {
         this.state = 503;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
+        case BaliDocumentParser.T__67:
+            this.enterOuterAlt(localctx, 1);
+            this.state = 498;
+            this.match(BaliDocumentParser.T__67);
+            break;
         case BaliDocumentParser.T__42:
         case BaliDocumentParser.CONSTANT:
-            localctx = new ConstantRealContext(this, localctx);
-            this.enterOuterAlt(localctx, 1);
-            this.state = 499;
+        case BaliDocumentParser.FLOAT:
+            this.enterOuterAlt(localctx, 2);
+            this.state = 500;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             if(_la===BaliDocumentParser.T__42) {
-                this.state = 498;
+                this.state = 499;
                 localctx.sign = this.match(BaliDocumentParser.T__42);
             }
 
-            this.state = 501;
-            this.match(BaliDocumentParser.CONSTANT);
-            break;
-        case BaliDocumentParser.FLOAT:
-            localctx = new VariableRealContext(this, localctx);
-            this.enterOuterAlt(localctx, 2);
             this.state = 502;
-            this.match(BaliDocumentParser.FLOAT);
+            _la = this._input.LA(1);
+            if(!(_la===BaliDocumentParser.CONSTANT || _la===BaliDocumentParser.FLOAT)) {
+            this._errHandler.recoverInline(this);
+            }
+            else {
+            	this._errHandler.reportMatch(this);
+                this.consume();
+            }
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -6850,17 +6814,17 @@ BaliDocumentParser.prototype.template = function() {
         this.state = 513;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__67:
+        case BaliDocumentParser.T__68:
             localctx = new NoneTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 511;
-            this.match(BaliDocumentParser.T__67);
+            this.match(BaliDocumentParser.T__68);
             break;
-        case BaliDocumentParser.T__68:
+        case BaliDocumentParser.T__69:
             localctx = new AnyTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 512;
-            this.match(BaliDocumentParser.T__68);
+            this.match(BaliDocumentParser.T__69);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
