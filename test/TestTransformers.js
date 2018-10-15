@@ -14,13 +14,13 @@ var expect = require('chai').expect;
 var utilities = require('../src/utilities');
 
 describe('Bali Document Notation™', function() {
-    var DEBUG = true;  // change to true to check for ambiguities in the grammar
+    var DEBUG = true;
 
     describe('Test Parser and Formatter', function() {
 
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
-            console.error(file);
+            console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = utilities.parser.parseComponent(source, DEBUG);
@@ -39,7 +39,7 @@ describe('Bali Document Notation™', function() {
                 for (var i = 0; i < array.length; i++) {
                     var item = array[i];
                     var string = item.toString();
-                    var element = utilities.parser.parseElement(string, true);
+                    var element = utilities.parser.parseElement(string, DEBUG);
                     expect(element.equalTo(item)).to.equal(true);
                 }
             }
@@ -47,7 +47,7 @@ describe('Bali Document Notation™', function() {
 
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
-            console.error(file);
+            console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = utilities.parser.parseComponent(source, DEBUG);
@@ -66,7 +66,7 @@ describe('Bali Document Notation™', function() {
                 for (var i = 0; i < array.length; i++) {
                     var item = array[i];
                     var string = item.toString();
-                    var expression = utilities.parser.parseExpression(string, true);
+                    var expression = utilities.parser.parseExpression(string, DEBUG);
                     expect(expression.equalTo(item)).to.equal(true);
                 }
             }
@@ -74,7 +74,7 @@ describe('Bali Document Notation™', function() {
 
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
-            console.error(file);
+            console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = utilities.parser.parseComponent(source, DEBUG);
@@ -90,7 +90,7 @@ describe('Bali Document Notation™', function() {
 
         it('should parse and format the same components', function() {
             var file = 'test/source/components.bali';
-            console.error(file);
+            console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
             var tree = utilities.parser.parseComponent(source, DEBUG);

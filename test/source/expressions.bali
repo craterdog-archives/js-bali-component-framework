@@ -8,6 +8,8 @@
         x
         foo
         item5
+        index
+        example
         verylongvariablename
     ]
     $functions: [

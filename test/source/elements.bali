@@ -76,18 +76,16 @@
         -5
         infinity
         e
-        -e
         pi
-        -pi
         phi
-        -phi
         -0.5
         -3.14159265
         1.234E-56
         42i
-        -pi i
-        -i
-        (-1, -phi i)
+        e i
+        pi i
+        phi i
+        (-1, phi i)
         (1.2 e^~pi i)
     ]
     $percents: [

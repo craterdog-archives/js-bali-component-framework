@@ -40,7 +40,6 @@ describe('Bali Primitive Types™', function() {
 
     describe('Test complex methods', function() {
 
-/*
         it('should generate method results that match the expected values', function() {
             var tests = testValues.length;
             for (var i = 0; i < tests; i++) {
@@ -57,7 +56,6 @@ describe('Bali Primitive Types™', function() {
                 expect(complex.toPolar()).to.equal(polarValues[i]);
             }
         });
-*/
     });
 
 });
@@ -71,8 +69,8 @@ var testValues = [
     new Complex('5'),
     new Complex('1'),
     new Complex('-1'),
-    new Complex('i'),
-    new Complex('-i'),
+    new Complex('1i'),
+    new Complex('-1i'),
     new Complex('(1.23E-56, -7.8E90i)'),
     new Complex('(5 e^~3.141592653589793i)')
 ];
@@ -183,8 +181,8 @@ var stringValues = [
     '5',
     '1',
     '-1',
-    'i',
-    '-i',
+    '1i',
+    '-1i',
     '(1.23E-56, -7.8E90i)',
     '(5 e^~pi i)'
 ];
@@ -197,8 +195,8 @@ var rectangularValues = [
     '5',
     '1',
     '-1',
-    'i',
-    '-i',
+    '1i',
+    '-1i',
     '(1.23E-56, -7.8E90i)',
     '-5'
 ];

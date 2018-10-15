@@ -28,9 +28,9 @@
         checkout $document from <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
         save document to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         commit document to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
-        checkout documents[i] from <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
-        save documents[i] to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
-        commit documents[i] to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        checkout documents[index] from <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
+        save documents[index] to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        commit documents[index] to <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         discard <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
     $publishEvent: {publish event}

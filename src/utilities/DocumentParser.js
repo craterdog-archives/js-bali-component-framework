@@ -655,22 +655,9 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 };
 
 
-// imaginary: (real | sign='-')? 'i'
+// imaginary: IMAGINARY
 ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    var string = '';
-    var real = ctx.real();
-    var sign = ctx.sign;
-    if (real) {
-        real.accept(this);
-        string += this.result;
-        if (real.CONSTANT()) {
-            string += ' ';
-        }
-    } else if (sign) {
-        string += '-';
-    }
-    string += 'i';
-    this.result = string;
+    this.result = ctx.getText();
 };
 
 
@@ -980,19 +967,9 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// real: '0' | CONSTANT | sign='-'? constant=('e' | 'pi' | 'phi')
+// real: '0' | REAL
 ParsingVisitor.prototype.visitReal = function(ctx) {
-    var string = '';
-    if (ctx.sign) {
-        string += '-';
-    }
-    if (ctx.FLOAT()) {
-        string += ctx.FLOAT().getText();
-    } else if (ctx.CONSTANT()) {
-        string += ctx.CONSTANT().getText();
-    } else {
-        string += '0';
-    }
+    var string = ctx.getText();
     this.result = string;
 };
 
@@ -1253,13 +1230,33 @@ BaliErrorStrategy.prototype.reportError = function(recognizer, e) {
 
 
 BaliErrorStrategy.prototype.recover = function(recognizer, e) {
-    var context = recognizer._ctx;
-    while (context !== null) {
-        context.exception = e;
-        context = context.parentCtx;
+    var token = e.offendingToken ? this.getTokenErrorDisplay(e.offendingToken) : '';
+	var lineNumber = token ? e.offendingToken.line : recognizer._tokenStartLine;
+	var columnNumber = token ? e.offendingToken.column : recognizer._tokenStartColumn;
+    var input = token ? e.offendingToken.getInputStream() : recognizer._input;
+    var lines = input.toString().split('\n');
+    var message = token ? e.message : 'LEXER: An unexpected character was encountered: "' + lines[lineNumber - 1][columnNumber] + '"';
+    if (!message) message = 'PARSER: An invalid token was encountered: ' + token;
+
+    // log the error message
+    console.log(message.slice(0, 160));
+
+    // log the lines before and after the invalid line and highlight the invalid token
+    if (lineNumber > 1) console.log(lines[lineNumber - 2]);
+    console.log(lines[lineNumber - 1]);
+    var line = '';
+    for (var i = 0; i < columnNumber; i++) {
+        line += ' ';
     }
-    var token = this.getTokenErrorDisplay(e.offendingToken);
-    var error = new Error('PARSER: An invalid token was encountered: ' + token);
+    var start = token ? e.offendingToken.start : columnNumber;
+    var stop = token ? e.offendingToken.stop : columnNumber;
+    while (start++ <= stop) {
+        line += '^';
+    }
+    console.log(line);
+    if (lineNumber < lines.length) console.log(lines[lineNumber]);
+
+    var error = new Error(message);
     throw error;
 };
 

@@ -64,25 +64,25 @@ function Complex(value, parameters) {
             break;
         case 'RealNumberContext':
             real = tree.real();
-            this.real = realToNumber(real);
+            this.real = nodeToNumber(real);
             this.imaginary = 0;
             break;
         case 'ImaginaryNumberContext':
             imaginary = tree.imaginary();
             this.real = 0;
-            this.imaginary = imaginaryToNumber(imaginary);
+            this.imaginary = nodeToNumber(imaginary);
             break;
         case 'ComplexNumberContext':
             real = tree.real();
             imaginary = tree.imaginary();
             var delimiter = tree.del.text;
             if (delimiter === ',') {
-                this.real = realToNumber(real);
-                this.imaginary = imaginaryToNumber(imaginary);
+                this.real = nodeToNumber(real);
+                this.imaginary = nodeToNumber(imaginary);
             } else {
                 this.format = 'polar';
-                this.magnitude = realToNumber(real);
-                this.angle = new Angle(imaginaryToNumber(imaginary));
+                this.magnitude = nodeToNumber(real);
+                this.angle = new Angle(nodeToNumber(imaginary));
                 this.normalize();
             }
             break;
@@ -286,22 +286,13 @@ function lockOnPole(number) {
 function imaginaryToSource(imaginary) {
     var source = Element.realToSource(imaginary);
     switch (source) {
-        case '-1':
-            source = '-i';
+        case 'undefined':
+        case 'infinity':
             break;
-        case '1':
-            source = 'i';
-            break;
-        case '-e':
         case 'e':
-        case '-pi':
         case 'pi':
-        case '-phi':
         case 'phi':
             source += ' i';
-            break;
-        case 'infinity':
-        case 'undefined':
             break;
         default:
             source += 'i';
@@ -314,43 +305,19 @@ function imaginaryToSource(imaginary) {
 // Javascript numbers.
 
 
-function realToNumber(realNode) {
-    var jsNumber;
-    if (realNode.CONSTANT()) {
-        var constant = realNode.CONSTANT().getText();
-        switch (constant) {
-            case 'e':
-                jsNumber = 2.718281828459045;
-                break;
-            case 'pi':
-                jsNumber = 3.141592653589793;
-                break;
-            case 'phi':
-                jsNumber = 1.618033988749895;
-                break;
-        }
-    } else if (realNode.FLOAT()) {
-        var string = realNode.FLOAT().getText();
-        jsNumber = Number(string);
+function nodeToNumber(realNode) {
+    var number;
+    var string = realNode.getText();
+    if (string.startsWith('e')) {
+        number = 2.718281828459045;
+    } else if (string.startsWith('pi')) {
+        number = 3.141592653589793;
+    } else if (string.startsWith('phi')) {
+        number = 1.618033988749895;
+    } else if (string.endsWith('i')) {
+        number = Number(string.slice(0, -1));  // strip off tailing 'i' (the space doesn't matter)
     } else {
-        jsNumber = 0;
+        number = Number(string);
     }
-    if (realNode.sign) {
-        jsNumber = -jsNumber;
-    }
-    return jsNumber;
+    return number;
 }
-
-
-function imaginaryToNumber(imaginaryNode) {
-    var real = imaginaryNode.real();
-    var sign = imaginaryNode.sign;
-    var jsNumber = 1;
-    if (real) {
-        jsNumber = realToNumber(real);
-    } else if (sign) {
-        jsNumber = -jsNumber;
-    }
-    return jsNumber;
-}
-

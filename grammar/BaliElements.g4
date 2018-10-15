@@ -25,7 +25,7 @@ binary: BINARY;
 
 duration: DURATION;
 
-imaginary: (real | sign='-')? 'i';
+imaginary: IMAGINARY;
 
 moment: MOMENT;
 
@@ -45,7 +45,7 @@ probability:
     'true'    #trueProbability
 ;
 
-real: '0' | FLOAT | sign='-'? CONSTANT;
+real: '0' | REAL;
 
 reference: RESOURCE;
 

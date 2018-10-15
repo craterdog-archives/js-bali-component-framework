@@ -17,9 +17,12 @@ SYMBOL: '$' IDENTIFIER;
 
 FRACTION: '.' ('0'..'9')* '1'..'9';
 
-CONSTANT: 'e' | 'pi' | 'phi';
-
+fragment
 FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' INTEGER)?;
+
+IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
+
+REAL: FLOAT | 'e' | 'pi' | 'phi';
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
