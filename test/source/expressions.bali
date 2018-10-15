@@ -1,103 +1,105 @@
 [
-    $result: [
-        $element: {
-            $expression := [1, 2, 3][2]
-            $expression := [1, 2, 3].reverse()
-            $expression := products[$yoyo, "Duncan"].calculateUPC()
-            $expression := products.sort()
-        }
-        $function: {
-            $expression := random(count)[1]
-            $expression := random($count: 16).sort(increasing)
-            $expression := random(16).sort(numeric, increasing)
-            $expression := random(16).sort()[-x]
-        }
-        $grouping: {
-            $expression := ([1, 2] + [2, 3])[1]
-            $expression := ([1, 2] + [2, 3]).reverse()
-            $expression := ([1, 2] + [2, 3]).reverse(foo, bar)[2]
-        }
+    $components: [
+        3E23("m/s")
+        pi($units: "radians")
+        [1, 2, 3]($type: $Stack($Number))
     ]
-    $dereference: {$expression := @result}
-    $factorial: {
-        $expression := dereference!
-    }
-    $exponential: {
-        $expression := percent ^ power
-    }
-    $inversion: [
-        $negative: {
-            $expression := -exponential
-            $expression := --pi
-        }
-        $inverse: {
-            $expression := /exponential
-        }
-        $conjugate: {
-            $expression := *exponential
-        }
+    $variables: [
+        x
+        foo
+        item5
+        verylongvariablename
     ]
-    $geometric: [
-        $product: {
-            $expression := -inversion * scaler
-        }
-        $quotient: {
-            $expression := inversion / dividend
-        }
-        $remainder: {
-            $expression := inversion // dividend
-        }
+    $functions: [
+        random(count)
+        random(count)[1]
+        random($count: 16)
+        random($count: 16).sort(increasing)
+        random(16).sort()[-x]
     ]
-    $arithmetic: [
-        $sum: {
-            $expression := geometric + addend
-        }
-        $difference: {
-            $expression := geometric - subtractend
-        }
+    $groupings: [
+        (x + y) * z
+        ((x + y) * z) - (a or (b and c))
+        ([1, 2] + [2, 3])[1]
+        ([1, 2] + [2, 3]).reverse()
+        ([1, 2] + [2, 3]).reverse(foo, bar)[index]
     ]
-    $magnitude: {
-        $expression := |arithmetic|
-    }
-    $comparison: [
-        $less: {
-            $expression := magnitude < scaler
-        }
-        $equal: {
-            $expression := magnitude = scaler
-        }
-        $greater: {
-            $expression := magnitude > scaler
-        }
-        $is: {
-            $expression := magnitude is value
-        }
-        $matches: {
-            $expression := magnitude matches pattern
-        }
+    $dereferences: [
+        @result
+        @foo.bar()
+        @(foo[x])
     ]
-    $complement: {
-        $expression := not comparison
-    }
-    $logical: [
-        $and: {
-            $expression := complement and [1, 2, 3]
-        }
-        $sans: {
-            $expression := complement sans [
-                $a: "a"
-                $b: "b"
-                $c: "c"
-            ]
-        }
-        $or: {
-            $expression := complement or value
-        }
-        $xor: {
-            $expression := complement xor value
-        }
+    $messages: [
+        foo.bar()
+        foo.bar(baz)
+        foo.bar(5).random()
+        foo.bar()[-index]
+        [1, 2, 3].reverse()
+        products[$yoyo, "Duncan"].calculateUPC()
     ]
-    $default: {
-        $expression := logical ? default
-    }
+    $indices: [
+        values[$symbol]
+        array[-1]
+        [1, 2, 3][2]
+        [[$a, $b], 2, 3][1, 2]
+    ]
+    $factorials: [
+        5!
+        big!
+        foo()!
+        base[index]!
+        [1, 2, 3].reverse()!
+    ]
+    $exponentials: [
+        2 ^ 8
+        e ^ power
+        x ^ y
+        random() ^ exponent
+        base ^ power(x)
+    ]
+    $inversions: [
+        -x
+        --pi
+        /exponential
+        *flip
+        / *(3, 4i)
+    ]
+    $geometrics: [
+        -x * scaler
+        6 / dividend
+        -7 // modulo
+    ]
+    $arithmetics: [
+        7 + 2
+        5 + addend
+        z - subtractend
+    ]
+    $magnitudes: [
+        |-3|
+        |-y|
+        |foo()|
+        |foo.bar(8)|
+    ]
+    $comparisons: [
+        scaler < 8
+        x = y
+        big > 2
+        value is [$foo]
+        component matches any
+    ]
+    $complements: [
+        not true
+        not c
+        not list.isEmpty()
+    ]
+    $logicals: [
+        set and [1, 2, 3]
+        set sans [$a, $b, $c]
+        a or foo.bar()
+        ["one", "two"] xor ["one"]
+    ]
+    $defaults: [
+        optional ? true
+        optional ? default
+    ]
 ]

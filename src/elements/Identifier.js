@@ -56,6 +56,6 @@ Identifier.prototype.accept = function(visitor) {
             visitor.visitVariable(this);
             break;
         default:
-            throw new Error('SYNTAX: An invalid identifier node type was found: ' + types.NODE_TYPES[this.type]);
+            throw new Error('SYNTAX: An invalid identifier node type was found: ' + types.typeName(type));
     }
 };

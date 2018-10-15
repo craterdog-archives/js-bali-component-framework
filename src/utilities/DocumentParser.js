@@ -911,7 +911,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
             }
             break;
         default:
-            throw new Error('PARSER: The collection type for the parameters is invalid: ' + types.NODE_TYPES[type]);
+            throw new Error('PARSER: The collection type for the parameters is invalid: ' + types.typeName(type));
     }
     this.result = parameters;
 };
@@ -1258,7 +1258,7 @@ BaliErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    var error = new Error('PARSER: Invalid input was detected, aborted parsing the input.');
+    var error = new Error('PARSER: Invalid input was detected, aborted parsing the input: ' + e);
     throw error;
 };
 

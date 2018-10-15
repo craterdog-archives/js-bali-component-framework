@@ -71,4 +71,35 @@
             }
         }
     ]
+    $binaries: [
+        ''($base: 2)
+        '
+            001011011001110101000001010011111011110100110111000111100000
+            00000100011001001101
+        '($base: 16)
+        '
+            C3393B1543ACD32429A15D22A557C42DDD227DDDDA69D9CD55A7923D214A
+            49D8A9C1AAC975C02B58
+        '($base: 32)
+        '
+            51540EF86BC3660D4F4F95D3EF1E57E5A79396A2C6D4590A50202A849881
+            45ADAEB3DC84737D6021CC0DB3E13EFDC90DBF4917172BA27E426FA6398A
+            790CE723DB70712361EDDF7DAEE5EDB706CA1A631DBCD80988E98171E166
+            C8BF8D3BE0E97F6E655105E74D96F9F86026504B752854B9316D0AB8263A
+        '($base: 16)
+        '
+            234VDR3AFBR3N596XPHCZL7HNL2NX9FTV858QH33QQR62GP176PW7DAKCB1H
+            DW411WRC0YS71NWKA93S
+        '(64)
+    ]
+    $moments: [
+        <-10000-01-01T00:00:00>("Atlantis")
+        <1962-04-01>("New York City")
+        <1962-04-01T06:31>("San Francisco")
+        <1962-04-01T06:31:60.726>(
+            $city: "Denver"
+            $region: "Colorado"
+            $country: "USA"
+        )
+    ]
 ]
