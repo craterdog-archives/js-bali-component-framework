@@ -342,8 +342,14 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     this.source += tree.operator;
     var operand = tree.children[0];
-    if (operand.type === types.INVERSION_EXPRESSION) {
-        this.source += ' ';  // should insert a space before another inversion
+    // should insert a space before a negative number or another inversion
+    var left = operand;
+    while (true) {
+        if (left.type === types.INVERSION_EXPRESSION || left.type === types.NUMBER && left.source.startsWith('-')) {
+            this.source += ' ';
+        }
+        if (!left.children) break;
+        left = left.children[0];
     }
     operand.accept(this);
 };

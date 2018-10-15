@@ -7,7 +7,7 @@ var BaliDocumentVisitor = require('./BaliDocumentVisitor').BaliDocumentVisitor;
 var grammarFileName = "BaliDocument.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
-    "\u0003X\u020c\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003X\u020d\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
     "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
@@ -74,13 +74,13 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     ",\u0003,\u0003-\u0003-\u0003.\u0003.\u0003/\u0003/\u0005/\u01db\n/\u0003",
     "/\u0003/\u00030\u00030\u00031\u00031\u00031\u00031\u00031\u00031\u0003",
     "1\u00031\u00031\u00031\u00051\u01eb\n1\u00032\u00032\u00032\u00033\u0003",
-    "3\u00033\u00053\u01f3\n3\u00034\u00034\u00054\u01f7\n4\u00034\u0005",
-    "4\u01fa\n4\u00035\u00035\u00036\u00036\u00037\u00037\u00038\u00038\u0005",
-    "8\u0204\n8\u00039\u00039\u00059\u0208\n9\u0003:\u0003:\u0003:\u0002",
-    "\u0003J;\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018",
-    "\u001a\u001c\u001e \"$&(*,.02468:<>@BDFHJLNPRTVXZ\\^`bdfhjlnpr\u0002",
-    "\b\u0003\u0002-/\u0003\u0002-1\u0003\u000237\u0003\u00029<\u0004\u0002",
-    "\b\bBB\u0003\u0002MN\u0002\u0227\u0002w\u0003\u0002\u0002\u0002\u0004",
+    "3\u00033\u00053\u01f3\n3\u00034\u00034\u00034\u00054\u01f8\n4\u0003",
+    "4\u00054\u01fb\n4\u00035\u00035\u00036\u00036\u00037\u00037\u00038\u0003",
+    "8\u00058\u0205\n8\u00039\u00039\u00059\u0209\n9\u0003:\u0003:\u0003",
+    ":\u0002\u0003J;\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016",
+    "\u0018\u001a\u001c\u001e \"$&(*,.02468:<>@BDFHJLNPRTVXZ\\^`bdfhjlnp",
+    "r\u0002\u0007\u0003\u0002-/\u0003\u0002-1\u0003\u000237\u0003\u0002",
+    "9<\u0004\u0002\b\bBB\u0002\u0229\u0002w\u0003\u0002\u0002\u0002\u0004",
     "\u0091\u0003\u0002\u0002\u0002\u0006\u0093\u0003\u0002\u0002\u0002\b",
     "\u0096\u0003\u0002\u0002\u0002\n\u009d\u0003\u0002\u0002\u0002\f\u009f",
     "\u0003\u0002\u0002\u0002\u000e\u00a3\u0003\u0002\u0002\u0002\u0010\u00aa",
@@ -103,10 +103,10 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002V\u01d1\u0003\u0002\u0002\u0002X\u01d4\u0003\u0002\u0002",
     "\u0002Z\u01d6\u0003\u0002\u0002\u0002\\\u01da\u0003\u0002\u0002\u0002",
     "^\u01de\u0003\u0002\u0002\u0002`\u01ea\u0003\u0002\u0002\u0002b\u01ec",
-    "\u0003\u0002\u0002\u0002d\u01f2\u0003\u0002\u0002\u0002f\u01f9\u0003",
-    "\u0002\u0002\u0002h\u01fb\u0003\u0002\u0002\u0002j\u01fd\u0003\u0002",
-    "\u0002\u0002l\u01ff\u0003\u0002\u0002\u0002n\u0203\u0003\u0002\u0002",
-    "\u0002p\u0207\u0003\u0002\u0002\u0002r\u0209\u0003\u0002\u0002\u0002",
+    "\u0003\u0002\u0002\u0002d\u01f2\u0003\u0002\u0002\u0002f\u01fa\u0003",
+    "\u0002\u0002\u0002h\u01fc\u0003\u0002\u0002\u0002j\u01fe\u0003\u0002",
+    "\u0002\u0002l\u0200\u0003\u0002\u0002\u0002n\u0204\u0003\u0002\u0002",
+    "\u0002p\u0208\u0003\u0002\u0002\u0002r\u020a\u0003\u0002\u0002\u0002",
     "tv\u0007W\u0002\u0002ut\u0003\u0002\u0002\u0002vy\u0003\u0002\u0002",
     "\u0002wu\u0003\u0002\u0002\u0002wx\u0003\u0002\u0002\u0002x}\u0003\u0002",
     "\u0002\u0002yw\u0003\u0002\u0002\u0002z{\u0005h5\u0002{|\u0007W\u0002",
@@ -323,23 +323,24 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01eec\u0003\u0002\u0002\u0002\u01ef\u01f3\u0007D\u0002\u0002\u01f0",
     "\u01f3\u0007L\u0002\u0002\u01f1\u01f3\u0007E\u0002\u0002\u01f2\u01ef",
     "\u0003\u0002\u0002\u0002\u01f2\u01f0\u0003\u0002\u0002\u0002\u01f2\u01f1",
-    "\u0003\u0002\u0002\u0002\u01f3e\u0003\u0002\u0002\u0002\u01f4\u01fa",
-    "\u0007F\u0002\u0002\u01f5\u01f7\u0007-\u0002\u0002\u01f6\u01f5\u0003",
-    "\u0002\u0002\u0002\u01f6\u01f7\u0003\u0002\u0002\u0002\u01f7\u01f8\u0003",
-    "\u0002\u0002\u0002\u01f8\u01fa\t\u0007\u0002\u0002\u01f9\u01f4\u0003",
-    "\u0002\u0002\u0002\u01f9\u01f6\u0003\u0002\u0002\u0002\u01fag\u0003",
-    "\u0002\u0002\u0002\u01fb\u01fc\u0007Q\u0002\u0002\u01fci\u0003\u0002",
-    "\u0002\u0002\u01fd\u01fe\u0007K\u0002\u0002\u01fek\u0003\u0002\u0002",
-    "\u0002\u01ff\u0200\u0007J\u0002\u0002\u0200m\u0003\u0002\u0002\u0002",
-    "\u0201\u0204\u0007G\u0002\u0002\u0202\u0204\u0007H\u0002\u0002\u0203",
-    "\u0201\u0003\u0002\u0002\u0002\u0203\u0202\u0003\u0002\u0002\u0002\u0204",
-    "o\u0003\u0002\u0002\u0002\u0205\u0208\u0007U\u0002\u0002\u0206\u0208",
-    "\u0007T\u0002\u0002\u0207\u0205\u0003\u0002\u0002\u0002\u0207\u0206",
-    "\u0003\u0002\u0002\u0002\u0208q\u0003\u0002\u0002\u0002\u0209\u020a",
-    "\u0007R\u0002\u0002\u020as\u0003\u0002\u0002\u0002(w}\u0084\u008a\u0091",
+    "\u0003\u0002\u0002\u0002\u01f3e\u0003\u0002\u0002\u0002\u01f4\u01fb",
+    "\u0007F\u0002\u0002\u01f5\u01fb\u0007N\u0002\u0002\u01f6\u01f8\u0007",
+    "-\u0002\u0002\u01f7\u01f6\u0003\u0002\u0002\u0002\u01f7\u01f8\u0003",
+    "\u0002\u0002\u0002\u01f8\u01f9\u0003\u0002\u0002\u0002\u01f9\u01fb\u0007",
+    "M\u0002\u0002\u01fa\u01f4\u0003\u0002\u0002\u0002\u01fa\u01f5\u0003",
+    "\u0002\u0002\u0002\u01fa\u01f7\u0003\u0002\u0002\u0002\u01fbg\u0003",
+    "\u0002\u0002\u0002\u01fc\u01fd\u0007Q\u0002\u0002\u01fdi\u0003\u0002",
+    "\u0002\u0002\u01fe\u01ff\u0007K\u0002\u0002\u01ffk\u0003\u0002\u0002",
+    "\u0002\u0200\u0201\u0007J\u0002\u0002\u0201m\u0003\u0002\u0002\u0002",
+    "\u0202\u0205\u0007G\u0002\u0002\u0203\u0205\u0007H\u0002\u0002\u0204",
+    "\u0202\u0003\u0002\u0002\u0002\u0204\u0203\u0003\u0002\u0002\u0002\u0205",
+    "o\u0003\u0002\u0002\u0002\u0206\u0209\u0007U\u0002\u0002\u0207\u0209",
+    "\u0007T\u0002\u0002\u0208\u0206\u0003\u0002\u0002\u0002\u0208\u0207",
+    "\u0003\u0002\u0002\u0002\u0209q\u0003\u0002\u0002\u0002\u020a\u020b",
+    "\u0007R\u0002\u0002\u020bs\u0003\u0002\u0002\u0002(w}\u0084\u008a\u0091",
     "\u0098\u009d\u00aa\u00b5\u00be\u00c2\u00c9\u00d2\u00d6\u00e5\u00ee\u00f2",
     "\u00f8\u010b\u011b\u014b\u0150\u015b\u015f\u0166\u0179\u0180\u0199\u01b3",
-    "\u01b5\u01cf\u01da\u01ea\u01f2\u01f6\u01f9\u0203\u0207"].join("");
+    "\u01b5\u01cf\u01da\u01ea\u01f2\u01f7\u01fa\u0204\u0208"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -6429,12 +6430,12 @@ function RealContext(parser, parent, invokingState) {
 RealContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 RealContext.prototype.constructor = RealContext;
 
-RealContext.prototype.CONSTANT = function() {
-    return this.getToken(BaliDocumentParser.CONSTANT, 0);
-};
-
 RealContext.prototype.FLOAT = function() {
     return this.getToken(BaliDocumentParser.FLOAT, 0);
+};
+
+RealContext.prototype.CONSTANT = function() {
+    return this.getToken(BaliDocumentParser.CONSTANT, 0);
 };
 
 RealContext.prototype.enterRule = function(listener) {
@@ -6468,7 +6469,7 @@ BaliDocumentParser.prototype.real = function() {
     this.enterRule(localctx, 100, BaliDocumentParser.RULE_real);
     var _la = 0; // Token type
     try {
-        this.state = 503;
+        this.state = 504;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case BaliDocumentParser.T__67:
@@ -6476,27 +6477,24 @@ BaliDocumentParser.prototype.real = function() {
             this.state = 498;
             this.match(BaliDocumentParser.T__67);
             break;
-        case BaliDocumentParser.T__42:
-        case BaliDocumentParser.CONSTANT:
         case BaliDocumentParser.FLOAT:
             this.enterOuterAlt(localctx, 2);
-            this.state = 500;
+            this.state = 499;
+            this.match(BaliDocumentParser.FLOAT);
+            break;
+        case BaliDocumentParser.T__42:
+        case BaliDocumentParser.CONSTANT:
+            this.enterOuterAlt(localctx, 3);
+            this.state = 501;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             if(_la===BaliDocumentParser.T__42) {
-                this.state = 499;
+                this.state = 500;
                 localctx.sign = this.match(BaliDocumentParser.T__42);
             }
 
-            this.state = 502;
-            _la = this._input.LA(1);
-            if(!(_la===BaliDocumentParser.CONSTANT || _la===BaliDocumentParser.FLOAT)) {
-            this._errHandler.recoverInline(this);
-            }
-            else {
-            	this._errHandler.reportMatch(this);
-                this.consume();
-            }
+            this.state = 503;
+            this.match(BaliDocumentParser.CONSTANT);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -6566,7 +6564,7 @@ BaliDocumentParser.prototype.reference = function() {
     this.enterRule(localctx, 102, BaliDocumentParser.RULE_reference);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 505;
+        this.state = 506;
         this.match(BaliDocumentParser.RESOURCE);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -6633,7 +6631,7 @@ BaliDocumentParser.prototype.symbol = function() {
     this.enterRule(localctx, 104, BaliDocumentParser.RULE_symbol);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 507;
+        this.state = 508;
         this.match(BaliDocumentParser.SYMBOL);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -6700,7 +6698,7 @@ BaliDocumentParser.prototype.tag = function() {
     this.enterRule(localctx, 106, BaliDocumentParser.RULE_tag);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 509;
+        this.state = 510;
         this.match(BaliDocumentParser.TAG);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -6811,19 +6809,19 @@ BaliDocumentParser.prototype.template = function() {
     var localctx = new TemplateContext(this, this._ctx, this.state);
     this.enterRule(localctx, 108, BaliDocumentParser.RULE_template);
     try {
-        this.state = 513;
+        this.state = 514;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case BaliDocumentParser.T__68:
             localctx = new NoneTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
-            this.state = 511;
+            this.state = 512;
             this.match(BaliDocumentParser.T__68);
             break;
         case BaliDocumentParser.T__69:
             localctx = new AnyTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
-            this.state = 512;
+            this.state = 513;
             this.match(BaliDocumentParser.T__69);
             break;
         default:
@@ -6944,19 +6942,19 @@ BaliDocumentParser.prototype.text = function() {
     var localctx = new TextContext(this, this._ctx, this.state);
     this.enterRule(localctx, 110, BaliDocumentParser.RULE_text);
     try {
-        this.state = 517;
+        this.state = 518;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case BaliDocumentParser.TEXT:
             localctx = new InlineTextContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
-            this.state = 515;
+            this.state = 516;
             this.match(BaliDocumentParser.TEXT);
             break;
         case BaliDocumentParser.TEXT_BLOCK:
             localctx = new NewlineTextContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
-            this.state = 516;
+            this.state = 517;
             this.match(BaliDocumentParser.TEXT_BLOCK);
             break;
         default:
@@ -7027,7 +7025,7 @@ BaliDocumentParser.prototype.version = function() {
     this.enterRule(localctx, 112, BaliDocumentParser.RULE_version);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 519;
+        this.state = 520;
         this.match(BaliDocumentParser.VERSION);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {

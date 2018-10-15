@@ -59,7 +59,7 @@
     ]
     $inversions: [
         -x
-        --pi
+        - -pi
         /exponential
         *flip
         / *(3, 4i)

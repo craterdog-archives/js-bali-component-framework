@@ -980,7 +980,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// real: '0' | (sign='-'? (FLOAT | CONSTANT))
+// real: '0' | CONSTANT | sign='-'? constant=('e' | 'pi' | 'phi')
 ParsingVisitor.prototype.visitReal = function(ctx) {
     var string = '';
     if (ctx.sign) {

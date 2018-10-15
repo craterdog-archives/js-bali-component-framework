@@ -30,10 +30,10 @@ imaginary: (real | sign='-')? 'i';
 moment: MOMENT;
 
 number:
-    'undefined'                              #undefinedNumber |
-    'infinity'                               #infiniteNumber  |
-    real                                     #realNumber      |
-    imaginary                                #imaginaryNumber |
+    'undefined'                               #undefinedNumber |
+    'infinity'                                #infiniteNumber  |
+    real                                      #realNumber      |
+    imaginary                                 #imaginaryNumber |
     '(' real del=(',' | 'e^~') imaginary ')'  #complexNumber
 ;
 
@@ -45,7 +45,7 @@ probability:
     'true'    #trueProbability
 ;
 
-real: '0' | (sign='-'? (CONSTANT | FLOAT));
+real: '0' | FLOAT | sign='-'? CONSTANT;
 
 reference: RESOURCE;
 
