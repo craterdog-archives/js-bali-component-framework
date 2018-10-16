@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Percent = require('../src/elements/Percent').Percent;
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test percent constructors', function() {
 

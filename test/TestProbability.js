@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Probability = require('../src/elements/Probability').Probability;
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test probability constructors', function() {
 

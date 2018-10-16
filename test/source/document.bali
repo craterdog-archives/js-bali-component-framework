@@ -1,12 +1,7 @@
 <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v2.3,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
 [
-    $element: $foo
-    $catalog: [
-        $list: [
-            [$foo: $bar]
-            [$bar: $baz]
-        ]
-    ]
+    $foo: $bar
+    $bar: $baz
 ]
 <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v2.3,$digest:none]> '
     620RH0K2043KKLQW3548RXFX9AC37CWHTGMDR1XZYYG5LLJMQ4ANA4XKR9L3

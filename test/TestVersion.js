@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Version = require('../src/elements/Version').Version;
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test version constructors', function() {
 

@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Text = require('../src/elements/Text').Text;
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test text constructors', function() {
 

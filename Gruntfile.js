@@ -65,6 +65,7 @@ module.exports = function(grunt) {
           'test/TestBinary.js',
           'test/TestCatalog.js',
           'test/TestComplex.js',
+          'test/TestDocument.js',
           'test/TestDuration.js',
           'test/TestEncodingUtilities.js',
           'test/TestList.js',

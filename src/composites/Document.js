@@ -14,7 +14,6 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Binary = require('../elements/Binary').Binary;
 var Reference = require('../elements/Reference').Reference;
 var parser = require('../utilities/DocumentParser');
 
@@ -151,19 +150,9 @@ Document.prototype.getLastSeal = function() {
 /**
  * This method appends a notary seal to the end of the document.
  * 
- * @param {String|Terminal} certificateCitation A citation to the certificate that can be used
- * to validate the digital signature.
- * @param {String|Terminal} digitalSignature The Base 32 encoded binary data for the digital
- * signature of the notary seal.
+ * @param {Terminal} seal The new notary seal to be appended to the document.
  */
-Document.prototype.addNotarySeal = function(certificateCitation, digitalSignature) {
-    if (certificateCitation.constructor.name === 'String') {
-        certificateCitation = new Reference(certificateCitation);
-    }
-    if (digitalSignature.constructor.name === 'String') {
-        digitalSignature = new Binary(digitalSignature);
-    }
-    var seal = new NotarySeal(certificateCitation, digitalSignature);
+Document.prototype.addNotarySeal = function(seal) {
     this.notarySeals.push(seal);
 };
 

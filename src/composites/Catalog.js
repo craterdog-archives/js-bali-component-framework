@@ -15,6 +15,7 @@
  * number of associations changes over time.
  */
 var types = require('../abstractions/Types');
+var Composite = require('../abstractions/Composite').Composite;
 var SortableCollection = require('../abstractions/SortableCollection').SortableCollection;
 var Association = require('./Association').Association;
 var List = require('./List').List;
@@ -37,6 +38,15 @@ Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 
 
+/**
+ * This function creates a new catalog using the specified collection to seed the
+ * initial associations.
+ * 
+ * @param {Array|Object|Collection} collection The collection containing the initial
+ * associations to be used to seed the new catalog.
+ * @param {type} parameters Optional parameters for the catalog type.
+ * @returns {Catalog} The resulting catalog.
+ */
 Catalog.fromCollection = function(collection, parameters) {
     var catalog = new Catalog(parameters);
     var index = 1;
@@ -96,8 +106,8 @@ Catalog.concatenation = function(catalog1, catalog2) {
  * This function returns a new catalog that contains only the associations with
  * the specified keys.
  *
- * @param catalog The catalog whose items are to be reduced.
- * @param keys The collection of keys for the associates to be saved.
+ * @param {Catalog} catalog The catalog whose items are to be reduced.
+ * @param {Collection} keys The collection of keys for the associates to be saved.
  * @returns The resulting catalog.
  */
 Catalog.reduction = function(catalog, keys) {
@@ -224,12 +234,17 @@ Catalog.prototype.getValue = function(key) {
  *
  * @param {Component} key The key for the new value.
  * @param {Component} value The new value to be associated with the key.
+ * @returns {Component} The value previously associated with the key.
  */
 Catalog.prototype.setValue = function(key, value) {
+    key = Composite.asComponent(key);
+    value = Composite.asComponent(value);
     var index = key.toString();
     var association = this.map[index];
+    var oldValue;
     if (association) {
-        this.length -= association.value.length;
+        oldValue = association.value;
+        this.length -= oldValue.length;
         association.setValue(value);
         this.length += value.length;
     } else {
@@ -239,6 +254,7 @@ Catalog.prototype.setValue = function(key, value) {
         this.length += association.length;
         if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
     }
+    return oldValue;
 };
 
 

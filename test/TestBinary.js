@@ -14,7 +14,7 @@ var elements = require('../src/elements');
 var composites = require('../src/composites');
 var codex = require('../src/utilities/Codex');
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test binary constructors', function() {
 

@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 var Angle = require('../src/elements/Angle').Angle;
 /* global NaN, Infinity */
 
-describe('Bali Primitive Types™', function() {
+describe('Bali Document Notation™', function() {
 
     describe('Test angle constructors', function() {
 
