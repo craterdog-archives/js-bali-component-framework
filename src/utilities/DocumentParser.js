@@ -235,7 +235,7 @@ function initializeParser(source, debug) {
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
-    parser._errHandler = new BaliErrorStrategy(debug);
+    parser._errHandler = new BaliErrorStrategy();
     return parser;
 }
 
@@ -1199,10 +1199,8 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
 };
 
 
-function BaliErrorStrategy(debug) {
+function BaliErrorStrategy() {
     ErrorStrategy.DefaultErrorStrategy.call(this);
-    this.defaultReportError = ErrorStrategy.DefaultErrorStrategy.prototype.reportError;
-    this.debug = debug;
     return this;
 }
 BaliErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
@@ -1210,14 +1208,11 @@ BaliErrorStrategy.prototype.constructor = BaliErrorStrategy;
 
 
 BaliErrorStrategy.prototype.reportError = function(recognizer, e) {
-    if (this.debug) {
-        recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
-    }
+    recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
 };
 
 
 BaliErrorStrategy.prototype.recover = function(recognizer, e) {
-    recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
     var context = recognizer._ctx;
     while (context !== null) {
         context.exception = e;
@@ -1228,7 +1223,9 @@ BaliErrorStrategy.prototype.recover = function(recognizer, e) {
 
 
 BaliErrorStrategy.prototype.recoverInline = function(recognizer) {
-    this.recover(recognizer, new antlr.error.InputMismatchException(recognizer));
+    var exception = new antlr.error.InputMismatchException(recognizer);
+    this.reportError(recognizer, exception);
+    this.recover(recognizer, exception);
 };
 
 
@@ -1266,20 +1263,30 @@ BaliErrorListener.prototype.syntaxError = function(recognizer, offendingToken, l
 };
 
 
-BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
-    var message = 'PARSER: Ambiguous input was encountered for rule: ' + getDecisionDescription(recognizer, dfa) +
-        ', possible alternatives: ' + getConflictingAlts(ambigAlts, configs);
-    logMessage(recognizer, message);
+BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, alternatives, configs) {
+    if (this.debug) {
+        var rule = getRule(recognizer, dfa);
+        alternatives = [];
+        configs.items.forEach(function(item) {
+            alternatives.push(item.alt);
+        });
+        alternatives = "{" + alternatives.join(", ") + "}";
+        var message = 'PARSER: Ambiguous input was encountered for rule: ' + rule + ', alternatives: ' + alternatives;
+        logMessage(recognizer, message);
+    }
 };
 
 
 BaliErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
-    var message = 'PARSER Encountered a context sensitive rule: ' + getDecisionDescription(recognizer, dfa);
-    logMessage(recognizer, message);
+    if (this.debug) {
+        var rule = getRule(recognizer, dfa);
+        var message = 'PARSER Encountered a context sensitive rule: ' + rule;
+        logMessage(recognizer, message);
+    }
 };
 
 
-function getDecisionDescription(recognizer, dfa) {
+function getRule(recognizer, dfa) {
     var description = dfa.decision.toString();
     var ruleIndex = dfa.atnStartState.ruleIndex;
 
@@ -1292,18 +1299,6 @@ function getDecisionDescription(recognizer, dfa) {
 }
 
 
-function getConflictingAlts(reportedAlts, configs) {
-    if (reportedAlts !== null) {
-        return reportedAlts;
-    }
-    var result = new antlr.Utils.BitSet();
-    for (var i = 0; i < configs.items.length; i++) {
-        result.add(configs.items[i].alt);
-    }
-    return "{" + result.values().join(", ") + "}";
-}
-
-
 function logMessage(recognizer, message) {
     // log the error message
     console.error(message.slice(0, 160));
@@ -1313,8 +1308,8 @@ function logMessage(recognizer, message) {
     var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     var input = token ? offendingToken.getInputStream() : recognizer._input;
     var lines = input.toString().split('\n');
-	var lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
-	var columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
+    var lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
+    var columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
     if (lineNumber > 1) {
         console.error(lines[lineNumber - 2]);
     }
