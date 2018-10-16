@@ -218,6 +218,12 @@ exports.parseStructure = function(source, debug) {
 
 // PRIVATE FUNCTIONS
 
+// override the recover method in the lexer to fail fast
+grammar.BaliDocumentLexer.prototype.recover = function(e) {
+    throw e;
+};
+
+
 function initializeParser(source, debug) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliDocumentLexer(chars);
@@ -232,13 +238,6 @@ function initializeParser(source, debug) {
     parser._errHandler = new BaliErrorStrategy(debug);
     return parser;
 }
-
-
-// override the recover method in the lexer to fail fast
-grammar.BaliDocumentLexer.prototype.recover = function(e) {
-    var error = new Error('LEXER: Invalid input was detected, aborted scanning the input: ' + e.input);
-    throw error;
-};
 
 
 function convertParseTree(antlrTree) {
@@ -1202,6 +1201,7 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
 
 function BaliErrorStrategy(debug) {
     ErrorStrategy.DefaultErrorStrategy.call(this);
+    this.defaultReportError = ErrorStrategy.DefaultErrorStrategy.prototype.reportError;
     this.debug = debug;
     return this;
 }
@@ -1210,54 +1210,20 @@ BaliErrorStrategy.prototype.constructor = BaliErrorStrategy;
 
 
 BaliErrorStrategy.prototype.reportError = function(recognizer, e) {
-   // if we've already reported an error and have not matched a token
-   // yet successfully, don't report any errors.
-    if(this.debug && !this.inErrorRecoveryMode(recognizer)) {
-        this.beginErrorCondition(recognizer);
-        if ( e instanceof antlr.error.NoViableAltException ) {
-            this.reportNoViableAlternative(recognizer, e);
-        } else if ( e instanceof antlr.error.InputMismatchException ) {
-            this.reportInputMismatch(recognizer, e);
-        } else if ( e instanceof antlr.error.FailedPredicateException ) {
-            this.reportFailedPredicate(recognizer, e);
-        } else {
-            console.log('PARSER: An unknown error occured: ' + e.constructor.name);
-            console.log(e.stack);
-            recognizer.notifyErrorListeners(e.getMessage(), recognizer.getCurrentToken(), e);
-        }
+    if (this.debug) {
+        recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
     }
 };
 
 
 BaliErrorStrategy.prototype.recover = function(recognizer, e) {
-    var token = e.offendingToken ? this.getTokenErrorDisplay(e.offendingToken) : '';
-	var lineNumber = token ? e.offendingToken.line : recognizer._tokenStartLine;
-	var columnNumber = token ? e.offendingToken.column : recognizer._tokenStartColumn;
-    var input = token ? e.offendingToken.getInputStream() : recognizer._input;
-    var lines = input.toString().split('\n');
-    var message = token ? e.message : 'LEXER: An unexpected character was encountered: "' + lines[lineNumber - 1][columnNumber] + '"';
-    if (!message) message = 'PARSER: An invalid token was encountered: ' + token;
-
-    // log the error message
-    console.log(message.slice(0, 160));
-
-    // log the lines before and after the invalid line and highlight the invalid token
-    if (lineNumber > 1) console.log(lines[lineNumber - 2]);
-    console.log(lines[lineNumber - 1]);
-    var line = '';
-    for (var i = 0; i < columnNumber; i++) {
-        line += ' ';
+    recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
+    var context = recognizer._ctx;
+    while (context !== null) {
+        context.exception = e;
+        context = context.parentCtx;
     }
-    var start = token ? e.offendingToken.start : columnNumber;
-    var stop = token ? e.offendingToken.stop : columnNumber;
-    while (start++ <= stop) {
-        line += '^';
-    }
-    console.log(line);
-    if (lineNumber < lines.length) console.log(lines[lineNumber]);
-
-    var error = new Error(message);
-    throw error;
+    throw new Error(e.message);
 };
 
 
@@ -1267,70 +1233,13 @@ BaliErrorStrategy.prototype.recoverInline = function(recognizer) {
 
 
 BaliErrorStrategy.prototype.sync = function(recognizer) {
-    // ignore
-};
-
-
-BaliErrorStrategy.prototype.reportNoViableAlternative = function(recognizer, e) {
-    var tokens = recognizer.getTokenStream();
-    var token;
-    if(tokens !== null) {
-        if (e.startToken.type===antlr.Token.EOF) {
-            token = "<EOF>";
-        } else {
-            token = tokens.tokens[e.offendingToken.tokenIndex];
-        }
-    } else {
-        token = "<unknown>";
-    }
-    var message = 'PARSER: An invalid token was encountered: ' + this.getTokenErrorDisplay(token);
-    recognizer.notifyErrorListeners(message, e.offendingToken, e);
-};
-
-
-BaliErrorStrategy.prototype.reportInputMismatch = function(recognizer, e) {
-    var message = 'PARSER: A mismatched token was encountered: "' + this.getTokenErrorDisplay(e.offendingToken) +
-          '", expected: ' + e.getExpectedTokens().toString(recognizer.literalNames, recognizer.symbolicNames);
-    recognizer.notifyErrorListeners(message, e.offendingToken, e);
-};
-
-
-BaliErrorStrategy.prototype.reportFailedPredicate = function(recognizer, e) {
-    var ruleName = recognizer.ruleNames[recognizer._ctx.ruleIndex];
-    var message = 'PARSER: A predicate match failed for rule(' + ruleName + '): ' + e.message;
-    recognizer.notifyErrorListeners(message, e.offendingToken, e);
-};
-
-
-BaliErrorStrategy.prototype.reportUnwantedToken = function(recognizer) {
-    if (this.inErrorRecoveryMode(recognizer)) {
-        return;
-    }
-    this.beginErrorCondition(recognizer);
-    var token = recognizer.getCurrentToken();
-    var expecting = this.getExpectedTokens(recognizer);
-    var message = 'PARSER: An extra token was encountered: "' + this.getTokenErrorDisplay(token) + "' expecting " +
-        expecting.toString(recognizer.literalNames, recognizer.symbolicNames);
-    recognizer.notifyErrorListeners(message, token, null);
-};
-
-
-BaliErrorStrategy.prototype.reportMissingToken = function(recognizer) {
-    if ( this.inErrorRecoveryMode(recognizer)) {
-        return;
-    }
-    this.beginErrorCondition(recognizer);
-    var token = recognizer.getCurrentToken();
-    var expecting = this.getExpectedTokens(recognizer);
-    var message = 'PARSER: A token is missing, expected: ' + expecting.toString(recognizer.literalNames, recognizer.symbolicNames) +
-          ' at "' + this.getTokenErrorDisplay(token) + '"';
-    recognizer.notifyErrorListeners(message, token, null);
+    // ignore for efficiency
 };
 
 
 function BaliErrorListener(debug) {
     antlr.error.ErrorListener.call(this);
-    this.exactOnly = true;  // 'true' results in uninteresting ambiguities so leave 'false'
+    this.exactOnly = false;  // 'true' results in uninteresting ambiguities so leave 'false'
     this.debug = debug;
     return this;
 }
@@ -1339,70 +1248,51 @@ BaliErrorListener.prototype.constructor = BaliErrorListener;
 
 
 BaliErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
-    if (this.debug) {
-        // handle lexer vs parser differences
-        var input = offendingToken ? offendingToken.getInputStream() : recognizer._input;
-        var lines = input.toString().split('\n');
-        message = offendingToken ? message : 'LEXER: An unexpected character was encountered: "' + lines[lineNumber - 1][columnNumber] + '"';
-
-        // log the error message
-        console.log(message.slice(0, 160));
-
-        // log the lines before and after the invalid line and highlight the invalid token
-        if (lineNumber > 1) console.log(lines[lineNumber - 2]);
-        console.log(lines[lineNumber - 1]);
-        var line = '';
-        for (var i = 0; i < columnNumber; i++) {
-            line += ' ';
-        }
-        var start = offendingToken ? offendingToken.start : columnNumber;
-        var stop = offendingToken ? offendingToken.stop : columnNumber;
-        while (start++ <= stop) {
-            line += '^';
-        }
-        console.log(line);
-        if (lineNumber < lines.length) console.log(lines[lineNumber]);
-
-        // log the error stack
-        if (e) console.log(e.stack);
+    // log a message
+    var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
+    var input = token ? offendingToken.getInputStream() : recognizer._input;
+    var lines = input.toString().split('\n');
+    var character = lines[lineNumber - 1][columnNumber];
+    if (!token) {
+        message = "LEXER: An unexpected character was encountered: '" + character + "'";
+    } else {
+        message = 'PARSER: An invalid token was encountered: ' + token;
     }
+    logMessage(recognizer, message);
+
+    // stop processing
+    var error = new Error(message);
+    throw error;
 };
 
 
 BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
-    var message = 'PARSER: Ambiguous input was encountered for rule: ' + this.getDecisionDescription(recognizer, dfa) +
-        ', possible alternatives: ' + this.getConflictingAlts(ambigAlts, configs);
-    recognizer.notifyErrorListeners(message, recognizer._input.LT(-1));
-};
-
-
-BaliErrorListener.prototype.reportAttemptingFullContext = function(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
+    var message = 'PARSER: Ambiguous input was encountered for rule: ' + getDecisionDescription(recognizer, dfa) +
+        ', possible alternatives: ' + getConflictingAlts(ambigAlts, configs);
+    logMessage(recognizer, message);
 };
 
 
 BaliErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
-    var message = 'PARSER Encountered a context sensitive rule: ' + this.getDecisionDescription(recognizer, dfa);
-    recognizer.notifyErrorListeners(message, recognizer.getCurrentToken());
+    var message = 'PARSER Encountered a context sensitive rule: ' + getDecisionDescription(recognizer, dfa);
+    logMessage(recognizer, message);
 };
 
 
-BaliErrorListener.prototype.getDecisionDescription = function(recognizer, dfa) {
-    var decision = dfa.decision;
+function getDecisionDescription(recognizer, dfa) {
+    var description = dfa.decision.toString();
     var ruleIndex = dfa.atnStartState.ruleIndex;
 
     var ruleNames = recognizer.ruleNames;
     if (ruleIndex < 0 || ruleIndex >= ruleNames.length) {
-        return "" + decision;
+        return description;
     }
-    var ruleName = ruleNames[ruleIndex] || null;
-    if (ruleName === null || ruleName.length === 0) {
-        return "" + decision;
-    }
-    return "" + decision + " (" + ruleName + ")";
-};
+    var ruleName = ruleNames[ruleIndex] || '<unknown>';
+    return description + " (" + ruleName + ")";
+}
 
 
-BaliErrorListener.prototype.getConflictingAlts = function(reportedAlts, configs) {
+function getConflictingAlts(reportedAlts, configs) {
     if (reportedAlts !== null) {
         return reportedAlts;
     }
@@ -1411,20 +1301,33 @@ BaliErrorListener.prototype.getConflictingAlts = function(reportedAlts, configs)
         result.add(configs.items[i].alt);
     }
     return "{" + result.values().join(", ") + "}";
-};
+}
 
 
-BaliErrorListener.prototype.enterEveryRule = function(context) {
-};
+function logMessage(recognizer, message) {
+    // log the error message
+    console.error(message.slice(0, 160));
 
-
-BaliErrorListener.prototype.visitTerminal = function(node) {
-};
-
-
-BaliErrorListener.prototype.visitErrorNode = function(node) {
-};
-
-
-BaliErrorListener.prototype.exitEveryRule = function(context) {
-};
+    // log the lines before and after the invalid line and highlight the invalid token
+    var offendingToken = recognizer._precedenceStack ? recognizer.getCurrentToken() : undefined;
+    var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
+    var input = token ? offendingToken.getInputStream() : recognizer._input;
+    var lines = input.toString().split('\n');
+	var lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
+	var columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
+    if (lineNumber > 1) {
+        console.error(lines[lineNumber - 2]);
+    }
+    console.error(lines[lineNumber - 1]);
+    var line = '';
+    for (var i = 0; i < columnNumber; i++) {
+        line += ' ';
+    }
+    var start = token ? offendingToken.start : columnNumber;
+    var stop = token ? offendingToken.stop : columnNumber;
+    while (start++ <= stop) {
+        line += '^';
+    }
+    console.error(line);
+    if (lineNumber < lines.length) console.error(lines[lineNumber]);
+}
