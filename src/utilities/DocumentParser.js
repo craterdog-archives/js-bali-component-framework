@@ -273,8 +273,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: '~' real
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     var parameters = this.parameters;
-    ctx.real().accept(this);
-    var value = '~' + this.result;
+    var value = ctx.getText();
     var angle = new elements.Angle(value, parameters);
     this.result = angle;
 };
@@ -283,7 +282,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 // anyTemplate: 'any'
 ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
     var parameters = this.parameters;
-    var value = 'any';
+    var value = ctx.getText();
     var template = new elements.Template(value, parameters);
     this.result = template;
 };
@@ -428,14 +427,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 // complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var parameters = this.parameters;
-    var delimiter = ctx.del.text;
-    var value = '(';
-    ctx.real().accept(this);
-    value += this.result;
-    value += delimiter === ',' ? ', ' : ' e^~';
-    ctx.imaginary().accept(this);
-    value += this.result;
-    value += ')';
+    var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
 };
@@ -521,7 +513,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.DURATION().getText();
+    var value = ctx.getText();
     var duration = new elements.Duration(value, parameters);
     this.result = duration;
 };
@@ -587,7 +579,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 // falseProbability: 'false'
 ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
     var parameters = this.parameters;
-    var value = 'false';
+    var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
@@ -596,7 +588,7 @@ ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
 // fractionalProbability: FRACTION
 ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.FRACTION().getText();
+    var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
@@ -615,7 +607,7 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 // funxtion: IDENTIFIER
 ParsingVisitor.prototype.visitFunxtion = function(ctx) {
-    var value = ctx.IDENTIFIER().getText();
+    var value = ctx.getText();
     var identifier = new elements.Identifier(types.FUNCTION, value);
     this.result = identifier;
 };
@@ -663,8 +655,7 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 // imaginaryNumber: imaginary
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     var parameters = this.parameters;
-    ctx.imaginary().accept(this);
-    var value = this.result;
+    var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
 };
@@ -681,7 +672,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     var parameters = this.parameters;
-    var value = 'infinity';
+    var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
 };
@@ -711,7 +702,7 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 // inlineText: TEXT
 ParsingVisitor.prototype.visitInlineText = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.TEXT().getText();
+    var value = ctx.getText();
     var text = new elements.Text(value, parameters);
     this.result = text;
 };
@@ -789,7 +780,7 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
-    var value = ctx.IDENTIFIER().getText();
+    var value = ctx.getText();
     var identifier = new elements.Identifier(types.MESSAGE, value);
     this.result = identifier;
 };
@@ -811,7 +802,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.MOMENT().getText();
+    var value = ctx.getText();
     var moment = new elements.Moment(value, parameters);
     this.result = moment;
 };
@@ -853,7 +844,7 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
 // noneTemplate: 'none'
 ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
     var parameters = this.parameters;
-    var value = 'none';
+    var value = ctx.getText();
     var template = new elements.Template(value, parameters);
     this.result = template;
 };
@@ -895,8 +886,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 // percent: real '%'
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     var parameters = this.parameters;
-    ctx.real().accept(this);
-    var value = this.result + '%';
+    var value = ctx.getText();
     var percent = new elements.Percent(value, parameters);
     this.result = percent;
 };
@@ -976,8 +966,7 @@ ParsingVisitor.prototype.visitReal = function(ctx) {
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     var parameters = this.parameters;
-    ctx.real().accept(this);
-    var value = this.result;
+    var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
 };
@@ -986,7 +975,7 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.RESOURCE().getText();
+    var value = ctx.getText();
     var reference = new elements.Reference(value, parameters);
     this.result = reference;
 };
@@ -1102,7 +1091,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.SYMBOL().getText();
+    var value = ctx.getText();
     var symbol = new elements.Symbol(value, parameters);
     this.result = symbol;
 };
@@ -1111,7 +1100,7 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.TAG().getText();
+    var value = ctx.getText();
     var tag = new elements.Tag(value, parameters);
     this.result = tag;
 };
@@ -1129,7 +1118,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 // trueProbability: 'true'
 ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
     var parameters = this.parameters;
-    var value = 'true';
+    var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
@@ -1138,7 +1127,7 @@ ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     var parameters = this.parameters;
-    var value = 'undefined';
+    var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
 };
@@ -1146,7 +1135,7 @@ ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
 
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
-    var value = ctx.IDENTIFIER().getText();
+    var value = ctx.getText();
     var identifier = new elements.Identifier(types.VARIABLE, value);
     this.result = identifier;
 };
@@ -1155,7 +1144,7 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     var parameters = this.parameters;
-    var value = ctx.VERSION().getText();
+    var value = ctx.getText();
     var version = new elements.Version(value, parameters);
     this.result = version;
 };
