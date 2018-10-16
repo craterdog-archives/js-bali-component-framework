@@ -218,12 +218,6 @@ exports.parseStructure = function(source, debug) {
 
 // PRIVATE FUNCTIONS
 
-// override the recover method in the lexer to fail fast
-grammar.BaliDocumentLexer.prototype.recover = function(e) {
-    throw e;
-};
-
-
 function initializeParser(source, debug) {
     var chars = new antlr.InputStream(source);
     var lexer = new grammar.BaliDocumentLexer(chars);
@@ -1185,6 +1179,14 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
     ctx.block().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+// CUSTOM ERROR HANDLING
+
+// override the recover method in the lexer to fail fast
+grammar.BaliDocumentLexer.prototype.recover = function(e) {
+    throw e;
 };
 
 
