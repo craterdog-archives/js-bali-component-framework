@@ -214,6 +214,18 @@ Catalog.prototype.removeAll = function() {
 
 
 /**
+ * This function retrieves from a catalog the string value associated with the
+ * specified key.
+ * 
+ * @param {String} key The string form of the key.
+ * @returns {Component} The string value associated with the key.
+ */
+Catalog.prototype.getString = function(key) {
+    return this.getValue(key).toString();
+};
+
+
+/**
  * This method returns the value associated with the specified key in this catalog.
  *
  * @param {Component} key The key for the value to be retrieved.

@@ -126,7 +126,7 @@ Document.prototype.unsealed = function() {
 /**
  * This method sets the citation to the previous version of the document.
  * 
- * @param {String|Terminal} citation The citation to the previous version of the document.
+ * @param {String|Reference} citation The citation to the previous version of the document.
  */
 Document.prototype.setPreviousCitation = function(citation) {
     if (citation.constructor.name === 'String') {
@@ -150,7 +150,7 @@ Document.prototype.getLastSeal = function() {
 /**
  * This method appends a notary seal to the end of the document.
  * 
- * @param {Terminal} seal The new notary seal to be appended to the document.
+ * @param {Seal} seal The new notary seal to be appended to the document.
  */
 Document.prototype.addNotarySeal = function(seal) {
     this.notarySeals.push(seal);
@@ -165,7 +165,7 @@ Document.prototype.addNotarySeal = function(seal) {
  * @returns {Component} The string value associated with the key.
  */
 Document.prototype.getString = function(key) {
-    return this.documentContent.getValue(key).toString();
+    return this.documentContent.getString(key);
 };
 
 

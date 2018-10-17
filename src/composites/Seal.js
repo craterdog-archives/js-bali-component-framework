@@ -13,12 +13,20 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
+var Binary = require('../elements/Binary').Binary;
+var Reference = require('../elements/Reference').Reference;
 
 
 // PUBLIC METHODS
 
 function Seal(certificateCitation, digitalSignature) {
     Composite.call(this, types.SEAL);
+    if (certificateCitation && certificateCitation.constructor.name === 'String') {
+        certificateCitation = new Reference(certificateCitation);
+    }
+    if (digitalSignature && digitalSignature.constructor.name === 'String') {
+        digitalSignature = new Binary(digitalSignature);
+    }
     this.certificateCitation = certificateCitation;
     this.digitalSignature = digitalSignature;
     this.length += certificateCitation.length + digitalSignature.length;
