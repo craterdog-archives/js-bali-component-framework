@@ -15,15 +15,48 @@
  * the corresponding source string.
  */
 var types = require('../abstractions/Types');
+var Component = require('../abstractions/Component').Component;
+var formatter = require('../utilities/DocumentFormatter');
 
 
+/**
+ * The constructor for the Visitor class.
+ * 
+ * @returns {Visitor} The new visitor.
+ */
 function Visitor() {
-    this.type = types.VISITOR;
+    Component.call(this, types.VISITOR);
     this.depth = 0;
     return this;
 }
+Visitor.prototype = Object.create(Component.prototype);
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method provides the canonical way to export a Bali component as Bali source code.
+ * 
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code.
+ * @returns {String} The Bali source code for the component.
+ */
+Visitor.prototype.toSource = function(indentation) {
+    var source = formatter.formatTree(this, indentation);
+    return source;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this visitor.
+ */
+Visitor.prototype.accept = function(visitor) {
+    visitor.visitVisitor(this);
+};
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression

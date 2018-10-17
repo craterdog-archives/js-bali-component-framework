@@ -13,6 +13,7 @@
  * This abstract class defines the invariant methods that all elemental components must support.
  */
 var Component = require('./Component').Component;
+var formatter = require('../utilities/DocumentFormatter');
 
 
 /**
@@ -76,6 +77,19 @@ Element.realToSource = function(real) {
 
 
 // PUBLIC METHODS
+
+/**
+ * This method provides the canonical way to export a Bali component as Bali source code.
+ * 
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code.
+ * @returns {String} The Bali source code for the component.
+ */
+Element.prototype.toSource = function(indentation) {
+    var source = formatter.formatTree(this, indentation);
+    return source;
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

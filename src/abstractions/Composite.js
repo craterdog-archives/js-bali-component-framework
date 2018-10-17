@@ -13,8 +13,9 @@
  * This abstract class defines the invariant methods that all composite components must support.
  */
 var Component = require('./Component').Component;
-var Iterator = require('../composites/Iterator').Iterator;
+var formatter = require('../utilities/DocumentFormatter');
 var parser = require('../utilities/DocumentParser');
+var Iterator = require('../composites/Iterator').Iterator;
 
 /**
  * The constructor for the Composite class.
@@ -33,6 +34,19 @@ exports.Composite = Composite;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method provides the canonical way to export a Bali component as Bali source code.
+ * 
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code.
+ * @returns {String} The Bali source code for the component.
+ */
+Composite.prototype.toSource = function(indentation) {
+    var source = formatter.formatTree(this, indentation);
+    return source;
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

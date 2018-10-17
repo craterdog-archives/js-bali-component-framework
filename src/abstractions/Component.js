@@ -13,7 +13,6 @@
  * This abstract class defines the invariant methods that all components must support.
  */
 var types = require('./Types');
-var formatter = require('../utilities/DocumentFormatter');
 
 
 /**
@@ -48,19 +47,6 @@ Component.prototype.isSimple = function() {
 Component.prototype.toString = function() {
     var string = this.toSource();
     return string;
-};
-
-
-/**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Component.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
 };
 
 
