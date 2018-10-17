@@ -15,6 +15,7 @@
  * the corresponding source string.
  */
 var types = require('../abstractions/Types');
+var Visitor = require('../abstractions/Visitor').Visitor;
 
 
 exports.formatTree = function(tree, indentation) {
@@ -29,11 +30,12 @@ exports.formatTree = function(tree, indentation) {
 var INDENTATION = '    ';
 
 function FormattingVisitor(indentation) {
+    Visitor.call(this);
     this.indentation = indentation ? indentation : '';
     this.source = '';
-    this.depth = 0;
     return this;
 }
+FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
@@ -78,16 +80,6 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// catalog:
-//     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
-//     ':' /*empty catalog*/
-FormattingVisitor.prototype.visitCatalog = function(catalog) {
-    // delegate to collection
-    this.visitCollection(catalog);
-};
-
-
 // checkoutClause: 'checkout' recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.source += 'checkout ';
@@ -96,13 +88,6 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.source += ' from ';
     var reference = tree.children[1];
     reference.accept(this);
-};
-
-
-// source: '{' procedure '}'
-FormattingVisitor.prototype.visitSource = function(source) {
-    // delegate to element
-    this.visitElement(source);
 };
 
 
@@ -254,11 +239,14 @@ FormattingVisitor.prototype.visitElement = function(element) {
 
 // evaluateClause: (recipient ':=')? expression
 FormattingVisitor.prototype.visitEvaluateClause = function(tree) {
-    tree.children[0].accept(this);
-    if (tree.children.length > 1) {
+    var size = tree.getSize();
+    if (size > 1) {
+        var recipient = tree.children[0];
+        recipient.accept(this);
         this.source += ' := ';
-        tree.children[1].accept(this);
     }
+    var expression = tree.children[size - 1];
+    expression.accept(this);
 };
 
 
@@ -283,15 +271,6 @@ FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
 // function: IDENTIFIER
 FormattingVisitor.prototype.visitFunction = function(identifier) {
     this.source += identifier.source;
-};
-
-
-// functionExpression: function parameters
-FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
-    var functionName = tree.children[0];
-    functionName.accept(this);
-    var parameters = tree.children[1];
-    parameters.accept(this);
 };
 
 
@@ -320,9 +299,9 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
     block.accept(this);
 
     // handle optional additional conditions
-    var count = tree.children.length;
-    for (var i = 2; i < count; i += 2) {
-        if (i === count - 1) {
+    var size = tree.getSize();
+    for (var i = 2; i < size; i += 2) {
+        if (i === size - 1) {
             this.source += ' else ';
             block = tree.children[i];
             block.accept(this);
@@ -358,32 +337,22 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 FormattingVisitor.prototype.visitIterator = function(iterator) {
     this.source += '[';
     this.depth++;
-    var count = 0;
+    var slot = 0;
     iterator.array.forEach(function(item) {
         this.appendNewline();
-        if (iterator.slot === count++) {
+        if (iterator.slot === slot++) {
             this.source += '    <= iterator';
             this.appendNewline();
         }
         item.accept(this);
     }, this);
-    if (iterator.slot === count) {
+    if (iterator.slot === slot) {
         this.source += '    <= iterator';
         this.appendNewline();
     }
     this.depth--;
     this.appendNewline();
     this.source += ']';
-};
-
-
-// list:
-//     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
-//     /*empty list*/
-FormattingVisitor.prototype.visitList = function(list) {
-    // delegate to collection
-    this.visitCollection(list);
 };
 
 
@@ -584,9 +553,9 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 
     // handle option blocks
     var block;
-    var count = tree.children.length;
-    for (var i = 1; i < count; i += 2) {
-        if (i === count - 1) {
+    var size = tree.getSize();
+    for (var i = 1; i < size; i += 2) {
+        if (i === size - 1) {
             this.source += ' else ';
             block = tree.children[i];
             block.accept(this);
@@ -599,44 +568,6 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
             block.accept(this);
         }
     }
-};
-
-
-FormattingVisitor.prototype.visitSet = function(set) {
-    // delegate to collection
-    this.visitCollection(set);
-};
-
-
-FormattingVisitor.prototype.visitStack = function(stack) {
-    // delegate to collection
-    this.visitCollection(stack);
-};
-
-
-// statement: mainClause handleClause*
-FormattingVisitor.prototype.visitStatement = function(tree) {
-    tree.children.forEach(function(child) {
-        child.accept(this);
-    }, this);
-};
-
-
-// subcomponent: variable indices
-FormattingVisitor.prototype.visitSubcomponent = function(tree) {
-    var variable = tree.children[0];
-    variable.accept(this);
-    var indices = tree.children[1];
-    indices.accept(this);
-};
-
-
-// subcomponentExpression: expression indices
-FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
-    var component = tree.children[0];
-    component.accept(this);
-    var indices = tree.children[1];
-    indices.accept(this);
 };
 
 
@@ -678,17 +609,17 @@ FormattingVisitor.prototype.visitWhileClause = function(tree) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 FormattingVisitor.prototype.visitWithClause = function(tree) {
-    var count = tree.children.length;
+    var size = tree.getSize();
     this.source += 'with ';
-    if (count > 2) {
+    if (size > 2) {
         this.source += 'each ';
         var item = tree.children[0];
         item.accept(this);
         this.source += ' in ';
     }
-    var collection = tree.children[count - 2];
+    var collection = tree.children[size - 2];
     collection.accept(this);
     this.source += ' do ';
-    var block = tree.children[count - 1];
+    var block = tree.children[size - 1];
     block.accept(this);
 };
