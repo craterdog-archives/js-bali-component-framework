@@ -39,7 +39,7 @@ function Stack(parameters) {
     Collection.call(this, types.STACK, parameters);
     this.capacity = 1024;
     this.array = [];
-    this.length += 2;  // account for the '[' ']' delimiters
+    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Stack.prototype = Object.create(Collection.prototype);
@@ -100,7 +100,7 @@ Stack.prototype.toArray = function() {
  */
 Stack.prototype.removeAll = function() {
     var size = this.getSize();
-    if (size > 1) this.length -= (size - 1) * 2;  // account for all the ', ' separators
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };
 
@@ -114,8 +114,8 @@ Stack.prototype.pushItem = function(item) {
     item = Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
-        this.length += item.length;
-    if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+        this.complexity += item.complexity;
+    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     } else {
         throw new Error('STACK: Attempted to push an item onto a full stack.');
     }
@@ -133,8 +133,8 @@ Stack.prototype.popItem = function() {
     var size = this.array.length;
     if (size > 0) {
         item = this.array.pop();
-        this.length -= item.length;
-        if (this.getSize() > 0) this.length -= 2;  // account for the ', ' separator
+        this.complexity -= item.complexity;
+        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     } else {
         throw new Error('STACK: Attempted to pop the top item of an empty stack.');
     }

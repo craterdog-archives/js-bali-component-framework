@@ -30,8 +30,8 @@ var List = require('./List').List;
 function Catalog(parameters) {
     SortableCollection.call(this, types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
-    this.length += 2;  // account for the '[' ']' delimiters
-    this.length += 1;  // account for the ':' in the empty catalog
+    this.complexity += 2;  // account for the '[' ']' delimiters
+    this.complexity += 1;  // account for the ':' in the empty catalog
     return this;
 }
 Catalog.prototype = Object.create(SortableCollection.prototype);
@@ -151,14 +151,14 @@ Catalog.prototype.addItem = function(association) {
     var index = association.key.toString();
     var candidate = this.map[index];
     if (candidate) {
-        this.length -= candidate.length;
+        this.complexity -= candidate.complexity;
         candidate.setValue(association.value);
     } else {
         this.map[index] = association;
         this.array.push(association);
-        if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
-    this.length += association.length;
+    this.complexity += association.complexity;
     return true;
 };
 
@@ -192,8 +192,8 @@ Catalog.prototype.removeItem = function(index) {
         var key = association.key;
         delete this.map[key];
         this.array.splice(index, 1);
-        this.length -= association.length;
-        if (this.getSize() > 1) this.length -= 2;  // account for the ', ' separator
+        this.complexity -= association.complexity;
+        if (this.getSize() > 1) this.complexity -= 2;  // account for the ', ' separator
     }
     return association;
 };
@@ -204,10 +204,10 @@ Catalog.prototype.removeItem = function(index) {
  */
 Catalog.prototype.removeAll = function() {
     var size = this.getSize();
-    if (size > 1) this.length -= (size - 1) * 2;  // account for all the ', ' separators
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     Object.keys(this.map).forEach(function(key) {
         var association = this.map[key];
-        this.length -= association.length;
+        this.complexity -= association.complexity;
         delete this.map[key];
     }, this);
     this.array.splice(0);
@@ -257,15 +257,15 @@ Catalog.prototype.setValue = function(key, value) {
     var oldValue;
     if (association) {
         oldValue = association.value;
-        this.length -= oldValue.length;
+        this.complexity -= oldValue.complexity;
         association.setValue(value);
-        this.length += value.length;
+        this.complexity += value.complexity;
     } else {
         association = new Association(key, value);
         this.map[index] = association;
         this.array.push(association);
-        this.length += association.length;
-        if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+        this.complexity += association.complexity;
+        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
     return oldValue;
 };
@@ -288,8 +288,8 @@ Catalog.prototype.removeValue = function(key) {
             return item.equalTo(association);
         });
         this.array.splice(index, 1);
-        this.length -= association.length;
-        if (this.getSize() > 0) this.length -= 2;  // account for the ', ' separator
+        this.complexity -= association.complexity;
+        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
         value = association.value;
     }
     return value;

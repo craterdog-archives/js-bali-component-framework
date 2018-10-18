@@ -12,7 +12,6 @@
 /**
  * This abstract class defines the invariant methods that all components must support.
  */
-var types = require('./Types');
 
 
 /**
@@ -25,17 +24,30 @@ var types = require('./Types');
 function Component(type, parameters) {
     this.type = type;
     this.parameters = parameters;
-    this.length = parameters ? parameters.length : 0;  // number of characters in its source code
+    this.complexity = parameters ? parameters.complexity : 0;  // number of characters in its source code
     return this;
 }
 Component.prototype.constructor = Component;
 exports.Component = Component;
 
 
+Component.IS_COMPLEX = 25;  // one more than the maximum number of characters that can be inlined
+
+
+Component.isSimple = function(complexity) {
+    return complexity < Component.IS_COMPLEX;
+};
+
+
 // PUBLIC METHODS
 
 Component.prototype.isSimple = function() {
-    return this.length < types.TOO_BIG;
+    return this.complexity < Component.IS_COMPLEX;
+};
+
+
+Component.prototype.setComplex = function() {
+    return this.complexity = Component.IS_COMPLEX;
 };
 
 

@@ -15,6 +15,7 @@
  * the corresponding source string.
  */
 var types = require('../abstractions/Types');
+var Component = require('../abstractions/Component').Component;
 
 
 exports.formatTree = function(tree, indentation) {
@@ -110,9 +111,9 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
         var iterator = collection.iterator();
         var item;
         // don't include the length of the parameters in the length of the combined items
-        var length = collection.length;
-        if (collection.parameters) length -= collection.parameters.length;
-        if (length < types.TOO_BIG) {
+        var complexity = collection.complexity;
+        if (collection.parameters) complexity -= collection.parameters.complexity;
+        if (Component.isSimple(complexity)) {
             // inline the items
             item = iterator.getNext();
             item.accept(this);
@@ -430,7 +431,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
     if (!parameters.isEmpty()) {
         var iterator = parameters.iterator();
         var parameter;
-        if (parameters.length < types.TOO_BIG) {
+        if (parameters.isSimple()) {
             // inline the parameters
             parameter = iterator.getNext();
             if (parameters.isList) parameter = parameter.value;
@@ -480,7 +481,7 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     if (!procedure.isEmpty()) {
         var iterator = procedure.iterator();
         var statement;
-        if (procedure.length < types.TOO_BIG) {
+        if (procedure.isSimple()) {
             // inline the statements
             statement = iterator.getNext();
             statement.accept(this);
@@ -500,7 +501,7 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
             this.depth--;
             this.appendNewline();
         }
-    } else if (procedure.length >= types.TOO_BIG) {
+    } else if (!procedure.isSimple()) {
         this.appendNewline();
     }
     if (procedure.inBrackets) {

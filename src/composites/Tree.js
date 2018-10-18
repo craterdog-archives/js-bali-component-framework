@@ -26,7 +26,7 @@ var Collection = require('../abstractions/Collection').Collection;
 function Tree(type, length) {
     Collection.call(this, type);
     this.children = [];
-    this.length += length;
+    this.complexity += length;
     return this;
 }
 Tree.prototype = Object.create(Collection.prototype);
@@ -66,7 +66,7 @@ Tree.prototype.toArray = function() {
  */
 Tree.prototype.addChild = function(child) {
     this.children.push(child);
-    this.length += child.length;
+    this.complexity += child.complexity;
 };
 
 

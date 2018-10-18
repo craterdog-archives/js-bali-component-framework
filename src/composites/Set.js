@@ -27,7 +27,7 @@ var OrderedCollection = require('../abstractions/OrderedCollection').OrderedColl
 function Set(parameters) {
     OrderedCollection.call(this, types.SET, parameters);
     this.tree = new RandomizedTree();
-    this.length += 2;  // account for the '[' ']' delimiters
+    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Set.prototype = Object.create(OrderedCollection.prototype);
@@ -241,8 +241,8 @@ Set.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     var result = this.tree.insert(item);
     if (result) {
-        this.length += item.length;
-        if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+        this.complexity += item.complexity;
+        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
     return result;
 };
@@ -259,8 +259,8 @@ Set.prototype.removeItem = function(item) {
     item = Composite.asComponent(item);
     var result = this.tree.remove(item);
     if (result) {
-        this.length -= item.length;
-        if (this.getSize() > 0) this.length -= 2;  // account for the ', ' separator
+        this.complexity -= item.complexity;
+        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     }
     return result;
 };
@@ -271,7 +271,7 @@ Set.prototype.removeItem = function(item) {
  */
 Set.prototype.removeAll = function() {
     var size = this.getSize();
-    if (size > 1) this.length -= (size - 1) * 2;  // account for all the ', ' separators
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.tree.clear();
 };
 

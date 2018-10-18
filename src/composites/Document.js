@@ -36,7 +36,7 @@ function Document(previousCitation, documentContent) {
     this.previousCitation = previousCitation;
     this.documentContent = documentContent;
     this.notarySeals = [];
-    this.length = types.TOO_BIG;  // documents won't fit inline
+    this.setComplex();  // documents won't fit inline
     return this;
 }
 Document.prototype = Object.create(Composite.prototype);

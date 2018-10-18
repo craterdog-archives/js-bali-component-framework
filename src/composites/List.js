@@ -33,7 +33,7 @@ var SortableCollection = require('../abstractions/SortableCollection').SortableC
  */
 function List(parameters) {
     SortableCollection.call(this, types.LIST, parameters);
-    this.length += 2;  // account for the '[' ']' delimiters
+    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 List.prototype = Object.create(SortableCollection.prototype);
@@ -103,8 +103,8 @@ List.prototype.emptyCopy = function() {
 List.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     this.array.push(item);
-    this.length += item.length;
-    if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+    this.complexity += item.complexity;
+    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     return true;
 };
 
@@ -121,8 +121,8 @@ List.prototype.insertItem = function(index, item) {
     index = this.normalizedIndex(index);
     index--;  // convert to javascript zero based indexing
     this.array.splice(index, 0, item);
-    this.length += item.length;
-    if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+    this.complexity += item.complexity;
+    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
 };
 
 
@@ -139,8 +139,8 @@ List.prototype.removeItem = function(index) {
     var oldItem = this.array[index];
     if (oldItem) {
         this.array.splice(index, 1);
-        this.length -= oldItem.length;
-        if (this.getSize() > 0) this.length -= 2;  // account for the ', ' separator
+        this.complexity -= oldItem.complexity;
+        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     }
     return oldItem;
 };
@@ -151,6 +151,6 @@ List.prototype.removeItem = function(index) {
  */
 List.prototype.removeAll = function() {
     var size = this.getSize();
-    if (size > 1) this.length -= (size - 1) * 2;  // account for all the ', ' separators
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };

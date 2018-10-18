@@ -79,6 +79,6 @@ Procedure.prototype.toArray = function() {
  */
 Procedure.prototype.addStatement = function(statement) {
     this.array.push(statement);
-    this.length += statement.length;
-    if (this.array.length > 1) this.length += 2;  // account for the '; ' separator
+    this.complexity += statement.complexity;
+    if (this.array.length > 1) this.complexity += 2;  // account for the '; ' separator
 };

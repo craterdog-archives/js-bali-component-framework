@@ -27,8 +27,8 @@ function Association(key, value) {
     Composite.call(this, types.ASSOCIATION);
     this.key = Composite.asComponent(key);
     this.value = Composite.asComponent(value);
-    this.length += this.key.length + this.value.length;
-    this.length += 2;  // account for the ': ' separator
+    this.complexity += this.key.complexity + this.value.complexity;
+    this.complexity += 2;  // account for the ': ' separator
     return this;
 }
 Association.prototype = Object.create(Composite.prototype);
@@ -68,7 +68,7 @@ Association.prototype.toArray = function() {
  */
 Association.prototype.setValue = function(value) {
     value = Composite.asComponent(value);
-    this.length -= this.value.length;
+    this.complexity -= this.value.complexity;
     this.value = value;
-    this.length += value.length;
+    this.complexity += value.complexity;
 };

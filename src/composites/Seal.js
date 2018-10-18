@@ -29,8 +29,8 @@ function Seal(certificateCitation, digitalSignature) {
     }
     this.certificateCitation = certificateCitation;
     this.digitalSignature = digitalSignature;
-    this.length += certificateCitation.length + digitalSignature.length;
-    this.length += 1;  // account for the ' ' separator
+    this.complexity += certificateCitation.complexity + digitalSignature.complexity;
+    this.complexity += 1;  // account for the ' ' separator
     return this;
 }
 Seal.prototype = Object.create(Composite.prototype);

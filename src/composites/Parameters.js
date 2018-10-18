@@ -24,7 +24,7 @@ var Association = require('../composites/Association').Association;
 function Parameters() {
     Collection.call(this, types.PARAMETERS);
     this.array = [];
-    this.length += 2;  // account for the '(' ')' delimiters
+    this.complexity += 2;  // account for the '(' ')' delimiters
     return this;
 }
 Parameters.prototype = Object.create(Collection.prototype);
@@ -117,11 +117,11 @@ Parameters.prototype.addParameter = function(key, value) {
     var parameter = new Association(key, value);
     this.array.push(parameter);
     if (this.isList) {
-        this.length += parameter.value.length;
+        this.complexity += parameter.value.complexity;
     } else {
-        this.length += parameter.length;
+        this.complexity += parameter.complexity;
     }
-    if (this.getSize() > 1) this.length += 2;  // account for the ', ' separator
+    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
 };
 
 

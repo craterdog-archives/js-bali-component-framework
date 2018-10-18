@@ -14,9 +14,6 @@
  * This module captures the type information about the parse tree nodes.
  */
 
-// one more than the maximum number of characters that an inline formatted component can have
-exports.TOO_BIG = 25;
-
 
 exports.typeName = function(type) {
     return TYPES[type];

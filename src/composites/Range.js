@@ -29,8 +29,8 @@ function Range(first, last, parameters) {
     Collection.call(this, types.RANGE, parameters);
     this.first = Composite.asComponent(first);
     this.last = Composite.asComponent(last);
-    this.length += 2;  // account for the '[' ']' delimiters
-    this.length += this.first.length + this.last.length + 2;  // account for the '..' separator
+    this.complexity += 2;  // account for the '[' ']' delimiters
+    this.complexity += this.first.complexity + this.last.complexity + 2;  // account for the '..' separator
     return this;
 }
 Range.prototype = Object.create(Collection.prototype);

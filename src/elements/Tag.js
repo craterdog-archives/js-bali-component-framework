@@ -59,7 +59,7 @@ function Tag(optionalSizeOrValue, parameters) {
     }
     this.hash = codex.bytesToInteger(bytes);  // the first four bytes work perfectly
     this.setSource(this.value);
-    this.length = types.TOO_BIG;  // tags should never be inlined
+    this.setComplex();  // tags should never be inlined
     return this;
 }
 Tag.prototype = Object.create(Element.prototype);

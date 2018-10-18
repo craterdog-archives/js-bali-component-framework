@@ -103,7 +103,7 @@ Element.prototype.accept = function(visitor) {
 
 Element.prototype.setSource = function(source) {
     this.source = source;
-    this.length += source.length;
+    this.complexity += source.length;
 };
 
 

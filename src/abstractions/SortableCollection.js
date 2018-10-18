@@ -99,7 +99,7 @@ SortableCollection.prototype.setItem = function(index, item) {
     index = this.normalizedIndex(index) - 1;  // convert to JS zero based indexing
     var oldItem = this.array[index];
     this.array[index] = item;
-    this.length += item.length - oldItem.length;
+    this.complexity += item.complexity - oldItem.complexity;
     return oldItem;
 };
 
