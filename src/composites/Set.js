@@ -27,6 +27,7 @@ var OrderedCollection = require('../abstractions/OrderedCollection').OrderedColl
 function Set(parameters) {
     OrderedCollection.call(this, types.SET, parameters);
     this.tree = new RandomizedTree();
+    this.length += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Set.prototype = Object.create(OrderedCollection.prototype);
@@ -278,12 +279,14 @@ Set.prototype.removeAll = function() {
 // PRIVATE CLASSES
 
 function SetIterator(set) {
+    Composite.call(this, types.ITERATOR);
     this.set = set;
     this.slot = 0;  // the slot before the first item
     this.previous = undefined;
     this.next = this.set.tree.minimum(this.set.tree.root);
     return this;
 }
+SetIterator.prototype = Object.create(Composite.prototype);
 SetIterator.prototype.constructor = SetIterator;
 
 

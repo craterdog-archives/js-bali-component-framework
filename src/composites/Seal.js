@@ -49,16 +49,6 @@ Seal.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the number of attributes that make up an seal.
- * 
- * @returns {Number} The number of attributes that make up an seal.
- */
-Seal.prototype.getSize = function() {
-    return 2;
-};
-
-
-/**
  * This method returns an array containing the attributes of this notary seal.
  * 
  * @returns {Array} An array containing the attributes of this notary seal.

@@ -6,9 +6,9 @@
         [
             $alpha
             $beta
-            $gamma
             $delta
-        ]($type: Set)
+            $gamma
+        ]($type: $Set)
         [
             none
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
@@ -61,7 +61,7 @@
                 $c: phi
             ]
         ]
-    ]($type: $foo)
+    ]($type: $Foo)
     $code: [
         {}
         {$foo := bar; $bar := baz}

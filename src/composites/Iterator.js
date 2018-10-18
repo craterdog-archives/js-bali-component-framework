@@ -27,8 +27,8 @@
  * </pre>
  */
 var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
-var formatter = require('../utilities/DocumentFormatter');
+var Composite = require('../abstractions/Composite').Composite;
+var Complex = require('../elements/Complex').Complex;
 
 
 /**
@@ -38,31 +38,18 @@ var formatter = require('../utilities/DocumentFormatter');
  * @returns {Iterator} The new array iterator.
  */
 function Iterator(array) {
-    Component.call(this, types.ITERATOR);
+    Composite.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first item
     this.array = array;
     this.length = types.TOO_BIG;  // iterators won't fit inline
     return this;
 }
-Iterator.prototype = Object.create(Component.prototype);
+Iterator.prototype = Object.create(Composite.prototype);
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
 
 
 // PUBLIC METHODS
-
-/**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Iterator.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -71,6 +58,21 @@ Iterator.prototype.toSource = function(indentation) {
  */
 Iterator.prototype.accept = function(visitor) {
     visitor.visitIterator(this);
+};
+
+
+/**
+ * This method returns an array containing the attributes of this iterator.
+ * 
+ * @returns {Array} An array containing the attributes of this iterator.
+ */
+Iterator.prototype.toArray = function() {
+    var array = [];
+    array.push(new Complex(this.slot.toString()));
+    this.array.forEach(function(item) {
+        array.push(item);
+    }, this);
+    return array;
 };
 
 

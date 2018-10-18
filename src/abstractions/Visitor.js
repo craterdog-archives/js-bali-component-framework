@@ -15,8 +15,7 @@
  * the corresponding source string.
  */
 var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
-var formatter = require('../utilities/DocumentFormatter');
+var Composite = require('../abstractions/Composite').Composite;
 
 
 /**
@@ -25,29 +24,16 @@ var formatter = require('../utilities/DocumentFormatter');
  * @returns {Visitor} The new visitor.
  */
 function Visitor() {
-    Component.call(this, types.VISITOR);
+    Composite.call(this, types.VISITOR);
     this.depth = 0;
     return this;
 }
-Visitor.prototype = Object.create(Component.prototype);
+Visitor.prototype = Object.create(Composite.prototype);
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
 
 
 // PUBLIC METHODS
-
-/**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Visitor.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -97,13 +83,6 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
     document.accept(this);
     var reference = tree.children[1];
     reference.accept(this);
-};
-
-
-// source: '{' procedure '}'
-Visitor.prototype.visitSource = function(source) {
-    // delegate to element
-    this.visitElement(source);
 };
 
 
@@ -457,6 +436,13 @@ Visitor.prototype.visitSelectClause = function(tree) {
 Visitor.prototype.visitSet = function(set) {
     // delegate to collection
     this.visitCollection(set);
+};
+
+
+// source: '{' procedure '}'
+Visitor.prototype.visitSource = function(source) {
+    // delegate to element
+    this.visitElement(source);
 };
 
 

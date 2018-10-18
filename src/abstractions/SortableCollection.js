@@ -61,6 +61,17 @@ SortableCollection.prototype.toArray = function() {
 
 
 /**
+ * This abstract method returns an empty copy of this collection. It must be implemented
+ * by a subclass.
+ * 
+ * @returns {Collection} An empty copy of this collection.
+ */
+SortableCollection.prototype.emptyCopy = function() {
+    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
+};
+
+
+/**
  * This method returns the item in this collection that is specified by the numeric index.
  * 
  * @param {Number} index The index of the desired item.
@@ -90,6 +101,58 @@ SortableCollection.prototype.setItem = function(index, item) {
     this.array[index] = item;
     this.length += item.length - oldItem.length;
     return oldItem;
+};
+
+
+/**
+ * This method returns a new collection of items starting with the item at the first index
+ * and including the item at the last index.
+ * 
+ * @param {type} firstIndex The index of the first item to be included.
+ * @param {type} lastIndex The index of the last item to be included.
+ * @returns {Collection} The new collection containing the requested items.
+ */
+SortableCollection.prototype.getItems = function(firstIndex, lastIndex) {
+    firstIndex = this.normalizedIndex(firstIndex) - 1;
+    lastIndex = this.normalizedIndex(lastIndex) - 1;
+    var result = this.emptyCopy();
+    for (var i = firstIndex; i <= lastIndex; i++) {
+        var item = this.array[i];
+        result.addItem(item);
+    }
+    return result;
+};
+
+
+/**
+ * This abstract method adds the specified item to this collection. It must be implemented
+ * by a subclass.
+ * 
+ * @param {Component} item The item to be added to this collection. 
+ * @returns {Boolean} Whether or not the item was successfully added.
+ */
+SortableCollection.prototype.addItem = function(item) {
+    throw new Error('COLLECTION: Abstract method addItem(item) must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method adds a list of new items to this collection.  The new
+ * items will be added in the order they appear in the specified collection.
+ *
+ * @param {Collection} items The list of new items to be added.
+ * @returns {Number} The number of items that were actually added to this collection.
+ */
+SortableCollection.prototype.addItems = function(items) {
+    var count = 0;
+    var iterator = items.iterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (this.addItem(item)) {
+            count++;
+        }
+    }
+    return count;
 };
 
 

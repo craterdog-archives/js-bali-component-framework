@@ -15,7 +15,6 @@
  * the corresponding source string.
  */
 var types = require('../abstractions/Types');
-var Visitor = require('../abstractions/Visitor').Visitor;
 
 
 exports.formatTree = function(tree, indentation) {
@@ -29,13 +28,14 @@ exports.formatTree = function(tree, indentation) {
 
 var INDENTATION = '    ';
 
+// NOTE: This visitor cannot inherit from the Visitor class or would introduce circular
+// dependencies since Visitor inherits from Composite which uses FormattingVisitor.
 function FormattingVisitor(indentation) {
-    Visitor.call(this);
     this.indentation = indentation ? indentation : '';
     this.source = '';
+    this.depth = 0;
     return this;
 }
-FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
@@ -77,6 +77,16 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 // breakClause: 'break' 'loop'
 FormattingVisitor.prototype.visitBreakClause = function(tree) {
     this.source += 'break loop';
+};
+
+
+// catalog:
+//     association (',' association)* |
+//     NEWLINE (association NEWLINE)* |
+//     ':' /*empty catalog*/
+FormattingVisitor.prototype.visitCatalog = function(catalog) {
+    // delegate to collection
+    this.visitCollection(catalog);
 };
 
 
@@ -274,6 +284,15 @@ FormattingVisitor.prototype.visitFunction = function(identifier) {
 };
 
 
+// functionExpression: function parameters
+FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
+    var functionName = tree.children[0];
+    functionName.accept(this);
+    var parameters = tree.children[1];
+    parameters.accept(this);
+};
+
+
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 FormattingVisitor.prototype.visitHandleClause = function(tree) {
     this.source += ' handle ';
@@ -337,22 +356,32 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 FormattingVisitor.prototype.visitIterator = function(iterator) {
     this.source += '[';
     this.depth++;
-    var slot = 0;
+    this.appendNewline();
+    this.source += '$slot: ' + iterator.slot;
+    this.appendNewline();
+    this.source += '$array: [';
+    this.depth++;
     iterator.array.forEach(function(item) {
         this.appendNewline();
-        if (iterator.slot === slot++) {
-            this.source += '    <= iterator';
-            this.appendNewline();
-        }
         item.accept(this);
     }, this);
-    if (iterator.slot === slot) {
-        this.source += '    <= iterator';
-        this.appendNewline();
-    }
     this.depth--;
     this.appendNewline();
     this.source += ']';
+    this.depth--;
+    this.appendNewline();
+    this.source += ']';
+    this.source += '($type: $Iterator)';
+};
+
+
+// list:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
+FormattingVisitor.prototype.visitList = function(list) {
+    // delegate to collection
+    this.visitCollection(list);
 };
 
 
@@ -568,6 +597,51 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
             block.accept(this);
         }
     }
+};
+
+
+FormattingVisitor.prototype.visitSet = function(set) {
+    // delegate to collection
+    this.visitCollection(set);
+};
+
+
+// source: '{' procedure '}'
+FormattingVisitor.prototype.visitSource = function(source) {
+    // delegate to element
+    this.visitElement(source);
+};
+
+
+FormattingVisitor.prototype.visitStack = function(stack) {
+    // delegate to collection
+    this.visitCollection(stack);
+};
+
+
+// statement: mainClause handleClause*
+FormattingVisitor.prototype.visitStatement = function(tree) {
+    tree.children.forEach(function(child) {
+        child.accept(this);
+    }, this);
+};
+
+
+// subcomponent: variable indices
+FormattingVisitor.prototype.visitSubcomponent = function(tree) {
+    var variable = tree.children[0];
+    variable.accept(this);
+    var indices = tree.children[1];
+    indices.accept(this);
+};
+
+
+// subcomponentExpression: expression indices
+FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+    var component = tree.children[0];
+    component.accept(this);
+    var indices = tree.children[1];
+    indices.accept(this);
 };
 
 

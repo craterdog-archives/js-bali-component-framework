@@ -14,7 +14,7 @@
  * such that once parameters have been added to it they cannot be reordered or removed.
  */
 var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+var Collection = require('../abstractions/Collection').Collection;
 var Association = require('../composites/Association').Association;
 
 
@@ -22,12 +22,12 @@ var Association = require('../composites/Association').Association;
  * The constructor creates a new empty parameter list.
  */
 function Parameters() {
-    Composite.call(this, types.PARAMETERS);
+    Collection.call(this, types.PARAMETERS);
     this.array = [];
-    this.length += 2;  // account for the '()' delimiters
+    this.length += 2;  // account for the '(' ')' delimiters
     return this;
 }
-Parameters.prototype = Object.create(Composite.prototype);
+Parameters.prototype = Object.create(Collection.prototype);
 Parameters.prototype.constructor = Parameters;
 exports.Parameters = Parameters;
 
@@ -160,8 +160,8 @@ Parameters.prototype.getValueForIndex = function(index) {
  * @returns {Object} The value associated with the key.
  */
 Parameters.prototype.getValueForKey = function(key) {
-    var value = this.array.find(function(parameter) {
+    var parameter = this.array.find(function(parameter) {
         return parameter.key.toString() === key.toString();
     }, this);
-    return value;
+    return parameter.value;
 };

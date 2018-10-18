@@ -13,7 +13,7 @@
  * This class captures the state and methods associated with a Bali document.
  */
 var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+var Collection = require('../abstractions/Collection').Collection;
 
 
 /**
@@ -24,12 +24,12 @@ var Composite = require('../abstractions/Composite').Composite;
  * @returns {Tree} The new tree node.
  */
 function Tree(type, length) {
-    Composite.call(this, type);
+    Collection.call(this, type);
     this.children = [];
     this.length += length;
     return this;
 }
-Tree.prototype = Object.create(Composite.prototype);
+Tree.prototype = Object.create(Collection.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
 

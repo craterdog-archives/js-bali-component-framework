@@ -40,6 +40,30 @@ Component.prototype.isSimple = function() {
 
 
 /**
+ * This abstract method compares this component with another object for equality. It must be
+ * implemented by a subclass.
+ * 
+ * @param {Object} that The object that is being compared.
+ * @returns {Boolean}
+ */
+Component.prototype.equalTo = function(that) {
+    throw new Error('COMPONENT: Abstract method equalTo(that) must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This abstract method compares this component with another object for natural order. It must
+ * be implemented by a subclass.
+ * 
+ * @param {Object} that The object that is being compared.
+ * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
+ */
+Component.prototype.compareTo = function(that) {
+    throw new Error('COMPONENT: Abstract method compareTo(that) must be implemented by a concrete subclass.');
+};
+
+
+/**
  * This method returns a string representation of the component.
  * 
  * @returns {String} The corresponding string representation.

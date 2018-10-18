@@ -14,7 +14,7 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Complex = require('../elements/Complex').Complex;
+var Collection = require('../abstractions/Collection').Collection;
 
 
 /**
@@ -26,14 +26,14 @@ var Complex = require('../elements/Complex').Complex;
  * @returns {Range} The new range.
  */
 function Range(first, last, parameters) {
-    Composite.call(this, types.RANGE, parameters);
+    Collection.call(this, types.RANGE, parameters);
     this.first = Composite.asComponent(first);
     this.last = Composite.asComponent(last);
-    this.length += 2;  // account for the '[]' delimiters
+    this.length += 2;  // account for the '[' ']' delimiters
     this.length += this.first.length + this.last.length + 2;  // account for the '..' separator
     return this;
 }
-Range.prototype = Object.create(Composite.prototype);
+Range.prototype = Object.create(Collection.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -116,11 +116,13 @@ Range.prototype.iterator = function() {
 // PRIVATE CLASSES
 
 function RangeIterator(range) {
+    Composite.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first number
     this.size = range.getSize();  // static so we can cache it here
     this.range = range;
     return this;
 }
+RangeIterator.prototype = Object.create(Composite.prototype);
 RangeIterator.prototype.constructor = RangeIterator;
 
 

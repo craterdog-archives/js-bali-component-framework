@@ -13,6 +13,7 @@
  * This abstract class defines the invariant methods that all collections must inherit.
  */
 var Composite = require('./Composite').Composite;
+var Iterator = require('../composites/Iterator').Iterator;
 
 
 /**
@@ -24,7 +25,6 @@ var Composite = require('./Composite').Composite;
  */
 function Collection(type, parameters) {
     Composite.call(this, type, parameters);
-    this.length += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Collection.prototype = Object.create(Composite.prototype);
@@ -35,25 +35,54 @@ exports.Collection = Collection;
 // PUBLIC METHODS
 
 /**
- * This abstract method returns an empty copy of this collection. It must be implemented
- * by a subclass.
+ * This method accepts a visitor as part of the visitor pattern.
  * 
- * @returns {Collection} An empty copy of this collection.
+ * @param {Visitor} visitor The visitor that wants to visit this composite.
  */
-Collection.prototype.emptyCopy = function() {
-    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
+Collection.prototype.accept = function(visitor) {
+    visitor.visitCollection(this);
 };
 
 
 /**
- * This abstract method adds the specified item to this collection. It must be implemented
- * by a subclass.
- * 
- * @param {Component} item The item to be added to this collection. 
- * @returns {Boolean} Whether or not the item was successfully added.
+ * This method returns an object that can be used to iterate over the items in
+ * this collection.
+ * @returns {Iterator} An iterator for this collection.
  */
-Collection.prototype.addItem = function(item) {
-    throw new Error('COLLECTION: Abstract method addItem(item) must be implemented by a concrete subclass.');
+Collection.prototype.iterator = function() {
+    var iterator = new Iterator(this.toArray());
+    return iterator;
+};
+/**
+ * This method returns whether or not this composite component is empty.
+ * 
+ * @returns {Boolean} Whether or not this composite component is empty.
+ */
+Collection.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
+
+/**
+ * This function converts negative indexes into their corresponding positive indexes and
+ * then checks to make sure the index is in the range [1..size]. NOTE: if the collection
+ * is empty then the resulting index will be zero.
+ *
+ * The mapping between indexes is as follows:
+ * <pre>
+ * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
+ * Positive Indexes:    1         2          3          4     ...    N
+ * </pre>
+ *
+ * @param {Number} index The index to be normalized [-N..N].
+ * @returns {Number} The normalized [1..N] index.
+ */
+Collection.prototype.normalizedIndex = function(index) {
+    var size = this.getSize();
+    if (index > size) index = size;
+    if (index < -size) index = -size;
+    if (index < 0) index = index + size + 1;
+    return index;
 };
 
 
@@ -79,50 +108,6 @@ Collection.prototype.getIndex = function(item) {
         if (component.equalTo(candidate)) return index;
     }
     return 0;  // not found
-};
-
-
-/**
- * This method returns a new collection of items starting with the item at the first index
- * and including the item at the last index.
- * 
- * @param {type} firstIndex The index of the first item to be included.
- * @param {type} lastIndex The index of the last item to be included.
- * @returns {Collection} The new collection containing the requested items.
- */
-Collection.prototype.getItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizedIndex(firstIndex);
-    lastIndex = this.normalizedIndex(lastIndex);
-    var result = this.emptyCopy();
-    var iterator = this.iterator();
-    iterator.toSlot(firstIndex - 1);  // the slot before the first item
-    var numberOfItems = lastIndex - firstIndex + 1;
-    while (numberOfItems > 0) {
-        var item = iterator.getNext();
-        result.addItem(item);
-        numberOfItems--;
-    }
-    return result;
-};
-
-
-/**
- * This method adds a list of new items to this collection.  The new
- * items will be added in the order they appear in the specified collection.
- *
- * @param {Collection} items The list of new items to be added.
- * @returns {Number} The number of items that were actually added to this collection.
- */
-Collection.prototype.addItems = function(items) {
-    var count = 0;
-    var iterator = items.iterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        if (this.addItem(item)) {
-            count++;
-        }
-    }
-    return count;
 };
 
 

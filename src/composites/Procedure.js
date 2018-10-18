@@ -19,7 +19,7 @@
  * </pre>
  */
 var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+var Collection = require('../abstractions/Collection').Collection;
 
 
 /**
@@ -29,11 +29,11 @@ var Composite = require('../abstractions/Composite').Composite;
  * @returns {Procedure} The new procedure.
  */
 function Procedure(parameters) {
-    Composite.call(this, types.PROCEDURE, parameters);
+    Collection.call(this, types.PROCEDURE, parameters);
     this.array = [];
     return this;
 }
-Procedure.prototype = Object.create(Composite.prototype);
+Procedure.prototype = Object.create(Collection.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 
@@ -80,5 +80,5 @@ Procedure.prototype.toArray = function() {
 Procedure.prototype.addStatement = function(statement) {
     this.array.push(statement);
     this.length += statement.length;
-    if (this.getSize() > 1) this.length += 2;  // account for the '; ' separator
+    if (this.array.length > 1) this.length += 2;  // account for the '; ' separator
 };

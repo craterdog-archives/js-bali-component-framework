@@ -12,6 +12,7 @@ var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var utilities = require('../src/utilities');
+var List = require('../src/composites/List').List;
 
 describe('Bali Document Notation™', function() {
     var DEBUG = true;
@@ -102,6 +103,18 @@ describe('Bali Document Notation™', function() {
             expect(tree).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatTree(tree);
             expect(formatted).to.equal(source);
+        });
+
+        it('should parse and format the same iterators', function() {
+            var list = List.fromCollection([1, 2, 3]);
+            var expected = list.iterator();
+            expected.getNext();
+            var source = utilities.formatter.formatTree(expected);
+            expect(source).to.exist;  // jshint ignore:line
+            var iterator = utilities.parser.parseComponent(source);
+            expect(iterator).to.exist;  // jshint ignore:line
+            expect(expected.slot).to.equal(iterator.slot);
+            expect(expected.equalTo(iterator)).to.equal(true);
         });
 
     });

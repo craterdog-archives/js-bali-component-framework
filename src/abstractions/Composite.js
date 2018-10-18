@@ -15,7 +15,7 @@
 var Component = require('./Component').Component;
 var formatter = require('../utilities/DocumentFormatter');
 var parser = require('../utilities/DocumentParser');
-var Iterator = require('../composites/Iterator').Iterator;
+
 
 /**
  * The constructor for the Composite class.
@@ -36,50 +36,6 @@ exports.Composite = Composite;
 // PUBLIC METHODS
 
 /**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Composite.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this composite.
- */
-Composite.prototype.accept = function(visitor) {
-    visitor.visitCollection(this);
-};
-
-
-/**
- * This method returns whether or not this composite component is empty.
- * 
- * @returns {Boolean} Whether or not this composite component is empty.
- */
-Composite.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
- * This abstract method returns the size of this composite component. The size is the number of
- * subcomponents this composite component has. It must be implemented by a subclass.
- * 
- * @returns {Number} The number of subcomponents this component has.
- */
-Composite.prototype.getSize = function() {
-    throw new Error('COMPOSITE: Abstract method getSize() must be implemented by a concrete subclass.');
-};
-
-
-/**
  * This abstract method returns an array containing the subcomponents in this composite
  * component. It must be implemented by a subclass.
  * 
@@ -91,65 +47,62 @@ Composite.prototype.toArray = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the subcomponents
- * of this composite component.
- * 
- * @returns {Iterator} An iterator for this composite component.
- */
-Composite.prototype.iterator = function() {
-    var iterator = new Iterator(this.toArray());
-    return iterator;
-};
-
-
-/**
- * This method compares this composit component with another object for equality.
+ * This method compares this composite with another object for equality.
  * 
  * @param {Object} that The object that is being compared.
  * @returns {Boolean}
  */
 Composite.prototype.equalTo = function(that) {
-    if (that && this.prototype !== that.prototype) return false;
-    if (this.getSize() !== that.getSize()) return false;
-    var thisIterator = this.iterator();
-    var thatIterator = that.iterator();
-    while (thisIterator.hasNext()) {
-        var thisItem = thisIterator.getNext();
-        var thatItem = thatIterator.getNext();
-        if (!thisItem.equalTo(thatItem)) return false;
+    if (!that) return false;
+    if (this === that) return true;  // same object
+    if (this.prototype !== that.prototype) return false;
+    var thisArray = this.toArray();
+    var thatArray = that.toArray();
+    if (thisArray.length !== thatArray.length) return false;
+    for (var i = 0; i < thisArray.length; i++) {
+        if (!thisArray[i].equalTo(thatArray[i])) return false;
     }
     return true;
 };
 
 
 /**
- * This method compares this composite component with another object using a
- * NaturalComparator.
+ * This method compares this composite with another object for natural order.
  * 
  * @param {Object} that The object that is being compared.
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
  */
 Composite.prototype.compareTo = function(that) {
-    if (that === null) return 1;
+    if (!that) return 1;  // all composites are greater than null/undefined
     if (this === that) return 0;  // same object
+    var result = this.constructor.name.localeCompare(that.constructor.name);
+    var thisArray = this.toArray();
+    var thatArray = that.toArray();
     var result = 0;
-    var thisIterator = this.iterator();
-    var thatIterator = that.iterator();
-    while (thisIterator.hasNext() && thatIterator.hasNext()) {
-        var thisItem = thisIterator.getNext();
-        var thatItem = thatIterator.getNext();
-        result = thisItem.compareTo(thatItem);
-        if (result !== 0) break;
+    for (var i = 0; i < thisArray.length && i < thatArray.length; i++) {
+        result = thisArray[i].compareTo(thatArray[i]);
+        if (result !== 0) return result;
     }
-    if (result === 0) {
-        // same so far, check for different lengths
-        if (this.getSize() < that.getSize()) {
-            return -1;
-        } else if (this.getSize() > that.getSize()) {
-            return 1;
-        }
+    if (thisArray.length < thatArray.length) {
+        return -1;
+    } else if (thisArray.length > thatArray.length) {
+        return 1;
+    } else {
+        return 0;
     }
-    return result;
+};
+
+
+/**
+ * This method provides the canonical way to export a Bali component as Bali source code.
+ * 
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code.
+ * @returns {String} The Bali source code for the component.
+ */
+Composite.prototype.toSource = function(indentation) {
+    var source = formatter.formatTree(this, indentation);
+    return source;
 };
 
 
@@ -173,27 +126,3 @@ Composite.asComponent = function(value) {
     }
     return component;
 };
-
-
-/**
- * This function converts negative indexes into their corresponding positive indexes and
- * then checks to make sure the index is in the range [1..size]. NOTE: if the collection
- * is empty then the resulting index will be zero.
- *
- * The mapping between indexes is as follows:
- * <pre>
- * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
- * Positive Indexes:    1         2          3          4     ...    N
- * </pre>
- *
- * @param {Number} index The index to be normalized [-N..N].
- * @returns {Number} The normalized [1..N] index.
- */
-Composite.prototype.normalizedIndex = function(index) {
-    var size = this.getSize();
-    if (index > size) index = size;
-    if (index < -size) index = -size;
-    if (index < 0) index = index + size + 1;
-    return index;
-};
-

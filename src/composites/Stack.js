@@ -17,6 +17,7 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
+var Collection = require('../abstractions/Collection').Collection;
 
 
 /*
@@ -35,13 +36,13 @@ Array.prototype.peek = function() {
  * @returns {Stack} The new stack.
  */
 function Stack(parameters) {
-    Composite.call(this, types.STACK, parameters);
+    Collection.call(this, types.STACK, parameters);
     this.capacity = 1024;
     this.array = [];
-    this.length += 2;  // account for the '{' '}' delimiters
+    this.length += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Stack.prototype = Object.create(Composite.prototype);
+Stack.prototype = Object.create(Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 

@@ -36,6 +36,73 @@ OrderedCollection.prototype.constructor = OrderedCollection;
 exports.OrderedCollection = OrderedCollection;
 
 
+/**
+ * This abstract method returns an empty copy of this collection. It must be implemented
+ * by a subclass.
+ * 
+ * @returns {Collection} An empty copy of this collection.
+ */
+OrderedCollection.prototype.emptyCopy = function() {
+    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method returns a new collection of items starting with the item at the first index
+ * and including the item at the last index.
+ * 
+ * @param {type} firstIndex The index of the first item to be included.
+ * @param {type} lastIndex The index of the last item to be included.
+ * @returns {Collection} The new collection containing the requested items.
+ */
+OrderedCollection.prototype.getItems = function(firstIndex, lastIndex) {
+    firstIndex = this.normalizedIndex(firstIndex);
+    lastIndex = this.normalizedIndex(lastIndex);
+    var result = this.emptyCopy();
+    var iterator = this.iterator();
+    iterator.toSlot(firstIndex - 1);  // the slot before the first item
+    var numberOfItems = lastIndex - firstIndex + 1;
+    while (numberOfItems > 0) {
+        var item = iterator.getNext();
+        result.addItem(item);
+        numberOfItems--;
+    }
+    return result;
+};
+
+
+/**
+ * This abstract method adds the specified item to this collection. It must be implemented
+ * by a subclass.
+ * 
+ * @param {Component} item The item to be added to this collection. 
+ * @returns {Boolean} Whether or not the item was successfully added.
+ */
+OrderedCollection.prototype.addItem = function(item) {
+    throw new Error('COLLECTION: Abstract method addItem(item) must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method adds a list of new items to this collection.  The new
+ * items will be added in the order they appear in the specified collection.
+ *
+ * @param {Collection} items The list of new items to be added.
+ * @returns {Number} The number of items that were actually added to this collection.
+ */
+OrderedCollection.prototype.addItems = function(items) {
+    var count = 0;
+    var iterator = items.iterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (this.addItem(item)) {
+            count++;
+        }
+    }
+    return count;
+};
+
+
 /*
  * This abstract method removes the specified item from this collection. It must be
  * implemented by a subclass.

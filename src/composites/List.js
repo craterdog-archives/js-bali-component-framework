@@ -33,6 +33,7 @@ var SortableCollection = require('../abstractions/SortableCollection').SortableC
  */
 function List(parameters) {
     SortableCollection.call(this, types.LIST, parameters);
+    this.length += 2;  // account for the '[' ']' delimiters
     return this;
 }
 List.prototype = Object.create(SortableCollection.prototype);

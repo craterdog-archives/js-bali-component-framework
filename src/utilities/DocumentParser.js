@@ -345,18 +345,38 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var parameters = this.parameters;
-    var catalog = new composites.Catalog(parameters);
-    var type = ctx.constructor.name;
-    if (type !== 'EmptyCatalogContext') {
-        var associations = ctx.association();
-        this.depth++;
-        associations.forEach(function(association) {
-            association.accept(this);
-            catalog.addItem(this.result);
-        }, this);
-        this.depth--;
+    var type = types.CATALOG;
+    if (parameters) {
+        type = parameters.getValueForKey('$type');
+        if (!type) parameters.getValueForIndex(1);
+        type = types.typeBySymbol(type);
     }
-    this.result = catalog;
+    var component;
+    var associations;
+    switch (type) {
+        case types.ITERATOR:
+            associations = ctx.association();
+            associations[0].accept(this);
+            var slot = Number(this.result.value);
+            associations[1].accept(this);
+            var array = this.result.value.toArray();
+            component = new composites.Iterator(array);
+            component.toSlot(slot);
+            break;
+        case types.CATALOG:
+        default:
+            component = new composites.Catalog(parameters);
+            if (ctx.constructor.name !== 'EmptyCatalogContext') {
+                this.depth++;
+                associations = ctx.association();
+                associations.forEach(function(association) {
+                    association.accept(this);
+                    component.addItem(this.result);
+                }, this);
+                this.depth--;
+            }
+    }
+    this.result = component;
 };
 
 
@@ -368,18 +388,6 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// source: '{' procedure '}'
-ParsingVisitor.prototype.visitSource = function(ctx) {
-    var parameters = this.parameters;
-    ctx.procedure().accept(this);
-    var procedure = this.result;
-    procedure.inBrackets = true;
-    var source = procedure.toSource();
-    source = new elements.Source(source, parameters);
-    this.result = source;
 };
 
 
@@ -1034,6 +1042,18 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
         tree.addChild(this.result);
     }
     this.result = tree;
+};
+
+
+// source: '{' procedure '}'
+ParsingVisitor.prototype.visitSource = function(ctx) {
+    var parameters = this.parameters;
+    ctx.procedure().accept(this);
+    var procedure = this.result;
+    procedure.inBrackets = true;
+    var source = procedure.toSource();
+    source = new elements.Source(source, parameters);
+    this.result = source;
 };
 
 

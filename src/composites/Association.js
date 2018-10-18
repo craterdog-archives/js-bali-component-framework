@@ -16,8 +16,13 @@ var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 
 
-// PUBLIC METHODS
-
+/**
+ * This constructor creates a new key-value association.
+ * 
+ * @param {String|Component} key The key of the association.
+ * @param {String|Expression} value The value associated with the key.
+ * @returns {Association} A new association.
+ */
 function Association(key, value) {
     Composite.call(this, types.ASSOCIATION);
     this.key = Composite.asComponent(key);
@@ -31,6 +36,8 @@ Association.prototype.constructor = Association;
 exports.Association = Association;
 
 
+// PUBLIC METHODS
+
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
@@ -38,16 +45,6 @@ exports.Association = Association;
  */
 Association.prototype.accept = function(visitor) {
     visitor.visitAssociation(this);
-};
-
-
-/**
- * This method returns the number of attributes that make up an association.
- * 
- * @returns {Number} The number of attributes that make up an association.
- */
-Association.prototype.getSize = function() {
-    return 2;
 };
 
 
@@ -65,11 +62,12 @@ Association.prototype.toArray = function() {
 
 
 /**
- * This method sets a new value for the association.
+ * This method sets a new value for this association.
  * 
- * @param {Component} value The value of the association.
+ * @param {String|Component} value The value of this association.
  */
 Association.prototype.setValue = function(value) {
+    value = Composite.asComponent(value);
     this.length -= this.value.length;
     this.value = value;
     this.length += value.length;

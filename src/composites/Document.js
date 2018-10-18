@@ -57,18 +57,6 @@ Document.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the number of attributes that make up an document.
- * 
- * @returns {Number} The number of attributes that make up an document.
- */
-Document.prototype.getSize = function() {
-    var size = this.previousCitation ? 2 : 1;
-    size += this.notarySeals.length;
-    return size;
-};
-
-
-/**
  * This method returns an array containing the attributes of this document.
  * 
  * @returns {Array} An array containing the attributes of this document.

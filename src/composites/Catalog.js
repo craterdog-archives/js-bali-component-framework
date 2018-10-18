@@ -30,6 +30,7 @@ var List = require('./List').List;
 function Catalog(parameters) {
     SortableCollection.call(this, types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
+    this.length += 2;  // account for the '[' ']' delimiters
     this.length += 1;  // account for the ':' in the empty catalog
     return this;
 }
