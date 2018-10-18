@@ -11,14 +11,11 @@
 
 /**
  * This collection class implements a stack (LIFO) data structure.  Attempting to access an
- * entity on an empty stack is considered a bug in the calling code and a runtime exception
- * is thrown.  The implementation dynamically scales up and down the size of the underlying
- * data structures as the number items changes over time.
+ * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
-
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -29,10 +26,13 @@ Array.prototype.peek = function() {
 };
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty stack.
+ * This constructor creates a new stack component with optional parameters that are
+ * used to parameterize its type.
  * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Stack} The new stack.
  */
 function Stack(parameters) {
@@ -47,6 +47,16 @@ Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 
 
+/**
+ * This function creates a new stack using the specified collection to seed the
+ * initial items on the stack. The stack may be parameterized by specifying optional
+ * parameters that are used to parameterize its type.
+ * 
+ * @param {Array|Object|Collection} collection The collection containing the initial
+ * items to be used to seed the new stack.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {Stack} The new stack.
+ */
 Stack.fromCollection = function(collection, parameters) {
     var stack = new Stack(parameters);
     var iterator;
@@ -108,7 +118,7 @@ Stack.prototype.removeAll = function() {
 /**
  * This method pushes a new item onto the top of this stack.
  *
- * @param {Object} item The new item to be added.
+ * @param {Component} item The new item to be added.
  */
 Stack.prototype.pushItem = function(item) {
     item = Composite.asComponent(item);
@@ -126,7 +136,7 @@ Stack.prototype.pushItem = function(item) {
  * This method pops the top item off of this stack.  If this stack is empty
  * an exception is thrown.
  *
- * @returns {Object} The top item from this stack.
+ * @returns {Component} The top item from this stack.
  */
 Stack.prototype.popItem = function() {
     var item;
@@ -146,7 +156,7 @@ Stack.prototype.popItem = function() {
  * This method returns a reference to the top item on this stack without
  * removing it from this stack.  If this stack is empty an exception is thrown.
  *
- * @returns {Object} The top item on this stack.
+ * @returns {Component} The top item on this stack.
  */
 Stack.prototype.getTop = function() {
     var item = null;

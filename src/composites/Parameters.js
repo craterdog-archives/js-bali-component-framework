@@ -18,8 +18,12 @@ var Collection = require('../abstractions/Collection').Collection;
 var Association = require('../composites/Association').Association;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty parameter list.
+ * This constructor creates a new empty parameter list.
+ * 
+ * @returns {Parameters} The new parameter list.
  */
 function Parameters() {
     Collection.call(this, types.PARAMETERS);
@@ -32,6 +36,14 @@ Parameters.prototype.constructor = Parameters;
 exports.Parameters = Parameters;
 
 
+/**
+ * This function creates a new parameter list using the specified collection to seed the
+ * initial parameters in the list.
+ * 
+ * @param {Array|Object|Collection} collection The collection containing the initial
+ * parameters to be used to seed the new parameter list.
+ * @returns {Parameters} The new parameter list.
+ */
 Parameters.fromCollection = function(collection) {
     var parameters = new Parameters();
     var iterator;
@@ -86,7 +98,7 @@ Parameters.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the number of items that are currently on the parameter list.
+ * This method returns the number of parameters that are currently on the parameter list.
  * 
  * @returns {Number}
  */
@@ -97,9 +109,9 @@ Parameters.prototype.getSize = function() {
 
 
 /**
- * This method returns an array containing the parameters in this collection.
+ * This method returns an array containing the parameters in this list.
  * 
- * @returns {Array} An array containing the parameters in this collection.
+ * @returns {Array} An array containing the parameters in this list.
  */
 Parameters.prototype.toArray = function() {
     var array = this.array.slice();  // copy the array
@@ -110,8 +122,8 @@ Parameters.prototype.toArray = function() {
 /**
  * This method adds a new parameter to the end of the parameter list.
  *
- * @param {Object} key The key for the new parameter.
- * @param {Object} value The new value to be associated with the parameter.
+ * @param {String|Number|Boolean|Component} key The key for the new parameter.
+ * @param {String|Number|Boolean|Component} value The new value to be associated with the key.
  */
 Parameters.prototype.addParameter = function(key, value) {
     var parameter = new Association(key, value);
@@ -126,10 +138,10 @@ Parameters.prototype.addParameter = function(key, value) {
 
 
 /**
- * This method returns the parameter that is specified by the numeric index.
+ * This method returns the parameter (key-value pair) that is specified by the numeric index.
  * 
  * @param {Number} index The index of the desired parameter.
- * @returns {Object} The parameter at the position in the parameter list.
+ * @returns {Association} The parameter at the position in the parameter list.
  */
 Parameters.prototype.getParameter = function(index) {
     index = this.normalizedIndex(index);
@@ -143,7 +155,7 @@ Parameters.prototype.getParameter = function(index) {
  * This method returns the value of the parameter that is specified by the numeric index.
  * 
  * @param {Number} index The index of the desired parameter.
- * @returns {Object} The value of the parameter at the position in the parameter list.
+ * @returns {Component} The value of the parameter at the position in the parameter list.
  */
 Parameters.prototype.getValueForIndex = function(index) {
     index = this.normalizedIndex(index);
@@ -156,8 +168,8 @@ Parameters.prototype.getValueForIndex = function(index) {
 /**
  * This method returns the value associated with the specified key in the parameter list.
  *
- * @param {Object} key The key for the value to be retrieved.
- * @returns {Object} The value associated with the key.
+ * @param {String|Number|Boolean|Component} key The key for the desired parameter value.
+ * @returns {Component} The parameter value associated with the key.
  */
 Parameters.prototype.getValueForKey = function(key) {
     var parameter = this.array.find(function(parameter) {

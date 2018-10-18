@@ -7,12 +7,13 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements a sortable collection containing key-value associations.  The
- * implementation is optimized for both inserting new associations and looking up values based on
- * their key.  The implementation also dynamically scales up and down the number of buckets as the
- * number of associations changes over time.
+ * This collection class implements a sortable collection containing key-value associations.
+ * Multiple values cannot be assigned to the same key, but the same value may be assigned to
+ * multiple keys. The key-value associations are maintained in the order in which they were
+ * added to the catalog. But they may be reordered by sorting the catalog.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
@@ -21,10 +22,13 @@ var Association = require('./Association').Association;
 var List = require('./List').List;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty catalog.
+ * This constructor creates a new catalog component with optional parameters that are
+ * used to parameterize its type.
  * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Catalog} The new catalog.
  */
 function Catalog(parameters) {
@@ -41,12 +45,13 @@ exports.Catalog = Catalog;
 
 /**
  * This function creates a new catalog using the specified collection to seed the
- * initial associations.
+ * initial associations. The list may be parameterized by specifying optional
+ * parameters that are used to parameterize its type.
  * 
  * @param {Array|Object|Collection} collection The collection containing the initial
  * associations to be used to seed the new catalog.
- * @param {type} parameters Optional parameters for the catalog type.
- * @returns {Catalog} The resulting catalog.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {Catalog} The new catalog.
  */
 Catalog.fromCollection = function(collection, parameters) {
     var catalog = new Catalog(parameters);
@@ -90,7 +95,8 @@ Catalog.fromCollection = function(collection, parameters) {
 
 /**
  * This function returns a new catalog that contains the all the associations from
- * both the specified catalogs.
+ * both the specified catalogs. The associations will be in the same order that they
+ * are in the separate catalogs.
  *
  * @param {Catalog} catalog1 The first catalog whose items are to be concatenated.
  * @param {Catalog} catalog2 The second catalog whose items are to be concatenated.
@@ -128,7 +134,8 @@ Catalog.reduction = function(catalog, keys) {
 // PUBLIC METHODS
 
 /**
- * This method returns an empty copy of this catalog.
+ * This method creates an empty copy of this catalog including any parameters that were
+ * used to parameterize its type.
  * 
  * @returns {Catalog} An empty copy of this catalog.
  */
@@ -145,7 +152,8 @@ Catalog.prototype.emptyCopy = function() {
  * affected in this case.
  * 
  * @param {Association} association The association to be added to this catalog. 
- * @returns {Boolean} Whether or not the association was successfully added.
+ * @returns {Boolean} Whether or not the association was successfully added, which it will
+ * always have been.
  */
 Catalog.prototype.addItem = function(association) {
     var index = association.key.toString();
@@ -181,7 +189,7 @@ Catalog.prototype.containsItem = function(association) {
 
 
 /**
- * This method removes from this collection the item associated with the specified index.
+ * This method removes from this catalog the item associated with the specified index.
  *
  * @param {Number} index The index of the item to be removed.
  * @returns {Component} The item at the specified index.
@@ -218,7 +226,7 @@ Catalog.prototype.removeAll = function() {
  * This function retrieves from a catalog the string value associated with the
  * specified key.
  * 
- * @param {String} key The string form of the key.
+ * @param {String|Number|Boolean|Component} key The key for the desired value.
  * @returns {Component} The string value associated with the key.
  */
 Catalog.prototype.getString = function(key) {
@@ -229,7 +237,7 @@ Catalog.prototype.getString = function(key) {
 /**
  * This method returns the value associated with the specified key in this catalog.
  *
- * @param {Component} key The key for the value to be retrieved.
+ * @param {String|Number|Boolean|Component} key The key for the desired value.
  * @returns {Component} The value associated with the key.
  */
 Catalog.prototype.getValue = function(key) {
@@ -245,8 +253,8 @@ Catalog.prototype.getValue = function(key) {
  * This method associates in this catalog a new value with a key.  If there is already
  * a value associated with the specified key, the new value replaces the old value.
  *
- * @param {Component} key The key for the new value.
- * @param {Component} value The new value to be associated with the key.
+ * @param {String|Number|Boolean|Component} key The key for the new value.
+ * @param {String|Number|Boolean|Component} value The new value to be associated with the key.
  * @returns {Component} The value previously associated with the key.
  */
 Catalog.prototype.setValue = function(key, value) {
@@ -275,7 +283,7 @@ Catalog.prototype.setValue = function(key, value) {
  * This method removes from this catalog the value associated with a key.  If no value
  * is associated with the specified key then the return value is undefined.
  *
- * @param {Component} key The key for the value to be removed.
+ * @param {String|Number|Boolean|Component} key The key for the value to be removed.
  * @returns {Component} The value associated with the key.
  */
 Catalog.prototype.removeValue = function(key) {
@@ -297,9 +305,9 @@ Catalog.prototype.removeValue = function(key) {
 
 
 /**
- * This method returns a sortable collection of the keys for the associations in this catalog.
+ * This method returns a list of the keys for the associations in this catalog.
  *
- * @returns {SortableCollection} A sortable collection of the keys for this catalog.
+ * @returns {List} A list of the keys for this catalog.
  */
 Catalog.prototype.getKeys = function() {
     var keys = new List();
@@ -312,9 +320,9 @@ Catalog.prototype.getKeys = function() {
 
 
 /**
- * This method returns a sortable collection of the values for the associations in this catalog.
+ * This method returns a list of the values for the associations in this catalog.
  *
- * @returns {SortableCollection} A sortable collection of the values for this catalog.
+ * @returns {List} A list of the values for this catalog.
  */
 Catalog.prototype.getValues = function() {
     var values = new List();
@@ -329,7 +337,7 @@ Catalog.prototype.getValues = function() {
 /**
  * This method returns the list of associations between keys and values for this catalog.
  *
- * @returns {SortableCollection} A sortable collection of the associations for this catalog.
+ * @returns {List} A list of the associations for this catalog.
  */
 Catalog.prototype.getAssociations = function() {
     var associations = new List();

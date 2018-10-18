@@ -7,28 +7,34 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements a sortable list which performs very well for both inserts and
- * indexed lookups of its values.  The implementation dynamically scales up and down the size of
- * the underlying data structures as the number of items changes over time. The indexing
- * is unit based and allows positive indexes starting at the beginning of the list or
- * negative indexes starting at the end of the list as follows:
+ * This collection class implements a sortable collection containing components that are
+ * indexed as items in a list. The indexing is ordinal based (e.g. 1..N) and allows either
+ * positive indexes starting at the beginning of the list or negative indexes starting at
+ * the end of the list as follows:
  * <pre>
  *        1          2          3            N
  *    [item 1] . [item 2] . [item 3] ... [item N]
  *       -N        -(N-1)     -(N-2)        -1
  * </pre>
+ * 
+ * The items in the list are maintained in the order in which they were added to the list.
+ * But they may be reordered by sorting the list.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var SortableCollection = require('../abstractions/SortableCollection').SortableCollection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty list.
+ * This constructor creates a new list component with optional parameters that are
+ * used to parameterize its type.
  * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {List} The new list.
  */
 function List(parameters) {
@@ -41,6 +47,16 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
+/**
+ * This function creates a new list using the specified collection to seed the
+ * initial items in the list. The list may be parameterized by specifying optional
+ * parameters that are used to parameterize its type.
+ * 
+ * @param {Array|Object|Collection} collection The collection containing the initial
+ * items to be used to seed the new list.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {List} The new list.
+ */
 List.fromCollection = function(collection, parameters) {
     var list = new List(parameters);
     var iterator;
@@ -67,8 +83,8 @@ List.fromCollection = function(collection, parameters) {
 
 
 /**
- * This function returns a new list that contains the all the items from
- * both the specified lists.
+ * This function returns a new list containing of the all the items from both
+ * the specified lists.
  *
  * @param {List} list1 The first list whose items are to be concatenated.
  * @param {List} list2 The second list whose items are to be concatenated.
@@ -84,7 +100,8 @@ List.concatenation = function(list1, list2) {
 // PUBLIC METHODS
 
 /**
- * This method creates an empty copy of this list.
+ * This method creates an empty copy of this list including any parameters that were
+ * used to parameterize its type.
  * 
  * @returns {List} The resulting empty list.
  */
@@ -97,7 +114,7 @@ List.prototype.emptyCopy = function() {
 /*
  * This method appends the specified item to this list.
  * 
- * @param {Component} item The item to be added to this list.
+ * @param {String|Number|Boolean|Component} item The item to be added to this list.
  * @returns {Boolean} Whether or not a new item was added, which it always will have been.
  */
 List.prototype.addItem = function(item) {

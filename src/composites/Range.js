@@ -12,17 +12,24 @@
 /**
  * This collection class defines a range of numbers.
  */
+/**
+ * This collection class implements a data structure that defines a range of numbers. The
+ * structure is static once the first and last numbers in the range have been defined.
+ */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the range class takes a first and last number.
+ * This constructor creates a new range of numbers with optional parameters that are used
+ * to parameterize its type.
  * 
  * @param {Number} first The first number in the range.
  * @param {Number} last The last number in the range.
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
 function Range(first, last, parameters) {
@@ -40,6 +47,8 @@ exports.Range = Range;
 
 /**
  * This function creates a new range with the specified first and last integer values.
+ * The range may be parameterized by specifying optional parameters that are used to
+ * parameterize its type.
  * 
  * @param {Number} first The first integer in the range.
  * @param {Number} last The last integer in the range.
@@ -54,6 +63,8 @@ Range.fromEndPoints = function(first, last, parameters) {
 
 /**
  * This function creates a new range from 1 to the specified last integer value.
+ * The range may be parameterized by specifying optional parameters that are used to
+ * parameterize its type.
  * 
  * @param {Number} last The last integer in the range.
  * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
@@ -70,7 +81,7 @@ Range.fromLastPoint = function(last, parameters) {
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Visitor} visitor The visitor that wants to visit this collection.
+ * @param {Visitor} visitor The visitor that wants to visit this range.
  */
 Range.prototype.accept = function(visitor) {
     visitor.visitRange(this);
@@ -114,6 +125,11 @@ Range.prototype.iterator = function() {
 
 
 // PRIVATE CLASSES
+
+/*
+ * A range does not have a backing array to iterate over. This iterator class simulates
+ * the same behavior by generating values on the fly as the range is tranversed.
+ */
 
 function RangeIterator(range) {
     Composite.call(this, types.ITERATOR);

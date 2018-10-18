@@ -7,11 +7,13 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements a procedure which is a procedure of statements. The indexing
- * is ordinal based and allows positive indexes starting at the beginning of the procedure or
- * negative indexes starting at the end of the procedure as follows:
+ * This collection class implements a procedure which is a ordered list of statements that
+ * can be indexed. The indexing is ordinal based (e.g. 1..N) and allows either positive
+ * indexes starting at the beginning of the list or negative indexes starting at the end
+ * of the list as follows:
  * <pre>
  *          1               2               3                 N
  *    [statement 1] . [statement 2] . [statement 3] ... [statement N]
@@ -22,8 +24,11 @@ var types = require('../abstractions/Types');
 var Collection = require('../abstractions/Collection').Collection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty procedure.
+ * This constructor creates a new empty procedure component with optional parameters
+ * that are used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this procedure. 
  * @returns {Procedure} The new procedure.

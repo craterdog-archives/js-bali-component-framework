@@ -7,6 +7,7 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
  * This composite class implements an iterator for arrays.  The indexing
@@ -16,7 +17,7 @@
  * <pre>
  *             1          2          3            N
  *         [item 1] . [item 2] . [item 3] ... [item N]
- *            -N        -(N-1)     -(N-2)        -1
+ *            -N       -(N-1)     -(N-2)         -1
  * </pre>
  * 
  * The iterator sits in slots that reside between each item:
@@ -31,8 +32,11 @@ var Composite = require('../abstractions/Composite').Composite;
 var Complex = require('../elements/Complex').Complex;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the Iterator class.
+ * This constructor creates a new array iterator that allows the items in the array
+ * to be iterated over in either direction.
  * 
  * @param {Array} array The array to be iterated over.
  * @returns {Iterator} The new array iterator.
@@ -41,7 +45,7 @@ function Iterator(array) {
     Composite.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first item
     this.array = array;
-    this.setToComplex();  // iterators won't fit inline
+    this.setToComplex();  // iterators are not formatted inline
     return this;
 }
 Iterator.prototype = Object.create(Composite.prototype);

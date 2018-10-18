@@ -9,24 +9,31 @@
  ************************************************************************/
 'use strict';
 
-/*
- * This class captures the state and methods associated with a Bali document.
+/**
+ * This collection class implements a tree data structure. Each node in the tree may
+ * contain zero or more children. A node with no children is a Bali elemental component.
+ * Tree nodes may also be any other type of Bali component including catalogs, lists, sets,
+ * stacks, and ranges. Collectively, all of the Bali components including the tree nodes
+ * are used to build up the parse trees that result from parsing the Bali Document Notation™.
  */
 var types = require('../abstractions/Types');
 var Collection = require('../abstractions/Collection').Collection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * This constructor creates a new tree node.
+ * This constructor creates a new tree node component.
  * 
- * @param {Number} type The type of the tree node.
- * @param {Number} length The initial character length of the tree node.
- * @returns {Tree} The new tree node.
+ * @param {Number} type The type of the tree node component.
+ * @param {Number} complexity The initial complexity (character length) of the tree node
+ * source code.
+ * @returns {Tree} The new tree node component.
  */
-function Tree(type, length) {
+function Tree(type, complexity) {
     Collection.call(this, type);
     this.children = [];
-    this.complexity += length;
+    this.complexity += complexity;
     return this;
 }
 Tree.prototype = Object.create(Collection.prototype);
@@ -36,11 +43,10 @@ exports.Tree = Tree;
 
 // PUBLIC METHODS
 
-
 /**
- * This method returns the number of nodes that are children of this tree.
+ * This method returns the number of components that are children of this tree node.
  * 
- * @returns {Number} The number of nodes that are children of this tree.
+ * @returns {Number} The number of components that are children of this tree node.
  */
 Tree.prototype.getSize = function() {
     var size = this.children.length;
@@ -49,9 +55,10 @@ Tree.prototype.getSize = function() {
 
 
 /**
- * This method returns an array containing the nodes that are children of this tree.
+ * This method returns an array containing the components that are children of this
+ * tree node.
  * 
- * @returns {Array} An array containing the nodes that are children of this tree.
+ * @returns {Array} An array containing the components that are children of this tree node.
  */
 Tree.prototype.toArray = function() {
     var array = this.children.slice();  // copy the array
@@ -60,20 +67,20 @@ Tree.prototype.toArray = function() {
 
 
 /**
- * This method adds a new child node to this tree.
+ * This method adds a new child component to this tree node.
  * 
- * @param {Component} child The new child node.
+ * @param {Component} component The new child component.
  */
-Tree.prototype.addChild = function(child) {
-    this.children.push(child);
-    this.complexity += child.complexity;
+Tree.prototype.addChild = function(component) {
+    this.children.push(component);
+    this.complexity += component.complexity;
 };
 
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {NodeVisitor} visitor The visitor that wants to visit this tree.
+ * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.accept = function(visitor) {
     switch(this.type) {

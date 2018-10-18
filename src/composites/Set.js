@@ -7,21 +7,26 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements an ordered collection that does not allow duplicate items.
- * The implementation dynamically scales up and down the size of the underlying data structures as
- * the number items changes over time.
+ * This ordered collection class implements an ordered collection of components
+ * that does not allow duplicate items. A set automatically orders its items based
+ * on the order defined by the <code>this.comparedTo(that)</code> method of the
+ * items being compared.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var OrderedCollection = require('../abstractions/OrderedCollection').OrderedCollection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor creates a new empty set.
+ * This constructor creates a new set component with optional parameters that are
+ * used to parameterize its type.
  * 
- * @param {Collection} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Set} The new set.
  */
 function Set(parameters) {
@@ -35,6 +40,16 @@ Set.prototype.constructor = Set;
 exports.Set = Set;
 
 
+/**
+ * This function creates a new set using the specified collection to seed the
+ * initial items in the set. The set may be parameterized by specifying optional
+ * parameters that are used to parameterize its type.
+ * 
+ * @param {Array|Object|Collection} collection The collection containing the initial
+ * items to be used to seed the new set.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {List} The new set.
+ */
 Set.fromCollection = function(collection, parameters) {
     var set = new Set(parameters);
     var iterator;
@@ -62,7 +77,7 @@ Set.fromCollection = function(collection, parameters) {
 
 /**
  * This function returns a new set that contains the items that are in
- * both the first set and the second set.
+ * both the first set and the second set, eliminating any duplicate items.
  *
  * @param {Set} set1 The first set to be operated on.
  * @param {Set} set2 The second set to be operated on.
@@ -201,7 +216,7 @@ Set.prototype.toArray = function() {
  * @returns {Iterator} An iterator that can be used to traverse the items in this set.
  */
 Set.prototype.iterator = function() {
-    return new SetIterator(this);
+    return new TreeIterator(this.tree);
 };
 
 
@@ -221,7 +236,7 @@ Set.prototype.getItem = function(index) {
 /**
  * This method determines the index of the specified item in this set.
  * 
- * @param {Component} item The item to be indexed.
+ * @param {String|Number|Boolean|Component} item The item to be indexed.
  * @returns {Number} The index of the specified item.
  */
 Set.prototype.getIndex = function(item) {
@@ -232,9 +247,10 @@ Set.prototype.getIndex = function(item) {
 
 
 /**
- * This method attempts to add the specified item to this set.
+ * This method attempts to add the specified item to this set. If the item is already
+ * in the set this method returns false.
  * 
- * @param {Component} item The item to be added.
+ * @param {String|Number|Boolean|Component} item The item to be added.
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Set.prototype.addItem = function(item) {
@@ -249,10 +265,10 @@ Set.prototype.addItem = function(item) {
 
 
 /*
- * This abstract method removes the specified item from this collection. It must be
- * implemented by a subclass.
+ * This method attempts to remove the specified item from this collection. If the set does
+ * not contain the item the method returns false.
  * 
- * @param {Component} item The item to be removed from the collection.
+ * @param {String|Number|Boolean|Component} item The item to be removed from the collection.
  * @returns {Boolean} Whether or not the item was removed.
  */
 Set.prototype.removeItem = function(item) {
@@ -278,64 +294,69 @@ Set.prototype.removeAll = function() {
 
 // PRIVATE CLASSES
 
-function SetIterator(set) {
+/*
+ * The set class is backed by a binary tree (treap) structure. Therefore, it can be traversed
+ * more efficiently using a custom iterator. This class implements a tree iterator.
+ */
+
+function TreeIterator(tree) {
     Composite.call(this, types.ITERATOR);
-    this.set = set;
+    this.tree = tree;
     this.slot = 0;  // the slot before the first item
     this.previous = undefined;
-    this.next = this.set.tree.minimum(this.set.tree.root);
+    this.next = this.tree.minimum(this.tree.root);
     return this;
 }
-SetIterator.prototype = Object.create(Composite.prototype);
-SetIterator.prototype.constructor = SetIterator;
+TreeIterator.prototype = Object.create(Composite.prototype);
+TreeIterator.prototype.constructor = TreeIterator;
 
 
-SetIterator.prototype.toStart = function() {
+TreeIterator.prototype.toStart = function() {
     this.slot = 0;  // the slot before the first item
     this.previous = undefined;
-    this.next = this.set.tree.minimum(this.set.tree.root);
+    this.next = this.tree.minimum(this.tree.root);
 };
 
 
-SetIterator.prototype.toSlot = function(slot) {
+TreeIterator.prototype.toSlot = function(slot) {
     this.slot = slot;
-    this.previous = this.set.tree.node(slot - 1);  // javascript index of item before the slot
-    this.next = this.set.tree.successor(this.previous);
+    this.previous = this.tree.node(slot - 1);  // javascript index of item before the slot
+    this.next = this.tree.successor(this.previous);
 };
 
 
-SetIterator.prototype.toEnd = function() {
-    this.slot = this.set.tree.size;  // the slot after the last item
-    this.previous = this.set.tree.maximum(this.set.tree.root);
+TreeIterator.prototype.toEnd = function() {
+    this.slot = this.tree.size;  // the slot after the last item
+    this.previous = this.tree.maximum(this.tree.root);
     this.next = undefined;
 };
 
 
-SetIterator.prototype.hasPrevious = function() {
+TreeIterator.prototype.hasPrevious = function() {
     return this.slot > 0;
 };
 
 
-SetIterator.prototype.hasNext = function() {
-    return this.slot < this.set.tree.size;
+TreeIterator.prototype.hasNext = function() {
+    return this.slot < this.tree.size;
 };
 
 
-SetIterator.prototype.getPrevious = function() {
+TreeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the set.');
     var value = this.previous.value;
     this.next = this.previous;
-    this.previous = this.set.tree.predecessor(this.next);
+    this.previous = this.tree.predecessor(this.next);
     this.slot--;
     return value;
 };
 
 
-SetIterator.prototype.getNext = function() {
+TreeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the set.');
     var value = this.next.value;
     this.previous = this.next;
-    this.next = this.set.tree.successor(this.previous);
+    this.next = this.tree.successor(this.previous);
     this.slot++;
     return value;
 };

@@ -7,9 +7,10 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements a digital notary seal for a document.
+ * This composite class implements a digital notary seal. It is used by the document class.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
@@ -17,8 +18,18 @@ var Binary = require('../elements/Binary').Binary;
 var Reference = require('../elements/Reference').Reference;
 
 
-// PUBLIC METHODS
+// PUBLIC FUNCTIONS
 
+/**
+ * This constructor creates a new digital notary seal.
+ * 
+ * @param {String|Reference} certificateCitation A citation to the certificate that can be
+ * used to verify the associated digital signature.
+ * @param {String|Binary} digitalSignature A base 32 encoded binary string containing the
+ * digital signature generated using the notary key associated with the notary certificate
+ * referenced by the certificate citation.
+ * @returns {Association} A new digital notary seal.
+ */
 function Seal(certificateCitation, digitalSignature) {
     Composite.call(this, types.SEAL);
     if (certificateCitation && certificateCitation.constructor.name === 'String') {
@@ -38,10 +49,12 @@ Seal.prototype.constructor = Seal;
 exports.Seal = Seal;
 
 
+// PUBLIC METHODS
+
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Visitor} visitor The visitor that wants to visit this seal.
+ * @param {Visitor} visitor The visitor that wants to visit this notary seal.
  */
 Seal.prototype.accept = function(visitor) {
     visitor.visitSeal(this);

@@ -9,8 +9,8 @@
  ************************************************************************/
 'use strict';
 
-/*
- * This class captures the state and methods associated with a Bali document.
+/**
+ * This composite class captures the state and methods associated with a Bali document.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
@@ -21,11 +21,13 @@ var parser = require('../utilities/DocumentParser');
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor returns a new Bali document.
+ * This constructor creates a new Bali document using the specified optional previous
+ * version citation and the content of the document. The new document is not yet
+ * notarized with any digital signatures.
  * 
- * @param {Reference} previousCitation An optional citation to the previous version of the
- * @param {Component} documentContent The content of the document.
+ * @param {String|Reference} previousCitation An optional citation to the previous version of the
  * document.
+ * @param {Component} documentContent The content of the document.
  * @returns {Document} The new Bali document.
  */
 function Document(previousCitation, documentContent) {
@@ -36,7 +38,7 @@ function Document(previousCitation, documentContent) {
     this.previousCitation = previousCitation;
     this.documentContent = documentContent;
     this.notarySeals = [];
-    this.setToComplex();  // documents won't fit inline
+    this.setToComplex();  // documents are not formatted inline
     return this;
 }
 Document.prototype = Object.create(Composite.prototype);
@@ -88,7 +90,7 @@ Document.prototype.copy = function() {
  * This function returns a draft copy of the document. The previous version citation
  * and seals from the original document have been removed from the draft copy.
  * 
- * @param {String} previousCitation A citation to the document.
+ * @param {String|Reference} previousCitation A citation to the document.
  * @returns {Document} A draft copy of the document.
  */
 Document.prototype.draft = function(previousCitation) {
@@ -114,34 +116,34 @@ Document.prototype.unsealed = function() {
 /**
  * This method sets the citation to the previous version of the document.
  * 
- * @param {String|Reference} citation The citation to the previous version of the document.
+ * @param {String|Reference} previousCitation The citation to the previous version of the document.
  */
-Document.prototype.setPreviousCitation = function(citation) {
-    if (citation.constructor.name === 'String') {
-        citation = new Reference(citation);
+Document.prototype.setPreviousCitation = function(previousCitation) {
+    if (previousCitation.constructor.name === 'String') {
+        previousCitation = new Reference(previousCitation);
     }
-    this.previousCitation = citation;
+    this.previousCitation = previousCitation;
 };
 
 
 /**
  * This method returns the last notary seal on the document.
  * 
- * @returns {Tree} The last notary seal.
+ * @returns {Seal} The last notary seal.
  */
 Document.prototype.getLastSeal = function() {
-    var seal = this.notarySeals.peek();
-    return seal;
+    var notarySeal = this.notarySeals.peek();
+    return notarySeal;
 };
 
 
 /**
  * This method appends a notary seal to the end of the document.
  * 
- * @param {Seal} seal The new notary seal to be appended to the document.
+ * @param {Seal} notarySeal The new notary seal to be appended to the document.
  */
-Document.prototype.addNotarySeal = function(seal) {
-    this.notarySeals.push(seal);
+Document.prototype.addNotarySeal = function(notarySeal) {
+    this.notarySeals.push(notarySeal);
 };
 
 
@@ -149,7 +151,7 @@ Document.prototype.addNotarySeal = function(seal) {
  * This function retrieves from a document the string value associated with the
  * specified key.
  * 
- * @param {String} key The string form of the key.
+ * @param {String|Number|Boolean|Component} key The key for the desired value.
  * @returns {Component} The string value associated with the key.
  */
 Document.prototype.getString = function(key) {
@@ -161,7 +163,7 @@ Document.prototype.getString = function(key) {
  * This function retrieves from a document the value associated with the
  * specified key.
  * 
- * @param {String} key The string form of the key.
+ * @param {String|Number|Boolean|Component} key The key for the desired value.
  * @returns {Component} The value associated with the key.
  */
 Document.prototype.getValue = function(key) {
@@ -173,7 +175,7 @@ Document.prototype.getValue = function(key) {
  * This function sets in a document a value associated with the
  * specified key.
  * 
- * @param {String} key The string form of the key.
+ * @param {String|Number|Boolean|Component} key The key for the new value.
  * @param {String|Component} value The value to be associated with the key.
  * @returns {Component} The old value associated with the key.
  */
@@ -187,7 +189,7 @@ Document.prototype.setValue = function(key, value) {
  * This function removes from a document the value associated with the
  * specified key.
  * 
- * @param {String} key The string form of the key.
+ * @param {String|Number|Boolean|Component} key The key for the value to be removed.
  * @returns {Component} The value associated with the key.
  */
 Document.prototype.removeValue = function(key) {

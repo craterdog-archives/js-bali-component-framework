@@ -7,20 +7,23 @@
  * under the terms of The MIT License (MIT), as published by the Open   *
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
+'use strict';
 
 /**
- * This collection class implements an association between a key and a value. It is used by the
+ * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 
 
+// PUBLIC FUNCTIONS
+
 /**
  * This constructor creates a new key-value association.
  * 
- * @param {String|Component} key The key of the association.
- * @param {String|Expression} value The value associated with the key.
+ * @param {String|Number|Boolean|Component} key The key of the association.
+ * @param {String|Number|Boolean|Component} value The value associated with the key.
  * @returns {Association} A new association.
  */
 function Association(key, value) {
