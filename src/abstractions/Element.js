@@ -10,14 +10,16 @@
 'use strict';
 
 /**
- * This abstract class defines the invariant methods that all elemental components must support.
+ * This abstract class defines the methods that all elemental components must support.
  */
 var Component = require('./Component').Component;
-var formatter = require('../utilities/DocumentFormatter');
 
+
+// PUBLIC FUNCTIONS
 
 /**
- * The constructor for the Element class.
+ * This constructor creates a new elemental component of the specified type with the optional
+ * parameters that are used to parameterize its type.
  * 
  * @param {Number} type The type of component.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -35,13 +37,13 @@ exports.Element = Element;
 
 
 /**
- * This function returns the Bali source code representation of a real number.
+ * This function returns the Bali source code representation of a JS number.
  * 
- * @param {number} real The real number.
+ * @param {number} number The JS number.
  * @returns {String} The Bali source code for that number.
  */
-Element.realToSource = function(real) {
-    var source = real.toString();
+Element.numberToSource = function(number) {
+    var source = number.toString();
     switch (source) {
         case '-2.718281828459045':
             source = '-e';
@@ -79,19 +81,6 @@ Element.realToSource = function(real) {
 // PUBLIC METHODS
 
 /**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Element.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.
@@ -104,51 +93,4 @@ Element.prototype.accept = function(visitor) {
 Element.prototype.setSource = function(source) {
     this.source = source;
     this.complexity += source.length;
-};
-
-
-/**
- * This method compares this composit component with another object for equality.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Boolean}
- */
-Element.prototype.equalTo = function(that) {
-    if (that && this.constructor.name !== that.constructor.name) return false;
-    var thisString = this.toSource();
-    var thatString = that.toSource();
-    return thisString === thatString;
-};
-
-
-/**
- * This method compares this element component with another object using a
- * NaturalComparator.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
- */
-Element.prototype.compareTo = function(that) {
-    // everything is greater than null
-    if (that === undefined || that === null) return 1;
-
-    // compare types
-    var thisType = this.constructor.name;
-    var thatType = that.constructor.name;
-    if (thisType !== thatType) return thisType.localeCompare(thatType);
-
-    // compare values
-    return this.comparedWith(that);
-};
-
-
-/**
- * This method provides the default implementation for element comparison. Concrete
- * subtypes may override this method to provide type specific implementations.
- * 
- * @param {Element} that The other element to be compared with. 
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Element.prototype.comparedWith = function(that) {
-    return this.toSource().localeCompare(that.toSource());
 };

@@ -9,34 +9,13 @@
  ************************************************************************/
 'use strict';
 
-
 /*
- * This module captures the type information about the parse tree nodes.
+ * This module defines type information about the different types of parse tree nodes that
+ * are generated when parsing the Bali Document Notation™.
  */
 
 
-exports.typeName = function(type) {
-    return TYPES[type];
-};
-
-
-exports.typeBySymbol = function(symbol) {
-    var name = symbol.toString().slice(1);  // remove the '$'
-    return TYPES.indexOf(name);
-};
-
-
-exports.typeByReference = function(reference) {
-    var source = reference.toString().slice(6, -1);  // remove the '<bali:' and '>'
-    var attributes = source.split(',');  // separate out the attributes
-    var tag = attributes[0].split(':')[1];  // remove the value of the tag attribute
-};
-
-
-exports.typeTag = function(type) {
-    return TAGS[type];
-};
-
+// PRIVATE ATTRIBUTES
 
 var MAP = {
     Invalid:                      '#JLG6FRDFPCN9QCYD0TBYS7J5DWKH9NJK',
@@ -107,70 +86,144 @@ var MAP = {
 };
 
 
-var TYPES = Object.keys(MAP);
+var NAMES = Object.keys(MAP);
 var TAGS = Object.values(MAP);
 
-exports.ANGLE = TYPES.indexOf('Angle');
-exports.ARITHMETIC_EXPRESSION = TYPES.indexOf('ArithmeticExpression');
-exports.ASSOCIATION = TYPES.indexOf('Association');
-exports.BINARY = TYPES.indexOf('Binary');
-exports.BLOCK = TYPES.indexOf('Block');
-exports.BREAK_CLAUSE = TYPES.indexOf('BreakClause');
-exports.CATALOG = TYPES.indexOf('Catalog');
-exports.CHECKOUT_CLAUSE = TYPES.indexOf('CheckoutClause');
-exports.COMMIT_CLAUSE = TYPES.indexOf('CommitClause');
-exports.COMPARISON_EXPRESSION = TYPES.indexOf('ComparisonExpression');
-exports.COMPLEMENT_EXPRESSION = TYPES.indexOf('ComplementExpression');
-exports.CONTINUE_CLAUSE = TYPES.indexOf('ContinueClause');
-exports.DEFAULT_EXPRESSION = TYPES.indexOf('DefaultExpression');
-exports.DEREFERENCE_EXPRESSION = TYPES.indexOf('DereferenceExpression');
-exports.DISCARD_CLAUSE = TYPES.indexOf('DiscardClause');
-exports.DOCUMENT = TYPES.indexOf('Document');
-exports.DURATION = TYPES.indexOf('Duration');
-exports.EVALUATE_CLAUSE = TYPES.indexOf('EvaluateClause');
-exports.EXPONENTIAL_EXPRESSION = TYPES.indexOf('ExponentialExpression');
-exports.FACTORIAL_EXPRESSION = TYPES.indexOf('FactorialExpression');
-exports.FUNCTION = TYPES.indexOf('Function');
-exports.FUNCTION_EXPRESSION = TYPES.indexOf('FunctionExpression');
-exports.HANDLE_CLAUSE = TYPES.indexOf('HandleClause');
-exports.IF_CLAUSE = TYPES.indexOf('IfClause');
-exports.INDICES = TYPES.indexOf('Indices');
-exports.INVERSION_EXPRESSION = TYPES.indexOf('InversionExpression');
-exports.ITERATOR = TYPES.indexOf('Iterator');
-exports.LIST = TYPES.indexOf('List');
-exports.LOGICAL_EXPRESSION = TYPES.indexOf('LogicalExpression');
-exports.MAGNITUDE_EXPRESSION = TYPES.indexOf('MagnitudeExpression');
-exports.MESSAGE = TYPES.indexOf('Message');
-exports.MESSAGE_EXPRESSION = TYPES.indexOf('MessageExpression');
-exports.MOMENT = TYPES.indexOf('Moment');
-exports.NUMBER = TYPES.indexOf('Number');
-exports.PARAMETERS = TYPES.indexOf('Parameters');
-exports.PERCENT = TYPES.indexOf('Percent');
-exports.PRECEDENCE_EXPRESSION = TYPES.indexOf('PrecedenceExpression');
-exports.PROBABILITY = TYPES.indexOf('Probability');
-exports.PROCEDURE = TYPES.indexOf('Procedure');
-exports.PUBLISH_CLAUSE = TYPES.indexOf('PublishClause');
-exports.QUEUE_CLAUSE = TYPES.indexOf('QueueClause');
-exports.RANGE = TYPES.indexOf('Range');
-exports.REFERENCE = TYPES.indexOf('Reference');
-exports.RETURN_CLAUSE = TYPES.indexOf('ReturnClause');
-exports.SAVE_CLAUSE = TYPES.indexOf('SaveClause');
-exports.SEAL = TYPES.indexOf('Seal');
-exports.SELECT_CLAUSE = TYPES.indexOf('SelectClause');
-exports.SET = TYPES.indexOf('Set');
-exports.SOURCE = TYPES.indexOf('Source');
-exports.STACK = TYPES.indexOf('Stack');
-exports.STATEMENT = TYPES.indexOf('Statement');
-exports.SUBCOMPONENT = TYPES.indexOf('Subcomponent');
-exports.SUBCOMPONENT_EXPRESSION = TYPES.indexOf('SubcomponentExpression');
-exports.SYMBOL = TYPES.indexOf('Symbol');
-exports.TAG = TYPES.indexOf('Tag');
-exports.TEMPLATE = TYPES.indexOf('Template');
-exports.TEXT = TYPES.indexOf('Text');
-exports.THROW_CLAUSE = TYPES.indexOf('ThrowClause');
-exports.VARIABLE = TYPES.indexOf('Variable');
-exports.VERSION = TYPES.indexOf('Version');
-exports.VISITOR = TYPES.indexOf('Visitor');
-exports.WAIT_CLAUSE = TYPES.indexOf('WaitClause');
-exports.WHILE_CLAUSE = TYPES.indexOf('WhileClause');
-exports.WITH_CLAUSE = TYPES.indexOf('WithClause');
+
+// PUBLIC CONSTANTS
+
+/**
+ * This constant defines the number of characters allowed in the Bali source code for a
+ * component before the source code can no longer be inline (on a single line).
+ */
+exports.IS_COMPLEX = 25;
+
+/*
+ * These constants define numeric values for each of the Bali types.
+ */
+exports.ANGLE = NAMES.indexOf('Angle');
+exports.ARITHMETIC_EXPRESSION = NAMES.indexOf('ArithmeticExpression');
+exports.ASSOCIATION = NAMES.indexOf('Association');
+exports.BINARY = NAMES.indexOf('Binary');
+exports.BLOCK = NAMES.indexOf('Block');
+exports.BREAK_CLAUSE = NAMES.indexOf('BreakClause');
+exports.CATALOG = NAMES.indexOf('Catalog');
+exports.CHECKOUT_CLAUSE = NAMES.indexOf('CheckoutClause');
+exports.COMMIT_CLAUSE = NAMES.indexOf('CommitClause');
+exports.COMPARISON_EXPRESSION = NAMES.indexOf('ComparisonExpression');
+exports.COMPLEMENT_EXPRESSION = NAMES.indexOf('ComplementExpression');
+exports.CONTINUE_CLAUSE = NAMES.indexOf('ContinueClause');
+exports.DEFAULT_EXPRESSION = NAMES.indexOf('DefaultExpression');
+exports.DEREFERENCE_EXPRESSION = NAMES.indexOf('DereferenceExpression');
+exports.DISCARD_CLAUSE = NAMES.indexOf('DiscardClause');
+exports.DOCUMENT = NAMES.indexOf('Document');
+exports.DURATION = NAMES.indexOf('Duration');
+exports.EVALUATE_CLAUSE = NAMES.indexOf('EvaluateClause');
+exports.EXPONENTIAL_EXPRESSION = NAMES.indexOf('ExponentialExpression');
+exports.FACTORIAL_EXPRESSION = NAMES.indexOf('FactorialExpression');
+exports.FUNCTION = NAMES.indexOf('Function');
+exports.FUNCTION_EXPRESSION = NAMES.indexOf('FunctionExpression');
+exports.HANDLE_CLAUSE = NAMES.indexOf('HandleClause');
+exports.IF_CLAUSE = NAMES.indexOf('IfClause');
+exports.INDICES = NAMES.indexOf('Indices');
+exports.INVERSION_EXPRESSION = NAMES.indexOf('InversionExpression');
+exports.ITERATOR = NAMES.indexOf('Iterator');
+exports.LIST = NAMES.indexOf('List');
+exports.LOGICAL_EXPRESSION = NAMES.indexOf('LogicalExpression');
+exports.MAGNITUDE_EXPRESSION = NAMES.indexOf('MagnitudeExpression');
+exports.MESSAGE = NAMES.indexOf('Message');
+exports.MESSAGE_EXPRESSION = NAMES.indexOf('MessageExpression');
+exports.MOMENT = NAMES.indexOf('Moment');
+exports.NUMBER = NAMES.indexOf('Number');
+exports.PARAMETERS = NAMES.indexOf('Parameters');
+exports.PERCENT = NAMES.indexOf('Percent');
+exports.PRECEDENCE_EXPRESSION = NAMES.indexOf('PrecedenceExpression');
+exports.PROBABILITY = NAMES.indexOf('Probability');
+exports.PROCEDURE = NAMES.indexOf('Procedure');
+exports.PUBLISH_CLAUSE = NAMES.indexOf('PublishClause');
+exports.QUEUE_CLAUSE = NAMES.indexOf('QueueClause');
+exports.RANGE = NAMES.indexOf('Range');
+exports.REFERENCE = NAMES.indexOf('Reference');
+exports.RETURN_CLAUSE = NAMES.indexOf('ReturnClause');
+exports.SAVE_CLAUSE = NAMES.indexOf('SaveClause');
+exports.SEAL = NAMES.indexOf('Seal');
+exports.SELECT_CLAUSE = NAMES.indexOf('SelectClause');
+exports.SET = NAMES.indexOf('Set');
+exports.SOURCE = NAMES.indexOf('Source');
+exports.STACK = NAMES.indexOf('Stack');
+exports.STATEMENT = NAMES.indexOf('Statement');
+exports.SUBCOMPONENT = NAMES.indexOf('Subcomponent');
+exports.SUBCOMPONENT_EXPRESSION = NAMES.indexOf('SubcomponentExpression');
+exports.SYMBOL = NAMES.indexOf('Symbol');
+exports.TAG = NAMES.indexOf('Tag');
+exports.TEMPLATE = NAMES.indexOf('Template');
+exports.TEXT = NAMES.indexOf('Text');
+exports.THROW_CLAUSE = NAMES.indexOf('ThrowClause');
+exports.VARIABLE = NAMES.indexOf('Variable');
+exports.VERSION = NAMES.indexOf('Version');
+exports.VISITOR = NAMES.indexOf('Visitor');
+exports.WAIT_CLAUSE = NAMES.indexOf('WaitClause');
+exports.WHILE_CLAUSE = NAMES.indexOf('WhileClause');
+exports.WITH_CLAUSE = NAMES.indexOf('WithClause');
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function determines whether or not the specified complexity is less than the maximum
+ * complexity (IS_COMPLEX) for a simple component.
+ * 
+ * @param {Number} complexity The complexity in number of source code characters.
+ * @returns {Boolean} Whether or not the specified complexity is simple.
+ */
+exports.isSimple = function(complexity) {
+    return complexity < exports.IS_COMPLEX;
+};
+
+
+/**
+ * This function returns the name of the specified type.
+ * 
+ * @param {Number} type The type to be looked up.
+ * @returns {String} The name of the specified type.
+ */
+exports.typeName = function(type) {
+    return NAMES[type];
+};
+
+
+/**
+ * This function returns the tag for the specified type.
+ * 
+ * @param {Number} type The type to be looked up.
+ * @returns {Tag} The tag associated with the specified type.
+ */
+exports.typeTag = function(type) {
+    return TAGS[type];
+};
+
+
+/**
+ * This function returns the type associated with the specified symbol.
+ * 
+ * @param {String|Symbol} symbol The symbol for the type.
+ * @returns {Number} The type for the specified symbol.
+ */
+exports.typeBySymbol = function(symbol) {
+    var name = symbol.toString().slice(1);  // remove the '$'
+    return NAMES.indexOf(name);
+};
+
+
+/**
+ * This function returns the type associated with the specified reference.
+ * 
+ * @param {String|Reference} reference A reference to the desired type.
+ * @returns {Number} The type for the specified type reference.
+ */
+exports.typeByReference = function(reference) {
+    var source = reference.toString().slice(6, -1);  // remove the '<bali:' and '>'
+    var attributes = source.split(',');  // separate out the attributes
+    var tag = attributes[0].split(':')[1];  // remove the value of the tag attribute
+    return TAGS.indexOf(tag);
+};

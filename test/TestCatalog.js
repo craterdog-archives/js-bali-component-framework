@@ -37,7 +37,7 @@ describe('Bali Document Notation™', function() {
             var copy = catalog.emptyCopy();
             expect(copy).to.exist;  // jshint ignore:line
             expect(catalog.equalTo(copy)).to.equal(true);
-            var signum = catalog.compareTo(copy);
+            var signum = catalog.comparedTo(copy);
             expect(signum).to.equal(0);
         });
 

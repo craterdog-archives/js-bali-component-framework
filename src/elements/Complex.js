@@ -230,9 +230,9 @@ Complex.prototype.toRectangular = function() {
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'infinity';
     if (this.getRealPart() === 0) return imaginaryToSource(this.getImaginaryPart());
-    if (this.getImaginaryPart() === 0) return Element.realToSource(this.getRealPart());
+    if (this.getImaginaryPart() === 0) return Element.numberToSource(this.getRealPart());
     var source = '(';
-    source += Element.realToSource(this.getRealPart());
+    source += Element.numberToSource(this.getRealPart());
     source += ', ';
     source += imaginaryToSource(this.getImaginaryPart());
     source += ')';
@@ -249,9 +249,9 @@ Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isZero()) return '0';
     if (this.isInfinite()) return 'infinity';
-    if (this.getAngle() === Angle.ZERO) return Element.realToSource(this.getRealPart());
+    if (this.getAngle() === Angle.ZERO) return Element.numberToSource(this.getRealPart());
     var source = '(';
-    source += Element.realToSource(this.getMagnitude());
+    source += Element.numberToSource(this.getMagnitude());
     source += ' e^~';
     source += imaginaryToSource(this.getAngle().value);
     source += ')';
@@ -284,7 +284,7 @@ function lockOnPole(number) {
 
 
 function imaginaryToSource(imaginary) {
-    var source = Element.realToSource(imaginary);
+    var source = Element.numberToSource(imaginary);
     switch (source) {
         case 'undefined':
         case 'infinity':

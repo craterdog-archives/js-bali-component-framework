@@ -10,18 +10,20 @@
 'use strict';
 
 /**
- * This abstract class defines the invariant methods that all composite components must support.
+ * This abstract class defines the methods that all composite components must support.
  */
 var Component = require('./Component').Component;
-var formatter = require('../utilities/DocumentFormatter');
 var parser = require('../utilities/DocumentParser');
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the Composite class.
+ * This constructor creates a new composite component of the specified type with the optional
+ * parameters that are used to parameterize its type.
  * 
  * @param {Number} type The type of component.
- * @param {Parameters} parameters Optional parameters used to parameterize this composite. 
+ * @param {Parameters} parameters Optional parameters used to parameterize the composite. 
  * @returns {Composite} The new composite component.
  */
 function Composite(type, parameters) {
@@ -31,6 +33,34 @@ function Composite(type, parameters) {
 Composite.prototype = Object.create(Component.prototype);
 Composite.prototype.constructor = Composite;
 exports.Composite = Composite;
+
+
+/**
+ * This function converts a JS primitive type into its corresponding Bali component.
+ * 
+ * @param {String|Number|Boolean|Component} value The value to be converted (if necessary).
+ * @returns {Component} The value as a component.
+ */
+Composite.asComponent = function(value) {
+    var component;
+    switch (value.constructor.name) {
+        case 'String':
+            component = parser.parseExpression(value);
+            break;
+        case 'Boolean':
+            // parse it's string value
+            component = parser.parseElement(String(value));
+            break;
+        case 'Number':
+            // parse it's uppercase string value to handle exponents correctly
+            component = parser.parseElement(String(value).toUpperCase());
+            break;
+        default:
+            // it's already a component, leave it as is
+            component = value;
+    }
+    return component;
+};
 
 
 // PUBLIC METHODS
@@ -54,7 +84,7 @@ Composite.prototype.toArray = function() {
  */
 Composite.prototype.equalTo = function(that) {
     if (!that) return false;
-    if (this === that) return true;  // same object
+    if (this === that) return true;  // same component
     if (this.prototype !== that.prototype) return false;
     var thisArray = this.toArray();
     var thatArray = that.toArray();
@@ -72,15 +102,16 @@ Composite.prototype.equalTo = function(that) {
  * @param {Object} that The object that is being compared.
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
  */
-Composite.prototype.compareTo = function(that) {
+Composite.prototype.comparedTo = function(that) {
     if (!that) return 1;  // all composites are greater than null/undefined
-    if (this === that) return 0;  // same object
+    if (this === that) return 0;  // same component
     var result = this.constructor.name.localeCompare(that.constructor.name);
+    if (result !== 0) return result;
     var thisArray = this.toArray();
     var thatArray = that.toArray();
     var result = 0;
     for (var i = 0; i < thisArray.length && i < thatArray.length; i++) {
-        result = thisArray[i].compareTo(thatArray[i]);
+        result = thisArray[i].comparedTo(thatArray[i]);
         if (result !== 0) return result;
     }
     if (thisArray.length < thatArray.length) {
@@ -90,39 +121,4 @@ Composite.prototype.compareTo = function(that) {
     } else {
         return 0;
     }
-};
-
-
-/**
- * This method provides the canonical way to export a Bali component as Bali source code.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The Bali source code for the component.
- */
-Composite.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
-    return source;
-};
-
-
-Composite.asComponent = function(value) {
-    var component;
-    switch (value.constructor.name) {
-        case 'String':
-            component = parser.parseExpression(value);
-            break;
-        case 'Boolean':
-            // parse it's string value
-            component = parser.parseElement(String(value));
-            break;
-        case 'Number':
-            // parse it's uppercase string value to handle exponents correctly
-            component = parser.parseElement(String(value).toUpperCase());
-            break;
-        default:
-            // it's already a component, leave it as is
-            component = value;
-    }
-    return component;
 };

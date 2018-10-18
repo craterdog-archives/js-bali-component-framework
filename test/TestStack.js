@@ -32,7 +32,7 @@ describe('Bali Document Notation™', function() {
             var copy = new composites.Stack();
             expect(copy).to.exist;  // jshint ignore:line
             expect(stack.equalTo(copy)).to.equal(true);
-            var signum = stack.compareTo(copy);
+            var signum = stack.comparedTo(copy);
             expect(signum).to.equal(0);
         });
 

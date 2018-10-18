@@ -12,12 +12,21 @@
 /**
  * This library provides functions that format a parse tree produced
  * by the DocumentParser and generates a canonical version of
- * the corresponding source string.
+ * the corresponding Bali source code string.
  */
 var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
 
 
+/**
+ * This function generates the canonical Bali source code for the specified parse tree. If
+ * the optional indentation string is specified each line of the generated source code will
+ * be indented using that string.
+ * 
+ * @param {Component} tree The Bali parse tree representing a component.
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code.
+ * @returns {String} The Bali source code for the parse tree.
+ */
 exports.formatTree = function(tree, indentation) {
     var visitor = new FormattingVisitor(indentation);
     tree.accept(visitor);
@@ -29,8 +38,9 @@ exports.formatTree = function(tree, indentation) {
 
 var INDENTATION = '    ';
 
-// NOTE: This visitor cannot inherit from the Visitor class or would introduce circular
-// dependencies since Visitor inherits from Composite which uses FormattingVisitor.
+// NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular
+// dependency since the Visitor class inherits from the Component class which uses the
+// FormattingVisitor class.
 function FormattingVisitor(indentation) {
     this.indentation = indentation ? indentation : '';
     this.source = '';
@@ -113,7 +123,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
         // don't include the length of the parameters in the length of the combined items
         var complexity = collection.complexity;
         if (collection.parameters) complexity -= collection.parameters.complexity;
-        if (Component.isSimple(complexity)) {
+        if (types.isSimple(complexity)) {
             // inline the items
             item = iterator.getNext();
             item.accept(this);

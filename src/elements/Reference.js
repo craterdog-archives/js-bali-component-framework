@@ -33,7 +33,7 @@ function Reference(value, parameters) {
     this.value = new URL(value);
     var source = '<' + this.value + '>';  // embed in angle brackets
     this.setSource(source);
-    this.setComplex();  // references should never be inlined
+    this.setToComplex();  // references should never be inlined
     return this;
 }
 Reference.prototype = Object.create(Element.prototype);

@@ -10,16 +10,18 @@
 'use strict';
 
 /**
- * This library provides functions that format a parse tree produced
- * by the DocumentParser and generates a canonical version of
- * the corresponding source string.
+ * This abstract class defines the methods that all visitor components must support. It
+ * provides implementations of each method that by default just traverse the parse tree.
+ * Subclasses should override most of the methods.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the Visitor class.
+ * This constructor creates a new visitor component.
  * 
  * @returns {Visitor} The new visitor.
  */
@@ -38,7 +40,7 @@ exports.Visitor = Visitor;
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Visitor} visitor The visitor that wants to visit this visitor.
+ * @param {Visitor} visitor The visitor that wants to visit this visitor (say what?!?!?).
  */
 Visitor.prototype.accept = function(visitor) {
     visitor.visitVisitor(this);

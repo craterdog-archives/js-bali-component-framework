@@ -30,7 +30,7 @@ function Text(value, parameters) {
     this.type = 
     this.value = value || '""';  // default is the empty text string
     this.setSource(this.value);
-    if (this.value.startsWith('"\n')) this.setComplex();
+    if (this.value.startsWith('"\n')) this.setToComplex();
     return this;
 }
 Text.prototype = Object.create(Element.prototype);

@@ -16,10 +16,13 @@ var Composite = require('./Composite').Composite;
 var Iterator = require('../composites/Iterator').Iterator;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the Collection class.
+ * This constructor creates a new collection component of the specified type with the optional
+ * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of component.
+ * @param {Number} type The type of collection.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Collection} The new collection.
  */
@@ -37,10 +40,21 @@ exports.Collection = Collection;
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Visitor} visitor The visitor that wants to visit this composite.
+ * @param {Visitor} visitor The visitor that wants to visit this collection.
  */
 Collection.prototype.accept = function(visitor) {
     visitor.visitCollection(this);
+};
+
+
+/**
+ * This abstract method returns an empty copy of this collection. It must be implemented
+ * by a subclass.
+ * 
+ * @returns {Collection} An empty copy of this collection.
+ */
+Collection.prototype.emptyCopy = function() {
+    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
 };
 
 
@@ -54,9 +68,9 @@ Collection.prototype.iterator = function() {
     return iterator;
 };
 /**
- * This method returns whether or not this composite component is empty.
+ * This method returns whether or not this collection is empty.
  * 
- * @returns {Boolean} Whether or not this composite component is empty.
+ * @returns {Boolean} Whether or not this collection is empty.
  */
 Collection.prototype.isEmpty = function() {
     return this.getSize() === 0;

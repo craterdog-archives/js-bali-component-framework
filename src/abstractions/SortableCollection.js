@@ -10,21 +10,25 @@
 'use strict';
 
 /*
- * This abstract class defines the invariant methods that all sortable collections must inherit.
- * A sortable collection allows the order of its items to be determined externally.  By
- * default, the items will be placed in the order in which they were added to the collection.
- * Additionally, the items can be sorted in various ways depending on a specified sorting
- * algorithm and comparison function.
+ * This abstract class defines the invariant methods that all sortable collections must
+ * implement. A sortable collection allows the order of its items to be determined externally.
+ * By default, the items will be placed in the order in which they were added to the collection.
+ * Additionally, the items can be sorted in various ways depending on the desired comparison
+ * function.
  */
 var Composite = require('./Composite').Composite;
 var Collection = require('./Collection').Collection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the SortableCollection class.
+ * This constructor creates a new sortable collection of the specified type with the optional
+ * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of component.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Number} type The type of sortable collection.
+ * @param {Parameters} parameters Optional parameters used to parameterize this sortable
+ * collection. 
  * @returns {SortableCollection} The new sortable collection.
  */
 function SortableCollection(type, parameters) {
@@ -40,9 +44,9 @@ exports.SortableCollection = SortableCollection;
 // PUBLIC METHODS
 
 /**
- * This method returns the number of items that are currently in this collection.
+ * This method returns the number of items that are currently in this sortable collection.
  * 
- * @returns {Number} The number of items in this collection.
+ * @returns {Number} The number of items in this sortable collection.
  */
 SortableCollection.prototype.getSize = function() {
     var size = this.array.length;
@@ -51,9 +55,9 @@ SortableCollection.prototype.getSize = function() {
 
 
 /**
- * This method returns an array containing the items in this collection.
+ * This method returns an array containing the items in this sortable collection.
  * 
- * @returns {Array} An array containing the items in this collection.
+ * @returns {Array} An array containing the items in this sortable collection.
  */
 SortableCollection.prototype.toArray = function() {
     return this.array.slice();  // copy the array
@@ -61,21 +65,10 @@ SortableCollection.prototype.toArray = function() {
 
 
 /**
- * This abstract method returns an empty copy of this collection. It must be implemented
- * by a subclass.
- * 
- * @returns {Collection} An empty copy of this collection.
- */
-SortableCollection.prototype.emptyCopy = function() {
-    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
-};
-
-
-/**
- * This method returns the item in this collection that is specified by the numeric index.
+ * This method returns the item in this sortable collection that is specified by the numeric index.
  * 
  * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this collection.
+ * @returns {Component} The item at the position in this sortable collection.
  */
 SortableCollection.prototype.getItem = function(index) {
     index = this.normalizedIndex(index);
@@ -86,7 +79,7 @@ SortableCollection.prototype.getItem = function(index) {
 
 
 /**
- * This method replaces an existing item in this collection with a new one.  The new
+ * This method replaces an existing item in this sortable collection with a new one.  The new
  * item replaces the existing item at the specified index.
  *
  * @param {Number} index The index of the existing item.
@@ -105,8 +98,8 @@ SortableCollection.prototype.setItem = function(index, item) {
 
 
 /**
- * This method returns a new collection of items starting with the item at the first index
- * and including the item at the last index.
+ * This method returns a new sortable collection of items starting with the item at the
+ * first index and including the item at the last index.
  * 
  * @param {type} firstIndex The index of the first item to be included.
  * @param {type} lastIndex The index of the last item to be included.
@@ -125,10 +118,10 @@ SortableCollection.prototype.getItems = function(firstIndex, lastIndex) {
 
 
 /**
- * This abstract method adds the specified item to this collection. It must be implemented
- * by a subclass.
+ * This abstract method adds the specified item to this sortable collection. It must be
+ * implemented by a subclass.
  * 
- * @param {Component} item The item to be added to this collection. 
+ * @param {Component} item The item to be added to this sortable collection. 
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 SortableCollection.prototype.addItem = function(item) {
@@ -137,11 +130,11 @@ SortableCollection.prototype.addItem = function(item) {
 
 
 /**
- * This method adds a list of new items to this collection.  The new
- * items will be added in the order they appear in the specified collection.
+ * This method adds a list of new items to this sortable collection.  The new items will
+ * be added in the order they appear in the specified collection.
  *
  * @param {Collection} items The list of new items to be added.
- * @returns {Number} The number of items that were actually added to this collection.
+ * @returns {Number} The number of items that were actually added to this sortable collection.
  */
 SortableCollection.prototype.addItems = function(items) {
     var count = 0;
@@ -157,8 +150,8 @@ SortableCollection.prototype.addItems = function(items) {
 
 
 /**
- * This abstract method removes from this collection the item associated with the specified
- * index. It must be implemented by a subclass.
+ * This abstract method removes from this sortable collection the item associated with
+ * the specified index. It must be implemented by a subclass.
  *
  * @param {Number} index The index of the item to be removed.
  * @returns {Component} The item at the specified index.
@@ -169,12 +162,12 @@ SortableCollection.prototype.removeItem = function(index) {
 
 
 /**
- * This method removes from this collection the items associated with the specified
+ * This method removes from this sortable collection the items associated with the specified
  * index range.
  *
  * @param {Number} firstIndex The index of the first item to be removed.
  * @param {Number} lastIndex The index of the last item to be removed.
- * @returns The collection of the items that were removed from this collection.
+ * @returns The collection of the items that were removed from this sortable collection.
  */
 SortableCollection.prototype.removeItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizedIndex(firstIndex);
@@ -190,7 +183,7 @@ SortableCollection.prototype.removeItems = function(firstIndex, lastIndex) {
 
 
 /**
- * This method shuffles the items in this collection using a randomizing algorithm.
+ * This method shuffles the items in this sortable collection using a randomizing algorithm.
  */
 SortableCollection.prototype.shuffleItems = function() {
     var sorter = new RandomSorter();
@@ -199,7 +192,8 @@ SortableCollection.prototype.shuffleItems = function() {
 
 
 /**
- * This method sorts the items in this collection.
+ * This method sorts the items in this sortable collection into their natural order as defined
+ * by the <code>this.comparedTo(that)</code> method of the items being compared.
  */
 SortableCollection.prototype.sortItems = function() {
     var sorter = new MergeSorter();
@@ -290,9 +284,9 @@ MergeSorter.prototype.mergeArrays = function(left, right) {
 };
 
 
-/**
+/*
  * This sorter class implements a randomizing sort algorithm.  The collection to be sorted
- * is randomly reordered such that the resulting order is completely random.
+ * is randomly reordered such that the resulting order is relatively random.
  */
 
 function RandomSorter() {

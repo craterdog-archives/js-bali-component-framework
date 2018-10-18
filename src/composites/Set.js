@@ -128,7 +128,7 @@ Set.xor = function(set1, set2) {
     while (iterator1.hasNext() && iterator2.hasNext()) {
         if (item1 === undefined) item1 = iterator1.getNext();
         if (item2 === undefined) item2 = iterator2.getNext();
-        var signum = item1.compareTo(item2);
+        var signum = item1.comparedTo(item2);
         switch (signum) {
             case -1:
                 result.addItem(item1);
@@ -397,7 +397,7 @@ RandomizedTree.prototype.insert = function(value) {
     var candidate = this.root;
     while (candidate && candidate.value) {
         parent = candidate;
-        switch (candidate.value.compareTo(value)) {
+        switch (candidate.value.comparedTo(value)) {
             case 1:
                 candidate = candidate.left;
                 break;
@@ -412,7 +412,7 @@ RandomizedTree.prototype.insert = function(value) {
 
     // insert the new node as a child of the parent
     var child = { value: value, parent: parent, priority: Math.random()};
-    switch (parent.value.compareTo(value)) {
+    switch (parent.value.comparedTo(value)) {
         case 1:
             parent.left = child;
             break;
@@ -537,7 +537,7 @@ RandomizedTree.prototype.successor = function(node) {
 RandomizedTree.prototype.find = function(value) {
     var candidate = this.root;
     while (candidate && candidate.value) {
-        switch (candidate.value.compareTo(value)) {
+        switch (candidate.value.comparedTo(value)) {
             case -1:
                 candidate = candidate.right;
                 break;

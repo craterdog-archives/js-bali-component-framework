@@ -41,7 +41,7 @@ function Iterator(array) {
     Composite.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first item
     this.array = array;
-    this.setComplex();  // iterators won't fit inline
+    this.setToComplex();  // iterators won't fit inline
     return this;
 }
 Iterator.prototype = Object.create(Composite.prototype);

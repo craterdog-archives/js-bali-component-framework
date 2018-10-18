@@ -328,7 +328,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     var procedure = this.result;
     procedure.inBrackets = true;
-    procedure.setComplex();  // force the procedure in a block NOT to be formatted inline
+    procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
     this.result = procedure;
 };
 

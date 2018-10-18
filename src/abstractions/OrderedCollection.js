@@ -9,21 +9,21 @@
  ************************************************************************/
 'use strict';
 
-
 /**
- * This abstract class defines the invariant methods that all ordered collections must inherit.
- * An ordered collection automatically orders its items based on the comparison function
- * implemented by a specified <code>Comparator</code>.  If no comparator is specified, the
- * a natural NaturalComparator is used. Duplicate items may be enabled as well, they are not
- * allowed by default.
+ * This abstract class defines the methods that all ordered collections must implement.
+ * An ordered collection automatically orders its items based on the order defined by the
+ <code>this.comparedTo(that)</code> method of the items being compared.
  */
 var Collection = require('./Collection').Collection;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * The constructor for the OrderedCollection class.
+ * This constructor creates a new ordered collection of the specified type with the optional
+ * parameters that are used to parameterize its type.
  *
- * @param {Number} type The type of component.
+ * @param {Number} type The type of ordered collection.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {OrderedCollection} The new ordered collection.
  */
@@ -36,24 +36,15 @@ OrderedCollection.prototype.constructor = OrderedCollection;
 exports.OrderedCollection = OrderedCollection;
 
 
-/**
- * This abstract method returns an empty copy of this collection. It must be implemented
- * by a subclass.
- * 
- * @returns {Collection} An empty copy of this collection.
- */
-OrderedCollection.prototype.emptyCopy = function() {
-    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
-};
-
+// PUBLIC METHODS
 
 /**
- * This method returns a new collection of items starting with the item at the first index
- * and including the item at the last index.
+ * This method returns a new ordered collection of items starting with the item at the
+ * first index and including the item at the last index.
  * 
  * @param {type} firstIndex The index of the first item to be included.
  * @param {type} lastIndex The index of the last item to be included.
- * @returns {Collection} The new collection containing the requested items.
+ * @returns {Collection} The new ordered collection containing the requested items.
  */
 OrderedCollection.prototype.getItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizedIndex(firstIndex);
@@ -72,10 +63,10 @@ OrderedCollection.prototype.getItems = function(firstIndex, lastIndex) {
 
 
 /**
- * This abstract method adds the specified item to this collection. It must be implemented
- * by a subclass.
+ * This abstract method adds the specified item to this ordered collection. It must
+ * be implemented by a subclass.
  * 
- * @param {Component} item The item to be added to this collection. 
+ * @param {Component} item The item to be added to this ordered collection. 
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 OrderedCollection.prototype.addItem = function(item) {
@@ -84,11 +75,10 @@ OrderedCollection.prototype.addItem = function(item) {
 
 
 /**
- * This method adds a list of new items to this collection.  The new
- * items will be added in the order they appear in the specified collection.
+ * This method adds a list of new items to this ordered collection.
  *
  * @param {Collection} items The list of new items to be added.
- * @returns {Number} The number of items that were actually added to this collection.
+ * @returns {Number} The number of items that were actually added to this ordered collection.
  */
 OrderedCollection.prototype.addItems = function(items) {
     var count = 0;
@@ -104,7 +94,7 @@ OrderedCollection.prototype.addItems = function(items) {
 
 
 /*
- * This abstract method removes the specified item from this collection. It must be
+ * This abstract method removes the specified item from this ordered collection. It must be
  * implemented by a subclass.
  * 
  * @param {Component} item The item to be removed from this collection.
@@ -116,10 +106,10 @@ OrderedCollection.prototype.removeItem = function(item) {
 
 
 /**
- * This method removes the specified items from this collection.  The number of
+ * This method removes the specified items from this ordered collection.  The number of
  * matching items is returned.
  *
- * @param {Collection} items The list of items to be removed from this collection.
+ * @param {Collection} items The list of items to be removed from this ordered collection.
  * @returns {Number} The number of items that were actually removed.
  */
 OrderedCollection.prototype.removeItems = function(items) {

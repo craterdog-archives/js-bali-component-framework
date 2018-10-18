@@ -50,7 +50,7 @@ function Angle(value, parameters) {
     if (typeof Angle.ZERO !== 'undefined' && value === 0) return Angle.ZERO;
     if (typeof Angle.PI !== 'undefined' && value === Math.PI) return Angle.PI;
     this.value = value;
-    var source = '~' + Element.realToSource(value);
+    var source = '~' + Element.numberToSource(value);
     source = source.replace(/e\+?/g, 'E');  // convert to Bali exponential format
     this.setSource(source);
     return this;
