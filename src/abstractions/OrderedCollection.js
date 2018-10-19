@@ -39,30 +39,6 @@ exports.OrderedCollection = OrderedCollection;
 // PUBLIC METHODS
 
 /**
- * This method returns a new ordered collection of items starting with the item at the
- * first index and including the item at the last index.
- * 
- * @param {type} firstIndex The index of the first item to be included.
- * @param {type} lastIndex The index of the last item to be included.
- * @returns {Collection} The new ordered collection containing the requested items.
- */
-OrderedCollection.prototype.getItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizedIndex(firstIndex);
-    lastIndex = this.normalizedIndex(lastIndex);
-    var result = this.emptyCopy();
-    var iterator = this.iterator();
-    iterator.toSlot(firstIndex - 1);  // the slot before the first item
-    var numberOfItems = lastIndex - firstIndex + 1;
-    while (numberOfItems > 0) {
-        var item = iterator.getNext();
-        result.addItem(item);
-        numberOfItems--;
-    }
-    return result;
-};
-
-
-/**
  * This abstract method adds the specified item to this ordered collection. It must
  * be implemented by a subclass.
  * 

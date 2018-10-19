@@ -10,7 +10,8 @@
 'use strict';
 
 /*
- * This class captures the state and methods associated with a Bali identifier.
+ * This element class captures the state and methods associated with an
+ * identifier element.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;

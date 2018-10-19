@@ -10,7 +10,7 @@
 'use strict';
 
 /*
- * This class captures the state and methods associated with an angle.
+ * This class captures the state and methods associated with an angle element.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;

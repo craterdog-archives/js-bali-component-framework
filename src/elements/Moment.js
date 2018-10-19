@@ -11,8 +11,8 @@
 
 
 /*
- * This element class captures the state and methods associated with a
- * moment element.
+ * This element class captures the state and methods associated with a moment
+ * in time element.
  */
 var moment = require('moment');
 var types = require('../abstractions/Types');

@@ -44,6 +44,16 @@ exports.SortableCollection = SortableCollection;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this sortable collection.
+ * 
+ * @returns {Array} An array containing the items in this sortable collection.
+ */
+SortableCollection.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
  * This method returns the number of items that are currently in this sortable collection.
  * 
  * @returns {Number} The number of items in this sortable collection.
@@ -51,16 +61,6 @@ exports.SortableCollection = SortableCollection;
 SortableCollection.prototype.getSize = function() {
     var size = this.array.length;
     return size;
-};
-
-
-/**
- * This method returns an array containing the items in this sortable collection.
- * 
- * @returns {Array} An array containing the items in this sortable collection.
- */
-SortableCollection.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
 };
 
 
@@ -98,26 +98,6 @@ SortableCollection.prototype.setItem = function(index, item) {
 
 
 /**
- * This method returns a new sortable collection of items starting with the item at the
- * first index and including the item at the last index.
- * 
- * @param {type} firstIndex The index of the first item to be included.
- * @param {type} lastIndex The index of the last item to be included.
- * @returns {Collection} The new collection containing the requested items.
- */
-SortableCollection.prototype.getItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizedIndex(firstIndex) - 1;
-    lastIndex = this.normalizedIndex(lastIndex) - 1;
-    var result = this.emptyCopy();
-    for (var i = firstIndex; i <= lastIndex; i++) {
-        var item = this.array[i];
-        result.addItem(item);
-    }
-    return result;
-};
-
-
-/**
  * This abstract method adds the specified item to this sortable collection. It must be
  * implemented by a subclass.
  * 
@@ -130,7 +110,7 @@ SortableCollection.prototype.addItem = function(item) {
 
 
 /**
- * This method adds a list of new items to this sortable collection.  The new items will
+ * This method adds a list of new items to this sortable collection. The new items will
  * be added in the order they appear in the specified collection.
  *
  * @param {Collection} items The list of new items to be added.

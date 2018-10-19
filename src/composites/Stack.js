@@ -158,7 +158,7 @@ Stack.prototype.popItem = function() {
  *
  * @returns {Component} The top item on this stack.
  */
-Stack.prototype.getTop = function() {
+Stack.prototype.topItem = function() {
     var item = null;
     var size = this.array.length;
     if (size > 0) {

@@ -139,3 +139,14 @@ Component.prototype.getHash = function() {
     }
     return hash;
 };
+
+
+/**
+ * This abstract method accepts a visitor as part of the visitor pattern. It must be
+ * implemented by a subclass.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this component.
+ */
+Component.prototype.accept = function(visitor) {
+    throw new Error('COMPONENT: Abstract method accept(visitor) must be implemented by a concrete subclass.');
+};

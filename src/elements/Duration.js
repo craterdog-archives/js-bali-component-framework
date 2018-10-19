@@ -11,7 +11,7 @@
 
 
 /*
- * This element class captures the state and methods associated with a
+ * This element class captures the state and methods associated with a time
  * duration element.
  */
 var duration = require('moment').duration;

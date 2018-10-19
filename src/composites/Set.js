@@ -174,27 +174,6 @@ Set.xor = function(set1, set2) {
 // PUBLIC METHODS
 
 /**
- * This method creates an empty copy of this set.
- * 
- * @returns {Set} The resulting empty set.
- */
-Set.prototype.emptyCopy = function() {
-    var copy = new Set(this.parameters);
-    return copy;
-};
-
-
-/**
- * This method returns the number of items that are currently in this set.
- * 
- * @returns {Number}
- */
-Set.prototype.getSize = function() {
-    return this.tree.size;
-};
-
-
-/**
  * This method returns an array containing the items in this set.
  * 
  * @returns {Array} An array containing the items in this set.
@@ -211,6 +190,17 @@ Set.prototype.toArray = function() {
 
 
 /**
+ * This method creates an empty copy of this set.
+ * 
+ * @returns {Set} The resulting empty set.
+ */
+Set.prototype.emptyCopy = function() {
+    var copy = new Set(this.parameters);
+    return copy;
+};
+
+
+/**
  * This method creates an iterator that can be used to traverse the items in this set.
  * 
  * @returns {Iterator} An iterator that can be used to traverse the items in this set.
@@ -221,15 +211,12 @@ Set.prototype.iterator = function() {
 
 
 /**
- * This method retrieves the item that is associated with the specified index from this set.
+ * This method returns the number of items that are currently in this set.
  * 
- * @param {Number} index The index of the desired item in this set.
- * @returns {Component} The item in this set that is associated with the specified index.
+ * @returns {Number} The number of items that are in this set.
  */
-Set.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index) - 1;  // convert to javascript zero based indexing
-    var item = this.tree.node(index).value;
-    return item;
+Set.prototype.getSize = function() {
+    return this.tree.size;
 };
 
 
@@ -243,6 +230,19 @@ Set.prototype.getIndex = function(item) {
     item = Composite.asComponent(item);
     var index = this.tree.index(item) + 1;  // convert to Bali ordinal based indexing
     return index;
+};
+
+
+/**
+ * This method retrieves the item that is associated with the specified index from this set.
+ * 
+ * @param {Number} index The index of the desired item in this set.
+ * @returns {Component} The item in this set that is associated with the specified index.
+ */
+Set.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index) - 1;  // convert to javascript zero based indexing
+    var item = this.tree.node(index).value;
+    return item;
 };
 
 

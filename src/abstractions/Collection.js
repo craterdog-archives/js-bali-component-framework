@@ -78,6 +78,16 @@ Collection.prototype.isEmpty = function() {
 
 
 /**
+ * This abstract method returns the number of items that are currently in this collection.
+ * It must be implemented by a subclass.
+ * 
+ * @returns {Number} The number of items that are in this collection.
+ */
+Collection.prototype.getSize = function() {
+    throw new Error('COLLECTION: Abstract method getSize() must be implemented by a concrete subclass.');
+};
+
+/**
  * This function converts negative indexes into their corresponding positive indexes and
  * then checks to make sure the index is in the range [1..size]. NOTE: if the collection
  * is empty then the resulting index will be zero.
@@ -122,6 +132,42 @@ Collection.prototype.getIndex = function(item) {
         if (component.equalTo(candidate)) return index;
     }
     return 0;  // not found
+};
+
+
+/**
+ * This abstract method returns the item in this collection that is specified by the numeric index.
+ * It must be implemented by a subclass.
+ * 
+ * @param {Number} index The index of the desired item.
+ * @returns {Component} The item at the position in this sortable collection.
+ */
+Collection.prototype.getItem = function(index) {
+    throw new Error('COLLECTION: Abstract method getItem(index) must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method returns a new collection of items starting with the item at the
+ * first index and including the item at the last index.
+ * 
+ * @param {type} firstIndex The index of the first item to be included.
+ * @param {type} lastIndex The index of the last item to be included.
+ * @returns {OrderedCollection} The new collection containing the requested items.
+ */
+Collection.prototype.getItems = function(firstIndex, lastIndex) {
+    firstIndex = this.normalizedIndex(firstIndex);
+    lastIndex = this.normalizedIndex(lastIndex);
+    var result = this.emptyCopy();
+    var iterator = this.iterator();
+    iterator.toSlot(firstIndex - 1);  // the slot before the first item
+    var numberOfItems = lastIndex - firstIndex + 1;
+    while (numberOfItems > 0) {
+        var item = iterator.getNext();
+        result.addItem(item);
+        numberOfItems--;
+    }
+    return result;
 };
 
 

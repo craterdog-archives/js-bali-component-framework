@@ -139,32 +139,32 @@ describe('Bali Document Notation™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var top = stack.getTop();
+            var top = stack.topItem();
             expect(top.toString()).to.equal('gamma');
             var pop = stack.popItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 1);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('epsilon');
             pop = stack.popItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 2);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('delta');
             pop = stack.popItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('beta');
             pop = stack.popItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 4);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('alpha');
             pop = stack.popItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
-            expect(function() {stack.getTop();}).to.throw(Error, 'STACK: Attempted to access the top item of an empty stack.');
+            expect(function() {stack.topItem();}).to.throw(Error, 'STACK: Attempted to access the top item of an empty stack.');
             expect(function() {stack.popItem();}).to.throw(Error, 'STACK: Attempted to pop the top item of an empty stack.');
         });
 

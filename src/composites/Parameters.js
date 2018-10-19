@@ -98,17 +98,6 @@ Parameters.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the number of parameters that are currently on the parameter list.
- * 
- * @returns {Number}
- */
-Parameters.prototype.getSize = function() {
-    var size = this.array.length;
-    return size;
-};
-
-
-/**
  * This method returns an array containing the parameters in this list.
  * 
  * @returns {Array} An array containing the parameters in this list.
@@ -116,6 +105,17 @@ Parameters.prototype.getSize = function() {
 Parameters.prototype.toArray = function() {
     var array = this.array.slice();  // copy the array
     return array;
+};
+
+
+/**
+ * This method returns the number of parameters that are currently on the parameter list.
+ * 
+ * @returns {Number} The number of parameters that are in this list.
+ */
+Parameters.prototype.getSize = function() {
+    var size = this.array.length;
+    return size;
 };
 
 
