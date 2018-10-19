@@ -49,11 +49,11 @@ Composite.asComponent = function(value) {
             break;
         case 'Boolean':
             // parse it's string value
-            component = parser.parseElement(String(value));
+            component = parser.parseComponent(String(value));
             break;
         case 'Number':
             // parse it's uppercase string value to handle exponents correctly
-            component = parser.parseElement(String(value).toUpperCase());
+            component = parser.parseComponent(String(value).toUpperCase());
             break;
         default:
             // it's already a component, leave it as is

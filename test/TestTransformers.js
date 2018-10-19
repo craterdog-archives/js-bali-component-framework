@@ -24,23 +24,23 @@ describe('Bali Document Notation™', function() {
             console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = utilities.parser.parseComponent(source, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatTree(tree);
+            var component = utilities.parser.parseComponent(source, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = utilities.parser.parseComponent(formatted, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatTree(tree);
+            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
-            var iterator = tree.iterator();
+            var iterator = component.iterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
                 var array = association.value.toArray();
                 for (var i = 0; i < array.length; i++) {
                     var item = array[i];
                     var string = item.toString();
-                    var element = utilities.parser.parseElement(string, DEBUG);
+                    var element = utilities.parser.parseComponent(string, DEBUG);
                     expect(element.equalTo(item)).to.equal(true);
                 }
             }
@@ -51,16 +51,16 @@ describe('Bali Document Notation™', function() {
             console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = utilities.parser.parseComponent(source, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatTree(tree);
+            var component = utilities.parser.parseComponent(source, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = utilities.parser.parseComponent(formatted, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatTree(tree);
+            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
-            var iterator = tree.iterator();
+            var iterator = component.iterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
                 var array = association.value.toArray();
@@ -78,14 +78,14 @@ describe('Bali Document Notation™', function() {
             console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = utilities.parser.parseComponent(source, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatTree(tree);
+            var component = utilities.parser.parseComponent(source, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = utilities.parser.parseComponent(formatted, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatTree(tree);
+            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
         });
 
@@ -94,14 +94,14 @@ describe('Bali Document Notation™', function() {
             console.error('        ' + file);
             var source = fs.readFileSync(file, 'utf8');
             expect(source).to.exist;  // jshint ignore:line
-            var tree = utilities.parser.parseComponent(source, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatTree(tree);
+            var component = utilities.parser.parseComponent(source, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
-            tree = utilities.parser.parseComponent(formatted, DEBUG);
-            expect(tree).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatTree(tree);
+            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(component).to.exist;  // jshint ignore:line
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
         });
 
@@ -109,7 +109,7 @@ describe('Bali Document Notation™', function() {
             var list = List.fromCollection([1, 2, 3]);
             var expected = list.iterator();
             expected.getNext();
-            var source = utilities.formatter.formatTree(expected);
+            var source = utilities.formatter.formatComponent(expected);
             expect(source).to.exist;  // jshint ignore:line
             var iterator = utilities.parser.parseComponent(source);
             expect(iterator).to.exist;  // jshint ignore:line

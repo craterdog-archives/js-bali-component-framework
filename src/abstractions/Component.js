@@ -87,7 +87,7 @@ Component.prototype.toString = function() {
  * @returns {String} The Bali source code for this component.
  */
 Component.prototype.toSource = function(indentation) {
-    var source = formatter.formatTree(this, indentation);
+    var source = formatter.formatComponent(this, indentation);
     return source;
 };
 

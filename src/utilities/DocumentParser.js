@@ -10,15 +10,19 @@
 'use strict';
 
 /**
- * This library provides functions that parse a Bali document and
- * produce the corresponding parse tree structure. It uses a parser that
- * is generated using ANTLR v4. The raw parse tree structure that comes
+ * This library provides functions that parse a Bali source code string and
+ * produce the corresponding parse tree structure.
+ * 
+ * NOTE: The implementation of this parser uses a raw parser that was
+ * generated using ANTLR v4. The raw parse tree structure that comes
  * out of ANTLR is frankly not very well designed and hard to understand.
- * So, we walk the raw parse tree with a visitor object regenerating a
- * nice clean parse tree that is constructed exclusively of Bali primitive
- * type components (e.g. elements, collections, and generic trees). This
- * means that some of the code in this the visitor class in this module is
- * a bit harder to understand but the result is nice clean javascript objects.
+ * So, we walk the raw parse tree with a visitor object generating a nice
+ * clean parse tree that is constructed exclusively of Bali component
+ * types (e.g. elements, collections, and trees). This means that some of
+ * the code in the visitor class in this module is a bit harder to
+ * understand but the result is that the rest of the javascript code that
+ * makes up all of the modules for the Bali Cloud Environment™ is simpler,
+ * clean and easy to read. You're welcome ;-)
  */
 var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
@@ -30,190 +34,77 @@ var codex = require('./Codex');
 var Component = require('../abstractions/Component').Component;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * This function parses a Bali source string and returns the corresponding
- * catalog.
+ * This function parses a string containing Bali source code and returns the corresponding
+ * document component.
  * 
  * @param {String} source The Bali source string.
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting catalog.
- */
-exports.parseCatalog = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.catalog();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * component.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting component.
- */
-exports.parseComponent = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.component();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * document.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting document.
+ * default is false. Debug mode is only useful for debugging the language grammar and
+ * need not be used otherwise.
+ * @returns {Document} The resulting document component.
  */
 exports.parseDocument = function(source, debug) {
     var parser = initializeParser(source, debug);
     var antlrTree = parser.document();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
+    var document = convertParseTree(antlrTree);
+    return document;
 };
 
 
 /**
- * This function parses a Bali source string and returns the corresponding
- * element.
+ * This function parses a string containing Bali source code and returns the corresponding
+ * procedure component.
  * 
  * @param {String} source The Bali source string.
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Element} The resulting element.
- */
-exports.parseElement = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.element();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * expression.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting expression.
- */
-exports.parseExpression = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.expression();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * list.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting list.
- */
-exports.parseList = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.list();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * parameters.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting parameters.
- */
-exports.parseParameters = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.parameters();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * procedure.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting procedure.
+ * default is false. Debug mode is only useful for debugging the language grammar and
+ * need not be used otherwise.
+ * @returns {Document} The resulting procedure component.
  */
 exports.parseProcedure = function(source, debug) {
     var parser = initializeParser(source, debug);
     var antlrTree = parser.procedure();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
+    var procedure = convertParseTree(antlrTree);
+    return procedure;
 };
 
 
 /**
- * This function parses a Bali source string and returns the corresponding
- * range.
+ * This function parses a string containing Bali source code and returns the corresponding
+ * component.
  * 
  * @param {String} source The Bali source string.
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting range.
+ * default is false. Debug mode is only useful for debugging the language grammar and
+ * need not be used otherwise.
+ * @returns {Document} The resulting component.
  */
-exports.parseRange = function(source, debug) {
+exports.parseComponent = function(source, debug) {
     var parser = initializeParser(source, debug);
-    var antlrTree = parser.range();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
+    var antlrTree = parser.component();
+    var component = convertParseTree(antlrTree);
+    return component;
 };
 
 
 /**
- * This function parses a Bali source string and returns the corresponding
- * notary seal.
+ * This function parses a string containing Bali source code and returns the corresponding
+ * expression tree component.
  * 
  * @param {String} source The Bali source string.
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting notary seal.
+ * default is false. Debug mode is only useful for debugging the language grammar and
+ * need not be used otherwise.
+ * @returns {Document} The resulting expression tree component.
  */
-exports.parseSeal = function(source, debug) {
+exports.parseExpression = function(source, debug) {
     var parser = initializeParser(source, debug);
-    var antlrTree = parser.seal();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
-};
-
-
-/**
- * This function parses a Bali source string and returns the corresponding
- * structure.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false.
- * @returns {Tree} The resulting structure.
- */
-exports.parseStructure = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.structure();
-    var baliTree = convertParseTree(antlrTree);
-    return baliTree;
+    var antlrTree = parser.expression();
+    var expression = convertParseTree(antlrTree);
+    return expression;
 };
 
 
@@ -245,7 +136,11 @@ function convertParseTree(antlrTree) {
 
 // PRIVATE CLASSES
 
-var INDENTATION = '    ';
+/*
+ * NOTE: This visitor implements the raw ANTLR4 visitor pattern, NOT the Bali
+ * visitor pattern. It is used to convert the raw ANTLR4 parse tree into a
+ * clean Bali parse tree.
+ */
 
 function ParsingVisitor() {
     grammar.BaliDocumentVisitor.call(this);
@@ -259,7 +154,7 @@ ParsingVisitor.prototype.constructor = ParsingVisitor;
 ParsingVisitor.prototype.getIndentation = function() {
     var indentation = '';
     for (var i = 0; i < this.depth; i++) {
-        indentation += INDENTATION;
+        indentation += '    ';
     }
     return indentation;
 };

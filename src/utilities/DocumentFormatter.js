@@ -10,37 +10,39 @@
 'use strict';
 
 /**
- * This library provides functions that format a parse tree produced
- * by the DocumentParser and generates a canonical version of
+ * This library provides functions that format a parse tree structure produced
+ * by the <code>DocumentParser</code> class and generates a canonical version of
  * the corresponding Bali source code string.
  */
 var types = require('../abstractions/Types');
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * This function generates the canonical Bali source code for the specified parse tree. If
- * the optional indentation string is specified each line of the generated source code will
- * be indented using that string.
+ * This function generates the canonical Bali source code for the specified parse tree
+ * component. If an optional indentation string is specified, then each line of the
+ * generated source code will be indented using that string.
  * 
- * @param {Component} tree The Bali parse tree representing a component.
+ * @param {Component} component The Bali parse tree representing a component.
  * @param {String} indentation A blank string that will be prepended to each indented line in
  * the source code.
- * @returns {String} The Bali source code for the parse tree.
+ * @returns {String} The Bali source code for the parse tree component.
  */
-exports.formatTree = function(tree, indentation) {
+exports.formatComponent = function(component, indentation) {
     var visitor = new FormattingVisitor(indentation);
-    tree.accept(visitor);
+    component.accept(visitor);
     return visitor.source;
 };
 
 
 // PRIVATE CLASSES
 
-var INDENTATION = '    ';
+/* NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular
+ * dependency since the Visitor class inherits from the Component class which uses the
+ * FormattingVisitor class.
+ */
 
-// NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular
-// dependency since the Visitor class inherits from the Component class which uses the
-// FormattingVisitor class.
 function FormattingVisitor(indentation) {
     this.indentation = indentation ? indentation : '';
     this.source = '';
@@ -59,7 +61,7 @@ FormattingVisitor.prototype.appendNewline = function() {
 FormattingVisitor.prototype.getIndentation = function() {
     var indentation = this.indentation;
     for (var i = 0; i < this.depth; i++) {
-        indentation += INDENTATION;
+        indentation += '    ';
     }
     return indentation;
 };
