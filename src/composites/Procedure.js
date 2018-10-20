@@ -56,6 +56,29 @@ Procedure.prototype.accept = function(visitor) {
 
 
 /**
+ * This method returns an array containing the statements in the procedure.
+ * 
+ * @returns {Array} An array containing the statements.
+ */
+Procedure.prototype.toArray = function() {
+    var array = this.array.slice();  // copy the array
+    return array;
+};
+
+
+/**
+ * This method creates an empty copy of this procedure including any parameters that were
+ * used to parameterize its type.
+ * 
+ * @returns {Procedure} The resulting empty procedure.
+ */
+Procedure.prototype.emptyCopy = function() {
+    var copy = new Procedure(this.parameters);
+    return copy;
+};
+
+
+/**
  * This method returns the number of statements that are currently in the procedure.
  * 
  * @returns {Number} The number of statements in the procedure.
@@ -67,13 +90,17 @@ Procedure.prototype.getSize = function() {
 
 
 /**
- * This method returns an array containing the statements in the procedure.
+ * This method retrieves the item (statement) that is associated with the specified index
+ * from this procedure.
  * 
- * @returns {Array} An array containing the statements.
+ * @param {Number} index The index of the desired parameter.
+ * @returns {Component} The parameter value at that index.
  */
-Procedure.prototype.toArray = function() {
-    var array = this.array.slice();  // copy the array
-    return array;
+Procedure.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    index--;  // convert to JS zero based indexing
+    var parameter = this.array[index];
+    if (parameter) return parameter.value;
 };
 
 

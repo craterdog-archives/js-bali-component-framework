@@ -243,8 +243,8 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var parameters = this.parameters;
     var type = types.CATALOG;
     if (parameters) {
-        type = parameters.getValueForKey('$type');
-        if (!type) parameters.getValueForIndex(1);
+        type = parameters.getValue('$type');
+        if (!type) type = parameters.getItem(1).value;
         type = types.typeBySymbol(type);
     }
     var component;
@@ -625,8 +625,8 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var collection;
     var type = types.LIST;
     if (parameters) {
-        type = parameters.getValueForKey('$type');
-        if (!type) parameters.getValueForIndex(1);
+        type = parameters.getValue('$type');
+        if (!type) type = parameters.getItem(1).value;
         type = types.typeBySymbol(type);
     }
     switch (type) {

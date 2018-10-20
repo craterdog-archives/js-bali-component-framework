@@ -85,6 +85,28 @@ Stack.fromCollection = function(collection, parameters) {
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items on this stack.
+ * 
+ * @returns {Array} An array containing the items on this stack.
+ */
+Stack.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
+ * This method creates an empty copy of this stack including any parameters that were
+ * used to parameterize its type.
+ * 
+ * @returns {Stack} The resulting empty stack.
+ */
+Stack.prototype.emptyCopy = function() {
+    var copy = new Stack(this.parameters);
+    return copy;
+};
+
+
+/**
  * This method returns the number of items that are currently on this stack.
  * 
  * @returns {Number} The number of items on this stack.
@@ -96,22 +118,17 @@ Stack.prototype.getSize = function() {
 
 
 /**
- * This method returns an array containing the items on this stack.
+ * This method retrieves the item that is associated with the specified index
+ * from this collection starting at the TOP of the stack.
  * 
- * @returns {Array} An array containing the items on this stack.
+ * @param {Number} index The index of the desired item.
+ * @returns {Component} The item at the position on this stack.
  */
-Stack.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
- * This method removes all items from this stack.
- */
-Stack.prototype.removeAll = function() {
-    var size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
-    this.array.splice(0);
+Stack.prototype.getItem = function(index) {
+    index = this.normalizedIndex(-index);  // invert to start at the top of the stack
+    index--;  // convert to JS zero based indexing
+    var item = this.array[index];
+    return item;
 };
 
 
@@ -167,4 +184,14 @@ Stack.prototype.topItem = function() {
         throw new Error('STACK: Attempted to access the top item of an empty stack.');
     }
     return item;
+};
+
+
+/**
+ * This method removes all items from this stack.
+ */
+Stack.prototype.removeAll = function() {
+    var size = this.getSize();
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
+    this.array.splice(0);
 };

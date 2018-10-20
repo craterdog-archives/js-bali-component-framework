@@ -10,11 +10,11 @@
 'use strict';
 
 /**
- * This collection class defines a range of numbers.
+ * This collection class defines a range of items.
  */
 /**
- * This collection class implements a data structure that defines a range of numbers. The
- * structure is static once the first and last numbers in the range have been defined.
+ * This collection class implements a data structure that defines a range of items. The
+ * structure is static once the first and last items in the range have been defined.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
@@ -24,20 +24,20 @@ var Collection = require('../abstractions/Collection').Collection;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new range of numbers with optional parameters that are used
+ * This constructor creates a new range of items with optional parameters that are used
  * to parameterize its type.
  * 
- * @param {Number} first The first number in the range.
- * @param {Number} last The last number in the range.
+ * @param {Component} firstItem The first item in the range.
+ * @param {Component} lastItem The last item in the range.
  * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
-function Range(first, last, parameters) {
+function Range(firstItem, lastItem, parameters) {
     Collection.call(this, types.RANGE, parameters);
-    this.first = Composite.asComponent(first);
-    this.last = Composite.asComponent(last);
+    this.firstItem = Composite.asComponent(firstItem);
+    this.lastItem = Composite.asComponent(lastItem);
     this.complexity += 2;  // account for the '[' ']' delimiters
-    this.complexity += this.first.complexity + this.last.complexity + 2;  // account for the '..' separator
+    this.complexity += this.firstItem.complexity + this.lastItem.complexity + 2;  // account for the '..' separator
     return this;
 }
 Range.prototype = Object.create(Collection.prototype);
@@ -46,32 +46,47 @@ exports.Range = Range;
 
 
 /**
- * This function creates a new range with the specified first and last integer values.
+ * This function creates a new range with the specified first and last item values.
  * The range may be parameterized by specifying optional parameters that are used to
  * parameterize its type.
  * 
- * @param {Number} first The first integer in the range.
- * @param {Number} last The last integer in the range.
+ * @param {Component} firstItem The first item in the range.
+ * @param {Component} lastItem The last item in the range.
  * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
  * @returns {Range} The new range.
  */
-Range.fromEndPoints = function(first, last, parameters) {
-    var range = new Range(first, last, parameters);
+Range.fromEndPoints = function(firstItem, lastItem, parameters) {
+    var range = new Range(firstItem, lastItem, parameters);
     return range;
 };
 
 
 /**
- * This function creates a new range from 1 to the specified last integer value.
+ * This function creates a new range from the specified first item to the last item value.
  * The range may be parameterized by specifying optional parameters that are used to
  * parameterize its type.
  * 
- * @param {Number} last The last integer in the range.
+ * @param {Component} firstItem The first item in the range.
  * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
  * @returns {Range} The new range.
  */
-Range.fromLastPoint = function(last, parameters) {
-    var range = new Range(1, last, parameters);
+Range.fromFirstItem = function(firstItem, parameters) {
+    var range = new Range(firstItem, 1024, parameters);  // setting a safe upper limit for now.
+    return range;
+};
+
+
+/**
+ * This function creates a new range from the first item to the specified last item value.
+ * The range may be parameterized by specifying optional parameters that are used to
+ * parameterize its type.
+ * 
+ * @param {Component} lastItem The last item in the range.
+ * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
+ * @returns {Range} The new range.
+ */
+Range.fromLastItem = function(lastItem, parameters) {
+    var range = new Range(1, lastItem, parameters);
     return range;
 };
 
@@ -89,95 +104,101 @@ Range.prototype.accept = function(visitor) {
 
 
 /**
- * This method returns the number of numbers that are in this range.
+ * This method returns an array containing the items in this range.
  * 
- * @returns {Number} The number of numbers that fall in this range.
- */
-Range.prototype.getSize = function() {
-    var size = this.last.toNumber() - this.first.toNumber() + 1;
-    return size;
-};
-
-
-/**
- * This method returns an array containing the integers in this range.
- * 
- * @returns {Array} An array containing the integers in this range.
+ * @returns {Array} An array containing the items in this range.
  */
 Range.prototype.toArray = function() {
     var array = [];
-    var index = this.first.toNumber();
-    var last = this.last.toNumber();
-    while (index <= last) array.push(index++);
+    var index = this.firstItem.toNumber();
+    var last = this.lastItem.toNumber();
+    while (index <= last) array.push(Composite.asComponent(index++));
     return array;
 };
 
 
 /**
- * This method creates an iterator that can be used to iterate over this range.
+ * This method creates an copy of this range including any parameters that were
+ * used to parameterize its type.
  * 
- * @returns {Iterator} An iterator that can be used to iterator over this range.
+ * @returns {Range} The resulting range.
  */
-Range.prototype.iterator = function() {
-    var iterator = new RangeIterator(this);
-    return iterator;
+Range.prototype.emptyCopy = function() {
+    var copy = new Range(this.firstItem, this.lastItem, this.parameters);
+    return copy;
 };
 
 
-// PRIVATE CLASSES
-
-/*
- * A range does not have a backing array to iterate over. This iterator class simulates
- * the same behavior by generating values on the fly as the range is tranversed.
+/**
+ * This method returns the number of numbers that are in this range.
+ * 
+ * @returns {Component} The number of numbers that fall in this range.
  */
-
-function RangeIterator(range) {
-    Composite.call(this, types.ITERATOR);
-    this.slot = 0;  // the slot before the first number
-    this.size = range.getSize();  // static so we can cache it here
-    this.range = range;
-    return this;
-}
-RangeIterator.prototype = Object.create(Composite.prototype);
-RangeIterator.prototype.constructor = RangeIterator;
-
-
-RangeIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
+Range.prototype.getSize = function() {
+    var size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
+    return size;
 };
 
 
-RangeIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
+/**
+ * This method retrieves the item that is associated with the specified index
+ * within this range.
+ *
+ * @param {Component} index The index of the desired item.
+ * @returns {Component} The item at that index within the range.
+ */
+Range.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    item = Composite.asComponent(this.firstItem.toNumber() + index);
+    return item;
 };
 
 
-RangeIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
+/**
+ * This method returns a new range of items starting with the item at the
+ * first index and including the item at the last index.
+ * <pre>
+ *  this: ['d'..'k']
+ *      ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
+ *  this.getItems(2..4):
+ *           ['e', 'f', 'g']
+ * </pre>
+ * 
+ * If either index references an item that is outside the bounds of this range,
+ * the index is reset to one of the current bounds of this range.
+ * <pre>
+ *  this: ['d'..'k']
+ *      ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
+ *  this.getItems(2..13):  =>  this.getItems(2..8)
+ *           ['e', 'f', 'g', 'h', 'i', 'j', 'k']
+ * </pre>
+ * 
+ * @param {type} firstIndex The index of the first item to be included.
+ * @param {type} lastIndex The index of the last item to be included.
+ * @returns {OrderedCollection} The new range containing the requested items.
+ */
+Range.prototype.getItems = function(firstIndex, lastIndex) {
+    var firstNumber = this.firstItem.toNumber();
+    var lastNumber = this.lastItem.toNumber();
+    firstIndex = this.normalizedIndex(firstIndex);
+    firstIndex += firstNumber - 1;
+    if (firstIndex > lastNumber) firstIndex = lastNumber;
+    lastIndex = this.normalizedIndex(lastIndex);
+    lastIndex += firstNumber - 1;
+    if (lastIndex > lastNumber) lastIndex = lastNumber;
+    var range = Range.fromEndPoints(firstIndex, lastIndex);
+    return range;
 };
 
 
-RangeIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-RangeIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-RangeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the range.');
-    this.slot--;
-    var number = this.range.first.toNumber() + this.slot;
-    return number;
-};
-
-
-RangeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the range.');
-    var number = this.range.first.toNumber() + this.slot;
-    this.slot++;
-    return number;
+/**
+ * This method determines whether or not the specified item is in this range.
+ *
+ * @param {Component} item The item to check.
+ * @returns {Boolean} Whether or not the item is in this range.
+ */
+Range.prototype.inRange = function(item) {
+    item = Composite.asComponent(item);
+    var index = item.toNumber();
+    return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
 };

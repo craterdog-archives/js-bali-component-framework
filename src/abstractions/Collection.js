@@ -136,8 +136,8 @@ Collection.prototype.getIndex = function(item) {
 
 
 /**
- * This abstract method returns the item in this collection that is specified by the numeric index.
- * It must be implemented by a subclass.
+ * This abstract method retrieves the item that is associated with the specified index
+ * from this collection. It must be implemented by a subclass.
  * 
  * @param {Number} index The index of the desired item.
  * @returns {Component} The item at the position in this sortable collection.
@@ -158,16 +158,17 @@ Collection.prototype.getItem = function(index) {
 Collection.prototype.getItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizedIndex(firstIndex);
     lastIndex = this.normalizedIndex(lastIndex);
-    var result = this.emptyCopy();
     var iterator = this.iterator();
     iterator.toSlot(firstIndex - 1);  // the slot before the first item
     var numberOfItems = lastIndex - firstIndex + 1;
+    var array = [];
     while (numberOfItems > 0) {
         var item = iterator.getNext();
-        result.addItem(item);
+        array.push(item);
         numberOfItems--;
     }
-    return result;
+    var collection = this.constructor.fromCollection(array);
+    return collection;
 };
 
 

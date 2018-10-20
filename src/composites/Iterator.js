@@ -73,6 +73,7 @@ Iterator.prototype.accept = function(visitor) {
 Iterator.prototype.toArray = function() {
     var array = [];
     array.push(new Complex(this.slot.toString()));
+    // can't push a List here since that would cause a circular dependency
     this.array.forEach(function(item) {
         array.push(item);
     }, this);

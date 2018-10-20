@@ -32,7 +32,7 @@ var Collection = require('../abstractions/Collection').Collection;
  */
 function Tree(type, complexity) {
     Collection.call(this, type);
-    this.children = [];
+    this.array = [];
     this.complexity += complexity;
     return this;
 }
@@ -44,36 +44,61 @@ exports.Tree = Tree;
 // PUBLIC METHODS
 
 /**
- * This method returns the number of components that are children of this tree node.
- * 
- * @returns {Number} The number of components that are children of this tree node.
- */
-Tree.prototype.getSize = function() {
-    var size = this.children.length;
-    return size;
-};
-
-
-/**
  * This method returns an array containing the components that are children of this
  * tree node.
  * 
  * @returns {Array} An array containing the components that are children of this tree node.
  */
 Tree.prototype.toArray = function() {
-    var array = this.children.slice();  // copy the array
+    var array = this.array.slice();  // copy the array
     return array;
+};
+
+
+/**
+ * This method creates an empty copy of this tree.
+ * 
+ * @returns {Tree} The resulting empty tree.
+ */
+Tree.prototype.emptyCopy = function() {
+    var copy = new Tree(this.type, 0);
+    return copy;
+};
+
+
+/**
+ * This method returns the number of components that are children of this tree node.
+ * 
+ * @returns {Number} The number of components that are children of this tree node.
+ */
+Tree.prototype.getSize = function() {
+    var size = this.array.length;
+    return size;
+};
+
+
+/**
+ * This method retrieves the child node that is associated with the specified index.
+ * 
+ * @param {Number} index The index of the desired child node.
+ * @returns {Component} The child node at the position in this tree.
+ */
+Tree.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    index--;  // convert to JS zero based indexing
+    var item = this.array[index];
+    return item;
 };
 
 
 /**
  * This method adds a new child component to this tree node.
  * 
- * @param {Component} component The new child component.
+ * @param {Component} child The new child component.
  */
-Tree.prototype.addChild = function(component) {
-    this.children.push(component);
-    this.complexity += component.complexity;
+Tree.prototype.addChild = function(child) {
+    this.array.push(child);
+    this.complexity += child.complexity;
 };
 
 

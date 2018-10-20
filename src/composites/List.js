@@ -82,19 +82,8 @@ List.fromCollection = function(collection, parameters) {
 };
 
 
-/**
- * This function returns a new list containing of the all the items from both
- * the specified lists.
- *
- * @param {List} list1 The first list whose items are to be concatenated.
- * @param {List} list2 The second list whose items are to be concatenated.
- * @returns {List} The resulting list.
- */
-List.concatenation = function(list1, list2) {
-    var result = List.fromCollection(list1);
-    result.addItems(list2);
-    return result;
-};
+List.concatenation = SortableCollection.concatenation;
+List.overlap = SortableCollection.overlap;
 
 
 // PUBLIC METHODS

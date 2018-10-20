@@ -41,6 +41,41 @@ SortableCollection.prototype.constructor = SortableCollection;
 exports.SortableCollection = SortableCollection;
 
 
+/**
+ * This function returns a new sortable collection containing of the all the items from both
+ * the specified collections.
+ *
+ * @param {SortableCollection} collection1 The first collection whose items are to be concatenated.
+ * @param {SortableCollection} collection2 The second collection whose items are to be concatenated.
+ * @returns {SortableCollection} The resulting collection.
+ */
+SortableCollection.concatenation = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.addItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new sortable collection containing of the only the items that are
+ * contained in both the specified collections.
+ * 
+ * @param {SortableCollection} collection1 The first collection whose items are to be compared.
+ * @param {SortableCollection} collection2 The second collection whose items are to be compared.
+ * @returns {SortableCollection} The resulting collection.
+ */
+SortableCollection.overlap = function(collection1, collection2) {
+    var result = collection1.constructor(collection1.parameters);
+    var iterator = collection1.iterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (collection2.containsItem(item)) {
+            result.addItem(item);
+        }
+    }
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -65,7 +100,7 @@ SortableCollection.prototype.getSize = function() {
 
 
 /**
- * This method returns the item in this sortable collection that is specified by the numeric index.
+ * This method retrieves the item that is associated with the specified index from this collection.
  * 
  * @param {Number} index The index of the desired item.
  * @returns {Component} The item at the position in this sortable collection.

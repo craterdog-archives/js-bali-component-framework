@@ -38,7 +38,7 @@ function Binary(value, parameters) {
     // decode the value
     var encoded = value.slice(1, -1);  // strip off the single quotes
     if (parameters) {
-        this.base = parameters.getValueForIndex(1).toNumber();
+        this.base = parameters.getItem(1).value.toNumber();
     }
     switch (this.base) {
         case 2:

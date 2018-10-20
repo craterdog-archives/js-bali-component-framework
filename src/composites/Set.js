@@ -173,7 +173,8 @@ Set.xor = function(set1, set2) {
 // PUBLIC METHODS
 
 /**
- * This method creates an empty copy of this set.
+ * This method creates an empty copy of this set including any parameters that were
+ * used to parameterize its type.
  * 
  * @returns {Set} The resulting empty set.
  */

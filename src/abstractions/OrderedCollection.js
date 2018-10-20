@@ -48,22 +48,12 @@ exports.OrderedCollection = OrderedCollection;
  */
 OrderedCollection.prototype.toArray = function() {
     var array = [];
-    var iterator = this.iterator();
+    var iterator = new TreeIterator(this.tree);
     while (iterator.hasNext()) {
         var item = iterator.getNext();
         array.push(item);
     }
     return array;
-};
-
-
-/**
- * This method creates an iterator that can be used to traverse the items in this collection.
- * 
- * @returns {Iterator} An iterator that can be used to traverse the items in this collection.
- */
-OrderedCollection.prototype.iterator = function() {
-    return new TreeIterator(this.tree);
 };
 
 
@@ -217,7 +207,7 @@ TreeIterator.prototype.hasNext = function() {
 
 
 TreeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the set.');
+    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the collection.');
     var value = this.previous.value;
     this.next = this.previous;
     this.previous = this.tree.predecessor(this.next);
@@ -227,7 +217,7 @@ TreeIterator.prototype.getPrevious = function() {
 
 
 TreeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the set.');
+    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the collection.');
     var value = this.next.value;
     this.previous = this.next;
     this.next = this.tree.successor(this.previous);

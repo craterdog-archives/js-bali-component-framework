@@ -109,6 +109,18 @@ Parameters.prototype.toArray = function() {
 
 
 /**
+ * This method creates an empty copy of this parameters list including any parameters that were
+ * used to parameterize its type.
+ * 
+ * @returns {Parameters} The resulting empty parameters list.
+ */
+Parameters.prototype.emptyCopy = function() {
+    var copy = new Parameters(this.parameters);
+    return copy;
+};
+
+
+/**
  * This method returns the number of parameters that are currently on the parameter list.
  * 
  * @returns {Number} The number of parameters that are in this list.
@@ -116,6 +128,35 @@ Parameters.prototype.toArray = function() {
 Parameters.prototype.getSize = function() {
     var size = this.array.length;
     return size;
+};
+
+
+/**
+ * This method retrieves the item (parameter association) that is associated with the
+ * specified index from this parameters list.
+ * 
+ * @param {Number} index The index of the desired parameter association.
+ * @returns {Association} The parameter association at that index.
+ */
+Parameters.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    index--;  // convert to JS zero based indexing
+    var association = this.array[index];
+    return association;
+};
+
+
+/**
+ * This method returns the value associated with the specified key in the parameter list.
+ *
+ * @param {String|Number|Boolean|Component} key The key for the desired parameter.
+ * @returns {Component} The parameter value associated with the key.
+ */
+Parameters.prototype.getValue = function(key) {
+    var association = this.array.find(function(association) {
+        return association.key.toString() === key.toString();
+    }, this);
+    return association.value;
 };
 
 
@@ -134,46 +175,4 @@ Parameters.prototype.addParameter = function(key, value) {
         this.complexity += parameter.complexity;
     }
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
-};
-
-
-/**
- * This method returns the parameter (key-value pair) that is specified by the numeric index.
- * 
- * @param {Number} index The index of the desired parameter.
- * @returns {Association} The parameter at the position in the parameter list.
- */
-Parameters.prototype.getParameter = function(index) {
-    index = this.normalizedIndex(index);
-    index = index - 1;  // convert to JS zero based indexing
-    var parameter = this.array[index];
-    return parameter;
-};
-
-
-/**
- * This method returns the value of the parameter that is specified by the numeric index.
- * 
- * @param {Number} index The index of the desired parameter.
- * @returns {Component} The value of the parameter at the position in the parameter list.
- */
-Parameters.prototype.getValueForIndex = function(index) {
-    index = this.normalizedIndex(index);
-    index = index - 1;  // convert to JS zero based indexing
-    var parameter = this.array[index];
-    if (parameter) return parameter.value;
-};
-
-
-/**
- * This method returns the value associated with the specified key in the parameter list.
- *
- * @param {String|Number|Boolean|Component} key The key for the desired parameter value.
- * @returns {Component} The parameter value associated with the key.
- */
-Parameters.prototype.getValueForKey = function(key) {
-    var parameter = this.array.find(function(parameter) {
-        return parameter.key.toString() === key.toString();
-    }, this);
-    return parameter.value;
 };

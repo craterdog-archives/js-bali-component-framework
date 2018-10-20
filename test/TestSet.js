@@ -164,8 +164,9 @@ describe('Bali Document Notation™', function() {
             size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
+            // the iterator should be pointing at a copy of the array so unaffected
             iterator.toStart();
-            var index = 2;
+            var index = 0;
             while (iterator.hasNext()) {
                 item = iterator.getNext().toString();
                 expect(item).to.equal(array[index++]);

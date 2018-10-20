@@ -27,16 +27,16 @@ describe('Bali Document Notation™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext()).to.equal(2);
-            expect(iterator.getNext()).to.equal(3);
-            expect(iterator.getNext()).to.equal(4);
-            expect(iterator.getNext()).to.equal(5);
+            expect(iterator.getNext().toNumber()).to.equal(2);
+            expect(iterator.getNext().toNumber()).to.equal(3);
+            expect(iterator.getNext().toNumber()).to.equal(4);
+            expect(iterator.getNext().toNumber()).to.equal(5);
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);
         });
 
         it('should create an integer range with one endpoint', function() {
-            var range = Range.fromLastPoint(5);
+            var range = Range.fromLastItem(5);
             expect(range).to.exist;  // jshint ignore:line
             var size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -45,14 +45,46 @@ describe('Bali Document Notation™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext()).to.equal(1);
-            expect(iterator.getNext()).to.equal(2);
-            expect(iterator.getNext()).to.equal(3);
-            expect(iterator.getNext()).to.equal(4);
-            expect(iterator.getNext()).to.equal(5);
+            expect(iterator.getNext().toNumber()).to.equal(1);
+            expect(iterator.getNext().toNumber()).to.equal(2);
+            expect(iterator.getNext().toNumber()).to.equal(3);
+            expect(iterator.getNext().toNumber()).to.equal(4);
+            expect(iterator.getNext().toNumber()).to.equal(5);
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);
         });
+
+    });
+
+    describe('Test the range methods.', function() {
+
+        it('should be able to call the Collection class methods on the range', function() {
+            var range1 = Range.fromEndPoints(1, 8);
+            var size = range1.getSize();
+            expect(size).to.equal(8);
+            var range2 = Range.fromEndPoints(4, 6);
+            size = range2.getSize();
+            expect(size).to.equal(3);
+            expect(range1.containsAll(range2)).to.equal(true);
+            expect(range2.containsAll(range1)).to.equal(false);
+            expect(range1.containsAny(range2)).to.equal(true);
+            expect(range2.containsAny(range1)).to.equal(true);
+            var range3 = range1.getItems(2, 4);
+            size = range3.getSize();
+            expect(size).to.equal(3);
+            expect(range3.containsItem(2)).to.equal(true);
+            expect(range3.containsItem(5)).to.equal(false);
+            expect(range3.getIndex(3)).to.equal(2);
+        });
+
+/*
+        it('should be able to perform range operations on ranges', function() {
+            var range1 = Range.fromEndPoints(3, 8);
+            var range2 = Range.fromEndPoints(7, 16);
+            var range3 = Range.fromEndPoints(3, 16);
+            expect(Range.concatenation(range1, range2).equalTo(range3)).to.equal(true);
+        });
+*/
 
     });
 
@@ -75,7 +107,7 @@ describe('Bali Document Notation™', function() {
             // iterate through the items in reverse order
             while (index > 0) {
                 item = iterator.getPrevious();
-                expect(items[--index]).to.equal(item);
+                expect(items[--index].equalTo(item)).to.equal(true);
             }
             // should be at the first slot in the iterator
             expect(iterator.hasPrevious() === false);
@@ -83,7 +115,7 @@ describe('Bali Document Notation™', function() {
             // iterator through the items in order
             while (index < items.length) {
                 item = iterator.getNext();
-                expect(items[index++]).to.equal(item);
+                expect(items[index++].equalTo(item)).to.equal(true);
             }
             // should be at the last slot in the iterator
             expect(iterator.hasPrevious() === true);

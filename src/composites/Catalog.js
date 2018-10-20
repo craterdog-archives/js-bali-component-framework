@@ -61,7 +61,11 @@ Catalog.fromCollection = function(collection, parameters) {
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
-                catalog.setValue(index++, item);
+                if (item.constructor.name === 'Association') {
+                    catalog.addItem(item);
+                } else {
+                    catalog.setValue(index++, item);
+                }
             });
             break;
         case 'List':
@@ -70,7 +74,11 @@ Catalog.fromCollection = function(collection, parameters) {
             iterator = collection.iterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
-                catalog.setValue(index++, item);
+                if (item.constructor.name === 'Association') {
+                    catalog.addItem(item);
+                } else {
+                    catalog.setValue(index++, item);
+                }
             }
             break;
         case 'Object':
@@ -93,31 +101,19 @@ Catalog.fromCollection = function(collection, parameters) {
 };
 
 
-/**
- * This function returns a new catalog that contains the all the associations from
- * both the specified catalogs. The associations will be in the same order that they
- * are in the separate catalogs.
- *
- * @param {Catalog} catalog1 The first catalog whose items are to be concatenated.
- * @param {Catalog} catalog2 The second catalog whose items are to be concatenated.
- * @returns {Catalog} The resulting catalog.
- */
-Catalog.concatenation = function(catalog1, catalog2) {
-    var result = Catalog.fromCollection(catalog1);
-    result.addItems(catalog2);
-    return result;
-};
+Catalog.concatenation = SortableCollection.concatenation;
+Catalog.overlap = SortableCollection.overlap;
 
 
 /**
  * This function returns a new catalog that contains only the associations with
  * the specified keys.
  *
+ * @param {Set} keys The set of keys for the associates to be saved.
  * @param {Catalog} catalog The catalog whose items are to be reduced.
- * @param {Collection} keys The collection of keys for the associates to be saved.
  * @returns The resulting catalog.
  */
-Catalog.reduction = function(catalog, keys) {
+Catalog.reduction = function(keys, catalog) {
     var result = new Catalog();
     var iterator = keys.iterator();
     while (iterator.hasNext()) {
@@ -305,7 +301,8 @@ Catalog.prototype.removeValue = function(key) {
 
 
 /**
- * This method returns a list of the keys for the associations in this catalog.
+ * This method returns a list of the keys for the associations in this catalog. The
+ * keys are in the same order as the associations in the catalog.
  *
  * @returns {List} A list of the keys for this catalog.
  */
@@ -320,7 +317,9 @@ Catalog.prototype.getKeys = function() {
 
 
 /**
- * This method returns a list of the values for the associations in this catalog.
+ * This method returns a list of the values for the associations in this catalog. The
+ * values are in the same order as the associations in the catalog including any duplicate
+ * values.
  *
  * @returns {List} A list of the values for this catalog.
  */
@@ -335,7 +334,8 @@ Catalog.prototype.getValues = function() {
 
 
 /**
- * This method returns the list of associations between keys and values for this catalog.
+ * This method returns the list of associations between keys and values for this catalog. The
+ * associations are in the same order as the associations in the catalog.
  *
  * @returns {List} A list of the associations for this catalog.
  */
