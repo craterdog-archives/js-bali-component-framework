@@ -45,7 +45,7 @@ exports.Version = Version;
  * @param {Version} that The other version to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Version.prototype.comparedWith = function(that) {
+Version.prototype.comparedTo = function(that) {
     var thisNumbers = this.getNumbers();
     var thatNumbers = that.getNumbers();
     var index = 0;

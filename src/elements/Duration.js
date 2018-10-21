@@ -44,7 +44,7 @@ exports.Duration = Duration;
  * @param {Duration} that The other duration to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Duration.prototype.comparedWith = function(that) {
+Duration.prototype.comparedTo = function(that) {
     var thisMilliseconds = this.duration.asMilliseconds();
     var thatMilliseconds = that.value.asMilliseconds();
     if (thisMilliseconds < thatMilliseconds) return -1;

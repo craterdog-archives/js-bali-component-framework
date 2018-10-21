@@ -209,7 +209,7 @@ Complex.prototype.getAngle = function() {
  * @param {Complex} that The other complex number to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Complex.prototype.comparedWith = function(that) {
+Complex.prototype.comparedTo = function(that) {
     if (this.real < that.real) return -1;
     if (this.real > that.real) return 1;
     // the real parts are equal, check the imaginary parts

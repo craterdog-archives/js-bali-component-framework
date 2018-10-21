@@ -27,20 +27,20 @@ var Element = require('../abstractions/Element').Element;
  */
 function Probability(value, parameters) {
     Element.call(this, types.PROBABILITY, parameters);
-    if (!value) value = false;  // default value
+    if (value === undefined || value === null) value = false;  // default value
 
-    var type = typeof value;
+    var type = value.constructor.name;
     switch (type) {
-        case 'boolean':
+        case 'Boolean':
             if (value) {
                 value = 1;
             } else {
                 value = 0;
             }
             break;
-        case 'number':
+        case 'Number':
             break;
-        case 'string':
+        case 'String':
             if (value === 'true') {
                 value = 1;
             } else if (value === 'false') {
@@ -81,7 +81,7 @@ exports.Probability = Probability;
  * @param {Probability} that The other probability to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Probability.prototype.comparedWith = function(that) {
+Probability.prototype.comparedTo = function(that) {
     if (this.value < that.value) return -1;
     if (this.value > that.value) return 1;
     return 0;

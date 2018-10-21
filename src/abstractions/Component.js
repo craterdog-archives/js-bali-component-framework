@@ -100,7 +100,7 @@ Component.prototype.toSource = function(indentation) {
  * @returns {Boolean}
  */
 Component.prototype.equalTo = function(that) {
-    if (!that) return false;
+    if (that === undefined || that === null) return false;
     if (this === that) return true;  // same component
     if (this.prototype !== that.prototype) return false;
     return this.toSource() === that.toSource();
@@ -115,7 +115,7 @@ Component.prototype.equalTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
  */
 Component.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // any component is greater than null/undefined
+    if (that === undefined || that === null) return 1;  // any component is greater than null/undefined
     if (this === that) return 0;  // same component
     var result = this.constructor.name.localeCompare(that.constructor.name);
     if (result !== 0) return result;

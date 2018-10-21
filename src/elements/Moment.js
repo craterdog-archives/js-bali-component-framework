@@ -65,7 +65,7 @@ exports.Moment = Moment;
  * @param {Moment} that The other moment to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Moment.prototype.comparedWith = function(that) {
+Moment.prototype.comparedTo = function(that) {
     if (this.moment.isBefore(that.value)) return -1;
     if (this.moment.isAfter(that.value)) return 1;
     return 0;

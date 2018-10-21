@@ -34,9 +34,9 @@ var codex = require('../utilities/Codex');
  */
 function Binary(value, parameters) {
     Element.call(this, types.BINARY, parameters);
-    value = value || "''";  // default to empty byte string
-    // decode the value
-    var encoded = value.slice(1, -1);  // strip off the single quotes
+    var source = value || "''";  // default to empty byte string
+    // decode the var source
+    var encoded = source.slice(1, -1);  // strip off the single quotes
     if (parameters) {
         this.base = parameters.getItem(1).value.toNumber();
     }
@@ -79,40 +79,12 @@ function Binary(value, parameters) {
         default:
             throw new Error('BINARY: An invalid base was passed into the constructor: ' + this.base);
     }
-    this.setSource(this.toSource());
+    this.setSource(source);
     return this;
 }
 Binary.prototype = Object.create(Element.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
-
-
-/**
- * This method returns the encoded binary string using the preferred base encoding.
- * 
- * @returns {String} The encoded binary string.
- */
-Binary.prototype.toSource = function() {
-    var string;
-    switch (this.base) {
-        case 2:
-            string = codex.base2Encode(this.value);
-            break;
-        case 16:
-            string = codex.base16Encode(this.value);
-            break;
-        case 32:
-            string = codex.base32Encode(this.value);
-            break;
-        case 64:
-            string = codex.base64Encode(this.value);
-            break;
-        default:
-            throw new Error('BINARY: The binary string has an unknown base: ' + this.base);
-    }
-    string = "'" + string + "'";  // embed in single quotes
-    return string;
-};
 
 
 /**

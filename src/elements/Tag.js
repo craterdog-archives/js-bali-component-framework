@@ -73,7 +73,7 @@ exports.Tag = Tag;
  * @param {Tag} that The other tag to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Tag.prototype.comparedWith = function(that) {
+Tag.prototype.comparedTo = function(that) {
     var thisBytes = this.value.getBytes();
     var thatBytes = that.value.getBytes();
     return thisBytes.localeCompare(thatBytes);

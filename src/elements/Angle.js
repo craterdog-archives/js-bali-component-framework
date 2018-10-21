@@ -66,7 +66,7 @@ exports.Angle = Angle;
  * @param {Angle} that The other angle to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Angle.prototype.comparedWith = function(that) {
+Angle.prototype.comparedTo = function(that) {
     if (this.value < that.value) return -1;
     if (this.value > that.value) return 1;
     return 0;
@@ -76,7 +76,7 @@ Angle.prototype.comparedWith = function(that) {
 /**
  * This method returns the numeric value of the angle.
  * 
- * @returns {number}
+ * @returns {Number} The numeric value of the angle.
  */
 Angle.prototype.toNumber = function() {
     return this.value;
@@ -89,10 +89,11 @@ Angle.PI = new Angle(Math.PI);
 
 
 /**
- * This function returns the inverse of an angle.
+ * This function returns the inverse of an angle. The inverse will be normalized to be
+ * in the range (-pi..pi].
  * 
- * @param {Angle} angle
- * @returns {Angle}
+ * @param {Angle} angle The angle to be inverted.
+ * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
     var value = angle.value - Math.PI;
@@ -104,8 +105,8 @@ Angle.inverse = function(angle) {
 /**
  * This function returns the sine (opposite/hypotenuse) of an angle.
  * 
- * @param {Angle} angle
- * @returns {number}
+ * @param {Angle} angle The angle to be analyzed.
+ * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle) {
     return Math.sin(angle.value);
@@ -115,8 +116,8 @@ Angle.sine = function(angle) {
 /**
  * This function returns the cosine (adjacent/hypotenuse) of an angle.
  * 
- * @param {Angle} angle
- * @returns {number}
+ * @param {Angle} angle The angle to be analyzed.
+ * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle) {
     return Math.cos(angle.value);
@@ -124,22 +125,59 @@ Angle.cosine = function(angle) {
 
 
 /**
- * This function returns an angle that is the arctangent of y/x.
+ * This function returns the tangent (opposite/adjacent) of an angle.
  * 
- * @param {number} ratioOrY
- * @param {number} optionalX
- * @returns {Angle}
+ * @param {Angle} angle The angle to be analyzed.
+ * @returns {Number} The ratio of the opposite to the adjacent for the angle.
+ */
+Angle.tangent = function(angle) {
+    return Math.tan(angle.value);
+};
+
+
+/**
+ * This function returns the angle for the ratio of the opposite to the hypotenuse for
+ * a triangle.
+ * 
+ * @param {Number} ratio The ratio of the opposite to the hypotenuse for the triangle. 
+ * @returns {Angle} The angle of the triangle.
+ */
+Angle.arcsine = function(ratio) {
+    return Math.asin(ratio);
+};
+
+
+/**
+ * This function returns the angle for the ratio of the adjacent to the hypotenuse for
+ * a triangle.
+ * 
+ * @param {Number} ratio The ratio of the adjacent to the hypotenuse for the triangle. 
+ * @returns {Angle} The angle of the triangle.
+ */
+Angle.arccosine = function(ratio) {
+    return Math.acos(ratio);
+};
+
+
+/**
+ * This function returns the angle for the ratio of the opposite to the adjacent for
+ * a triangle.
+ * 
+ * @param {Number} ratioOrY Either the ratio of the opposite to the adjacent, or the opposite.
+ * @param {Number} optionalX The adjacent if the first parameter is not a ratio.
+ * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(ratioOrY, optionalX) {
     var angle;
-    if (typeof optionalX !== 'undefined' && optionalX !== null) {
-        var y = ratioOrY;
-        var x = optionalX;
-        angle = Math.atan2(y, x);
+    if (optionalX === undefined || optionalX === null) {
+        var ratio = ratioOrY;
+        angle = Math.atan(ratio);
         angle = new Angle(angle);
     } else {
-        var ratio = ratioOrY;
-        angle = new Angle(Math.atan(ratio));
+        var opposite = ratioOrY;
+        var adjacent = optionalX;
+        angle = Math.atan2(opposite, adjacent);
+        angle = new Angle(angle);
     }
     return angle;
 };

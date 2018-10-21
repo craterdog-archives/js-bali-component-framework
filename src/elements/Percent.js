@@ -58,7 +58,7 @@ exports.Percent = Percent;
  * @param {Percent} that The other percent to be compared with. 
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Percent.prototype.comparedWith = function(that) {
+Percent.prototype.comparedTo = function(that) {
     if (this.value < that.value) return -1;
     if (this.value > that.value) return 1;
     return 0;
