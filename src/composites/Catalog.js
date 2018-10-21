@@ -34,6 +34,7 @@ var List = require('./List').List;
 function Catalog(parameters) {
     SortableCollection.call(this, types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
+    this.array = [];  // maintains the order of the associations
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += 1;  // account for the ':' in the empty catalog
     return this;
@@ -130,14 +131,56 @@ Catalog.reduction = function(keys, catalog) {
 // PUBLIC METHODS
 
 /**
- * This method creates an empty copy of this catalog including any parameters that were
- * used to parameterize its type.
+ * This method returns an array containing the items in this catalog.
  * 
- * @returns {Catalog} An empty copy of this catalog.
+ * @returns {Array} An array containing the items in this catalog.
  */
-Catalog.prototype.emptyCopy = function() {
-    var copy = new Catalog(this.parameters);
-    return copy;
+Catalog.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
+ * This method returns the number of items that are currently in this catalog.
+ * 
+ * @returns {Number} The number of items in this catalog.
+ */
+Catalog.prototype.getSize = function() {
+    var size = this.array.length;
+    return size;
+};
+
+
+/**
+ * This method retrieves the item that is associated with the specified index from this collection.
+ * 
+ * @param {Number} index The index of the desired item.
+ * @returns {Component} The item at the position in this catalog.
+ */
+Catalog.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    index--;  // convert to JS zero based indexing
+    var item = this.array[index];
+    return item;
+};
+
+
+/**
+ * This method replaces an existing item in this catalog with a new one.  The new
+ * item replaces the existing item at the specified index.
+ *
+ * @param {Number} index The index of the existing item.
+ * @param {Component} item The new item that will replace the existing one.
+ *
+ * @returns The existing item that was at the specified index.
+ */
+Catalog.prototype.setItem = function(index, item) {
+    item = Composite.asComponent(item);
+    index = this.normalizedIndex(index) - 1;  // convert to JS zero based indexing
+    var oldItem = this.array[index];
+    this.array[index] = item;
+    this.complexity += item.complexity - oldItem.complexity;
+    return oldItem;
 };
 
 
@@ -191,9 +234,12 @@ Catalog.prototype.containsItem = function(association) {
  * @returns {Component} The item at the specified index.
  */
 Catalog.prototype.removeItem = function(index) {
+    console.log('this: ' + this);
+    console.log('removing item at index: ' + index);
     var association = this.array[index];
     if (association) {
         var key = association.key;
+        console.log('removing item with key: ' + key);
         delete this.map[key];
         this.array.splice(index, 1);
         this.complexity -= association.complexity;

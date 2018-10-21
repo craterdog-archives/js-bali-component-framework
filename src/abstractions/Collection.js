@@ -48,17 +48,6 @@ Collection.prototype.accept = function(visitor) {
 
 
 /**
- * This abstract method returns an empty copy of this collection. It must be implemented
- * by a subclass.
- * 
- * @returns {Collection} An empty copy of this collection.
- */
-Collection.prototype.emptyCopy = function() {
-    throw new Error('COLLECTION: Abstract method emptyCopy() must be implemented by a concrete subclass.');
-};
-
-
-/**
  * This method returns an object that can be used to iterate over the items in
  * this collection.
  * @returns {Iterator} An iterator for this collection.

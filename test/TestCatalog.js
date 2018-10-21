@@ -34,7 +34,7 @@ describe('Bali Document Notation™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             catalog.removeAll();
-            var copy = catalog.emptyCopy();
+            var copy = catalog.constructor(catalog.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(catalog.equalTo(copy)).to.equal(true);
             var signum = catalog.comparedTo(copy);

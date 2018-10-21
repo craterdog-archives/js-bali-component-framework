@@ -33,7 +33,6 @@ var Collection = require('./Collection').Collection;
  */
 function SortableCollection(type, parameters) {
     Collection.call(this, type, parameters);
-    this.array = [];
     return this;
 }
 SortableCollection.prototype = Object.create(Collection.prototype);
@@ -79,43 +78,9 @@ SortableCollection.overlap = function(collection1, collection2) {
 // PUBLIC METHODS
 
 /**
- * This method returns an array containing the items in this sortable collection.
- * 
- * @returns {Array} An array containing the items in this sortable collection.
- */
-SortableCollection.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
- * This method returns the number of items that are currently in this sortable collection.
- * 
- * @returns {Number} The number of items in this sortable collection.
- */
-SortableCollection.prototype.getSize = function() {
-    var size = this.array.length;
-    return size;
-};
-
-
-/**
- * This method retrieves the item that is associated with the specified index from this collection.
- * 
- * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this sortable collection.
- */
-SortableCollection.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
-    index--;  // convert to JS zero based indexing
-    var item = this.array[index];
-    return item;
-};
-
-
-/**
- * This method replaces an existing item in this sortable collection with a new one.  The new
- * item replaces the existing item at the specified index.
+ * This abstract method replaces an existing item in this sortable collection with a new one.
+ * The new item replaces the existing item at the specified index. It must be implemented
+ * by a subclass.
  *
  * @param {Number} index The index of the existing item.
  * @param {Component} item The new item that will replace the existing one.
@@ -123,12 +88,7 @@ SortableCollection.prototype.getItem = function(index) {
  * @returns The existing item that was at the specified index.
  */
 SortableCollection.prototype.setItem = function(index, item) {
-    item = Composite.asComponent(item);
-    index = this.normalizedIndex(index) - 1;  // convert to JS zero based indexing
-    var oldItem = this.array[index];
-    this.array[index] = item;
-    this.complexity += item.complexity - oldItem.complexity;
-    return oldItem;
+    throw new Error('COLLECTION: Abstract method setItem(index, item) must be implemented by a concrete subclass.');
 };
 
 
@@ -187,7 +147,7 @@ SortableCollection.prototype.removeItem = function(index) {
 SortableCollection.prototype.removeItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizedIndex(firstIndex);
     lastIndex = this.normalizedIndex(lastIndex);
-    var removedItems = this.emptyCopy();
+    var removedItems = this.constructor.fromCollection([], this.parameters);  // empty collection
     var index = firstIndex;
     while (index <= lastIndex) {
         var removedItem = this.removeItem(index++);

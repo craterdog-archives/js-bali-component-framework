@@ -29,7 +29,7 @@ describe('Bali Document Notation™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             set.removeAll();
-            var copy = set.emptyCopy();
+            var copy = set.constructor(set.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(set.equalTo(copy)).to.equal(true);
             var signum = set.comparedTo(copy);

@@ -39,6 +39,7 @@ var SortableCollection = require('../abstractions/SortableCollection').SortableC
  */
 function List(parameters) {
     SortableCollection.call(this, types.LIST, parameters);
+    this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
@@ -89,14 +90,56 @@ List.overlap = SortableCollection.overlap;
 // PUBLIC METHODS
 
 /**
- * This method creates an empty copy of this list including any parameters that were
- * used to parameterize its type.
+ * This method returns an array containing the items in this list.
  * 
- * @returns {List} The resulting empty list.
+ * @returns {Array} An array containing the items in this list.
  */
-List.prototype.emptyCopy = function() {
-    var copy = new List(this.parameters);
-    return copy;
+List.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
+ * This method returns the number of items that are currently in this list.
+ * 
+ * @returns {Number} The number of items in this list.
+ */
+List.prototype.getSize = function() {
+    var size = this.array.length;
+    return size;
+};
+
+
+/**
+ * This method retrieves the item that is associated with the specified index from this collection.
+ * 
+ * @param {Number} index The index of the desired item.
+ * @returns {Component} The item at the position in this list.
+ */
+List.prototype.getItem = function(index) {
+    index = this.normalizedIndex(index);
+    index--;  // convert to JS zero based indexing
+    var item = this.array[index];
+    return item;
+};
+
+
+/**
+ * This method replaces an existing item in this list with a new one.  The new
+ * item replaces the existing item at the specified index.
+ *
+ * @param {Number} index The index of the existing item.
+ * @param {Component} item The new item that will replace the existing one.
+ *
+ * @returns The existing item that was at the specified index.
+ */
+List.prototype.setItem = function(index, item) {
+    item = Composite.asComponent(item);
+    index = this.normalizedIndex(index) - 1;  // convert to JS zero based indexing
+    var oldItem = this.array[index];
+    this.array[index] = item;
+    this.complexity += item.complexity - oldItem.complexity;
+    return oldItem;
 };
 
 
