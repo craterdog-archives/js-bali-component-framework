@@ -234,12 +234,9 @@ Catalog.prototype.containsItem = function(association) {
  * @returns {Component} The item at the specified index.
  */
 Catalog.prototype.removeItem = function(index) {
-    console.log('this: ' + this);
-    console.log('removing item at index: ' + index);
     var association = this.array[index];
     if (association) {
         var key = association.key;
-        console.log('removing item with key: ' + key);
         delete this.map[key];
         this.array.splice(index, 1);
         this.complexity -= association.complexity;
