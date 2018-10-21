@@ -186,22 +186,22 @@ describe('Bali Document Notation™', function() {
             var set3 = new composites.Set();
             set3.addItem('beta');
             set3.addItem('delta');
-            expect(composites.Set.and(set1, set2).equalTo(set3)).to.equal(true);
+            expect(composites.Set.intersection(set1, set2).equalTo(set3)).to.equal(true);
             var set4 = new composites.Set();
             set4.addItem('alpha');
-            expect(composites.Set.sans(set1, set2).equalTo(set4)).to.equal(true);
+            expect(composites.Set.difference(set1, set2).equalTo(set4)).to.equal(true);
             var set5 = new composites.Set();
             set5.addItem('alpha');
             set5.addItem('beta');
             set5.addItem('delta');
             set5.addItem('epsilon');
             set5.addItem('gamma');
-            expect(composites.Set.or(set1, set2).equalTo(set5)).to.equal(true);
+            expect(composites.Set.union(set1, set2).equalTo(set5)).to.equal(true);
             var set6 = new composites.Set();
             set6.addItem('alpha');
             set6.addItem('epsilon');
             set6.addItem('gamma');
-            expect(composites.Set.xor(set1, set2).equalTo(set6)).to.equal(true);
+            expect(composites.Set.maverick(set1, set2).equalTo(set6)).to.equal(true);
         });
 
     });

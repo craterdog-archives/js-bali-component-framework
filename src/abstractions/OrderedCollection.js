@@ -36,6 +36,102 @@ OrderedCollection.prototype.constructor = OrderedCollection;
 exports.OrderedCollection = OrderedCollection;
 
 
+/**
+ * This function returns a new ordered collection that contains all the items that are in
+ * the first ordered collection or the second ordered collection or both.
+ *
+ * @param {OrderedCollection} collection1 The first ordered collection to be operated on.
+ * @param {OrderedCollection} collection2 The second ordered collection to be operated on.
+ * @returns {OrderedCollection} The resulting ordered collection.
+ */
+OrderedCollection.union = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.addItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new ordered collection that contains the items that are in
+ * both the first ordered collection and the second ordered collection.
+ *
+ * @param {OrderedCollection} collection1 The first ordered collection to be operated on.
+ * @param {OrderedCollection} collection2 The second ordered collection to be operated on.
+ * @returns {OrderedCollection} The resulting ordered collection.
+ */
+OrderedCollection.intersection = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator = collection1.iterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (collection2.containsItem(item)) {
+            result.addItem(item);
+        }
+    }
+    return result;
+};
+
+
+/**
+ * This function returns a new ordered collection that contains the items that are in
+ * the first ordered collection but not in the second ordered collection.
+ *
+ * @param {OrderedCollection} collection1 The first ordered collection to be operated on.
+ * @param {OrderedCollection} collection2 The second ordered collection to be operated on.
+ * @returns {OrderedCollection} The resulting ordered collection.
+ */
+OrderedCollection.difference = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.removeItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new ordered collection that contains all the items that are in
+ * the first ordered collection or the second ordered collection but not both.
+ *
+ * @param {OrderedCollection} collection1 The first ordered collection to be operated on.
+ * @param {OrderedCollection} collection2 The second ordered collection to be operated on.
+ * @returns {OrderedCollection} The resulting ordered collection.
+ */
+OrderedCollection.maverick = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator1 = collection1.iterator();
+    var item1;
+    var iterator2 = collection2.iterator();
+    var item2;
+    while (iterator1.hasNext() && iterator2.hasNext()) {
+        if (item1 === undefined) item1 = iterator1.getNext();
+        if (item2 === undefined) item2 = iterator2.getNext();
+        var signum = item1.comparedTo(item2);
+        switch (signum) {
+            case -1:
+                result.addItem(item1);
+                item1 = undefined;
+                break;
+            case 0:
+                item1 = undefined;
+                item2 = undefined;
+                break;
+            case 1:
+                result.addItem(item2);
+                item2 = undefined;
+                break;
+        }
+    }
+    while (iterator1.hasNext()) {
+        item1 = iterator1.getNext();
+        result.addItem(item1);
+    }
+    while (iterator2.hasNext()) {
+        item2 = iterator2.getNext();
+        result.addItem(item2);
+    }
+    return result;
+};
+
+
 // PUBLIC METHODS
 
 /**

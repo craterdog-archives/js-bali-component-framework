@@ -102,8 +102,8 @@ Catalog.fromCollection = function(collection, parameters) {
 };
 
 
+// bind to superclass functions
 Catalog.concatenation = SortableCollection.concatenation;
-Catalog.overlap = SortableCollection.overlap;
 
 
 /**
@@ -191,8 +191,6 @@ Catalog.prototype.setItem = function(index, item) {
  * affected in this case.
  * 
  * @param {Association} association The association to be added to this catalog. 
- * @returns {Boolean} Whether or not the association was successfully added, which it will
- * always have been.
  */
 Catalog.prototype.addItem = function(association) {
     var index = association.key.toString();
@@ -206,7 +204,6 @@ Catalog.prototype.addItem = function(association) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
     this.complexity += association.complexity;
-    return true;
 };
 
 

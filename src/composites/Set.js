@@ -74,100 +74,11 @@ Set.fromCollection = function(collection, parameters) {
 };
 
 
-/**
- * This function returns a new set that contains the items that are in
- * both the first set and the second set, eliminating any duplicate items.
- *
- * @param {Set} set1 The first set to be operated on.
- * @param {Set} set2 The second set to be operated on.
- * @returns {Set} The resulting set.
- */
-Set.and = function(set1, set2) {
-    var result = new Set();
-    var iterator = set1.iterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        if (set2.containsItem(item)) {
-            result.addItem(item);
-        }
-    }
-    return result;
-};
-
-
-/**
- * This function returns a new set that contains the items that are in
- * the first set but not in the second set.
- *
- * @param {Set} set1 The first set to be operated on.
- * @param {Set} set2 The second set to be operated on.
- * @returns {Set} The resulting set.
- */
-Set.sans = function(set1, set2) {
-    var result = Set.fromCollection(set1);
-    result.removeItems(set2);
-    return result;
-};
-
-
-/**
- * This function returns a new set that contains all the items that are in
- * the first set or the second set or both.
- *
- * @param {Set} set1 The first set to be operated on.
- * @param {Set} set2 The second set to be operated on.
- * @returns {Set} The resulting set.
- */
-Set.or = function(set1, set2) {
-    var result = Set.fromCollection(set1);
-    result.addItems(set2);
-    return result;
-};
-
-
-/**
- * This function returns a new set that contains all the items that are in
- * the first set or the second set but not both.
- *
- * @param {Set} set1 The first set to be operated on.
- * @param {Set} set2 The second set to be operated on.
- * @returns {Set} The resulting set.
- */
-Set.xor = function(set1, set2) {
-    var result = new Set();
-    var iterator1 = set1.iterator();
-    var item1;
-    var iterator2 = set2.iterator();
-    var item2;
-    while (iterator1.hasNext() && iterator2.hasNext()) {
-        if (item1 === undefined) item1 = iterator1.getNext();
-        if (item2 === undefined) item2 = iterator2.getNext();
-        var signum = item1.comparedTo(item2);
-        switch (signum) {
-            case -1:
-                result.addItem(item1);
-                item1 = undefined;
-                break;
-            case 0:
-                item1 = undefined;
-                item2 = undefined;
-                break;
-            case 1:
-                result.addItem(item2);
-                item2 = undefined;
-                break;
-        }
-    }
-    while (iterator1.hasNext()) {
-        item1 = iterator1.getNext();
-        result.addItem(item1);
-    }
-    while (iterator2.hasNext()) {
-        item2 = iterator2.getNext();
-        result.addItem(item2);
-    }
-    return result;
-};
+// bind to superclass functions
+Set.union = OrderedCollection.union;
+Set.intersection = OrderedCollection.intersection;
+Set.difference = OrderedCollection.difference;
+Set.maverick = OrderedCollection.maverick;
 
 
 // PUBLIC METHODS
