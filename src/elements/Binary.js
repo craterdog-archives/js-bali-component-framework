@@ -60,6 +60,7 @@ function Binary(value, parameters) {
                 default:
                     throw new Error('BINARY: An invalid base value was passed into the constructor: ' + type);
             }
+            source = "'" + source + "'";
             break;
         case 'String':
             source = value;
