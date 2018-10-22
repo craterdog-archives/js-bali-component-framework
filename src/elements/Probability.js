@@ -21,7 +21,7 @@ var Element = require('../abstractions/Element').Element;
 /**
  * This constructor creates a new probability element.
  * 
- * @param {Number|String|boolean} value The value of the probability.
+ * @param {Number|Boolean|String} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability element.
  */

@@ -23,7 +23,20 @@ describe('Bali Document Notation™', function() {
             expected[i] = i;
         }
 
-        it('should construct binary values by detecting the base', function() {
+        it('should construct binary values from buffer with no base', function() {
+            var binary = new elements.Binary(expected);
+            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
+            expect(binary.base).to.equal(32);
+        });
+
+        it('should construct binary values from buffer with specific base', function() {
+            var parameters = composites.Parameters.fromCollection({$base: 16});
+            var binary = new elements.Binary(expected, parameters);
+            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
+            expect(binary.base).to.equal(16);
+        });
+
+        it('should construct binary values from string by detecting the base', function() {
             var base32 = "'" + codex.base32Encode(expected) + "'";
             var binary = new elements.Binary(base32);
             expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));

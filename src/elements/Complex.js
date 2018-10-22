@@ -31,7 +31,7 @@ var Angle = require('./Angle').Angle;
  * </code></pre>
  * 
  * @constructor
- * @param {String} value The string value of the complex number.
+ * @param {Number|String} value The numeric or string value of the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Complex} The new complex element.
  */
