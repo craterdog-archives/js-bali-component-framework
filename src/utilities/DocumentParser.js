@@ -68,6 +68,7 @@ exports.parseProcedure = function(source, debug) {
     var parser = initializeParser(source, debug);
     var antlrTree = parser.procedure();
     var procedure = convertParseTree(antlrTree);
+    procedure.inBrackets = false;
     return procedure;
 };
 
@@ -222,7 +223,6 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     var procedure = this.result;
-    procedure.inBrackets = true;
     procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
     this.result = procedure;
 };
@@ -563,7 +563,6 @@ ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
 ParsingVisitor.prototype.visitIndices = function(ctx) {
     ctx.list().accept(this);
     var indices = this.result;
-    indices.inBrackets = true;
 };
 
 
@@ -946,7 +945,6 @@ ParsingVisitor.prototype.visitSource = function(ctx) {
     var parameters = this.parameters;
     ctx.procedure().accept(this);
     var procedure = this.result;
-    procedure.inBrackets = true;
     var source = procedure.toSource();
     source = new elements.Source(source, parameters);
     this.result = source;
@@ -972,7 +970,6 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 ParsingVisitor.prototype.visitStructure = function(ctx) {
     ctx.collection().accept(this);
     var collection = this.result;
-    collection.inBrackets = true;
 };
 
 

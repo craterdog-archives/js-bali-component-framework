@@ -32,6 +32,7 @@ var Collection = require('../abstractions/Collection').Collection;
  */
 function Tree(type, complexity) {
     Collection.call(this, type);
+    this.inBrackets = false;
     this.array = [];
     this.complexity += complexity;
     return this;
