@@ -27,8 +27,11 @@ var Element = require('../abstractions/Element').Element;
  */
 function Text(value, parameters) {
     Element.call(this, types.TEXT, parameters);
-    this.type = 
-    this.value = value || '""';  // default is the empty text string
+    if (value === undefined || value === null) value = '""';  // default value
+    if (!value.startsWith('"')) {
+        value = '"' + value + '"';
+    }
+    this.value = value;
     this.setSource(this.value);
     if (this.value.startsWith('"\n')) this.setToComplex();
     return this;

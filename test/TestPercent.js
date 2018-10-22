@@ -33,19 +33,19 @@ describe('Bali Document Notation™', function() {
         });
 
         it('should construct a percent of 13.25%', function() {
-            var decimal = new Percent(13.25);
+            var decimal = new Percent(0.1325);
             var number = decimal.toNumber();
             expect(number).to.equal(0.1325);
             var string = decimal.toSource();
             expect(string).to.equal('13.25%');
         });
 
-        it('should construct a percent of -7%', function() {
-            var negative = new Percent(-7);
+        it('should construct a percent of -2%', function() {
+            var negative = new Percent(-0.02);
             var number = negative.toNumber();
-            expect(number).to.equal(-0.07);
+            expect(number).to.equal(-0.02);
             var string = negative.toSource();
-            expect(string).to.equal('-7%');
+            expect(string).to.equal('-2%');
         });
 
         it('should construct a percent of 50%', function() {

@@ -32,6 +32,14 @@ describe('Bali Document Notation™', function() {
             expect(raw).to.equal('');
         });
 
+        it('should generate from a JS string', function() {
+            var text = new Text('This is a javascript string.');
+            var string = text.toSource();
+            expect(string).to.equal('"This is a javascript string."');
+            var raw = text.getRawString();
+            expect(raw).to.equal('This is a javascript string.');
+        });
+
         it('should generate a specific text string', function() {
             var text = new Text('"This is a text string."');
             var string = text.toSource();

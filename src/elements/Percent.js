@@ -26,21 +26,19 @@ var Element = require('../abstractions/Element').Element;
  */
 function Percent(value, parameters) {
     Element.call(this, types.PERCENT, parameters);
-    var type = typeof value;
+    if (value === undefined || value === null) value = 0;  // default value
+    var type = value.constructor.name;
     switch (type) {
-        case 'undefined':
-            value = 0;
+        case 'Number':
+            value *= 100.0;  // convert to percent
             break;
-        case 'number':
-            // leave it
-            break;
-        case 'string':
+        case 'String':
             value = Number(value.replace(/%/g, ''));  // strip off the %
             break;
         default:
             throw new Error('PERCENT: An invalid value type was passed into the constructor: ' + type);
     }
-    this.value = value;
+    this.value = value / 100.0;  // convert to numeric value
     var source = value.toString() + '%';  // append the %
     // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
     source = source.replace(/e\+?/g, 'E');
@@ -71,5 +69,5 @@ Percent.prototype.comparedTo = function(that) {
  * @returns {number} The numeric value of the percent element.
  */
 Percent.prototype.toNumber = function () {
-    return this.value / 100;
+    return this.value;
 };

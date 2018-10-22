@@ -37,57 +37,67 @@ var Angle = require('./Angle').Angle;
  */
 function Complex(value, parameters) {
     Element.call(this, types.NUMBER, parameters);
-    value = value || '0';  // default to zero
+    if (value === undefined || value === null) value = 0;  // default value
     this.format = 'rectangular';  // rectangular coordinates by default
     var real;
     var imaginary;
-    // Complex(value): constructor generates a complex number from a string
-    var chars = new antlr.InputStream(value);
-    var lexer = new grammar.BaliDocumentLexer(chars);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliDocumentParser(tokens);
-    parser.buildParseTrees = true;
-    var tree = parser.number();
-    var nodeType = tree.constructor.name;
-    switch (nodeType) {
-        case 'UndefinedNumberContext':
-            this.real = NaN;
-            this.imaginary = NaN;
-            this.magnitude = NaN;
-            this.angle = new Angle(0);
-            break;
-        case 'InfiniteNumberContext':
-            this.real = Infinity;
-            this.imaginary = Infinity;
-            this.magnitude = Infinity;
-            this.angle = new Angle(0);
-            break;
-        case 'RealNumberContext':
-            real = tree.real();
-            this.real = nodeToNumber(real);
+    var type = value.constructor.name;
+    switch (type) {
+        case 'Number':
+            this.real = value;
             this.imaginary = 0;
             break;
-        case 'ImaginaryNumberContext':
-            imaginary = tree.imaginary();
-            this.real = 0;
-            this.imaginary = nodeToNumber(imaginary);
-            break;
-        case 'ComplexNumberContext':
-            real = tree.real();
-            imaginary = tree.imaginary();
-            var delimiter = tree.del.text;
-            if (delimiter === ',') {
-                this.real = nodeToNumber(real);
-                this.imaginary = nodeToNumber(imaginary);
-            } else {
-                this.format = 'polar';
-                this.magnitude = nodeToNumber(real);
-                this.angle = new Angle(nodeToNumber(imaginary));
-                this.normalize();
+        case 'String':
+            var chars = new antlr.InputStream(value);
+            var lexer = new grammar.BaliDocumentLexer(chars);
+            var tokens = new antlr.CommonTokenStream(lexer);
+            var parser = new grammar.BaliDocumentParser(tokens);
+            parser.buildParseTrees = true;
+            var tree = parser.number();
+            var nodeType = tree.constructor.name;
+            switch (nodeType) {
+                case 'UndefinedNumberContext':
+                    this.real = NaN;
+                    this.imaginary = NaN;
+                    this.magnitude = NaN;
+                    this.angle = new Angle(0);
+                    break;
+                case 'InfiniteNumberContext':
+                    this.real = Infinity;
+                    this.imaginary = Infinity;
+                    this.magnitude = Infinity;
+                    this.angle = new Angle(0);
+                    break;
+                case 'RealNumberContext':
+                    real = tree.real();
+                    this.real = nodeToNumber(real);
+                    this.imaginary = 0;
+                    break;
+                case 'ImaginaryNumberContext':
+                    imaginary = tree.imaginary();
+                    this.real = 0;
+                    this.imaginary = nodeToNumber(imaginary);
+                    break;
+                case 'ComplexNumberContext':
+                    real = tree.real();
+                    imaginary = tree.imaginary();
+                    var delimiter = tree.del.text;
+                    if (delimiter === ',') {
+                        this.real = nodeToNumber(real);
+                        this.imaginary = nodeToNumber(imaginary);
+                    } else {
+                        this.format = 'polar';
+                        this.magnitude = nodeToNumber(real);
+                        this.angle = new Angle(nodeToNumber(imaginary));
+                        this.normalize();
+                    }
+                    break;
+                default:
+                    throw new Error('COMPLEX: An invalid string was passed to the constructor : ' + value);
             }
             break;
         default:
-            throw new Error('COMPLEX: An invalid string was passed to the constructor : ' + value);
+            throw new Error('COMPLEX: An invalid type was passed to the constructor : ' + type);
     }
     if (this.isUndefined() && typeof Complex.UNDEFINED !== 'undefined') return Complex.UNDEFINED;
     if (this.isZero() && typeof Complex.ZERO !== 'undefined') return Complex.ZERO;

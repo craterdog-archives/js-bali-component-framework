@@ -26,13 +26,13 @@ var Element = require('../abstractions/Element').Element;
  */
 function Angle(value, parameters) {
     Element.call(this, types.ANGLE, parameters);
-    if (typeof value === 'undefined' || value === null) value = 0;  // default value
-    var type = typeof value;
+    if (value === undefined || value === null) value = 0;  // default value
+    var type = value.constructor.name;
     switch (type) {
-        case 'number':
+        case 'Number':
             if (!isFinite(value)) throw new Error('ANGLE: An angle must be a valid number: ' + value);
             break;
-        case 'string':
+        case 'String':
             if (value === '~pi' || value === '~-pi') {
                 value = Math.PI;
             } else {
