@@ -86,4 +86,39 @@ describe('Bali Document Notation™', function() {
 
     });
 
+    describe('Test version functions', function() {
+
+        it('should calculate and validate next versions', function() {
+            var currentVersion = new Version('v6.2.7');
+            var nextVersion = Version.nextVersion(currentVersion, 1);
+            expect(nextVersion.toString()).to.equal('v7');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+            nextVersion = Version.nextVersion(currentVersion, 2);
+            expect(nextVersion.toString()).to.equal('v6.3');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+            nextVersion = Version.nextVersion(currentVersion, 3);
+            expect(nextVersion.toString()).to.equal('v6.2.8');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+            nextVersion = Version.nextVersion(currentVersion, 4);
+            expect(nextVersion.toString()).to.equal('v6.2.7.1');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+            nextVersion = Version.nextVersion(currentVersion);
+            expect(nextVersion.toString()).to.equal('v6.2.8');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+
+            expect(Version.validNextVersion(currentVersion, currentVersion)).to.equal(false);
+            nextVersion = new Version('v7.2.7');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            nextVersion = new Version('v6.3.7');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            nextVersion = new Version('v6.2.8.1');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            nextVersion = new Version('v6.2.7.2');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            nextVersion = new Version('v6.2.7.1.1');
+            expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+        });
+
+    });
+
 });
