@@ -23,24 +23,24 @@ var Reference = require('../elements/Reference').Reference;
 /**
  * This constructor creates a new digital notary seal.
  * 
- * @param {String|Reference} certificateCitation A citation to the certificate that can be
+ * @param {String|Reference} certificateReference A reference to the certificate that can be
  * used to verify the associated digital signature.
  * @param {String|Binary} digitalSignature A base 32 encoded binary string containing the
  * digital signature generated using the notary key associated with the notary certificate
- * referenced by the certificate citation.
+ * referenced by the certificate reference.
  * @returns {Association} A new digital notary seal.
  */
-function Seal(certificateCitation, digitalSignature) {
+function Seal(certificateReference, digitalSignature) {
     Composite.call(this, types.SEAL);
-    if (certificateCitation && certificateCitation.constructor.name === 'String') {
-        certificateCitation = new Reference(certificateCitation);
+    if (certificateReference && certificateReference.constructor.name === 'String') {
+        certificateReference = new Reference(certificateReference);
     }
     if (digitalSignature && digitalSignature.constructor.name === 'String') {
         digitalSignature = new Binary(digitalSignature);
     }
-    this.certificateCitation = certificateCitation;
+    this.certificateReference = certificateReference;
     this.digitalSignature = digitalSignature;
-    this.complexity += certificateCitation.complexity + digitalSignature.complexity;
+    this.complexity += certificateReference.complexity + digitalSignature.complexity;
     this.complexity += 1;  // account for the ' ' separator
     return this;
 }
@@ -68,7 +68,7 @@ Seal.prototype.accept = function(visitor) {
  */
 Seal.prototype.toArray = function() {
     var array = [];
-    array.push(this.certificateCitation);
+    array.push(this.certificateReference);
     array.push(this.digitalSignature);
     return array;
 };

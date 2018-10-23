@@ -22,20 +22,20 @@ var parser = require('../utilities/DocumentParser');
 
 /**
  * This constructor creates a new Bali document using the specified optional previous
- * version citation and the content of the document. The new document is not yet
+ * version reference and the content of the document. The new document is not yet
  * notarized with any digital signatures.
  * 
- * @param {String|Reference} previousCitation An optional citation to the previous version of the
+ * @param {String|Reference} previousReference An optional reference to the previous version of the
  * document.
  * @param {Component} documentContent The content of the document.
  * @returns {Document} The new Bali document.
  */
-function Document(previousCitation, documentContent) {
+function Document(previousReference, documentContent) {
     Composite.call(this, types.DOCUMENT);
-    if (previousCitation && previousCitation.constructor.name === 'String') {
-        previousCitation = new Reference(previousCitation);
+    if (previousReference && previousReference.constructor.name === 'String') {
+        previousReference = new Reference(previousReference);
     }
-    this.previousCitation = previousCitation;
+    this.previousReference = previousReference;
     this.documentContent = documentContent;
     this.notarySeals = [];
     this.setToComplex();  // documents are not formatted inline
@@ -65,7 +65,7 @@ Document.prototype.accept = function(visitor) {
  */
 Document.prototype.toArray = function() {
     var array = [];
-    if (this.previousCitation) array.push(this.previousCitation);
+    if (this.previousReference) array.push(this.previousReference);
     array.push(this.documentContent);
     this.notarySeals.forEach(function(seal) {
         array.push(seal);
@@ -87,16 +87,16 @@ Document.prototype.copy = function() {
 
 
 /**
- * This function returns a draft copy of the document. The previous version citation
+ * This function returns a draft copy of the document. The previous version reference
  * and seals from the original document have been removed from the draft copy.
  * 
- * @param {String|Reference} previousCitation A citation to the document.
+ * @param {String|Reference} previousReference A reference to the document.
  * @returns {Document} A draft copy of the document.
  */
-Document.prototype.draft = function(previousCitation) {
+Document.prototype.draft = function(previousReference) {
     var source = this.documentContent.toSource();
     var draft = parser.parseDocument(source);
-    draft.setPreviousCitation(previousCitation);
+    draft.setPreviousReference(previousReference);
     return draft;
 };
 
@@ -114,15 +114,15 @@ Document.prototype.unsealed = function() {
 
 
 /**
- * This method sets the citation to the previous version of the document.
+ * This method sets the reference to the previous version of the document.
  * 
- * @param {String|Reference} previousCitation The citation to the previous version of the document.
+ * @param {String|Reference} previousReference The reference to the previous version of the document.
  */
-Document.prototype.setPreviousCitation = function(previousCitation) {
-    if (previousCitation.constructor.name === 'String') {
-        previousCitation = new Reference(previousCitation);
+Document.prototype.setPreviousReference = function(previousReference) {
+    if (previousReference.constructor.name === 'String') {
+        previousReference = new Reference(previousReference);
     }
-    this.previousCitation = previousCitation;
+    this.previousReference = previousReference;
 };
 
 

@@ -38,7 +38,7 @@ describe('Bali Document Notation™', function() {
         });
 
         it('should create a draft of a document', function() {
-            var draft = document.draft(document.previousCitation);
+            var draft = document.draft(document.previousReference);
             expect(draft).to.exist;  // jshint ignore:line
             document.notarySeals = [];
             expect(draft.toSource()).to.equal(document.toSource());

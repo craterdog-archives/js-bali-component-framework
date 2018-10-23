@@ -160,8 +160,8 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 Visitor.prototype.visitDocument = function(document) {
-    if (document.previousCitation) {
-        document.previousCitation.accept(this);
+    if (document.previousReference) {
+        document.previousReference.accept(this);
     }
     document.documentContent.accept(this);
     document.notarySeals.forEach(function(seal) {
@@ -405,7 +405,7 @@ Visitor.prototype.visitSaveClause = function(tree) {
 
 // seal: reference binary
 Visitor.prototype.visitSeal = function(seal) {
-    seal.certificateCitation.accept(this);
+    seal.certificateReference.accept(this);
     seal.digitalSignature.accept(this);
 };
 

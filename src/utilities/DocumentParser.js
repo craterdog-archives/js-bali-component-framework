@@ -905,13 +905,13 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // seal: reference binary
 ParsingVisitor.prototype.visitSeal = function(ctx) {
-    var certificateCitation = ctx.reference();
-    certificateCitation.accept(this);
-    certificateCitation = this.result;
+    var certificateReference = ctx.reference();
+    certificateReference.accept(this);
+    certificateReference = this.result;
     var digitalSignature = ctx.binary();
     digitalSignature.accept(this);
     digitalSignature = this.result;
-    var notarySeal = new composites.Seal(certificateCitation, digitalSignature);
+    var notarySeal = new composites.Seal(certificateReference, digitalSignature);
     this.result = notarySeal;
 };
 

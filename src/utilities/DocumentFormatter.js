@@ -222,8 +222,8 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
 FormattingVisitor.prototype.visitDocument = function(document) {
-    if (document.previousCitation) {
-        document.previousCitation.accept(this);
+    if (document.previousReference) {
+        document.previousReference.accept(this);
         this.source += '\n';
     }
     document.documentContent.accept(this);
@@ -579,7 +579,7 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
 
 // seal: reference binary
 FormattingVisitor.prototype.visitSeal = function(seal) {
-    seal.certificateCitation.accept(this);
+    seal.certificateReference.accept(this);
     this.source += ' ';
     seal.digitalSignature.accept(this);
 };
