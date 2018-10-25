@@ -546,6 +546,9 @@ FormattingVisitor.prototype.visitRange = function(range) {
     this.source += '..';
     range.lastItem.accept(this);
     this.source += ']';
+    if (range.isParameterized()) {
+        range.parameters.accept(this);
+    }
 };
 
 

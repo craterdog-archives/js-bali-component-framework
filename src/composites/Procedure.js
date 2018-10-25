@@ -27,14 +27,12 @@ var Collection = require('../abstractions/Collection').Collection;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new empty procedure component with optional parameters
- * that are used to parameterize its type.
+ * This constructor creates a new empty procedure component.
  * 
- * @param {Parameters} parameters Optional parameters used to parameterize this procedure. 
  * @returns {Procedure} The new procedure.
  */
-function Procedure(parameters) {
-    Collection.call(this, types.PROCEDURE, parameters);
+function Procedure() {
+    Collection.call(this, types.PROCEDURE);
     this.array = [];
     return this;
 }
@@ -67,13 +65,12 @@ Procedure.prototype.toArray = function() {
 
 
 /**
- * This method creates an empty copy of this procedure including any parameters that were
- * used to parameterize its type.
+ * This method creates an empty copy of this procedure.
  * 
  * @returns {Procedure} The resulting empty procedure.
  */
 Procedure.prototype.emptyCopy = function() {
-    var copy = new Procedure(this.parameters);
+    var copy = new Procedure();
     return copy;
 };
 

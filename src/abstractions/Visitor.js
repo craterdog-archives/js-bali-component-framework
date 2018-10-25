@@ -226,7 +226,7 @@ Visitor.prototype.visitFactorialExpression = function(tree) {
 
 
 // function: IDENTIFIER
-Visitor.prototype.visitFunction = function(identifier) {
+Visitor.prototype.visitFunction = function(funxtion) {
 };
 
 
@@ -316,7 +316,7 @@ Visitor.prototype.visitMagnitudeExpression = function(tree) {
 
 
 // message: IDENTIFIER
-Visitor.prototype.visitMessage = function(identifier) {
+Visitor.prototype.visitMessage = function(message) {
 };
 
 
@@ -388,6 +388,9 @@ Visitor.prototype.visitQueueClause = function(tree) {
 Visitor.prototype.visitRange = function(range) {
     range.firstItem.accept(this);
     range.lastItem.accept(this);
+    if (range.isParameterized()) {
+        range.parameters.accept(this);
+    }
 };
 
 
@@ -450,6 +453,9 @@ Visitor.prototype.visitSet = function(set) {
 // source: '{' procedure '}'
 Visitor.prototype.visitSource = function(source) {
     source.procedure.accept(this);
+    if (source.isParameterized()) {
+        source.parameters.accept(this);
+    }
 };
 
 
@@ -495,7 +501,7 @@ Visitor.prototype.visitThrowClause = function(tree) {
 
 
 // variable: IDENTIFIER
-Visitor.prototype.visitVariable = function(identifier) {
+Visitor.prototype.visitVariable = function(variable) {
 };
 
 
