@@ -803,8 +803,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    var parameters = this.parameters;
-    var procedure = new composites.Procedure(parameters);
+    var procedure = new composites.Procedure();
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
         var statements = ctx.statement();
