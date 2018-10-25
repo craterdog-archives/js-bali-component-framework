@@ -38,7 +38,6 @@ exports.Moment = require('./src/elements/Moment').Moment;
 exports.Percent = require('./src/elements/Percent').Percent;
 exports.Probability = require('./src/elements/Probability').Probability;
 exports.Reference = require('./src/elements/Reference').Reference;
-exports.Source = require('./src/elements/Source').Source;
 exports.Symbol = require('./src/elements/Symbol').Symbol;
 exports.Tag = require('./src/elements/Tag').Tag;
 exports.Template = require('./src/elements/Template').Template;
@@ -59,5 +58,7 @@ exports.Set = require('./src/composites/Set').Set;
 exports.Stack = require('./src/composites/Stack').Stack;
 exports.Catalog = require('./src/composites/Catalog').Catalog;
 exports.Tree = require('./src/composites/Tree').Tree;
+exports.Block = require('./src/composites/Block').Block;
+exports.Source = require('./src/composites/Source').Source;
 exports.Procedure = require('./src/composites/Procedure').Procedure;
 

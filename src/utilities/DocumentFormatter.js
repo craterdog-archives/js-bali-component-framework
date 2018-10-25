@@ -87,6 +87,14 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 };
 
 
+// block: '{' procedure '}'
+FormattingVisitor.prototype.visitBlock = function(block) {
+    this.source += '{';
+    block.procedure.accept(this);
+    this.source += '}';
+};
+
+
 // breakClause: 'break' 'loop'
 FormattingVisitor.prototype.visitBreakClause = function(tree) {
     this.source += 'break loop';
@@ -116,9 +124,7 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
-    if (collection.inBrackets) {
-        this.source += '[';
-    }
+    this.source += '[';
     if (!collection.isEmpty()) {
         var iterator = collection.iterator();
         var item;
@@ -148,9 +154,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
     } else if (collection.type === types.CATALOG) {
         this.source += ':';  // empty catalog
     }
-    if (collection.inBrackets) {
-        this.source += ']';
-    }
+    this.source += ']';
     if (collection.isParameterized()) {
         collection.parameters.accept(this);
     }
@@ -487,9 +491,6 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
-    if (procedure.inBrackets) {
-        this.source += '{';
-    }
     if (!procedure.isEmpty()) {
         var iterator = procedure.iterator();
         var statement;
@@ -516,9 +517,6 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     } else if (!procedure.isSimple()) {
         this.appendNewline();
     }
-    if (procedure.inBrackets) {
-        this.source += '}';
-    }
 };
 
 
@@ -543,15 +541,11 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 FormattingVisitor.prototype.visitRange = function(range) {
-    if (range.inBrackets) {
-        this.source += '[';
-    }
+    this.source += '[';
     range.firstItem.accept(this);
     this.source += '..';
     range.lastItem.accept(this);
-    if (range.inBrackets) {
-        this.source += ']';
-    }
+    this.source += ']';
 };
 
 
@@ -621,8 +615,9 @@ FormattingVisitor.prototype.visitSet = function(set) {
 
 // source: '{' procedure '}'
 FormattingVisitor.prototype.visitSource = function(source) {
-    // delegate to element
-    this.visitElement(source);
+    this.source += '{';
+    source.procedure.accept(this);
+    this.source += '}';
 };
 
 

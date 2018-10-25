@@ -64,6 +64,12 @@ Visitor.prototype.visitAssociation = function(association) {
 };
 
 
+// block: '{' procedure '}'
+Visitor.prototype.visitBlock = function(block) {
+    block.procedure.accept(this);
+};
+
+
 // breakClause: 'break' 'loop'
 Visitor.prototype.visitBreakClause = function(tree) {
 };
@@ -443,8 +449,7 @@ Visitor.prototype.visitSet = function(set) {
 
 // source: '{' procedure '}'
 Visitor.prototype.visitSource = function(source) {
-    // delegate to element
-    this.visitElement(source);
+    source.procedure.accept(this);
 };
 
 

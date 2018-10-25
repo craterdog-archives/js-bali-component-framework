@@ -28,7 +28,6 @@ var Iterator = require('../composites/Iterator').Iterator;
  */
 function Collection(type, parameters) {
     Composite.call(this, type, parameters);
-    this.inBrackets = true;
     return this;
 }
 Collection.prototype = Object.create(Composite.prototype);

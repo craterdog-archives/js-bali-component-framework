@@ -18,7 +18,6 @@ exports.Moment = require('./Moment').Moment;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
 exports.Reference = require('./Reference').Reference;
-exports.Source = require('./Source').Source;
 exports.Symbol = require('./Symbol').Symbol;
 exports.Tag = require('./Tag').Tag;
 exports.Template = require('./Template').Template;

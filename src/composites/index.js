@@ -20,5 +20,7 @@ exports.Set = require('./Set').Set;
 exports.Stack = require('./Stack').Stack;
 exports.Catalog = require('./Catalog').Catalog;
 exports.Tree = require('./Tree').Tree;
+exports.Block = require('./Block').Block;
+exports.Source = require('./Source').Source;
 exports.Procedure = require('./Procedure').Procedure;
 

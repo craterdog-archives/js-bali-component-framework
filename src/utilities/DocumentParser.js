@@ -68,7 +68,6 @@ exports.parseProcedure = function(source, debug) {
     var parser = initializeParser(source, debug);
     var antlrTree = parser.procedure();
     var procedure = convertParseTree(antlrTree);
-    procedure.inBrackets = false;
     return procedure;
 };
 
@@ -224,7 +223,8 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     var procedure = this.result;
     procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
-    this.result = procedure;
+    var block = new composites.Block(procedure);
+    this.result = block;
 };
 
 
@@ -945,8 +945,7 @@ ParsingVisitor.prototype.visitSource = function(ctx) {
     var parameters = this.parameters;
     ctx.procedure().accept(this);
     var procedure = this.result;
-    var source = procedure.toSource();
-    source = new elements.Source(source, parameters);
+    var source = new composites.Source(procedure, parameters);
     this.result = source;
 };
 
