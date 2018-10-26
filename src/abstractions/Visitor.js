@@ -275,18 +275,18 @@ Visitor.prototype.visitIfClause = function(tree) {
 };
 
 
+// indices: '[' list ']'
+Visitor.prototype.visitIndices = function(tree) {
+    var list = tree.getItem(1);
+    list.accept(this);
+};
+
+
 // inversionExpression: ('-' | '/' | '*') expression
 Visitor.prototype.visitInversionExpression = function(tree) {
     var operator = tree.operator;
     var operand = tree.getItem(1);
     operand.accept(this);
-};
-
-
-// indices: '[' list ']'
-Visitor.prototype.visitIndices = function(tree) {
-    var list = tree.getItem(1);
-    list.accept(this);
 };
 
 
@@ -343,7 +343,10 @@ Visitor.prototype.visitParameters = function(parameters) {
     this.depth++;
     while (iterator.hasNext()) {
         var parameter = iterator.getNext();
-        if (parameters.isList) parameter = parameter.value;
+        if (parameters.isList) {
+            // for list format we only want the value of the association
+            parameter = parameter.value;
+        }
         parameter.accept(this);
     };
     this.depth--;

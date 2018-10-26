@@ -25,6 +25,7 @@ exports.Composite = require('./src/abstractions/Composite').Composite;
 exports.Collection = require('./src/abstractions/Collection').Collection;
 exports.SortableCollection = require('./src/abstractions/SortableCollection').SortableCollection;
 exports.OrderedCollection = require('./src/abstractions/OrderedCollection').OrderedCollection;
+exports.Visitor = require('./src/abstractions/Visitor').Visitor;
 
 
 // PRIMITIVE ELEMENT TYPES

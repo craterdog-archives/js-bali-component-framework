@@ -90,6 +90,16 @@ List.concatenation = SortableCollection.concatenation;
 // PUBLIC METHODS
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this list.
+ */
+List.prototype.accept = function(visitor) {
+    visitor.visitList(this);
+};
+
+
+/**
  * This method returns an array containing the items in this list.
  * 
  * @returns {Array} An array containing the items in this list.

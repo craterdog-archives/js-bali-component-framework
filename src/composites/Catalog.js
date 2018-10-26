@@ -131,6 +131,16 @@ Catalog.reduction = function(keys, catalog) {
 // PUBLIC METHODS
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this catalog.
+ */
+Catalog.prototype.accept = function(visitor) {
+    visitor.visitCatalog(this);
+};
+
+
+/**
  * This method returns an array containing the items in this catalog.
  * 
  * @returns {Array} An array containing the items in this catalog.

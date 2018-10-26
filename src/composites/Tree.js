@@ -157,6 +157,9 @@ Tree.prototype.accept = function(visitor) {
         case types.IF_CLAUSE:
             visitor.visitIfClause(this);
             break;
+        case types.INDICES:
+            visitor.visitIndices(this);
+            break;
         case types.INVERSION_EXPRESSION:
             visitor.visitInversionExpression(this);
             break;

@@ -85,6 +85,16 @@ Stack.fromCollection = function(collection, parameters) {
 // PUBLIC METHODS
 
 /**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this stack.
+ */
+Stack.prototype.accept = function(visitor) {
+    visitor.visitStack(this);
+};
+
+
+/**
  * This method returns an array containing the items on this stack.
  * 
  * @returns {Array} An array containing the items on this stack.
