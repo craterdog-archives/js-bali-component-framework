@@ -99,7 +99,6 @@ Visitor.prototype.visitCollection = function(collection) {
     var iterator = collection.iterator();
     this.depth++;
     while (iterator.hasNext()) {
-        this.appendNewline();
         var item = iterator.getNext();
         item.accept(this);
     };
@@ -284,6 +283,13 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
+// indices: '[' list ']'
+Visitor.prototype.visitIndices = function(tree) {
+    var list = tree.getItem(1);
+    list.accept(this);
+};
+
+
 Visitor.prototype.visitIterator = function(iterator) {
 };
 
@@ -359,12 +365,10 @@ Visitor.prototype.visitProcedure = function(procedure) {
     var iterator = procedure.iterator();
     this.depth++;
     while (iterator.hasNext()) {
-        this.appendNewline();
         var statement = iterator.getNext();
         statement.accept(this);
     }
     this.depth--;
-    this.appendNewline();
 };
 
 

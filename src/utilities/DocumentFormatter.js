@@ -370,6 +370,13 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
+// indices: '[' list ']'
+FormattingVisitor.prototype.visitIndices = function(tree) {
+    var list = tree.getItem(1);
+    list.accept(this);
+};
+
+
 FormattingVisitor.prototype.visitIterator = function(iterator) {
     this.source += '[';
     this.depth++;
