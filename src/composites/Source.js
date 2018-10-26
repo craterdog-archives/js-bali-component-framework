@@ -28,7 +28,7 @@ var Composite = require('../abstractions/Composite').Composite;
  * @returns {Source} A new source code component.
  */
 function Source(procedure, parameters) {
-    Composite.call(this, types.ASSOCIATION, parameters);
+    Composite.call(this, types.SOURCE, parameters);
     this.procedure = procedure;
     this.complexity += this.procedure.complexity;
     this.complexity += 2;  // account for the '{' '}' delimiters

@@ -561,8 +561,10 @@ ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
 
 // indices: '[' list ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
+    var tree = new composites.Tree(types.INDICES, 0);
     ctx.list().accept(this);
-    var indices = this.result;
+    tree.addChild(this.result);
+    this.result = tree;
 };
 
 

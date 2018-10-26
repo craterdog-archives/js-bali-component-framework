@@ -27,7 +27,7 @@ var Composite = require('../abstractions/Composite').Composite;
  * @returns {Block} A new code block component.
  */
 function Block(procedure) {
-    Composite.call(this, types.ASSOCIATION);
+    Composite.call(this, types.BLOCK);
     this.procedure = procedure;
     this.complexity += this.procedure.complexity;
     this.complexity += 2;  // account for the '{' '}' delimiters
