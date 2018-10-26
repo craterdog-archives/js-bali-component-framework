@@ -106,8 +106,13 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 //     NEWLINE (association NEWLINE)* |
 //     ':' /*empty catalog*/
 FormattingVisitor.prototype.visitCatalog = function(catalog) {
+    this.source += '[';
     // delegate to collection
     this.visitCollection(catalog);
+    this.source += ']';
+    if (catalog.isParameterized()) {
+        catalog.parameters.accept(this);
+    }
 };
 
 
@@ -124,7 +129,6 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
-    this.source += '[';
     if (!collection.isEmpty()) {
         var iterator = collection.iterator();
         var item;
@@ -153,10 +157,6 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
         }
     } else if (collection.type === types.CATALOG) {
         this.source += ':';  // empty catalog
-    }
-    this.source += ']';
-    if (collection.isParameterized()) {
-        collection.parameters.accept(this);
     }
 };
 
@@ -404,8 +404,13 @@ FormattingVisitor.prototype.visitIterator = function(iterator) {
 //     NEWLINE (expression NEWLINE)* |
 //     /*empty list*/
 FormattingVisitor.prototype.visitList = function(list) {
+    this.source += '[';
     // delegate to collection
     this.visitCollection(list);
+    this.source += ']';
+    if (list.isParameterized()) {
+        list.parameters.accept(this);
+    }
 };
 
 
@@ -617,9 +622,18 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
+// set:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
 FormattingVisitor.prototype.visitSet = function(set) {
+    this.source += '[';
     // delegate to collection
     this.visitCollection(set);
+    this.source += ']';
+    if (set.isParameterized()) {
+        set.parameters.accept(this);
+    }
 };
 
 
@@ -631,9 +645,18 @@ FormattingVisitor.prototype.visitSource = function(source) {
 };
 
 
+// stack:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty list*/
 FormattingVisitor.prototype.visitStack = function(stack) {
+    this.source += '[';
     // delegate to collection
     this.visitCollection(stack);
+    this.source += ']';
+    if (stack.isParameterized()) {
+        stack.parameters.accept(this);
+    }
 };
 
 

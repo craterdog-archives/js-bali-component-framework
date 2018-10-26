@@ -2,7 +2,9 @@
     $components: [
         3E23("m/s")
         pi($units: "radians")
-        [1, 2, 3]($type: $Stack($Number))
+        [1, 2, 3](
+            $type: $Stack($Number([1..infinity]))
+        )
     ]
     $variables: [
         x

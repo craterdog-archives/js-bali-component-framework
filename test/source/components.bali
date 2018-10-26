@@ -26,7 +26,7 @@
             ["one", "two", "three"]
             [
                 $foo: bar
-                $bar: 25
+                $bar: 25($range: [1..100])
                 $baz: none
             ]
         ]

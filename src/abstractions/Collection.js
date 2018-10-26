@@ -56,6 +56,8 @@ Collection.prototype.iterator = function() {
     var iterator = new Iterator(this.toArray());
     return iterator;
 };
+
+
 /**
  * This method returns whether or not this collection is empty.
  * 

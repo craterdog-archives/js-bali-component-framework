@@ -19,6 +19,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
+/* global NaN, Infinity */
 
 
 // PUBLIC FUNCTIONS
@@ -104,6 +105,17 @@ Range.prototype.accept = function(visitor) {
 
 
 /**
+ * This method returns an object that can be used to iterate over the items in
+ * this collection.
+ * @returns {Iterator} An iterator for this collection.
+ */
+Range.prototype.iterator = function() {
+    var iterator = new RangeIterator(this);
+    return iterator;
+};
+
+
+/**
  * This method returns an array containing the items in this range.
  * 
  * @returns {Array} An array containing the items in this range.
@@ -112,6 +124,9 @@ Range.prototype.toArray = function() {
     var array = [];
     var index = this.firstItem.toNumber();
     var last = this.lastItem.toNumber();
+    if (last === Infinity) {
+        throw new Error('RANGE: Unable to generate an array from an infinite range.');
+    }
     while (index <= last) array.push(Composite.asComponent(index++));
     return array;
 };
@@ -201,4 +216,58 @@ Range.prototype.inRange = function(item) {
     item = Composite.asComponent(item);
     var index = item.toNumber();
     return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
+};
+
+
+// PRIVATE CLASSES
+
+function RangeIterator(range) {
+    this.slot = 0;  // the slot before the first number
+    this.size = range.getSize();  // static so we can cache it here
+    this.range = range;
+    return this;
+}
+RangeIterator.prototype.constructor = RangeIterator;
+
+
+RangeIterator.prototype.toStart = function() {
+    this.slot = 0;  // the slot before the first number
+};
+
+
+RangeIterator.prototype.toSlot = function(slot) {
+    this.slot = slot;
+};
+
+
+RangeIterator.prototype.toEnd = function() {
+    this.slot = this.size;  // the slot after the last number
+};
+
+
+RangeIterator.prototype.hasPrevious = function() {
+    return this.slot > 0;
+};
+
+
+RangeIterator.prototype.hasNext = function() {
+    return this.slot < this.size;
+};
+
+
+RangeIterator.prototype.getPrevious = function() {
+    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the range.');
+    this.slot--;
+    var number = this.range.firstItem.toNumber() + this.slot;
+    number = Composite.asComponent(number);
+    return number;
+};
+
+
+RangeIterator.prototype.getNext = function() {
+    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the range.');
+    var number = this.range.firstItem.toNumber() + this.slot;
+    number = Composite.asComponent(number);
+    this.slot++;
+    return number;
 };

@@ -754,8 +754,8 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
     var parameters = new composites.Parameters();
     ctx.collection().accept(this);
     var collection = this.result;
-    var iterator = collection.iterator();
     var type = collection.type;
+    var iterator = collection.iterator();
     var key;
     var value;
     switch (type) {

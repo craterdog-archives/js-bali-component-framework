@@ -105,6 +105,22 @@ describe('Bali Document Notation™', function() {
             expect(formatted).to.equal(source);
         });
 
+        it('should parse and format the same document', function() {
+            var file = 'test/source/document.bali';
+            console.error('        ' + file);
+            var source = fs.readFileSync(file, 'utf8');
+            expect(source).to.exist;  // jshint ignore:line
+            var component = utilities.parser.parseDocument(source, false);  // is ambiguous :-(
+            expect(component).to.exist;  // jshint ignore:line
+            var formatted = utilities.formatter.formatComponent(component);
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(source);
+            component = utilities.parser.parseDocument(formatted, false);  // is ambiguous :-(
+            expect(component).to.exist;  // jshint ignore:line
+            formatted = utilities.formatter.formatComponent(component);
+            expect(formatted).to.equal(source);
+        });
+
         it('should parse and format the same iterators', function() {
             var list = List.fromCollection([1, 2, 3]);
             var expected = list.iterator();

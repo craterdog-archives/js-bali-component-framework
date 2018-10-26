@@ -82,6 +82,9 @@ Visitor.prototype.visitBreakClause = function(tree) {
 Visitor.prototype.visitCatalog = function(catalog) {
     // delegate to collection
     this.visitCollection(catalog);
+    if (catalog.isParameterized()) {
+        catalog.parameters.accept(this);
+    }
 };
 
 
@@ -103,9 +106,6 @@ Visitor.prototype.visitCollection = function(collection) {
         item.accept(this);
     };
     this.depth--;
-    if (collection.isParameterized()) {
-        collection.parameters.accept(this);
-    }
 };
 
 
@@ -301,6 +301,9 @@ Visitor.prototype.visitIterator = function(iterator) {
 Visitor.prototype.visitList = function(list) {
     // delegate to collection
     this.visitCollection(list);
+    if (list.isParameterized()) {
+        list.parameters.accept(this);
+    }
 };
 
 
@@ -454,6 +457,9 @@ Visitor.prototype.visitSelectClause = function(tree) {
 Visitor.prototype.visitSet = function(set) {
     // delegate to collection
     this.visitCollection(set);
+    if (set.isParameterized()) {
+        set.parameters.accept(this);
+    }
 };
 
 
@@ -469,16 +475,21 @@ Visitor.prototype.visitSource = function(source) {
 Visitor.prototype.visitStack = function(stack) {
     // delegate to collection
     this.visitCollection(stack);
+    if (stack.isParameterized()) {
+        stack.parameters.accept(this);
+    }
 };
 
 
 // statement: mainClause handleClause*
 Visitor.prototype.visitStatement = function(tree) {
     var iterator = tree.iterator();
+    this.depth++;
     while (iterator.hasNext()) {
         var child = iterator.getNext();
         child.accept(this);
     }
+    this.depth--;
 };
 
 

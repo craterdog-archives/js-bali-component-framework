@@ -156,7 +156,7 @@ Parameters.prototype.getValue = function(key) {
     var association = this.array.find(function(association) {
         return association.key.toString() === key.toString();
     }, this);
-    return association.value;
+    if (association) return association.value;
 };
 
 
