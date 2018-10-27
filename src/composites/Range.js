@@ -164,7 +164,7 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.getItem = function(index) {
     index = this.normalizedIndex(index);
-    item = Composite.asComponent(this.firstItem.toNumber() + index);
+    var item = Composite.asComponent(this.firstItem.toNumber() + index);
     return item;
 };
 
