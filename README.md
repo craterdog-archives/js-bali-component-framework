@@ -1,2 +1,2 @@
-# js-bali-parser
-This project contains a JavaScript based parser for the Bali Document Notation™.
+# js-bali-document-framework
+This project contains a JavaScript based version of the Bali Document Framework™.

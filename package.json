@@ -1,10 +1,10 @@
 {
-  "name": "bali-document-notation",
+  "name": "bali-document-framework",
   "version": "1.0.0",
-  "description": "This library provides a JavaScript based parser and formatter for the Bali Document Notation™.",
+  "description": "This library provides a JavaScript based version of the Bali Document Framework™.",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-document-notation.git"
+    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-document-framework.git"
   },
   "keywords": [
     "JavaScript",
@@ -15,9 +15,9 @@
   "author": "Derk Norton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/craterdog-bali/js-bali-document-notation/issues"
+    "url": "https://github.com/craterdog-bali/js-bali-document-framework/issues"
   },
-  "homepage": "https://github.com/craterdog-bali/js-bali-document-notation#readme",
+  "homepage": "https://github.com/craterdog-bali/js-bali-document-framework#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "grunt": "^1.0.3",
