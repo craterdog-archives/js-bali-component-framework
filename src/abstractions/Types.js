@@ -18,7 +18,7 @@
 // PRIVATE ATTRIBUTES
 
 var MAP = {
-    Invalid:                      '#JLG6FRDFPCN9QCYD0TBYS7J5DWKH9NJK',
+    Invalid:                      'Invalid',  // Bali uses ordinal based indexing
     Angle:                        '#8SC89QY4LM68LTGPXYMBR6C0LR324L3P',
     ArithmeticExpression:         '#G5YBFG0VKKQLMABZ7Z9T1NMPLA87WJHA',
     Association:                  '#MKCH4J7N45P3GV9RC7JA7QBVV2H2PPJB',
