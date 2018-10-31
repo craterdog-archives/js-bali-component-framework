@@ -33,7 +33,12 @@ module.exports = function(grunt) {
         'grammar/*.interp',
         'grammar/*.tokens'
       ],
-      build: ['dist/*']
+      build: [
+        'dist/*'
+      ],
+      options: {
+        force: false
+      }
     },
 
     // grunt-antlr4 plugin configuration (generate parser)
@@ -58,7 +63,8 @@ module.exports = function(grunt) {
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec'
+          reporter: 'spec',
+          timeout: 10000 
         },
         src: [
           'test/TestCodex.js',
@@ -94,7 +100,8 @@ module.exports = function(grunt) {
       dist: {
         // concatenate the source files and place the result in destination
         src: [
-          'src/*.js'
+          'grammar/*.js',
+          'src/*/*.js'
         ],
         dest: 'dist/<%= pkg.name %>.js'
       }

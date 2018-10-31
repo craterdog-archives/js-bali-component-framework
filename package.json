@@ -2,17 +2,24 @@
   "name": "bali-document-framework",
   "version": "1.0.0",
   "description": "This library provides a JavaScript based version of the Bali Document Framework™.",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/craterdog-bali/js-bali-document-framework.git"
   },
   "keywords": [
-    "JavaScript",
-    "Bali",
+    "NodeJS",
+    "Bali Document Framework",
+    "Bali Cloud Environment",
+    "Bali Document Notation",
+    "Primitive Types",
+    "Collection Classes",
     "Parser",
     "Formatter"
   ],
   "author": "Derk Norton",
+  "company": "Crater Dog Technologies™",
+  "email": "craterdog@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/craterdog-bali/js-bali-document-framework/issues"
