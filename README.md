@@ -8,7 +8,7 @@ The component classes provide the foundation for all other classes in the Bali D
 
 #### Framework
 The following UML class diagram shows a high-level view of the base component classes.
-![Bali Component Framework](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/docs/images/Bali%20Component%20Framework.png)
+![Bali Component Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Framework.png)
 
 The component classes are split into two types of components:
  * **Elements** - which are atomic in nature and not generally broken down into smaller pieces.
@@ -18,16 +18,16 @@ The component classes are split into two types of components:
 
 #### Details
 The next UML class diagram shows the details for the base component classes.
-![Bali Component Framework](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/docs/images/Bali%20Component%20Details.png)
+![Bali Component Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Details.png)
 
 ### Bali Documents
-An important type of component is a _notarized_ Bali Document. Each document contains a potentially complex component which represents knowledge about things or knowledge about how to do things. A document is digitally notarized by the author of the document to prove that she is the author and to prevent anyone or anything from modifying the document once it has been notarized. To facilitate this each document may contain one or more notary seals that can be used to verify the validity of the document by anyone who care to verify it. Refer to the Crater Dog Technologies™ [js-bali-digital-notary](https://github.com/craterdog-bali/js-bali-digital-notary) project for details on how to digitally notarize and verify the documents.
+An important type of component is a _notarized_ Bali Document. Each document contains a potentially complex component which represents knowledge about things or knowledge about how to do things. A document is digitally notarized by the author of the document to prove that she is the author and to prevent anyone or anything from modifying the document once it has been notarized. To facilitate this each document may contain one or more notary seals that can be used to verify the validity of the document by anyone who care to verify it. Refer to the Crater Dog Technologies™ [js-bali-digital-notary](https://raw.githubusercontent.com/craterdog-bali/js-bali-digital-notary) project for details on how to digitally notarize and verify the documents.
 
 #### Framework
 The following UML class diagram shows a high-level view of the document related component classes.
-![Bali Document Framework](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/docs/images/Bali%20Document%20Framework.png)
+![Bali Document Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Framework.png)
 
 #### Details
 The next UML class diagram shows the details for the document related component classes.
-![Bali Document Framework](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/docs/images/Bali%20Document%20Details.png)
+![Bali Document Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Details.png)
 
