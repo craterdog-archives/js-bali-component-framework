@@ -85,7 +85,7 @@ Element.numberToSource = function(number) {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
-Element.prototype.accept = function(visitor) {
+Element.prototype.acceptVisitor = function(visitor) {
     visitor.visitElement(this);
 };
 

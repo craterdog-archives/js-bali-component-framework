@@ -89,7 +89,7 @@ Stack.fromCollection = function(collection, parameters) {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this stack.
  */
-Stack.prototype.accept = function(visitor) {
+Stack.prototype.acceptVisitor = function(visitor) {
     visitor.visitStack(this);
 };
 

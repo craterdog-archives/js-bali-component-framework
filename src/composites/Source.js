@@ -46,7 +46,7 @@ exports.Source = Source;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this source code.
  */
-Source.prototype.accept = function(visitor) {
+Source.prototype.acceptVisitor = function(visitor) {
     visitor.visitSource(this);
 };
 

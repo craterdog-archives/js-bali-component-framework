@@ -82,7 +82,7 @@ describe('Bali Document Notation™', function() {
             var range1 = Range.fromEndPoints(3, 8);
             var range2 = Range.fromEndPoints(7, 16);
             var range3 = Range.fromEndPoints(3, 16);
-            expect(Range.concatenation(range1, range2).equalTo(range3)).to.equal(true);
+            expect(Range.concatenation(range1, range2).isEqualTo(range3)).to.equal(true);
         });
 */
 
@@ -107,7 +107,7 @@ describe('Bali Document Notation™', function() {
             // iterate through the items in reverse order
             while (index > 0) {
                 item = iterator.getPrevious();
-                expect(items[--index].equalTo(item)).to.equal(true);
+                expect(items[--index].isEqualTo(item)).to.equal(true);
             }
             // should be at the first slot in the iterator
             expect(iterator.hasPrevious() === false);
@@ -115,7 +115,7 @@ describe('Bali Document Notation™', function() {
             // iterator through the items in order
             while (index < items.length) {
                 item = iterator.getNext();
-                expect(items[index++].equalTo(item)).to.equal(true);
+                expect(items[index++].isEqualTo(item)).to.equal(true);
             }
             // should be at the last slot in the iterator
             expect(iterator.hasPrevious() === true);

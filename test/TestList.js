@@ -31,7 +31,7 @@ describe('Bali Document Notation™', function() {
             list.removeAll();
             var copy = list.constructor(list.parameters);
             expect(copy).to.exist;  // jshint ignore:line
-            expect(list.equalTo(copy)).to.equal(true);
+            expect(list.isEqualTo(copy)).to.equal(true);
             var signum = list.comparedTo(copy);
             expect(signum).to.equal(0);
         });
@@ -179,7 +179,7 @@ describe('Bali Document Notation™', function() {
             list2.addItem('epsilon');
             list2.addItem('gamma');
             var list3 = composites.List.fromCollection(array);
-            expect(composites.List.concatenation(list1, list2).equalTo(list3)).to.equal(true);
+            expect(composites.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
     });

@@ -46,7 +46,7 @@ exports.Association = Association;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this association.
  */
-Association.prototype.accept = function(visitor) {
+Association.prototype.acceptVisitor = function(visitor) {
     visitor.visitAssociation(this);
 };
 

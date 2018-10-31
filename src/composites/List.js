@@ -94,7 +94,7 @@ List.concatenation = SortableCollection.concatenation;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this list.
  */
-List.prototype.accept = function(visitor) {
+List.prototype.acceptVisitor = function(visitor) {
     visitor.visitList(this);
 };
 

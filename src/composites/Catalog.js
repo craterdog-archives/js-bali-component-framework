@@ -135,7 +135,7 @@ Catalog.reduction = function(keys, catalog) {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this catalog.
  */
-Catalog.prototype.accept = function(visitor) {
+Catalog.prototype.acceptVisitor = function(visitor) {
     visitor.visitCatalog(this);
 };
 
@@ -228,7 +228,7 @@ Catalog.prototype.containsItem = function(association) {
     var index = association.key.toString();
     var candidate = this.map[index];
     if (candidate) {
-        result = candidate.equalTo(association);
+        result = candidate.isEqualTo(association);
     }
     return result;
 };
@@ -339,7 +339,7 @@ Catalog.prototype.removeValue = function(key) {
     if (association) {
         delete this.map[index];
         index = this.array.findIndex(function(item) {
-            return item.equalTo(association);
+            return item.isEqualTo(association);
         });
         this.array.splice(index, 1);
         this.complexity -= association.complexity;

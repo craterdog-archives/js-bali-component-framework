@@ -60,7 +60,7 @@ exports.Iterator = Iterator;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this iterator.
  */
-Iterator.prototype.accept = function(visitor) {
+Iterator.prototype.acceptVisitor = function(visitor) {
     visitor.visitIterator(this);
 };
 

@@ -45,7 +45,7 @@ exports.Block = Block;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this code block.
  */
-Block.prototype.accept = function(visitor) {
+Block.prototype.acceptVisitor = function(visitor) {
     visitor.visitBlock(this);
 };
 

@@ -53,7 +53,7 @@ exports.Document = Document;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this document.
  */
-Document.prototype.accept = function(visitor) {
+Document.prototype.acceptVisitor = function(visitor) {
     visitor.visitDocument(this);
 };
 
@@ -79,9 +79,21 @@ Document.prototype.toArray = function() {
  * 
  * @returns {Document} A deep copy of the document.
  */
-Document.prototype.copy = function() {
+Document.prototype.exactCopy = function() {
     var source = this.toSource();
     var copy = parser.parseDocument(source);
+    return copy;
+};
+
+
+/**
+ * This function returns a copy of the document without its last notary seal.
+ * 
+ * @returns {Document} A copy of the document without the last seal.
+ */
+Document.prototype.unsealedCopy = function() {
+    var copy = this.exactCopy();
+    copy.notarySeals.pop();  // remove the last notary seal
     return copy;
 };
 
@@ -93,23 +105,11 @@ Document.prototype.copy = function() {
  * @param {String|Reference} previousReference A reference to the document.
  * @returns {Document} A draft copy of the document.
  */
-Document.prototype.draft = function(previousReference) {
+Document.prototype.draftCopy = function(previousReference) {
     var source = this.documentContent.toSource();
     var draft = parser.parseDocument(source);
     draft.setPreviousReference(previousReference);
     return draft;
-};
-
-
-/**
- * This function returns a copy of the document without its last notary seal.
- * 
- * @returns {Document} A copy of the document without the last seal.
- */
-Document.prototype.unsealed = function() {
-    var copy = this.copy();
-    copy.notarySeals.pop();  // remove the last notary seal
-    return copy;
 };
 
 
@@ -144,18 +144,6 @@ Document.prototype.getLastSeal = function() {
  */
 Document.prototype.addNotarySeal = function(notarySeal) {
     this.notarySeals.push(notarySeal);
-};
-
-
-/**
- * This function retrieves from a document the string value associated with the
- * specified key.
- * 
- * @param {String|Number|Boolean|Component} key The key for the desired value.
- * @returns {Component} The string value associated with the key.
- */
-Document.prototype.getString = function(key) {
-    return this.documentContent.getString(key);
 };
 
 

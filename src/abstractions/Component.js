@@ -99,7 +99,7 @@ Component.prototype.toSource = function(indentation) {
  * @param {Object} that The object that is being compared.
  * @returns {Boolean}
  */
-Component.prototype.equalTo = function(that) {
+Component.prototype.isEqualTo = function(that) {
     if (that === undefined || that === null) return false;
     if (this === that) return true;  // same component
     if (this.prototype !== that.prototype) return false;
@@ -147,6 +147,6 @@ Component.prototype.getHash = function() {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
-Component.prototype.accept = function(visitor) {
-    throw new Error('COMPONENT: Abstract method accept(visitor) must be implemented by a concrete subclass.');
+Component.prototype.acceptVisitor = function(visitor) {
+    throw new Error('COMPONENT: Abstract method acceptVisitor(visitor) must be implemented by a concrete subclass.');
 };

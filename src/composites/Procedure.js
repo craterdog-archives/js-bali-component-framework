@@ -48,7 +48,7 @@ exports.Procedure = Procedure;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this procedure.
  */
-Procedure.prototype.accept = function(visitor) {
+Procedure.prototype.acceptVisitor = function(visitor) {
     visitor.visitProcedure(this);
 };
 

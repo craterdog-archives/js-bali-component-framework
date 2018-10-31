@@ -45,7 +45,7 @@ exports.Identifier = Identifier;
  * 
  * @param {NodeVisitor} visitor The visitor that wants to visit this identifier node.
  */
-Identifier.prototype.accept = function(visitor) {
+Identifier.prototype.acceptVisitor = function(visitor) {
     switch(this.type) {
         case types.FUNCTION:
             visitor.visitFunction(this);

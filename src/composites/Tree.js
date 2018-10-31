@@ -107,7 +107,7 @@ Tree.prototype.addChild = function(child) {
  * 
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
-Tree.prototype.accept = function(visitor) {
+Tree.prototype.acceptVisitor = function(visitor) {
     switch(this.type) {
         case types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);

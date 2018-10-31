@@ -36,7 +36,7 @@ describe('Bali Document Notation™', function() {
             catalog.removeAll();
             var copy = catalog.constructor(catalog.parameters);
             expect(copy).to.exist;  // jshint ignore:line
-            expect(catalog.equalTo(copy)).to.equal(true);
+            expect(catalog.isEqualTo(copy)).to.equal(true);
             var signum = catalog.comparedTo(copy);
             expect(signum).to.equal(0);
         });
@@ -292,13 +292,13 @@ describe('Bali Document Notation™', function() {
             var values = catalog.getValues();
             size = values.getSize();
             expect(size).to.equal(array.length);
-            expect(list.equalTo(values)).to.equal(true);
+            expect(list.isEqualTo(values)).to.equal(true);
             var valueIterator = values.iterator();
             expect(valueIterator).to.exist;  // jshint ignore:line
             var associations = catalog.getAssociations();
             size = associations.getSize();
             expect(size).to.equal(array.length);
-            expect(catalog.equalTo(associations)).to.equal(true);
+            expect(catalog.isEqualTo(associations)).to.equal(true);
             var associationIterator = catalog.iterator();
             expect(associationIterator).to.exist;  // jshint ignore:line
             var key;
@@ -348,7 +348,7 @@ describe('Bali Document Notation™', function() {
             catalog2.addItem(association5);
             var catalog3 = composites.Catalog.fromCollection(array);
             var catalog4 = composites.Catalog.concatenation(catalog1, catalog2);
-            expect(catalog4.equalTo(catalog3)).to.equal(true);
+            expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
 
     });

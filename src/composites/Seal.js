@@ -56,7 +56,7 @@ exports.Seal = Seal;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this notary seal.
  */
-Seal.prototype.accept = function(visitor) {
+Seal.prototype.acceptVisitor = function(visitor) {
     visitor.visitSeal(this);
 };
 

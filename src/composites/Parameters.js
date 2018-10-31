@@ -92,7 +92,7 @@ Parameters.fromCollection = function(collection) {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this parameter list.
  */
-Parameters.prototype.accept = function(visitor) {
+Parameters.prototype.acceptVisitor = function(visitor) {
     visitor.visitParameters(this);
 };
 

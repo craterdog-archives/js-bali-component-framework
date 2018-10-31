@@ -41,7 +41,7 @@ describe('Bali Document Notation™', function() {
                     var item = array[i];
                     var string = item.toString();
                     var element = utilities.parser.parseComponent(string, DEBUG);
-                    expect(element.equalTo(item)).to.equal(true);
+                    expect(element.isEqualTo(item)).to.equal(true);
                 }
             }
         });
@@ -68,7 +68,7 @@ describe('Bali Document Notation™', function() {
                     var item = array[i];
                     var string = item.toString();
                     var expression = utilities.parser.parseExpression(string, DEBUG);
-                    expect(expression.equalTo(item)).to.equal(true);
+                    expect(expression.isEqualTo(item)).to.equal(true);
                 }
             }
         });
@@ -130,7 +130,7 @@ describe('Bali Document Notation™', function() {
             var iterator = utilities.parser.parseComponent(source);
             expect(iterator).to.exist;  // jshint ignore:line
             expect(expected.slot).to.equal(iterator.slot);
-            expect(expected.equalTo(iterator)).to.equal(true);
+            expect(expected.isEqualTo(iterator)).to.equal(true);
         });
 
     });

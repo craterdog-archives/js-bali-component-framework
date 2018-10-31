@@ -42,7 +42,7 @@ exports.Collection = Collection;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this collection.
  */
-Collection.prototype.accept = function(visitor) {
+Collection.prototype.acceptVisitor = function(visitor) {
     visitor.visitCollection(this);
 };
 
@@ -120,7 +120,7 @@ Collection.prototype.getIndex = function(item) {
     while (iterator.hasNext()) {
         var candidate = iterator.getNext();
         index++;
-        if (component.equalTo(candidate)) return index;
+        if (component.isEqualTo(candidate)) return index;
     }
     return 0;  // not found
 };

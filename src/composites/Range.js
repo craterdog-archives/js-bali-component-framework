@@ -99,7 +99,7 @@ Range.fromLastItem = function(lastItem, parameters) {
  * 
  * @param {Visitor} visitor The visitor that wants to visit this range.
  */
-Range.prototype.accept = function(visitor) {
+Range.prototype.acceptVisitor = function(visitor) {
     visitor.visitRange(this);
 };
 

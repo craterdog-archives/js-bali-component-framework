@@ -82,7 +82,7 @@ Composite.prototype.toArray = function() {
  * @param {Object} that The object that is being compared.
  * @returns {Boolean}
  */
-Composite.prototype.equalTo = function(that) {
+Composite.prototype.isEqualTo = function(that) {
     if (that === undefined || that === null) return false;
     if (this === that) return true;  // same component
     if (this.prototype !== that.prototype) return false;
@@ -90,7 +90,7 @@ Composite.prototype.equalTo = function(that) {
     var thatArray = that.toArray();
     if (thisArray.length !== thatArray.length) return false;
     for (var i = 0; i < thisArray.length; i++) {
-        if (!thisArray[i].equalTo(thatArray[i])) return false;
+        if (!thisArray[i].isEqualTo(thatArray[i])) return false;
     }
     return true;
 };

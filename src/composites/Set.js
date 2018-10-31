@@ -88,7 +88,7 @@ Set.maverick = OrderedCollection.maverick;
  * 
  * @param {Visitor} visitor The visitor that wants to visit this set.
  */
-Set.prototype.accept = function(visitor) {
+Set.prototype.acceptVisitor = function(visitor) {
     visitor.visitSet(this);
 };
 
@@ -282,7 +282,7 @@ RandomizedTree.prototype.contains = function(value) {
 RandomizedTree.prototype.index = function(value) {
     var index = 0;
     var candidate = this.minimum(this.root);
-    while (candidate && !candidate.value.equalTo(value)) {
+    while (candidate && !candidate.value.isEqualTo(value)) {
         candidate = this.successor(candidate);
         index++;
     }
