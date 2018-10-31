@@ -56,7 +56,7 @@ The document itself is fairly straight forward. It captures the information asso
 Once this document has been posted to the Bali Cloud Environment™ it cannot be modified or deleted so neither the consumer nor the merchant can deny that it took place or dispute the details of the transaction. This simple example shows the real power of the Bali Document Framework™.
 
 ### Bali Components
-The [`bali.Component`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Component.js) class provide the foundation for all other classes in the Bali Document Framework™. It defines canonical implementations for common methods that all classes should implement like:
+The [`bali.Component`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Component.js) class provides the foundation for all other classes in the Bali Document Framework™. It defines canonical implementations for common methods that all classes should implement like:
  * **`toString()`** - Returns a consistently formatted string containing the Bali Document Notation™ form of this component.
  * **`isEqualTo(that)`** - Returns whether or not the canonical string format of this component is equal to the canonical string format of that component.
  * **`comparedTo(that)`** - Returns a _signum_ value showing how this component compares to that component using their natural ordering: `-1` if this < that; `0` if this = that; and `1` if this > that.
@@ -76,7 +76,7 @@ Complex documents can be constructed out of composite components. A [`bali.Visit
 
 #### Component Details
 The following UML class diagram shows the details for the base component classes.
-![Bali Component Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Details.png)
+![Bali Component Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Details.png)
 
 Notice that in addition to the canonical methods defined by the [`bali.Component`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Component.js) class a component may be parameterized to further constrain its type and behavior. In the example transaction document above the numbers representing currency amounts where parameterized with the currency type (`$USD` or `$EUR`). Also the timestamp was parameterized with the location information `($city: "Madrid", $country: "Spain")` that can be used to determine the timezone for the timestamp.
 
@@ -95,7 +95,28 @@ Each notary seal also contains a reference to the public notary certificate docu
 
 #### Document Details
 The next UML class diagram shows the details for the document related component classes.
-![Bali Document Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Details.png)
+![Bali Document Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Details.png)
 
 The [`bali.Document`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Document.js) class provides methods for doing various content and notary seal based transformations on the document. This does **not** include notarizing and verifying a document. For information on how to do that see the Crater Dog Technologies™ [js-bali-digital-notary](https://github.com/craterdog-bali/js-bali-digital-notary) project.
 
+### Bali Collections
+The [`bali.Collection`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Collection.js) class provides the foundation for the collection classes in the Bali Document Framework™. Collections are groups of subcomponents referred to as _items_ that are maintained and ordered following different rules depending on the specific collection type. There are three main types of collection classes:
+ * **Fixed** - Collections whose items are added and removed in a specific order (e.g. "first in, first out"; or "last in, first out").
+ * **Ordered** - Collections whose items are automatically ordered when they are added using their _natural_ ordering.
+ * **Sortable** - Collections whose items are kept in the order in which they were added but that can be sorted in various ways.
+
+#### Collection Framework
+The following UML class diagram shows a high-level view of both the abstract and concrete collection classes.
+![Bali Collection Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Collection%20Framework.png)
+
+Each concrete collection class enforces different rules for managing its items:
+ * [**`bali.Tree`**](https://https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Tree.js) - A tree collection maintains children component nodes that are kept in the order in which they were added.
+ * [**`bali.Stack`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Stack.js) - A stack collection strictly enforces the "last in, first out" (aka LIFO) ordering.
+ * [**`bali.Set`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Set.js) - A set collection orders its items in their natural order and does not allow duplicate items.
+ * [**`bali.Range`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Range.js) - A range collection constrains a set of items to a specific subset of its items by specifying the first and last item to be included.
+ * [**`bali.List`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/List.js) - A list collection maintains its items in the order in which they were added to the list, but it allows its items to be sorted if desired.
+ * [**`bali.Catalog`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Catalog.js) - A catalog collection is like a list collection whose items are [`bali.Association`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Association.js) components that contain a key which is mapped to a value, both of which are also components. A catalog collection may also be sorted based on its keys if desired.
+
+#### Collection Details
+The following UML class diagram shows the details for the abstract collection classes.
+![Bali Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Collection%20Details.png)
