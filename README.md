@@ -1,10 +1,10 @@
 ## Overview
 
 ### Project Description
-This project contains a JavaScript/NodeJS based implementation of the _Bali Document Framework™_. The framework is like JSON on steroids. It supports a much richer set of primitive types (13 in all) and collection types (6 in all) than JSON. It also supports powerful high-level programming constructs that integrate directly with the _Bali Cloud Environment™_. Everything in this framework is a Bali component and inherits from the [`bali.Component`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Component.js) class. Components may be persisted to the Bali Cloud Environment™ as **notarized** Bali documents that are instances of the `bali.Document` class. Each document contains a full description of the component using the [Bali Document Notation™](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I). This project provides all of the JavaScript/NodeJS modules that are required to work with Bali components and documents.
+This project contains a JavaScript/NodeJS based implementation of the _Bali Document Framework™_. The framework is like JSON on steroids. It supports a much richer set of primitive types (13 in all) and collection types (6 in all) than JSON. It also supports powerful high-level programming constructs that integrate directly with the _Bali Cloud Environment™_. Everything in this framework is a Bali component and inherits from the [`bali.Component`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Component.js) class. Components may be persisted to the Bali Cloud Environment™ as **notarized** Bali documents that are instances of the `bali.Document` class. Each document contains a full description of the component using the [Bali Document Notation™](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I). This project provides all of the JavaScript/NodeJS modules that are required to work with Bali components and documents.
 
 #### _WARNING_
-This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON for capturing information and procedures. A compiler for the Bali Document Notation™ and the Bali Cloud Environment™ won't be available until 2019.
+_This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON for capturing information and procedures. A compiler for the Bali Document Notation™ and the Bali Cloud Environment™ won't be available until 2019._
 
 #### Example Document
 To whet your appetite here is a short example document showing some of the capabilities of the Bali Document Notation™:
@@ -56,38 +56,46 @@ The document itself is fairly straight forward. It captures the information asso
 Once this document has been posted to the Bali Cloud Environment™ it cannot be modified or deleted so neither the consumer nor the merchant can deny that it took place or dispute the details of the transaction. This simple example shows the real power of the Bali Document Framework™.
 
 ### Bali Components
-The [`bali.Component`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Component.js) class provide the foundation for all other classes in the Bali Document Framework™. It defines canonical implementations for common methods that all classes should implement like:
- * `toString()` - Returns a consistently formatted string containing the Bali Document Notation™ form of this component.
- * `isEqualTo(that)` - Returns whether or not the canonical string format of this component is equal to the canonical string format of that component.
- * `comparedTo(that)` - Returns a _signum_ value showing how this component compares to that component using their natural ordering: `-1` if this < that; `0` if this = that; and `1` if this > that.
- * `getHash()` - Returns a unique canonical integer _hash_ value for this component so that it can be used efficiently in a _hash table_.
+The [`bali.Component`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Component.js) class provide the foundation for all other classes in the Bali Document Framework™. It defines canonical implementations for common methods that all classes should implement like:
+ * **`toString()`** - Returns a consistently formatted string containing the Bali Document Notation™ form of this component.
+ * **`isEqualTo(that)`** - Returns whether or not the canonical string format of this component is equal to the canonical string format of that component.
+ * **`comparedTo(that)`** - Returns a _signum_ value showing how this component compares to that component using their natural ordering: `-1` if this < that; `0` if this = that; and `1` if this > that.
+ * **`getHash()`** - Returns a unique canonical integer _hash_ value for this component so that it can be used efficiently in a _hash table_.
 
 #### Component Framework
 The following UML class diagram shows a high-level view of the base component classes.
 ![Bali Component Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Framework.png)
 
 The component classes are split into two types of components:
- * [`bali.Element`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Element.js) - Elemental components are atomic in nature and not generally broken down into smaller pieces.
- * [`bali.Composite`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Composite.js) - Composite components are made up of smaller subcomponents.
+ * [**`bali.Element`**](https://https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Element.js) - Elemental components are atomic in nature and not generally broken down into smaller pieces.
+ * [**`bali.Composite`**](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Composite.js) - Composite components are made up of smaller subcomponents.
  
- A [`bali.Collection`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Collection.js) is a type of composite component that contains a dynamic set of subcomponents referred to as its items. The items in a collection may be iterated over using a [`bali.Iterator`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/composites/Iterator.js) which is also a type of composite component.
+ A [`bali.Collection`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Collection.js) is a type of composite component that contains a dynamic set of subcomponents referred to as its items. The items in a collection may be iterated over using a [`bali.Iterator`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/composites/Iterator.js) which is also a type of composite component.
  
-Complex documents can be constructed out of composite components. A [`bali.Visitor`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Visitor.js) component is another type of composite component that is able to visit each component in a document and perform tasks based on the type of visited component. For example, any document can be visited by a [`bali.DocumentFormatter`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/utilities/DocumentFormatter.js) which generates the corresponding Bali Document Notation™ text string for the structured document.
+Complex documents can be constructed out of composite components. A [`bali.Visitor`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/abstractions/Visitor.js) component is another type of composite component that is able to visit each component in a document and perform tasks based on the type of visited component. For example, any document can be visited by a [`bali.DocumentFormatter`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/utilities/DocumentFormatter.js) which generates the corresponding Bali Document Notation™ text string for the structured document.
 
 #### Component Details
 The following UML class diagram shows the details for the base component classes.
 ![Bali Component Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Component%20Details.png)
 
-Notice that in addition to the canonical methods defined by the `bali.Component` class a component may be parameterized to further constrain its type and behavior. In the example transaction document above the numbers representing currency amounts where parameterized with the currency type (`$USD` or `$EUR`). Also the timestamp was parameterized with the location information that can be used to determine the timezone for the timestamp.
+Notice that in addition to the canonical methods defined by the [`bali.Component`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/abstractions/Component.js) class a component may be parameterized to further constrain its type and behavior. In the example transaction document above the numbers representing currency amounts where parameterized with the currency type (`$USD` or `$EUR`). Also the timestamp was parameterized with the location information `($city: "Madrid", $country: "Spain")` that can be used to determine the timezone for the timestamp.
 
 ### Bali Documents
-As shown in the example a powerful type of component is a _notarized_  [`bali.Document`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/composites/Document.js). Each document wraps a potentially complex component representing knowledge about things or how to do things. A document is digitally notarized by the author of the document to prove that she is the author and to prevent anyone or anything from modifying the document once it has been notarized. To facilitate this each document may contain one or more notary seals that can be used to verify the validity of the document by anyone who cares to verify it. Refer to the Crater Dog Technologies™ [js-bali-digital-notary](https://github.com/craterdog-bali/js-bali-digital-notary) project for details on how to digitally notarize and verify the documents.
+As shown in the example above a powerful type of component is a _notarized_  [`bali.Document`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Document.js). Each document wraps a potentially complex component representing knowledge about things or how to do things. A document is digitally notarized by the author of the document to prove that she is the author and to prevent anyone or anything from modifying the document once it has been notarized. To facilitate this each document may contain one or more notary seals that can be used to verify the validity of the document by anyone who cares to verify it. Refer to the Crater Dog Technologies™ [js-bali-digital-notary](https://github.com/craterdog-bali/js-bali-digital-notary) project for details on how to digitally notarize and verify the documents.
 
 #### Document Framework
 The following UML class diagram shows a high-level view of the document related component classes.
 ![Bali Document Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Framework.png)
 
+The [`bali.Document`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Document.js) and [`bali.Seal`](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/src/composites/Seal.js) classes are composite classes with a document containing zero or more notary seals.
+
+A document may also contain a [`bali.Reference`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/elements/Reference.js) which is an element type that references another document, in this case the previous version of the document containing the reference.
+
+Each notary seal also contains a reference to the public notary certificate document that can be used to verify the notary seal. Each notary seal also contains a [`bali.Binary`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/elements/Binary.js) element type that defines the base 32 encoded binary digital signature of the notarized document.
+
 #### Document Details
 The next UML class diagram shows the details for the document related component classes.
 ![Bali Document Framework](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Document%20Details.png)
+
+The [`bali.Document`](https://github.com/craterdog-bali/js-bali-document-framework/blob/master/src/composites/Document.js) class provides methods for doing various content and notary seal based transformations on the document. This does **not** include notarizing and verifying a document. For information on how to do that see the Crater Dog Technologies™ [js-bali-digital-notary](https://github.com/craterdog-bali/js-bali-digital-notary) project.
 
