@@ -195,6 +195,30 @@ Range.prototype.getItems = function(firstIndex, lastIndex) {
 
 
 /**
+ * This abstract method adds the specified item to this ordered collection. It must
+ * be implemented by a subclass.
+ * 
+ * @param {Component} item The item to be added to this ordered collection. 
+ * @returns {Boolean} Whether or not the item was successfully added.
+ */
+Range.prototype.addItem = function(item) {
+    throw new Error('RANGE: Items cannot be added to a range.');
+};
+
+
+/*
+ * This abstract method removes the specified item from this ordered collection. It must be
+ * implemented by a subclass.
+ * 
+ * @param {Component} item The item to be removed from this collection.
+ * @returns {Boolean} Whether or not the item was removed.
+ */
+Range.prototype.removeItem = function(item) {
+    throw new Error('RANGE: Items cannot be removed from a range.');
+};
+
+
+/**
  * This method determines whether or not the specified item is in this range.
  *
  * @param {Component} item The item to check.
