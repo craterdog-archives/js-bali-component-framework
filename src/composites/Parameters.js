@@ -109,18 +109,6 @@ Parameters.prototype.toArray = function() {
 
 
 /**
- * This method creates an empty copy of this parameters list including any parameters that were
- * used to parameterize its type.
- * 
- * @returns {Parameters} The resulting empty parameters list.
- */
-Parameters.prototype.emptyCopy = function() {
-    var copy = new Parameters(this.parameters);
-    return copy;
-};
-
-
-/**
  * This method returns the number of parameters that are currently on the parameter list.
  * 
  * @returns {Number} The number of parameters that are in this list.

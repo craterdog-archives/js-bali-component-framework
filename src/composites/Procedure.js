@@ -65,17 +65,6 @@ Procedure.prototype.toArray = function() {
 
 
 /**
- * This method creates an empty copy of this procedure.
- * 
- * @returns {Procedure} The resulting empty procedure.
- */
-Procedure.prototype.emptyCopy = function() {
-    var copy = new Procedure();
-    return copy;
-};
-
-
-/**
  * This method returns the number of statements that are currently in the procedure.
  * 
  * @returns {Number} The number of statements in the procedure.

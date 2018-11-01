@@ -56,17 +56,6 @@ Tree.prototype.toArray = function() {
 
 
 /**
- * This method creates an empty copy of this tree.
- * 
- * @returns {Tree} The resulting empty tree.
- */
-Tree.prototype.emptyCopy = function() {
-    var copy = new Tree(this.type, 0);
-    return copy;
-};
-
-
-/**
  * This method returns the number of components that are children of this tree node.
  * 
  * @returns {Number} The number of components that are children of this tree node.

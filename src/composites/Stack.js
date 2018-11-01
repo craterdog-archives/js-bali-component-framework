@@ -105,18 +105,6 @@ Stack.prototype.toArray = function() {
 
 
 /**
- * This method creates an empty copy of this stack including any parameters that were
- * used to parameterize its type.
- * 
- * @returns {Stack} The resulting empty stack.
- */
-Stack.prototype.emptyCopy = function() {
-    var copy = new Stack(this.parameters);
-    return copy;
-};
-
-
-/**
  * This method returns the number of items that are currently on this stack.
  * 
  * @returns {Number} The number of items on this stack.

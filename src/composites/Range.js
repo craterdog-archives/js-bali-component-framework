@@ -133,18 +133,6 @@ Range.prototype.toArray = function() {
 
 
 /**
- * This method creates an copy of this range including any parameters that were
- * used to parameterize its type.
- * 
- * @returns {Range} The resulting range.
- */
-Range.prototype.emptyCopy = function() {
-    var copy = new Range(this.firstItem, this.lastItem, this.parameters);
-    return copy;
-};
-
-
-/**
  * This method returns the number of numbers that are in this range.
  * 
  * @returns {Component} The number of numbers that fall in this range.
