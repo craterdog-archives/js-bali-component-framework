@@ -120,3 +120,16 @@ Each concrete collection class enforces different rules for managing its items:
 #### Collection Details
 The following UML class diagram shows the details for the abstract collection classes.
 ![Bali Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Collection%20Details.png)
+
+#### Fixed Collection Details
+And the next UML class diagram shows the details for the fixed collection classes.
+![Bali Fixed Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Fixed%20Collection%20Details.png)
+
+#### Ordered Collection Details
+The next UML class diagram shows the details for the ordered collection classes.
+![Bali Ordered Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Ordered%20Collection%20Details.png)
+
+#### Sortable Collection Details
+And the last UML class diagram shows the details for the sortable collection classes.
+![Bali Sortable Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-document-framework/master/docs/images/Bali%20Sortable%20Collection%20Details.png)
+
