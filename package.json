@@ -1,15 +1,15 @@
 {
-  "name": "bali-document-framework",
+  "name": "bali-component-framework",
   "version": "1.0.0",
-  "description": "This library provides a JavaScript based version of the Bali Document Framework™.",
+  "description": "This library provides a JavaScript based implementation of the Bali Component Framework™.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-document-framework.git"
+    "url": "git+ssh://git@github.com/craterdog-bali/js-bali-component-framework.git"
   },
   "keywords": [
     "NodeJS",
-    "Bali Document Framework",
+    "Bali Component Framework",
     "Bali Cloud Environment",
     "Bali Document Notation",
     "Primitive Types",
@@ -22,9 +22,9 @@
   "email": "craterdog@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/craterdog-bali/js-bali-document-framework/issues"
+    "url": "https://github.com/craterdog-bali/js-bali-component-framework/issues"
   },
-  "homepage": "https://github.com/craterdog-bali/js-bali-document-framework#readme",
+  "homepage": "https://github.com/craterdog-bali/js-bali-component-framework#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "grunt": "^1.0.3",

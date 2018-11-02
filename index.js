@@ -9,27 +9,20 @@
  ************************************************************************/
 'use strict';
 
-// GENERAL UTILITIES
-
-exports.formatter = require('./src/utilities/DocumentFormatter');
-exports.parser = require('./src/utilities/DocumentParser');
-exports.codex = require('./src/utilities/Codex');
-
-
 // ABSTRACT TYPES
-
 exports.types = require('./src/abstractions/Types');
 exports.Component = require('./src/abstractions/Component').Component;
+exports.Visitor = require('./src/abstractions/Visitor').Visitor;
 exports.Element = require('./src/abstractions/Element').Element;
 exports.Composite = require('./src/abstractions/Composite').Composite;
 exports.Collection = require('./src/abstractions/Collection').Collection;
-exports.SortableCollection = require('./src/abstractions/SortableCollection').SortableCollection;
-exports.OrderedCollection = require('./src/abstractions/OrderedCollection').OrderedCollection;
-exports.Visitor = require('./src/abstractions/Visitor').Visitor;
 
+// COMPONENT TYPES
+exports.Comparator = require('./src/components/Comparator').Comparator;
+exports.Iterator = require('./src/components/Iterator').Iterator;
+exports.Sorter = require('./src/components/Sorter').Sorter;
 
 // PRIMITIVE ELEMENT TYPES
-
 exports.Angle = require('./src/elements/Angle').Angle;
 exports.Binary = require('./src/elements/Binary').Binary;
 exports.Complex = require('./src/elements/Complex').Complex;
@@ -45,21 +38,24 @@ exports.Template = require('./src/elements/Template').Template;
 exports.Text = require('./src/elements/Text').Text;
 exports.Version = require('./src/elements/Version').Version;
 
-
 // PRIMITIVE COMPOSITE TYPES
-
 exports.Association = require('./src/composites/Association').Association;
-exports.Document = require('./src/composites/Document').Document;
-exports.Seal = require('./src/composites/Seal').Seal;
-exports.Parameters = require('./src/composites/Parameters').Parameters;
-exports.Iterator = require('./src/composites/Iterator').Iterator;
-exports.Range = require('./src/composites/Range').Range;
-exports.List = require('./src/composites/List').List;
-exports.Set = require('./src/composites/Set').Set;
-exports.Stack = require('./src/composites/Stack').Stack;
-exports.Catalog = require('./src/composites/Catalog').Catalog;
 exports.Tree = require('./src/composites/Tree').Tree;
 exports.Block = require('./src/composites/Block').Block;
 exports.Source = require('./src/composites/Source').Source;
 exports.Procedure = require('./src/composites/Procedure').Procedure;
+exports.Parameters = require('./src/composites/Parameters').Parameters;
+
+// COLLECTION TYPES
+exports.List = require('./src/collections/List').List;
+exports.Catalog = require('./src/collections/Catalog').Catalog;
+exports.Set = require('./src/collections/Set').Set;
+exports.Range = require('./src/collections/Range').Range;
+exports.Stack = require('./src/collections/Stack').Stack;
+
+// GENERAL UTILITIES
+exports.formatter = require('./src/utilities/ComponentFormatter');
+exports.parser = require('./src/utilities/ComponentParser');
+exports.codex = require('./src/utilities/Codex');
+
 
