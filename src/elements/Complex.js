@@ -44,8 +44,24 @@ function Complex(value, parameters) {
     var type = value.constructor.name;
     switch (type) {
         case 'Number':
-            this.real = value;
-            this.imaginary = 0;
+            switch (value) {
+                case NaN:
+                    this.real = NaN;
+                    this.imaginary = NaN;
+                    this.magnitude = NaN;
+                    this.angle = new Angle(0);
+                    break;
+                case Infinity:
+                case -Infinity:
+                    this.real = Infinity;
+                    this.imaginary = Infinity;
+                    this.magnitude = Infinity;
+                    this.angle = new Angle(0);
+                    break;
+                default:
+                    this.real = value;
+                    this.imaginary = 0;
+            }
             break;
         case 'String':
             var chars = new antlr.InputStream(value);

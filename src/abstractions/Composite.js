@@ -12,9 +12,11 @@
 /**
  * This abstract class defines the methods that all composite components must support.
  */
+var types = require('./Types');
 var Component = require('./Component').Component;
 var Iterator = require('../composites/Iterator').Iterator;
-var parser = require('../utilities/ComponentParser');
+var elements = require('../elements');
+var composites = require('../composites');
 
 
 // PUBLIC FUNCTIONS
@@ -38,8 +40,8 @@ exports.Composite = Composite;
 
 /**
  * This function converts a JS primitive type into its corresponding Bali component.
- * NOTE: this function really belongs in the <code>bali.Component</code> class but that
- * would introduce a circular dependency with the parser.
+ * NOTE: it's tempting to use the parser in this method but that would introduce a
+ * circular dependency with this class and the parser.
  * 
  * @param {String|Number|Boolean|Component} value The value to be converted (if necessary).
  * @returns {Component} The value as a component.
@@ -48,15 +50,45 @@ Composite.asComponent = function(value) {
     var component;
     switch (value.constructor.name) {
         case 'String':
-            component = parser.parseExpression(value);
+            if (value.startsWith('~P')) { // Duration must come before Angle
+                component = new elements.Duration(value);
+            } else if (value.startsWith('~')) {
+                component = new elements.Angle(value);
+            } else if (value.startsWith("'")) {
+                component = new elements.Binary(value);
+            } else if (value.match(/^<-?[1-9]/)) {
+                component = new elements.Moment(value);
+            } else if (value.match(/%$/)) {
+                component = new elements.Percent(value);
+            } else if (value === 'true' || value === 'false') {
+                component = new elements.Probability(value);
+            } else if (value.match(/^</)) {
+                component = new elements.Reference(value);
+            } else if (value.startsWith('$')) {
+                component = new elements.Symbol(value);
+            } else if (value.startsWith('#')) {
+                component = new elements.Tag(value);
+            } else if (value === 'none' || value === 'any') {
+                component = new elements.Template(value);
+            } else if (value.startsWith('"')) {
+                component = new elements.Text(value);
+            } else if (value.match(/^v[1-9]/)) {
+                component = new elements.Version(value);
+            } else {  // must come last
+                component = new elements.Identifier(types.VARIABLE, value);
+            }
             break;
         case 'Boolean':
-            // parse it's string value
-            component = parser.parseComponent(String(value));
+            component = new elements.Probability(value);
             break;
         case 'Number':
-            // parse it's uppercase string value to handle exponents correctly
-            component = parser.parseComponent(String(value).toUpperCase());
+            component = new elements.Complex(value);
+            break;
+        case 'Array':
+            component = new composites.List.fromCollection(value);
+            break;
+        case 'Object':
+            component = new composites.Catalog.fromCollection(value);
             break;
         default:
             // it's already a component, leave it as is

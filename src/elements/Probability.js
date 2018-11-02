@@ -14,8 +14,8 @@
  * probability element.
  */
 var types = require('../abstractions/Types');
-var codex = require('../utilities/Codex');
 var Element = require('../abstractions/Element').Element;
+var codex = require('../utilities/Codex');
 
 
 /**
