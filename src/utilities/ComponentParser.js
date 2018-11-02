@@ -28,6 +28,7 @@ var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
 var grammar = require('../../grammar');
 var types = require('../abstractions/Types');
+var components = require('../components');
 var elements = require('../elements');
 var composites = require('../composites');
 var collections = require('../collections');
@@ -239,7 +240,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             var slot = Number(this.result.value);
             associations[1].accept(this);
             var array = this.result.value.toArray();
-            component = new composites.Iterator(array);
+            component = new components.Iterator(array);
             component.toSlot(slot);
             break;
         case types.CATALOG:

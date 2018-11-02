@@ -13,7 +13,7 @@
  * This abstract class defines the invariant methods that all collections must inherit.
  */
 var Composite = require('./Composite').Composite;
-var Iterator = require('../composites/Iterator').Iterator;
+var Iterator = require('../components/Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
