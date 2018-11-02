@@ -68,6 +68,18 @@ Tree.prototype.toArray = function() {
 
 
 /**
+ * This method adds a new child component to this tree node.
+ * 
+ * @param {Component} child The new child component.
+ */
+Tree.prototype.addChild = function(child) {
+    this.array.push(child);
+    this.complexity += child.complexity;
+    child.parent = this;
+};
+
+
+/**
  * This method retrieves the child node that is associated with the specified index.
  * 
  * @param {Number} index The index of the desired child node.
@@ -78,17 +90,6 @@ Tree.prototype.getChild = function(index) {
     index--;  // convert to JS zero based indexing
     var item = this.array[index];
     return item;
-};
-
-
-/**
- * This method adds a new child component to this tree node.
- * 
- * @param {Component} child The new child component.
- */
-Tree.prototype.addChild = function(child) {
-    this.array.push(child);
-    this.complexity += child.complexity;
 };
 
 
