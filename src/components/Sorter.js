@@ -33,18 +33,28 @@ Sorter.prototype.constructor = Sorter;
 exports.Sorter = Sorter;
 
 
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this sorter.
+ */
+Sorter.prototype.acceptVisitor = function(visitor) {
+    visitor.visitSorter(this);
+};
+
+
+/**
+ * This method sorts the specified collection using the natural ordering of its items.
+ * 
+ * @param {Collection} collection The collection to be sorted.
+ */
 Sorter.prototype.sortCollection = function(collection) {
     if (collection && collection.getSize() > 1) {
         // convert the collection to an array
-        var array = [];
-        var iterator = collection.getIterator();
-        while (iterator.hasNext()) {
-            var item = iterator.getNext();
-            array.push(item);
-        }
+        var array = collection.toArray();
 
         // sort the array
-        array = this.sortArray(array);
+        array = sortArray(array);
 
         // convert it back to a collection
         collection.removeAll();
@@ -53,10 +63,10 @@ Sorter.prototype.sortCollection = function(collection) {
 };
 
 
-Sorter.prototype.sortArray = function(array) {
+function sortArray(array) {
     // check to see if the array is already sorted
     var length = array.length;
-    if (length < 2) return;
+    if (length < 2) return array;
 
     // split the array into two halves
     var leftLength = Math.floor(length / 2);
@@ -64,22 +74,23 @@ Sorter.prototype.sortArray = function(array) {
     var right = array.slice(leftLength, length);
 
     // sort each half separately
-    left = this.sortArray(left);
-    right = this.sortArray(right);
+    left = sortArray(left);
+    right = sortArray(right);
 
     // merge the sorted halves back together
-    var result = this.mergeArrays(left, right);
+    var result = mergeArrays(left, right);
     return result;
-};
+}
 
 
-Sorter.prototype.mergeArrays = function(left, right) {
+function mergeArrays(left, right) {
     var leftIndex = 0;
     var rightIndex = 0;
     var result = [];
     while (leftIndex < left.length && rightIndex < right.length) {
         // still have elements in both halves
-        switch (left[leftIndex].comparedTo(right[rightIndex])) {
+        var comparison = left[leftIndex].comparedTo(right[rightIndex]);
+        switch (comparison) {
             case -1:
                 // copy the next left element to the result
                 result.push(left[leftIndex++]);
@@ -99,4 +110,4 @@ Sorter.prototype.mergeArrays = function(left, right) {
         result = result.concat(right.slice(rightIndex));
     }
     return result;
-};
+}

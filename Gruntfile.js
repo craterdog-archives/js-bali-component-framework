@@ -67,26 +67,7 @@ module.exports = function(grunt) {
           timeout: 10000 
         },
         src: [
-          'test/TestCodex.js',
-          'test/TestAngle.js',
-          'test/TestBinary.js',
-          'test/TestCatalog.js',
-          'test/TestComplex.js',
-          'test/TestDuration.js',
-          'test/TestList.js',
-          'test/TestMoment.js',
-          'test/TestPercent.js',
-          'test/TestProbability.js',
-          'test/TestRange.js',
-          'test/TestReference.js',
-          'test/TestSet.js',
-          'test/TestStack.js',
-          'test/TestSymbol.js',
-          'test/TestTag.js',
-          'test/TestTemplate.js',
-          'test/TestText.js',
-          'test/TestVersion.js',
-          'test/TestTransformers.js'
+          'test/*.js'
         ]
       }
     },

@@ -18,6 +18,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
+var Sorter = require('../components/Sorter').Sorter;
 var Association = require('../composites/Association').Association;
 var List = require('./List').List;
 
@@ -84,7 +85,7 @@ Catalog.fromCollection = function(collection, parameters) {
         case 'Object':
             var keys = Object.keys(collection);
             keys.forEach(function(key) {
-                catalog.setValue('$' + key, collection[key]);
+                catalog.setValue(key, collection[key]);
             });
             break;
         case 'Catalog':
@@ -444,7 +445,7 @@ Catalog.prototype.getAssociations = function() {
  * by the <code>this.comparedTo(that)</code> method of the keys being compared.
  */
 Catalog.prototype.sortItems = function() {
-    var sorter = new MergeSorter();
+    var sorter = new Sorter();
     sorter.sortCollection(this);
 };
 

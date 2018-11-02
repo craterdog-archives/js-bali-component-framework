@@ -220,16 +220,24 @@ Collection.prototype.addItem = function(item) {
 /**
  * This method adds a collection of new items to this collection.
  *
- * @param {Collection} items The collection of new items to be added.
+ * @param {Array|Collection} items The collection of new items to be added.
  * @returns {Number} The number of items that were actually added to this collection.
  */
 Collection.prototype.addItems = function(items) {
     var count = 0;
-    var iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        if (this.addItem(item)) {
-            count++;
+    if (items.constructor.name === 'Array') {
+        items.forEach(function(item) {
+            if (this.addItem(item)) {
+                count++;
+            }
+        }, this);
+    } else {
+        var iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            var item = iterator.getNext();
+            if (this.addItem(item)) {
+                count++;
+            }
         }
     }
     return count;

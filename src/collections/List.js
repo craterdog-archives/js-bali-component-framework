@@ -26,6 +26,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
+var Sorter = require('../components/Sorter').Sorter;
 
 
 // PUBLIC FUNCTIONS
@@ -234,7 +235,7 @@ List.prototype.removeAll = function() {
  * by the <code>this.comparedTo(that)</code> method of the items being compared.
  */
 List.prototype.sortItems = function() {
-    var sorter = new MergeSorter();
+    var sorter = new Sorter();
     sorter.sortCollection(this);
 };
 
