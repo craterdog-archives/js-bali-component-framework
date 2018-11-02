@@ -15,17 +15,22 @@
  */
 var types = require('../abstractions/Types');
 var Component = require('../abstractions/Component').Component;
+var Comparator = require('../components/Comparator').Comparator;
 
 
 // PUBLIC FUNCTIONS
 
-/*
+/**
  * This sorter class implements a standard merge sort algorithm.  The collection to be sorted
  * is recursively split into two collections each of which are then sorted and then the two
  * collections are merged back into a sorted collection.
+ * 
+ * @param {Comparator} comparator An optional comparator to be used when comparing items during
+ * sorting. If none is specified, the natural comparator will be used.
  */
-function Sorter() {
+function Sorter(comparator) {
     Component.call(this, types.SORTER);
+    this.comparator = comparator || new Comparator();
     return this;
 }
 Sorter.prototype = Object.create(Component.prototype);
@@ -54,7 +59,7 @@ Sorter.prototype.sortCollection = function(collection) {
         var array = collection.toArray();
 
         // sort the array
-        array = sortArray(array);
+        array = this.sortArray(array);
 
         // convert it back to a collection
         collection.removeAll();
@@ -63,7 +68,7 @@ Sorter.prototype.sortCollection = function(collection) {
 };
 
 
-function sortArray(array) {
+Sorter.prototype.sortArray = function(array) {
     // check to see if the array is already sorted
     var length = array.length;
     if (length < 2) return array;
@@ -74,22 +79,22 @@ function sortArray(array) {
     var right = array.slice(leftLength, length);
 
     // sort each half separately
-    left = sortArray(left);
-    right = sortArray(right);
+    left = this.sortArray(left);
+    right = this.sortArray(right);
 
     // merge the sorted halves back together
-    var result = mergeArrays(left, right);
+    var result = this.mergeArrays(left, right);
     return result;
-}
+};
 
 
-function mergeArrays(left, right) {
+Sorter.prototype.mergeArrays = function(left, right) {
     var leftIndex = 0;
     var rightIndex = 0;
     var result = [];
     while (leftIndex < left.length && rightIndex < right.length) {
         // still have elements in both halves
-        var comparison = left[leftIndex].comparedTo(right[rightIndex]);
+        var comparison = this.comparator.compareItems(left[leftIndex], right[rightIndex]);
         switch (comparison) {
             case -1:
                 // copy the next left element to the result
@@ -110,4 +115,4 @@ function mergeArrays(left, right) {
         result = result.concat(right.slice(rightIndex));
     }
     return result;
-}
+};

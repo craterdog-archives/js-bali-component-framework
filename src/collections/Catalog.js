@@ -443,9 +443,12 @@ Catalog.prototype.getAssociations = function() {
 /**
  * This method sorts the items in this catalog into their natural order as defined
  * by the <code>this.comparedTo(that)</code> method of the keys being compared.
+ * 
+ * @param {Sorter} sorter An optional sorter to use for sorting the items. If none is
+ * specified, the default natural sorter will be used.
  */
-Catalog.prototype.sortItems = function() {
-    var sorter = new Sorter();
+Catalog.prototype.sortItems = function(sorter) {
+    sorter = sorter || new Sorter();
     sorter.sortCollection(this);
 };
 

@@ -233,9 +233,12 @@ List.prototype.removeAll = function() {
 /**
  * This method sorts the items in this list into their natural order as defined
  * by the <code>this.comparedTo(that)</code> method of the items being compared.
+ * 
+ * @param {Sorter} sorter An optional sorter to use for sorting the items. If none is
+ * specified, the default natural sorter will be used.
  */
-List.prototype.sortItems = function() {
-    var sorter = new Sorter();
+List.prototype.sortItems = function(sorter) {
+    sorter = sorter || new Sorter();
     sorter.sortCollection(this);
 };
 

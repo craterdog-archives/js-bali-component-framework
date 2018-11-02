@@ -112,7 +112,7 @@ Component.prototype.isEqualTo = function(that) {
  * overridden with a more efficient implementation by a subclass.
  * 
  * @param {Object} that The object that is being compared.
- * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
+ * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
     if (that === undefined || that === null) return 1;  // any component is greater than null/undefined

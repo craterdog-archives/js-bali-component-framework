@@ -9,5 +9,6 @@
  ************************************************************************/
 'use strict';
 
+exports.Comparator = require('./Comparator').Comparator;
 exports.Iterator = require('./Iterator').Iterator;
 exports.Sorter = require('./Sorter').Sorter;
