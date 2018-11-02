@@ -21,7 +21,7 @@
  * </pre>
  */
 var types = require('../abstractions/Types');
-var Collection = require('../abstractions/Collection').Collection;
+var Composite = require('../abstractions/Composite').Composite;
 
 
 // PUBLIC FUNCTIONS
@@ -32,11 +32,11 @@ var Collection = require('../abstractions/Collection').Collection;
  * @returns {Procedure} The new procedure.
  */
 function Procedure() {
-    Collection.call(this, types.PROCEDURE);
+    Composite.call(this, types.PROCEDURE);
     this.array = [];
     return this;
 }
-Procedure.prototype = Object.create(Collection.prototype);
+Procedure.prototype = Object.create(Composite.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 
@@ -54,17 +54,6 @@ Procedure.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns an array containing the statements in the procedure.
- * 
- * @returns {Array} An array containing the statements.
- */
-Procedure.prototype.toArray = function() {
-    var array = this.array.slice();  // copy the array
-    return array;
-};
-
-
-/**
  * This method returns the number of statements that are currently in the procedure.
  * 
  * @returns {Number} The number of statements in the procedure.
@@ -76,17 +65,13 @@ Procedure.prototype.getSize = function() {
 
 
 /**
- * This method retrieves the item (statement) that is associated with the specified index
- * from this procedure.
+ * This method returns an array containing the statements in the procedure.
  * 
- * @param {Number} index The index of the desired parameter.
- * @returns {Component} The parameter value at that index.
+ * @returns {Array} An array containing the statements.
  */
-Procedure.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    var parameter = this.array[index];
-    if (parameter) return parameter.value;
+Procedure.prototype.toArray = function() {
+    var array = this.array.slice();  // copy the array
+    return array;
 };
 
 
@@ -99,4 +84,19 @@ Procedure.prototype.addStatement = function(statement) {
     this.array.push(statement);
     this.complexity += statement.complexity;
     if (this.array.length > 1) this.complexity += 2;  // account for the '; ' separator
+};
+
+
+/**
+ * This method retrieves the item (statement) that is associated with the specified index
+ * from this procedure.
+ * 
+ * @param {Number} index The index of the desired parameter.
+ * @returns {Component} The parameter value at that index.
+ */
+Procedure.prototype.getStatement = function(index) {
+    index = this.normalizeIndex(index);
+    index--;  // convert to JS zero based indexing
+    var parameter = this.array[index];
+    if (parameter) return parameter.value;
 };

@@ -14,7 +14,7 @@
  * such that once parameters have been added to it they cannot be reordered or removed.
  */
 var types = require('../abstractions/Types');
-var Collection = require('../abstractions/Collection').Collection;
+var Composite = require('../abstractions/Composite').Composite;
 var Association = require('../composites/Association').Association;
 
 
@@ -26,12 +26,12 @@ var Association = require('../composites/Association').Association;
  * @returns {Parameters} The new parameter list.
  */
 function Parameters() {
-    Collection.call(this, types.PARAMETERS);
+    Composite.call(this, types.PARAMETERS);
     this.array = [];
     this.complexity += 2;  // account for the '(' ')' delimiters
     return this;
 }
-Parameters.prototype = Object.create(Collection.prototype);
+Parameters.prototype = Object.create(Composite.prototype);
 Parameters.prototype.constructor = Parameters;
 exports.Parameters = Parameters;
 
@@ -98,17 +98,6 @@ Parameters.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns an array containing the parameters in this list.
- * 
- * @returns {Array} An array containing the parameters in this list.
- */
-Parameters.prototype.toArray = function() {
-    var array = this.array.slice();  // copy the array
-    return array;
-};
-
-
-/**
  * This method returns the number of parameters that are currently on the parameter list.
  * 
  * @returns {Number} The number of parameters that are in this list.
@@ -120,31 +109,13 @@ Parameters.prototype.getSize = function() {
 
 
 /**
- * This method retrieves the item (parameter association) that is associated with the
- * specified index from this parameters list.
+ * This method returns an array containing the parameters in this list.
  * 
- * @param {Number} index The index of the desired parameter association.
- * @returns {Association} The parameter association at that index.
+ * @returns {Array} An array containing the parameters in this list.
  */
-Parameters.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    var association = this.array[index];
-    return association;
-};
-
-
-/**
- * This method returns the value associated with the specified key in the parameter list.
- *
- * @param {String|Number|Boolean|Component} key The key for the desired parameter.
- * @returns {Component} The parameter value associated with the key.
- */
-Parameters.prototype.getValue = function(key) {
-    var association = this.array.find(function(association) {
-        return association.key.toString() === key.toString();
-    }, this);
-    if (association) return association.value;
+Parameters.prototype.toArray = function() {
+    var array = this.array.slice();  // copy the array
+    return array;
 };
 
 
@@ -163,4 +134,33 @@ Parameters.prototype.addParameter = function(key, value) {
         this.complexity += parameter.complexity;
     }
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+};
+
+
+/**
+ * This method retrieves the item (parameter association) that is associated with the
+ * specified index from this parameters list.
+ * 
+ * @param {Number} index The index of the desired parameter association.
+ * @returns {Association} The parameter association at that index.
+ */
+Parameters.prototype.getParameter = function(index) {
+    index = this.normalizeIndex(index);
+    index--;  // convert to JS zero based indexing
+    var association = this.array[index];
+    return association;
+};
+
+
+/**
+ * This method returns the value associated with the specified key in the parameter list.
+ *
+ * @param {String|Number|Boolean|Component} key The key for the desired parameter.
+ * @returns {Component} The parameter value associated with the key.
+ */
+Parameters.prototype.getValue = function(key) {
+    var association = this.array.find(function(association) {
+        return association.key.toString() === key.toString();
+    }, this);
+    if (association) return association.value;
 };
