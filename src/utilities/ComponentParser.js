@@ -30,6 +30,7 @@ var grammar = require('../../grammar');
 var types = require('../abstractions/Types');
 var elements = require('../elements');
 var composites = require('../composites');
+var collections = require('../collections');
 var codex = require('./Codex');
 var Component = require('../abstractions/Component').Component;
 
@@ -243,7 +244,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             break;
         case types.CATALOG:
         default:
-            component = new composites.Catalog(parameters);
+            component = new collections.Catalog(parameters);
             if (ctx.constructor.name !== 'EmptyCatalogContext') {
                 this.depth++;
                 associations = ctx.association();
@@ -594,14 +595,14 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     }
     switch (type) {
         case types.SET:
-            collection = new composites.Set(parameters);
+            collection = new collections.Set(parameters);
             break;
         case types.STACK:
-            collection = new composites.Stack(parameters);
+            collection = new collections.Stack(parameters);
             break;
         case types.LIST:
         default:
-            collection = new composites.List(parameters);
+            collection = new collections.List(parameters);
     }
     if (ctx.constructor.name !== 'EmptyListContext') {
         var expressions = ctx.expression();
@@ -811,7 +812,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     var first= this.result;
     expressions[1].accept(this);
     var last= this.result;
-    var range = new composites.Range(first, last, parameters);
+    var range = new collections.Range(first, last, parameters);
     this.result = range;
 };
 

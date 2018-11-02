@@ -16,7 +16,7 @@ var types = require('./Types');
 var Component = require('./Component').Component;
 var Iterator = require('../composites/Iterator').Iterator;
 var elements = require('../elements');
-var composites = require('../composites');
+//var collections = require('../collections');
 
 
 // PUBLIC FUNCTIONS
@@ -84,12 +84,14 @@ Composite.asComponent = function(value) {
         case 'Number':
             component = new elements.Complex(value);
             break;
+        /*
         case 'Array':
-            component = new composites.List.fromCollection(value);
+            component = new collections.List.fromCollection(value);
             break;
         case 'Object':
-            component = new composites.Catalog.fromCollection(value);
+            component = new collections.Catalog.fromCollection(value);
             break;
+        */
         default:
             // it's already a component, leave it as is
             component = value;

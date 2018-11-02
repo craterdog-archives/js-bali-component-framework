@@ -10,7 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var Range = require('../src/composites/Range').Range;
+var Range = require('../src/collections/Range').Range;
 
 
 describe('Bali Component Framework™', function() {

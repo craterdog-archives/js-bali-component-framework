@@ -18,7 +18,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
-var Association = require('./Association').Association;
+var Association = require('../composites/Association').Association;
 var List = require('./List').List;
 
 

@@ -11,7 +11,7 @@
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var abstractions = require('../src/abstractions');
-var composites = require('../src/composites');
+var collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -20,7 +20,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the list constructors.', function() {
 
         it('should create an empty list', function() {
-            var list = new composites.List();
+            var list = new collections.List();
             expect(list).to.exist;  // jshint ignore:line
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -38,7 +38,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from an array', function() {
-            var list = composites.List.fromCollection(array);
+            var list = collections.List.fromCollection(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -56,8 +56,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a list', function() {
-            var list = composites.List.fromCollection(array);
-            list = composites.List.fromCollection(list);
+            var list = collections.List.fromCollection(array);
+            list = collections.List.fromCollection(list);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -75,8 +75,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a set', function() {
-            var set = composites.Set.fromCollection(array);
-            var list = composites.List.fromCollection(set);
+            var set = collections.Set.fromCollection(array);
+            var list = collections.List.fromCollection(set);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -98,11 +98,11 @@ describe('Bali Component Framework™', function() {
     describe('Test the list methods.', function() {
 
         it('should be able to call the Collection class methods on the list', function() {
-            var list1 = new composites.List();
+            var list1 = new collections.List();
             list1.addItem('alpha');
             list1.addItem('beta');
             list1.addItem('delta');
-            var list2 = new composites.List();
+            var list2 = new collections.List();
             list2.addItem('epsilon');
             list2.addItem('gamma');
             list1.addItems(list2);
@@ -125,7 +125,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a list', function() {
-            var list = composites.List.fromCollection(array);
+            var list = collections.List.fromCollection(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -153,14 +153,14 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to perform list operations on lists', function() {
-            var list1 = new composites.List();
+            var list1 = new collections.List();
             list1.addItem('alpha');
             list1.addItem('beta');
             list1.addItem('delta');
-            var list2 = new composites.List();
+            var list2 = new collections.List();
             list2.addItem('epsilon');
             list2.addItem('gamma');
-            var list3 = composites.List.fromCollection(array);
+            var list3 = collections.List.fromCollection(array);
             expect(abstractions.Collection.union(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
@@ -169,7 +169,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the list iterators.', function() {
 
         it('should iterate over a list forwards and backwards', function() {
-            var list = composites.List.fromCollection(array);
+            var list = collections.List.fromCollection(array);
             var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

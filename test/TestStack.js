@@ -11,6 +11,7 @@
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var composites = require('../src/composites');
+var collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -19,7 +20,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack constructors.', function() {
 
         it('should create an empty stack', function() {
-            var stack = new composites.Stack();
+            var stack = new collections.Stack();
             expect(stack).to.exist;  // jshint ignore:line
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -29,7 +30,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             stack.removeAll();
-            var copy = new composites.Stack();
+            var copy = new collections.Stack();
             expect(copy).to.exist;  // jshint ignore:line
             expect(stack.isEqualTo(copy)).to.equal(true);
             var signum = stack.comparedTo(copy);
@@ -37,7 +38,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty stack with small capacity', function() {
-            var stack = new composites.Stack();
+            var stack = new collections.Stack();
             stack.capacity = 1;
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -56,7 +57,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from an array', function() {
-            var stack = composites.Stack.fromCollection(array);
+            var stack = collections.Stack.fromCollection(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -74,8 +75,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a list', function() {
-            var list = composites.List.fromCollection(array);
-            stack = composites.Stack.fromCollection(list);
+            var list = collections.List.fromCollection(array);
+            stack = collections.Stack.fromCollection(list);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -97,7 +98,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack methods.', function() {
 
         it('should be able to push and pop items from a stack', function() {
-            var stack = composites.Stack.fromCollection(array);
+            var stack = collections.Stack.fromCollection(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -136,7 +137,7 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             // REMEMBER: The iterator for a stack iterates through the items in LIFO order
-            var stack = new composites.Stack();
+            var stack = new collections.Stack();
             var index;
             var item;
             // place the items on the stack in order

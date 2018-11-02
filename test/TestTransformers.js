@@ -12,7 +12,7 @@ var fs = require('fs');
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var utilities = require('../src/utilities');
-var List = require('../src/composites/List').List;
+var collections = require('../src/collections');
 
 describe('Bali Component Framework™', function() {
     var DEBUG = true;
@@ -106,7 +106,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should parse and format the same iterators', function() {
-            var list = List.fromCollection([1, 2, 3]);
+            var list = collections.List.fromCollection([1, 2, 3]);
             var expected = list.getIterator();
             expected.getNext();
             var source = utilities.formatter.formatComponent(expected);

@@ -12,6 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var abstractions = require('../src/abstractions');
 var composites = require('../src/composites');
+var collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -25,7 +26,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog constructors.', function() {
 
         it('should create an empty catalog', function() {
-            var catalog = new composites.Catalog();
+            var catalog = new collections.Catalog();
             expect(catalog).to.exist;  // jshint ignore:line
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -43,7 +44,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from an array', function() {
-            var catalog = composites.Catalog.fromCollection(array);
+            var catalog = collections.Catalog.fromCollection(array);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -74,8 +75,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from a list', function() {
-            var list = composites.List.fromCollection(array);
-            var catalog = composites.Catalog.fromCollection(list);
+            var list = collections.List.fromCollection(array);
+            var catalog = collections.Catalog.fromCollection(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -106,8 +107,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from a set', function() {
-            var set = composites.Set.fromCollection(array);
-            var catalog = composites.Catalog.fromCollection(set);
+            var set = collections.Set.fromCollection(array);
+            var catalog = collections.Catalog.fromCollection(set);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -145,7 +146,7 @@ describe('Bali Component Framework™', function() {
                 epsilon: 'epsilon',
                 gamma: 'gamma'
             };
-            var catalog = composites.Catalog.fromCollection(object);
+            var catalog = collections.Catalog.fromCollection(object);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(Object.keys(object).length);
@@ -176,8 +177,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from a catalog', function() {
-            var catalog = composites.Catalog.fromCollection(array);
-            catalog = composites.Catalog.fromCollection(catalog);
+            var catalog = collections.Catalog.fromCollection(array);
+            catalog = collections.Catalog.fromCollection(catalog);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -212,11 +213,11 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog methods.', function() {
 
         it('should be able to call the Collection class methods on the catalog', function() {
-            var catalog1 = new composites.Catalog();
+            var catalog1 = new collections.Catalog();
             catalog1.addItem(new composites.Association(1, 'alpha'));
             catalog1.addItem(new composites.Association(2, 'beta'));
             catalog1.addItem(new composites.Association(3, 'delta'));
-            var catalog2 = new composites.Catalog();
+            var catalog2 = new collections.Catalog();
             catalog2.addItem(new composites.Association(4, 'epsilon'));
             catalog2.addItem(new composites.Association(5, 'gamma'));
             catalog1.addItems(catalog2);
@@ -242,8 +243,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove associations from a catalog', function() {
-            var list = composites.List.fromCollection(array);
-            var catalog = composites.Catalog.fromCollection(list);
+            var list = collections.List.fromCollection(array);
+            var catalog = collections.Catalog.fromCollection(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -308,14 +309,14 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to perform catalog operations on catalogs', function() {
-            var catalog1 = new composites.Catalog();
+            var catalog1 = new collections.Catalog();
             catalog1.addItem(association1);
             catalog1.addItem(association2);
             catalog1.addItem(association3);
-            var catalog2 = new composites.Catalog();
+            var catalog2 = new collections.Catalog();
             catalog2.addItem(association4);
             catalog2.addItem(association5);
-            var catalog3 = composites.Catalog.fromCollection(array);
+            var catalog3 = collections.Catalog.fromCollection(array);
             var catalog4 = abstractions.Collection.union(catalog1, catalog2);
             expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
@@ -325,7 +326,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog iterators.', function() {
 
         it('should iterate over a catalog forwards and backwards', function() {
-            var catalog = composites.Catalog.fromCollection(array);
+            var catalog = collections.Catalog.fromCollection(array);
             var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

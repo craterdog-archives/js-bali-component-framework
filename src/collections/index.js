@@ -9,12 +9,9 @@
  ************************************************************************/
 'use strict';
 
-exports.Iterator = require('./Iterator').Iterator;
-exports.Sorter = require('./Sorter').Sorter;
-exports.Association = require('./Association').Association;
-exports.Tree = require('./Tree').Tree;
-exports.Block = require('./Block').Block;
-exports.Source = require('./Source').Source;
-exports.Procedure = require('./Procedure').Procedure;
-exports.Parameters = require('./Parameters').Parameters;
+exports.List = require('./List').List;
+exports.Catalog = require('./Catalog').Catalog;
+exports.Set = require('./Set').Set;
+exports.Range = require('./Range').Range;
+exports.Stack = require('./Stack').Stack;
 
