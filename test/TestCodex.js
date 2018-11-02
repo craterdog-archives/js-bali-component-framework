@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var codex = require('../src/utilities/Codex');
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test random number utilities', function() {
 

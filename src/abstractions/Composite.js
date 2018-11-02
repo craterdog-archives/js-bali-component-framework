@@ -14,7 +14,7 @@
  */
 var Component = require('./Component').Component;
 var Iterator = require('../composites/Iterator').Iterator;
-var parser = require('../utilities/DocumentParser');
+var parser = require('../utilities/ComponentParser');
 
 
 // PUBLIC FUNCTIONS

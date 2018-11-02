@@ -11,7 +11,7 @@
 
 /*
  * This module defines type information about the different types of parse tree nodes that
- * are generated when parsing the Bali Document Notation™.
+ * are generated when parsing strings containing Bali Document Notation™.
  */
 
 
@@ -34,7 +34,6 @@ var MAP = {
     DefaultExpression:            '#6Z2Y2P41ZH33Y42HJGPV0Q8VA3ZFK4K4',
     DereferenceExpression:        '#D9JFAF3C9Z96JTGNY6CX3X2Y1L2VZPMK',
     DiscardClause:                '#CBM7R7YJFMQBZ06QZ7R682V6WPXCM6NF',
-    Document:                     '#84N8WSRKX806ZMPWJ7F09VKN87X4N5XJ',
     Duration:                     '#Y6572KBG2SBYSCBHR88KB1GR616LFK8N',
     EvaluateClause:               '#51Z65KR2AR4N2APTFDCPVDZPCNH1T1DA',
     ExponentialExpression:        '#53HF4NHVBS8L1CTN14QKMQRQ616TSW88',
@@ -64,7 +63,6 @@ var MAP = {
     Reference:                    '#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3',
     ReturnClause:                 '#BYS06PXZA0JZPSPG2NXZKSGJP9H9NRFV',
     SaveClause:                   '#ZZB0JXMS61LQSF09B44BRWBCW6LM9RSV',
-    Seal:                         '#4XPJ51CM69RHXMQJZ36XJWQ3M1591C78',
     SelectClause:                 '#AZJ00P3CLMCNWZAG43MSGGFQA46HNPQJ',
     Set:                          '#PB33C4Z89QTKBD8P824JMN83STXZGHY9',
     Source:                       '#S07XBYZN98PWJZSS7NCXLAH86FG78F2C',
@@ -116,7 +114,6 @@ exports.CONTINUE_CLAUSE = NAMES.indexOf('ContinueClause');
 exports.DEFAULT_EXPRESSION = NAMES.indexOf('DefaultExpression');
 exports.DEREFERENCE_EXPRESSION = NAMES.indexOf('DereferenceExpression');
 exports.DISCARD_CLAUSE = NAMES.indexOf('DiscardClause');
-exports.DOCUMENT = NAMES.indexOf('Document');
 exports.DURATION = NAMES.indexOf('Duration');
 exports.EVALUATE_CLAUSE = NAMES.indexOf('EvaluateClause');
 exports.EXPONENTIAL_EXPRESSION = NAMES.indexOf('ExponentialExpression');
@@ -146,7 +143,6 @@ exports.RANGE = NAMES.indexOf('Range');
 exports.REFERENCE = NAMES.indexOf('Reference');
 exports.RETURN_CLAUSE = NAMES.indexOf('ReturnClause');
 exports.SAVE_CLAUSE = NAMES.indexOf('SaveClause');
-exports.SEAL = NAMES.indexOf('Seal');
 exports.SELECT_CLAUSE = NAMES.indexOf('SelectClause');
 exports.SET = NAMES.indexOf('Set');
 exports.SOURCE = NAMES.indexOf('Source');

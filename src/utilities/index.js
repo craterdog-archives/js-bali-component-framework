@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-exports.formatter = require('./DocumentFormatter');
-exports.parser = require('./DocumentParser');
+exports.formatter = require('./ComponentFormatter');
+exports.parser = require('./ComponentParser');
 exports.codex = require('./Codex');
 

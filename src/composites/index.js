@@ -10,10 +10,9 @@
 'use strict';
 
 exports.Association = require('./Association').Association;
-exports.Seal = require('./Seal').Seal;
-exports.Document = require('./Document').Document;
 exports.Parameters = require('./Parameters').Parameters;
 exports.Iterator = require('./Iterator').Iterator;
+exports.Sorter = require('./Sorter').Sorter;
 exports.Range = require('./Range').Range;
 exports.List = require('./List').List;
 exports.Set = require('./Set').Set;

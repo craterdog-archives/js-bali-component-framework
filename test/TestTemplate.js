@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Template = require('../src/elements/Template').Template;
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test template constructors', function() {
 

@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 var composites = require('../src/composites');
 
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
     var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
 
     describe('Test the stack constructors.', function() {

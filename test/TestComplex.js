@@ -14,7 +14,7 @@ var Angle = require('../src/elements/Angle').Angle;
 var Complex = require('../src/elements/Complex').Complex;
 /* global NaN, Infinity */
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test complex constructors', function() {
 

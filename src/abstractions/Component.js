@@ -13,7 +13,7 @@
  * This abstract class defines the methods that all Bali components must support.
  */
 var types = require('../abstractions/Types');
-var formatter = require('../utilities/DocumentFormatter');
+var formatter = require('../utilities/ComponentFormatter');
 
 
 // PUBLIC FUNCTIONS

@@ -38,31 +38,13 @@ var Component = require('../abstractions/Component').Component;
 
 /**
  * This function parses a string containing Bali source code and returns the corresponding
- * document component.
- * 
- * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false. Debug mode is only useful for debugging the language grammar and
- * need not be used otherwise.
- * @returns {Document} The resulting document component.
- */
-exports.parseDocument = function(source, debug) {
-    var parser = initializeParser(source, debug);
-    var antlrTree = parser.document();
-    var document = convertParseTree(antlrTree);
-    return document;
-};
-
-
-/**
- * This function parses a string containing Bali source code and returns the corresponding
  * procedure component.
  * 
  * @param {String} source The Bali source string.
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
  * default is false. Debug mode is only useful for debugging the language grammar and
  * need not be used otherwise.
- * @returns {Document} The resulting procedure component.
+ * @returns {Procedure} The resulting procedure component.
  */
 exports.parseProcedure = function(source, debug) {
     var parser = initializeParser(source, debug);
@@ -80,7 +62,7 @@ exports.parseProcedure = function(source, debug) {
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
  * default is false. Debug mode is only useful for debugging the language grammar and
  * need not be used otherwise.
- * @returns {Document} The resulting component.
+ * @returns {Component} The resulting component.
  */
 exports.parseComponent = function(source, debug) {
     var parser = initializeParser(source, debug);
@@ -98,7 +80,7 @@ exports.parseComponent = function(source, debug) {
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
  * default is false. Debug mode is only useful for debugging the language grammar and
  * need not be used otherwise.
- * @returns {Document} The resulting expression tree component.
+ * @returns {Tree} The resulting expression tree component.
  */
 exports.parseExpression = function(source, debug) {
     var parser = initializeParser(source, debug);
@@ -112,12 +94,12 @@ exports.parseExpression = function(source, debug) {
 
 function initializeParser(source, debug) {
     var chars = new antlr.InputStream(source);
-    var lexer = new grammar.BaliDocumentLexer(chars);
+    var lexer = new grammar.BaliComponentLexer(chars);
     var listener = new BaliErrorListener(debug);
     lexer.removeErrorListeners();
     lexer.addErrorListener(listener);
     var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliDocumentParser(tokens);
+    var parser = new grammar.BaliComponentParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
@@ -143,11 +125,11 @@ function convertParseTree(antlrTree) {
  */
 
 function ParsingVisitor() {
-    grammar.BaliDocumentVisitor.call(this);
+    grammar.BaliComponentVisitor.call(this);
     this.depth = 0;
     return this;
 }
-ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
+ParsingVisitor.prototype = Object.create(grammar.BaliComponentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
@@ -385,26 +367,6 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
-ParsingVisitor.prototype.visitDocument = function(ctx) {
-    var reference = ctx.reference();
-    if (reference) {
-        reference.accept(this);
-        reference = this.result;
-    }
-    var content = ctx.content();
-    content.accept(this);
-    content = this.result;
-    var document = new composites.Document(reference, content);
-    var seals = ctx.seal();
-    seals.forEach(function(seal) {
-        seal.accept(this);
-        document.addNotarySeal(this.result);
-    }, this);
-    this.result = document;
 };
 
 
@@ -904,19 +866,6 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 };
 
 
-// seal: reference binary
-ParsingVisitor.prototype.visitSeal = function(ctx) {
-    var certificateReference = ctx.reference();
-    certificateReference.accept(this);
-    certificateReference = this.result;
-    var digitalSignature = ctx.binary();
-    digitalSignature.accept(this);
-    digitalSignature = this.result;
-    var notarySeal = new composites.Seal(certificateReference, digitalSignature);
-    this.result = notarySeal;
-};
-
-
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
     var tree = new composites.Tree(types.SELECT_CLAUSE, Component.IS_COMPLEX);
@@ -1098,7 +1047,7 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
 // CUSTOM ERROR HANDLING
 
 // override the recover method in the lexer to fail fast
-grammar.BaliDocumentLexer.prototype.recover = function(e) {
+grammar.BaliComponentLexer.prototype.recover = function(e) {
     throw e;
 };
 

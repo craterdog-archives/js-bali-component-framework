@@ -90,8 +90,8 @@ Visitor.prototype.visitCatalog = function(catalog) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 Visitor.prototype.visitCheckoutClause = function(tree) {
-    var document = tree.getItem(1);
-    document.acceptVisitor(this);
+    var component = tree.getItem(1);
+    component.acceptVisitor(this);
     var reference = tree.getItem(2);
     reference.acceptVisitor(this);
 };
@@ -111,8 +111,8 @@ Visitor.prototype.visitCollection = function(collection) {
 
 // commitClause: 'commit' expression 'to' expression
 Visitor.prototype.visitCommitClause = function(tree) {
-    var document = tree.getItem(1);
-    document.acceptVisitor(this);
+    var component = tree.getItem(1);
+    component.acceptVisitor(this);
     var reference = tree.getItem(2);
     reference.acceptVisitor(this);
 };
@@ -160,18 +160,6 @@ Visitor.prototype.visitDereferenceExpression = function(tree) {
 Visitor.prototype.visitDiscardClause = function(tree) {
     var draft = tree.getItem(1);
     draft.acceptVisitor(this);
-};
-
-
-// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
-Visitor.prototype.visitDocument = function(document) {
-    if (document.previousReference) {
-        document.previousReference.acceptVisitor(this);
-    }
-    document.documentContent.acceptVisitor(this);
-    document.notarySeals.forEach(function(seal) {
-        seal.acceptVisitor(this);
-    }, this);
 };
 
 
@@ -419,13 +407,6 @@ Visitor.prototype.visitSaveClause = function(tree) {
     draft.acceptVisitor(this);
     var reference = tree.getItem(2);
     reference.acceptVisitor(this);
-};
-
-
-// seal: reference binary
-Visitor.prototype.visitSeal = function(seal) {
-    seal.certificateReference.acceptVisitor(this);
-    seal.digitalSignature.acceptVisitor(this);
 };
 
 

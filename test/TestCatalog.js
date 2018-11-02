@@ -14,7 +14,7 @@ var abstractions = require('../src/abstractions');
 var composites = require('../src/composites');
 
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
     var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
     var association1 = new composites.Association(1, 'alpha');
     var association2 = new composites.Association(2, 'beta');

@@ -14,7 +14,8 @@
  * contain zero or more children. A node with no children is a Bali elemental component.
  * Tree nodes may also be any other type of Bali component including catalogs, lists, sets,
  * stacks, and ranges. Collectively, all of the Bali components including the tree nodes
- * are used to build up the parse trees that result from parsing the Bali Document Notation™.
+ * are used to build up the parse trees that result from parsing strings containing
+ * Bali Document Notation™.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;

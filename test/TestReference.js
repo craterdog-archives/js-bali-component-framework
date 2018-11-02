@@ -12,7 +12,7 @@ var mocha = require('mocha');
 var expect = require('chai').expect;
 var Reference = require('../src/elements/Reference').Reference;
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test reference constructors', function() {
 

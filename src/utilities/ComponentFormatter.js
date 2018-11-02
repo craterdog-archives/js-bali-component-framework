@@ -11,7 +11,7 @@
 
 /**
  * This library provides functions that format a parse tree structure produced
- * by the <code>DocumentParser</code> class and generates a canonical version of
+ * by the <code>ComponentParser</code> class and generates a canonical version of
  * the corresponding Bali source code string.
  */
 var types = require('../abstractions/Types');
@@ -119,8 +119,8 @@ FormattingVisitor.prototype.visitCatalog = function(catalog) {
 // checkoutClause: 'checkout' recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.source += 'checkout ';
-    var document = tree.getChild(1);
-    document.acceptVisitor(this);
+    var component = tree.getChild(1);
+    component.acceptVisitor(this);
     this.source += ' from ';
     var reference = tree.getChild(2);
     reference.acceptVisitor(this);
@@ -164,8 +164,8 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
 // commitClause: 'commit' expression 'to' expression
 FormattingVisitor.prototype.visitCommitClause = function(tree) {
     this.source += 'commit ';
-    var document = tree.getChild(1);
-    document.acceptVisitor(this);
+    var component = tree.getChild(1);
+    component.acceptVisitor(this);
     this.source += ' to ';
     var reference = tree.getChild(2);
     reference.acceptVisitor(this);
@@ -221,21 +221,6 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
     this.source += 'discard ';
     var draft = tree.getChild(1);
     draft.acceptVisitor(this);
-};
-
-
-// document: NEWLINE* (reference NEWLINE)? content (NEWLINE seal)* NEWLINE* EOF
-FormattingVisitor.prototype.visitDocument = function(document) {
-    if (document.previousReference) {
-        document.previousReference.acceptVisitor(this);
-        this.source += '\n';
-    }
-    document.documentContent.acceptVisitor(this);
-    this.source += '\n';
-    document.notarySeals.forEach(function(seal) {
-        seal.acceptVisitor(this);
-        this.source += '\n';
-    }, this);
 };
 
 
@@ -583,14 +568,6 @@ FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.source += ' to ';
     var reference = tree.getChild(2);
     reference.acceptVisitor(this);
-};
-
-
-// seal: reference binary
-FormattingVisitor.prototype.visitSeal = function(seal) {
-    seal.certificateReference.acceptVisitor(this);
-    this.source += ' ';
-    seal.digitalSignature.acceptVisitor(this);
 };
 
 

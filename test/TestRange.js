@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 var Range = require('../src/composites/Range').Range;
 
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test the range constructors.', function() {
 

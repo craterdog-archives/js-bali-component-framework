@@ -14,7 +14,7 @@ var elements = require('../src/elements');
 var composites = require('../src/composites');
 var codex = require('../src/utilities/Codex');
 
-describe('Bali Document Notation™', function() {
+describe('Bali Component Framework™', function() {
 
     describe('Test binary constructors', function() {
 

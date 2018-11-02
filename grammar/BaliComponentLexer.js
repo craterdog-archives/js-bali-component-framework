@@ -1,4 +1,4 @@
-// Generated from grammar/BaliDocument.g4 by ANTLR 4.7.1
+// Generated from grammar/BaliComponent.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
@@ -512,187 +512,188 @@ var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
 
 var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
 
-function BaliDocumentLexer(input) {
+function BaliComponentLexer(input) {
 	antlr4.Lexer.call(this, input);
     this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
     return this;
 }
 
-BaliDocumentLexer.prototype = Object.create(antlr4.Lexer.prototype);
-BaliDocumentLexer.prototype.constructor = BaliDocumentLexer;
+BaliComponentLexer.prototype = Object.create(antlr4.Lexer.prototype);
+BaliComponentLexer.prototype.constructor = BaliComponentLexer;
 
-Object.defineProperty(BaliDocumentLexer.prototype, "atn", {
+Object.defineProperty(BaliComponentLexer.prototype, "atn", {
         get : function() {
                 return atn;
         }
 });
 
-BaliDocumentLexer.EOF = antlr4.Token.EOF;
-BaliDocumentLexer.T__0 = 1;
-BaliDocumentLexer.T__1 = 2;
-BaliDocumentLexer.T__2 = 3;
-BaliDocumentLexer.T__3 = 4;
-BaliDocumentLexer.T__4 = 5;
-BaliDocumentLexer.T__5 = 6;
-BaliDocumentLexer.T__6 = 7;
-BaliDocumentLexer.T__7 = 8;
-BaliDocumentLexer.T__8 = 9;
-BaliDocumentLexer.T__9 = 10;
-BaliDocumentLexer.T__10 = 11;
-BaliDocumentLexer.T__11 = 12;
-BaliDocumentLexer.T__12 = 13;
-BaliDocumentLexer.T__13 = 14;
-BaliDocumentLexer.T__14 = 15;
-BaliDocumentLexer.T__15 = 16;
-BaliDocumentLexer.T__16 = 17;
-BaliDocumentLexer.T__17 = 18;
-BaliDocumentLexer.T__18 = 19;
-BaliDocumentLexer.T__19 = 20;
-BaliDocumentLexer.T__20 = 21;
-BaliDocumentLexer.T__21 = 22;
-BaliDocumentLexer.T__22 = 23;
-BaliDocumentLexer.T__23 = 24;
-BaliDocumentLexer.T__24 = 25;
-BaliDocumentLexer.T__25 = 26;
-BaliDocumentLexer.T__26 = 27;
-BaliDocumentLexer.T__27 = 28;
-BaliDocumentLexer.T__28 = 29;
-BaliDocumentLexer.T__29 = 30;
-BaliDocumentLexer.T__30 = 31;
-BaliDocumentLexer.T__31 = 32;
-BaliDocumentLexer.T__32 = 33;
-BaliDocumentLexer.T__33 = 34;
-BaliDocumentLexer.T__34 = 35;
-BaliDocumentLexer.T__35 = 36;
-BaliDocumentLexer.T__36 = 37;
-BaliDocumentLexer.T__37 = 38;
-BaliDocumentLexer.T__38 = 39;
-BaliDocumentLexer.T__39 = 40;
-BaliDocumentLexer.T__40 = 41;
-BaliDocumentLexer.T__41 = 42;
-BaliDocumentLexer.T__42 = 43;
-BaliDocumentLexer.T__43 = 44;
-BaliDocumentLexer.T__44 = 45;
-BaliDocumentLexer.T__45 = 46;
-BaliDocumentLexer.T__46 = 47;
-BaliDocumentLexer.T__47 = 48;
-BaliDocumentLexer.T__48 = 49;
-BaliDocumentLexer.T__49 = 50;
-BaliDocumentLexer.T__50 = 51;
-BaliDocumentLexer.T__51 = 52;
-BaliDocumentLexer.T__52 = 53;
-BaliDocumentLexer.T__53 = 54;
-BaliDocumentLexer.T__54 = 55;
-BaliDocumentLexer.T__55 = 56;
-BaliDocumentLexer.T__56 = 57;
-BaliDocumentLexer.T__57 = 58;
-BaliDocumentLexer.T__58 = 59;
-BaliDocumentLexer.T__59 = 60;
-BaliDocumentLexer.T__60 = 61;
-BaliDocumentLexer.T__61 = 62;
-BaliDocumentLexer.T__62 = 63;
-BaliDocumentLexer.T__63 = 64;
-BaliDocumentLexer.T__64 = 65;
-BaliDocumentLexer.T__65 = 66;
-BaliDocumentLexer.T__66 = 67;
-BaliDocumentLexer.T__67 = 68;
-BaliDocumentLexer.T__68 = 69;
-BaliDocumentLexer.SHELL = 70;
-BaliDocumentLexer.TAG = 71;
-BaliDocumentLexer.SYMBOL = 72;
-BaliDocumentLexer.FRACTION = 73;
-BaliDocumentLexer.IMAGINARY = 74;
-BaliDocumentLexer.REAL = 75;
-BaliDocumentLexer.MOMENT = 76;
-BaliDocumentLexer.DURATION = 77;
-BaliDocumentLexer.RESOURCE = 78;
-BaliDocumentLexer.VERSION = 79;
-BaliDocumentLexer.BINARY = 80;
-BaliDocumentLexer.TEXT_BLOCK = 81;
-BaliDocumentLexer.TEXT = 82;
-BaliDocumentLexer.IDENTIFIER = 83;
-BaliDocumentLexer.NEWLINE = 84;
-BaliDocumentLexer.SPACE = 85;
+BaliComponentLexer.EOF = antlr4.Token.EOF;
+BaliComponentLexer.T__0 = 1;
+BaliComponentLexer.T__1 = 2;
+BaliComponentLexer.T__2 = 3;
+BaliComponentLexer.T__3 = 4;
+BaliComponentLexer.T__4 = 5;
+BaliComponentLexer.T__5 = 6;
+BaliComponentLexer.T__6 = 7;
+BaliComponentLexer.T__7 = 8;
+BaliComponentLexer.T__8 = 9;
+BaliComponentLexer.T__9 = 10;
+BaliComponentLexer.T__10 = 11;
+BaliComponentLexer.T__11 = 12;
+BaliComponentLexer.T__12 = 13;
+BaliComponentLexer.T__13 = 14;
+BaliComponentLexer.T__14 = 15;
+BaliComponentLexer.T__15 = 16;
+BaliComponentLexer.T__16 = 17;
+BaliComponentLexer.T__17 = 18;
+BaliComponentLexer.T__18 = 19;
+BaliComponentLexer.T__19 = 20;
+BaliComponentLexer.T__20 = 21;
+BaliComponentLexer.T__21 = 22;
+BaliComponentLexer.T__22 = 23;
+BaliComponentLexer.T__23 = 24;
+BaliComponentLexer.T__24 = 25;
+BaliComponentLexer.T__25 = 26;
+BaliComponentLexer.T__26 = 27;
+BaliComponentLexer.T__27 = 28;
+BaliComponentLexer.T__28 = 29;
+BaliComponentLexer.T__29 = 30;
+BaliComponentLexer.T__30 = 31;
+BaliComponentLexer.T__31 = 32;
+BaliComponentLexer.T__32 = 33;
+BaliComponentLexer.T__33 = 34;
+BaliComponentLexer.T__34 = 35;
+BaliComponentLexer.T__35 = 36;
+BaliComponentLexer.T__36 = 37;
+BaliComponentLexer.T__37 = 38;
+BaliComponentLexer.T__38 = 39;
+BaliComponentLexer.T__39 = 40;
+BaliComponentLexer.T__40 = 41;
+BaliComponentLexer.T__41 = 42;
+BaliComponentLexer.T__42 = 43;
+BaliComponentLexer.T__43 = 44;
+BaliComponentLexer.T__44 = 45;
+BaliComponentLexer.T__45 = 46;
+BaliComponentLexer.T__46 = 47;
+BaliComponentLexer.T__47 = 48;
+BaliComponentLexer.T__48 = 49;
+BaliComponentLexer.T__49 = 50;
+BaliComponentLexer.T__50 = 51;
+BaliComponentLexer.T__51 = 52;
+BaliComponentLexer.T__52 = 53;
+BaliComponentLexer.T__53 = 54;
+BaliComponentLexer.T__54 = 55;
+BaliComponentLexer.T__55 = 56;
+BaliComponentLexer.T__56 = 57;
+BaliComponentLexer.T__57 = 58;
+BaliComponentLexer.T__58 = 59;
+BaliComponentLexer.T__59 = 60;
+BaliComponentLexer.T__60 = 61;
+BaliComponentLexer.T__61 = 62;
+BaliComponentLexer.T__62 = 63;
+BaliComponentLexer.T__63 = 64;
+BaliComponentLexer.T__64 = 65;
+BaliComponentLexer.T__65 = 66;
+BaliComponentLexer.T__66 = 67;
+BaliComponentLexer.T__67 = 68;
+BaliComponentLexer.T__68 = 69;
+BaliComponentLexer.SHELL = 70;
+BaliComponentLexer.TAG = 71;
+BaliComponentLexer.SYMBOL = 72;
+BaliComponentLexer.FRACTION = 73;
+BaliComponentLexer.IMAGINARY = 74;
+BaliComponentLexer.REAL = 75;
+BaliComponentLexer.MOMENT = 76;
+BaliComponentLexer.DURATION = 77;
+BaliComponentLexer.RESOURCE = 78;
+BaliComponentLexer.VERSION = 79;
+BaliComponentLexer.BINARY = 80;
+BaliComponentLexer.TEXT_BLOCK = 81;
+BaliComponentLexer.TEXT = 82;
+BaliComponentLexer.IDENTIFIER = 83;
+BaliComponentLexer.NEWLINE = 84;
+BaliComponentLexer.SPACE = 85;
 
-BaliDocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
+BaliComponentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 
-BaliDocumentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
+BaliComponentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
 
-BaliDocumentLexer.prototype.literalNames = [ null, "'['", "']'", "'('", 
-                                             "')'", "'..'", "','", "':'", 
-                                             "'{'", "'}'", "';'", "'handle'", 
-                                             "'matching'", "'with'", "':='", 
-                                             "'checkout'", "'from'", "'save'", 
-                                             "'to'", "'discard'", "'commit'", 
-                                             "'publish'", "'queue'", "'on'", 
-                                             "'wait'", "'for'", "'if'", 
-                                             "'then'", "'else'", "'select'", 
-                                             "'do'", "'each'", "'in'", "'while'", 
-                                             "'continue'", "'loop'", "'break'", 
-                                             "'return'", "'throw'", "'@'", 
-                                             "'.'", "'!'", "'^'", "'-'", 
-                                             "'/'", "'*'", "'//'", "'+'", 
-                                             "'|'", "'<'", "'='", "'>'", 
-                                             "'is'", "'matches'", "'not'", 
-                                             "'and'", "'sans'", "'xor'", 
-                                             "'or'", "'?'", "'~'", "'undefined'", 
-                                             "'infinity'", "'e^~'", "'%'", 
-                                             "'false'", "'true'", "'0'", 
-                                             "'none'", "'any'" ];
+BaliComponentLexer.prototype.literalNames = [ null, "'['", "']'", "'('", 
+                                              "')'", "'..'", "','", "':'", 
+                                              "'{'", "'}'", "';'", "'handle'", 
+                                              "'matching'", "'with'", "':='", 
+                                              "'checkout'", "'from'", "'save'", 
+                                              "'to'", "'discard'", "'commit'", 
+                                              "'publish'", "'queue'", "'on'", 
+                                              "'wait'", "'for'", "'if'", 
+                                              "'then'", "'else'", "'select'", 
+                                              "'do'", "'each'", "'in'", 
+                                              "'while'", "'continue'", "'loop'", 
+                                              "'break'", "'return'", "'throw'", 
+                                              "'@'", "'.'", "'!'", "'^'", 
+                                              "'-'", "'/'", "'*'", "'//'", 
+                                              "'+'", "'|'", "'<'", "'='", 
+                                              "'>'", "'is'", "'matches'", 
+                                              "'not'", "'and'", "'sans'", 
+                                              "'xor'", "'or'", "'?'", "'~'", 
+                                              "'undefined'", "'infinity'", 
+                                              "'e^~'", "'%'", "'false'", 
+                                              "'true'", "'0'", "'none'", 
+                                              "'any'" ];
 
-BaliDocumentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              "SHELL", "TAG", "SYMBOL", 
-                                              "FRACTION", "IMAGINARY", "REAL", 
-                                              "MOMENT", "DURATION", "RESOURCE", 
-                                              "VERSION", "BINARY", "TEXT_BLOCK", 
-                                              "TEXT", "IDENTIFIER", "NEWLINE", 
-                                              "SPACE" ];
+BaliComponentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               null, null, null, null, null, 
+                                               "SHELL", "TAG", "SYMBOL", 
+                                               "FRACTION", "IMAGINARY", 
+                                               "REAL", "MOMENT", "DURATION", 
+                                               "RESOURCE", "VERSION", "BINARY", 
+                                               "TEXT_BLOCK", "TEXT", "IDENTIFIER", 
+                                               "NEWLINE", "SPACE" ];
 
-BaliDocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", 
-                                          "T__4", "T__5", "T__6", "T__7", 
-                                          "T__8", "T__9", "T__10", "T__11", 
-                                          "T__12", "T__13", "T__14", "T__15", 
-                                          "T__16", "T__17", "T__18", "T__19", 
-                                          "T__20", "T__21", "T__22", "T__23", 
-                                          "T__24", "T__25", "T__26", "T__27", 
-                                          "T__28", "T__29", "T__30", "T__31", 
-                                          "T__32", "T__33", "T__34", "T__35", 
-                                          "T__36", "T__37", "T__38", "T__39", 
-                                          "T__40", "T__41", "T__42", "T__43", 
-                                          "T__44", "T__45", "T__46", "T__47", 
-                                          "T__48", "T__49", "T__50", "T__51", 
-                                          "T__52", "T__53", "T__54", "T__55", 
-                                          "T__56", "T__57", "T__58", "T__59", 
-                                          "T__60", "T__61", "T__62", "T__63", 
-                                          "T__64", "T__65", "T__66", "T__67", 
-                                          "T__68", "SHELL", "TAG", "SYMBOL", 
-                                          "FRACTION", "FLOAT", "IMAGINARY", 
-                                          "REAL", "MOMENT", "DURATION", 
-                                          "RESOURCE", "VERSION", "BINARY", 
-                                          "TEXT_BLOCK", "TEXT", "IDENTIFIER", 
-                                          "NEWLINE", "SPACE", "LINE", "CHARACTER", 
-                                          "NATURAL", "INTEGER", "SPAN", 
-                                          "SCHEME", "CONTEXT", "YEARS", 
-                                          "MONTHS", "DAYS", "HOURS", "MINUTES", 
-                                          "SECONDS", "BASE16", "BASE32", 
-                                          "BASE64", "ESCAPE" ];
+BaliComponentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", 
+                                           "T__4", "T__5", "T__6", "T__7", 
+                                           "T__8", "T__9", "T__10", "T__11", 
+                                           "T__12", "T__13", "T__14", "T__15", 
+                                           "T__16", "T__17", "T__18", "T__19", 
+                                           "T__20", "T__21", "T__22", "T__23", 
+                                           "T__24", "T__25", "T__26", "T__27", 
+                                           "T__28", "T__29", "T__30", "T__31", 
+                                           "T__32", "T__33", "T__34", "T__35", 
+                                           "T__36", "T__37", "T__38", "T__39", 
+                                           "T__40", "T__41", "T__42", "T__43", 
+                                           "T__44", "T__45", "T__46", "T__47", 
+                                           "T__48", "T__49", "T__50", "T__51", 
+                                           "T__52", "T__53", "T__54", "T__55", 
+                                           "T__56", "T__57", "T__58", "T__59", 
+                                           "T__60", "T__61", "T__62", "T__63", 
+                                           "T__64", "T__65", "T__66", "T__67", 
+                                           "T__68", "SHELL", "TAG", "SYMBOL", 
+                                           "FRACTION", "FLOAT", "IMAGINARY", 
+                                           "REAL", "MOMENT", "DURATION", 
+                                           "RESOURCE", "VERSION", "BINARY", 
+                                           "TEXT_BLOCK", "TEXT", "IDENTIFIER", 
+                                           "NEWLINE", "SPACE", "LINE", "CHARACTER", 
+                                           "NATURAL", "INTEGER", "SPAN", 
+                                           "SCHEME", "CONTEXT", "YEARS", 
+                                           "MONTHS", "DAYS", "HOURS", "MINUTES", 
+                                           "SECONDS", "BASE16", "BASE32", 
+                                           "BASE64", "ESCAPE" ];
 
-BaliDocumentLexer.prototype.grammarFileName = "BaliDocument.g4";
+BaliComponentLexer.prototype.grammarFileName = "BaliComponent.g4";
 
 
 
-exports.BaliDocumentLexer = BaliDocumentLexer;
+exports.BaliComponentLexer = BaliComponentLexer;
 

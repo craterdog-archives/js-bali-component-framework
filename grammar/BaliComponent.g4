@@ -1,4 +1,4 @@
-grammar BaliComponents;
+grammar BaliComponent;
 
 import BaliProcedures;
 

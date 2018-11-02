@@ -13,8 +13,8 @@
  * This component class implements a sorter that can be used on any collection to sort its
  * items into their natural order.
  */
-var types = require('./Types');
-var Component = require('./Component').Component;
+var types = require('../abstractions/Types');
+var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
