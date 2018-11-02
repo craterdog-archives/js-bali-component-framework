@@ -15,7 +15,7 @@
  * Subclasses should override most of the methods.
  */
 var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
@@ -26,11 +26,11 @@ var Composite = require('../abstractions/Composite').Composite;
  * @returns {Visitor} The new visitor.
  */
 function Visitor() {
-    Composite.call(this, types.VISITOR);
+    Component.call(this, types.VISITOR);
     this.depth = 0;
     return this;
 }
-Visitor.prototype = Object.create(Composite.prototype);
+Visitor.prototype = Object.create(Component.prototype);
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
 
@@ -99,7 +99,7 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 
 // collection: range | list | catalog
 Visitor.prototype.visitCollection = function(collection) {
-    var iterator = collection.iterator();
+    var iterator = collection.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var item = iterator.getNext();
@@ -342,7 +342,7 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 
 // parameters: '(' collection ')'
 Visitor.prototype.visitParameters = function(parameters) {
-    var iterator = parameters.iterator();
+    var iterator = parameters.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var parameter = iterator.getNext();
@@ -368,7 +368,7 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty procedure*/
 Visitor.prototype.visitProcedure = function(procedure) {
-    var iterator = procedure.iterator();
+    var iterator = procedure.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var statement = iterator.getNext();
@@ -483,7 +483,7 @@ Visitor.prototype.visitStack = function(stack) {
 
 // statement: mainClause handleClause*
 Visitor.prototype.visitStatement = function(tree) {
-    var iterator = tree.iterator();
+    var iterator = tree.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var child = iterator.getNext();

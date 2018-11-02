@@ -35,6 +35,102 @@ Collection.prototype.constructor = Collection;
 exports.Collection = Collection;
 
 
+/**
+ * This function returns a new collection that contains all the items that are in
+ * the first collection or the second collection or both.
+ *
+ * @param {ollection} collection1 The first collection to be operated on.
+ * @param {ollection} collection2 The second collection to be operated on.
+ * @returns {ollection} The resulting collection.
+ */
+Collection.union = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.addItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains the items that are in
+ * both the first collection and the second collection.
+ *
+ * @param {ollection} collection1 The first collection to be operated on.
+ * @param {ollection} collection2 The second collection to be operated on.
+ * @returns {ollection} The resulting collection.
+ */
+Collection.intersection = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator = collection1.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (collection2.containsItem(item)) {
+            result.addItem(item);
+        }
+    }
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains the items that are in
+ * the first collection but not in the second collection.
+ *
+ * @param {ollection} collection1 The first collection to be operated on.
+ * @param {ollection} collection2 The second collection to be operated on.
+ * @returns {ollection} The resulting collection.
+ */
+Collection.difference = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.removeItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains all the items that are in
+ * the first collection or the second collection but not both.
+ *
+ * @param {ollection} collection1 The first collection to be operated on.
+ * @param {ollection} collection2 The second collection to be operated on.
+ * @returns {ollection} The resulting collection.
+ */
+Collection.mavericks = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator1 = collection1.getIterator();
+    var item1;
+    var iterator2 = collection2.getIterator();
+    var item2;
+    while (iterator1.hasNext() && iterator2.hasNext()) {
+        if (item1 === undefined) item1 = iterator1.getNext();
+        if (item2 === undefined) item2 = iterator2.getNext();
+        var signum = item1.comparedTo(item2);
+        switch (signum) {
+            case -1:
+                result.addItem(item1);
+                item1 = undefined;
+                break;
+            case 0:
+                item1 = undefined;
+                item2 = undefined;
+                break;
+            case 1:
+                result.addItem(item2);
+                item2 = undefined;
+                break;
+        }
+    }
+    while (iterator1.hasNext()) {
+        item1 = iterator1.getNext();
+        result.addItem(item1);
+    }
+    while (iterator2.hasNext()) {
+        item2 = iterator2.getNext();
+        result.addItem(item2);
+    }
+    return result;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -44,60 +140,6 @@ exports.Collection = Collection;
  */
 Collection.prototype.acceptVisitor = function(visitor) {
     visitor.visitCollection(this);
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this collection.
- * @returns {Iterator} An iterator for this collection.
- */
-Collection.prototype.iterator = function() {
-    var iterator = new Iterator(this.toArray());
-    return iterator;
-};
-
-
-/**
- * This method returns whether or not this collection is empty.
- * 
- * @returns {Boolean} Whether or not this collection is empty.
- */
-Collection.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
- * This abstract method returns the number of items that are currently in this collection.
- * It must be implemented by a subclass.
- * 
- * @returns {Number} The number of items that are in this collection.
- */
-Collection.prototype.getSize = function() {
-    throw new Error('COLLECTION: Abstract method getSize() must be implemented by a concrete subclass.');
-};
-
-/**
- * This function converts negative indexes into their corresponding positive indexes and
- * then checks to make sure the index is in the range [1..size]. NOTE: if the collection
- * is empty then the resulting index will be zero.
- *
- * The mapping between indexes is as follows:
- * <pre>
- * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
- * Positive Indexes:    1         2          3          4     ...    N
- * </pre>
- *
- * @param {Number} index The index to be normalized [-N..N].
- * @returns {Number} The normalized [1..N] index.
- */
-Collection.prototype.normalizedIndex = function(index) {
-    var size = this.getSize();
-    if (index > size) index = size;
-    if (index < -size) index = -size;
-    if (index < 0) index = index + size + 1;
-    return index;
 };
 
 
@@ -116,7 +158,7 @@ Collection.prototype.normalizedIndex = function(index) {
 Collection.prototype.getIndex = function(item) {
     var component = Composite.asComponent(item);
     var index = 0;
-    var iterator = this.iterator();
+    var iterator = this.getIterator();
     while (iterator.hasNext()) {
         var candidate = iterator.getNext();
         index++;
@@ -131,7 +173,7 @@ Collection.prototype.getIndex = function(item) {
  * from this collection. It must be implemented by a subclass.
  * 
  * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this sortable collection.
+ * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
     throw new Error('COLLECTION: Abstract method getItem(index) must be implemented by a concrete subclass.');
@@ -144,12 +186,12 @@ Collection.prototype.getItem = function(index) {
  * 
  * @param {type} firstIndex The index of the first item to be included.
  * @param {type} lastIndex The index of the last item to be included.
- * @returns {OrderedCollection} The new collection containing the requested items.
+ * @returns {ollection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizedIndex(firstIndex);
-    lastIndex = this.normalizedIndex(lastIndex);
-    var iterator = this.iterator();
+    firstIndex = this.normalizeIndex(firstIndex);
+    lastIndex = this.normalizeIndex(lastIndex);
+    var iterator = this.getIterator();
     iterator.toSlot(firstIndex - 1);  // the slot before the first item
     var numberOfItems = lastIndex - firstIndex + 1;
     var array = [];
@@ -160,6 +202,37 @@ Collection.prototype.getItems = function(firstIndex, lastIndex) {
     }
     var collection = this.constructor.fromCollection(array);
     return collection;
+};
+
+
+/**
+ * This abstract method adds the specified item to this collection. It must
+ * be implemented by a subclass.
+ * 
+ * @param {Component} item The item to be added to this collection. 
+ * @returns {Boolean} Whether or not the item was successfully added.
+ */
+Collection.prototype.addItem = function(item) {
+    throw new Error('COLLECTION: Abstract method addItem(item) must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method adds a collection of new items to this collection.
+ *
+ * @param {Collection} items The collection of new items to be added.
+ * @returns {Number} The number of items that were actually added to this collection.
+ */
+Collection.prototype.addItems = function(items) {
+    var count = 0;
+    var iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (this.addItem(item)) {
+            count++;
+        }
+    }
+    return count;
 };
 
 
@@ -185,7 +258,7 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     var result = false;
-    var iterator = items.iterator();
+    var iterator = items.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
         result = this.containsItem(item);
@@ -204,7 +277,7 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     var result = false;
-    var iterator = items.iterator();
+    var iterator = items.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
         result = this.containsItem(item);
@@ -212,3 +285,13 @@ Collection.prototype.containsAll = function(items) {
     }
     return result;
 };
+
+
+/**
+ * This abstract method removes all of the items from this collection. It must
+ * be implemented by a subclass.
+ */
+Collection.prototype.removeAll = function() {
+    throw new Error('COLLECTION: Abstract method removeAll() must be implemented by a concrete subclass.');
+};
+

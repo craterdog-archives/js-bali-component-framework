@@ -13,6 +13,7 @@
  * This abstract class defines the methods that all composite components must support.
  */
 var Component = require('./Component').Component;
+var Iterator = require('../composites/Iterator').Iterator;
 var parser = require('../utilities/DocumentParser');
 
 
@@ -23,7 +24,7 @@ var parser = require('../utilities/DocumentParser');
  * parameters that are used to parameterize its type.
  * 
  * @param {Number} type The type of component.
- * @param {Parameters} parameters Optional parameters used to parameterize the composite. 
+ * @param {Parameters} parameters Optional parameters used to parameterize the composite component. 
  * @returns {Composite} The new composite component.
  */
 function Composite(type, parameters) {
@@ -37,6 +38,8 @@ exports.Composite = Composite;
 
 /**
  * This function converts a JS primitive type into its corresponding Bali component.
+ * NOTE: this function really belongs in the <code>bali.Component</code> class but that
+ * would introduce a circular dependency with the parser.
  * 
  * @param {String|Number|Boolean|Component} value The value to be converted (if necessary).
  * @returns {Component} The value as a component.
@@ -64,17 +67,6 @@ Composite.asComponent = function(value) {
 
 
 // PUBLIC METHODS
-
-/**
- * This abstract method returns an array containing the subcomponents in this composite
- * component. It must be implemented by a subclass.
- * 
- * @returns {Array} An array containing the subcomponents in this composite component.
- */
-Composite.prototype.toArray = function() {
-    throw new Error('COMPOSITE: Abstract method toArray() must be implemented by a concrete subclass.');
-};
-
 
 /**
  * This method compares this composite with another object for equality.
@@ -121,4 +113,70 @@ Composite.prototype.comparedTo = function(that) {
     } else {
         return 0;
     }
+};
+
+
+/**
+ * This method returns whether or not this composite component has any subcomponents.
+ * 
+ * @returns {Boolean} Whether or not this composite component has any subcomponents.
+ */
+Composite.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
+
+/**
+ * This abstract method returns the number of subcomponents that this composite component has.
+ * It must be implemented by a subclass.
+ * 
+ * @returns {Number} The number of subcomponents that this composite component has.
+ */
+Composite.prototype.getSize = function() {
+    throw new Error('COMPOSITE: Abstract method getSize() must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the subcomponents in
+ * this composite component.
+ * @returns {Iterator} An iterator for this composite component.
+ */
+Composite.prototype.getIterator = function() {
+    var iterator = new Iterator(this.toArray());
+    return iterator;
+};
+
+
+/**
+ * This abstract method returns an array containing the subcomponents in this composite
+ * component. It must be implemented by a subclass.
+ * 
+ * @returns {Array} An array containing the subcomponents in this composite component.
+ */
+Composite.prototype.toArray = function() {
+    throw new Error('COMPOSITE: Abstract method toArray() must be implemented by a concrete subclass.');
+};
+
+
+/**
+ * This function converts negative subcomponent indexes into their corresponding positive
+ * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
+ * composite component is empty then the resulting index will be zero.
+ *
+ * The mapping between indexes is as follows:
+ * <pre>
+ * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
+ * Positive Indexes:    1         2          3          4     ...    N
+ * </pre>
+ *
+ * @param {Number} index The index to be normalized [-N..N].
+ * @returns {Number} The normalized [1..N] index.
+ */
+Composite.prototype.normalizeIndex = function(index) {
+    var size = this.getSize();
+    if (index > size) index = size;
+    if (index < -size) index = -size;
+    if (index < 0) index = index + size + 1;
+    return index;
 };

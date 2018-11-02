@@ -18,7 +18,6 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
 /* global NaN, Infinity */
 
 
@@ -34,14 +33,14 @@ var Collection = require('../abstractions/Collection').Collection;
  * @returns {Range} The new range.
  */
 function Range(firstItem, lastItem, parameters) {
-    Collection.call(this, types.RANGE, parameters);
+    Composite.call(this, types.RANGE, parameters);
     this.firstItem = Composite.asComponent(firstItem);
     this.lastItem = Composite.asComponent(lastItem);
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += this.firstItem.complexity + this.lastItem.complexity + 2;  // account for the '..' separator
     return this;
 }
-Range.prototype = Object.create(Collection.prototype);
+Range.prototype = Object.create(Composite.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -105,11 +104,22 @@ Range.prototype.acceptVisitor = function(visitor) {
 
 
 /**
+ * This method returns the number of numbers that are in this range.
+ * 
+ * @returns {Component} The number of numbers that fall in this range.
+ */
+Range.prototype.getSize = function() {
+    var size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
+    return size;
+};
+
+
+/**
  * This method returns an object that can be used to iterate over the items in
  * this collection.
  * @returns {Iterator} An iterator for this collection.
  */
-Range.prototype.iterator = function() {
+Range.prototype.getIterator = function() {
     var iterator = new RangeIterator(this);
     return iterator;
 };
@@ -129,92 +139,6 @@ Range.prototype.toArray = function() {
     }
     while (index <= last) array.push(Composite.asComponent(index++));
     return array;
-};
-
-
-/**
- * This method returns the number of numbers that are in this range.
- * 
- * @returns {Component} The number of numbers that fall in this range.
- */
-Range.prototype.getSize = function() {
-    var size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
-    return size;
-};
-
-
-/**
- * This method retrieves the item that is associated with the specified index
- * within this range.
- *
- * @param {Component} index The index of the desired item.
- * @returns {Component} The item at that index within the range.
- */
-Range.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
-    var item = Composite.asComponent(this.firstItem.toNumber() + index);
-    return item;
-};
-
-
-/**
- * This method returns a new range of items starting with the item at the
- * first index and including the item at the last index.
- * <pre>
- *  this: ['d'..'k']
- *      ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
- *  this.getItems(2..4):
- *           ['e', 'f', 'g']
- * </pre>
- * 
- * If either index references an item that is outside the bounds of this range,
- * the index is reset to one of the current bounds of this range.
- * <pre>
- *  this: ['d'..'k']
- *      ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
- *  this.getItems(2..13):  =>  this.getItems(2..8)
- *           ['e', 'f', 'g', 'h', 'i', 'j', 'k']
- * </pre>
- * 
- * @param {type} firstIndex The index of the first item to be included.
- * @param {type} lastIndex The index of the last item to be included.
- * @returns {OrderedCollection} The new range containing the requested items.
- */
-Range.prototype.getItems = function(firstIndex, lastIndex) {
-    var firstNumber = this.firstItem.toNumber();
-    var lastNumber = this.lastItem.toNumber();
-    firstIndex = this.normalizedIndex(firstIndex);
-    firstIndex += firstNumber - 1;
-    if (firstIndex > lastNumber) firstIndex = lastNumber;
-    lastIndex = this.normalizedIndex(lastIndex);
-    lastIndex += firstNumber - 1;
-    if (lastIndex > lastNumber) lastIndex = lastNumber;
-    var range = Range.fromEndPoints(firstIndex, lastIndex);
-    return range;
-};
-
-
-/**
- * This abstract method adds the specified item to this ordered collection. It must
- * be implemented by a subclass.
- * 
- * @param {Component} item The item to be added to this ordered collection. 
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-Range.prototype.addItem = function(item) {
-    throw new Error('RANGE: Items cannot be added to a range.');
-};
-
-
-/*
- * This abstract method removes the specified item from this ordered collection. It must be
- * implemented by a subclass.
- * 
- * @param {Component} item The item to be removed from this collection.
- * @returns {Boolean} Whether or not the item was removed.
- */
-Range.prototype.removeItem = function(item) {
-    throw new Error('RANGE: Items cannot be removed from a range.');
 };
 
 

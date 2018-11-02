@@ -10,13 +10,13 @@
 'use strict';
 
 /**
- * This ordered collection class implements a set of components that does not allow
+ * This collection class implements an ordered set of components that does not allow
  * duplicate items. A set automatically orders its items based on the order defined
  * by the <code>this.comparedTo(that)</code> method of the items being compared.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var OrderedCollection = require('../abstractions/OrderedCollection').OrderedCollection;
+var Collection = require('../abstractions/Collection').Collection;
 
 
 // PUBLIC FUNCTIONS
@@ -25,16 +25,16 @@ var OrderedCollection = require('../abstractions/OrderedCollection').OrderedColl
  * This constructor creates a new set component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {Set} The new set.
  */
 function Set(parameters) {
-    OrderedCollection.call(this, types.SET, parameters);
+    Collection.call(this, types.SET, parameters);
     this.tree = new RandomizedTree();
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Set.prototype = Object.create(OrderedCollection.prototype);
+Set.prototype = Object.create(Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
 
@@ -46,7 +46,7 @@ exports.Set = Set;
  * 
  * @param {Array|Object|Collection} collection The collection containing the initial
  * items to be used to seed the new set.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {List} The new set.
  */
 Set.fromCollection = function(collection, parameters) {
@@ -61,8 +61,7 @@ Set.fromCollection = function(collection, parameters) {
             break;
         case 'List':
         case 'Set':
-        case 'Stack':
-            iterator = collection.iterator();
+            iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 set.addItem(iterator.getNext());
             }
@@ -74,13 +73,6 @@ Set.fromCollection = function(collection, parameters) {
 };
 
 
-// bind to superclass functions
-Set.union = OrderedCollection.union;
-Set.intersection = OrderedCollection.intersection;
-Set.difference = OrderedCollection.difference;
-Set.maverick = OrderedCollection.maverick;
-
-
 // PUBLIC METHODS
 
 /**
@@ -90,6 +82,27 @@ Set.maverick = OrderedCollection.maverick;
  */
 Set.prototype.acceptVisitor = function(visitor) {
     visitor.visitSet(this);
+};
+
+
+/**
+ * This method returns the number of items that are currently in this set.
+ * 
+ * @returns {Number} The number of items that are in this set.
+ */
+Set.prototype.getSize = function() {
+    return this.tree.size;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the items in
+ * this set.
+ * @returns {Iterator} An iterator for this set.
+ */
+Set.prototype.getIterator = function() {
+    var iterator = new TreeIterator(this.tree);
+    return iterator;
 };
 
 
@@ -106,16 +119,6 @@ Set.prototype.toArray = function() {
         array.push(item);
     }
     return array;
-};
-
-
-/**
- * This method returns the number of items that are currently in this set.
- * 
- * @returns {Number} The number of items that are in this set.
- */
-Set.prototype.getSize = function() {
-    return this.tree.size;
 };
 
 
@@ -139,7 +142,7 @@ Set.prototype.getIndex = function(item) {
  * @returns {Component} The item in this set that is associated with the specified index.
  */
 Set.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index) - 1;  // convert to javascript zero based indexing
+    index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
     var item = this.tree.node(index).value;
     return item;
 };
@@ -178,6 +181,26 @@ Set.prototype.removeItem = function(item) {
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     }
     return result;
+};
+
+
+/**
+ * This method removes the specified items from this set.  The number of
+ * matching items is returned.
+ *
+ * @param {Collection} items The collection of items to be removed from this set.
+ * @returns {Number} The number of items that were actually removed.
+ */
+Set.prototype.removeItems = function(items) {
+    var count = 0;
+    var iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (this.removeItem(item)) {
+            count++;
+        }
+    }
+    return count;
 };
 
 

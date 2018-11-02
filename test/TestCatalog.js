@@ -10,6 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var abstractions = require('../src/abstractions');
 var composites = require('../src/composites');
 
 
@@ -29,7 +30,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
@@ -46,7 +47,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -78,7 +79,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -110,39 +111,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.iterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            var association = iterator.getNext();
-            expect(association.key.toString()).to.equal('1');
-            expect(association.value.toString()).to.equal('alpha');
-            association = iterator.getNext();
-            expect(association.key.toString()).to.equal('2');
-            expect(association.value.toString()).to.equal('beta');
-            association = iterator.getNext();
-            expect(association.key.toString()).to.equal('3');
-            expect(association.value.toString()).to.equal('delta');
-            association = iterator.getNext();
-            expect(association.key.toString()).to.equal('4');
-            expect(association.value.toString()).to.equal('epsilon');
-            association = iterator.getNext();
-            expect(association.key.toString()).to.equal('5');
-            expect(association.value.toString()).to.equal('gamma');
-            expect(iterator.hasNext() === false);
-            catalog.removeAll();
-            size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(0);
-        });
-
-        it('should create a catalog from a stack', function() {
-            var stack = composites.Stack.fromCollection(array);
-            var catalog = composites.Catalog.fromCollection(stack);
-            var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(array.length);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -180,7 +149,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(Object.keys(object).length);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -212,7 +181,7 @@ describe('Bali Document Notation™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -287,19 +256,19 @@ describe('Bali Document Notation™', function() {
             var keys = catalog.getKeys();
             size = keys.getSize();
             expect(size).to.equal(array.length);
-            var keyIterator = keys.iterator();
+            var keyIterator = keys.getIterator();
             expect(keyIterator).to.exist;  // jshint ignore:line
             var values = catalog.getValues();
             size = values.getSize();
             expect(size).to.equal(array.length);
             expect(list.isEqualTo(values)).to.equal(true);
-            var valueIterator = values.iterator();
+            var valueIterator = values.getIterator();
             expect(valueIterator).to.exist;  // jshint ignore:line
             var associations = catalog.getAssociations();
             size = associations.getSize();
             expect(size).to.equal(array.length);
             expect(catalog.isEqualTo(associations)).to.equal(true);
-            var associationIterator = catalog.iterator();
+            var associationIterator = catalog.getIterator();
             expect(associationIterator).to.exist;  // jshint ignore:line
             var key;
             var value;
@@ -347,7 +316,7 @@ describe('Bali Document Notation™', function() {
             catalog2.addItem(association4);
             catalog2.addItem(association5);
             var catalog3 = composites.Catalog.fromCollection(array);
-            var catalog4 = composites.Catalog.concatenation(catalog1, catalog2);
+            var catalog4 = abstractions.Collection.union(catalog1, catalog2);
             expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
 
@@ -357,7 +326,7 @@ describe('Bali Document Notation™', function() {
 
         it('should iterate over a catalog forwards and backwards', function() {
             var catalog = composites.Catalog.fromCollection(array);
-            var iterator = catalog.iterator();
+            var iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

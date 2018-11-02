@@ -10,6 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var abstractions = require('../src/abstractions');
 var composites = require('../src/composites');
 
 
@@ -24,7 +25,7 @@ describe('Bali Document Notation™', function() {
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
@@ -41,7 +42,7 @@ describe('Bali Document Notation™', function() {
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -60,7 +61,7 @@ describe('Bali Document Notation™', function() {
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -79,26 +80,7 @@ describe('Bali Document Notation™', function() {
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = set.iterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
-            });
-            set.removeAll();
-            size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(0);
-        });
-
-        it('should create a set from a stack', function() {
-            var stack = composites.Stack.fromCollection(array);
-            var set = composites.Set.fromCollection(stack);
-            var size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(array.length);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -154,7 +136,7 @@ describe('Bali Document Notation™', function() {
             expect(set.getIndex('alpha')).to.equal(1);
             expect(set.getItem(5).toString()).to.equal('gamma');
             expect(set.getIndex('delta')).to.equal(3);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
@@ -164,9 +146,8 @@ describe('Bali Document Notation™', function() {
             size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
-            // the iterator should be pointing at a copy of the array so unaffected
             iterator.toStart();
-            var index = 0;
+            var index = 2;
             while (iterator.hasNext()) {
                 item = iterator.getNext().toString();
                 expect(item).to.equal(array[index++]);
@@ -186,22 +167,22 @@ describe('Bali Document Notation™', function() {
             var set3 = new composites.Set();
             set3.addItem('beta');
             set3.addItem('delta');
-            expect(composites.Set.intersection(set1, set2).isEqualTo(set3)).to.equal(true);
+            expect(abstractions.Collection.intersection(set1, set2).isEqualTo(set3)).to.equal(true);
             var set4 = new composites.Set();
             set4.addItem('alpha');
-            expect(composites.Set.difference(set1, set2).isEqualTo(set4)).to.equal(true);
+            expect(abstractions.Collection.difference(set1, set2).isEqualTo(set4)).to.equal(true);
             var set5 = new composites.Set();
             set5.addItem('alpha');
             set5.addItem('beta');
             set5.addItem('delta');
             set5.addItem('epsilon');
             set5.addItem('gamma');
-            expect(composites.Set.union(set1, set2).isEqualTo(set5)).to.equal(true);
+            expect(abstractions.Collection.union(set1, set2).isEqualTo(set5)).to.equal(true);
             var set6 = new composites.Set();
             set6.addItem('alpha');
             set6.addItem('epsilon');
             set6.addItem('gamma');
-            expect(composites.Set.maverick(set1, set2).isEqualTo(set6)).to.equal(true);
+            expect(abstractions.Collection.mavericks(set1, set2).isEqualTo(set6)).to.equal(true);
         });
 
     });
@@ -210,7 +191,7 @@ describe('Bali Document Notation™', function() {
 
         it('should iterate over a set forwards and backwards', function() {
             var set = composites.Set.fromCollection(array);
-            var iterator = set.iterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

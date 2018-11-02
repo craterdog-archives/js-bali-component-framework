@@ -10,6 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var abstractions = require('../src/abstractions');
 var composites = require('../src/composites');
 
 
@@ -24,7 +25,7 @@ describe('Bali Document Notation™', function() {
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
@@ -41,7 +42,7 @@ describe('Bali Document Notation™', function() {
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -60,7 +61,7 @@ describe('Bali Document Notation™', function() {
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -79,26 +80,7 @@ describe('Bali Document Notation™', function() {
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = list.iterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
-            });
-            list.removeAll();
-            size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(0);
-        });
-
-        it('should create a list from a stack', function() {
-            var stack = composites.Stack.fromCollection(array);
-            var list = composites.List.fromCollection(stack);
-            var size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(array.length);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -151,7 +133,7 @@ describe('Bali Document Notation™', function() {
             expect(list.getIndex('alpha')).to.equal(1);
             expect(list.getItem(5).toString()).to.equal('gamma');
             expect(list.getIndex('delta')).to.equal(3);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
@@ -179,7 +161,7 @@ describe('Bali Document Notation™', function() {
             list2.addItem('epsilon');
             list2.addItem('gamma');
             var list3 = composites.List.fromCollection(array);
-            expect(composites.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
+            expect(abstractions.Collection.union(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
     });
@@ -188,7 +170,7 @@ describe('Bali Document Notation™', function() {
 
         it('should iterate over a list forwards and backwards', function() {
             var list = composites.List.fromCollection(array);
-            var iterator = list.iterator();
+            var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

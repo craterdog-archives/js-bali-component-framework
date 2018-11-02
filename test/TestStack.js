@@ -24,7 +24,7 @@ describe('Bali Document Notation™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = stack.iterator();
+            var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
@@ -60,7 +60,7 @@ describe('Bali Document Notation™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = stack.iterator();
+            var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -79,45 +79,7 @@ describe('Bali Document Notation™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = stack.iterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
-            });
-            stack.removeAll();
-            size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(0);
-        });
-
-        it('should create a stack from a set', function() {
-            var set = composites.Set.fromCollection(array);
-            var stack = composites.Stack.fromCollection(set);
-            var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(array.length);
-            var iterator = stack.iterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
-            });
-            stack.removeAll();
-            size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(0);
-        });
-
-        it('should create a stack from a stack', function() {
-            var stack = composites.Stack.fromCollection(array);
-            stack = composites.Stack.fromCollection(stack);
-            var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(array.length);
-            var iterator = stack.iterator();
+            var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -182,7 +144,7 @@ describe('Bali Document Notation™', function() {
                 stack.pushItem(array[index++]);
             }
             // iterate through the items from top down
-            var iterator = stack.iterator();
+            var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);

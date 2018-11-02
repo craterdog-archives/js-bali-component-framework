@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This collection class implements a procedure which is a ordered list of statements that
+ * This collection class implements a procedure which is a list of statements that
  * can be indexed. The indexing is ordinal based (e.g. 1..N) and allows either positive
  * indexes starting at the beginning of the list or negative indexes starting at the end
  * of the list as follows:
@@ -83,7 +83,7 @@ Procedure.prototype.getSize = function() {
  * @returns {Component} The parameter value at that index.
  */
 Procedure.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
+    index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
     var parameter = this.array[index];
     if (parameter) return parameter.value;

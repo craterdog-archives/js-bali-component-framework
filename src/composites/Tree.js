@@ -17,7 +17,7 @@
  * are used to build up the parse trees that result from parsing the Bali Document Notation™.
  */
 var types = require('../abstractions/Types');
-var Collection = require('../abstractions/Collection').Collection;
+var Composite = require('../abstractions/Composite').Composite;
 
 
 // PUBLIC FUNCTIONS
@@ -31,17 +31,28 @@ var Collection = require('../abstractions/Collection').Collection;
  * @returns {Tree} The new tree node component.
  */
 function Tree(type, complexity) {
-    Collection.call(this, type);
+    Composite.call(this, type);
     this.array = [];
     this.complexity += complexity;
     return this;
 }
-Tree.prototype = Object.create(Collection.prototype);
+Tree.prototype = Object.create(Composite.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method returns the number of components that are children of this tree node.
+ * 
+ * @returns {Number} The number of components that are children of this tree node.
+ */
+Tree.prototype.getSize = function() {
+    var size = this.array.length;
+    return size;
+};
+
 
 /**
  * This method returns an array containing the components that are children of this
@@ -56,24 +67,13 @@ Tree.prototype.toArray = function() {
 
 
 /**
- * This method returns the number of components that are children of this tree node.
- * 
- * @returns {Number} The number of components that are children of this tree node.
- */
-Tree.prototype.getSize = function() {
-    var size = this.array.length;
-    return size;
-};
-
-
-/**
  * This method retrieves the child node that is associated with the specified index.
  * 
  * @param {Number} index The index of the desired child node.
  * @returns {Component} The child node at the position in this tree.
  */
-Tree.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
+Tree.prototype.getChild = function(index) {
+    index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
     var item = this.array[index];
     return item;

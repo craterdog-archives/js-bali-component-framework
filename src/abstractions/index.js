@@ -14,6 +14,4 @@ exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;
 exports.Composite = require('./Composite').Composite;
 exports.Collection = require('./Collection').Collection;
-exports.SortableCollection = require('./SortableCollection').SortableCollection;
-exports.OrderedCollection = require('./OrderedCollection').OrderedCollection;
 

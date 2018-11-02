@@ -52,6 +52,16 @@ Association.prototype.acceptVisitor = function(visitor) {
 
 
 /**
+ * This method returns the number of 
+ * 
+ * @returns {Number} The number of attributes that make up this composite component.
+ */
+Association.prototype.getSize = function() {
+    return 2;
+};
+
+
+/**
  * This method returns an array containing the attributes of this association.
  * 
  * @returns {Array} An array containing the attributes of this association.
@@ -68,10 +78,13 @@ Association.prototype.toArray = function() {
  * This method sets a new value for this association.
  * 
  * @param {String|Component} value The value of this association.
+ * @returns {Component} The value previously associated with the key.
  */
 Association.prototype.setValue = function(value) {
     value = Composite.asComponent(value);
-    this.complexity -= this.value.complexity;
+    var oldValue = this.value;
+    this.complexity -= oldValue.complexity;
     this.value = value;
     this.complexity += value.complexity;
+    return oldValue;
 };

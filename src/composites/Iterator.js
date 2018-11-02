@@ -28,8 +28,7 @@
  * </pre>
  */
 var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Complex = require('../elements/Complex').Complex;
+var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
@@ -42,13 +41,13 @@ var Complex = require('../elements/Complex').Complex;
  * @returns {Iterator} The new array iterator.
  */
 function Iterator(array) {
-    Composite.call(this, types.ITERATOR);
+    Component.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first item
     this.array = array;
     this.setToComplex();  // iterators are not formatted inline
     return this;
 }
-Iterator.prototype = Object.create(Composite.prototype);
+Iterator.prototype = Object.create(Component.prototype);
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
 
@@ -62,22 +61,6 @@ exports.Iterator = Iterator;
  */
 Iterator.prototype.acceptVisitor = function(visitor) {
     visitor.visitIterator(this);
-};
-
-
-/**
- * This method returns an array containing the attributes of this iterator.
- * 
- * @returns {Array} An array containing the attributes of this iterator.
- */
-Iterator.prototype.toArray = function() {
-    var array = [];
-    array.push(new Complex(this.slot.toString()));
-    // can't push a List here since that would cause a circular dependency
-    this.array.forEach(function(item) {
-        array.push(item);
-    }, this);
-    return array;
 };
 
 

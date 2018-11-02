@@ -57,7 +57,7 @@ Parameters.fromCollection = function(collection) {
         case 'List':
         case 'Set':
         case 'Stack':
-            iterator = collection.iterator();
+            iterator = collection.getIterator();
             var index = 1;
             while (iterator.hasNext()) {
                 var parameter = iterator.getNext();
@@ -127,7 +127,7 @@ Parameters.prototype.getSize = function() {
  * @returns {Association} The parameter association at that index.
  */
 Parameters.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
+    index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
     var association = this.array[index];
     return association;

@@ -15,7 +15,6 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -36,13 +35,13 @@ Array.prototype.peek = function() {
  * @returns {Stack} The new stack.
  */
 function Stack(parameters) {
-    Collection.call(this, types.STACK, parameters);
+    Composite.call(this, types.STACK, parameters);
     this.capacity = 1024;
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Stack.prototype = Object.create(Collection.prototype);
+Stack.prototype = Object.create(Composite.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 
@@ -68,9 +67,7 @@ Stack.fromCollection = function(collection, parameters) {
             });
             break;
         case 'List':
-        case 'Set':
-        case 'Stack':
-            iterator = collection.iterator();
+            iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 stack.pushItem(iterator.getNext());
             }
@@ -95,16 +92,6 @@ Stack.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns an array containing the items on this stack.
- * 
- * @returns {Array} An array containing the items on this stack.
- */
-Stack.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
  * This method returns the number of items that are currently on this stack.
  * 
  * @returns {Number} The number of items on this stack.
@@ -116,17 +103,12 @@ Stack.prototype.getSize = function() {
 
 
 /**
- * This method retrieves the item that is associated with the specified index
- * from this collection starting at the TOP of the stack.
+ * This method returns an array containing the items on this stack.
  * 
- * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position on this stack.
+ * @returns {Array} An array containing the items on this stack.
  */
-Stack.prototype.getItem = function(index) {
-    index = this.normalizedIndex(-index);  // invert to start at the top of the stack
-    index--;  // convert to JS zero based indexing
-    var item = this.array[index];
-    return item;
+Stack.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
 };
 
 

@@ -17,7 +17,7 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var SortableCollection = require('../abstractions/SortableCollection').SortableCollection;
+var Collection = require('../abstractions/Collection').Collection;
 var Association = require('./Association').Association;
 var List = require('./List').List;
 
@@ -32,14 +32,14 @@ var List = require('./List').List;
  * @returns {Catalog} The new catalog.
  */
 function Catalog(parameters) {
-    SortableCollection.call(this, types.CATALOG, parameters);
+    Collection.call(this, types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
     this.array = [];  // maintains the order of the associations
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += 1;  // account for the ':' in the empty catalog
     return this;
 }
-Catalog.prototype = Object.create(SortableCollection.prototype);
+Catalog.prototype = Object.create(Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 
@@ -71,8 +71,7 @@ Catalog.fromCollection = function(collection, parameters) {
             break;
         case 'List':
         case 'Set':
-        case 'Stack':
-            iterator = collection.iterator();
+            iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 if (item.constructor.name === 'Association') {
@@ -89,7 +88,7 @@ Catalog.fromCollection = function(collection, parameters) {
             });
             break;
         case 'Catalog':
-            iterator = collection.iterator();
+            iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
                 catalog.setValue(association.key, association.value);
@@ -102,26 +101,43 @@ Catalog.fromCollection = function(collection, parameters) {
 };
 
 
-// bind to superclass functions
-Catalog.concatenation = SortableCollection.concatenation;
-
-
 /**
  * This function returns a new catalog that contains only the associations with
  * the specified keys.
  *
- * @param {Set} keys The set of keys for the associates to be saved.
+ * @param {Set} keys The set of keys for the associations to be saved.
  * @param {Catalog} catalog The catalog whose items are to be reduced.
  * @returns The resulting catalog.
  */
 Catalog.reduction = function(keys, catalog) {
     var result = new Catalog();
-    var iterator = keys.iterator();
+    var iterator = keys.getIterator();
     while (iterator.hasNext()) {
         var key = iterator.getNext();
         var value = catalog.getValue(key);
         if (value) {
             result.setValue(key, value);
+        }
+    }
+    return result;
+};
+
+
+/**
+ * This function returns a new catalog that contains only the associations that don't
+ * include the specified keys.
+ *
+ * @param {Set} keys The set of keys for the associations to be excluded.
+ * @param {Catalog} catalog The catalog whose items are to be excluded.
+ * @returns The resulting catalog.
+ */
+Catalog.exclusion = function(keys, catalog) {
+    var result = new Catalog();
+    var iterator = catalog.getIterator();
+    while (iterator.hasNext()) {
+        var association = iterator.getNext();
+        if (!keys.containsItem(association.key)) {
+            result.addItem(association);
         }
     }
     return result;
@@ -141,16 +157,6 @@ Catalog.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns an array containing the items in this catalog.
- * 
- * @returns {Array} An array containing the items in this catalog.
- */
-Catalog.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
  * This method returns the number of items that are currently in this catalog.
  * 
  * @returns {Number} The number of items in this catalog.
@@ -162,13 +168,39 @@ Catalog.prototype.getSize = function() {
 
 
 /**
+ * This method returns an array containing the items in this catalog.
+ * 
+ * @returns {Array} An array containing the items in this catalog.
+ */
+Catalog.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
+ * This method returns an object containing the items in this catalog.
+ * 
+ * @returns {Object} An object containing the items in this catalog.
+ */
+Catalog.prototype.toObject = function() {
+    var object = {};
+    var iterator = this.getIterator();
+    while (iterator.hasNext()) {
+        var association = iterator.getNext();
+        object[association.key.toString()] = association.value;
+    }
+    return object;
+};
+
+
+/**
  * This method retrieves the item that is associated with the specified index from this collection.
  * 
  * @param {Number} index The index of the desired item.
  * @returns {Component} The item at the position in this catalog.
  */
 Catalog.prototype.getItem = function(index) {
-    index = this.normalizedIndex(index);
+    index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
     var item = this.array[index];
     return item;
@@ -186,7 +218,7 @@ Catalog.prototype.getItem = function(index) {
  */
 Catalog.prototype.setItem = function(index, item) {
     item = Composite.asComponent(item);
-    index = this.normalizedIndex(index) - 1;  // convert to JS zero based indexing
+    index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
     var oldItem = this.array[index];
     this.array[index] = item;
     this.complexity += item.complexity - oldItem.complexity;
@@ -254,6 +286,27 @@ Catalog.prototype.removeItem = function(index) {
 
 
 /**
+ * This method removes from this catalog the items associated with the specified
+ * index range.
+ *
+ * @param {Number} firstIndex The index of the first item to be removed.
+ * @param {Number} lastIndex The index of the last item to be removed.
+ * @returns The catalog of the items that were removed from this catalog.
+ */
+Catalog.prototype.removeItems = function(firstIndex, lastIndex) {
+    firstIndex = this.normalizeIndex(firstIndex);
+    lastIndex = this.normalizeIndex(lastIndex);
+    var removedItems = new Catalog(this.parameters);
+    var index = firstIndex;
+    while (index <= lastIndex) {
+        var removedItem = this.removeItem(index++);
+        if (removedItem) removedItems.addItem(removedItem);
+    }
+    return removedItems;
+};
+
+
+/**
  * This method removes all associations from this catalog.
  */
 Catalog.prototype.removeAll = function() {
@@ -265,18 +318,6 @@ Catalog.prototype.removeAll = function() {
         delete this.map[key];
     }, this);
     this.array.splice(0);
-};
-
-
-/**
- * This function retrieves from a catalog the string value associated with the
- * specified key.
- * 
- * @param {String|Number|Boolean|Component} key The key for the desired value.
- * @returns {Component} The string value associated with the key.
- */
-Catalog.prototype.getString = function(key) {
-    return this.getValue(key).toString();
 };
 
 
@@ -395,4 +436,22 @@ Catalog.prototype.getAssociations = function() {
         associations.addItem(association);
     });
     return associations;
+};
+
+
+/**
+ * This method sorts the items in this catalog into their natural order as defined
+ * by the <code>this.comparedTo(that)</code> method of the keys being compared.
+ */
+Catalog.prototype.sortItems = function() {
+    var sorter = new MergeSorter();
+    sorter.sortCollection(this);
+};
+
+
+/**
+ * This method reverses the order of the items in this catalog.
+ */
+Catalog.prototype.reverseItems = function() {
+    this.array.reverse();
 };

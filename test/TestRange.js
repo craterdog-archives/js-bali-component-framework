@@ -23,7 +23,7 @@ describe('Bali Document Notation™', function() {
             var size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(4);
-            var iterator = range.iterator();
+            var iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -41,7 +41,7 @@ describe('Bali Document Notation™', function() {
             var size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
-            var iterator = range.iterator();
+            var iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -65,26 +65,15 @@ describe('Bali Document Notation™', function() {
             var range2 = Range.fromEndPoints(4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
-            expect(range1.containsAll(range2)).to.equal(true);
-            expect(range2.containsAll(range1)).to.equal(false);
-            expect(range1.containsAny(range2)).to.equal(true);
-            expect(range2.containsAny(range1)).to.equal(true);
-            var range3 = range1.getItems(2, 4);
-            size = range3.getSize();
-            expect(size).to.equal(3);
-            expect(range3.containsItem(2)).to.equal(true);
-            expect(range3.containsItem(5)).to.equal(false);
-            expect(range3.getIndex(3)).to.equal(2);
+            expect(range1.inRange(2)).to.equal(true);
+            expect(range2.inRange(7)).to.equal(false);
         });
 
-/*
         it('should be able to perform range operations on ranges', function() {
             var range1 = Range.fromEndPoints(3, 8);
             var range2 = Range.fromEndPoints(7, 16);
             var range3 = Range.fromEndPoints(3, 16);
-            expect(Range.concatenation(range1, range2).isEqualTo(range3)).to.equal(true);
         });
-*/
 
     });
 
@@ -95,7 +84,7 @@ describe('Bali Document Notation™', function() {
             var index = range.getSize();
             var items = range.toArray();
             var item;
-            var iterator = range.iterator();
+            var iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             // the iterator is at the first slot
             expect(iterator.hasPrevious() === false);

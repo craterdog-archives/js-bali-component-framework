@@ -33,7 +33,7 @@ describe('Bali Document Notation™', function() {
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
-            var iterator = component.iterator();
+            var iterator = component.getIterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
                 var array = association.value.toArray();
@@ -60,7 +60,7 @@ describe('Bali Document Notation™', function() {
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
-            var iterator = component.iterator();
+            var iterator = component.getIterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
                 var array = association.value.toArray();
@@ -123,7 +123,7 @@ describe('Bali Document Notation™', function() {
 
         it('should parse and format the same iterators', function() {
             var list = List.fromCollection([1, 2, 3]);
-            var expected = list.iterator();
+            var expected = list.getIterator();
             expected.getNext();
             var source = utilities.formatter.formatComponent(expected);
             expect(source).to.exist;  // jshint ignore:line
