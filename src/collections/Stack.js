@@ -15,6 +15,7 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
+var Iterator = require('../components/Iterator').Iterator;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -72,6 +73,14 @@ Stack.fromCollection = function(collection, parameters) {
                 stack.pushItem(iterator.getNext());
             }
             break;
+        case 'Stack':
+            iterator = collection.getIterator();
+            // a stack's iterator starts at the top, we need to start at the bottom
+            iterator.toEnd();
+            while (iterator.hasPrevious()) {
+                stack.pushItem(iterator.getPrevious());
+            }
+            break;
         default:
             throw new Error('STACK: A stack cannot be initialized using a collection of type: ' + type);
     }
@@ -99,6 +108,20 @@ Stack.prototype.acceptVisitor = function(visitor) {
 Stack.prototype.getSize = function() {
     var size = this.array.length;
     return size;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the items on this
+ * stack.
+ * 
+ * NOTE: This iterator iterates over the items on the stack starting at the top.
+ * 
+ * @returns {Iterator} An iterator for this stack.
+ */
+Stack.prototype.getIterator = function() {
+    var iterator = new Iterator(this.array.slice().reverse());
+    return iterator;
 };
 
 

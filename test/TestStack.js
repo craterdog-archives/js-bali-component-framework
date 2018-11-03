@@ -65,8 +65,9 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
+            iterator.toEnd();  // stacks iterate from the top
             array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
+                expect(item).to.equal(iterator.getPrevious().toString());
             });
             stack.removeAll();
             size = stack.getSize();
@@ -84,8 +85,30 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
+            iterator.toEnd();  // stacks iterate from the top
             array.forEach(function(item) {
-                expect(item).to.equal(iterator.getNext().toString());
+                expect(item).to.equal(iterator.getPrevious().toString());
+            });
+            stack.removeAll();
+            size = stack.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(0);
+        });
+
+        it('should create a stack from a stack', function() {
+            var expected = collections.Stack.fromCollection(array);
+            var stack = collections.Stack.fromCollection(expected);
+            var size = stack.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(array.length);
+            expect(stack.isEqualTo(expected)).to.equal(true);
+            var iterator = stack.getIterator();
+            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+            iterator.toEnd();  // stacks iterate from the top
+            array.forEach(function(item) {
+                expect(item).to.equal(iterator.getPrevious().toString());
             });
             stack.removeAll();
             size = stack.getSize();
@@ -137,19 +160,15 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             // REMEMBER: The iterator for a stack iterates through the items in LIFO order
-            var stack = new collections.Stack();
-            var index;
-            var item;
-            // place the items on the stack in order
-            while (index < array.length) {
-                stack.pushItem(array[index++]);
-            }
+            var stack = collections.Stack.fromCollection(array);
             // iterate through the items from top down
             var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);
             // now go through in LIFO order
+            var index = array.length;
+            var item;
             while (index > 0) {
                 item = iterator.getNext().toString();
                 expect(array[--index]).to.equal(item);
