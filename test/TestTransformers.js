@@ -22,16 +22,16 @@ describe('Bali Component Framework™', function() {
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);  // remove POSIX compliant end of line
             expect(source).to.exist;  // jshint ignore:line
             var component = utilities.parser.parseComponent(source, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
             component = utilities.parser.parseComponent(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
             var iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -49,16 +49,16 @@ describe('Bali Component Framework™', function() {
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);  // remove POSIX compliant end of line
             expect(source).to.exist;  // jshint ignore:line
             var component = utilities.parser.parseComponent(source, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
             component = utilities.parser.parseComponent(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
             var iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -76,32 +76,32 @@ describe('Bali Component Framework™', function() {
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);  // remove POSIX compliant end of line
             expect(source).to.exist;  // jshint ignore:line
             var component = utilities.parser.parseComponent(source, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
             component = utilities.parser.parseComponent(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
         });
 
         it('should parse and format the same components', function() {
             var file = 'test/source/components.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
+            var source = fs.readFileSync(file, 'utf8').slice(0, -1);  // remove POSIX compliant end of line
             expect(source).to.exist;  // jshint ignore:line
             var component = utilities.parser.parseComponent(source, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            var formatted = utilities.formatter.formatComponent(component);
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(source);
             component = utilities.parser.parseComponent(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // POSIX
+            formatted = utilities.formatter.formatComponent(component);
             expect(formatted).to.equal(source);
         });
 
