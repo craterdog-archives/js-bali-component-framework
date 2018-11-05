@@ -169,4 +169,4 @@ node
 ```
 
 ## Contributing
-Project contributers are always welcome. Create a [fork](https://github.com/craterdog-bali/js-bali-component-framework) of the project and add cool new things to the framework. Any questions and comments can be sent to craterdog@gmail.com.
+Project contributers are always welcome. Create a [fork](https://github.com/craterdog-bali/js-bali-component-framework) of the project and add cool new things to the framework. When you are ready to contribute the changes create subsequent ["pull request"](https://help.github.com/articles/about-pull-requests/). Any questions and comments can be sent to craterdog@gmail.com.
