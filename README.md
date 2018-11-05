@@ -73,7 +73,7 @@ Complex nested component structures can be constructed out of composite componen
 The following UML class diagram shows the details for the base component classes.
 ![Bali Component Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-component-framework/master/docs/images/Bali%20Component%20Details.png)
 
-Notice that in addition to the canonical methods defined by the [`bali.Component`](https://github.com/craterdog-bali/js-bali-component-framework/blob/master/src/utilities/Component.js) class a component may be parameterized to further constrain its type and behavior. In the example transaction document above the numbers representing currency amounts where parameterized with the currency type (`$USD` or `$EUR`). Also the timestamp was parameterized with the location information `($city: "Madrid", $country: "Spain")` that can be used to determine the timezone for the timestamp.
+Notice that in addition to the canonical methods defined by the [`bali.Component`](https://github.com/craterdog-bali/js-bali-component-framework/blob/master/src/abstractions/Component.js) class a component may be parameterized to further constrain its type and behavior. In the example transaction document above the numbers representing currency amounts where parameterized with the currency type (`$USD` or `$EUR`). Also the timestamp was parameterized with the location information `($city: "Madrid", $country: "Spain")` that can be used to determine the timezone for the timestamp.
 
 ## Bali Elements
 
