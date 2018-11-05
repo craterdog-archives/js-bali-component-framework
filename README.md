@@ -1,5 +1,5 @@
 ## Overview
-This project provides the foundation for the _Bali Cloud Environment™_. It contains a framework of modules designed to run in both the cloud on NodeJS servers and in your browser. It defines the _Bali Document Notation™_ which allows the two to communicate similar to _JSON_ based web services.
+This project provides the foundation for the _Bali Cloud Environment™_. It contains a framework of classes designed to run in both the cloud on NodeJS servers and in your browser. It defines the _Bali Document Notation™_ which allows the two to communicate similar to _JSON_ based web services. For the latest documentation on this project click [here](https://github.com/craterdog-bali/js-bali-component-framework).
 
 ### _WARNING_
 _This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON solution for capturing information and rendering it in a human and computer readable way. A compiler for the Bali Document Notation™ and the Bali Cloud Environment™ should be available sometime in 2019._
@@ -122,7 +122,51 @@ And the last UML class diagram shows the details for the sortable collection cla
 ![Bali Sortable Collection Details](https://raw.githubusercontent.com/craterdog-bali/js-bali-component-framework/master/docs/images/Bali%20Sortable%20Collection%20Details.png)
 
 ## Getting Started
-Stay tuned, an `nmp` module will be released soon.
+To install this NodeJS package and get started using it do the following:
+```
+npm install bali-component-framework
+node
+> var bali = require('bali-component-framework');
+> Object.keys(bali)
+[ 'types',
+  'Component',
+  'Visitor',
+  'Element',
+  'Composite',
+  'Collection',
+  'Comparator',
+  'Iterator',
+  'Sorter',
+  'Angle',
+  'Binary',
+  'Complex',
+  'Duration',
+  'Identifier',
+  'Moment',
+  'Percent',
+  'Probability',
+  'Reference',
+  'Symbol',
+  'Tag',
+  'Template',
+  'Text',
+  'Version',
+  'Association',
+  'Block',
+  'Source',
+  'Procedure',
+  'Parameters',
+  'List',
+  'Catalog',
+  'Set',
+  'Range',
+  'Stack',
+  'Tree',
+  'formatter',
+  'parser',
+  'codex' ]
+> 
+```
 
 ## Contributing
 Project contributers are always welcome. Create a fork of the project and add cool new things to the framework. Any questions and comments can be sent to craterdog@gmail.com.
