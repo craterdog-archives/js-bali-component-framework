@@ -40,7 +40,6 @@ exports.Version = require('./src/elements/Version').Version;
 
 // PRIMITIVE COMPOSITE TYPES
 exports.Association = require('./src/composites/Association').Association;
-exports.Tree = require('./src/composites/Tree').Tree;
 exports.Block = require('./src/composites/Block').Block;
 exports.Source = require('./src/composites/Source').Source;
 exports.Procedure = require('./src/composites/Procedure').Procedure;
@@ -52,6 +51,7 @@ exports.Catalog = require('./src/collections/Catalog').Catalog;
 exports.Set = require('./src/collections/Set').Set;
 exports.Range = require('./src/collections/Range').Range;
 exports.Stack = require('./src/collections/Stack').Stack;
+exports.Tree = require('./src/collections/Tree').Tree;
 
 // GENERAL UTILITIES
 exports.formatter = require('./src/utilities/ComponentFormatter');

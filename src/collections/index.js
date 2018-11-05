@@ -14,4 +14,5 @@ exports.Catalog = require('./Catalog').Catalog;
 exports.Set = require('./Set').Set;
 exports.Range = require('./Range').Range;
 exports.Stack = require('./Stack').Stack;
+exports.Tree = require('./Tree').Tree;
 
