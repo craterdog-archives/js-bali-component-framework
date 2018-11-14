@@ -1,8 +1,10 @@
+![Components](https://raw.githubusercontent.com/craterdog-bali/js-bali-component-framework/master/docs/images/components.png)
+
 ## Overview
-This project provides the foundation for the _Bali Cloud Environment™_. It contains a framework of classes designed to run in both the cloud on NodeJS servers and in your browser. It defines the _Bali Document Notation™_ which allows the two to communicate similar to _JSON_ based web services. For the latest documentation on this project click [here](https://github.com/craterdog-bali/js-bali-component-framework).
+This project provides the foundation for the _Bali Cloud Environment™_. It contains a framework of JavaScript classes designed to run in both the cloud on NodeJS servers and in your browser. It defines the _Bali Document Notation™_ which allows your browser to communicate with the cloud services similar to the way _JSON_ based web services work. For the latest documentation on this project click [here](https://github.com/craterdog-bali/js-bali-component-framework).
 
 ### _WARNING_
-_This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON solution for capturing information and rendering it in a human and computer readable way. A compiler for the Bali Document Notation™ and the Bali Cloud Environment™ should be available sometime in 2019._
+_This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON solution for capturing information and rendering it in a human and computer readable way. A compiler for the procedural aspects of the Bali Document Notation™ and the full Bali Cloud Environment™ should be available sometime in 2019._
 
 ### Contents
  * [Project Description](#project-description)
@@ -13,7 +15,7 @@ _This project is still in its early stages and the classes and interfaces to the
  * [Contributing](#contributing) 
  
 ## Project Description
-This project contains a JavaScript/NodeJS based implementation of the _Bali Component Framework™_. The framework is like JSON on steroids. It supports a much richer set of primitive types (13 in all) and collection types (6 in all) than JSON supports. It also provides powerful high-level programming constructs that integrate directly with the _Bali Cloud Environment™_. Everything in this framework is a Bali component and inherits from the [`bali.Component`](https://github.com/craterdog-bali/js-bali-component-framework/blob/master/src/abstractions/Component.js) class. Each component can be turned into a portable document format called the [Bali Document Notation™](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I). Similarly, a string containing Bali Document Notation™ can be parsed into its corresponding Bali components. This project provides all of the JavaScript/NodeJS modules that are required to work with Bali components and Bali Document Notation™ strings.
+This project contains a JavaScript/NodeJS based implementation of the _Bali Component Framework™_. The framework is like JSON on steroids. It supports a much richer set of primitive types (13 in all) and collection types (6 in all) than JSON's five total types. It also provides powerful high-level programming constructs that integrate directly with the _Bali Cloud Environment™_. Everything in this framework is a Bali component and inherits from the [`bali.Component`](https://github.com/craterdog-bali/js-bali-component-framework/blob/master/src/abstractions/Component.js) class. Each component can be turned into a portable document format called the [Bali Document Notation™](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I). Similarly, a string containing Bali Document Notation™ can be parsed into its corresponding Bali components. This project provides all of the JavaScript/NodeJS modules that are required to work with Bali components and Bali Document Notation™ strings.
 
 ### Example Document
 To whet your appetite here is a short example Bali document showing some of the capabilities of the Bali Document Notation™:
