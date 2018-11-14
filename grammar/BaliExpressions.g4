@@ -1,5 +1,4 @@
 grammar BaliExpressions;
-
 import BaliElements;
 
 expression:                  // Precedence (highest to lowest)
@@ -28,4 +27,3 @@ funxtion: IDENTIFIER;
 message: IDENTIFIER;
 
 indices: '[' list ']';
-

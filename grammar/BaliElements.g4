@@ -1,7 +1,5 @@
 grammar BaliElements;
-
 import BaliTokens;
-
 
 element:
     angle |
@@ -64,4 +62,3 @@ text:
 ;
 
 version: VERSION;
-

@@ -1,7 +1,5 @@
 grammar BaliProcedures;
-
 import BaliExpressions;
-
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |
@@ -69,4 +67,3 @@ throwClause: 'throw' expression;
 recipient: symbol | subcomponent;
 
 subcomponent: variable indices;
-

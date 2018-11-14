@@ -1,6 +1,5 @@
 grammar BaliTokens;
 
-
 /* TOKEN RULES
  It's important to remember that tokens are recognized by the
  lexer in the order declared. The longest first matching token
@@ -107,4 +106,3 @@ BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/';
 // replace with actual characters when read
 fragment
 ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '"' | '\\');
-

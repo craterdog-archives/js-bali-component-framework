@@ -1,7 +1,5 @@
 grammar BaliComponent;
-
 import BaliProcedures;
-
 
 component: value parameters?;
 
@@ -30,4 +28,3 @@ catalog:
 association: component ':' expression;
 
 source: '{' procedure '}';
-
