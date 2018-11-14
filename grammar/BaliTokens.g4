@@ -17,9 +17,6 @@ SYMBOL: '$' IDENTIFIER;
 
 FRACTION: '.' ('0'..'9')* '1'..'9';
 
-fragment
-FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' INTEGER)?;
-
 IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
 
 REAL: FLOAT | 'e' | 'pi' | 'phi';
@@ -60,6 +57,9 @@ NATURAL: '1'..'9' ('0'..'9')*;
 
 fragment
 INTEGER: '0' | '-'? NATURAL;
+
+fragment
+FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' INTEGER)?;
 
 fragment
 SPAN: ('0' | NATURAL) FRACTION?;
