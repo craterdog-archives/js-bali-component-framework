@@ -1,4 +1,4 @@
-grammar BaliComponent;
+grammar BaliComponents;
 import BaliProcedures;
 
 component: value parameters?;

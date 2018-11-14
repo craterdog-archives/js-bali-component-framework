@@ -65,9 +65,9 @@ function Complex(value, parameters) {
             break;
         case 'String':
             var chars = new antlr.InputStream(value);
-            var lexer = new grammar.BaliComponentLexer(chars);
+            var lexer = new grammar.BaliDocumentLexer(chars);
             var tokens = new antlr.CommonTokenStream(lexer);
-            var parser = new grammar.BaliComponentParser(tokens);
+            var parser = new grammar.BaliDocumentParser(tokens);
             parser.buildParseTrees = true;
             var tree = parser.number();
             var nodeType = tree.constructor.name;

@@ -96,12 +96,12 @@ exports.parseExpression = function(source, debug) {
 
 function initializeParser(source, debug) {
     var chars = new antlr.InputStream(source);
-    var lexer = new grammar.BaliComponentLexer(chars);
+    var lexer = new grammar.BaliDocumentLexer(chars);
     var listener = new BaliErrorListener(debug);
     lexer.removeErrorListeners();
     lexer.addErrorListener(listener);
     var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliComponentParser(tokens);
+    var parser = new grammar.BaliDocumentParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
@@ -127,11 +127,11 @@ function convertParseTree(antlrTree) {
  */
 
 function ParsingVisitor() {
-    grammar.BaliComponentVisitor.call(this);
+    grammar.BaliDocumentVisitor.call(this);
     this.depth = 0;
     return this;
 }
-ParsingVisitor.prototype = Object.create(grammar.BaliComponentVisitor.prototype);
+ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
@@ -1049,7 +1049,7 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
 // CUSTOM ERROR HANDLING
 
 // override the recover method in the lexer to fail fast
-grammar.BaliComponentLexer.prototype.recover = function(e) {
+grammar.BaliDocumentLexer.prototype.recover = function(e) {
     throw e;
 };
 

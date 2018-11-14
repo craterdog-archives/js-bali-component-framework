@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-exports.BaliComponentLexer = require('./BaliComponentLexer').BaliComponentLexer;
-exports.BaliComponentParser = require('./BaliComponentParser').BaliComponentParser;
-exports.BaliComponentVisitor = require('./BaliComponentVisitor').BaliComponentVisitor;
-exports.BaliComponentListener = require('./BaliComponentListener').BaliComponentListener;
+exports.BaliDocumentLexer = require('./BaliDocumentLexer').BaliDocumentLexer;
+exports.BaliDocumentParser = require('./BaliDocumentParser').BaliDocumentParser;
+exports.BaliDocumentVisitor = require('./BaliDocumentVisitor').BaliDocumentVisitor;
+exports.BaliDocumentListener = require('./BaliDocumentListener').BaliDocumentListener;
