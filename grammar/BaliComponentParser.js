@@ -71,7 +71,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "6\u01d7\n6\u00037\u00037\u00037\u0002\u0003D8\u0002\u0004\u0006\b\n",
     "\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.02",
     "468:<>@BDFHJLNPRTVXZ\\^`bdfhjl\u0002\b\u0003\u0002-/\u0003\u0002-1\u0003",
-    "\u000237\u0003\u00029<\u0004\u0002\b\bAA\u0004\u0002EEMM\u0002\u01f0",
+    "\u000237\u0003\u00029<\u0004\u0002\b\bAA\u0004\u0002EELL\u0002\u01f0",
     "\u0002n\u0003\u0002\u0002\u0002\u0004u\u0003\u0002\u0002\u0002\u0006",
     "w\u0003\u0002\u0002\u0002\b{\u0003\u0002\u0002\u0002\n\u0082\u0003\u0002",
     "\u0002\u0002\f\u0084\u0003\u0002\u0002\u0002\u000e\u009a\u0003\u0002",
@@ -278,7 +278,7 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     ">\u0002\u0002\u01aa\u01ab\u0005`1\u0002\u01abQ\u0003\u0002\u0002\u0002",
     "\u01ac\u01ad\u0007R\u0002\u0002\u01adS\u0003\u0002\u0002\u0002\u01ae",
     "\u01af\u0007O\u0002\u0002\u01afU\u0003\u0002\u0002\u0002\u01b0\u01b1",
-    "\u0007L\u0002\u0002\u01b1W\u0003\u0002\u0002\u0002\u01b2\u01b3\u0007",
+    "\u0007M\u0002\u0002\u01b1W\u0003\u0002\u0002\u0002\u01b2\u01b3\u0007",
     "N\u0002\u0002\u01b3Y\u0003\u0002\u0002\u0002\u01b4\u01bf\u0007?\u0002",
     "\u0002\u01b5\u01bf\u0007@\u0002\u0002\u01b6\u01bf\u0005`1\u0002\u01b7",
     "\u01bf\u0005V,\u0002\u01b8\u01b9\u0007\u0005\u0002\u0002\u01b9\u01ba",
@@ -333,7 +333,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, "SHELL", 
-                      "TAG", "SYMBOL", "FRACTION", "IMAGINARY", "REAL", 
+                      "TAG", "SYMBOL", "FRACTION", "REAL", "IMAGINARY", 
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
                       "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
 
@@ -442,8 +442,8 @@ BaliComponentParser.SHELL = 70;
 BaliComponentParser.TAG = 71;
 BaliComponentParser.SYMBOL = 72;
 BaliComponentParser.FRACTION = 73;
-BaliComponentParser.IMAGINARY = 74;
-BaliComponentParser.REAL = 75;
+BaliComponentParser.REAL = 74;
+BaliComponentParser.IMAGINARY = 75;
 BaliComponentParser.MOMENT = 76;
 BaliComponentParser.DURATION = 77;
 BaliComponentParser.RESOURCE = 78;
@@ -662,8 +662,8 @@ BaliComponentParser.prototype.value = function() {
         case BaliComponentParser.TAG:
         case BaliComponentParser.SYMBOL:
         case BaliComponentParser.FRACTION:
-        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.REAL:
+        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.MOMENT:
         case BaliComponentParser.DURATION:
         case BaliComponentParser.RESOURCE:
@@ -1200,8 +1200,8 @@ BaliComponentParser.prototype.list = function() {
         case BaliComponentParser.TAG:
         case BaliComponentParser.SYMBOL:
         case BaliComponentParser.FRACTION:
-        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.REAL:
+        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.MOMENT:
         case BaliComponentParser.DURATION:
         case BaliComponentParser.RESOURCE:
@@ -1235,7 +1235,7 @@ BaliComponentParser.prototype.list = function() {
             this.state = 148;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0)) {
                 this.state = 143;
                 this.expression(0);
                 this.state = 144;
@@ -1445,8 +1445,8 @@ BaliComponentParser.prototype.catalog = function() {
         case BaliComponentParser.TAG:
         case BaliComponentParser.SYMBOL:
         case BaliComponentParser.FRACTION:
-        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.REAL:
+        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.MOMENT:
         case BaliComponentParser.DURATION:
         case BaliComponentParser.RESOURCE:
@@ -1479,7 +1479,7 @@ BaliComponentParser.prototype.catalog = function() {
             this.state = 168;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 60)) & ~0x1f) == 0 && ((1 << (_la - 60)) & ((1 << (BaliComponentParser.T__59 - 60)) | (1 << (BaliComponentParser.T__60 - 60)) | (1 << (BaliComponentParser.T__61 - 60)) | (1 << (BaliComponentParser.T__64 - 60)) | (1 << (BaliComponentParser.T__65 - 60)) | (1 << (BaliComponentParser.T__66 - 60)) | (1 << (BaliComponentParser.T__67 - 60)) | (1 << (BaliComponentParser.T__68 - 60)) | (1 << (BaliComponentParser.TAG - 60)) | (1 << (BaliComponentParser.SYMBOL - 60)) | (1 << (BaliComponentParser.FRACTION - 60)) | (1 << (BaliComponentParser.IMAGINARY - 60)) | (1 << (BaliComponentParser.REAL - 60)) | (1 << (BaliComponentParser.MOMENT - 60)) | (1 << (BaliComponentParser.DURATION - 60)) | (1 << (BaliComponentParser.RESOURCE - 60)) | (1 << (BaliComponentParser.VERSION - 60)) | (1 << (BaliComponentParser.BINARY - 60)) | (1 << (BaliComponentParser.TEXT_BLOCK - 60)) | (1 << (BaliComponentParser.TEXT - 60)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 60)) & ~0x1f) == 0 && ((1 << (_la - 60)) & ((1 << (BaliComponentParser.T__59 - 60)) | (1 << (BaliComponentParser.T__60 - 60)) | (1 << (BaliComponentParser.T__61 - 60)) | (1 << (BaliComponentParser.T__64 - 60)) | (1 << (BaliComponentParser.T__65 - 60)) | (1 << (BaliComponentParser.T__66 - 60)) | (1 << (BaliComponentParser.T__67 - 60)) | (1 << (BaliComponentParser.T__68 - 60)) | (1 << (BaliComponentParser.TAG - 60)) | (1 << (BaliComponentParser.SYMBOL - 60)) | (1 << (BaliComponentParser.FRACTION - 60)) | (1 << (BaliComponentParser.REAL - 60)) | (1 << (BaliComponentParser.IMAGINARY - 60)) | (1 << (BaliComponentParser.MOMENT - 60)) | (1 << (BaliComponentParser.DURATION - 60)) | (1 << (BaliComponentParser.RESOURCE - 60)) | (1 << (BaliComponentParser.VERSION - 60)) | (1 << (BaliComponentParser.BINARY - 60)) | (1 << (BaliComponentParser.TEXT_BLOCK - 60)) | (1 << (BaliComponentParser.TEXT - 60)))) !== 0)) {
                 this.state = 163;
                 this.association();
                 this.state = 164;
@@ -1856,8 +1856,8 @@ BaliComponentParser.prototype.procedure = function() {
         case BaliComponentParser.TAG:
         case BaliComponentParser.SYMBOL:
         case BaliComponentParser.FRACTION:
-        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.REAL:
+        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.MOMENT:
         case BaliComponentParser.DURATION:
         case BaliComponentParser.RESOURCE:
@@ -1891,7 +1891,7 @@ BaliComponentParser.prototype.procedure = function() {
             this.state = 196;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7) | (1 << BaliComponentParser.T__12) | (1 << BaliComponentParser.T__14) | (1 << BaliComponentParser.T__16) | (1 << BaliComponentParser.T__18) | (1 << BaliComponentParser.T__19) | (1 << BaliComponentParser.T__20) | (1 << BaliComponentParser.T__21) | (1 << BaliComponentParser.T__23) | (1 << BaliComponentParser.T__25) | (1 << BaliComponentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliComponentParser.T__32 - 33)) | (1 << (BaliComponentParser.T__33 - 33)) | (1 << (BaliComponentParser.T__35 - 33)) | (1 << (BaliComponentParser.T__36 - 33)) | (1 << (BaliComponentParser.T__37 - 33)) | (1 << (BaliComponentParser.T__38 - 33)) | (1 << (BaliComponentParser.T__42 - 33)) | (1 << (BaliComponentParser.T__43 - 33)) | (1 << (BaliComponentParser.T__44 - 33)) | (1 << (BaliComponentParser.T__47 - 33)) | (1 << (BaliComponentParser.T__53 - 33)) | (1 << (BaliComponentParser.T__59 - 33)) | (1 << (BaliComponentParser.T__60 - 33)) | (1 << (BaliComponentParser.T__61 - 33)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (BaliComponentParser.T__64 - 65)) | (1 << (BaliComponentParser.T__65 - 65)) | (1 << (BaliComponentParser.T__66 - 65)) | (1 << (BaliComponentParser.T__67 - 65)) | (1 << (BaliComponentParser.T__68 - 65)) | (1 << (BaliComponentParser.TAG - 65)) | (1 << (BaliComponentParser.SYMBOL - 65)) | (1 << (BaliComponentParser.FRACTION - 65)) | (1 << (BaliComponentParser.IMAGINARY - 65)) | (1 << (BaliComponentParser.REAL - 65)) | (1 << (BaliComponentParser.MOMENT - 65)) | (1 << (BaliComponentParser.DURATION - 65)) | (1 << (BaliComponentParser.RESOURCE - 65)) | (1 << (BaliComponentParser.VERSION - 65)) | (1 << (BaliComponentParser.BINARY - 65)) | (1 << (BaliComponentParser.TEXT_BLOCK - 65)) | (1 << (BaliComponentParser.TEXT - 65)) | (1 << (BaliComponentParser.IDENTIFIER - 65)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7) | (1 << BaliComponentParser.T__12) | (1 << BaliComponentParser.T__14) | (1 << BaliComponentParser.T__16) | (1 << BaliComponentParser.T__18) | (1 << BaliComponentParser.T__19) | (1 << BaliComponentParser.T__20) | (1 << BaliComponentParser.T__21) | (1 << BaliComponentParser.T__23) | (1 << BaliComponentParser.T__25) | (1 << BaliComponentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliComponentParser.T__32 - 33)) | (1 << (BaliComponentParser.T__33 - 33)) | (1 << (BaliComponentParser.T__35 - 33)) | (1 << (BaliComponentParser.T__36 - 33)) | (1 << (BaliComponentParser.T__37 - 33)) | (1 << (BaliComponentParser.T__38 - 33)) | (1 << (BaliComponentParser.T__42 - 33)) | (1 << (BaliComponentParser.T__43 - 33)) | (1 << (BaliComponentParser.T__44 - 33)) | (1 << (BaliComponentParser.T__47 - 33)) | (1 << (BaliComponentParser.T__53 - 33)) | (1 << (BaliComponentParser.T__59 - 33)) | (1 << (BaliComponentParser.T__60 - 33)) | (1 << (BaliComponentParser.T__61 - 33)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (BaliComponentParser.T__64 - 65)) | (1 << (BaliComponentParser.T__65 - 65)) | (1 << (BaliComponentParser.T__66 - 65)) | (1 << (BaliComponentParser.T__67 - 65)) | (1 << (BaliComponentParser.T__68 - 65)) | (1 << (BaliComponentParser.TAG - 65)) | (1 << (BaliComponentParser.SYMBOL - 65)) | (1 << (BaliComponentParser.FRACTION - 65)) | (1 << (BaliComponentParser.REAL - 65)) | (1 << (BaliComponentParser.IMAGINARY - 65)) | (1 << (BaliComponentParser.MOMENT - 65)) | (1 << (BaliComponentParser.DURATION - 65)) | (1 << (BaliComponentParser.RESOURCE - 65)) | (1 << (BaliComponentParser.VERSION - 65)) | (1 << (BaliComponentParser.BINARY - 65)) | (1 << (BaliComponentParser.TEXT_BLOCK - 65)) | (1 << (BaliComponentParser.TEXT - 65)) | (1 << (BaliComponentParser.IDENTIFIER - 65)))) !== 0)) {
                 this.state = 191;
                 this.statement();
                 this.state = 192;
@@ -2145,8 +2145,8 @@ BaliComponentParser.prototype.mainClause = function() {
         case BaliComponentParser.TAG:
         case BaliComponentParser.SYMBOL:
         case BaliComponentParser.FRACTION:
-        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.REAL:
+        case BaliComponentParser.IMAGINARY:
         case BaliComponentParser.MOMENT:
         case BaliComponentParser.DURATION:
         case BaliComponentParser.RESOURCE:
@@ -3234,7 +3234,7 @@ BaliComponentParser.prototype.selectClause = function() {
             this.state = 305; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0));
         this.state = 309;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -3619,7 +3619,7 @@ BaliComponentParser.prototype.returnClause = function() {
         this.state = 335;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliComponentParser.T__0) | (1 << BaliComponentParser.T__2) | (1 << BaliComponentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliComponentParser.T__38 - 39)) | (1 << (BaliComponentParser.T__42 - 39)) | (1 << (BaliComponentParser.T__43 - 39)) | (1 << (BaliComponentParser.T__44 - 39)) | (1 << (BaliComponentParser.T__47 - 39)) | (1 << (BaliComponentParser.T__53 - 39)) | (1 << (BaliComponentParser.T__59 - 39)) | (1 << (BaliComponentParser.T__60 - 39)) | (1 << (BaliComponentParser.T__61 - 39)) | (1 << (BaliComponentParser.T__64 - 39)) | (1 << (BaliComponentParser.T__65 - 39)) | (1 << (BaliComponentParser.T__66 - 39)) | (1 << (BaliComponentParser.T__67 - 39)) | (1 << (BaliComponentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliComponentParser.TAG - 71)) | (1 << (BaliComponentParser.SYMBOL - 71)) | (1 << (BaliComponentParser.FRACTION - 71)) | (1 << (BaliComponentParser.REAL - 71)) | (1 << (BaliComponentParser.IMAGINARY - 71)) | (1 << (BaliComponentParser.MOMENT - 71)) | (1 << (BaliComponentParser.DURATION - 71)) | (1 << (BaliComponentParser.RESOURCE - 71)) | (1 << (BaliComponentParser.VERSION - 71)) | (1 << (BaliComponentParser.BINARY - 71)) | (1 << (BaliComponentParser.TEXT_BLOCK - 71)) | (1 << (BaliComponentParser.TEXT - 71)) | (1 << (BaliComponentParser.IDENTIFIER - 71)))) !== 0)) {
             this.state = 334;
             this.expression(0);
         }

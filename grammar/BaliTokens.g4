@@ -17,9 +17,14 @@ SYMBOL: '$' IDENTIFIER;
 
 FRACTION: '.' ('0'..'9')* '1'..'9';
 
-IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
+
+// NOTE: We cannot define negative constants here because the scanner would scan
+//       a negative variable like '-exponent' as a single '-e' token rather than
+//       two tokens '-' and 'exponent'.
 
 REAL: FLOAT | 'e' | 'pi' | 'phi';
+
+IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
