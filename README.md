@@ -3,7 +3,7 @@
 ### Bali Component Framework
 This project provides a JavaScript version of the foundation classes for the [_Bali Cloud Environment™_](https://github.com/craterdog-bali/bali-project-documentation/wiki). It defines the [_Bali Document Notation™_](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I) which allows your browser to communicate with the Bali Cloud Environment™ similar to the way _JSON_ based web services communicate with each other but with a much more powerful interchange language.
 
-![Pyramid](https://raw.githubusercontent.com/craterdog-bali/bali-project-documentation/master/images/PyramidComponentFramework.png)
+![Pyramid](https://raw.githubusercontent.com/craterdog-bali/bali-project-documentation/master/images/Bali%20Pyramid%20-%20Component%20Framework.png)
 
 _**WARNING**_
 _This project is still in its early stages and the classes and interfaces to the classes are likely to change. Nevertheless, the project in its current state should work well as a better JSON solution for capturing information and rendering it in a human and computer readable way. A compiler for the procedural aspects of the Bali Document Notation™ and the full Bali Cloud Environment™ should be available sometime in 2019._
