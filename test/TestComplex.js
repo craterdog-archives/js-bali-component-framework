@@ -19,7 +19,7 @@ describe('Bali Component Framework™', function() {
     describe('Test complex constructors', function() {
 
         it('should construct and equal zero', function() {
-            expect(new Complex().toSource()).to.equal(Complex.ZERO.toSource());
+            expect(new Complex().toString()).to.equal(Complex.ZERO.toString());
             expect(new Complex('0').toNumber()).to.equal(Complex.ZERO.toNumber());
         });
 
@@ -33,7 +33,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct and equal undefined', function() {
-            expect(new Complex('undefined').toSource()).to.equal(Complex.UNDEFINED.toSource());
+            expect(new Complex('undefined').toString()).to.equal(Complex.UNDEFINED.toString());
         });
 
     });
@@ -51,7 +51,7 @@ describe('Bali Component Framework™', function() {
                 expect(complex.getImaginaryPart().toString()).to.equal(imaginaryValues[i].toString());
                 expect(complex.getMagnitude().toString()).to.equal(magnitudeValues[i].toString());
                 expect(complex.getAngle().toNumber()).to.equal(angleValues[i]);
-                expect(complex.toSource()).to.equal(stringValues[i]);
+                expect(complex.toString()).to.equal(stringValues[i]);
                 expect(complex.toRectangular()).to.equal(rectangularValues[i]);
                 expect(complex.toPolar()).to.equal(polarValues[i]);
             }

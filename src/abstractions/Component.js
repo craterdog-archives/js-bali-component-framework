@@ -74,7 +74,7 @@ Component.prototype.setToComplex = function() {
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
-    var string = this.toSource();
+    var string = this.toDocument();
     return string;
 };
 
@@ -86,7 +86,7 @@ Component.prototype.toString = function() {
  * the source code.
  * @returns {String} The Bali source code for this component.
  */
-Component.prototype.toSource = function(indentation) {
+Component.prototype.toDocument = function(indentation) {
     var formatter = new Formatter();
     var source = formatter.formatComponent(this, indentation);
     return source;
@@ -104,7 +104,7 @@ Component.prototype.isEqualTo = function(that) {
     if (that === undefined || that === null) return false;
     if (this === that) return true;  // same component
     if (this.prototype !== that.prototype) return false;
-    return this.toSource() === that.toSource();
+    return this.toString() === that.toString();
 };
 
 
@@ -120,7 +120,7 @@ Component.prototype.comparedTo = function(that) {
     if (this === that) return 0;  // same component
     var result = this.constructor.name.localeCompare(that.constructor.name);
     if (result !== 0) return result;
-    return this.toSource().localeCompare(that.toSource());
+    return this.toString().localeCompare(that.toString());
 };
 
 
@@ -131,7 +131,7 @@ Component.prototype.comparedTo = function(that) {
  */
 Component.prototype.getHash = function() {
     var hash = 0;
-    var source = this.toSource();
+    var source = this.toString();
     if (source.length === 0) return hash;
     for (var i = 0; i < source.length; i++) {
         var character = source.charCodeAt(i);

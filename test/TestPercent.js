@@ -20,7 +20,7 @@ describe('Bali Component Framework™', function() {
             var empty = new Percent();
             var number = empty.toNumber();
             expect(number).to.equal(0);
-            var string = empty.toSource();
+            var string = empty.toString();
             expect(string).to.equal('0%');
         });
 
@@ -28,7 +28,7 @@ describe('Bali Component Framework™', function() {
             var zero = new Percent('0%');
             var number = zero.toNumber();
             expect(number).to.equal(0);
-            var string = zero.toSource();
+            var string = zero.toString();
             expect(string).to.equal('0%');
         });
 
@@ -36,7 +36,7 @@ describe('Bali Component Framework™', function() {
             var decimal = new Percent(0.1325);
             var number = decimal.toNumber();
             expect(number).to.equal(0.1325);
-            var string = decimal.toSource();
+            var string = decimal.toString();
             expect(string).to.equal('13.25%');
         });
 
@@ -44,7 +44,7 @@ describe('Bali Component Framework™', function() {
             var negative = new Percent(-0.02);
             var number = negative.toNumber();
             expect(number).to.equal(-0.02);
-            var string = negative.toSource();
+            var string = negative.toString();
             expect(string).to.equal('-2%');
         });
 
@@ -52,7 +52,7 @@ describe('Bali Component Framework™', function() {
             var fifty = new Percent('50%');
             var number = fifty.toNumber();
             expect(number).to.equal(0.5);
-            var string = fifty.toSource();
+            var string = fifty.toString();
             expect(string).to.equal('50%');
         });
 
@@ -60,7 +60,7 @@ describe('Bali Component Framework™', function() {
             var fractional = new Percent('-0.234%');
             var number = fractional.toNumber();
             expect(number).to.equal(-0.00234);
-            var string = fractional.toSource();
+            var string = fractional.toString();
             expect(string).to.equal('-0.234%');
         });
 
@@ -68,7 +68,7 @@ describe('Bali Component Framework™', function() {
             var hundred = new Percent('100%');
             var number = hundred.toNumber();
             expect(number).to.equal(1);
-            var string = hundred.toSource();
+            var string = hundred.toString();
             expect(string).to.equal('100%');
         });
 
@@ -76,7 +76,7 @@ describe('Bali Component Framework™', function() {
             var hundred = new Percent('150%');
             var number = hundred.toNumber();
             expect(number).to.equal(1.5);
-            var string = hundred.toSource();
+            var string = hundred.toString();
             expect(string).to.equal('150%');
         });
 

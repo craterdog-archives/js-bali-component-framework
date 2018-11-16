@@ -45,7 +45,7 @@ describe('Bali Component Framework™', function() {
 
         it('should construct a identifier and format the same identifier', function() {
             var identifier = new Identifier(types.VARIABLE, 'foobar');
-            var source = identifier.toSource();
+            var source = identifier.toString();
             expect(source).to.equal('foobar');
             var string = identifier.toString();
             expect(string).to.equal('foobar');

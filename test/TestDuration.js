@@ -18,20 +18,20 @@ describe('Bali Component Framework™', function() {
 
         it('should construct a default duration of zero', function() {
             var duration = new Duration();
-            var string = duration.toSource();
+            var string = duration.toString();
             expect(string).to.equal(tests[0]);
         });
 
         it('should construct a duration of days from weeks', function() {
             var duration = new Duration('~P5W');
-            var string = duration.toSource();
+            var string = duration.toString();
             expect(string).to.equal('~P35D');
         });
 
         it('should construct a duration and format it the same', function() {
             tests.forEach(function(expected) {
                 var duration = new Duration(expected);
-                var string = duration.toSource();
+                var string = duration.toString();
                 expect(string).to.equal(expected);
             });
         });

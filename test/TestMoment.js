@@ -18,14 +18,14 @@ describe('Bali Component Framework™', function() {
 
         it('should construct a default moment of zero', function() {
             var time = new Moment();
-            var string = time.toSource();
+            var string = time.toString();
             expect(string.length).to.equal(25);
         });
 
         it('should construct a moment and format the same', function() {
             tests.forEach(function(expected) {
                 var time = new Moment(expected);
-                var string = time.toSource();
+                var string = time.toString();
                 expect(string).to.equal(expected);
             });
         });

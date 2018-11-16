@@ -44,7 +44,7 @@ describe('Bali Component Framework™', function() {
 
         it('should construct a symbol and format the same symbol', function() {
             var symbol = new Symbol('$foobar');
-            var string = symbol.toSource();
+            var string = symbol.toString();
             expect(string).to.equal('$foobar');
             var identifier = symbol.getIdentifier();
             expect(identifier).to.equal('foobar');

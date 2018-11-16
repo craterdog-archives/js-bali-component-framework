@@ -17,15 +17,15 @@ describe('Bali Component Framework™', function() {
     describe('Test template constructors', function() {
 
         it('should generate a default none template', function() {
-            expect(new Template().toSource()).to.equal(Template.NONE.toSource());
+            expect(new Template().toString()).to.equal(Template.NONE.toString());
         });
 
         it('should generate an explicit none template', function() {
-            expect(new Template('none').toSource()).to.equal(Template.NONE.toSource());
+            expect(new Template('none').toString()).to.equal(Template.NONE.toString());
         });
 
         it('should generate an explicit any template', function() {
-            expect(new Template('any').toSource()).to.equal(Template.ANY.toSource());
+            expect(new Template('any').toString()).to.equal(Template.ANY.toString());
         });
 
         it('should throw an exception for an invalid template', function() {

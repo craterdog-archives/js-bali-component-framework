@@ -20,7 +20,7 @@ describe('Bali Component Framework™', function() {
             var empty = new Probability();
             var number = empty.toNumber();
             expect(number).to.equal(0);
-            var string = empty.toSource();
+            var string = empty.toString();
             expect(string).to.equal('false');
             expect(empty.toBoolean()).to.be.false;  // jshint ignore:line
         });
@@ -29,7 +29,7 @@ describe('Bali Component Framework™', function() {
             var zero = new Probability(0);
             var number = zero.toNumber();
             expect(number).to.equal(0);
-            var string = zero.toSource();
+            var string = zero.toString();
             expect(string).to.equal('false');
             expect(zero.toBoolean()).to.be.false;  // jshint ignore:line
         });
@@ -38,7 +38,7 @@ describe('Bali Component Framework™', function() {
             var half = new Probability(0.5);
             var number = half.toNumber();
             expect(number).to.equal(0.5);
-            var string = half.toSource();
+            var string = half.toString();
             expect(string).to.equal('.5');
         });
 
@@ -46,7 +46,7 @@ describe('Bali Component Framework™', function() {
             var one = new Probability(1);
             var number = one.toNumber();
             expect(number).to.equal(1);
-            var string = one.toSource();
+            var string = one.toString();
             expect(string).to.equal('true');
             expect(one.toBoolean()).to.be.true;  // jshint ignore:line
         });

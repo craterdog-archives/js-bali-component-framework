@@ -37,7 +37,7 @@ describe('Bali Component Framework™', function() {
         it('should sort an out of order list', function() {
             var list = collections.List.fromCollection(array);
             list.sortItems();
-            expect(list.toSource()).to.equal(set.toSource());
+            expect(list.toString()).to.equal(set.toString());
         });
 
     });
@@ -55,7 +55,7 @@ describe('Bali Component Framework™', function() {
             var catalog = collections.Catalog.fromCollection(object);
             catalog.sortItems();
             var keys = catalog.getKeys();
-            expect(keys.toSource()).to.equal(set.toSource());
+            expect(keys.toString()).to.equal(set.toString());
         });
 
     });

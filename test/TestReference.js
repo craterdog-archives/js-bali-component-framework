@@ -37,7 +37,7 @@ describe('Bali Component Framework™', function() {
         it('should construct references and format matching references', function() {
             tests.forEach(function(expected) {
                 var reference = new Reference(expected);
-                var string = reference.toSource();
+                var string = reference.toString();
                 expect(string).to.equal(expected);
             });
         });

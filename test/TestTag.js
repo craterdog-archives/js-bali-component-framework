@@ -19,25 +19,25 @@ describe('Bali Component Framework™', function() {
         it('should generate a default random tag with 20 bytes', function() {
             var random = new Tag();
             expect(random.getNumberOfBytes()).to.equal(20);
-            var expected = random.toSource();
+            var expected = random.toString();
             var tag = new Tag(expected);
-            var result = tag.toSource();
+            var result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a random tag with 15 bytes', function() {
             var random = new Tag(15);
             expect(random.getNumberOfBytes()).to.equal(15);
-            var expected = random.toSource();
+            var expected = random.toString();
             var tag = new Tag(expected);
-            var result = tag.toSource();
+            var result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a predefined tag', function() {
             expected = '#NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
             var tag = new Tag(expected);
-            var result = tag.toSource();
+            var result = tag.toString();
             expect(result).to.equal(expected);
         });
 

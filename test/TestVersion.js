@@ -18,25 +18,25 @@ describe('Bali Component Framework™', function() {
 
         it('should generate a default first version string', function() {
             var empty = new Version();
-            var string = empty.toSource();
+            var string = empty.toString();
             expect(string).to.equal('v1');
         });
 
         it('should generate an explicit single level version string', function() {
             var major = new Version('v42');
-            var string = major.toSource();
+            var string = major.toString();
             expect(string).to.equal('v42');
         });
 
         it('should generate an explicit two level version string', function() {
             var minor = new Version('v41.6');
-            var string = minor.toSource();
+            var string = minor.toString();
             expect(string).to.equal('v41.6');
         });
 
         it('should generate an explicit three level version string', function() {
             var bug = new Version('v2.13.5');
-            var string = bug.toSource();
+            var string = bug.toString();
             expect(string).to.equal('v2.13.5');
         });
 
