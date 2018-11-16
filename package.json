@@ -8,14 +8,15 @@
     "url": "git+ssh://git@github.com/craterdog-bali/js-bali-component-framework.git"
   },
   "keywords": [
+    "JavaScript",
     "NodeJS",
-    "Bali Component Framework",
     "Bali Cloud Environment",
+    "Bali Component Framework",
     "Bali Document Notation",
     "Primitive Types",
     "Collection Classes",
-    "Parser",
-    "Formatter"
+    "Component Parser",
+    "Component Formatter"
   ],
   "author": "Derk Norton",
   "company": "Crater Dog Technologies™",
