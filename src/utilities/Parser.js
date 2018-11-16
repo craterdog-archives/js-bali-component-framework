@@ -32,7 +32,8 @@ var Component = require('../abstractions/Component').Component;
 var elements = require('../elements');
 var composites = require('../composites');
 var collections = require('../collections');
-var utilities = require('../utilities');
+var codex = require('../utilities/Codex');
+var Iterator = require('../utilities/Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
@@ -203,7 +204,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     string = string.replace(/\s/g, '');  // strip out all whitespace
 
     // break the string into canonical formatted lines of characters
-    var value = "'" + utilities.codex.formatLines(string) + "'";
+    var value = "'" + codex.formatLines(string) + "'";
 
     var binary = new elements.Binary(value, parameters);
     this.result = binary;
@@ -248,7 +249,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             var slot = Number(this.result.value);
             associations[1].accept(this);
             var array = this.result.value.toArray();
-            component = new utilities.Iterator(array);
+            component = new Iterator(array);
             component.toSlot(slot);
             break;
         case types.CATALOG:
