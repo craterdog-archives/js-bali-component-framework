@@ -13,9 +13,7 @@
  * This component class implements a sorter that can be used on any collection to sort its
  * items into their natural order.
  */
-var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
-var Comparator = require('../components/Comparator').Comparator;
+var Comparator = require('./Comparator').Comparator;
 
 
 // PUBLIC FUNCTIONS
@@ -29,23 +27,11 @@ var Comparator = require('../components/Comparator').Comparator;
  * sorting. If none is specified, the natural comparator will be used.
  */
 function Sorter(comparator) {
-    Component.call(this, types.SORTER);
     this.comparator = comparator || new Comparator();
     return this;
 }
-Sorter.prototype = Object.create(Component.prototype);
 Sorter.prototype.constructor = Sorter;
 exports.Sorter = Sorter;
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this sorter.
- */
-Sorter.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSorter(this);
-};
 
 
 /**

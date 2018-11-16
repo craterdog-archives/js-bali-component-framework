@@ -13,7 +13,7 @@
  * This abstract class defines the methods that all Bali components must support.
  */
 var types = require('../abstractions/Types');
-var formatter = require('../utilities/ComponentFormatter');
+var Formatter = require('../utilities/Formatter').Formatter;
 
 
 // PUBLIC FUNCTIONS
@@ -87,6 +87,7 @@ Component.prototype.toString = function() {
  * @returns {String} The Bali source code for this component.
  */
 Component.prototype.toSource = function(indentation) {
+    var formatter = new Formatter();
     var source = formatter.formatComponent(this, indentation);
     return source;
 };

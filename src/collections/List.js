@@ -26,7 +26,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
-var Sorter = require('../components/Sorter').Sorter;
+var Sorter = require('../utilities/Sorter').Sorter;
 
 
 // PUBLIC FUNCTIONS

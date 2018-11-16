@@ -15,7 +15,7 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Iterator = require('../components/Iterator').Iterator;
+var Iterator = require('../utilities/Iterator').Iterator;
 
 /*
  * This function defines a missing stack function for the standard Array class.

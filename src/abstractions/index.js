@@ -11,7 +11,6 @@
 
 exports.types = require('./Types');
 exports.Component = require('./Component').Component;
-exports.Visitor = require('./Visitor').Visitor;
 exports.Element = require('./Element').Element;
 exports.Composite = require('./Composite').Composite;
 exports.Collection = require('./Collection').Collection;

@@ -13,8 +13,6 @@
  * This component class implements a comparator that can be used to compare any two items
  * for their natural ordering.
  */
-var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
@@ -24,22 +22,10 @@ var Component = require('../abstractions/Component').Component;
  * <code>Component.comparedTo(that)</code> method.
  */
 function Comparator() {
-    Component.call(this, types.COMPARATOR);
     return this;
 }
-Comparator.prototype = Object.create(Component.prototype);
 Comparator.prototype.constructor = Comparator;
 exports.Comparator = Comparator;
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this comparator.
- */
-Comparator.prototype.acceptVisitor = function(visitor) {
-    visitor.visitComparator(this);
-};
 
 
 /**

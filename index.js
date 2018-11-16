@@ -12,15 +12,9 @@
 // ABSTRACT TYPES
 exports.types = require('./src/abstractions/Types');
 exports.Component = require('./src/abstractions/Component').Component;
-exports.Visitor = require('./src/abstractions/Visitor').Visitor;
 exports.Element = require('./src/abstractions/Element').Element;
 exports.Composite = require('./src/abstractions/Composite').Composite;
 exports.Collection = require('./src/abstractions/Collection').Collection;
-
-// COMPONENT TYPES
-exports.Comparator = require('./src/components/Comparator').Comparator;
-exports.Iterator = require('./src/components/Iterator').Iterator;
-exports.Sorter = require('./src/components/Sorter').Sorter;
 
 // PRIMITIVE ELEMENT TYPES
 exports.Angle = require('./src/elements/Angle').Angle;
@@ -54,8 +48,15 @@ exports.Stack = require('./src/collections/Stack').Stack;
 exports.Tree = require('./src/collections/Tree').Tree;
 
 // GENERAL UTILITIES
-exports.formatter = require('./src/utilities/ComponentFormatter');
-exports.parser = require('./src/utilities/ComponentParser');
+exports.Comparator = require('./src/utilities/Comparator').Comparator;
+exports.Formatter = require('./src/utilities/Formatter').Formatter;
+exports.Iterator = require('./src/utilities/Iterator').Iterator;
+exports.Parser = require('./src/utilities/Parser').Parser;
+exports.Sorter = require('./src/utilities/Sorter').Sorter;
+exports.Visitor = require('./src/utilities/Visitor').Visitor;
+
 exports.codex = require('./src/utilities/Codex');
+exports.formatter = new exports.Formatter();
+exports.parser = new exports.Parser(false);
 
 

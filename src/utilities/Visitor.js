@@ -14,8 +14,6 @@
  * provides implementations of each method that by default just traverse the parse tree.
  * Subclasses should override most of the methods.
  */
-var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
@@ -26,26 +24,14 @@ var Component = require('../abstractions/Component').Component;
  * @returns {Visitor} The new visitor.
  */
 function Visitor() {
-    Component.call(this, types.VISITOR);
     this.depth = 0;
     return this;
 }
-Visitor.prototype = Object.create(Component.prototype);
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
 
 
 // PUBLIC METHODS
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this visitor (say what?!?!?).
- */
-Visitor.prototype.acceptVisitor = function(visitor) {
-    visitor.visitVisitor(this);
-};
-
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 Visitor.prototype.visitArithmeticExpression = function(tree) {
@@ -278,10 +264,6 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-Visitor.prototype.visitIterator = function(iterator) {
-};
-
-
 // list:
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
@@ -501,10 +483,6 @@ Visitor.prototype.visitThrowClause = function(tree) {
 
 // variable: IDENTIFIER
 Visitor.prototype.visitVariable = function(variable) {
-};
-
-
-Visitor.prototype.visitVisitor = function(visitor) {
 };
 
 

@@ -20,7 +20,21 @@ var types = require('../abstractions/Types');
 // PUBLIC FUNCTIONS
 
 /**
- * This function generates the canonical Bali source code for the specified parse tree
+ * This class implements a formatter that formats Bali component structures as strings
+ * containing Bali Document Notation™ in a canonical way.
+ * 
+ * @constructor
+ * @returns {Formatter} The new component formatter.
+ */
+function Formatter() {
+    return this;
+}
+Formatter.prototype.constructor = Formatter;
+exports.Formatter = Formatter;
+
+
+/**
+ * This method generates the canonical Bali source code for the specified parse tree
  * component. If an optional indentation string is specified, then each line of the
  * generated source code will be indented using that string.
  * 
@@ -29,7 +43,7 @@ var types = require('../abstractions/Types');
  * the source code.
  * @returns {String} The Bali source code for the parse tree component.
  */
-exports.formatComponent = function(component, indentation) {
+Formatter.prototype.formatComponent = function(component, indentation) {
     var visitor = new FormattingVisitor(indentation);
     component.acceptVisitor(visitor);
     return visitor.source;
@@ -359,28 +373,6 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 FormattingVisitor.prototype.visitIndices = function(tree) {
     var list = tree.getChild(1);
     list.acceptVisitor(this);
-};
-
-
-FormattingVisitor.prototype.visitIterator = function(iterator) {
-    this.source += '[';
-    this.depth++;
-    this.appendNewline();
-    this.source += '$slot: ' + iterator.slot;
-    this.appendNewline();
-    this.source += '$array: [';
-    this.depth++;
-    iterator.array.forEach(function(item) {
-        this.appendNewline();
-        item.acceptVisitor(this);
-    }, this);
-    this.depth--;
-    this.appendNewline();
-    this.source += ']';
-    this.depth--;
-    this.appendNewline();
-    this.source += ']';
-    this.source += '($type: $Iterator)';
 };
 
 

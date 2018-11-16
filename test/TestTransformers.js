@@ -105,18 +105,6 @@ describe('Bali Component Framework™', function() {
             expect(formatted).to.equal(source);
         });
 
-        it('should parse and format the same iterators', function() {
-            var list = collections.List.fromCollection([1, 2, 3]);
-            var expected = list.getIterator();
-            expected.getNext();
-            var source = utilities.formatter.formatComponent(expected);
-            expect(source).to.exist;  // jshint ignore:line
-            var iterator = utilities.parser.parseComponent(source);
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(expected.slot).to.equal(iterator.slot);
-            expect(expected.isEqualTo(iterator)).to.equal(true);
-        });
-
     });
 
 });

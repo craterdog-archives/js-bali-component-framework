@@ -9,7 +9,14 @@
  ************************************************************************/
 'use strict';
 
-exports.formatter = require('./ComponentFormatter');
-exports.parser = require('./ComponentParser');
+exports.Comparator = require('./Comparator').Comparator;
+exports.Formatter = require('./Formatter').Formatter;
+exports.Iterator = require('./Iterator').Iterator;
+exports.Parser = require('./Parser').Parser;
+exports.Sorter = require('./Sorter').Sorter;
+exports.Visitor = require('./Visitor').Visitor;
+
 exports.codex = require('./Codex');
+exports.formatter = new exports.Formatter();
+exports.parser = new exports.Parser(false);
 

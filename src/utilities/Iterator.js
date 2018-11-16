@@ -27,8 +27,6 @@
  *     slot 0     slot 1     slot 2                  slot N
  * </pre>
  */
-var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
 
 
 // PUBLIC FUNCTIONS
@@ -41,28 +39,15 @@ var Component = require('../abstractions/Component').Component;
  * @returns {Iterator} The new array iterator.
  */
 function Iterator(array) {
-    Component.call(this, types.ITERATOR);
     this.slot = 0;  // the slot before the first item
     this.array = array;
-    this.setToComplex();  // iterators are not formatted inline
     return this;
 }
-Iterator.prototype = Object.create(Component.prototype);
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
 
 
 // PUBLIC METHODS
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this iterator.
- */
-Iterator.prototype.acceptVisitor = function(visitor) {
-    visitor.visitIterator(this);
-};
-
 
 /**
  * This method moves the iterator to the slot before the first item.

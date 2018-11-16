@@ -29,7 +29,6 @@ var MAP = {
     CheckoutClause:               '#2YWBP7TAKQ72MBL1AA55MP34DG9KGVHH',
     CommitClause:                 '#PX8X7F9R63SPPJ43V7Q6B3WA7J40X3SY',
     ComparisonExpression:         '#4BPSTG1VKZ78FZ1Q6BBG3FSQLP485W6A',
-    Comparator:                   '#VRADCGYL602PN2MSS2AH6W0GRPLGMCCK',
     ComplementExpression:         '#ML3LBVVVJ253VAFQ385WF1WGGZL759BP',
     ContinueClause:               '#5QMFG29CD78F647GMTQC5YPS5M1XNB1Q',
     DefaultExpression:            '#6Z2Y2P41ZH33Y42HJGPV0Q8VA3ZFK4K4',
@@ -45,7 +44,6 @@ var MAP = {
     IfClause:                     '#03QKSKTTR5QP2K8MHC34WT4CA8FG8PCX',
     Indices:                      '#5617V7QT7RT4J9WVF8PD9V7DNMKCWQR9',
     InversionExpression:          '#WHSTLK1HZXYVD4TZFHP2B19PRY75J3TL',
-    Iterator:                     '#G4YCMDW4XM2CM4J4W5C4NN5B267TT1FQ',
     List:                         '#TRYB04LK9Z1TSABALD7W31K8YFSN1F0F',
     LogicalExpression:            '#1CJT7XYHXJ83AVSQ5VJC6Q7GVRHWMWSM',
     MagnitudeExpression:          '#R72VZ4YQMXQW1BLKX26LG76C1VGZMLN9',
@@ -110,7 +108,6 @@ exports.CATALOG = NAMES.indexOf('Catalog');
 exports.CHECKOUT_CLAUSE = NAMES.indexOf('CheckoutClause');
 exports.COMMIT_CLAUSE = NAMES.indexOf('CommitClause');
 exports.COMPARISON_EXPRESSION = NAMES.indexOf('ComparisonExpression');
-exports.COMPARATOR = NAMES.indexOf('Comparator');
 exports.COMPLEMENT_EXPRESSION = NAMES.indexOf('ComplementExpression');
 exports.CONTINUE_CLAUSE = NAMES.indexOf('ContinueClause');
 exports.DEFAULT_EXPRESSION = NAMES.indexOf('DefaultExpression');
@@ -126,7 +123,6 @@ exports.HANDLE_CLAUSE = NAMES.indexOf('HandleClause');
 exports.IF_CLAUSE = NAMES.indexOf('IfClause');
 exports.INDICES = NAMES.indexOf('Indices');
 exports.INVERSION_EXPRESSION = NAMES.indexOf('InversionExpression');
-exports.ITERATOR = NAMES.indexOf('Iterator');
 exports.LIST = NAMES.indexOf('List');
 exports.LOGICAL_EXPRESSION = NAMES.indexOf('LogicalExpression');
 exports.MAGNITUDE_EXPRESSION = NAMES.indexOf('MagnitudeExpression');

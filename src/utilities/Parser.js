@@ -28,28 +28,42 @@ var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
 var grammar = require('../../grammar');
 var types = require('../abstractions/Types');
-var components = require('../components');
+var Component = require('../abstractions/Component').Component;
 var elements = require('../elements');
 var composites = require('../composites');
 var collections = require('../collections');
-var codex = require('./Codex');
-var Component = require('../abstractions/Component').Component;
+var utilities = require('../utilities');
 
 
 // PUBLIC FUNCTIONS
 
 /**
- * This function parses a string containing Bali source code and returns the corresponding
- * procedure component.
+ * This class implements a parser that parses strings containing Bali Document Notation™ and
+ * generates the corresponding Bali component structures.
  * 
- * @param {String} source The Bali source string.
+ * @constructor
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
  * default is false. Debug mode is only useful for debugging the language grammar and
  * need not be used otherwise.
+ * @returns {Parser} The new string parser.
+ */
+function Parser(debug) {
+    this.debug = debug || false;
+    return this;
+}
+Parser.prototype.constructor = Parser;
+exports.Parser = Parser;
+
+
+/**
+ * This method parses a string containing Bali source code and returns the corresponding
+ * procedure component.
+ * 
+ * @param {String} source The Bali source string.
  * @returns {Procedure} The resulting procedure component.
  */
-exports.parseProcedure = function(source, debug) {
-    var parser = initializeParser(source, debug);
+Parser.prototype.parseProcedure = function(source) {
+    var parser = initializeParser(source, this.debug);
     var antlrTree = parser.procedure();
     var procedure = convertParseTree(antlrTree);
     return procedure;
@@ -57,17 +71,14 @@ exports.parseProcedure = function(source, debug) {
 
 
 /**
- * This function parses a string containing Bali source code and returns the corresponding
+ * This method parses a string containing Bali source code and returns the corresponding
  * component.
  * 
  * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false. Debug mode is only useful for debugging the language grammar and
- * need not be used otherwise.
  * @returns {Component} The resulting component.
  */
-exports.parseComponent = function(source, debug) {
-    var parser = initializeParser(source, debug);
+Parser.prototype.parseComponent = function(source) {
+    var parser = initializeParser(source, this.debug);
     var antlrTree = parser.component();
     var component = convertParseTree(antlrTree);
     return component;
@@ -75,17 +86,14 @@ exports.parseComponent = function(source, debug) {
 
 
 /**
- * This function parses a string containing Bali source code and returns the corresponding
+ * This method parses a string containing Bali source code and returns the corresponding
  * expression tree component.
  * 
  * @param {String} source The Bali source string.
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false. Debug mode is only useful for debugging the language grammar and
- * need not be used otherwise.
  * @returns {Tree} The resulting expression tree component.
  */
-exports.parseExpression = function(source, debug) {
-    var parser = initializeParser(source, debug);
+Parser.prototype.parseExpression = function(source) {
+    var parser = initializeParser(source, this.debug);
     var antlrTree = parser.expression();
     var expression = convertParseTree(antlrTree);
     return expression;
@@ -195,7 +203,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     string = string.replace(/\s/g, '');  // strip out all whitespace
 
     // break the string into canonical formatted lines of characters
-    var value = "'" + codex.formatLines(string) + "'";
+    var value = "'" + utilities.codex.formatLines(string) + "'";
 
     var binary = new elements.Binary(value, parameters);
     this.result = binary;
@@ -240,7 +248,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
             var slot = Number(this.result.value);
             associations[1].accept(this);
             var array = this.result.value.toArray();
-            component = new components.Iterator(array);
+            component = new utilities.Iterator(array);
             component.toSlot(slot);
             break;
         case types.CATALOG:

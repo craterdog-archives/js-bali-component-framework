@@ -32,18 +32,18 @@ For more information on this project click on the following links:
    * _Text Strings_
    * _Version Strings_
  * **Collections** - a group of collection types that are used to organize elements and other collections:
-   * _Ranges_
-   * _Stacks_
-   * _Sets_
-   * _Lists_
    * _Catalogs_
+   * _Lists_
+   * _Ranges_
+   * _Sets_
+   * _Stacks_
    * _Trees_
  * **Utilities** - a group of utilities that are used to manipulate elements and collections:
-   * _Component Parsers_
-   * _Component Formatters_
-   * _Component Comparators_
-   * _Collection Iterators_
-   * _Collection Sorters_
+   * _Comparators_
+   * _Iterators_
+   * _Formatters_
+   * _Parsers_
+   * _Sorters_
 
 ### Getting Started
 To install this NodeJS package:

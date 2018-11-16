@@ -14,7 +14,7 @@
  */
 var types = require('./Types');
 var Component = require('./Component').Component;
-var Iterator = require('../components/Iterator').Iterator;
+var Iterator = require('../utilities/Iterator').Iterator;
 var elements = require('../elements');
 //var collections = require('../collections');
 
