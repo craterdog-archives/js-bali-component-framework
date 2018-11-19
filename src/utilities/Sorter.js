@@ -80,7 +80,7 @@ Sorter.prototype.mergeArrays = function(left, right) {
     var result = [];
     while (leftIndex < left.length && rightIndex < right.length) {
         // still have elements in both halves
-        var comparison = this.comparator.compareItems(left[leftIndex], right[rightIndex]);
+        var comparison = this.comparator.compareComponents(left[leftIndex], right[rightIndex]);
         switch (comparison) {
             case -1:
                 // copy the next left element to the result

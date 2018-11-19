@@ -355,6 +355,19 @@ Visitor.prototype.visitPublishClause = function(tree) {
 };
 
 
+// queue:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty queue*/
+Visitor.prototype.visitQueue = function(queue) {
+    // delegate to collection
+    this.visitCollection(queue);
+    if (queue.isParameterized()) {
+        queue.parameters.acceptVisitor(this);
+    }
+};
+
+
 // queueClause: 'queue' expression 'on' expression
 Visitor.prototype.visitQueueClause = function(tree) {
     var message = tree.getChild(1);
@@ -417,6 +430,10 @@ Visitor.prototype.visitSelectClause = function(tree) {
 };
 
 
+// set:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty set*/
 Visitor.prototype.visitSet = function(set) {
     // delegate to collection
     this.visitCollection(set);
@@ -435,6 +452,10 @@ Visitor.prototype.visitSource = function(source) {
 };
 
 
+// stack:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty stack*/
 Visitor.prototype.visitStack = function(stack) {
     // delegate to collection
     this.visitCollection(stack);

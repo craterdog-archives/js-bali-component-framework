@@ -604,6 +604,9 @@ ParsingVisitor.prototype.visitList = function(ctx) {
         type = types.typeBySymbol(type);
     }
     switch (type) {
+        case types.QUEUE:
+            collection = new collections.Queue(parameters);
+            break;
         case types.SET:
             collection = new collections.Set(parameters);
             break;

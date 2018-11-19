@@ -517,6 +517,21 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
+// queue:
+//     expression (',' expression)* |
+//     NEWLINE (expression NEWLINE)* |
+//     /*empty queue*/
+FormattingVisitor.prototype.visitQueue = function(queue) {
+    this.source += '[';
+    // delegate to collection
+    this.visitCollection(queue);
+    this.source += ']';
+    if (queue.isParameterized()) {
+        queue.parameters.acceptVisitor(this);
+    }
+};
+
+
 // queueClause: 'queue' expression 'on' expression
 FormattingVisitor.prototype.visitQueueClause = function(tree) {
     this.source += 'queue ';
@@ -594,7 +609,7 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 // set:
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
-//     /*empty list*/
+//     /*empty set*/
 FormattingVisitor.prototype.visitSet = function(set) {
     this.source += '[';
     // delegate to collection
@@ -617,7 +632,7 @@ FormattingVisitor.prototype.visitSource = function(source) {
 // stack:
 //     expression (',' expression)* |
 //     NEWLINE (expression NEWLINE)* |
-//     /*empty list*/
+//     /*empty stack*/
 FormattingVisitor.prototype.visitStack = function(stack) {
     this.source += '[';
     // delegate to collection

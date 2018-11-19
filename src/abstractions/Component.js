@@ -13,6 +13,7 @@
  * This abstract class defines the methods that all Bali components must support.
  */
 var types = require('../abstractions/Types');
+var Comparator = require('../utilities/Comparator').Comparator;
 var Formatter = require('../utilities/Formatter').Formatter;
 
 
@@ -94,17 +95,14 @@ Component.prototype.toDocument = function(indentation) {
 
 
 /**
- * This method compares this component with another object for equality. It may be overridden
- * with a more efficient implementation by a subclass.
+ * This method determines whether or not this component is equal to another component.
  * 
  * @param {Object} that The object that is being compared.
- * @returns {Boolean}
+ * @returns {Boolean} Whether or not this component is equal to another component.
  */
 Component.prototype.isEqualTo = function(that) {
-    if (that === undefined || that === null) return false;
-    if (this === that) return true;  // same component
-    if (this.prototype !== that.prototype) return false;
-    return this.toString() === that.toString();
+    var comparator = new Comparator();
+    return comparator.componentsAreEqual(this, that);
 };
 
 
@@ -116,11 +114,8 @@ Component.prototype.isEqualTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
-    if (that === undefined || that === null) return 1;  // any component is greater than null/undefined
-    if (this === that) return 0;  // same component
-    var result = this.constructor.name.localeCompare(that.constructor.name);
-    if (result !== 0) return result;
-    return this.toString().localeCompare(that.toString());
+    var comparator = new Comparator();
+    return comparator.compareComponents(this, that);
 };
 
 

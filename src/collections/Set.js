@@ -11,12 +11,13 @@
 
 /**
  * This collection class implements an ordered set of components that does not allow
- * duplicate items. A set automatically orders its items based on the order defined
- * by the <code>this.comparedTo(that)</code> method of the items being compared.
+ * duplicate items. A set automatically orders its items based on the natural order
+ * defined by the <code>Comparator</code> class.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
+var Comparator = require('../utilities/Comparator').Comparator;
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +31,7 @@ var Collection = require('../abstractions/Collection').Collection;
  */
 function Set(parameters) {
     Collection.call(this, types.SET, parameters);
-    this.tree = new RandomizedTree();
+    this.tree = new RandomizedTree(new Comparator());
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
@@ -290,8 +291,9 @@ TreeIterator.prototype.getNext = function() {
  * update performance.
  */
 
-function RandomizedTree() {
+function RandomizedTree(comparator) {
     this.size = 0;
+    this.comparator = comparator;
     return this;
 }
 RandomizedTree.prototype.constructor = RandomizedTree;
@@ -305,7 +307,7 @@ RandomizedTree.prototype.contains = function(value) {
 RandomizedTree.prototype.index = function(value) {
     var index = 0;
     var candidate = this.minimum(this.root);
-    while (candidate && !candidate.value.isEqualTo(value)) {
+    while (candidate && !this.comparator.componentsAreEqual(candidate.value, value)) {
         candidate = this.successor(candidate);
         index++;
     }
@@ -340,7 +342,7 @@ RandomizedTree.prototype.insert = function(value) {
     var candidate = this.root;
     while (candidate && candidate.value) {
         parent = candidate;
-        switch (candidate.value.comparedTo(value)) {
+        switch (this.comparator.compareComponents(candidate.value, value)) {
             case 1:
                 candidate = candidate.left;
                 break;
@@ -355,7 +357,7 @@ RandomizedTree.prototype.insert = function(value) {
 
     // insert the new node as a child of the parent
     var child = { value: value, parent: parent, priority: Math.random()};
-    switch (parent.value.comparedTo(value)) {
+    switch (this.comparator.compareComponents(parent.value, value)) {
         case 1:
             parent.left = child;
             break;
@@ -480,7 +482,7 @@ RandomizedTree.prototype.successor = function(node) {
 RandomizedTree.prototype.find = function(value) {
     var candidate = this.root;
     while (candidate && candidate.value) {
-        switch (candidate.value.comparedTo(value)) {
+        switch (this.comparator.compareComponents(candidate.value, value)) {
             case -1:
                 candidate = candidate.right;
                 break;
