@@ -43,12 +43,12 @@ describe('Bali Component Framework™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            stack.pushItem('alpha');
+            stack.addItem('alpha');
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.pushItem('beta');}).to.throw(Error, 'STACK: Attempted to push an item onto a full stack.');
-            var top = stack.popItem();
+            expect(function() {stack.addItem('beta');}).to.throw(Error, 'STACK: Attempted to push an item onto a full stack.');
+            var top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('alpha');
             size = stack.getSize();
@@ -127,31 +127,31 @@ describe('Bali Component Framework™', function() {
             expect(size).to.equal(array.length);
             var top = stack.topItem();
             expect(top.toString()).to.equal('gamma');
-            var pop = stack.popItem();
+            var pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 1);
             top = stack.topItem();
             expect(top.toString()).to.equal('epsilon');
-            pop = stack.popItem();
+            pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 2);
             top = stack.topItem();
             expect(top.toString()).to.equal('delta');
-            pop = stack.popItem();
+            pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
             top = stack.topItem();
             expect(top.toString()).to.equal('beta');
-            pop = stack.popItem();
+            pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 4);
             top = stack.topItem();
             expect(top.toString()).to.equal('alpha');
-            pop = stack.popItem();
+            pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
             expect(function() {stack.topItem();}).to.throw(Error, 'STACK: Attempted to access the top item of an empty stack.');
-            expect(function() {stack.popItem();}).to.throw(Error, 'STACK: Attempted to pop the top item of an empty stack.');
+            expect(function() {stack.removeItem();}).to.throw(Error, 'STACK: Attempted to pop the top item of an empty stack.');
         });
 
     });

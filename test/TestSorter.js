@@ -23,6 +23,9 @@ describe('Bali Component Framework™', function() {
         'epsilon': 5
     };
     var array = Object.keys(object);
+    array.forEach(function(item, index) {
+        this[index] = '$' + item;
+    }, array);
     var set = collections.Set.fromCollection(array);
 
     describe('Test the sorter on lists.', function() {

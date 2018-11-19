@@ -10,8 +10,9 @@
 'use strict';
 
 /**
- * This collection class implements a stack (LIFO) data structure.  Attempting to access an
- * empty stack is considered a bug in the calling code and a runtime exception is thrown.
+ * This collection class implements a queue (FIFO) data structure.  Attempting to retrieve
+ * an item from an empty queue is considered a bug in the calling code and a runtime exception
+ * is thrown.
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
@@ -30,42 +31,42 @@ Array.prototype.peek = function() {
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new stack component with optional parameters that are
+ * This constructor creates a new queue component with optional parameters that are
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
- * @returns {Stack} The new stack.
+ * @returns {Queue} The new queue.
  */
-function Stack(parameters) {
-    Collection.call(this, types.STACK, parameters);
+function Queue(parameters) {
+    Collection.call(this, types.QUEUE, parameters);
     this.capacity = 1024;
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Stack.prototype = Object.create(Collection.prototype);
-Stack.prototype.constructor = Stack;
-exports.Stack = Stack;
+Queue.prototype = Object.create(Collection.prototype);
+Queue.prototype.constructor = Queue;
+exports.Queue = Queue;
 
 
 /**
- * This function creates a new stack using the specified collection to seed the
- * initial items on the stack. The stack may be parameterized by specifying optional
+ * This function creates a new queue using the specified collection to seed the
+ * initial items in the queue. The queue may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
  * @param {Array|Object|Collection} collection The collection containing the initial
- * items to be used to seed the new stack.
+ * items to be used to seed the new queue.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
- * @returns {Stack} The new stack.
+ * @returns {Queue} The new queue.
  */
-Stack.fromCollection = function(collection, parameters) {
-    var stack = new Stack(parameters);
+Queue.fromCollection = function(collection, parameters) {
+    var queue = new Queue(parameters);
     var iterator;
     var type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
-                stack.addItem(item);
+                queue.addItem(item);
             });
             break;
         case 'List':
@@ -73,7 +74,7 @@ Stack.fromCollection = function(collection, parameters) {
         case 'Set':
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
-                stack.addItem(iterator.getNext());
+                queue.addItem(iterator.getNext());
             }
             break;
         case 'Stack':
@@ -81,13 +82,13 @@ Stack.fromCollection = function(collection, parameters) {
             // a stack's iterator starts at the top, we need to start at the bottom
             iterator.toEnd();
             while (iterator.hasPrevious()) {
-                stack.addItem(iterator.getPrevious());
+                queue.addItem(iterator.getPrevious());
             }
             break;
         default:
-            throw new Error('STACK: A stack cannot be initialized using a collection of type: ' + type);
+            throw new Error('QUEUE: A queue cannot be initialized using a collection of type: ' + type);
     }
-    return stack;
+    return queue;
 };
 
 
@@ -96,107 +97,93 @@ Stack.fromCollection = function(collection, parameters) {
 /**
  * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Visitor} visitor The visitor that wants to visit this stack.
+ * @param {Visitor} visitor The visitor that wants to visit this queue.
  */
-Stack.prototype.acceptVisitor = function(visitor) {
-    visitor.visitStack(this);
+Queue.prototype.acceptVisitor = function(visitor) {
+    visitor.visitQueue(this);
 };
 
 
 /**
- * This method returns the number of items that are currently on this stack.
+ * This method returns the number of items that are currently in this queue.
  * 
- * @returns {Number} The number of items on this stack.
+ * @returns {Number} The number of items in this queue.
  */
-Stack.prototype.getSize = function() {
+Queue.prototype.getSize = function() {
     var size = this.array.length;
     return size;
 };
 
 
 /**
- * This method returns an object that can be used to iterate over the items on this
- * stack.
+ * This method returns an array containing the items in this queue.
  * 
- * NOTE: This iterator iterates over the items on the stack starting at the top.
- * 
- * @returns {Iterator} An iterator for this stack.
+ * @returns {Array} An array containing the items in this queue.
  */
-Stack.prototype.getIterator = function() {
-    var iterator = new Iterator(this.array.slice().reverse());
-    return iterator;
-};
-
-
-/**
- * This method returns an array containing the items on this stack.
- * 
- * @returns {Array} An array containing the items on this stack.
- */
-Stack.prototype.toArray = function() {
+Queue.prototype.toArray = function() {
     return this.array.slice();  // copy the array
 };
 
 
 /**
- * This method adds a new item onto the top of this stack.
+ * This method adds a new item to the end of this queue.
  *
  * @param {Component} item The new item to be added.
  */
-Stack.prototype.addItem = function(item) {
+Queue.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     } else {
-        throw new Error('STACK: Attempted to push an item onto a full stack.');
+        throw new Error('QUEUE: Attempted to add an item to a full queue.');
     }
 };
 
 
 /**
- * This method removes the top item from this stack.  If this stack is empty
+ * This method removes the item at the beginning of this queue.  If this queue is empty
  * an exception is thrown.
  *
- * @returns {Component} The top item from this stack.
+ * @returns {Component} The first item in this queue.
  */
-Stack.prototype.removeItem = function() {
+Queue.prototype.removeItem = function() {
     var item;
     var size = this.array.length;
     if (size > 0) {
-        item = this.array.pop();
+        item = this.array.splice(0, 1)[0];  // remove the first item in the array
         this.complexity -= item.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     } else {
-        throw new Error('STACK: Attempted to pop the top item of an empty stack.');
+        throw new Error('QUEUE: Attempted to remove an item from an empty queue.');
     }
     return item;
 };
 
 
 /**
- * This method returns a reference to the top item on this stack without
- * removing it from this stack.  If this stack is empty an exception is thrown.
+ * This method returns a reference to the first item in this queue without
+ * removing it from the queue.  If this queue is empty an exception is thrown.
  *
- * @returns {Component} The top item on this stack.
+ * @returns {Component} The first item in this queue.
  */
-Stack.prototype.topItem = function() {
+Queue.prototype.firstItem = function() {
     var item = null;
     var size = this.array.length;
     if (size > 0) {
-        item = this.array.peek();
+        item = this.array[0];
     } else {
-        throw new Error('STACK: Attempted to access the top item of an empty stack.');
+        throw new Error('QUEUE: Attempted to access the first item in an empty queue.');
     }
     return item;
 };
 
 
 /**
- * This method removes all items from this stack.
+ * This method removes all items from this queue.
  */
-Stack.prototype.removeAll = function() {
+Queue.prototype.removeAll = function() {
     var size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);

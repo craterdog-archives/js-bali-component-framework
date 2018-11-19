@@ -85,7 +85,7 @@ Catalog.fromCollection = function(collection, parameters) {
         case 'Object':
             var keys = Object.keys(collection);
             keys.forEach(function(key) {
-                catalog.setValue(key, collection[key]);
+                catalog.setValue('$' + key, collection[key]);
             });
             break;
         case 'Catalog':

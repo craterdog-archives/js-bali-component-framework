@@ -14,4 +14,5 @@ exports.Block = require('./Block').Block;
 exports.Source = require('./Source').Source;
 exports.Procedure = require('./Procedure').Procedure;
 exports.Parameters = require('./Parameters').Parameters;
-
+exports.Range = require('./Range').Range;
+exports.Tree = require('./Tree').Tree;

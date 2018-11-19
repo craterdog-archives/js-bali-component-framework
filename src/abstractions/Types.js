@@ -57,6 +57,7 @@ var MAP = {
     Probability:                  '#2YBVYV11HS4CKZ7X8RDJ0RYC7TKKAV2D',
     Procedure:                    '#HYH7M0HTRTML8MVWVKFMQN2KP136HG3F',
     PublishClause:                '#PK764JB8N97KRJDSL6JNL2PV9Y9GW6YY',
+    Queue:                        '#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4',
     QueueClause:                  '#QLZV5M4GQD14WV2W7A3WV5G486QJFBZ1',
     Range:                        '#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L',
     Reference:                    '#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3',
@@ -136,6 +137,7 @@ exports.PRECEDENCE_EXPRESSION = NAMES.indexOf('PrecedenceExpression');
 exports.PROBABILITY = NAMES.indexOf('Probability');
 exports.PROCEDURE = NAMES.indexOf('Procedure');
 exports.PUBLISH_CLAUSE = NAMES.indexOf('PublishClause');
+exports.QUEUE = NAMES.indexOf('Queue');
 exports.QUEUE_CLAUSE = NAMES.indexOf('QueueClause');
 exports.RANGE = NAMES.indexOf('Range');
 exports.REFERENCE = NAMES.indexOf('Reference');

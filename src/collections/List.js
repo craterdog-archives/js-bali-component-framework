@@ -70,10 +70,19 @@ List.fromCollection = function(collection, parameters) {
             });
             break;
         case 'List':
+        case 'Queue':
         case 'Set':
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 list.addItem(iterator.getNext());
+            }
+            break;
+        case 'Stack':
+            iterator = collection.getIterator();
+            // a stack's iterator starts at the top, we need to start at the bottom
+            iterator.toEnd();
+            while (iterator.hasPrevious()) {
+                list.addItem(iterator.getPrevious());
             }
             break;
         default:

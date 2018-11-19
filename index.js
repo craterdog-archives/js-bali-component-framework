@@ -38,14 +38,15 @@ exports.Block = require('./src/composites/Block').Block;
 exports.Source = require('./src/composites/Source').Source;
 exports.Procedure = require('./src/composites/Procedure').Procedure;
 exports.Parameters = require('./src/composites/Parameters').Parameters;
+exports.Range = require('./src/composites/Range').Range;
+exports.Tree = require('./src/composites/Tree').Tree;
 
 // COLLECTION TYPES
 exports.List = require('./src/collections/List').List;
 exports.Catalog = require('./src/collections/Catalog').Catalog;
+exports.Queue = require('./src/collections/Queue').Stack;
 exports.Set = require('./src/collections/Set').Set;
-exports.Range = require('./src/collections/Range').Range;
 exports.Stack = require('./src/collections/Stack').Stack;
-exports.Tree = require('./src/collections/Tree').Tree;
 
 // GENERAL UTILITIES
 exports.Comparator = require('./src/utilities/Comparator').Comparator;
