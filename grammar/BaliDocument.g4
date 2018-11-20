@@ -1,4 +1,4 @@
 grammar BaliDocument;
 import BaliComponents;
 
-document: (component | procedure) EOF;
+document: NEWLINE* component NEWLINE* EOF;

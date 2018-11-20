@@ -57,25 +57,10 @@ exports.Parser = Parser;
 
 
 /**
- * This method parses a string containing Bali source code and returns the corresponding
- * procedure component.
- * 
- * @param {String} source The Bali source string.
- * @returns {Procedure} The resulting procedure component.
- */
-Parser.prototype.parseProcedure = function(source) {
-    var parser = initializeParser(source, this.debug);
-    var antlrTree = parser.procedure();
-    var procedure = convertParseTree(antlrTree);
-    return procedure;
-};
-
-
-/**
- * This method parses a string containing Bali source code and returns the corresponding
+ * This method parses a string containing Bali Document Notation™ and returns the corresponding
  * component.
  * 
- * @param {String} source The Bali source string.
+ * @param {String} source The Bali Document Notation™ source string.
  * @returns {Component} The resulting component.
  */
 Parser.prototype.parseComponent = function(source) {
@@ -87,10 +72,10 @@ Parser.prototype.parseComponent = function(source) {
 
 
 /**
- * This method parses a string containing Bali source code and returns the corresponding
+ * This method parses a string containing Bali Document Notation™ and returns the corresponding
  * expression tree component.
  * 
- * @param {String} source The Bali source string.
+ * @param {String} source The Bali Document Notation™ source string.
  * @returns {Tree} The resulting expression tree component.
  */
 Parser.prototype.parseExpression = function(source) {

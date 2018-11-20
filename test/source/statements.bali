@@ -1,8 +1,6 @@
 [
-    $block: [
-        $empty: {}
-        $single: {$x := value}
-    ]
+    $empty: {}
+    $single: {$x := value}
     $statement: {
         while condition do {
             break loop
@@ -49,69 +47,45 @@
     }
     $returnResult: {return; return result}
     $throwException: {throw exception}
-    $ifThen: [
-        $simple: {
-            if condition then {
-            }
+    $ifThen: {
+        if condition then {
         }
-        $withElse: {
-            if condition then {
-            } else {
-            }
+        if condition then {
+        } else {
         }
-        $compound: {
-            if condition then {
-            } else if otherCondition then {
-            }
+        if condition then {
+        } else if otherCondition then {
         }
-        $nested: {
-            if condition then {
-            } else if otherCondition then {
-            } else {
-            }
+        if condition then {
+        } else if otherCondition then {
+        } else {
         }
-    ]
-    $selectFrom: [
-        $simple: {
-            select expression from a do {
-            } b do {
-            } c do {
-            }
+    }
+    $selectFrom: {
+        select expression from a do {
+        } b do {
+        } c do {
         }
-        $withElse: {
-            select expression from a do {
-            } b do {
-            } c do {
-            } else {
-            }
+        select expression from a do {
+        } b do {
+        } c do {
+        } else {
         }
-    ]
-    $whileLoop: [
-        $simple: {
-            while condition do {
-            }
+    }
+    $whileLoop: {
+        while condition do {
         }
-        $withLabel: {
-            while condition do {
-            }
+        while condition do {
         }
-    ]
-    $withLoop: [
-        $simple: {
-            with [1..10] do {
-            }
+    }
+    $withLoop: {
+        with [1..10] do {
         }
-        $withLabel: {
-            with [1..10] do {
-            }
+        with [1..10] do {
         }
-        $withEach: {
-            with each $item in list do {
-            }
+        with each $item in list do {
         }
-        $withLabelAndEach: {
-            with each $item in list do {
-            }
+        with each $item in list do {
         }
-    ]
+    }
 ]
