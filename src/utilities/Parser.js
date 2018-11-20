@@ -60,36 +60,21 @@ exports.Parser = Parser;
  * This method parses a string containing Bali Document Notation™ and returns the corresponding
  * component.
  * 
- * @param {String} source The Bali Document Notation™ source string.
+ * @param {String} document The Bali Document Notation™ source string.
  * @returns {Component} The resulting component.
  */
-Parser.prototype.parseComponent = function(source) {
-    var parser = initializeParser(source, this.debug);
+Parser.prototype.parseDocument = function(document) {
+    var parser = initializeParser(document, this.debug);
     var antlrTree = parser.component();
     var component = convertParseTree(antlrTree);
     return component;
 };
 
 
-/**
- * This method parses a string containing Bali Document Notation™ and returns the corresponding
- * expression tree component.
- * 
- * @param {String} source The Bali Document Notation™ source string.
- * @returns {Tree} The resulting expression tree component.
- */
-Parser.prototype.parseExpression = function(source) {
-    var parser = initializeParser(source, this.debug);
-    var antlrTree = parser.expression();
-    var expression = convertParseTree(antlrTree);
-    return expression;
-};
-
-
 // PRIVATE FUNCTIONS
 
-function initializeParser(source, debug) {
-    var chars = new antlr.InputStream(source);
+function initializeParser(document, debug) {
+    var chars = new antlr.InputStream(document);
     var lexer = new grammar.BaliDocumentLexer(chars);
     var listener = new BaliErrorListener(debug);
     lexer.removeErrorListeners();

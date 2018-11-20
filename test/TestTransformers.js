@@ -22,17 +22,17 @@ describe('Bali Component Framework™', function() {
         it('should parse and format the same elements', function() {
             var file = 'test/source/elements.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
-            expect(source).to.exist;  // jshint ignore:line
-            var component = utilities.parser.parseComponent(source, DEBUG);
+            var document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;  // jshint ignore:line
+            var component = utilities.parser.parseDocument(document, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
-            expect(formatted).to.equal(source);
-            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(formatted).to.equal(document);
+            component = utilities.parser.parseDocument(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(source);
+            expect(formatted).to.equal(document);
             var iterator = component.getIterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
@@ -40,7 +40,7 @@ describe('Bali Component Framework™', function() {
                 for (var i = 0; i < array.length; i++) {
                     var item = array[i];
                     var string = item.toString();
-                    var element = utilities.parser.parseComponent(string, DEBUG);
+                    var element = utilities.parser.parseDocument(string, DEBUG);
                     expect(element.isEqualTo(item)).to.equal(true);
                 }
             }
@@ -49,60 +49,49 @@ describe('Bali Component Framework™', function() {
         it('should parse and format the same expressions', function() {
             var file = 'test/source/expressions.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
-            expect(source).to.exist;  // jshint ignore:line
-            var component = utilities.parser.parseComponent(source, DEBUG);
+            var document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;  // jshint ignore:line
+            var component = utilities.parser.parseDocument(document, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
-            expect(formatted).to.equal(source);
-            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(formatted).to.equal(document);
+            component = utilities.parser.parseDocument(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(source);
-            var iterator = component.getIterator();
-            while (iterator.hasNext()) {
-                var association = iterator.getNext();
-                var array = association.value.toArray();
-                for (var i = 0; i < array.length; i++) {
-                    var item = array[i];
-                    var string = item.toString();
-                    var expression = utilities.parser.parseExpression(string, DEBUG);
-                    expect(expression.isEqualTo(item)).to.equal(true);
-                }
-            }
+            expect(formatted).to.equal(document);
         });
 
         it('should parse and format the same statements', function() {
             var file = 'test/source/statements.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
-            expect(source).to.exist;  // jshint ignore:line
-            var component = utilities.parser.parseComponent(source, DEBUG);
+            var document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;  // jshint ignore:line
+            var component = utilities.parser.parseDocument(document, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
-            expect(formatted).to.equal(source);
-            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(formatted).to.equal(document);
+            component = utilities.parser.parseDocument(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(source);
+            expect(formatted).to.equal(document);
         });
 
         it('should parse and format the same components', function() {
             var file = 'test/source/components.bali';
             console.error('        ' + file);
-            var source = fs.readFileSync(file, 'utf8');
-            expect(source).to.exist;  // jshint ignore:line
-            var component = utilities.parser.parseComponent(source, DEBUG);
+            var document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;  // jshint ignore:line
+            var component = utilities.parser.parseDocument(document, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
-            expect(formatted).to.equal(source);
-            component = utilities.parser.parseComponent(formatted, DEBUG);
+            expect(formatted).to.equal(document);
+            component = utilities.parser.parseDocument(formatted, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
             formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(source);
+            expect(formatted).to.equal(document);
             var iterator = component.getIterator();
             while (iterator.hasNext()) {
                 var association = iterator.getNext();
@@ -110,7 +99,7 @@ describe('Bali Component Framework™', function() {
                 for (var i = 0; i < array.length; i++) {
                     var item = array[i];
                     var string = item.toString();
-                    component = utilities.parser.parseComponent(string, DEBUG);
+                    component = utilities.parser.parseDocument(string, DEBUG);
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }
