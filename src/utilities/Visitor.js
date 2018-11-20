@@ -51,8 +51,8 @@ Visitor.prototype.visitAssociation = function(association) {
 
 
 // block: '{' procedure '}'
-Visitor.prototype.visitBlock = function(block) {
-    block.procedure.acceptVisitor(this);
+Visitor.prototype.visitBlock = function(tree) {
+    tree.getChild(1).acceptVisitor(this);
 };
 
 
@@ -337,8 +337,8 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 //     statement (';' statement)* |
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty procedure*/
-Visitor.prototype.visitProcedure = function(procedure) {
-    var iterator = procedure.getIterator();
+Visitor.prototype.visitProcedure = function(tree) {
+    var iterator = tree.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var statement = iterator.getNext();

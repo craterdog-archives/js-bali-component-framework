@@ -201,8 +201,9 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     var procedure = this.result;
     procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
-    var block = new composites.Block(procedure);
-    this.result = block;
+    var tree = new composites.Tree(types.BLOCK, 2);
+    tree.addChild(procedure);
+    this.result = tree;
 };
 
 
@@ -766,18 +767,19 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    var procedure = new composites.Procedure();
+    var tree = new composites.Tree(types.PROCEDURE, 0);
     var type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
         var statements = ctx.statement();
         this.depth++;
         statements.forEach(function(statement) {
             statement.accept(this);
-            procedure.addStatement(this.result);
+            tree.addChild(this.result);
+            if (tree.getSize() > 1) tree.complexity += 2;  // account for the '; ' separator
         }, this);
         this.depth--;
     }
-    this.result = procedure;
+    this.result = tree;
 };
 
 

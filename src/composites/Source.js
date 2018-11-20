@@ -23,7 +23,7 @@ var Composite = require('../abstractions/Composite').Composite;
  * This constructor creates a new source code component with optional parameters that are
  * used to parameterize its behavior.
  * 
- * @param {Procedure} procedure The procedure that is contained within the source code.
+ * @param {Tree} procedure The procedure that is contained within the source code.
  * @param {Parameters} parameters Optional parameters used to parameterize the source code. 
  * @returns {Source} A new source code component.
  */
@@ -31,7 +31,7 @@ function Source(procedure, parameters) {
     Composite.call(this, types.SOURCE, parameters);
     this.procedure = procedure;
     this.complexity += this.procedure.complexity;
-    this.complexity += 2;  // account for the '{' '}' delimiters
+    //this.complexity += 2;  // account for the '{' '}' delimiters
     return this;
 }
 Source.prototype = Object.create(Composite.prototype);

@@ -34,11 +34,9 @@ exports.Version = require('./src/elements/Version').Version;
 
 // PRIMITIVE COMPOSITE TYPES
 exports.Association = require('./src/composites/Association').Association;
-exports.Block = require('./src/composites/Block').Block;
-exports.Source = require('./src/composites/Source').Source;
-exports.Procedure = require('./src/composites/Procedure').Procedure;
 exports.Parameters = require('./src/composites/Parameters').Parameters;
 exports.Range = require('./src/composites/Range').Range;
+exports.Source = require('./src/composites/Source').Source;
 exports.Tree = require('./src/composites/Tree').Tree;
 
 // COLLECTION TYPES

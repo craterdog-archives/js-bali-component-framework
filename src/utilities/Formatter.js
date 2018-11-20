@@ -102,9 +102,9 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 
 
 // block: '{' procedure '}'
-FormattingVisitor.prototype.visitBlock = function(block) {
+FormattingVisitor.prototype.visitBlock = function(tree) {
     this.source += '{';
-    block.procedure.acceptVisitor(this);
+    tree.getChild(1).acceptVisitor(this);
     this.source += '}';
 };
 
@@ -479,11 +479,11 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 //     statement (';' statement)* |
 //     NEWLINE (statement NEWLINE)* |
 //     /*empty procedure*/
-FormattingVisitor.prototype.visitProcedure = function(procedure) {
-    if (!procedure.isEmpty()) {
-        var iterator = procedure.getIterator();
+FormattingVisitor.prototype.visitProcedure = function(tree) {
+    if (!tree.isEmpty()) {
+        var iterator = tree.getIterator();
         var statement;
-        if (procedure.isSimple()) {
+        if (tree.isSimple()) {
             // inline the statements
             statement = iterator.getNext();
             statement.acceptVisitor(this);
@@ -503,7 +503,7 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
             this.depth--;
             this.appendNewline();
         }
-    } else if (!procedure.isSimple()) {
+    } else if (!tree.isSimple()) {
         this.appendNewline();
     }
 };

@@ -103,6 +103,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
         case types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
+        case types.BLOCK:
+            visitor.visitBlock(this);
+            break;
         case types.BREAK_CLAUSE:
             visitor.visitBreakClause(this);
             break;
@@ -166,6 +169,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
         case types.PRECEDENCE_EXPRESSION:
             visitor.visitPrecedenceExpression(this);
             break;
+        case types.PROCEDURE:
+            visitor.visitProcedure(this);
+            break;
         case types.PUBLISH_CLAUSE:
             visitor.visitPublishClause(this);
             break;
@@ -203,6 +209,6 @@ Tree.prototype.acceptVisitor = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('SYNTAX: An invalid tree node type was found: ' + types.typeName(type));
+            throw new Error('SYNTAX: An invalid tree node type was found: ' + types.typeName(this.type));
     }
 };
