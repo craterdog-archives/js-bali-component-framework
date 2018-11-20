@@ -118,6 +118,10 @@ Version.validNextVersion = function(currentVersion, nextVersion) {
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Version.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+    if (typeof this !== typeof that) {
+        return this.constructor.name.localeCompare(that.constructor.name);
+    }
     var thisNumbers = this.getNumbers();
     var thatNumbers = that.getNumbers();
     var index = 0;

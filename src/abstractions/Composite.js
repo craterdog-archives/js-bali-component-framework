@@ -103,54 +103,6 @@ Composite.asComponent = function(value) {
 // PUBLIC METHODS
 
 /**
- * This method compares this composite with another object for equality.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Boolean}
- */
-Composite.prototype.isEqualTo = function(that) {
-    if (that === undefined || that === null) return false;
-    if (this === that) return true;  // same component
-    if (this.prototype !== that.prototype) return false;
-    var thisArray = this.toArray();
-    var thatArray = that.toArray();
-    if (thisArray.length !== thatArray.length) return false;
-    for (var i = 0; i < thisArray.length; i++) {
-        if (!thisArray[i].isEqualTo(thatArray[i])) return false;
-    }
-    return true;
-};
-
-
-/**
- * This method compares this composite with another object for natural order.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that
- */
-Composite.prototype.comparedTo = function(that) {
-    if (that === undefined || that === null) return 1;  // all composites are greater than null/undefined
-    if (this === that) return 0;  // same component
-    var result = this.constructor.name.localeCompare(that.constructor.name);
-    if (result !== 0) return result;
-    var thisArray = this.toArray();
-    var thatArray = that.toArray();
-    var result = 0;
-    for (var i = 0; i < thisArray.length && i < thatArray.length; i++) {
-        result = thisArray[i].comparedTo(thatArray[i]);
-        if (result !== 0) return result;
-    }
-    if (thisArray.length < thatArray.length) {
-        return -1;
-    } else if (thisArray.length > thatArray.length) {
-        return 1;
-    } else {
-        return 0;
-    }
-};
-
-
-/**
  * This method returns whether or not this composite component has any subcomponents.
  * 
  * @returns {Boolean} Whether or not this composite component has any subcomponents.

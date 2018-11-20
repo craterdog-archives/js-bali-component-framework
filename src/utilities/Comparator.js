@@ -50,20 +50,57 @@ Comparator.prototype.componentsAreEqual = function(firstComponent, secondCompone
  * 
  */
 Comparator.prototype.compareComponents = function(firstComponent, secondComponent) {
-    if (firstComponent && firstComponent.prototype && firstComponent.prototype.comparedTo) {
-        return firstComponent.comparedTo(secondComponent);
+    // handle undefined components
+    if (firstComponent && !secondComponent) {
+        return 1;  // anything is greater than nothing
     }
+    if (!firstComponent && secondComponent) {
+        return -1;  // nothing is less than anything
+    }
+    if (!firstComponent && !secondComponent) {
+        return 0;  // nothing is equal to nothing
+    }
+
+    // handle numeric components
     if (typeof firstComponent === 'number' && typeof secondComponent === 'number') {
         return Math.sign(firstComponent - secondComponent);
     }
-    if (firstComponent && secondComponent) {
-        return Math.sign(firstComponent.toString().localeCompare(secondComponent.toString()));
+    if (firstComponent.prototype && firstComponent.prototype.toNumber && typeof secondComponent === 'number') {
+        return Math.sign(firstComponent.toNumber() - secondComponent);
     }
-    if (firstComponent) {
-        return 1;  // the second component is undefined or null
+    if (typeof firstComponent === 'number' && secondComponent.prototype && secondComponent.prototype.toNumber) {
+        return Math.sign(firstComponent - secondComponent.toNumber());
     }
-    if (secondComponent) {
-        return -1;  // the first component is undefined or null
+
+    // handle string components
+    if (typeof firstComponent === 'string' && typeof secondComponent === 'string') {
+        return Math.sign(firstComponent.localeCompare(secondComponent));
     }
-    return 0;  // both components are undefined or null
+    if (firstComponent.source && typeof secondComponent === 'string') {
+        return Math.sign(firstComponent.source.localeCompare('"' + secondComponent + '"'));
+    }
+    if (typeof firstComponent === 'string' && secondComponent.source) {
+        return Math.sign(String('"' + firstComponent + '"').localeCompare(secondComponent.source));
+    }
+
+    // handle different object types
+    var result = firstComponent.constructor.name.localeCompare(secondComponent.constructor.name);
+    if (result !== 0) return result;
+
+    // handle composite components
+    if (firstComponent.prototype && firstComponent.prototype.getIterator && secondComponent.prototype && secondComponent.prototype.getIterator) {
+        var firstIterator = firstComponent.getIterator();
+        var secondIterator = secondComponent.getIterator();
+        var result = 0;
+        while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
+            result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
+        }
+        if (result !== 0) return result;  // found a difference
+        if (firstIterator.hasNext()) return 1;  // the first is longer than the second
+        if (secondIterator.hasNext()) return -1;  // the second is longer than the first
+        return 0;  // they are the same length and all items are equal
+    }
+
+    // must be two elemental objects of the same type, compare their string values
+    return Math.sign(firstComponent.toString().localeCompare(secondComponent.toString()));
 };

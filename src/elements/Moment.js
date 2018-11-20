@@ -66,6 +66,10 @@ exports.Moment = Moment;
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Moment.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+    if (typeof this !== typeof that) {
+        return this.constructor.name.localeCompare(that.constructor.name);
+    }
     if (this.moment.isBefore(that.value)) return -1;
     if (this.moment.isAfter(that.value)) return 1;
     return 0;

@@ -236,6 +236,10 @@ Complex.prototype.getAngle = function() {
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Complex.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+    if (typeof this !== typeof that) {
+        return this.constructor.name.localeCompare(that.constructor.name);
+    }
     if (this.real < that.real) return -1;
     if (this.real > that.real) return 1;
     // the real parts are equal, check the imaginary parts

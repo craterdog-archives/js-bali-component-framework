@@ -76,19 +76,6 @@ exports.Probability = Probability;
 
 
 /**
- * This method compares two probabilities for ordering.
- * 
- * @param {Probability} that The other probability to be compared with. 
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Probability.prototype.comparedTo = function(that) {
-    if (this.value < that.value) return -1;
-    if (this.value > that.value) return 1;
-    return 0;
-};
-
-
-/**
  * This method returns a boolean representation of the probability element. A
  * coin weighted with the probability is tossed and the boolean outcome is returned.
  * 

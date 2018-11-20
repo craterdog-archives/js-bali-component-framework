@@ -268,7 +268,6 @@ describe('Bali Component Framework™', function() {
             var associations = catalog.getAssociations();
             size = associations.getSize();
             expect(size).to.equal(array.length);
-            expect(catalog.isEqualTo(associations)).to.equal(true);
             var associationIterator = catalog.getIterator();
             expect(associationIterator).to.exist;  // jshint ignore:line
             var key;
