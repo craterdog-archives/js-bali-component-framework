@@ -211,30 +211,15 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
         if (!type) type = parameters.getParameter(1).value;
         type = types.typeBySymbol(type);
     }
-    var component;
-    var associations;
-    switch (type) {
-        case types.ITERATOR:
-            associations = ctx.association();
-            associations[0].accept(this);
-            var slot = Number(this.result.value);
-            associations[1].accept(this);
-            var array = this.result.value.toArray();
-            component = new Iterator(array);
-            component.toSlot(slot);
-            break;
-        case types.CATALOG:
-        default:
-            component = new collections.Catalog(parameters);
-            if (ctx.constructor.name !== 'EmptyCatalogContext') {
-                this.depth++;
-                associations = ctx.association();
-                associations.forEach(function(association) {
-                    association.accept(this);
-                    component.addItem(this.result);
-                }, this);
-                this.depth--;
-            }
+    var component = new collections.Catalog(parameters);
+    if (ctx.constructor.name !== 'EmptyCatalogContext') {
+        this.depth++;
+        var associations = ctx.association();
+        associations.forEach(function(association) {
+            association.accept(this);
+            component.addItem(this.result);
+        }, this);
+        this.depth--;
     }
     this.result = component;
 };

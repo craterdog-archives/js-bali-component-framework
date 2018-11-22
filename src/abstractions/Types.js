@@ -157,7 +157,6 @@ exports.TEXT = NAMES.indexOf('Text');
 exports.THROW_CLAUSE = NAMES.indexOf('ThrowClause');
 exports.VARIABLE = NAMES.indexOf('Variable');
 exports.VERSION = NAMES.indexOf('Version');
-exports.VISITOR = NAMES.indexOf('Visitor');
 exports.WAIT_CLAUSE = NAMES.indexOf('WaitClause');
 exports.WHILE_CLAUSE = NAMES.indexOf('WhileClause');
 exports.WITH_CLAUSE = NAMES.indexOf('WithClause');

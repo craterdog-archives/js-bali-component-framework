@@ -223,14 +223,12 @@ Set.prototype.removeAll = function() {
  */
 
 function TreeIterator(tree) {
-    Composite.call(this, types.ITERATOR);
     this.tree = tree;
     this.slot = 0;  // the slot before the first item
     this.previous = undefined;
     this.next = this.tree.minimum(this.tree.root);
     return this;
 }
-TreeIterator.prototype = Object.create(Composite.prototype);
 TreeIterator.prototype.constructor = TreeIterator;
 
 
