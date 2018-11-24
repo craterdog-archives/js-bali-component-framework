@@ -1,7 +1,7 @@
 ![Logo](https://raw.githubusercontent.com/craterdog-bali/bali-project-documentation/master/images/CraterDogLogo.png)
 
 ### Bali Component Framework
-This project provides a JavaScript/NodeJS version of the foundation framework classes for the [_Bali Cloud Environment™_](https://github.com/craterdog-bali/bali-project-documentation/wiki). It implements the [_Bali Document Notation™_](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I), which allows your browser to communicate with the Bali Cloud Environment™ similar to the way _JSON_ based web services communicate with each other but using a much more powerful interchange language.
+This project provides a JavaScript/NodeJS version of the foundation framework classes for the [_Bali Nebula™_](https://github.com/craterdog-bali/bali-project-documentation/wiki). It implements the [_Bali Document Notation™_](https://github.com/craterdog-bali/bali-project-documentation/wiki/The-Bali-Reference-Guide:-Part-I), which allows your browser to communicate with the Bali Nebula™ similar to the way _JSON_ based web services communicate with each other but using a much more powerful interchange language.
 
 ![Pyramid](https://raw.githubusercontent.com/craterdog-bali/js-bali-component-framework/master/docs/images/BaliPyramid-ComponentFramework.png)
 
