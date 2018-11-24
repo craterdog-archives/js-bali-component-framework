@@ -21,7 +21,7 @@
  * types (e.g. elements, collections, and trees). This means that some of
  * the code in the visitor class in this module is a bit harder to
  * understand but the result is that the rest of the javascript code that
- * makes up all of the modules for the Bali Cloud Environment™ is simpler,
+ * makes up all of the modules for the Bali Nebula™ is simpler,
  * clean and easy to read. You're welcome ;-)
  */
 var antlr = require('antlr4');
