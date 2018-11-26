@@ -40,18 +40,18 @@ VERSION: 'v' NATURAL ('.' NATURAL)*;
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
 // a text block takes precedence over a regular text string
-TEXT_BLOCK: '"' NEWLINE CHARACTER*? NEWLINE SPACE* '"';
+TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
 
 TEXT: '"' (ESCAPE | CHARACTER)*? '"';
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
 
-NEWLINE: '\r'? '\n';
+EOL: '\r'? '\n';
 
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
 
 fragment
-LINE: CHARACTER*? NEWLINE;
+LINE: CHARACTER*? EOL;
 
 fragment
 CHARACTER: .;

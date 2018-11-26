@@ -86,6 +86,9 @@ exports.coinToss = function(probability) {
  */
 var LINE_WIDTH = 60;
 
+var EOL = '\n';  // POSIX end of line character
+
+
 /**
  * This function returns a formatted version of a string with LINE_WIDTH characters per line.
  * 
@@ -99,10 +102,10 @@ exports.formatLines = function(string, indentation) {
     var length = string.length;
     if (length > LINE_WIDTH) {
         for (var index = 0; index < length; index += LINE_WIDTH) {
-            formatted += '\n    ' + indentation;
+            formatted += EOL + '    ' + indentation;
             formatted += string.substring(index, index + LINE_WIDTH);
         }
-        formatted += '\n';
+        formatted += EOL;
     } else {
         formatted += string;
     }

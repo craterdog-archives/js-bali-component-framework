@@ -347,7 +347,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, "SHELL", 
                       "TAG", "SYMBOL", "FRACTION", "REAL", "IMAGINARY", 
                       "MOMENT", "DURATION", "RESOURCE", "VERSION", "BINARY", 
-                      "TEXT_BLOCK", "TEXT", "IDENTIFIER", "NEWLINE", "SPACE" ];
+                      "TEXT_BLOCK", "TEXT", "IDENTIFIER", "EOL", "SPACE" ];
 
 var ruleNames =  [ "document", "component", "value", "structure", "parameters", 
                    "collection", "range", "list", "catalog", "association", 
@@ -464,7 +464,7 @@ DocumentParser.BINARY = 80;
 DocumentParser.TEXT_BLOCK = 81;
 DocumentParser.TEXT = 82;
 DocumentParser.IDENTIFIER = 83;
-DocumentParser.NEWLINE = 84;
+DocumentParser.EOL = 84;
 DocumentParser.SPACE = 85;
 
 DocumentParser.RULE_document = 0;
@@ -547,14 +547,14 @@ DocumentContext.prototype.EOF = function() {
     return this.getToken(DocumentParser.EOF, 0);
 };
 
-DocumentContext.prototype.NEWLINE = function(i) {
+DocumentContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.EOL);
     } else {
-        return this.getToken(DocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.EOL, i);
     }
 };
 
@@ -594,9 +594,9 @@ DocumentParser.prototype.document = function() {
         this.state = 113;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        while(_la===DocumentParser.NEWLINE) {
+        while(_la===DocumentParser.EOL) {
             this.state = 110;
-            this.match(DocumentParser.NEWLINE);
+            this.match(DocumentParser.EOL);
             this.state = 115;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -606,9 +606,9 @@ DocumentParser.prototype.document = function() {
         this.state = 120;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        while(_la===DocumentParser.NEWLINE) {
+        while(_la===DocumentParser.EOL) {
             this.state = 117;
-            this.match(DocumentParser.NEWLINE);
+            this.match(DocumentParser.EOL);
             this.state = 122;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -1170,14 +1170,14 @@ NewlineListContext.prototype.constructor = NewlineListContext;
 
 DocumentParser.NewlineListContext = NewlineListContext;
 
-NewlineListContext.prototype.NEWLINE = function(i) {
+NewlineListContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.EOL);
     } else {
-        return this.getToken(DocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.EOL, i);
     }
 };
 
@@ -1346,11 +1346,11 @@ DocumentParser.prototype.list = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case DocumentParser.NEWLINE:
+        case DocumentParser.EOL:
             localctx = new NewlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 159;
-            this.match(DocumentParser.NEWLINE);
+            this.match(DocumentParser.EOL);
             this.state = 165;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -1358,7 +1358,7 @@ DocumentParser.prototype.list = function() {
                 this.state = 160;
                 this.expression(0);
                 this.state = 161;
-                this.match(DocumentParser.NEWLINE);
+                this.match(DocumentParser.EOL);
                 this.state = 167;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
@@ -1463,14 +1463,14 @@ NewlineCatalogContext.prototype.constructor = NewlineCatalogContext;
 
 DocumentParser.NewlineCatalogContext = NewlineCatalogContext;
 
-NewlineCatalogContext.prototype.NEWLINE = function(i) {
+NewlineCatalogContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.EOL);
     } else {
-        return this.getToken(DocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.EOL, i);
     }
 };
 
@@ -1590,11 +1590,11 @@ DocumentParser.prototype.catalog = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case DocumentParser.NEWLINE:
+        case DocumentParser.EOL:
             localctx = new NewlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 179;
-            this.match(DocumentParser.NEWLINE);
+            this.match(DocumentParser.EOL);
             this.state = 185;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -1602,7 +1602,7 @@ DocumentParser.prototype.catalog = function() {
                 this.state = 180;
                 this.association();
                 this.state = 181;
-                this.match(DocumentParser.NEWLINE);
+                this.match(DocumentParser.EOL);
                 this.state = 187;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
@@ -1843,14 +1843,14 @@ NewlineProcedureContext.prototype.constructor = NewlineProcedureContext;
 
 DocumentParser.NewlineProcedureContext = NewlineProcedureContext;
 
-NewlineProcedureContext.prototype.NEWLINE = function(i) {
+NewlineProcedureContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.EOL);
     } else {
-        return this.getToken(DocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.EOL, i);
     }
 };
 
@@ -2002,11 +2002,11 @@ DocumentParser.prototype.procedure = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case DocumentParser.NEWLINE:
+        case DocumentParser.EOL:
             localctx = new NewlineProcedureContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 207;
-            this.match(DocumentParser.NEWLINE);
+            this.match(DocumentParser.EOL);
             this.state = 213;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -2014,7 +2014,7 @@ DocumentParser.prototype.procedure = function() {
                 this.state = 208;
                 this.statement();
                 this.state = 209;
-                this.match(DocumentParser.NEWLINE);
+                this.match(DocumentParser.EOL);
                 this.state = 215;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);

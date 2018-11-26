@@ -15,13 +15,13 @@ range: expression '..' expression;
 
 list:
     expression (',' expression)* #inlineList |
-    NEWLINE (expression NEWLINE)* #newlineList |
+    EOL (expression EOL)* #newlineList |
     /*empty list*/ #emptyList
 ;
 
 catalog:
     association (',' association)* #inlineCatalog |
-    NEWLINE (association NEWLINE)* #newlineCatalog |
+    EOL (association EOL)* #newlineCatalog |
     ':' /*empty catalog*/ #emptyCatalog
 ;
 

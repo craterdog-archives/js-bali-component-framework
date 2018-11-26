@@ -3,7 +3,7 @@ import Expressions;
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |
-    NEWLINE (statement NEWLINE)*  #newlineProcedure |
+    EOL (statement EOL)*  #newlineProcedure |
     /*empty procedure*/ #emptyProcedure
 ;
 

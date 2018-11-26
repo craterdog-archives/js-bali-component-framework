@@ -54,6 +54,9 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
+var EOL = '\n';  // POSIX end of line character
+
+
 /* NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular
  * dependency since the Visitor class inherits from the Component class which uses the
  * FormattingVisitor class.
@@ -69,7 +72,7 @@ FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
 FormattingVisitor.prototype.appendNewline = function() {
-    this.source += '\n';
+    this.source += EOL;
     this.source += this.getIndentation();
 };
 
@@ -119,7 +122,7 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 
 // catalog:
 //     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
+//     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 FormattingVisitor.prototype.visitCatalog = function(catalog) {
     this.source += '[';
@@ -257,7 +260,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 FormattingVisitor.prototype.visitElement = function(element) {
     var indentation = this.getIndentation();
     var regex = new RegExp('\\n', 'g');
-    var source = element.source.replace(regex, '\n' + indentation);
+    var source = element.source.replace(regex, EOL + indentation);
     this.source += source;
     if (element.isParameterized()) {
         element.parameters.acceptVisitor(this);
@@ -380,7 +383,7 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 
 // list:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty list*/
 FormattingVisitor.prototype.visitList = function(list) {
     this.source += '[';
@@ -479,7 +482,7 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // procedure:
 //     statement (';' statement)* |
-//     NEWLINE (statement NEWLINE)* |
+//     EOL (statement EOL)* |
 //     /*empty procedure*/
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     if (!tree.isEmpty()) {
@@ -521,7 +524,7 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 
 // queue:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty queue*/
 FormattingVisitor.prototype.visitQueue = function(queue) {
     this.source += '[';
@@ -610,7 +613,7 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 
 // set:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty set*/
 FormattingVisitor.prototype.visitSet = function(set) {
     this.source += '[';
@@ -633,7 +636,7 @@ FormattingVisitor.prototype.visitSource = function(source) {
 
 // stack:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty stack*/
 FormattingVisitor.prototype.visitStack = function(stack) {
     this.source += '[';

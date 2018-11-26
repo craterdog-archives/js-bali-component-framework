@@ -63,7 +63,7 @@ Visitor.prototype.visitBreakClause = function(tree) {
 
 // catalog:
 //     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
+//     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 Visitor.prototype.visitCatalog = function(catalog) {
     // delegate to collection
@@ -266,7 +266,7 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 
 // list:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty list*/
 Visitor.prototype.visitList = function(list) {
     // delegate to collection
@@ -335,7 +335,7 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // procedure:
 //     statement (';' statement)* |
-//     NEWLINE (statement NEWLINE)* |
+//     EOL (statement EOL)* |
 //     /*empty procedure*/
 Visitor.prototype.visitProcedure = function(tree) {
     var iterator = tree.getIterator();
@@ -357,7 +357,7 @@ Visitor.prototype.visitPublishClause = function(tree) {
 
 // queue:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty queue*/
 Visitor.prototype.visitQueue = function(queue) {
     // delegate to collection
@@ -432,7 +432,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 
 // set:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty set*/
 Visitor.prototype.visitSet = function(set) {
     // delegate to collection
@@ -454,7 +454,7 @@ Visitor.prototype.visitSource = function(source) {
 
 // stack:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty stack*/
 Visitor.prototype.visitStack = function(stack) {
     // delegate to collection

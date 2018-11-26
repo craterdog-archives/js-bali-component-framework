@@ -612,7 +612,7 @@ DocumentLexer.BINARY = 80;
 DocumentLexer.TEXT_BLOCK = 81;
 DocumentLexer.TEXT = 82;
 DocumentLexer.IDENTIFIER = 83;
-DocumentLexer.NEWLINE = 84;
+DocumentLexer.EOL = 84;
 DocumentLexer.SPACE = 85;
 
 DocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
@@ -656,7 +656,7 @@ DocumentLexer.prototype.symbolicNames = [ null, null, null, null, null,
                                           "REAL", "IMAGINARY", "MOMENT", 
                                           "DURATION", "RESOURCE", "VERSION", 
                                           "BINARY", "TEXT_BLOCK", "TEXT", 
-                                          "IDENTIFIER", "NEWLINE", "SPACE" ];
+                                          "IDENTIFIER", "EOL", "SPACE" ];
 
 DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", 
                                       "T__5", "T__6", "T__7", "T__8", "T__9", 
@@ -678,7 +678,7 @@ DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                       "TAG", "SYMBOL", "FRACTION", "REAL", 
                                       "IMAGINARY", "MOMENT", "DURATION", 
                                       "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
-                                      "TEXT", "IDENTIFIER", "NEWLINE", "SPACE", 
+                                      "TEXT", "IDENTIFIER", "EOL", "SPACE", 
                                       "LINE", "CHARACTER", "NATURAL", "INTEGER", 
                                       "FLOAT", "SPAN", "SCHEME", "CONTEXT", 
                                       "YEARS", "MONTHS", "DAYS", "HOURS", 

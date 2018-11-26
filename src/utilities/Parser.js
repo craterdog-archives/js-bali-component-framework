@@ -200,7 +200,7 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 
 // catalog:
 //     association (',' association)* |
-//     NEWLINE (association NEWLINE)* |
+//     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var parameters = this.parameters;
@@ -547,7 +547,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 
 // list:
 //     expression (',' expression)* |
-//     NEWLINE (expression NEWLINE)* |
+//     EOL (expression EOL)* |
 //     /*empty list*/
 ParsingVisitor.prototype.visitList = function(ctx) {
     var parameters = this.parameters;
@@ -638,21 +638,21 @@ ParsingVisitor.prototype.visitMoment = function(ctx) {
 };
 
 
-// newlineCatalog: NEWLINE (association NEWLINE)*
+// newlineCatalog: EOL (association EOL)*
 ParsingVisitor.prototype.visitNewlineCatalog = function(ctx) {
     // delegate to abstract type
     this.visitCatalog(ctx);
 };
 
 
-// newlineList: NEWLINE (expression NEWLINE)*
+// newlineList: EOL (expression EOL)*
 ParsingVisitor.prototype.visitNewlineList = function(ctx) {
     // delegate to abstract type
     this.visitList(ctx);
 };
 
 
-// newlineProcedure: NEWLINE (statement NEWLINE)*
+// newlineProcedure: EOL (statement EOL)*
 ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
     // delegate to abstract type
     this.visitProcedure(ctx);
@@ -733,7 +733,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 
 // procedure:
 //     statement (';' statement)*   |
-//     NEWLINE (statement NEWLINE)* |
+//     EOL (statement EOL)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
     var tree = new composites.Tree(types.PROCEDURE, 0);
