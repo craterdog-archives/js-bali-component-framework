@@ -64,7 +64,7 @@ exports.Parser = Parser;
  */
 Parser.prototype.parseDocument = function(document) {
     var parser = initializeParser(document, this.debug);
-    var antlrTree = parser.component();
+    var antlrTree = parser.document();
     var component = convertParseTree(antlrTree);
     return component;
 };
