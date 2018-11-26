@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This abstract class defines the methods that all Bali components must support.
+ * This abstract class defines the methods that all components must support.
  */
 var types = require('../abstractions/Types');
 var Comparator = require('../utilities/Comparator').Comparator;
@@ -81,11 +81,12 @@ Component.prototype.toString = function() {
 
 
 /**
- * This method provides the canonical way to export this component as Bali source code.
+ * This method provides the canonical way to export this component in
+ * Bali Document Notation™.
  * 
  * @param {String} indentation A blank string that will be prepended to each indented line in
  * the source code.
- * @returns {String} The Bali source code for this component.
+ * @returns {String} The source code for this component.
  */
 Component.prototype.toDocument = function(indentation) {
     var formatter = new Formatter();

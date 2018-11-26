@@ -1,4 +1,4 @@
-grammar BaliTokens;
+grammar Tokens;
 
 /* TOKEN RULES
  It's important to remember that tokens are recognized by the

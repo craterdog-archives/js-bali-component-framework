@@ -131,7 +131,7 @@ Set.prototype.toArray = function() {
  */
 Set.prototype.getIndex = function(item) {
     item = Composite.asComponent(item);
-    var index = this.tree.index(item) + 1;  // convert to Bali ordinal based indexing
+    var index = this.tree.index(item) + 1;  // convert to ordinal based indexing
     return index;
 };
 

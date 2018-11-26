@@ -11,8 +11,8 @@
 
 /**
  * This library provides functions that format a parse tree structure produced
- * by the <code>ComponentParser</code> class and generates a canonical version of
- * the corresponding Bali source code string.
+ * by the <code>Parser</code> class and generates a canonical version of
+ * the corresponding Bali Document Notation™ source code string.
  */
 var types = require('../abstractions/Types');
 
@@ -20,7 +20,7 @@ var types = require('../abstractions/Types');
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements a formatter that formats Bali component structures as strings
+ * This class implements a formatter that formats component structures as strings
  * containing Bali Document Notation™ in a canonical way.
  * 
  * @constructor
@@ -34,14 +34,14 @@ exports.Formatter = Formatter;
 
 
 /**
- * This method generates the canonical Bali source code for the specified parse tree
+ * This method generates the canonical source code for the specified parse tree
  * component. If an optional indentation string is specified, then each line of the
  * generated source code will be indented using that string.
  * 
- * @param {Component} component The Bali parse tree representing a component.
+ * @param {Component} component The parse tree representing a component.
  * @param {String} indentation A blank string that will be prepended to each indented line in
  * the source code.
- * @returns {String} The Bali source code for the parse tree component.
+ * @returns {String} The source code for the parse tree component.
  */
 Formatter.prototype.formatComponent = function(component, indentation) {
     var visitor = new FormattingVisitor(indentation);

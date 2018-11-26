@@ -11,9 +11,9 @@
 
 /**
  * This collection class implements a tree data structure. Each node in the tree may
- * contain zero or more children. A node with no children is a Bali elemental component.
- * Tree nodes may also be any other type of Bali component including catalogs, lists, sets,
- * stacks, and ranges. Collectively, all of the Bali components including the tree nodes
+ * contain zero or more children. A node with no children is an elemental component.
+ * Tree nodes may also be any other type of component including catalogs, lists, sets,
+ * stacks, and ranges. Collectively, all of the components including the tree nodes
  * are used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */

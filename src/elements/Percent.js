@@ -40,8 +40,7 @@ function Percent(value, parameters) {
     }
     this.value = value / 100.0;  // convert to numeric value
     var source = value.toString() + '%';  // append the %
-    // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
-    source = source.replace(/e\+?/g, 'E');
+    source = source.replace(/e\+?/g, 'E');  // convert to the canonical exponent format
     this.setSource(source);
     return this;
 }

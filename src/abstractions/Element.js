@@ -37,10 +37,10 @@ exports.Element = Element;
 
 
 /**
- * This function returns the Bali source code representation of a JS number.
+ * This function returns the Bali Document Notation™ representation of a JS number.
  * 
  * @param {number} number The JS number.
- * @returns {String} The Bali source code for that number.
+ * @returns {String} The source code for that number.
  */
 Element.numberToSource = function(number) {
     var source = number.toString();
@@ -71,8 +71,7 @@ Element.numberToSource = function(number) {
             source = 'undefined';
             break;
         default:
-            // must replace the 'e' in the JS exponent with 'E' for the Bali exponent
-            source = source.replace(/e\+?/g, 'E');
+            source = source.replace(/e\+?/g, 'E');  // convert to canonical exponent format
     }
     return source;
 };

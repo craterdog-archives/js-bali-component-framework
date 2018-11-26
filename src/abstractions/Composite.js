@@ -39,7 +39,7 @@ exports.Composite = Composite;
 
 
 /**
- * This function converts a JS primitive type into its corresponding Bali component.
+ * This function converts a JS primitive type into its corresponding component.
  * NOTE: it's tempting to use the parser in this method but that would introduce a
  * circular dependency with this class and the parser.
  * 

@@ -18,7 +18,7 @@
 // PRIVATE ATTRIBUTES
 
 var MAP = {
-    Invalid:                      'Invalid',  // Bali uses ordinal based indexing
+    Invalid:                      'Invalid',  // ordinal based indexing
     Angle:                        '#8SC89QY4LM68LTGPXYMBR6C0LR324L3P',
     ArithmeticExpression:         '#G5YBFG0VKKQLMABZ7Z9T1NMPLA87WJHA',
     Association:                  '#MKCH4J7N45P3GV9RC7JA7QBVV2H2PPJB',
@@ -91,13 +91,13 @@ var TAGS = Object.values(MAP);
 // PUBLIC CONSTANTS
 
 /**
- * This constant defines the number of characters allowed in the Bali source code for a
- * component before the source code can no longer be inline (on a single line).
+ * This constant defines the number of characters allowed in Bali Document Notation™
+ * for a component before the source code can no longer be inline (on a single line).
  */
 exports.IS_COMPLEX = 25;
 
 /*
- * These constants define numeric values for each of the Bali types.
+ * These constants define numeric values for each of the types.
  */
 exports.ANGLE = NAMES.indexOf('Angle');
 exports.ARITHMETIC_EXPRESSION = NAMES.indexOf('ArithmeticExpression');

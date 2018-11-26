@@ -65,9 +65,9 @@ function Complex(value, parameters) {
             break;
         case 'String':
             var chars = new antlr.InputStream(value);
-            var lexer = new grammar.BaliDocumentLexer(chars);
+            var lexer = new grammar.DocumentLexer(chars);
             var tokens = new antlr.CommonTokenStream(lexer);
-            var parser = new grammar.BaliDocumentParser(tokens);
+            var parser = new grammar.DocumentParser(tokens);
             parser.buildParseTrees = true;
             var tree = parser.number();
             var nodeType = tree.constructor.name;
@@ -251,9 +251,10 @@ Complex.prototype.comparedTo = function(that) {
 
 
 /**
- * This method returns the Bali source code version of the complex number in retangular form.
+ * This method returns the Bali Document Notation™ for this complex number
+ * in retangular form.
  * 
- * @returns {String}
+ * @returns {String} The source string.
  */
 Complex.prototype.toRectangular = function() {
     if (this.isUndefined()) return 'undefined';
@@ -271,9 +272,10 @@ Complex.prototype.toRectangular = function() {
 
 
 /**
- * This method returns a the Bali source code of the complex number in polar form.
+ * This method returns the Bali Document Notation™ for this complex number
+ * in polar form.
  * 
- * @returns {String}
+ * @returns {String} The source string.
  */
 Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
@@ -331,7 +333,7 @@ function imaginaryToSource(imaginary) {
 }
 
 
-// NOTE: the following functions take Bali parse tree nodes and covert them into
+// NOTE: the following functions take parse tree nodes and covert them into
 // Javascript numbers.
 
 

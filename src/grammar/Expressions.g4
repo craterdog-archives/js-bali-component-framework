@@ -1,5 +1,5 @@
-grammar BaliExpressions;
-import BaliElements;
+grammar Expressions;
+import Elements;
 
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression    |

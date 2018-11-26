@@ -10,19 +10,19 @@
 'use strict';
 
 /**
- * This library provides functions that parse a Bali source code string and
- * produce the corresponding parse tree structure.
+ * This library provides functions that parse a Bali Document Notation™
+ * and produce the corresponding parse tree structure.
  * 
  * NOTE: The implementation of this parser uses a raw parser that was
  * generated using ANTLR v4. The raw parse tree structure that comes
  * out of ANTLR is frankly not very well designed and hard to understand.
  * So, we walk the raw parse tree with a visitor object generating a nice
- * clean parse tree that is constructed exclusively of Bali component
+ * clean parse tree that is constructed exclusively of component
  * types (e.g. elements, collections, and trees). This means that some of
  * the code in the visitor class in this module is a bit harder to
  * understand but the result is that the rest of the javascript code that
- * makes up all of the modules for the Bali Nebula™ is simpler,
- * clean and easy to read. You're welcome ;-)
+ * makes up all of the modules for the Bali Nebula™ is simpler, clean and
+ * easy to read. You're welcome ;-)
  */
 var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
@@ -33,14 +33,13 @@ var elements = require('../elements');
 var composites = require('../composites');
 var collections = require('../collections');
 var codex = require('../utilities/Codex');
-var Iterator = require('../utilities/Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
 
 /**
  * This class implements a parser that parses strings containing Bali Document Notation™ and
- * generates the corresponding Bali component structures.
+ * generates the corresponding component structures.
  * 
  * @constructor
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
@@ -75,16 +74,16 @@ Parser.prototype.parseDocument = function(document) {
 
 function initializeParser(document, debug) {
     var chars = new antlr.InputStream(document);
-    var lexer = new grammar.BaliDocumentLexer(chars);
-    var listener = new BaliErrorListener(debug);
+    var lexer = new grammar.DocumentLexer(chars);
+    var listener = new CustomErrorListener(debug);
     lexer.removeErrorListeners();
     lexer.addErrorListener(listener);
     var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.BaliDocumentParser(tokens);
+    var parser = new grammar.DocumentParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
-    parser._errHandler = new BaliErrorStrategy();
+    parser._errHandler = new CustomErrorStrategy();
     return parser;
 }
 
@@ -100,17 +99,17 @@ function convertParseTree(antlrTree) {
 // PRIVATE CLASSES
 
 /*
- * NOTE: This visitor implements the raw ANTLR4 visitor pattern, NOT the Bali
- * visitor pattern. It is used to convert the raw ANTLR4 parse tree into a
- * clean Bali parse tree.
+ * NOTE: This visitor implements the raw ANTLR4 visitor pattern, NOT the
+ * component visitor pattern. It is used to convert the raw ANTLR4 parse
+ * tree into a clean parse tree.
  */
 
 function ParsingVisitor() {
-    grammar.BaliDocumentVisitor.call(this);
+    grammar.DocumentVisitor.call(this);
     this.depth = 0;
     return this;
 }
-ParsingVisitor.prototype = Object.create(grammar.BaliDocumentVisitor.prototype);
+ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
@@ -1018,25 +1017,25 @@ ParsingVisitor.prototype.visitWithClause = function(ctx) {
 // CUSTOM ERROR HANDLING
 
 // override the recover method in the lexer to fail fast
-grammar.BaliDocumentLexer.prototype.recover = function(e) {
+grammar.DocumentLexer.prototype.recover = function(e) {
     throw e;
 };
 
 
-function BaliErrorStrategy() {
+function CustomErrorStrategy() {
     ErrorStrategy.DefaultErrorStrategy.call(this);
     return this;
 }
-BaliErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
-BaliErrorStrategy.prototype.constructor = BaliErrorStrategy;
+CustomErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
+CustomErrorStrategy.prototype.constructor = CustomErrorStrategy;
 
 
-BaliErrorStrategy.prototype.reportError = function(recognizer, e) {
+CustomErrorStrategy.prototype.reportError = function(recognizer, e) {
     recognizer.notifyErrorListeners(e.message, recognizer.getCurrentToken(), e);
 };
 
 
-BaliErrorStrategy.prototype.recover = function(recognizer, e) {
+CustomErrorStrategy.prototype.recover = function(recognizer, e) {
     var context = recognizer._ctx;
     while (context !== null) {
         context.exception = e;
@@ -1046,29 +1045,29 @@ BaliErrorStrategy.prototype.recover = function(recognizer, e) {
 };
 
 
-BaliErrorStrategy.prototype.recoverInline = function(recognizer) {
+CustomErrorStrategy.prototype.recoverInline = function(recognizer) {
     var exception = new antlr.error.InputMismatchException(recognizer);
     this.reportError(recognizer, exception);
     this.recover(recognizer, exception);
 };
 
 
-BaliErrorStrategy.prototype.sync = function(recognizer) {
+CustomErrorStrategy.prototype.sync = function(recognizer) {
     // ignore for efficiency
 };
 
 
-function BaliErrorListener(debug) {
+function CustomErrorListener(debug) {
     antlr.error.ErrorListener.call(this);
     this.exactOnly = false;  // 'true' results in uninteresting ambiguities so leave 'false'
     this.debug = debug;
     return this;
 }
-BaliErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
-BaliErrorListener.prototype.constructor = BaliErrorListener;
+CustomErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
+CustomErrorListener.prototype.constructor = CustomErrorListener;
 
 
-BaliErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
+CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
     // log a message
     var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     var input = token ? offendingToken.getInputStream() : recognizer._input;
@@ -1087,7 +1086,7 @@ BaliErrorListener.prototype.syntaxError = function(recognizer, offendingToken, l
 };
 
 
-BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, alternatives, configs) {
+CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, alternatives, configs) {
     if (this.debug) {
         var rule = getRule(recognizer, dfa);
         alternatives = [];
@@ -1101,7 +1100,7 @@ BaliErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startInd
 };
 
 
-BaliErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
+CustomErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
     if (this.debug) {
         var rule = getRule(recognizer, dfa);
         var message = 'PARSER Encountered a context sensitive rule: ' + rule;

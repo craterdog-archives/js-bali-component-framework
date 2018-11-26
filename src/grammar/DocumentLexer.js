@@ -1,4 +1,4 @@
-// Generated from src/grammar/BaliDocument.g4 by ANTLR 4.7.1
+// Generated from src/grammar/Document.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
@@ -513,187 +513,181 @@ var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
 
 var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
 
-function BaliDocumentLexer(input) {
+function DocumentLexer(input) {
 	antlr4.Lexer.call(this, input);
     this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
     return this;
 }
 
-BaliDocumentLexer.prototype = Object.create(antlr4.Lexer.prototype);
-BaliDocumentLexer.prototype.constructor = BaliDocumentLexer;
+DocumentLexer.prototype = Object.create(antlr4.Lexer.prototype);
+DocumentLexer.prototype.constructor = DocumentLexer;
 
-Object.defineProperty(BaliDocumentLexer.prototype, "atn", {
+Object.defineProperty(DocumentLexer.prototype, "atn", {
         get : function() {
                 return atn;
         }
 });
 
-BaliDocumentLexer.EOF = antlr4.Token.EOF;
-BaliDocumentLexer.T__0 = 1;
-BaliDocumentLexer.T__1 = 2;
-BaliDocumentLexer.T__2 = 3;
-BaliDocumentLexer.T__3 = 4;
-BaliDocumentLexer.T__4 = 5;
-BaliDocumentLexer.T__5 = 6;
-BaliDocumentLexer.T__6 = 7;
-BaliDocumentLexer.T__7 = 8;
-BaliDocumentLexer.T__8 = 9;
-BaliDocumentLexer.T__9 = 10;
-BaliDocumentLexer.T__10 = 11;
-BaliDocumentLexer.T__11 = 12;
-BaliDocumentLexer.T__12 = 13;
-BaliDocumentLexer.T__13 = 14;
-BaliDocumentLexer.T__14 = 15;
-BaliDocumentLexer.T__15 = 16;
-BaliDocumentLexer.T__16 = 17;
-BaliDocumentLexer.T__17 = 18;
-BaliDocumentLexer.T__18 = 19;
-BaliDocumentLexer.T__19 = 20;
-BaliDocumentLexer.T__20 = 21;
-BaliDocumentLexer.T__21 = 22;
-BaliDocumentLexer.T__22 = 23;
-BaliDocumentLexer.T__23 = 24;
-BaliDocumentLexer.T__24 = 25;
-BaliDocumentLexer.T__25 = 26;
-BaliDocumentLexer.T__26 = 27;
-BaliDocumentLexer.T__27 = 28;
-BaliDocumentLexer.T__28 = 29;
-BaliDocumentLexer.T__29 = 30;
-BaliDocumentLexer.T__30 = 31;
-BaliDocumentLexer.T__31 = 32;
-BaliDocumentLexer.T__32 = 33;
-BaliDocumentLexer.T__33 = 34;
-BaliDocumentLexer.T__34 = 35;
-BaliDocumentLexer.T__35 = 36;
-BaliDocumentLexer.T__36 = 37;
-BaliDocumentLexer.T__37 = 38;
-BaliDocumentLexer.T__38 = 39;
-BaliDocumentLexer.T__39 = 40;
-BaliDocumentLexer.T__40 = 41;
-BaliDocumentLexer.T__41 = 42;
-BaliDocumentLexer.T__42 = 43;
-BaliDocumentLexer.T__43 = 44;
-BaliDocumentLexer.T__44 = 45;
-BaliDocumentLexer.T__45 = 46;
-BaliDocumentLexer.T__46 = 47;
-BaliDocumentLexer.T__47 = 48;
-BaliDocumentLexer.T__48 = 49;
-BaliDocumentLexer.T__49 = 50;
-BaliDocumentLexer.T__50 = 51;
-BaliDocumentLexer.T__51 = 52;
-BaliDocumentLexer.T__52 = 53;
-BaliDocumentLexer.T__53 = 54;
-BaliDocumentLexer.T__54 = 55;
-BaliDocumentLexer.T__55 = 56;
-BaliDocumentLexer.T__56 = 57;
-BaliDocumentLexer.T__57 = 58;
-BaliDocumentLexer.T__58 = 59;
-BaliDocumentLexer.T__59 = 60;
-BaliDocumentLexer.T__60 = 61;
-BaliDocumentLexer.T__61 = 62;
-BaliDocumentLexer.T__62 = 63;
-BaliDocumentLexer.T__63 = 64;
-BaliDocumentLexer.T__64 = 65;
-BaliDocumentLexer.T__65 = 66;
-BaliDocumentLexer.T__66 = 67;
-BaliDocumentLexer.T__67 = 68;
-BaliDocumentLexer.T__68 = 69;
-BaliDocumentLexer.SHELL = 70;
-BaliDocumentLexer.TAG = 71;
-BaliDocumentLexer.SYMBOL = 72;
-BaliDocumentLexer.FRACTION = 73;
-BaliDocumentLexer.REAL = 74;
-BaliDocumentLexer.IMAGINARY = 75;
-BaliDocumentLexer.MOMENT = 76;
-BaliDocumentLexer.DURATION = 77;
-BaliDocumentLexer.RESOURCE = 78;
-BaliDocumentLexer.VERSION = 79;
-BaliDocumentLexer.BINARY = 80;
-BaliDocumentLexer.TEXT_BLOCK = 81;
-BaliDocumentLexer.TEXT = 82;
-BaliDocumentLexer.IDENTIFIER = 83;
-BaliDocumentLexer.NEWLINE = 84;
-BaliDocumentLexer.SPACE = 85;
+DocumentLexer.EOF = antlr4.Token.EOF;
+DocumentLexer.T__0 = 1;
+DocumentLexer.T__1 = 2;
+DocumentLexer.T__2 = 3;
+DocumentLexer.T__3 = 4;
+DocumentLexer.T__4 = 5;
+DocumentLexer.T__5 = 6;
+DocumentLexer.T__6 = 7;
+DocumentLexer.T__7 = 8;
+DocumentLexer.T__8 = 9;
+DocumentLexer.T__9 = 10;
+DocumentLexer.T__10 = 11;
+DocumentLexer.T__11 = 12;
+DocumentLexer.T__12 = 13;
+DocumentLexer.T__13 = 14;
+DocumentLexer.T__14 = 15;
+DocumentLexer.T__15 = 16;
+DocumentLexer.T__16 = 17;
+DocumentLexer.T__17 = 18;
+DocumentLexer.T__18 = 19;
+DocumentLexer.T__19 = 20;
+DocumentLexer.T__20 = 21;
+DocumentLexer.T__21 = 22;
+DocumentLexer.T__22 = 23;
+DocumentLexer.T__23 = 24;
+DocumentLexer.T__24 = 25;
+DocumentLexer.T__25 = 26;
+DocumentLexer.T__26 = 27;
+DocumentLexer.T__27 = 28;
+DocumentLexer.T__28 = 29;
+DocumentLexer.T__29 = 30;
+DocumentLexer.T__30 = 31;
+DocumentLexer.T__31 = 32;
+DocumentLexer.T__32 = 33;
+DocumentLexer.T__33 = 34;
+DocumentLexer.T__34 = 35;
+DocumentLexer.T__35 = 36;
+DocumentLexer.T__36 = 37;
+DocumentLexer.T__37 = 38;
+DocumentLexer.T__38 = 39;
+DocumentLexer.T__39 = 40;
+DocumentLexer.T__40 = 41;
+DocumentLexer.T__41 = 42;
+DocumentLexer.T__42 = 43;
+DocumentLexer.T__43 = 44;
+DocumentLexer.T__44 = 45;
+DocumentLexer.T__45 = 46;
+DocumentLexer.T__46 = 47;
+DocumentLexer.T__47 = 48;
+DocumentLexer.T__48 = 49;
+DocumentLexer.T__49 = 50;
+DocumentLexer.T__50 = 51;
+DocumentLexer.T__51 = 52;
+DocumentLexer.T__52 = 53;
+DocumentLexer.T__53 = 54;
+DocumentLexer.T__54 = 55;
+DocumentLexer.T__55 = 56;
+DocumentLexer.T__56 = 57;
+DocumentLexer.T__57 = 58;
+DocumentLexer.T__58 = 59;
+DocumentLexer.T__59 = 60;
+DocumentLexer.T__60 = 61;
+DocumentLexer.T__61 = 62;
+DocumentLexer.T__62 = 63;
+DocumentLexer.T__63 = 64;
+DocumentLexer.T__64 = 65;
+DocumentLexer.T__65 = 66;
+DocumentLexer.T__66 = 67;
+DocumentLexer.T__67 = 68;
+DocumentLexer.T__68 = 69;
+DocumentLexer.SHELL = 70;
+DocumentLexer.TAG = 71;
+DocumentLexer.SYMBOL = 72;
+DocumentLexer.FRACTION = 73;
+DocumentLexer.REAL = 74;
+DocumentLexer.IMAGINARY = 75;
+DocumentLexer.MOMENT = 76;
+DocumentLexer.DURATION = 77;
+DocumentLexer.RESOURCE = 78;
+DocumentLexer.VERSION = 79;
+DocumentLexer.BINARY = 80;
+DocumentLexer.TEXT_BLOCK = 81;
+DocumentLexer.TEXT = 82;
+DocumentLexer.IDENTIFIER = 83;
+DocumentLexer.NEWLINE = 84;
+DocumentLexer.SPACE = 85;
 
-BaliDocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
+DocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 
-BaliDocumentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
+DocumentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
 
-BaliDocumentLexer.prototype.literalNames = [ null, "'['", "']'", "'('", 
-                                             "')'", "'..'", "','", "':'", 
-                                             "'{'", "'}'", "';'", "'handle'", 
-                                             "'matching'", "'with'", "':='", 
-                                             "'checkout'", "'from'", "'save'", 
-                                             "'to'", "'discard'", "'commit'", 
-                                             "'publish'", "'queue'", "'on'", 
-                                             "'wait'", "'for'", "'if'", 
-                                             "'then'", "'else'", "'select'", 
-                                             "'do'", "'each'", "'in'", "'while'", 
-                                             "'continue'", "'loop'", "'break'", 
-                                             "'return'", "'throw'", "'@'", 
-                                             "'.'", "'!'", "'^'", "'-'", 
-                                             "'/'", "'*'", "'//'", "'+'", 
-                                             "'|'", "'<'", "'='", "'>'", 
-                                             "'is'", "'matches'", "'not'", 
-                                             "'and'", "'sans'", "'xor'", 
-                                             "'or'", "'?'", "'~'", "'undefined'", 
-                                             "'infinity'", "'e^~'", "'%'", 
-                                             "'false'", "'true'", "'0'", 
-                                             "'none'", "'any'" ];
+DocumentLexer.prototype.literalNames = [ null, "'['", "']'", "'('", "')'", 
+                                         "'..'", "','", "':'", "'{'", "'}'", 
+                                         "';'", "'handle'", "'matching'", 
+                                         "'with'", "':='", "'checkout'", 
+                                         "'from'", "'save'", "'to'", "'discard'", 
+                                         "'commit'", "'publish'", "'queue'", 
+                                         "'on'", "'wait'", "'for'", "'if'", 
+                                         "'then'", "'else'", "'select'", 
+                                         "'do'", "'each'", "'in'", "'while'", 
+                                         "'continue'", "'loop'", "'break'", 
+                                         "'return'", "'throw'", "'@'", "'.'", 
+                                         "'!'", "'^'", "'-'", "'/'", "'*'", 
+                                         "'//'", "'+'", "'|'", "'<'", "'='", 
+                                         "'>'", "'is'", "'matches'", "'not'", 
+                                         "'and'", "'sans'", "'xor'", "'or'", 
+                                         "'?'", "'~'", "'undefined'", "'infinity'", 
+                                         "'e^~'", "'%'", "'false'", "'true'", 
+                                         "'0'", "'none'", "'any'" ];
 
-BaliDocumentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              null, null, null, null, null, 
-                                              "SHELL", "TAG", "SYMBOL", 
-                                              "FRACTION", "REAL", "IMAGINARY", 
-                                              "MOMENT", "DURATION", "RESOURCE", 
-                                              "VERSION", "BINARY", "TEXT_BLOCK", 
-                                              "TEXT", "IDENTIFIER", "NEWLINE", 
-                                              "SPACE" ];
+DocumentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          "SHELL", "TAG", "SYMBOL", "FRACTION", 
+                                          "REAL", "IMAGINARY", "MOMENT", 
+                                          "DURATION", "RESOURCE", "VERSION", 
+                                          "BINARY", "TEXT_BLOCK", "TEXT", 
+                                          "IDENTIFIER", "NEWLINE", "SPACE" ];
 
-BaliDocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", 
-                                          "T__4", "T__5", "T__6", "T__7", 
-                                          "T__8", "T__9", "T__10", "T__11", 
-                                          "T__12", "T__13", "T__14", "T__15", 
-                                          "T__16", "T__17", "T__18", "T__19", 
-                                          "T__20", "T__21", "T__22", "T__23", 
-                                          "T__24", "T__25", "T__26", "T__27", 
-                                          "T__28", "T__29", "T__30", "T__31", 
-                                          "T__32", "T__33", "T__34", "T__35", 
-                                          "T__36", "T__37", "T__38", "T__39", 
-                                          "T__40", "T__41", "T__42", "T__43", 
-                                          "T__44", "T__45", "T__46", "T__47", 
-                                          "T__48", "T__49", "T__50", "T__51", 
-                                          "T__52", "T__53", "T__54", "T__55", 
-                                          "T__56", "T__57", "T__58", "T__59", 
-                                          "T__60", "T__61", "T__62", "T__63", 
-                                          "T__64", "T__65", "T__66", "T__67", 
-                                          "T__68", "SHELL", "TAG", "SYMBOL", 
-                                          "FRACTION", "REAL", "IMAGINARY", 
-                                          "MOMENT", "DURATION", "RESOURCE", 
-                                          "VERSION", "BINARY", "TEXT_BLOCK", 
-                                          "TEXT", "IDENTIFIER", "NEWLINE", 
-                                          "SPACE", "LINE", "CHARACTER", 
-                                          "NATURAL", "INTEGER", "FLOAT", 
-                                          "SPAN", "SCHEME", "CONTEXT", "YEARS", 
-                                          "MONTHS", "DAYS", "HOURS", "MINUTES", 
-                                          "SECONDS", "BASE16", "BASE32", 
-                                          "BASE64", "ESCAPE" ];
+DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", 
+                                      "T__5", "T__6", "T__7", "T__8", "T__9", 
+                                      "T__10", "T__11", "T__12", "T__13", 
+                                      "T__14", "T__15", "T__16", "T__17", 
+                                      "T__18", "T__19", "T__20", "T__21", 
+                                      "T__22", "T__23", "T__24", "T__25", 
+                                      "T__26", "T__27", "T__28", "T__29", 
+                                      "T__30", "T__31", "T__32", "T__33", 
+                                      "T__34", "T__35", "T__36", "T__37", 
+                                      "T__38", "T__39", "T__40", "T__41", 
+                                      "T__42", "T__43", "T__44", "T__45", 
+                                      "T__46", "T__47", "T__48", "T__49", 
+                                      "T__50", "T__51", "T__52", "T__53", 
+                                      "T__54", "T__55", "T__56", "T__57", 
+                                      "T__58", "T__59", "T__60", "T__61", 
+                                      "T__62", "T__63", "T__64", "T__65", 
+                                      "T__66", "T__67", "T__68", "SHELL", 
+                                      "TAG", "SYMBOL", "FRACTION", "REAL", 
+                                      "IMAGINARY", "MOMENT", "DURATION", 
+                                      "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
+                                      "TEXT", "IDENTIFIER", "NEWLINE", "SPACE", 
+                                      "LINE", "CHARACTER", "NATURAL", "INTEGER", 
+                                      "FLOAT", "SPAN", "SCHEME", "CONTEXT", 
+                                      "YEARS", "MONTHS", "DAYS", "HOURS", 
+                                      "MINUTES", "SECONDS", "BASE16", "BASE32", 
+                                      "BASE64", "ESCAPE" ];
 
-BaliDocumentLexer.prototype.grammarFileName = "BaliDocument.g4";
+DocumentLexer.prototype.grammarFileName = "Document.g4";
 
 
 
-exports.BaliDocumentLexer = BaliDocumentLexer;
+exports.DocumentLexer = DocumentLexer;
 

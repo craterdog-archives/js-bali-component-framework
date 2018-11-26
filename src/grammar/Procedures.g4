@@ -1,5 +1,5 @@
-grammar BaliProcedures;
-import BaliExpressions;
+grammar Procedures;
+import Expressions;
 
 procedure:
     statement (';' statement)*    #inlineProcedure  |

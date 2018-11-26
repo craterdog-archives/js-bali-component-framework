@@ -1,10 +1,10 @@
-// Generated from src/grammar/BaliDocument.g4 by ANTLR 4.7.1
+// Generated from src/grammar/Document.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
-var BaliDocumentListener = require('./BaliDocumentListener').BaliDocumentListener;
-var BaliDocumentVisitor = require('./BaliDocumentVisitor').BaliDocumentVisitor;
+var DocumentListener = require('./DocumentListener').DocumentListener;
+var DocumentVisitor = require('./DocumentVisitor').DocumentVisitor;
 
-var grammarFileName = "BaliDocument.g4";
+var grammarFileName = "Document.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003W\u01ec\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
@@ -362,7 +362,7 @@ var ruleNames =  [ "document", "component", "value", "structure", "parameters",
                    "number", "percent", "probability", "real", "reference", 
                    "symbol", "tag", "template", "text", "version" ];
 
-function BaliDocumentParser (input) {
+function DocumentParser (input) {
 	antlr4.Parser.call(this, input);
     this._interp = new antlr4.atn.ParserATNSimulator(this, atn, decisionsToDFA, sharedContextCache);
     this.ruleNames = ruleNames;
@@ -371,157 +371,157 @@ function BaliDocumentParser (input) {
     return this;
 }
 
-BaliDocumentParser.prototype = Object.create(antlr4.Parser.prototype);
-BaliDocumentParser.prototype.constructor = BaliDocumentParser;
+DocumentParser.prototype = Object.create(antlr4.Parser.prototype);
+DocumentParser.prototype.constructor = DocumentParser;
 
-Object.defineProperty(BaliDocumentParser.prototype, "atn", {
+Object.defineProperty(DocumentParser.prototype, "atn", {
 	get : function() {
 		return atn;
 	}
 });
 
-BaliDocumentParser.EOF = antlr4.Token.EOF;
-BaliDocumentParser.T__0 = 1;
-BaliDocumentParser.T__1 = 2;
-BaliDocumentParser.T__2 = 3;
-BaliDocumentParser.T__3 = 4;
-BaliDocumentParser.T__4 = 5;
-BaliDocumentParser.T__5 = 6;
-BaliDocumentParser.T__6 = 7;
-BaliDocumentParser.T__7 = 8;
-BaliDocumentParser.T__8 = 9;
-BaliDocumentParser.T__9 = 10;
-BaliDocumentParser.T__10 = 11;
-BaliDocumentParser.T__11 = 12;
-BaliDocumentParser.T__12 = 13;
-BaliDocumentParser.T__13 = 14;
-BaliDocumentParser.T__14 = 15;
-BaliDocumentParser.T__15 = 16;
-BaliDocumentParser.T__16 = 17;
-BaliDocumentParser.T__17 = 18;
-BaliDocumentParser.T__18 = 19;
-BaliDocumentParser.T__19 = 20;
-BaliDocumentParser.T__20 = 21;
-BaliDocumentParser.T__21 = 22;
-BaliDocumentParser.T__22 = 23;
-BaliDocumentParser.T__23 = 24;
-BaliDocumentParser.T__24 = 25;
-BaliDocumentParser.T__25 = 26;
-BaliDocumentParser.T__26 = 27;
-BaliDocumentParser.T__27 = 28;
-BaliDocumentParser.T__28 = 29;
-BaliDocumentParser.T__29 = 30;
-BaliDocumentParser.T__30 = 31;
-BaliDocumentParser.T__31 = 32;
-BaliDocumentParser.T__32 = 33;
-BaliDocumentParser.T__33 = 34;
-BaliDocumentParser.T__34 = 35;
-BaliDocumentParser.T__35 = 36;
-BaliDocumentParser.T__36 = 37;
-BaliDocumentParser.T__37 = 38;
-BaliDocumentParser.T__38 = 39;
-BaliDocumentParser.T__39 = 40;
-BaliDocumentParser.T__40 = 41;
-BaliDocumentParser.T__41 = 42;
-BaliDocumentParser.T__42 = 43;
-BaliDocumentParser.T__43 = 44;
-BaliDocumentParser.T__44 = 45;
-BaliDocumentParser.T__45 = 46;
-BaliDocumentParser.T__46 = 47;
-BaliDocumentParser.T__47 = 48;
-BaliDocumentParser.T__48 = 49;
-BaliDocumentParser.T__49 = 50;
-BaliDocumentParser.T__50 = 51;
-BaliDocumentParser.T__51 = 52;
-BaliDocumentParser.T__52 = 53;
-BaliDocumentParser.T__53 = 54;
-BaliDocumentParser.T__54 = 55;
-BaliDocumentParser.T__55 = 56;
-BaliDocumentParser.T__56 = 57;
-BaliDocumentParser.T__57 = 58;
-BaliDocumentParser.T__58 = 59;
-BaliDocumentParser.T__59 = 60;
-BaliDocumentParser.T__60 = 61;
-BaliDocumentParser.T__61 = 62;
-BaliDocumentParser.T__62 = 63;
-BaliDocumentParser.T__63 = 64;
-BaliDocumentParser.T__64 = 65;
-BaliDocumentParser.T__65 = 66;
-BaliDocumentParser.T__66 = 67;
-BaliDocumentParser.T__67 = 68;
-BaliDocumentParser.T__68 = 69;
-BaliDocumentParser.SHELL = 70;
-BaliDocumentParser.TAG = 71;
-BaliDocumentParser.SYMBOL = 72;
-BaliDocumentParser.FRACTION = 73;
-BaliDocumentParser.REAL = 74;
-BaliDocumentParser.IMAGINARY = 75;
-BaliDocumentParser.MOMENT = 76;
-BaliDocumentParser.DURATION = 77;
-BaliDocumentParser.RESOURCE = 78;
-BaliDocumentParser.VERSION = 79;
-BaliDocumentParser.BINARY = 80;
-BaliDocumentParser.TEXT_BLOCK = 81;
-BaliDocumentParser.TEXT = 82;
-BaliDocumentParser.IDENTIFIER = 83;
-BaliDocumentParser.NEWLINE = 84;
-BaliDocumentParser.SPACE = 85;
+DocumentParser.EOF = antlr4.Token.EOF;
+DocumentParser.T__0 = 1;
+DocumentParser.T__1 = 2;
+DocumentParser.T__2 = 3;
+DocumentParser.T__3 = 4;
+DocumentParser.T__4 = 5;
+DocumentParser.T__5 = 6;
+DocumentParser.T__6 = 7;
+DocumentParser.T__7 = 8;
+DocumentParser.T__8 = 9;
+DocumentParser.T__9 = 10;
+DocumentParser.T__10 = 11;
+DocumentParser.T__11 = 12;
+DocumentParser.T__12 = 13;
+DocumentParser.T__13 = 14;
+DocumentParser.T__14 = 15;
+DocumentParser.T__15 = 16;
+DocumentParser.T__16 = 17;
+DocumentParser.T__17 = 18;
+DocumentParser.T__18 = 19;
+DocumentParser.T__19 = 20;
+DocumentParser.T__20 = 21;
+DocumentParser.T__21 = 22;
+DocumentParser.T__22 = 23;
+DocumentParser.T__23 = 24;
+DocumentParser.T__24 = 25;
+DocumentParser.T__25 = 26;
+DocumentParser.T__26 = 27;
+DocumentParser.T__27 = 28;
+DocumentParser.T__28 = 29;
+DocumentParser.T__29 = 30;
+DocumentParser.T__30 = 31;
+DocumentParser.T__31 = 32;
+DocumentParser.T__32 = 33;
+DocumentParser.T__33 = 34;
+DocumentParser.T__34 = 35;
+DocumentParser.T__35 = 36;
+DocumentParser.T__36 = 37;
+DocumentParser.T__37 = 38;
+DocumentParser.T__38 = 39;
+DocumentParser.T__39 = 40;
+DocumentParser.T__40 = 41;
+DocumentParser.T__41 = 42;
+DocumentParser.T__42 = 43;
+DocumentParser.T__43 = 44;
+DocumentParser.T__44 = 45;
+DocumentParser.T__45 = 46;
+DocumentParser.T__46 = 47;
+DocumentParser.T__47 = 48;
+DocumentParser.T__48 = 49;
+DocumentParser.T__49 = 50;
+DocumentParser.T__50 = 51;
+DocumentParser.T__51 = 52;
+DocumentParser.T__52 = 53;
+DocumentParser.T__53 = 54;
+DocumentParser.T__54 = 55;
+DocumentParser.T__55 = 56;
+DocumentParser.T__56 = 57;
+DocumentParser.T__57 = 58;
+DocumentParser.T__58 = 59;
+DocumentParser.T__59 = 60;
+DocumentParser.T__60 = 61;
+DocumentParser.T__61 = 62;
+DocumentParser.T__62 = 63;
+DocumentParser.T__63 = 64;
+DocumentParser.T__64 = 65;
+DocumentParser.T__65 = 66;
+DocumentParser.T__66 = 67;
+DocumentParser.T__67 = 68;
+DocumentParser.T__68 = 69;
+DocumentParser.SHELL = 70;
+DocumentParser.TAG = 71;
+DocumentParser.SYMBOL = 72;
+DocumentParser.FRACTION = 73;
+DocumentParser.REAL = 74;
+DocumentParser.IMAGINARY = 75;
+DocumentParser.MOMENT = 76;
+DocumentParser.DURATION = 77;
+DocumentParser.RESOURCE = 78;
+DocumentParser.VERSION = 79;
+DocumentParser.BINARY = 80;
+DocumentParser.TEXT_BLOCK = 81;
+DocumentParser.TEXT = 82;
+DocumentParser.IDENTIFIER = 83;
+DocumentParser.NEWLINE = 84;
+DocumentParser.SPACE = 85;
 
-BaliDocumentParser.RULE_document = 0;
-BaliDocumentParser.RULE_component = 1;
-BaliDocumentParser.RULE_value = 2;
-BaliDocumentParser.RULE_structure = 3;
-BaliDocumentParser.RULE_parameters = 4;
-BaliDocumentParser.RULE_collection = 5;
-BaliDocumentParser.RULE_range = 6;
-BaliDocumentParser.RULE_list = 7;
-BaliDocumentParser.RULE_catalog = 8;
-BaliDocumentParser.RULE_association = 9;
-BaliDocumentParser.RULE_source = 10;
-BaliDocumentParser.RULE_procedure = 11;
-BaliDocumentParser.RULE_statement = 12;
-BaliDocumentParser.RULE_mainClause = 13;
-BaliDocumentParser.RULE_handleClause = 14;
-BaliDocumentParser.RULE_block = 15;
-BaliDocumentParser.RULE_evaluateClause = 16;
-BaliDocumentParser.RULE_checkoutClause = 17;
-BaliDocumentParser.RULE_saveClause = 18;
-BaliDocumentParser.RULE_discardClause = 19;
-BaliDocumentParser.RULE_commitClause = 20;
-BaliDocumentParser.RULE_publishClause = 21;
-BaliDocumentParser.RULE_queueClause = 22;
-BaliDocumentParser.RULE_waitClause = 23;
-BaliDocumentParser.RULE_ifClause = 24;
-BaliDocumentParser.RULE_selectClause = 25;
-BaliDocumentParser.RULE_withClause = 26;
-BaliDocumentParser.RULE_whileClause = 27;
-BaliDocumentParser.RULE_continueClause = 28;
-BaliDocumentParser.RULE_breakClause = 29;
-BaliDocumentParser.RULE_returnClause = 30;
-BaliDocumentParser.RULE_throwClause = 31;
-BaliDocumentParser.RULE_recipient = 32;
-BaliDocumentParser.RULE_subcomponent = 33;
-BaliDocumentParser.RULE_expression = 34;
-BaliDocumentParser.RULE_variable = 35;
-BaliDocumentParser.RULE_funxtion = 36;
-BaliDocumentParser.RULE_message = 37;
-BaliDocumentParser.RULE_indices = 38;
-BaliDocumentParser.RULE_element = 39;
-BaliDocumentParser.RULE_angle = 40;
-BaliDocumentParser.RULE_binary = 41;
-BaliDocumentParser.RULE_duration = 42;
-BaliDocumentParser.RULE_imaginary = 43;
-BaliDocumentParser.RULE_moment = 44;
-BaliDocumentParser.RULE_number = 45;
-BaliDocumentParser.RULE_percent = 46;
-BaliDocumentParser.RULE_probability = 47;
-BaliDocumentParser.RULE_real = 48;
-BaliDocumentParser.RULE_reference = 49;
-BaliDocumentParser.RULE_symbol = 50;
-BaliDocumentParser.RULE_tag = 51;
-BaliDocumentParser.RULE_template = 52;
-BaliDocumentParser.RULE_text = 53;
-BaliDocumentParser.RULE_version = 54;
+DocumentParser.RULE_document = 0;
+DocumentParser.RULE_component = 1;
+DocumentParser.RULE_value = 2;
+DocumentParser.RULE_structure = 3;
+DocumentParser.RULE_parameters = 4;
+DocumentParser.RULE_collection = 5;
+DocumentParser.RULE_range = 6;
+DocumentParser.RULE_list = 7;
+DocumentParser.RULE_catalog = 8;
+DocumentParser.RULE_association = 9;
+DocumentParser.RULE_source = 10;
+DocumentParser.RULE_procedure = 11;
+DocumentParser.RULE_statement = 12;
+DocumentParser.RULE_mainClause = 13;
+DocumentParser.RULE_handleClause = 14;
+DocumentParser.RULE_block = 15;
+DocumentParser.RULE_evaluateClause = 16;
+DocumentParser.RULE_checkoutClause = 17;
+DocumentParser.RULE_saveClause = 18;
+DocumentParser.RULE_discardClause = 19;
+DocumentParser.RULE_commitClause = 20;
+DocumentParser.RULE_publishClause = 21;
+DocumentParser.RULE_queueClause = 22;
+DocumentParser.RULE_waitClause = 23;
+DocumentParser.RULE_ifClause = 24;
+DocumentParser.RULE_selectClause = 25;
+DocumentParser.RULE_withClause = 26;
+DocumentParser.RULE_whileClause = 27;
+DocumentParser.RULE_continueClause = 28;
+DocumentParser.RULE_breakClause = 29;
+DocumentParser.RULE_returnClause = 30;
+DocumentParser.RULE_throwClause = 31;
+DocumentParser.RULE_recipient = 32;
+DocumentParser.RULE_subcomponent = 33;
+DocumentParser.RULE_expression = 34;
+DocumentParser.RULE_variable = 35;
+DocumentParser.RULE_funxtion = 36;
+DocumentParser.RULE_message = 37;
+DocumentParser.RULE_indices = 38;
+DocumentParser.RULE_element = 39;
+DocumentParser.RULE_angle = 40;
+DocumentParser.RULE_binary = 41;
+DocumentParser.RULE_duration = 42;
+DocumentParser.RULE_imaginary = 43;
+DocumentParser.RULE_moment = 44;
+DocumentParser.RULE_number = 45;
+DocumentParser.RULE_percent = 46;
+DocumentParser.RULE_probability = 47;
+DocumentParser.RULE_real = 48;
+DocumentParser.RULE_reference = 49;
+DocumentParser.RULE_symbol = 50;
+DocumentParser.RULE_tag = 51;
+DocumentParser.RULE_template = 52;
+DocumentParser.RULE_text = 53;
+DocumentParser.RULE_version = 54;
 
 function DocumentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -532,7 +532,7 @@ function DocumentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_document;
+    this.ruleIndex = DocumentParser.RULE_document;
     return this;
 }
 
@@ -544,7 +544,7 @@ DocumentContext.prototype.component = function() {
 };
 
 DocumentContext.prototype.EOF = function() {
-    return this.getToken(BaliDocumentParser.EOF, 0);
+    return this.getToken(DocumentParser.EOF, 0);
 };
 
 DocumentContext.prototype.NEWLINE = function(i) {
@@ -552,27 +552,27 @@ DocumentContext.prototype.NEWLINE = function(i) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(BaliDocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.NEWLINE);
     } else {
-        return this.getToken(BaliDocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.NEWLINE, i);
     }
 };
 
 
 DocumentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterDocument(this);
 	}
 };
 
 DocumentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitDocument(this);
 	}
 };
 
 DocumentContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitDocument(this);
     } else {
         return visitor.visitChildren(this);
@@ -582,21 +582,21 @@ DocumentContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.DocumentContext = DocumentContext;
+DocumentParser.DocumentContext = DocumentContext;
 
-BaliDocumentParser.prototype.document = function() {
+DocumentParser.prototype.document = function() {
 
     var localctx = new DocumentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 0, BaliDocumentParser.RULE_document);
+    this.enterRule(localctx, 0, DocumentParser.RULE_document);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 113;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        while(_la===BaliDocumentParser.NEWLINE) {
+        while(_la===DocumentParser.NEWLINE) {
             this.state = 110;
-            this.match(BaliDocumentParser.NEWLINE);
+            this.match(DocumentParser.NEWLINE);
             this.state = 115;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
@@ -606,15 +606,15 @@ BaliDocumentParser.prototype.document = function() {
         this.state = 120;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        while(_la===BaliDocumentParser.NEWLINE) {
+        while(_la===DocumentParser.NEWLINE) {
             this.state = 117;
-            this.match(BaliDocumentParser.NEWLINE);
+            this.match(DocumentParser.NEWLINE);
             this.state = 122;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
         }
         this.state = 123;
-        this.match(BaliDocumentParser.EOF);
+        this.match(DocumentParser.EOF);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -638,7 +638,7 @@ function ComponentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_component;
+    this.ruleIndex = DocumentParser.RULE_component;
     return this;
 }
 
@@ -654,19 +654,19 @@ ComponentContext.prototype.parameters = function() {
 };
 
 ComponentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterComponent(this);
 	}
 };
 
 ComponentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitComponent(this);
 	}
 };
 
 ComponentContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitComponent(this);
     } else {
         return visitor.visitChildren(this);
@@ -676,12 +676,12 @@ ComponentContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ComponentContext = ComponentContext;
+DocumentParser.ComponentContext = ComponentContext;
 
-BaliDocumentParser.prototype.component = function() {
+DocumentParser.prototype.component = function() {
 
     var localctx = new ComponentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 2, BaliDocumentParser.RULE_component);
+    this.enterRule(localctx, 2, DocumentParser.RULE_component);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 125;
@@ -717,7 +717,7 @@ function ValueContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_value;
+    this.ruleIndex = DocumentParser.RULE_value;
     return this;
 }
 
@@ -737,19 +737,19 @@ ValueContext.prototype.source = function() {
 };
 
 ValueContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterValue(this);
 	}
 };
 
 ValueContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitValue(this);
 	}
 };
 
 ValueContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitValue(this);
     } else {
         return visitor.visitChildren(this);
@@ -759,47 +759,47 @@ ValueContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ValueContext = ValueContext;
+DocumentParser.ValueContext = ValueContext;
 
-BaliDocumentParser.prototype.value = function() {
+DocumentParser.prototype.value = function() {
 
     var localctx = new ValueContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 4, BaliDocumentParser.RULE_value);
+    this.enterRule(localctx, 4, DocumentParser.RULE_value);
     try {
         this.state = 132;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__2:
-        case BaliDocumentParser.T__59:
-        case BaliDocumentParser.T__60:
-        case BaliDocumentParser.T__61:
-        case BaliDocumentParser.T__64:
-        case BaliDocumentParser.T__65:
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.T__67:
-        case BaliDocumentParser.T__68:
-        case BaliDocumentParser.TAG:
-        case BaliDocumentParser.SYMBOL:
-        case BaliDocumentParser.FRACTION:
-        case BaliDocumentParser.REAL:
-        case BaliDocumentParser.IMAGINARY:
-        case BaliDocumentParser.MOMENT:
-        case BaliDocumentParser.DURATION:
-        case BaliDocumentParser.RESOURCE:
-        case BaliDocumentParser.VERSION:
-        case BaliDocumentParser.BINARY:
-        case BaliDocumentParser.TEXT_BLOCK:
-        case BaliDocumentParser.TEXT:
+        case DocumentParser.T__2:
+        case DocumentParser.T__59:
+        case DocumentParser.T__60:
+        case DocumentParser.T__61:
+        case DocumentParser.T__64:
+        case DocumentParser.T__65:
+        case DocumentParser.T__66:
+        case DocumentParser.T__67:
+        case DocumentParser.T__68:
+        case DocumentParser.TAG:
+        case DocumentParser.SYMBOL:
+        case DocumentParser.FRACTION:
+        case DocumentParser.REAL:
+        case DocumentParser.IMAGINARY:
+        case DocumentParser.MOMENT:
+        case DocumentParser.DURATION:
+        case DocumentParser.RESOURCE:
+        case DocumentParser.VERSION:
+        case DocumentParser.BINARY:
+        case DocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT:
             this.enterOuterAlt(localctx, 1);
             this.state = 129;
             this.element();
             break;
-        case BaliDocumentParser.T__0:
+        case DocumentParser.T__0:
             this.enterOuterAlt(localctx, 2);
             this.state = 130;
             this.structure();
             break;
-        case BaliDocumentParser.T__7:
+        case DocumentParser.T__7:
             this.enterOuterAlt(localctx, 3);
             this.state = 131;
             this.source();
@@ -830,7 +830,7 @@ function StructureContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_structure;
+    this.ruleIndex = DocumentParser.RULE_structure;
     return this;
 }
 
@@ -842,19 +842,19 @@ StructureContext.prototype.collection = function() {
 };
 
 StructureContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterStructure(this);
 	}
 };
 
 StructureContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitStructure(this);
 	}
 };
 
 StructureContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitStructure(this);
     } else {
         return visitor.visitChildren(this);
@@ -864,20 +864,20 @@ StructureContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.StructureContext = StructureContext;
+DocumentParser.StructureContext = StructureContext;
 
-BaliDocumentParser.prototype.structure = function() {
+DocumentParser.prototype.structure = function() {
 
     var localctx = new StructureContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 6, BaliDocumentParser.RULE_structure);
+    this.enterRule(localctx, 6, DocumentParser.RULE_structure);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 134;
-        this.match(BaliDocumentParser.T__0);
+        this.match(DocumentParser.T__0);
         this.state = 135;
         this.collection();
         this.state = 136;
-        this.match(BaliDocumentParser.T__1);
+        this.match(DocumentParser.T__1);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -901,7 +901,7 @@ function ParametersContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_parameters;
+    this.ruleIndex = DocumentParser.RULE_parameters;
     return this;
 }
 
@@ -913,19 +913,19 @@ ParametersContext.prototype.collection = function() {
 };
 
 ParametersContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterParameters(this);
 	}
 };
 
 ParametersContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitParameters(this);
 	}
 };
 
 ParametersContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitParameters(this);
     } else {
         return visitor.visitChildren(this);
@@ -935,20 +935,20 @@ ParametersContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ParametersContext = ParametersContext;
+DocumentParser.ParametersContext = ParametersContext;
 
-BaliDocumentParser.prototype.parameters = function() {
+DocumentParser.prototype.parameters = function() {
 
     var localctx = new ParametersContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 8, BaliDocumentParser.RULE_parameters);
+    this.enterRule(localctx, 8, DocumentParser.RULE_parameters);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 138;
-        this.match(BaliDocumentParser.T__2);
+        this.match(DocumentParser.T__2);
         this.state = 139;
         this.collection();
         this.state = 140;
-        this.match(BaliDocumentParser.T__3);
+        this.match(DocumentParser.T__3);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -972,7 +972,7 @@ function CollectionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_collection;
+    this.ruleIndex = DocumentParser.RULE_collection;
     return this;
 }
 
@@ -992,19 +992,19 @@ CollectionContext.prototype.catalog = function() {
 };
 
 CollectionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterCollection(this);
 	}
 };
 
 CollectionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitCollection(this);
 	}
 };
 
 CollectionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitCollection(this);
     } else {
         return visitor.visitChildren(this);
@@ -1014,12 +1014,12 @@ CollectionContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.CollectionContext = CollectionContext;
+DocumentParser.CollectionContext = CollectionContext;
 
-BaliDocumentParser.prototype.collection = function() {
+DocumentParser.prototype.collection = function() {
 
     var localctx = new CollectionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 10, BaliDocumentParser.RULE_collection);
+    this.enterRule(localctx, 10, DocumentParser.RULE_collection);
     try {
         this.state = 145;
         this._errHandler.sync(this);
@@ -1067,7 +1067,7 @@ function RangeContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_range;
+    this.ruleIndex = DocumentParser.RULE_range;
     return this;
 }
 
@@ -1086,19 +1086,19 @@ RangeContext.prototype.expression = function(i) {
 };
 
 RangeContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterRange(this);
 	}
 };
 
 RangeContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitRange(this);
 	}
 };
 
 RangeContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitRange(this);
     } else {
         return visitor.visitChildren(this);
@@ -1108,18 +1108,18 @@ RangeContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.RangeContext = RangeContext;
+DocumentParser.RangeContext = RangeContext;
 
-BaliDocumentParser.prototype.range = function() {
+DocumentParser.prototype.range = function() {
 
     var localctx = new RangeContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 12, BaliDocumentParser.RULE_range);
+    this.enterRule(localctx, 12, DocumentParser.RULE_range);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 147;
         this.expression(0);
         this.state = 148;
-        this.match(BaliDocumentParser.T__4);
+        this.match(DocumentParser.T__4);
         this.state = 149;
         this.expression(0);
     } catch (re) {
@@ -1145,7 +1145,7 @@ function ListContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_list;
+    this.ruleIndex = DocumentParser.RULE_list;
     return this;
 }
 
@@ -1168,16 +1168,16 @@ function NewlineListContext(parser, ctx) {
 NewlineListContext.prototype = Object.create(ListContext.prototype);
 NewlineListContext.prototype.constructor = NewlineListContext;
 
-BaliDocumentParser.NewlineListContext = NewlineListContext;
+DocumentParser.NewlineListContext = NewlineListContext;
 
 NewlineListContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(BaliDocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.NEWLINE);
     } else {
-        return this.getToken(BaliDocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.NEWLINE, i);
     }
 };
 
@@ -1193,19 +1193,19 @@ NewlineListContext.prototype.expression = function(i) {
     }
 };
 NewlineListContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterNewlineList(this);
 	}
 };
 
 NewlineListContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitNewlineList(this);
 	}
 };
 
 NewlineListContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitNewlineList(this);
     } else {
         return visitor.visitChildren(this);
@@ -1222,22 +1222,22 @@ function EmptyListContext(parser, ctx) {
 EmptyListContext.prototype = Object.create(ListContext.prototype);
 EmptyListContext.prototype.constructor = EmptyListContext;
 
-BaliDocumentParser.EmptyListContext = EmptyListContext;
+DocumentParser.EmptyListContext = EmptyListContext;
 
 EmptyListContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterEmptyList(this);
 	}
 };
 
 EmptyListContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitEmptyList(this);
 	}
 };
 
 EmptyListContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitEmptyList(this);
     } else {
         return visitor.visitChildren(this);
@@ -1254,7 +1254,7 @@ function InlineListContext(parser, ctx) {
 InlineListContext.prototype = Object.create(ListContext.prototype);
 InlineListContext.prototype.constructor = InlineListContext;
 
-BaliDocumentParser.InlineListContext = InlineListContext;
+DocumentParser.InlineListContext = InlineListContext;
 
 InlineListContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -1267,19 +1267,19 @@ InlineListContext.prototype.expression = function(i) {
     }
 };
 InlineListContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInlineList(this);
 	}
 };
 
 InlineListContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInlineList(this);
 	}
 };
 
 InlineListContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInlineList(this);
     } else {
         return visitor.visitChildren(this);
@@ -1288,47 +1288,47 @@ InlineListContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ListContext = ListContext;
+DocumentParser.ListContext = ListContext;
 
-BaliDocumentParser.prototype.list = function() {
+DocumentParser.prototype.list = function() {
 
     var localctx = new ListContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 14, BaliDocumentParser.RULE_list);
+    this.enterRule(localctx, 14, DocumentParser.RULE_list);
     var _la = 0; // Token type
     try {
         this.state = 169;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__0:
-        case BaliDocumentParser.T__2:
-        case BaliDocumentParser.T__7:
-        case BaliDocumentParser.T__38:
-        case BaliDocumentParser.T__42:
-        case BaliDocumentParser.T__43:
-        case BaliDocumentParser.T__44:
-        case BaliDocumentParser.T__47:
-        case BaliDocumentParser.T__53:
-        case BaliDocumentParser.T__59:
-        case BaliDocumentParser.T__60:
-        case BaliDocumentParser.T__61:
-        case BaliDocumentParser.T__64:
-        case BaliDocumentParser.T__65:
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.T__67:
-        case BaliDocumentParser.T__68:
-        case BaliDocumentParser.TAG:
-        case BaliDocumentParser.SYMBOL:
-        case BaliDocumentParser.FRACTION:
-        case BaliDocumentParser.REAL:
-        case BaliDocumentParser.IMAGINARY:
-        case BaliDocumentParser.MOMENT:
-        case BaliDocumentParser.DURATION:
-        case BaliDocumentParser.RESOURCE:
-        case BaliDocumentParser.VERSION:
-        case BaliDocumentParser.BINARY:
-        case BaliDocumentParser.TEXT_BLOCK:
-        case BaliDocumentParser.TEXT:
-        case BaliDocumentParser.IDENTIFIER:
+        case DocumentParser.T__0:
+        case DocumentParser.T__2:
+        case DocumentParser.T__7:
+        case DocumentParser.T__38:
+        case DocumentParser.T__42:
+        case DocumentParser.T__43:
+        case DocumentParser.T__44:
+        case DocumentParser.T__47:
+        case DocumentParser.T__53:
+        case DocumentParser.T__59:
+        case DocumentParser.T__60:
+        case DocumentParser.T__61:
+        case DocumentParser.T__64:
+        case DocumentParser.T__65:
+        case DocumentParser.T__66:
+        case DocumentParser.T__67:
+        case DocumentParser.T__68:
+        case DocumentParser.TAG:
+        case DocumentParser.SYMBOL:
+        case DocumentParser.FRACTION:
+        case DocumentParser.REAL:
+        case DocumentParser.IMAGINARY:
+        case DocumentParser.MOMENT:
+        case DocumentParser.DURATION:
+        case DocumentParser.RESOURCE:
+        case DocumentParser.VERSION:
+        case DocumentParser.BINARY:
+        case DocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT:
+        case DocumentParser.IDENTIFIER:
             localctx = new InlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 151;
@@ -1336,9 +1336,9 @@ BaliDocumentParser.prototype.list = function() {
             this.state = 156;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===BaliDocumentParser.T__5) {
+            while(_la===DocumentParser.T__5) {
                 this.state = 152;
-                this.match(BaliDocumentParser.T__5);
+                this.match(DocumentParser.T__5);
                 this.state = 153;
                 this.expression(0);
                 this.state = 158;
@@ -1346,26 +1346,26 @@ BaliDocumentParser.prototype.list = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.NEWLINE:
+        case DocumentParser.NEWLINE:
             localctx = new NewlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 159;
-            this.match(BaliDocumentParser.NEWLINE);
+            this.match(DocumentParser.NEWLINE);
             this.state = 165;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__64 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.REAL - 71)) | (1 << (BaliDocumentParser.IMAGINARY - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__42 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__47 - 39)) | (1 << (DocumentParser.T__53 - 39)) | (1 << (DocumentParser.T__59 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__64 - 39)) | (1 << (DocumentParser.T__65 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
                 this.state = 160;
                 this.expression(0);
                 this.state = 161;
-                this.match(BaliDocumentParser.NEWLINE);
+                this.match(DocumentParser.NEWLINE);
                 this.state = 167;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.T__1:
-        case BaliDocumentParser.T__3:
+        case DocumentParser.T__1:
+        case DocumentParser.T__3:
             localctx = new EmptyListContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
@@ -1396,7 +1396,7 @@ function CatalogContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_catalog;
+    this.ruleIndex = DocumentParser.RULE_catalog;
     return this;
 }
 
@@ -1419,7 +1419,7 @@ function InlineCatalogContext(parser, ctx) {
 InlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
 InlineCatalogContext.prototype.constructor = InlineCatalogContext;
 
-BaliDocumentParser.InlineCatalogContext = InlineCatalogContext;
+DocumentParser.InlineCatalogContext = InlineCatalogContext;
 
 InlineCatalogContext.prototype.association = function(i) {
     if(i===undefined) {
@@ -1432,19 +1432,19 @@ InlineCatalogContext.prototype.association = function(i) {
     }
 };
 InlineCatalogContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInlineCatalog(this);
 	}
 };
 
 InlineCatalogContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInlineCatalog(this);
 	}
 };
 
 InlineCatalogContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInlineCatalog(this);
     } else {
         return visitor.visitChildren(this);
@@ -1461,16 +1461,16 @@ function NewlineCatalogContext(parser, ctx) {
 NewlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
 NewlineCatalogContext.prototype.constructor = NewlineCatalogContext;
 
-BaliDocumentParser.NewlineCatalogContext = NewlineCatalogContext;
+DocumentParser.NewlineCatalogContext = NewlineCatalogContext;
 
 NewlineCatalogContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(BaliDocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.NEWLINE);
     } else {
-        return this.getToken(BaliDocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.NEWLINE, i);
     }
 };
 
@@ -1486,19 +1486,19 @@ NewlineCatalogContext.prototype.association = function(i) {
     }
 };
 NewlineCatalogContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterNewlineCatalog(this);
 	}
 };
 
 NewlineCatalogContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitNewlineCatalog(this);
 	}
 };
 
 NewlineCatalogContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitNewlineCatalog(this);
     } else {
         return visitor.visitChildren(this);
@@ -1515,22 +1515,22 @@ function EmptyCatalogContext(parser, ctx) {
 EmptyCatalogContext.prototype = Object.create(CatalogContext.prototype);
 EmptyCatalogContext.prototype.constructor = EmptyCatalogContext;
 
-BaliDocumentParser.EmptyCatalogContext = EmptyCatalogContext;
+DocumentParser.EmptyCatalogContext = EmptyCatalogContext;
 
 EmptyCatalogContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterEmptyCatalog(this);
 	}
 };
 
 EmptyCatalogContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitEmptyCatalog(this);
 	}
 };
 
 EmptyCatalogContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitEmptyCatalog(this);
     } else {
         return visitor.visitChildren(this);
@@ -1539,40 +1539,40 @@ EmptyCatalogContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.CatalogContext = CatalogContext;
+DocumentParser.CatalogContext = CatalogContext;
 
-BaliDocumentParser.prototype.catalog = function() {
+DocumentParser.prototype.catalog = function() {
 
     var localctx = new CatalogContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 16, BaliDocumentParser.RULE_catalog);
+    this.enterRule(localctx, 16, DocumentParser.RULE_catalog);
     var _la = 0; // Token type
     try {
         this.state = 189;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__0:
-        case BaliDocumentParser.T__2:
-        case BaliDocumentParser.T__7:
-        case BaliDocumentParser.T__59:
-        case BaliDocumentParser.T__60:
-        case BaliDocumentParser.T__61:
-        case BaliDocumentParser.T__64:
-        case BaliDocumentParser.T__65:
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.T__67:
-        case BaliDocumentParser.T__68:
-        case BaliDocumentParser.TAG:
-        case BaliDocumentParser.SYMBOL:
-        case BaliDocumentParser.FRACTION:
-        case BaliDocumentParser.REAL:
-        case BaliDocumentParser.IMAGINARY:
-        case BaliDocumentParser.MOMENT:
-        case BaliDocumentParser.DURATION:
-        case BaliDocumentParser.RESOURCE:
-        case BaliDocumentParser.VERSION:
-        case BaliDocumentParser.BINARY:
-        case BaliDocumentParser.TEXT_BLOCK:
-        case BaliDocumentParser.TEXT:
+        case DocumentParser.T__0:
+        case DocumentParser.T__2:
+        case DocumentParser.T__7:
+        case DocumentParser.T__59:
+        case DocumentParser.T__60:
+        case DocumentParser.T__61:
+        case DocumentParser.T__64:
+        case DocumentParser.T__65:
+        case DocumentParser.T__66:
+        case DocumentParser.T__67:
+        case DocumentParser.T__68:
+        case DocumentParser.TAG:
+        case DocumentParser.SYMBOL:
+        case DocumentParser.FRACTION:
+        case DocumentParser.REAL:
+        case DocumentParser.IMAGINARY:
+        case DocumentParser.MOMENT:
+        case DocumentParser.DURATION:
+        case DocumentParser.RESOURCE:
+        case DocumentParser.VERSION:
+        case DocumentParser.BINARY:
+        case DocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT:
             localctx = new InlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 171;
@@ -1580,9 +1580,9 @@ BaliDocumentParser.prototype.catalog = function() {
             this.state = 176;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===BaliDocumentParser.T__5) {
+            while(_la===DocumentParser.T__5) {
                 this.state = 172;
-                this.match(BaliDocumentParser.T__5);
+                this.match(DocumentParser.T__5);
                 this.state = 173;
                 this.association();
                 this.state = 178;
@@ -1590,29 +1590,29 @@ BaliDocumentParser.prototype.catalog = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.NEWLINE:
+        case DocumentParser.NEWLINE:
             localctx = new NewlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 179;
-            this.match(BaliDocumentParser.NEWLINE);
+            this.match(DocumentParser.NEWLINE);
             this.state = 185;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 60)) & ~0x1f) == 0 && ((1 << (_la - 60)) & ((1 << (BaliDocumentParser.T__59 - 60)) | (1 << (BaliDocumentParser.T__60 - 60)) | (1 << (BaliDocumentParser.T__61 - 60)) | (1 << (BaliDocumentParser.T__64 - 60)) | (1 << (BaliDocumentParser.T__65 - 60)) | (1 << (BaliDocumentParser.T__66 - 60)) | (1 << (BaliDocumentParser.T__67 - 60)) | (1 << (BaliDocumentParser.T__68 - 60)) | (1 << (BaliDocumentParser.TAG - 60)) | (1 << (BaliDocumentParser.SYMBOL - 60)) | (1 << (BaliDocumentParser.FRACTION - 60)) | (1 << (BaliDocumentParser.REAL - 60)) | (1 << (BaliDocumentParser.IMAGINARY - 60)) | (1 << (BaliDocumentParser.MOMENT - 60)) | (1 << (BaliDocumentParser.DURATION - 60)) | (1 << (BaliDocumentParser.RESOURCE - 60)) | (1 << (BaliDocumentParser.VERSION - 60)) | (1 << (BaliDocumentParser.BINARY - 60)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 60)) | (1 << (BaliDocumentParser.TEXT - 60)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 60)) & ~0x1f) == 0 && ((1 << (_la - 60)) & ((1 << (DocumentParser.T__59 - 60)) | (1 << (DocumentParser.T__60 - 60)) | (1 << (DocumentParser.T__61 - 60)) | (1 << (DocumentParser.T__64 - 60)) | (1 << (DocumentParser.T__65 - 60)) | (1 << (DocumentParser.T__66 - 60)) | (1 << (DocumentParser.T__67 - 60)) | (1 << (DocumentParser.T__68 - 60)) | (1 << (DocumentParser.TAG - 60)) | (1 << (DocumentParser.SYMBOL - 60)) | (1 << (DocumentParser.FRACTION - 60)) | (1 << (DocumentParser.REAL - 60)) | (1 << (DocumentParser.IMAGINARY - 60)) | (1 << (DocumentParser.MOMENT - 60)) | (1 << (DocumentParser.DURATION - 60)) | (1 << (DocumentParser.RESOURCE - 60)) | (1 << (DocumentParser.VERSION - 60)) | (1 << (DocumentParser.BINARY - 60)) | (1 << (DocumentParser.TEXT_BLOCK - 60)) | (1 << (DocumentParser.TEXT - 60)))) !== 0)) {
                 this.state = 180;
                 this.association();
                 this.state = 181;
-                this.match(BaliDocumentParser.NEWLINE);
+                this.match(DocumentParser.NEWLINE);
                 this.state = 187;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.T__6:
+        case DocumentParser.T__6:
             localctx = new EmptyCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 188;
-            this.match(BaliDocumentParser.T__6);
+            this.match(DocumentParser.T__6);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -1640,7 +1640,7 @@ function AssociationContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_association;
+    this.ruleIndex = DocumentParser.RULE_association;
     return this;
 }
 
@@ -1656,19 +1656,19 @@ AssociationContext.prototype.expression = function() {
 };
 
 AssociationContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterAssociation(this);
 	}
 };
 
 AssociationContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitAssociation(this);
 	}
 };
 
 AssociationContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitAssociation(this);
     } else {
         return visitor.visitChildren(this);
@@ -1678,18 +1678,18 @@ AssociationContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.AssociationContext = AssociationContext;
+DocumentParser.AssociationContext = AssociationContext;
 
-BaliDocumentParser.prototype.association = function() {
+DocumentParser.prototype.association = function() {
 
     var localctx = new AssociationContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 18, BaliDocumentParser.RULE_association);
+    this.enterRule(localctx, 18, DocumentParser.RULE_association);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 191;
         this.component();
         this.state = 192;
-        this.match(BaliDocumentParser.T__6);
+        this.match(DocumentParser.T__6);
         this.state = 193;
         this.expression(0);
     } catch (re) {
@@ -1715,7 +1715,7 @@ function SourceContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_source;
+    this.ruleIndex = DocumentParser.RULE_source;
     return this;
 }
 
@@ -1727,19 +1727,19 @@ SourceContext.prototype.procedure = function() {
 };
 
 SourceContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSource(this);
 	}
 };
 
 SourceContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSource(this);
 	}
 };
 
 SourceContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSource(this);
     } else {
         return visitor.visitChildren(this);
@@ -1749,20 +1749,20 @@ SourceContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.SourceContext = SourceContext;
+DocumentParser.SourceContext = SourceContext;
 
-BaliDocumentParser.prototype.source = function() {
+DocumentParser.prototype.source = function() {
 
     var localctx = new SourceContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 20, BaliDocumentParser.RULE_source);
+    this.enterRule(localctx, 20, DocumentParser.RULE_source);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 195;
-        this.match(BaliDocumentParser.T__7);
+        this.match(DocumentParser.T__7);
         this.state = 196;
         this.procedure();
         this.state = 197;
-        this.match(BaliDocumentParser.T__8);
+        this.match(DocumentParser.T__8);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -1786,7 +1786,7 @@ function ProcedureContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_procedure;
+    this.ruleIndex = DocumentParser.RULE_procedure;
     return this;
 }
 
@@ -1809,22 +1809,22 @@ function EmptyProcedureContext(parser, ctx) {
 EmptyProcedureContext.prototype = Object.create(ProcedureContext.prototype);
 EmptyProcedureContext.prototype.constructor = EmptyProcedureContext;
 
-BaliDocumentParser.EmptyProcedureContext = EmptyProcedureContext;
+DocumentParser.EmptyProcedureContext = EmptyProcedureContext;
 
 EmptyProcedureContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterEmptyProcedure(this);
 	}
 };
 
 EmptyProcedureContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitEmptyProcedure(this);
 	}
 };
 
 EmptyProcedureContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitEmptyProcedure(this);
     } else {
         return visitor.visitChildren(this);
@@ -1841,16 +1841,16 @@ function NewlineProcedureContext(parser, ctx) {
 NewlineProcedureContext.prototype = Object.create(ProcedureContext.prototype);
 NewlineProcedureContext.prototype.constructor = NewlineProcedureContext;
 
-BaliDocumentParser.NewlineProcedureContext = NewlineProcedureContext;
+DocumentParser.NewlineProcedureContext = NewlineProcedureContext;
 
 NewlineProcedureContext.prototype.NEWLINE = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(BaliDocumentParser.NEWLINE);
+        return this.getTokens(DocumentParser.NEWLINE);
     } else {
-        return this.getToken(BaliDocumentParser.NEWLINE, i);
+        return this.getToken(DocumentParser.NEWLINE, i);
     }
 };
 
@@ -1866,19 +1866,19 @@ NewlineProcedureContext.prototype.statement = function(i) {
     }
 };
 NewlineProcedureContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterNewlineProcedure(this);
 	}
 };
 
 NewlineProcedureContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitNewlineProcedure(this);
 	}
 };
 
 NewlineProcedureContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitNewlineProcedure(this);
     } else {
         return visitor.visitChildren(this);
@@ -1895,7 +1895,7 @@ function InlineProcedureContext(parser, ctx) {
 InlineProcedureContext.prototype = Object.create(ProcedureContext.prototype);
 InlineProcedureContext.prototype.constructor = InlineProcedureContext;
 
-BaliDocumentParser.InlineProcedureContext = InlineProcedureContext;
+DocumentParser.InlineProcedureContext = InlineProcedureContext;
 
 InlineProcedureContext.prototype.statement = function(i) {
     if(i===undefined) {
@@ -1908,19 +1908,19 @@ InlineProcedureContext.prototype.statement = function(i) {
     }
 };
 InlineProcedureContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInlineProcedure(this);
 	}
 };
 
 InlineProcedureContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInlineProcedure(this);
 	}
 };
 
 InlineProcedureContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInlineProcedure(this);
     } else {
         return visitor.visitChildren(this);
@@ -1929,62 +1929,62 @@ InlineProcedureContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ProcedureContext = ProcedureContext;
+DocumentParser.ProcedureContext = ProcedureContext;
 
-BaliDocumentParser.prototype.procedure = function() {
+DocumentParser.prototype.procedure = function() {
 
     var localctx = new ProcedureContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 22, BaliDocumentParser.RULE_procedure);
+    this.enterRule(localctx, 22, DocumentParser.RULE_procedure);
     var _la = 0; // Token type
     try {
         this.state = 217;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__0:
-        case BaliDocumentParser.T__2:
-        case BaliDocumentParser.T__7:
-        case BaliDocumentParser.T__12:
-        case BaliDocumentParser.T__14:
-        case BaliDocumentParser.T__16:
-        case BaliDocumentParser.T__18:
-        case BaliDocumentParser.T__19:
-        case BaliDocumentParser.T__20:
-        case BaliDocumentParser.T__21:
-        case BaliDocumentParser.T__23:
-        case BaliDocumentParser.T__25:
-        case BaliDocumentParser.T__28:
-        case BaliDocumentParser.T__32:
-        case BaliDocumentParser.T__33:
-        case BaliDocumentParser.T__35:
-        case BaliDocumentParser.T__36:
-        case BaliDocumentParser.T__37:
-        case BaliDocumentParser.T__38:
-        case BaliDocumentParser.T__42:
-        case BaliDocumentParser.T__43:
-        case BaliDocumentParser.T__44:
-        case BaliDocumentParser.T__47:
-        case BaliDocumentParser.T__53:
-        case BaliDocumentParser.T__59:
-        case BaliDocumentParser.T__60:
-        case BaliDocumentParser.T__61:
-        case BaliDocumentParser.T__64:
-        case BaliDocumentParser.T__65:
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.T__67:
-        case BaliDocumentParser.T__68:
-        case BaliDocumentParser.TAG:
-        case BaliDocumentParser.SYMBOL:
-        case BaliDocumentParser.FRACTION:
-        case BaliDocumentParser.REAL:
-        case BaliDocumentParser.IMAGINARY:
-        case BaliDocumentParser.MOMENT:
-        case BaliDocumentParser.DURATION:
-        case BaliDocumentParser.RESOURCE:
-        case BaliDocumentParser.VERSION:
-        case BaliDocumentParser.BINARY:
-        case BaliDocumentParser.TEXT_BLOCK:
-        case BaliDocumentParser.TEXT:
-        case BaliDocumentParser.IDENTIFIER:
+        case DocumentParser.T__0:
+        case DocumentParser.T__2:
+        case DocumentParser.T__7:
+        case DocumentParser.T__12:
+        case DocumentParser.T__14:
+        case DocumentParser.T__16:
+        case DocumentParser.T__18:
+        case DocumentParser.T__19:
+        case DocumentParser.T__20:
+        case DocumentParser.T__21:
+        case DocumentParser.T__23:
+        case DocumentParser.T__25:
+        case DocumentParser.T__28:
+        case DocumentParser.T__32:
+        case DocumentParser.T__33:
+        case DocumentParser.T__35:
+        case DocumentParser.T__36:
+        case DocumentParser.T__37:
+        case DocumentParser.T__38:
+        case DocumentParser.T__42:
+        case DocumentParser.T__43:
+        case DocumentParser.T__44:
+        case DocumentParser.T__47:
+        case DocumentParser.T__53:
+        case DocumentParser.T__59:
+        case DocumentParser.T__60:
+        case DocumentParser.T__61:
+        case DocumentParser.T__64:
+        case DocumentParser.T__65:
+        case DocumentParser.T__66:
+        case DocumentParser.T__67:
+        case DocumentParser.T__68:
+        case DocumentParser.TAG:
+        case DocumentParser.SYMBOL:
+        case DocumentParser.FRACTION:
+        case DocumentParser.REAL:
+        case DocumentParser.IMAGINARY:
+        case DocumentParser.MOMENT:
+        case DocumentParser.DURATION:
+        case DocumentParser.RESOURCE:
+        case DocumentParser.VERSION:
+        case DocumentParser.BINARY:
+        case DocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT:
+        case DocumentParser.IDENTIFIER:
             localctx = new InlineProcedureContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 199;
@@ -1992,9 +1992,9 @@ BaliDocumentParser.prototype.procedure = function() {
             this.state = 204;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===BaliDocumentParser.T__9) {
+            while(_la===DocumentParser.T__9) {
                 this.state = 200;
-                this.match(BaliDocumentParser.T__9);
+                this.match(DocumentParser.T__9);
                 this.state = 201;
                 this.statement();
                 this.state = 206;
@@ -2002,25 +2002,25 @@ BaliDocumentParser.prototype.procedure = function() {
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.NEWLINE:
+        case DocumentParser.NEWLINE:
             localctx = new NewlineProcedureContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 207;
-            this.match(BaliDocumentParser.NEWLINE);
+            this.match(DocumentParser.NEWLINE);
             this.state = 213;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7) | (1 << BaliDocumentParser.T__12) | (1 << BaliDocumentParser.T__14) | (1 << BaliDocumentParser.T__16) | (1 << BaliDocumentParser.T__18) | (1 << BaliDocumentParser.T__19) | (1 << BaliDocumentParser.T__20) | (1 << BaliDocumentParser.T__21) | (1 << BaliDocumentParser.T__23) | (1 << BaliDocumentParser.T__25) | (1 << BaliDocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (BaliDocumentParser.T__32 - 33)) | (1 << (BaliDocumentParser.T__33 - 33)) | (1 << (BaliDocumentParser.T__35 - 33)) | (1 << (BaliDocumentParser.T__36 - 33)) | (1 << (BaliDocumentParser.T__37 - 33)) | (1 << (BaliDocumentParser.T__38 - 33)) | (1 << (BaliDocumentParser.T__42 - 33)) | (1 << (BaliDocumentParser.T__43 - 33)) | (1 << (BaliDocumentParser.T__44 - 33)) | (1 << (BaliDocumentParser.T__47 - 33)) | (1 << (BaliDocumentParser.T__53 - 33)) | (1 << (BaliDocumentParser.T__59 - 33)) | (1 << (BaliDocumentParser.T__60 - 33)) | (1 << (BaliDocumentParser.T__61 - 33)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (BaliDocumentParser.T__64 - 65)) | (1 << (BaliDocumentParser.T__65 - 65)) | (1 << (BaliDocumentParser.T__66 - 65)) | (1 << (BaliDocumentParser.T__67 - 65)) | (1 << (BaliDocumentParser.T__68 - 65)) | (1 << (BaliDocumentParser.TAG - 65)) | (1 << (BaliDocumentParser.SYMBOL - 65)) | (1 << (BaliDocumentParser.FRACTION - 65)) | (1 << (BaliDocumentParser.REAL - 65)) | (1 << (BaliDocumentParser.IMAGINARY - 65)) | (1 << (BaliDocumentParser.MOMENT - 65)) | (1 << (BaliDocumentParser.DURATION - 65)) | (1 << (BaliDocumentParser.RESOURCE - 65)) | (1 << (BaliDocumentParser.VERSION - 65)) | (1 << (BaliDocumentParser.BINARY - 65)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 65)) | (1 << (BaliDocumentParser.TEXT - 65)) | (1 << (BaliDocumentParser.IDENTIFIER - 65)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7) | (1 << DocumentParser.T__12) | (1 << DocumentParser.T__14) | (1 << DocumentParser.T__16) | (1 << DocumentParser.T__18) | (1 << DocumentParser.T__19) | (1 << DocumentParser.T__20) | (1 << DocumentParser.T__21) | (1 << DocumentParser.T__23) | (1 << DocumentParser.T__25) | (1 << DocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (DocumentParser.T__32 - 33)) | (1 << (DocumentParser.T__33 - 33)) | (1 << (DocumentParser.T__35 - 33)) | (1 << (DocumentParser.T__36 - 33)) | (1 << (DocumentParser.T__37 - 33)) | (1 << (DocumentParser.T__38 - 33)) | (1 << (DocumentParser.T__42 - 33)) | (1 << (DocumentParser.T__43 - 33)) | (1 << (DocumentParser.T__44 - 33)) | (1 << (DocumentParser.T__47 - 33)) | (1 << (DocumentParser.T__53 - 33)) | (1 << (DocumentParser.T__59 - 33)) | (1 << (DocumentParser.T__60 - 33)) | (1 << (DocumentParser.T__61 - 33)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (DocumentParser.T__64 - 65)) | (1 << (DocumentParser.T__65 - 65)) | (1 << (DocumentParser.T__66 - 65)) | (1 << (DocumentParser.T__67 - 65)) | (1 << (DocumentParser.T__68 - 65)) | (1 << (DocumentParser.TAG - 65)) | (1 << (DocumentParser.SYMBOL - 65)) | (1 << (DocumentParser.FRACTION - 65)) | (1 << (DocumentParser.REAL - 65)) | (1 << (DocumentParser.IMAGINARY - 65)) | (1 << (DocumentParser.MOMENT - 65)) | (1 << (DocumentParser.DURATION - 65)) | (1 << (DocumentParser.RESOURCE - 65)) | (1 << (DocumentParser.VERSION - 65)) | (1 << (DocumentParser.BINARY - 65)) | (1 << (DocumentParser.TEXT_BLOCK - 65)) | (1 << (DocumentParser.TEXT - 65)) | (1 << (DocumentParser.IDENTIFIER - 65)))) !== 0)) {
                 this.state = 208;
                 this.statement();
                 this.state = 209;
-                this.match(BaliDocumentParser.NEWLINE);
+                this.match(DocumentParser.NEWLINE);
                 this.state = 215;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
             }
             break;
-        case BaliDocumentParser.T__8:
+        case DocumentParser.T__8:
             localctx = new EmptyProcedureContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
@@ -2051,7 +2051,7 @@ function StatementContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_statement;
+    this.ruleIndex = DocumentParser.RULE_statement;
     return this;
 }
 
@@ -2074,19 +2074,19 @@ StatementContext.prototype.handleClause = function(i) {
 };
 
 StatementContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterStatement(this);
 	}
 };
 
 StatementContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitStatement(this);
 	}
 };
 
 StatementContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitStatement(this);
     } else {
         return visitor.visitChildren(this);
@@ -2096,12 +2096,12 @@ StatementContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.StatementContext = StatementContext;
+DocumentParser.StatementContext = StatementContext;
 
-BaliDocumentParser.prototype.statement = function() {
+DocumentParser.prototype.statement = function() {
 
     var localctx = new StatementContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 24, BaliDocumentParser.RULE_statement);
+    this.enterRule(localctx, 24, DocumentParser.RULE_statement);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
@@ -2110,7 +2110,7 @@ BaliDocumentParser.prototype.statement = function() {
         this.state = 223;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        while(_la===BaliDocumentParser.T__10) {
+        while(_la===DocumentParser.T__10) {
             this.state = 220;
             this.handleClause();
             this.state = 225;
@@ -2140,7 +2140,7 @@ function MainClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_mainClause;
+    this.ruleIndex = DocumentParser.RULE_mainClause;
     return this;
 }
 
@@ -2212,19 +2212,19 @@ MainClauseContext.prototype.throwClause = function() {
 };
 
 MainClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterMainClause(this);
 	}
 };
 
 MainClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitMainClause(this);
 	}
 };
 
 MainClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMainClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2234,121 +2234,121 @@ MainClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.MainClauseContext = MainClauseContext;
+DocumentParser.MainClauseContext = MainClauseContext;
 
-BaliDocumentParser.prototype.mainClause = function() {
+DocumentParser.prototype.mainClause = function() {
 
     var localctx = new MainClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 26, BaliDocumentParser.RULE_mainClause);
+    this.enterRule(localctx, 26, DocumentParser.RULE_mainClause);
     try {
         this.state = 242;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__0:
-        case BaliDocumentParser.T__2:
-        case BaliDocumentParser.T__7:
-        case BaliDocumentParser.T__38:
-        case BaliDocumentParser.T__42:
-        case BaliDocumentParser.T__43:
-        case BaliDocumentParser.T__44:
-        case BaliDocumentParser.T__47:
-        case BaliDocumentParser.T__53:
-        case BaliDocumentParser.T__59:
-        case BaliDocumentParser.T__60:
-        case BaliDocumentParser.T__61:
-        case BaliDocumentParser.T__64:
-        case BaliDocumentParser.T__65:
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.T__67:
-        case BaliDocumentParser.T__68:
-        case BaliDocumentParser.TAG:
-        case BaliDocumentParser.SYMBOL:
-        case BaliDocumentParser.FRACTION:
-        case BaliDocumentParser.REAL:
-        case BaliDocumentParser.IMAGINARY:
-        case BaliDocumentParser.MOMENT:
-        case BaliDocumentParser.DURATION:
-        case BaliDocumentParser.RESOURCE:
-        case BaliDocumentParser.VERSION:
-        case BaliDocumentParser.BINARY:
-        case BaliDocumentParser.TEXT_BLOCK:
-        case BaliDocumentParser.TEXT:
-        case BaliDocumentParser.IDENTIFIER:
+        case DocumentParser.T__0:
+        case DocumentParser.T__2:
+        case DocumentParser.T__7:
+        case DocumentParser.T__38:
+        case DocumentParser.T__42:
+        case DocumentParser.T__43:
+        case DocumentParser.T__44:
+        case DocumentParser.T__47:
+        case DocumentParser.T__53:
+        case DocumentParser.T__59:
+        case DocumentParser.T__60:
+        case DocumentParser.T__61:
+        case DocumentParser.T__64:
+        case DocumentParser.T__65:
+        case DocumentParser.T__66:
+        case DocumentParser.T__67:
+        case DocumentParser.T__68:
+        case DocumentParser.TAG:
+        case DocumentParser.SYMBOL:
+        case DocumentParser.FRACTION:
+        case DocumentParser.REAL:
+        case DocumentParser.IMAGINARY:
+        case DocumentParser.MOMENT:
+        case DocumentParser.DURATION:
+        case DocumentParser.RESOURCE:
+        case DocumentParser.VERSION:
+        case DocumentParser.BINARY:
+        case DocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT:
+        case DocumentParser.IDENTIFIER:
             this.enterOuterAlt(localctx, 1);
             this.state = 226;
             this.evaluateClause();
             break;
-        case BaliDocumentParser.T__14:
+        case DocumentParser.T__14:
             this.enterOuterAlt(localctx, 2);
             this.state = 227;
             this.checkoutClause();
             break;
-        case BaliDocumentParser.T__16:
+        case DocumentParser.T__16:
             this.enterOuterAlt(localctx, 3);
             this.state = 228;
             this.saveClause();
             break;
-        case BaliDocumentParser.T__18:
+        case DocumentParser.T__18:
             this.enterOuterAlt(localctx, 4);
             this.state = 229;
             this.discardClause();
             break;
-        case BaliDocumentParser.T__19:
+        case DocumentParser.T__19:
             this.enterOuterAlt(localctx, 5);
             this.state = 230;
             this.commitClause();
             break;
-        case BaliDocumentParser.T__20:
+        case DocumentParser.T__20:
             this.enterOuterAlt(localctx, 6);
             this.state = 231;
             this.publishClause();
             break;
-        case BaliDocumentParser.T__21:
+        case DocumentParser.T__21:
             this.enterOuterAlt(localctx, 7);
             this.state = 232;
             this.queueClause();
             break;
-        case BaliDocumentParser.T__23:
+        case DocumentParser.T__23:
             this.enterOuterAlt(localctx, 8);
             this.state = 233;
             this.waitClause();
             break;
-        case BaliDocumentParser.T__25:
+        case DocumentParser.T__25:
             this.enterOuterAlt(localctx, 9);
             this.state = 234;
             this.ifClause();
             break;
-        case BaliDocumentParser.T__28:
+        case DocumentParser.T__28:
             this.enterOuterAlt(localctx, 10);
             this.state = 235;
             this.selectClause();
             break;
-        case BaliDocumentParser.T__12:
+        case DocumentParser.T__12:
             this.enterOuterAlt(localctx, 11);
             this.state = 236;
             this.withClause();
             break;
-        case BaliDocumentParser.T__32:
+        case DocumentParser.T__32:
             this.enterOuterAlt(localctx, 12);
             this.state = 237;
             this.whileClause();
             break;
-        case BaliDocumentParser.T__33:
+        case DocumentParser.T__33:
             this.enterOuterAlt(localctx, 13);
             this.state = 238;
             this.continueClause();
             break;
-        case BaliDocumentParser.T__35:
+        case DocumentParser.T__35:
             this.enterOuterAlt(localctx, 14);
             this.state = 239;
             this.breakClause();
             break;
-        case BaliDocumentParser.T__36:
+        case DocumentParser.T__36:
             this.enterOuterAlt(localctx, 15);
             this.state = 240;
             this.returnClause();
             break;
-        case BaliDocumentParser.T__37:
+        case DocumentParser.T__37:
             this.enterOuterAlt(localctx, 16);
             this.state = 241;
             this.throwClause();
@@ -2379,7 +2379,7 @@ function HandleClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_handleClause;
+    this.ruleIndex = DocumentParser.RULE_handleClause;
     return this;
 }
 
@@ -2399,19 +2399,19 @@ HandleClauseContext.prototype.block = function() {
 };
 
 HandleClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterHandleClause(this);
 	}
 };
 
 HandleClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitHandleClause(this);
 	}
 };
 
 HandleClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitHandleClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2421,24 +2421,24 @@ HandleClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.HandleClauseContext = HandleClauseContext;
+DocumentParser.HandleClauseContext = HandleClauseContext;
 
-BaliDocumentParser.prototype.handleClause = function() {
+DocumentParser.prototype.handleClause = function() {
 
     var localctx = new HandleClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 28, BaliDocumentParser.RULE_handleClause);
+    this.enterRule(localctx, 28, DocumentParser.RULE_handleClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 244;
-        this.match(BaliDocumentParser.T__10);
+        this.match(DocumentParser.T__10);
         this.state = 245;
         this.symbol();
         this.state = 246;
-        this.match(BaliDocumentParser.T__11);
+        this.match(DocumentParser.T__11);
         this.state = 247;
         this.expression(0);
         this.state = 248;
-        this.match(BaliDocumentParser.T__12);
+        this.match(DocumentParser.T__12);
         this.state = 249;
         this.block();
     } catch (re) {
@@ -2464,7 +2464,7 @@ function BlockContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_block;
+    this.ruleIndex = DocumentParser.RULE_block;
     return this;
 }
 
@@ -2476,19 +2476,19 @@ BlockContext.prototype.procedure = function() {
 };
 
 BlockContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterBlock(this);
 	}
 };
 
 BlockContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitBlock(this);
 	}
 };
 
 BlockContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitBlock(this);
     } else {
         return visitor.visitChildren(this);
@@ -2498,20 +2498,20 @@ BlockContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.BlockContext = BlockContext;
+DocumentParser.BlockContext = BlockContext;
 
-BaliDocumentParser.prototype.block = function() {
+DocumentParser.prototype.block = function() {
 
     var localctx = new BlockContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 30, BaliDocumentParser.RULE_block);
+    this.enterRule(localctx, 30, DocumentParser.RULE_block);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 251;
-        this.match(BaliDocumentParser.T__7);
+        this.match(DocumentParser.T__7);
         this.state = 252;
         this.procedure();
         this.state = 253;
-        this.match(BaliDocumentParser.T__8);
+        this.match(DocumentParser.T__8);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -2535,7 +2535,7 @@ function EvaluateClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_evaluateClause;
+    this.ruleIndex = DocumentParser.RULE_evaluateClause;
     return this;
 }
 
@@ -2551,19 +2551,19 @@ EvaluateClauseContext.prototype.recipient = function() {
 };
 
 EvaluateClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterEvaluateClause(this);
 	}
 };
 
 EvaluateClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitEvaluateClause(this);
 	}
 };
 
 EvaluateClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitEvaluateClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2573,12 +2573,12 @@ EvaluateClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.EvaluateClauseContext = EvaluateClauseContext;
+DocumentParser.EvaluateClauseContext = EvaluateClauseContext;
 
-BaliDocumentParser.prototype.evaluateClause = function() {
+DocumentParser.prototype.evaluateClause = function() {
 
     var localctx = new EvaluateClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 32, BaliDocumentParser.RULE_evaluateClause);
+    this.enterRule(localctx, 32, DocumentParser.RULE_evaluateClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 258;
@@ -2588,7 +2588,7 @@ BaliDocumentParser.prototype.evaluateClause = function() {
             this.state = 255;
             this.recipient();
             this.state = 256;
-            this.match(BaliDocumentParser.T__13);
+            this.match(DocumentParser.T__13);
 
         }
         this.state = 260;
@@ -2616,7 +2616,7 @@ function CheckoutClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_checkoutClause;
+    this.ruleIndex = DocumentParser.RULE_checkoutClause;
     return this;
 }
 
@@ -2632,19 +2632,19 @@ CheckoutClauseContext.prototype.expression = function() {
 };
 
 CheckoutClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterCheckoutClause(this);
 	}
 };
 
 CheckoutClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitCheckoutClause(this);
 	}
 };
 
 CheckoutClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitCheckoutClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2654,20 +2654,20 @@ CheckoutClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.CheckoutClauseContext = CheckoutClauseContext;
+DocumentParser.CheckoutClauseContext = CheckoutClauseContext;
 
-BaliDocumentParser.prototype.checkoutClause = function() {
+DocumentParser.prototype.checkoutClause = function() {
 
     var localctx = new CheckoutClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 34, BaliDocumentParser.RULE_checkoutClause);
+    this.enterRule(localctx, 34, DocumentParser.RULE_checkoutClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 262;
-        this.match(BaliDocumentParser.T__14);
+        this.match(DocumentParser.T__14);
         this.state = 263;
         this.recipient();
         this.state = 264;
-        this.match(BaliDocumentParser.T__15);
+        this.match(DocumentParser.T__15);
         this.state = 265;
         this.expression(0);
     } catch (re) {
@@ -2693,7 +2693,7 @@ function SaveClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_saveClause;
+    this.ruleIndex = DocumentParser.RULE_saveClause;
     return this;
 }
 
@@ -2712,19 +2712,19 @@ SaveClauseContext.prototype.expression = function(i) {
 };
 
 SaveClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSaveClause(this);
 	}
 };
 
 SaveClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSaveClause(this);
 	}
 };
 
 SaveClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSaveClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2734,20 +2734,20 @@ SaveClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.SaveClauseContext = SaveClauseContext;
+DocumentParser.SaveClauseContext = SaveClauseContext;
 
-BaliDocumentParser.prototype.saveClause = function() {
+DocumentParser.prototype.saveClause = function() {
 
     var localctx = new SaveClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 36, BaliDocumentParser.RULE_saveClause);
+    this.enterRule(localctx, 36, DocumentParser.RULE_saveClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 267;
-        this.match(BaliDocumentParser.T__16);
+        this.match(DocumentParser.T__16);
         this.state = 268;
         this.expression(0);
         this.state = 269;
-        this.match(BaliDocumentParser.T__17);
+        this.match(DocumentParser.T__17);
         this.state = 270;
         this.expression(0);
     } catch (re) {
@@ -2773,7 +2773,7 @@ function DiscardClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_discardClause;
+    this.ruleIndex = DocumentParser.RULE_discardClause;
     return this;
 }
 
@@ -2785,19 +2785,19 @@ DiscardClauseContext.prototype.expression = function() {
 };
 
 DiscardClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterDiscardClause(this);
 	}
 };
 
 DiscardClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitDiscardClause(this);
 	}
 };
 
 DiscardClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitDiscardClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2807,16 +2807,16 @@ DiscardClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.DiscardClauseContext = DiscardClauseContext;
+DocumentParser.DiscardClauseContext = DiscardClauseContext;
 
-BaliDocumentParser.prototype.discardClause = function() {
+DocumentParser.prototype.discardClause = function() {
 
     var localctx = new DiscardClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 38, BaliDocumentParser.RULE_discardClause);
+    this.enterRule(localctx, 38, DocumentParser.RULE_discardClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 272;
-        this.match(BaliDocumentParser.T__18);
+        this.match(DocumentParser.T__18);
         this.state = 273;
         this.expression(0);
     } catch (re) {
@@ -2842,7 +2842,7 @@ function CommitClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_commitClause;
+    this.ruleIndex = DocumentParser.RULE_commitClause;
     return this;
 }
 
@@ -2861,19 +2861,19 @@ CommitClauseContext.prototype.expression = function(i) {
 };
 
 CommitClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterCommitClause(this);
 	}
 };
 
 CommitClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitCommitClause(this);
 	}
 };
 
 CommitClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitCommitClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2883,20 +2883,20 @@ CommitClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.CommitClauseContext = CommitClauseContext;
+DocumentParser.CommitClauseContext = CommitClauseContext;
 
-BaliDocumentParser.prototype.commitClause = function() {
+DocumentParser.prototype.commitClause = function() {
 
     var localctx = new CommitClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 40, BaliDocumentParser.RULE_commitClause);
+    this.enterRule(localctx, 40, DocumentParser.RULE_commitClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 275;
-        this.match(BaliDocumentParser.T__19);
+        this.match(DocumentParser.T__19);
         this.state = 276;
         this.expression(0);
         this.state = 277;
-        this.match(BaliDocumentParser.T__17);
+        this.match(DocumentParser.T__17);
         this.state = 278;
         this.expression(0);
     } catch (re) {
@@ -2922,7 +2922,7 @@ function PublishClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_publishClause;
+    this.ruleIndex = DocumentParser.RULE_publishClause;
     return this;
 }
 
@@ -2934,19 +2934,19 @@ PublishClauseContext.prototype.expression = function() {
 };
 
 PublishClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterPublishClause(this);
 	}
 };
 
 PublishClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitPublishClause(this);
 	}
 };
 
 PublishClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitPublishClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -2956,16 +2956,16 @@ PublishClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.PublishClauseContext = PublishClauseContext;
+DocumentParser.PublishClauseContext = PublishClauseContext;
 
-BaliDocumentParser.prototype.publishClause = function() {
+DocumentParser.prototype.publishClause = function() {
 
     var localctx = new PublishClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 42, BaliDocumentParser.RULE_publishClause);
+    this.enterRule(localctx, 42, DocumentParser.RULE_publishClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 280;
-        this.match(BaliDocumentParser.T__20);
+        this.match(DocumentParser.T__20);
         this.state = 281;
         this.expression(0);
     } catch (re) {
@@ -2991,7 +2991,7 @@ function QueueClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_queueClause;
+    this.ruleIndex = DocumentParser.RULE_queueClause;
     return this;
 }
 
@@ -3010,19 +3010,19 @@ QueueClauseContext.prototype.expression = function(i) {
 };
 
 QueueClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterQueueClause(this);
 	}
 };
 
 QueueClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitQueueClause(this);
 	}
 };
 
 QueueClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitQueueClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3032,20 +3032,20 @@ QueueClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.QueueClauseContext = QueueClauseContext;
+DocumentParser.QueueClauseContext = QueueClauseContext;
 
-BaliDocumentParser.prototype.queueClause = function() {
+DocumentParser.prototype.queueClause = function() {
 
     var localctx = new QueueClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 44, BaliDocumentParser.RULE_queueClause);
+    this.enterRule(localctx, 44, DocumentParser.RULE_queueClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 283;
-        this.match(BaliDocumentParser.T__21);
+        this.match(DocumentParser.T__21);
         this.state = 284;
         this.expression(0);
         this.state = 285;
-        this.match(BaliDocumentParser.T__22);
+        this.match(DocumentParser.T__22);
         this.state = 286;
         this.expression(0);
     } catch (re) {
@@ -3071,7 +3071,7 @@ function WaitClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_waitClause;
+    this.ruleIndex = DocumentParser.RULE_waitClause;
     return this;
 }
 
@@ -3087,19 +3087,19 @@ WaitClauseContext.prototype.expression = function() {
 };
 
 WaitClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterWaitClause(this);
 	}
 };
 
 WaitClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitWaitClause(this);
 	}
 };
 
 WaitClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitWaitClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3109,22 +3109,22 @@ WaitClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.WaitClauseContext = WaitClauseContext;
+DocumentParser.WaitClauseContext = WaitClauseContext;
 
-BaliDocumentParser.prototype.waitClause = function() {
+DocumentParser.prototype.waitClause = function() {
 
     var localctx = new WaitClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 46, BaliDocumentParser.RULE_waitClause);
+    this.enterRule(localctx, 46, DocumentParser.RULE_waitClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 288;
-        this.match(BaliDocumentParser.T__23);
+        this.match(DocumentParser.T__23);
         this.state = 289;
-        this.match(BaliDocumentParser.T__24);
+        this.match(DocumentParser.T__24);
         this.state = 290;
         this.recipient();
         this.state = 291;
-        this.match(BaliDocumentParser.T__15);
+        this.match(DocumentParser.T__15);
         this.state = 292;
         this.expression(0);
     } catch (re) {
@@ -3150,7 +3150,7 @@ function IfClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_ifClause;
+    this.ruleIndex = DocumentParser.RULE_ifClause;
     return this;
 }
 
@@ -3180,19 +3180,19 @@ IfClauseContext.prototype.block = function(i) {
 };
 
 IfClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterIfClause(this);
 	}
 };
 
 IfClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitIfClause(this);
 	}
 };
 
 IfClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitIfClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3202,21 +3202,21 @@ IfClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.IfClauseContext = IfClauseContext;
+DocumentParser.IfClauseContext = IfClauseContext;
 
-BaliDocumentParser.prototype.ifClause = function() {
+DocumentParser.prototype.ifClause = function() {
 
     var localctx = new IfClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 48, BaliDocumentParser.RULE_ifClause);
+    this.enterRule(localctx, 48, DocumentParser.RULE_ifClause);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 294;
-        this.match(BaliDocumentParser.T__25);
+        this.match(DocumentParser.T__25);
         this.state = 295;
         this.expression(0);
         this.state = 296;
-        this.match(BaliDocumentParser.T__26);
+        this.match(DocumentParser.T__26);
         this.state = 297;
         this.block();
         this.state = 306;
@@ -3225,13 +3225,13 @@ BaliDocumentParser.prototype.ifClause = function() {
         while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
             if(_alt===1) {
                 this.state = 298;
-                this.match(BaliDocumentParser.T__27);
+                this.match(DocumentParser.T__27);
                 this.state = 299;
-                this.match(BaliDocumentParser.T__25);
+                this.match(DocumentParser.T__25);
                 this.state = 300;
                 this.expression(0);
                 this.state = 301;
-                this.match(BaliDocumentParser.T__26);
+                this.match(DocumentParser.T__26);
                 this.state = 302;
                 this.block(); 
             }
@@ -3243,9 +3243,9 @@ BaliDocumentParser.prototype.ifClause = function() {
         this.state = 311;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===BaliDocumentParser.T__27) {
+        if(_la===DocumentParser.T__27) {
             this.state = 309;
-            this.match(BaliDocumentParser.T__27);
+            this.match(DocumentParser.T__27);
             this.state = 310;
             this.block();
         }
@@ -3273,7 +3273,7 @@ function SelectClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_selectClause;
+    this.ruleIndex = DocumentParser.RULE_selectClause;
     return this;
 }
 
@@ -3303,19 +3303,19 @@ SelectClauseContext.prototype.block = function(i) {
 };
 
 SelectClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSelectClause(this);
 	}
 };
 
 SelectClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSelectClause(this);
 	}
 };
 
 SelectClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSelectClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3325,21 +3325,21 @@ SelectClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.SelectClauseContext = SelectClauseContext;
+DocumentParser.SelectClauseContext = SelectClauseContext;
 
-BaliDocumentParser.prototype.selectClause = function() {
+DocumentParser.prototype.selectClause = function() {
 
     var localctx = new SelectClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 50, BaliDocumentParser.RULE_selectClause);
+    this.enterRule(localctx, 50, DocumentParser.RULE_selectClause);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 313;
-        this.match(BaliDocumentParser.T__28);
+        this.match(DocumentParser.T__28);
         this.state = 314;
         this.expression(0);
         this.state = 315;
-        this.match(BaliDocumentParser.T__15);
+        this.match(DocumentParser.T__15);
         this.state = 320; 
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -3347,19 +3347,19 @@ BaliDocumentParser.prototype.selectClause = function() {
             this.state = 316;
             this.expression(0);
             this.state = 317;
-            this.match(BaliDocumentParser.T__29);
+            this.match(DocumentParser.T__29);
             this.state = 318;
             this.block();
             this.state = 322; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__64 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.REAL - 71)) | (1 << (BaliDocumentParser.IMAGINARY - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__42 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__47 - 39)) | (1 << (DocumentParser.T__53 - 39)) | (1 << (DocumentParser.T__59 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__64 - 39)) | (1 << (DocumentParser.T__65 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0));
         this.state = 326;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===BaliDocumentParser.T__27) {
+        if(_la===DocumentParser.T__27) {
             this.state = 324;
-            this.match(BaliDocumentParser.T__27);
+            this.match(DocumentParser.T__27);
             this.state = 325;
             this.block();
         }
@@ -3387,7 +3387,7 @@ function WithClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_withClause;
+    this.ruleIndex = DocumentParser.RULE_withClause;
     return this;
 }
 
@@ -3407,19 +3407,19 @@ WithClauseContext.prototype.symbol = function() {
 };
 
 WithClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterWithClause(this);
 	}
 };
 
 WithClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitWithClause(this);
 	}
 };
 
 WithClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitWithClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3429,33 +3429,33 @@ WithClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.WithClauseContext = WithClauseContext;
+DocumentParser.WithClauseContext = WithClauseContext;
 
-BaliDocumentParser.prototype.withClause = function() {
+DocumentParser.prototype.withClause = function() {
 
     var localctx = new WithClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 52, BaliDocumentParser.RULE_withClause);
+    this.enterRule(localctx, 52, DocumentParser.RULE_withClause);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 328;
-        this.match(BaliDocumentParser.T__12);
+        this.match(DocumentParser.T__12);
         this.state = 333;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===BaliDocumentParser.T__30) {
+        if(_la===DocumentParser.T__30) {
             this.state = 329;
-            this.match(BaliDocumentParser.T__30);
+            this.match(DocumentParser.T__30);
             this.state = 330;
             this.symbol();
             this.state = 331;
-            this.match(BaliDocumentParser.T__31);
+            this.match(DocumentParser.T__31);
         }
 
         this.state = 335;
         this.expression(0);
         this.state = 336;
-        this.match(BaliDocumentParser.T__29);
+        this.match(DocumentParser.T__29);
         this.state = 337;
         this.block();
     } catch (re) {
@@ -3481,7 +3481,7 @@ function WhileClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_whileClause;
+    this.ruleIndex = DocumentParser.RULE_whileClause;
     return this;
 }
 
@@ -3497,19 +3497,19 @@ WhileClauseContext.prototype.block = function() {
 };
 
 WhileClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterWhileClause(this);
 	}
 };
 
 WhileClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitWhileClause(this);
 	}
 };
 
 WhileClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitWhileClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3519,20 +3519,20 @@ WhileClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.WhileClauseContext = WhileClauseContext;
+DocumentParser.WhileClauseContext = WhileClauseContext;
 
-BaliDocumentParser.prototype.whileClause = function() {
+DocumentParser.prototype.whileClause = function() {
 
     var localctx = new WhileClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 54, BaliDocumentParser.RULE_whileClause);
+    this.enterRule(localctx, 54, DocumentParser.RULE_whileClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 339;
-        this.match(BaliDocumentParser.T__32);
+        this.match(DocumentParser.T__32);
         this.state = 340;
         this.expression(0);
         this.state = 341;
-        this.match(BaliDocumentParser.T__29);
+        this.match(DocumentParser.T__29);
         this.state = 342;
         this.block();
     } catch (re) {
@@ -3558,7 +3558,7 @@ function ContinueClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_continueClause;
+    this.ruleIndex = DocumentParser.RULE_continueClause;
     return this;
 }
 
@@ -3567,19 +3567,19 @@ ContinueClauseContext.prototype.constructor = ContinueClauseContext;
 
 
 ContinueClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterContinueClause(this);
 	}
 };
 
 ContinueClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitContinueClause(this);
 	}
 };
 
 ContinueClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitContinueClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3589,18 +3589,18 @@ ContinueClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ContinueClauseContext = ContinueClauseContext;
+DocumentParser.ContinueClauseContext = ContinueClauseContext;
 
-BaliDocumentParser.prototype.continueClause = function() {
+DocumentParser.prototype.continueClause = function() {
 
     var localctx = new ContinueClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 56, BaliDocumentParser.RULE_continueClause);
+    this.enterRule(localctx, 56, DocumentParser.RULE_continueClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 344;
-        this.match(BaliDocumentParser.T__33);
+        this.match(DocumentParser.T__33);
         this.state = 345;
-        this.match(BaliDocumentParser.T__34);
+        this.match(DocumentParser.T__34);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -3624,7 +3624,7 @@ function BreakClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_breakClause;
+    this.ruleIndex = DocumentParser.RULE_breakClause;
     return this;
 }
 
@@ -3633,19 +3633,19 @@ BreakClauseContext.prototype.constructor = BreakClauseContext;
 
 
 BreakClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterBreakClause(this);
 	}
 };
 
 BreakClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitBreakClause(this);
 	}
 };
 
 BreakClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitBreakClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3655,18 +3655,18 @@ BreakClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.BreakClauseContext = BreakClauseContext;
+DocumentParser.BreakClauseContext = BreakClauseContext;
 
-BaliDocumentParser.prototype.breakClause = function() {
+DocumentParser.prototype.breakClause = function() {
 
     var localctx = new BreakClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 58, BaliDocumentParser.RULE_breakClause);
+    this.enterRule(localctx, 58, DocumentParser.RULE_breakClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 347;
-        this.match(BaliDocumentParser.T__35);
+        this.match(DocumentParser.T__35);
         this.state = 348;
-        this.match(BaliDocumentParser.T__34);
+        this.match(DocumentParser.T__34);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -3690,7 +3690,7 @@ function ReturnClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_returnClause;
+    this.ruleIndex = DocumentParser.RULE_returnClause;
     return this;
 }
 
@@ -3702,19 +3702,19 @@ ReturnClauseContext.prototype.expression = function() {
 };
 
 ReturnClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterReturnClause(this);
 	}
 };
 
 ReturnClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitReturnClause(this);
 	}
 };
 
 ReturnClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitReturnClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3724,21 +3724,21 @@ ReturnClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ReturnClauseContext = ReturnClauseContext;
+DocumentParser.ReturnClauseContext = ReturnClauseContext;
 
-BaliDocumentParser.prototype.returnClause = function() {
+DocumentParser.prototype.returnClause = function() {
 
     var localctx = new ReturnClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 60, BaliDocumentParser.RULE_returnClause);
+    this.enterRule(localctx, 60, DocumentParser.RULE_returnClause);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 350;
-        this.match(BaliDocumentParser.T__36);
+        this.match(DocumentParser.T__36);
         this.state = 352;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << BaliDocumentParser.T__0) | (1 << BaliDocumentParser.T__2) | (1 << BaliDocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (BaliDocumentParser.T__38 - 39)) | (1 << (BaliDocumentParser.T__42 - 39)) | (1 << (BaliDocumentParser.T__43 - 39)) | (1 << (BaliDocumentParser.T__44 - 39)) | (1 << (BaliDocumentParser.T__47 - 39)) | (1 << (BaliDocumentParser.T__53 - 39)) | (1 << (BaliDocumentParser.T__59 - 39)) | (1 << (BaliDocumentParser.T__60 - 39)) | (1 << (BaliDocumentParser.T__61 - 39)) | (1 << (BaliDocumentParser.T__64 - 39)) | (1 << (BaliDocumentParser.T__65 - 39)) | (1 << (BaliDocumentParser.T__66 - 39)) | (1 << (BaliDocumentParser.T__67 - 39)) | (1 << (BaliDocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (BaliDocumentParser.TAG - 71)) | (1 << (BaliDocumentParser.SYMBOL - 71)) | (1 << (BaliDocumentParser.FRACTION - 71)) | (1 << (BaliDocumentParser.REAL - 71)) | (1 << (BaliDocumentParser.IMAGINARY - 71)) | (1 << (BaliDocumentParser.MOMENT - 71)) | (1 << (BaliDocumentParser.DURATION - 71)) | (1 << (BaliDocumentParser.RESOURCE - 71)) | (1 << (BaliDocumentParser.VERSION - 71)) | (1 << (BaliDocumentParser.BINARY - 71)) | (1 << (BaliDocumentParser.TEXT_BLOCK - 71)) | (1 << (BaliDocumentParser.TEXT - 71)) | (1 << (BaliDocumentParser.IDENTIFIER - 71)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__42 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__47 - 39)) | (1 << (DocumentParser.T__53 - 39)) | (1 << (DocumentParser.T__59 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__64 - 39)) | (1 << (DocumentParser.T__65 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.T__68 - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
             this.state = 351;
             this.expression(0);
         }
@@ -3766,7 +3766,7 @@ function ThrowClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_throwClause;
+    this.ruleIndex = DocumentParser.RULE_throwClause;
     return this;
 }
 
@@ -3778,19 +3778,19 @@ ThrowClauseContext.prototype.expression = function() {
 };
 
 ThrowClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterThrowClause(this);
 	}
 };
 
 ThrowClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitThrowClause(this);
 	}
 };
 
 ThrowClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitThrowClause(this);
     } else {
         return visitor.visitChildren(this);
@@ -3800,16 +3800,16 @@ ThrowClauseContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ThrowClauseContext = ThrowClauseContext;
+DocumentParser.ThrowClauseContext = ThrowClauseContext;
 
-BaliDocumentParser.prototype.throwClause = function() {
+DocumentParser.prototype.throwClause = function() {
 
     var localctx = new ThrowClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 62, BaliDocumentParser.RULE_throwClause);
+    this.enterRule(localctx, 62, DocumentParser.RULE_throwClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 354;
-        this.match(BaliDocumentParser.T__37);
+        this.match(DocumentParser.T__37);
         this.state = 355;
         this.expression(0);
     } catch (re) {
@@ -3835,7 +3835,7 @@ function RecipientContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_recipient;
+    this.ruleIndex = DocumentParser.RULE_recipient;
     return this;
 }
 
@@ -3851,19 +3851,19 @@ RecipientContext.prototype.subcomponent = function() {
 };
 
 RecipientContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterRecipient(this);
 	}
 };
 
 RecipientContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitRecipient(this);
 	}
 };
 
 RecipientContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitRecipient(this);
     } else {
         return visitor.visitChildren(this);
@@ -3873,22 +3873,22 @@ RecipientContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.RecipientContext = RecipientContext;
+DocumentParser.RecipientContext = RecipientContext;
 
-BaliDocumentParser.prototype.recipient = function() {
+DocumentParser.prototype.recipient = function() {
 
     var localctx = new RecipientContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 64, BaliDocumentParser.RULE_recipient);
+    this.enterRule(localctx, 64, DocumentParser.RULE_recipient);
     try {
         this.state = 359;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.SYMBOL:
+        case DocumentParser.SYMBOL:
             this.enterOuterAlt(localctx, 1);
             this.state = 357;
             this.symbol();
             break;
-        case BaliDocumentParser.IDENTIFIER:
+        case DocumentParser.IDENTIFIER:
             this.enterOuterAlt(localctx, 2);
             this.state = 358;
             this.subcomponent();
@@ -3919,7 +3919,7 @@ function SubcomponentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_subcomponent;
+    this.ruleIndex = DocumentParser.RULE_subcomponent;
     return this;
 }
 
@@ -3935,19 +3935,19 @@ SubcomponentContext.prototype.indices = function() {
 };
 
 SubcomponentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSubcomponent(this);
 	}
 };
 
 SubcomponentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSubcomponent(this);
 	}
 };
 
 SubcomponentContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSubcomponent(this);
     } else {
         return visitor.visitChildren(this);
@@ -3957,12 +3957,12 @@ SubcomponentContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.SubcomponentContext = SubcomponentContext;
+DocumentParser.SubcomponentContext = SubcomponentContext;
 
-BaliDocumentParser.prototype.subcomponent = function() {
+DocumentParser.prototype.subcomponent = function() {
 
     var localctx = new SubcomponentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 66, BaliDocumentParser.RULE_subcomponent);
+    this.enterRule(localctx, 66, DocumentParser.RULE_subcomponent);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 361;
@@ -3992,7 +3992,7 @@ function ExpressionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_expression;
+    this.ruleIndex = DocumentParser.RULE_expression;
     return this;
 }
 
@@ -4014,7 +4014,7 @@ function DefaultExpressionContext(parser, ctx) {
 DefaultExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 DefaultExpressionContext.prototype.constructor = DefaultExpressionContext;
 
-BaliDocumentParser.DefaultExpressionContext = DefaultExpressionContext;
+DocumentParser.DefaultExpressionContext = DefaultExpressionContext;
 
 DefaultExpressionContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -4027,19 +4027,19 @@ DefaultExpressionContext.prototype.expression = function(i) {
     }
 };
 DefaultExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterDefaultExpression(this);
 	}
 };
 
 DefaultExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitDefaultExpression(this);
 	}
 };
 
 DefaultExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitDefaultExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4056,7 +4056,7 @@ function MessageExpressionContext(parser, ctx) {
 MessageExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 MessageExpressionContext.prototype.constructor = MessageExpressionContext;
 
-BaliDocumentParser.MessageExpressionContext = MessageExpressionContext;
+DocumentParser.MessageExpressionContext = MessageExpressionContext;
 
 MessageExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
@@ -4070,19 +4070,19 @@ MessageExpressionContext.prototype.parameters = function() {
     return this.getTypedRuleContext(ParametersContext,0);
 };
 MessageExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterMessageExpression(this);
 	}
 };
 
 MessageExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitMessageExpression(this);
 	}
 };
 
 MessageExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMessageExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4099,7 +4099,7 @@ function SubcomponentExpressionContext(parser, ctx) {
 SubcomponentExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 SubcomponentExpressionContext.prototype.constructor = SubcomponentExpressionContext;
 
-BaliDocumentParser.SubcomponentExpressionContext = SubcomponentExpressionContext;
+DocumentParser.SubcomponentExpressionContext = SubcomponentExpressionContext;
 
 SubcomponentExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
@@ -4109,19 +4109,19 @@ SubcomponentExpressionContext.prototype.indices = function() {
     return this.getTypedRuleContext(IndicesContext,0);
 };
 SubcomponentExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSubcomponentExpression(this);
 	}
 };
 
 SubcomponentExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSubcomponentExpression(this);
 	}
 };
 
 SubcomponentExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSubcomponentExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4139,7 +4139,7 @@ function ComparisonExpressionContext(parser, ctx) {
 ComparisonExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 ComparisonExpressionContext.prototype.constructor = ComparisonExpressionContext;
 
-BaliDocumentParser.ComparisonExpressionContext = ComparisonExpressionContext;
+DocumentParser.ComparisonExpressionContext = ComparisonExpressionContext;
 
 ComparisonExpressionContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -4152,19 +4152,19 @@ ComparisonExpressionContext.prototype.expression = function(i) {
     }
 };
 ComparisonExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterComparisonExpression(this);
 	}
 };
 
 ComparisonExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitComparisonExpression(this);
 	}
 };
 
 ComparisonExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitComparisonExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4182,7 +4182,7 @@ function ArithmeticExpressionContext(parser, ctx) {
 ArithmeticExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 ArithmeticExpressionContext.prototype.constructor = ArithmeticExpressionContext;
 
-BaliDocumentParser.ArithmeticExpressionContext = ArithmeticExpressionContext;
+DocumentParser.ArithmeticExpressionContext = ArithmeticExpressionContext;
 
 ArithmeticExpressionContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -4195,19 +4195,19 @@ ArithmeticExpressionContext.prototype.expression = function(i) {
     }
 };
 ArithmeticExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterArithmeticExpression(this);
 	}
 };
 
 ArithmeticExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitArithmeticExpression(this);
 	}
 };
 
 ArithmeticExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitArithmeticExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4224,25 +4224,25 @@ function MagnitudeExpressionContext(parser, ctx) {
 MagnitudeExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 MagnitudeExpressionContext.prototype.constructor = MagnitudeExpressionContext;
 
-BaliDocumentParser.MagnitudeExpressionContext = MagnitudeExpressionContext;
+DocumentParser.MagnitudeExpressionContext = MagnitudeExpressionContext;
 
 MagnitudeExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 MagnitudeExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterMagnitudeExpression(this);
 	}
 };
 
 MagnitudeExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitMagnitudeExpression(this);
 	}
 };
 
 MagnitudeExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMagnitudeExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4260,7 +4260,7 @@ function LogicalExpressionContext(parser, ctx) {
 LogicalExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 LogicalExpressionContext.prototype.constructor = LogicalExpressionContext;
 
-BaliDocumentParser.LogicalExpressionContext = LogicalExpressionContext;
+DocumentParser.LogicalExpressionContext = LogicalExpressionContext;
 
 LogicalExpressionContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -4273,19 +4273,19 @@ LogicalExpressionContext.prototype.expression = function(i) {
     }
 };
 LogicalExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterLogicalExpression(this);
 	}
 };
 
 LogicalExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitLogicalExpression(this);
 	}
 };
 
 LogicalExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitLogicalExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4302,25 +4302,25 @@ function FactorialExpressionContext(parser, ctx) {
 FactorialExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 FactorialExpressionContext.prototype.constructor = FactorialExpressionContext;
 
-BaliDocumentParser.FactorialExpressionContext = FactorialExpressionContext;
+DocumentParser.FactorialExpressionContext = FactorialExpressionContext;
 
 FactorialExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 FactorialExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterFactorialExpression(this);
 	}
 };
 
 FactorialExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitFactorialExpression(this);
 	}
 };
 
 FactorialExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFactorialExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4337,25 +4337,25 @@ function VariableExpressionContext(parser, ctx) {
 VariableExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 VariableExpressionContext.prototype.constructor = VariableExpressionContext;
 
-BaliDocumentParser.VariableExpressionContext = VariableExpressionContext;
+DocumentParser.VariableExpressionContext = VariableExpressionContext;
 
 VariableExpressionContext.prototype.variable = function() {
     return this.getTypedRuleContext(VariableContext,0);
 };
 VariableExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterVariableExpression(this);
 	}
 };
 
 VariableExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitVariableExpression(this);
 	}
 };
 
 VariableExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitVariableExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4372,7 +4372,7 @@ function FunctionExpressionContext(parser, ctx) {
 FunctionExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 FunctionExpressionContext.prototype.constructor = FunctionExpressionContext;
 
-BaliDocumentParser.FunctionExpressionContext = FunctionExpressionContext;
+DocumentParser.FunctionExpressionContext = FunctionExpressionContext;
 
 FunctionExpressionContext.prototype.funxtion = function() {
     return this.getTypedRuleContext(FunxtionContext,0);
@@ -4382,19 +4382,19 @@ FunctionExpressionContext.prototype.parameters = function() {
     return this.getTypedRuleContext(ParametersContext,0);
 };
 FunctionExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterFunctionExpression(this);
 	}
 };
 
 FunctionExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitFunctionExpression(this);
 	}
 };
 
 FunctionExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFunctionExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4411,25 +4411,25 @@ function PrecedenceExpressionContext(parser, ctx) {
 PrecedenceExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 PrecedenceExpressionContext.prototype.constructor = PrecedenceExpressionContext;
 
-BaliDocumentParser.PrecedenceExpressionContext = PrecedenceExpressionContext;
+DocumentParser.PrecedenceExpressionContext = PrecedenceExpressionContext;
 
 PrecedenceExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 PrecedenceExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterPrecedenceExpression(this);
 	}
 };
 
 PrecedenceExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitPrecedenceExpression(this);
 	}
 };
 
 PrecedenceExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitPrecedenceExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4446,7 +4446,7 @@ function ExponentialExpressionContext(parser, ctx) {
 ExponentialExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 ExponentialExpressionContext.prototype.constructor = ExponentialExpressionContext;
 
-BaliDocumentParser.ExponentialExpressionContext = ExponentialExpressionContext;
+DocumentParser.ExponentialExpressionContext = ExponentialExpressionContext;
 
 ExponentialExpressionContext.prototype.expression = function(i) {
     if(i===undefined) {
@@ -4459,19 +4459,19 @@ ExponentialExpressionContext.prototype.expression = function(i) {
     }
 };
 ExponentialExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterExponentialExpression(this);
 	}
 };
 
 ExponentialExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitExponentialExpression(this);
 	}
 };
 
 ExponentialExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitExponentialExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4488,25 +4488,25 @@ function ComponentExpressionContext(parser, ctx) {
 ComponentExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 ComponentExpressionContext.prototype.constructor = ComponentExpressionContext;
 
-BaliDocumentParser.ComponentExpressionContext = ComponentExpressionContext;
+DocumentParser.ComponentExpressionContext = ComponentExpressionContext;
 
 ComponentExpressionContext.prototype.component = function() {
     return this.getTypedRuleContext(ComponentContext,0);
 };
 ComponentExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterComponentExpression(this);
 	}
 };
 
 ComponentExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitComponentExpression(this);
 	}
 };
 
 ComponentExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitComponentExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4524,25 +4524,25 @@ function InversionExpressionContext(parser, ctx) {
 InversionExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 InversionExpressionContext.prototype.constructor = InversionExpressionContext;
 
-BaliDocumentParser.InversionExpressionContext = InversionExpressionContext;
+DocumentParser.InversionExpressionContext = InversionExpressionContext;
 
 InversionExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 InversionExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInversionExpression(this);
 	}
 };
 
 InversionExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInversionExpression(this);
 	}
 };
 
 InversionExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInversionExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4559,25 +4559,25 @@ function DereferenceExpressionContext(parser, ctx) {
 DereferenceExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 DereferenceExpressionContext.prototype.constructor = DereferenceExpressionContext;
 
-BaliDocumentParser.DereferenceExpressionContext = DereferenceExpressionContext;
+DocumentParser.DereferenceExpressionContext = DereferenceExpressionContext;
 
 DereferenceExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 DereferenceExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterDereferenceExpression(this);
 	}
 };
 
 DereferenceExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitDereferenceExpression(this);
 	}
 };
 
 DereferenceExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitDereferenceExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4594,25 +4594,25 @@ function ComplementExpressionContext(parser, ctx) {
 ComplementExpressionContext.prototype = Object.create(ExpressionContext.prototype);
 ComplementExpressionContext.prototype.constructor = ComplementExpressionContext;
 
-BaliDocumentParser.ComplementExpressionContext = ComplementExpressionContext;
+DocumentParser.ComplementExpressionContext = ComplementExpressionContext;
 
 ComplementExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 ComplementExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterComplementExpression(this);
 	}
 };
 
 ComplementExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitComplementExpression(this);
 	}
 };
 
 ComplementExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitComplementExpression(this);
     } else {
         return visitor.visitChildren(this);
@@ -4621,7 +4621,7 @@ ComplementExpressionContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.prototype.expression = function(_p) {
+DocumentParser.prototype.expression = function(_p) {
 	if(_p===undefined) {
 	    _p = 0;
 	}
@@ -4630,7 +4630,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
     var localctx = new ExpressionContext(this, this._ctx, _parentState);
     var _prevctx = localctx;
     var _startState = 68;
-    this.enterRecursionRule(localctx, 68, BaliDocumentParser.RULE_expression, _p);
+    this.enterRecursionRule(localctx, 68, DocumentParser.RULE_expression, _p);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
@@ -4670,11 +4670,11 @@ BaliDocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 370;
-            this.match(BaliDocumentParser.T__2);
+            this.match(DocumentParser.T__2);
             this.state = 371;
             this.expression(0);
             this.state = 372;
-            this.match(BaliDocumentParser.T__3);
+            this.match(DocumentParser.T__3);
             break;
 
         case 5:
@@ -4682,7 +4682,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 374;
-            this.match(BaliDocumentParser.T__38);
+            this.match(DocumentParser.T__38);
             this.state = 375;
             this.expression(12);
             break;
@@ -4694,7 +4694,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
             this.state = 376;
             localctx.op = this._input.LT(1);
             _la = this._input.LA(1);
-            if(!(((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliDocumentParser.T__42 - 43)) | (1 << (BaliDocumentParser.T__43 - 43)) | (1 << (BaliDocumentParser.T__44 - 43)))) !== 0))) {
+            if(!(((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (DocumentParser.T__42 - 43)) | (1 << (DocumentParser.T__43 - 43)) | (1 << (DocumentParser.T__44 - 43)))) !== 0))) {
                 localctx.op = this._errHandler.recoverInline(this);
             }
             else {
@@ -4710,11 +4710,11 @@ BaliDocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 378;
-            this.match(BaliDocumentParser.T__47);
+            this.match(DocumentParser.T__47);
             this.state = 379;
             this.expression(0);
             this.state = 380;
-            this.match(BaliDocumentParser.T__47);
+            this.match(DocumentParser.T__47);
             break;
 
         case 8:
@@ -4722,7 +4722,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 382;
-            this.match(BaliDocumentParser.T__53);
+            this.match(DocumentParser.T__53);
             this.state = 383;
             this.expression(3);
             break;
@@ -4744,20 +4744,20 @@ BaliDocumentParser.prototype.expression = function(_p) {
                 switch(la_) {
                 case 1:
                     localctx = new ExponentialExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 386;
                     if (!( this.precpred(this._ctx, 8))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 8)");
                     }
                     this.state = 387;
-                    this.match(BaliDocumentParser.T__41);
+                    this.match(DocumentParser.T__41);
                     this.state = 388;
                     this.expression(8);
                     break;
 
                 case 2:
                     localctx = new ArithmeticExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 389;
                     if (!( this.precpred(this._ctx, 6))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 6)");
@@ -4765,7 +4765,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
                     this.state = 390;
                     localctx.op = this._input.LT(1);
                     _la = this._input.LA(1);
-                    if(!(((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (BaliDocumentParser.T__42 - 43)) | (1 << (BaliDocumentParser.T__43 - 43)) | (1 << (BaliDocumentParser.T__44 - 43)) | (1 << (BaliDocumentParser.T__45 - 43)) | (1 << (BaliDocumentParser.T__46 - 43)))) !== 0))) {
+                    if(!(((((_la - 43)) & ~0x1f) == 0 && ((1 << (_la - 43)) & ((1 << (DocumentParser.T__42 - 43)) | (1 << (DocumentParser.T__43 - 43)) | (1 << (DocumentParser.T__44 - 43)) | (1 << (DocumentParser.T__45 - 43)) | (1 << (DocumentParser.T__46 - 43)))) !== 0))) {
                         localctx.op = this._errHandler.recoverInline(this);
                     }
                     else {
@@ -4778,7 +4778,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
 
                 case 3:
                     localctx = new ComparisonExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 392;
                     if (!( this.precpred(this._ctx, 4))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
@@ -4786,7 +4786,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
                     this.state = 393;
                     localctx.op = this._input.LT(1);
                     _la = this._input.LA(1);
-                    if(!(((((_la - 49)) & ~0x1f) == 0 && ((1 << (_la - 49)) & ((1 << (BaliDocumentParser.T__48 - 49)) | (1 << (BaliDocumentParser.T__49 - 49)) | (1 << (BaliDocumentParser.T__50 - 49)) | (1 << (BaliDocumentParser.T__51 - 49)) | (1 << (BaliDocumentParser.T__52 - 49)))) !== 0))) {
+                    if(!(((((_la - 49)) & ~0x1f) == 0 && ((1 << (_la - 49)) & ((1 << (DocumentParser.T__48 - 49)) | (1 << (DocumentParser.T__49 - 49)) | (1 << (DocumentParser.T__50 - 49)) | (1 << (DocumentParser.T__51 - 49)) | (1 << (DocumentParser.T__52 - 49)))) !== 0))) {
                         localctx.op = this._errHandler.recoverInline(this);
                     }
                     else {
@@ -4799,7 +4799,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
 
                 case 4:
                     localctx = new LogicalExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 395;
                     if (!( this.precpred(this._ctx, 2))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 2)");
@@ -4807,7 +4807,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
                     this.state = 396;
                     localctx.op = this._input.LT(1);
                     _la = this._input.LA(1);
-                    if(!(((((_la - 55)) & ~0x1f) == 0 && ((1 << (_la - 55)) & ((1 << (BaliDocumentParser.T__54 - 55)) | (1 << (BaliDocumentParser.T__55 - 55)) | (1 << (BaliDocumentParser.T__56 - 55)) | (1 << (BaliDocumentParser.T__57 - 55)))) !== 0))) {
+                    if(!(((((_la - 55)) & ~0x1f) == 0 && ((1 << (_la - 55)) & ((1 << (DocumentParser.T__54 - 55)) | (1 << (DocumentParser.T__55 - 55)) | (1 << (DocumentParser.T__56 - 55)) | (1 << (DocumentParser.T__57 - 55)))) !== 0))) {
                         localctx.op = this._errHandler.recoverInline(this);
                     }
                     else {
@@ -4820,26 +4820,26 @@ BaliDocumentParser.prototype.expression = function(_p) {
 
                 case 5:
                     localctx = new DefaultExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 398;
                     if (!( this.precpred(this._ctx, 1))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 1)");
                     }
                     this.state = 399;
-                    this.match(BaliDocumentParser.T__58);
+                    this.match(DocumentParser.T__58);
                     this.state = 400;
                     this.expression(2);
                     break;
 
                 case 6:
                     localctx = new MessageExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 401;
                     if (!( this.precpred(this._ctx, 11))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 11)");
                     }
                     this.state = 402;
-                    this.match(BaliDocumentParser.T__39);
+                    this.match(DocumentParser.T__39);
                     this.state = 403;
                     this.message();
                     this.state = 404;
@@ -4848,7 +4848,7 @@ BaliDocumentParser.prototype.expression = function(_p) {
 
                 case 7:
                     localctx = new SubcomponentExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 406;
                     if (!( this.precpred(this._ctx, 10))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 10)");
@@ -4859,13 +4859,13 @@ BaliDocumentParser.prototype.expression = function(_p) {
 
                 case 8:
                     localctx = new FactorialExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-                    this.pushNewRecursionContext(localctx, _startState, BaliDocumentParser.RULE_expression);
+                    this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 408;
                     if (!( this.precpred(this._ctx, 9))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 9)");
                     }
                     this.state = 409;
-                    this.match(BaliDocumentParser.T__40);
+                    this.match(DocumentParser.T__40);
                     break;
 
                 } 
@@ -4898,7 +4898,7 @@ function VariableContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_variable;
+    this.ruleIndex = DocumentParser.RULE_variable;
     return this;
 }
 
@@ -4906,23 +4906,23 @@ VariableContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 VariableContext.prototype.constructor = VariableContext;
 
 VariableContext.prototype.IDENTIFIER = function() {
-    return this.getToken(BaliDocumentParser.IDENTIFIER, 0);
+    return this.getToken(DocumentParser.IDENTIFIER, 0);
 };
 
 VariableContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterVariable(this);
 	}
 };
 
 VariableContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitVariable(this);
 	}
 };
 
 VariableContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitVariable(this);
     } else {
         return visitor.visitChildren(this);
@@ -4932,16 +4932,16 @@ VariableContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.VariableContext = VariableContext;
+DocumentParser.VariableContext = VariableContext;
 
-BaliDocumentParser.prototype.variable = function() {
+DocumentParser.prototype.variable = function() {
 
     var localctx = new VariableContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 70, BaliDocumentParser.RULE_variable);
+    this.enterRule(localctx, 70, DocumentParser.RULE_variable);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 415;
-        this.match(BaliDocumentParser.IDENTIFIER);
+        this.match(DocumentParser.IDENTIFIER);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -4965,7 +4965,7 @@ function FunxtionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_funxtion;
+    this.ruleIndex = DocumentParser.RULE_funxtion;
     return this;
 }
 
@@ -4973,23 +4973,23 @@ FunxtionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 FunxtionContext.prototype.constructor = FunxtionContext;
 
 FunxtionContext.prototype.IDENTIFIER = function() {
-    return this.getToken(BaliDocumentParser.IDENTIFIER, 0);
+    return this.getToken(DocumentParser.IDENTIFIER, 0);
 };
 
 FunxtionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterFunxtion(this);
 	}
 };
 
 FunxtionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitFunxtion(this);
 	}
 };
 
 FunxtionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFunxtion(this);
     } else {
         return visitor.visitChildren(this);
@@ -4999,16 +4999,16 @@ FunxtionContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.FunxtionContext = FunxtionContext;
+DocumentParser.FunxtionContext = FunxtionContext;
 
-BaliDocumentParser.prototype.funxtion = function() {
+DocumentParser.prototype.funxtion = function() {
 
     var localctx = new FunxtionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 72, BaliDocumentParser.RULE_funxtion);
+    this.enterRule(localctx, 72, DocumentParser.RULE_funxtion);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 417;
-        this.match(BaliDocumentParser.IDENTIFIER);
+        this.match(DocumentParser.IDENTIFIER);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5032,7 +5032,7 @@ function MessageContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_message;
+    this.ruleIndex = DocumentParser.RULE_message;
     return this;
 }
 
@@ -5040,23 +5040,23 @@ MessageContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 MessageContext.prototype.constructor = MessageContext;
 
 MessageContext.prototype.IDENTIFIER = function() {
-    return this.getToken(BaliDocumentParser.IDENTIFIER, 0);
+    return this.getToken(DocumentParser.IDENTIFIER, 0);
 };
 
 MessageContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterMessage(this);
 	}
 };
 
 MessageContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitMessage(this);
 	}
 };
 
 MessageContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMessage(this);
     } else {
         return visitor.visitChildren(this);
@@ -5066,16 +5066,16 @@ MessageContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.MessageContext = MessageContext;
+DocumentParser.MessageContext = MessageContext;
 
-BaliDocumentParser.prototype.message = function() {
+DocumentParser.prototype.message = function() {
 
     var localctx = new MessageContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 74, BaliDocumentParser.RULE_message);
+    this.enterRule(localctx, 74, DocumentParser.RULE_message);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 419;
-        this.match(BaliDocumentParser.IDENTIFIER);
+        this.match(DocumentParser.IDENTIFIER);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5099,7 +5099,7 @@ function IndicesContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_indices;
+    this.ruleIndex = DocumentParser.RULE_indices;
     return this;
 }
 
@@ -5111,19 +5111,19 @@ IndicesContext.prototype.list = function() {
 };
 
 IndicesContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterIndices(this);
 	}
 };
 
 IndicesContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitIndices(this);
 	}
 };
 
 IndicesContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitIndices(this);
     } else {
         return visitor.visitChildren(this);
@@ -5133,20 +5133,20 @@ IndicesContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.IndicesContext = IndicesContext;
+DocumentParser.IndicesContext = IndicesContext;
 
-BaliDocumentParser.prototype.indices = function() {
+DocumentParser.prototype.indices = function() {
 
     var localctx = new IndicesContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 76, BaliDocumentParser.RULE_indices);
+    this.enterRule(localctx, 76, DocumentParser.RULE_indices);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 421;
-        this.match(BaliDocumentParser.T__0);
+        this.match(DocumentParser.T__0);
         this.state = 422;
         this.list();
         this.state = 423;
-        this.match(BaliDocumentParser.T__1);
+        this.match(DocumentParser.T__1);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5170,7 +5170,7 @@ function ElementContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_element;
+    this.ruleIndex = DocumentParser.RULE_element;
     return this;
 }
 
@@ -5230,19 +5230,19 @@ ElementContext.prototype.version = function() {
 };
 
 ElementContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterElement(this);
 	}
 };
 
 ElementContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitElement(this);
 	}
 };
 
 ElementContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitElement(this);
     } else {
         return visitor.visitChildren(this);
@@ -5252,12 +5252,12 @@ ElementContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ElementContext = ElementContext;
+DocumentParser.ElementContext = ElementContext;
 
-BaliDocumentParser.prototype.element = function() {
+DocumentParser.prototype.element = function() {
 
     var localctx = new ElementContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 78, BaliDocumentParser.RULE_element);
+    this.enterRule(localctx, 78, DocumentParser.RULE_element);
     try {
         this.state = 438;
         this._errHandler.sync(this);
@@ -5365,7 +5365,7 @@ function AngleContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_angle;
+    this.ruleIndex = DocumentParser.RULE_angle;
     return this;
 }
 
@@ -5377,19 +5377,19 @@ AngleContext.prototype.real = function() {
 };
 
 AngleContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterAngle(this);
 	}
 };
 
 AngleContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitAngle(this);
 	}
 };
 
 AngleContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitAngle(this);
     } else {
         return visitor.visitChildren(this);
@@ -5399,16 +5399,16 @@ AngleContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.AngleContext = AngleContext;
+DocumentParser.AngleContext = AngleContext;
 
-BaliDocumentParser.prototype.angle = function() {
+DocumentParser.prototype.angle = function() {
 
     var localctx = new AngleContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 80, BaliDocumentParser.RULE_angle);
+    this.enterRule(localctx, 80, DocumentParser.RULE_angle);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 440;
-        this.match(BaliDocumentParser.T__59);
+        this.match(DocumentParser.T__59);
         this.state = 441;
         this.real();
     } catch (re) {
@@ -5434,7 +5434,7 @@ function BinaryContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_binary;
+    this.ruleIndex = DocumentParser.RULE_binary;
     return this;
 }
 
@@ -5442,23 +5442,23 @@ BinaryContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 BinaryContext.prototype.constructor = BinaryContext;
 
 BinaryContext.prototype.BINARY = function() {
-    return this.getToken(BaliDocumentParser.BINARY, 0);
+    return this.getToken(DocumentParser.BINARY, 0);
 };
 
 BinaryContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterBinary(this);
 	}
 };
 
 BinaryContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitBinary(this);
 	}
 };
 
 BinaryContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitBinary(this);
     } else {
         return visitor.visitChildren(this);
@@ -5468,16 +5468,16 @@ BinaryContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.BinaryContext = BinaryContext;
+DocumentParser.BinaryContext = BinaryContext;
 
-BaliDocumentParser.prototype.binary = function() {
+DocumentParser.prototype.binary = function() {
 
     var localctx = new BinaryContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 82, BaliDocumentParser.RULE_binary);
+    this.enterRule(localctx, 82, DocumentParser.RULE_binary);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 443;
-        this.match(BaliDocumentParser.BINARY);
+        this.match(DocumentParser.BINARY);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5501,7 +5501,7 @@ function DurationContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_duration;
+    this.ruleIndex = DocumentParser.RULE_duration;
     return this;
 }
 
@@ -5509,23 +5509,23 @@ DurationContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 DurationContext.prototype.constructor = DurationContext;
 
 DurationContext.prototype.DURATION = function() {
-    return this.getToken(BaliDocumentParser.DURATION, 0);
+    return this.getToken(DocumentParser.DURATION, 0);
 };
 
 DurationContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterDuration(this);
 	}
 };
 
 DurationContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitDuration(this);
 	}
 };
 
 DurationContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitDuration(this);
     } else {
         return visitor.visitChildren(this);
@@ -5535,16 +5535,16 @@ DurationContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.DurationContext = DurationContext;
+DocumentParser.DurationContext = DurationContext;
 
-BaliDocumentParser.prototype.duration = function() {
+DocumentParser.prototype.duration = function() {
 
     var localctx = new DurationContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 84, BaliDocumentParser.RULE_duration);
+    this.enterRule(localctx, 84, DocumentParser.RULE_duration);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 445;
-        this.match(BaliDocumentParser.DURATION);
+        this.match(DocumentParser.DURATION);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5568,7 +5568,7 @@ function ImaginaryContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_imaginary;
+    this.ruleIndex = DocumentParser.RULE_imaginary;
     return this;
 }
 
@@ -5576,23 +5576,23 @@ ImaginaryContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ImaginaryContext.prototype.constructor = ImaginaryContext;
 
 ImaginaryContext.prototype.IMAGINARY = function() {
-    return this.getToken(BaliDocumentParser.IMAGINARY, 0);
+    return this.getToken(DocumentParser.IMAGINARY, 0);
 };
 
 ImaginaryContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterImaginary(this);
 	}
 };
 
 ImaginaryContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitImaginary(this);
 	}
 };
 
 ImaginaryContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitImaginary(this);
     } else {
         return visitor.visitChildren(this);
@@ -5602,16 +5602,16 @@ ImaginaryContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ImaginaryContext = ImaginaryContext;
+DocumentParser.ImaginaryContext = ImaginaryContext;
 
-BaliDocumentParser.prototype.imaginary = function() {
+DocumentParser.prototype.imaginary = function() {
 
     var localctx = new ImaginaryContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 86, BaliDocumentParser.RULE_imaginary);
+    this.enterRule(localctx, 86, DocumentParser.RULE_imaginary);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 447;
-        this.match(BaliDocumentParser.IMAGINARY);
+        this.match(DocumentParser.IMAGINARY);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5635,7 +5635,7 @@ function MomentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_moment;
+    this.ruleIndex = DocumentParser.RULE_moment;
     return this;
 }
 
@@ -5643,23 +5643,23 @@ MomentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 MomentContext.prototype.constructor = MomentContext;
 
 MomentContext.prototype.MOMENT = function() {
-    return this.getToken(BaliDocumentParser.MOMENT, 0);
+    return this.getToken(DocumentParser.MOMENT, 0);
 };
 
 MomentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterMoment(this);
 	}
 };
 
 MomentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitMoment(this);
 	}
 };
 
 MomentContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMoment(this);
     } else {
         return visitor.visitChildren(this);
@@ -5669,16 +5669,16 @@ MomentContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.MomentContext = MomentContext;
+DocumentParser.MomentContext = MomentContext;
 
-BaliDocumentParser.prototype.moment = function() {
+DocumentParser.prototype.moment = function() {
 
     var localctx = new MomentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 88, BaliDocumentParser.RULE_moment);
+    this.enterRule(localctx, 88, DocumentParser.RULE_moment);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 449;
-        this.match(BaliDocumentParser.MOMENT);
+        this.match(DocumentParser.MOMENT);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -5702,7 +5702,7 @@ function NumberContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_number;
+    this.ruleIndex = DocumentParser.RULE_number;
     return this;
 }
 
@@ -5725,25 +5725,25 @@ function RealNumberContext(parser, ctx) {
 RealNumberContext.prototype = Object.create(NumberContext.prototype);
 RealNumberContext.prototype.constructor = RealNumberContext;
 
-BaliDocumentParser.RealNumberContext = RealNumberContext;
+DocumentParser.RealNumberContext = RealNumberContext;
 
 RealNumberContext.prototype.real = function() {
     return this.getTypedRuleContext(RealContext,0);
 };
 RealNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterRealNumber(this);
 	}
 };
 
 RealNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitRealNumber(this);
 	}
 };
 
 RealNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitRealNumber(this);
     } else {
         return visitor.visitChildren(this);
@@ -5760,22 +5760,22 @@ function InfiniteNumberContext(parser, ctx) {
 InfiniteNumberContext.prototype = Object.create(NumberContext.prototype);
 InfiniteNumberContext.prototype.constructor = InfiniteNumberContext;
 
-BaliDocumentParser.InfiniteNumberContext = InfiniteNumberContext;
+DocumentParser.InfiniteNumberContext = InfiniteNumberContext;
 
 InfiniteNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInfiniteNumber(this);
 	}
 };
 
 InfiniteNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInfiniteNumber(this);
 	}
 };
 
 InfiniteNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInfiniteNumber(this);
     } else {
         return visitor.visitChildren(this);
@@ -5792,22 +5792,22 @@ function UndefinedNumberContext(parser, ctx) {
 UndefinedNumberContext.prototype = Object.create(NumberContext.prototype);
 UndefinedNumberContext.prototype.constructor = UndefinedNumberContext;
 
-BaliDocumentParser.UndefinedNumberContext = UndefinedNumberContext;
+DocumentParser.UndefinedNumberContext = UndefinedNumberContext;
 
 UndefinedNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterUndefinedNumber(this);
 	}
 };
 
 UndefinedNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitUndefinedNumber(this);
 	}
 };
 
 UndefinedNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitUndefinedNumber(this);
     } else {
         return visitor.visitChildren(this);
@@ -5825,7 +5825,7 @@ function ComplexNumberContext(parser, ctx) {
 ComplexNumberContext.prototype = Object.create(NumberContext.prototype);
 ComplexNumberContext.prototype.constructor = ComplexNumberContext;
 
-BaliDocumentParser.ComplexNumberContext = ComplexNumberContext;
+DocumentParser.ComplexNumberContext = ComplexNumberContext;
 
 ComplexNumberContext.prototype.real = function() {
     return this.getTypedRuleContext(RealContext,0);
@@ -5835,19 +5835,19 @@ ComplexNumberContext.prototype.imaginary = function() {
     return this.getTypedRuleContext(ImaginaryContext,0);
 };
 ComplexNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterComplexNumber(this);
 	}
 };
 
 ComplexNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitComplexNumber(this);
 	}
 };
 
 ComplexNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitComplexNumber(this);
     } else {
         return visitor.visitChildren(this);
@@ -5864,25 +5864,25 @@ function ImaginaryNumberContext(parser, ctx) {
 ImaginaryNumberContext.prototype = Object.create(NumberContext.prototype);
 ImaginaryNumberContext.prototype.constructor = ImaginaryNumberContext;
 
-BaliDocumentParser.ImaginaryNumberContext = ImaginaryNumberContext;
+DocumentParser.ImaginaryNumberContext = ImaginaryNumberContext;
 
 ImaginaryNumberContext.prototype.imaginary = function() {
     return this.getTypedRuleContext(ImaginaryContext,0);
 };
 ImaginaryNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterImaginaryNumber(this);
 	}
 };
 
 ImaginaryNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitImaginaryNumber(this);
 	}
 };
 
 ImaginaryNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitImaginaryNumber(this);
     } else {
         return visitor.visitChildren(this);
@@ -5891,53 +5891,53 @@ ImaginaryNumberContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.NumberContext = NumberContext;
+DocumentParser.NumberContext = NumberContext;
 
-BaliDocumentParser.prototype.number = function() {
+DocumentParser.prototype.number = function() {
 
     var localctx = new NumberContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 90, BaliDocumentParser.RULE_number);
+    this.enterRule(localctx, 90, DocumentParser.RULE_number);
     var _la = 0; // Token type
     try {
         this.state = 461;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__60:
+        case DocumentParser.T__60:
             localctx = new UndefinedNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 451;
-            this.match(BaliDocumentParser.T__60);
+            this.match(DocumentParser.T__60);
             break;
-        case BaliDocumentParser.T__61:
+        case DocumentParser.T__61:
             localctx = new InfiniteNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 452;
-            this.match(BaliDocumentParser.T__61);
+            this.match(DocumentParser.T__61);
             break;
-        case BaliDocumentParser.T__66:
-        case BaliDocumentParser.REAL:
+        case DocumentParser.T__66:
+        case DocumentParser.REAL:
             localctx = new RealNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 453;
             this.real();
             break;
-        case BaliDocumentParser.IMAGINARY:
+        case DocumentParser.IMAGINARY:
             localctx = new ImaginaryNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 4);
             this.state = 454;
             this.imaginary();
             break;
-        case BaliDocumentParser.T__2:
+        case DocumentParser.T__2:
             localctx = new ComplexNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 5);
             this.state = 455;
-            this.match(BaliDocumentParser.T__2);
+            this.match(DocumentParser.T__2);
             this.state = 456;
             this.real();
             this.state = 457;
             localctx.del = this._input.LT(1);
             _la = this._input.LA(1);
-            if(!(_la===BaliDocumentParser.T__5 || _la===BaliDocumentParser.T__62)) {
+            if(!(_la===DocumentParser.T__5 || _la===DocumentParser.T__62)) {
                 localctx.del = this._errHandler.recoverInline(this);
             }
             else {
@@ -5947,7 +5947,7 @@ BaliDocumentParser.prototype.number = function() {
             this.state = 458;
             this.imaginary();
             this.state = 459;
-            this.match(BaliDocumentParser.T__3);
+            this.match(DocumentParser.T__3);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -5975,7 +5975,7 @@ function PercentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_percent;
+    this.ruleIndex = DocumentParser.RULE_percent;
     return this;
 }
 
@@ -5987,19 +5987,19 @@ PercentContext.prototype.real = function() {
 };
 
 PercentContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterPercent(this);
 	}
 };
 
 PercentContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitPercent(this);
 	}
 };
 
 PercentContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitPercent(this);
     } else {
         return visitor.visitChildren(this);
@@ -6009,18 +6009,18 @@ PercentContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.PercentContext = PercentContext;
+DocumentParser.PercentContext = PercentContext;
 
-BaliDocumentParser.prototype.percent = function() {
+DocumentParser.prototype.percent = function() {
 
     var localctx = new PercentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 92, BaliDocumentParser.RULE_percent);
+    this.enterRule(localctx, 92, DocumentParser.RULE_percent);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 463;
         this.real();
         this.state = 464;
-        this.match(BaliDocumentParser.T__63);
+        this.match(DocumentParser.T__63);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -6044,7 +6044,7 @@ function ProbabilityContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_probability;
+    this.ruleIndex = DocumentParser.RULE_probability;
     return this;
 }
 
@@ -6067,22 +6067,22 @@ function FalseProbabilityContext(parser, ctx) {
 FalseProbabilityContext.prototype = Object.create(ProbabilityContext.prototype);
 FalseProbabilityContext.prototype.constructor = FalseProbabilityContext;
 
-BaliDocumentParser.FalseProbabilityContext = FalseProbabilityContext;
+DocumentParser.FalseProbabilityContext = FalseProbabilityContext;
 
 FalseProbabilityContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterFalseProbability(this);
 	}
 };
 
 FalseProbabilityContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitFalseProbability(this);
 	}
 };
 
 FalseProbabilityContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFalseProbability(this);
     } else {
         return visitor.visitChildren(this);
@@ -6099,22 +6099,22 @@ function TrueProbabilityContext(parser, ctx) {
 TrueProbabilityContext.prototype = Object.create(ProbabilityContext.prototype);
 TrueProbabilityContext.prototype.constructor = TrueProbabilityContext;
 
-BaliDocumentParser.TrueProbabilityContext = TrueProbabilityContext;
+DocumentParser.TrueProbabilityContext = TrueProbabilityContext;
 
 TrueProbabilityContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterTrueProbability(this);
 	}
 };
 
 TrueProbabilityContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitTrueProbability(this);
 	}
 };
 
 TrueProbabilityContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitTrueProbability(this);
     } else {
         return visitor.visitChildren(this);
@@ -6131,25 +6131,25 @@ function FractionalProbabilityContext(parser, ctx) {
 FractionalProbabilityContext.prototype = Object.create(ProbabilityContext.prototype);
 FractionalProbabilityContext.prototype.constructor = FractionalProbabilityContext;
 
-BaliDocumentParser.FractionalProbabilityContext = FractionalProbabilityContext;
+DocumentParser.FractionalProbabilityContext = FractionalProbabilityContext;
 
 FractionalProbabilityContext.prototype.FRACTION = function() {
-    return this.getToken(BaliDocumentParser.FRACTION, 0);
+    return this.getToken(DocumentParser.FRACTION, 0);
 };
 FractionalProbabilityContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterFractionalProbability(this);
 	}
 };
 
 FractionalProbabilityContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitFractionalProbability(this);
 	}
 };
 
 FractionalProbabilityContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFractionalProbability(this);
     } else {
         return visitor.visitChildren(this);
@@ -6158,33 +6158,33 @@ FractionalProbabilityContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ProbabilityContext = ProbabilityContext;
+DocumentParser.ProbabilityContext = ProbabilityContext;
 
-BaliDocumentParser.prototype.probability = function() {
+DocumentParser.prototype.probability = function() {
 
     var localctx = new ProbabilityContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 94, BaliDocumentParser.RULE_probability);
+    this.enterRule(localctx, 94, DocumentParser.RULE_probability);
     try {
         this.state = 469;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__64:
+        case DocumentParser.T__64:
             localctx = new FalseProbabilityContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 466;
-            this.match(BaliDocumentParser.T__64);
+            this.match(DocumentParser.T__64);
             break;
-        case BaliDocumentParser.FRACTION:
+        case DocumentParser.FRACTION:
             localctx = new FractionalProbabilityContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 467;
-            this.match(BaliDocumentParser.FRACTION);
+            this.match(DocumentParser.FRACTION);
             break;
-        case BaliDocumentParser.T__65:
+        case DocumentParser.T__65:
             localctx = new TrueProbabilityContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 468;
-            this.match(BaliDocumentParser.T__65);
+            this.match(DocumentParser.T__65);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -6212,7 +6212,7 @@ function RealContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_real;
+    this.ruleIndex = DocumentParser.RULE_real;
     return this;
 }
 
@@ -6220,23 +6220,23 @@ RealContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 RealContext.prototype.constructor = RealContext;
 
 RealContext.prototype.REAL = function() {
-    return this.getToken(BaliDocumentParser.REAL, 0);
+    return this.getToken(DocumentParser.REAL, 0);
 };
 
 RealContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterReal(this);
 	}
 };
 
 RealContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitReal(this);
 	}
 };
 
 RealContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitReal(this);
     } else {
         return visitor.visitChildren(this);
@@ -6246,18 +6246,18 @@ RealContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.RealContext = RealContext;
+DocumentParser.RealContext = RealContext;
 
-BaliDocumentParser.prototype.real = function() {
+DocumentParser.prototype.real = function() {
 
     var localctx = new RealContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 96, BaliDocumentParser.RULE_real);
+    this.enterRule(localctx, 96, DocumentParser.RULE_real);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 471;
         _la = this._input.LA(1);
-        if(!(_la===BaliDocumentParser.T__66 || _la===BaliDocumentParser.REAL)) {
+        if(!(_la===DocumentParser.T__66 || _la===DocumentParser.REAL)) {
         this._errHandler.recoverInline(this);
         }
         else {
@@ -6287,7 +6287,7 @@ function ReferenceContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_reference;
+    this.ruleIndex = DocumentParser.RULE_reference;
     return this;
 }
 
@@ -6295,23 +6295,23 @@ ReferenceContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ReferenceContext.prototype.constructor = ReferenceContext;
 
 ReferenceContext.prototype.RESOURCE = function() {
-    return this.getToken(BaliDocumentParser.RESOURCE, 0);
+    return this.getToken(DocumentParser.RESOURCE, 0);
 };
 
 ReferenceContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterReference(this);
 	}
 };
 
 ReferenceContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitReference(this);
 	}
 };
 
 ReferenceContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitReference(this);
     } else {
         return visitor.visitChildren(this);
@@ -6321,16 +6321,16 @@ ReferenceContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.ReferenceContext = ReferenceContext;
+DocumentParser.ReferenceContext = ReferenceContext;
 
-BaliDocumentParser.prototype.reference = function() {
+DocumentParser.prototype.reference = function() {
 
     var localctx = new ReferenceContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 98, BaliDocumentParser.RULE_reference);
+    this.enterRule(localctx, 98, DocumentParser.RULE_reference);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 473;
-        this.match(BaliDocumentParser.RESOURCE);
+        this.match(DocumentParser.RESOURCE);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -6354,7 +6354,7 @@ function SymbolContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_symbol;
+    this.ruleIndex = DocumentParser.RULE_symbol;
     return this;
 }
 
@@ -6362,23 +6362,23 @@ SymbolContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 SymbolContext.prototype.constructor = SymbolContext;
 
 SymbolContext.prototype.SYMBOL = function() {
-    return this.getToken(BaliDocumentParser.SYMBOL, 0);
+    return this.getToken(DocumentParser.SYMBOL, 0);
 };
 
 SymbolContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterSymbol(this);
 	}
 };
 
 SymbolContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitSymbol(this);
 	}
 };
 
 SymbolContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitSymbol(this);
     } else {
         return visitor.visitChildren(this);
@@ -6388,16 +6388,16 @@ SymbolContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.SymbolContext = SymbolContext;
+DocumentParser.SymbolContext = SymbolContext;
 
-BaliDocumentParser.prototype.symbol = function() {
+DocumentParser.prototype.symbol = function() {
 
     var localctx = new SymbolContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 100, BaliDocumentParser.RULE_symbol);
+    this.enterRule(localctx, 100, DocumentParser.RULE_symbol);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 475;
-        this.match(BaliDocumentParser.SYMBOL);
+        this.match(DocumentParser.SYMBOL);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -6421,7 +6421,7 @@ function TagContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_tag;
+    this.ruleIndex = DocumentParser.RULE_tag;
     return this;
 }
 
@@ -6429,23 +6429,23 @@ TagContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 TagContext.prototype.constructor = TagContext;
 
 TagContext.prototype.TAG = function() {
-    return this.getToken(BaliDocumentParser.TAG, 0);
+    return this.getToken(DocumentParser.TAG, 0);
 };
 
 TagContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterTag(this);
 	}
 };
 
 TagContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitTag(this);
 	}
 };
 
 TagContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitTag(this);
     } else {
         return visitor.visitChildren(this);
@@ -6455,16 +6455,16 @@ TagContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.TagContext = TagContext;
+DocumentParser.TagContext = TagContext;
 
-BaliDocumentParser.prototype.tag = function() {
+DocumentParser.prototype.tag = function() {
 
     var localctx = new TagContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 102, BaliDocumentParser.RULE_tag);
+    this.enterRule(localctx, 102, DocumentParser.RULE_tag);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 477;
-        this.match(BaliDocumentParser.TAG);
+        this.match(DocumentParser.TAG);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -6488,7 +6488,7 @@ function TemplateContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_template;
+    this.ruleIndex = DocumentParser.RULE_template;
     return this;
 }
 
@@ -6511,22 +6511,22 @@ function NoneTemplateContext(parser, ctx) {
 NoneTemplateContext.prototype = Object.create(TemplateContext.prototype);
 NoneTemplateContext.prototype.constructor = NoneTemplateContext;
 
-BaliDocumentParser.NoneTemplateContext = NoneTemplateContext;
+DocumentParser.NoneTemplateContext = NoneTemplateContext;
 
 NoneTemplateContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterNoneTemplate(this);
 	}
 };
 
 NoneTemplateContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitNoneTemplate(this);
 	}
 };
 
 NoneTemplateContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitNoneTemplate(this);
     } else {
         return visitor.visitChildren(this);
@@ -6543,22 +6543,22 @@ function AnyTemplateContext(parser, ctx) {
 AnyTemplateContext.prototype = Object.create(TemplateContext.prototype);
 AnyTemplateContext.prototype.constructor = AnyTemplateContext;
 
-BaliDocumentParser.AnyTemplateContext = AnyTemplateContext;
+DocumentParser.AnyTemplateContext = AnyTemplateContext;
 
 AnyTemplateContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterAnyTemplate(this);
 	}
 };
 
 AnyTemplateContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitAnyTemplate(this);
 	}
 };
 
 AnyTemplateContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitAnyTemplate(this);
     } else {
         return visitor.visitChildren(this);
@@ -6567,27 +6567,27 @@ AnyTemplateContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.TemplateContext = TemplateContext;
+DocumentParser.TemplateContext = TemplateContext;
 
-BaliDocumentParser.prototype.template = function() {
+DocumentParser.prototype.template = function() {
 
     var localctx = new TemplateContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 104, BaliDocumentParser.RULE_template);
+    this.enterRule(localctx, 104, DocumentParser.RULE_template);
     try {
         this.state = 481;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.T__67:
+        case DocumentParser.T__67:
             localctx = new NoneTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 479;
-            this.match(BaliDocumentParser.T__67);
+            this.match(DocumentParser.T__67);
             break;
-        case BaliDocumentParser.T__68:
+        case DocumentParser.T__68:
             localctx = new AnyTemplateContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 480;
-            this.match(BaliDocumentParser.T__68);
+            this.match(DocumentParser.T__68);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -6615,7 +6615,7 @@ function TextContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_text;
+    this.ruleIndex = DocumentParser.RULE_text;
     return this;
 }
 
@@ -6638,25 +6638,25 @@ function InlineTextContext(parser, ctx) {
 InlineTextContext.prototype = Object.create(TextContext.prototype);
 InlineTextContext.prototype.constructor = InlineTextContext;
 
-BaliDocumentParser.InlineTextContext = InlineTextContext;
+DocumentParser.InlineTextContext = InlineTextContext;
 
 InlineTextContext.prototype.TEXT = function() {
-    return this.getToken(BaliDocumentParser.TEXT, 0);
+    return this.getToken(DocumentParser.TEXT, 0);
 };
 InlineTextContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterInlineText(this);
 	}
 };
 
 InlineTextContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitInlineText(this);
 	}
 };
 
 InlineTextContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitInlineText(this);
     } else {
         return visitor.visitChildren(this);
@@ -6673,25 +6673,25 @@ function NewlineTextContext(parser, ctx) {
 NewlineTextContext.prototype = Object.create(TextContext.prototype);
 NewlineTextContext.prototype.constructor = NewlineTextContext;
 
-BaliDocumentParser.NewlineTextContext = NewlineTextContext;
+DocumentParser.NewlineTextContext = NewlineTextContext;
 
 NewlineTextContext.prototype.TEXT_BLOCK = function() {
-    return this.getToken(BaliDocumentParser.TEXT_BLOCK, 0);
+    return this.getToken(DocumentParser.TEXT_BLOCK, 0);
 };
 NewlineTextContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterNewlineText(this);
 	}
 };
 
 NewlineTextContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitNewlineText(this);
 	}
 };
 
 NewlineTextContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitNewlineText(this);
     } else {
         return visitor.visitChildren(this);
@@ -6700,27 +6700,27 @@ NewlineTextContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.TextContext = TextContext;
+DocumentParser.TextContext = TextContext;
 
-BaliDocumentParser.prototype.text = function() {
+DocumentParser.prototype.text = function() {
 
     var localctx = new TextContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 106, BaliDocumentParser.RULE_text);
+    this.enterRule(localctx, 106, DocumentParser.RULE_text);
     try {
         this.state = 485;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
-        case BaliDocumentParser.TEXT:
+        case DocumentParser.TEXT:
             localctx = new InlineTextContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 483;
-            this.match(BaliDocumentParser.TEXT);
+            this.match(DocumentParser.TEXT);
             break;
-        case BaliDocumentParser.TEXT_BLOCK:
+        case DocumentParser.TEXT_BLOCK:
             localctx = new NewlineTextContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 484;
-            this.match(BaliDocumentParser.TEXT_BLOCK);
+            this.match(DocumentParser.TEXT_BLOCK);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -6748,7 +6748,7 @@ function VersionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = BaliDocumentParser.RULE_version;
+    this.ruleIndex = DocumentParser.RULE_version;
     return this;
 }
 
@@ -6756,23 +6756,23 @@ VersionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 VersionContext.prototype.constructor = VersionContext;
 
 VersionContext.prototype.VERSION = function() {
-    return this.getToken(BaliDocumentParser.VERSION, 0);
+    return this.getToken(DocumentParser.VERSION, 0);
 };
 
 VersionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.enterVersion(this);
 	}
 };
 
 VersionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof BaliDocumentListener ) {
+    if(listener instanceof DocumentListener ) {
         listener.exitVersion(this);
 	}
 };
 
 VersionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof BaliDocumentVisitor ) {
+    if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitVersion(this);
     } else {
         return visitor.visitChildren(this);
@@ -6782,16 +6782,16 @@ VersionContext.prototype.accept = function(visitor) {
 
 
 
-BaliDocumentParser.VersionContext = VersionContext;
+DocumentParser.VersionContext = VersionContext;
 
-BaliDocumentParser.prototype.version = function() {
+DocumentParser.prototype.version = function() {
 
     var localctx = new VersionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 108, BaliDocumentParser.RULE_version);
+    this.enterRule(localctx, 108, DocumentParser.RULE_version);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 487;
-        this.match(BaliDocumentParser.VERSION);
+        this.match(DocumentParser.VERSION);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -6807,7 +6807,7 @@ BaliDocumentParser.prototype.version = function() {
 };
 
 
-BaliDocumentParser.prototype.sempred = function(localctx, ruleIndex, predIndex) {
+DocumentParser.prototype.sempred = function(localctx, ruleIndex, predIndex) {
 	switch(ruleIndex) {
 	case 34:
 			return this.expression_sempred(localctx, predIndex);
@@ -6816,7 +6816,7 @@ BaliDocumentParser.prototype.sempred = function(localctx, ruleIndex, predIndex) 
    }
 };
 
-BaliDocumentParser.prototype.expression_sempred = function(localctx, predIndex) {
+DocumentParser.prototype.expression_sempred = function(localctx, predIndex) {
 	switch(predIndex) {
 		case 0:
 			return this.precpred(this._ctx, 8);
@@ -6840,4 +6840,4 @@ BaliDocumentParser.prototype.expression_sempred = function(localctx, predIndex) 
 };
 
 
-exports.BaliDocumentParser = BaliDocumentParser;
+exports.DocumentParser = DocumentParser;

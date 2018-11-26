@@ -1,5 +1,5 @@
-grammar BaliComponents;
-import BaliProcedures;
+grammar Components;
+import Procedures;
 
 component: value parameters?;
 

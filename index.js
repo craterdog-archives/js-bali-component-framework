@@ -10,52 +10,56 @@
 'use strict';
 
 // ABSTRACT TYPES
-exports.types = require('./src/abstractions/Types');
-exports.Component = require('./src/abstractions/Component').Component;
-exports.Element = require('./src/abstractions/Element').Element;
-exports.Composite = require('./src/abstractions/Composite').Composite;
-exports.Collection = require('./src/abstractions/Collection').Collection;
+var abstractions = require('./src/abstractions');
+exports.types = abstractions.types;
+exports.Component = abstractions.Component;
+exports.Element = abstractions.Element;
+exports.Composite = abstractions.Composite;
+exports.Collection = abstractions.Collection;
 
 // PRIMITIVE ELEMENT TYPES
-exports.Angle = require('./src/elements/Angle').Angle;
-exports.Binary = require('./src/elements/Binary').Binary;
-exports.Complex = require('./src/elements/Complex').Complex;
-exports.Duration = require('./src/elements/Duration').Duration;
-exports.Identifier = require('./src/elements/Identifier').Identifier;
-exports.Moment = require('./src/elements/Moment').Moment;
-exports.Percent = require('./src/elements/Percent').Percent;
-exports.Probability = require('./src/elements/Probability').Probability;
-exports.Reference = require('./src/elements/Reference').Reference;
-exports.Symbol = require('./src/elements/Symbol').Symbol;
-exports.Tag = require('./src/elements/Tag').Tag;
-exports.Template = require('./src/elements/Template').Template;
-exports.Text = require('./src/elements/Text').Text;
-exports.Version = require('./src/elements/Version').Version;
+var elements = require('./src/elements');
+exports.Angle = elements.Angle;
+exports.Binary = elements.Binary;
+exports.Complex = elements.Complex;
+exports.Duration = elements.Duration;
+exports.Identifier = elements.Identifier;
+exports.Moment = elements.Moment;
+exports.Percent = elements.Percent;
+exports.Probability = elements.Probability;
+exports.Reference = elements.Reference;
+exports.Symbol = elements.Symbol;
+exports.Tag = elements.Tag;
+exports.Template = elements.Template;
+exports.Text = elements.Text;
+exports.Version = elements.Version;
 
 // PRIMITIVE COMPOSITE TYPES
-exports.Association = require('./src/composites/Association').Association;
-exports.Parameters = require('./src/composites/Parameters').Parameters;
-exports.Range = require('./src/composites/Range').Range;
-exports.Source = require('./src/composites/Source').Source;
-exports.Tree = require('./src/composites/Tree').Tree;
+var composites = require('./src/composites');
+exports.Association = composites.Association;
+exports.Parameters = composites.Parameters;
+exports.Range = composites.Range;
+exports.Source = composites.Source;
+exports.Tree = composites.Tree;
 
 // COLLECTION TYPES
-exports.List = require('./src/collections/List').List;
-exports.Catalog = require('./src/collections/Catalog').Catalog;
-exports.Queue = require('./src/collections/Queue').Stack;
-exports.Set = require('./src/collections/Set').Set;
-exports.Stack = require('./src/collections/Stack').Stack;
+var collections = require('./src/collections');
+exports.List = collections.List;
+exports.Catalog = collections.Catalog;
+exports.Queue = collections.Stack;
+exports.Set = collections.Set;
+exports.Stack = collections.Stack;
 
 // GENERAL UTILITIES
-exports.Comparator = require('./src/utilities/Comparator').Comparator;
-exports.Formatter = require('./src/utilities/Formatter').Formatter;
-exports.Iterator = require('./src/utilities/Iterator').Iterator;
-exports.Parser = require('./src/utilities/Parser').Parser;
-exports.Sorter = require('./src/utilities/Sorter').Sorter;
-exports.Visitor = require('./src/utilities/Visitor').Visitor;
-
-exports.codex = require('./src/utilities/Codex');
-exports.formatter = new exports.Formatter();
-exports.parser = new exports.Parser(false);
+var utilities = require('./src/utilities');
+exports.Comparator = utilities.Comparator;
+exports.Formatter = utilities.Formatter;
+exports.Iterator = utilities.Iterator;
+exports.Parser = utilities.Parser;
+exports.Sorter = utilities.Sorter;
+exports.Visitor = utilities.Visitor;
+exports.codex = utilities.codex;
+exports.formatter = new utilities.Formatter();
+exports.parser = new utilities.Parser(false);
 
 

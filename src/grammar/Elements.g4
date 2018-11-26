@@ -1,5 +1,5 @@
-grammar BaliElements;
-import BaliTokens;
+grammar Elements;
+import Tokens;
 
 element:
     angle |

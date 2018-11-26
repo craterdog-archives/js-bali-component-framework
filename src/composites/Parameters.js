@@ -51,7 +51,7 @@ Parameters.fromCollection = function(collection) {
     switch (type) {
         case 'Array':
             collection.forEach(function(parameter, index) {
-                parameters.addParameter(index + 1, parameter);  // Bali ordinal based indexing
+                parameters.addParameter(index + 1, parameter);  // ordinal based indexing
             });
             break;
         case 'List':
