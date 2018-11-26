@@ -89,8 +89,8 @@ Component.prototype.toString = function() {
  * @returns {String} The source code for this component.
  */
 Component.prototype.toDocument = function(indentation) {
-    var formatter = new Formatter();
-    var source = formatter.formatComponent(this, indentation);
+    var formatter = new Formatter(indentation);
+    var source = formatter.formatComponent(this);
     return source;
 };
 

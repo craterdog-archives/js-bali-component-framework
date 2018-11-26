@@ -16,7 +16,6 @@ var types = require('./Types');
 var Component = require('./Component').Component;
 var Iterator = require('../utilities/Iterator').Iterator;
 var elements = require('../elements');
-//var collections = require('../collections');
 
 
 // PUBLIC FUNCTIONS
@@ -84,14 +83,9 @@ Composite.asComponent = function(value) {
         case 'Number':
             component = new elements.Complex(value);
             break;
-        /*
         case 'Array':
-            component = new collections.List.fromCollection(value);
-            break;
         case 'Object':
-            component = new collections.Catalog.fromCollection(value);
-            break;
-        */
+            throw new Error('COMPOSITE: Only primitive JS types (strings, numbers, and booleans) can be converted to components.');
         default:
             // it's already a component, leave it as is
             component = value;

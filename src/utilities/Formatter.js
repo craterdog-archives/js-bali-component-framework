@@ -21,12 +21,17 @@ var types = require('../abstractions/Types');
 
 /**
  * This class implements a formatter that formats component structures as strings
- * containing Bali Document Notation™ in a canonical way.
+ * containing Bali Document Notation™ in a canonical way. If an optional indentation
+ * string is specified, then each line of the generated source code will be indented
+ * using that string.
  * 
  * @constructor
+ * @param {String} indentation A blank string that will be prepended to each indented line in
+ * the source code. The default is the empty string.
  * @returns {Formatter} The new component formatter.
  */
-function Formatter() {
+function Formatter(indentation) {
+    this.indentation = indentation;
     return this;
 }
 Formatter.prototype.constructor = Formatter;
@@ -35,16 +40,13 @@ exports.Formatter = Formatter;
 
 /**
  * This method generates the canonical source code for the specified parse tree
- * component. If an optional indentation string is specified, then each line of the
- * generated source code will be indented using that string.
+ * component.
  * 
  * @param {Component} component The parse tree representing a component.
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
  * @returns {String} The source code for the parse tree component.
  */
-Formatter.prototype.formatComponent = function(component, indentation) {
-    var visitor = new FormattingVisitor(indentation);
+Formatter.prototype.formatComponent = function(component) {
+    var visitor = new FormattingVisitor(this.indentation);
     component.acceptVisitor(visitor);
     return visitor.source;
 };
