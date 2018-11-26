@@ -14,7 +14,7 @@
  * complex number element.
  */
 var antlr = require('antlr4');
-var grammar = require('../../grammar');
+var grammar = require('../grammar');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 var Angle = require('./Angle').Angle;

@@ -26,7 +26,7 @@
  */
 var antlr = require('antlr4');
 var ErrorStrategy = require('antlr4/error/ErrorStrategy');
-var grammar = require('../../grammar');
+var grammar = require('../grammar');
 var types = require('../abstractions/Types');
 var Component = require('../abstractions/Component').Component;
 var elements = require('../elements');

@@ -26,12 +26,12 @@ module.exports = function(grunt) {
     clean: {
       generate: [
         '*.log',
-        'grammar/BaliDocumentLexer.js',
-        'grammar/BaliDocumentParser.js',
-        'grammar/BaliDocumentListener.js',
-        'grammar/BaliDocumentVisitor.js',
-        'grammar/*.interp',
-        'grammar/*.tokens'
+        'src/grammar/BaliDocumentLexer.js',
+        'src/grammar/BaliDocumentParser.js',
+        'src/grammar/BaliDocumentListener.js',
+        'src/grammar/BaliDocumentVisitor.js',
+        'src/grammar/*.interp',
+        'src/grammar/*.tokens'
       ],
       build: [
         'dist/*'
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     // grunt-antlr4 plugin configuration (generate parser)
     antlr4: {
       generate: {
-        grammar: 'grammar/BaliDocument.g4',
+        grammar: 'src/grammar/BaliDocument.g4',
         options: {
           grammarLevel: {
             language: 'JavaScript'
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
           timeout: 10000 
         },
         src: [
-          'test/*.js'
+          'test/**/*.js'
         ]
       }
     },
@@ -80,8 +80,7 @@ module.exports = function(grunt) {
       dist: {
         // concatenate the source files and place the result in destination
         src: [
-          'grammar/*.js',
-          'src/*/*.js'
+          'src/**/*.js'
         ],
         dest: 'dist/<%= pkg.name %>.js'
       }
