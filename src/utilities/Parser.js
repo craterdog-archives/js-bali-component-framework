@@ -10,8 +10,8 @@
 'use strict';
 
 /**
- * This library provides functions that parse a Bali Document Notation™
- * and produce the corresponding parse tree structure.
+ * This module provides a class that parses a document containing
+ * Bali Document Notation™ and produce the corresponding parse tree structure.
  * 
  * NOTE: The implementation of this parser uses a raw parser that was
  * generated using ANTLR v4. The raw parse tree structure that comes
@@ -333,6 +333,12 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+// document: EOL* component EOL* EOF
+ParsingVisitor.prototype.visitDocument = function(ctx) {
+    ctx.component().accept(this);
 };
 
 
