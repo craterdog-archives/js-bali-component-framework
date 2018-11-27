@@ -631,6 +631,9 @@ FormattingVisitor.prototype.visitSource = function(source) {
     this.source += '{';
     source.procedure.acceptVisitor(this);
     this.source += '}';
+    if (source.isParameterized()) {
+        source.parameters.acceptVisitor(this);
+    }
 };
 
 

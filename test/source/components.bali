@@ -64,14 +64,18 @@
     ]($type: $Foo)
     $code: [
         {}
-        {$foo := bar; $bar := baz}
+        {$foo := bar; $bar := baz}($bar, $baz)
         {
             if condition then {
                 $x := y
             } else {
                 return x
             }
-        }
+        }(
+            $y: 5
+            $baz: none
+            $condition: true
+        )
     ]
     $binaries: [
         ''($base: 2)

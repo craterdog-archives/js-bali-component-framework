@@ -113,6 +113,13 @@ ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
+ParsingVisitor.prototype.getParameters = function() {
+    var parameters = this.parameters;
+    this.parameters = undefined;  // must unset it so other values don't see it
+    return parameters;
+};
+
+
 ParsingVisitor.prototype.getIndentation = function() {
     var indentation = '';
     for (var i = 0; i < this.depth; i++) {
@@ -124,7 +131,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 
 // angle: '~' real
 ParsingVisitor.prototype.visitAngle = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var angle = new elements.Angle(value, parameters);
     this.result = angle;
@@ -133,7 +140,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 
 // anyTemplate: 'any'
 ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var template = new elements.Template(value, parameters);
     this.result = template;
@@ -167,7 +174,7 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var string = ctx.BINARY().getText();
     string = string.slice(1, -1);  // strip off the "'" delimiters
     string = string.replace(/\s/g, '');  // strip out all whitespace
@@ -203,7 +210,7 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var type = types.CATALOG;
     if (parameters) {
         type = parameters.getValue('$type');
@@ -272,7 +279,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 
 // complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
@@ -287,15 +294,13 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 //       are during its initialization.
 ParsingVisitor.prototype.visitComponent = function(ctx) {
     var parameters = ctx.parameters();
-    this.parameters = undefined;  // must clear it first to avoid it propagating for recursive parameters
     if (parameters) {
         // this is a parameterized component so parse the parameters first
         parameters.accept(this);
         this.parameters = this.result;  // save off the parameters for the value object
     }
     var value = ctx.value();
-    value.accept(this);
-    this.parameters = undefined;  // must clear it afterwards so non-components don't see it
+    value.accept(this);  // the value clears this.parameters if it is set
 };
 
 
@@ -344,7 +349,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var duration = new elements.Duration(value, parameters);
     this.result = duration;
@@ -410,7 +415,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 // falseProbability: 'false'
 ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
@@ -419,7 +424,7 @@ ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
 
 // fractionalProbability: FRACTION
 ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
@@ -486,7 +491,7 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 
 // imaginaryNumber: imaginary
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
@@ -504,7 +509,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
@@ -534,7 +539,7 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 
 // inlineText: TEXT
 ParsingVisitor.prototype.visitInlineText = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var text = new elements.Text(value, parameters);
     this.result = text;
@@ -556,7 +561,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     EOL (expression EOL)* |
 //     /*empty list*/
 ParsingVisitor.prototype.visitList = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var collection;
     var type = types.LIST;
     if (parameters) {
@@ -637,7 +642,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var moment = new elements.Moment(value, parameters);
     this.result = moment;
@@ -667,7 +672,7 @@ ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 
 // newlineText: TEXT_BLOCK
 ParsingVisitor.prototype.visitNewlineText = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.TEXT_BLOCK().getText();
     var indentation = this.getIndentation();
     var regex = new RegExp('\\n' + indentation, 'g');
@@ -679,7 +684,7 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
 
 // noneTemplate: 'none'
 ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var template = new elements.Template(value, parameters);
     this.result = template;
@@ -721,7 +726,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 
 // percent: real '%'
 ParsingVisitor.prototype.visitPercent = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var percent = new elements.Percent(value, parameters);
     this.result = percent;
@@ -781,7 +786,7 @@ ParsingVisitor.prototype.visitQueueClause = function(ctx) {
 
 // range: expression '..' expression
 ParsingVisitor.prototype.visitRange = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var expressions = ctx.expression();
     expressions[0].accept(this);
     var first= this.result;
@@ -801,7 +806,7 @@ ParsingVisitor.prototype.visitReal = function(ctx) {
 
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
@@ -810,7 +815,7 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
 
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var reference = new elements.Reference(value, parameters);
     this.result = reference;
@@ -868,7 +873,7 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 
 // source: '{' procedure '}'
 ParsingVisitor.prototype.visitSource = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     ctx.procedure().accept(this);
     var procedure = this.result;
     var source = new composites.Source(procedure, parameters);
@@ -922,7 +927,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var symbol = new elements.Symbol(value, parameters);
     this.result = symbol;
@@ -931,7 +936,7 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var tag = new elements.Tag(value, parameters);
     this.result = tag;
@@ -949,7 +954,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 
 // trueProbability: 'true'
 ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var probability = new elements.Probability(value, parameters);
     this.result = probability;
@@ -958,7 +963,7 @@ ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
 
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var number = new elements.Complex(value, parameters);
     this.result = number;
@@ -975,7 +980,7 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
-    var parameters = this.parameters;
+    var parameters = this.getParameters();
     var value = ctx.getText();
     var version = new elements.Version(value, parameters);
     this.result = version;
