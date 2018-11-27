@@ -15,20 +15,21 @@
  */
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
-var Association = require('../composites/Association').Association;
+var collections = require('../collections');
 
 
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new empty parameter list.
+ * This constructor creates a new parameter catalog or list.
  * 
+ * @param {Collection} collection The collection of parameters. 
  * @returns {Parameters} The new parameter list.
  */
-function Parameters() {
+function Parameters(collection) {
     Composite.call(this, types.PARAMETERS);
-    this.array = [];
-    this.complexity += 2;  // account for the '(' ')' delimiters
+    this.collection = collection;
+    this.complexity += collection.complexity;
     return this;
 }
 Parameters.prototype = Object.create(Composite.prototype);
@@ -37,50 +38,30 @@ exports.Parameters = Parameters;
 
 
 /**
- * This function creates a new parameter list using the specified collection to seed the
- * initial parameters in the list.
+ * This function creates a new parameter list using the specified collection as the
+ * parameter values.
  * 
  * @param {Array|Object|Collection} collection The collection containing the initial
  * parameters to be used to seed the new parameter list.
  * @returns {Parameters} The new parameter list.
  */
 Parameters.fromCollection = function(collection) {
-    var parameters = new Parameters();
-    var iterator;
     var type = collection.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(parameter, index) {
-                parameters.addParameter(index + 1, parameter);  // ordinal based indexing
-            });
-            break;
         case 'List':
         case 'Set':
         case 'Stack':
-            iterator = collection.getIterator();
-            var index = 1;
-            while (iterator.hasNext()) {
-                var parameter = iterator.getNext();
-                parameters.addParameter(index++, parameter);
-            }
+            collection = collections.List.fromCollection(collection);
             break;
         case 'Object':
-            var keys = Object.keys(collection);
-            keys.forEach(function(key) {
-                var value = collection[key];
-                parameters.addParameter(key, value);
-            });
-            break;
         case 'Catalog':
-            iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                var parameter = iterator.getNext();
-                parameters.addParameter(parameter.key, parameter.value);
-            }
+            collection = collections.Catalog.fromCollection(collection);
             break;
         default:
             throw new Error('LIST: A parameters list cannot be initialized using a collection of type: ' + type);
     }
+    var parameters = new Parameters(collection);
     return parameters;
 };
 
@@ -103,7 +84,7 @@ Parameters.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of parameters that are in this list.
  */
 Parameters.prototype.getSize = function() {
-    var size = this.array.length;
+    var size = this.collection.getSize();
     return size;
 };
 
@@ -114,53 +95,42 @@ Parameters.prototype.getSize = function() {
  * @returns {Array} An array containing the parameters in this list.
  */
 Parameters.prototype.toArray = function() {
-    var array = this.array.slice();  // copy the array
+    var array = this.collection.toArray();
     return array;
 };
 
 
 /**
- * This method adds a new parameter to the end of the parameter list.
+ * This method returns the key for the parameter with the specified index in the
+ * parameter list.
  *
- * @param {String|Number|Boolean|Component} key The key for the new parameter.
- * @param {String|Number|Boolean|Component} value The new value to be associated with the key.
+ * @param {Number} index The index for the parameter with the desired key.
+ * @returns {Component} The key for the parameter associated with the index.
  */
-Parameters.prototype.addParameter = function(key, value) {
-    var parameter = new Association(key, value);
-    this.array.push(parameter);
-    if (this.isList) {
-        this.complexity += parameter.value.complexity;
-    } else {
-        this.complexity += parameter.complexity;
+Parameters.prototype.getKey = function(index) {
+    var key = this.collection.getItem(index);
+    if (this.collection.constructor.name === 'Catalog') {
+        key = key.key;  // the item is an association
     }
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+    return key;
 };
 
 
 /**
- * This method retrieves the item (parameter association) that is associated with the
- * specified index from this parameters list.
- * 
- * @param {Number} index The index of the desired parameter association.
- * @returns {Association} The parameter association at that index.
- */
-Parameters.prototype.getParameter = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    var association = this.array[index];
-    return association;
-};
-
-
-/**
- * This method returns the value associated with the specified key in the parameter list.
+ * This method returns the value associated with the specified key from the parameter list.
  *
- * @param {String|Number|Boolean|Component} key The key for the desired parameter.
+ * @param {String|Number|Boolean|Component} key The key (or index) for the desired parameter.
  * @returns {Component} The parameter value associated with the key.
  */
 Parameters.prototype.getValue = function(key) {
-    var association = this.array.find(function(association) {
-        return association.key.toString() === key.toString();
-    }, this);
-    if (association) return association.value;
+    var value;
+    if (this.collection.constructor.name === 'Catalog') {
+        value = this.collection.getValue(key);
+        if (value === undefined) {
+            value = this.collection.getItem(key).value;
+        }
+    } else {
+        value = this.collection.getItem(key);
+    }
+    return value;
 };

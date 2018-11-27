@@ -36,7 +36,7 @@ function Binary(value, parameters) {
     Element.call(this, types.BINARY, parameters);
     if (value === undefined || value === null) value = Buffer.alloc(0);  // default value
     if (parameters) {
-        this.base = parameters.getParameter(1).value.toNumber();
+        this.base = parameters.getValue(1).toNumber();
     }
     var source;
     var type = value.constructor.name;

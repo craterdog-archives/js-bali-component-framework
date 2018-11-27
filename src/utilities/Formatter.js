@@ -438,35 +438,8 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 // parameters: '(' collection ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     this.source += '(';
-    if (!parameters.isEmpty()) {
-        var iterator = parameters.getIterator();
-        var parameter;
-        if (parameters.isSimple()) {
-            // inline the parameters
-            parameter = iterator.getNext();
-            if (parameters.isList) parameter = parameter.value;
-            parameter.acceptVisitor(this);
-            while (iterator.hasNext()) {
-                this.source += ', ';
-                parameter = iterator.getNext();
-                if (parameters.isList) parameter = parameter.value;
-                parameter.acceptVisitor(this);
-            };
-        } else {
-            // each parameter is on a separate line
-            this.depth++;
-            while (iterator.hasNext()) {
-                this.appendNewline();
-                parameter = iterator.getNext();
-                if (parameters.isList) parameter = parameter.value;
-                parameter.acceptVisitor(this);
-            };
-            this.depth--;
-            this.appendNewline();
-        }
-    } else if (!parameters.isList) {
-        this.source += ':';  // empty catalog
-    }
+    // delegate to collection
+    this.visitCollection(parameters.collection);
     this.source += ')';
 };
 

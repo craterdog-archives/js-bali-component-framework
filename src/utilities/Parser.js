@@ -211,12 +211,6 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
     var parameters = this.getParameters();
-    var type = types.CATALOG;
-    if (parameters) {
-        type = parameters.getValue('$type');
-        if (!type) type = parameters.getParameter(1).value;
-        type = types.typeBySymbol(type);
-    }
     var component = new collections.Catalog(parameters);
     if (ctx.constructor.name !== 'EmptyCatalogContext') {
         this.depth++;
@@ -565,9 +559,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var collection;
     var type = types.LIST;
     if (parameters) {
-        type = parameters.getValue('$type');
-        if (!type) type = parameters.getParameter(1).value;
-        type = types.typeBySymbol(type);
+        type = types.typeBySymbol(parameters.getValue(1));
     }
     switch (type) {
         case types.QUEUE:
@@ -693,33 +685,9 @@ ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
 
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
-    var parameters = new composites.Parameters();
     ctx.collection().accept(this);
     var collection = this.result;
-    var type = collection.type;
-    var iterator = collection.getIterator();
-    var key;
-    var value;
-    switch (type) {
-        case types.LIST:
-            parameters.isList = true;
-            key = 1;
-            while (iterator.hasNext()) {
-                value = iterator.getNext();
-                parameters.addParameter(key++, value);
-            }
-            break;
-        case types.CATALOG:
-            while (iterator.hasNext()) {
-                var association = iterator.getNext();
-                key = association.key;
-                value = association.value;
-                parameters.addParameter(key, value);
-            }
-            break;
-        default:
-            throw new Error('PARSER: The collection type for the parameters is invalid: ' + types.typeName(type));
-    }
+    var parameters = new composites.Parameters(collection);
     this.result = parameters;
 };
 
@@ -899,7 +867,6 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 // structure: '[' collection ']'
 ParsingVisitor.prototype.visitStructure = function(ctx) {
     ctx.collection().accept(this);
-    var collection = this.result;
 };
 
 
