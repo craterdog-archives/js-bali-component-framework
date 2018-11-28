@@ -12,41 +12,41 @@
 
 /*
  * This element class captures the state and methods associated with a
- * symbol element.
+ * reserved element.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 
 
 /**
- * This constructor creates a new symbol element.
+ * This constructor creates a new reserved element.
  * 
- * @param {String} value The value of the symbol.
+ * @param {String} value The value of the reserved.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Symbol} The new symbol element.
+ * @returns {Reserved} The new reserved element.
  */
-function Symbol(value, parameters) {
-    Element.call(this, types.SYMBOL, parameters);
+function Reserved(value, parameters) {
+    Element.call(this, types.RESERVED, parameters);
     if (!value) {
-        throw new Error('SYMBOL: A symbol cannot be null.');
+        throw new Error('RESERVED: A reserved cannot be null.');
     }
-    if (!/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error("SYMBOL: A symbol must begin with a '$' and contain at least one character and cannot contain white space: " + this.value);
+    if (!/^\$_[a-zA-Z][0-9a-zA-Z]*_$/g.test(value)) {
+        throw new Error("RESERVED: A reserved must begin with '$_', end with a '_' and contain at least one character and cannot contain white space: " + this.value);
     }
     this.value = value;
     this.setSource(value);
     return this;
 }
-Symbol.prototype = Object.create(Element.prototype);
-Symbol.prototype.constructor = Symbol;
-exports.Symbol = Symbol;
+Reserved.prototype = Object.create(Element.prototype);
+Reserved.prototype.constructor = Reserved;
+exports.Reserved = Reserved;
 
 
 /**
- * This method returns the identifier part of the symbol element.
+ * This method returns the identifier part of the reserved element.
  * 
- * @returns {String} The identifier part of the symbol element.
+ * @returns {String} The identifier part of the reserved element.
  */
-Symbol.prototype.getIdentifier = function() {
+Reserved.prototype.getIdentifier = function() {
     return this.value.substring(1);
 };

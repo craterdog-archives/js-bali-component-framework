@@ -10,6 +10,7 @@ element:
     percent |
     probability |
     reference |
+    reserved |
     symbol |
     tag |
     template |
@@ -46,6 +47,8 @@ probability:
 real: '0' | REAL;
 
 reference: RESOURCE;
+
+reserved: RESERVED;
 
 symbol: SYMBOL;
 

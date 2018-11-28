@@ -704,6 +704,15 @@ DocumentListener.prototype.exitReference = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#reserved.
+DocumentListener.prototype.enterReserved = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#reserved.
+DocumentListener.prototype.exitReserved = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#symbol.
 DocumentListener.prototype.enterSymbol = function(ctx) {
 };

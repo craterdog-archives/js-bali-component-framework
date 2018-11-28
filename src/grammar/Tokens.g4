@@ -12,6 +12,8 @@ SHELL: '^#!' LINE;
 
 TAG: '#' BASE32*;
 
+RESERVED: '$_' IDENTIFIER '_';
+
 SYMBOL: '$' IDENTIFIER;
 
 FRACTION: '.' ('0'..'9')* '1'..'9';

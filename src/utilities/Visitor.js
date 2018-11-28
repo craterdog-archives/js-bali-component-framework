@@ -158,6 +158,7 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 //     percent |
 //     probability |
 //     reference |
+//     reserved |
 //     symbol |
 //     tag |
 //     template |

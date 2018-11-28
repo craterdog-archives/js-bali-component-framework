@@ -28,6 +28,7 @@ exports.Moment = elements.Moment;
 exports.Percent = elements.Percent;
 exports.Probability = elements.Probability;
 exports.Reference = elements.Reference;
+exports.Reserved = elements.Reserved;
 exports.Symbol = elements.Symbol;
 exports.Tag = elements.Tag;
 exports.Template = elements.Template;

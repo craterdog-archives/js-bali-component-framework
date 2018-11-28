@@ -790,6 +790,15 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 };
 
 
+// reserved: RESERVED
+ParsingVisitor.prototype.visitReserved = function(ctx) {
+    var parameters = this.getParameters();
+    var value = ctx.getText();
+    var reserved = new elements.Reserved(value, parameters);
+    this.result = reserved;
+};
+
+
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     var tree = new composites.Tree(types.RETURN_CLAUSE, 6);

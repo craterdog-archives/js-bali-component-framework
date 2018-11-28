@@ -61,6 +61,7 @@ var MAP = {
     QueueClause:                  '#QLZV5M4GQD14WV2W7A3WV5G486QJFBZ1',
     Range:                        '#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L',
     Reference:                    '#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3',
+    Reserved:                     '#HKTQFZ328SXYW6Q08CCHW90NQ6FW77KB',
     ReturnClause:                 '#BYS06PXZA0JZPSPG2NXZKSGJP9H9NRFV',
     SaveClause:                   '#ZZB0JXMS61LQSF09B44BRWBCW6LM9RSV',
     SelectClause:                 '#AZJ00P3CLMCNWZAG43MSGGFQA46HNPQJ',
@@ -141,6 +142,7 @@ exports.QUEUE = NAMES.indexOf('Queue');
 exports.QUEUE_CLAUSE = NAMES.indexOf('QueueClause');
 exports.RANGE = NAMES.indexOf('Range');
 exports.REFERENCE = NAMES.indexOf('Reference');
+exports.RESERVED = NAMES.indexOf('Reserved');
 exports.RETURN_CLAUSE = NAMES.indexOf('ReturnClause');
 exports.SAVE_CLAUSE = NAMES.indexOf('SaveClause');
 exports.SELECT_CLAUSE = NAMES.indexOf('SelectClause');
