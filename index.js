@@ -23,6 +23,7 @@ exports.Angle = elements.Angle;
 exports.Binary = elements.Binary;
 exports.Complex = elements.Complex;
 exports.Duration = elements.Duration;
+exports.Filter = elements.Filter;
 exports.Identifier = elements.Identifier;
 exports.Moment = elements.Moment;
 exports.Percent = elements.Percent;
@@ -31,7 +32,6 @@ exports.Reference = elements.Reference;
 exports.Reserved = elements.Reserved;
 exports.Symbol = elements.Symbol;
 exports.Tag = elements.Tag;
-exports.Template = elements.Template;
 exports.Text = elements.Text;
 exports.Version = elements.Version;
 
