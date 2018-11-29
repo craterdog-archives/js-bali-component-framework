@@ -30,8 +30,8 @@ function Reserved(value, parameters) {
     if (!value) {
         throw new Error('RESERVED: A reserved cannot be null.');
     }
-    if (!/^\$_[a-zA-Z][0-9a-zA-Z]*_$/g.test(value)) {
-        throw new Error("RESERVED: A reserved must begin with '$_', end with a '_' and contain at least one character and cannot contain white space: " + this.value);
+    if (!/^\$\$[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
+        throw new Error("RESERVED: A reserved must begin with '$$' and contain at least one character and cannot contain white space: " + this.value);
     }
     this.value = value;
     this.setSource(value);

@@ -138,12 +138,12 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 };
 
 
-// anyTemplate: 'any'
-ParsingVisitor.prototype.visitAnyTemplate = function(ctx) {
+// anyFilter: 'any'
+ParsingVisitor.prototype.visitAnyFilter = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var template = new elements.Template(value, parameters);
-    this.result = template;
+    var filter = new elements.Filter(value, parameters);
+    this.result = filter;
 };
 
 
@@ -674,12 +674,12 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
 };
 
 
-// noneTemplate: 'none'
-ParsingVisitor.prototype.visitNoneTemplate = function(ctx) {
+// noneFilter: 'none'
+ParsingVisitor.prototype.visitNoneFilter = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var template = new elements.Template(value, parameters);
-    this.result = template;
+    var filter = new elements.Filter(value, parameters);
+    this.result = filter;
 };
 
 

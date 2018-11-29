@@ -68,7 +68,7 @@ Composite.asComponent = function(value) {
             } else if (value.startsWith('#')) {
                 component = new elements.Tag(value);
             } else if (value === 'none' || value === 'any') {
-                component = new elements.Template(value);
+                component = new elements.Filter(value);
             } else if (value.startsWith('"')) {
                 component = new elements.Text(value);
             } else if (value.match(/^v[1-9]/)) {

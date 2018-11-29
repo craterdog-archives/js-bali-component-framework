@@ -10,42 +10,41 @@
 'use strict';
 
 /*
- * This element class captures the state and methods associated with an
- * template element.
+ * This element class captures the state and methods associated with a filter element.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 
 
 /**
- * This constructor creates a new template element.
+ * This constructor creates a new filter element.
  * 
  * @constructor
- * @param {String} value The value of the template element.
+ * @param {String} value The value of the filter element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Template} The new template element.
+ * @returns {Filter} The new filter element.
  */
-function Template(value, parameters) {
-    Element.call(this, types.TEMPLATE, parameters);
+function Filter(value, parameters) {
+    Element.call(this, types.FILTER, parameters);
     if (!value) value = 'none';  // default value
     switch (value) {
         case 'none':
         case 'any':
             break;
         default:
-            throw new Error('TEMPLATE: An invalid value was passed into the constructor: ' + value);
+            throw new Error('FILTER: An invalid value was passed into the constructor: ' + value);
     }
-    if (typeof Template.NONE !== 'undefined' && value === 'none') return Template.NONE;
-    if (typeof Template.ANY !== 'undefined' && value === 'any') return Template.ANY;
+    if (typeof Filter.NONE !== 'undefined' && value === 'none') return Filter.NONE;
+    if (typeof Filter.ANY !== 'undefined' && value === 'any') return Filter.ANY;
     this.value = value;
     this.setSource(value);
     return this;
 }
-Template.prototype = Object.create(Element.prototype);
-Template.prototype.constructor = Template;
-exports.Template = Template;
+Filter.prototype = Object.create(Element.prototype);
+Filter.prototype.constructor = Filter;
+exports.Filter = Filter;
 
 
 // common constants
-Template.NONE = new Template('none');
-Template.ANY = new Template('any');
+Filter.NONE = new Filter('none');
+Filter.ANY = new Filter('any');

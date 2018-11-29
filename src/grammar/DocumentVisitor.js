@@ -396,6 +396,24 @@ DocumentVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#noneFilter.
+DocumentVisitor.prototype.visitNoneFilter = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#anyFilter.
+DocumentVisitor.prototype.visitAnyFilter = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#expressionFilter.
+DocumentVisitor.prototype.visitExpressionFilter = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#imaginary.
 DocumentVisitor.prototype.visitImaginary = function(ctx) {
   return this.visitChildren(ctx);
@@ -488,18 +506,6 @@ DocumentVisitor.prototype.visitSymbol = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#tag.
 DocumentVisitor.prototype.visitTag = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#noneTemplate.
-DocumentVisitor.prototype.visitNoneTemplate = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#anyTemplate.
-DocumentVisitor.prototype.visitAnyTemplate = function(ctx) {
   return this.visitChildren(ctx);
 };
 

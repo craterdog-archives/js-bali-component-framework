@@ -10,44 +10,44 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var Reserved = require('../src/elements/Reserved').Reserved;
+var Symbol = require('../src/elements/Symbol').Symbol;
 
 describe('Bali Component Framework™', function() {
 
-    describe('Test reserved constructors', function() {
+    describe('Test symbol constructors', function() {
 
-        it('should throw an exception for an empty reserved', function() {
+        it('should throw an exception for an empty symbol', function() {
             expect(
                 function() {
-                    var empty = new Reserved();
+                    var empty = new Symbol();
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new Reserved('');
+                    var empty = new Symbol('');
                 }
             ).to.throw();
         });
 
-        it('should throw an exception for a reserved containing white space', function() {
+        it('should throw an exception for a symbol containing white space', function() {
             expect(
                 function() {
-                    var bad = new Reserved(' ');
+                    var bad = new Symbol(' ');
                 }
             ).to.throw();
             expect(
                 function() {
-                    var bad = new Reserved('White Space');
+                    var bad = new Symbol('White Space');
                 }
             ).to.throw();
         });
 
-        it('should construct a reserved and format the same reserved', function() {
-            var reserved = new Reserved('$_foobar_');
-            var string = reserved.toString();
-            expect(string).to.equal('$_foobar_');
-            var identifier = reserved.getIdentifier();
-            expect(identifier).to.equal('_foobar_');
+        it('should construct a symbol and format the same symbol', function() {
+            var symbol = new Symbol('$foobar');
+            var string = symbol.toString();
+            expect(string).to.equal('$foobar');
+            var identifier = symbol.getIdentifier();
+            expect(identifier).to.equal('foobar');
         });
 
     });

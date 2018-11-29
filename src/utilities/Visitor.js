@@ -153,6 +153,7 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 //     angle |
 //     binary |
 //     duration |
+//     filter |
 //     moment |
 //     number |
 //     percent |
@@ -161,7 +162,6 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 //     reserved |
 //     symbol |
 //     tag |
-//     template |
 //     text |
 //     version
 Visitor.prototype.visitElement = function(element) {
@@ -217,8 +217,8 @@ Visitor.prototype.visitFunctionExpression = function(tree) {
 Visitor.prototype.visitHandleClause = function(tree) {
     var exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    var template = tree.getChild(2);
-    template.acceptVisitor(this);
+    var filter = tree.getChild(2);
+    filter.acceptVisitor(this);
     var block = tree.getChild(3);
     block.acceptVisitor(this);
 };

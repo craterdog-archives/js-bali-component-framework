@@ -10,28 +10,28 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
-var Template = require('../src/elements/Template').Template;
+var Filter = require('../src/elements/Filter').Filter;
 
 describe('Bali Component Framework™', function() {
 
-    describe('Test template constructors', function() {
+    describe('Test filter constructors', function() {
 
-        it('should generate a default none template', function() {
-            expect(new Template().toString()).to.equal(Template.NONE.toString());
+        it('should generate a default none filter', function() {
+            expect(new Filter().toString()).to.equal(Filter.NONE.toString());
         });
 
-        it('should generate an explicit none template', function() {
-            expect(new Template('none').toString()).to.equal(Template.NONE.toString());
+        it('should generate an explicit none filter', function() {
+            expect(new Filter('none').toString()).to.equal(Filter.NONE.toString());
         });
 
-        it('should generate an explicit any template', function() {
-            expect(new Template('any').toString()).to.equal(Template.ANY.toString());
+        it('should generate an explicit any filter', function() {
+            expect(new Filter('any').toString()).to.equal(Filter.ANY.toString());
         });
 
-        it('should throw an exception for an invalid template', function() {
+        it('should throw an exception for an invalid filter', function() {
             expect(
                 function() {
-                    new Template('foobar');
+                    new Filter('foobar');
                 }
             ).to.throw();
         });

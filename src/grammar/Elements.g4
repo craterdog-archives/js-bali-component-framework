@@ -5,6 +5,7 @@ element:
     angle |
     binary |
     duration |
+    filter |
     moment |
     number |
     percent |
@@ -13,7 +14,6 @@ element:
     reserved |
     symbol |
     tag |
-    template |
     text |
     version
 ;
@@ -23,6 +23,12 @@ angle: '~' real;
 binary: BINARY;
 
 duration: DURATION;
+
+filter:
+    'none'  #noneFilter |
+    'any'   #anyFilter |
+    REGEX   #expressionFilter
+;
 
 imaginary: IMAGINARY;
 
@@ -53,11 +59,6 @@ reserved: RESERVED;
 symbol: SYMBOL;
 
 tag: TAG;
-
-template:
-    'none'  #noneTemplate |
-    'any'   #anyTemplate
-;
 
 text:
     TEXT        #inlineText |

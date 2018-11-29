@@ -38,6 +38,7 @@ var MAP = {
     EvaluateClause:               '#51Z65KR2AR4N2APTFDCPVDZPCNH1T1DA',
     ExponentialExpression:        '#53HF4NHVBS8L1CTN14QKMQRQ616TSW88',
     FactorialExpression:          '#DHXPLJPJ7BZFHDP5CP2N8V3YX09K2NTW',
+    Filter:                       '#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W',
     Function:                     '#YFZN88KCZVJFCBK9VZ7BSGMRQKDB9XY1',
     FunctionExpression:           '#D64C23JGH8CJFXKDB7D6LA77CB8T5CMM',
     HandleClause:                 '#FXZBVDWT8PSDS98ZAN242DVBKQ41WS73',
@@ -73,7 +74,6 @@ var MAP = {
     SubcomponentExpression:       '#L67PSVRDKAQKTFJ0N578DHKC719S4YKT',
     Symbol:                       '#R4N28VY9D39002WL3PSM6ZSXDC6FT730',
     Tag:                          '#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2',
-    Template:                     '#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W',
     Text:                         '#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL',
     ThrowClause:                  '#0CB0H5GSZK8NW9MTQ7NSKWPV07P82TR6',
     Variable:                     '#CBZ2CQLQM3JXMQT8P041PXGWW6MWB4J0',
@@ -119,6 +119,7 @@ exports.DURATION = NAMES.indexOf('Duration');
 exports.EVALUATE_CLAUSE = NAMES.indexOf('EvaluateClause');
 exports.EXPONENTIAL_EXPRESSION = NAMES.indexOf('ExponentialExpression');
 exports.FACTORIAL_EXPRESSION = NAMES.indexOf('FactorialExpression');
+exports.FILTER = NAMES.indexOf('Filter');
 exports.FUNCTION = NAMES.indexOf('Function');
 exports.FUNCTION_EXPRESSION = NAMES.indexOf('FunctionExpression');
 exports.HANDLE_CLAUSE = NAMES.indexOf('HandleClause');
@@ -154,7 +155,6 @@ exports.SUBCOMPONENT = NAMES.indexOf('Subcomponent');
 exports.SUBCOMPONENT_EXPRESSION = NAMES.indexOf('SubcomponentExpression');
 exports.SYMBOL = NAMES.indexOf('Symbol');
 exports.TAG = NAMES.indexOf('Tag');
-exports.TEMPLATE = NAMES.indexOf('Template');
 exports.TEXT = NAMES.indexOf('Text');
 exports.THROW_CLAUSE = NAMES.indexOf('ThrowClause');
 exports.VARIABLE = NAMES.indexOf('Variable');

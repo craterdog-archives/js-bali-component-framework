@@ -12,10 +12,6 @@ SHELL: '^#!' LINE;
 
 TAG: '#' BASE32*;
 
-RESERVED: '$_' IDENTIFIER '_';
-
-SYMBOL: '$' IDENTIFIER;
-
 FRACTION: '.' ('0'..'9')* '1'..'9';
 
 
@@ -44,9 +40,15 @@ BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 // a text block takes precedence over a regular text string
 TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
 
-TEXT: '"' (ESCAPE | CHARACTER)*? '"';
+TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
+
+REGEX: '&' TEXT;
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
+
+SYMBOL: '$' IDENTIFIER;
+
+RESERVED: '$$' IDENTIFIER ('-' NATURAL)?;
 
 EOL: '\r'? '\n';
 
@@ -107,4 +109,4 @@ BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/';
 
 // replace with actual characters when read
 fragment
-ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '"' | '\\');
+ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '`' | '\\');

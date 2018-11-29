@@ -109,7 +109,7 @@
         <bali:[$protocol:v1,$name:"/acme/types/Customer",$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
     ]
     $symbols: [$s, $symbol, $foo]
-    $templates: [none, any]
+    $filters: [none, any]
     $texts: [
         "This is a single line text string."
         "This is a string with \"quotes\" in it."

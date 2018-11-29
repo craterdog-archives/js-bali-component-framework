@@ -247,6 +247,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 //     angle |
 //     binary |
 //     duration |
+//     filter |
 //     moment |
 //     number |
 //     percent |
@@ -254,7 +255,6 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 //     reference |
 //     symbol |
 //     tag |
-//     template |
 //     text |
 //     version
 FormattingVisitor.prototype.visitElement = function(element) {
@@ -320,8 +320,8 @@ FormattingVisitor.prototype.visitHandleClause = function(tree) {
     var exception = tree.getChild(1);
     exception.acceptVisitor(this);
     this.source += ' matching ';
-    var template = tree.getChild(2);
-    template.acceptVisitor(this);
+    var filter = tree.getChild(2);
+    filter.acceptVisitor(this);
     this.source += ' with ';
     var block = tree.getChild(3);
     block.acceptVisitor(this);
