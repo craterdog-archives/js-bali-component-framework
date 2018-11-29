@@ -18,7 +18,7 @@ element:
     version
 ;
 
-angle: '~' real;
+angle: ANGLE;
 
 binary: BINARY;
 
@@ -42,7 +42,7 @@ number:
     '(' real del=(',' | 'e^~') imaginary ')'  #complexNumber
 ;
 
-percent: real '%';
+percent: PERCENT;
 
 probability:
     'false'   #falseProbability      |
@@ -50,7 +50,7 @@ probability:
     'true'    #trueProbability
 ;
 
-real: '0' | REAL;
+real: REAL;
 
 reference: RESOURCE;
 

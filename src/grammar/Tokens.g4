@@ -8,7 +8,9 @@ grammar Tokens;
  "fragment" keyword.
 */
 
-SHELL: '^#!' LINE;
+ANGLE: '~' REAL;
+
+PERCENT: REAL '%';
 
 TAG: '#' BASE32*;
 
@@ -19,7 +21,7 @@ FRACTION: '.' ('0'..'9')* '1'..'9';
 //       a negative variable like '-exponent' as a single '-e' token rather than
 //       two tokens '-' and 'exponent'.
 
-REAL: FLOAT | 'e' | 'pi' | 'phi';
+REAL: '0' | FLOAT | 'e' | 'pi' | 'phi';
 
 IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
 
@@ -44,18 +46,15 @@ TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
 
 REGEX: '&' TEXT;
 
-IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
-
 SYMBOL: '$' IDENTIFIER;
 
 RESERVED: '$$' IDENTIFIER ('-' NATURAL)?;
 
+IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
+
 EOL: '\r'? '\n';
 
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
-
-fragment
-LINE: CHARACTER*? EOL;
 
 fragment
 CHARACTER: .;
@@ -64,10 +63,7 @@ fragment
 NATURAL: '1'..'9' ('0'..'9')*;
 
 fragment
-INTEGER: '0' | '-'? NATURAL;
-
-fragment
-FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' INTEGER)?;
+FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' '-'? NATURAL)?;
 
 fragment
 SPAN: ('0' | NATURAL) FRACTION?;
@@ -79,7 +75,7 @@ fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;
 
 fragment
-YEARS: INTEGER;
+YEARS: '0' | '-'? NATURAL;
 
 fragment
 MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));
