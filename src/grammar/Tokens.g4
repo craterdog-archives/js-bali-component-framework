@@ -35,7 +35,7 @@ DURATION:
 RESOURCE: '<' SCHEME ':' CONTEXT '>';
 
 // a version like v123 takes precedence over an identifier
-VERSION: 'v' NATURAL ('.' NATURAL)*;
+VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
@@ -48,7 +48,7 @@ REGEX: '&' TEXT;
 
 SYMBOL: '$' IDENTIFIER;
 
-RESERVED: '$$' IDENTIFIER ('-' NATURAL)?;
+RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
 
@@ -60,13 +60,13 @@ fragment
 CHARACTER: .;
 
 fragment
-NATURAL: '1'..'9' ('0'..'9')*;
+NUMBER: '1'..'9' ('0'..'9')*;
 
 fragment
-FLOAT: '-'? (NATURAL FRACTION? | '0' FRACTION) ('E' '-'? NATURAL)?;
+FLOAT: '-'? (NUMBER FRACTION? | '0' FRACTION) ('E' '-'? NUMBER)?;
 
 fragment
-SPAN: ('0' | NATURAL) FRACTION?;
+SPAN: ('0' | NUMBER) FRACTION?;
 
 fragment
 SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
@@ -75,7 +75,7 @@ fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;
 
 fragment
-YEARS: '0' | '-'? NATURAL;
+YEARS: '0' | '-'? NUMBER;
 
 fragment
 MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));

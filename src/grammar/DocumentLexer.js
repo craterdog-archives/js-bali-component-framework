@@ -679,7 +679,7 @@ DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                       "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
                                       "TEXT", "REGEX", "SYMBOL", "RESERVED", 
                                       "IDENTIFIER", "EOL", "SPACE", "CHARACTER", 
-                                      "NATURAL", "FLOAT", "SPAN", "SCHEME", 
+                                      "NUMBER", "FLOAT", "SPAN", "SCHEME", 
                                       "CONTEXT", "YEARS", "MONTHS", "DAYS", 
                                       "HOURS", "MINUTES", "SECONDS", "BASE16", 
                                       "BASE32", "BASE64", "ESCAPE" ];
