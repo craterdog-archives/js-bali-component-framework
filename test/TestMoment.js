@@ -32,6 +32,15 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test moment methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Moment('<2018>').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR,$version:v1,$digest:none]>');
+        });
+
+    });
+
 });
 
 var tests = [

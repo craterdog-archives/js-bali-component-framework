@@ -16,12 +16,12 @@ var codex = require('../src/utilities/Codex');
 
 describe('Bali Component Framework™', function() {
 
-    describe('Test binary constructors', function() {
+    var expected = Buffer.alloc(256);
+    for (var i = 0; i < 256; i++) {
+        expected[i] = i;
+    }
 
-        var expected = Buffer.alloc(256);
-        for (var i = 0; i < 256; i++) {
-            expected[i] = i;
-        }
+    describe('Test binary constructors', function() {
 
         it('should construct binary values from buffer with no base', function() {
             var binary = new elements.Binary(expected);
@@ -82,6 +82,31 @@ describe('Bali Component Framework™', function() {
                     var bad = new elements.Binary("''", parameters);
                 }
             ).to.throw();
+        });
+
+    });
+
+    describe('Test binary methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new elements.Binary(expected).getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#S858FKVC1YTL20J9M0WQK89MQLS4TK8Z,$version:v1,$digest:none]>');
+        });
+
+        it('should run round-trip binary methods', function() {
+            var binary = new elements.Binary(expected);
+
+            var base2 = new elements.Binary(binary.toBase2());
+            expect(base2.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
+
+            var base16 = new elements.Binary(binary.toBase16());
+            expect(base16.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
+
+            var base32 = new elements.Binary(binary.toBase32());
+            expect(base32.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
+
+            var base64 = new elements.Binary(binary.toBase64());
+            expect(base64.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
         });
 
     });

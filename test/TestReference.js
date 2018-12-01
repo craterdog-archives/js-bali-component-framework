@@ -44,6 +44,15 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test reference methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Reference('<https://google.com/>').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
+        });
+
+    });
+
 });
 
 var tests = [

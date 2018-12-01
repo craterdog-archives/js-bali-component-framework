@@ -212,6 +212,17 @@ describe('Bali Component Framework™', function() {
 
     describe('Test the catalog methods.', function() {
 
+        it('should return the correct primitive type', function() {
+            var type = new collections.Catalog().getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#4XR1NCZKATC5DPT2WAVQH89Q6Y4BCLP6,$version:v1,$digest:none]>');
+        });
+
+        it('should return the correct user defined type', function() {
+            var parameters = composites.Parameters.fromCollection(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']);
+            type = new collections.Catalog(parameters).getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>');
+        });
+
         it('should be able to call the Collection class methods on the catalog', function() {
             var catalog1 = new collections.Catalog();
             catalog1.addItem(new composites.Association(1, 'alpha'));

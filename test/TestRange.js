@@ -58,6 +58,11 @@ describe('Bali Component Framework™', function() {
 
     describe('Test the range methods.', function() {
 
+        it('should return the correct primitive type', function() {
+            var type = new Range(1, 5).getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L,$version:v1,$digest:none]>');
+        });
+
         it('should be able to call the Collection class methods on the range', function() {
             var range1 = Range.fromEndPoints(1, 8);
             var size = range1.getSize();

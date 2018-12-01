@@ -86,7 +86,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test version functions', function() {
+    describe('Test version methods', function() {
 
         it('should calculate and validate next versions', function() {
             var currentVersion = new Version('v6.2.7');
@@ -117,6 +117,11 @@ describe('Bali Component Framework™', function() {
             expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
             nextVersion = new Version('v6.2.7.1.1');
             expect(Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+        });
+
+        it('should return the correct type', function() {
+            var type = new Version('v1.2.3').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#VVF92PYR76BJRFV932KMG7VHCD0MAS5R,$version:v1,$digest:none]>');
         });
 
     });

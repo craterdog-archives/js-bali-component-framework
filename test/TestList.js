@@ -11,6 +11,7 @@
 var mocha = require('mocha');
 var expect = require('chai').expect;
 var abstractions = require('../src/abstractions');
+var composites = require('../src/composites');
 var collections = require('../src/collections');
 
 
@@ -96,6 +97,11 @@ describe('Bali Component Framework™', function() {
     });
 
     describe('Test the list methods.', function() {
+
+        it('should return the correct primitive type', function() {
+            var type = new collections.List().getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#TRYB04LK9Z1TSABALD7W31K8YFSN1F0F,$version:v1,$digest:none]>');
+        });
 
         it('should be able to call the Collection class methods on the list', function() {
             var list1 = new collections.List();

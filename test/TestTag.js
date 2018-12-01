@@ -51,4 +51,13 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test tag methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Tag('JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2,$version:v1,$digest:none]>');
+        });
+
+    });
+
 });

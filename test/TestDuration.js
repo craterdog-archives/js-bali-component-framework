@@ -38,6 +38,15 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test duration methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Duration('~P0D').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y6572KBG2SBYSCBHR88KB1GR616LFK8N,$version:v1,$digest:none]>');
+        });
+
+    });
+
 });
 
 var tests = [

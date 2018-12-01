@@ -53,4 +53,20 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test identifier methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Identifier(types.FUNCTION, 'function').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#YFZN88KCZVJFCBK9VZ7BSGMRQKDB9XY1,$version:v1,$digest:none]>');
+
+            type = new Identifier(types.MESSAGE, 'message').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#1LLBH0287FD3GV4LVS4GC12S60DR54DZ,$version:v1,$digest:none]>');
+
+            type = new Identifier(types.VARIABLE, 'variable').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#CBZ2CQLQM3JXMQT8P041PXGWW6MWB4J0,$version:v1,$digest:none]>');
+
+        });
+
+    });
+
 });

@@ -40,6 +40,27 @@ exports.Component = Component;
 // PUBLIC METHODS
 
 /**
+ * This method returns the type of this component as a reference string.
+ * 
+ * @returns {String} A string containing a type reference for this component.
+ */
+Component.prototype.getType = function() {
+    var type = this.type;
+    if (type === types.CATALOG && this.isParameterized()) {
+        type = types.typeBySymbol(this.parameters.getValue(1));
+    }
+    if (type > 0) {
+        // system type
+        type = types.typeReference(type);
+    } else {
+        // user defined type
+        type = this.parameters.getValue(1).toString();
+    }
+    return type;
+};
+
+
+/**
  * This method returns whether or not this component is parameterized.
  * 
  * @returns {Boolean} Whether or not this component is parameterized.

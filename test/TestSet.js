@@ -97,6 +97,11 @@ describe('Bali Component Framework™', function() {
 
     describe('Test the set methods.', function() {
 
+        it('should return the correct primitive type', function() {
+            var type = new collections.Set().getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#PB33C4Z89QTKBD8P824JMN83STXZGHY9,$version:v1,$digest:none]>');
+        });
+
         it('should be able to call the Collection class methods on the set', function() {
             var set1 = new collections.Set();
             set1.addItem('alpha');

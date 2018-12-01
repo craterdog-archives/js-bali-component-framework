@@ -55,9 +55,14 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test angle functions', function() {
+    describe('Test angle methods', function() {
 
-        it('should run round-trip angle functions', function() {
+        it('should return the correct type', function() {
+            var type = Angle.PI.getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#8SC89QY4LM68LTGPXYMBR6C0LR324L3P,$version:v1,$digest:none]>');
+        });
+
+        it('should run round-trip angle methods', function() {
             var testValues = [
                 Angle.ZERO,
                 Angle.PI,

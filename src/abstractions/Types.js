@@ -17,6 +17,9 @@
 
 // PRIVATE ATTRIBUTES
 
+var PROTOCOL = 'v1';
+var VERSION = 'v1';
+
 var MAP = {
     Invalid:                      'Invalid',  // ordinal based indexing
     Angle:                        '#8SC89QY4LM68LTGPXYMBR6C0LR324L3P',
@@ -83,7 +86,6 @@ var MAP = {
     WhileClause:                  '#D9A2CQGM3RJ6SYBHKM32AN7GM5KZYR9L',
     WithClause:                   '#AGXY4B519SNJFFMDNTQ2DSWZXCBKX596'
 };
-
 
 var NAMES = Object.keys(MAP);
 var TAGS = Object.values(MAP);
@@ -200,6 +202,13 @@ exports.typeTag = function(type) {
 };
 
 
+exports.typeReference = function(type) {
+    var tag = TAGS[type];
+    var reference = '<bali:[$protocol:' + PROTOCOL + ',$tag:' + tag + ',$version:' + VERSION + ',$digest:none]>';
+    return reference;
+};
+
+
 /**
  * This function returns the type associated with the specified symbol.
  * 
@@ -209,18 +218,4 @@ exports.typeTag = function(type) {
 exports.typeBySymbol = function(symbol) {
     var name = symbol.toString().slice(1);  // remove the '$'
     return NAMES.indexOf(name);
-};
-
-
-/**
- * This function returns the type associated with the specified reference.
- * 
- * @param {String|Reference} reference A reference to the desired type.
- * @returns {Number} The type for the specified type reference.
- */
-exports.typeByReference = function(reference) {
-    var source = reference.toString().slice(6, -1);  // remove the '<bali:' and '>'
-    var attributes = source.split(',');  // separate out the attributes
-    var tag = attributes[0].split(':')[1];  // remove the value of the tag attribute
-    return TAGS.indexOf(tag);
 };

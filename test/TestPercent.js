@@ -82,4 +82,13 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test percent methods', function() {
+
+        it('should return the correct type', function() {
+            var type = new Percent('50%').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#WCXVKQC0BM03CNBD2JSF8VLVVHJ1A6P4,$version:v1,$digest:none]>');
+        });
+
+    });
+
 });
