@@ -31,7 +31,7 @@ function Symbol(value, parameters) {
         throw new Error('SYMBOL: A symbol cannot be null.');
     }
     if (!/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error("SYMBOL: A symbol must begin with a '$' and contain at least one character and cannot contain white space: " + this.value);
+        throw new Error("SYMBOL: A symbol must begin with a '$' and contain at least one character and cannot contain white space: " + value);
     }
     this.value = value;
     this.setSource(value);

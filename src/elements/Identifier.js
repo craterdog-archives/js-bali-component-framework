@@ -30,7 +30,7 @@ function Identifier(type, value) {
         throw new Error('IDENTIFIER: An identifier cannot be null.');
     }
     if (!/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error("IDENTIFIER: An identifier must begin with a character and only consist of alpha-numeric characters: " + this.value);
+        throw new Error("IDENTIFIER: An identifier must begin with a character and only consist of alpha-numeric characters: " + value);
     }
     this.setSource(value);
     return this;
