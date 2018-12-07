@@ -64,6 +64,80 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test complex functions', function() {
+
+        it('should perform the negative function correctly', function() {
+            expect(Complex.negative(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.negative(Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.negative(Complex.ZERO)).to.equal(Complex.ZERO);
+            expect(Complex.negative(new Complex('(1 e^~2i)')).isEqualTo(new Complex('(1 e^~-2i)'))).to.equal(true);
+        });
+
+        it('should perform the inverse function correctly', function() {
+            expect(Complex.inverse(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.inverse(Complex.INFINITY)).to.equal(Complex.ZERO);
+            expect(Complex.inverse(Complex.ZERO)).to.equal(Complex.INFINITY);
+            expect(Complex.inverse(new Complex('(2 e^~pi i)')).isEqualTo(new Complex('(0.5 e^~pi i)'))).to.equal(true);
+        });
+
+        it('should perform the conjugate function correctly', function() {
+            expect(Complex.conjugate(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.conjugate(Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.conjugate(Complex.ZERO)).to.equal(Complex.ZERO);
+            expect(Complex.conjugate(new Complex('(3, 4i)')).isEqualTo(new Complex('(3, -4i)'))).to.equal(true);
+        });
+
+        it('should perform the magnitude function correctly', function() {
+            expect(Complex.magnitude(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.magnitude(Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.magnitude(Complex.ZERO)).to.equal(Complex.ZERO);
+            expect(Complex.magnitude(new Complex('(3, 4i)')).isEqualTo(new Complex(5))).to.equal(true);
+        });
+
+        it('should perform the factorial function correctly', function() {
+            expect(Complex.factorial(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.factorial(Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.factorial(Complex.ZERO).isEqualTo(new Complex(1))).to.equal(true);
+            expect(Complex.factorial(new Complex(20)).isEqualTo(new Complex(2432902008176638000))).to.equal(true);
+        });
+
+        it('should perform the sum function correctly', function() {
+            expect(Complex.sum(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.sum(new Complex(5), Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.sum(new Complex('(-3, 4i)'), new Complex('(3, -4i)'))).to.equal(Complex.ZERO);
+            expect(Complex.sum(new Complex('(3, 4i)'), new Complex('(2, -2i)')).isEqualTo(new Complex('(5, 2i)'))).to.equal(true);
+        });
+
+        it('should perform the difference function correctly', function() {
+            expect(Complex.difference(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.difference(new Complex(5), Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.difference(new Complex('(3, 4i)'), new Complex('(3, 4i)'))).to.equal(Complex.ZERO);
+            expect(Complex.difference(new Complex('(3, 4i)'), new Complex('(2, -2i)')).isEqualTo(new Complex('(1, 6i)'))).to.equal(true);
+        });
+
+        it('should perform the product function correctly', function() {
+            expect(Complex.product(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.product(new Complex(5), Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.product(Complex.ZERO, new Complex('(3, 4i)'))).to.equal(Complex.ZERO);
+            expect(Complex.product(new Complex('(3 e^~2i)'), new Complex('(2 e^~1i)')).isEqualTo(new Complex('(6 e^~3i)'))).to.equal(true);
+        });
+
+        it('should perform the quotient function correctly', function() {
+            expect(Complex.quotient(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.quotient(new Complex(5), Complex.INFINITY)).to.equal(Complex.ZERO);
+            expect(Complex.quotient(new Complex('(3, 4i)'), Complex.ZERO)).to.equal(Complex.INFINITY);
+            expect(Complex.quotient(new Complex('(4 e^~2i)'), new Complex('(2 e^~1i)')).isEqualTo(new Complex('(2 e^~1i)'))).to.equal(true);
+        });
+
+        it('should perform the remainder function correctly', function() {
+            expect(Complex.remainder(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.remainder(new Complex(5), Complex.INFINITY)).to.equal(Complex.ZERO);
+            expect(Complex.remainder(new Complex(5), Complex.ZERO)).to.equal(Complex.INFINITY);
+            expect(Complex.remainder(new Complex(23), new Complex(7)).isEqualTo(new Complex(2))).to.equal(true);
+        });
+
+    });
+
 });
 
 var testValues = [

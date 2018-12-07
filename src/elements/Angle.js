@@ -60,6 +60,21 @@ Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
 
 
+Angle.negative = function(angle) {
+    return new Angle(-angle.value);
+};
+
+
+Angle.sum = function(firstAngle, secondAngle) {
+    return new Angle(firstAngle.value + secondAngle.value);
+};
+
+
+Angle.difference = function(firstAngle, secondAngle) {
+    return new Angle(firstAngle.value - secondAngle.value);
+};
+
+
 /**
  * This method returns the numeric value of the angle.
  * 
