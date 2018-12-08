@@ -8,6 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
+/* global NaN, Infinity */
 
 /*
  * This element class captures the state and methods associated with a
@@ -18,7 +19,6 @@ var grammar = require('../grammar');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 var Angle = require('./Angle').Angle;
-/* global NaN, Infinity */
 
 
 /**
@@ -39,8 +39,8 @@ function Complex(value, parameters) {
     Element.call(this, types.NUMBER, parameters);
     if (value === undefined || value === null) value = 0;  // default value
     this.format = 'rectangular';  // rectangular coordinates by default
-    var real;
-    var imaginary;
+
+    // analyze the value
     var type = value.constructor.name;
     switch (type) {
         case 'Number':
@@ -48,15 +48,11 @@ function Complex(value, parameters) {
                 case NaN:
                     this.real = NaN;
                     this.imaginary = NaN;
-                    this.magnitude = NaN;
-                    this.angle = new Angle(0);
                     break;
                 case Infinity:
                 case -Infinity:
                     this.real = Infinity;
                     this.imaginary = Infinity;
-                    this.magnitude = Infinity;
-                    this.angle = new Angle(0);
                     break;
                 default:
                     this.real = value;
@@ -75,40 +71,36 @@ function Complex(value, parameters) {
                 case 'UndefinedNumberContext':
                     this.real = NaN;
                     this.imaginary = NaN;
-                    this.magnitude = NaN;
-                    this.angle = new Angle(0);
                     break;
                 case 'InfiniteNumberContext':
                     this.real = Infinity;
                     this.imaginary = Infinity;
-                    this.magnitude = Infinity;
-                    this.angle = new Angle(0);
                     break;
                 case 'RealNumberContext':
-                    real = tree.real();
-                    this.real = nodeToNumber(real);
+                    this.real = nodeToNumber(tree.real());
                     this.imaginary = 0;
                     break;
                 case 'ImaginaryNumberContext':
-                    imaginary = tree.imaginary();
                     this.real = 0;
-                    this.imaginary = nodeToNumber(imaginary);
+                    this.imaginary = nodeToNumber(tree.imaginary());
                     break;
                 case 'ComplexNumberContext':
-                    real = tree.real();
-                    imaginary = tree.imaginary();
+                    var real = tree.real();
+                    var imaginary = tree.imaginary();
                     var delimiter = tree.del.text;
                     if (delimiter === ',') {
                         this.real = nodeToNumber(real);
                         this.imaginary = nodeToNumber(imaginary);
                     } else {
                         this.format = 'polar';
-                        this.magnitude = nodeToNumber(real);
-                        this.angle = new Angle(nodeToNumber(imaginary));
-                        if (this.magnitude < 0) {
-                            this.magnitude = -this.magnitude;
-                            this.angle = Angle.inverse(this.angle);
+                        var magnitude = nodeToNumber(real);
+                        var angle = new Angle(nodeToNumber(imaginary));
+                        if (magnitude < 0) {
+                            magnitude = -magnitude;
+                            angle = Angle.reciprocal(angle);
                         }
+                        this.real = lockOnPole(magnitude * Angle.cosine(angle));
+                        this.imaginary = lockOnPole(magnitude * Angle.sine(angle));
                     }
                     break;
                 default:
@@ -118,9 +110,17 @@ function Complex(value, parameters) {
         default:
             throw new Error('COMPLEX: An invalid type was passed to the constructor : ' + type);
     }
-    if (this.isUndefined() && typeof Complex.UNDEFINED !== 'undefined') return Complex.UNDEFINED;
-    if (this.isInfinite() && typeof Complex.INFINITY !== 'undefined') return Complex.INFINITY;
-    if (this.isZero() && typeof Complex.ZERO !== 'undefined') return Complex.ZERO;
+
+    // lock on the poles if appropriate
+    //this.real = lockOnPole(this.real);
+    //this.imaginary = lockOnPole(this.imaginary);
+
+    // return constants if possible
+    if (this.isUndefined() && Complex.UNDEFINED) return Complex.UNDEFINED;
+    if (this.isInfinite() && Complex.INFINITY) return Complex.INFINITY;
+    if (this.isZero() && Complex.ZERO) return Complex.ZERO;
+
+    // cache the canonically formatted version
     var source;
     if (this.format === 'rectangular') {
         source = this.toRectangular();
@@ -128,6 +128,7 @@ function Complex(value, parameters) {
         source = this.toPolar();
     }
     this.setSource(source);
+
     return this;
 }
 Complex.prototype = Object.create(Element.prototype);
@@ -138,86 +139,32 @@ exports.Complex = Complex;
 // PUBLIC METHODS
 
 /**
- * This method determines whether the complex number is undefined.
+ * This method determines whether this complex number is undefined.
  * 
- * @returns {boolean}
+ * @returns {boolean} Whether or not this complex number is undefined.
  */
 Complex.prototype.isUndefined = function() {
-    return this.getMagnitude().toString() === 'NaN';  // must use strings since NaN !== NaN
+    return this.real.toString() === 'NaN';  // must use strings since NaN !== NaN
 };
 
 
 /**
- * This method determines whether the complex number is zero.
+ * This method determines whether this complex number is zero.
  * 
- * @returns {boolean}
+ * @returns {boolean} Whether or not this complex number is zero.
  */
 Complex.prototype.isZero = function() {
-    return this.getMagnitude() === 0;
+    return this.real === 0 && this.imaginary === 0;
 };
 
 
 /**
- * This method determines whether the complex number is infinite.
+ * This method determines whether this complex number is infinite.
  * 
- * @returns {boolean}
+ * @returns {boolean} Whether or not this complex number is infinite.
  */
 Complex.prototype.isInfinite = function() {
-    return this.getMagnitude() === Infinity;
-};
-
-
-/**
- * This method returns the real part of the complex number.
- * 
- * @returns {number}
- */
-Complex.prototype.getRealPart = function() {
-    if (typeof this.real === 'undefined') {
-        this.real = lockOnPole(this.magnitude * Angle.cosine(this.angle));
-    }
-    return this.real;
-};
-
-
-/**
- * This method returns the imaginary part of the complex number.
- * 
- * @returns {number}
- */
-Complex.prototype.getImaginaryPart = function() {
-    if (typeof this.imaginary === 'undefined') {
-        this.imaginary = lockOnPole(this.magnitude * Angle.sine(this.angle));
-    }
-    return this.imaginary;
-};
-
-
-/**
- * This method returns the magnitude of the complex number.
- * 
- * @returns {number}
- */
-Complex.prototype.getMagnitude = function() {
-    if (typeof this.magnitude === 'undefined') {
-        this.magnitude = Math.sqrt(Math.pow(this.real, 2) + Math.pow(this.imaginary, 2));
-    }
-    return this.magnitude;
-};
-
-
-/**
- * This method returns the angel of the complex number.
- * 
- * @returns {Angle}
- */
-Complex.prototype.getAngle = function() {
-    if (typeof this.angle === 'undefined') {
-        var angle = Angle.arctangent(this.imaginary, this.real).toNumber();
-        angle = lockOnPole(angle);
-        this.angle = new Angle(angle);
-    }
-    return this.angle;
+    return this.real === Infinity;
 };
 
 
@@ -240,18 +187,20 @@ Complex.prototype.isEqualTo = function(that) {
  */
 Complex.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
+
+    // check the types
     if (typeof this !== typeof that) {
         return this.constructor.name.localeCompare(that.constructor.name);
     }
-    var thisReal = this.getRealPart();
-    var thatReal = that.getRealPart();
-    if (thisReal < thatReal) return -1;
-    if (thisReal > thatReal) return 1;
+
+    // the types are the same, check the real parts
+    if (this.real < that.real) return -1;
+    if (this.real > that.real) return 1;
+
     // the real parts are equal, check the imaginary parts
-    var thisImaginary = this.getImaginaryPart();
-    var thatImaginary = that.getImaginaryPart();
-    if (thisImaginary < thatImaginary) return -1;
-    if (thisImaginary > thatImaginary) return 1;
+    if (this.imaginary < that.imaginary) return -1;
+    if (this.imaginary > that.imaginary) return 1;
+
     // they are also equal
     return 0;
 };
@@ -267,14 +216,12 @@ Complex.prototype.toRectangular = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    var realPart = this.getRealPart();
-    var imaginaryPart = this.getImaginaryPart();
-    if (imaginaryPart === 0) return Element.numberToSource(realPart);  // real part can be zero
-    if (realPart === 0) return imaginaryToSource(imaginaryPart);  // imaginary part cannot be zero
+    if (this.imaginary === 0) return Element.numberToSource(this.real);  // real part isn't zero
+    if (this.real === 0) return imaginaryToSource(this.imaginary);  // imaginary part isn't zero
     var source = '(';
-    source += Element.numberToSource(this.getRealPart());
+    source += Element.numberToSource(this.real);
     source += ', ';
-    source += imaginaryToSource(this.getImaginaryPart());
+    source += imaginaryToSource(this.imaginary);
     source += ')';
     return source;
 };
@@ -290,62 +237,113 @@ Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    if (this.getAngle() === Angle.ZERO) return Element.numberToSource(this.getRealPart());
+    if (this.imaginary === 0 && this.real > 0) return Element.numberToSource(this.real);
     var source = '(';
-    source += Element.numberToSource(this.getMagnitude());
+    source += Element.numberToSource(Complex.magnitude(this));
     source += ' e^~';
-    source += imaginaryToSource(this.getAngle().value);
+    source += imaginaryToSource(Complex.angle(this).value);
     source += ')';
     return source;
 };
 
 
 /**
- * This method returns the real part of the complex number.
+ * This method returns the real part of this complex number.
  * 
  * @returns {number}
  */
 Complex.prototype.toNumber = function() {
-    return this.getRealPart();
+    return this.real;
 };
 
 
 // PUBLIC CONSTANTS
 
 Complex.UNDEFINED = new Complex('undefined');
-Complex.ZERO = new Complex('0');
 Complex.INFINITY = new Complex('infinity');
+Complex.ZERO = new Complex(0);
 
 
 // PUBLIC FUNCTIONS
 
-Complex.negative = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
-    if (complex.isZero()) return Complex.ZERO;
-    var magnitude = complex.getMagnitude();
-    var angle = complex.getAngle();
-    var source = '(';
-    source += Element.numberToSource(magnitude);
-    source += 'e^~';
-    source += imaginaryToSource(-angle.toNumber());
-    source += ')';
-    return new Complex(source);
+/**
+ * This function returns the real part of a complex number.
+ * 
+ * @param {Complex} complex The complex number.
+ * @returns {number} The real part of the complex number.
+ */
+Complex.real = function(complex) {
+    return complex.real;
+};
+
+
+/**
+ * This function returns the imaginary part of a complex number.
+ * 
+ * @param {Complex} complex The complex number.
+ * @returns {number} The imaginary part of the complex number.
+ */
+Complex.imaginary = function(complex) {
+    return complex.imaginary;
+};
+
+
+/**
+ * This function returns the magnitude of a complex number.
+ * 
+ * @param {Complex} complex The complex number.
+ * @returns {number} The magnitude of the complex number.
+ */
+Complex.magnitude = function(complex) {
+    var magnitude = Math.sqrt(Math.pow(complex.real, 2) + Math.pow(complex.imaginary, 2));
+    return magnitude;
+};
+
+
+/**
+ * This function returns the angle of a complex number.
+ * 
+ * @param {Complex} complex The complex number.
+ * @returns {Angle} The angle of the complex number or undefined if the complex number is
+ * infinite or undefined.
+ */
+Complex.angle = function(complex) {
+    var angle;
+    if (!complex.isInfinite() && !complex.isUndefined()) {
+        angle = Angle.arctangent(complex.imaginary, complex.real);
+    }
+    return angle;
 };
 
 
 Complex.inverse = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
+    if (complex.isInfinite()) return Complex.INFINITY;
+    if (complex.isZero()) return Complex.ZERO;
+    var source = '(';
+    source += Element.numberToSource(-complex.real);
+    source += ', ';
+    source += imaginaryToSource(-complex.imaginary);
+    source += ')';
+    var result = new Complex(source);
+    result.format = complex.format;
+    return result;
+};
+
+
+Complex.reciprocal = function(complex) {
+    if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.ZERO;
     if (complex.isZero()) return Complex.INFINITY;
-    var magnitude = complex.getMagnitude();
-    var angle = complex.getAngle();
+    var squared = complex.real * complex.real + complex.imaginary * complex.imaginary;
     var source = '(';
-    source += Element.numberToSource(1/magnitude);
-    source += 'e^~';
-    source += imaginaryToSource(angle.toNumber());
+    source += Element.numberToSource(complex.real / squared);
+    source += ', ';
+    source += imaginaryToSource(-complex.imaginary / squared);
     source += ')';
-    return new Complex(source);
+    var result = new Complex(source);
+    result.format = complex.format;
+    return result;
 };
 
 
@@ -353,22 +351,49 @@ Complex.conjugate = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.ZERO;
-    var realPart = complex.getRealPart();
-    var imaginaryPart = complex.getImaginaryPart();
     var source = '(';
-    source += Element.numberToSource(realPart);
+    source += Element.numberToSource(complex.real);
     source += ', ';
-    source += imaginaryToSource(-imaginaryPart);
+    source += imaginaryToSource(-complex.imaginary);
     source += ')';
-    return new Complex(source);
+    var result = new Complex(source);
+    result.format = complex.format;
+    return result;
 };
 
 
-Complex.magnitude = function(complex) {
+Complex.exponential = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
-    if (complex.isZero()) return Complex.ZERO;
-    return new Complex(complex.getMagnitude());
+    if (complex.isZero()) return new Complex(1);
+    var scale = Math.exp(complex.real);
+    var real = scale * (Math.cos(complex.imaginary));
+    var imaginary = scale * (Math.sin(complex.imaginary));
+    var source = '(';
+    source += Element.numberToSource(real);
+    source += ', ';
+    source += imaginaryToSource(imaginary);
+    source += ')';
+    var result = new Complex(source);
+    result.format = complex.format;
+    return result;
+};
+
+
+Complex.logarithm = function(complex) {
+    if (complex.isUndefined()) return Complex.UNDEFINED;
+    if (complex.isInfinite()) return Complex.INFINITY;
+    if (complex.isZero()) return Complex.INFINITY;
+    var real = Math.log(Complex.magnitude(complex));
+    var imaginary = Complex.angle(complex).value;
+    var source = '(';
+    source += Element.numberToSource(real);
+    source += ', ';
+    source += imaginaryToSource(imaginary);
+    source += ')';
+    var result = new Complex(source);
+    result.format = complex.format;
+    return result;
 };
 
 
@@ -377,94 +402,80 @@ Complex.factorial = function(complex) {
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return new Complex(1);
     // just implement real factorials for now...
-    var realPart = complex.getRealPart();
-    var factorial = gamma(realPart + 1);
-    return new Complex(String(factorial));
+    var factorial = gamma(complex.real + 1);
+    var result = new Complex(String(factorial));
+    result.format = complex.format;
+    return result;
 };
 
 
-Complex.sum = function(firstComplex, secondComplex) {
-    if (firstComplex.isUndefined() || secondComplex.isUndefined()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() || secondComplex.isInfinite()) return Complex.INFINITY;
-    if (firstComplex.isEqualTo(Complex.negative(secondComplex))) return Complex.ZERO;
-    var realPart = firstComplex.getRealPart() + secondComplex.getRealPart();
-    var imaginaryPart = firstComplex.getImaginaryPart() + secondComplex.getImaginaryPart();
-    if (imaginaryPart === 0) return new Complex(Element.numberToSource(realPart));
-    if (realPart === 0) return new Complex(imaginaryToSource(imaginaryPart));
+Complex.sum = function(first, second) {
+    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
+    if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
+    if (first.isEqualTo(Complex.inverse(second))) return Complex.ZERO;
+    var real = first.real + second.real;
+    var imaginary = first.imaginary + second.imaginary;
+    if (imaginary === 0) return new Complex(Element.numberToSource(real));
+    if (real === 0) return new Complex(imaginaryToSource(imaginary));
     var source = '(';
-    source += Element.numberToSource(realPart);
+    source += Element.numberToSource(real);
     source += ', ';
-    source += imaginaryToSource(imaginaryPart);
+    source += imaginaryToSource(imaginary);
     source += ')';
-    return new Complex(source);
+    var result = new Complex(source);
+    result.format = first.format;
+    return result;
 };
 
 
-Complex.difference = function(firstComplex, secondComplex) {
-    if (firstComplex.isUndefined() || secondComplex.isUndefined()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() || secondComplex.isInfinite()) return Complex.INFINITY;
-    if (firstComplex.isEqualTo(secondComplex)) return Complex.ZERO;
-    var realPart = firstComplex.getRealPart() - secondComplex.getRealPart();
-    var imaginaryPart = firstComplex.getImaginaryPart() - secondComplex.getImaginaryPart();
-    if (imaginaryPart === 0) return new Complex(Element.numberToSource(realPart));
-    if (realPart === 0) return new Complex(imaginaryToSource(imaginaryPart));
+Complex.difference = function(first, second) {
+    return Complex.sum(first, Complex.inverse(second));
+};
+
+
+Complex.product = function(first, second) {
+    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
+    if (first.isZero() && second.isInfinite()) return Complex.UNDEFINED;
+    if (first.isInfinite() && second.isZero()) return Complex.UNDEFINED;
+    if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
+    if (first.isZero() || second.isZero()) return Complex.ZERO;
+    var real = first.real * second.real - first.imaginary * second.imaginary;
+    var imaginary = first.real * second.imaginary + first.imaginary * second.real;
     var source = '(';
-    source += Element.numberToSource(realPart);
+    source += Element.numberToSource(real);
     source += ', ';
-    source += imaginaryToSource(imaginaryPart);
+    source += imaginaryToSource(imaginary);
     source += ')';
-    return new Complex(source);
+    var result = new Complex(source);
+    result.format = first.format;
+    return result;
 };
 
 
-Complex.product = function(firstComplex, secondComplex) {
-    if (firstComplex.isUndefined() || secondComplex.isUndefined()) return Complex.UNDEFINED;
-    if (firstComplex.isZero() && secondComplex.isInfinite()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() && secondComplex.isZero()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() || secondComplex.isInfinite()) return Complex.INFINITY;
-    if (firstComplex.isZero() || secondComplex.isZero()) return Complex.ZERO;
-    var magnitude = firstComplex.getMagnitude() * secondComplex.getMagnitude();
-    var angle = Angle.sum(firstComplex.getAngle(), secondComplex.getAngle());
-    if (angle === Angle.ZERO) return new Complex(Element.numberToSource(magnitude));
-    if (magnitude === 0) return new Complex(imaginaryToSource(angle.toNumber()));
-    var source = '(';
-    source += Element.numberToSource(magnitude);
-    source += 'e^~';
-    source += imaginaryToSource(angle.toNumber());
-    source += ')';
-    return new Complex(source);
+Complex.quotient = function(first, second) {
+    return Complex.product(first, Complex.reciprocal(second));
 };
 
 
-Complex.quotient = function(firstComplex, secondComplex) {
-    if (firstComplex.isUndefined() || secondComplex.isUndefined()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() && secondComplex.isInfinite()) return Complex.UNDEFINED;
-    if (firstComplex.isZero() && secondComplex.isZero()) return Complex.UNDEFINED;
-    if (secondComplex.isInfinite()) return Complex.ZERO;
-    if (secondComplex.isZero()) return Complex.INFINITY;
-    var magnitude = firstComplex.getMagnitude() / secondComplex.getMagnitude();
-    var angle = Angle.difference(firstComplex.getAngle(), secondComplex.getAngle());
-    if (angle === Angle.ZERO) return new Complex(Element.numberToSource(magnitude));
-    if (magnitude === 0) return new Complex(imaginaryToSource(angle.toNumber()));
-    var source = '(';
-    source += Element.numberToSource(magnitude);
-    source += 'e^~';
-    source += imaginaryToSource(angle.toNumber());
-    source += ')';
-    return new Complex(source);
-};
-
-
-Complex.remainder = function(firstComplex, secondComplex) {
-    if (firstComplex.isUndefined() || secondComplex.isUndefined()) return Complex.UNDEFINED;
-    if (firstComplex.isInfinite() && secondComplex.isInfinite()) return Complex.UNDEFINED;
-    if (firstComplex.isZero() && secondComplex.isZero()) return Complex.UNDEFINED;
-    if (secondComplex.isInfinite()) return Complex.ZERO;
-    if (secondComplex.isZero()) return Complex.INFINITY;
+Complex.remainder = function(first, second) {
+    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
+    if (first.isInfinite() && second.isInfinite()) return Complex.UNDEFINED;
+    if (first.isZero() && second.isZero()) return Complex.UNDEFINED;
+    if (second.isInfinite()) return Complex.ZERO;
+    if (second.isZero()) return Complex.INFINITY;
     // just implement for integer values
-    var firstInteger = Math.round(firstComplex.getRealPart());
-    var secondInteger = Math.round(secondComplex.getRealPart());
+    var firstInteger = Math.round(first.real);
+    var secondInteger = Math.round(second.real);
     return new Complex(firstInteger % secondInteger);
+};
+
+
+Complex.power = function(base, exponent) {
+    if (base.isUndefined() || exponent.isUndefined()) return Complex.UNDEFINED;
+    if (exponent.isZero()) return new Complex(1);
+    if (base.isZero()) return Complex.ZERO;
+    if (base.isInfinite() || exponent.isInfinite()) return Complex.INFINITY;
+    return Complex.exponential(Complex.product(exponent, Complex.logarithm(base)));
 };
 
 
@@ -477,7 +488,6 @@ function lockOnPole(number) {
     if (number < 0 && number <= -16331239353195370) return Infinity;
     return number;
 }
-
 
 function gamma(number) {
     var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,

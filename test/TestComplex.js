@@ -44,13 +44,10 @@ describe('Bali Component Framework™', function() {
             var tests = testValues.length;
             for (var i = 0; i < tests; i++) {
                 var complex = testValues[i];
+                console.log('test ' + i + ': ' + testValues[i]);
                 expect(complex.isUndefined()).to.equal(isUndefinedValues[i]);
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);
-                expect(complex.getRealPart().toString()).to.equal(realValues[i].toString());
-                expect(complex.getImaginaryPart().toString()).to.equal(imaginaryValues[i].toString());
-                expect(complex.getMagnitude().toString()).to.equal(magnitudeValues[i].toString());
-                expect(complex.getAngle().toNumber()).to.equal(angleValues[i]);
                 expect(complex.toString()).to.equal(stringValues[i]);
                 expect(complex.toRectangular()).to.equal(rectangularValues[i]);
                 expect(complex.toPolar()).to.equal(polarValues[i]);
@@ -66,18 +63,46 @@ describe('Bali Component Framework™', function() {
 
     describe('Test complex functions', function() {
 
-        it('should perform the negative function correctly', function() {
-            expect(Complex.negative(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
-            expect(Complex.negative(Complex.INFINITY)).to.equal(Complex.INFINITY);
-            expect(Complex.negative(Complex.ZERO)).to.equal(Complex.ZERO);
-            expect(Complex.negative(new Complex('(1 e^~2i)')).isEqualTo(new Complex('(1 e^~-2i)'))).to.equal(true);
+        it('should perform the real function correctly', function() {
+            expect(Complex.real(Complex.UNDEFINED).toString()).to.equal('NaN');
+            expect(Complex.real(Complex.INFINITY)).to.equal(Infinity);
+            expect(Complex.real(Complex.ZERO)).to.equal(0);
+            expect(Complex.real(new Complex('(3, 4i)'))).to.equal(3);
+        });
+
+        it('should perform the imaginary function correctly', function() {
+            expect(Complex.imaginary(Complex.UNDEFINED).toString()).to.equal('NaN');
+            expect(Complex.imaginary(Complex.INFINITY)).to.equal(Infinity);
+            expect(Complex.imaginary(Complex.ZERO)).to.equal(0);
+            expect(Complex.imaginary(new Complex('(3, -4i)'))).to.equal(-4);
+        });
+
+        it('should perform the magnitude function correctly', function() {
+            expect(Complex.magnitude(Complex.UNDEFINED).toString()).to.equal('NaN');
+            expect(Complex.magnitude(Complex.INFINITY)).to.equal(Infinity);
+            expect(Complex.magnitude(Complex.ZERO)).to.equal(0);
+            expect(Complex.magnitude(new Complex('(3, 4i)'))).to.equal(5);
+        });
+
+        it('should perform the angle function correctly', function() {
+            expect(Complex.angle(Complex.UNDEFINED)).to.equal(undefined);
+            expect(Complex.angle(Complex.INFINITY)).to.equal(undefined);
+            expect(Complex.angle(Complex.ZERO)).to.equal(Angle.ZERO);
+            expect(Complex.angle(new Complex('-1')).isEqualTo(Angle.PI)).to.equal(true);
         });
 
         it('should perform the inverse function correctly', function() {
             expect(Complex.inverse(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
-            expect(Complex.inverse(Complex.INFINITY)).to.equal(Complex.ZERO);
-            expect(Complex.inverse(Complex.ZERO)).to.equal(Complex.INFINITY);
-            expect(Complex.inverse(new Complex('(2 e^~pi i)')).isEqualTo(new Complex('(0.5 e^~pi i)'))).to.equal(true);
+            expect(Complex.inverse(Complex.INFINITY)).to.equal(Complex.INFINITY);
+            expect(Complex.inverse(Complex.ZERO)).to.equal(Complex.ZERO);
+            expect(Complex.inverse(new Complex(3)).isEqualTo(new Complex('(3 e^~pi i)'))).to.equal(true);
+        });
+
+        it('should perform the reciprocal function correctly', function() {
+            expect(Complex.reciprocal(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
+            expect(Complex.reciprocal(Complex.INFINITY)).to.equal(Complex.ZERO);
+            expect(Complex.reciprocal(Complex.ZERO)).to.equal(Complex.INFINITY);
+            expect(Complex.reciprocal(new Complex('(2 e^~pi i)')).isEqualTo(new Complex('(0.5 e^~pi i)'))).to.equal(true);
         });
 
         it('should perform the conjugate function correctly', function() {
@@ -85,13 +110,6 @@ describe('Bali Component Framework™', function() {
             expect(Complex.conjugate(Complex.INFINITY)).to.equal(Complex.INFINITY);
             expect(Complex.conjugate(Complex.ZERO)).to.equal(Complex.ZERO);
             expect(Complex.conjugate(new Complex('(3, 4i)')).isEqualTo(new Complex('(3, -4i)'))).to.equal(true);
-        });
-
-        it('should perform the magnitude function correctly', function() {
-            expect(Complex.magnitude(Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
-            expect(Complex.magnitude(Complex.INFINITY)).to.equal(Complex.INFINITY);
-            expect(Complex.magnitude(Complex.ZERO)).to.equal(Complex.ZERO);
-            expect(Complex.magnitude(new Complex('(3, 4i)')).isEqualTo(new Complex(5))).to.equal(true);
         });
 
         it('should perform the factorial function correctly', function() {

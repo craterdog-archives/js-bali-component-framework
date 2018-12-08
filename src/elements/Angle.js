@@ -8,9 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
+/* global NaN, Infinity */
 
 /*
- * This class captures the state and methods associated with an angle element.
+ * This class captures the state, methods, and functions associated with an angle element.
  */
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
@@ -26,6 +27,8 @@ var Element = require('../abstractions/Element').Element;
  */
 function Angle(value, parameters) {
     Element.call(this, types.ANGLE, parameters);
+
+    // analyze the value
     if (value === undefined || value === null) value = 0;  // default value
     var type = value.constructor.name;
     switch (type) {
@@ -42,17 +45,31 @@ function Angle(value, parameters) {
         default:
             throw new Error('ANGLE: An invalid value type was passed to the constructor: ' + type);
     }
+
+    // lock onto zero if appropriate
+    if (value > 0 && value <= 6.123233995736766e-16) value = 0;
+    if (value < 0 && value >= -6.123233995736766e-16) value = 0;
+
+    // lock onto pi if appropriate, the value will be normalized to the range (-pi..pi]
+    if (value > 3.141592653589791 && value < 3.141592653589795) value = Math.PI;
+    if (value < -3.141592653589791 && value > -3.141592653589795) value = Math.PI;
+
+    // normalize the value to the range (-pi..pi]
     var twoPi = 2 * Math.PI;
     if (value <= -Math.PI || value > Math.PI) value %= twoPi;  // make in range (-2pi..2pi)
     if (value > Math.PI) value -= twoPi;  // make in the range (-pi..pi]
     if (value <= -Math.PI) value += twoPi;  // make in the range (-pi..pi]
     if (value === -0) value = 0;  // normalize to positive zero
-    if (typeof Angle.ZERO !== 'undefined' && value === 0) return Angle.ZERO;
-    if (typeof Angle.PI !== 'undefined' && value === Math.PI) return Angle.PI;
+
+    // return a constant if available
+    if (value === 0 && Angle.ZERO) return Angle.ZERO;
+    if (value === Math.PI && Angle.PI) return Angle.PI;
+
+    // cache the canonically formatted source
     this.value = value;
     var source = '~' + Element.numberToSource(value);
-    source = source.replace(/e\+?/g, 'E');  // convert to canonical exponential format
     this.setSource(source);
+
     return this;
 }
 Angle.prototype = Object.create(Element.prototype);
@@ -60,20 +77,7 @@ Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
 
 
-Angle.negative = function(angle) {
-    return new Angle(-angle.value);
-};
-
-
-Angle.sum = function(firstAngle, secondAngle) {
-    return new Angle(firstAngle.value + secondAngle.value);
-};
-
-
-Angle.difference = function(firstAngle, secondAngle) {
-    return new Angle(firstAngle.value - secondAngle.value);
-};
-
+// PUBLIC METHODS
 
 /**
  * This method returns the numeric value of the angle.
@@ -85,22 +89,59 @@ Angle.prototype.toNumber = function() {
 };
 
 
-// common constants
-Angle.ZERO = new Angle(0);
+// PUBLIC CONSTANTS
+
 Angle.PI = new Angle(Math.PI);
+Angle.ZERO = new Angle(0);
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns the negative of an angle.
+ * 
+ * @param {Angle} angle The angle to be negated.
+ * @returns {Angle} The negated angle.
+ */
+Angle.negative = function(angle) {
+    return new Angle(-angle.value);
+};
 
 
 /**
- * This function returns the inverse of an angle. The inverse will be normalized to be
- * in the range (-pi..pi].
+ * This function returns the sum of two angles. The result will be normalized to be in
+ * the range (-pi..pi].
+ * 
+ * @param {Angle} firstAngle The first angle to be summed.
+ * @param {Angle} secondAngle The second angle to be summed.
+ * @returns {Angle} The normalized sum of the two angles.
+ */
+Angle.sum = function(firstAngle, secondAngle) {
+    return new Angle(firstAngle.value + secondAngle.value);
+};
+
+
+/**
+ * This function returns the difference of two angles. The result will be normalized to be in
+ * the range (-pi..pi].
+ * 
+ * @param {Angle} firstAngle The angle to be subtracted from.
+ * @param {Angle} secondAngle The angle to subtract from the first angle.
+ * @returns {Angle} The normalized difference of the two angles.
+ */
+Angle.difference = function(firstAngle, secondAngle) {
+    return new Angle(firstAngle.value - secondAngle.value);
+};
+
+
+/**
+ * This function returns the inverse of an angle.
  * 
  * @param {Angle} angle The angle to be inverted.
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
-    var value = angle.value - Math.PI;
-    if (value <= -Math.PI || value > Math.PI) value %= Math.PI;
-    return new Angle(value);
+    return new Angle(angle.value - Math.PI);
 };
 
 
@@ -133,53 +174,46 @@ Angle.cosine = function(angle) {
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle) {
-    return Math.tan(angle.value);
+    var tangent = Math.tan(angle.value);
+
+    // lock onto infinity if appropriate
+    if (tangent > 0 && tangent >= 16331239353195370) tangent = Infinity;
+    if (tangent < 0 && tangent <= -16331239353195370) tangent = Infinity;
 };
 
 
 /**
  * This function returns the angle for the ratio of the opposite to the hypotenuse for
- * a triangle.
+ * a right triangle.
  * 
  * @param {Number} ratio The ratio of the opposite to the hypotenuse for the triangle. 
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio) {
-    return Math.asin(ratio);
+    return new Angle(Math.asin(ratio));
 };
 
 
 /**
  * This function returns the angle for the ratio of the adjacent to the hypotenuse for
- * a triangle.
+ * a right triangle.
  * 
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse for the triangle. 
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio) {
-    return Math.acos(ratio);
+    return new Angle(Math.acos(ratio));
 };
 
 
 /**
  * This function returns the angle for the ratio of the opposite to the adjacent for
- * a triangle.
+ * a right triangle.
  * 
- * @param {Number} ratioOrY Either the ratio of the opposite to the adjacent, or the opposite.
- * @param {Number} optionalX The adjacent if the first parameter is not a ratio.
+ * @param {Number} opposite The length of the side opposite the angle.
+ * @param {Number} adjacent The length of the side adjacent to the angle.
  * @returns {Angle} The angle of the triangle.
  */
-Angle.arctangent = function(ratioOrY, optionalX) {
-    var angle;
-    if (optionalX === undefined || optionalX === null) {
-        var ratio = ratioOrY;
-        angle = Math.atan(ratio);
-        angle = new Angle(angle);
-    } else {
-        var opposite = ratioOrY;
-        var adjacent = optionalX;
-        angle = Math.atan2(opposite, adjacent);
-        angle = new Angle(angle);
-    }
-    return angle;
+Angle.arctangent = function(opposite, adjacent) {
+    return new Angle(Math.atan2(opposite, adjacent));
 };
