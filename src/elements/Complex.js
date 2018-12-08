@@ -26,12 +26,15 @@ var Angle = require('./Angle').Angle;
  * The allowed ways to call it include:
  * <pre><code>
  * new Complex()  // defaults to zero
- * new Complex('(3, 4i)')  // rectangular form
- * new Complex('(12.3e-45 e^~3.1415926i)')  // polar form
+ * new Complex(3)  // real number
+ * new Complex('4i')  // imaginary number
+ * new Complex('(3, 4i)')  // rectangular complex form
+ * new Complex('(12.3E-45 e^~pi i)')  // polar complex form
+ * new Complex({real: 3, imaginary: 4})  // object form
  * </code></pre>
  * 
  * @constructor
- * @param {Number|String} value The numeric or string value of the complex number.
+ * @param {Number|String|Object} value The numeric or string value of the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Complex} The new complex element.
  */
@@ -107,13 +110,14 @@ function Complex(value, parameters) {
                     throw new Error('COMPLEX: An invalid string was passed to the constructor : ' + value);
             }
             break;
+        case 'Object':
+            this.real = value.real;
+            this.imaginary = value.imaginary;
+            break;
+
         default:
             throw new Error('COMPLEX: An invalid type was passed to the constructor : ' + type);
     }
-
-    // lock on the poles if appropriate
-    //this.real = lockOnPole(this.real);
-    //this.imaginary = lockOnPole(this.imaginary);
 
     // return constants if possible
     if (this.isUndefined() && Complex.UNDEFINED) return Complex.UNDEFINED;
@@ -262,6 +266,9 @@ Complex.prototype.toNumber = function() {
 Complex.UNDEFINED = new Complex('undefined');
 Complex.INFINITY = new Complex('infinity');
 Complex.ZERO = new Complex(0);
+Complex.E = Math.E;
+Complex.PI = Math.PI;
+Complex.PHI = (Math.sqrt(5) + 1) / 2;
 
 
 // PUBLIC FUNCTIONS
@@ -320,12 +327,9 @@ Complex.inverse = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.ZERO;
-    var source = '(';
-    source += Element.numberToSource(-complex.real);
-    source += ', ';
-    source += imaginaryToSource(-complex.imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var real = -complex.real;
+    var imaginary = -complex.imaginary;
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -336,12 +340,9 @@ Complex.reciprocal = function(complex) {
     if (complex.isInfinite()) return Complex.ZERO;
     if (complex.isZero()) return Complex.INFINITY;
     var squared = complex.real * complex.real + complex.imaginary * complex.imaginary;
-    var source = '(';
-    source += Element.numberToSource(complex.real / squared);
-    source += ', ';
-    source += imaginaryToSource(-complex.imaginary / squared);
-    source += ')';
-    var result = new Complex(source);
+    var real = complex.real / squared;
+    var imaginary = -complex.imaginary / squared;
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -351,12 +352,9 @@ Complex.conjugate = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.ZERO;
-    var source = '(';
-    source += Element.numberToSource(complex.real);
-    source += ', ';
-    source += imaginaryToSource(-complex.imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var real = complex.real;
+    var imaginary = -complex.imaginary;
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -369,12 +367,7 @@ Complex.exponential = function(complex) {
     var scale = Math.exp(complex.real);
     var real = scale * (Math.cos(complex.imaginary));
     var imaginary = scale * (Math.sin(complex.imaginary));
-    var source = '(';
-    source += Element.numberToSource(real);
-    source += ', ';
-    source += imaginaryToSource(imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -386,12 +379,7 @@ Complex.logarithm = function(complex) {
     if (complex.isZero()) return Complex.INFINITY;
     var real = Math.log(Complex.magnitude(complex));
     var imaginary = Complex.angle(complex).value;
-    var source = '(';
-    source += Element.numberToSource(real);
-    source += ', ';
-    source += imaginaryToSource(imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -415,14 +403,7 @@ Complex.sum = function(first, second) {
     if (first.isEqualTo(Complex.inverse(second))) return Complex.ZERO;
     var real = first.real + second.real;
     var imaginary = first.imaginary + second.imaginary;
-    if (imaginary === 0) return new Complex(Element.numberToSource(real));
-    if (real === 0) return new Complex(imaginaryToSource(imaginary));
-    var source = '(';
-    source += Element.numberToSource(real);
-    source += ', ';
-    source += imaginaryToSource(imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
 };
@@ -441,12 +422,7 @@ Complex.product = function(first, second) {
     if (first.isZero() || second.isZero()) return Complex.ZERO;
     var real = first.real * second.real - first.imaginary * second.imaginary;
     var imaginary = first.real * second.imaginary + first.imaginary * second.real;
-    var source = '(';
-    source += Element.numberToSource(real);
-    source += ', ';
-    source += imaginaryToSource(imaginary);
-    source += ')';
-    var result = new Complex(source);
+    var result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
 };
@@ -532,16 +508,15 @@ function imaginaryToSource(imaginary) {
 // NOTE: the following functions take parse tree nodes and covert them into
 // Javascript numbers.
 
-
 function nodeToNumber(realNode) {
     var number;
     var string = realNode.getText();
     if (string.startsWith('e')) {
-        number = 2.718281828459045;
+        number = Complex.E;
     } else if (string.startsWith('pi')) {
-        number = 3.141592653589793;
+        number = Complex.PI;
     } else if (string.startsWith('phi')) {
-        number = 1.618033988749895;
+        number = Complex.PHI;
     } else if (string.endsWith('i')) {
         number = Number(string.slice(0, -1));  // strip off tailing 'i' (the space doesn't matter)
     } else {

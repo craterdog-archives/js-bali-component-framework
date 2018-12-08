@@ -43,24 +43,24 @@ exports.Element = Element;
  * @returns {String} The source code for that number.
  */
 Element.numberToSource = function(number) {
-    var source = number.toString();
+    var source = Number(number.toPrecision(14)).toString();
     switch (source) {
-        case '-2.718281828459045':
+        case '-2.718281828459':
             source = '-e';
             break;
-        case '2.718281828459045':
+        case '2.718281828459':
             source = 'e';
             break;
-        case '-3.141592653589793':
+        case '-3.1415926535898':
             source = '-pi';
             break;
-        case '3.141592653589793':
+        case '3.1415926535898':
             source = 'pi';
             break;
-        case '-1.618033988749895':
+        case '-1.6180339887499':
             source = '-phi';
             break;
-        case '1.618033988749895':
+        case '1.6180339887499':
             source = 'phi';
             break;
         case 'Infinity':
