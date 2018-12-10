@@ -13,6 +13,7 @@
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
+var precision = require('../utilities/Precision');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 
@@ -37,7 +38,7 @@ function Angle(value, parameters) {
             break;
         case 'String':
             if (value === '~pi' || value === '~-pi') {
-                value = Math.PI;
+                value = precision.PI;
             } else {
                 value = Number(value.replace(/~/g, ''));  // strip off the ~
             }
@@ -51,19 +52,24 @@ function Angle(value, parameters) {
     if (value < 0 && value >= -6.123233995736766e-16) value = 0;
 
     // lock onto pi if appropriate, the value will be normalized to the range (-pi..pi]
-    if (value > 3.141592653589791 && value < 3.141592653589795) value = Math.PI;
-    if (value < -3.141592653589791 && value > -3.141592653589795) value = Math.PI;
+    if (value > 3.141592653589791 && value < 3.141592653589795) value = precision.PI;
+    if (value < -3.141592653589791 && value > -3.141592653589795) value = precision.PI;
 
     // normalize the value to the range (-pi..pi]
-    var twoPi = 2 * Math.PI;
-    if (value <= -Math.PI || value > Math.PI) value %= twoPi;  // make in range (-2pi..2pi)
-    if (value > Math.PI) value -= twoPi;  // make in the range (-pi..pi]
-    if (value <= -Math.PI) value += twoPi;  // make in the range (-pi..pi]
+    var twoPi = precision.product(precision.PI, 2);
+    if (value < -twoPi || value > twoPi) {
+        value = precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
+    }
+    if (value > precision.PI) {
+        value = precision.difference(value, twoPi);  // make in the range (-pi..pi]
+    } else if (value <= -precision.PI) {
+        value = precision.sum(value, twoPi);  // make in the range (-pi..pi]
+    }
     if (value === -0) value = 0;  // normalize to positive zero
 
     // return a constant if available
     if (value === 0 && Angle.ZERO) return Angle.ZERO;
-    if (value === Math.PI && Angle.PI) return Angle.PI;
+    if (value === precision.PI && Angle.PI) return Angle.PI;
 
     // cache the canonically formatted source
     this.value = value;
@@ -91,7 +97,7 @@ Angle.prototype.toNumber = function() {
 
 // PUBLIC CONSTANTS
 
-Angle.PI = new Angle(Math.PI);
+Angle.PI = new Angle(precision.PI);
 Angle.ZERO = new Angle(0);
 
 
@@ -117,7 +123,7 @@ Angle.negative = function(angle) {
  * @returns {Angle} The normalized sum of the two angles.
  */
 Angle.sum = function(firstAngle, secondAngle) {
-    return new Angle(firstAngle.value + secondAngle.value);
+    return new Angle(precision.sum(firstAngle.value + secondAngle.value));
 };
 
 
@@ -130,7 +136,7 @@ Angle.sum = function(firstAngle, secondAngle) {
  * @returns {Angle} The normalized difference of the two angles.
  */
 Angle.difference = function(firstAngle, secondAngle) {
-    return new Angle(firstAngle.value - secondAngle.value);
+    return new Angle(precision.difference(firstAngle.value - secondAngle.value));
 };
 
 
@@ -141,7 +147,7 @@ Angle.difference = function(firstAngle, secondAngle) {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
-    return new Angle(angle.value - Math.PI);
+    return new Angle(precision.difference(angle.value, precision.PI));
 };
 
 
@@ -152,7 +158,7 @@ Angle.inverse = function(angle) {
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle) {
-    return Math.sin(angle.value);
+    return precision.sine(angle.value);
 };
 
 
@@ -163,7 +169,7 @@ Angle.sine = function(angle) {
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle) {
-    return Math.cos(angle.value);
+    return precision.cosine(angle.value);
 };
 
 
@@ -174,11 +180,7 @@ Angle.cosine = function(angle) {
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle) {
-    var tangent = Math.tan(angle.value);
-
-    // lock onto infinity if appropriate
-    if (tangent > 0 && tangent >= 16331239353195370) tangent = Infinity;
-    if (tangent < 0 && tangent <= -16331239353195370) tangent = Infinity;
+    return precision.tangent(angle.value);
 };
 
 
@@ -190,7 +192,7 @@ Angle.tangent = function(angle) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio) {
-    return new Angle(Math.asin(ratio));
+    return new Angle(precision.arcsine(ratio));
 };
 
 
@@ -202,7 +204,7 @@ Angle.arcsine = function(ratio) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio) {
-    return new Angle(Math.acos(ratio));
+    return new Angle(precision.arccosine(ratio));
 };
 
 
@@ -215,5 +217,5 @@ Angle.arccosine = function(ratio) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent) {
-    return new Angle(Math.atan2(opposite, adjacent));
+    return new Angle(precision.arctangent(opposite, adjacent));
 };

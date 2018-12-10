@@ -44,7 +44,6 @@ describe('Bali Component Framework™', function() {
             var tests = testValues.length;
             for (var i = 0; i < tests; i++) {
                 var complex = testValues[i];
-                console.log('test ' + i + ': ' + testValues[i]);
                 expect(complex.isUndefined()).to.equal(isUndefinedValues[i]);
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);

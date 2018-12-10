@@ -64,21 +64,34 @@ describe('Bali Component Framework™', function() {
 
         it('should run round-trip angle methods', function() {
             var testValues = [
-                Angle.ZERO,
                 Angle.PI,
-                new Angle(-Math.PI),
                 new Angle(Math.PI / 2),
-                new Angle('~-0.5'),
+                new Angle(Math.PI / 3),
                 new Angle('~0.5'),
+                Angle.ZERO,
+                new Angle('~-0.5'),
+                new Angle(-Math.PI),
                 new Angle(-Math.PI / 2),
                 new Angle(-Math.PI / 3)
             ];
-            testValues.forEach(function(angle) {
-                var sine = Angle.sine(angle);
-                var cosine = Angle.cosine(angle);
-                var arctangent = Angle.arctangent(sine, cosine);
-                expect(arctangent.toNumber()).to.equal(angle.toNumber());
-            });
+            var expectedValues = [
+                Angle.PI,
+                new Angle(1.5707963267949),
+                new Angle(1.0471975511966),
+                new Angle(0.48995732625373),
+                Angle.ZERO,
+                new Angle(-0.48995732625373),
+                new Angle(-Math.PI),
+                new Angle(-1.5707963267949),
+                new Angle(-1.0471975511966)
+            ];
+            for (var i = 0; i < testValues.length; i++) {
+                var angle = testValues[i];
+                var opposite = Angle.sine(angle);
+                var adjacent = Angle.cosine(angle);
+                var arctangent = Angle.arctangent(opposite, adjacent);
+                expect(arctangent.isEqualTo(expectedValues[i])).to.equal(true);
+            }
         });
 
     });

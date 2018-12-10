@@ -57,6 +57,11 @@ function Complex(value, parameters) {
                     this.real = Infinity;
                     this.imaginary = Infinity;
                     break;
+                case 0:
+                case -0:
+                    this.real = 0;
+                    this.imaginary = 0;
+                    break;
                 default:
                     this.real = value;
                     this.imaginary = 0;
@@ -88,22 +93,22 @@ function Complex(value, parameters) {
                     this.imaginary = nodeToNumber(tree.imaginary());
                     break;
                 case 'ComplexNumberContext':
-                    var real = tree.real();
-                    var imaginary = tree.imaginary();
+                    var real = nodeToNumber(tree.real());
+                    var imaginary = nodeToNumber(tree.imaginary());
                     var delimiter = tree.del.text;
                     if (delimiter === ',') {
-                        this.real = nodeToNumber(real);
-                        this.imaginary = nodeToNumber(imaginary);
+                        this.real = real;
+                        this.imaginary = imaginary;
                     } else {
                         this.format = 'polar';
-                        var magnitude = nodeToNumber(real);
-                        var angle = new Angle(nodeToNumber(imaginary));
+                        var magnitude = real;
+                        var angle = new Angle(imaginary);
                         if (magnitude < 0) {
                             magnitude = -magnitude;
                             angle = Angle.reciprocal(angle);
                         }
-                        this.real = lockOnPole(magnitude * Angle.cosine(angle));
-                        this.imaginary = lockOnPole(magnitude * Angle.sine(angle));
+                        this.real = magnitude * Angle.cosine(angle);
+                        this.imaginary = magnitude * Angle.sine(angle);
                     }
                     break;
                 default:
