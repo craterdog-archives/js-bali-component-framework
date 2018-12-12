@@ -282,7 +282,7 @@ function decimalDigits() {
             var digits = parsed.decimal.length - parsed.exponent;
             significantDigits = Math.min(significantDigits, digits);
         } else {
-            significantDigits = 0;
+            if (value !== 0) significantDigits = 0;
         }
     }
     return significantDigits;

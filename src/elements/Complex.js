@@ -208,12 +208,12 @@ Complex.prototype.comparedTo = function(that) {
     }
 
     // the types are the same, check the real parts
-    if (this.real < that.real) return -1;
-    if (this.real > that.real) return 1;
+    if (Math.fround(this.real) < Math.fround(that.real)) return -1;
+    if (Math.fround(this.real) > Math.fround(that.real)) return 1;
 
     // the real parts are equal, check the imaginary parts
-    if (this.imaginary < that.imaginary) return -1;
-    if (this.imaginary > that.imaginary) return 1;
+    if (Math.fround(this.imaginary) < Math.fround(that.imaginary)) return -1;
+    if (Math.fround(this.imaginary) > Math.fround(that.imaginary)) return 1;
 
     // they are also equal
     return 0;
@@ -312,7 +312,7 @@ Complex.imaginary = function(complex) {
  * @returns {number} The magnitude of the complex number.
  */
 Complex.magnitude = function(complex) {
-    var magnitude = precision.exponential(1/2, precision.sum(precision.exponential(2, complex.real), precision.exponential(2, complex.imaginary)));
+    var magnitude = precision.exponential(0.49999999999999999, precision.sum(precision.exponential(2, complex.real), precision.exponential(2, complex.imaginary)));
     return magnitude;
 };
 

@@ -54,7 +54,7 @@
             'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '11101011010110010001'($base: 16)
             true: false
             pi: -3.14159265
-            (1, 2i): (1.3 e^~pi i)
+            (1, 2i): (1.4 e^~pi i)
             $sequence: ["short", "sequence"]
             $table: [
                 $a: pi
