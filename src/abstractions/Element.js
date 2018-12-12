@@ -71,7 +71,7 @@ Element.numberToSource = function(number) {
             source = 'undefined';
             break;
         default:
-            source = source.replace(/e\+?/g, 'E');  // convert to canonical exponent format
+            source = number.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
     }
     return source;
 };

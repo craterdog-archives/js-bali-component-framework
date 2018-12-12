@@ -64,20 +64,22 @@ describe('Bali Component Framework™', function() {
             ];
             var expectedValues = [
                 Angle.PI,
-                new Angle(1.5707963267949),
-                new Angle(1.0471975511966),
-                new Angle(0.48995732625373),
+                new Angle(1.570796326794897),
+                new Angle(1.047197551196598),
+                new Angle(0.4899573262537283),
                 Angle.ZERO,
-                new Angle(-0.48995732625373),
+                new Angle(-0.4899573262537283),
                 new Angle(-Math.PI),
-                new Angle(-1.5707963267949),
-                new Angle(-1.0471975511966)
+                new Angle(-1.570796326794897),
+                new Angle(-1.047197551196598)
             ];
             for (var i = 0; i < testValues.length; i++) {
                 var angle = testValues[i];
                 var opposite = Angle.sine(angle);
                 var adjacent = Angle.cosine(angle);
                 var arctangent = Angle.arctangent(opposite, adjacent);
+                console.log('arctangent: ' + arctangent);
+                console.log('expected: ' + expectedValues[i]);
                 expect(arctangent.isEqualTo(expectedValues[i])).to.equal(true);
             }
         });

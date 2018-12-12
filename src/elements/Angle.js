@@ -47,13 +47,8 @@ function Angle(value, parameters) {
             throw new Error('ANGLE: An invalid value type was passed to the constructor: ' + type);
     }
 
-    // lock onto zero if appropriate
-    if (value > 0 && value <= 6.123233995736766e-16) value = 0;
-    if (value < 0 && value >= -6.123233995736766e-16) value = 0;
-
-    // lock onto pi if appropriate, the value will be normalized to the range (-pi..pi]
-    if (value > 3.141592653589791 && value < 3.141592653589795) value = precision.PI;
-    if (value < -3.141592653589791 && value > -3.141592653589795) value = precision.PI;
+    // lock onto pi if appropriate
+    value = precision.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
     var twoPi = precision.product(precision.PI, 2);
