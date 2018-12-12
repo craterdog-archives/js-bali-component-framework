@@ -39,8 +39,15 @@ describe('Bali Component Framework™', function() {
         it('should test division', function() {
             expect(precision.quotient(1, 3)).to.equal(0.3333333333333333);
             expect(precision.quotient(123.45, 67.8)).to.equal(1.82);
-            expect(precision.quotient(1.2345e+56, 6.789e-23)).to.equal(1.818e+78);
-            expect(precision.quotient(1.2345e+56, 6.7e-23)).to.equal(1.8e+78);
+            expect(precision.quotient(1.2345e+2, 7.8e-9)).to.equal(16000000000);
+            expect(precision.quotient(1.2345e+56, 6.789e-23)).to.equal(Infinity);
+        });
+
+        it('should test remainder', function() {
+            expect(precision.remainder(1, 3)).to.equal(1);
+            expect(precision.remainder(24, 7)).to.equal(3);
+            expect(precision.remainder(123.45, 67.8)).to.equal(55.7);
+            expect(precision.remainder(1.2345e+56, 6.789e-23)).to.equal(2.259e-23);
         });
 
     });
@@ -50,13 +57,15 @@ describe('Bali Component Framework™', function() {
         it('should test exponentiation', function() {
             expect(precision.exponential(1.2345)).to.equal(3.4367);
             expect(precision.exponential(12.345)).to.equal(2.298e+5);
-            expect(precision.exponential(123.45)).to.equal(4.11e+53);
+            expect(precision.exponential(123.45)).to.equal(Infinity);
+            expect(precision.exponential(12.34, 10)).to.equal(2190000000000);
         });
 
         it('should test logarithms', function() {
             expect(precision.logarithm(3.4367)).to.equal(1.2345);
             expect(precision.logarithm(229800.1)).to.equal(12.345);
             expect(precision.logarithm(4.11e+53)).to.equal(123.45043295719);
+            expect(precision.logarithm(4.11e+53, 10)).to.equal(53.613841821876);
         });
 
     });

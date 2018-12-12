@@ -34,7 +34,7 @@ function Angle(value, parameters) {
     var type = value.constructor.name;
     switch (type) {
         case 'Number':
-            if (!isFinite(value)) throw new Error('ANGLE: An angle must be a valid number: ' + value);
+            if (!isFinite(value)) value = 0;
             break;
         case 'String':
             if (value === '~pi' || value === '~-pi') {

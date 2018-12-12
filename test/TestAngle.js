@@ -35,22 +35,10 @@ describe('Bali Component Framework™', function() {
             expect(new Angle(Math.PI / 2).toNumber()).to.equal(Math.PI / 2);
         });
 
-        it('should throw an exception', function() {
-            expect(
-                function() {
-                    new Angle(NaN);
-                }
-            ).to.throw();
-            expect(
-                function() {
-                    new Angle(Infinity);
-                }
-            ).to.throw();
-            expect(
-                function() {
-                    new Angle(-Infinity);
-                }
-            ).to.throw();
+        it('should default to zero', function() {
+            expect(new Angle(NaN)).to.equal(Angle.ZERO);
+            expect(new Angle(Infinity)).to.equal(Angle.ZERO);
+            expect(new Angle(-Infinity)).to.equal(Angle.ZERO);
         });
 
     });

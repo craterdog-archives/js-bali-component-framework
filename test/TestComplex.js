@@ -44,6 +44,7 @@ describe('Bali Component Framework™', function() {
             var tests = testValues.length;
             for (var i = 0; i < tests; i++) {
                 var complex = testValues[i];
+                console.log('complex: ' + complex);
                 expect(complex.isUndefined()).to.equal(isUndefinedValues[i]);
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);
@@ -210,7 +211,7 @@ var isInfiniteValues = [
     false,
     false,
     false,
-    false,
+    true,
     false
 ];
 var realValues = [
@@ -224,7 +225,7 @@ var realValues = [
     -1,
     0,
     0,
-    1.23E-56,
+    Infinity,
     -5
 ];
 var imaginaryValues = [
@@ -238,7 +239,7 @@ var imaginaryValues = [
     0,
     1,
     -1,
-    -7.8E90,
+    Infinity,
     0
 ];
 var magnitudeValues = [
@@ -252,7 +253,7 @@ var magnitudeValues = [
     1,
     1,
     1,
-    7.8E90,
+    Infinity,
     5
 ];
 var angleValues = [
@@ -266,7 +267,7 @@ var angleValues = [
     3.1415926535898,
     1.5707963267949,
     -1.5707963267949,
-    -1.5707963267949,
+    0,
     3.1415926535898
 ];
 var stringValues = [
@@ -280,7 +281,7 @@ var stringValues = [
     '-1',
     '1i',
     '-1i',
-    '(1.23E-56, -7.8E90i)',
+    'infinity',
     '(5 e^~pi i)'
 ];
 var rectangularValues = [
@@ -294,7 +295,7 @@ var rectangularValues = [
     '-1',
     '1i',
     '-1i',
-    '(1.23E-56, -7.8E90i)',
+    'infinity',
     '-5'
 ];
 var polarValues = [
@@ -308,6 +309,6 @@ var polarValues = [
     '(1 e^~pi i)',
     '(1 e^~1.5707963267949i)',
     '(1 e^~-1.5707963267949i)',
-    '(7.8E90 e^~-1.5707963267949i)',
+    'infinity',
     '(5 e^~pi i)'
 ];

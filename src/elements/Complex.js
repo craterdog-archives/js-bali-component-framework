@@ -16,6 +16,7 @@
  */
 var antlr = require('antlr4');
 var grammar = require('../grammar');
+var precision = require('../utilities/Precision');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 var Angle = require('./Angle').Angle;
@@ -93,8 +94,12 @@ function Complex(value, parameters) {
                     this.imaginary = nodeToNumber(tree.imaginary());
                     break;
                 case 'ComplexNumberContext':
-                    var real = nodeToNumber(tree.real());
-                    var imaginary = nodeToNumber(tree.imaginary());
+                    var real = precision.lockOnExtreme(nodeToNumber(tree.real()));
+                    var imaginary = precision.lockOnExtreme(nodeToNumber(tree.imaginary()));
+                    if (real === Infinity || imaginary === Infinity) {
+                        real = Infinity;
+                        imaginary = Infinity;
+                    }
                     var delimiter = tree.del.text;
                     if (delimiter === ',') {
                         this.real = real;
@@ -271,9 +276,9 @@ Complex.prototype.toNumber = function() {
 Complex.UNDEFINED = new Complex('undefined');
 Complex.INFINITY = new Complex('infinity');
 Complex.ZERO = new Complex(0);
-Complex.E = Math.E;
-Complex.PI = Math.PI;
-Complex.PHI = (Math.sqrt(5) + 1) / 2;
+Complex.E = precision.E;
+Complex.PI = precision.PI;
+Complex.PHI = precision.PHI;
 
 
 // PUBLIC FUNCTIONS
@@ -307,7 +312,7 @@ Complex.imaginary = function(complex) {
  * @returns {number} The magnitude of the complex number.
  */
 Complex.magnitude = function(complex) {
-    var magnitude = Math.sqrt(Math.pow(complex.real, 2) + Math.pow(complex.imaginary, 2));
+    var magnitude = precision.exponential(1/2, precision.sum(precision.exponential(2, complex.real), precision.exponential(2, complex.imaginary)));
     return magnitude;
 };
 
@@ -344,9 +349,9 @@ Complex.reciprocal = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.ZERO;
     if (complex.isZero()) return Complex.INFINITY;
-    var squared = complex.real * complex.real + complex.imaginary * complex.imaginary;
-    var real = complex.real / squared;
-    var imaginary = -complex.imaginary / squared;
+    var squared = precision.sum(precision.product(complex.real, complex.real), precision.product(complex.imaginary, complex.imaginary));
+    var real = precision.quotient(complex.real, squared);
+    var imaginary = -precision.quotient(complex.imaginary, squared);
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
@@ -369,9 +374,9 @@ Complex.exponential = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return new Complex(1);
-    var scale = Math.exp(complex.real);
-    var real = scale * (Math.cos(complex.imaginary));
-    var imaginary = scale * (Math.sin(complex.imaginary));
+    var scale = precision.exponential(complex.real);
+    var real = precision.product(scale, (precision.cosine(complex.imaginary)));
+    var imaginary = precision.product(scale, (precision.sine(complex.imaginary)));
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
@@ -382,7 +387,7 @@ Complex.logarithm = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.INFINITY;
-    var real = Math.log(Complex.magnitude(complex));
+    var real = precision.logarithm(Complex.magnitude(complex));
     var imaginary = Complex.angle(complex).value;
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
@@ -406,8 +411,8 @@ Complex.sum = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
     if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
     if (first.isEqualTo(Complex.inverse(second))) return Complex.ZERO;
-    var real = first.real + second.real;
-    var imaginary = first.imaginary + second.imaginary;
+    var real = precision.sum(first.real, second.real);
+    var imaginary = precision.sum(first.imaginary, second.imaginary);
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
@@ -425,8 +430,8 @@ Complex.product = function(first, second) {
     if (first.isInfinite() && second.isZero()) return Complex.UNDEFINED;
     if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
     if (first.isZero() || second.isZero()) return Complex.ZERO;
-    var real = first.real * second.real - first.imaginary * second.imaginary;
-    var imaginary = first.real * second.imaginary + first.imaginary * second.real;
+    var real = precision.difference(precision.product(first.real, second.real), precision.product(first.imaginary, second.imaginary));
+    var imaginary = precision.sum(precision.product(first.real, second.imaginary), precision.product(first.imaginary * second.real));
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
@@ -447,28 +452,11 @@ Complex.remainder = function(first, second) {
     // just implement for integer values
     var firstInteger = Math.round(first.real);
     var secondInteger = Math.round(second.real);
-    return new Complex(firstInteger % secondInteger);
-};
-
-
-Complex.power = function(base, exponent) {
-    if (base.isUndefined() || exponent.isUndefined()) return Complex.UNDEFINED;
-    if (exponent.isZero()) return new Complex(1);
-    if (base.isZero()) return Complex.ZERO;
-    if (base.isInfinite() || exponent.isInfinite()) return Complex.INFINITY;
-    return Complex.exponential(Complex.product(exponent, Complex.logarithm(base)));
+    return new Complex(precision.remainder(firstInteger, secondInteger));
 };
 
 
 // PRIVATE FUNCTIONS
-
-function lockOnPole(number) {
-    if (number > 0 && number <= 6.123233995736766e-16) return 0;
-    if (number < 0 && number >= -6.123233995736766e-16) return 0;
-    if (number > 0 && number >= 16331239353195370) return Infinity;
-    if (number < 0 && number <= -16331239353195370) return Infinity;
-    return number;
-}
 
 function gamma(number) {
     var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,

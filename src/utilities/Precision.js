@@ -25,6 +25,30 @@ exports.PHI = (Math.sqrt(5) + 1) / 2;
 
 // PUBLIC FUNCTIONS
 
+exports.lockOnExtreme = function(number) {
+    var extreme = Math.fround(number);
+    if (extreme === -0 || extreme === 0) return 0;
+    if (extreme === -Infinity || extreme === Infinity) return Infinity;
+    return number;
+};
+
+
+exports.lockOnPole = function(number) {
+    if (number === -0) return 0;
+    if (number > -1.2246467991473536e-16 && number < 1.2246467991473536e-16) return 0;
+    if (number > 0.9999999999999996 && number < 1.0000000000000004) return 1;
+    if (number > -1.0000000000000004 && number < -0.9999999999999996) return -1;
+    if (number < -16331239353195366 || number > 16331239353195366) return Infinity;
+    if (number === -Infinity) return Infinity;
+    return number;
+};
+
+
+exports.lockOnAngle = function(angle) {
+    if (angle > 3.141592653589791 && angle < 3.141592653589795) angle = exports.PI;
+    if (angle < -3.141592653589791 && angle > -3.141592653589795) angle = exports.PI;
+    return angle;
+};
 /**
  * This function returns the sum of a list of numbers. The number of significant digits in the decimal
  * of the result is equal to the number of significant digits in the decimal of the operand with
@@ -114,82 +138,91 @@ exports.product = function() {
  * @return {Number} The resulting quotient of the two numbers.
  */
 exports.quotient = function(first, second) {
-    var result = lockOnPole(first / second);
+    var result = exports.lockOnExtreme(first / second);
     var minDigits = valueDigits(first, second);
     result = normalizeValue(result, minDigits);
     return result;
 };
 
 
-exports.exponential = function(exponent) {
-    var result = lockOnPole(Math.exp(exponent));
-    var minDigits = valueDigits(exponent);
-    var error = exponent;
+exports.remainder = function(first, second) {
+    var result = exports.lockOnExtreme(first % second);
+    var minDigits = valueDigits(first, second);
+    result = normalizeValue(result, minDigits);
+    return result;
+};
+
+
+exports.exponential = function(exponent, base) {
+    if (base === undefined) base = Math.E;
+    var result = exports.lockOnExtreme(Math.pow(base, exponent));
+    var minDigits = valueDigits(exponent, base);
+    var error = exponent * Math.log(base);
     result = normalizeValue(result, minDigits, error);
     return result;
 };
 
 
-exports.logarithm = function(value) {
-    var result = lockOnPole(Math.log(value));
-    var minDigits = valueDigits(value);
-    var error = 1 / Math.log(value);
+exports.logarithm = function(value, base) {
+    if (base === undefined) base = Math.E;
+    var result = exports.lockOnExtreme(Math.log(value)/Math.log(base));
+    var minDigits = valueDigits(value, base);
+    var error = exports.lockOnExtreme(1 / Math.log(value));
     result = normalizeValue(result, minDigits, error);
     return result;
 };
 
 
 exports.sine = function(angle) {
-    var result = lockOnPole(Math.sin(angle));
+    var result = exports.lockOnPole(Math.sin(angle));
     var minDigits = valueDigits(angle);
-    var error = lockOnPole(angle / Math.tan(angle));
+    var error = exports.lockOnExtreme(angle / exports.lockOnPole(Math.tan(angle)));
     result = normalizeValue(result, minDigits, error);
     return result;
 };
 
 
 exports.cosine = function(angle) {
-    var result = lockOnPole(Math.cos(angle));
+    var result = exports.lockOnPole(Math.cos(angle));
     var minDigits = valueDigits(angle);
-    var error = lockOnPole(angle * Math.tan(angle));
+    var error = exports.lockOnExtreme(angle * exports.lockOnPole(Math.tan(angle)));
     result = normalizeValue(result, minDigits, error);
     return result;
 };
 
 
 exports.tangent = function(angle) {
-    var result = lockOnPole(Math.tan(angle));
-    if (result < -9007199254740991 || result > 9007199254740991) return Infinity;
+    var result = exports.lockOnPole(Math.tan(angle));
     var minDigits = valueDigits(angle);
-    var error = lockOnPole(angle * (result + 1 / result));
+    var error = exports.lockOnExtreme(angle * (result + 1 / result));
     result = normalizeValue(result, minDigits, error);
     return result;
 };
 
 
 exports.arcsine = function(ratio) {
-    var angle = lockOnAngle(Math.asin(ratio));
+    var angle = exports.lockOnAngle(Math.asin(ratio));
     var minDigits = valueDigits(ratio);
-    var error = ratio / (Math.sqrt(1 - ratio * ratio) * angle);
+    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
     angle = normalizeValue(angle, minDigits, error);
     return angle;
 };
 
 
 exports.arccosine = function(ratio) {
-    var angle = lockOnAngle(Math.acos(ratio));
+    var angle = exports.lockOnAngle(Math.acos(ratio));
     var minDigits = valueDigits(ratio);
-    var error = ratio / (Math.sqrt(1 - ratio * ratio) * angle);
+    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
     angle = normalizeValue(angle, minDigits, error);
     return angle;
 };
 
 
 exports.arctangent = function(opposite, adjacent) {
-    var ratio = opposite / adjacent;
-    var angle = lockOnAngle(Math.atan2(opposite, adjacent));
+    var ratio = exports.lockOnExtreme(opposite / adjacent);
+    var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
     var minDigits = valueDigits(ratio);
-    var error = ratio / (Math.sqrt(1 + ratio * ratio) * angle);
+    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
     angle = normalizeValue(angle, minDigits, error);
     return angle;
 };
@@ -257,11 +290,13 @@ function decimalDigits() {
 
 
 function normalizeValue(number, significantDigits, error) {
-    if (error < -9007199254740991 || error > 9007199254740991) error = Infinity;
     var errorDigits;
     if (isFinite(error) && error !== 0) {
         errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
         significantDigits -= errorDigits;
+    }
+    if (significantDigits < 1 || significantDigits > 21) {
+        console.log('significant digits: ' + significantDigits);
     }
     return Number(number.toPrecision(significantDigits));
 }
@@ -269,20 +304,4 @@ function normalizeValue(number, significantDigits, error) {
 
 function normalizeDecimal(number, significantDigits) {
     return Number(number.toFixed(significantDigits));
-}
-
-
-function lockOnPole(number) {
-    if (number > -6.123233995736766e-16 && number < 6.123233995736766e-16) return 0;
-    if (number > 0.9999999999999996 && number < 1.0000000000000004) return 1;
-    if (number > -1.0000000000000004 && number < -0.9999999999999996) return -1;
-    if (number === -Infinity) return Infinity;
-    return number;
-}
-
-
-function lockOnAngle(angle) {
-    if (angle > 3.141592653589791 && angle < 3.141592653589795) angle = exports.PI;
-    if (angle < -3.141592653589791 && angle > -3.141592653589795) angle = exports.PI;
-    return angle;
 }
