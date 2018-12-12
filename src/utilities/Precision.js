@@ -15,6 +15,14 @@
  * that preserve only the significant digits of the results. It uses the algorithms for
  * calculating the significant digits defined here:
  * https://en.wikipedia.org/wiki/Significance_arithmetic
+ * 
+ * It also corrects the Math library with respect to indeterminate forms:
+ * <pre>
+ *    0/0, ∞/∞, 0*∞, 1^∞, ∞-∞, 0^0, and ∞^0
+ * </pre>
+ * 
+ * See the following link for derivations:
+ * https://en.wikipedia.org/wiki/Indeterminate_form
  */
 
 
@@ -94,8 +102,8 @@ exports.sum = function() {
     var result = 0;
     var minDigits = decimalDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
-        result += value;
+        var value = exports.lockOnExtreme(arguments[i]);
+        result = exports.lockOnExtreme(result + value);
     }
     result = normalizeDecimal(result, minDigits);
     return result;
@@ -118,7 +126,9 @@ exports.sum = function() {
  * @return {Number} The resulting difference of the two numbers.
  */
 exports.difference = function(first, second) {
-    var result = first - second;
+    var first = exports.lockOnExtreme(first);
+    var second = exports.lockOnExtreme(second);
+    var result = exports.lockOnExtreme(first - second);
     var minDigits = decimalDigits(first, second);
     result = normalizeDecimal(result, minDigits);
     return result;
@@ -142,8 +152,8 @@ exports.product = function() {
     var result = 1;
     var minDigits = valueDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
-        result *= value;
+        var value = exports.lockOnExtreme(arguments[i]);
+        result = exports.lockOnExtreme(result * value);
     }
     result = normalizeValue(result, minDigits);
     return result;
@@ -166,6 +176,8 @@ exports.product = function() {
  * @return {Number} The resulting quotient of the two numbers.
  */
 exports.quotient = function(first, second) {
+    var first = exports.lockOnExtreme(first);
+    var second = exports.lockOnExtreme(second);
     var result = exports.lockOnExtreme(first / second);
     var minDigits = valueDigits(first, second);
     result = normalizeValue(result, minDigits);
@@ -189,6 +201,8 @@ exports.quotient = function(first, second) {
  * @return {Number} The resulting remainder of the quotient of the two numbers.
  */
 exports.remainder = function(first, second) {
+    var first = exports.lockOnExtreme(first);
+    var second = exports.lockOnExtreme(second);
     var result = exports.lockOnExtreme(first % second);
     var minDigits = valueDigits(first, second);
     result = normalizeValue(result, minDigits);
@@ -212,6 +226,10 @@ exports.remainder = function(first, second) {
  * @returns {Number} The value of the base raised to the exponent.
  */
 exports.exponential = function(base, exponent) {
+    var base = exports.lockOnExtreme(base);
+    var exponent = exports.lockOnExtreme(exponent);
+    // check for cases where Math.pow(0, 0) and Math.pow(Infinity, 0) are wrong!
+    if ((base === 0 || base === Infinity) && exponent === 0) return NaN;
     var result = exports.lockOnExtreme(Math.pow(base, exponent));
     var minDigits = valueDigits(exponent, base);
     var error = exponent * Math.log(base);
@@ -237,6 +255,8 @@ exports.exponential = function(base, exponent) {
  * @returns {Number} The value of the base raised to the exponent.
  */
 exports.logarithm = function(base, value) {
+    var base = exports.lockOnExtreme(base);
+    var value = exports.lockOnExtreme(value);
     var result = exports.lockOnExtreme(Math.log(value)/Math.log(base));
     var minDigits = valueDigits(value, base);
     var error = exports.lockOnExtreme(1 / Math.log(value));
