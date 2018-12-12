@@ -11,8 +11,10 @@
 /* global NaN, Infinity */
 
 /**
- * This library provides functions that perform arithmetic operations that preserve
- * only the significant digits of the results.
+ * This library provides functions that perform arithmetic and trigonometric operations
+ * that preserve only the significant digits of the results. It uses the algorithms for
+ * calculating the significant digits defined here:
+ * https://en.wikipedia.org/wiki/Significance_arithmetic
  */
 
 
@@ -200,8 +202,9 @@ exports.remainder = function(first, second) {
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
  * <pre>
- *   error digits: log  |x|
- *                    10
+ *                      |                       |
+ *   error digits: log  | exponent * log (base) |
+ *                    10|               e       |
  * </pre>
  * 
  * @param {Number} base The base value.
@@ -223,14 +226,14 @@ exports.exponential = function(base, exponent) {
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
  * <pre>
- *                      |    1     |
- *   error digits: log  | -------- |
- *                    10|  log x   |
- *                      |     e    |
+ *                      |      1      |
+ *   error digits: log  | ----------- |
+ *                    10| log (value) |
+ *                      |    e        |
  * </pre>
  * 
  * @param {Number} base The base value.
- * @param {Number} exponent The exponent value.
+ * @param {Number} value The value that is equal to base^exponent.
  * @returns {Number} The value of the base raised to the exponent.
  */
 exports.logarithm = function(base, value) {
@@ -242,6 +245,20 @@ exports.logarithm = function(base, value) {
 };
 
 
+/**
+ * This function returns the ratio of the length of the side opposite of an angle to the length
+ * of the hypotenuse of a right triangle. The number of significant digits in the result is
+ * equal to the number of significant digits in the operand minus the order of magnitude of the
+ * error for the function which is calculated as follows:
+ * <pre>
+ *                      |     angle      |
+ *   error digits: log  | -------------- |
+ *                    10| tangent(angle) |
+ * </pre>
+ * 
+ * @param {Number} angle The angle within the right triangle.
+ * @returns {Number} The ratio of the opposite to the hypotenuse.
+ */
 exports.sine = function(angle) {
     var result = exports.lockOnPole(Math.sin(angle));
     var minDigits = valueDigits(angle);
@@ -251,6 +268,20 @@ exports.sine = function(angle) {
 };
 
 
+/**
+ * This function returns the ratio of the length of the side adjacent to an angle to the length
+ * of the hypotenuse of a right triangle. The number of significant digits in the result is
+ * equal to the number of significant digits in the operand minus the order of magnitude of the
+ * error for the function which is calculated as follows:
+ * <pre>
+ *                      |                        |
+ *   error digits: log  | angle * tangent(angle) | 
+ *                    10|                        |
+ * </pre>
+ * 
+ * @param {Number} angle The angle within the right triangle.
+ * @returns {Number} The ratio of the adjacent to the hypotenuse.
+ */
 exports.cosine = function(angle) {
     var result = exports.lockOnPole(Math.cos(angle));
     var minDigits = valueDigits(angle);
@@ -260,6 +291,20 @@ exports.cosine = function(angle) {
 };
 
 
+/**
+ * This function returns the ratio of the length of the side opposite of an angle to the length
+ * of the side adjacent to the angle of a right triangle. The number of significant digits in
+ * the result is equal to the number of significant digits in the operand minus the order of
+ * magnitude of the error for the function which is calculated as follows:
+ * <pre>
+ *                      |          /                       1        \ |
+ *   error digits: log  | angle * | tangent(angle) + -------------- | |
+ *                    10|          \                 tangent(angle) / |
+ * </pre>
+ * 
+ * @param {Number} angle The angle within the right triangle.
+ * @returns {Number} The ratio of the opposite to the adjacent.
+ */
 exports.tangent = function(angle) {
     var result = exports.lockOnPole(Math.tan(angle));
     var minDigits = valueDigits(angle);
@@ -269,6 +314,21 @@ exports.tangent = function(angle) {
 };
 
 
+/**
+ * This function returns the angle defined by the ratio of the length of the side opposite of
+ * the angle to the length of the hypotenuse of a right triangle. The number of significant
+ * digits in the result is equal to the number of significant digits in the operand minus the
+ * order of magnitude of the error for the function which is calculated as follows:
+ * <pre>
+ *                      |               ratio               |
+ *   error digits: log  | --------------------------------- |
+ *                    10|                            2  1/2 |
+ *                      | arcsine(ratio) * (1 - ratio  )    |
+ * </pre>
+ * 
+ * @param {Number} ratio The ratio of the opposite to the hypotenuse within the right triangle.
+ * @returns {Number} The corresponding angle.
+ */
 exports.arcsine = function(ratio) {
     var angle = exports.lockOnAngle(Math.asin(ratio));
     var minDigits = valueDigits(ratio);
@@ -278,6 +338,21 @@ exports.arcsine = function(ratio) {
 };
 
 
+/**
+ * This function returns the angle defined by the ratio of the length of the side adjacent to
+ * the angle to the length of the hypotenuse of a right triangle. The number of significant
+ * digits in the result is equal to the number of significant digits in the operand minus the
+ * order of magnitude of the error for the function which is calculated as follows:
+ * <pre>
+ *                      |                ratio                |
+ *   error digits: log  | ----------------------------------- |
+ *                    10|                              2  1/2 |
+ *                      | arccosine(ratio) * (1 - ratio  )    |
+ * </pre>
+ * 
+ * @param {Number} ratio The ratio of the adjacent to the hypotenuse within the right triangle.
+ * @returns {Number} The corresponding angle.
+ */
 exports.arccosine = function(ratio) {
     var angle = exports.lockOnAngle(Math.acos(ratio));
     var minDigits = valueDigits(ratio);
@@ -287,6 +362,23 @@ exports.arccosine = function(ratio) {
 };
 
 
+/**
+ * This function returns the angle defined by the ratio of the length of the side opposite of
+ * the angle to the length of the side adjacent to the angle in a right triangle. The number
+ * of significant digits in the result is equal to the number of significant digits in the
+ * operand with the least number of significant digits minus the order of magnitude of the
+ * error for the function which is calculated as follows:
+ * <pre>
+ *                      |                ratio                 |
+ *   error digits: log  | ------------------------------------ |
+ *                    10|                               2  1/2 |
+ *                      | arctangent(ratio) * (1 + ratio  )    |
+ * </pre>
+ * 
+ * @param {Number} opposite The length of the side opposite the angle in the right triangle.
+ * @param {Number} adjacent The length of the side adjacent to the angle in the right triangle.
+ * @returns {Number} The corresponding angle.
+ */
 exports.arctangent = function(opposite, adjacent) {
     var ratio = exports.lockOnExtreme(opposite / adjacent);
     var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
@@ -300,16 +392,14 @@ exports.arctangent = function(opposite, adjacent) {
 // PRIVATE FUNCTIONS
 
 /*
- * These functions calculate the significant digits of numbers and perform normalizations
- * on them based on the number of significant digits. The rules for performing these
- * calculations are documented here: https://en.wikipedia.org/wiki/Significance_arithmetic
- */
-
-/*
  * This value captures the number of significant digits in the largest integer
  */
 var MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
 
+
+/*
+ * This function parses a floating point number into its three parts.
+ */
 function parse(number) {
     var pattern = /([0-9]+)\.([0-9]*[1-9])(e[+-][1-9][0-9]*)?/;
     var matches = number.toString().match(pattern);
@@ -325,8 +415,9 @@ function parse(number) {
 
 
 /*
- * This function calculates the significant digits of a number and an optional condition number
- * that was derived from the transcendental operation performed on the number.
+ * This function calculates the smallest number of significant digits for a list of numbers
+ * that are passed as arguments to this function. All integers including zero have the
+ * maximum number of significant digits.
  */
 function valueDigits() {
     var significantDigits = MAXIMUM_PRECISION;
@@ -342,6 +433,30 @@ function valueDigits() {
 }
 
 
+/*
+ * This function normalizes a raw numeric value to the specified number of significant
+ * digits minus the error digits associated with the specified error factor. The number
+ * of error digits is equal to the base 10 logarithm of the error factor.
+ */
+function normalizeValue(number, significantDigits, error) {
+    var errorDigits;
+    if (isFinite(error) && error !== 0) {
+        errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
+        significantDigits -= errorDigits;
+    }
+    if (significantDigits < 1 || significantDigits > 21) {
+        console.log('significant digits: ' + significantDigits);
+    }
+    return Number(number.toPrecision(significantDigits));
+}
+
+
+/*
+ * This function calculates the smallest number of significant digits to the right of the
+ * decimal place for a list of numbers that are passed as arguments to this function.  All
+ * integers (with the exception of zero) have zero significant digits to the right of the
+ * decimal.
+ */
 function decimalDigits() {
     var significantDigits = MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
@@ -358,19 +473,10 @@ function decimalDigits() {
 }
 
 
-function normalizeValue(number, significantDigits, error) {
-    var errorDigits;
-    if (isFinite(error) && error !== 0) {
-        errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
-        significantDigits -= errorDigits;
-    }
-    if (significantDigits < 1 || significantDigits > 21) {
-        console.log('significant digits: ' + significantDigits);
-    }
-    return Number(number.toPrecision(significantDigits));
-}
-
-
+/*
+ * This function normalizes a raw numeric value to the specified number of significant
+ * digits to the right of the decimal place.
+ */
 function normalizeDecimal(number, significantDigits) {
     return Number(number.toFixed(significantDigits));
 }
