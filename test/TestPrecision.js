@@ -55,17 +55,17 @@ describe('Bali Component Framework™', function() {
     describe('Test power operations', function() {
 
         it('should test exponentiation', function() {
-            expect(precision.exponential(1.2345)).to.equal(3.4367);
-            expect(precision.exponential(12.345)).to.equal(2.298e+5);
-            expect(precision.exponential(123.45)).to.equal(Infinity);
-            expect(precision.exponential(12.34, 10)).to.equal(2190000000000);
+            expect(precision.exponential(precision.E, 1.2345)).to.equal(3.4367);
+            expect(precision.exponential(precision.E, 12.345)).to.equal(2.298e+5);
+            expect(precision.exponential(precision.E, 123.45)).to.equal(Infinity);
+            expect(precision.exponential(10, 12.34)).to.equal(2190000000000);
         });
 
         it('should test logarithms', function() {
-            expect(precision.logarithm(3.4367)).to.equal(1.2345);
-            expect(precision.logarithm(229800.1)).to.equal(12.345);
-            expect(precision.logarithm(4.11e+53)).to.equal(123.45043295719);
-            expect(precision.logarithm(4.11e+53, 10)).to.equal(53.613841821876);
+            expect(precision.logarithm(precision.E, 3.4367)).to.equal(1.2345);
+            expect(precision.logarithm(precision.E, 229800.1)).to.equal(12.345);
+            expect(precision.logarithm(precision.E, 4.11e+53)).to.equal(123.45043295719);
+            expect(precision.logarithm(10, 4.11e+53)).to.equal(53.613841821876);
         });
 
     });

@@ -312,7 +312,7 @@ Complex.imaginary = function(complex) {
  * @returns {number} The magnitude of the complex number.
  */
 Complex.magnitude = function(complex) {
-    var magnitude = precision.exponential(0.49999999999999999, precision.sum(precision.exponential(2, complex.real), precision.exponential(2, complex.imaginary)));
+    var magnitude = precision.exponential(precision.sum(precision.exponential(complex.real, 2), precision.exponential(complex.imaginary, 2)), 0.49999999999999999);
     return magnitude;
 };
 
@@ -374,7 +374,7 @@ Complex.exponential = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return new Complex(1);
-    var scale = precision.exponential(complex.real);
+    var scale = precision.exponential(precision.E, complex.real);
     var real = precision.product(scale, (precision.cosine(complex.imaginary)));
     var imaginary = precision.product(scale, (precision.sine(complex.imaginary)));
     var result = new Complex({real: real, imaginary: imaginary});
@@ -387,7 +387,7 @@ Complex.logarithm = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.INFINITY;
-    var real = precision.logarithm(Complex.magnitude(complex));
+    var real = precision.logarithm(precision.E, Complex.magnitude(complex));
     var imaginary = Complex.angle(complex).value;
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;

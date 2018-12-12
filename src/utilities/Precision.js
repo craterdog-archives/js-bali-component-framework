@@ -25,6 +25,14 @@ exports.PHI = (Math.sqrt(5) + 1) / 2;
 
 // PUBLIC FUNCTIONS
 
+/**
+ * This function checks to see if the specified number is close enough to zero or infinity to
+ * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
+ * doing round trip conversions using arithmetic functions.
+ * 
+ * @param {Number} number The number to be checked.
+ * @returns {Number} The potentially converted number.
+ */
 exports.lockOnExtreme = function(number) {
     var extreme = Math.fround(number);
     if (extreme === -0 || extreme === 0) return 0;
@@ -33,6 +41,14 @@ exports.lockOnExtreme = function(number) {
 };
 
 
+/**
+ * This function checks to see if the specified number is close enough to one of the six poles
+ * on a Riemann sphere to cause it to lock onto one of those values. This helps with the
+ * hysteresis that occurs when doing round trip conversions with complex numbers.
+ * 
+ * @param {Number} number The number to be checked.
+ * @returns {Number} The potentially converted number.
+ */
 exports.lockOnPole = function(number) {
     if (number === -0) return 0;
     if (number > -1.2246467991473536e-16 && number < 1.2246467991473536e-16) return 0;
@@ -44,11 +60,21 @@ exports.lockOnPole = function(number) {
 };
 
 
+/**
+ * This function checks to see if the specified angle is close enough to pi or -pi to
+ * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
+ * doing round trip conversions using trigonometric functions.
+ * 
+ * @param {Number} angle The angle to be checked.
+ * @returns {Number} The potentially converted angle.
+ */
 exports.lockOnAngle = function(angle) {
     if (angle > 3.141592653589791 && angle < 3.141592653589795) angle = exports.PI;
     if (angle < -3.141592653589791 && angle > -3.141592653589795) angle = exports.PI;
     return angle;
 };
+
+
 /**
  * This function returns the sum of a list of numbers. The number of significant digits in the decimal
  * of the result is equal to the number of significant digits in the decimal of the operand with
@@ -145,6 +171,21 @@ exports.quotient = function(first, second) {
 };
 
 
+/**
+ * This function returns the remainder that is left from the quotient of two numbers. The
+ * number of significant digits in the result is equal to the number of significant digits
+ * in the operand with the least number of significant digits. For example:
+ * <pre>
+ *    123.45   (5 significant digits)
+ * %    67.8   (3 significant digits)
+ * ---------
+ *      55.6   (3 significant digits)
+ * </pre>
+ *
+ * @param {Number} first The number to be divided into.
+ * @param {Number} second The number to be divided by.
+ * @return {Number} The resulting remainder of the quotient of the two numbers.
+ */
 exports.remainder = function(first, second) {
     var result = exports.lockOnExtreme(first % second);
     var minDigits = valueDigits(first, second);
@@ -153,8 +194,21 @@ exports.remainder = function(first, second) {
 };
 
 
-exports.exponential = function(exponent, base) {
-    if (base === undefined) base = Math.E;
+/**
+ * This function returns the value of a base number raised to an exponential power. The
+ * number of significant digits in the result is equal to the number of significant digits
+ * in the operand with the least number of significant digits minus the order of magnitude
+ * of the error for the function which is calculated as follows:
+ * <pre>
+ *   error digits: log  |x|
+ *                    10
+ * </pre>
+ * 
+ * @param {Number} base The base value.
+ * @param {Number} exponent The exponent value.
+ * @returns {Number} The value of the base raised to the exponent.
+ */
+exports.exponential = function(base, exponent) {
     var result = exports.lockOnExtreme(Math.pow(base, exponent));
     var minDigits = valueDigits(exponent, base);
     var error = exponent * Math.log(base);
@@ -163,8 +217,23 @@ exports.exponential = function(exponent, base) {
 };
 
 
-exports.logarithm = function(value, base) {
-    if (base === undefined) base = Math.E;
+/**
+ * This function returns the value of the logarithm with a base number of an exponential value.
+ * The number of significant digits in the result is equal to the number of significant digits
+ * in the operand with the least number of significant digits minus the order of magnitude
+ * of the error for the function which is calculated as follows:
+ * <pre>
+ *                      |    1     |
+ *   error digits: log  | -------- |
+ *                    10|  log x   |
+ *                      |     e    |
+ * </pre>
+ * 
+ * @param {Number} base The base value.
+ * @param {Number} exponent The exponent value.
+ * @returns {Number} The value of the base raised to the exponent.
+ */
+exports.logarithm = function(base, value) {
     var result = exports.lockOnExtreme(Math.log(value)/Math.log(base));
     var minDigits = valueDigits(value, base);
     var error = exports.lockOnExtreme(1 / Math.log(value));
