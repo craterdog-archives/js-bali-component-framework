@@ -43,6 +43,7 @@ function Complex(value, parameters) {
     Element.call(this, types.NUMBER, parameters);
     if (value === undefined || value === null) value = 0;  // default value
     this.format = 'rectangular';  // rectangular coordinates by default
+    var source;
 
     // analyze the value
     var type = value.constructor.name;
@@ -52,20 +53,24 @@ function Complex(value, parameters) {
                 case NaN:
                     this.real = NaN;
                     this.imaginary = NaN;
+                    source = 'undefined';
                     break;
                 case Infinity:
                 case -Infinity:
                     this.real = Infinity;
                     this.imaginary = Infinity;
+                    source = 'infinity';
                     break;
                 case 0:
                 case -0:
                     this.real = 0;
                     this.imaginary = 0;
+                    source = '0';
                     break;
                 default:
                     this.real = value;
                     this.imaginary = 0;
+                    source = Element.numberToSource(this.real);
             }
             break;
         case 'String':
@@ -80,30 +85,41 @@ function Complex(value, parameters) {
                 case 'UndefinedNumberContext':
                     this.real = NaN;
                     this.imaginary = NaN;
+                    source = 'undefined';
                     break;
                 case 'InfiniteNumberContext':
                     this.real = Infinity;
                     this.imaginary = Infinity;
+                    source = 'infinity';
                     break;
                 case 'RealNumberContext':
                     this.real = nodeToNumber(tree.real());
                     this.imaginary = 0;
+                    source = Element.numberToSource(this.real);
                     break;
                 case 'ImaginaryNumberContext':
                     this.real = 0;
                     this.imaginary = nodeToNumber(tree.imaginary());
+                    source = imaginaryToSource(this.imaginary);
                     break;
                 case 'ComplexNumberContext':
-                    var real = precision.lockOnExtreme(nodeToNumber(tree.real()));
-                    var imaginary = precision.lockOnExtreme(nodeToNumber(tree.imaginary()));
+                    var real = nodeToNumber(tree.real());
+                    var imaginary = nodeToNumber(tree.imaginary());
                     if (real === Infinity || imaginary === Infinity) {
-                        real = Infinity;
-                        imaginary = Infinity;
+                        this.real = Infinity;
+                        this.imaginary = Infinity;
+                        source = 'infinity';
+                        break;
                     }
                     var delimiter = tree.del.text;
                     if (delimiter === ',') {
                         this.real = real;
                         this.imaginary = imaginary;
+                        source = '(';
+                        source += Element.numberToSource(this.real);
+                        source += ', ';
+                        source += imaginaryToSource(this.imaginary);
+                        source += ')';
                     } else {
                         this.format = 'polar';
                         var magnitude = real;
@@ -114,6 +130,11 @@ function Complex(value, parameters) {
                         }
                         this.real = magnitude * Angle.cosine(angle);
                         this.imaginary = magnitude * Angle.sine(angle);
+                        source = '(';
+                        source += Element.numberToSource(magnitude);
+                        source += ' e^~';
+                        source += imaginaryToSource(angle.value);
+                        source += ')';
                     }
                     break;
                 default:
@@ -123,6 +144,11 @@ function Complex(value, parameters) {
         case 'Object':
             this.real = value.real;
             this.imaginary = value.imaginary;
+            source = '(';
+            source += Element.numberToSource(this.real);
+            source += ', ';
+            source += imaginaryToSource(this.imaginary);
+            source += ')';
             break;
 
         default:
@@ -135,12 +161,6 @@ function Complex(value, parameters) {
     if (this.isZero() && Complex.ZERO) return Complex.ZERO;
 
     // cache the canonically formatted version
-    var source;
-    if (this.format === 'rectangular') {
-        source = this.toRectangular();
-    } else {
-        source = this.toPolar();
-    }
     this.setSource(source);
 
     return this;
@@ -227,6 +247,7 @@ Complex.prototype.comparedTo = function(that) {
  * @returns {String} The source string.
  */
 Complex.prototype.toRectangular = function() {
+    if (this.format === 'rectangular') return this.source;
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
@@ -248,6 +269,7 @@ Complex.prototype.toRectangular = function() {
  * @returns {String} The source string.
  */
 Complex.prototype.toPolar = function() {
+    if (this.format === 'polar') return this.source;
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
@@ -312,7 +334,9 @@ Complex.imaginary = function(complex) {
  * @returns {number} The magnitude of the complex number.
  */
 Complex.magnitude = function(complex) {
-    var magnitude = precision.exponential(precision.sum(precision.exponential(complex.real, 2), precision.exponential(complex.imaginary, 2)), 0.49999999999999999);
+    // need to preserve full precision on this except for the sum part
+    var magnitude = Math.sqrt(precision.sum(Math.pow(complex.real, 2), Math.pow(complex.imaginary, 2)));
+    magnitude = precision.lockOnExtreme(magnitude);
     return magnitude;
 };
 
@@ -450,6 +474,7 @@ Complex.remainder = function(first, second) {
     if (second.isInfinite()) return Complex.ZERO;
     if (second.isZero()) return Complex.INFINITY;
     // just implement for integer values
+    // TODO: what does remainder mean for complex numbers?
     var firstInteger = Math.round(first.real);
     var secondInteger = Math.round(second.real);
     return new Complex(precision.remainder(firstInteger, secondInteger));
@@ -458,6 +483,7 @@ Complex.remainder = function(first, second) {
 
 // PRIVATE FUNCTIONS
 
+// TODO: should the math in the gamma function use the precision module?
 function gamma(number) {
     var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
         771.32342877765313, -176.61502916214059, 12.507343278686905,
@@ -498,9 +524,9 @@ function imaginaryToSource(imaginary) {
 }
 
 
-// NOTE: the following functions take parse tree nodes and covert them into
-// Javascript numbers.
-
+/*
+ * This function takes a parse tree node and coverts it into a Javascript number.
+ */
 function nodeToNumber(realNode) {
     var number;
     var string = realNode.getText();
@@ -515,5 +541,5 @@ function nodeToNumber(realNode) {
     } else {
         number = Number(string);
     }
-    return number;
+    return precision.lockOnExtreme(number);
 }

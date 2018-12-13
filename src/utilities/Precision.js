@@ -31,6 +31,7 @@
 exports.E = Math.E;
 exports.PI = Math.PI;
 exports.PHI = (Math.sqrt(5) + 1) / 2;
+exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length - 1;
 
 
 // PUBLIC FUNCTIONS
@@ -61,10 +62,10 @@ exports.lockOnExtreme = function(number) {
  */
 exports.lockOnPole = function(number) {
     if (number === -0) return 0;
-    if (number > -1.2246467991473536e-16 && number < 1.2246467991473536e-16) return 0;
+    if (number > -2.4492935982947068e-16 && number < 2.4492935982947068e-16) return 0;
     if (number > 0.9999999999999996 && number < 1.0000000000000004) return 1;
     if (number > -1.0000000000000004 && number < -0.9999999999999996) return -1;
-    if (number < -16331239353195366 || number > 16331239353195366) return Infinity;
+    if (number < -5443746451065119 || number > 5443746451065119) return Infinity;
     if (number === -Infinity) return Infinity;
     return number;
 };
@@ -86,6 +87,88 @@ exports.lockOnAngle = function(angle) {
 
 
 /**
+ * This function calculates the smallest number of significant digits for a list of values
+ * that are passed as arguments to this function. All integers including zero have the
+ * maximum number of significant digits.
+ * 
+ * @params {Numbers} arguments The values to be evaluated.
+ * @returns {Number} The number of significant digits for the list of values.
+ */
+exports.valueDigits = function() {
+    var significantDigits = exports.MAXIMUM_PRECISION;
+    for (var i = 0; i < arguments.length; i++) {
+        var value = arguments[i];
+        if (Number.isFinite(value) && !Number.isInteger(value)) {
+            var parsed = parse(value);
+            var digits = parsed.coefficient.length + parsed.decimal.length;
+            significantDigits = Math.min(significantDigits, digits);
+        }
+    }
+    return significantDigits;
+};
+
+
+/**
+ * This function normalizes a raw numeric value to the specified number of significant
+ * digits minus the error digits associated with the specified error factor. The number
+ * of error digits is equal to the base 10 logarithm of the error factor.
+ * 
+ * @param {Number} value The raw value to be normalized.
+ * @param {Number} significantDigits The number of significant digits for the value.
+ * @param {Number} error The error factor to use to adjust the significant digits.
+ * @returns {Number} The normalized value.
+ */
+exports.normalizeValue = function(value, significantDigits, error) {
+    var errorDigits;
+    if (isFinite(error) && error !== 0) {
+        errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
+        significantDigits -= errorDigits;
+    }
+    return Number(value.toPrecision(significantDigits));
+};
+
+
+/**
+ * This function calculates the smallest number of significant digits to the right of the
+ * decimal place for a list of values that are passed as arguments to this function.  All
+ * integers (with the exception of zero) have zero significant digits to the right of the
+ * decimal.
+ * 
+ * @params {Numbers} arguments The values to be evaluated.
+ * @returns {Number} The number of significant digits to the right of the decimal for the
+ * list of values.
+ */
+exports.decimalDigits = function() {
+    var significantDigits = exports.MAXIMUM_PRECISION;
+    for (var i = 0; i < arguments.length; i++) {
+        var value = arguments[i];
+        if (Number.isFinite(value) && !Number.isInteger(value)) {
+            var parsed = parse(value);
+            var digits = parsed.decimal.length - parsed.exponent;
+            significantDigits = Math.min(significantDigits, digits);
+        } else {
+            if (value !== 0) significantDigits = 0;
+        }
+    }
+    return significantDigits;
+};
+
+
+/**
+ * This function normalizes a raw numeric value to the specified number of significant
+ * digits to the right of the decimal place.
+ * 
+ * @param {Number} value The raw value to be normalized.
+ * @param {Number} significantDigits The number of significant digits to the right of the
+ * decimal for the value.
+ * @returns {Number} The normalized value.
+ */
+exports.normalizeDecimal = function(value, significantDigits) {
+    return Number(value.toFixed(significantDigits));
+};
+
+
+/**
  * This function returns the sum of a list of numbers. The number of significant digits in the decimal
  * of the result is equal to the number of significant digits in the decimal of the operand with
  * the least number of digits in its decimal. For example:
@@ -100,12 +183,12 @@ exports.lockOnAngle = function(angle) {
  */
 exports.sum = function() {
     var result = 0;
-    var minDigits = decimalDigits.apply(this, arguments);
+    var digits = exports.decimalDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
         var value = exports.lockOnExtreme(arguments[i]);
         result = exports.lockOnExtreme(result + value);
     }
-    result = normalizeDecimal(result, minDigits);
+    result = exports.normalizeDecimal(result, digits);
     return result;
 };
 
@@ -129,8 +212,8 @@ exports.difference = function(first, second) {
     var first = exports.lockOnExtreme(first);
     var second = exports.lockOnExtreme(second);
     var result = exports.lockOnExtreme(first - second);
-    var minDigits = decimalDigits(first, second);
-    result = normalizeDecimal(result, minDigits);
+    var digits = exports.decimalDigits(first, second);
+    result = exports.normalizeDecimal(result, digits);
     return result;
 };
 
@@ -150,12 +233,12 @@ exports.difference = function(first, second) {
  */
 exports.product = function() {
     var result = 1;
-    var minDigits = valueDigits.apply(this, arguments);
+    var digits = exports.valueDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
         var value = exports.lockOnExtreme(arguments[i]);
         result = exports.lockOnExtreme(result * value);
     }
-    result = normalizeValue(result, minDigits);
+    result = exports.normalizeValue(result, digits);
     return result;
 };
 
@@ -179,8 +262,8 @@ exports.quotient = function(first, second) {
     var first = exports.lockOnExtreme(first);
     var second = exports.lockOnExtreme(second);
     var result = exports.lockOnExtreme(first / second);
-    var minDigits = valueDigits(first, second);
-    result = normalizeValue(result, minDigits);
+    var digits = exports.valueDigits(first, second);
+    result = exports.normalizeValue(result, digits);
     return result;
 };
 
@@ -204,8 +287,8 @@ exports.remainder = function(first, second) {
     var first = exports.lockOnExtreme(first);
     var second = exports.lockOnExtreme(second);
     var result = exports.lockOnExtreme(first % second);
-    var minDigits = valueDigits(first, second);
-    result = normalizeValue(result, minDigits);
+    var digits = exports.valueDigits(first, second);
+    result = exports.normalizeValue(result, digits);
     return result;
 };
 
@@ -231,9 +314,9 @@ exports.exponential = function(base, exponent) {
     // check for cases where Math.pow(0, 0) and Math.pow(Infinity, 0) are wrong!
     if ((base === 0 || base === Infinity) && exponent === 0) return NaN;
     var result = exports.lockOnExtreme(Math.pow(base, exponent));
-    var minDigits = valueDigits(exponent, base);
+    var digits = exports.valueDigits(exponent, base);
     var error = exponent * Math.log(base);
-    result = normalizeValue(result, minDigits, error);
+    result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -258,9 +341,9 @@ exports.logarithm = function(base, value) {
     var base = exports.lockOnExtreme(base);
     var value = exports.lockOnExtreme(value);
     var result = exports.lockOnExtreme(Math.log(value)/Math.log(base));
-    var minDigits = valueDigits(value, base);
+    var digits = exports.valueDigits(value, base);
     var error = exports.lockOnExtreme(1 / Math.log(value));
-    result = normalizeValue(result, minDigits, error);
+    result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -281,9 +364,9 @@ exports.logarithm = function(base, value) {
  */
 exports.sine = function(angle) {
     var result = exports.lockOnPole(Math.sin(angle));
-    var minDigits = valueDigits(angle);
+    var digits = exports.valueDigits(angle);
     var error = exports.lockOnExtreme(angle / exports.lockOnPole(Math.tan(angle)));
-    result = normalizeValue(result, minDigits, error);
+    result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -304,9 +387,9 @@ exports.sine = function(angle) {
  */
 exports.cosine = function(angle) {
     var result = exports.lockOnPole(Math.cos(angle));
-    var minDigits = valueDigits(angle);
+    var digits = exports.valueDigits(angle);
     var error = exports.lockOnExtreme(angle * exports.lockOnPole(Math.tan(angle)));
-    result = normalizeValue(result, minDigits, error);
+    result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -327,9 +410,9 @@ exports.cosine = function(angle) {
  */
 exports.tangent = function(angle) {
     var result = exports.lockOnPole(Math.tan(angle));
-    var minDigits = valueDigits(angle);
+    var digits = exports.valueDigits(angle);
     var error = exports.lockOnExtreme(angle * (result + 1 / result));
-    result = normalizeValue(result, minDigits, error);
+    result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -351,9 +434,9 @@ exports.tangent = function(angle) {
  */
 exports.arcsine = function(ratio) {
     var angle = exports.lockOnAngle(Math.asin(ratio));
-    var minDigits = valueDigits(ratio);
+    var digits = exports.valueDigits(ratio);
     var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
-    angle = normalizeValue(angle, minDigits, error);
+    angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
 
@@ -375,9 +458,9 @@ exports.arcsine = function(ratio) {
  */
 exports.arccosine = function(ratio) {
     var angle = exports.lockOnAngle(Math.acos(ratio));
-    var minDigits = valueDigits(ratio);
+    var digits = exports.valueDigits(ratio);
     var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
-    angle = normalizeValue(angle, minDigits, error);
+    angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
 
@@ -402,20 +485,14 @@ exports.arccosine = function(ratio) {
 exports.arctangent = function(opposite, adjacent) {
     var ratio = exports.lockOnExtreme(opposite / adjacent);
     var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
-    var minDigits = valueDigits(ratio);
+    var digits = exports.valueDigits(ratio);
     var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
-    angle = normalizeValue(angle, minDigits, error);
+    angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
 
 
 // PRIVATE FUNCTIONS
-
-/*
- * This value captures the number of significant digits in the largest integer
- */
-var MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
-
 
 /*
  * This function parses a floating point number into its three parts.
@@ -426,77 +503,10 @@ function parse(number) {
     var coefficient = matches[1];
     var decimal = matches[2];
     var exponent = matches[3] ? Number(matches[3].slice(1)) : 0;
+    if (coefficient === '0') coefficient = '';  // leading zero does not count
     return {
         coefficient: coefficient,
         decimal: decimal,
         exponent: exponent
     };
-}
-
-
-/*
- * This function calculates the smallest number of significant digits for a list of numbers
- * that are passed as arguments to this function. All integers including zero have the
- * maximum number of significant digits.
- */
-function valueDigits() {
-    var significantDigits = MAXIMUM_PRECISION;
-    for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
-        if (Number.isFinite(value) && !Number.isInteger(value)) {
-            var parsed = parse(value);
-            var digits = parsed.coefficient.length + parsed.decimal.length;
-            significantDigits = Math.min(significantDigits, digits);
-        }
-    }
-    return significantDigits;
-}
-
-
-/*
- * This function normalizes a raw numeric value to the specified number of significant
- * digits minus the error digits associated with the specified error factor. The number
- * of error digits is equal to the base 10 logarithm of the error factor.
- */
-function normalizeValue(number, significantDigits, error) {
-    var errorDigits;
-    if (isFinite(error) && error !== 0) {
-        errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
-        significantDigits -= errorDigits;
-    }
-    if (significantDigits < 1 || significantDigits > 21) {
-        console.log('significant digits: ' + significantDigits);
-    }
-    return Number(number.toPrecision(significantDigits));
-}
-
-
-/*
- * This function calculates the smallest number of significant digits to the right of the
- * decimal place for a list of numbers that are passed as arguments to this function.  All
- * integers (with the exception of zero) have zero significant digits to the right of the
- * decimal.
- */
-function decimalDigits() {
-    var significantDigits = MAXIMUM_PRECISION;
-    for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
-        if (Number.isFinite(value) && !Number.isInteger(value)) {
-            var parsed = parse(value);
-            var digits = parsed.decimal.length - parsed.exponent;
-            significantDigits = Math.min(significantDigits, digits);
-        } else {
-            if (value !== 0) significantDigits = 0;
-        }
-    }
-    return significantDigits;
-}
-
-
-/*
- * This function normalizes a raw numeric value to the specified number of significant
- * digits to the right of the decimal place.
- */
-function normalizeDecimal(number, significantDigits) {
-    return Number(number.toFixed(significantDigits));
 }

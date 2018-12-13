@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-/* global NaN, Infinity */
 
 /*
  * This class captures the state, methods, and functions associated with an angle element.

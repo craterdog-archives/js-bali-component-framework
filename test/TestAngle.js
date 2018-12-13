@@ -10,6 +10,7 @@
 
 var mocha = require('mocha');
 var expect = require('chai').expect;
+var precision = require('../src/utilities/Precision');
 var Angle = require('../src/elements/Angle').Angle;
 /* global NaN, Infinity */
 
@@ -21,18 +22,18 @@ describe('Bali Component Framework™', function() {
             expect(new Angle().toNumber()).to.equal(Angle.ZERO.toNumber());
             expect(new Angle(0).toNumber()).to.equal(Angle.ZERO.toNumber());
             expect(new Angle(-0).toNumber()).to.equal(Angle.ZERO.toNumber());
-            expect(new Angle(2 * Math.PI).toNumber()).to.equal(Angle.ZERO.toNumber());
+            expect(new Angle(2 * precision.PI).toNumber()).to.equal(Angle.ZERO.toNumber());
         });
 
         it('should construct and equal pi', function() {
             expect(new Angle('~pi').toNumber()).to.equal(Angle.PI.toNumber());
             expect(new Angle('~-pi').toNumber()).to.equal(Angle.PI.toNumber());
-            expect(new Angle(Math.PI).toNumber()).to.equal(Angle.PI.toNumber());
-            expect(new Angle(-Math.PI).toNumber()).to.equal(Angle.PI.toNumber());
+            expect(new Angle(precision.PI).toNumber()).to.equal(Angle.PI.toNumber());
+            expect(new Angle(-precision.PI).toNumber()).to.equal(Angle.PI.toNumber());
         });
 
         it('should construct and equal pi/2', function() {
-            expect(new Angle(Math.PI / 2).toNumber()).to.equal(Math.PI / 2);
+            expect(new Angle(precision.PI / 2).toNumber()).to.equal(precision.PI / 2);
         });
 
         it('should default to zero', function() {
@@ -53,33 +54,31 @@ describe('Bali Component Framework™', function() {
         it('should run round-trip angle methods', function() {
             var testValues = [
                 Angle.PI,
-                new Angle(Math.PI / 2),
-                new Angle(Math.PI / 3),
-                new Angle('~0.5'),
+                new Angle(precision.PI / 2),
+                new Angle(precision.PI / 3),
+                new Angle('~0.54321'),
                 Angle.ZERO,
-                new Angle('~-0.5'),
-                new Angle(-Math.PI),
-                new Angle(-Math.PI / 2),
-                new Angle(-Math.PI / 3)
+                new Angle('~-0.54321'),
+                new Angle(-precision.PI),
+                new Angle(-precision.PI / 2),
+                new Angle(-precision.PI / 3)
             ];
             var expectedValues = [
                 Angle.PI,
-                new Angle(1.570796326794897),
-                new Angle(1.047197551196598),
-                new Angle(0.4899573262537283),
+                new Angle(1.5707963267949),
+                new Angle(1.0471975511966),
+                new Angle(0.54321493521763),
                 Angle.ZERO,
-                new Angle(-0.4899573262537283),
-                new Angle(-Math.PI),
-                new Angle(-1.570796326794897),
-                new Angle(-1.047197551196598)
+                new Angle(-0.54321493521763),
+                new Angle(-precision.PI),
+                new Angle(-1.5707963267949),
+                new Angle(-1.0471975511966)
             ];
             for (var i = 0; i < testValues.length; i++) {
                 var angle = testValues[i];
                 var opposite = Angle.sine(angle);
                 var adjacent = Angle.cosine(angle);
                 var arctangent = Angle.arctangent(opposite, adjacent);
-                console.log('arctangent: ' + arctangent);
-                console.log('expected: ' + expectedValues[i]);
                 expect(arctangent.isEqualTo(expectedValues[i])).to.equal(true);
             }
         });
