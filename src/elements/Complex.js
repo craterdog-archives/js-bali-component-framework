@@ -431,6 +431,16 @@ Complex.factorial = function(complex) {
 };
 
 
+Complex.sum = function() {
+    var values = Array.prototype.slice.call(arguments).map(function(value) {
+        if (value.constructor.name === 'Percent') value = value.value;
+        return value;
+    });
+    var result = new Percent(precision.sum.apply(this, values));
+    return result;
+};
+
+
 Complex.sum = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
     if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;

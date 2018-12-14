@@ -46,9 +46,46 @@ describe('Bali Component Framework™', function() {
 
     describe('Test angle methods', function() {
 
+        it('should generate method results that match the expected values', function() {
+            var tests = testValues.length;
+            for (var i = 0; i < tests; i++) {
+                var angle = testValues[i];
+                expect(angle.toString()).to.equal(stringValues[i]);
+                expect(angle.toNumber()).to.equal(numericValues[i]);
+            }
+        });
+
         it('should return the correct type', function() {
             var type = Angle.PI.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#8SC89QY4LM68LTGPXYMBR6C0LR324L3P,$version:v1,$digest:none]>');
+        });
+
+    });
+
+    describe('Test angle functions', function() {
+
+        it('should perform the inverse function correctly', function() {
+            expect(Angle.inverse(Angle.ZERO)).to.equal(Angle.PI);
+            expect(Angle.inverse(Angle.PI)).to.equal(Angle.ZERO);
+            expect(Angle.inverse(new Angle(precision.PI / 2)).isEqualTo(new Angle(-1.570796326794897))).to.equal(true);
+        });
+
+        it('should perform the complement function correctly', function() {
+        });
+
+        it('should perform the supplement function correctly', function() {
+        });
+
+        it('should perform the conjugate function correctly', function() {
+        });
+
+        it('should perform the sum function correctly', function() {
+        });
+
+        it('should perform the difference function correctly', function() {
+        });
+
+        it('should perform the scale function correctly', function() {
         });
 
         it('should run round-trip angle methods', function() {
@@ -67,9 +104,9 @@ describe('Bali Component Framework™', function() {
                 Angle.PI,
                 new Angle(1.5707963267949),
                 new Angle(1.0471975511966),
-                new Angle(0.54321493521763),
+                new Angle(0.54321),
                 Angle.ZERO,
-                new Angle(-0.54321493521763),
+                new Angle(-0.54321),
                 new Angle(-precision.PI),
                 new Angle(-1.5707963267949),
                 new Angle(-1.0471975511966)
@@ -86,3 +123,79 @@ describe('Bali Component Framework™', function() {
     });
 
 });
+
+
+var testValues = [
+    Angle.ZERO,
+    new Angle(-0),
+    new Angle(0),
+    new Angle('~0'),
+    new Angle(),
+    Angle.PI,
+    new Angle('~pi'),
+    new Angle('~-pi'),
+    new Angle(precision.PI),
+    new Angle(-precision.PI),
+    new Angle(precision.PI / 4),
+    new Angle(-precision.PI / 4),
+    new Angle(precision.PI / 2),
+    new Angle(-precision.PI / 2),
+    new Angle(precision.PI * 3 / 4),
+    new Angle(-precision.PI * 3 / 4),
+    new Angle(precision.PI * 5 / 4),
+    new Angle(-precision.PI * 5 / 4),
+    new Angle(precision.PI * 7 / 4),
+    new Angle(-precision.PI * 7 / 4),
+    new Angle(2 * precision.PI),
+    new Angle(-2 * precision.PI)
+];
+
+var stringValues = [
+    '~0',
+    '~0',
+    '~0',
+    '~0',
+    '~0',
+    '~pi',
+    '~pi',
+    '~pi',
+    '~pi',
+    '~pi',
+    '~0.7853981633974483',
+    '~-0.7853981633974483',
+    '~1.5707963267948966',
+    '~-1.5707963267948966',
+    '~2.356194490192345',
+    '~-2.356194490192345',
+    '~-2.35619449019235',
+    '~2.35619449019235',
+    '~-0.78539816339745',
+    '~0.78539816339745',
+    '~0',
+    '~0'
+];
+
+var numericValues = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    precision.PI,
+    precision.PI,
+    precision.PI,
+    precision.PI,
+    precision.PI,
+    precision.PI / 4,
+    -precision.PI / 4,
+    precision.PI / 2,
+    -precision.PI / 2,
+    precision.PI * 3 / 4,
+    -precision.PI * 3 / 4,
+    -2.35619449019235,
+    2.35619449019235,
+    -0.78539816339745,
+    0.78539816339745,
+    0,
+    0
+];

@@ -179,7 +179,8 @@ exports.normalizeDecimal = function(value, significantDigits) {
  *   555.56    (2 significant decimal digits)
  * </pre>
  *
- * @return {Number} The resulting sum of the two numbers.
+ * @params {Numbers} arguments The values to be added.
+ * @return {Number} The resulting sum of the numbers.
  */
 exports.sum = function() {
     var result = 0;
@@ -204,15 +205,15 @@ exports.sum = function() {
  *    69.13    (2 significant decimal digits)
  * </pre>
  *
- * @param {Number} first The number to be subtracted from.
- * @param {Number} second The number to be subtracted from the first number.
+ * @param {Number} minuend The number to be subtracted from.
+ * @param {Number} subtrahend The number to be subtracted from the first number.
  * @return {Number} The resulting difference of the two numbers.
  */
-exports.difference = function(first, second) {
-    var first = exports.lockOnExtreme(first);
-    var second = exports.lockOnExtreme(second);
-    var result = exports.lockOnExtreme(first - second);
-    var digits = exports.decimalDigits(first, second);
+exports.difference = function(minuend, subtrahend) {
+    minuend = exports.lockOnExtreme(minuend);
+    subtrahend = exports.lockOnExtreme(subtrahend);
+    var result = exports.lockOnExtreme(minuend - subtrahend);
+    var digits = exports.decimalDigits(minuend, subtrahend);
     result = exports.normalizeDecimal(result, digits);
     return result;
 };
@@ -229,7 +230,8 @@ exports.difference = function(first, second) {
  *   8.37e+3   (3 significant digits)
  * </pre>
  *
- * @return {Number} The resulting product of the two numbers.
+ * @params {Numbers} arguments The values to be multiplied.
+ * @return {Number} The resulting product of the numbers.
  */
 exports.product = function() {
     var result = 1;
@@ -254,15 +256,15 @@ exports.product = function() {
  *      1.82   (3 significant digits)
  * </pre>
  *
- * @param {Number} first The number to be divided into.
- * @param {Number} second The number to be divided by.
+ * @param {Number} dividend The number to be divided into.
+ * @param {Number} divisor The number to be divided by.
  * @return {Number} The resulting quotient of the two numbers.
  */
-exports.quotient = function(first, second) {
-    var first = exports.lockOnExtreme(first);
-    var second = exports.lockOnExtreme(second);
-    var result = exports.lockOnExtreme(first / second);
-    var digits = exports.valueDigits(first, second);
+exports.quotient = function(dividend, divisor) {
+    dividend = exports.lockOnExtreme(dividend);
+    divisor = exports.lockOnExtreme(divisor);
+    var result = exports.lockOnExtreme(dividend / divisor);
+    var digits = exports.valueDigits(dividend, divisor);
     result = exports.normalizeValue(result, digits);
     return result;
 };
@@ -279,15 +281,15 @@ exports.quotient = function(first, second) {
  *      55.6   (3 significant digits)
  * </pre>
  *
- * @param {Number} first The number to be divided into.
- * @param {Number} second The number to be divided by.
+ * @param {Number} dividend The number to be divided into.
+ * @param {Number} divisor The number to be divided by.
  * @return {Number} The resulting remainder of the quotient of the two numbers.
  */
-exports.remainder = function(first, second) {
-    var first = exports.lockOnExtreme(first);
-    var second = exports.lockOnExtreme(second);
-    var result = exports.lockOnExtreme(first % second);
-    var digits = exports.valueDigits(first, second);
+exports.remainder = function(dividend, divisor) {
+    dividend = exports.lockOnExtreme(dividend);
+    divisor = exports.lockOnExtreme(divisor);
+    var result = exports.lockOnExtreme(dividend % divisor);
+    var digits = exports.valueDigits(dividend, divisor);
     result = exports.normalizeValue(result, digits);
     return result;
 };
@@ -309,8 +311,8 @@ exports.remainder = function(first, second) {
  * @returns {Number} The value of the base raised to the exponent.
  */
 exports.exponential = function(base, exponent) {
-    var base = exports.lockOnExtreme(base);
-    var exponent = exports.lockOnExtreme(exponent);
+    base = exports.lockOnExtreme(base);
+    exponent = exports.lockOnExtreme(exponent);
     // check for cases where Math.pow(0, 0) and Math.pow(Infinity, 0) are wrong!
     if ((base === 0 || base === Infinity) && exponent === 0) return NaN;
     var result = exports.lockOnExtreme(Math.pow(base, exponent));
@@ -327,22 +329,22 @@ exports.exponential = function(base, exponent) {
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
  * <pre>
- *                      |      1      |
- *   error digits: log  | ----------- |
- *                    10| log (value) |
- *                      |    e        |
+ *                      |         1         |
+ *   error digits: log  | ----------------- |
+ *                    10| log (exponential) |
+ *                      |    e              |
  * </pre>
  * 
  * @param {Number} base The base value.
- * @param {Number} value The value that is equal to base^exponent.
- * @returns {Number} The value of the base raised to the exponent.
+ * @param {Number} exponential The value that is equal to base^exponent.
+ * @returns {Number} The value of the base logarith of the exponential.
  */
-exports.logarithm = function(base, value) {
-    var base = exports.lockOnExtreme(base);
-    var value = exports.lockOnExtreme(value);
-    var result = exports.lockOnExtreme(Math.log(value)/Math.log(base));
-    var digits = exports.valueDigits(value, base);
-    var error = exports.lockOnExtreme(1 / Math.log(value));
+exports.logarithm = function(base, exponential) {
+    base = exports.lockOnExtreme(base);
+    exponential = exports.lockOnExtreme(exponential);
+    var result = exports.lockOnExtreme(Math.log(exponential)/Math.log(base));
+    var digits = exports.valueDigits(exponential, base);
+    var error = exports.lockOnExtreme(1 / Math.log(exponential));
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -483,7 +485,7 @@ exports.arccosine = function(ratio) {
  * @returns {Number} The corresponding angle.
  */
 exports.arctangent = function(opposite, adjacent) {
-    var ratio = exports.lockOnExtreme(opposite / adjacent);
+    var ratio = exports.quotient(opposite, adjacent);
     var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
     var digits = exports.valueDigits(ratio);
     var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));

@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * percent element.
  */
+var precision = require('../utilities/Precision');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
 
@@ -54,6 +55,6 @@ exports.Percent = Percent;
  * 
  * @returns {number} The numeric value of the percent element.
  */
-Percent.prototype.toNumber = function () {
+Percent.prototype.toNumber = function() {
     return this.value;
 };

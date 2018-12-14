@@ -98,12 +98,48 @@ Angle.ZERO = new Angle(0);
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns the negative of an angle.
+ * This function returns the inverse of an angle.
  * 
- * @param {Angle} angle The angle to be negated.
- * @returns {Angle} The negated angle.
+ * @param {Angle} angle The angle to be inverted.
+ * @returns {Angle} The inverted angle.
  */
-Angle.negative = function(angle) {
+Angle.inverse = function(angle) {
+    return new Angle(precision.difference(angle.value, precision.PI));
+};
+
+
+/**
+ * This function returns the complement of an angle. The complementary angle
+ * adds to the specified angle to equal pi/2.
+ * 
+ * @param {Angle} angle The angle to be complemented.
+ * @returns {Angle} The complementary angle.
+ */
+Angle.complement = function(angle) {
+    return new Angle(precision.difference(precision.PI / 2, angle.value));
+};
+
+
+/**
+ * This function returns the supplement of an angle. The supplementary angle
+ * adds to the specified angle to equal pi.
+ * 
+ * @param {Angle} angle The angle to be supplemented.
+ * @returns {Angle} The supplemental angle.
+ */
+Angle.supplement = function(angle) {
+    return new Angle(precision.difference(precision.PI, angle.value));
+};
+
+
+/**
+ * This function returns the conjugate of an angle. The conjugated angle
+ * adds to the specified angle to equal 2pi.
+ * 
+ * @param {Angle} angle The angle to be conjugated angle.
+ * @returns {Angle} The conjugated angle.
+ */
+Angle.conjugate = function(angle) {
     return new Angle(-angle.value);
 };
 
@@ -117,7 +153,7 @@ Angle.negative = function(angle) {
  * @returns {Angle} The normalized sum of the two angles.
  */
 Angle.sum = function(firstAngle, secondAngle) {
-    return new Angle(precision.sum(firstAngle.value + secondAngle.value));
+    return new Angle(precision.sum(firstAngle.value, secondAngle.value));
 };
 
 
@@ -130,21 +166,24 @@ Angle.sum = function(firstAngle, secondAngle) {
  * @returns {Angle} The normalized difference of the two angles.
  */
 Angle.difference = function(firstAngle, secondAngle) {
-    return new Angle(precision.difference(firstAngle.value - secondAngle.value));
+    return new Angle(precision.difference(firstAngle.value, secondAngle.value));
 };
 
 
 /**
- * This function returns the inverse of an angle.
+ * This function returns the specified angle scaled to the specified factor. The result
+ * will be normalized to be in the range (-pi..pi].
  * 
- * @param {Angle} angle The angle to be inverted.
- * @returns {Angle} The inverted angle.
+ * @param {Angle} angle The angle to be scaled.
+ * @param {Number} factor The scale factor.
+ * @returns {Angle} The normalized scaled angle.
  */
-Angle.inverse = function(angle) {
-    return new Angle(precision.difference(angle.value, precision.PI));
+Angle.scale = function(angle, factor) {
+    return new Angle(precision.product(angle.value, factor));
 };
 
 
+/**
 /**
  * This function returns the sine (opposite/hypotenuse) of an angle.
  * 

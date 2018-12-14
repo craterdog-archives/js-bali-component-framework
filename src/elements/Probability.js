@@ -81,7 +81,7 @@ exports.Probability = Probability;
  * 
  * @returns {number} The boolean representation of the probability element.
  */
-Probability.prototype.toBoolean = function () {
+Probability.prototype.toBoolean = function() {
     return codex.coinToss(this.value);
 };
 
@@ -91,7 +91,7 @@ Probability.prototype.toBoolean = function () {
  * 
  * @returns {number} The numeric representation of the probability element.
  */
-Probability.prototype.toNumber = function () {
+Probability.prototype.toNumber = function() {
     return this.value;
 };
 
