@@ -126,7 +126,7 @@ function Complex(value, parameters) {
                         var angle = new Angle(imaginary);
                         if (magnitude < 0) {
                             magnitude = -magnitude;
-                            angle = Angle.reciprocal(angle);
+                            angle = Angle.inverse(angle);
                         }
                         this.real = magnitude * Angle.cosine(angle);
                         this.imaginary = magnitude * Angle.sine(angle);
@@ -455,6 +455,20 @@ Complex.sum = function(first, second) {
 
 Complex.difference = function(first, second) {
     return Complex.sum(first, Complex.inverse(second));
+};
+
+
+Complex.scale = function(complex, factor) {
+    if (complex.isUndefined() || Number.isNaN(factor)) return Complex.UNDEFINED;
+    if (complex.isZero() && !Number.isFinite(factor)) return Complex.UNDEFINED;
+    if (complex.isInfinite() && factor === 0) return Complex.UNDEFINED;
+    if (complex.isInfinite() || !Number.isFinite(factor)) return Complex.INFINITY;
+    if (complex.isZero() || factor === 0) return Complex.ZERO;
+    var real = precision.product(complex.real, factor);
+    var imaginary = precision.product(complex.imaginary, factor);
+    var result = new Complex({real: real, imaginary: imaginary});
+    result.format = complex.format;
+    return result;
 };
 
 

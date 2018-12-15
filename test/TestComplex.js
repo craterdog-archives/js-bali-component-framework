@@ -132,6 +132,14 @@ describe('Bali Component Framework™', function() {
             expect(Complex.difference(new Complex('(3, 4i)'), new Complex('(2, -2i)')).isEqualTo(new Complex('(1, 6i)'))).to.equal(true);
         });
 
+        it('should perform the scale function correctly', function() {
+            expect(Complex.scale(new Complex(5), NaN)).to.equal(Complex.UNDEFINED);
+            expect(Complex.scale(new Complex(5), Infinity)).to.equal(Complex.INFINITY);
+            expect(Complex.scale(new Complex(5), 0)).to.equal(Complex.ZERO);
+            expect(Complex.scale(Complex.ZERO, 5)).to.equal(Complex.ZERO);
+            expect(Complex.scale(new Complex('(3 e^~pi i)'), -1).isEqualTo(new Complex('(-3 e^~pi i)'))).to.equal(true);
+        });
+
         it('should perform the product function correctly', function() {
             expect(Complex.product(new Complex(5), Complex.UNDEFINED)).to.equal(Complex.UNDEFINED);
             expect(Complex.product(new Complex(5), Complex.INFINITY)).to.equal(Complex.INFINITY);
