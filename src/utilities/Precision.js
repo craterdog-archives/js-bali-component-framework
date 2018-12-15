@@ -31,7 +31,7 @@
 exports.E = Math.E;
 exports.PI = Math.PI;
 exports.PHI = (Math.sqrt(5) + 1) / 2;
-exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length - 1;
+exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
 
 
 // PUBLIC FUNCTIONS
@@ -45,22 +45,63 @@ exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length - 1;
  * @returns {Number} The potentially converted number.
  */
 exports.lockOnExtreme = function(number) {
-    var extreme = Math.fround(number);
-    if (extreme === -0 || extreme === 0) return 0;
-    if (extreme === -Infinity || extreme === Infinity) return Infinity;
+    // use single precision comparisons to lock on
+    var extreme = Math.fround(Math.abs(number));
+    if (extreme === 0 || extreme === Infinity) return extreme;
     return number;
 };
 
 
 /**
- * This function checks to see if the specified number is close enough to one of the six poles
- * on a Riemann sphere to cause it to lock onto one of those values. This helps with the
- * hysteresis that occurs when doing round trip conversions with complex numbers.
+ * This function checks to see if the specified number is close enough to one of the four poles
+ * on a Riemann circle (-1, 0, 1, and Infinity) to cause it to lock onto one of those values.
+ * This helps with the hysteresis that occurs when doing round trip conversions with trigonometry.
  * 
  * @param {Number} number The number to be checked.
  * @returns {Number} The potentially converted number.
  */
 exports.lockOnPole = function(number) {
+    // NOTE: it would be great if the single precision comparision worked here as well, or
+    // better yet, the Math trigonometric functions returned Infinity and 0 when they should,
+    // but alas... https://github.com/nodejs/node-v0.x-archive/issues/7852
+    // 
+    // So, we must check each special case explicitly:
+    // Math.sin(0) => 0
+    // Math.cos(0) => 1
+    // Math.tan(0) => 0
+    // 
+    // Math.sin(Math.PI/2) => 1
+    // Math.cos(Math.PI/2) => 6.123233995736766e-17 (not zero)
+    // Math.tan(Math.PI/2) => 16331239353195370 (not Infinity)
+    // 
+    // Math.sin(Math.PI) => 1.2246467991473532e-16 (not zero)
+    // Math.cos(Math.PI) => -1
+    // Math.tan(Math.PI) => -1.2246467991473532e-16 (not zero)
+    // 
+    // Math.sin(Math.PI * 3/2) => -1
+    // Math.cos(Math.PI * 3/2) => -1.8369701987210297e-16 (not zero)
+    // Math.tan(Math.PI * 3/2) => 5443746451065123 (not -Infinity)
+    // 
+    // Math.sin(Math.PI * 2) => -2.4492935982947064e-16 (not zero)
+    // Math.cos(Math.PI * 2) => 1
+    // Math.tan(Math.PI * 2) => -2.4492935982947064e-16 (not zero)
+    // 
+    // Math.sin(-Math.PI/2) => -1
+    // Math.cos(-Math.PI/2) => 6.123233995736766e-17 (not zero)
+    // Math.tan(-Math.PI/2) => -16331239353195370 (not -Infinity)
+    // 
+    // Math.sin(-Math.PI) => -1.2246467991473532e-16 (not zero)
+    // Math.cos(-Math.PI) => -1
+    // Math.tan(-Math.PI) => 1.2246467991473532e-16 (not zero)
+    // 
+    // Math.sin(-Math.PI * 3/2) => 1
+    // Math.cos(-Math.PI * 3/2) => -1.8369701987210297e-16 (not zero)
+    // Math.tan(-Math.PI * 3/2) => -5443746451065123 (not -Infinity)
+    // 
+    // Math.sin(-Math.PI * 2) => 2.4492935982947064e-16 (not zero)
+    // Math.cos(-Math.PI * 2) => 1
+    // Math.tan(-Math.PI * 2) => 2.4492935982947064e-16 (not zero)
+
     if (number === -0) return 0;
     if (number > -2.4492935982947068e-16 && number < 2.4492935982947068e-16) return 0;
     if (number > 0.9999999999999996 && number < 1.0000000000000004) return 1;
@@ -80,8 +121,8 @@ exports.lockOnPole = function(number) {
  * @returns {Number} The potentially converted angle.
  */
 exports.lockOnAngle = function(angle) {
-    if (angle > 3.141592653589791 && angle < 3.141592653589795) angle = exports.PI;
-    if (angle < -3.141592653589791 && angle > -3.141592653589795) angle = exports.PI;
+    // use single precision comparisons to lock on
+    if (Math.fround(exports.PI) === Math.fround(Math.abs(angle))) angle = exports.PI;
     return angle;
 };
 
@@ -95,7 +136,7 @@ exports.lockOnAngle = function(angle) {
  * @returns {Number} The number of significant digits for the list of values.
  */
 exports.valueDigits = function() {
-    var significantDigits = exports.MAXIMUM_PRECISION;
+    var significantDigits = exports.MAXIMUM_PRECISION - 1;
     for (var i = 0; i < arguments.length; i++) {
         var value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {

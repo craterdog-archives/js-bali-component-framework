@@ -80,6 +80,40 @@ exports.Angle = Angle;
 // PUBLIC METHODS
 
 /**
+ * This method determines whether or not this angle is equal to another angle.
+ * 
+ * @param {Object} that The object that is being compared.
+ * @returns {Boolean} Whether or not this component is equal to another component.
+ */
+Angle.prototype.isEqualTo = function(that) {
+    return this.comparedTo(that) === 0;
+};
+
+
+/**
+ * This method compares this angle to another for ordering.
+ * 
+ * @param {Object} that The other angle to be compared with. 
+ * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
+ */
+Angle.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+
+    // check the types
+    if (typeof this !== typeof that) {
+        return this.constructor.name.localeCompare(that.constructor.name);
+    }
+
+    // the types are the same, check the values
+    if (Math.fround(this.value) < Math.fround(that.value)) return -1;
+    if (Math.fround(this.value) > Math.fround(that.value)) return 1;
+
+    // they are also equal
+    return 0;
+};
+
+
+/**
  * This method returns the numeric value of the angle.
  * 
  * @returns {Number} The numeric value of the angle.
