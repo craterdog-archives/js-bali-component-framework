@@ -16,6 +16,7 @@ exports.Parser = require('./Parser').Parser;
 exports.Sorter = require('./Sorter').Sorter;
 exports.Visitor = require('./Visitor').Visitor;
 
+exports.precision = require('./Precision');
 exports.codex = require('./Codex');
 exports.formatter = new exports.Formatter();
 exports.parser = new exports.Parser(false);

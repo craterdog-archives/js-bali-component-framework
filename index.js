@@ -59,6 +59,7 @@ exports.Iterator = utilities.Iterator;
 exports.Parser = utilities.Parser;
 exports.Sorter = utilities.Sorter;
 exports.Visitor = utilities.Visitor;
+exports.precision = utilities.precision;
 exports.codex = utilities.codex;
 exports.formatter = new utilities.Formatter();
 exports.parser = new utilities.Parser(false);
