@@ -136,7 +136,7 @@ exports.lockOnAngle = function(angle) {
  * @returns {Number} The number of significant digits for the list of values.
  */
 exports.valueDigits = function() {
-    var significantDigits = exports.MAXIMUM_PRECISION - 1;
+    var significantDigits = exports.MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
         var value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {
