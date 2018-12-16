@@ -172,8 +172,7 @@ exports.normalizeValue = function(value, significantDigits, error) {
 /**
  * This function calculates the smallest number of significant digits to the right of the
  * decimal place for a list of values that are passed as arguments to this function.  All
- * integers (with the exception of zero) have zero significant digits to the right of the
- * decimal.
+ * integers have unlimited significant digits to the right of the decimal.
  * 
  * @params {Numbers} arguments The values to be evaluated.
  * @returns {Number} The number of significant digits to the right of the decimal for the
@@ -187,8 +186,6 @@ exports.decimalDigits = function() {
             var parsed = parse(value);
             var digits = parsed.decimal.length - parsed.exponent;
             significantDigits = Math.min(significantDigits, digits);
-        } else {
-            if (value !== 0) significantDigits = 0;
         }
     }
     return significantDigits;

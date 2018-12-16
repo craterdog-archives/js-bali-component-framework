@@ -187,7 +187,7 @@ describe('Bali Component Framework™', function() {
             set6.addItem('alpha');
             set6.addItem('epsilon');
             set6.addItem('gamma');
-            expect(abstractions.Collection.mavericks(set1, set2).isEqualTo(set6)).to.equal(true);
+            expect(abstractions.Collection.exclusive(set1, set2).isEqualTo(set6)).to.equal(true);
         });
 
     });

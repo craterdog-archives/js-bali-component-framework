@@ -90,4 +90,47 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test probability functions', function() {
+
+        it('should perform the inverse function correctly', function() {
+            expect(Probability.inverse(Probability.FALSE)).to.equal(Probability.TRUE);
+            expect(Probability.inverse(Probability.TRUE)).to.equal(Probability.FALSE);
+            expect(Probability.inverse(new Probability(0.25)).isEqualTo(new Probability(0.75))).to.equal(true);
+            expect(Probability.inverse(new Probability('.25')).isEqualTo(new Probability('.75'))).to.equal(true);
+        });
+
+        it('should perform the union function correctly', function() {
+            expect(Probability.union(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
+            expect(Probability.union(Probability.FALSE, Probability.TRUE)).to.equal(Probability.TRUE);
+            expect(Probability.union(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
+            expect(Probability.union(Probability.TRUE, Probability.TRUE)).to.equal(Probability.TRUE);
+            expect(Probability.union(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.83))).to.equal(true);
+        });
+
+        it('should perform the intersection function correctly', function() {
+            expect(Probability.intersection(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
+            expect(Probability.intersection(Probability.FALSE, Probability.TRUE)).to.equal(Probability.FALSE);
+            expect(Probability.intersection(Probability.TRUE, Probability.FALSE)).to.equal(Probability.FALSE);
+            expect(Probability.intersection(Probability.TRUE, Probability.TRUE)).to.equal(Probability.TRUE);
+            expect(Probability.intersection(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.25))).to.equal(true);
+        });
+
+        it('should perform the difference function correctly', function() {
+            expect(Probability.difference(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
+            expect(Probability.difference(Probability.FALSE, Probability.TRUE)).to.equal(Probability.FALSE);
+            expect(Probability.difference(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
+            expect(Probability.difference(Probability.TRUE, Probability.TRUE)).to.equal(Probability.FALSE);
+            expect(Probability.difference(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.5))).to.equal(true);
+        });
+
+        it('should perform the exclusive function correctly', function() {
+            expect(Probability.exclusive(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
+            expect(Probability.exclusive(Probability.FALSE, Probability.TRUE)).to.equal(Probability.TRUE);
+            expect(Probability.exclusive(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
+            expect(Probability.exclusive(Probability.TRUE, Probability.TRUE)).to.equal(Probability.FALSE);
+            expect(Probability.exclusive(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.6))).to.equal(true);
+        });
+
+    });
+
 });

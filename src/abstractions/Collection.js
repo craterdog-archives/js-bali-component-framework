@@ -38,9 +38,9 @@ exports.Collection = Collection;
  * This function returns a new collection that contains all the items that are in
  * the first collection or the second collection or both.
  *
- * @param {ollection} collection1 The first collection to be operated on.
- * @param {ollection} collection2 The second collection to be operated on.
- * @returns {ollection} The resulting collection.
+ * @param {Collection} collection1 The first collection to be operated on.
+ * @param {Collection} collection2 The second collection to be operated on.
+ * @returns {Collection} The resulting collection.
  */
 Collection.union = function(collection1, collection2) {
     var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
@@ -53,9 +53,9 @@ Collection.union = function(collection1, collection2) {
  * This function returns a new collection that contains the items that are in
  * both the first collection and the second collection.
  *
- * @param {ollection} collection1 The first collection to be operated on.
- * @param {ollection} collection2 The second collection to be operated on.
- * @returns {ollection} The resulting collection.
+ * @param {Collection} collection1 The first collection to be operated on.
+ * @param {Collection} collection2 The second collection to be operated on.
+ * @returns {Collection} The resulting collection.
  */
 Collection.intersection = function(collection1, collection2) {
     var result = collection1.constructor.fromCollection([], collection1.parameters);
@@ -74,9 +74,9 @@ Collection.intersection = function(collection1, collection2) {
  * This function returns a new collection that contains the items that are in
  * the first collection but not in the second collection.
  *
- * @param {ollection} collection1 The first collection to be operated on.
- * @param {ollection} collection2 The second collection to be operated on.
- * @returns {ollection} The resulting collection.
+ * @param {Collection} collection1 The first collection to be operated on.
+ * @param {Collection} collection2 The second collection to be operated on.
+ * @returns {Collection} The resulting collection.
  */
 Collection.difference = function(collection1, collection2) {
     var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
@@ -89,11 +89,11 @@ Collection.difference = function(collection1, collection2) {
  * This function returns a new collection that contains all the items that are in
  * the first collection or the second collection but not both.
  *
- * @param {ollection} collection1 The first collection to be operated on.
- * @param {ollection} collection2 The second collection to be operated on.
- * @returns {ollection} The resulting collection.
+ * @param {Collection} collection1 The first collection to be operated on.
+ * @param {Collection} collection2 The second collection to be operated on.
+ * @returns {Collection} The resulting collection.
  */
-Collection.mavericks = function(collection1, collection2) {
+Collection.exclusive = function(collection1, collection2) {
     var result = collection1.constructor.fromCollection([], collection1.parameters);
     var iterator1 = collection1.getIterator();
     var item1;
@@ -183,9 +183,9 @@ Collection.prototype.getItem = function(index) {
  * This method returns a new collection of items starting with the item at the
  * first index and including the item at the last index.
  * 
- * @param {type} firstIndex The index of the first item to be included.
- * @param {type} lastIndex The index of the last item to be included.
- * @returns {ollection} The new collection containing the requested items.
+ * @param {Number} firstIndex The index of the first item to be included.
+ * @param {Number} lastIndex The index of the last item to be included.
+ * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizeIndex(firstIndex);

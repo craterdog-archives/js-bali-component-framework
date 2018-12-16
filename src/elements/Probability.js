@@ -13,9 +13,10 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
+var precision = require('../utilities/Precision');
+var codex = require('../utilities/Codex');
 var types = require('../abstractions/Types');
 var Element = require('../abstractions/Element').Element;
-var codex = require('../utilities/Codex');
 
 
 /**
@@ -55,8 +56,8 @@ function Probability(value, parameters) {
     if (value < 0 || value > 1) {
         throw new Error('PROBABILITY: A probability must be in the range [0..1]: ' + value);
     }
-    if (typeof Probability.FALSE !== 'undefined' && value === 'false') return Probability.FALSE;
-    if (typeof Probability.TRUE !== 'undefined' && value === 'true') return Probability.TRUE;
+    if (typeof Probability.FALSE !== 'undefined' && value === 0) return Probability.FALSE;
+    if (typeof Probability.TRUE !== 'undefined' && value === 1) return Probability.TRUE;
     this.value = value;
     var source;
     if (value === 1) {
@@ -96,7 +97,113 @@ Probability.prototype.toNumber = function() {
 };
 
 
-// common constants
+// PUBLIC CONSTANTS
+
 Probability.FALSE = new Probability('false');
 Probability.TRUE = new Probability('true');
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new probability that is the logical NOT of the specified
+ * probability. It represents the likelihood that the probability is false.
+ * The logical NOT is equal to:
+ * <pre>
+ *    pNOT = 1 - p
+ * </pre>
+ *
+ * @param {Probability} probability The probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.inverse = function(probability) {
+    var p = precision.difference(1, probability.value);
+    var result = new Probability(p);
+    return result;
+};
+
+
+/**
+ * This function returns a new probability that is the logical OR of the two specified
+ * probabilities. It represents the likelihood that the first probability is true or the
+ * second probability is true or both are true. The logical OR is equal to:
+ * <pre>
+ *    pOR = p1 + p2 - p1 * p2
+ * </pre>
+ *
+ * @param {Probability} probability1 The first probability.
+ * @param {Probability} probability2 The second probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.union = function(probability1, probability2) {
+    var p1 = probability1.value;
+    var p2 = probability2.value;
+    var p = precision.sum(p1, p2, precision.product(-p1, p2));
+    var result = new Probability(p);
+    return result;
+};
+
+
+/**
+ * This function returns a new probability that is the logical AND of the two specified
+ * probabilities. It represents the likelihood that the first probability is true and the
+ * second probability is true. The logical AND is equal to:
+ * <pre>
+ *    pAND = p1 * p2
+ * </pre>
+ *
+ * @param {Probability} probability1 The first probability.
+ * @param {Probability} probability2 The second probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.intersection = function(probability1, probability2) {
+    var p1 = probability1.value;
+    var p2 = probability2.value;
+    var p = precision.product(p1, p2);
+    var result = new Probability(p);
+    return result;
+};
+
+
+/**
+ * This function returns a new probability that is the logical SANS of the two specified
+ * probabilities. It represents the likelihood that the first probability is true but the
+ * second probability is not. The logical SANS is equal to:
+ * <pre>
+ *    pSANS = p1 * (1 - p2)
+ * </pre>
+ *
+ * @param {Probability} probability1 The first probability.
+ * @param {Probability} probability2 The second probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.difference = function(probability1, probability2) {
+    var p1 = probability1.value;
+    var p2 = probability2.value;
+    var p = precision.product(p1, precision.difference(1, p2));
+    var result = new Probability(p);
+    return result;
+};
+
+
+/**
+ * This function returns a new probability that is the logical XOR of the two specified
+ * probabilities. It represents the likelihood that the first probability is true or the
+ * second probability is true but not both. The logical XOR is equal to:
+ * <pre>
+ *    pXOR = p1 * (1 - p2) + p2 * (1 - p1)
+ *         = p1 + p2 - 2 * (p1 * p2)
+ * </pre>
+ *
+ * @param {Probability} probability1 The first probability.
+ * @param {Probability} probability2 The second probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.exclusive = function(probability1, probability2) {
+    var p1 = probability1.value;
+    var p2 = probability2.value;
+    var p = precision.sum(p1, p2, precision.product(-2, p1, p2));
+    var result = new Probability(p);
+    return result;
+};
 
