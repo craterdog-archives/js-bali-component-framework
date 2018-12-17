@@ -28,7 +28,7 @@ var Element = require('../abstractions/Element').Element;
  */
 function Duration(value, parameters) {
     Element.call(this, types.DURATION, parameters);
-    if (typeof value === 'undefined' || value === null) value = '~P0D';  // default value
+    if (value === undefined || value === null) value = '~P0D';  // default value
     this.duration = duration(value.slice(1));  // remove leading '~'
     this.setSource('~' + this.duration.toISOString());  // make it canonical
     return this;

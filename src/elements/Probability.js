@@ -56,8 +56,8 @@ function Probability(value, parameters) {
     if (value < 0 || value > 1) {
         throw new Error('PROBABILITY: A probability must be in the range [0..1]: ' + value);
     }
-    if (typeof Probability.FALSE !== 'undefined' && value === 0) return Probability.FALSE;
-    if (typeof Probability.TRUE !== 'undefined' && value === 1) return Probability.TRUE;
+    if (Probability.FALSE && value === 0) return Probability.FALSE;
+    if (Probability.TRUE && value === 1) return Probability.TRUE;
     this.value = value;
     var source;
     if (value === 1) {

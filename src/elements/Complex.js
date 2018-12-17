@@ -223,8 +223,10 @@ Complex.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
 
     // check the types
-    if (typeof this !== typeof that) {
-        return this.constructor.name.localeCompare(that.constructor.name);
+    var thisType = this.constructor.name;
+    var thatType = that.constructor.name;
+    if (thisType !== thatType) {
+        return thisType.localeCompare(thatType);
     }
 
     // the types are the same, check the real parts

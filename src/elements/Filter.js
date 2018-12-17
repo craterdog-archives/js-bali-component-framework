@@ -34,8 +34,8 @@ function Filter(value, parameters) {
         default:
             throw new Error('FILTER: An invalid value was passed into the constructor: ' + value);
     }
-    if (typeof Filter.NONE !== 'undefined' && value === 'none') return Filter.NONE;
-    if (typeof Filter.ANY !== 'undefined' && value === 'any') return Filter.ANY;
+    if (Filter.NONE && value === 'none') return Filter.NONE;
+    if (Filter.ANY && value === 'any') return Filter.ANY;
     this.value = value;
     this.setSource(value);
     return this;

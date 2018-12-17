@@ -119,9 +119,15 @@ Version.validNextVersion = function(currentVersion, nextVersion) {
  */
 Version.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
-    if (typeof this !== typeof that) {
-        return this.constructor.name.localeCompare(that.constructor.name);
+
+    // compare types
+    var thisType = this.constructor.name;
+    var thatType = that.constructor.name;
+    if (thisType !== thatType) {
+        return thisType.localeCompare(thatType);
     }
+
+    // compare numbers
     var thisNumbers = this.getNumbers();
     var thatNumbers = that.getNumbers();
     var index = 0;
@@ -130,9 +136,11 @@ Version.prototype.comparedTo = function(that) {
         if (thisNumbers[index] > thatNumbers[index]) return 1;
         index++;
     }
+
     // so far they are the same...
     if (thisNumbers.length < thatNumbers.length) return -1;
     if (thisNumbers.length > thatNumbers.length) return 1;
+
     // they are exactly the same version numbers
     return 0;
 };
