@@ -28,17 +28,17 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should test endpoints of random indexes', function() {
-            var gotZero = false;
-            var gotTwo = false;
+            var gotOne = false;
+            var gotThree = false;
             for (var i = 0; i < 100; i++) {
                 var index = codex.randomIndex(3);
-                expect(index >= 0).is.true;  // jshint ignore:line
-                expect(index < 3).is.true;  // jshint ignore:line
-                if (index === 0) gotZero = true;
-                if (index === 2) gotTwo = true;
+                expect(index >= 1).is.true;  // jshint ignore:line
+                expect(index <= 3).is.true;  // jshint ignore:line
+                if (index === 1) gotOne = true;
+                if (index === 3) gotThree = true;
             }
-            expect(gotZero).is.true;  // jshint ignore:line
-            expect(gotTwo).is.true;  // jshint ignore:line
+            expect(gotOne).is.true;  // jshint ignore:line
+            expect(gotThree).is.true;  // jshint ignore:line
         });
 
     });

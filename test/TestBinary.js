@@ -111,4 +111,16 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test binary functions', function() {
+
+        it('should return random binary values of different lengths', function() {
+            for (var i = 0; i < 256; i++) {
+                expected = elements.Binary.randomBytes(i);
+                var binary = new elements.Binary(expected.toString());
+                expect(binary.isEqualTo(expected)).to.equal(true);
+            }
+        });
+
+    });
+
 });

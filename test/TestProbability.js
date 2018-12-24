@@ -67,7 +67,6 @@ describe('Bali Component Framework™', function() {
             ).to.throw();
         });
 
-/*      // uncomment this test as needed, but it runs slowly ;-)
         it('should average very near 50% for many coin flips', function() {
             var even = new Probability(0.5);
             var heads = 0;
@@ -76,8 +75,7 @@ describe('Bali Component Framework™', function() {
                 if (even.toBoolean()) heads++;
             }
             expect(tosses * 0.485 < heads && heads < tosses * 0.515).to.be.true;  // jshint ignore:line
-        );
-*/
+        });
 
     });
 
@@ -91,6 +89,13 @@ describe('Bali Component Framework™', function() {
     });
 
     describe('Test probability functions', function() {
+
+        it('should perform the random function correctly', function() {
+            for (var i = 0; i < 100; i++) {
+                var probability = Probability.random();
+                expect(probability.value >= 0 && probability.value <= 1).to.equal(true);
+            }
+        });
 
         it('should perform the inverse function correctly', function() {
             expect(Probability.inverse(Probability.FALSE)).to.equal(Probability.TRUE);

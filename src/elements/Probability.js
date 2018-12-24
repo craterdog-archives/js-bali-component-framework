@@ -83,7 +83,14 @@ exports.Probability = Probability;
  * @returns {number} The boolean representation of the probability element.
  */
 Probability.prototype.toBoolean = function() {
-    return codex.coinToss(this.value);
+    switch (this.value) {
+        case 0:
+            return false;
+        case 1:
+            return true;
+        default:
+            return codex.coinToss(this.value);
+    }
 };
 
 
@@ -104,6 +111,17 @@ Probability.TRUE = new Probability('true');
 
 
 // PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new random probability element in the range [false..true].
+ * 
+ * @returns {Probability} A new random probability.
+ */
+Probability.random = function() {
+    var probability = codex.randomProbability();
+    return new Probability(probability);
+};
+
 
 /**
  * This function returns a new probability that is the logical NOT of the specified

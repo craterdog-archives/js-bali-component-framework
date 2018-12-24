@@ -42,16 +42,30 @@ exports.randomInteger = function() {
 };
 
 
+var MAXIMUM_INTEGER = 4294967296;  // unsigned
+
 /**
- * This function returns a random index in the range in the range [0..length).
+ * This function returns a random index in the range in the range [1..length].
  *
  * @param {Number} length The length of the collection being indexed.
- * @return {Number} The random index.
+ * @return {Number} The random ordinal index.
  */
 exports.randomIndex = function(length) {
-    var randomInteger = exports.randomInteger() & 0x7FFFFFFF;  // in range [0..2,147,483,647]
-    var index = randomInteger % length;
+    var randomInteger = (exports.randomInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..4,294,967,296]
+    var index = (randomInteger % length) + 1;  // in range [1..length] for ordinal based indexing
     return index;
+};
+
+
+/**
+ * This function returns a random probability in the range in the range [0..1].
+ *
+ * @return {Number} The random probability.
+ */
+exports.randomProbability = function() {
+    var randomInteger = (exports.randomInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..4,294,967,296]
+    var probability = randomInteger / MAXIMUM_INTEGER;  // in range [0..1]
+    return probability;
 };
 
 

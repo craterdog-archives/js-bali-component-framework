@@ -117,6 +117,8 @@ Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 
 
+// PUBLIC METHODS
+
 /**
  * This method returns a formatted base 2 encoding of the binary string
  * with an optional indentation prefix.
@@ -172,4 +174,18 @@ Binary.prototype.toBase64 = function(indentation) {
  */
 Binary.prototype.getBuffer = function() {
     return this.value;
+};
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new binary element containing the specified number of random bytes.
+ * 
+ * @param {Number} numberOfBytes The number of random bytes to be created.
+ * @returns {Binary} A new binary element containing the specified number of random bytes.
+ */
+Binary.randomBytes = function(numberOfBytes) {
+    var buffer = codex.randomBytes(numberOfBytes);
+    return new Binary(buffer);
 };
