@@ -234,19 +234,20 @@ Catalog.prototype.setItem = function(index, item) {
  * affected in this case.
  * 
  * @param {Association} association The association to be added to this catalog. 
+ * @returns {Boolean} Whether or not the item was successfully added.
  */
 Catalog.prototype.addItem = function(association) {
     var index = association.key.toString();
-    var candidate = this.map[index];
-    if (candidate) {
-        this.complexity -= candidate.complexity;
-        candidate.setValue(association.value);
-    } else {
-        this.map[index] = association;
-        this.array.push(association);
-        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+    if (this.map[index]) {
+        // an association with the specified key already exists
+        return false;
     }
+    // add a new association
+    this.map[index] = association;
+    this.array.push(association);
+    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     this.complexity += association.complexity;
+    return true;
 };
 
 

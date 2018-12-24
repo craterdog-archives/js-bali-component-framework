@@ -163,12 +163,14 @@ List.prototype.setItem = function(index, item) {
  * This method appends the specified item to this list.
  * 
  * @param {String|Number|Boolean|Component} item The item to be added to this list.
+ * @returns {Boolean} Whether or not the item was successfully added.
  */
 List.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     this.array.push(item);
     this.complexity += item.complexity;
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+    return true;
 };
 
 

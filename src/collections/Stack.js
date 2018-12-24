@@ -142,13 +142,15 @@ Stack.prototype.toArray = function() {
  * This method adds a new item onto the top of this stack.
  *
  * @param {Component} item The new item to be added.
+ * @returns {Boolean} Whether or not the item was successfully added.
  */
 Stack.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+        return true;
     } else {
         throw new Error('STACK: Attempted to push an item onto a full stack.');
     }

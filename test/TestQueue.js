@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
 
         it('should create an empty queue with small capacity', function() {
             var queue = new collections.Queue();
-            queue.capacity = 1;
+            queue.capacity = 3;
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -47,10 +47,33 @@ describe('Bali Component Framework™', function() {
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {queue.addItem('beta');}).to.throw(Error, 'QUEUE: Attempted to add an item to a full queue.');
+            expect(queue.firstItem().toString()).to.equal('alpha');
+            queue.addItem('beta');
+            size = queue.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(2);
+            expect(queue.firstItem().toString()).to.equal('alpha');
+            queue.addItem('gamma');
+            size = queue.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(3);
+            expect(queue.firstItem().toString()).to.equal('alpha');
+            expect(function() {queue.addItem('delta');}).to.throw(Error, 'QUEUE: Attempted to add an item to a full queue.');
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
             expect(item.toString()).to.equal('alpha');
+            size = queue.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(2);
+            item = queue.removeItem();
+            expect(item).to.exist;  // jshint ignore:line
+            expect(item.toString()).to.equal('beta');
+            size = queue.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(1);
+            item = queue.removeItem();
+            expect(item).to.exist;  // jshint ignore:line
+            expect(item.toString()).to.equal('gamma');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -152,8 +175,10 @@ describe('Bali Component Framework™', function() {
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(0);
-            expect(function() {queue.firstItem();}).to.throw(Error, 'QUEUE: Attempted to access the first item in an empty queue.');
-            expect(function() {queue.removeItem();}).to.throw(Error, 'QUEUE: Attempted to remove an item from an empty queue.');
+            first = queue.firstItem();
+            expect(first).to.equal(undefined);
+            item = queue.removeItem();
+            expect(item).to.equal(undefined);
         });
 
     });

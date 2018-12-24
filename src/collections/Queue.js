@@ -129,54 +129,45 @@ Queue.prototype.toArray = function() {
  * This method adds a new item to the end of this queue.
  *
  * @param {Component} item The new item to be added.
+ * @returns {Boolean} Whether or not the item was successfully added.
  */
 Queue.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
-    } else {
-        throw new Error('QUEUE: Attempted to add an item to a full queue.');
+        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
+        return true;
     }
+    throw new Error('QUEUE: Attempted to add an item to a full queue.');
 };
 
 
 /**
  * This method removes the item at the beginning of this queue.  If this queue is empty
- * an exception is thrown.
+ * undefined is returned.
  *
- * @returns {Component} The first item in this queue.
+ * @returns {Component} The first item in this queue or undefined if the queue is empty.
  */
 Queue.prototype.removeItem = function() {
-    var item;
     var size = this.array.length;
     if (size > 0) {
-        item = this.array.splice(0, 1)[0];  // remove the first item in the array
+        var item = this.array.splice(0, 1)[0];  // remove the first item in the array
         this.complexity -= item.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
-    } else {
-        throw new Error('QUEUE: Attempted to remove an item from an empty queue.');
+        return item;
     }
-    return item;
 };
 
 
 /**
  * This method returns a reference to the first item in this queue without
- * removing it from the queue.  If this queue is empty an exception is thrown.
+ * removing it from the queue.  If this queue is empty undefined is returned.
  *
- * @returns {Component} The first item in this queue.
+ * @returns {Component} The first item in this queue or undefined if the queue is empty.
  */
 Queue.prototype.firstItem = function() {
-    var item = null;
-    var size = this.array.length;
-    if (size > 0) {
-        item = this.array[0];
-    } else {
-        throw new Error('QUEUE: Attempted to access the first item in an empty queue.');
-    }
-    return item;
+    return this.array[0];
 };
 
 
