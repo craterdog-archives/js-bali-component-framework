@@ -16,7 +16,7 @@ describe('Bali Component Framework™', function() {
 
     describe('Test random number utilities', function() {
 
-        it('should print out random tags', function() {
+        it('should print out random tags in case we need some', function() {
             for (var i = 0; i < 10; i++) {
                 console.log('        tag: ' + codex.randomTag());
             }

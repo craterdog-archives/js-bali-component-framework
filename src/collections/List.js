@@ -27,6 +27,7 @@ var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
 var Sorter = require('../utilities/Sorter').Sorter;
+var codex = require('../utilities/Codex');
 
 
 // PUBLIC FUNCTIONS
@@ -261,54 +262,16 @@ List.prototype.reverseItems = function() {
 
 
 /**
- * This method shuffles the items in this list using a randomizing algorithm.
+ * This method shuffles the items in this list using a randomizing algorithm.  It uses ordinal
+ * indexing with the modern version of the Fisher-Yates shuffle:
+ * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
  */
 List.prototype.shuffleItems = function() {
-    var sorter = new Randomizer();
-    sorter.sortCollection(this);
-};
-
-
-// PRIVATE CLASSES
-
-/*
- * This class implements a randomizing algorithm.  The list to be randomized
- * is randomly reordered such that the resulting order is relatively random.
- */
-
-function Randomizer() {
-    return this;
-}
-Randomizer.prototype.constructor = Randomizer;
-
-
-Randomizer.prototype.sortCollection = function(list) {
-    if (list && list.getSize() > 1) {
-        // convert the list to an array
-        var array = [];
-        var iterator = list.getIterator();
-        while (iterator.hasNext()) {
-            var item = iterator.getNext();
-            array.push(item);
-        }
-
-        // randomize the array
-        array = this.randomizeArray(array);
-
-        // convert it back to a list
-        list.removeAll();
-        list.addItems(array);
-    }
-};
-
-
-Randomizer.prototype.randomizeArray = function(array) {
-    var size = array.length;
+    var size = this.getSize();
     for (var index = size; index > 1; index--) {
-        var randomIndex = Math.floor(Math.random() * index);  // use zero based indexing
-        var swap = array[index - 1];
-        array[index - 1] = array[randomIndex];
-        array[randomIndex] = swap;
+        var randomIndex = codex.randomIndex(index);  // in range [1..index] ordinal indexing
+        var item = this.getItem(index);
+        this.setItem(index, this.getItem(randomIndex));
+        this.setItem(randomIndex, item);
     }
-    return array;
 };

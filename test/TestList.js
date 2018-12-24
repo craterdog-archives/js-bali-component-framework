@@ -158,6 +158,41 @@ describe('Bali Component Framework™', function() {
             }
         });
 
+        it('should be able to sort and randomize lists', function() {
+            var original = [
+                'alpha',
+                'beta',
+                'chi',
+                'delta',
+                'epsilon',
+                'eta',
+                'gamma',
+                'iota',
+                'kappa',
+                'lambda',
+                'mu',
+                'nu',
+                'omega',
+                'omicron',
+                'phi',
+                'pi',
+                'psi',
+                'rho',
+                'sigma',
+                'tau',
+                'theta',
+                'upsilon',
+                'xi',
+                'zeta'
+            ];
+            var list = collections.List.fromCollection(original);
+            var sorted = collections.List.fromCollection(original);
+            sorted.shuffleItems();
+            expect(sorted.isEqualTo(list)).to.equal(false);  // should fail once every 24! runs on average ;-)
+            sorted.sortItems();
+            expect(sorted.isEqualTo(list)).to.equal(true);
+        });
+
         it('should be able to perform list operations on lists', function() {
             var list1 = new collections.List();
             list1.addItem('alpha');
