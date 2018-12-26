@@ -209,6 +209,6 @@ Tree.prototype.acceptVisitor = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('SYNTAX: An invalid tree node type was found: ' + types.typeName(this.type));
+            throw new Error('BUG: A visitor found an invalid tree node type: ' + types.typeName(this.type));
     }
 };

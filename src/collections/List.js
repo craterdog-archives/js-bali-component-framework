@@ -87,7 +87,7 @@ List.fromCollection = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('LIST: A list cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A list cannot be initialized using a collection of type: ' + type);
     }
     return list;
 };

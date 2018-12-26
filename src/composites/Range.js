@@ -135,7 +135,7 @@ Range.prototype.toArray = function() {
     var index = this.firstItem.toNumber();
     var last = this.lastItem.toNumber();
     if (last === Infinity) {
-        throw new Error('RANGE: Unable to generate an array from an infinite range.');
+        throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
     while (index <= last) array.push(Composite.asComponent(index++));
     return array;
@@ -192,7 +192,7 @@ RangeIterator.prototype.hasNext = function() {
 
 
 RangeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the range.');
+    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
     this.slot--;
     var number = this.range.firstItem.toNumber() + this.slot;
     number = Composite.asComponent(number);
@@ -201,7 +201,7 @@ RangeIterator.prototype.getPrevious = function() {
 
 
 RangeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the range.');
+    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
     var number = this.range.firstItem.toNumber() + this.slot;
     number = Composite.asComponent(number);
     this.slot++;

@@ -50,7 +50,7 @@ function Moment(value, parameters) {
         } 
         return false;
     }, this);
-    if (!this.moment) throw new Error('MOMENT: An invalid value was passed to the constructor: ' + value);
+    if (!this.moment) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
     this.setSource(this.moment.format(this.format));
     return this;
 }

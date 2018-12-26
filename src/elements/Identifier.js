@@ -26,11 +26,8 @@ var Element = require('../abstractions/Element').Element;
  */
 function Identifier(type, value) {
     Element.call(this, type);
-    if (!value) {
-        throw new Error('IDENTIFIER: An identifier cannot be null.');
-    }
-    if (!/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error("IDENTIFIER: An identifier must begin with a character and only consist of alpha-numeric characters: " + value);
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
+        throw new Error('BUG: An invalid identifier string was passed to the constructor: ' + value);
     }
     this.setSource(value);
     return this;

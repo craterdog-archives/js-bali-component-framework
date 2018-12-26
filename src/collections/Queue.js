@@ -17,7 +17,7 @@
 var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
-var Iterator = require('../utilities/Iterator').Iterator;
+var Catalog = require('./Catalog').Catalog;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -86,7 +86,7 @@ Queue.fromCollection = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('QUEUE: A queue cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A queue cannot be initialized using a collection of type: ' + type);
     }
     return queue;
 };
@@ -130,6 +130,7 @@ Queue.prototype.toArray = function() {
  *
  * @param {Component} item The new item to be added.
  * @returns {Boolean} Whether or not the item was successfully added.
+ * @throws {Exception} Attempted to add an item to a full queue.
  */
 Queue.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
@@ -139,7 +140,14 @@ Queue.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
-    throw new Error('QUEUE: Attempted to add an item to a full queue.');
+    var exception = Catalog.fromCollection({
+        $exception: '$resourceLimit',
+        $type: '$Queue',
+        $procedure: '$addItem',
+        $capacity: this.capacity,
+        $message: 'The queue has reached its maximum capacity.'
+    });
+    throw new Exception(exception);
 };
 
 

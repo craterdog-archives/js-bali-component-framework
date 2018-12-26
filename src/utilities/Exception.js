@@ -9,16 +9,18 @@
  ************************************************************************/
 'use strict';
 
-exports.Comparator = require('./Comparator').Comparator;
-exports.Exception = require('./Exception').Exception;
-exports.Formatter = require('./Formatter').Formatter;
-exports.Iterator = require('./Iterator').Iterator;
-exports.Parser = require('./Parser').Parser;
-exports.Sorter = require('./Sorter').Sorter;
-exports.Visitor = require('./Visitor').Visitor;
 
-exports.precision = require('./Precision');
-exports.codex = require('./Codex');
-exports.formatter = new exports.Formatter();
-exports.parser = new exports.Parser(false);
-
+/**
+ * This constructor creates a new Bali exception with the specified attributes.
+ * 
+ * @param {Catalog} exception A catalog containing the exception attributes.
+ * @returns {Exception} The new exception.
+ */
+function Exception(exception) {
+    Error.call(this, 'EXCEPTION: The following Bali exception was thrown: ' + exception);
+    this.exception;
+    return this;
+}
+Exception.prototype = Object.create(Error.prototype);
+Exception.prototype.constructor = Exception;
+exports.Exception = Exception;

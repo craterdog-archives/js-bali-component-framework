@@ -27,11 +27,8 @@ var Element = require('../abstractions/Element').Element;
  */
 function Reserved(value, parameters) {
     Element.call(this, types.RESERVED, parameters);
-    if (!value) {
-        throw new Error('RESERVED: A reserved cannot be null.');
-    }
-    if (!/^\$\$[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
-        throw new Error("RESERVED: A reserved must begin with '$$' and contain at least one character and cannot contain white space: " + value);
+    if (!value || !/^\$\$[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
+        throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
     this.value = value;
     this.setSource(value);

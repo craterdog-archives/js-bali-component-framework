@@ -28,7 +28,7 @@ var Element = require('../abstractions/Element').Element;
  */
 function Reference(value, parameters) {
     Element.call(this, types.REFERENCE, parameters);
-    if (!value) throw new Error('REFERENCE: An invalid value was passed to the constructor: ' + value);
+    if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     value = value.slice(1, -1);  // remove the angle brackets
     this.value = new URL(value);
     var source = '<' + this.value + '>';  // embed in angle brackets

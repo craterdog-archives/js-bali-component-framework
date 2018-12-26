@@ -32,7 +32,7 @@ function Filter(value, parameters) {
         case 'any':
             break;
         default:
-            throw new Error('FILTER: An invalid value was passed into the constructor: ' + value);
+            throw new Error('BUG: An invalid filter value was passed to the constructor: ' + value);
     }
     if (Filter.NONE && value === 'none') return Filter.NONE;
     if (Filter.ANY && value === 'any') return Filter.ANY;

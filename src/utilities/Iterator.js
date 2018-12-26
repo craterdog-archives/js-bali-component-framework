@@ -106,7 +106,7 @@ Iterator.prototype.hasNext = function() {
  * @returns {Component} The item before the current slot.
  */
 Iterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the array.');
+    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous element from an iterator that is at the beginning of an array.');
     var item = this.array[--this.slot];
     return item;
 };
@@ -119,7 +119,7 @@ Iterator.prototype.getPrevious = function() {
  * @returns {Component} The item after the current slot.
  */
 Iterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the array.');
+    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next element from an iterator that is at the end of an array.');
     var item = this.array[this.slot++];
     return item;
 };

@@ -166,5 +166,5 @@ Component.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    throw new Error('COMPONENT: Abstract method acceptVisitor(visitor) must be implemented by a concrete subclass.');
+    throw new Error('BUG: The abstract method acceptVisitor(visitor) must be implemented by a concrete subclass.');
 };

@@ -29,7 +29,7 @@ function Version(value, parameters) {
     Element.call(this, types.VERSION, parameters);
     this.value = value ? value : 'v1';  // default value
     if (!/^v([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(this.value)) {
-        throw new Error('VERSION: A version string must begin with "v" and contain at least one version and cannot contain white space: ' + this.value);
+        throw new Error('BUG: An invalid version string was passed to the constructor: ' + this.value);
     }
     this.setSource(this.value);
     return this;

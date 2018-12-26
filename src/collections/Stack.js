@@ -17,6 +17,7 @@ var types = require('../abstractions/Types');
 var Composite = require('../abstractions/Composite').Composite;
 var Collection = require('../abstractions/Collection').Collection;
 var Iterator = require('../utilities/Iterator').Iterator;
+var Catalog = require('./Catalog').Catalog;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -85,7 +86,7 @@ Stack.fromCollection = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('STACK: A stack cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A stack cannot be initialized using a collection of type: ' + type);
     }
     return stack;
 };
@@ -143,6 +144,7 @@ Stack.prototype.toArray = function() {
  *
  * @param {Component} item The new item to be added.
  * @returns {Boolean} Whether or not the item was successfully added.
+ * @throws {Exception} Attempted to add an item to a full stack.
  */
 Stack.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
@@ -152,7 +154,14 @@ Stack.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
-        throw new Error('STACK: Attempted to push an item onto a full stack.');
+        exception = Catalog.fromCollection({
+            $exception: '$resourceLimit',
+            $type: '$Stack',
+            $procedure: '$addItem',
+            $capacity: this.capacity,
+            $message: 'The stack has reached its maximum capacity.'
+        });
+        throw new Exception(exception);
     }
 };
 
@@ -171,7 +180,7 @@ Stack.prototype.removeItem = function() {
         this.complexity -= item.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     } else {
-        throw new Error('STACK: Attempted to pop the top item of an empty stack.');
+        throw new Error('BUG: Attempted to pop an item off of an empty stack.');
     }
     return item;
 };
@@ -189,7 +198,7 @@ Stack.prototype.topItem = function() {
     if (size > 0) {
         item = this.array.peek();
     } else {
-        throw new Error('STACK: Attempted to access the top item of an empty stack.');
+        throw new Error('BUG: Attempted to access the top item of an empty stack.');
     }
     return item;
 };

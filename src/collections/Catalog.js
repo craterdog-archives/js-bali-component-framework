@@ -96,7 +96,7 @@ Catalog.fromCollection = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('CATALOG: A catalog cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A catalog cannot be initialized using a collection of type: ' + type);
     }
     return catalog;
 };

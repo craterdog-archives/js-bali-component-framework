@@ -55,7 +55,7 @@ function Tag(optionalSizeOrValue, parameters) {
             this.size = bytes.length;
             break;
         default:
-            throw new Error('TAG: An invalid type was passed to the constructor: ' + type);
+            throw new Error('BUG: An invalid tag value type was passed to the constructor: ' + type);
     }
     this.hash = codex.bytesToInteger(bytes);  // the first four bytes work perfectly
     this.setSource(this.value);

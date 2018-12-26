@@ -50,6 +50,7 @@ Parameters.fromCollection = function(collection) {
     switch (type) {
         case 'Array':
         case 'List':
+        case 'Queue':
         case 'Set':
         case 'Stack':
             collection = collections.List.fromCollection(collection);
@@ -59,7 +60,7 @@ Parameters.fromCollection = function(collection) {
             collection = collections.Catalog.fromCollection(collection);
             break;
         default:
-            throw new Error('LIST: A parameters list cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A parameters list cannot be initialized using a collection of type: ' + type);
     }
     var parameters = new Parameters(collection);
     return parameters;

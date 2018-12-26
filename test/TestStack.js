@@ -47,7 +47,7 @@ describe('Bali Component Framework™', function() {
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.addItem('beta');}).to.throw(Error, 'STACK: Attempted to push an item onto a full stack.');
+            expect(function() {stack.addItem('beta');}).to.throw(Error, 'BUG: An invalid symbol value was passed to the constructor.');
             var top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('alpha');
@@ -155,8 +155,8 @@ describe('Bali Component Framework™', function() {
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
-            expect(function() {stack.topItem();}).to.throw(Error, 'STACK: Attempted to access the top item of an empty stack.');
-            expect(function() {stack.removeItem();}).to.throw(Error, 'STACK: Attempted to pop the top item of an empty stack.');
+            expect(function() {stack.topItem();}).to.throw(Error, 'BUG: Attempted to access the top item of an empty stack.');
+            expect(function() {stack.removeItem();}).to.throw(Error, 'BUG: Attempted to pop an item off of an empty stack.');
         });
 
     });

@@ -58,7 +58,7 @@ function Binary(value, parameters) {
                     source = codex.base64Encode(value);
                     break;
                 default:
-                    throw new Error('BINARY: An invalid base value was passed into the constructor: ' + type);
+                    throw new Error('BUG: An invalid binary base value was passed to the constructor: ' + this.base);
             }
             source = "'" + source + "'";
             break;
@@ -96,18 +96,18 @@ function Binary(value, parameters) {
                                     this.value = codex.base64Decode(encoded);
                                     this.base = 64;
                                 } catch (e) {
-                                    throw new Error('BINARY: An invalid encoded value was passed into the constructor: ' + encoded);
+                                    throw new Error('BUG: An invalid binary value was passed to the constructor: ' + encoded);
                                 }
                             }
                         }
                     }
                     break;
                 default:
-                    throw new Error('BINARY: An invalid base was passed into the constructor: ' + this.base);
+                    throw new Error('BUG: An invalid binary base value was passed into the constructor: ' + this.base);
             }
             break;
         default:
-            throw new Error('BINARY: An invalid value type was passed into the constructor: ' + type);
+            throw new Error('BUG: An invalid binary value type was passed into the constructor: ' + type);
     }
     this.setSource(source);
     return this;

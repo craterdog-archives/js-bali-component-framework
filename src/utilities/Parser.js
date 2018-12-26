@@ -275,7 +275,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var number = new elements.Complex(value, parameters);
+    var number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -487,7 +487,7 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var number = new elements.Complex(value, parameters);
+    var number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -505,7 +505,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var number = new elements.Complex(value, parameters);
+    var number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -776,7 +776,7 @@ ParsingVisitor.prototype.visitReal = function(ctx) {
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var number = new elements.Complex(value, parameters);
+    var number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -941,7 +941,7 @@ ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     var parameters = this.getParameters();
     var value = ctx.getText();
-    var number = new elements.Complex(value, parameters);
+    var number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -1028,7 +1028,13 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    throw new Error(e.message);
+    var exception = collections.Catalog.fromCollection({
+        $exception: '$syntaxError',
+        $type: '$Parser',
+        $procedure: '$parseDocument',
+        $message: e.message
+    });
+    throw new Exception(exception);
 };
 
 
@@ -1061,15 +1067,20 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     var lines = input.toString().split('\n');
     var character = lines[lineNumber - 1][columnNumber];
     if (!token) {
-        message = "LEXER: An unexpected character was encountered: '" + character + "'";
+        message = "An unexpected character was encountered: '" + character + "'";
     } else {
-        message = 'PARSER: An invalid token was encountered: ' + token;
+        message = 'An invalid token was encountered: ' + token;
     }
     logMessage(recognizer, message);
 
     // stop processing
-    var error = new Error(message);
-    throw error;
+    var exception = collections.Catalog.fromCollection({
+        $exception: '$syntaxError',
+        $type: '$Parser',
+        $procedure: '$parseDocument',
+        $message: message
+    });
+    throw new Exception(exception);
 };
 
 

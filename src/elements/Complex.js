@@ -138,7 +138,7 @@ function Complex(value, parameters) {
                     }
                     break;
                 default:
-                    throw new Error('COMPLEX: An invalid string was passed to the constructor : ' + value);
+                    throw new Error('BUG: An invalid complex number value was passed to the constructor: ' + value);
             }
             break;
         case 'Object':
@@ -152,7 +152,7 @@ function Complex(value, parameters) {
             break;
 
         default:
-            throw new Error('COMPLEX: An invalid type was passed to the constructor : ' + type);
+            throw new Error('BUG: An invalid complex number value type was passed to the constructor: ' + type);
     }
 
     // return constants if possible

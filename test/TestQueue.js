@@ -58,7 +58,7 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
             expect(queue.firstItem().toString()).to.equal('alpha');
-            expect(function() {queue.addItem('delta');}).to.throw(Error, 'QUEUE: Attempted to add an item to a full queue.');
+            expect(function() {queue.addItem('delta');}).to.throw(Error, 'BUG: An invalid symbol value was passed to the constructor.');
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
             expect(item.toString()).to.equal('alpha');

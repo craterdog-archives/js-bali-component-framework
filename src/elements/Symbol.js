@@ -27,11 +27,8 @@ var Element = require('../abstractions/Element').Element;
  */
 function Symbol(value, parameters) {
     Element.call(this, types.SYMBOL, parameters);
-    if (!value) {
-        throw new Error('SYMBOL: A symbol cannot be null.');
-    }
-    if (!/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error("SYMBOL: A symbol must begin with a '$' and contain at least one character and cannot contain white space: " + value);
+    if (!value || !/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
+        throw new Error('BUG: An invalid symbol value was passed to the constructor.');
     }
     this.value = value;
     this.setSource(value);

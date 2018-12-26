@@ -81,11 +81,11 @@ Composite.asComponent = function(value) {
             component = new elements.Probability(value);
             break;
         case 'Number':
-            component = new elements.Complex(value);
+            component = new elements.Number(value);
             break;
         case 'Array':
         case 'Object':
-            throw new Error('COMPOSITE: Only primitive JS types (strings, numbers, and booleans) can be converted to components.');
+            throw new Error('BUG: Only primitive JS types (strings, numbers, and booleans) can be converted to components.');
         default:
             // it's already a component, leave it as is
             component = value;

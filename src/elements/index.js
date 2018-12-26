@@ -11,11 +11,11 @@
 
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
-exports.Complex = require('./Complex').Complex;
 exports.Duration = require('./Duration').Duration;
 exports.Filter = require('./Filter').Filter;
 exports.Identifier = require('./Identifier').Identifier;
 exports.Moment = require('./Moment').Moment;
+exports.Number = require('./Complex').Complex;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
 exports.Reference = require('./Reference').Reference;

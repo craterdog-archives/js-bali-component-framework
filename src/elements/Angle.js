@@ -43,7 +43,7 @@ function Angle(value, parameters) {
             }
             break;
         default:
-            throw new Error('ANGLE: An invalid value type was passed to the constructor: ' + type);
+            throw new Error('BUG: An invalid angle value type was passed to the constructor: ' + type);
     }
 
     // lock onto pi if appropriate

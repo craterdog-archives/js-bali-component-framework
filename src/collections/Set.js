@@ -68,7 +68,7 @@ Set.fromCollection = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('SET: A set cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A set cannot be initialized using a collection of type: ' + type);
     }
     return set;
 };
@@ -264,7 +264,7 @@ TreeIterator.prototype.hasNext = function() {
 
 
 TreeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('ITERATOR: The iterator is at the beginning of the set.');
+    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous item from an iterator that is at the beginning of a set.');
     var value = this.previous.value;
     this.next = this.previous;
     this.previous = this.tree.predecessor(this.next);
@@ -274,7 +274,7 @@ TreeIterator.prototype.getPrevious = function() {
 
 
 TreeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('ITERATOR: The iterator is at the end of the set.');
+    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next item from an iterator that is at the end of a set.');
     var value = this.next.value;
     this.previous = this.next;
     this.next = this.tree.successor(this.previous);

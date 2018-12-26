@@ -51,10 +51,10 @@ function Probability(value, parameters) {
             }
             break;
         default:
-            throw new Error('PROBABILITY: An invalid value type was passed into the constructor: ' + type);
+            throw new Error('BUG: An invalid probability value type was passed to the constructor: ' + type);
     }
     if (value < 0 || value > 1) {
-        throw new Error('PROBABILITY: A probability must be in the range [0..1]: ' + value);
+        throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
     if (Probability.FALSE && value === 0) return Probability.FALSE;
     if (Probability.TRUE && value === 1) return Probability.TRUE;

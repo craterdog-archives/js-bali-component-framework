@@ -37,7 +37,7 @@ function Percent(value, parameters) {
             value = Number(value.replace(/%/g, ''));  // strip off the %
             break;
         default:
-            throw new Error('PERCENT: An invalid value type was passed into the constructor: ' + type);
+            throw new Error('BUG: An invalid percentage value type was passed into the constructor: ' + type);
     }
     this.value = value / 100.0;  // convert to numeric value
     var source = value.toString() + '%';  // append the %
