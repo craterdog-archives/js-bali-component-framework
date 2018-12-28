@@ -8,9 +8,9 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var Reference = require('../src/elements/Reference').Reference;
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const elements = require('../src/elements');
 
 describe('Bali Component Framework™', function() {
 
@@ -19,24 +19,24 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for an empty reference', function() {
             expect(
                 function() {
-                    var empty = new Reference();
+                    var empty = new elements.Reference();
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new Reference('');
+                    var empty = new elements.Reference('');
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new Reference('<>');
+                    var empty = new elements.Reference('<>');
                 }
             ).to.throw();
         });
 
         it('should construct references and format matching references', function() {
             tests.forEach(function(expected) {
-                var reference = new Reference(expected);
+                var reference = new elements.Reference(expected);
                 var string = reference.toString();
                 expect(string).to.equal(expected);
             });
@@ -47,7 +47,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reference methods', function() {
 
         it('should return the correct type', function() {
-            var type = new Reference('<https://google.com/>').getType();
+            var type = new elements.Reference('<https://google.com/>').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
         });
 

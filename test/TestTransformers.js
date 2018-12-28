@@ -8,14 +8,14 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var fs = require('fs');
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var utilities = require('../src/utilities');
-var collections = require('../src/collections');
+const fs = require('fs');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const utilities = require('../src/utilities');
+const collections = require('../src/collections');
 
 describe('Bali Component Framework™', function() {
-    var DEBUG = true;
+    const DEBUG = true;
 
     describe('Test Parser and Formatter', function() {
 

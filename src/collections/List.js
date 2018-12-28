@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This collection class implements a sortable collection containing components that are
+ * This collection class implements a sortable list containing components that are
  * indexed as items in a list. The indexing is ordinal based (e.g. 1..N) and allows either
  * positive indexes starting at the beginning of the list or negative indexes starting at
  * the end of the list as follows:
@@ -23,11 +23,11 @@
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
-var Sorter = require('../utilities/Sorter').Sorter;
-var codex = require('../utilities/Codex');
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const Collection = require('../abstractions/Collection').Collection;
+const Sorter = require('../utilities/Sorter').Sorter;
+const random = require('../utilities/Random');
 
 
 // PUBLIC FUNCTIONS
@@ -90,6 +90,36 @@ List.fromCollection = function(collection, parameters) {
             throw new Error('BUG: A list cannot be initialized using a collection of type: ' + type);
     }
     return list;
+};
+
+
+/**
+ * This function returns a new list that contains all the items that are in
+ * the first list or the second list or both.
+ *
+ * @param {List} list1 The first list to be operated on.
+ * @param {List} list2 The second list to be operated on.
+ * @returns {List} The resulting list.
+ */
+List.concatenation = function(list1, list2) {
+    var result = list1.constructor.fromCollection(list1, list1.parameters);
+    result.addItems(list2);
+    return result;
+};
+
+
+/**
+ * This function returns a new list that contains the items that are in
+ * the first list but not in the second list.
+ *
+ * @param {List} list1 The first list to be operated on.
+ * @param {List} list2 The second list to be operated on.
+ * @returns {List} The resulting list.
+ */
+List.difference = function(list1, list2) {
+    var result = list1.constructor.fromCollection(list1, list1.parameters);
+    result.removeItems(list2);
+    return result;
 };
 
 
@@ -217,7 +247,7 @@ List.prototype.removeItem = function(index) {
  *
  * @param {Number} firstIndex The index of the first item to be removed.
  * @param {Number} lastIndex The index of the last item to be removed.
- * @returns The collection of the items that were removed from this list.
+ * @returns The list of the items that were removed from this list.
  */
 List.prototype.removeItems = function(firstIndex, lastIndex) {
     firstIndex = this.normalizeIndex(firstIndex);
@@ -271,7 +301,7 @@ List.prototype.reverseItems = function() {
 List.prototype.shuffleItems = function() {
     var size = this.getSize();
     for (var index = size; index > 1; index--) {
-        var randomIndex = codex.randomIndex(index);  // in range [1..index] ordinal indexing
+        var randomIndex = random.index(index);  // in range [1..index] ordinal indexing
         var item = this.getItem(index);
         this.setItem(index, this.getItem(randomIndex));
         this.setItem(randomIndex, item);

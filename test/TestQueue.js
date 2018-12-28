@@ -8,10 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var composites = require('../src/composites');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const composites = require('../src/composites');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -47,17 +47,17 @@ describe('Bali Component Framework™', function() {
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(queue.firstItem().toString()).to.equal('alpha');
+            expect(queue.getHead().toString()).to.equal('alpha');
             queue.addItem('beta');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(2);
-            expect(queue.firstItem().toString()).to.equal('alpha');
+            expect(queue.getHead().toString()).to.equal('alpha');
             queue.addItem('gamma');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
-            expect(queue.firstItem().toString()).to.equal('alpha');
+            expect(queue.getHead().toString()).to.equal('alpha');
             expect(function() {queue.addItem('delta');}).to.throw(Error, 'BUG: An invalid symbol value was passed to the constructor.');
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
@@ -150,32 +150,32 @@ describe('Bali Component Framework™', function() {
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var first = queue.firstItem();
+            var first = queue.getHead();
             expect(first.toString()).to.equal('alpha');
             var item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 1);
-            first = queue.firstItem();
+            first = queue.getHead();
             expect(first.toString()).to.equal('beta');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 2);
-            first = queue.firstItem();
+            first = queue.getHead();
             expect(first.toString()).to.equal('delta');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 3);
-            first = queue.firstItem();
+            first = queue.getHead();
             expect(first.toString()).to.equal('epsilon');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 4);
-            first = queue.firstItem();
+            first = queue.getHead();
             expect(first.toString()).to.equal('gamma');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(0);
-            first = queue.firstItem();
+            first = queue.getHead();
             expect(first).to.equal(undefined);
             item = queue.removeItem();
             expect(item).to.equal(undefined);

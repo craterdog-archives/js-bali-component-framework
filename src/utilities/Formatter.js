@@ -14,7 +14,7 @@
  * by the <code>Parser</code> class and generates a canonical version of
  * the corresponding Bali Document Notation™ source code string.
  */
-var types = require('../abstractions/Types');
+const types = require('../abstractions/Types');
 
 
 // PUBLIC FUNCTIONS
@@ -54,7 +54,7 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
-var EOL = '\n';  // POSIX end of line character
+const EOL = '\n';  // POSIX end of line character
 
 
 /* NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular

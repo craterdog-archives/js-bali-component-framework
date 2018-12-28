@@ -14,9 +14,11 @@
  * This element class captures the state and methods associated with a
  * reserved element.
  */
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new reserved element.

@@ -14,10 +14,12 @@
  * This element class captures the state and methods associated with a
  * reference element.
  */
-var URL = require('url').URL;
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const URL = require('url').URL;
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new reference element.

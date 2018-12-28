@@ -12,10 +12,10 @@
 /**
  * This abstract class defines the methods that all composite components must support.
  */
-var types = require('./Types');
-var Component = require('./Component').Component;
-var Iterator = require('../utilities/Iterator').Iterator;
-var elements = require('../elements');
+const types = require('./Types');
+const Component = require('./Component').Component;
+const Iterator = require('../utilities/Iterator').Iterator;
+const elements = require('../elements');
 
 
 // PUBLIC FUNCTIONS

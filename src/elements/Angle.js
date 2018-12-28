@@ -12,10 +12,12 @@
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
-var precision = require('../utilities/Precision');
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const precision = require('../utilities/Precision');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates an immutable instance of an angle in radians.

@@ -10,9 +10,9 @@
 
 /* global NaN, Infinity */
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var precision = require('../src/utilities/Precision');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const precision = require('../src/utilities/Precision');
 
 describe('Bali Component Framework™', function() {
 

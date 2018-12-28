@@ -62,6 +62,7 @@ exports.Sorter = utilities.Sorter;
 exports.Visitor = utilities.Visitor;
 exports.precision = utilities.precision;
 exports.codex = utilities.codex;
+exports.random = utilities.random;
 exports.formatter = new utilities.Formatter();
 exports.parser = new utilities.Parser(false);
 

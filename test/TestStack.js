@@ -8,10 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var composites = require('../src/composites');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const composites = require('../src/composites');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -130,32 +130,32 @@ describe('Bali Component Framework™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var top = stack.topItem();
+            var top = stack.getTop();
             expect(top.toString()).to.equal('gamma');
             var pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 1);
-            top = stack.topItem();
+            top = stack.getTop();
             expect(top.toString()).to.equal('epsilon');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 2);
-            top = stack.topItem();
+            top = stack.getTop();
             expect(top.toString()).to.equal('delta');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
-            top = stack.topItem();
+            top = stack.getTop();
             expect(top.toString()).to.equal('beta');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 4);
-            top = stack.topItem();
+            top = stack.getTop();
             expect(top.toString()).to.equal('alpha');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
-            expect(function() {stack.topItem();}).to.throw(Error, 'BUG: Attempted to access the top item of an empty stack.');
+            expect(function() {stack.getTop();}).to.throw(Error, 'BUG: Attempted to access the top item of an empty stack.');
             expect(function() {stack.removeItem();}).to.throw(Error, 'BUG: Attempted to pop an item off of an empty stack.');
         });
 

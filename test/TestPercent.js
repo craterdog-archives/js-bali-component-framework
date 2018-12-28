@@ -8,16 +8,16 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var Percent = require('../src/elements/Percent').Percent;
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const elements = require('../src/elements');
 
 describe('Bali Component Framework™', function() {
 
     describe('Test percent constructors', function() {
 
         it('should construct a default percent of zero', function() {
-            var empty = new Percent();
+            var empty = new elements.Percent();
             var number = empty.toNumber();
             expect(number).to.equal(0);
             var string = empty.toString();
@@ -25,7 +25,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of zero', function() {
-            var zero = new Percent('0%');
+            var zero = new elements.Percent('0%');
             var number = zero.toNumber();
             expect(number).to.equal(0);
             var string = zero.toString();
@@ -33,7 +33,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of 13.25%', function() {
-            var decimal = new Percent(0.1325);
+            var decimal = new elements.Percent(0.1325);
             var number = decimal.toNumber();
             expect(number).to.equal(0.1325);
             var string = decimal.toString();
@@ -41,7 +41,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of -2%', function() {
-            var negative = new Percent(-0.02);
+            var negative = new elements.Percent(-0.02);
             var number = negative.toNumber();
             expect(number).to.equal(-0.02);
             var string = negative.toString();
@@ -49,7 +49,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of 50%', function() {
-            var fifty = new Percent('50%');
+            var fifty = new elements.Percent('50%');
             var number = fifty.toNumber();
             expect(number).to.equal(0.5);
             var string = fifty.toString();
@@ -57,7 +57,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of -0.234%', function() {
-            var fractional = new Percent('-0.234%');
+            var fractional = new elements.Percent('-0.234%');
             var number = fractional.toNumber();
             expect(number).to.equal(-0.00234);
             var string = fractional.toString();
@@ -65,7 +65,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of 100%', function() {
-            var hundred = new Percent('100%');
+            var hundred = new elements.Percent('100%');
             var number = hundred.toNumber();
             expect(number).to.equal(1);
             var string = hundred.toString();
@@ -73,7 +73,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of 150%', function() {
-            var hundred = new Percent('150%');
+            var hundred = new elements.Percent('150%');
             var number = hundred.toNumber();
             expect(number).to.equal(1.5);
             var string = hundred.toString();
@@ -85,7 +85,7 @@ describe('Bali Component Framework™', function() {
     describe('Test percent methods', function() {
 
         it('should return the correct type', function() {
-            var type = new Percent('50%').getType();
+            var type = new elements.Percent('50%').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#WCXVKQC0BM03CNBD2JSF8VLVVHJ1A6P4,$version:v1,$digest:none]>');
         });
 

@@ -15,12 +15,12 @@
  * multiple keys. The key-value associations are maintained in the order in which they were
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
-var Sorter = require('../utilities/Sorter').Sorter;
-var Association = require('../composites/Association').Association;
-var List = require('./List').List;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const Collection = require('../abstractions/Collection').Collection;
+const Sorter = require('../utilities/Sorter').Sorter;
+const Association = require('../composites/Association').Association;
+const List = require('./List').List;
 
 
 // PUBLIC FUNCTIONS
@@ -29,7 +29,7 @@ var List = require('./List').List;
  * This constructor creates a new catalog component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
  * @returns {Catalog} The new catalog.
  */
 function Catalog(parameters) {
@@ -103,6 +103,21 @@ Catalog.fromCollection = function(collection, parameters) {
 
 
 /**
+ * This function returns a new catalog that contains all the items that are in
+ * the first catalog or the second catalog or both.
+ *
+ * @param {Collection} catalog1 The first catalog to be operated on.
+ * @param {Collection} catalog2 The second catalog to be operated on.
+ * @returns {Collection} The resulting catalog.
+ */
+Catalog.concatenation = function(catalog1, catalog2) {
+    var result = catalog1.constructor.fromCollection(catalog1, catalog1.parameters);
+    result.addItems(catalog2);
+    return result;
+};
+
+
+/**
  * This function returns a new catalog that contains only the associations with
  * the specified keys.
  *
@@ -110,7 +125,7 @@ Catalog.fromCollection = function(collection, parameters) {
  * @param {Catalog} catalog The catalog whose items are to be reduced.
  * @returns The resulting catalog.
  */
-Catalog.reduction = function(keys, catalog) {
+Catalog.extraction = function(keys, catalog) {
     var result = new Catalog();
     var iterator = keys.getIterator();
     while (iterator.hasNext()) {
@@ -118,27 +133,6 @@ Catalog.reduction = function(keys, catalog) {
         var value = catalog.getValue(key);
         if (value) {
             result.setValue(key, value);
-        }
-    }
-    return result;
-};
-
-
-/**
- * This function returns a new catalog that contains only the associations that don't
- * include the specified keys.
- *
- * @param {Set} keys The set of keys for the associations to be excluded.
- * @param {Catalog} catalog The catalog whose items are to be excluded.
- * @returns The resulting catalog.
- */
-Catalog.exclusion = function(keys, catalog) {
-    var result = new Catalog();
-    var iterator = catalog.getIterator();
-    while (iterator.hasNext()) {
-        var association = iterator.getNext();
-        if (!keys.containsItem(association.key)) {
-            result.addItem(association);
         }
     }
     return result;
@@ -195,10 +189,11 @@ Catalog.prototype.toObject = function() {
 
 
 /**
- * This method retrieves the item that is associated with the specified index from this collection.
+ * This method retrieves the association that is associated with the specified index from
+ * this catalog.
  * 
- * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this catalog.
+ * @param {Number} index The index of the desired association.
+ * @returns {Component} The association at the index in this catalog.
  */
 Catalog.prototype.getItem = function(index) {
     index = this.normalizeIndex(index);
@@ -209,8 +204,8 @@ Catalog.prototype.getItem = function(index) {
 
 
 /**
- * This method replaces an existing item in this catalog with a new one.  The new
- * item replaces the existing item at the specified index.
+ * This method replaces an existing association in this catalog with a new one.  The new
+ * association replaces the existing association at the specified index.
  *
  * @param {Number} index The index of the existing item.
  * @param {Component} item The new item that will replace the existing one.

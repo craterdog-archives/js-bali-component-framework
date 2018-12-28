@@ -14,10 +14,10 @@
  * duplicate items. A set automatically orders its items based on the natural order
  * defined by the <code>Comparator</code> class.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
-var Comparator = require('../utilities/Comparator').Comparator;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const Collection = require('../abstractions/Collection').Collection;
+const Comparator = require('../utilities/Comparator').Comparator;
 
 
 // PUBLIC FUNCTIONS
@@ -71,6 +71,102 @@ Set.fromCollection = function(collection, parameters) {
             throw new Error('BUG: A set cannot be initialized using a collection of type: ' + type);
     }
     return set;
+};
+
+
+/**
+ * This function returns a new collection that contains all the items that are in
+ * the first collection or the second collection or both.
+ *
+ * @param {Set} collection1 The first collection to be operated on.
+ * @param {Set} collection2 The second collection to be operated on.
+ * @returns {Set} The resulting collection.
+ */
+Set.or = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.addItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains the items that are in
+ * both the first collection and the second collection.
+ *
+ * @param {Set} collection1 The first collection to be operated on.
+ * @param {Set} collection2 The second collection to be operated on.
+ * @returns {Set} The resulting collection.
+ */
+Set.and = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator = collection1.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        if (collection2.containsItem(item)) {
+            result.addItem(item);
+        }
+    }
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains the items that are in
+ * the first collection but not in the second collection.
+ *
+ * @param {Set} collection1 The first collection to be operated on.
+ * @param {Set} collection2 The second collection to be operated on.
+ * @returns {Set} The resulting collection.
+ */
+Set.sans = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    result.removeItems(collection2);
+    return result;
+};
+
+
+/**
+ * This function returns a new collection that contains all the items that are in
+ * the first collection or the second collection but not both.
+ *
+ * @param {Set} collection1 The first collection to be operated on.
+ * @param {Set} collection2 The second collection to be operated on.
+ * @returns {Set} The resulting collection.
+ */
+Set.xor = function(collection1, collection2) {
+    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var iterator1 = collection1.getIterator();
+    var item1;
+    var iterator2 = collection2.getIterator();
+    var item2;
+    while (iterator1.hasNext() && iterator2.hasNext()) {
+        if (item1 === undefined) item1 = iterator1.getNext();
+        if (item2 === undefined) item2 = iterator2.getNext();
+        var signum = item1.comparedTo(item2);
+        switch (signum) {
+            case -1:
+                result.addItem(item1);
+                item1 = undefined;
+                break;
+            case 0:
+                item1 = undefined;
+                item2 = undefined;
+                break;
+            case 1:
+                result.addItem(item2);
+                item2 = undefined;
+                break;
+        }
+    }
+    while (iterator1.hasNext()) {
+        item1 = iterator1.getNext();
+        result.addItem(item1);
+    }
+    while (iterator2.hasNext()) {
+        item2 = iterator2.getNext();
+        result.addItem(item2);
+    }
+    return result;
 };
 
 

@@ -13,11 +13,13 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
-var precision = require('../utilities/Precision');
-var codex = require('../utilities/Codex');
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const precision = require('../utilities/Precision');
+const random = require('../utilities/Random');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new probability element.
@@ -89,7 +91,7 @@ Probability.prototype.toBoolean = function() {
         case 1:
             return true;
         default:
-            return codex.coinToss(this.value);
+            return random.coinToss(this.value);
     }
 };
 
@@ -117,9 +119,24 @@ Probability.TRUE = new Probability('true');
  * 
  * @returns {Probability} A new random probability.
  */
-Probability.random = function() {
-    var probability = codex.randomProbability();
+Probability.randomProbability = function() {
+    var probability = random.probability();
     return new Probability(probability);
+};
+
+
+/**
+ * This function returns a boolean valued probability by flipping a coin that is
+ * weighted using the specified probability. If a random probability is less than
+ * the specified weighting then the result is <code>true</code>, otherwise it is
+ * <code>false</code>.
+ *
+ * @param {Probability} weighting The probability.
+ * @returns {Boolean} The resulting probability.
+ */
+Probability.coinToss = function(weighting) {
+    var probability = random.probability();
+    return probability < weighting;
 };
 
 
@@ -153,7 +170,7 @@ Probability.inverse = function(probability) {
  * @param {Probability} probability2 The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.union = function(probability1, probability2) {
+Probability.or = function(probability1, probability2) {
     var p1 = probability1.value;
     var p2 = probability2.value;
     var p = precision.sum(p1, p2, precision.product(-p1, p2));
@@ -174,7 +191,7 @@ Probability.union = function(probability1, probability2) {
  * @param {Probability} probability2 The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.intersection = function(probability1, probability2) {
+Probability.and = function(probability1, probability2) {
     var p1 = probability1.value;
     var p2 = probability2.value;
     var p = precision.product(p1, p2);
@@ -195,7 +212,7 @@ Probability.intersection = function(probability1, probability2) {
  * @param {Probability} probability2 The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.difference = function(probability1, probability2) {
+Probability.sans = function(probability1, probability2) {
     var p1 = probability1.value;
     var p2 = probability2.value;
     var p = precision.product(p1, precision.difference(1, p2));
@@ -217,7 +234,7 @@ Probability.difference = function(probability1, probability2) {
  * @param {Probability} probability2 The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.exclusive = function(probability1, probability2) {
+Probability.xor = function(probability1, probability2) {
     var p1 = probability1.value;
     var p2 = probability2.value;
     var p = precision.sum(p1, p2, precision.product(-2, p1, p2));

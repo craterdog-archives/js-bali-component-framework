@@ -19,6 +19,7 @@ exports.Visitor = require('./Visitor').Visitor;
 
 exports.precision = require('./Precision');
 exports.codex = require('./Codex');
+exports.random = require('./Random');
 exports.formatter = new exports.Formatter();
 exports.parser = new exports.Parser(false);
 

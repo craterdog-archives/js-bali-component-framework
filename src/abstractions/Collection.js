@@ -12,7 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all collections must inherit.
  */
-var Composite = require('./Composite').Composite;
+const Composite = require('./Composite').Composite;
 
 
 // PUBLIC FUNCTIONS
@@ -32,102 +32,6 @@ function Collection(type, parameters) {
 Collection.prototype = Object.create(Composite.prototype);
 Collection.prototype.constructor = Collection;
 exports.Collection = Collection;
-
-
-/**
- * This function returns a new collection that contains all the items that are in
- * the first collection or the second collection or both.
- *
- * @param {Collection} collection1 The first collection to be operated on.
- * @param {Collection} collection2 The second collection to be operated on.
- * @returns {Collection} The resulting collection.
- */
-Collection.union = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
-    result.addItems(collection2);
-    return result;
-};
-
-
-/**
- * This function returns a new collection that contains the items that are in
- * both the first collection and the second collection.
- *
- * @param {Collection} collection1 The first collection to be operated on.
- * @param {Collection} collection2 The second collection to be operated on.
- * @returns {Collection} The resulting collection.
- */
-Collection.intersection = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection([], collection1.parameters);
-    var iterator = collection1.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        if (collection2.containsItem(item)) {
-            result.addItem(item);
-        }
-    }
-    return result;
-};
-
-
-/**
- * This function returns a new collection that contains the items that are in
- * the first collection but not in the second collection.
- *
- * @param {Collection} collection1 The first collection to be operated on.
- * @param {Collection} collection2 The second collection to be operated on.
- * @returns {Collection} The resulting collection.
- */
-Collection.difference = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
-    result.removeItems(collection2);
-    return result;
-};
-
-
-/**
- * This function returns a new collection that contains all the items that are in
- * the first collection or the second collection but not both.
- *
- * @param {Collection} collection1 The first collection to be operated on.
- * @param {Collection} collection2 The second collection to be operated on.
- * @returns {Collection} The resulting collection.
- */
-Collection.exclusive = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection([], collection1.parameters);
-    var iterator1 = collection1.getIterator();
-    var item1;
-    var iterator2 = collection2.getIterator();
-    var item2;
-    while (iterator1.hasNext() && iterator2.hasNext()) {
-        if (item1 === undefined) item1 = iterator1.getNext();
-        if (item2 === undefined) item2 = iterator2.getNext();
-        var signum = item1.comparedTo(item2);
-        switch (signum) {
-            case -1:
-                result.addItem(item1);
-                item1 = undefined;
-                break;
-            case 0:
-                item1 = undefined;
-                item2 = undefined;
-                break;
-            case 1:
-                result.addItem(item2);
-                item2 = undefined;
-                break;
-        }
-    }
-    while (iterator1.hasNext()) {
-        item1 = iterator1.getNext();
-        result.addItem(item1);
-    }
-    while (iterator2.hasNext()) {
-        item2 = iterator2.getNext();
-        result.addItem(item2);
-    }
-    return result;
-};
 
 
 // PUBLIC METHODS

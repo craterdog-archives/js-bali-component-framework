@@ -13,8 +13,8 @@
  * This composite class implements a source code component that can be assigned as
  * the value of an association.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
 
 
 // PUBLIC FUNCTIONS

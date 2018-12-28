@@ -16,8 +16,8 @@
  * This collection class implements a data structure that defines a range of items. The
  * structure is static once the first and last items in the range have been defined.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
 /* global NaN, Infinity */
 
 
@@ -148,7 +148,7 @@ Range.prototype.toArray = function() {
  * @param {Component} item The item to check.
  * @returns {Boolean} Whether or not the item is in this range.
  */
-Range.prototype.inRange = function(item) {
+Range.prototype.isInRange = function(item) {
     item = Composite.asComponent(item);
     var index = item.toNumber();
     return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();

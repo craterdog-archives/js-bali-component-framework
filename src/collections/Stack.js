@@ -13,11 +13,11 @@
  * This collection class implements a stack (LIFO) data structure.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
-var Iterator = require('../utilities/Iterator').Iterator;
-var Catalog = require('./Catalog').Catalog;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const Collection = require('../abstractions/Collection').Collection;
+const Iterator = require('../utilities/Iterator').Iterator;
+const Catalog = require('./Catalog').Catalog;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -192,7 +192,7 @@ Stack.prototype.removeItem = function() {
  *
  * @returns {Component} The top item on this stack.
  */
-Stack.prototype.topItem = function() {
+Stack.prototype.getTop = function() {
     var item = null;
     var size = this.array.length;
     if (size > 0) {

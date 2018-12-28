@@ -17,10 +17,10 @@
 
 // PRIVATE ATTRIBUTES
 
-var PROTOCOL = 'v1';
-var VERSION = 'v1';
+const PROTOCOL = 'v1';
+const VERSION = 'v1';
 
-var MAP = {
+const MAP = {
     Invalid:                      'Invalid',  // ordinal based indexing
     Angle:                        '#8SC89QY4LM68LTGPXYMBR6C0LR324L3P',
     ArithmeticExpression:         '#G5YBFG0VKKQLMABZ7Z9T1NMPLA87WJHA',
@@ -87,8 +87,8 @@ var MAP = {
     WithClause:                   '#AGXY4B519SNJFFMDNTQ2DSWZXCBKX596'
 };
 
-var NAMES = Object.keys(MAP);
-var TAGS = Object.values(MAP);
+const NAMES = Object.keys(MAP);
+const TAGS = Object.values(MAP);
 
 
 // PUBLIC CONSTANTS

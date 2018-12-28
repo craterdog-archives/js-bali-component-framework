@@ -14,11 +14,11 @@
  * This element class captures the state and methods associated with a moment
  * in time element.
  */
-var moment = require('moment');
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const moment = require('moment');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
-var FORMATS = [
+const FORMATS = [
     '<Y>',
     '<Y-MM>',
     '<Y-MM-DD>',
@@ -30,6 +30,8 @@ var FORMATS = [
     '<Y-MM-DDTHH:mm:60.SSS>'  // HACK:JavaScript doesn't handle leap seconds
 ];
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new moment element.

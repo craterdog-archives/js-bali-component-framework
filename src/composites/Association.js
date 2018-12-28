@@ -13,8 +13,8 @@
  * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
 
 
 // PUBLIC FUNCTIONS

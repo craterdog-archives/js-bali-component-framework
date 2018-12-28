@@ -24,15 +24,15 @@
  * makes up all of the modules for the Bali Nebula™ is simpler, clean and
  * easy to read. You're welcome ;-)
  */
-var antlr = require('antlr4');
-var ErrorStrategy = require('antlr4/error/ErrorStrategy');
-var grammar = require('../grammar');
-var types = require('../abstractions/Types');
-var Component = require('../abstractions/Component').Component;
-var elements = require('../elements');
-var composites = require('../composites');
-var collections = require('../collections');
-var codex = require('../utilities/Codex');
+const antlr = require('antlr4');
+const ErrorStrategy = require('antlr4/error/ErrorStrategy');
+const grammar = require('../grammar');
+const types = require('../abstractions/Types');
+const Component = require('../abstractions/Component').Component;
+const elements = require('../elements');
+const composites = require('../composites');
+const collections = require('../collections');
+const codex = require('../utilities/Codex');
 
 
 // PUBLIC FUNCTIONS

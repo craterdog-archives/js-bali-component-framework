@@ -8,11 +8,11 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var abstractions = require('../src/abstractions');
-var composites = require('../src/composites');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const abstractions = require('../src/abstractions');
+const composites = require('../src/composites');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -223,7 +223,7 @@ describe('Bali Component Framework™', function() {
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>');
         });
 
-        it('should be able to call the Collection class methods on the catalog', function() {
+        it('should be able to call the Catalog class methods on the catalog', function() {
             var catalog1 = new collections.Catalog();
             catalog1.addItem(new composites.Association(1, 'alpha'));
             catalog1.addItem(new composites.Association(2, 'beta'));
@@ -327,7 +327,7 @@ describe('Bali Component Framework™', function() {
             catalog2.addItem(association4);
             catalog2.addItem(association5);
             var catalog3 = collections.Catalog.fromCollection(array);
-            var catalog4 = abstractions.Collection.union(catalog1, catalog2);
+            var catalog4 = collections.Catalog.concatenation(catalog1, catalog2);
             expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
 

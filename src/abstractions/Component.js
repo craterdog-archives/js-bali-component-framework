@@ -12,9 +12,9 @@
 /**
  * This abstract class defines the methods that all components must support.
  */
-var types = require('../abstractions/Types');
-var Comparator = require('../utilities/Comparator').Comparator;
-var Formatter = require('../utilities/Formatter').Formatter;
+const types = require('../abstractions/Types');
+const Comparator = require('../utilities/Comparator').Comparator;
+const Formatter = require('../utilities/Formatter').Formatter;
 
 
 // PUBLIC FUNCTIONS

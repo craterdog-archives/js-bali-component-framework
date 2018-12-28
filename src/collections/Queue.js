@@ -14,10 +14,10 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var Collection = require('../abstractions/Collection').Collection;
-var Catalog = require('./Catalog').Catalog;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const Collection = require('../abstractions/Collection').Collection;
+const Catalog = require('./Catalog').Catalog;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -169,12 +169,12 @@ Queue.prototype.removeItem = function() {
 
 
 /**
- * This method returns a reference to the first item in this queue without
+ * This method returns a reference to the item that is at the head of this queue without
  * removing it from the queue.  If this queue is empty undefined is returned.
  *
- * @returns {Component} The first item in this queue or undefined if the queue is empty.
+ * @returns {Component} The item that is at the head of this queue or undefined if the queue is empty.
  */
-Queue.prototype.firstItem = function() {
+Queue.prototype.getHead = function() {
     return this.array[0];
 };
 

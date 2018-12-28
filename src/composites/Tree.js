@@ -17,8 +17,8 @@
  * are used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
 
 
 // PUBLIC FUNCTIONS
@@ -33,6 +33,49 @@ var Composite = require('../abstractions/Composite').Composite;
  */
 function Tree(type, complexity) {
     Composite.call(this, type);
+    switch(type) {
+        case types.ARITHMETIC_EXPRESSION:
+        case types.BLOCK:
+        case types.BREAK_CLAUSE:
+        case types.CHECKOUT_CLAUSE:
+        case types.COMMIT_CLAUSE:
+        case types.COMPARISON_EXPRESSION:
+        case types.COMPLEMENT_EXPRESSION:
+        case types.CONTINUE_CLAUSE:
+        case types.DEFAULT_EXPRESSION:
+        case types.DEREFERENCE_EXPRESSION:
+        case types.DISCARD_CLAUSE:
+        case types.EVALUATE_CLAUSE:
+        case types.EXPONENTIAL_EXPRESSION:
+        case types.FACTORIAL_EXPRESSION:
+        case types.FUNCTION_EXPRESSION:
+        case types.HANDLE_CLAUSE:
+        case types.IF_CLAUSE:
+        case types.INDICES:
+        case types.INVERSION_EXPRESSION:
+        case types.LOGICAL_EXPRESSION:
+        case types.MAGNITUDE_EXPRESSION:
+        case types.MESSAGE_EXPRESSION:
+        case types.PRECEDENCE_EXPRESSION:
+        case types.PROCEDURE:
+        case types.PUBLISH_CLAUSE:
+        case types.QUEUE_CLAUSE:
+        case types.RETURN_CLAUSE:
+        case types.SAVE_CLAUSE:
+        case types.SELECT_CLAUSE:
+        case types.STATEMENT:
+        case types.SUBCOMPONENT:
+        case types.SUBCOMPONENT_EXPRESSION:
+        case types.THROW_CLAUSE:
+        case types.WAIT_CLAUSE:
+        case types.WHILE_CLAUSE:
+        case types.WITH_CLAUSE:
+            // these are fine
+            break;
+        default:
+            // anything else isn't
+            throw new Error('BUG: An invalid identifier type was passed to the constructor: ' + types.typeName(type));
+    }
     this.array = [];
     this.complexity += complexity;
     return this;

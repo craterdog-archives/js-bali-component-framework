@@ -13,10 +13,13 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
-var codex = require('../utilities/Codex');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
+const codex = require('../utilities/Codex');
+const random = require('../utilities/Random');
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new tag element.
@@ -41,12 +44,12 @@ function Tag(optionalSizeOrValue, parameters) {
     switch (type) {
         case 'undefined':
             this.size = 20;  // default size
-            bytes = codex.randomBytes(this.size);
+            bytes = random.bytes(this.size);
             this.value = '#' + codex.base32Encode(bytes);
             break;
         case 'number':
             this.size = optionalSizeOrValue;
-            bytes = codex.randomBytes(this.size);
+            bytes = random.bytes(this.size);
             this.value = '#' + codex.base32Encode(bytes);
             break;
         case 'string':

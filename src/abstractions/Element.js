@@ -12,7 +12,7 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
-var Component = require('./Component').Component;
+const Component = require('./Component').Component;
 
 
 // PUBLIC FUNCTIONS

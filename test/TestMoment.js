@@ -8,23 +8,23 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var Moment = require('../src/elements/Moment').Moment;
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const elements = require('../src/elements');
 
 describe('Bali Component Framework™', function() {
 
     describe('Test moment constructors', function() {
 
         it('should construct a default moment of zero', function() {
-            var time = new Moment();
+            var time = new elements.Moment();
             var string = time.toString();
             expect(string.length).to.equal(25);
         });
 
         it('should construct a moment and format the same', function() {
             tests.forEach(function(expected) {
-                var time = new Moment(expected);
+                var time = new elements.Moment(expected);
                 var string = time.toString();
                 expect(string).to.equal(expected);
             });
@@ -35,7 +35,7 @@ describe('Bali Component Framework™', function() {
     describe('Test moment methods', function() {
 
         it('should return the correct type', function() {
-            var type = new Moment('<2018>').getType();
+            var type = new elements.Moment('<2018>').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR,$version:v1,$digest:none]>');
         });
 

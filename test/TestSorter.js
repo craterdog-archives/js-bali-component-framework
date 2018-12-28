@@ -8,10 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var abstractions = require('../src/abstractions');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const abstractions = require('../src/abstractions');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {

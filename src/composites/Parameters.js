@@ -13,9 +13,9 @@
  * This collection class implements a parameter list data structure. The structure is static
  * such that once parameters have been added to it they cannot be reordered or removed.
  */
-var types = require('../abstractions/Types');
-var Composite = require('../abstractions/Composite').Composite;
-var collections = require('../collections');
+const types = require('../abstractions/Types');
+const Composite = require('../abstractions/Composite').Composite;
+const collections = require('../collections');
 
 
 // PUBLIC FUNCTIONS

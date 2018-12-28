@@ -8,16 +8,16 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var Probability = require('../src/elements/Probability').Probability;
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const elements = require('../src/elements');
 
 describe('Bali Component Framework™', function() {
 
     describe('Test probability constructors', function() {
 
         it('should construct a default probability of zero', function() {
-            var empty = new Probability();
+            var empty = new elements.Probability();
             var number = empty.toNumber();
             expect(number).to.equal(0);
             var string = empty.toString();
@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a probability of zero', function() {
-            var zero = new Probability(0);
+            var zero = new elements.Probability(0);
             var number = zero.toNumber();
             expect(number).to.equal(0);
             var string = zero.toString();
@@ -35,7 +35,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a probability of one half', function() {
-            var half = new Probability(0.5);
+            var half = new elements.Probability(0.5);
             var number = half.toNumber();
             expect(number).to.equal(0.5);
             var string = half.toString();
@@ -43,7 +43,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a probability of one', function() {
-            var one = new Probability(1);
+            var one = new elements.Probability(1);
             var number = one.toNumber();
             expect(number).to.equal(1);
             var string = one.toString();
@@ -54,7 +54,7 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for negative probabilities', function() {
             expect(
                 function() {
-                    var negative = new Probability(-1);
+                    var negative = new elements.Probability(-1);
                 }
             ).to.throw();
         });
@@ -62,13 +62,13 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for probabilities greater than 1', function() {
             expect(
                 function() {
-                    var two = new Probability(2);
+                    var two = new elements.Probability(2);
                 }
             ).to.throw();
         });
 
         it('should average very near 50% for many coin flips', function() {
-            var even = new Probability(0.5);
+            var even = new elements.Probability(0.5);
             var heads = 0;
             var tosses = 10000;
             for (var i = 1; i < tosses; i++) {
@@ -82,7 +82,7 @@ describe('Bali Component Framework™', function() {
     describe('Test probability methods', function() {
 
         it('should return the correct type', function() {
-            var type = Probability.TRUE.getType();
+            var type = elements.Probability.TRUE.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#2YBVYV11HS4CKZ7X8RDJ0RYC7TKKAV2D,$version:v1,$digest:none]>');
         });
 
@@ -92,48 +92,48 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the random function correctly', function() {
             for (var i = 0; i < 100; i++) {
-                var probability = Probability.random();
+                var probability = elements.Probability.randomProbability();
                 expect(probability.value >= 0 && probability.value <= 1).to.equal(true);
             }
         });
 
         it('should perform the inverse function correctly', function() {
-            expect(Probability.inverse(Probability.FALSE)).to.equal(Probability.TRUE);
-            expect(Probability.inverse(Probability.TRUE)).to.equal(Probability.FALSE);
-            expect(Probability.inverse(new Probability(0.25)).isEqualTo(new Probability(0.75))).to.equal(true);
-            expect(Probability.inverse(new Probability('.25')).isEqualTo(new Probability('.75'))).to.equal(true);
+            expect(elements.Probability.inverse(elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.inverse(elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.inverse(new elements.Probability(0.25)).isEqualTo(new elements.Probability(0.75))).to.equal(true);
+            expect(elements.Probability.inverse(new elements.Probability('.25')).isEqualTo(new elements.Probability('.75'))).to.equal(true);
         });
 
         it('should perform the union function correctly', function() {
-            expect(Probability.union(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
-            expect(Probability.union(Probability.FALSE, Probability.TRUE)).to.equal(Probability.TRUE);
-            expect(Probability.union(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
-            expect(Probability.union(Probability.TRUE, Probability.TRUE)).to.equal(Probability.TRUE);
-            expect(Probability.union(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.83))).to.equal(true);
+            expect(elements.Probability.or(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.or(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.or(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.or(elements.Probability.TRUE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.or(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.83))).to.equal(true);
         });
 
         it('should perform the intersection function correctly', function() {
-            expect(Probability.intersection(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
-            expect(Probability.intersection(Probability.FALSE, Probability.TRUE)).to.equal(Probability.FALSE);
-            expect(Probability.intersection(Probability.TRUE, Probability.FALSE)).to.equal(Probability.FALSE);
-            expect(Probability.intersection(Probability.TRUE, Probability.TRUE)).to.equal(Probability.TRUE);
-            expect(Probability.intersection(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.25))).to.equal(true);
+            expect(elements.Probability.and(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.and(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.and(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.and(elements.Probability.TRUE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.and(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.25))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(Probability.difference(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
-            expect(Probability.difference(Probability.FALSE, Probability.TRUE)).to.equal(Probability.FALSE);
-            expect(Probability.difference(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
-            expect(Probability.difference(Probability.TRUE, Probability.TRUE)).to.equal(Probability.FALSE);
-            expect(Probability.difference(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.5))).to.equal(true);
+            expect(elements.Probability.sans(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.sans(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.sans(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.sans(elements.Probability.TRUE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.sans(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.5))).to.equal(true);
         });
 
         it('should perform the exclusive function correctly', function() {
-            expect(Probability.exclusive(Probability.FALSE, Probability.FALSE)).to.equal(Probability.FALSE);
-            expect(Probability.exclusive(Probability.FALSE, Probability.TRUE)).to.equal(Probability.TRUE);
-            expect(Probability.exclusive(Probability.TRUE, Probability.FALSE)).to.equal(Probability.TRUE);
-            expect(Probability.exclusive(Probability.TRUE, Probability.TRUE)).to.equal(Probability.FALSE);
-            expect(Probability.exclusive(new Probability(0.75), new Probability(1/3)).isEqualTo(new Probability(0.6))).to.equal(true);
+            expect(elements.Probability.xor(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.xor(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.xor(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.xor(elements.Probability.TRUE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.xor(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.6))).to.equal(true);
         });
 
     });

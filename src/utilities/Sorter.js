@@ -13,7 +13,7 @@
  * This component class implements a sorter that can be used on any collection to sort its
  * items into their natural order.
  */
-var Comparator = require('./Comparator').Comparator;
+const Comparator = require('./Comparator').Comparator;
 
 
 // PUBLIC FUNCTIONS

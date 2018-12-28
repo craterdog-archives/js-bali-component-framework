@@ -8,11 +8,11 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var abstractions = require('../src/abstractions');
-var composites = require('../src/composites');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const abstractions = require('../src/abstractions');
+const composites = require('../src/composites');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -103,7 +103,7 @@ describe('Bali Component Framework™', function() {
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#TRYB04LK9Z1TSABALD7W31K8YFSN1F0F,$version:v1,$digest:none]>');
         });
 
-        it('should be able to call the Collection class methods on the list', function() {
+        it('should be able to call the List class methods on the list', function() {
             var list1 = new collections.List();
             list1.addItem('alpha');
             list1.addItem('beta');
@@ -202,7 +202,7 @@ describe('Bali Component Framework™', function() {
             list2.addItem('epsilon');
             list2.addItem('gamma');
             var list3 = collections.List.fromCollection(array);
-            expect(abstractions.Collection.union(list1, list2).isEqualTo(list3)).to.equal(true);
+            expect(collections.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
     });

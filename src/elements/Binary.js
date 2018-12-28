@@ -13,10 +13,13 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
-var codex = require('../utilities/Codex');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
+const random = require('../utilities/Random');
+const codex = require('../utilities/Codex');
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new binary string element.
@@ -186,6 +189,100 @@ Binary.prototype.getBuffer = function() {
  * @returns {Binary} A new binary element containing the specified number of random bytes.
  */
 Binary.randomBytes = function(numberOfBytes) {
-    var buffer = codex.randomBytes(numberOfBytes);
+    var buffer = random.bytes(numberOfBytes);
     return new Binary(buffer);
 };
+
+
+/**
+ * This function returns a new binary element that is the logical NOT of the bits
+ * of the specified binary element.
+ *
+ * @param {Binary} binary The binary.
+ * @returns {Binary} The resulting binary.
+ */
+Binary.inverse = function(binary) {
+    var length = binary.value.length;
+    var buffer = Buffer.alloc(length);
+    binary.value.forEach(function(byte, index) {
+        buffer[index] = ~byte;
+    });
+    return new Binary(buffer);
+};
+
+
+/**
+ * This function returns a new binary entity that is the logical AND of the bits
+ * of the two specified probabilities.
+ *
+ * @param {Binary} binary1 The first binary.
+ * @param {Binary} binary2 The second binary.
+ * @returns {Binary} The resulting binary.
+ */
+Binary.and = function(binary1, binary2) {
+    var length = Math.max(binary1.value.length, binary2.value.length);
+    var buffer = Buffer.alloc(length);
+    length = Math.min(binary1.value.length, binary2.value.length);
+    for (var index = 0; index < length; index++) {
+        buffer[index] = binary1[index] & binary2[index];
+    }
+    return new Binary(buffer);
+};
+
+
+/**
+ * This function returns a new binary entity that is the logical SANS of the bits
+ * of the two specified probabilities.
+ *
+ * @param {Binary} binary1 The first binary.
+ * @param {Binary} binary2 The second binary.
+ * @returns {Binary} The resulting binary.
+ */
+Binary.sans = function(binary1, binary2) {
+    var length = Math.max(binary1.value.length, binary2.value.length);
+    var buffer = Buffer.alloc(length);
+    length = Math.min(binary1.value.length, binary2.value.length);
+    for (var index = 0; index < length; index++) {
+        buffer[index] = binary1[index] & ~binary2[index];
+    }
+    return new Binary(buffer);
+};
+
+
+/**
+ * This function returns a new binary entity that is the logical OR of the bits
+ * of the two specified probabilities.
+ *
+ * @param {Binary} binary1 The first binary.
+ * @param {Binary} binary2 The second binary.
+ * @returns {Binary} The resulting binary.
+ */
+Binary.or = function(binary1, binary2) {
+    var length = Math.max(binary1.value.length, binary2.value.length);
+    var buffer = Buffer.alloc(length);
+    length = Math.min(binary1.value.length, binary2.value.length);
+    for (var index = 0; index < length; index++) {
+        buffer[index] = binary1[index] | binary2[index];
+    }
+    return new Binary(buffer);
+};
+
+
+/**
+ * This function returns a new binary entity that is the logical XOR of the bits
+ * of the two specified probabilities.
+ *
+ * @param {Binary} binary1 The first binary.
+ * @param {Binary} binary2 The second binary.
+ * @returns {Binary} The resulting binary.
+ */
+Binary.xor = function(binary1, binary2) {
+    var length = Math.max(binary1.value.length, binary2.value.length);
+    var buffer = Buffer.alloc(length);
+    length = Math.min(binary1.value.length, binary2.value.length);
+    for (var index = 0; index < length; index++) {
+        buffer[index] = binary1[index] ^ binary2[index];
+    }
+    return new Binary(buffer);
+};
+

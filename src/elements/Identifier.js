@@ -13,9 +13,11 @@
  * This element class captures the state and methods associated with an
  * identifier element.
  */
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new identifier node.
@@ -26,6 +28,16 @@ var Element = require('../abstractions/Element').Element;
  */
 function Identifier(type, value) {
     Element.call(this, type);
+    switch (type) {
+        case types.FUNCTION:
+        case types.MESSAGE:
+        case types.VARIABLE:
+            // these are fine
+            break;
+        default:
+            // anything else isn't
+            throw new Error('BUG: An invalid identifier type was passed to the constructor: ' + types.typeName(type));
+    }
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
         throw new Error('BUG: An invalid identifier string was passed to the constructor: ' + value);
     }

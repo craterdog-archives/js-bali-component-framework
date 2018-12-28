@@ -14,10 +14,12 @@
  * This element class captures the state and methods associated with a time
  * duration element.
  */
-var duration = require('moment').duration;
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
+const duration = require('moment').duration;
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new duration element.

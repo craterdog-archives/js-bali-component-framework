@@ -8,10 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-var mocha = require('mocha');
-var expect = require('chai').expect;
-var abstractions = require('../src/abstractions');
-var collections = require('../src/collections');
+const mocha = require('mocha');
+const expect = require('chai').expect;
+const abstractions = require('../src/abstractions');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -102,7 +102,7 @@ describe('Bali Component Framework™', function() {
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#PB33C4Z89QTKBD8P824JMN83STXZGHY9,$version:v1,$digest:none]>');
         });
 
-        it('should be able to call the Collection class methods on the set', function() {
+        it('should be able to call the Set class methods on the set', function() {
             var set1 = new collections.Set();
             set1.addItem('alpha');
             set1.addItem('beta');
@@ -172,22 +172,22 @@ describe('Bali Component Framework™', function() {
             var set3 = new collections.Set();
             set3.addItem('beta');
             set3.addItem('delta');
-            expect(abstractions.Collection.intersection(set1, set2).isEqualTo(set3)).to.equal(true);
+            expect(collections.Set.and(set1, set2).isEqualTo(set3)).to.equal(true);
             var set4 = new collections.Set();
             set4.addItem('alpha');
-            expect(abstractions.Collection.difference(set1, set2).isEqualTo(set4)).to.equal(true);
+            expect(collections.Set.sans(set1, set2).isEqualTo(set4)).to.equal(true);
             var set5 = new collections.Set();
             set5.addItem('alpha');
             set5.addItem('beta');
             set5.addItem('delta');
             set5.addItem('epsilon');
             set5.addItem('gamma');
-            expect(abstractions.Collection.union(set1, set2).isEqualTo(set5)).to.equal(true);
+            expect(collections.Set.or(set1, set2).isEqualTo(set5)).to.equal(true);
             var set6 = new collections.Set();
             set6.addItem('alpha');
             set6.addItem('epsilon');
             set6.addItem('gamma');
-            expect(abstractions.Collection.exclusive(set1, set2).isEqualTo(set6)).to.equal(true);
+            expect(collections.Set.xor(set1, set2).isEqualTo(set6)).to.equal(true);
         });
 
     });

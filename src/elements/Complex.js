@@ -14,13 +14,15 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
-var antlr = require('antlr4');
-var grammar = require('../grammar');
-var precision = require('../utilities/Precision');
-var types = require('../abstractions/Types');
-var Element = require('../abstractions/Element').Element;
-var Angle = require('./Angle').Angle;
+const antlr = require('antlr4');
+const grammar = require('../grammar');
+const precision = require('../utilities/Precision');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
+const Angle = require('./Angle').Angle;
 
+
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates an immutable instance of a complex number element.
@@ -277,9 +279,9 @@ Complex.prototype.toPolar = function() {
     if (this.isZero()) return '0';
     if (this.imaginary === 0 && this.real > 0) return Element.numberToSource(this.real);
     var source = '(';
-    source += Element.numberToSource(Complex.magnitude(this));
+    source += Element.numberToSource(Complex.getMagnitude(this));
     source += ' e^~';
-    source += imaginaryToSource(Complex.angle(this).value);
+    source += imaginaryToSource(Complex.getAngle(this).value);
     source += ')';
     return source;
 };
@@ -313,7 +315,7 @@ Complex.PHI = precision.PHI;
  * @param {Complex} complex The complex number.
  * @returns {number} The real part of the complex number.
  */
-Complex.real = function(complex) {
+Complex.getReal = function(complex) {
     return complex.real;
 };
 
@@ -324,7 +326,7 @@ Complex.real = function(complex) {
  * @param {Complex} complex The complex number.
  * @returns {number} The imaginary part of the complex number.
  */
-Complex.imaginary = function(complex) {
+Complex.getImaginary = function(complex) {
     return complex.imaginary;
 };
 
@@ -335,7 +337,7 @@ Complex.imaginary = function(complex) {
  * @param {Complex} complex The complex number.
  * @returns {number} The magnitude of the complex number.
  */
-Complex.magnitude = function(complex) {
+Complex.getMagnitude = function(complex) {
     // need to preserve full precision on this except for the sum part
     var magnitude = Math.sqrt(precision.sum(Math.pow(complex.real, 2), Math.pow(complex.imaginary, 2)));
     magnitude = precision.lockOnExtreme(magnitude);
@@ -350,7 +352,7 @@ Complex.magnitude = function(complex) {
  * @returns {Angle} The angle of the complex number or undefined if the complex number is
  * infinite or undefined.
  */
-Complex.angle = function(complex) {
+Complex.getAngle = function(complex) {
     var angle;
     if (!complex.isInfinite() && !complex.isUndefined()) {
         angle = Angle.arctangent(complex.imaginary, complex.real);
