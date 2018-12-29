@@ -85,14 +85,7 @@ exports.Probability = Probability;
  * @returns {number} The boolean representation of the probability element.
  */
 Probability.prototype.toBoolean = function() {
-    switch (this.value) {
-        case 0:
-            return false;
-        case 1:
-            return true;
-        default:
-            return random.coinToss(this.value);
-    }
+    return this.value >= 0.5;
 };
 
 
@@ -119,7 +112,7 @@ Probability.TRUE = new Probability('true');
  * 
  * @returns {Probability} A new random probability.
  */
-Probability.randomProbability = function() {
+Probability.random = function() {
     var probability = random.probability();
     return new Probability(probability);
 };
@@ -151,7 +144,7 @@ Probability.coinToss = function(weighting) {
  * @param {Probability} probability The probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.inverse = function(probability) {
+Probability.not = function(probability) {
     var p = precision.difference(1, probability.value);
     var result = new Probability(p);
     return result;

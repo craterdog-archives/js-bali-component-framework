@@ -16,13 +16,16 @@ describe('Bali Component Framework™', function() {
 
     describe('Test tag constructors', function() {
 
-        it('should generate a default random tag with 20 bytes', function() {
-            var random = new elements.Tag();
-            expect(random.getNumberOfBytes()).to.equal(20);
-            var expected = random.toString();
-            var tag = new elements.Tag(expected);
-            var result = tag.toString();
-            expect(result).to.equal(expected);
+        it('should generate default random tags with 20 bytes', function() {
+            for (var i = 0; i < 10; i++) {
+                var random = new elements.Tag();
+                expect(random.getNumberOfBytes()).to.equal(20);
+                var expected = random.toString();
+                var tag = new elements.Tag(expected);
+                var result = tag.toString();
+                console.log('        ' + result);
+                expect(result).to.equal(expected);
+            }
         });
 
         it('should generate a random tag with 15 bytes', function() {

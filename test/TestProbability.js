@@ -72,7 +72,7 @@ describe('Bali Component Framework™', function() {
             var heads = 0;
             var tosses = 10000;
             for (var i = 1; i < tosses; i++) {
-                if (even.toBoolean()) heads++;
+                if (elements.Probability.coinToss(even)) heads++;
             }
             expect(tosses * 0.485 < heads && heads < tosses * 0.515).to.be.true;  // jshint ignore:line
         });
@@ -92,19 +92,19 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the random function correctly', function() {
             for (var i = 0; i < 100; i++) {
-                var probability = elements.Probability.randomProbability();
+                var probability = elements.Probability.random();
                 expect(probability.value >= 0 && probability.value <= 1).to.equal(true);
             }
         });
 
-        it('should perform the inverse function correctly', function() {
-            expect(elements.Probability.inverse(elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
-            expect(elements.Probability.inverse(elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
-            expect(elements.Probability.inverse(new elements.Probability(0.25)).isEqualTo(new elements.Probability(0.75))).to.equal(true);
-            expect(elements.Probability.inverse(new elements.Probability('.25')).isEqualTo(new elements.Probability('.75'))).to.equal(true);
+        it('should perform the logical NOT function correctly', function() {
+            expect(elements.Probability.not(elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
+            expect(elements.Probability.not(elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
+            expect(elements.Probability.not(new elements.Probability(0.25)).isEqualTo(new elements.Probability(0.75))).to.equal(true);
+            expect(elements.Probability.not(new elements.Probability('.25')).isEqualTo(new elements.Probability('.75'))).to.equal(true);
         });
 
-        it('should perform the union function correctly', function() {
+        it('should perform the logical OR function correctly', function() {
             expect(elements.Probability.or(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.or(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
             expect(elements.Probability.or(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
@@ -112,7 +112,7 @@ describe('Bali Component Framework™', function() {
             expect(elements.Probability.or(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.83))).to.equal(true);
         });
 
-        it('should perform the intersection function correctly', function() {
+        it('should perform the logical AND function correctly', function() {
             expect(elements.Probability.and(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.and(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.and(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
@@ -120,7 +120,7 @@ describe('Bali Component Framework™', function() {
             expect(elements.Probability.and(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.25))).to.equal(true);
         });
 
-        it('should perform the difference function correctly', function() {
+        it('should perform the logical SANS function correctly', function() {
             expect(elements.Probability.sans(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.sans(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.sans(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
@@ -128,12 +128,19 @@ describe('Bali Component Framework™', function() {
             expect(elements.Probability.sans(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.5))).to.equal(true);
         });
 
-        it('should perform the exclusive function correctly', function() {
+        it('should perform the logical XOR function correctly', function() {
             expect(elements.Probability.xor(elements.Probability.FALSE, elements.Probability.FALSE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.xor(elements.Probability.FALSE, elements.Probability.TRUE)).to.equal(elements.Probability.TRUE);
             expect(elements.Probability.xor(elements.Probability.TRUE, elements.Probability.FALSE)).to.equal(elements.Probability.TRUE);
             expect(elements.Probability.xor(elements.Probability.TRUE, elements.Probability.TRUE)).to.equal(elements.Probability.FALSE);
             expect(elements.Probability.xor(new elements.Probability(0.75), new elements.Probability(1/3)).isEqualTo(new elements.Probability(0.6))).to.equal(true);
+        });
+
+        it("should perform the De Morgan's Laws correctly", function() {
+            var A = new elements.Probability(0.75);
+            var B = new elements.Probability(1/3);
+            expect(elements.Probability.not(elements.Probability.and(A, B)).isEqualTo(elements.Probability.or(elements.Probability.not(A), elements.Probability.not(B)))).to.equal(true);
+            expect(elements.Probability.not(elements.Probability.or(A, B)).isEqualTo(elements.Probability.and(elements.Probability.not(A), elements.Probability.not(B)))).to.equal(true);
         });
 
     });

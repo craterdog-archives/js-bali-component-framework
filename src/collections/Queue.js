@@ -59,7 +59,7 @@ exports.Queue = Queue;
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Queue} The new queue.
  */
-Queue.fromCollection = function(collection, parameters) {
+Queue.from = function(collection, parameters) {
     var queue = new Queue(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -140,7 +140,7 @@ Queue.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
-    var exception = Catalog.fromCollection({
+    var exception = Catalog.from({
         $exception: '$resourceLimit',
         $type: '$Queue',
         $procedure: '$addItem',

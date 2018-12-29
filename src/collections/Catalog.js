@@ -55,7 +55,7 @@ exports.Catalog = Catalog;
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Catalog} The new catalog.
  */
-Catalog.fromCollection = function(collection, parameters) {
+Catalog.from = function(collection, parameters) {
     var catalog = new Catalog(parameters);
     var index = 1;
     var iterator;
@@ -111,7 +111,7 @@ Catalog.fromCollection = function(collection, parameters) {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    var result = catalog1.constructor.fromCollection(catalog1, catalog1.parameters);
+    var result = catalog1.constructor.from(catalog1, catalog1.parameters);
     result.addItems(catalog2);
     return result;
 };

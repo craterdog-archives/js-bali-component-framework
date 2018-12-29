@@ -60,7 +60,7 @@ exports.List = List;
  * @param {Parameters} parameters Optional parameters used to parameterize this list. 
  * @returns {List} The new list.
  */
-List.fromCollection = function(collection, parameters) {
+List.from = function(collection, parameters) {
     var list = new List(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -102,7 +102,7 @@ List.fromCollection = function(collection, parameters) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    var result = list1.constructor.fromCollection(list1, list1.parameters);
+    var result = list1.constructor.from(list1, list1.parameters);
     result.addItems(list2);
     return result;
 };
@@ -117,7 +117,7 @@ List.concatenation = function(list1, list2) {
  * @returns {List} The resulting list.
  */
 List.difference = function(list1, list2) {
-    var result = list1.constructor.fromCollection(list1, list1.parameters);
+    var result = list1.constructor.from(list1, list1.parameters);
     result.removeItems(list2);
     return result;
 };

@@ -57,7 +57,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from an array', function() {
-            var stack = collections.Stack.fromCollection(array);
+            var stack = collections.Stack.from(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +76,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a list', function() {
-            var list = collections.List.fromCollection(array);
-            stack = collections.Stack.fromCollection(list);
+            var list = collections.List.from(array);
+            stack = collections.Stack.from(list);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -96,8 +96,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a stack', function() {
-            var expected = collections.Stack.fromCollection(array);
-            var stack = collections.Stack.fromCollection(expected);
+            var expected = collections.Stack.from(array);
+            var stack = collections.Stack.from(expected);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -126,7 +126,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to push and pop items from a stack', function() {
-            var stack = collections.Stack.fromCollection(array);
+            var stack = collections.Stack.from(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -165,7 +165,7 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             // REMEMBER: The iterator for a stack iterates through the items in LIFO order
-            var stack = collections.Stack.fromCollection(array);
+            var stack = collections.Stack.from(array);
             // iterate through the items from top down
             var iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line

@@ -103,7 +103,7 @@ Collection.prototype.getItems = function(firstIndex, lastIndex) {
         array.push(item);
         numberOfItems--;
     }
-    var collection = this.constructor.fromCollection(array);
+    var collection = this.constructor.from(array);
     return collection;
 };
 

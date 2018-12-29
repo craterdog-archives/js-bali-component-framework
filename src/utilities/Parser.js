@@ -1028,7 +1028,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    var exception = collections.Catalog.fromCollection({
+    var exception = collections.Catalog.from({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
@@ -1074,7 +1074,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     logMessage(recognizer, message);
 
     // stop processing
-    var exception = collections.Catalog.fromCollection({
+    var exception = collections.Catalog.from({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',

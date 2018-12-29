@@ -216,7 +216,7 @@ Angle.difference = function(firstAngle, secondAngle) {
  * @param {Number} factor The scale factor.
  * @returns {Angle} The normalized scaled angle.
  */
-Angle.scale = function(angle, factor) {
+Angle.scaled = function(angle, factor) {
     return new Angle(precision.product(angle.value, factor));
 };
 

@@ -45,7 +45,7 @@ exports.Parameters = Parameters;
  * parameters to be used to seed the new parameter list.
  * @returns {Parameters} The new parameter list.
  */
-Parameters.fromCollection = function(collection) {
+Parameters.from = function(collection) {
     var type = collection.constructor.name;
     switch (type) {
         case 'Array':
@@ -53,11 +53,11 @@ Parameters.fromCollection = function(collection) {
         case 'Queue':
         case 'Set':
         case 'Stack':
-            collection = collections.List.fromCollection(collection);
+            collection = collections.List.from(collection);
             break;
         case 'Object':
         case 'Catalog':
-            collection = collections.Catalog.fromCollection(collection);
+            collection = collections.Catalog.from(collection);
             break;
         default:
             throw new Error('BUG: A parameters list cannot be initialized using a collection of type: ' + type);

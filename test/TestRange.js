@@ -18,7 +18,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the range constructors.', function() {
 
         it('should create an integer range with two endpoints', function() {
-            var range = composites.Range.fromEndPoints(2, 5);
+            var range = new composites.Range(2, 5);
             expect(range).to.exist;  // jshint ignore:line
             var size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -27,25 +27,6 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext().toNumber()).to.equal(2);
-            expect(iterator.getNext().toNumber()).to.equal(3);
-            expect(iterator.getNext().toNumber()).to.equal(4);
-            expect(iterator.getNext().toNumber()).to.equal(5);
-            expect(iterator.hasNext() === false);
-            expect(iterator.hasPrevious() === true);
-        });
-
-        it('should create an integer range with one endpoint', function() {
-            var range = composites.Range.fromLastItem(5);
-            expect(range).to.exist;  // jshint ignore:line
-            var size = range.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(5);
-            var iterator = range.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext().toNumber()).to.equal(1);
             expect(iterator.getNext().toNumber()).to.equal(2);
             expect(iterator.getNext().toNumber()).to.equal(3);
             expect(iterator.getNext().toNumber()).to.equal(4);
@@ -64,20 +45,14 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to call the Collection class methods on the range', function() {
-            var range1 = composites.Range.fromEndPoints(1, 8);
+            var range1 = new composites.Range(1, 8);
             var size = range1.getSize();
             expect(size).to.equal(8);
-            var range2 = composites.Range.fromEndPoints(4, 6);
+            var range2 = new composites.Range(4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
             expect(range1.isInRange(2)).to.equal(true);
             expect(range2.isInRange(7)).to.equal(false);
-        });
-
-        it('should be able to perform range operations on ranges', function() {
-            var range1 = composites.Range.fromEndPoints(3, 8);
-            var range2 = composites.Range.fromEndPoints(7, 16);
-            var range3 = composites.Range.fromEndPoints(3, 16);
         });
 
     });
@@ -85,7 +60,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the range iterators.', function() {
 
         it('should iterate over a range forwards and backwards', function() {
-            var range = composites.Range.fromEndPoints(1, 3);
+            var range = new composites.Range(1, 3);
             var index = range.getSize();
             var items = range.toArray();
             var item;

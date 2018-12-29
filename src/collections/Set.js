@@ -50,7 +50,7 @@ exports.Set = Set;
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {List} The new set.
  */
-Set.fromCollection = function(collection, parameters) {
+Set.from = function(collection, parameters) {
     var set = new Set(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -83,7 +83,7 @@ Set.fromCollection = function(collection, parameters) {
  * @returns {Set} The resulting collection.
  */
 Set.or = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    var result = collection1.constructor.from(collection1, collection1.parameters);
     result.addItems(collection2);
     return result;
 };
@@ -98,7 +98,7 @@ Set.or = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.and = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var result = collection1.constructor.from([], collection1.parameters);
     var iterator = collection1.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
@@ -119,7 +119,7 @@ Set.and = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.sans = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection(collection1, collection1.parameters);
+    var result = collection1.constructor.from(collection1, collection1.parameters);
     result.removeItems(collection2);
     return result;
 };
@@ -134,7 +134,7 @@ Set.sans = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.xor = function(collection1, collection2) {
-    var result = collection1.constructor.fromCollection([], collection1.parameters);
+    var result = collection1.constructor.from([], collection1.parameters);
     var iterator1 = collection1.getIterator();
     var item1;
     var iterator2 = collection2.getIterator();

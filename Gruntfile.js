@@ -85,7 +85,8 @@ module.exports = function(grunt) {
         entry: './index.js',
         output: {
           path: path.resolve(__dirname, 'dist'),
-          filename: 'lib-web.js'
+          filename: 'lib-web.js',
+          library: 'bali'
         }
       },
       serverConfig: {
@@ -94,7 +95,8 @@ module.exports = function(grunt) {
         entry: './index.js',
         output: {
           path: path.resolve(__dirname, 'dist'),
-          filename: 'lib-node.js'
+          filename: 'lib-node.js',
+          library: 'bali'
         }
       }
     }

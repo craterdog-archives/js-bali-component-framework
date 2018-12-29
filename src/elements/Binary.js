@@ -188,7 +188,7 @@ Binary.prototype.getBuffer = function() {
  * @param {Number} numberOfBytes The number of random bytes to be created.
  * @returns {Binary} A new binary element containing the specified number of random bytes.
  */
-Binary.randomBytes = function(numberOfBytes) {
+Binary.random = function(numberOfBytes) {
     var buffer = random.bytes(numberOfBytes);
     return new Binary(buffer);
 };
@@ -201,7 +201,7 @@ Binary.randomBytes = function(numberOfBytes) {
  * @param {Binary} binary The binary.
  * @returns {Binary} The resulting binary.
  */
-Binary.inverse = function(binary) {
+Binary.not = function(binary) {
     var length = binary.value.length;
     var buffer = Buffer.alloc(length);
     binary.value.forEach(function(byte, index) {
@@ -224,7 +224,7 @@ Binary.and = function(binary1, binary2) {
     var buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1[index] & binary2[index];
+        buffer[index] = binary1.value[index] & binary2.value[index];
     }
     return new Binary(buffer);
 };
@@ -243,7 +243,7 @@ Binary.sans = function(binary1, binary2) {
     var buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1[index] & ~binary2[index];
+        buffer[index] = binary1.value[index] & ~binary2.value[index];
     }
     return new Binary(buffer);
 };
@@ -262,7 +262,7 @@ Binary.or = function(binary1, binary2) {
     var buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1[index] | binary2[index];
+        buffer[index] = binary1.value[index] | binary2.value[index];
     }
     return new Binary(buffer);
 };
@@ -281,7 +281,7 @@ Binary.xor = function(binary1, binary2) {
     var buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1[index] ^ binary2[index];
+        buffer[index] = binary1.value[index] ^ binary2.value[index];
     }
     return new Binary(buffer);
 };

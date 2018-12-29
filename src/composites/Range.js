@@ -45,52 +45,6 @@ Range.prototype.constructor = Range;
 exports.Range = Range;
 
 
-/**
- * This function creates a new range with the specified first and last item values.
- * The range may be parameterized by specifying optional parameters that are used to
- * parameterize its type.
- * 
- * @param {Component} firstItem The first item in the range.
- * @param {Component} lastItem The last item in the range.
- * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
- * @returns {Range} The new range.
- */
-Range.fromEndPoints = function(firstItem, lastItem, parameters) {
-    var range = new Range(firstItem, lastItem, parameters);
-    return range;
-};
-
-
-/**
- * This function creates a new range from the specified first item to the last item value.
- * The range may be parameterized by specifying optional parameters that are used to
- * parameterize its type.
- * 
- * @param {Component} firstItem The first item in the range.
- * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
- * @returns {Range} The new range.
- */
-Range.fromFirstItem = function(firstItem, parameters) {
-    var range = new Range(firstItem, 1024, parameters);  // setting a safe upper limit for now.
-    return range;
-};
-
-
-/**
- * This function creates a new range from the first item to the specified last item value.
- * The range may be parameterized by specifying optional parameters that are used to
- * parameterize its type.
- * 
- * @param {Component} lastItem The last item in the range.
- * @param {Parameters} parameters Optional parameters that parameterize the type of the range.
- * @returns {Range} The new range.
- */
-Range.fromLastItem = function(lastItem, parameters) {
-    var range = new Range(1, lastItem, parameters);
-    return range;
-};
-
-
 // PUBLIC METHODS
 
 /**

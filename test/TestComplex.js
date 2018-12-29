@@ -63,31 +63,31 @@ describe('Bali Component Framework™', function() {
     describe('Test complex functions', function() {
 
         it('should perform the real function correctly', function() {
-            expect(elements.Number.getReal(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.getReal(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.getReal(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.getReal(new elements.Number('(3, 4i)'))).to.equal(3);
+            expect(elements.Number.real(elements.Number.UNDEFINED).toString()).to.equal('NaN');
+            expect(elements.Number.real(elements.Number.INFINITY)).to.equal(Infinity);
+            expect(elements.Number.real(elements.Number.ZERO)).to.equal(0);
+            expect(elements.Number.real(new elements.Number('(3, 4i)'))).to.equal(3);
         });
 
         it('should perform the imaginary function correctly', function() {
-            expect(elements.Number.getImaginary(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.getImaginary(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.getImaginary(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.getImaginary(new elements.Number('(3, -4i)'))).to.equal(-4);
+            expect(elements.Number.imaginary(elements.Number.UNDEFINED).toString()).to.equal('NaN');
+            expect(elements.Number.imaginary(elements.Number.INFINITY)).to.equal(Infinity);
+            expect(elements.Number.imaginary(elements.Number.ZERO)).to.equal(0);
+            expect(elements.Number.imaginary(new elements.Number('(3, -4i)'))).to.equal(-4);
         });
 
         it('should perform the magnitude function correctly', function() {
-            expect(elements.Number.getMagnitude(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.getMagnitude(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.getMagnitude(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.getMagnitude(new elements.Number('(3, 4i)'))).to.equal(5);
+            expect(elements.Number.magnitude(elements.Number.UNDEFINED).toString()).to.equal('NaN');
+            expect(elements.Number.magnitude(elements.Number.INFINITY)).to.equal(Infinity);
+            expect(elements.Number.magnitude(elements.Number.ZERO)).to.equal(0);
+            expect(elements.Number.magnitude(new elements.Number('(3, 4i)'))).to.equal(5);
         });
 
-        it('should perform the angle function correctly', function() {
-            expect(elements.Number.getAngle(elements.Number.UNDEFINED)).to.equal(undefined);
-            expect(elements.Number.getAngle(elements.Number.INFINITY)).to.equal(undefined);
-            expect(elements.Number.getAngle(elements.Number.ZERO)).to.equal(Angle.ZERO);
-            expect(elements.Number.getAngle(new elements.Number('-1')).isEqualTo(Angle.PI)).to.equal(true);
+        it('should perform the phase function correctly', function() {
+            expect(elements.Number.phase(elements.Number.UNDEFINED)).to.equal(undefined);
+            expect(elements.Number.phase(elements.Number.INFINITY)).to.equal(undefined);
+            expect(elements.Number.phase(elements.Number.ZERO)).to.equal(Angle.ZERO);
+            expect(elements.Number.phase(new elements.Number('-1')).isEqualTo(Angle.PI)).to.equal(true);
         });
 
         it('should perform the inverse function correctly', function() {
@@ -132,12 +132,12 @@ describe('Bali Component Framework™', function() {
             expect(elements.Number.difference(new elements.Number('(3, 4i)'), new elements.Number('(2, -2i)')).isEqualTo(new elements.Number('(1, 6i)'))).to.equal(true);
         });
 
-        it('should perform the scale function correctly', function() {
-            expect(elements.Number.scale(new elements.Number(5), NaN)).to.equal(elements.Number.UNDEFINED);
-            expect(elements.Number.scale(new elements.Number(5), Infinity)).to.equal(elements.Number.INFINITY);
-            expect(elements.Number.scale(new elements.Number(5), 0)).to.equal(elements.Number.ZERO);
-            expect(elements.Number.scale(elements.Number.ZERO, 5)).to.equal(elements.Number.ZERO);
-            expect(elements.Number.scale(new elements.Number('(3 e^~pi i)'), -1).isEqualTo(new elements.Number('(-3 e^~pi i)'))).to.equal(true);
+        it('should perform the scaled function correctly', function() {
+            expect(elements.Number.scaled(new elements.Number(5), NaN)).to.equal(elements.Number.UNDEFINED);
+            expect(elements.Number.scaled(new elements.Number(5), Infinity)).to.equal(elements.Number.INFINITY);
+            expect(elements.Number.scaled(new elements.Number(5), 0)).to.equal(elements.Number.ZERO);
+            expect(elements.Number.scaled(elements.Number.ZERO, 5)).to.equal(elements.Number.ZERO);
+            expect(elements.Number.scaled(new elements.Number('(3 e^~pi i)'), -1).isEqualTo(new elements.Number('(-3 e^~pi i)'))).to.equal(true);
         });
 
         it('should perform the product function correctly', function() {

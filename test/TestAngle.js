@@ -172,43 +172,43 @@ describe('Bali Component Framework™', function() {
             expect(elements.Angle.difference(elements.Angle.PI, new elements.Angle(precision.PI * 2))).to.equal(elements.Angle.PI);  // should use constant values
         });
 
-        it('should perform the scale function correctly', function() {
-            expect(elements.Angle.scale(elements.Angle.ZERO, -1)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 4), -1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 2), -1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scale(elements.Angle.PI, -1)).to.equal(elements.Angle.PI);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 4), -1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 2), -1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI), -1).isEqualTo(elements.Angle.PI)).to.equal(true);
-            expect(elements.Angle.scale(elements.Angle.ZERO, 0)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 2), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(new elements.Angle(precision.PI * 3 / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(elements.Angle.PI, 0)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 2), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI * 3 / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
-            expect(elements.Angle.scale(elements.Angle.ZERO, 1)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 4), 1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 2), 1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scale(elements.Angle.PI, 1)).to.equal(elements.Angle.PI);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 4), 1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 2), 1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI), 1).isEqualTo(elements.Angle.PI)).to.equal(true);
-            expect(elements.Angle.scale(elements.Angle.ZERO, Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI / 2), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(precision.PI * 3 / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(elements.Angle.PI, Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI / 2), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI * 3 / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
-            expect(elements.Angle.scale(new elements.Angle(-precision.PI), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+        it('should perform the scaled function correctly', function() {
+            expect(elements.Angle.scaled(elements.Angle.ZERO, -1)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), -1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), -1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(elements.Angle.PI, -1)).to.equal(elements.Angle.PI);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), -1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), -1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), -1).isEqualTo(elements.Angle.PI)).to.equal(true);
+            expect(elements.Angle.scaled(elements.Angle.ZERO, 0)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(elements.Angle.PI, 0)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), 0)).to.equal(elements.Angle.ZERO);  // should use constant values)
+            expect(elements.Angle.scaled(elements.Angle.ZERO, 1)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), 1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), 1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(elements.Angle.PI, 1)).to.equal(elements.Angle.PI);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), 1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), 1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), 1).isEqualTo(elements.Angle.PI)).to.equal(true);
+            expect(elements.Angle.scaled(elements.Angle.ZERO, Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(elements.Angle.PI, Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
+            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), Infinity)).to.equal(elements.Angle.ZERO);  // should use constant values
         });
 
         it('should run round-trip angle methods', function() {

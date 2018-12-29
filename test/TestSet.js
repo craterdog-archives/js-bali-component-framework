@@ -38,7 +38,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from an array', function() {
-            var set = collections.Set.fromCollection(array);
+            var set = collections.Set.from(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -56,8 +56,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a list', function() {
-            var list = collections.List.fromCollection(array);
-            var set = collections.Set.fromCollection(list);
+            var list = collections.List.from(array);
+            var set = collections.Set.from(list);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -75,8 +75,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a set', function() {
-            var set = collections.Set.fromCollection(array);
-            set = collections.Set.fromCollection(set);
+            var set = collections.Set.from(array);
+            set = collections.Set.from(set);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -133,7 +133,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a set', function() {
-            var set = collections.Set.fromCollection(array);
+            var set = collections.Set.from(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -195,7 +195,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the set iterators.', function() {
 
         it('should iterate over a set forwards and backwards', function() {
-            var set = collections.Set.fromCollection(array);
+            var set = collections.Set.from(array);
             var iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

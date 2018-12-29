@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from an array', function() {
-            var list = collections.List.fromCollection(array);
+            var list = collections.List.from(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -57,8 +57,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a list', function() {
-            var list = collections.List.fromCollection(array);
-            list = collections.List.fromCollection(list);
+            var list = collections.List.from(array);
+            list = collections.List.from(list);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +76,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a set', function() {
-            var set = collections.Set.fromCollection(array);
-            var list = collections.List.fromCollection(set);
+            var set = collections.Set.from(array);
+            var list = collections.List.from(set);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -131,7 +131,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a list', function() {
-            var list = collections.List.fromCollection(array);
+            var list = collections.List.from(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -185,8 +185,8 @@ describe('Bali Component Framework™', function() {
                 'xi',
                 'zeta'
             ];
-            var list = collections.List.fromCollection(original);
-            var sorted = collections.List.fromCollection(original);
+            var list = collections.List.from(original);
+            var sorted = collections.List.from(original);
             sorted.shuffleItems();
             expect(sorted.isEqualTo(list)).to.equal(false);  // should fail once every 24! runs on average ;-)
             sorted.sortItems();
@@ -201,7 +201,7 @@ describe('Bali Component Framework™', function() {
             var list2 = new collections.List();
             list2.addItem('epsilon');
             list2.addItem('gamma');
-            var list3 = collections.List.fromCollection(array);
+            var list3 = collections.List.from(array);
             expect(collections.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
@@ -210,7 +210,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the list iterators.', function() {
 
         it('should iterate over a list forwards and backwards', function() {
-            var list = collections.List.fromCollection(array);
+            var list = collections.List.from(array);
             var iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

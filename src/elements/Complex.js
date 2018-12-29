@@ -125,17 +125,17 @@ function Complex(value, parameters) {
                     } else {
                         this.format = 'polar';
                         var magnitude = real;
-                        var angle = new Angle(imaginary);
+                        var phase = new Angle(imaginary);
                         if (magnitude < 0) {
                             magnitude = -magnitude;
-                            angle = Angle.inverse(angle);
+                            phase = Angle.inverse(phase);
                         }
-                        this.real = magnitude * Angle.cosine(angle);
-                        this.imaginary = magnitude * Angle.sine(angle);
+                        this.real = magnitude * Angle.cosine(phase);
+                        this.imaginary = magnitude * Angle.sine(phase);
                         source = '(';
                         source += Element.numberToSource(magnitude);
                         source += ' e^~';
-                        source += imaginaryToSource(angle.value);
+                        source += imaginaryToSource(phase.value);
                         source += ')';
                     }
                     break;
@@ -279,9 +279,9 @@ Complex.prototype.toPolar = function() {
     if (this.isZero()) return '0';
     if (this.imaginary === 0 && this.real > 0) return Element.numberToSource(this.real);
     var source = '(';
-    source += Element.numberToSource(Complex.getMagnitude(this));
+    source += Element.numberToSource(Complex.magnitude(this));
     source += ' e^~';
-    source += imaginaryToSource(Complex.getAngle(this).value);
+    source += imaginaryToSource(Complex.phase(this).value);
     source += ')';
     return source;
 };
@@ -315,7 +315,7 @@ Complex.PHI = precision.PHI;
  * @param {Complex} complex The complex number.
  * @returns {number} The real part of the complex number.
  */
-Complex.getReal = function(complex) {
+Complex.real = function(complex) {
     return complex.real;
 };
 
@@ -326,7 +326,7 @@ Complex.getReal = function(complex) {
  * @param {Complex} complex The complex number.
  * @returns {number} The imaginary part of the complex number.
  */
-Complex.getImaginary = function(complex) {
+Complex.imaginary = function(complex) {
     return complex.imaginary;
 };
 
@@ -337,7 +337,7 @@ Complex.getImaginary = function(complex) {
  * @param {Complex} complex The complex number.
  * @returns {number} The magnitude of the complex number.
  */
-Complex.getMagnitude = function(complex) {
+Complex.magnitude = function(complex) {
     // need to preserve full precision on this except for the sum part
     var magnitude = Math.sqrt(precision.sum(Math.pow(complex.real, 2), Math.pow(complex.imaginary, 2)));
     magnitude = precision.lockOnExtreme(magnitude);
@@ -346,18 +346,18 @@ Complex.getMagnitude = function(complex) {
 
 
 /**
- * This function returns the angle of a complex number.
+ * This function returns the phase (imaginary angle) of a complex number.
  * 
  * @param {Complex} complex The complex number.
- * @returns {Angle} The angle of the complex number or undefined if the complex number is
+ * @returns {Angle} The phase of the complex number or undefined if the complex number is
  * infinite or undefined.
  */
-Complex.getAngle = function(complex) {
-    var angle;
+Complex.phase = function(complex) {
+    var phase;
     if (!complex.isInfinite() && !complex.isUndefined()) {
-        angle = Angle.arctangent(complex.imaginary, complex.real);
+        phase = Angle.arctangent(complex.imaginary, complex.real);
     }
-    return angle;
+    return phase;
 };
 
 
@@ -416,7 +416,7 @@ Complex.logarithm = function(complex) {
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.INFINITY;
     var real = precision.logarithm(precision.E, Complex.magnitude(complex));
-    var imaginary = Complex.angle(complex).value;
+    var imaginary = Complex.phase(complex).value;
     var result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
@@ -452,7 +452,7 @@ Complex.difference = function(first, second) {
 };
 
 
-Complex.scale = function(complex, factor) {
+Complex.scaled = function(complex, factor) {
     if (complex.isUndefined() || Number.isNaN(factor)) return Complex.UNDEFINED;
     if (complex.isZero() && !Number.isFinite(factor)) return Complex.UNDEFINED;
     if (complex.isInfinite() && factor === 0) return Complex.UNDEFINED;

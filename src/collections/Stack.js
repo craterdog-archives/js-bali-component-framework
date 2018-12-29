@@ -59,7 +59,7 @@ exports.Stack = Stack;
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Stack} The new stack.
  */
-Stack.fromCollection = function(collection, parameters) {
+Stack.from = function(collection, parameters) {
     var stack = new Stack(parameters);
     var iterator;
     var type = collection.constructor.name;
@@ -154,7 +154,7 @@ Stack.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
-        exception = Catalog.fromCollection({
+        exception = Catalog.from({
             $exception: '$resourceLimit',
             $type: '$Stack',
             $procedure: '$addItem',
