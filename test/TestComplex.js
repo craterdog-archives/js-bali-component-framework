@@ -53,6 +53,34 @@ describe('Bali Component Framework™', function() {
             }
         });
 
+        it('should perform the getReal method correctly', function() {
+            expect(elements.Number.UNDEFINED.getReal().toString()).to.equal('NaN');
+            expect(elements.Number.INFINITY.getReal()).to.equal(Infinity);
+            expect(elements.Number.ZERO.getReal()).to.equal(0);
+            expect(new elements.Number('(3, 4i)').getReal()).to.equal(3);
+        });
+
+        it('should perform the getImaginary method correctly', function() {
+            expect(elements.Number.UNDEFINED.getImaginary().toString()).to.equal('NaN');
+            expect(elements.Number.INFINITY.getImaginary()).to.equal(Infinity);
+            expect(elements.Number.ZERO.getImaginary()).to.equal(0);
+            expect(new elements.Number('(3, -4i)').getImaginary()).to.equal(-4);
+        });
+
+        it('should perform the getMagnitude method correctly', function() {
+            expect(elements.Number.UNDEFINED.getMagnitude().toString()).to.equal('NaN');
+            expect(elements.Number.INFINITY.getMagnitude()).to.equal(Infinity);
+            expect(elements.Number.ZERO.getMagnitude()).to.equal(0);
+            expect(new elements.Number('(3, 4i)').getMagnitude()).to.equal(5);
+        });
+
+        it('should perform the getPhase method correctly', function() {
+            expect(elements.Number.UNDEFINED.getPhase()).to.equal(undefined);
+            expect(elements.Number.INFINITY.getPhase()).to.equal(undefined);
+            expect(elements.Number.ZERO.getPhase()).to.equal(Angle.ZERO);
+            expect(new elements.Number('-1').getPhase().isEqualTo(Angle.PI)).to.equal(true);
+        });
+
         it('should return the correct type', function() {
             var type = elements.Number.ZERO.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#HYPTA0PX51J7K2VQ88NZMH9GDPHR6G0B,$version:v1,$digest:none]>');
@@ -61,34 +89,6 @@ describe('Bali Component Framework™', function() {
     });
 
     describe('Test complex functions', function() {
-
-        it('should perform the real function correctly', function() {
-            expect(elements.Number.real(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.real(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.real(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.real(new elements.Number('(3, 4i)'))).to.equal(3);
-        });
-
-        it('should perform the imaginary function correctly', function() {
-            expect(elements.Number.imaginary(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.imaginary(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.imaginary(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.imaginary(new elements.Number('(3, -4i)'))).to.equal(-4);
-        });
-
-        it('should perform the magnitude function correctly', function() {
-            expect(elements.Number.magnitude(elements.Number.UNDEFINED).toString()).to.equal('NaN');
-            expect(elements.Number.magnitude(elements.Number.INFINITY)).to.equal(Infinity);
-            expect(elements.Number.magnitude(elements.Number.ZERO)).to.equal(0);
-            expect(elements.Number.magnitude(new elements.Number('(3, 4i)'))).to.equal(5);
-        });
-
-        it('should perform the phase function correctly', function() {
-            expect(elements.Number.phase(elements.Number.UNDEFINED)).to.equal(undefined);
-            expect(elements.Number.phase(elements.Number.INFINITY)).to.equal(undefined);
-            expect(elements.Number.phase(elements.Number.ZERO)).to.equal(Angle.ZERO);
-            expect(elements.Number.phase(new elements.Number('-1')).isEqualTo(Angle.PI)).to.equal(true);
-        });
 
         it('should perform the inverse function correctly', function() {
             expect(elements.Number.inverse(elements.Number.UNDEFINED)).to.equal(elements.Number.UNDEFINED);

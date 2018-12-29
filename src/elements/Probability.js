@@ -152,27 +152,6 @@ Probability.not = function(probability) {
 
 
 /**
- * This function returns a new probability that is the logical OR of the two specified
- * probabilities. It represents the likelihood that the first probability is true or the
- * second probability is true or both are true. The logical OR is equal to:
- * <pre>
- *    pOR = p1 + p2 - p1 * p2
- * </pre>
- *
- * @param {Probability} probability1 The first probability.
- * @param {Probability} probability2 The second probability.
- * @returns {Probability} The resulting probability.
- */
-Probability.or = function(probability1, probability2) {
-    var p1 = probability1.value;
-    var p2 = probability2.value;
-    var p = precision.sum(p1, p2, precision.product(-p1, p2));
-    var result = new Probability(p);
-    return result;
-};
-
-
-/**
  * This function returns a new probability that is the logical AND of the two specified
  * probabilities. It represents the likelihood that the first probability is true and the
  * second probability is true. The logical AND is equal to:
@@ -198,7 +177,8 @@ Probability.and = function(probability1, probability2) {
  * probabilities. It represents the likelihood that the first probability is true but the
  * second probability is not. The logical SANS is equal to:
  * <pre>
- *    pSANS = p1 * (1 - p2)
+ *    pSANS = p1 AND NOT p2
+ *          = p1 * (1 - p2)
  * </pre>
  *
  * @param {Probability} probability1 The first probability.
@@ -215,11 +195,35 @@ Probability.sans = function(probability1, probability2) {
 
 
 /**
+ * This function returns a new probability that is the logical OR of the two specified
+ * probabilities. It represents the likelihood that the first probability is true or the
+ * second probability is true or both are true. The logical OR is equal to:
+ * <pre>
+ *    pOR = NOT (NOT p1 AND NOT p2)
+ *        = 1 - (1 - p1) * (1 - p2)
+ *        = p1 + p2 - p1 * p2
+ * </pre>
+ *
+ * @param {Probability} probability1 The first probability.
+ * @param {Probability} probability2 The second probability.
+ * @returns {Probability} The resulting probability.
+ */
+Probability.or = function(probability1, probability2) {
+    var p1 = probability1.value;
+    var p2 = probability2.value;
+    var p = precision.sum(p1, p2, precision.product(-p1, p2));
+    var result = new Probability(p);
+    return result;
+};
+
+
+/**
  * This function returns a new probability that is the logical XOR of the two specified
  * probabilities. It represents the likelihood that the first probability is true or the
  * second probability is true but not both. The logical XOR is equal to:
  * <pre>
- *    pXOR = p1 * (1 - p2) + p2 * (1 - p1)
+ *    pXOR = (p1 SANS p2) + (p2 SANS p1)
+ *         = p1 * (1 - p2) + p2 * (1 - p1)
  *         = p1 + p2 - 2 * (p1 * p2)
  * </pre>
  *

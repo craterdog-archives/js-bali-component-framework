@@ -205,6 +205,54 @@ Complex.prototype.isInfinite = function() {
 
 
 /**
+ * This function returns the real part of a complex number.
+ * 
+ * @returns {number} The real part of the complex number.
+ */
+Complex.prototype.getReal = function() {
+    return this.real;
+};
+
+
+/**
+ * This function returns the imaginary part of a complex number.
+ * 
+ * @returns {number} The imaginary part of the complex number.
+ */
+Complex.prototype.getImaginary = function() {
+    return this.imaginary;
+};
+
+
+/**
+ * This function returns the magnitude of a complex number.
+ * 
+ * @returns {number} The magnitude of the complex number.
+ */
+Complex.prototype.getMagnitude = function() {
+    // need to preserve full precision on this except for the sum part
+    var magnitude = Math.sqrt(precision.sum(Math.pow(this.real, 2), Math.pow(this.imaginary, 2)));
+    magnitude = precision.lockOnExtreme(magnitude);
+    return magnitude;
+};
+
+
+/**
+ * This function returns the phase (imaginary angle) of a complex number.
+ * 
+ * @returns {Angle} The phase of the complex number or undefined if the complex number is
+ * infinite or undefined.
+ */
+Complex.prototype.getPhase = function() {
+    var phase;
+    if (!this.isInfinite() && !this.isUndefined()) {
+        phase = Angle.arctangent(this.imaginary, this.real);
+    }
+    return phase;
+};
+
+
+/**
  * This method determines whether or not this complex number is equal to another complex number.
  * 
  * @param {Object} that The object that is being compared.
@@ -279,9 +327,9 @@ Complex.prototype.toPolar = function() {
     if (this.isZero()) return '0';
     if (this.imaginary === 0 && this.real > 0) return Element.numberToSource(this.real);
     var source = '(';
-    source += Element.numberToSource(Complex.magnitude(this));
+    source += Element.numberToSource(this.getMagnitude());
     source += ' e^~';
-    source += imaginaryToSource(Complex.phase(this).value);
+    source += imaginaryToSource(this.getPhase().value);
     source += ')';
     return source;
 };
@@ -290,7 +338,7 @@ Complex.prototype.toPolar = function() {
 /**
  * This method returns the real part of this complex number.
  * 
- * @returns {number}
+ * @returns {Number} The real part of this complex number.
  */
 Complex.prototype.toNumber = function() {
     return this.real;
@@ -308,58 +356,6 @@ Complex.PHI = precision.PHI;
 
 
 // PUBLIC FUNCTIONS
-
-/**
- * This function returns the real part of a complex number.
- * 
- * @param {Complex} complex The complex number.
- * @returns {number} The real part of the complex number.
- */
-Complex.real = function(complex) {
-    return complex.real;
-};
-
-
-/**
- * This function returns the imaginary part of a complex number.
- * 
- * @param {Complex} complex The complex number.
- * @returns {number} The imaginary part of the complex number.
- */
-Complex.imaginary = function(complex) {
-    return complex.imaginary;
-};
-
-
-/**
- * This function returns the magnitude of a complex number.
- * 
- * @param {Complex} complex The complex number.
- * @returns {number} The magnitude of the complex number.
- */
-Complex.magnitude = function(complex) {
-    // need to preserve full precision on this except for the sum part
-    var magnitude = Math.sqrt(precision.sum(Math.pow(complex.real, 2), Math.pow(complex.imaginary, 2)));
-    magnitude = precision.lockOnExtreme(magnitude);
-    return magnitude;
-};
-
-
-/**
- * This function returns the phase (imaginary angle) of a complex number.
- * 
- * @param {Complex} complex The complex number.
- * @returns {Angle} The phase of the complex number or undefined if the complex number is
- * infinite or undefined.
- */
-Complex.phase = function(complex) {
-    var phase;
-    if (!complex.isInfinite() && !complex.isUndefined()) {
-        phase = Angle.arctangent(complex.imaginary, complex.real);
-    }
-    return phase;
-};
-
 
 Complex.inverse = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
