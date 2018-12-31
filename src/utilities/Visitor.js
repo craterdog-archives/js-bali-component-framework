@@ -121,6 +121,15 @@ Visitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
+// concatenationExpression: expression '&' expression
+Visitor.prototype.visitConcatenationExpression = function(tree) {
+    var operand = tree.getChild(1);
+    operand.acceptVisitor(this);
+    operand = tree.getChild(2);
+    operand.acceptVisitor(this);
+};
+
+
 // continueClause: 'continue' 'loop'
 Visitor.prototype.visitContinueClause = function(tree) {
 };

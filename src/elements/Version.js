@@ -29,11 +29,16 @@ const Element = require('../abstractions/Element').Element;
  */
 function Version(value, parameters) {
     Element.call(this, types.VERSION, parameters);
-    this.value = value ? value : 'v1';  // default value
-    if (!/^v([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(this.value)) {
-        throw new Error('BUG: An invalid version string was passed to the constructor: ' + this.value);
+    value = value || 'v1';  // default value
+    if (!/^v([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(value)) {
+        throw new Error('BUG: An invalid version string was passed to the constructor: ' + value);
     }
-    this.setSource(this.value);
+    this.value = [];
+    var levels = value.slice(1).split('.');
+    levels.forEach(function(level) {
+        this.value.push(Number(level));
+    }, this);
+    this.setSource(value);
     return this;
 }
 Version.prototype = Object.create(Element.prototype);
@@ -41,8 +46,10 @@ Version.prototype.constructor = Version;
 exports.Version = Version;
 
 
+// PUBLIC FUNCTIONS
+
 /**
- * This function increments the specified version number string at the specified version
+ * This function increments the specified version string at the specified version
  * level, for example:
  * <pre>
  *            current             next          what likely changed
@@ -51,33 +58,33 @@ exports.Version = Version;
  * level 3:    v5.7              v5.7.1     (changes being tested)
  * </pre>
  * 
- * If no level is specified the last version number in the string is incremented. If a
+ * If no level is specified the last level in the version string is incremented. If a
  * level that is greater than the current number of levels is specified, a new level
  * with the value '1' is appended to the version string.
  * 
  * @param {Version} currentVersion The current version string.
  * @param {Number} level The version level to be incremented. If no level is specified
- * the last version number in the string is incremented.
+ * the last level in the version string is incremented.
  * @returns {Version} The next version string.
  */
 Version.nextVersion = function(currentVersion, level) {
-    var numbers = currentVersion.getNumbers();
-    var index = level ? level - 1 : numbers.length - 1;  // convert to JS zero based indexing
-    if (index < numbers.length) {
-        numbers[index]++;
-        numbers.splice(index + 1);
+    var levels = currentVersion.value.slice();  // copy the array since we are going to splice it!
+    var index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
+    if (index < levels.length) {
+        levels[index]++;
+        levels.splice(index + 1);
     } else {
-        numbers.push(1);
+        levels.push(1);
     }
-    var nextVersion = new Version('v' + numbers.join('.'), currentVersion.parameters);
+    var nextVersion = new Version('v' + levels.join('.'), currentVersion.parameters);
     return nextVersion;
 };
 
 
 /**
  * This function determines whether or not a proposed next version string is valid. In order
- * for the next version to be valid the last number in the next version string must be one
- * more than the corresponding number in the current version string; or it must be '1' and
+ * for the next version to be valid the last level in the next version string must be one
+ * more than the corresponding level in the current version string; or it must be '1' and
  * the next version string must have one more level of versions than the current version
  * string, for example:
  * <pre>
@@ -92,26 +99,28 @@ Version.nextVersion = function(currentVersion, level) {
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
 Version.validNextVersion = function(currentVersion, nextVersion) {
-    // extract the version numbers
-    var currentNumbers = currentVersion.getNumbers();
-    var nextNumbers = nextVersion.getNumbers();
+    // extract the version levels
+    var currentLevels = currentVersion.value;
+    var nextLevels = nextVersion.value;
 
-    // walk the lists looking for the first different version number
+    // walk the lists looking for the first different version levels
     var index = 0;
-    while (index < currentNumbers.length && index < nextNumbers.length) {
-        var currentNumber = currentNumbers[index];
-        var nextNumber = nextNumbers[index];
-        if (currentNumber === nextNumber) {
+    while (index < currentLevels.length && index < nextLevels.length) {
+        var currentLevel = currentLevels[index];
+        var nextLevel = nextLevels[index];
+        if (currentLevel === nextLevel) {
             index++;
             continue;
         }
-        // the last next version number must be one more than the corresponding current version number
-        return (nextNumber === currentNumber + 1 && nextNumbers.length === index + 1);
+        // the last next version level must be one more than the corresponding current version level
+        return (nextLevel === currentLevel + 1 && nextLevels.length === index + 1);
     }
     // check for a next subversion level of one
-    return (nextNumbers.length === index + 1 && nextNumbers[index] === 1);
+    return (nextLevels.length === index + 1 && nextLevels[index] === 1);
 };
 
+
+// PUBLIC METHODS
 
 /**
  * This method compares two versions for ordering.
@@ -129,35 +138,99 @@ Version.prototype.comparedTo = function(that) {
         return thisType.localeCompare(thatType);
     }
 
-    // compare numbers
-    var thisNumbers = this.getNumbers();
-    var thatNumbers = that.getNumbers();
+    // compare levels
+    var thisLevels = this.value;
+    var thatLevels = that.value;
     var index = 0;
-    while (index < thisNumbers.length && index < thatNumbers.length) {
-        if (thisNumbers[index] < thatNumbers[index]) return -1;
-        if (thisNumbers[index] > thatNumbers[index]) return 1;
+    while (index < thisLevels.length && index < thatLevels.length) {
+        if (thisLevels[index] < thatLevels[index]) return -1;
+        if (thisLevels[index] > thatLevels[index]) return 1;
         index++;
     }
 
     // so far they are the same...
-    if (thisNumbers.length < thatNumbers.length) return -1;
-    if (thisNumbers.length > thatNumbers.length) return 1;
+    if (thisLevels.length < thatLevels.length) return -1;
+    if (thisLevels.length > thatLevels.length) return 1;
 
-    // they are exactly the same version numbers
+    // they are exactly the same version levels
     return 0;
 };
 
 
 /**
- * This method returns the version numbers in an array.
+ * This method returns whether or not this version string has any levels.
  * 
- * @returns {Array} The version numbers.
+ * @returns {Boolean} Whether or not this version string has any levels.
  */
-Version.prototype.getNumbers = function() {
-    var numbers = [];
-    var tokens = this.value.slice(1).split('.');
-    tokens.forEach(function(token) {
-        numbers.push(Number(token));
-    });
-    return numbers;
+Version.prototype.isEmpty = function() {
+    return false;  // a version string requires at least one level
+};
+
+
+/**
+ * This method returns the number of levels that this version string has.
+ * 
+ * @returns {Number} The number of levels that this version string has.
+ */
+Version.prototype.getSize = function() {
+    return this.value.length;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the levels in
+ * this version string.
+ * @returns {Iterator} An iterator for this version string.
+ */
+Version.prototype.getIterator = function() {
+    var iterator = new VersionIterator(this.value);
+    return iterator;
+};
+
+
+// PRIVATE CLASSES
+
+function VersionIterator(levels) {
+    this.slot = 0;  // the slot before the first level
+    this.size = levels.length;  // static so we can cache it here
+    this.levels = levels;
+    return this;
+}
+VersionIterator.prototype.constructor = VersionIterator;
+
+
+VersionIterator.prototype.toStart = function() {
+    this.slot = 0;  // the slot before the first level
+};
+
+
+VersionIterator.prototype.toSlot = function(slot) {
+    this.slot = slot;
+};
+
+
+VersionIterator.prototype.toEnd = function() {
+    this.slot = this.size;  // the slot after the last level
+};
+
+
+VersionIterator.prototype.hasPrevious = function() {
+    return this.slot > 0;
+};
+
+
+VersionIterator.prototype.hasNext = function() {
+    return this.slot < this.size;
+};
+
+
+VersionIterator.prototype.getPrevious = function() {
+    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous level from an iterator that is at the beginning of a version string.');
+    return this.levels[--this.slot];
+};
+
+
+VersionIterator.prototype.getNext = function() {
+    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next level from an iterator that is at the end of a version string.');
+    return this.levels[this.slot++];
 };

@@ -10,6 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
+const random = require('../src/utilities/Random');
 const codex = require('../src/utilities/Codex');
 const elements = require('../src/elements');
 const composites = require('../src/composites');
@@ -113,6 +114,16 @@ describe('Bali Component Framework™', function() {
 
     describe('Test binary functions', function() {
 
+        it('should perform concatenation of two binary strings', function() {
+            var binary1 = new elements.Binary(random.bytes(40));
+            var binary2 = new elements.Binary(random.bytes(40));
+            var binary3 = elements.Binary.concatenation(binary1, binary2);
+            var string1 = binary1.toString().slice(1, -1).replace(/\s/g, '');
+            var string2 = binary2.toString().slice(1, -1).replace(/\s/g, '');
+            var string3 = binary3.toString().slice(1, -1).replace(/\s/g, '');
+            expect(string3).to.equal(string1 + string2);
+        });
+
         it('should perform the bitwise NOT function correctly', function() {
             for (var i = 0; i < 256; i++) {
                 expected = elements.Binary.random(i);
@@ -149,6 +160,39 @@ describe('Bali Component Framework™', function() {
                 expect(elements.Binary.not(elements.Binary.and(A, B)).isEqualTo(elements.Binary.or(elements.Binary.not(A), elements.Binary.not(B)))).to.equal(true);
                 expect(elements.Binary.not(elements.Binary.or(A, B)).isEqualTo(elements.Binary.and(elements.Binary.not(A), elements.Binary.not(B)))).to.equal(true);
             }
+        });
+
+    });
+
+    describe('Test the binary iterators.', function() {
+
+        it('should iterate over a binary string forwards and backwards', function() {
+            var binary = new elements.Binary(random.bytes(4));
+            var iterator = binary.getIterator();
+            expect(iterator).to.exist;  // jshint ignore:line
+            iterator.toEnd();
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            var byte;
+            while (iterator.hasPrevious()) {
+                byte = iterator.getPrevious();
+            }
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+            byte = iterator.getNext();
+            expect(byte).to.equal(binary.value[0]);
+            byte = iterator.getNext();
+            expect(byte).to.equal(binary.value[1]);
+            byte = iterator.getPrevious();
+            expect(byte).to.equal(binary.value[1]);
+            byte = iterator.getPrevious();
+            expect(byte).to.equal(binary.value[0]);
+            while (iterator.hasNext()) {
+                byte = iterator.getNext();
+            }
+            iterator.toStart();
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
         });
 
     });

@@ -126,4 +126,37 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test the version iterators.', function() {
+
+        it('should iterate over a version string forwards and backwards', function() {
+            var version = new elements.Version('v1.2.3');
+            var iterator = version.getIterator();
+            expect(iterator).to.exist;  // jshint ignore:line
+            iterator.toEnd();
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            var number;
+            while (iterator.hasPrevious()) {
+                number = iterator.getPrevious();
+            }
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+            number = iterator.getNext();
+            expect(number).to.equal(version.value[0]);
+            number = iterator.getNext();
+            expect(number).to.equal(version.value[1]);
+            number = iterator.getPrevious();
+            expect(number).to.equal(version.value[1]);
+            number = iterator.getPrevious();
+            expect(number).to.equal(version.value[0]);
+            while (iterator.hasNext()) {
+                number = iterator.getNext();
+            }
+            iterator.toStart();
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+        });
+
+    });
+
 });

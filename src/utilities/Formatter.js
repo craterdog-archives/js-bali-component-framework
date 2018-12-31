@@ -211,6 +211,16 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
+// concatenationExpression: expression '&' expression
+FormattingVisitor.prototype.visitConcatenationExpression = function(tree) {
+    var operand = tree.getChild(1);
+    operand.acceptVisitor(this);
+    this.source += ' & ';
+    operand = tree.getChild(2);
+    operand.acceptVisitor(this);
+};
+
+
 // continueClause: 'continue' 'loop'
 FormattingVisitor.prototype.visitContinueClause = function(tree) {
     this.source += 'continue loop';
@@ -461,7 +471,7 @@ FormattingVisitor.prototype.visitProcedure = function(tree) {
     if (!tree.isEmpty()) {
         var iterator = tree.getIterator();
         var statement;
-        if (tree.isSimple()) {
+        if (types.isSimple(tree.complexity)) {
             // inline the statements
             statement = iterator.getNext();
             statement.acceptVisitor(this);
@@ -481,7 +491,7 @@ FormattingVisitor.prototype.visitProcedure = function(tree) {
             this.depth--;
             this.appendNewline();
         }
-    } else if (!tree.isSimple()) {
+    } else if (!types.isSimple(tree.complexity)) {
         this.appendNewline();
     }
 };

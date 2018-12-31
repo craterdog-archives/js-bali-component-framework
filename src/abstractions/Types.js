@@ -33,6 +33,7 @@ const MAP = {
     CommitClause:                 '#PX8X7F9R63SPPJ43V7Q6B3WA7J40X3SY',
     ComparisonExpression:         '#4BPSTG1VKZ78FZ1Q6BBG3FSQLP485W6A',
     ComplementExpression:         '#ML3LBVVVJ253VAFQ385WF1WGGZL759BP',
+    ConcatenationExpression:      '#5758L981N1NA8390CYQTMALD732RH02P',
     ContinueClause:               '#5QMFG29CD78F647GMTQC5YPS5M1XNB1Q',
     DefaultExpression:            '#6Z2Y2P41ZH33Y42HJGPV0Q8VA3ZFK4K4',
     DereferenceExpression:        '#D9JFAF3C9Z96JTGNY6CX3X2Y1L2VZPMK',
@@ -81,7 +82,6 @@ const MAP = {
     ThrowClause:                  '#0CB0H5GSZK8NW9MTQ7NSKWPV07P82TR6',
     Variable:                     '#CBZ2CQLQM3JXMQT8P041PXGWW6MWB4J0',
     Version:                      '#VVF92PYR76BJRFV932KMG7VHCD0MAS5R',
-    Visitor:                      '#VHT9RL809PSKL6VPDHBMC3AX4MWJNB9N',
     WaitClause:                   '#ANWBB52Q07PRHB4T3R3KP18VFB5M9B4R',
     WhileClause:                  '#D9A2CQGM3RJ6SYBHKM32AN7GM5KZYR9L',
     WithClause:                   '#AGXY4B519SNJFFMDNTQ2DSWZXCBKX596'
@@ -113,6 +113,7 @@ exports.CHECKOUT_CLAUSE = NAMES.indexOf('CheckoutClause');
 exports.COMMIT_CLAUSE = NAMES.indexOf('CommitClause');
 exports.COMPARISON_EXPRESSION = NAMES.indexOf('ComparisonExpression');
 exports.COMPLEMENT_EXPRESSION = NAMES.indexOf('ComplementExpression');
+exports.CONCATENATION_EXPRESSION = NAMES.indexOf('ConcatenationExpression');
 exports.CONTINUE_CLAUSE = NAMES.indexOf('ContinueClause');
 exports.DEFAULT_EXPRESSION = NAMES.indexOf('DefaultExpression');
 exports.DEREFERENCE_EXPRESSION = NAMES.indexOf('DereferenceExpression');
@@ -177,6 +178,137 @@ exports.WITH_CLAUSE = NAMES.indexOf('WithClause');
  */
 exports.isSimple = function(complexity) {
     return complexity < exports.IS_COMPLEX;
+};
+
+
+/**
+ * This function determines whether or not the specified type supports logical operations:
+ * <pre>
+ *  * false
+ *  * true
+ *  * not
+ *  * and
+ *  * sans
+ *  * or
+ *  * xor
+ * </pre>
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type supports logical operations.
+ */
+exports.isLogical = function(type) {
+    switch (type) {
+        case exports.BINARY:
+        case exports.PROBABILITY:
+        case exports.SET:
+            return true;
+        default:
+            return false;
+    }
+};
+
+
+/**
+ * This function determines whether or not the specified type supports scaling operations:
+ * <pre>
+ *  * inverse
+ *  * sum
+ *  * difference
+ *  * scaled
+ * </pre>
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type supports scaling operations.
+ */
+exports.isScalable = function(type) {
+    switch (type) {
+        case exports.ANGLE:
+        case exports.DURATION:
+        case exports.NUMBER:
+        case exports.PERCENT:
+            return true;
+        default:
+            return false;
+    }
+};
+
+
+/**
+ * This function determines whether or not the specified type supports numeric operations:
+ * <pre>
+ *  * inverse
+ *  * reciprocal
+ *  * conjugate
+ *  * factorial
+ *  * sum
+ *  * difference
+ *  * scaled
+ *  * product
+ *  * quotient
+ *  * remainder
+ *  * exponential
+ *  * logarithm
+ * </pre>
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type supports numeric operations.
+ */
+exports.isNumeric = function(type) {
+    switch (type) {
+        case exports.NUMBER:
+            return true;
+        default:
+            return false;
+    }
+};
+
+
+/**
+ * This function determines whether or not the specified type supports iterator operations:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type supports iterator operations.
+ */
+exports.isSequential = function(type) {
+    switch (type) {
+        case exports.BINARY:
+        case exports.CATALOG:
+        case exports.LIST:
+        case exports.QUEUE:
+        case exports.RANGE:
+        case exports.SET:
+        case exports.STACK:
+        case exports.TEXT:
+        case exports.VERSION:
+            return true;
+        default:
+            return false;
+    }
+};
+
+
+/**
+ * This function determines whether or not the specified type supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type supports concatenation operations.
+ */
+exports.isCombinable = function(type) {
+    switch (type) {
+        case exports.BINARY:
+        case exports.CATALOG:
+        case exports.LIST:
+        case exports.TEXT:
+            return true;
+        default:
+            return false;
+    }
 };
 
 

@@ -47,6 +47,30 @@ describe('Bali Component Framework™', function() {
 
     });
 
+    describe('Test duration functions', function() {
+
+        it('should throw an exception for inverse function', function() {
+            expect(
+                function() {
+                    var error = elements.Duration.inverse(new elements.Duration('~P0D'));
+                }
+            ).to.throw();
+        });
+
+        it('should perform the sum function correctly', function() {
+            expect(elements.Duration.sum(new elements.Duration('~P2Y3M6D'), new elements.Duration('~P2M4D')).isEqualTo(new elements.Duration('~P2Y5M10D'))).to.equal(true);
+        });
+
+        it('should perform the difference function correctly', function() {
+            expect(elements.Duration.difference(new elements.Duration('~P2Y3M6D'), new elements.Duration('~P2M4D')).isEqualTo(new elements.Duration('~P2Y1M2D'))).to.equal(true);
+        });
+
+        it('should perform the scaled function correctly', function() {
+            expect(elements.Duration.scaled(new elements.Duration('~6D'), 3).isEqualTo(new elements.Duration('~18D'))).to.equal(true);
+        });
+
+    });
+
 });
 
 var tests = [

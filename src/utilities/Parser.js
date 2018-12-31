@@ -298,6 +298,18 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
+// concatenationExpression: expression '&' expression
+ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
+    var tree = new composites.Tree(types.CONCATENATION_EXPRESSION, 3);
+    var expressions = ctx.expression();
+    expressions[0].accept(this);
+    tree.addChild(this.result);
+    expressions[1].accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
+};
+
+
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
     var tree = new composites.Tree(types.CONTINUE_CLAUSE, 13);

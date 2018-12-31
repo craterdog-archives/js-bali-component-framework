@@ -71,17 +71,6 @@ Component.prototype.isParameterized = function() {
 
 
 /**
- * This method determines whether or not the complexity of this component is less than
- * the maximum complexity (IS_COMPLEX) for a simple component.
- * 
- * @returns {Boolean} Whether or not this component is simple.
- */
-Component.prototype.isSimple = function() {
-    return types.isSimple(this.complexity);
-};
-
-
-/**
  * This method sets the complexity of this component to be greater than the maximum complexity
  * for a simple component.
  */
@@ -138,6 +127,26 @@ Component.prototype.isEqualTo = function(that) {
 Component.prototype.comparedTo = function(that) {
     var comparator = new Comparator();
     return comparator.compareComponents(this, that);
+};
+
+
+/**
+ * This method determines whether or not this component matches the specified filter.
+ * 
+ * @param {Object} filter The filter to be used for matching.
+ * @returns {Boolean} Whether or not this component matches the filter.
+ */
+Component.prototype.matches = function(filter) {
+    var string = filter.toString();
+    switch (string) {
+        case 'none':
+            return false;
+        case 'any':
+            return true;
+        default:
+            var regex = new RegExp(string.slice(2, -1));  // remove "&'" and "'" delimiters
+            return regex.test(this.toString());
+    }
 };
 
 

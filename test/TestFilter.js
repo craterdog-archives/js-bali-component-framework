@@ -18,14 +18,20 @@ describe('Bali Component Framework™', function() {
 
         it('should generate a default none filter', function() {
             expect(new elements.Filter().toString()).to.equal(elements.Filter.NONE.toString());
+            expect(new elements.Filter().matches(elements.Filter.NONE)).to.equal(false);
+            expect(new elements.Filter().matches(elements.Filter.ANY)).to.equal(true);
         });
 
         it('should generate an explicit none filter', function() {
             expect(new elements.Filter('none').toString()).to.equal(elements.Filter.NONE.toString());
+            expect(new elements.Filter('none').matches(elements.Filter.NONE)).to.equal(false);
+            expect(new elements.Filter('none').matches(elements.Filter.ANY)).to.equal(true);
         });
 
         it('should generate an explicit any filter', function() {
             expect(new elements.Filter('any').toString()).to.equal(elements.Filter.ANY.toString());
+            expect(new elements.Filter('any').matches(elements.Filter.NONE)).to.equal(false);
+            expect(new elements.Filter('any').matches(elements.Filter.ANY)).to.equal(true);
         });
 
         it('should throw an exception for an invalid filter', function() {

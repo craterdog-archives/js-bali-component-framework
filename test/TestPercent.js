@@ -33,7 +33,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of 13.25%', function() {
-            var decimal = new elements.Percent(0.1325);
+            var decimal = new elements.Percent(13.25);
             var number = decimal.toNumber();
             expect(number).to.equal(0.1325);
             var string = decimal.toString();
@@ -41,7 +41,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct a percent of -2%', function() {
-            var negative = new elements.Percent(-0.02);
+            var negative = new elements.Percent(-2);
             var number = negative.toNumber();
             expect(number).to.equal(-0.02);
             var string = negative.toString();
@@ -87,6 +87,26 @@ describe('Bali Component Framework™', function() {
         it('should return the correct type', function() {
             var type = new elements.Percent('50%').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#WCXVKQC0BM03CNBD2JSF8VLVVHJ1A6P4,$version:v1,$digest:none]>');
+        });
+
+    });
+
+    describe('Test percent functions', function() {
+
+        it('should perform the inverse function correctly', function() {
+            expect(elements.Percent.inverse(new elements.Percent('25%')).isEqualTo(new elements.Percent('-25%'))).to.equal(true);
+        });
+
+        it('should perform the sum function correctly', function() {
+            expect(elements.Percent.sum(new elements.Percent('35%'), new elements.Percent('25%')).isEqualTo(new elements.Percent('60%'))).to.equal(true);
+        });
+
+        it('should perform the difference function correctly', function() {
+            expect(elements.Percent.difference(new elements.Percent('35%'), new elements.Percent('25%')).isEqualTo(new elements.Percent('10%'))).to.equal(true);
+        });
+
+        it('should perform the scaled function correctly', function() {
+            expect(elements.Percent.scaled(new elements.Percent('10%'), 5).isEqualTo(new elements.Percent('50%'))).to.equal(true);
         });
 
     });

@@ -31,8 +31,8 @@ const Element = require('../abstractions/Element').Element;
 function Duration(value, parameters) {
     Element.call(this, types.DURATION, parameters);
     if (value === undefined || value === null) value = '~P0D';  // default value
-    this.duration = duration(value.slice(1));  // remove leading '~'
-    this.setSource('~' + this.duration.toISOString());  // make it canonical
+    this.value = duration(value.slice(1));  // remove leading '~'
+    this.setSource('~' + this.value.toISOString());  // make it canonical
     return this;
 }
 Duration.prototype = Object.create(Element.prototype);
@@ -46,5 +46,55 @@ exports.Duration = Duration;
  * @returns {number} The number of milliseconds of the duration.
  */
 Duration.prototype.toNumber = function() {
-    return this.duration.asMilliseconds();
+    return this.value.asMilliseconds();
 };
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function throws an exception since a duration cannot be negative.
+ * 
+ * @param {Duration} duration The duration to be inverted.
+ * @throws {Error} The duration cannot be negative.
+ */
+Duration.inverse = function(duration) {
+    throw new Error('BUG: Durations cannot be negative.');
+};
+
+
+/**
+ * This function returns the sum of two durations.
+ * 
+ * @param {Duration} firstDuration The first duration to be summed.
+ * @param {Duration} secondDuration The second duration to be summed.
+ * @returns {Duration} The normalized sum of the two durations.
+ */
+Duration.sum = function(firstDuration, secondDuration) {
+    return new Duration('~' + firstDuration.value.add(secondDuration.value).toISOString());
+};
+
+
+/**
+ * This function returns the difference of two durations.
+ * 
+ * @param {Duration} firstDuration The duration to be subtracted from.
+ * @param {Duration} secondDuration The duration to subtract from the first duration.
+ * @returns {Duration} The normalized difference of the two durations.
+ */
+Duration.difference = function(firstDuration, secondDuration) {
+    return new Duration('~' + firstDuration.value.subtract(secondDuration.value).toISOString());
+};
+
+
+/**
+ * This function returns the specified duration scaled to the specified factor.
+ * 
+ * @param {Duration} baseDuration The duration to be scaled.
+ * @param {Number} factor The scale factor.
+ * @returns {Duration} The normalized scaled duration.
+ */
+Duration.scaled = function(baseDuration, factor) {
+    return new Duration('~' + duration(Math.round(baseDuration.value.asMilliseconds() * factor)).toISOString());
+};
+

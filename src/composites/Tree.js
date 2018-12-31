@@ -41,6 +41,7 @@ function Tree(type, complexity) {
         case types.COMMIT_CLAUSE:
         case types.COMPARISON_EXPRESSION:
         case types.COMPLEMENT_EXPRESSION:
+        case types.CONCATENATION_EXPRESSION:
         case types.CONTINUE_CLAUSE:
         case types.DEFAULT_EXPRESSION:
         case types.DEREFERENCE_EXPRESSION:
@@ -74,7 +75,7 @@ function Tree(type, complexity) {
             break;
         default:
             // anything else isn't
-            throw new Error('BUG: An invalid identifier type was passed to the constructor: ' + types.typeName(type));
+            throw new Error('BUG: An invalid tree type was passed to the constructor: ' + types.typeName(type));
     }
     this.array = [];
     this.complexity += complexity;
@@ -163,6 +164,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
             break;
         case types.COMPLEMENT_EXPRESSION:
             visitor.visitComplementExpression(this);
+            break;
+        case types.CONCATENATION_EXPRESSION:
+            visitor.visitConcatenationExpression(this);
             break;
         case types.CONTINUE_CLAUSE:
             visitor.visitContinueClause(this);

@@ -515,6 +515,15 @@ DocumentListener.prototype.exitComplementExpression = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#concatenationExpression.
+DocumentListener.prototype.enterConcatenationExpression = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#concatenationExpression.
+DocumentListener.prototype.exitConcatenationExpression = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#variable.
 DocumentListener.prototype.enterVariable = function(ctx) {
 };

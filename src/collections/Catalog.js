@@ -103,8 +103,8 @@ Catalog.from = function(collection, parameters) {
 
 
 /**
- * This function returns a new catalog that contains all the items that are in
- * the first catalog or the second catalog or both.
+ * This function returns a new catalog that contains the associations from the second catalog
+ * concatenated onto the end of the first catalog (except any duplicate keys which are ignored).
  *
  * @param {Collection} catalog1 The first catalog to be operated on.
  * @param {Collection} catalog2 The second catalog to be operated on.

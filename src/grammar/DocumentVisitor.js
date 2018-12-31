@@ -348,6 +348,12 @@ DocumentVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#concatenationExpression.
+DocumentVisitor.prototype.visitConcatenationExpression = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#variable.
 DocumentVisitor.prototype.visitVariable = function(ctx) {
   return this.visitChildren(ctx);

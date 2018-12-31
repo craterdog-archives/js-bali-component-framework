@@ -94,8 +94,8 @@ List.from = function(collection, parameters) {
 
 
 /**
- * This function returns a new list that contains all the items that are in
- * the first list or the second list or both.
+ * This function returns a new list that contains the items from the second list concatenated
+ * onto the end of the first list.
  *
  * @param {List} list1 The first list to be operated on.
  * @param {List} list2 The second list to be operated on.

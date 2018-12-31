@@ -84,6 +84,11 @@
         |foo()|
         |foo.bar(8)|
     ]
+    $concatenations: [
+        text & "more text"
+        [1, 2, 3] & list
+        [$a: "a", $b: "b"] & catalog
+    ]
     $comparisons: [
         scaler < 8
         x = y
