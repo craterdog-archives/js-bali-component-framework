@@ -237,7 +237,7 @@ describe('Bali Component Framework™', function() {
             expect(catalog1.containsAll(catalog2)).to.equal(true);
             expect(catalog2.containsAll(catalog1)).to.equal(false);
             expect(catalog2.containsAny(catalog1)).to.equal(true);
-            var catalog3 = catalog1.getItems(2, 4);
+            var catalog3 = catalog1.getItems(new composites.Range(2, 4));
             size = catalog3.getSize();
             expect(size).to.equal(3);
             expect(catalog3.containsItem(association4)).to.equal(true);
@@ -247,7 +247,7 @@ describe('Bali Component Framework™', function() {
             size = catalog2.getSize();
             expect(size).to.equal(array.length);
             expect(catalog2.containsAll(catalog1)).to.equal(true);
-            catalog2.removeItems(2, 3);
+            catalog2.removeValues(new composites.Range(2, 3));
             size = catalog2.getSize();
             expect(size).to.equal(3);
             expect(catalog2.containsItem(association3)).to.equal(false);
@@ -270,12 +270,6 @@ describe('Bali Component Framework™', function() {
             expect(size).to.equal(array.length);
             var keyIterator = keys.getIterator();
             expect(keyIterator).to.exist;  // jshint ignore:line
-            var values = catalog.getValues();
-            size = values.getSize();
-            expect(size).to.equal(array.length);
-            expect(list.isEqualTo(values)).to.equal(true);
-            var valueIterator = values.getIterator();
-            expect(valueIterator).to.exist;  // jshint ignore:line
             var associations = catalog.getAssociations();
             size = associations.getSize();
             expect(size).to.equal(array.length);
@@ -285,17 +279,17 @@ describe('Bali Component Framework™', function() {
             var value;
             var association;
             var index = 0;
-            while (keyIterator.hasNext() && valueIterator.hasNext() && associationIterator.hasNext()) {
+            while (keyIterator.hasNext() && associationIterator.hasNext()) {
                 index++;
                 key = keyIterator.getNext();
-                value = valueIterator.getNext();
                 association = associationIterator.getNext();
+                value = association.value;
                 expect(key.toNumber()).to.equal(index);
                 expect(value.toString()).to.equal(array[index - 1]);
                 expect(association.key.toNumber()).to.equal(index);
                 expect(association.value.toString()).to.equal(array[index - 1]);
             }
-            catalog.removeItem(2);
+            catalog.removeValue(2);
             catalog.removeValue(1);
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line

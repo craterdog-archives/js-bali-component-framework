@@ -84,27 +84,21 @@ Collection.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new collection of items starting with the item at the
- * first index and including the item at the last index.
+ * This method returns a new collection containing the items in the specified range.
  * 
- * @param {Number} firstIndex The index of the first item to be included.
- * @param {Number} lastIndex The index of the last item to be included.
+ * @param {Range} range A range depicting the first and last items to be retrieved.
  * @returns {Collection} The new collection containing the requested items.
  */
-Collection.prototype.getItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizeIndex(firstIndex);
-    lastIndex = this.normalizeIndex(lastIndex);
-    var iterator = this.getIterator();
-    iterator.toSlot(firstIndex - 1);  // the slot before the first item
-    var numberOfItems = lastIndex - firstIndex + 1;
+Collection.prototype.getItems = function(range) {
+    var iterator = range.getIterator();
     var array = [];
-    while (numberOfItems > 0) {
-        var item = iterator.getNext();
+    while (iterator.hasNext()) {
+        var index = iterator.getNext();
+        var item = this.getItem(index);
         array.push(item);
-        numberOfItems--;
     }
-    var collection = this.constructor.from(array);
-    return collection;
+    var items = this.constructor.from(array);
+    return items;
 };
 
 

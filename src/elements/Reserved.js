@@ -32,20 +32,10 @@ function Reserved(value, parameters) {
     if (!value || !/^\$\$[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
-    this.value = value;
+    this.value = value.slice(2);
     this.setSource(value);
     return this;
 }
 Reserved.prototype = Object.create(Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
-
-
-/**
- * This method returns the identifier part of the reserved element.
- * 
- * @returns {String} The identifier part of the reserved element.
- */
-Reserved.prototype.getIdentifier = function() {
-    return this.value.substring(1);
-};

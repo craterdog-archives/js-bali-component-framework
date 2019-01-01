@@ -28,7 +28,7 @@ Array.prototype.peek = function() {
 };
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new queue component with optional parameters that are

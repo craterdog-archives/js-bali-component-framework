@@ -32,20 +32,10 @@ function Symbol(value, parameters) {
     if (!value || !/^\$[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
         throw new Error('BUG: An invalid symbol value was passed to the constructor.');
     }
-    this.value = value;
+    this.value = value.slice(1);
     this.setSource(value);
     return this;
 }
 Symbol.prototype = Object.create(Element.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
-
-
-/**
- * This method returns the identifier part of the symbol element.
- * 
- * @returns {String} The identifier part of the symbol element.
- */
-Symbol.prototype.getIdentifier = function() {
-    return this.value.substring(1);
-};

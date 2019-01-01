@@ -30,7 +30,7 @@ const Sorter = require('../utilities/Sorter').Sorter;
 const random = require('../utilities/Random');
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new list component with optional parameters that are
@@ -93,6 +93,8 @@ List.from = function(collection, parameters) {
 };
 
 
+// PUBLIC FUNCTIONS
+
 /**
  * This function returns a new list that contains the items from the second list concatenated
  * onto the end of the first list.
@@ -102,23 +104,8 @@ List.from = function(collection, parameters) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    var result = list1.constructor.from(list1, list1.parameters);
+    var result = List.from(list1, list1.parameters);
     result.addItems(list2);
-    return result;
-};
-
-
-/**
- * This function returns a new list that contains the items that are in
- * the first list but not in the second list.
- *
- * @param {List} list1 The first list to be operated on.
- * @param {List} list2 The second list to be operated on.
- * @returns {List} The resulting list.
- */
-List.difference = function(list1, list2) {
-    var result = list1.constructor.from(list1, list1.parameters);
-    result.removeItems(list2);
     return result;
 };
 
@@ -222,6 +209,22 @@ List.prototype.insertItem = function(index, item) {
 
 
 /**
+ * This method inserts the specified collection of items into this list before the item
+ * associated with the specified index.
+ *
+ * @param {Number} index The index of the item before which the new items are to be inserted.
+ * @param {Collection} items A collection containing the new items to be inserted into this list.
+ */
+List.prototype.insertItems = function(index, items) {
+    var iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        this.insertItem(index++, item);
+    }
+};
+
+
+/**
  * This method removes from this list the item associated with the specified
  * index.
  *
@@ -245,20 +248,19 @@ List.prototype.removeItem = function(index) {
  * This method removes from this list the items associated with the specified
  * index range.
  *
- * @param {Number} firstIndex The index of the first item to be removed.
- * @param {Number} lastIndex The index of the last item to be removed.
+ * @param {Range} range A range depicting the first and last items to be removed.
  * @returns The list of the items that were removed from this list.
  */
-List.prototype.removeItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizeIndex(firstIndex);
-    lastIndex = this.normalizeIndex(lastIndex);
-    var removedItems = new List(this.parameters);
-    var index = firstIndex;
-    while (index <= lastIndex) {
-        var removedItem = this.removeItem(index++);
-        if (removedItem) removedItems.addItem(removedItem);
+List.prototype.removeItems = function(range) {
+    var iterator = range.getIterator();
+    var array = [];
+    while (iterator.hasNext()) {
+        var index = iterator.getNext();
+        var item = this.removeItem(index);
+        array.push(item);
     }
-    return removedItems;
+    var items = this.constructor.from(array);
+    return items;
 };
 
 

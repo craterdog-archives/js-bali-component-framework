@@ -46,7 +46,7 @@ describe('Bali Component Framework™', function() {
             var symbol = new elements.Symbol('$foobar');
             var string = symbol.toString();
             expect(string).to.equal('$foobar');
-            var identifier = symbol.getIdentifier();
+            var identifier = symbol.value;
             expect(identifier).to.equal('foobar');
         });
 

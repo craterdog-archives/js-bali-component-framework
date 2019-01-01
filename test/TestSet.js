@@ -11,6 +11,7 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const abstractions = require('../src/abstractions');
+const composites = require('../src/composites');
 const collections = require('../src/collections');
 
 
@@ -116,7 +117,7 @@ describe('Bali Component Framework™', function() {
             expect(set1.containsAll(set2)).to.equal(true);
             expect(set2.containsAll(set1)).to.equal(false);
             expect(set2.containsAny(set1)).to.equal(true);
-            var set3 = set1.getItems(2, 4);
+            var set3 = set1.getItems(new composites.Range(2, 4));
             size = set3.getSize();
             expect(size).to.equal(3);
             expect(set3.containsItem('epsilon')).to.equal(true);

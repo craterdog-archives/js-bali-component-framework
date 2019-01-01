@@ -23,7 +23,7 @@ const Association = require('../composites/Association').Association;
 const List = require('./List').List;
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new catalog component with optional parameters that are
@@ -102,6 +102,8 @@ Catalog.from = function(collection, parameters) {
 };
 
 
+// PUBLIC FUNCTIONS
+
 /**
  * This function returns a new catalog that contains the associations from the second catalog
  * concatenated onto the end of the first catalog (except any duplicate keys which are ignored).
@@ -111,7 +113,7 @@ Catalog.from = function(collection, parameters) {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    var result = catalog1.constructor.from(catalog1, catalog1.parameters);
+    var result = Catalog.from(catalog1, catalog1.parameters);
     result.addItems(catalog2);
     return result;
 };
@@ -121,11 +123,11 @@ Catalog.concatenation = function(catalog1, catalog2) {
  * This function returns a new catalog that contains only the associations with
  * the specified keys.
  *
- * @param {Set} keys The set of keys for the associations to be saved.
  * @param {Catalog} catalog The catalog whose items are to be reduced.
+ * @param {Set} keys The set of keys for the associations to be extracted.
  * @returns The resulting catalog.
  */
-Catalog.extraction = function(keys, catalog) {
+Catalog.extraction = function(catalog, keys) {
     var result = new Catalog();
     var iterator = keys.getIterator();
     while (iterator.hasNext()) {
@@ -204,25 +206,6 @@ Catalog.prototype.getItem = function(index) {
 
 
 /**
- * This method replaces an existing association in this catalog with a new one.  The new
- * association replaces the existing association at the specified index.
- *
- * @param {Number} index The index of the existing item.
- * @param {Component} item The new item that will replace the existing one.
- *
- * @returns The existing item that was at the specified index.
- */
-Catalog.prototype.setItem = function(index, item) {
-    item = Composite.asComponent(item);
-    index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
-    var oldItem = this.array[index];
-    this.array[index] = item;
-    this.complexity += item.complexity - oldItem.complexity;
-    return oldItem;
-};
-
-
-/**
  * This method adds the specified association to this catalog. If an association with
  * the same key already exists in this catalog, its value will be replaced with the
  * the value of the specified association. The order of associations will not be
@@ -264,61 +247,6 @@ Catalog.prototype.containsItem = function(association) {
 
 
 /**
- * This method removes from this catalog the item associated with the specified index.
- *
- * @param {Number} index The index of the item to be removed.
- * @returns {Component} The item at the specified index.
- */
-Catalog.prototype.removeItem = function(index) {
-    var association = this.array[index];
-    if (association) {
-        var key = association.key;
-        delete this.map[key];
-        this.array.splice(index, 1);
-        this.complexity -= association.complexity;
-        if (this.getSize() > 1) this.complexity -= 2;  // account for the ', ' separator
-    }
-    return association;
-};
-
-
-/**
- * This method removes from this catalog the items associated with the specified
- * index range.
- *
- * @param {Number} firstIndex The index of the first item to be removed.
- * @param {Number} lastIndex The index of the last item to be removed.
- * @returns The catalog of the items that were removed from this catalog.
- */
-Catalog.prototype.removeItems = function(firstIndex, lastIndex) {
-    firstIndex = this.normalizeIndex(firstIndex);
-    lastIndex = this.normalizeIndex(lastIndex);
-    var removedItems = new Catalog(this.parameters);
-    var index = firstIndex;
-    while (index <= lastIndex) {
-        var removedItem = this.removeItem(index++);
-        if (removedItem) removedItems.addItem(removedItem);
-    }
-    return removedItems;
-};
-
-
-/**
- * This method removes all associations from this catalog.
- */
-Catalog.prototype.removeAll = function() {
-    var size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
-    Object.keys(this.map).forEach(function(key) {
-        var association = this.map[key];
-        this.complexity -= association.complexity;
-        delete this.map[key];
-    }, this);
-    this.array.splice(0);
-};
-
-
-/**
  * This method returns the value associated with the specified key in this catalog.
  *
  * @param {String|Number|Boolean|Component} key The key for the desired value.
@@ -330,6 +258,26 @@ Catalog.prototype.getValue = function(key) {
     var association = this.map[index];
     if (association) value = association.value;
     return value;
+};
+
+
+/**
+ * This method retrieves from this catalog the values associated with the specified
+ * keys. The values are returned as a list with the values in the same order as the
+ * specified keys.
+ *
+ * @param {List} keys The list of keys for the values to be retrieved.
+ * @returns A list of the values that were retrieved from this catalog.
+ */
+Catalog.prototype.getValues = function(keys) {
+    var values = new List();
+    var iterator = keys.getIterator();
+    while (iterator.hasNext()) {
+        var key = iterator.getNext();
+        var value = this.getValue(key);
+        if (value !== undefined) values.addItem(value);
+    }
+    return values;
 };
 
 
@@ -364,14 +312,28 @@ Catalog.prototype.setValue = function(key, value) {
 
 
 /**
+ * This method adds to this catalog the associations in the specified catalog.  If there
+ * is already a value associated with a specified key, the new value replaces the old value.
+ *
+ * @param {Catalog} associations A catalog containing the new associations to be added.
+ */
+Catalog.prototype.setValues = function(associations) {
+    var iterator = associations.getIterator();
+    while (iterator.hasNext()) {
+        var association = iterator.getNext();
+        this.setValue(association.key, association.value);
+    }
+};
+
+
+/**
  * This method removes from this catalog the value associated with a key.  If no value
  * is associated with the specified key then the return value is undefined.
  *
  * @param {String|Number|Boolean|Component} key The key for the value to be removed.
- * @returns {Component} The value associated with the key.
+ * @returns {Boolean} Whether or not a value was removed.
  */
 Catalog.prototype.removeValue = function(key) {
-    var value;
     var index = key.toString();
     var association = this.map[index];
     if (association) {
@@ -382,9 +344,42 @@ Catalog.prototype.removeValue = function(key) {
         this.array.splice(index, 1);
         this.complexity -= association.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
-        value = association.value;
+        return true;
     }
-    return value;
+    return false;
+};
+
+
+/**
+ * This method removes from this catalog the values associated with the specified
+ * keys. It returns the number of associations that were removed.
+ *
+ * @param {List} keys The list of keys for the values to be removed.
+ * @returns {Number} The number of associations that were removed from this catalog.
+ */
+Catalog.prototype.removeValues = function(keys) {
+    var count = 0;
+    var iterator = keys.getIterator();
+    while (iterator.hasNext()) {
+        var key = iterator.getNext();
+        if (this.removeValue(key)) count++;
+    }
+    return count;
+};
+
+
+/**
+ * This method removes all associations from this catalog.
+ */
+Catalog.prototype.removeAll = function() {
+    var size = this.getSize();
+    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
+    Object.keys(this.map).forEach(function(key) {
+        var association = this.map[key];
+        this.complexity -= association.complexity;
+        delete this.map[key];
+    }, this);
+    this.array.splice(0);
 };
 
 
@@ -401,23 +396,6 @@ Catalog.prototype.getKeys = function() {
         keys.addItem(key);
     });
     return keys;
-};
-
-
-/**
- * This method returns a list of the values for the associations in this catalog. The
- * values are in the same order as the associations in the catalog including any duplicate
- * values.
- *
- * @returns {List} A list of the values for this catalog.
- */
-Catalog.prototype.getValues = function() {
-    var values = new List();
-    this.array.forEach(function(association) {
-        var value = association.value;
-        values.addItem(value);
-    });
-    return values;
 };
 
 

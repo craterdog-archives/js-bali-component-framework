@@ -253,7 +253,7 @@ exports.isScalable = function(type) {
  * @param {Number} type The type being analyzed.
  * @returns {Boolean} Whether or not the specified type supports numeric operations.
  */
-exports.isNumeric = function(type) {
+exports.isNumerical = function(type) {
     switch (type) {
         case exports.NUMBER:
             return true;
@@ -277,11 +277,13 @@ exports.isSequential = function(type) {
         case exports.BINARY:
         case exports.CATALOG:
         case exports.LIST:
+        case exports.PARAMETERS:
         case exports.QUEUE:
         case exports.RANGE:
         case exports.SET:
         case exports.STACK:
         case exports.TEXT:
+        case exports.TREE:
         case exports.VERSION:
             return true;
         default:

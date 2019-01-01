@@ -117,7 +117,7 @@ describe('Bali Component Framework™', function() {
             expect(list1.containsAll(list2)).to.equal(true);
             expect(list2.containsAll(list1)).to.equal(false);
             expect(list2.containsAny(list1)).to.equal(true);
-            var list3 = list1.getItems(2, 4);
+            var list3 = list1.getItems(new composites.Range(2, 4));
             size = list3.getSize();
             expect(size).to.equal(3);
             expect(list3.containsItem('epsilon')).to.equal(true);
