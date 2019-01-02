@@ -19,25 +19,25 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for an empty reference', function() {
             expect(
                 function() {
-                    var empty = new elements.Reference();
+                    const empty = new elements.Reference();
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new elements.Reference('');
+                    const empty = new elements.Reference('');
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new elements.Reference('<>');
+                    const empty = new elements.Reference('<>');
                 }
             ).to.throw();
         });
 
         it('should construct references and format matching references', function() {
             tests.forEach(function(expected) {
-                var reference = new elements.Reference(expected);
-                var string = reference.toString();
+                const reference = new elements.Reference(expected);
+                const string = reference.toString();
                 expect(string).to.equal(expected);
             });
         });
@@ -47,7 +47,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reference methods', function() {
 
         it('should return the correct type', function() {
-            var type = new elements.Reference('<https://google.com/>').getType();
+            const type = new elements.Reference('<https://google.com/>').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
         });
 
@@ -55,7 +55,7 @@ describe('Bali Component Framework™', function() {
 
 });
 
-var tests = [
+const tests = [
     '<https://google.com/>',
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',

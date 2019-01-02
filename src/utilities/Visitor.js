@@ -76,19 +76,19 @@ Visitor.prototype.visitCatalog = function(catalog) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 Visitor.prototype.visitCheckoutClause = function(tree) {
-    var component = tree.getChild(1);
+    const component = tree.getChild(1);
     component.acceptVisitor(this);
-    var reference = tree.getChild(2);
+    const reference = tree.getChild(2);
     reference.acceptVisitor(this);
 };
 
 
 // collection: range | list | catalog
 Visitor.prototype.visitCollection = function(collection) {
-    var iterator = collection.getIterator();
+    const iterator = collection.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         item.acceptVisitor(this);
     };
     this.depth--;
@@ -97,9 +97,9 @@ Visitor.prototype.visitCollection = function(collection) {
 
 // commitClause: 'commit' expression 'to' expression
 Visitor.prototype.visitCommitClause = function(tree) {
-    var component = tree.getChild(1);
+    const component = tree.getChild(1);
     component.acceptVisitor(this);
-    var reference = tree.getChild(2);
+    const reference = tree.getChild(2);
     reference.acceptVisitor(this);
 };
 
@@ -108,7 +108,7 @@ Visitor.prototype.visitCommitClause = function(tree) {
 Visitor.prototype.visitComparisonExpression = function(tree) {
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    var operator = tree.operator;
+    const operator = tree.operator;
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
 };
@@ -116,7 +116,7 @@ Visitor.prototype.visitComparisonExpression = function(tree) {
 
 // complementExpression: 'not' expression
 Visitor.prototype.visitComplementExpression = function(tree) {
-    var operand = tree.getChild(1);
+    const operand = tree.getChild(1);
     operand.acceptVisitor(this);
 };
 
@@ -137,23 +137,23 @@ Visitor.prototype.visitContinueClause = function(tree) {
 
 // defaultExpression: expression '?' expression
 Visitor.prototype.visitDefaultExpression = function(tree) {
-    var value = tree.getChild(1);
+    const value = tree.getChild(1);
     value.acceptVisitor(this);
-    var defaultValue = tree.getChild(2);
+    const defaultValue = tree.getChild(2);
     defaultValue.acceptVisitor(this);
 };
 
 
 // dereferenceExpression: '@' expression
 Visitor.prototype.visitDereferenceExpression = function(tree) {
-    var reference = tree.getChild(1);
+    const reference = tree.getChild(1);
     reference.acceptVisitor(this);
 };
 
 
 // discardClause: 'discard' expression
 Visitor.prototype.visitDiscardClause = function(tree) {
-    var draft = tree.getChild(1);
+    const draft = tree.getChild(1);
     draft.acceptVisitor(this);
 };
 
@@ -182,12 +182,12 @@ Visitor.prototype.visitElement = function(element) {
 
 // evaluateClause: (recipient ':=')? expression
 Visitor.prototype.visitEvaluateClause = function(tree) {
-    var size = tree.getSize();
+    const size = tree.getSize();
     if (size > 1) {
-        var recipient = tree.getChild(1);
+        const recipient = tree.getChild(1);
         recipient.acceptVisitor(this);
     }
-    var expression = tree.getChild(size);
+    const expression = tree.getChild(size);
     expression.acceptVisitor(this);
 };
 
@@ -203,7 +203,7 @@ Visitor.prototype.visitExponentialExpression = function(tree) {
 
 // factorialExpression: expression '!'
 Visitor.prototype.visitFactorialExpression = function(tree) {
-    var operand = tree.getChild(1);
+    const operand = tree.getChild(1);
     operand.acceptVisitor(this);
 };
 
@@ -215,20 +215,20 @@ Visitor.prototype.visitFunction = function(funxtion) {
 
 // functionExpression: function parameters
 Visitor.prototype.visitFunctionExpression = function(tree) {
-    var functionName = tree.getChild(1);
+    const functionName = tree.getChild(1);
     functionName.acceptVisitor(this);
-    var parameters = tree.getChild(2);
+    const parameters = tree.getChild(2);
     parameters.acceptVisitor(this);
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 Visitor.prototype.visitHandleClause = function(tree) {
-    var exception = tree.getChild(1);
+    const exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    var filter = tree.getChild(2);
+    const filter = tree.getChild(2);
     filter.acceptVisitor(this);
-    var block = tree.getChild(3);
+    const block = tree.getChild(3);
     block.acceptVisitor(this);
 };
 
@@ -242,7 +242,7 @@ Visitor.prototype.visitIfClause = function(tree) {
     block.acceptVisitor(this);
 
     // handle optional additional conditions
-    var size = tree.getSize();
+    const size = tree.getSize();
     for (var i = 3; i <= size; i += 2) {
         if (i === size) {
             // handle last 'else' block
@@ -261,15 +261,15 @@ Visitor.prototype.visitIfClause = function(tree) {
 
 // indices: '[' list ']'
 Visitor.prototype.visitIndices = function(tree) {
-    var list = tree.getChild(1);
+    const list = tree.getChild(1);
     list.acceptVisitor(this);
 };
 
 
 // inversionExpression: ('-' | '/' | '*') expression
 Visitor.prototype.visitInversionExpression = function(tree) {
-    var operator = tree.operator;
-    var operand = tree.getChild(1);
+    const operator = tree.operator;
+    const operand = tree.getChild(1);
     operand.acceptVisitor(this);
 };
 
@@ -291,7 +291,7 @@ Visitor.prototype.visitList = function(list) {
 Visitor.prototype.visitLogicalExpression = function(tree) {
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    var operator = tree.operator;
+    const operator = tree.operator;
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
 };
@@ -299,7 +299,7 @@ Visitor.prototype.visitLogicalExpression = function(tree) {
 
 // magnitudeExpression: '|' expression '|'
 Visitor.prototype.visitMagnitudeExpression = function(tree) {
-    var operand = tree.getChild(1);
+    const operand = tree.getChild(1);
     operand.acceptVisitor(this);
 };
 
@@ -311,18 +311,18 @@ Visitor.prototype.visitMessage = function(message) {
 
 // messageExpression: expression '.' message parameters
 Visitor.prototype.visitMessageExpression = function(tree) {
-    var target = tree.getChild(1);
+    const target = tree.getChild(1);
     target.acceptVisitor(this);
-    var messageName = tree.getChild(2);
+    const messageName = tree.getChild(2);
     messageName.acceptVisitor(this);
-    var parameters = tree.getChild(3);
+    const parameters = tree.getChild(3);
     parameters.acceptVisitor(this);
 };
 
 
 // parameters: '(' collection ')'
 Visitor.prototype.visitParameters = function(parameters) {
-    var iterator = parameters.getIterator();
+    const iterator = parameters.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
         var parameter = iterator.getNext();
@@ -338,7 +338,7 @@ Visitor.prototype.visitParameters = function(parameters) {
 
 // precedenceExpression: '(' expression ')'
 Visitor.prototype.visitPrecedenceExpression = function(tree) {
-    var expression = tree.getChild(1);
+    const expression = tree.getChild(1);
     expression.acceptVisitor(this);
 };
 
@@ -348,10 +348,10 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 //     EOL (statement EOL)* |
 //     /*empty procedure*/
 Visitor.prototype.visitProcedure = function(tree) {
-    var iterator = tree.getIterator();
+    const iterator = tree.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
-        var statement = iterator.getNext();
+        const statement = iterator.getNext();
         statement.acceptVisitor(this);
     }
     this.depth--;
@@ -360,7 +360,7 @@ Visitor.prototype.visitProcedure = function(tree) {
 
 // publishClause: 'publish' expression
 Visitor.prototype.visitPublishClause = function(tree) {
-    var event = tree.getChild(1);
+    const event = tree.getChild(1);
     event.acceptVisitor(this);
 };
 
@@ -380,9 +380,9 @@ Visitor.prototype.visitQueue = function(queue) {
 
 // queueClause: 'queue' expression 'on' expression
 Visitor.prototype.visitQueueClause = function(tree) {
-    var message = tree.getChild(1);
+    const message = tree.getChild(1);
     message.acceptVisitor(this);
-    var queue = tree.getChild(2);
+    const queue = tree.getChild(2);
     queue.acceptVisitor(this);
 };
 
@@ -400,7 +400,7 @@ Visitor.prototype.visitRange = function(range) {
 // returnClause: 'return' expression?
 Visitor.prototype.visitReturnClause = function(tree) {
     if (tree.getSize() > 0) {
-        var result = tree.getChild(1);
+        const result = tree.getChild(1);
         result.acceptVisitor(this);
     }
 };
@@ -408,9 +408,9 @@ Visitor.prototype.visitReturnClause = function(tree) {
 
 // saveClause: 'save' expression 'to' expression
 Visitor.prototype.visitSaveClause = function(tree) {
-    var draft = tree.getChild(1);
+    const draft = tree.getChild(1);
     draft.acceptVisitor(this);
-    var reference = tree.getChild(2);
+    const reference = tree.getChild(2);
     reference.acceptVisitor(this);
 };
 
@@ -418,12 +418,12 @@ Visitor.prototype.visitSaveClause = function(tree) {
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 Visitor.prototype.visitSelectClause = function(tree) {
     // handle the selection
-    var value = tree.getChild(1);
+    const value = tree.getChild(1);
     value.acceptVisitor(this);
 
     // handle option blocks
     var block;
-    var size = tree.getSize();
+    const size = tree.getSize();
     for (var i = 2; i <= size; i += 2) {
         if (i === size) {
             // handle the last 'else' block
@@ -431,7 +431,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
             block.acceptVisitor(this);
         } else {
             // handle the 'do' option block
-            var option = tree.getChild(i);
+            const option = tree.getChild(i);
             option.acceptVisitor(this);
             block = tree.getChild(i + 1);
             block.acceptVisitor(this);
@@ -477,10 +477,10 @@ Visitor.prototype.visitStack = function(stack) {
 
 // statement: mainClause handleClause*
 Visitor.prototype.visitStatement = function(tree) {
-    var iterator = tree.getIterator();
+    const iterator = tree.getIterator();
     this.depth++;
     while (iterator.hasNext()) {
-        var child = iterator.getNext();
+        const child = iterator.getNext();
         child.acceptVisitor(this);
     }
     this.depth--;
@@ -489,25 +489,25 @@ Visitor.prototype.visitStatement = function(tree) {
 
 // subcomponent: variable indices
 Visitor.prototype.visitSubcomponent = function(tree) {
-    var variable = tree.getChild(1);
+    const variable = tree.getChild(1);
     variable.acceptVisitor(this);
-    var indices = tree.getChild(2);
+    const indices = tree.getChild(2);
     indices.acceptVisitor(this);
 };
 
 
 // subcomponentExpression: expression indices
 Visitor.prototype.visitSubcomponentExpression = function(tree) {
-    var component = tree.getChild(1);
+    const component = tree.getChild(1);
     component.acceptVisitor(this);
-    var indices = tree.getChild(2);
+    const indices = tree.getChild(2);
     indices.acceptVisitor(this);
 };
 
 
 // throwClause: 'throw' expression
 Visitor.prototype.visitThrowClause = function(tree) {
-    var exception = tree.getChild(1);
+    const exception = tree.getChild(1);
     exception.acceptVisitor(this);
 };
 
@@ -519,32 +519,32 @@ Visitor.prototype.visitVariable = function(variable) {
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 Visitor.prototype.visitWaitClause = function(tree) {
-    var message = tree.getChild(1);
+    const message = tree.getChild(1);
     message.acceptVisitor(this);
-    var queue = tree.getChild(2);
+    const queue = tree.getChild(2);
     queue.acceptVisitor(this);
 };
 
 
 // whileClause: 'while' expression 'do' block
 Visitor.prototype.visitWhileClause = function(tree) {
-    var condition = tree.getChild(1);
+    const condition = tree.getChild(1);
     condition.acceptVisitor(this);
-    var block = tree.getChild(2);
+    const block = tree.getChild(2);
     block.acceptVisitor(this);
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 Visitor.prototype.visitWithClause = function(tree) {
-    var size = tree.getSize();
+    const size = tree.getSize();
     if (size > 2) {
         // handle symbol
-        var item = tree.getChild(1);
+        const item = tree.getChild(1);
         item.acceptVisitor(this);
     }
-    var collection = tree.getChild(size - 1);
+    const collection = tree.getChild(size - 1);
     collection.acceptVisitor(this);
-    var block = tree.getChild(size);
+    const block = tree.getChild(size);
     block.acceptVisitor(this);
 };

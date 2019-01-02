@@ -18,12 +18,12 @@ describe('Bali Component Framework™', function() {
     describe('Test the range constructors.', function() {
 
         it('should create an integer range with two endpoints', function() {
-            var range = new composites.Range(2, 5);
+            const range = new composites.Range(2, 5);
             expect(range).to.exist;  // jshint ignore:line
-            var size = range.getSize();
+            const size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(4);
-            var iterator = range.getIterator();
+            const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -40,15 +40,15 @@ describe('Bali Component Framework™', function() {
     describe('Test the range methods.', function() {
 
         it('should return the correct primitive type', function() {
-            var type = new composites.Range(1, 5).getType();
+            const type = new composites.Range(1, 5).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L,$version:v1,$digest:none]>');
         });
 
         it('should be able to call the Collection class methods on the range', function() {
-            var range1 = new composites.Range(1, 8);
+            const range1 = new composites.Range(1, 8);
             var size = range1.getSize();
             expect(size).to.equal(8);
-            var range2 = new composites.Range(4, 6);
+            const range2 = new composites.Range(4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
             expect(range1.isInRange(2)).to.equal(true);
@@ -60,11 +60,11 @@ describe('Bali Component Framework™', function() {
     describe('Test the range iterators.', function() {
 
         it('should iterate over a range forwards and backwards', function() {
-            var range = new composites.Range(1, 3);
+            const range = new composites.Range(1, 3);
             var index = range.getSize();
-            var items = range.toArray();
+            const items = range.toArray();
             var item;
-            var iterator = range.getIterator();
+            const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             // the iterator is at the first slot
             expect(iterator.hasPrevious() === false);

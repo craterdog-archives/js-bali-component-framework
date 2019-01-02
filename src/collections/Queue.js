@@ -60,9 +60,9 @@ exports.Queue = Queue;
  * @returns {Queue} The new queue.
  */
 Queue.from = function(collection, parameters) {
-    var queue = new Queue(parameters);
+    const queue = new Queue(parameters);
     var iterator;
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
@@ -110,7 +110,7 @@ Queue.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of items in this queue.
  */
 Queue.prototype.getSize = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     return size;
 };
 
@@ -140,7 +140,7 @@ Queue.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
-    var exception = Catalog.from({
+    const exception = Catalog.from({
         $exception: '$resourceLimit',
         $type: '$Queue',
         $procedure: '$addItem',
@@ -158,9 +158,9 @@ Queue.prototype.addItem = function(item) {
  * @returns {Component} The first item in this queue or undefined if the queue is empty.
  */
 Queue.prototype.removeItem = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     if (size > 0) {
-        var item = this.array.splice(0, 1)[0];  // remove the first item in the array
+        const item = this.array.splice(0, 1)[0];  // remove the first item in the array
         this.complexity -= item.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
         return item;
@@ -183,7 +183,7 @@ Queue.prototype.getHead = function() {
  * This method removes all items from this queue.
  */
 Queue.prototype.removeAll = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };

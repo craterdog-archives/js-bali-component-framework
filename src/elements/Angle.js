@@ -32,7 +32,7 @@ function Angle(value, parameters) {
 
     // analyze the value
     if (value === undefined || value === null) value = 0;  // default value
-    var type = value.constructor.name;
+    const type = value.constructor.name;
     switch (type) {
         case 'Number':
             if (!isFinite(value)) value = 0;
@@ -52,7 +52,7 @@ function Angle(value, parameters) {
     value = precision.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
-    var twoPi = precision.product(precision.PI, 2);
+    const twoPi = precision.product(precision.PI, 2);
     if (value < -twoPi || value > twoPi) {
         value = precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
     }
@@ -69,7 +69,7 @@ function Angle(value, parameters) {
 
     // cache the canonically formatted source
     this.value = value;
-    var source = '~' + Element.numberToSource(value);
+    const source = '~' + Element.numberToSource(value);
     this.setSource(source);
 
     return this;
@@ -102,8 +102,8 @@ Angle.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
 
     // check the types
-    var thisType = this.constructor.name;
-    var thatType = that.constructor.name;
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
     if (thisType !== thatType) {
         return thisType.localeCompare(thatType);
     }

@@ -15,30 +15,30 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    var object = {
+    const object = {
         'beta': 1,
         'gamma': 2,
         'delta': 3,
         'alpha': 4,
         'epsilon': 5
     };
-    var array = Object.keys(object);
+    const array = Object.keys(object);
     array.forEach(function(item, index) {
         this[index] = '$' + item;
     }, array);
-    var set = collections.Set.from(array);
+    const set = collections.Set.from(array);
 
     describe('Test the sorter on lists.', function() {
 
         it('should sort an empty list', function() {
-            var list = new collections.List();
+            const list = new collections.List();
             list.sortItems();
             expect(list.isEmpty()).to.equal(true);
         });
 
 
         it('should sort an out of order list', function() {
-            var list = collections.List.from(array);
+            const list = collections.List.from(array);
             list.sortItems();
             expect(list.toString()).to.equal(set.toString());
         });
@@ -48,16 +48,16 @@ describe('Bali Component Framework™', function() {
     describe('Test the sorter on catalogs.', function() {
 
         it('should sort an empty catalogs', function() {
-            var catalog = new collections.Catalog();
+            const catalog = new collections.Catalog();
             catalog.sortItems();
             expect(catalog.isEmpty()).to.equal(true);
         });
 
 
         it('should sort an out of order catalog', function() {
-            var catalog = collections.Catalog.from(object);
+            const catalog = collections.Catalog.from(object);
             catalog.sortItems();
-            var keys = catalog.getKeys();
+            const keys = catalog.getKeys();
             expect(keys.toString()).to.equal(set.toString());
         });
 

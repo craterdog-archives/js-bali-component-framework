@@ -63,7 +63,7 @@ Range.prototype.acceptVisitor = function(visitor) {
  * @returns {Component} The number of numbers that fall in this range.
  */
 Range.prototype.getSize = function() {
-    var size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
+    const size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
     return size;
 };
 
@@ -74,7 +74,7 @@ Range.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this collection.
  */
 Range.prototype.getIterator = function() {
-    var iterator = new RangeIterator(this);
+    const iterator = new RangeIterator(this);
     return iterator;
 };
 
@@ -85,9 +85,9 @@ Range.prototype.getIterator = function() {
  * @returns {Array} An array containing the items in this range.
  */
 Range.prototype.toArray = function() {
-    var array = [];
+    const array = [];
     var index = this.firstItem.toNumber();
-    var last = this.lastItem.toNumber();
+    const last = this.lastItem.toNumber();
     if (last === Infinity) {
         throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
@@ -104,7 +104,7 @@ Range.prototype.toArray = function() {
  */
 Range.prototype.isInRange = function(item) {
     item = Composite.asComponent(item);
-    var index = item.toNumber();
+    const index = item.toNumber();
     return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
 };
 

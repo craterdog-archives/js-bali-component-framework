@@ -32,7 +32,7 @@ const MAXIMUM_INTEGER = 4294967296;  // unsigned
  * @return {Buffer} A data buffer containing random bytes.
  */
 exports.bytes = function(numberOfBytes) {
-    var buffer = crypto.randomBytes(numberOfBytes);
+    const buffer = crypto.randomBytes(numberOfBytes);
     return buffer;
 };
 
@@ -43,7 +43,7 @@ exports.bytes = function(numberOfBytes) {
  * @return {Number} The random integer.
  */
 exports.integer = function() {
-    var integer = codex.bytesToInteger(exports.bytes(4));
+    const integer = codex.bytesToInteger(exports.bytes(4));
     return integer;
 };
 
@@ -55,8 +55,8 @@ exports.integer = function() {
  * @return {Number} The random ordinal index.
  */
 exports.index = function(length) {
-    var randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
-    var index = (randomInteger % length) + 1;  // in range [1..length] for ordinal based indexing
+    const randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+    const index = (randomInteger % length) + 1;  // in range [1..length] for ordinal based indexing
     return index;
 };
 
@@ -67,8 +67,8 @@ exports.index = function(length) {
  * @return {Number} The random probability.
  */
 exports.probability = function() {
-    var randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
-    var probability = randomInteger / MAXIMUM_INTEGER;  // in range [0..1]
+    const randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+    const probability = randomInteger / MAXIMUM_INTEGER;  // in range [0..1]
     return probability;
 };
 
@@ -81,7 +81,7 @@ exports.probability = function() {
  * @return {Boolean} The result of the coin toss.
  */
 exports.coinToss = function(probability) {
-    var randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
-    var toss = randomInteger / (MAXIMUM_INTEGER - 1);  // convert to range [0.0..1.0)
+    const randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+    const toss = randomInteger / (MAXIMUM_INTEGER - 1);  // convert to range [0.0..1.0)
     return toss < probability;  // true: [0.0..probability) and false: [probability..1.0]
 };

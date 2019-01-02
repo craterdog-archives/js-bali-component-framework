@@ -34,7 +34,7 @@ function Version(value, parameters) {
         throw new Error('BUG: An invalid version string was passed to the constructor: ' + value);
     }
     this.value = [];
-    var levels = value.slice(1).split('.');
+    const levels = value.slice(1).split('.');
     levels.forEach(function(level) {
         this.value.push(Number(level));
     }, this);
@@ -68,15 +68,15 @@ exports.Version = Version;
  * @returns {Version} The next version string.
  */
 Version.nextVersion = function(currentVersion, level) {
-    var levels = currentVersion.value.slice();  // copy the array since we are going to splice it!
-    var index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
+    const levels = currentVersion.value.slice();  // copy the array since we are going to splice it!
+    const index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
     if (index < levels.length) {
         levels[index]++;
         levels.splice(index + 1);
     } else {
         levels.push(1);
     }
-    var nextVersion = new Version('v' + levels.join('.'), currentVersion.parameters);
+    const nextVersion = new Version('v' + levels.join('.'), currentVersion.parameters);
     return nextVersion;
 };
 
@@ -100,14 +100,14 @@ Version.nextVersion = function(currentVersion, level) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion) {
     // extract the version levels
-    var currentLevels = currentVersion.value;
-    var nextLevels = nextVersion.value;
+    const currentLevels = currentVersion.value;
+    const nextLevels = nextVersion.value;
 
     // walk the lists looking for the first different version levels
     var index = 0;
     while (index < currentLevels.length && index < nextLevels.length) {
-        var currentLevel = currentLevels[index];
-        var nextLevel = nextLevels[index];
+        const currentLevel = currentLevels[index];
+        const nextLevel = nextLevels[index];
         if (currentLevel === nextLevel) {
             index++;
             continue;
@@ -132,15 +132,15 @@ Version.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
 
     // compare types
-    var thisType = this.constructor.name;
-    var thatType = that.constructor.name;
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
     if (thisType !== thatType) {
         return thisType.localeCompare(thatType);
     }
 
     // compare levels
-    var thisLevels = this.value;
-    var thatLevels = that.value;
+    const thisLevels = this.value;
+    const thatLevels = that.value;
     var index = 0;
     while (index < thisLevels.length && index < thatLevels.length) {
         if (thisLevels[index] < thatLevels[index]) return -1;
@@ -183,7 +183,7 @@ Version.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this version string.
  */
 Version.prototype.getIterator = function() {
-    var iterator = new VersionIterator(this.value);
+    const iterator = new VersionIterator(this.value);
     return iterator;
 };
 

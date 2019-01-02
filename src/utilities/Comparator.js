@@ -89,9 +89,9 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
 
     // handle composite components
     if (firstComponent.prototype && firstComponent.prototype.getIterator && secondComponent.prototype && secondComponent.prototype.getIterator) {
-        var firstIterator = firstComponent.getIterator();
-        var secondIterator = secondComponent.getIterator();
-        var result = 0;
+        const firstIterator = firstComponent.getIterator();
+        const secondIterator = secondComponent.getIterator();
+        result = 0;
         while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
             result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
         }

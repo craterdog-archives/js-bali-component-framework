@@ -67,7 +67,7 @@ Association.prototype.getSize = function() {
  * @returns {Array} An array containing the attributes of this association.
  */
 Association.prototype.toArray = function() {
-    var array = [];
+    const array = [];
     array.push(this.key);
     array.push(this.value);
     return array;
@@ -82,7 +82,7 @@ Association.prototype.toArray = function() {
  */
 Association.prototype.setValue = function(value) {
     value = Composite.asComponent(value);
-    var oldValue = this.value;
+    const oldValue = this.value;
     this.complexity -= oldValue.complexity;
     this.value = value;
     this.complexity += value.complexity;

@@ -46,7 +46,7 @@ exports.Parameters = Parameters;
  * @returns {Parameters} The new parameter list.
  */
 Parameters.from = function(collection) {
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
         case 'List':
@@ -62,7 +62,7 @@ Parameters.from = function(collection) {
         default:
             throw new Error('BUG: A parameters list cannot be initialized using a collection of type: ' + type);
     }
-    var parameters = new Parameters(collection);
+    const parameters = new Parameters(collection);
     return parameters;
 };
 
@@ -85,7 +85,7 @@ Parameters.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of parameters that are in this list.
  */
 Parameters.prototype.getSize = function() {
-    var size = this.collection.getSize();
+    const size = this.collection.getSize();
     return size;
 };
 
@@ -96,7 +96,7 @@ Parameters.prototype.getSize = function() {
  * @returns {Array} An array containing the parameters in this list.
  */
 Parameters.prototype.toArray = function() {
-    var array = this.collection.toArray();
+    const array = this.collection.toArray();
     return array;
 };
 

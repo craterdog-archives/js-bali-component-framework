@@ -18,36 +18,36 @@ describe('Bali Component Framework™', function() {
 
         it('should generate default random tags with 20 bytes', function() {
             for (var i = 0; i < 10; i++) {
-                var random = new elements.Tag();
+                const random = new elements.Tag();
                 expect(random.getNumberOfBytes()).to.equal(20);
-                var expected = random.toString();
-                var tag = new elements.Tag(expected);
-                var result = tag.toString();
+                const expected = random.toString();
+                const tag = new elements.Tag(expected);
+                const result = tag.toString();
                 console.log('        ' + result);
                 expect(result).to.equal(expected);
             }
         });
 
         it('should generate a random tag with 15 bytes', function() {
-            var random = new elements.Tag(15);
+            const random = new elements.Tag(15);
             expect(random.getNumberOfBytes()).to.equal(15);
-            var expected = random.toString();
-            var tag = new elements.Tag(expected);
-            var result = tag.toString();
+            const expected = random.toString();
+            const tag = new elements.Tag(expected);
+            const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a predefined tag', function() {
             expected = '#NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
-            var tag = new elements.Tag(expected);
-            var result = tag.toString();
+            const tag = new elements.Tag(expected);
+            const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should throw an exception for an empty symbol', function() {
             expect(
                 function() {
-                    var bad = new elements.Tag('This is not a tag!');
+                    const bad = new elements.Tag('This is not a tag!');
                 }
             ).to.throw();
         });
@@ -57,7 +57,7 @@ describe('Bali Component Framework™', function() {
     describe('Test tag methods', function() {
 
         it('should return the correct type', function() {
-            var type = new elements.Tag('JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2').getType();
+            const type = new elements.Tag('JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2,$version:v1,$digest:none]>');
         });
 

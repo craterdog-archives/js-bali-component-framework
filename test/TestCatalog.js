@@ -16,39 +16,39 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
-    var association1 = new composites.Association(1, 'alpha');
-    var association2 = new composites.Association(2, 'beta');
-    var association3 = new composites.Association(3, 'delta');
-    var association4 = new composites.Association(4, 'epsilon');
-    var association5 = new composites.Association(5, 'gamma');
+    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const association1 = new composites.Association(1, 'alpha');
+    const association2 = new composites.Association(2, 'beta');
+    const association3 = new composites.Association(3, 'delta');
+    const association4 = new composites.Association(4, 'epsilon');
+    const association5 = new composites.Association(5, 'gamma');
 
     describe('Test the catalog constructors.', function() {
 
         it('should create an empty catalog', function() {
-            var catalog = new collections.Catalog();
+            const catalog = new collections.Catalog();
             expect(catalog).to.exist;  // jshint ignore:line
-            var size = catalog.getSize();
+            const size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             catalog.removeAll();
-            var copy = catalog.constructor(catalog.parameters);
+            const copy = catalog.constructor(catalog.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(catalog.isEqualTo(copy)).to.equal(true);
-            var signum = catalog.comparedTo(copy);
+            const signum = catalog.comparedTo(copy);
             expect(signum).to.equal(0);
         });
 
         it('should create a catalog from an array', function() {
-            var catalog = collections.Catalog.from(array);
+            const catalog = collections.Catalog.from(array);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -75,12 +75,12 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from a list', function() {
-            var list = collections.List.from(array);
-            var catalog = collections.Catalog.from(list);
+            const list = collections.List.from(array);
+            const catalog = collections.Catalog.from(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -107,12 +107,12 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from a set', function() {
-            var set = collections.Set.from(array);
-            var catalog = collections.Catalog.from(set);
+            const set = collections.Set.from(array);
+            const catalog = collections.Catalog.from(set);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -139,18 +139,18 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a catalog from an object', function() {
-            var object = {
+            const object = {
                 alpha: 'alpha',
                 beta: 'beta',
                 delta: 'delta',
                 epsilon: 'epsilon',
                 gamma: 'gamma'
             };
-            var catalog = collections.Catalog.from(object);
+            const catalog = collections.Catalog.from(object);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(Object.keys(object).length);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -182,7 +182,7 @@ describe('Bali Component Framework™', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = catalog.getIterator();
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -213,31 +213,31 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog methods.', function() {
 
         it('should return the correct primitive type', function() {
-            var type = new collections.Catalog().getType();
+            const type = new collections.Catalog().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#4XR1NCZKATC5DPT2WAVQH89Q6Y4BCLP6,$version:v1,$digest:none]>');
         });
 
         it('should return the correct user defined type', function() {
-            var parameters = composites.Parameters.from(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']);
+            const parameters = composites.Parameters.from(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']);
             type = new collections.Catalog(parameters).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>');
         });
 
         it('should be able to call the Catalog class methods on the catalog', function() {
-            var catalog1 = new collections.Catalog();
+            const catalog1 = new collections.Catalog();
             catalog1.addItem(new composites.Association(1, 'alpha'));
             catalog1.addItem(new composites.Association(2, 'beta'));
             catalog1.addItem(new composites.Association(3, 'delta'));
-            var catalog2 = new collections.Catalog();
+            const catalog2 = new collections.Catalog();
             catalog2.addItem(new composites.Association(4, 'epsilon'));
             catalog2.addItem(new composites.Association(5, 'gamma'));
             catalog1.addItems(catalog2);
-            size = catalog1.getSize();
+            var size = catalog1.getSize();
             expect(size).to.equal(array.length);
             expect(catalog1.containsAll(catalog2)).to.equal(true);
             expect(catalog2.containsAll(catalog1)).to.equal(false);
             expect(catalog2.containsAny(catalog1)).to.equal(true);
-            var catalog3 = catalog1.getItems(new composites.Range(2, 4));
+            const catalog3 = catalog1.getItems(new composites.Range(2, 4));
             size = catalog3.getSize();
             expect(size).to.equal(3);
             expect(catalog3.containsItem(association4)).to.equal(true);
@@ -254,8 +254,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove associations from a catalog', function() {
-            var list = collections.List.from(array);
-            var catalog = collections.Catalog.from(list);
+            const list = collections.List.from(array);
+            const catalog = collections.Catalog.from(list);
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -263,17 +263,17 @@ describe('Bali Component Framework™', function() {
             expect(catalog.getIndex(association1)).to.equal(1);
             expect(catalog.getItem(5).value.toString()).to.equal(association5.value.toString());
             expect(catalog.getIndex(association3)).to.equal(3);
-            var actual = catalog.getValue(3);
+            const actual = catalog.getValue(3);
             expect(actual.toString()).to.equal('delta');
-            var keys = catalog.getKeys();
+            const keys = catalog.getKeys();
             size = keys.getSize();
             expect(size).to.equal(array.length);
-            var keyIterator = keys.getIterator();
+            const keyIterator = keys.getIterator();
             expect(keyIterator).to.exist;  // jshint ignore:line
-            var associations = catalog.getAssociations();
+            const associations = catalog.getAssociations();
             size = associations.getSize();
             expect(size).to.equal(array.length);
-            var associationIterator = catalog.getIterator();
+            const associationIterator = catalog.getIterator();
             expect(associationIterator).to.exist;  // jshint ignore:line
             var key;
             var value;
@@ -313,15 +313,15 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to perform catalog operations on catalogs', function() {
-            var catalog1 = new collections.Catalog();
+            const catalog1 = new collections.Catalog();
             catalog1.addItem(association1);
             catalog1.addItem(association2);
             catalog1.addItem(association3);
-            var catalog2 = new collections.Catalog();
+            const catalog2 = new collections.Catalog();
             catalog2.addItem(association4);
             catalog2.addItem(association5);
-            var catalog3 = collections.Catalog.from(array);
-            var catalog4 = collections.Catalog.concatenation(catalog1, catalog2);
+            const catalog3 = collections.Catalog.from(array);
+            const catalog4 = collections.Catalog.concatenation(catalog1, catalog2);
             expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
 
@@ -330,8 +330,8 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog iterators.', function() {
 
         it('should iterate over a catalog forwards and backwards', function() {
-            var catalog = collections.Catalog.from(array);
-            var iterator = catalog.getIterator();
+            const catalog = collections.Catalog.from(array);
+            const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

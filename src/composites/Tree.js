@@ -94,7 +94,7 @@ exports.Tree = Tree;
  * @returns {Number} The number of components that are children of this tree node.
  */
 Tree.prototype.getSize = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     return size;
 };
 
@@ -106,7 +106,7 @@ Tree.prototype.getSize = function() {
  * @returns {Array} An array containing the components that are children of this tree node.
  */
 Tree.prototype.toArray = function() {
-    var array = this.array.slice();  // copy the array
+    const array = this.array.slice();  // copy the array
     return array;
 };
 
@@ -132,7 +132,7 @@ Tree.prototype.addChild = function(child) {
 Tree.prototype.getChild = function(index) {
     index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
-    var item = this.array[index];
+    const item = this.array[index];
     return item;
 };
 

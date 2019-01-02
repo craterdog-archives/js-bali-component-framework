@@ -56,10 +56,10 @@ exports.Catalog = Catalog;
  * @returns {Catalog} The new catalog.
  */
 Catalog.from = function(collection, parameters) {
-    var catalog = new Catalog(parameters);
+    const catalog = new Catalog(parameters);
     var index = 1;
     var iterator;
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
@@ -74,7 +74,7 @@ Catalog.from = function(collection, parameters) {
         case 'Set':
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
-                var item = iterator.getNext();
+                const item = iterator.getNext();
                 if (item.constructor.name === 'Association') {
                     catalog.addItem(item);
                 } else {
@@ -83,7 +83,7 @@ Catalog.from = function(collection, parameters) {
             }
             break;
         case 'Object':
-            var keys = Object.keys(collection);
+            const keys = Object.keys(collection);
             keys.forEach(function(key) {
                 catalog.setValue('$' + key, collection[key]);
             });
@@ -91,7 +91,7 @@ Catalog.from = function(collection, parameters) {
         case 'Catalog':
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
-                var association = iterator.getNext();
+                const association = iterator.getNext();
                 catalog.setValue(association.key, association.value);
             }
             break;
@@ -113,7 +113,7 @@ Catalog.from = function(collection, parameters) {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    var result = Catalog.from(catalog1, catalog1.parameters);
+    const result = Catalog.from(catalog1, catalog1.parameters);
     result.addItems(catalog2);
     return result;
 };
@@ -128,11 +128,11 @@ Catalog.concatenation = function(catalog1, catalog2) {
  * @returns The resulting catalog.
  */
 Catalog.extraction = function(catalog, keys) {
-    var result = new Catalog();
-    var iterator = keys.getIterator();
+    const result = new Catalog();
+    const iterator = keys.getIterator();
     while (iterator.hasNext()) {
-        var key = iterator.getNext();
-        var value = catalog.getValue(key);
+        const key = iterator.getNext();
+        const value = catalog.getValue(key);
         if (value) {
             result.setValue(key, value);
         }
@@ -159,7 +159,7 @@ Catalog.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of items in this catalog.
  */
 Catalog.prototype.getSize = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     return size;
 };
 
@@ -180,10 +180,10 @@ Catalog.prototype.toArray = function() {
  * @returns {Object} An object containing the items in this catalog.
  */
 Catalog.prototype.toObject = function() {
-    var object = {};
-    var iterator = this.getIterator();
+    const object = {};
+    const iterator = this.getIterator();
     while (iterator.hasNext()) {
-        var association = iterator.getNext();
+        const association = iterator.getNext();
         object[association.key.toString()] = association.value;
     }
     return object;
@@ -200,7 +200,7 @@ Catalog.prototype.toObject = function() {
 Catalog.prototype.getItem = function(index) {
     index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
-    var item = this.array[index];
+    const item = this.array[index];
     return item;
 };
 
@@ -215,7 +215,7 @@ Catalog.prototype.getItem = function(index) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Catalog.prototype.addItem = function(association) {
-    var index = association.key.toString();
+    const index = association.key.toString();
     if (this.map[index]) {
         // an association with the specified key already exists
         return false;
@@ -237,8 +237,8 @@ Catalog.prototype.addItem = function(association) {
  */
 Catalog.prototype.containsItem = function(association) {
     var result = false;
-    var index = association.key.toString();
-    var candidate = this.map[index];
+    const index = association.key.toString();
+    const candidate = this.map[index];
     if (candidate) {
         result = candidate.isEqualTo(association);
     }
@@ -254,8 +254,8 @@ Catalog.prototype.containsItem = function(association) {
  */
 Catalog.prototype.getValue = function(key) {
     var value;
-    var index = key.toString();
-    var association = this.map[index];
+    const index = key.toString();
+    const association = this.map[index];
     if (association) value = association.value;
     return value;
 };
@@ -270,11 +270,11 @@ Catalog.prototype.getValue = function(key) {
  * @returns A list of the values that were retrieved from this catalog.
  */
 Catalog.prototype.getValues = function(keys) {
-    var values = new List();
-    var iterator = keys.getIterator();
+    const values = new List();
+    const iterator = keys.getIterator();
     while (iterator.hasNext()) {
-        var key = iterator.getNext();
-        var value = this.getValue(key);
+        const key = iterator.getNext();
+        const value = this.getValue(key);
         if (value !== undefined) values.addItem(value);
     }
     return values;
@@ -292,7 +292,7 @@ Catalog.prototype.getValues = function(keys) {
 Catalog.prototype.setValue = function(key, value) {
     key = Composite.asComponent(key);
     value = Composite.asComponent(value);
-    var index = key.toString();
+    const index = key.toString();
     var association = this.map[index];
     var oldValue;
     if (association) {
@@ -318,9 +318,9 @@ Catalog.prototype.setValue = function(key, value) {
  * @param {Catalog} associations A catalog containing the new associations to be added.
  */
 Catalog.prototype.setValues = function(associations) {
-    var iterator = associations.getIterator();
+    const iterator = associations.getIterator();
     while (iterator.hasNext()) {
-        var association = iterator.getNext();
+        const association = iterator.getNext();
         this.setValue(association.key, association.value);
     }
 };
@@ -331,11 +331,11 @@ Catalog.prototype.setValues = function(associations) {
  * is associated with the specified key then the return value is undefined.
  *
  * @param {String|Number|Boolean|Component} key The key for the value to be removed.
- * @returns {Boolean} Whether or not a value was removed.
+ * @returns {Component} The value that was associated with the key.
  */
 Catalog.prototype.removeValue = function(key) {
     var index = key.toString();
-    var association = this.map[index];
+    const association = this.map[index];
     if (association) {
         delete this.map[index];
         index = this.array.findIndex(function(item) {
@@ -344,27 +344,28 @@ Catalog.prototype.removeValue = function(key) {
         this.array.splice(index, 1);
         this.complexity -= association.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
-        return true;
+        return association.value;
     }
-    return false;
 };
 
 
 /**
  * This method removes from this catalog the values associated with the specified
- * keys. It returns the number of associations that were removed.
+ * keys. The values are returned as a list with the values in the same order as the
+ * specified keys.
  *
  * @param {List} keys The list of keys for the values to be removed.
- * @returns {Number} The number of associations that were removed from this catalog.
+ * @returns A list of the values that were removed from this catalog.
  */
 Catalog.prototype.removeValues = function(keys) {
-    var count = 0;
-    var iterator = keys.getIterator();
+    const values = new List();
+    const iterator = keys.getIterator();
     while (iterator.hasNext()) {
-        var key = iterator.getNext();
-        if (this.removeValue(key)) count++;
+        const key = iterator.getNext();
+        const value = this.removeValue(key);
+        if (value !== undefined) values.addItem(value);
     }
-    return count;
+    return values;
 };
 
 
@@ -372,10 +373,10 @@ Catalog.prototype.removeValues = function(keys) {
  * This method removes all associations from this catalog.
  */
 Catalog.prototype.removeAll = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     Object.keys(this.map).forEach(function(key) {
-        var association = this.map[key];
+        const association = this.map[key];
         this.complexity -= association.complexity;
         delete this.map[key];
     }, this);
@@ -390,9 +391,9 @@ Catalog.prototype.removeAll = function() {
  * @returns {List} A list of the keys for this catalog.
  */
 Catalog.prototype.getKeys = function() {
-    var keys = new List();
+    const keys = new List();
     this.array.forEach(function(association) {
-        var key = association.key;
+        const key = association.key;
         keys.addItem(key);
     });
     return keys;
@@ -406,7 +407,7 @@ Catalog.prototype.getKeys = function() {
  * @returns {List} A list of the associations for this catalog.
  */
 Catalog.prototype.getAssociations = function() {
-    var associations = new List();
+    const associations = new List();
     this.array.forEach(function(association) {
         associations.addItem(association);
     });

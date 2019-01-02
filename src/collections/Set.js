@@ -51,9 +51,9 @@ exports.Set = Set;
  * @returns {List} The new set.
  */
 Set.from = function(collection, parameters) {
-    var set = new Set(parameters);
+    const set = new Set(parameters);
     var iterator;
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
@@ -85,7 +85,7 @@ Set.from = function(collection, parameters) {
  * @returns {Set} The resulting collection.
  */
 Set.or = function(collection1, collection2) {
-    var result = Set.from(collection1, collection1.parameters);
+    const result = Set.from(collection1, collection1.parameters);
     result.addItems(collection2);
     return result;
 };
@@ -100,10 +100,10 @@ Set.or = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.and = function(collection1, collection2) {
-    var result = new Set(collection1.parameters);
-    var iterator = collection1.getIterator();
+    const result = new Set(collection1.parameters);
+    const iterator = collection1.getIterator();
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         if (collection2.containsItem(item)) {
             result.addItem(item);
         }
@@ -121,7 +121,7 @@ Set.and = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.sans = function(collection1, collection2) {
-    var result = Set.from(collection1, collection1.parameters);
+    const result = Set.from(collection1, collection1.parameters);
     result.removeItems(collection2);
     return result;
 };
@@ -136,15 +136,15 @@ Set.sans = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.xor = function(collection1, collection2) {
-    var result = new Set(collection1.parameters);
-    var iterator1 = collection1.getIterator();
+    const result = new Set(collection1.parameters);
+    const iterator1 = collection1.getIterator();
     var item1;
-    var iterator2 = collection2.getIterator();
+    const iterator2 = collection2.getIterator();
     var item2;
     while (iterator1.hasNext() && iterator2.hasNext()) {
         if (item1 === undefined) item1 = iterator1.getNext();
         if (item2 === undefined) item2 = iterator2.getNext();
-        var signum = item1.comparedTo(item2);
+        const signum = item1.comparedTo(item2);
         switch (signum) {
             case -1:
                 result.addItem(item1);
@@ -200,7 +200,7 @@ Set.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this set.
  */
 Set.prototype.getIterator = function() {
-    var iterator = new TreeIterator(this.tree);
+    const iterator = new TreeIterator(this.tree);
     return iterator;
 };
 
@@ -211,10 +211,10 @@ Set.prototype.getIterator = function() {
  * @returns {Array} An array containing the items in this set.
  */
 Set.prototype.toArray = function() {
-    var array = [];
-    var iterator = new TreeIterator(this.tree);
+    const array = [];
+    const iterator = new TreeIterator(this.tree);
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         array.push(item);
     }
     return array;
@@ -229,7 +229,7 @@ Set.prototype.toArray = function() {
  */
 Set.prototype.getIndex = function(item) {
     item = Composite.asComponent(item);
-    var index = this.tree.index(item) + 1;  // convert to ordinal based indexing
+    const index = this.tree.index(item) + 1;  // convert to ordinal based indexing
     return index;
 };
 
@@ -242,7 +242,7 @@ Set.prototype.getIndex = function(item) {
  */
 Set.prototype.getItem = function(index) {
     index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
-    var item = this.tree.node(index).value;
+    const item = this.tree.node(index).value;
     return item;
 };
 
@@ -256,7 +256,7 @@ Set.prototype.getItem = function(index) {
  */
 Set.prototype.addItem = function(item) {
     item = Composite.asComponent(item);
-    var result = this.tree.insert(item);
+    const result = this.tree.insert(item);
     if (result) {
         this.complexity += item.complexity;
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
@@ -274,7 +274,7 @@ Set.prototype.addItem = function(item) {
  */
 Set.prototype.removeItem = function(item) {
     item = Composite.asComponent(item);
-    var result = this.tree.remove(item);
+    const result = this.tree.remove(item);
     if (result) {
         this.complexity -= item.complexity;
         if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
@@ -292,9 +292,9 @@ Set.prototype.removeItem = function(item) {
  */
 Set.prototype.removeItems = function(items) {
     var count = 0;
-    var iterator = items.getIterator();
+    const iterator = items.getIterator();
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         if (this.removeItem(item)) {
             count++;
         }
@@ -307,7 +307,7 @@ Set.prototype.removeItems = function(items) {
  * This method removes all items from this set.
  */
 Set.prototype.removeAll = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.tree.clear();
 };
@@ -363,7 +363,7 @@ TreeIterator.prototype.hasNext = function() {
 
 TreeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous item from an iterator that is at the beginning of a set.');
-    var value = this.previous.value;
+    const value = this.previous.value;
     this.next = this.previous;
     this.previous = this.tree.predecessor(this.next);
     this.slot--;
@@ -373,7 +373,7 @@ TreeIterator.prototype.getPrevious = function() {
 
 TreeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next item from an iterator that is at the end of a set.');
-    var value = this.next.value;
+    const value = this.next.value;
     this.previous = this.next;
     this.next = this.tree.successor(this.previous);
     this.slot++;
@@ -452,7 +452,7 @@ RandomizedTree.prototype.insert = function(value) {
     }
 
     // insert the new node as a child of the parent
-    var child = { value: value, parent: parent, priority: Math.random()};
+    const child = { value: value, parent: parent, priority: Math.random()};
     switch (this.comparator.compareComponents(parent.value, value)) {
         case 1:
             parent.left = child;
@@ -482,7 +482,7 @@ RandomizedTree.prototype.insert = function(value) {
 
 
 RandomizedTree.prototype.remove = function(value) {
-    var candidate = this.find(value);
+    const candidate = this.find(value);
     if (candidate) {
         // rotate the candidate down to leaf
         this.rotateDown(candidate);
@@ -493,7 +493,7 @@ RandomizedTree.prototype.remove = function(value) {
         } else if (candidate.right === undefined) {
             this.replace(candidate, candidate.left);
         } else {
-            var successor = this.minimum(candidate.right);
+            const successor = this.minimum(candidate.right);
             if (successor.parent !== candidate) {
                 this.replace(successor, successor.right);
                 successor.right = candidate.right;
@@ -607,7 +607,7 @@ RandomizedTree.prototype.replace = function(old, replacement) {
 
 
 RandomizedTree.prototype.rotateLeft = function(node) {
-    var temporary = node.right;
+    const temporary = node.right;
     temporary.parent = node.parent;
 
     node.right = temporary.left;
@@ -631,7 +631,7 @@ RandomizedTree.prototype.rotateLeft = function(node) {
 
 
 RandomizedTree.prototype.rotateRight = function(node) {
-    var temporary = node.left;
+    const temporary = node.left;
     temporary.parent = node.parent;
 
     node.left = temporary.right;

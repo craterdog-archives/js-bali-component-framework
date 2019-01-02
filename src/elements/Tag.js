@@ -40,7 +40,7 @@ function Tag(optionalSizeOrValue, parameters) {
     Element.call(this, types.TAG, parameters);
     var bytes;
 
-    var type = typeof optionalSizeOrValue;
+    const type = typeof optionalSizeOrValue;
     switch (type) {
         case 'undefined':
             this.size = 20;  // default size

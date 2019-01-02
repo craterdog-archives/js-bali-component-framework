@@ -17,42 +17,42 @@ describe('Bali Component Framework™', function() {
     describe('Test text constructors', function() {
 
         it('should generate a default empty text string', function() {
-            var text = new elements.Text();
-            var string = text.toString();
+            const text = new elements.Text();
+            const string = text.toString();
             expect(string).to.equal('""');
-            var raw = text.value;
+            const raw = text.value;
             expect(raw).to.equal('');
         });
 
         it('should generate an explicit empty text string', function() {
-            var text = new elements.Text('""');
-            var string = text.toString();
+            const text = new elements.Text('""');
+            const string = text.toString();
             expect(string).to.equal('""');
-            var raw = text.value;
+            const raw = text.value;
             expect(raw).to.equal('');
         });
 
         it('should generate from a JS string', function() {
-            var text = new elements.Text('This is a javascript string.');
-            var string = text.toString();
+            const text = new elements.Text('This is a javascript string.');
+            const string = text.toString();
             expect(string).to.equal('"This is a javascript string."');
-            var raw = text.value;
+            const raw = text.value;
             expect(raw).to.equal('This is a javascript string.');
         });
 
         it('should generate a specific text string', function() {
-            var text = new elements.Text('"This is a text string."');
-            var string = text.toString();
+            const text = new elements.Text('"This is a text string."');
+            const string = text.toString();
             expect(string).to.equal('"This is a text string."');
-            var raw = text.value;
+            const raw = text.value;
             expect(raw).to.equal('This is a text string.');
         });
 
         it('should generate a specific text bloc containing quotes', function() {
-            var text = new elements.Text('"\nThis is a \"text block\" containing \'quotes\'.\n"');
-            var string = text.toString();
+            const text = new elements.Text('"\nThis is a \"text block\" containing \'quotes\'.\n"');
+            const string = text.toString();
             expect(string).to.equal('"\nThis is a \"text block\" containing \'quotes\'.\n"');
-            var raw = text.value;
+            const raw = text.value;
             expect(raw).to.equal('\nThis is a \"text block\" containing \'quotes\'.\n');
         });
 
@@ -61,7 +61,7 @@ describe('Bali Component Framework™', function() {
     describe('Test text methods', function() {
 
         it('should return the correct type', function() {
-            var type = new elements.Text('"Hello World!"').getType();
+            const type = new elements.Text('"Hello World!"').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL,$version:v1,$digest:none]>');
         });
 
@@ -70,9 +70,9 @@ describe('Bali Component Framework™', function() {
     describe('Test text functions', function() {
 
         it('should perform concatenation of two text strings', function() {
-            var text1 = new elements.Text('"Hello "');
-            var text2 = new elements.Text('"World!"');
-            var text3 = elements.Text.concatenation(text1, text2);
+            const text1 = new elements.Text('"Hello "');
+            const text2 = new elements.Text('"World!"');
+            const text3 = elements.Text.concatenation(text1, text2);
             expect(text3.toString()).to.equal('"Hello World!"');
         });
 
@@ -81,8 +81,8 @@ describe('Bali Component Framework™', function() {
     describe('Test the text iterators.', function() {
 
         it('should iterate over a text string forwards and backwards', function() {
-            var text = new elements.Text('"Hello World!"');
-            var iterator = text.getIterator();
+            const text = new elements.Text('"Hello World!"');
+            const iterator = text.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

@@ -60,9 +60,9 @@ exports.Stack = Stack;
  * @returns {Stack} The new stack.
  */
 Stack.from = function(collection, parameters) {
-    var stack = new Stack(parameters);
+    const stack = new Stack(parameters);
     var iterator;
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
@@ -110,7 +110,7 @@ Stack.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of items on this stack.
  */
 Stack.prototype.getSize = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     return size;
 };
 
@@ -124,7 +124,7 @@ Stack.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this stack.
  */
 Stack.prototype.getIterator = function() {
-    var iterator = new Iterator(this.array.slice().reverse());
+    const iterator = new Iterator(this.array.slice().reverse());
     return iterator;
 };
 
@@ -174,7 +174,7 @@ Stack.prototype.addItem = function(item) {
  */
 Stack.prototype.removeItem = function() {
     var item;
-    var size = this.array.length;
+    const size = this.array.length;
     if (size > 0) {
         item = this.array.pop();
         this.complexity -= item.complexity;
@@ -194,7 +194,7 @@ Stack.prototype.removeItem = function() {
  */
 Stack.prototype.getTop = function() {
     var item = null;
-    var size = this.array.length;
+    const size = this.array.length;
     if (size > 0) {
         item = this.array.peek();
     } else {
@@ -208,7 +208,7 @@ Stack.prototype.getTop = function() {
  * This method removes all items from this stack.
  */
 Stack.prototype.removeAll = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };

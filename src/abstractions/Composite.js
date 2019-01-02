@@ -123,7 +123,7 @@ Composite.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this composite component.
  */
 Composite.prototype.getIterator = function() {
-    var iterator = new Iterator(this.toArray());
+    const iterator = new Iterator(this.toArray());
     return iterator;
 };
 
@@ -154,7 +154,7 @@ Composite.prototype.toArray = function() {
  * @returns {Number} The normalized [1..N] index.
  */
 Composite.prototype.normalizeIndex = function(index) {
-    var size = this.getSize();
+    const size = this.getSize();
     if (index > size) index = size;
     if (index < -size) index = -size;
     if (index < 0) index = index + size + 1;

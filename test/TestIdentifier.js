@@ -20,12 +20,12 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for an empty identifier', function() {
             expect(
                 function() {
-                    var empty = new elements.Identifier(types.VARIABLE);
+                    const empty = new elements.Identifier(types.VARIABLE);
                 }
             ).to.throw();
             expect(
                 function() {
-                    var empty = new elements.Identifier(types.VARIABLE, '');
+                    const empty = new elements.Identifier(types.VARIABLE, '');
                 }
             ).to.throw();
         });
@@ -33,21 +33,21 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for a identifier containing white space', function() {
             expect(
                 function() {
-                    var bad = new elements.Identifier(types.VARIABLE, ' ');
+                    const bad = new elements.Identifier(types.VARIABLE, ' ');
                 }
             ).to.throw();
             expect(
                 function() {
-                    var bad = new elements.Identifier(types.VARIABLE, 'White Space');
+                    const bad = new elements.Identifier(types.VARIABLE, 'White Space');
                 }
             ).to.throw();
         });
 
         it('should construct a identifier and format the same identifier', function() {
-            var identifier = new elements.Identifier(types.VARIABLE, 'foobar');
-            var source = identifier.toString();
+            const identifier = new elements.Identifier(types.VARIABLE, 'foobar');
+            const source = identifier.toString();
             expect(source).to.equal('foobar');
-            var string = identifier.toString();
+            const string = identifier.toString();
             expect(string).to.equal('foobar');
         });
 

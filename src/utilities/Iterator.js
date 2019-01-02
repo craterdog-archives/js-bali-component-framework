@@ -63,7 +63,7 @@ Iterator.prototype.toStart = function() {
  * @param {Number} slot The slot before the next desired item. 
  */
 Iterator.prototype.toSlot = function(slot) {
-    var size = this.array.length;
+    const size = this.array.length;
     if (slot > size) slot = size;
     if (slot < -size) slot = -size;
     if (slot < 0) slot = slot + size + 1;
@@ -107,7 +107,7 @@ Iterator.prototype.hasNext = function() {
  */
 Iterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous element from an iterator that is at the beginning of an array.');
-    var item = this.array[--this.slot];
+    const item = this.array[--this.slot];
     return item;
 };
 
@@ -120,6 +120,6 @@ Iterator.prototype.getPrevious = function() {
  */
 Iterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next element from an iterator that is at the end of an array.');
-    var item = this.array[this.slot++];
+    const item = this.array[this.slot++];
     return item;
 };

@@ -42,7 +42,7 @@ function Binary(value, parameters) {
         this.base = parameters.getValue(1).toNumber();
     }
     var source;
-    var type = value.constructor.name;
+    const type = value.constructor.name;
     switch (type) {
         case 'Buffer':
             if (!this.base) this.base = 32;  // default value
@@ -67,7 +67,7 @@ function Binary(value, parameters) {
             break;
         case 'String':
             source = value;
-            var encoded = value.slice(1, -1);  // strip off the single quotes
+            const encoded = value.slice(1, -1);  // strip off the single quotes
             switch (this.base) {
                 case 2:
                     this.value = codex.base2Decode(encoded);
@@ -131,9 +131,9 @@ exports.Binary = Binary;
  * @returns {List} The resulting binary string.
  */
 Binary.concatenation = function(binary1, binary2) {
-    var buffer1 = binary1.value;
-    var buffer2 = binary2.value;
-    var buffer = Buffer.alloc(buffer1.length + buffer2.length);
+    const buffer1 = binary1.value;
+    const buffer2 = binary2.value;
+    const buffer = Buffer.alloc(buffer1.length + buffer2.length);
     buffer1.copy(buffer);
     buffer2.copy(buffer, buffer1.length);
     return new Binary(buffer, binary1.parameters);
@@ -168,7 +168,7 @@ Binary.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this binary string.
  */
 Binary.prototype.getIterator = function() {
-    var iterator = new BufferIterator(this.value);
+    const iterator = new BufferIterator(this.value);
     return iterator;
 };
 
@@ -240,7 +240,7 @@ Binary.prototype.toBase64 = function(indentation) {
  * @returns {Binary} A new binary string containing the specified number of random bytes.
  */
 Binary.random = function(numberOfBytes) {
-    var buffer = random.bytes(numberOfBytes);
+    const buffer = random.bytes(numberOfBytes);
     return new Binary(buffer);
 };
 
@@ -253,8 +253,8 @@ Binary.random = function(numberOfBytes) {
  * @returns {Binary} The resulting binary.
  */
 Binary.not = function(binary) {
-    var length = binary.value.length;
-    var buffer = Buffer.alloc(length);
+    const length = binary.value.length;
+    const buffer = Buffer.alloc(length);
     binary.value.forEach(function(byte, index) {
         buffer[index] = ~byte;
     });
@@ -272,7 +272,7 @@ Binary.not = function(binary) {
  */
 Binary.and = function(binary1, binary2) {
     var length = Math.max(binary1.value.length, binary2.value.length);
-    var buffer = Buffer.alloc(length);
+    const buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
         buffer[index] = binary1.value[index] & binary2.value[index];
@@ -291,7 +291,7 @@ Binary.and = function(binary1, binary2) {
  */
 Binary.sans = function(binary1, binary2) {
     var length = Math.max(binary1.value.length, binary2.value.length);
-    var buffer = Buffer.alloc(length);
+    const buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
         buffer[index] = binary1.value[index] & ~binary2.value[index];
@@ -310,7 +310,7 @@ Binary.sans = function(binary1, binary2) {
  */
 Binary.or = function(binary1, binary2) {
     var length = Math.max(binary1.value.length, binary2.value.length);
-    var buffer = Buffer.alloc(length);
+    const buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
         buffer[index] = binary1.value[index] | binary2.value[index];
@@ -329,7 +329,7 @@ Binary.or = function(binary1, binary2) {
  */
 Binary.xor = function(binary1, binary2) {
     var length = Math.max(binary1.value.length, binary2.value.length);
-    var buffer = Buffer.alloc(length);
+    const buffer = Buffer.alloc(length);
     length = Math.min(binary1.value.length, binary2.value.length);
     for (var index = 0; index < length; index++) {
         buffer[index] = binary1.value[index] ^ binary2.value[index];

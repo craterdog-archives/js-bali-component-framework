@@ -33,7 +33,7 @@ function Reference(value, parameters) {
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     value = value.slice(1, -1);  // remove the angle brackets
     this.value = new URL(value);
-    var source = '<' + this.value + '>';  // embed in angle brackets
+    const source = '<' + this.value + '>';  // embed in angle brackets
     this.setSource(source);
     this.setToComplex();  // references should never be inlined
     return this;

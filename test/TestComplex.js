@@ -41,9 +41,9 @@ describe('Bali Component Framework™', function() {
     describe('Test complex methods', function() {
 
         it('should generate method results that match the expected values', function() {
-            var tests = testValues.length;
+            const tests = testValues.length;
             for (var i = 0; i < tests; i++) {
-                var complex = testValues[i];
+                const complex = testValues[i];
                 expect(complex.isUndefined()).to.equal(isUndefinedValues[i]);
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);
@@ -82,7 +82,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should return the correct type', function() {
-            var type = elements.Number.ZERO.getType();
+            const type = elements.Number.ZERO.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#HYPTA0PX51J7K2VQ88NZMH9GDPHR6G0B,$version:v1,$digest:none]>');
         });
 
@@ -165,7 +165,7 @@ describe('Bali Component Framework™', function() {
 
 });
 
-var testValues = [
+const testValues = [
     elements.Number.UNDEFINED,
     elements.Number.ZERO,
     elements.Number.INFINITY,
@@ -179,7 +179,7 @@ var testValues = [
     new elements.Number('(1.23E-56, -7.8E90i)'),
     new elements.Number('(5 e^~3.141592653589793i)')
 ];
-var isUndefinedValues = [
+const isUndefinedValues = [
     true,
     false,
     false,
@@ -193,7 +193,7 @@ var isUndefinedValues = [
     false,
     false
 ];
-var isZeroValues = [
+const isZeroValues = [
     false,
     true,
     false,
@@ -207,7 +207,7 @@ var isZeroValues = [
     false,
     false
 ];
-var isInfiniteValues = [
+const isInfiniteValues = [
     false,
     false,
     true,
@@ -221,7 +221,7 @@ var isInfiniteValues = [
     true,
     false
 ];
-var realValues = [
+const realValues = [
     NaN,
     0,
     Infinity,
@@ -235,7 +235,7 @@ var realValues = [
     Infinity,
     -5
 ];
-var imaginaryValues = [
+const imaginaryValues = [
     NaN,
     0,
     Infinity,
@@ -249,7 +249,7 @@ var imaginaryValues = [
     Infinity,
     0
 ];
-var magnitudeValues = [
+const magnitudeValues = [
     NaN,
     0,
     Infinity,
@@ -263,7 +263,7 @@ var magnitudeValues = [
     Infinity,
     5
 ];
-var angleValues = [
+const angleValues = [
     0,
     0,
     0,
@@ -277,7 +277,7 @@ var angleValues = [
     0,
     3.1415926535898
 ];
-var stringValues = [
+const stringValues = [
     'undefined',
     '0',
     'infinity',
@@ -291,7 +291,7 @@ var stringValues = [
     'infinity',
     '(5 e^~pi i)'
 ];
-var rectangularValues = [
+const rectangularValues = [
     'undefined',
     '0',
     'infinity',
@@ -305,7 +305,7 @@ var rectangularValues = [
     'infinity',
     '-5'
 ];
-var polarValues = [
+const polarValues = [
     'undefined',
     '0',
     'infinity',

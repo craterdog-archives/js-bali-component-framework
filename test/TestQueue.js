@@ -15,30 +15,30 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
 
     describe('Test the queue constructors.', function() {
 
         it('should create an empty queue', function() {
-            var queue = new collections.Queue();
+            const queue = new collections.Queue();
             expect(queue).to.exist;  // jshint ignore:line
-            var size = queue.getSize();
+            const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = queue.getIterator();
+            const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             queue.removeAll();
-            var copy = new collections.Queue();
+            const copy = new collections.Queue();
             expect(copy).to.exist;  // jshint ignore:line
             expect(queue.isEqualTo(copy)).to.equal(true);
-            var signum = queue.comparedTo(copy);
+            const signum = queue.comparedTo(copy);
             expect(signum).to.equal(0);
         });
 
         it('should create an empty queue with small capacity', function() {
-            var queue = new collections.Queue();
+            const queue = new collections.Queue();
             queue.capacity = 3;
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -80,11 +80,11 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from an array', function() {
-            var queue = collections.Queue.from(array);
+            const queue = collections.Queue.from(array);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = queue.getIterator();
+            const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -98,12 +98,12 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a list', function() {
-            var list = collections.List.from(array);
+            const list = collections.List.from(array);
             queue = collections.Queue.from(list);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = queue.getIterator();
+            const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -117,13 +117,13 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a queue', function() {
-            var expected = collections.Queue.from(array);
-            var queue = collections.Queue.from(expected);
+            const expected = collections.Queue.from(array);
+            const queue = collections.Queue.from(expected);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
             expect(queue.isEqualTo(expected)).to.equal(true);
-            var iterator = queue.getIterator();
+            const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -141,13 +141,13 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue methods.', function() {
 
         it('should return the correct primitive type', function() {
-            var type = new collections.Queue().getType();
+            const type = new collections.Queue().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4,$version:v1,$digest:none]>');
         });
 
         it('should be able to add and remove items from a queue', function() {
-            var queue = collections.Queue.from(array);
-            var size = queue.getSize();
+            const queue = collections.Queue.from(array);
+            const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
             var first = queue.getHead();
@@ -187,9 +187,9 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a queue forwards and backwards', function() {
             // REMEMBER: The iterator for a queue iterates through the items in FIFO order
-            var queue = collections.Queue.from(array);
+            const queue = collections.Queue.from(array);
             // iterate through the items from beginning to end
-            var iterator = queue.getIterator();
+            const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);

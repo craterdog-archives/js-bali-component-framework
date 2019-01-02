@@ -30,7 +30,7 @@ const Element = require('../abstractions/Element').Element;
 function Percent(value, parameters) {
     Element.call(this, types.PERCENT, parameters);
     if (value === undefined || value === null) value = 0;  // default value
-    var type = value.constructor.name;
+    const type = value.constructor.name;
     switch (type) {
         case 'Number':
             // nothing to convert

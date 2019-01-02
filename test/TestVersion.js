@@ -17,26 +17,26 @@ describe('Bali Component Framework™', function() {
     describe('Test version constructors', function() {
 
         it('should generate a default first version string', function() {
-            var empty = new elements.Version();
-            var string = empty.toString();
+            const empty = new elements.Version();
+            const string = empty.toString();
             expect(string).to.equal('v1');
         });
 
         it('should generate an explicit single level version string', function() {
-            var major = new elements.Version('v42');
-            var string = major.toString();
+            const major = new elements.Version('v42');
+            const string = major.toString();
             expect(string).to.equal('v42');
         });
 
         it('should generate an explicit two level version string', function() {
-            var minor = new elements.Version('v41.6');
-            var string = minor.toString();
+            const minor = new elements.Version('v41.6');
+            const string = minor.toString();
             expect(string).to.equal('v41.6');
         });
 
         it('should generate an explicit three level version string', function() {
-            var bug = new elements.Version('v2.13.5');
-            var string = bug.toString();
+            const bug = new elements.Version('v2.13.5');
+            const string = bug.toString();
             expect(string).to.equal('v2.13.5');
         });
 
@@ -89,7 +89,7 @@ describe('Bali Component Framework™', function() {
     describe('Test version methods', function() {
 
         it('should calculate and validate next versions', function() {
-            var currentVersion = new elements.Version('v6.2.7');
+            const currentVersion = new elements.Version('v6.2.7');
             var nextVersion = elements.Version.nextVersion(currentVersion, 1);
             expect(nextVersion.toString()).to.equal('v7');
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
@@ -120,7 +120,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should return the correct type', function() {
-            var type = new elements.Version('v1.2.3').getType();
+            const type = new elements.Version('v1.2.3').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#VVF92PYR76BJRFV932KMG7VHCD0MAS5R,$version:v1,$digest:none]>');
         });
 
@@ -129,8 +129,8 @@ describe('Bali Component Framework™', function() {
     describe('Test the version iterators.', function() {
 
         it('should iterate over a version string forwards and backwards', function() {
-            var version = new elements.Version('v1.2.3');
-            var iterator = version.getIterator();
+            const version = new elements.Version('v1.2.3');
+            const iterator = version.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
             expect(iterator.hasNext() === false);

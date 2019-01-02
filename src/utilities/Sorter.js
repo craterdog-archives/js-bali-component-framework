@@ -56,11 +56,11 @@ Sorter.prototype.sortCollection = function(collection) {
 
 Sorter.prototype.sortArray = function(array) {
     // check to see if the array is already sorted
-    var length = array.length;
+    const length = array.length;
     if (length < 2) return array;
 
     // split the array into two halves
-    var leftLength = Math.floor(length / 2);
+    const leftLength = Math.floor(length / 2);
     var left = array.slice(0, leftLength);
     var right = array.slice(leftLength, length);
 
@@ -69,7 +69,7 @@ Sorter.prototype.sortArray = function(array) {
     right = this.sortArray(right);
 
     // merge the sorted halves back together
-    var result = this.mergeArrays(left, right);
+    const result = this.mergeArrays(left, right);
     return result;
 };
 
@@ -80,7 +80,7 @@ Sorter.prototype.mergeArrays = function(left, right) {
     var result = [];
     while (leftIndex < left.length && rightIndex < right.length) {
         // still have elements in both halves
-        var comparison = this.comparator.compareComponents(left[leftIndex], right[rightIndex]);
+        const comparison = this.comparator.compareComponents(left[leftIndex], right[rightIndex]);
         switch (comparison) {
             case -1:
                 // copy the next left element to the result

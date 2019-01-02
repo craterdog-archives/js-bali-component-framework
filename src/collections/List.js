@@ -61,9 +61,9 @@ exports.List = List;
  * @returns {List} The new list.
  */
 List.from = function(collection, parameters) {
-    var list = new List(parameters);
+    const list = new List(parameters);
     var iterator;
-    var type = collection.constructor.name;
+    const type = collection.constructor.name;
     switch (type) {
         case 'Array':
             collection.forEach(function(item) {
@@ -104,7 +104,7 @@ List.from = function(collection, parameters) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    var result = List.from(list1, list1.parameters);
+    const result = List.from(list1, list1.parameters);
     result.addItems(list2);
     return result;
 };
@@ -128,7 +128,7 @@ List.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of items in this list.
  */
 List.prototype.getSize = function() {
-    var size = this.array.length;
+    const size = this.array.length;
     return size;
 };
 
@@ -152,7 +152,7 @@ List.prototype.toArray = function() {
 List.prototype.getItem = function(index) {
     index = this.normalizeIndex(index);
     index--;  // convert to JS zero based indexing
-    var item = this.array[index];
+    const item = this.array[index];
     return item;
 };
 
@@ -169,7 +169,7 @@ List.prototype.getItem = function(index) {
 List.prototype.setItem = function(index, item) {
     item = Composite.asComponent(item);
     index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
-    var oldItem = this.array[index];
+    const oldItem = this.array[index];
     this.array[index] = item;
     this.complexity += item.complexity - oldItem.complexity;
     return oldItem;
@@ -216,9 +216,9 @@ List.prototype.insertItem = function(index, item) {
  * @param {Collection} items A collection containing the new items to be inserted into this list.
  */
 List.prototype.insertItems = function(index, items) {
-    var iterator = items.getIterator();
+    const iterator = items.getIterator();
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         this.insertItem(index++, item);
     }
 };
@@ -234,7 +234,7 @@ List.prototype.insertItems = function(index, items) {
 List.prototype.removeItem = function(index) {
     index = this.normalizeIndex(index);
     index--;  // convert to javascript zero based indexing
-    var oldItem = this.array[index];
+    const oldItem = this.array[index];
     if (oldItem) {
         this.array.splice(index, 1);
         this.complexity -= oldItem.complexity;
@@ -252,14 +252,14 @@ List.prototype.removeItem = function(index) {
  * @returns The list of the items that were removed from this list.
  */
 List.prototype.removeItems = function(range) {
-    var iterator = range.getIterator();
-    var array = [];
+    const iterator = range.getIterator();
+    const array = [];
     while (iterator.hasNext()) {
-        var index = iterator.getNext();
-        var item = this.removeItem(index);
+        const index = iterator.getNext();
+        const item = this.removeItem(index);
         array.push(item);
     }
-    var items = this.constructor.from(array);
+    const items = List.from(array);
     return items;
 };
 
@@ -268,7 +268,7 @@ List.prototype.removeItems = function(range) {
  * This method removes all items from this list.
  */
 List.prototype.removeAll = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };
@@ -301,10 +301,10 @@ List.prototype.reverseItems = function() {
  * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
  */
 List.prototype.shuffleItems = function() {
-    var size = this.getSize();
+    const size = this.getSize();
     for (var index = size; index > 1; index--) {
-        var randomIndex = random.index(index);  // in range [1..index] ordinal indexing
-        var item = this.getItem(index);
+        const randomIndex = random.index(index);  // in range [1..index] ordinal indexing
+        const item = this.getItem(index);
         this.setItem(index, this.getItem(randomIndex));
         this.setItem(randomIndex, item);
     }

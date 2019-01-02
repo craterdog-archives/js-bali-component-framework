@@ -57,7 +57,7 @@ Source.prototype.acceptVisitor = function(visitor) {
  * @returns {Array} An array containing the procedure for this source code.
  */
 Source.prototype.toArray = function() {
-    var array = [];
+    const array = [];
     array.push(this.procedure);
     return array;
 };

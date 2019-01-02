@@ -35,7 +35,7 @@ const EOL = '\n';  // POSIX end of line character
 exports.formatLines = function(string, indentation) {
     indentation = indentation ? indentation : '';
     var formatted = '';
-    var length = string.length;
+    const length = string.length;
     if (length > LINE_WIDTH) {
         for (var index = 0; index < length; index += LINE_WIDTH) {
             formatted += EOL + '    ' + indentation;
@@ -53,7 +53,7 @@ exports.formatLines = function(string, indentation) {
  * This private string acts as a lookup table for mapping one bit values to base 2
  * characters.
  */
-var base2LookupTable = "01";
+const base2LookupTable = "01";
 
 /**
  * This function encodes the bytes in a data buffer into a base 2 string.
@@ -71,14 +71,14 @@ exports.base2Encode = function(buffer, indentation) {
     buffer.forEach(function(byte) {
         // encode each bit
         for (var b = 7; b >= 0; b--) {
-            var mask = 1 << b;
-            var bit = (byte & mask) >>> b;
+            const mask = 1 << b;
+            const bit = (byte & mask) >>> b;
             string += base2LookupTable[bit];
         }
     });
 
     // break the string into formatted lines
-    var base2 = exports.formatLines(string, indentation);
+    const base2 = exports.formatLines(string, indentation);
     return base2;
 };
 
@@ -93,21 +93,21 @@ exports.base2Encode = function(buffer, indentation) {
 exports.base2Decode = function(base2) {
     // validate the base 2 encoded string
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
-    var length = base2.length;
+    const length = base2.length;
     if (length % 8 !== 0) {
         throw new Error("BUG: The number of characters in a base 2 binary string must be divisible by 8: " + base2);
     }
 
     // decode each base 2 character
-    var buffer = Buffer.alloc(length / 8);
+    const buffer = Buffer.alloc(length / 8);
     var index = 0;
     while (index < length - 7) {
 
         // decode one byte
         var byte = 0;
         for (var b = 7; b >= 0; b--) {
-            var character = base2[index++];
-            var bit = base2LookupTable.indexOf(character);
+            const character = base2[index++];
+            const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
                 throw new Error("BUG: Attempted to decode a string that is not base 2: " + base2);
             }
@@ -127,7 +127,7 @@ exports.base2Decode = function(base2) {
  * This private string acts as a lookup table for mapping four bit values to base 16
  * characters. Only uppercase letters are allowed.
  */
-var base16LookupTable = "0123456789ABCDEF";
+const base16LookupTable = "0123456789ABCDEF";
 
 
 /**
@@ -144,14 +144,14 @@ exports.base16Encode = function(buffer, indentation) {
     // encode the bytes
     var string = '';
     buffer.forEach(function(byte) {
-        var highOrderNybble = (byte & 0xF0) >>> 4;
+        const highOrderNybble = (byte & 0xF0) >>> 4;
         string += base16LookupTable[highOrderNybble];
-        var lowOrderNybble = byte & 0x0F;
+        const lowOrderNybble = byte & 0x0F;
         string += base16LookupTable[lowOrderNybble];
     });
 
     // break the string into formatted lines
-    var base16 = exports.formatLines(string, indentation);
+    const base16 = exports.formatLines(string, indentation);
     return base16;
 };
 
@@ -167,32 +167,32 @@ exports.base16Decode = function(base16) {
     // validate the base 16 encoded string
     base16 = base16.replace(/\s/g, '');  // strip out whitespace
     base16 = base16.toUpperCase();
-    var length = base16.length;
+    const length = base16.length;
     if (length % 2 !== 0) {
         throw new Error("BUG: The number of characters in a base 16 binary string must be divisible by 2: " + base16);
     }
 
     // decode each base 16 character
-    var buffer = Buffer.alloc(length / 2);
+    const buffer = Buffer.alloc(length / 2);
     var index = 0;
     while (index < length - 1) {
 
         // decode the character for the high order nybble
         var character = base16[index++];
-        var highOrderNybble = base16LookupTable.indexOf(character);
+        const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
             throw new Error("BUG: Attempted to decode a string that is not base 16: " + base16);
         }
 
         // decode the character for the low order nybble
         character = base16[index++];
-        var lowOrderNybble = base16LookupTable.indexOf(character);
+        const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
             throw new Error("BUG: Attempted to decode a string that is not base 16: " + base16);
         }
 
         // combine the nybbles to form the byte
-        var charCode = (highOrderNybble << 4) | lowOrderNybble;
+        const charCode = (highOrderNybble << 4) | lowOrderNybble;
         buffer[index / 2 - 1] = charCode;
 
     }
@@ -207,7 +207,7 @@ exports.base16Decode = function(base16) {
  * 0 and O, 1 and I; and reduce the likelihood of *actual* (potentially offensive)
  * words from being included in a base 32 string. Only uppercase letters are allowed.
  */
-var base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
+const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
 
 
 /**
@@ -223,21 +223,21 @@ exports.base32Encode = function(buffer, indentation) {
 
     // encode each byte
     var string = '';
-    var length = buffer.length;
+    const length = buffer.length;
     for (var i = 0; i < length; i++) {
-        var previousByte = buffer[i - 1];  // ignored when i is zero
-        var currentByte = buffer[i];
+        const previousByte = buffer[i - 1];  // ignored when i is zero
+        const currentByte = buffer[i];
 
         // encode next one or two 5 bit chunks
         string = base32EncodeNextChucks(previousByte, currentByte, i, string);
     }
 
     // encode the last chunk
-    var lastByte = buffer[length - 1];
+    const lastByte = buffer[length - 1];
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    var base32 = exports.formatLines(string, indentation);
+    const base32 = exports.formatLines(string, indentation);
     return base32;
 };
 
@@ -253,13 +253,13 @@ exports.base32Decode = function(base32) {
     // validate the base 32 encoded string
     base32 = base32.replace(/\s/g, '');  // strip out whitespace
     base32 = base32.toUpperCase();
-    var length = base32.length;
+    const length = base32.length;
 
     var character;
     var chunk;
 
     // decode each base 32 character
-    var buffer = Buffer.alloc(Math.floor(length * 5 / 8));
+    const buffer = Buffer.alloc(Math.floor(length * 5 / 8));
     var index = 0;
     while (index < length - 1) {
         character = base32[index];
@@ -293,10 +293,10 @@ exports.base64Encode = function(buffer, indentation) {
     indentation = indentation ? indentation : '';
 
     // format as indented 80 character blocks
-    var string = buffer.toString('base64');
+    const string = buffer.toString('base64');
 
     // break the string into formatted lines
-    var base64 = exports.formatLines(string, indentation);
+    const base64 = exports.formatLines(string, indentation);
     return base64;
 };
 
@@ -321,9 +321,9 @@ exports.base64Decode = function(base64) {
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
 exports.shortToBytes = function(short) {
-    var buffer = Buffer.alloc(2);
+    const buffer = Buffer.alloc(2);
     for (var i = 0; i < 2; i++) {
-        var byte = short >> (i * 8) & 0xFF;
+        const byte = short >> (i * 8) & 0xFF;
         buffer[1 - i] = byte;
     }
     return buffer;
@@ -340,7 +340,7 @@ exports.shortToBytes = function(short) {
 exports.bytesToShort = function(buffer) {
     var short = 0;
     for (var i = 0; i < 2; i++) {
-        var byte = buffer[1 - i];
+        const byte = buffer[1 - i];
         short |= byte << (i * 8);
     }
     return short;
@@ -355,9 +355,9 @@ exports.bytesToShort = function(buffer) {
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
 exports.integerToBytes = function(integer) {
-    var buffer = Buffer.alloc(4);
+    const buffer = Buffer.alloc(4);
     for (var i = 0; i < 4; i++) {
-        var byte = integer >> (i * 8) & 0xFF;
+        const byte = integer >> (i * 8) & 0xFF;
         buffer[3 - i] = byte;
     }
     return buffer;
@@ -374,7 +374,7 @@ exports.integerToBytes = function(integer) {
 exports.bytesToInteger = function(buffer) {
     var integer = 0;
     for (var i = 0; i < 4; i++) {
-        var byte = buffer[3 - i];
+        const byte = buffer[3 - i];
         integer |= byte << (i * 8);
     }
     return integer;
@@ -390,7 +390,7 @@ exports.bytesToInteger = function(buffer) {
  */
 function base32EncodeNextChucks(previous, current, byteIndex, base32) {
     var chunk;
-    var offset = byteIndex % 5;
+    const offset = byteIndex % 5;
     switch (offset) {
         case 0:
             chunk = (current & 0xF8) >>> 3;
@@ -431,7 +431,7 @@ function base32EncodeNextChucks(previous, current, byteIndex, base32) {
  */
 function base32EncodeLastChunk(last, byteIndex, base32) {
     var chunk;
-    var offset = byteIndex % 5;
+    const offset = byteIndex % 5;
     switch (offset) {
         case 0:
             chunk = (last & 0x07) << 2;
@@ -463,8 +463,8 @@ function base32EncodeLastChunk(last, byteIndex, base32) {
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
 function base32DecodeNextCharacter(chunk, characterIndex, buffer, index) {
-    var byteIndex = Math.floor(index + (characterIndex * 5) / 8);
-    var offset = characterIndex % 8;
+    const byteIndex = Math.floor(index + (characterIndex * 5) / 8);
+    const offset = characterIndex % 8;
     switch (offset) {
         case 0:
             buffer[byteIndex] |= chunk << 3;
@@ -505,8 +505,8 @@ function base32DecodeNextCharacter(chunk, characterIndex, buffer, index) {
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
 function base32DecodeLastCharacter(chunk, characterIndex, buffer, index) {
-    var byteIndex = Math.floor(index + (characterIndex * 5) / 8);
-    var offset = characterIndex % 8;
+    const byteIndex = Math.floor(index + (characterIndex * 5) / 8);
+    const offset = characterIndex % 8;
     switch (offset) {
         case 1:
             buffer[byteIndex] |= chunk >>> 2;

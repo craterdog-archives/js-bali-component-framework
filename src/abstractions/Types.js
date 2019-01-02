@@ -337,8 +337,8 @@ exports.typeTag = function(type) {
 
 
 exports.typeReference = function(type) {
-    var tag = TAGS[type];
-    var reference = '<bali:[$protocol:' + PROTOCOL + ',$tag:' + tag + ',$version:' + VERSION + ',$digest:none]>';
+    const tag = TAGS[type];
+    const reference = '<bali:[$protocol:' + PROTOCOL + ',$tag:' + tag + ',$version:' + VERSION + ',$digest:none]>';
     return reference;
 };
 
@@ -350,6 +350,6 @@ exports.typeReference = function(type) {
  * @returns {Number} The type for the specified symbol.
  */
 exports.typeBySymbol = function(symbol) {
-    var name = symbol.toString().slice(1);  // remove the '$'
+    const name = symbol.toString().slice(1);  // remove the '$'
     return NAMES.indexOf(name);
 };

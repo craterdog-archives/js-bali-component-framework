@@ -85,7 +85,7 @@ Component.prototype.setToComplex = function() {
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
-    var string = this.toDocument();
+    const string = this.toDocument();
     return string;
 };
 
@@ -99,8 +99,8 @@ Component.prototype.toString = function() {
  * @returns {String} The source code for this component.
  */
 Component.prototype.toDocument = function(indentation) {
-    var formatter = new Formatter(indentation);
-    var source = formatter.formatComponent(this);
+    const formatter = new Formatter(indentation);
+    const source = formatter.formatComponent(this);
     return source;
 };
 
@@ -112,7 +112,7 @@ Component.prototype.toDocument = function(indentation) {
  * @returns {Boolean} Whether or not this component is equal to another component.
  */
 Component.prototype.isEqualTo = function(that) {
-    var comparator = new Comparator();
+    const comparator = new Comparator();
     return comparator.componentsAreEqual(this, that);
 };
 
@@ -125,7 +125,7 @@ Component.prototype.isEqualTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
-    var comparator = new Comparator();
+    const comparator = new Comparator();
     return comparator.compareComponents(this, that);
 };
 
@@ -137,14 +137,14 @@ Component.prototype.comparedTo = function(that) {
  * @returns {Boolean} Whether or not this component matches the filter.
  */
 Component.prototype.matches = function(filter) {
-    var string = filter.toString();
+    const string = filter.toString();
     switch (string) {
         case 'none':
             return false;
         case 'any':
             return true;
         default:
-            var regex = new RegExp(string.slice(2, -1));  // remove "&'" and "'" delimiters
+            const regex = new RegExp(string.slice(2, -1));  // remove "&'" and "'" delimiters
             return regex.test(this.toString());
     }
 };
@@ -157,10 +157,10 @@ Component.prototype.matches = function(filter) {
  */
 Component.prototype.getHash = function() {
     var hash = 0;
-    var source = this.toString();
+    const source = this.toString();
     if (source.length === 0) return hash;
     for (var i = 0; i < source.length; i++) {
-        var character = source.charCodeAt(i);
+        const character = source.charCodeAt(i);
         hash = ((hash << 5) - hash) + character;
         hash |= 0;  // truncate to a 32 bit integer
     }

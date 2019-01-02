@@ -32,7 +32,7 @@ function Probability(value, parameters) {
     Element.call(this, types.PROBABILITY, parameters);
     if (value === undefined || value === null) value = false;  // default value
 
-    var type = value.constructor.name;
+    const type = value.constructor.name;
     switch (type) {
         case 'Boolean':
             if (value) {
@@ -113,7 +113,7 @@ Probability.TRUE = new Probability('true');
  * @returns {Probability} A new random probability.
  */
 Probability.random = function() {
-    var probability = random.probability();
+    const probability = random.probability();
     return new Probability(probability);
 };
 
@@ -128,7 +128,7 @@ Probability.random = function() {
  * @returns {Boolean} The resulting probability.
  */
 Probability.coinToss = function(weighting) {
-    var probability = random.probability();
+    const probability = random.probability();
     return probability < weighting;
 };
 
@@ -145,8 +145,8 @@ Probability.coinToss = function(weighting) {
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability) {
-    var p = precision.difference(1, probability.value);
-    var result = new Probability(p);
+    const p = precision.difference(1, probability.value);
+    const result = new Probability(p);
     return result;
 };
 
@@ -164,10 +164,10 @@ Probability.not = function(probability) {
  * @returns {Probability} The resulting probability.
  */
 Probability.and = function(probability1, probability2) {
-    var p1 = probability1.value;
-    var p2 = probability2.value;
-    var p = precision.product(p1, p2);
-    var result = new Probability(p);
+    const p1 = probability1.value;
+    const p2 = probability2.value;
+    const p = precision.product(p1, p2);
+    const result = new Probability(p);
     return result;
 };
 
@@ -186,10 +186,10 @@ Probability.and = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.sans = function(probability1, probability2) {
-    var p1 = probability1.value;
-    var p2 = probability2.value;
-    var p = precision.product(p1, precision.difference(1, p2));
-    var result = new Probability(p);
+    const p1 = probability1.value;
+    const p2 = probability2.value;
+    const p = precision.product(p1, precision.difference(1, p2));
+    const result = new Probability(p);
     return result;
 };
 
@@ -209,10 +209,10 @@ Probability.sans = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.or = function(probability1, probability2) {
-    var p1 = probability1.value;
-    var p2 = probability2.value;
-    var p = precision.sum(p1, p2, precision.product(-p1, p2));
-    var result = new Probability(p);
+    const p1 = probability1.value;
+    const p2 = probability2.value;
+    const p = precision.sum(p1, p2, precision.product(-p1, p2));
+    const result = new Probability(p);
     return result;
 };
 
@@ -232,10 +232,10 @@ Probability.or = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.xor = function(probability1, probability2) {
-    var p1 = probability1.value;
-    var p2 = probability2.value;
-    var p = precision.sum(p1, p2, precision.product(-2, p1, p2));
-    var result = new Probability(p);
+    const p1 = probability1.value;
+    const p2 = probability2.value;
+    const p = precision.sum(p1, p2, precision.product(-2, p1, p2));
+    const result = new Probability(p);
     return result;
 };
 

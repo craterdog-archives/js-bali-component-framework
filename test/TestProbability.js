@@ -17,36 +17,36 @@ describe('Bali Component Framework™', function() {
     describe('Test probability constructors', function() {
 
         it('should construct a default probability of zero', function() {
-            var empty = new elements.Probability();
-            var number = empty.toNumber();
+            const empty = new elements.Probability();
+            const number = empty.toNumber();
             expect(number).to.equal(0);
-            var string = empty.toString();
+            const string = empty.toString();
             expect(string).to.equal('false');
             expect(empty.toBoolean()).to.be.false;  // jshint ignore:line
         });
 
         it('should construct a probability of zero', function() {
-            var zero = new elements.Probability(0);
-            var number = zero.toNumber();
+            const zero = new elements.Probability(0);
+            const number = zero.toNumber();
             expect(number).to.equal(0);
-            var string = zero.toString();
+            const string = zero.toString();
             expect(string).to.equal('false');
             expect(zero.toBoolean()).to.be.false;  // jshint ignore:line
         });
 
         it('should construct a probability of one half', function() {
-            var half = new elements.Probability(0.5);
-            var number = half.toNumber();
+            const half = new elements.Probability(0.5);
+            const number = half.toNumber();
             expect(number).to.equal(0.5);
-            var string = half.toString();
+            const string = half.toString();
             expect(string).to.equal('.5');
         });
 
         it('should construct a probability of one', function() {
-            var one = new elements.Probability(1);
-            var number = one.toNumber();
+            const one = new elements.Probability(1);
+            const number = one.toNumber();
             expect(number).to.equal(1);
-            var string = one.toString();
+            const string = one.toString();
             expect(string).to.equal('true');
             expect(one.toBoolean()).to.be.true;  // jshint ignore:line
         });
@@ -54,7 +54,7 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for negative probabilities', function() {
             expect(
                 function() {
-                    var negative = new elements.Probability(-1);
+                    const negative = new elements.Probability(-1);
                 }
             ).to.throw();
         });
@@ -62,15 +62,15 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for probabilities greater than 1', function() {
             expect(
                 function() {
-                    var two = new elements.Probability(2);
+                    const two = new elements.Probability(2);
                 }
             ).to.throw();
         });
 
         it('should average very near 50% for many coin flips', function() {
-            var even = new elements.Probability(0.5);
+            const even = new elements.Probability(0.5);
             var heads = 0;
-            var tosses = 10000;
+            const tosses = 10000;
             for (var i = 1; i < tosses; i++) {
                 if (elements.Probability.coinToss(even)) heads++;
             }
@@ -82,7 +82,7 @@ describe('Bali Component Framework™', function() {
     describe('Test probability methods', function() {
 
         it('should return the correct type', function() {
-            var type = elements.Probability.TRUE.getType();
+            const type = elements.Probability.TRUE.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#2YBVYV11HS4CKZ7X8RDJ0RYC7TKKAV2D,$version:v1,$digest:none]>');
         });
 
@@ -92,7 +92,7 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the random function correctly', function() {
             for (var i = 0; i < 100; i++) {
-                var probability = elements.Probability.random();
+                const probability = elements.Probability.random();
                 expect(probability.value >= 0 && probability.value <= 1).to.equal(true);
             }
         });
@@ -137,8 +137,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it("should perform the De Morgan's Laws correctly", function() {
-            var A = new elements.Probability(0.75);
-            var B = new elements.Probability(1/3);
+            const A = new elements.Probability(0.75);
+            const B = new elements.Probability(1/3);
             expect(elements.Probability.not(elements.Probability.and(A, B)).isEqualTo(elements.Probability.or(elements.Probability.not(A), elements.Probability.not(B)))).to.equal(true);
             expect(elements.Probability.not(elements.Probability.or(A, B)).isEqualTo(elements.Probability.and(elements.Probability.not(A), elements.Probability.not(B)))).to.equal(true);
         });

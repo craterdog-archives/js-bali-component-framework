@@ -47,16 +47,16 @@ describe('Bali Component Framework™', function() {
     describe('Test angle methods', function() {
 
         it('should generate method results that match the expected values', function() {
-            var tests = testValues.length;
+            const tests = testValues.length;
             for (var i = 0; i < tests; i++) {
-                var angle = testValues[i];
+                const angle = testValues[i];
                 expect(angle.toString()).to.equal(stringValues[i]);
                 expect(angle.toNumber()).to.equal(numericValues[i]);
             }
         });
 
         it('should return the correct type', function() {
-            var type = elements.Angle.PI.getType();
+            const type = elements.Angle.PI.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#8SC89QY4LM68LTGPXYMBR6C0LR324L3P,$version:v1,$digest:none]>');
         });
 
@@ -212,7 +212,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should run round-trip angle methods', function() {
-            var expectedValues = [
+            const expectedValues = [
                 elements.Angle.PI,
                 new elements.Angle(precision.PI / 2),
                 new elements.Angle(precision.PI / 3),
@@ -224,10 +224,10 @@ describe('Bali Component Framework™', function() {
                 new elements.Angle(-precision.PI / 3)
             ];
             for (var i = 0; i < expectedValues.length; i++) {
-                var angle = expectedValues[i];
-                var opposite = elements.Angle.sine(angle);
-                var adjacent = elements.Angle.cosine(angle);
-                var arctangent = elements.Angle.arctangent(opposite, adjacent);
+                const angle = expectedValues[i];
+                const opposite = elements.Angle.sine(angle);
+                const adjacent = elements.Angle.cosine(angle);
+                const arctangent = elements.Angle.arctangent(opposite, adjacent);
                 expect(arctangent.isEqualTo(angle)).to.equal(true);
             }
         });
@@ -237,7 +237,7 @@ describe('Bali Component Framework™', function() {
 });
 
 
-var testValues = [
+const testValues = [
     elements.Angle.ZERO,
     new elements.Angle(-0),
     new elements.Angle(0),
@@ -262,7 +262,7 @@ var testValues = [
     new elements.Angle(-2 * precision.PI)
 ];
 
-var stringValues = [
+const stringValues = [
     '~0',
     '~0',
     '~0',
@@ -287,7 +287,7 @@ var stringValues = [
     '~0'
 ];
 
-var numericValues = [
+const numericValues = [
     0,
     0,
     0,

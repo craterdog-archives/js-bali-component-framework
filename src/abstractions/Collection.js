@@ -59,11 +59,11 @@ Collection.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    var component = Composite.asComponent(item);
+    const component = Composite.asComponent(item);
     var index = 0;
-    var iterator = this.getIterator();
+    const iterator = this.getIterator();
     while (iterator.hasNext()) {
-        var candidate = iterator.getNext();
+        const candidate = iterator.getNext();
         index++;
         if (component.isEqualTo(candidate)) return index;
     }
@@ -90,14 +90,14 @@ Collection.prototype.getItem = function(index) {
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
-    var iterator = range.getIterator();
-    var array = [];
+    const iterator = range.getIterator();
+    const array = [];
     while (iterator.hasNext()) {
-        var index = iterator.getNext();
-        var item = this.getItem(index);
+        const index = iterator.getNext();
+        const item = this.getItem(index);
         array.push(item);
     }
-    var items = this.constructor.from(array);
+    const items = this.constructor.from(array);
     return items;
 };
 
@@ -129,9 +129,9 @@ Collection.prototype.addItems = function(items) {
             }
         }, this);
     } else {
-        var iterator = items.getIterator();
+        const iterator = items.getIterator();
         while (iterator.hasNext()) {
-            var item = iterator.getNext();
+            const item = iterator.getNext();
             if (this.addItem(item)) {
                 count++;
             }
@@ -148,8 +148,8 @@ Collection.prototype.addItems = function(items) {
  * @returns {Boolean} Whether or not the specified item is contained in this collection.
  */
 Collection.prototype.containsItem = function(item) {
-    var index = this.getIndex(item);
-    var result = index > 0;
+    const index = this.getIndex(item);
+    const result = index > 0;
     return result;
 };
 
@@ -163,9 +163,9 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     var result = false;
-    var iterator = items.getIterator();
+    const iterator = items.getIterator();
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         result = this.containsItem(item);
         if (result) break;
     }
@@ -182,9 +182,9 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     var result = false;
-    var iterator = items.getIterator();
+    const iterator = items.getIterator();
     while (iterator.hasNext()) {
-        var item = iterator.getNext();
+        const item = iterator.getNext();
         result = this.containsItem(item);
         if (!result) break;
     }

@@ -44,7 +44,7 @@ function Moment(value, parameters) {
     if (value === undefined || value === null) value = moment().format(FORMATS[7]);  // current moment
     Element.call(this, types.MOMENT, parameters);
     FORMATS.find(function(format) {
-        var attempt = moment(value, format, true);  // true means strict mode
+        const attempt = moment(value, format, true);  // true means strict mode
         if (attempt.isValid()) {
             this.moment = attempt;
             this.format = format;
@@ -69,8 +69,8 @@ exports.Moment = Moment;
  */
 Moment.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
-    var thisType = this.constructor.name;
-    var thatType = that.constructor.name;
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
     if (thisType !== thatType) {
         return thisType.localeCompare(thatType);
     }

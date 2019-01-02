@@ -63,9 +63,9 @@ exports.Parser = Parser;
  * @returns {Component} The resulting component.
  */
 Parser.prototype.parseDocument = function(document) {
-    var parser = initializeParser(document, this.debug);
-    var antlrTree = parser.document();
-    var component = convertParseTree(antlrTree);
+    const parser = initializeParser(document, this.debug);
+    const antlrTree = parser.document();
+    const component = convertParseTree(antlrTree);
     return component;
 };
 
@@ -73,13 +73,13 @@ Parser.prototype.parseDocument = function(document) {
 // PRIVATE FUNCTIONS
 
 function initializeParser(document, debug) {
-    var chars = new antlr.InputStream(document);
-    var lexer = new grammar.DocumentLexer(chars);
-    var listener = new CustomErrorListener(debug);
+    const chars = new antlr.InputStream(document);
+    const lexer = new grammar.DocumentLexer(chars);
+    const listener = new CustomErrorListener(debug);
     lexer.removeErrorListeners();
     lexer.addErrorListener(listener);
-    var tokens = new antlr.CommonTokenStream(lexer);
-    var parser = new grammar.DocumentParser(tokens);
+    const tokens = new antlr.CommonTokenStream(lexer);
+    const parser = new grammar.DocumentParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
@@ -89,9 +89,9 @@ function initializeParser(document, debug) {
 
 
 function convertParseTree(antlrTree) {
-    var visitor = new ParsingVisitor();
+    const visitor = new ParsingVisitor();
     antlrTree.accept(visitor);
-    var baliTree = visitor.result;
+    const baliTree = visitor.result;
     return baliTree;
 }
 
@@ -114,7 +114,7 @@ ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
 ParsingVisitor.prototype.getParameters = function() {
-    var parameters = this.parameters;
+    const parameters = this.parameters;
     this.parameters = undefined;  // must unset it so other values don't see it
     return parameters;
 };
@@ -131,26 +131,26 @@ ParsingVisitor.prototype.getIndentation = function() {
 
 // angle: '~' real
 ParsingVisitor.prototype.visitAngle = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var angle = new elements.Angle(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const angle = new elements.Angle(value, parameters);
     this.result = angle;
 };
 
 
 // anyFilter: 'any'
 ParsingVisitor.prototype.visitAnyFilter = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var filter = new elements.Filter(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const filter = new elements.Filter(value, parameters);
     this.result = filter;
 };
 
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    var tree = new composites.Tree(types.ARITHMETIC_EXPRESSION, 2);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.ARITHMETIC_EXPRESSION, 2);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
@@ -164,25 +164,25 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 // association: component ':' expression
 ParsingVisitor.prototype.visitAssociation = function(ctx) {
     ctx.component().accept(this);
-    var key = this.result;
+    const key = this.result;
     ctx.expression().accept(this);
-    var value = this.result;
-    var association = new composites.Association(key, value);
+    const value = this.result;
+    const association = new composites.Association(key, value);
     this.result = association;
 };
 
 
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
-    var parameters = this.getParameters();
+    const parameters = this.getParameters();
     var string = ctx.BINARY().getText();
     string = string.slice(1, -1);  // strip off the "'" delimiters
     string = string.replace(/\s/g, '');  // strip out all whitespace
 
     // break the string into canonical formatted lines of characters
-    var value = "'" + codex.formatLines(string) + "'";
+    const value = "'" + codex.formatLines(string) + "'";
 
-    var binary = new elements.Binary(value, parameters);
+    const binary = new elements.Binary(value, parameters);
     this.result = binary;
 };
 
@@ -190,9 +190,9 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 // block: '{' procedure '}'
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
-    var procedure = this.result;
+    const procedure = this.result;
     procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
-    var tree = new composites.Tree(types.BLOCK, 2);
+    const tree = new composites.Tree(types.BLOCK, 2);
     tree.addChild(procedure);
     this.result = tree;
 };
@@ -200,7 +200,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
-    var tree = new composites.Tree(types.BREAK_CLAUSE, 10);
+    const tree = new composites.Tree(types.BREAK_CLAUSE, 10);
     this.result = tree;
 };
 
@@ -210,11 +210,11 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
-    var parameters = this.getParameters();
-    var component = new collections.Catalog(parameters);
+    const parameters = this.getParameters();
+    const component = new collections.Catalog(parameters);
     if (ctx.constructor.name !== 'EmptyCatalogContext') {
         this.depth++;
-        var associations = ctx.association();
+        const associations = ctx.association();
         associations.forEach(function(association) {
             association.accept(this);
             component.addItem(this.result);
@@ -227,7 +227,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
-    var tree = new composites.Tree(types.CHECKOUT_CLAUSE, 15);
+    const tree = new composites.Tree(types.CHECKOUT_CLAUSE, 15);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -238,8 +238,8 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 
 // commitClause: 'commit' expression 'to' expression
 ParsingVisitor.prototype.visitCommitClause = function(ctx) {
-    var tree = new composites.Tree(types.COMMIT_CLAUSE, 11);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.COMMIT_CLAUSE, 11);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -250,8 +250,8 @@ ParsingVisitor.prototype.visitCommitClause = function(ctx) {
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    var tree = new composites.Tree(types.COMPARISON_EXPRESSION, 2);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.COMPARISON_EXPRESSION, 2);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
@@ -264,7 +264,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 // complementExpression: 'not' expression
 ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
-    var tree = new composites.Tree(types.COMPLEMENT_EXPRESSION, 4);
+    const tree = new composites.Tree(types.COMPLEMENT_EXPRESSION, 4);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -273,9 +273,9 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 
 // complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var number = new elements.Number(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -287,21 +287,21 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
 //       during its processing. The value object often needs to know what the parameters
 //       are during its initialization.
 ParsingVisitor.prototype.visitComponent = function(ctx) {
-    var parameters = ctx.parameters();
+    const parameters = ctx.parameters();
     if (parameters) {
         // this is a parameterized component so parse the parameters first
         parameters.accept(this);
         this.parameters = this.result;  // save off the parameters for the value object
     }
-    var value = ctx.value();
+    const value = ctx.value();
     value.accept(this);  // the value clears this.parameters if it is set
 };
 
 
 // concatenationExpression: expression '&' expression
 ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
-    var tree = new composites.Tree(types.CONCATENATION_EXPRESSION, 3);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.CONCATENATION_EXPRESSION, 3);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -312,15 +312,15 @@ ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
 
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
-    var tree = new composites.Tree(types.CONTINUE_CLAUSE, 13);
+    const tree = new composites.Tree(types.CONTINUE_CLAUSE, 13);
     this.result = tree;
 };
 
 
 // defaultExpression: expression '?' expression
 ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
-    var tree = new composites.Tree(types.DEFAULT_EXPRESSION, 3);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.DEFAULT_EXPRESSION, 3);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -331,7 +331,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // dereferenceExpression: '@' expression
 ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
-    var tree = new composites.Tree(types.DEREFERENCE_EXPRESSION, 1);
+    const tree = new composites.Tree(types.DEREFERENCE_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -340,7 +340,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // discardClause: 'discard' expression
 ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
-    var tree = new composites.Tree(types.DISCARD_CLAUSE, 8);
+    const tree = new composites.Tree(types.DISCARD_CLAUSE, 8);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -355,9 +355,9 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var duration = new elements.Duration(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const duration = new elements.Duration(value, parameters);
     this.result = duration;
 };
 
@@ -385,8 +385,8 @@ ParsingVisitor.prototype.visitEmptyProcedure = function(ctx) {
 
 // evaluateClause: (recipient ':=')? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
-    var tree = new composites.Tree(types.EVALUATE_CLAUSE, 0);
-    var recipient = ctx.recipient();
+    const tree = new composites.Tree(types.EVALUATE_CLAUSE, 0);
+    const recipient = ctx.recipient();
     if (recipient) {
         recipient.accept(this);
         tree.addChild(this.result);
@@ -400,8 +400,8 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 // exponentialExpression: <assoc=right> expression '^' expression
 ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
-    var tree = new composites.Tree(types.EXPONENTIAL_EXPRESSION, 3);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.EXPONENTIAL_EXPRESSION, 3);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -412,7 +412,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
-    var tree = new composites.Tree(types.FACTORIAL_EXPRESSION, 1);
+    const tree = new composites.Tree(types.FACTORIAL_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -421,25 +421,25 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 // falseProbability: 'false'
 ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var probability = new elements.Probability(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
 
 
 // fractionalProbability: FRACTION
 ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var probability = new elements.Probability(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
 
 
 // functionExpression: function parameters
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    var tree = new composites.Tree(types.FUNCTION_EXPRESSION, 0);
+    const tree = new composites.Tree(types.FUNCTION_EXPRESSION, 0);
     ctx.funxtion().accept(this);
     tree.addChild(this.result);
     ctx.parameters().accept(this);
@@ -450,15 +450,15 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 // funxtion: IDENTIFIER
 ParsingVisitor.prototype.visitFunxtion = function(ctx) {
-    var value = ctx.getText();
-    var identifier = new elements.Identifier(types.FUNCTION, value);
+    const value = ctx.getText();
+    const identifier = new elements.Identifier(types.FUNCTION, value);
     this.result = identifier;
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    var tree = new composites.Tree(types.HANDLE_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.HANDLE_CLAUSE, Component.IS_COMPLEX);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -471,10 +471,10 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    var tree = new composites.Tree(types.IF_CLAUSE, Component.IS_COMPLEX);
-    var expressions = ctx.expression();
-    var blocks = ctx.block();
-    var hasElseBlock = blocks.length > expressions.length;
+    const tree = new composites.Tree(types.IF_CLAUSE, Component.IS_COMPLEX);
+    const expressions = ctx.expression();
+    const blocks = ctx.block();
+    const hasElseBlock = blocks.length > expressions.length;
     for (var i = 0; i < expressions.length; i++) {
         expressions[i].accept(this);
         tree.addChild(this.result);
@@ -497,16 +497,16 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 
 // imaginaryNumber: imaginary
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var number = new elements.Number(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const number = new elements.Number(value, parameters);
     this.result = number;
 };
 
 
 // indices: '[' list ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
-    var tree = new composites.Tree(types.INDICES, 0);
+    const tree = new composites.Tree(types.INDICES, 0);
     ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -515,9 +515,9 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var number = new elements.Number(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const number = new elements.Number(value, parameters);
     this.result = number;
 };
 
@@ -545,16 +545,16 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 
 // inlineText: TEXT
 ParsingVisitor.prototype.visitInlineText = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var text = new elements.Text(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const text = new elements.Text(value, parameters);
     this.result = text;
 };
 
 
 // inversionExpression: op=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
-    var tree = new composites.Tree(types.INVERSION_EXPRESSION, 1);
+    const tree = new composites.Tree(types.INVERSION_EXPRESSION, 1);
     tree.operator = ctx.op.text;
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -567,9 +567,9 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     EOL (expression EOL)* |
 //     /*empty list*/
 ParsingVisitor.prototype.visitList = function(ctx) {
-    var parameters = this.getParameters();
     var collection;
     var type = types.LIST;
+    const parameters = this.getParameters();
     if (parameters) {
         type = types.typeBySymbol(parameters.getValue(1));
     }
@@ -588,7 +588,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.List(parameters);
     }
     if (ctx.constructor.name !== 'EmptyListContext') {
-        var expressions = ctx.expression();
+        const expressions = ctx.expression();
         this.depth++;
         expressions.forEach(function(expression) {
             expression.accept(this);
@@ -602,8 +602,8 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    var tree = new composites.Tree(types.LOGICAL_EXPRESSION, 2);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.LOGICAL_EXPRESSION, 2);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
@@ -616,7 +616,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 // magnitudeExpression: '|' expression '|'
 ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
-    var tree = new composites.Tree(types.MAGNITUDE_EXPRESSION, 2);
+    const tree = new composites.Tree(types.MAGNITUDE_EXPRESSION, 2);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -625,15 +625,15 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
-    var value = ctx.getText();
-    var identifier = new elements.Identifier(types.MESSAGE, value);
+    const value = ctx.getText();
+    const identifier = new elements.Identifier(types.MESSAGE, value);
     this.result = identifier;
 };
 
 
 // messageExpression: expression '.' message parameters
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
-    var tree = new composites.Tree(types.MESSAGE_EXPRESSION, 1);
+    const tree = new composites.Tree(types.MESSAGE_EXPRESSION, 1);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.message().accept(this);
@@ -646,9 +646,9 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var moment = new elements.Moment(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const moment = new elements.Moment(value, parameters);
     this.result = moment;
 };
 
@@ -676,21 +676,21 @@ ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 
 // newlineText: TEXT_BLOCK
 ParsingVisitor.prototype.visitNewlineText = function(ctx) {
-    var parameters = this.getParameters();
+    const parameters = this.getParameters();
+    const indentation = this.getIndentation();
+    const regex = new RegExp('\\n' + indentation, 'g');
     var value = ctx.TEXT_BLOCK().getText();
-    var indentation = this.getIndentation();
-    var regex = new RegExp('\\n' + indentation, 'g');
     value = value.replace(regex, '\n');
-    var text = new elements.Text(value, parameters);
+    const text = new elements.Text(value, parameters);
     this.result = text;
 };
 
 
 // noneFilter: 'none'
 ParsingVisitor.prototype.visitNoneFilter = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var filter = new elements.Filter(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const filter = new elements.Filter(value, parameters);
     this.result = filter;
 };
 
@@ -698,24 +698,24 @@ ParsingVisitor.prototype.visitNoneFilter = function(ctx) {
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     ctx.collection().accept(this);
-    var collection = this.result;
-    var parameters = new composites.Parameters(collection);
+    const collection = this.result;
+    const parameters = new composites.Parameters(collection);
     this.result = parameters;
 };
 
 
 // percent: real '%'
 ParsingVisitor.prototype.visitPercent = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var percent = new elements.Percent(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const percent = new elements.Percent(value, parameters);
     this.result = percent;
 };
 
 
 // precedenceExpression: '(' expression ')'
 ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
-    var tree = new composites.Tree(types.PRECEDENCE_EXPRESSION, 2);
+    const tree = new composites.Tree(types.PRECEDENCE_EXPRESSION, 2);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -727,10 +727,10 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 //     EOL (statement EOL)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    var tree = new composites.Tree(types.PROCEDURE, 0);
-    var type = ctx.constructor.name;
+    const tree = new composites.Tree(types.PROCEDURE, 0);
+    const type = ctx.constructor.name;
     if (type !== 'EmptyProcedureContext') {
-        var statements = ctx.statement();
+        const statements = ctx.statement();
         this.depth++;
         statements.forEach(function(statement) {
             statement.accept(this);
@@ -745,7 +745,7 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
 
 // publishClause: 'publish' expression
 ParsingVisitor.prototype.visitPublishClause = function(ctx) {
-    var tree = new composites.Tree(types.PUBLISH_CLAUSE, 8);
+    const tree = new composites.Tree(types.PUBLISH_CLAUSE, 8);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -754,8 +754,8 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 
 // queueClause: 'queue' expression 'on' expression
 ParsingVisitor.prototype.visitQueueClause = function(ctx) {
-    var tree = new composites.Tree(types.QUEUE_CLAUSE, 10);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.QUEUE_CLAUSE, 10);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -766,55 +766,55 @@ ParsingVisitor.prototype.visitQueueClause = function(ctx) {
 
 // range: expression '..' expression
 ParsingVisitor.prototype.visitRange = function(ctx) {
-    var parameters = this.getParameters();
-    var expressions = ctx.expression();
+    const parameters = this.getParameters();
+    const expressions = ctx.expression();
     expressions[0].accept(this);
-    var first= this.result;
+    const first= this.result;
     expressions[1].accept(this);
-    var last= this.result;
-    var range = new composites.Range(first, last, parameters);
+    const last= this.result;
+    const range = new composites.Range(first, last, parameters);
     this.result = range;
 };
 
 
 // real: '0' | REAL
 ParsingVisitor.prototype.visitReal = function(ctx) {
-    var string = ctx.getText();
+    const string = ctx.getText();
     this.result = string;
 };
 
 
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var number = new elements.Number(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const number = new elements.Number(value, parameters);
     this.result = number;
 };
 
 
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var reference = new elements.Reference(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const reference = new elements.Reference(value, parameters);
     this.result = reference;
 };
 
 
 // reserved: RESERVED
 ParsingVisitor.prototype.visitReserved = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var reserved = new elements.Reserved(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const reserved = new elements.Reserved(value, parameters);
     this.result = reserved;
 };
 
 
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
-    var tree = new composites.Tree(types.RETURN_CLAUSE, 6);
-    var expression = ctx.expression();
+    const tree = new composites.Tree(types.RETURN_CLAUSE, 6);
+    const expression = ctx.expression();
     if (expression) {
         tree.complexity += 1;  // for the ' ' before the expression
         expression.accept(this);
@@ -826,8 +826,8 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 
 // saveClause: 'save' expression 'to' expression
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
-    var tree = new composites.Tree(types.SAVE_CLAUSE, 9);
-    var expressions = ctx.expression();
+    const tree = new composites.Tree(types.SAVE_CLAUSE, 9);
+    const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
     expressions[1].accept(this);
@@ -838,12 +838,12 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    var tree = new composites.Tree(types.SELECT_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.SELECT_CLAUSE, Component.IS_COMPLEX);
     var expressions = ctx.expression();
-    var selector = expressions[0];
+    const selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
-    var blocks = ctx.block();
-    var hasElseBlock = blocks.length > expressions.length;
+    const blocks = ctx.block();
+    const hasElseBlock = blocks.length > expressions.length;
     selector.accept(this);
     tree.addChild(this.result);
     for (var i = 0; i < expressions.length; i++) {
@@ -862,20 +862,20 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 
 // source: '{' procedure '}'
 ParsingVisitor.prototype.visitSource = function(ctx) {
-    var parameters = this.getParameters();
+    const parameters = this.getParameters();
     ctx.procedure().accept(this);
-    var procedure = this.result;
-    var source = new composites.Source(procedure, parameters);
+    const procedure = this.result;
+    const source = new composites.Source(procedure, parameters);
     this.result = source;
 };
 
 
 // statement: mainClause handleClause*
 ParsingVisitor.prototype.visitStatement = function(ctx) {
-    var tree = new composites.Tree(types.STATEMENT, 0);
+    const tree = new composites.Tree(types.STATEMENT, 0);
     ctx.mainClause().accept(this);
     tree.addChild(this.result);
-    var handleClauses = ctx.handleClause();
+    const handleClauses = ctx.handleClause();
     handleClauses.forEach(function(clause) {
         tree.complexity += 1;  // for the ' ' before each clause
         clause.accept(this);
@@ -893,7 +893,7 @@ ParsingVisitor.prototype.visitStructure = function(ctx) {
 
 // subcomponent: variable indices
 ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
-    var tree = new composites.Tree(types.SUBCOMPONENT, 0);
+    const tree = new composites.Tree(types.SUBCOMPONENT, 0);
     ctx.variable().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -904,7 +904,7 @@ ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
 
 // subcomponentExpression: expression indices
 ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
-    var tree = new composites.Tree(types.SUBCOMPONENT_EXPRESSION, 0);
+    const tree = new composites.Tree(types.SUBCOMPONENT_EXPRESSION, 0);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -915,25 +915,25 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var symbol = new elements.Symbol(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const symbol = new elements.Symbol(value, parameters);
     this.result = symbol;
 };
 
 
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var tag = new elements.Tag(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const tag = new elements.Tag(value, parameters);
     this.result = tag;
 };
 
 
 // throwClause: 'throw' expression
 ParsingVisitor.prototype.visitThrowClause = function(ctx) {
-    var tree = new composites.Tree(types.THROW_CLAUSE, 6);
+    const tree = new composites.Tree(types.THROW_CLAUSE, 6);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -942,42 +942,42 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 
 // trueProbability: 'true'
 ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var probability = new elements.Probability(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
 
 
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var number = new elements.Number(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const number = new elements.Number(value, parameters);
     this.result = number;
 };
 
 
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
-    var value = ctx.getText();
-    var identifier = new elements.Identifier(types.VARIABLE, value);
+    const value = ctx.getText();
+    const identifier = new elements.Identifier(types.VARIABLE, value);
     this.result = identifier;
 };
 
 
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
-    var parameters = this.getParameters();
-    var value = ctx.getText();
-    var version = new elements.Version(value, parameters);
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const version = new elements.Version(value, parameters);
     this.result = version;
 };
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 ParsingVisitor.prototype.visitWaitClause = function(ctx) {
-    var tree = new composites.Tree(types.WAIT_CLAUSE, 15);
+    const tree = new composites.Tree(types.WAIT_CLAUSE, 15);
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -988,7 +988,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    var tree = new composites.Tree(types.WHILE_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.WHILE_CLAUSE, Component.IS_COMPLEX);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -999,8 +999,8 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    var tree = new composites.Tree(types.WITH_CLAUSE, Component.IS_COMPLEX);
-    var symbol = ctx.symbol();
+    const tree = new composites.Tree(types.WITH_CLAUSE, Component.IS_COMPLEX);
+    const symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);
         tree.addChild(this.result);
@@ -1040,7 +1040,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    var exception = collections.Catalog.from({
+    const exception = collections.Catalog.from({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
@@ -1051,7 +1051,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
 
 
 CustomErrorStrategy.prototype.recoverInline = function(recognizer) {
-    var exception = new antlr.error.InputMismatchException(recognizer);
+    const exception = new antlr.error.InputMismatchException(recognizer);
     this.reportError(recognizer, exception);
     this.recover(recognizer, exception);
 };
@@ -1074,10 +1074,10 @@ CustomErrorListener.prototype.constructor = CustomErrorListener;
 
 CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
     // log a message
-    var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
-    var input = token ? offendingToken.getInputStream() : recognizer._input;
-    var lines = input.toString().split('\n');
-    var character = lines[lineNumber - 1][columnNumber];
+    const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
+    const input = token ? offendingToken.getInputStream() : recognizer._input;
+    const lines = input.toString().split('\n');
+    const character = lines[lineNumber - 1][columnNumber];
     if (!token) {
         message = "An unexpected character was encountered: '" + character + "'";
     } else {
@@ -1086,7 +1086,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     logMessage(recognizer, message);
 
     // stop processing
-    var exception = collections.Catalog.from({
+    const exception = collections.Catalog.from({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
@@ -1098,13 +1098,13 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
 
 CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startIndex, stopIndex, exact, alternatives, configs) {
     if (this.debug) {
-        var rule = getRule(recognizer, dfa);
+        const rule = getRule(recognizer, dfa);
         alternatives = [];
         configs.items.forEach(function(item) {
             alternatives.push(item.alt);
         });
         alternatives = "{" + alternatives.join(", ") + "}";
-        var message = 'PARSER: Ambiguous input was encountered for rule: ' + rule + ', alternatives: ' + alternatives;
+        const message = 'PARSER: Ambiguous input was encountered for rule: ' + rule + ', alternatives: ' + alternatives;
         logMessage(recognizer, message);
     }
 };
@@ -1112,22 +1112,22 @@ CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startI
 
 CustomErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
     if (this.debug) {
-        var rule = getRule(recognizer, dfa);
-        var message = 'PARSER Encountered a context sensitive rule: ' + rule;
+        const rule = getRule(recognizer, dfa);
+        const message = 'PARSER Encountered a context sensitive rule: ' + rule;
         logMessage(recognizer, message);
     }
 };
 
 
 function getRule(recognizer, dfa) {
-    var description = dfa.decision.toString();
-    var ruleIndex = dfa.atnStartState.ruleIndex;
+    const description = dfa.decision.toString();
+    const ruleIndex = dfa.atnStartState.ruleIndex;
 
-    var ruleNames = recognizer.ruleNames;
+    const ruleNames = recognizer.ruleNames;
     if (ruleIndex < 0 || ruleIndex >= ruleNames.length) {
         return description;
     }
-    var ruleName = ruleNames[ruleIndex] || '<unknown>';
+    const ruleName = ruleNames[ruleIndex] || '<unknown>';
     return description + " (" + ruleName + ")";
 }
 
@@ -1137,12 +1137,12 @@ function logMessage(recognizer, message) {
     console.error(message.slice(0, 160));
 
     // log the lines before and after the invalid line and highlight the invalid token
-    var offendingToken = recognizer._precedenceStack ? recognizer.getCurrentToken() : undefined;
-    var token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
-    var input = token ? offendingToken.getInputStream() : recognizer._input;
-    var lines = input.toString().split('\n');
-    var lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
-    var columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
+    const offendingToken = recognizer._precedenceStack ? recognizer.getCurrentToken() : undefined;
+    const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
+    const input = token ? offendingToken.getInputStream() : recognizer._input;
+    const lines = input.toString().split('\n');
+    const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
+    const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
     if (lineNumber > 1) {
         console.error(lines[lineNumber - 2]);
     }
@@ -1152,7 +1152,7 @@ function logMessage(recognizer, message) {
         line += ' ';
     }
     var start = token ? offendingToken.start : columnNumber;
-    var stop = token ? offendingToken.stop : columnNumber;
+    const stop = token ? offendingToken.stop : columnNumber;
     while (start++ <= stop) {
         line += '^';
     }

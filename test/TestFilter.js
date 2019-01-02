@@ -47,7 +47,7 @@ describe('Bali Component Framework™', function() {
     describe('Test filter methods', function() {
 
         it('should return the correct type', function() {
-            var type = elements.Filter.ANY.getType();
+            const type = elements.Filter.ANY.getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W,$version:v1,$digest:none]>');
         });
 

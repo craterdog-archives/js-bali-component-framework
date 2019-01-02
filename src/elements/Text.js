@@ -54,9 +54,9 @@ exports.Text = Text;
  * @returns {List} The resulting text string.
  */
 Text.concatenation = function(text1, text2) {
-    var string1 = text1.value;
-    var string2 = text2.value;
-    var string = string1 + string2;
+    const string1 = text1.value;
+    const string2 = text2.value;
+    const string = string1 + string2;
     return new Text(string, text1.parameters);
 };
 
@@ -89,7 +89,7 @@ Text.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this text string.
  */
 Text.prototype.getIterator = function() {
-    var iterator = new TextIterator(this.value);
+    const iterator = new TextIterator(this.value);
     return iterator;
 };
 

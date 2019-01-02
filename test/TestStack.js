@@ -15,30 +15,30 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    var array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
 
     describe('Test the stack constructors.', function() {
 
         it('should create an empty stack', function() {
-            var stack = new collections.Stack();
+            const stack = new collections.Stack();
             expect(stack).to.exist;  // jshint ignore:line
-            var size = stack.getSize();
+            const size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            var iterator = stack.getIterator();
+            const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             stack.removeAll();
-            var copy = new collections.Stack();
+            const copy = new collections.Stack();
             expect(copy).to.exist;  // jshint ignore:line
             expect(stack.isEqualTo(copy)).to.equal(true);
-            var signum = stack.comparedTo(copy);
+            const signum = stack.comparedTo(copy);
             expect(signum).to.equal(0);
         });
 
         it('should create an empty stack with small capacity', function() {
-            var stack = new collections.Stack();
+            const stack = new collections.Stack();
             stack.capacity = 1;
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -48,7 +48,7 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
             expect(function() {stack.addItem('beta');}).to.throw(Error, 'BUG: An invalid symbol value was passed to the constructor.');
-            var top = stack.removeItem();
+            const top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('alpha');
             size = stack.getSize();
@@ -57,11 +57,11 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from an array', function() {
-            var stack = collections.Stack.from(array);
+            const stack = collections.Stack.from(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = stack.getIterator();
+            const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -76,12 +76,12 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a list', function() {
-            var list = collections.List.from(array);
+            const list = collections.List.from(array);
             stack = collections.Stack.from(list);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var iterator = stack.getIterator();
+            const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -96,13 +96,13 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a stack', function() {
-            var expected = collections.Stack.from(array);
-            var stack = collections.Stack.from(expected);
+            const expected = collections.Stack.from(array);
+            const stack = collections.Stack.from(expected);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
             expect(stack.isEqualTo(expected)).to.equal(true);
-            var iterator = stack.getIterator();
+            const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
@@ -121,12 +121,12 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack methods.', function() {
 
         it('should return the correct primitive type', function() {
-            var type = new collections.Stack().getType();
+            const type = new collections.Stack().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Q2BJ8CAR3HW39A5GFC2C2S1JZVX4PSX9,$version:v1,$digest:none]>');
         });
 
         it('should be able to push and pop items from a stack', function() {
-            var stack = collections.Stack.from(array);
+            const stack = collections.Stack.from(array);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -165,9 +165,9 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             // REMEMBER: The iterator for a stack iterates through the items in LIFO order
-            var stack = collections.Stack.from(array);
+            const stack = collections.Stack.from(array);
             // iterate through the items from top down
-            var iterator = stack.getIterator();
+            const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);

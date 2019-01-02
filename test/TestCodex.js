@@ -19,55 +19,55 @@ describe('Bali Component Framework™', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {
-                var expectedBuffer = random.bytes(4);
-                var expectedInteger = codex.bytesToInteger(expectedBuffer);
-                buffer = codex.integerToBytes(expectedInteger);
+                const expectedBuffer = random.bytes(4);
+                const expectedInteger = codex.bytesToInteger(expectedBuffer);
+                const buffer = codex.integerToBytes(expectedInteger);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                var integer = codex.bytesToInteger(buffer);
+                const integer = codex.bytesToInteger(buffer);
                 expect(integer).to.equal(expectedInteger);
             }
         });
 
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
-                var expectedBuffer = random.bytes(i);
-                var expectedBase2 = codex.base2Encode(expectedBuffer, '    ');
-                var buffer = codex.base2Decode(expectedBase2);
+                const expectedBuffer = random.bytes(i);
+                const expectedBase2 = codex.base2Encode(expectedBuffer, '    ');
+                const buffer = codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                var base2 = codex.base2Encode(buffer, '    ');
+                const base2 = codex.base2Encode(buffer, '    ');
                 expect(base2).to.equal(expectedBase2);
             }
         });
 
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
-                var expectedBuffer = random.bytes(i);
-                var expectedBase16 = codex.base16Encode(expectedBuffer, '    ');
-                var buffer = codex.base16Decode(expectedBase16);
+                const expectedBuffer = random.bytes(i);
+                const expectedBase16 = codex.base16Encode(expectedBuffer, '    ');
+                const buffer = codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                var base16 = codex.base16Encode(buffer, '    ');
+                const base16 = codex.base16Encode(buffer, '    ');
                 expect(base16).to.equal(expectedBase16);
             }
         });
 
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
-                var expectedBuffer = random.bytes(i);
-                var expectedBase32 = codex.base32Encode(expectedBuffer, '    ');
-                var buffer = codex.base32Decode(expectedBase32);
+                const expectedBuffer = random.bytes(i);
+                const expectedBase32 = codex.base32Encode(expectedBuffer, '    ');
+                const buffer = codex.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                var base32 = codex.base32Encode(buffer, '    ');
+                const base32 = codex.base32Encode(buffer, '    ');
                 expect(base32).to.equal(expectedBase32);
             }
         });
 
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
-                var expectedBuffer = random.bytes(i);
-                var expectedBase64 = codex.base64Encode(expectedBuffer, '    ');
-                var buffer = codex.base64Decode(expectedBase64);
+                const expectedBuffer = random.bytes(i);
+                const expectedBase64 = codex.base64Encode(expectedBuffer, '    ');
+                const buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                var base64 = codex.base64Encode(buffer, '    ');
+                const base64 = codex.base64Encode(buffer, '    ');
                 expect(base64).to.equal(expectedBase64);
             }
         });

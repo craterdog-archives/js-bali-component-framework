@@ -46,7 +46,7 @@ exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
  */
 exports.lockOnExtreme = function(number) {
     // use single precision comparisons to lock on
-    var extreme = Math.fround(Math.abs(number));
+    const extreme = Math.fround(Math.abs(number));
     if (extreme === 0 || extreme === Infinity) return extreme;
     return number;
 };
@@ -138,10 +138,10 @@ exports.lockOnAngle = function(angle) {
 exports.valueDigits = function() {
     var significantDigits = exports.MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
+        const value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {
-            var parsed = parse(value);
-            var digits = parsed.coefficient.length + parsed.decimal.length;
+            const parsed = parse(value);
+            const digits = parsed.coefficient.length + parsed.decimal.length;
             significantDigits = Math.min(significantDigits, digits);
         }
     }
@@ -162,7 +162,7 @@ exports.valueDigits = function() {
 exports.normalizeValue = function(value, significantDigits, error) {
     var errorDigits;
     if (isFinite(error) && error !== 0) {
-        errorDigits= Math.round(Math.abs(Math.log10(Math.abs(error))));
+        errorDigits = Math.round(Math.abs(Math.log10(Math.abs(error))));
         significantDigits -= errorDigits;
     }
     return Number(value.toPrecision(significantDigits));
@@ -181,10 +181,10 @@ exports.normalizeValue = function(value, significantDigits, error) {
 exports.decimalDigits = function() {
     var significantDigits = exports.MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
-        var value = arguments[i];
+        const value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {
-            var parsed = parse(value);
-            var digits = parsed.decimal.length - parsed.exponent;
+            const parsed = parse(value);
+            const digits = parsed.decimal.length - parsed.exponent;
             significantDigits = Math.min(significantDigits, digits);
         }
     }
@@ -222,9 +222,9 @@ exports.normalizeDecimal = function(value, significantDigits) {
  */
 exports.sum = function() {
     var result = 0;
-    var digits = exports.decimalDigits.apply(this, arguments);
+    const digits = exports.decimalDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        var value = exports.lockOnExtreme(arguments[i]);
+        const value = exports.lockOnExtreme(arguments[i]);
         result = exports.lockOnExtreme(result + value);
     }
     result = exports.normalizeDecimal(result, digits);
@@ -251,7 +251,7 @@ exports.difference = function(minuend, subtrahend) {
     minuend = exports.lockOnExtreme(minuend);
     subtrahend = exports.lockOnExtreme(subtrahend);
     var result = exports.lockOnExtreme(minuend - subtrahend);
-    var digits = exports.decimalDigits(minuend, subtrahend);
+    const digits = exports.decimalDigits(minuend, subtrahend);
     result = exports.normalizeDecimal(result, digits);
     return result;
 };
@@ -273,9 +273,9 @@ exports.difference = function(minuend, subtrahend) {
  */
 exports.product = function() {
     var result = 1;
-    var digits = exports.valueDigits.apply(this, arguments);
+    const digits = exports.valueDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        var value = exports.lockOnExtreme(arguments[i]);
+        const value = exports.lockOnExtreme(arguments[i]);
         result = exports.lockOnExtreme(result * value);
     }
     result = exports.normalizeValue(result, digits);
@@ -302,7 +302,7 @@ exports.quotient = function(dividend, divisor) {
     dividend = exports.lockOnExtreme(dividend);
     divisor = exports.lockOnExtreme(divisor);
     var result = exports.lockOnExtreme(dividend / divisor);
-    var digits = exports.valueDigits(dividend, divisor);
+    const digits = exports.valueDigits(dividend, divisor);
     result = exports.normalizeValue(result, digits);
     return result;
 };
@@ -327,7 +327,7 @@ exports.remainder = function(dividend, divisor) {
     dividend = exports.lockOnExtreme(dividend);
     divisor = exports.lockOnExtreme(divisor);
     var result = exports.lockOnExtreme(dividend % divisor);
-    var digits = exports.valueDigits(dividend, divisor);
+    const digits = exports.valueDigits(dividend, divisor);
     result = exports.normalizeValue(result, digits);
     return result;
 };
@@ -354,8 +354,8 @@ exports.exponential = function(base, exponent) {
     // check for cases where Math.pow(0, 0) and Math.pow(Infinity, 0) are wrong!
     if ((base === 0 || base === Infinity) && exponent === 0) return NaN;
     var result = exports.lockOnExtreme(Math.pow(base, exponent));
-    var digits = exports.valueDigits(exponent, base);
-    var error = exponent * Math.log(base);
+    const digits = exports.valueDigits(exponent, base);
+    const error = exponent * Math.log(base);
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -381,8 +381,8 @@ exports.logarithm = function(base, exponential) {
     base = exports.lockOnExtreme(base);
     exponential = exports.lockOnExtreme(exponential);
     var result = exports.lockOnExtreme(Math.log(exponential)/Math.log(base));
-    var digits = exports.valueDigits(exponential, base);
-    var error = exports.lockOnExtreme(1 / Math.log(exponential));
+    const digits = exports.valueDigits(exponential, base);
+    const error = exports.lockOnExtreme(1 / Math.log(exponential));
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -404,8 +404,8 @@ exports.logarithm = function(base, exponential) {
  */
 exports.sine = function(angle) {
     var result = exports.lockOnPole(Math.sin(angle));
-    var digits = exports.valueDigits(angle);
-    var error = exports.lockOnExtreme(angle / exports.lockOnPole(Math.tan(angle)));
+    const digits = exports.valueDigits(angle);
+    const error = exports.lockOnExtreme(angle / exports.lockOnPole(Math.tan(angle)));
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -427,8 +427,8 @@ exports.sine = function(angle) {
  */
 exports.cosine = function(angle) {
     var result = exports.lockOnPole(Math.cos(angle));
-    var digits = exports.valueDigits(angle);
-    var error = exports.lockOnExtreme(angle * exports.lockOnPole(Math.tan(angle)));
+    const digits = exports.valueDigits(angle);
+    const error = exports.lockOnExtreme(angle * exports.lockOnPole(Math.tan(angle)));
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -450,8 +450,8 @@ exports.cosine = function(angle) {
  */
 exports.tangent = function(angle) {
     var result = exports.lockOnPole(Math.tan(angle));
-    var digits = exports.valueDigits(angle);
-    var error = exports.lockOnExtreme(angle * (result + 1 / result));
+    const digits = exports.valueDigits(angle);
+    const error = exports.lockOnExtreme(angle * (result + 1 / result));
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
@@ -474,8 +474,8 @@ exports.tangent = function(angle) {
  */
 exports.arcsine = function(ratio) {
     var angle = exports.lockOnAngle(Math.asin(ratio));
-    var digits = exports.valueDigits(ratio);
-    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
+    const digits = exports.valueDigits(ratio);
+    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
     angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
@@ -498,8 +498,8 @@ exports.arcsine = function(ratio) {
  */
 exports.arccosine = function(ratio) {
     var angle = exports.lockOnAngle(Math.acos(ratio));
-    var digits = exports.valueDigits(ratio);
-    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
+    const digits = exports.valueDigits(ratio);
+    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
     angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
@@ -523,10 +523,10 @@ exports.arccosine = function(ratio) {
  * @returns {Number} The corresponding angle.
  */
 exports.arctangent = function(opposite, adjacent) {
-    var ratio = exports.quotient(opposite, adjacent);
+    const ratio = exports.quotient(opposite, adjacent);
     var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
-    var digits = exports.valueDigits(ratio);
-    var error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
+    const digits = exports.valueDigits(ratio);
+    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
     angle = exports.normalizeValue(angle, digits, error);
     return angle;
 };
@@ -538,11 +538,11 @@ exports.arctangent = function(opposite, adjacent) {
  * This function parses a floating point number into its three parts.
  */
 function parse(number) {
-    var pattern = /([0-9]+)\.([0-9]*[1-9])(e[+-][1-9][0-9]*)?/;
-    var matches = number.toString().match(pattern);
+    const pattern = /([0-9]+)\.([0-9]*[1-9])(e[+-][1-9][0-9]*)?/;
+    const matches = number.toString().match(pattern);
     var coefficient = matches[1];
-    var decimal = matches[2];
-    var exponent = matches[3] ? Number(matches[3].slice(1)) : 0;
+    const decimal = matches[2];
+    const exponent = matches[3] ? Number(matches[3].slice(1)) : 0;
     if (coefficient === '0') coefficient = '';  // leading zero does not count
     return {
         coefficient: coefficient,

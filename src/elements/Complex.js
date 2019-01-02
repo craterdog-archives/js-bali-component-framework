@@ -48,7 +48,7 @@ function Complex(value, parameters) {
     var source;
 
     // analyze the value
-    var type = value.constructor.name;
+    const type = value.constructor.name;
     switch (type) {
         case 'Number':
             switch (value) {
@@ -76,13 +76,13 @@ function Complex(value, parameters) {
             }
             break;
         case 'String':
-            var chars = new antlr.InputStream(value);
-            var lexer = new grammar.DocumentLexer(chars);
-            var tokens = new antlr.CommonTokenStream(lexer);
-            var parser = new grammar.DocumentParser(tokens);
+            const chars = new antlr.InputStream(value);
+            const lexer = new grammar.DocumentLexer(chars);
+            const tokens = new antlr.CommonTokenStream(lexer);
+            const parser = new grammar.DocumentParser(tokens);
             parser.buildParseTrees = true;
-            var tree = parser.number();
-            var nodeType = tree.constructor.name;
+            const tree = parser.number();
+            const nodeType = tree.constructor.name;
             switch (nodeType) {
                 case 'UndefinedNumberContext':
                     this.real = NaN;
@@ -105,15 +105,15 @@ function Complex(value, parameters) {
                     source = imaginaryToSource(this.imaginary);
                     break;
                 case 'ComplexNumberContext':
-                    var real = nodeToNumber(tree.real());
-                    var imaginary = nodeToNumber(tree.imaginary());
+                    const real = nodeToNumber(tree.real());
+                    const imaginary = nodeToNumber(tree.imaginary());
                     if (real === Infinity || imaginary === Infinity) {
                         this.real = Infinity;
                         this.imaginary = Infinity;
                         source = 'infinity';
                         break;
                     }
-                    var delimiter = tree.del.text;
+                    const delimiter = tree.del.text;
                     if (delimiter === ',') {
                         this.real = real;
                         this.imaginary = imaginary;
@@ -273,8 +273,8 @@ Complex.prototype.comparedTo = function(that) {
     if (!that) return 1;  // anything is greater than nothing
 
     // check the types
-    var thisType = this.constructor.name;
-    var thatType = that.constructor.name;
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
     if (thisType !== thatType) {
         return thisType.localeCompare(thatType);
     }
@@ -361,9 +361,9 @@ Complex.inverse = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.ZERO;
-    var real = -complex.real;
-    var imaginary = -complex.imaginary;
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = -complex.real;
+    const imaginary = -complex.imaginary;
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -373,10 +373,10 @@ Complex.reciprocal = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.ZERO;
     if (complex.isZero()) return Complex.INFINITY;
-    var squared = precision.sum(precision.product(complex.real, complex.real), precision.product(complex.imaginary, complex.imaginary));
-    var real = precision.quotient(complex.real, squared);
-    var imaginary = -precision.quotient(complex.imaginary, squared);
-    var result = new Complex({real: real, imaginary: imaginary});
+    const squared = precision.sum(precision.product(complex.real, complex.real), precision.product(complex.imaginary, complex.imaginary));
+    const real = precision.quotient(complex.real, squared);
+    const imaginary = -precision.quotient(complex.imaginary, squared);
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -386,9 +386,9 @@ Complex.conjugate = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.ZERO;
-    var real = complex.real;
-    var imaginary = -complex.imaginary;
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = complex.real;
+    const imaginary = -complex.imaginary;
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -398,10 +398,10 @@ Complex.exponential = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return new Complex(1);
-    var scale = precision.exponential(precision.E, complex.real);
-    var real = precision.product(scale, (precision.cosine(complex.imaginary)));
-    var imaginary = precision.product(scale, (precision.sine(complex.imaginary)));
-    var result = new Complex({real: real, imaginary: imaginary});
+    const scale = precision.exponential(precision.E, complex.real);
+    const real = precision.product(scale, (precision.cosine(complex.imaginary)));
+    const imaginary = precision.product(scale, (precision.sine(complex.imaginary)));
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -411,9 +411,9 @@ Complex.logarithm = function(complex) {
     if (complex.isUndefined()) return Complex.UNDEFINED;
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return Complex.INFINITY;
-    var real = precision.logarithm(precision.E, Complex.magnitude(complex));
-    var imaginary = Complex.phase(complex).value;
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = precision.logarithm(precision.E, Complex.magnitude(complex));
+    const imaginary = Complex.phase(complex).value;
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -424,8 +424,8 @@ Complex.factorial = function(complex) {
     if (complex.isInfinite()) return Complex.INFINITY;
     if (complex.isZero()) return new Complex(1);
     // just implement real factorials for now...
-    var factorial = gamma(complex.real + 1);
-    var result = new Complex(String(factorial));
+    const factorial = gamma(complex.real + 1);
+    const result = new Complex(String(factorial));
     result.format = complex.format;
     return result;
 };
@@ -435,9 +435,9 @@ Complex.sum = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
     if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
     if (first.isEqualTo(Complex.inverse(second))) return Complex.ZERO;
-    var real = precision.sum(first.real, second.real);
-    var imaginary = precision.sum(first.imaginary, second.imaginary);
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = precision.sum(first.real, second.real);
+    const imaginary = precision.sum(first.imaginary, second.imaginary);
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
 };
@@ -454,9 +454,9 @@ Complex.scaled = function(complex, factor) {
     if (complex.isInfinite() && factor === 0) return Complex.UNDEFINED;
     if (complex.isInfinite() || !Number.isFinite(factor)) return Complex.INFINITY;
     if (complex.isZero() || factor === 0) return Complex.ZERO;
-    var real = precision.product(complex.real, factor);
-    var imaginary = precision.product(complex.imaginary, factor);
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = precision.product(complex.real, factor);
+    const imaginary = precision.product(complex.imaginary, factor);
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = complex.format;
     return result;
 };
@@ -468,9 +468,9 @@ Complex.product = function(first, second) {
     if (first.isInfinite() && second.isZero()) return Complex.UNDEFINED;
     if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
     if (first.isZero() || second.isZero()) return Complex.ZERO;
-    var real = precision.difference(precision.product(first.real, second.real), precision.product(first.imaginary, second.imaginary));
-    var imaginary = precision.sum(precision.product(first.real, second.imaginary), precision.product(first.imaginary * second.real));
-    var result = new Complex({real: real, imaginary: imaginary});
+    const real = precision.difference(precision.product(first.real, second.real), precision.product(first.imaginary, second.imaginary));
+    const imaginary = precision.sum(precision.product(first.real, second.imaginary), precision.product(first.imaginary * second.real));
+    const result = new Complex({real: real, imaginary: imaginary});
     result.format = first.format;
     return result;
 };
@@ -489,8 +489,8 @@ Complex.remainder = function(first, second) {
     if (second.isZero()) return Complex.INFINITY;
     // just implement for integer values
     // TODO: what does remainder mean for complex numbers?
-    var firstInteger = Math.round(first.real);
-    var secondInteger = Math.round(second.real);
+    const firstInteger = Math.round(first.real);
+    const secondInteger = Math.round(second.real);
     return new Complex(precision.remainder(firstInteger, secondInteger));
 };
 
@@ -499,19 +499,19 @@ Complex.remainder = function(first, second) {
 
 // TODO: should the math in the gamma function use the precision module?
 function gamma(number) {
-    var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
         771.32342877765313, -176.61502916214059, 12.507343278686905,
         -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
     ];
  
-    var g = 7;
+    const g = 7;
     if (number < 0.5) {
         return Math.PI / (Math.sin(Math.PI * number) * gamma(1 - number));
     }
  
     number -= 1;
     var a = p[0];
-    var t = number + g + 0.5;
+    const t = number + g + 0.5;
     for (var i = 1; i < p.length; i++) {
         a += p[i] / (number + i);
     }
@@ -543,7 +543,7 @@ function imaginaryToSource(imaginary) {
  */
 function nodeToNumber(realNode) {
     var number;
-    var string = realNode.getText();
+    const string = realNode.getText();
     if (string.startsWith('e')) {
         number = Complex.E;
     } else if (string.startsWith('pi')) {
