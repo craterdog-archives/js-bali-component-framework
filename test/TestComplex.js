@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const Angle = require('../src/elements/Angle').Angle;
+const precision = require('../src/utilities/Precision');
 const elements = require('../src/elements');
 /* global NaN, Infinity */
 
@@ -77,8 +77,8 @@ describe('Bali Component Framework™', function() {
         it('should perform the getPhase method correctly', function() {
             expect(elements.Number.UNDEFINED.getPhase()).to.equal(undefined);
             expect(elements.Number.INFINITY.getPhase()).to.equal(undefined);
-            expect(elements.Number.ZERO.getPhase()).to.equal(Angle.ZERO);
-            expect(new elements.Number('-1').getPhase().isEqualTo(Angle.PI)).to.equal(true);
+            expect(elements.Number.ZERO.getPhase().isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(new elements.Number('-1').getPhase().isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
         });
 
         it('should return the correct type', function() {

@@ -143,6 +143,39 @@ Binary.concatenation = function(binary1, binary2) {
 // PUBLIC METHODS
 
 /**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Binary.prototype.toLiteral = function() {
+    var string = "'";
+    if (this.parameters) {
+        const base = this.parameters.getValue(1).toNumber();
+        switch (base) {
+            case 2:
+                string += codex.base2Encode(this.value);
+                break;
+            case 16:
+                string += codex.base16Encode(this.value);
+                break;
+            case 32:
+                string += codex.base32Encode(this.value);
+                break;
+            case 64:
+                string += codex.base64Encode(this.value);
+                break;
+            default:
+                throw new Error('BUG: An invalid binary base value is specified in the parameters: ' + base);
+            }
+    } else {
+        string += codex.base32Encode(this.value);
+    }
+    string += "'";
+    return string;
+};
+
+
+/**
  * This method returns whether or not this binary string has any bytes.
  * 
  * @returns {Boolean} Whether or not this binary string has any bytes.

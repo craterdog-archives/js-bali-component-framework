@@ -41,3 +41,17 @@ function Reference(value, parameters) {
 Reference.prototype = Object.create(Element.prototype);
 Reference.prototype.constructor = Reference;
 exports.Reference = Reference;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Reference.prototype.toLiteral = function() {
+    const string = '<' + this.value + '>';  // embed in angle brackets
+    return string;
+};
+

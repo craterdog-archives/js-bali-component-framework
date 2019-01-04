@@ -64,6 +64,17 @@ Text.concatenation = function(text1, text2) {
 // PUBLIC METHODS
 
 /**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Text.prototype.toLiteral = function() {
+    const string = '"' + this.value + '"';  // add surrounding double quote marks
+    return string;
+};
+
+
+/**
  * This method returns whether or not this text string has any characters.
  * 
  * @returns {Boolean} Whether or not this text string has any characters.

@@ -39,3 +39,17 @@ function Reserved(value, parameters) {
 Reserved.prototype = Object.create(Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Reserved.prototype.toLiteral = function() {
+    const string = '$$' + this.value;  // add the leading '$$'
+    return string;
+};
+

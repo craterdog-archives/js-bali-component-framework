@@ -39,3 +39,17 @@ function Symbol(value, parameters) {
 Symbol.prototype = Object.create(Element.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Symbol.prototype.toLiteral = function() {
+    const string = '$' + this.value;  // add the leading '$'
+    return string;
+};
+

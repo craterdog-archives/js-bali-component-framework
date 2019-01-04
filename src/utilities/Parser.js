@@ -32,6 +32,7 @@ const Component = require('../abstractions/Component').Component;
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
+const precision = require('../utilities/Precision');
 const codex = require('../utilities/Codex');
 
 
@@ -129,10 +130,24 @@ ParsingVisitor.prototype.getIndentation = function() {
 };
 
 
-// angle: '~' real
+// angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
+    var value;
+    const string = ctx.getText().slice(1);  // remove leading '~'
+    switch (string) {
+        case 'e':
+            value = precision.E;
+            break;
+        case 'pi':
+            value = precision.PI;
+            break;
+        case 'phi':
+            value = precision.PHI;
+            break;
+        default:
+            value = Number(string);
+    }
     const angle = new elements.Angle(value, parameters);
     this.result = angle;
 };
@@ -704,7 +719,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 };
 
 
-// percent: real '%'
+// percent: PERCENT
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText();
@@ -780,14 +795,27 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 // real: '0' | REAL
 ParsingVisitor.prototype.visitReal = function(ctx) {
     const string = ctx.getText();
-    this.result = string;
+    switch (string) {
+        case 'e':
+            this.result = precision.E;
+            break;
+        case 'pi':
+            this.result = precision.PI;
+            break;
+        case 'phi':
+            this.result = precision.PHI;
+            break;
+        default:
+            this.result = Number(string);
+    }
 };
 
 
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
+    ctx.real().accept(this);
+    const value = this.result;
     const number = new elements.Number(value, parameters);
     this.result = number;
 };

@@ -40,6 +40,19 @@ Duration.prototype.constructor = Duration;
 exports.Duration = Duration;
 
 
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Duration.prototype.toLiteral = function() {
+    const string = '~' + this.value.toISOString();
+    return string;
+};
+
+
 /**
  * This method returns the number of milliseconds of the duration.
  * 

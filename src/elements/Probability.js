@@ -78,6 +78,25 @@ Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
 
 
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Probability.prototype.toLiteral = function() {
+    switch (this.value) {
+        case 0:
+            return 'false';
+        case 1:
+            return 'true';
+        default:
+            return this.value.toString().substring(1);  // remove the leading '0'
+    }
+};
+
+
 /**
  * This method returns a boolean representation of the probability element. A
  * coin weighted with the probability is tossed and the boolean outcome is returned.

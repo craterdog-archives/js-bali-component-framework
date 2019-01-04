@@ -46,19 +46,33 @@ function Moment(value, parameters) {
     FORMATS.find(function(format) {
         const attempt = moment(value, format, true);  // true means strict mode
         if (attempt.isValid()) {
-            this.moment = attempt;
+            this.value = attempt;
             this.format = format;
             return true;
         } 
         return false;
     }, this);
-    if (!this.moment) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
-    this.setSource(this.moment.format(this.format));
+    if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
+    this.setSource(this.value.format(this.format));
     return this;
 }
 Moment.prototype = Object.create(Element.prototype);
 Moment.prototype.constructor = Moment;
 exports.Moment = Moment;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Moment.prototype.toLiteral = function() {
+    // TODO: need to handle the location context in the parameters
+    const string = this.value.format(this.format);
+    return string;
+};
 
 
 /**
@@ -74,7 +88,7 @@ Moment.prototype.comparedTo = function(that) {
     if (thisType !== thatType) {
         return thisType.localeCompare(thatType);
     }
-    if (this.moment.isBefore(that.value)) return -1;
-    if (this.moment.isAfter(that.value)) return 1;
+    if (this.value.isBefore(that.value)) return -1;
+    if (this.value.isAfter(that.value)) return 1;
     return 0;
 };

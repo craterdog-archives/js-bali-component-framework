@@ -53,6 +53,20 @@ Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
 
 
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Percent.prototype.toLiteral = function() {
+    var string = this.value.toString() + '%';  // append the %
+    string = string.replace(/e\+?/g, 'E');  // convert to the canonical exponent format
+    return string;
+};
+
+
 /**
  * This method returns the numeric value of the percent element, e.g. 25% => 0.25
  * 

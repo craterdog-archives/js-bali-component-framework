@@ -70,6 +70,18 @@ Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
 
 
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Tag.prototype.toLiteral = function() {
+    return this.value;
+};
+
+
 /**
  * This method returns the raw byte string for the tag element.
  * 

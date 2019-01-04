@@ -123,6 +123,17 @@ Version.validNextVersion = function(currentVersion, nextVersion) {
 // PUBLIC METHODS
 
 /**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Version.prototype.toLiteral = function() {
+    const string = 'v' + this.value.join('.');
+    return string;
+};
+
+
+/**
  * This method compares two versions for ordering.
  * 
  * @param {Version} that The other version to be compared with. 

@@ -50,3 +50,16 @@ exports.Filter = Filter;
 // common constants
 Filter.NONE = new Filter('none');
 Filter.ANY = new Filter('any');
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Filter.prototype.toLiteral = function() {
+    return this.value;
+};
+

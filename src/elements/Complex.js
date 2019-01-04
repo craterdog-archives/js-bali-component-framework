@@ -253,6 +253,22 @@ Complex.prototype.getPhase = function() {
 
 
 /**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Complex.prototype.toLiteral = function() {
+    if (this.parameters) {
+        const format = this.parameters.getValue(1);
+        if (format.toString() === '$polar') {
+            return this.toPolar();
+        }
+    }
+    return (this.format === 'polar') ? this.toPolar() : this.toRectangular();
+};
+
+
+/**
  * This method determines whether or not this complex number is equal to another complex number.
  * 
  * @param {Object} that The object that is being compared.
