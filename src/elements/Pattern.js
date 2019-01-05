@@ -10,7 +10,7 @@
 'use strict';
 
 /*
- * This element class captures the state and methods associated with a filter element.
+ * This element class captures the state and methods associated with a pattern element.
  */
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
@@ -19,33 +19,23 @@ const Element = require('../abstractions/Element').Element;
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates a new filter element.
+ * This constructor creates a new pattern element.
  * 
  * @constructor
- * @param {String} value The value of the filter element.
+ * @param {String} value The value of the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Filter} The new filter element.
+ * @returns {Pattern} The new pattern element.
  */
-function Filter(value, parameters) {
-    Element.call(this, types.FILTER, parameters);
+function Pattern(value, parameters) {
+    Element.call(this, types.PATTERN, parameters);
     if (!value) value = 'none';  // default value
-    switch (value) {
-        case 'none':
-            value = new RegExp('\u0000');
-            break;
-        case 'any':
-            value = new RegExp('.*');
-            break;
-        default:
-            value = new RegExp(value);
-    }
     this.value = value;
     this.setSource(this.toLiteral());
     return this;
 }
-Filter.prototype = Object.create(Element.prototype);
-Filter.prototype.constructor = Filter;
-exports.Filter = Filter;
+Pattern.prototype = Object.create(Element.prototype);
+Pattern.prototype.constructor = Pattern;
+exports.Pattern = Pattern;
 
 
 // PUBLIC METHODS
@@ -55,15 +45,7 @@ exports.Filter = Filter;
  * 
  * @returns {String} The corresponding literal string representation.
  */
-Filter.prototype.toLiteral = function() {
-    const source = this.value.source;
-    switch (source) {
-        case '\u0000':
-            return 'none';
-        case '.*':
-            return 'any';
-        default:
-            return '&"' + source + '"';
-    }
+Pattern.prototype.toLiteral = function() {
+    return this.value;
 };
 

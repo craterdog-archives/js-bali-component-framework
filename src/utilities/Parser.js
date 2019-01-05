@@ -154,15 +154,6 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 };
 
 
-// anyFilter: 'any'
-ParsingVisitor.prototype.visitAnyFilter = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const filter = new elements.Filter(value, parameters);
-    this.result = filter;
-};
-
-
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     const tree = new composites.Tree(types.ARITHMETIC_EXPRESSION, 2);
@@ -455,15 +446,6 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 };
 
 
-// expressionFilter: REGEX
-ParsingVisitor.prototype.visitExpressionFilter = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.REGEX().getText().slice(2, -1);   // remove '&"' and '"'
-    const filter = new elements.Filter(value, parameters);
-    this.result = filter;
-};
-
-
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
     const tree = new composites.Tree(types.FACTORIAL_EXPRESSION, 1);
@@ -753,21 +735,21 @@ ParsingVisitor.prototype.visitNewlineText = function(ctx) {
 };
 
 
-// noneFilter: 'none'
-ParsingVisitor.prototype.visitNoneFilter = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const filter = new elements.Filter(value, parameters);
-    this.result = filter;
-};
-
-
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     ctx.collection().accept(this);
     const collection = this.result;
     const parameters = new composites.Parameters(collection);
     this.result = parameters;
+};
+
+
+// pattern: 'none' | 'any'
+ParsingVisitor.prototype.visitPattern = function(ctx) {
+    const parameters = this.getParameters();
+    const value = ctx.getText();
+    const pattern = new elements.Pattern(value, parameters);
+    this.result = pattern;
 };
 
 

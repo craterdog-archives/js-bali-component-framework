@@ -162,9 +162,9 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 //     angle |
 //     binary |
 //     duration |
-//     filter |
 //     moment |
 //     number |
+//     pattern |
 //     percent |
 //     probability |
 //     reference |
@@ -226,8 +226,8 @@ Visitor.prototype.visitFunctionExpression = function(tree) {
 Visitor.prototype.visitHandleClause = function(tree) {
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    const filter = tree.getChild(2);
-    filter.acceptVisitor(this);
+    const pattern = tree.getChild(2);
+    pattern.acceptVisitor(this);
     const block = tree.getChild(3);
     block.acceptVisitor(this);
 };

@@ -12,6 +12,7 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const composites = require('../src/composites');
 const collections = require('../src/collections');
+const Exception = require('../src/utilities/Exception').Exception;
 
 
 describe('Bali Component Framework™', function() {
@@ -47,7 +48,7 @@ describe('Bali Component Framework™', function() {
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.addItem('beta');}).to.throw(Error, 'BUG: An invalid symbol value was passed to the constructor.');
+            expect(function() {stack.addItem('beta');}).to.throw(Exception);
             const top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('alpha');

@@ -42,7 +42,6 @@ const MAP = {
     EvaluateClause:               '#51Z65KR2AR4N2APTFDCPVDZPCNH1T1DA',
     ExponentialExpression:        '#53HF4NHVBS8L1CTN14QKMQRQ616TSW88',
     FactorialExpression:          '#DHXPLJPJ7BZFHDP5CP2N8V3YX09K2NTW',
-    Filter:                       '#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W',
     Function:                     '#YFZN88KCZVJFCBK9VZ7BSGMRQKDB9XY1',
     FunctionExpression:           '#D64C23JGH8CJFXKDB7D6LA77CB8T5CMM',
     HandleClause:                 '#FXZBVDWT8PSDS98ZAN242DVBKQ41WS73',
@@ -57,6 +56,7 @@ const MAP = {
     Moment:                       '#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR',
     Number:                       '#HYPTA0PX51J7K2VQ88NZMH9GDPHR6G0B',
     Parameters:                   '#1M4Z05MMH8H4H3BT92LZNBWG4PKZ55L5',
+    Pattern:                      '#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W',
     Percent:                      '#WCXVKQC0BM03CNBD2JSF8VLVVHJ1A6P4',
     PrecedenceExpression:         '#VMTGMRZCWWP90HH38TFM53YTP1YLRH57',
     Probability:                  '#2YBVYV11HS4CKZ7X8RDJ0RYC7TKKAV2D',
@@ -122,7 +122,6 @@ exports.DURATION = NAMES.indexOf('Duration');
 exports.EVALUATE_CLAUSE = NAMES.indexOf('EvaluateClause');
 exports.EXPONENTIAL_EXPRESSION = NAMES.indexOf('ExponentialExpression');
 exports.FACTORIAL_EXPRESSION = NAMES.indexOf('FactorialExpression');
-exports.FILTER = NAMES.indexOf('Filter');
 exports.FUNCTION = NAMES.indexOf('Function');
 exports.FUNCTION_EXPRESSION = NAMES.indexOf('FunctionExpression');
 exports.HANDLE_CLAUSE = NAMES.indexOf('HandleClause');
@@ -137,6 +136,7 @@ exports.MESSAGE_EXPRESSION = NAMES.indexOf('MessageExpression');
 exports.MOMENT = NAMES.indexOf('Moment');
 exports.NUMBER = NAMES.indexOf('Number');
 exports.PARAMETERS = NAMES.indexOf('Parameters');
+exports.PATTERN = NAMES.indexOf('Pattern');
 exports.PERCENT = NAMES.indexOf('Percent');
 exports.PRECEDENCE_EXPRESSION = NAMES.indexOf('PrecedenceExpression');
 exports.PROBABILITY = NAMES.indexOf('Probability');

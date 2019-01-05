@@ -57,18 +57,20 @@ Composite.asComponent = function(value) {
                 component = new elements.Binary(value);
             } else if (value.match(/^<-?[1-9]/)) {
                 component = new elements.Moment(value);
+            } else if (value === 'none' || value === 'any') {
+                component = new elements.Pattern(value);
             } else if (value.match(/%$/)) {
                 component = new elements.Percent(value);
             } else if (value === 'true' || value === 'false') {
                 component = new elements.Probability(value);
             } else if (value.match(/^</)) {
                 component = new elements.Reference(value);
+            } else if (value.startsWith('$$')) {  // Reserved must come before Symbol
+                component = new elements.Reserved(value);
             } else if (value.startsWith('$')) {
                 component = new elements.Symbol(value);
             } else if (value.startsWith('#')) {
                 component = new elements.Tag(value);
-            } else if (value === 'none' || value === 'any') {
-                component = new elements.Filter(value);
             } else if (value.startsWith('"')) {
                 component = new elements.Text(value);
             } else if (value.match(/^v[1-9]/)) {

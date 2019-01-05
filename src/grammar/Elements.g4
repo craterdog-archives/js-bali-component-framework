@@ -5,9 +5,9 @@ element:
     angle |
     binary |
     duration |
-    filter |
     moment |
     number |
+    pattern |
     percent |
     probability |
     reference |
@@ -24,10 +24,9 @@ binary: BINARY;
 
 duration: DURATION;
 
-filter:
-    'none'  #noneFilter |
-    'any'   #anyFilter |
-    REGEX   #expressionFilter
+pattern:
+    'none' |
+    'any'
 ;
 
 imaginary: IMAGINARY;

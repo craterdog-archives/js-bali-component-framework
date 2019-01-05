@@ -18,6 +18,7 @@ const types = require('../abstractions/Types');
 const Composite = require('../abstractions/Composite').Composite;
 const Collection = require('../abstractions/Collection').Collection;
 const Catalog = require('./Catalog').Catalog;
+const Exception = require('../utilities/Exception').Exception;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -145,7 +146,7 @@ Queue.prototype.addItem = function(item) {
         $type: '$Queue',
         $procedure: '$addItem',
         $capacity: this.capacity,
-        $message: 'The queue has reached its maximum capacity.'
+        $message: '"The queue has reached its maximum capacity."'
     });
     throw new Exception(exception);
 };

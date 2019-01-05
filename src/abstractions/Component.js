@@ -131,13 +131,31 @@ Component.prototype.comparedTo = function(that) {
 
 
 /**
- * This method determines whether or not this component matches the specified filter.
+ * This method determines whether or not this component matches the specified pattern.
  * 
- * @param {Object} filter The filter to be used for matching.
- * @returns {Boolean} Whether or not this component matches the filter.
+ * @param {String|Pattern} pattern The pattern to be used for matching.
+ * @returns {Boolean} Whether or not this component matches the pattern.
  */
-Component.prototype.matches = function(filter) {
-    const regex = filter.value;
+Component.prototype.matches = function(pattern) {
+    var regex;
+    const type = pattern.constructor.name;
+    switch (type) {
+        case 'String':
+            regex = new RegExp(pattern);
+            break;
+        case 'Pattern':
+            switch (pattern.value) {
+                case 'none':
+                    regex = new RegExp('\u0000');
+                    break;
+                case 'any':
+                    regex = new RegExp('.*');
+                    break;
+            }
+            break;
+        default:
+            throw new Error('BUG: An invalid pattern type was passed to match: ' + pattern);
+    }
     return regex.test(this.toString());
 };
 

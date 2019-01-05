@@ -44,8 +44,6 @@ TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
 
 TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
 
-REGEX: '&' TEXT;
-
 SYMBOL: '$' IDENTIFIER;
 
 RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;

@@ -257,9 +257,9 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 //     angle |
 //     binary |
 //     duration |
-//     filter |
 //     moment |
 //     number |
+//     pattern |
 //     percent |
 //     probability |
 //     reference |
@@ -330,8 +330,8 @@ FormattingVisitor.prototype.visitHandleClause = function(tree) {
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
     this.source += ' matching ';
-    const filter = tree.getChild(2);
-    filter.acceptVisitor(this);
+    const pattern = tree.getChild(2);
+    pattern.acceptVisitor(this);
     this.source += ' with ';
     const block = tree.getChild(3);
     block.acceptVisitor(this);

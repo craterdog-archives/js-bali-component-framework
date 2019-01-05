@@ -18,6 +18,7 @@ const Composite = require('../abstractions/Composite').Composite;
 const Collection = require('../abstractions/Collection').Collection;
 const Iterator = require('../utilities/Iterator').Iterator;
 const Catalog = require('./Catalog').Catalog;
+const Exception = require('../utilities/Exception').Exception;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -154,12 +155,12 @@ Stack.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
-        exception = Catalog.from({
+        const exception = Catalog.from({
             $exception: '$resourceLimit',
             $type: '$Stack',
             $procedure: '$addItem',
             $capacity: this.capacity,
-            $message: 'The stack has reached its maximum capacity.'
+            $message: '"The stack has reached its maximum capacity."'
         });
         throw new Exception(exception);
     }

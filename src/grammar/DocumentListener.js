@@ -596,30 +596,12 @@ DocumentListener.prototype.exitDuration = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#noneFilter.
-DocumentListener.prototype.enterNoneFilter = function(ctx) {
+// Enter a parse tree produced by DocumentParser#pattern.
+DocumentListener.prototype.enterPattern = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#noneFilter.
-DocumentListener.prototype.exitNoneFilter = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#anyFilter.
-DocumentListener.prototype.enterAnyFilter = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#anyFilter.
-DocumentListener.prototype.exitAnyFilter = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#expressionFilter.
-DocumentListener.prototype.enterExpressionFilter = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#expressionFilter.
-DocumentListener.prototype.exitExpressionFilter = function(ctx) {
+// Exit a parse tree produced by DocumentParser#pattern.
+DocumentListener.prototype.exitPattern = function(ctx) {
 };
 
 

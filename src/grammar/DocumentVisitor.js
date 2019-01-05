@@ -402,20 +402,8 @@ DocumentVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#noneFilter.
-DocumentVisitor.prototype.visitNoneFilter = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#anyFilter.
-DocumentVisitor.prototype.visitAnyFilter = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#expressionFilter.
-DocumentVisitor.prototype.visitExpressionFilter = function(ctx) {
+// Visit a parse tree produced by DocumentParser#pattern.
+DocumentVisitor.prototype.visitPattern = function(ctx) {
   return this.visitChildren(ctx);
 };
 
