@@ -17,29 +17,30 @@ describe('Bali Component Framework™', function() {
     describe('Test filter constructors', function() {
 
         it('should generate a default none filter', function() {
-            expect(new elements.Filter().toString()).to.equal(elements.Filter.NONE.toString());
-            expect(new elements.Filter().matches(elements.Filter.NONE)).to.equal(false);
-            expect(new elements.Filter().matches(elements.Filter.ANY)).to.equal(true);
+            expect(new elements.Filter().isEqualTo(new elements.Filter('none'))).to.equal(true);
+            expect(new elements.Filter().matches(new elements.Filter('none'))).to.equal(false);
+            expect(new elements.Filter().matches(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Text('any').matches(new elements.Filter())).to.equal(false);
+            expect(new elements.Text('none').matches(new elements.Filter())).to.equal(false);
+            expect(new elements.Text('foobar').matches(new elements.Filter())).to.equal(false);
         });
 
         it('should generate an explicit none filter', function() {
-            expect(new elements.Filter('none').toString()).to.equal(elements.Filter.NONE.toString());
-            expect(new elements.Filter('none').matches(elements.Filter.NONE)).to.equal(false);
-            expect(new elements.Filter('none').matches(elements.Filter.ANY)).to.equal(true);
+            expect(new elements.Filter('none').isEqualTo(new elements.Filter('none'))).to.equal(true);
+            expect(new elements.Filter('none').matches(new elements.Filter('none'))).to.equal(false);
+            expect(new elements.Filter('none').matches(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Text('any').matches(new elements.Filter('none'))).to.equal(false);
+            expect(new elements.Text('none').matches(new elements.Filter('none'))).to.equal(false);
+            expect(new elements.Text('foobar').matches(new elements.Filter('none'))).to.equal(false);
         });
 
         it('should generate an explicit any filter', function() {
-            expect(new elements.Filter('any').toString()).to.equal(elements.Filter.ANY.toString());
-            expect(new elements.Filter('any').matches(elements.Filter.NONE)).to.equal(false);
-            expect(new elements.Filter('any').matches(elements.Filter.ANY)).to.equal(true);
-        });
-
-        it('should throw an exception for an invalid filter', function() {
-            expect(
-                function() {
-                    new elements.Filter('foobar');
-                }
-            ).to.throw();
+            expect(new elements.Filter('any').isEqualTo(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Filter('any').matches(new elements.Filter('none'))).to.equal(false);
+            expect(new elements.Filter('any').matches(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Text('any').matches(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Text('none').matches(new elements.Filter('any'))).to.equal(true);
+            expect(new elements.Text('foobar').matches(new elements.Filter('any'))).to.equal(true);
         });
 
     });
@@ -47,7 +48,7 @@ describe('Bali Component Framework™', function() {
     describe('Test filter methods', function() {
 
         it('should return the correct type', function() {
-            const type = elements.Filter.ANY.getType();
+            const type = new elements.Filter('any').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W,$version:v1,$digest:none]>');
         });
 

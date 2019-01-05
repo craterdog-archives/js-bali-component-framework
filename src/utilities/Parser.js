@@ -455,6 +455,15 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 };
 
 
+// expressionFilter: REGEX
+ParsingVisitor.prototype.visitExpressionFilter = function(ctx) {
+    const parameters = this.getParameters();
+    const value = ctx.REGEX().getText().slice(2, -1);   // remove '&"' and '"'
+    const filter = new elements.Filter(value, parameters);
+    this.result = filter;
+};
+
+
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
     const tree = new composites.Tree(types.FACTORIAL_EXPRESSION, 1);

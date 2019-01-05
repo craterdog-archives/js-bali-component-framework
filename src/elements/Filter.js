@@ -31,25 +31,21 @@ function Filter(value, parameters) {
     if (!value) value = 'none';  // default value
     switch (value) {
         case 'none':
+            value = new RegExp('\u0000');
+            break;
         case 'any':
+            value = new RegExp('.*');
             break;
         default:
-            throw new Error('BUG: An invalid filter value was passed to the constructor: ' + value);
+            value = new RegExp(value);
     }
-    if (Filter.NONE && value === 'none') return Filter.NONE;
-    if (Filter.ANY && value === 'any') return Filter.ANY;
     this.value = value;
-    this.setSource(value);
+    this.setSource(this.toLiteral());
     return this;
 }
 Filter.prototype = Object.create(Element.prototype);
 Filter.prototype.constructor = Filter;
 exports.Filter = Filter;
-
-
-// common constants
-Filter.NONE = new Filter('none');
-Filter.ANY = new Filter('any');
 
 
 // PUBLIC METHODS
@@ -60,6 +56,14 @@ Filter.ANY = new Filter('any');
  * @returns {String} The corresponding literal string representation.
  */
 Filter.prototype.toLiteral = function() {
-    return this.value;
+    const source = this.value.source;
+    switch (source) {
+        case '\u0000':
+            return 'none';
+        case '.*':
+            return 'any';
+        default:
+            return '&"' + source + '"';
+    }
 };
 

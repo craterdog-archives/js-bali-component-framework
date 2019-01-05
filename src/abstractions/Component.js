@@ -137,16 +137,8 @@ Component.prototype.comparedTo = function(that) {
  * @returns {Boolean} Whether or not this component matches the filter.
  */
 Component.prototype.matches = function(filter) {
-    const string = filter.toString();
-    switch (string) {
-        case 'none':
-            return false;
-        case 'any':
-            return true;
-        default:
-            const regex = new RegExp(string.slice(2, -1));  // remove "&'" and "'" delimiters
-            return regex.test(this.toString());
-    }
+    const regex = filter.value;
+    return regex.test(this.toString());
 };
 
 
