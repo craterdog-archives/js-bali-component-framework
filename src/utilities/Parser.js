@@ -8,6 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
+/* global NaN, Infinity */
 
 /**
  * This module provides a class that parses a document containing
@@ -312,8 +313,14 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 // complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = new elements.Number(value, parameters);
+    ctx.real().accept(this);
+    const real = this.result;
+    ctx.imaginary().accept(this);
+    var imaginary = this.result;
+    if (ctx.del.text !== ',') {
+        imaginary = new elements.Angle(imaginary);
+    }
+    const number = new elements.Number(real, imaginary, parameters);
     this.result = number;
 };
 
@@ -529,15 +536,29 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 
 // imaginary: IMAGINARY
 ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    this.result = ctx.getText();
+    const string = ctx.getText();
+    switch (string) {
+        case 'e i':
+            this.result = precision.E;
+            break;
+        case 'pi i':
+            this.result = precision.PI;
+            break;
+        case 'phi i':
+            this.result = precision.PHI;
+            break;
+        default:
+            this.result = Number(string.slice(0, -1));  // remove the tailing 'i'
+    }
 };
 
 
 // imaginaryNumber: imaginary
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = new elements.Number(value, parameters);
+    ctx.imaginary().accept(this);
+    const value = this.result;
+    const number = new elements.Number(0, value, parameters);
     this.result = number;
 };
 
@@ -554,8 +575,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = new elements.Number(value, parameters);
+    const number = new elements.Number(Infinity, Infinity, parameters);
     this.result = number;
 };
 
@@ -839,7 +859,7 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     const parameters = this.getParameters();
     ctx.real().accept(this);
     const value = this.result;
-    const number = new elements.Number(value, parameters);
+    const number = new elements.Number(value, 0, parameters);
     this.result = number;
 };
 
@@ -1003,8 +1023,7 @@ ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = new elements.Number(value, parameters);
+    const number = new elements.Number(NaN, NaN, parameters);
     this.result = number;
 };
 

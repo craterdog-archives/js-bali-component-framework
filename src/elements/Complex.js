@@ -25,146 +25,50 @@ const Angle = require('./Angle').Angle;
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates an immutable instance of a complex number element.
- * The allowed ways to call it include:
- * <pre><code>
- * new Complex()  // defaults to zero
- * new Complex(3)  // real number
- * new Complex('4i')  // imaginary number
- * new Complex('(3, 4i)')  // rectangular complex form
- * new Complex('(12.3E-45 e^~pi i)')  // polar complex form
- * new Complex({real: 3, imaginary: 4})  // object form
- * </code></pre>
+ * This constructor creates an immutable instance of a complex number using the format defined
+ * in the specified parameters, or 'rectangular' if no parameters are provided.
  * 
  * @constructor
- * @param {Number|String|Object} value The numeric or string value of the complex number.
+ * @param {Number} real The real value of the complex number.
+ * @param {Number|Angle} imaginary The imaginary value of the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Complex} The new complex element.
  */
-function Complex(value, parameters) {
+function Complex(real, imaginary, parameters) {
     Element.call(this, types.NUMBER, parameters);
-    if (value === undefined || value === null) value = 0;  // default value
-    this.format = 'rectangular';  // rectangular coordinates by default
-    var source;
 
-    // analyze the value
-    const type = value.constructor.name;
-    switch (type) {
-        case 'Number':
-            switch (value) {
-                case NaN:
-                    this.real = NaN;
-                    this.imaginary = NaN;
-                    source = 'undefined';
-                    break;
-                case Infinity:
-                case -Infinity:
-                    this.real = Infinity;
-                    this.imaginary = Infinity;
-                    source = 'infinity';
-                    break;
-                case 0:
-                case -0:
-                    this.real = 0;
-                    this.imaginary = 0;
-                    source = '0';
-                    break;
-                default:
-                    this.real = value;
-                    this.imaginary = 0;
-                    source = Element.numberToSource(this.real);
-            }
-            break;
-        case 'String':
-            const chars = new antlr.InputStream(value);
-            const lexer = new grammar.DocumentLexer(chars);
-            const tokens = new antlr.CommonTokenStream(lexer);
-            const parser = new grammar.DocumentParser(tokens);
-            parser.buildParseTrees = true;
-            const tree = parser.number();
-            const nodeType = tree.constructor.name;
-            switch (nodeType) {
-                case 'UndefinedNumberContext':
-                    this.real = NaN;
-                    this.imaginary = NaN;
-                    source = 'undefined';
-                    break;
-                case 'InfiniteNumberContext':
-                    this.real = Infinity;
-                    this.imaginary = Infinity;
-                    source = 'infinity';
-                    break;
-                case 'RealNumberContext':
-                    this.real = nodeToNumber(tree.real());
-                    this.imaginary = 0;
-                    source = Element.numberToSource(this.real);
-                    break;
-                case 'ImaginaryNumberContext':
-                    this.real = 0;
-                    this.imaginary = nodeToNumber(tree.imaginary());
-                    source = imaginaryToSource(this.imaginary);
-                    break;
-                case 'ComplexNumberContext':
-                    const real = nodeToNumber(tree.real());
-                    const imaginary = nodeToNumber(tree.imaginary());
-                    if (real === Infinity || imaginary === Infinity) {
-                        this.real = Infinity;
-                        this.imaginary = Infinity;
-                        source = 'infinity';
-                        break;
-                    }
-                    const delimiter = tree.del.text;
-                    if (delimiter === ',') {
-                        this.real = real;
-                        this.imaginary = imaginary;
-                        source = '(';
-                        source += Element.numberToSource(this.real);
-                        source += ', ';
-                        source += imaginaryToSource(this.imaginary);
-                        source += ')';
-                    } else {
-                        this.format = 'polar';
-                        var magnitude = real;
-                        var phase = new Angle(imaginary);
-                        if (magnitude < 0) {
-                            magnitude = -magnitude;
-                            phase = Angle.inverse(phase);
-                        }
-                        this.real = magnitude * Angle.cosine(phase);
-                        this.imaginary = magnitude * Angle.sine(phase);
-                        source = '(';
-                        source += Element.numberToSource(magnitude);
-                        source += ' e^~';
-                        source += imaginaryToSource(phase.value);
-                        source += ')';
-                    }
-                    break;
-                default:
-                    throw new Error('BUG: An invalid complex number value was passed to the constructor: ' + value);
-            }
-            break;
-        case 'Object':
-            this.real = value.real;
-            this.imaginary = value.imaginary;
-            source = '(';
-            source += Element.numberToSource(this.real);
-            source += ', ';
-            source += imaginaryToSource(this.imaginary);
-            source += ')';
-            break;
-
-        default:
-            throw new Error('BUG: An invalid complex number value type was passed to the constructor: ' + type);
+    // normalize the values
+    if (real === undefined || real === null || real === -0) {
+        real = 0;
     }
+    real = precision.lockOnExtreme(real);
+    if (imaginary === undefined || imaginary === null || imaginary === -0) {
+        imaginary = 0;
+    }
+    imaginary = precision.lockOnExtreme(imaginary);
+    if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
+        real = NaN;
+        imaginary = NaN;
+    }
+    if (real === Infinity || real === -Infinity || imaginary === Infinity || imaginary === -Infinity) {
+        real = Infinity;
+        imaginary = Infinity;
+    }
+    if (imaginary.constructor.name === 'Angle') {
+        // convert polar to rectangular
+        var magnitude = real;
+        var phase = imaginary;
+        if (magnitude < 0) {
+            magnitude = -magnitude;
+            phase = Angle.inverse(phase);
+        }
+        real = magnitude * Angle.cosine(phase);
+        imaginary = magnitude * Angle.sine(phase);
+    }
+    this.real = real;
+    this.imaginary = imaginary;
 
-    // return constants if possible
-    if (this.isUndefined() && Complex.UNDEFINED) return Complex.UNDEFINED;
-    if (this.isInfinite() && Complex.INFINITY) return Complex.INFINITY;
-    if (this.isZero() && Complex.ZERO) return Complex.ZERO;
-
-    // cache the canonically formatted version
-    this.setSource(source);
-
+    this.setSource(this.toLiteral());
     return this;
 }
 Complex.prototype = Object.create(Element.prototype);
@@ -264,7 +168,7 @@ Complex.prototype.toLiteral = function() {
             return this.toPolar();
         }
     }
-    return (this.format === 'polar') ? this.toPolar() : this.toRectangular();
+    return this.toRectangular();
 };
 
 
@@ -315,7 +219,6 @@ Complex.prototype.comparedTo = function(that) {
  * @returns {String} The source string.
  */
 Complex.prototype.toRectangular = function() {
-    if (this.format === 'rectangular') return this.source;
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
@@ -337,7 +240,6 @@ Complex.prototype.toRectangular = function() {
  * @returns {String} The source string.
  */
 Complex.prototype.toPolar = function() {
-    if (this.format === 'polar') return this.source;
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
@@ -361,99 +263,89 @@ Complex.prototype.toNumber = function() {
 };
 
 
-// PUBLIC CONSTANTS
-
-Complex.UNDEFINED = new Complex('undefined');
-Complex.INFINITY = new Complex('infinity');
-Complex.ZERO = new Complex(0);
-Complex.E = precision.E;
-Complex.PI = precision.PI;
-Complex.PHI = precision.PHI;
-
-
 // PUBLIC FUNCTIONS
 
 Complex.inverse = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
-    if (complex.isZero()) return Complex.ZERO;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
+    if (complex.isZero()) return new Complex(0);
     const real = -complex.real;
     const imaginary = -complex.imaginary;
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.reciprocal = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.ZERO;
-    if (complex.isZero()) return Complex.INFINITY;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(0);
+    if (complex.isZero()) return new Complex(Infinity);
     const squared = precision.sum(precision.product(complex.real, complex.real), precision.product(complex.imaginary, complex.imaginary));
     const real = precision.quotient(complex.real, squared);
     const imaginary = -precision.quotient(complex.imaginary, squared);
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.conjugate = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
-    if (complex.isZero()) return Complex.ZERO;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
+    if (complex.isZero()) return new Complex(0);
     const real = complex.real;
     const imaginary = -complex.imaginary;
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.exponential = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(1);
     const scale = precision.exponential(precision.E, complex.real);
     const real = precision.product(scale, (precision.cosine(complex.imaginary)));
     const imaginary = precision.product(scale, (precision.sine(complex.imaginary)));
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.logarithm = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
-    if (complex.isZero()) return Complex.INFINITY;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
+    if (complex.isZero()) return new Complex(Infinity);
     const real = precision.logarithm(precision.E, Complex.magnitude(complex));
     const imaginary = Complex.phase(complex).value;
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.factorial = function(complex) {
-    if (complex.isUndefined()) return Complex.UNDEFINED;
-    if (complex.isInfinite()) return Complex.INFINITY;
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(1);
     // just implement real factorials for now...
     const factorial = gamma(complex.real + 1);
-    const result = new Complex(String(factorial));
+    const result = new Complex(factorial);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.sum = function(first, second) {
-    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
-    if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
-    if (first.isEqualTo(Complex.inverse(second))) return Complex.ZERO;
+    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
+    if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
+    if (first.isEqualTo(Complex.inverse(second))) return new Complex(0);
     const real = precision.sum(first.real, second.real);
     const imaginary = precision.sum(first.imaginary, second.imaginary);
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, first.parameters);
     result.format = first.format;
     return result;
 };
@@ -465,28 +357,28 @@ Complex.difference = function(first, second) {
 
 
 Complex.scaled = function(complex, factor) {
-    if (complex.isUndefined() || Number.isNaN(factor)) return Complex.UNDEFINED;
-    if (complex.isZero() && !Number.isFinite(factor)) return Complex.UNDEFINED;
-    if (complex.isInfinite() && factor === 0) return Complex.UNDEFINED;
-    if (complex.isInfinite() || !Number.isFinite(factor)) return Complex.INFINITY;
-    if (complex.isZero() || factor === 0) return Complex.ZERO;
+    if (complex.isUndefined() || Number.isNaN(factor)) return new Complex(NaN);
+    if (complex.isZero() && !Number.isFinite(factor)) return new Complex(NaN);
+    if (complex.isInfinite() && factor === 0) return new Complex(NaN);
+    if (complex.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity);
+    if (complex.isZero() || factor === 0) return new Complex(0);
     const real = precision.product(complex.real, factor);
     const imaginary = precision.product(complex.imaginary, factor);
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, complex.parameters);
     result.format = complex.format;
     return result;
 };
 
 
 Complex.product = function(first, second) {
-    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
-    if (first.isZero() && second.isInfinite()) return Complex.UNDEFINED;
-    if (first.isInfinite() && second.isZero()) return Complex.UNDEFINED;
-    if (first.isInfinite() || second.isInfinite()) return Complex.INFINITY;
-    if (first.isZero() || second.isZero()) return Complex.ZERO;
+    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
+    if (first.isZero() && second.isInfinite()) return new Complex(NaN);
+    if (first.isInfinite() && second.isZero()) return new Complex(NaN);
+    if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
+    if (first.isZero() || second.isZero()) return new Complex(0);
     const real = precision.difference(precision.product(first.real, second.real), precision.product(first.imaginary, second.imaginary));
     const imaginary = precision.sum(precision.product(first.real, second.imaginary), precision.product(first.imaginary * second.real));
-    const result = new Complex({real: real, imaginary: imaginary});
+    const result = new Complex(real, imaginary, first.parameters);
     result.format = first.format;
     return result;
 };
@@ -498,11 +390,11 @@ Complex.quotient = function(first, second) {
 
 
 Complex.remainder = function(first, second) {
-    if (first.isUndefined() || second.isUndefined()) return Complex.UNDEFINED;
-    if (first.isInfinite() && second.isInfinite()) return Complex.UNDEFINED;
-    if (first.isZero() && second.isZero()) return Complex.UNDEFINED;
-    if (second.isInfinite()) return Complex.ZERO;
-    if (second.isZero()) return Complex.INFINITY;
+    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
+    if (first.isInfinite() && second.isInfinite()) return new Complex(NaN);
+    if (first.isZero() && second.isZero()) return new Complex(NaN);
+    if (second.isInfinite()) return new Complex(0);
+    if (second.isZero()) return new Complex(Infinity);
     // just implement for integer values
     // TODO: what does remainder mean for complex numbers?
     const firstInteger = Math.round(first.real);
@@ -522,7 +414,7 @@ function gamma(number) {
  
     const g = 7;
     if (number < 0.5) {
-        return Math.PI / (Math.sin(Math.PI * number) * gamma(1 - number));
+        return precision.PI / (Math.sin(precision.PI * number) * gamma(1 - number));
     }
  
     number -= 1;
@@ -532,7 +424,7 @@ function gamma(number) {
         a += p[i] / (number + i);
     }
  
-    return Math.sqrt(2 * Math.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
+    return Math.sqrt(2 * precision.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
 }
 
 
@@ -551,25 +443,4 @@ function imaginaryToSource(imaginary) {
             source += 'i';
     }
     return source;
-}
-
-
-/*
- * This function takes a parse tree node and coverts it into a Javascript number.
- */
-function nodeToNumber(realNode) {
-    var number;
-    const string = realNode.getText();
-    if (string.startsWith('e')) {
-        number = Complex.E;
-    } else if (string.startsWith('pi')) {
-        number = Complex.PI;
-    } else if (string.startsWith('phi')) {
-        number = Complex.PHI;
-    } else if (string.endsWith('i')) {
-        number = Number(string.slice(0, -1));  // strip off tailing 'i' (the space doesn't matter)
-    } else {
-        number = Number(string);
-    }
-    return precision.lockOnExtreme(number);
 }
