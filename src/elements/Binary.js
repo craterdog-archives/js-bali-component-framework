@@ -13,106 +13,31 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
 const random = require('../utilities/Random');
 const codex = require('../utilities/Codex');
+const types = require('../abstractions/Types');
+const Element = require('../abstractions/Element').Element;
 
 
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates a new binary string element.
- * The allowed ways to call it include:
- * <pre><code>
- * new Binary()  // creates an empty byte string with base set to 64
- * new Binary(value)  // autodetects the base
- * new Binary(value, base)  // uses the specified base
- * </code></pre>
+ * This constructor creates an immutable instance of a binary string using the base defined
+ * in the specified parameters, or base 32 if no parameters are provided.
  * 
  * @constructor
- * @param {Buffer|String} value The byte buffer or encoded value of the binary string.
+ * @param {Buffer} value The byte buffer the containing the bytes for the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
 function Binary(value, parameters) {
     Element.call(this, types.BINARY, parameters);
+
+    // analyze the value
     if (value === undefined || value === null) value = Buffer.alloc(0);  // default value
-    if (parameters) {
-        this.base = parameters.getValue(1).toNumber();
-    }
-    var source;
-    const type = value.constructor.name;
-    switch (type) {
-        case 'Buffer':
-            if (!this.base) this.base = 32;  // default value
-            this.value = value;
-            switch (this.base) {
-                case 2:
-                    source = codex.base2Encode(value);
-                    break;
-                case 16:
-                    source = codex.base16Encode(value);
-                    break;
-                case 32:
-                    source = codex.base32Encode(value);
-                    break;
-                case 64:
-                    source = codex.base64Encode(value);
-                    break;
-                default:
-                    throw new Error('BUG: An invalid binary base value was passed to the constructor: ' + this.base);
-            }
-            source = "'" + source + "'";
-            break;
-        case 'String':
-            source = value;
-            const encoded = value.slice(1, -1);  // strip off the single quotes
-            switch (this.base) {
-                case 2:
-                    this.value = codex.base2Decode(encoded);
-                    break;
-                case 16:
-                    this.value = codex.base16Decode(encoded);
-                    break;
-                case 32:
-                    this.value = codex.base32Decode(encoded);
-                    break;
-                case 64:
-                    this.value = codex.base64Decode(encoded);
-                    break;
-                case undefined:
-                    // decode with trial and error starting with the smallest base
-                    try {
-                        this.value = codex.base2Decode(encoded);
-                        this.base = 2;
-                    } catch (e) {
-                        try {
-                            this.value = codex.base16Decode(encoded);
-                            this.base = 16;
-                        } catch (e) {
-                            try {
-                                this.value = codex.base32Decode(encoded);
-                                this.base = 32;
-                            } catch (e) {
-                                try {
-                                    this.value = codex.base64Decode(encoded);
-                                    this.base = 64;
-                                } catch (e) {
-                                    throw new Error('BUG: An invalid binary value was passed to the constructor: ' + encoded);
-                                }
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    throw new Error('BUG: An invalid binary base value was passed into the constructor: ' + this.base);
-            }
-            break;
-        default:
-            throw new Error('BUG: An invalid binary value type was passed into the constructor: ' + type);
-    }
-    this.setSource(source);
+    this.value = value;
+
+    this.setSource(this.toLiteral());
     return this;
 }
 Binary.prototype = Object.create(Element.prototype);
@@ -148,29 +73,29 @@ Binary.concatenation = function(binary1, binary2) {
  * @returns {String} The corresponding literal string representation.
  */
 Binary.prototype.toLiteral = function() {
-    var string = "'";
+    var string;
     if (this.parameters) {
         const base = this.parameters.getValue(1).toNumber();
         switch (base) {
             case 2:
-                string += codex.base2Encode(this.value);
+                string = codex.base2Encode(this.value);
                 break;
             case 16:
-                string += codex.base16Encode(this.value);
+                string = codex.base16Encode(this.value);
                 break;
             case 32:
-                string += codex.base32Encode(this.value);
+                string = codex.base32Encode(this.value);
                 break;
             case 64:
-                string += codex.base64Encode(this.value);
+                string = codex.base64Encode(this.value);
                 break;
             default:
                 throw new Error('BUG: An invalid binary base value is specified in the parameters: ' + base);
             }
     } else {
-        string += codex.base32Encode(this.value);
+        string = codex.base32Encode(this.value);
     }
-    string += "'";
+    string = "'" + string + "'";
     return string;
 };
 
@@ -203,16 +128,6 @@ Binary.prototype.getSize = function() {
 Binary.prototype.getIterator = function() {
     const iterator = new BufferIterator(this.value);
     return iterator;
-};
-
-
-/**
- * This method returns the byte buffer for the binary string.
- * 
- * @returns {Buffer} The byte buffer.
- */
-Binary.prototype.getBuffer = function() {
-    return this.value;
 };
 
 

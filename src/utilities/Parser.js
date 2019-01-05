@@ -190,13 +190,36 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
-    var string = ctx.BINARY().getText();
-    string = string.slice(1, -1);  // strip off the "'" delimiters
-    string = string.replace(/\s/g, '');  // strip out all whitespace
-
-    // break the string into canonical formatted lines of characters
-    const value = "'" + codex.formatLines(string) + "'";
-
+    var encoded = ctx.BINARY().getText();
+    encoded = encoded.slice(1, -1);  // strip off the "'" delimiters
+    encoded = encoded.replace(/\s/g, '');  // strip out all whitespace
+    var base = 32;  // default value
+    if (parameters) {
+        base = parameters.getValue(1).toNumber();
+    }
+    var value;
+    switch (base) {
+        case 2:
+            value = codex.base2Decode(encoded);
+            break;
+        case 16:
+            value = codex.base16Decode(encoded);
+            break;
+        case 32:
+            value = codex.base32Decode(encoded);
+            break;
+        case 64:
+            value = codex.base64Decode(encoded);
+            break;
+        default:
+            const exception = collections.Catalog.from({
+                $exception: '$invalidFormat',
+                $type: '$Binary',
+                $procedure: '$decode',
+                $base: base
+            });
+            throw new Exception(exception);
+    }
     const binary = new elements.Binary(value, parameters);
     this.result = binary;
 };

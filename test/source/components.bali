@@ -18,7 +18,7 @@
             <https://google.com/>
             v123
             "text"
-            '011010110101000'
+            '0110101101010001'($base: 2)
             true
             index
             example
@@ -51,7 +51,7 @@
             <https://craterdog.com/>: <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"
-            'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '11101011010110010001'($base: 16)
+            'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($base: 16)
             true: false
             pi: -3.14159265
             (1, 2i): (1.4142135623730951 e^~pi i)

@@ -26,61 +26,40 @@ describe('Bali Component Framework™', function() {
 
         it('should construct binary values from buffer with no base', function() {
             const binary = new elements.Binary(expected);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(32);
+            expect(binary.value.toString('hex')).to.equal(expected.toString('hex'));
+            expect(binary.toLiteral().slice(1, -1)).to.equal(codex.base32Encode(expected));
         });
 
-        it('should construct binary values from buffer with specific base', function() {
+        it('should construct binary values from buffer with base 2 format', function() {
+            const parameters = composites.Parameters.from({base: 2});
+            const binary = new elements.Binary(expected, parameters);
+            expect(binary.toLiteral().slice(1, -1)).to.equal(codex.base2Encode(expected));
+        });
+
+        it('should construct binary values from buffer with base 16 format', function() {
             const parameters = composites.Parameters.from({base: 16});
             const binary = new elements.Binary(expected, parameters);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(16);
+            expect(binary.toLiteral().slice(1, -1)).to.equal(codex.base16Encode(expected));
         });
 
-        it('should construct binary values from string by detecting the base', function() {
-            const base32 = "'" + codex.base32Encode(expected) + "'";
-            const binary = new elements.Binary(base32);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(32);
-        });
-
-        it('should construct binary values with encoding of base 64', function() {
-            const base64 = "'" + codex.base64Encode(expected) + "'";
-            const parameters = composites.Parameters.from({base: 64});
-            const binary = new elements.Binary(base64, parameters);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(64);
-        });
-
-        it('should construct binary values with encoding of base 32', function() {
-            const base32 = "'" + codex.base32Encode(expected) + "'";
+        it('should construct binary values from buffer with base 32 format', function() {
             const parameters = composites.Parameters.from({base: 32});
-            const binary = new elements.Binary(base32, parameters);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(32);
+            const binary = new elements.Binary(expected, parameters);
+            expect(binary.toLiteral().slice(1, -1)).to.equal(codex.base32Encode(expected));
         });
 
-        it('should construct binary values with encoding of base 16', function() {
-            const base16 = "'" + codex.base16Encode(expected) + "'";
-            const parameters = composites.Parameters.from({base: 16});
-            const binary = new elements.Binary(base16, parameters);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(16);
-        });
-
-        it('should construct binary values with encoding of base 2', function() {
-            const base2 = "'" + codex.base2Encode(expected) + "'";
-            const parameters = composites.Parameters.from({base: 2});
-            const binary = new elements.Binary(base2, parameters);
-            expect(binary.getBuffer().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.base).to.equal(2);
+        it('should construct binary values from buffer with base 64 format', function() {
+            const parameters = composites.Parameters.from({base: 64});
+            const binary = new elements.Binary(expected, parameters);
+            expect(binary.toLiteral().slice(1, -1)).to.equal(codex.base64Encode(expected));
         });
 
         it('should throw and exception when constructing a binary value with an illegal base', function() {
             expect(
                 function() {
                     const parameters = composites.Parameters.from({base: 25});
-                    const bad = new elements.Binary("''", parameters);
+                    const bad = new elements.Binary(expected, parameters);
+                    bad.toLiteral();
                 }
             ).to.throw();
         });
@@ -92,22 +71,6 @@ describe('Bali Component Framework™', function() {
         it('should return the correct type', function() {
             const type = new elements.Binary(expected).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S858FKVC1YTL20J9M0WQK89MQLS4TK8Z,$version:v1,$digest:none]>');
-        });
-
-        it('should run round-trip binary methods', function() {
-            const binary = new elements.Binary(expected);
-
-            const base2 = new elements.Binary(binary.toBase2());
-            expect(base2.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
-
-            const base16 = new elements.Binary(binary.toBase16());
-            expect(base16.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
-
-            const base32 = new elements.Binary(binary.toBase32());
-            expect(base32.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
-
-            const base64 = new elements.Binary(binary.toBase64());
-            expect(base64.getBuffer().toString('hex')).to.equal(binary.getBuffer().toString('hex'));
         });
 
     });
@@ -128,8 +91,6 @@ describe('Bali Component Framework™', function() {
             for (var i = 0; i < 256; i++) {
                 const expected = elements.Binary.random(i);
                 expect(elements.Binary.not(elements.Binary.not(expected)).isEqualTo(expected)).to.equal(true);
-                const binary = new elements.Binary(expected.toString());
-                expect(binary.isEqualTo(expected)).to.equal(true);
             }
         });
 

@@ -58,6 +58,7 @@ function Angle(value, parameters) {
     if (value === -0) value = 0;  // normalize to positive zero
     this.value = value;
 
+    this.setSource(this.toLiteral());
     return this;
 }
 Angle.prototype = Object.create(Element.prototype);
