@@ -24,15 +24,15 @@ const Element = require('../abstractions/Element').Element;
 /**
  * This constructor creates a new duration element.
  * 
- * @param {String} value The value of the duration.
+ * @param {String} value The ISO compliant value of the duration.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Duration} The new duration element.
  */
 function Duration(value, parameters) {
     Element.call(this, types.DURATION, parameters);
-    if (value === undefined || value === null) value = '~P0D';  // default value
-    this.value = duration(value.slice(1));  // remove leading '~'
-    this.setSource('~' + this.value.toISOString());  // make it canonical
+    if (value === undefined || value === null) value = 'P0D';  // default value
+    this.value = duration(value);
+    this.setSource(this.toLiteral());
     return this;
 }
 Duration.prototype = Object.create(Element.prototype);
@@ -84,7 +84,7 @@ Duration.inverse = function(duration) {
  * @returns {Duration} The normalized sum of the two durations.
  */
 Duration.sum = function(firstDuration, secondDuration) {
-    return new Duration('~' + firstDuration.value.add(secondDuration.value).toISOString());
+    return new Duration(firstDuration.value.add(secondDuration.value).toISOString());
 };
 
 
@@ -96,7 +96,7 @@ Duration.sum = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized difference of the two durations.
  */
 Duration.difference = function(firstDuration, secondDuration) {
-    return new Duration('~' + firstDuration.value.subtract(secondDuration.value).toISOString());
+    return new Duration(firstDuration.value.subtract(secondDuration.value).toISOString());
 };
 
 
@@ -108,6 +108,6 @@ Duration.difference = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized scaled duration.
  */
 Duration.scaled = function(baseDuration, factor) {
-    return new Duration('~' + duration(Math.round(baseDuration.value.asMilliseconds() * factor)).toISOString());
+    return new Duration(duration(Math.round(baseDuration.value.asMilliseconds() * factor)).toISOString());
 };
 
