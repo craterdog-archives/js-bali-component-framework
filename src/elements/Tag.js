@@ -45,23 +45,23 @@ function Tag(optionalSizeOrValue, parameters) {
         case 'undefined':
             this.size = 20;  // default size
             bytes = random.bytes(this.size);
-            this.value = '#' + codex.base32Encode(bytes);
+            this.value = codex.base32Encode(bytes);
             break;
         case 'number':
             this.size = optionalSizeOrValue;
             bytes = random.bytes(this.size);
-            this.value = '#' + codex.base32Encode(bytes);
+            this.value = codex.base32Encode(bytes);
             break;
         case 'string':
             this.value = optionalSizeOrValue;
-            bytes = codex.base32Decode(this.value.substring(1));
+            bytes = codex.base32Decode(this.value);
             this.size = bytes.length;
             break;
         default:
             throw new Error('BUG: An invalid tag value type was passed to the constructor: ' + type);
     }
     this.hash = codex.bytesToInteger(bytes);  // the first four bytes work perfectly
-    this.setSource(this.value);
+    this.setSource(this.toLiteral());
     this.setToComplex();  // tags should never be inlined
     return this;
 }
@@ -78,7 +78,8 @@ exports.Tag = Tag;
  * @returns {String} The corresponding literal string representation.
  */
 Tag.prototype.toLiteral = function() {
-    return this.value;
+    const string = '#' + this.value;
+    return string;
 };
 
 

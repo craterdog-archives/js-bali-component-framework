@@ -23,22 +23,17 @@ const Element = require('../abstractions/Element').Element;
 /**
  * This constructor creates a new version element.
  * 
- * @param {String} value The value of the version.
+ * @param {Array} value An array of version levels for the version number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Symbol} The new version element.
  */
 function Version(value, parameters) {
     Element.call(this, types.VERSION, parameters);
-    value = value || 'v1';  // default value
-    if (!/^v([1-9][0-9]*)(\.[1-9][0-9]*)*$/g.test(value)) {
-        throw new Error('BUG: An invalid version string was passed to the constructor: ' + value);
+    this.value = value || [1];  // default value is v1
+    if (this.value.indexOf(0) >= 0) {
+        throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
-    this.value = [];
-    const levels = value.slice(1).split('.');
-    levels.forEach(function(level) {
-        this.value.push(Number(level));
-    }, this);
-    this.setSource(value);
+    this.setSource(this.toLiteral());
     return this;
 }
 Version.prototype = Object.create(Element.prototype);
@@ -76,7 +71,7 @@ Version.nextVersion = function(currentVersion, level) {
     } else {
         levels.push(1);
     }
-    const nextVersion = new Version('v' + levels.join('.'), currentVersion.parameters);
+    const nextVersion = new Version(levels, currentVersion.parameters);
     return nextVersion;
 };
 

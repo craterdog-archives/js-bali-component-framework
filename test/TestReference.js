@@ -38,7 +38,7 @@ describe('Bali Component Framework™', function() {
             tests.forEach(function(expected) {
                 const reference = new elements.Reference(expected);
                 const string = reference.toString();
-                expect(string).to.equal(expected);
+                expect(string).to.equal('<' + expected + '>');
             });
         });
 
@@ -47,7 +47,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reference methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Reference('<https://google.com/>').getType();
+            const type = new elements.Reference('https://google.com/').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
         });
 
@@ -56,10 +56,10 @@ describe('Bali Component Framework™', function() {
 });
 
 const tests = [
-    '<https://google.com/>',
-    '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
-    '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
-    '<bali:/bali/elements/Text>',
-    '<bali:/bali/elements/Text?version=6.12.1>',
-    '<bali:/abcCorp/reports/2010/Q3>'
+    'https://google.com/',
+    'bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYM',
+    'bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1',
+    'bali:/bali/elements/Text',
+    'bali:/bali/elements/Text?version=6.12.1',
+    'bali:/abcCorp/reports/2010/Q3'
 ];

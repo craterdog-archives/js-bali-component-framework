@@ -14,8 +14,6 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
-const antlr = require('antlr4');
-const grammar = require('../grammar');
 const precision = require('../utilities/Precision');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;

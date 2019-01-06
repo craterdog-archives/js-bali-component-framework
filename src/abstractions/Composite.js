@@ -15,6 +15,8 @@
 const types = require('./Types');
 const Component = require('./Component').Component;
 const Iterator = require('../utilities/Iterator').Iterator;
+const precision = require('../utilities/Precision');
+const codex = require('../utilities/Codex');
 const elements = require('../elements');
 
 
@@ -40,7 +42,9 @@ exports.Composite = Composite;
 /**
  * This function converts a JS primitive type into its corresponding component.
  * NOTE: it's tempting to use the parser in this method but that would introduce a
- * circular dependency with this class and the parser.
+ * circular dependency since the parser depends on all component classes. Here we
+ * restrict the dependency to just the elements which are under a different
+ * dependency tree from the composites.  Yes, it is a TOTAL KLUDGE!
  * 
  * @param {String|Number|Boolean|Component} value The value to be converted (if necessary).
  * @returns {Component} The value as a component.
@@ -52,34 +56,67 @@ Composite.asComponent = function(value) {
             if (value.startsWith('~P')) { // Duration must come before Angle
                 component = new elements.Duration(value);
             } else if (value.startsWith('~')) {
+                value = value.slice(1);  // remove leading '~'
+                switch (value) {
+                    case 'e':
+                        value = precision.E;
+                        break;
+                    case 'pi':
+                        value = precision.PI;
+                        break;
+                    case 'phi':
+                        value = precision.PHI;
+                        break;
+                    default:
+                        value = Number(value);
+                }
                 component = new elements.Angle(value);
             } else if (value.startsWith("'")) {
+                value = value.slice(1, -1);  // strip off the "'" delimiters
+                value = value.replace(/\s/g, '');  // strip out all whitespace
+                value = codex.base32Decode(value);
                 component = new elements.Binary(value);
             } else if (value.match(/^<-?[1-9]/)) {
+                value = value.slice(1, -1);  // strip off the '<' and '>' delimiters
                 component = new elements.Moment(value);
             } else if (value === 'none' || value === 'any') {
                 component = new elements.Pattern(value);
             } else if (value.match(/%$/)) {
+                value = Number(value.slice(0, -1));  // strip off the trailing '%'
                 component = new elements.Percent(value);
-            } else if (value === 'true' || value === 'false') {
-                component = new elements.Probability(value);
+            } else if (value === 'false') {
+                component = new elements.Probability(0);
+            } else if (value === 'true') {
+                component = new elements.Probability(1);
             } else if (value.match(/^</)) {
+                value = value.slice(1, -1);  // strip off the '<' and '>' delimiters
                 component = new elements.Reference(value);
             } else if (value.startsWith('$$')) {  // Reserved must come before Symbol
+                value = value.slice(2);  // strip off the leading '$$'
                 component = new elements.Reserved(value);
             } else if (value.startsWith('$')) {
+                value = value.slice(1);  // strip off the leading '$'
                 component = new elements.Symbol(value);
             } else if (value.startsWith('#')) {
+                value = value.slice(1);  // strip off the leading '#'
                 component = new elements.Tag(value);
             } else if (value.startsWith('"')) {
+                value = value.slice(1, -1);  // strip off the '"' and '"' delimiters
                 component = new elements.Text(value);
             } else if (value.match(/^v[1-9]/)) {
+                value = value.slice(1);  // strip off the leading 'v'
+                const levels = value.split('.');  // split into level strings
+                value = [];
+                levels.forEach(function(level) {
+                    value.push(Number(level));
+                });
                 component = new elements.Version(value);
             } else {  // must come last
-                component = new elements.Identifier(types.VARIABLE, value);
+                component = new elements.Text(value);
             }
             break;
         case 'Boolean':
+            value = value ? 1 : 0;
             component = new elements.Probability(value);
             break;
         case 'Number':

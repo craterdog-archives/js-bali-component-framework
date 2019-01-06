@@ -23,19 +23,16 @@ const Element = require('../abstractions/Element').Element;
  * This constructor creates a new text string element.
  * 
  * @constructor
- * @param {String} value The value of the text string (embedded in double quotes).
+ * @param {String} value The value of the text string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Text} The new text string.
  */
 function Text(value, parameters) {
     Element.call(this, types.TEXT, parameters);
-    if (value === undefined || value === null) value = '""';  // default value
-    if (!value.startsWith('"')) {
-        value = '"' + value + '"';
-    }
-    this.value = value.slice(1, -1);  // remove double quotes from string value
-    this.setSource(value);
-    if (value.startsWith('"\n')) this.setToComplex();
+    if (value === undefined || value === null) value = '';  // default value
+    this.value = value;
+    this.setSource(this.toLiteral());
+    if (value.startsWith('\n')) this.setToComplex();
     return this;
 }
 Text.prototype = Object.create(Element.prototype);

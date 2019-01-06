@@ -16,7 +16,7 @@ const Exception = require('../src/utilities/Exception').Exception;
 
 
 describe('Bali Component Framework™', function() {
-    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
     describe('Test the stack constructors.', function() {
 
@@ -44,14 +44,14 @@ describe('Bali Component Framework™', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            stack.addItem('alpha');
+            stack.addItem('"alpha"');
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.addItem('beta');}).to.throw(Exception);
+            expect(function() {stack.addItem('"beta"');}).to.throw(Exception);
             const top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
-            expect(top.toString()).to.equal('alpha');
+            expect(top.toString()).to.equal('"alpha"');
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -132,27 +132,27 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
             var top = stack.getTop();
-            expect(top.toString()).to.equal('gamma');
+            expect(top.toString()).to.equal('"gamma"');
             var pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 1);
             top = stack.getTop();
-            expect(top.toString()).to.equal('epsilon');
+            expect(top.toString()).to.equal('"epsilon"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 2);
             top = stack.getTop();
-            expect(top.toString()).to.equal('delta');
+            expect(top.toString()).to.equal('"delta"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
             top = stack.getTop();
-            expect(top.toString()).to.equal('beta');
+            expect(top.toString()).to.equal('"beta"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 4);
             top = stack.getTop();
-            expect(top.toString()).to.equal('alpha');
+            expect(top.toString()).to.equal('"alpha"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);

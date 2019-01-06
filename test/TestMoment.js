@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
             tests.forEach(function(expected) {
                 const time = new elements.Moment(expected);
                 const string = time.toString();
-                expect(string).to.equal(expected);
+                expect(string).to.equal('<' + expected + '>');
             });
         });
 
@@ -35,7 +35,7 @@ describe('Bali Component Framework™', function() {
     describe('Test moment methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Moment('<2018>').getType();
+            const type = new elements.Moment('2018').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR,$version:v1,$digest:none]>');
         });
 
@@ -44,13 +44,13 @@ describe('Bali Component Framework™', function() {
 });
 
 const tests = [
-    '<2017-12-30T17:38:35.726>',
-    '<2017-12-30T17:38:35>',
-    '<2017-12-30T17:38>',
-    '<2017-12-30T17>',
-    '<2017-12-30>',
-    '<2017-12>',
-    '<2017>',
-    '<-10000>'
+    '2017-12-30T17:38:35.726',
+    '2017-12-30T17:38:35',
+    '2017-12-30T17:38',
+    '2017-12-30T17',
+    '2017-12-30',
+    '2017-12',
+    '2017',
+    '-10000'
 ];
 

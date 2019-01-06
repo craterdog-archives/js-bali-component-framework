@@ -16,12 +16,12 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
-    const association1 = new composites.Association(1, 'alpha');
-    const association2 = new composites.Association(2, 'beta');
-    const association3 = new composites.Association(3, 'delta');
-    const association4 = new composites.Association(4, 'epsilon');
-    const association5 = new composites.Association(5, 'gamma');
+    const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
+    const association1 = new composites.Association(1, '"alpha"');
+    const association2 = new composites.Association(2, '"beta"');
+    const association3 = new composites.Association(3, '"delta"');
+    const association4 = new composites.Association(4, '"epsilon"');
+    const association5 = new composites.Association(5, '"gamma"');
 
     describe('Test the catalog constructors.', function() {
 
@@ -54,19 +54,19 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
             expect(association.key.toString()).to.equal('1');
-            expect(association.value.toString()).to.equal('alpha');
+            expect(association.value.toString()).to.equal('"alpha"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('2');
-            expect(association.value.toString()).to.equal('beta');
+            expect(association.value.toString()).to.equal('"beta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('3');
-            expect(association.value.toString()).to.equal('delta');
+            expect(association.value.toString()).to.equal('"delta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('4');
-            expect(association.value.toString()).to.equal('epsilon');
+            expect(association.value.toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('5');
-            expect(association.value.toString()).to.equal('gamma');
+            expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
@@ -86,19 +86,19 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
             expect(association.key.toString()).to.equal('1');
-            expect(association.value.toString()).to.equal('alpha');
+            expect(association.value.toString()).to.equal('"alpha"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('2');
-            expect(association.value.toString()).to.equal('beta');
+            expect(association.value.toString()).to.equal('"beta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('3');
-            expect(association.value.toString()).to.equal('delta');
+            expect(association.value.toString()).to.equal('"delta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('4');
-            expect(association.value.toString()).to.equal('epsilon');
+            expect(association.value.toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('5');
-            expect(association.value.toString()).to.equal('gamma');
+            expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
@@ -118,19 +118,19 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
             expect(association.key.toString()).to.equal('1');
-            expect(association.value.toString()).to.equal('alpha');
+            expect(association.value.toString()).to.equal('"alpha"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('2');
-            expect(association.value.toString()).to.equal('beta');
+            expect(association.value.toString()).to.equal('"beta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('3');
-            expect(association.value.toString()).to.equal('delta');
+            expect(association.value.toString()).to.equal('"delta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('4');
-            expect(association.value.toString()).to.equal('epsilon');
+            expect(association.value.toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('5');
-            expect(association.value.toString()).to.equal('gamma');
+            expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
@@ -140,11 +140,11 @@ describe('Bali Component Framework™', function() {
 
         it('should create a catalog from an object', function() {
             const object = {
-                alpha: 'alpha',
-                beta: 'beta',
-                delta: 'delta',
-                epsilon: 'epsilon',
-                gamma: 'gamma'
+                alpha: '"alpha"',
+                beta: '"beta"',
+                delta: '"delta"',
+                epsilon: '"epsilon"',
+                gamma: '"gamma"'
             };
             const catalog = collections.Catalog.from(object);
             var size = catalog.getSize();
@@ -156,19 +156,19 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
             expect(association.key.toString()).to.equal('$alpha');
-            expect(association.value.toString()).to.equal('alpha');
+            expect(association.value.toString()).to.equal('"alpha"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('$beta');
-            expect(association.value.toString()).to.equal('beta');
+            expect(association.value.toString()).to.equal('"beta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('$delta');
-            expect(association.value.toString()).to.equal('delta');
+            expect(association.value.toString()).to.equal('"delta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('$epsilon');
-            expect(association.value.toString()).to.equal('epsilon');
+            expect(association.value.toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('$gamma');
-            expect(association.value.toString()).to.equal('gamma');
+            expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
@@ -188,19 +188,19 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
             expect(association.key.toString()).to.equal('1');
-            expect(association.value.toString()).to.equal('alpha');
+            expect(association.value.toString()).to.equal('"alpha"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('2');
-            expect(association.value.toString()).to.equal('beta');
+            expect(association.value.toString()).to.equal('"beta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('3');
-            expect(association.value.toString()).to.equal('delta');
+            expect(association.value.toString()).to.equal('"delta"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('4');
-            expect(association.value.toString()).to.equal('epsilon');
+            expect(association.value.toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.key.toString()).to.equal('5');
-            expect(association.value.toString()).to.equal('gamma');
+            expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
@@ -225,12 +225,12 @@ describe('Bali Component Framework™', function() {
 
         it('should be able to call the Catalog class methods on the catalog', function() {
             const catalog1 = new collections.Catalog();
-            catalog1.addItem(new composites.Association(1, 'alpha'));
-            catalog1.addItem(new composites.Association(2, 'beta'));
-            catalog1.addItem(new composites.Association(3, 'delta'));
+            catalog1.addItem(new composites.Association(1, '"alpha"'));
+            catalog1.addItem(new composites.Association(2, '"beta"'));
+            catalog1.addItem(new composites.Association(3, '"delta"'));
             const catalog2 = new collections.Catalog();
-            catalog2.addItem(new composites.Association(4, 'epsilon'));
-            catalog2.addItem(new composites.Association(5, 'gamma'));
+            catalog2.addItem(new composites.Association(4, '"epsilon"'));
+            catalog2.addItem(new composites.Association(5, '"gamma"'));
             catalog1.addItems(catalog2);
             var size = catalog1.getSize();
             expect(size).to.equal(array.length);
@@ -264,7 +264,7 @@ describe('Bali Component Framework™', function() {
             expect(catalog.getItem(5).value.toString()).to.equal(association5.value.toString());
             expect(catalog.getIndex(association3)).to.equal(3);
             const actual = catalog.getValue(3);
-            expect(actual.toString()).to.equal('delta');
+            expect(actual.toString()).to.equal('"delta"');
             const keys = catalog.getKeys();
             size = keys.getSize();
             expect(size).to.equal(array.length);
@@ -301,10 +301,10 @@ describe('Bali Component Framework™', function() {
                 association = associationIterator.getNext();
                 expect(association.value.toString()).to.equal(array[index++]);
             }
-            catalog.setValue(1, 'gamma');
-            expect(catalog.getValue(1).toString()).to.equal('gamma');
-            catalog.setValue(6, 'kappa');
-            expect(catalog.getValue(6).toString()).to.equal('kappa');
+            catalog.setValue(1, '"gamma"');
+            expect(catalog.getValue(1).toString()).to.equal('"gamma"');
+            catalog.setValue(6, '"kappa"');
+            expect(catalog.getValue(6).toString()).to.equal('"kappa"');
             catalog.removeAll();
             expect(catalog.getValue(6)).to.equal(undefined);
             size = catalog.getSize();

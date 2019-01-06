@@ -16,7 +16,7 @@ const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
-    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
     describe('Test the list constructors.', function() {
 
@@ -105,12 +105,12 @@ describe('Bali Component Framework™', function() {
 
         it('should be able to call the List class methods on the list', function() {
             const list1 = new collections.List();
-            list1.addItem('alpha');
-            list1.addItem('beta');
-            list1.addItem('delta');
+            list1.addItem('"alpha"');
+            list1.addItem('"beta"');
+            list1.addItem('"delta"');
             const list2 = new collections.List();
-            list2.addItem('epsilon');
-            list2.addItem('gamma');
+            list2.addItem('"epsilon"');
+            list2.addItem('"gamma"');
             list1.addItems(list2);
             var size = list1.getSize();
             expect(size).to.equal(5);
@@ -120,9 +120,9 @@ describe('Bali Component Framework™', function() {
             const list3 = list1.getItems(new composites.Range(2, 4));
             size = list3.getSize();
             expect(size).to.equal(3);
-            expect(list3.containsItem('epsilon')).to.equal(true);
-            expect(list3.containsItem('alpha')).to.equal(false);
-            expect(list3.getIndex('delta')).to.equal(2);
+            expect(list3.containsItem('"epsilon"')).to.equal(true);
+            expect(list3.containsItem('"alpha"')).to.equal(false);
+            expect(list3.getIndex('"delta"')).to.equal(2);
             list2.addItems(list1);
             size = list2.getSize();
             expect(size).to.equal(7);
@@ -135,10 +135,10 @@ describe('Bali Component Framework™', function() {
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
-            expect(list.getItem(2).toString()).to.equal('beta');
-            expect(list.getIndex('alpha')).to.equal(1);
-            expect(list.getItem(5).toString()).to.equal('gamma');
-            expect(list.getIndex('delta')).to.equal(3);
+            expect(list.getItem(2).toString()).to.equal('"beta"');
+            expect(list.getIndex('"alpha"')).to.equal(1);
+            expect(list.getItem(5).toString()).to.equal('"gamma"');
+            expect(list.getIndex('"delta"')).to.equal(3);
             const iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             array.forEach(function(item) {
@@ -188,19 +188,19 @@ describe('Bali Component Framework™', function() {
             const list = collections.List.from(original);
             const sorted = collections.List.from(original);
             sorted.shuffleItems();
-            expect(sorted.isEqualTo(list)).to.equal(false);  // should fail once every 24! runs on average ;-)
+            expect(sorted.isEqualTo(list)).to.equal(false);
             sorted.sortItems();
             expect(sorted.isEqualTo(list)).to.equal(true);
         });
 
         it('should be able to perform list operations on lists', function() {
             const list1 = new collections.List();
-            list1.addItem('alpha');
-            list1.addItem('beta');
-            list1.addItem('delta');
+            list1.addItem('"alpha"');
+            list1.addItem('"beta"');
+            list1.addItem('"delta"');
             const list2 = new collections.List();
-            list2.addItem('epsilon');
-            list2.addItem('gamma');
+            list2.addItem('"epsilon"');
+            list2.addItem('"gamma"');
             const list3 = collections.List.from(array);
             expect(collections.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
         });

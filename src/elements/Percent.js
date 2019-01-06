@@ -23,29 +23,15 @@ const Element = require('../abstractions/Element').Element;
 /**
  * This constructor creates a new percent element.
  * 
- * @param {Number|String} value The value of the percent.
+ * @param {Number} value The value of the percent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Percent} The new percent element.
  */
 function Percent(value, parameters) {
     Element.call(this, types.PERCENT, parameters);
     if (value === undefined || value === null) value = 0;  // default value
-    const type = value.constructor.name;
-    switch (type) {
-        case 'Number':
-            // nothing to convert
-            break;
-        case 'String':
-            // convert to a number
-            value = Number(value.replace(/%/g, ''));  // strip off the %
-            break;
-        default:
-            throw new Error('BUG: An invalid percentage value type was passed into the constructor: ' + type);
-    }
     this.value = value;
-    var source = value.toString() + '%';  // append the %
-    source = source.replace(/e\+?/g, 'E');  // convert to the canonical exponent format
-    this.setSource(source);
+    this.setSource(this.toLiteral());
     return this;
 }
 Percent.prototype = Object.create(Element.prototype);
@@ -61,8 +47,9 @@ exports.Percent = Percent;
  * @returns {String} The corresponding literal string representation.
  */
 Percent.prototype.toLiteral = function() {
-    var string = this.value.toString() + '%';  // append the %
+    var string = Element.numberToSource(this.value);
     string = string.replace(/e\+?/g, 'E');  // convert to the canonical exponent format
+    string += '%';  // append the %
     return string;
 };
 

@@ -19,7 +19,7 @@ describe('Bali Component Framework™', function() {
         it('should construct a default duration of zero', function() {
             const duration = new elements.Duration();
             const string = duration.toString();
-            expect(string).to.equal(tests[0]);
+            expect(string).to.equal('~' + tests[0]);
         });
 
         it('should construct a duration of days from weeks', function() {
@@ -30,9 +30,9 @@ describe('Bali Component Framework™', function() {
 
         it('should construct a duration and format it the same', function() {
             tests.forEach(function(expected) {
-                const duration = new elements.Duration(expected.slice(1));
+                const duration = new elements.Duration(expected);
                 const string = duration.toString();
-                expect(string).to.equal(expected);
+                expect(string).to.equal('~' + expected);
             });
         });
 
@@ -74,17 +74,17 @@ describe('Bali Component Framework™', function() {
 });
 
 const tests = [
-    '~P0D',
-    '~P12345Y',
-    '~P2Y3M7D',
-    '~P2Y3M7DT8H',
-    '~P2Y3M7DT8H29M',
-    '~P2Y3M7DT8H29M54S',
-    '~P3M7DT8H29M54.321S',
-    '~P7DT8H29M54.321S',
-    '~PT8H29M54.321S',
-    '~PT29M54.321S',
-    '~PT54.321S',
-    '~PT54S'
+    'P0D',
+    'P12345Y',
+    'P2Y3M7D',
+    'P2Y3M7DT8H',
+    'P2Y3M7DT8H29M',
+    'P2Y3M7DT8H29M54S',
+    'P3M7DT8H29M54.321S',
+    'P7DT8H29M54.321S',
+    'PT8H29M54.321S',
+    'PT29M54.321S',
+    'PT54.321S',
+    'PT54S'
 ];
 

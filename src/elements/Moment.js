@@ -19,15 +19,15 @@ const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
 const FORMATS = [
-    '<Y>',
-    '<Y-MM>',
-    '<Y-MM-DD>',
-    '<Y-MM-DDTHH>',
-    '<Y-MM-DDTHH:mm>',
-    '<Y-MM-DDTHH:mm:ss>',
-    '<Y-MM-DDTHH:mm:60>',  // HACK:JavaScript doesn't handle leap seconds
-    '<Y-MM-DDTHH:mm:ss.SSS>',
-    '<Y-MM-DDTHH:mm:60.SSS>'  // HACK:JavaScript doesn't handle leap seconds
+    'Y',
+    'Y-MM',
+    'Y-MM-DD',
+    'Y-MM-DDTHH',
+    'Y-MM-DDTHH:mm',
+    'Y-MM-DDTHH:mm:ss',
+    'Y-MM-DDTHH:mm:60',  // HACK:JavaScript doesn't handle leap seconds
+    'Y-MM-DDTHH:mm:ss.SSS',
+    'Y-MM-DDTHH:mm:60.SSS'  // HACK:JavaScript doesn't handle leap seconds
 ];
 
 
@@ -36,7 +36,7 @@ const FORMATS = [
 /**
  * This constructor creates a new moment element.
  * 
- * @param {String} value The value of the moment.
+ * @param {String} value The ISO compliant value of the date/time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment element.
  */
@@ -70,7 +70,7 @@ exports.Moment = Moment;
  */
 Moment.prototype.toLiteral = function() {
     // TODO: need to handle the location context in the parameters
-    const string = this.value.format(this.format);
+    const string = '<' + this.value.format(this.format) + '>';
     return string;
 };
 

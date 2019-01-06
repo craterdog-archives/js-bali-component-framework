@@ -21,7 +21,7 @@ describe('Bali Component Framework™', function() {
                 const random = new elements.Tag();
                 expect(random.getNumberOfBytes()).to.equal(20);
                 const expected = random.toString();
-                const tag = new elements.Tag(expected);
+                const tag = new elements.Tag(expected.slice(1));  // remove the leading '#'
                 const result = tag.toString();
                 console.log('        ' + result);
                 expect(result).to.equal(expected);
@@ -32,16 +32,16 @@ describe('Bali Component Framework™', function() {
             const random = new elements.Tag(15);
             expect(random.getNumberOfBytes()).to.equal(15);
             const expected = random.toString();
-            const tag = new elements.Tag(expected);
+            const tag = new elements.Tag(expected.slice(1));  // remove the leading '#'
             const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a predefined tag', function() {
-            expected = '#NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
+            expected = 'NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
             const tag = new elements.Tag(expected);
             const result = tag.toString();
-            expect(result).to.equal(expected);
+            expect(result).to.equal('#' + expected);
         });
 
         it('should throw an exception for an empty symbol', function() {

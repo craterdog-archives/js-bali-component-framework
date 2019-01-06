@@ -25,7 +25,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should generate an explicit empty text string', function() {
-            const text = new elements.Text('""');
+            const text = new elements.Text('');
             const string = text.toString();
             expect(string).to.equal('""');
             const raw = text.value;
@@ -40,16 +40,8 @@ describe('Bali Component Framework™', function() {
             expect(raw).to.equal('This is a javascript string.');
         });
 
-        it('should generate a specific text string', function() {
-            const text = new elements.Text('"This is a text string."');
-            const string = text.toString();
-            expect(string).to.equal('"This is a text string."');
-            const raw = text.value;
-            expect(raw).to.equal('This is a text string.');
-        });
-
         it('should generate a specific text bloc containing quotes', function() {
-            const text = new elements.Text('"\nThis is a \"text block\" containing \'quotes\'.\n"');
+            const text = new elements.Text('\nThis is a \"text block\" containing \'quotes\'.\n');
             const string = text.toString();
             expect(string).to.equal('"\nThis is a \"text block\" containing \'quotes\'.\n"');
             const raw = text.value;
@@ -61,7 +53,7 @@ describe('Bali Component Framework™', function() {
     describe('Test text methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Text('"Hello World!"').getType();
+            const type = new elements.Text('Hello World!').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL,$version:v1,$digest:none]>');
         });
 
@@ -70,8 +62,8 @@ describe('Bali Component Framework™', function() {
     describe('Test text functions', function() {
 
         it('should perform concatenation of two text strings', function() {
-            const text1 = new elements.Text('"Hello "');
-            const text2 = new elements.Text('"World!"');
+            const text1 = new elements.Text('Hello ');
+            const text2 = new elements.Text('World!');
             const text3 = elements.Text.concatenation(text1, text2);
             expect(text3.toString()).to.equal('"Hello World!"');
         });
@@ -81,7 +73,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the text iterators.', function() {
 
         it('should iterate over a text string forwards and backwards', function() {
-            const text = new elements.Text('"Hello World!"');
+            const text = new elements.Text('Hello World!');
             const iterator = text.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

@@ -16,7 +16,7 @@ const Exception = require('../src/utilities/Exception').Exception;
 
 
 describe('Bali Component Framework™', function() {
-    const array = ['alpha', 'beta', 'delta', 'epsilon', 'gamma'];
+    const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
     describe('Test the queue constructors.', function() {
 
@@ -44,37 +44,37 @@ describe('Bali Component Framework™', function() {
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
-            queue.addItem('alpha');
+            queue.addItem('"alpha"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(queue.getHead().toString()).to.equal('alpha');
-            queue.addItem('beta');
+            expect(queue.getHead().toString()).to.equal('"alpha"');
+            queue.addItem('"beta"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(2);
-            expect(queue.getHead().toString()).to.equal('alpha');
-            queue.addItem('gamma');
+            expect(queue.getHead().toString()).to.equal('"alpha"');
+            queue.addItem('"gamma"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
-            expect(queue.getHead().toString()).to.equal('alpha');
-            expect(function() {queue.addItem('delta');}).to.throw(Exception);
+            expect(queue.getHead().toString()).to.equal('"alpha"');
+            expect(function() {queue.addItem('"delta"');}).to.throw(Exception);
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
-            expect(item.toString()).to.equal('alpha');
+            expect(item.toString()).to.equal('"alpha"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(2);
             item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
-            expect(item.toString()).to.equal('beta');
+            expect(item.toString()).to.equal('"beta"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
             item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
-            expect(item.toString()).to.equal('gamma');
+            expect(item.toString()).to.equal('"gamma"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -152,27 +152,27 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
             var first = queue.getHead();
-            expect(first.toString()).to.equal('alpha');
+            expect(first.toString()).to.equal('"alpha"');
             var item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 1);
             first = queue.getHead();
-            expect(first.toString()).to.equal('beta');
+            expect(first.toString()).to.equal('"beta"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 2);
             first = queue.getHead();
-            expect(first.toString()).to.equal('delta');
+            expect(first.toString()).to.equal('"delta"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 3);
             first = queue.getHead();
-            expect(first.toString()).to.equal('epsilon');
+            expect(first.toString()).to.equal('"epsilon"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 4);
             first = queue.getHead();
-            expect(first.toString()).to.equal('gamma');
+            expect(first.toString()).to.equal('"gamma"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(0);

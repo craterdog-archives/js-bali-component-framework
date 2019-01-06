@@ -23,19 +23,19 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should generate an explicit single level version string', function() {
-            const major = new elements.Version('v42');
+            const major = new elements.Version([42]);
             const string = major.toString();
             expect(string).to.equal('v42');
         });
 
         it('should generate an explicit two level version string', function() {
-            const minor = new elements.Version('v41.6');
+            const minor = new elements.Version([41, 6]);
             const string = minor.toString();
             expect(string).to.equal('v41.6');
         });
 
         it('should generate an explicit three level version string', function() {
-            const bug = new elements.Version('v2.13.5');
+            const bug = new elements.Version([2, 13, 5]);
             const string = bug.toString();
             expect(string).to.equal('v2.13.5');
         });
@@ -44,26 +44,10 @@ describe('Bali Component Framework™', function() {
 
     describe('Test invalid version constructors', function() {
 
-        it('should generate an exception for a missing prefix', function() {
-            expect(
-                function() {
-                    new elements.Version('1');
-                }
-            ).to.throw();
-        });
-
-        it('should generate an exception for a trailing dot', function() {
-            expect(
-                function() {
-                    new elements.Version('v1.');
-                }
-            ).to.throw();
-        });
-
         it('should generate an exception for a zero version number', function() {
             expect(
                 function() {
-                    new elements.Version('v0');
+                    new elements.Version([0]);
                 }
             ).to.throw();
         });
@@ -71,7 +55,7 @@ describe('Bali Component Framework™', function() {
         it('should generate an exception for a zero trailing version number', function() {
             expect(
                 function() {
-                    new elements.Version('v1.0');
+                    new elements.Version([1, 0]);
                 }
             ).to.throw();
         });
@@ -79,7 +63,7 @@ describe('Bali Component Framework™', function() {
         it('should generate an exception for a zero subversion number', function() {
             expect(
                 function() {
-                    new elements.Version('v1.0.2');
+                    new elements.Version([1, 0, 2]);
                 }
             ).to.throw();
         });
@@ -89,7 +73,7 @@ describe('Bali Component Framework™', function() {
     describe('Test version methods', function() {
 
         it('should calculate and validate next versions', function() {
-            const currentVersion = new elements.Version('v6.2.7');
+            const currentVersion = new elements.Version([6, 2, 7]);
             var nextVersion = elements.Version.nextVersion(currentVersion, 1);
             expect(nextVersion.toString()).to.equal('v7');
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
@@ -107,20 +91,20 @@ describe('Bali Component Framework™', function() {
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
 
             expect(elements.Version.validNextVersion(currentVersion, currentVersion)).to.equal(false);
-            nextVersion = new elements.Version('v7.2.7');
+            nextVersion = new elements.Version([7, 2, 7]);
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
-            nextVersion = new elements.Version('v6.3.7');
+            nextVersion = new elements.Version([6, 3, 7]);
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
-            nextVersion = new elements.Version('v6.2.8.1');
+            nextVersion = new elements.Version([6, 2, 8, 1]);
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
-            nextVersion = new elements.Version('v6.2.7.2');
+            nextVersion = new elements.Version([6, 2, 7, 2]);
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
-            nextVersion = new elements.Version('v6.2.7.1.1');
+            nextVersion = new elements.Version([6, 2, 7, 1, 1]);
             expect(elements.Version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
         });
 
         it('should return the correct type', function() {
-            const type = new elements.Version('v1.2.3').getType();
+            const type = new elements.Version([1, 2, 3]).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#VVF92PYR76BJRFV932KMG7VHCD0MAS5R,$version:v1,$digest:none]>');
         });
 
@@ -129,7 +113,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the version iterators.', function() {
 
         it('should iterate over a version string forwards and backwards', function() {
-            const version = new elements.Version('v1.2.3');
+            const version = new elements.Version([1, 2, 3]);
             const iterator = version.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

@@ -12,7 +12,7 @@
 
 /*
  * This element class captures the state and methods associated with a
- * reserved element.
+ * reserved identifier.
  */
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
@@ -21,19 +21,19 @@ const Element = require('../abstractions/Element').Element;
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates a new reserved element.
+ * This constructor creates a new reserved identifier.
  * 
- * @param {String} value The value of the reserved.
+ * @param {String} value The value of the reserved identifier.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Reserved} The new reserved element.
+ * @returns {Reserved} The new reserved identifier.
  */
 function Reserved(value, parameters) {
     Element.call(this, types.RESERVED, parameters);
-    if (!value || !/^\$\$[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
-    this.value = value.slice(2);
-    this.setSource(value);
+    this.value = value;
+    this.setSource(this.toLiteral());
     return this;
 }
 Reserved.prototype = Object.create(Element.prototype);

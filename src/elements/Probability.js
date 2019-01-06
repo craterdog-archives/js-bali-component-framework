@@ -24,52 +24,19 @@ const Element = require('../abstractions/Element').Element;
 /**
  * This constructor creates a new probability element.
  * 
- * @param {Number|Boolean|String} value The value of the probability.
+ * @param {Number|Boolean} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters) {
     Element.call(this, types.PROBABILITY, parameters);
     if (value === undefined || value === null) value = false;  // default value
-
-    const type = value.constructor.name;
-    switch (type) {
-        case 'Boolean':
-            if (value) {
-                value = 1;
-            } else {
-                value = 0;
-            }
-            break;
-        case 'Number':
-            break;
-        case 'String':
-            if (value === 'true') {
-                value = 1;
-            } else if (value === 'false') {
-                value = 0;
-            } else {
-                value = Number('0' + value);
-            }
-            break;
-        default:
-            throw new Error('BUG: An invalid probability value type was passed to the constructor: ' + type);
-    }
+    if (typeof value === 'boolean') value = value ? 1 : 0;
     if (value < 0 || value > 1) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
-    if (Probability.FALSE && value === 0) return Probability.FALSE;
-    if (Probability.TRUE && value === 1) return Probability.TRUE;
     this.value = value;
-    var source;
-    if (value === 1) {
-        source = 'true';
-    } else if (value === 0) {
-        source = 'false';
-    } else {
-        source = value.toString().substring(1);  // remove the leading '0'
-    }
-    this.setSource(source);
+    this.setSource(this.toLiteral());
     return this;
 
 }
