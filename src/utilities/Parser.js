@@ -166,7 +166,8 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
-    const binary = elements.Binary.from(ctx.getText(), parameters);
+    const value = ctx.getText().replace(/\s/g, '');  // strip out all whitespace
+    const binary = elements.Binary.from(value, parameters);
     this.result = binary;
 };
 
@@ -255,18 +256,11 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// complexNumber: '(' real del=(',' | 'e^~') imaginary ')'
+// complexNumber: '(' real (',' imaginary | 'e^' angle 'i') ')'
 ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     const parameters = this.getParameters();
-    ctx.real().accept(this);
-    const real = this.result;
-    ctx.imaginary().accept(this);
-    var imaginary = this.result;
-    const delimiter = ctx.del.text;
-    if (delimiter !== ',') {
-        imaginary = new elements.Angle(imaginary);
-    }
-    const number = new elements.Number(real, imaginary, parameters);
+    const value = ctx.getText();
+    const number = elements.Number.from(value, parameters);
     this.result = number;
 };
 
@@ -470,9 +464,8 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 // imaginaryNumber: imaginary
 ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
     const parameters = this.getParameters();
-    ctx.imaginary().accept(this);
-    const value = this.result;
-    const number = new elements.Number(0, value, parameters);
+    const value = ctx.getText();
+    const number = elements.Number.from(value, parameters);
     this.result = number;
 };
 
@@ -489,7 +482,8 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 // infiniteNumber: 'infinity'
 ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
     const parameters = this.getParameters();
-    const number = new elements.Number(Infinity, Infinity, parameters);
+    const value = ctx.getText();
+    const number = elements.Number.from(value, parameters);
     this.result = number;
 };
 
@@ -742,9 +736,8 @@ ParsingVisitor.prototype.visitReal = function(ctx) {
 // realNumber: real
 ParsingVisitor.prototype.visitRealNumber = function(ctx) {
     const parameters = this.getParameters();
-    ctx.real().accept(this);
-    const value = this.result;
-    const number = new elements.Number(value, 0, parameters);
+    const value = ctx.getText();
+    const number = elements.Number.from(value, parameters);
     this.result = number;
 };
 
@@ -906,7 +899,8 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 // undefinedNumber: 'undefined'
 ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
     const parameters = this.getParameters();
-    const number = new elements.Number(NaN, NaN, parameters);
+    const value = ctx.getText();
+    const number = elements.Number.from(value, parameters);
     this.result = number;
 };
 

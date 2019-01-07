@@ -89,18 +89,14 @@ exports.Complex = Complex;
  * @returns {Complex} The new complex number.
  */
 Complex.from = function(source, parameters) {
-    const object = literals.parseComplex(source, parameters);
-    const complex = new Complex(object.real, object.imaginary, parameters);
-    return complex;
-
     const chars = new antlr.InputStream(source);
     const lexer = new grammar.DocumentLexer(chars);
     const tokens = new antlr.CommonTokenStream(lexer);
     const parser = new grammar.DocumentParser(tokens);
     parser.buildParseTrees = true;
-    const tree = parser.number();
+    const ctx = parser.number();
     var real, imaginary;
-    const nodeType = tree.constructor.name;
+    const nodeType = ctx.constructor.name;
     switch (nodeType) {
         case 'UndefinedNumberContext':
             real = NaN;
@@ -111,25 +107,27 @@ Complex.from = function(source, parameters) {
             imaginary = Infinity;
             break;
         case 'RealNumberContext':
-            real = literals.parseReal(tree.real().getText());
+            real = literals.parseReal(ctx.real().getText());
             imaginary = 0;
             break;
         case 'ImaginaryNumberContext':
             real = 0;
-            imaginary = literals.parseImaginary(tree.imaginary().getText());
+            imaginary = literals.parseImaginary(ctx.imaginary().getText());
             break;
         case 'ComplexNumberContext':
-            real = literals.parseReal(tree.real().getText());
-            imaginary = literals.parseImaginary(tree.imaginary().getText());
+            real = ctx.real();
+            real = literals.parseReal(real.getText());
+            imaginary = ctx.imaginary();
+            if (imaginary) {
+                imaginary = literals.parseImaginary(imaginary.getText());
+            } else {
+                const angle = ctx.angle();
+                imaginary = literals.parseAngle(angle.getText());
+            }
             if (real === Infinity || imaginary === Infinity) {
                 real = Infinity;
                 imaginary = Infinity;
                 break;
-            }
-            const delimiter = tree.del.text;
-            if (delimiter !== ',') {
-                // polar format
-                imaginary = new Angle(imaginary);
             }
             break;
         default:

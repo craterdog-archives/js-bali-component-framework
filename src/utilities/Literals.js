@@ -70,21 +70,20 @@ exports.formatAngle = function(value, parameters) {
  * @return {Buffer} The byte buffer containing the binary string.
  */
 exports.parseBinary = function(source, parameters) {
-    var string = source.slice(1, -1);  // strip off the "'" delimiters
-    string = string.replace(/\s/g, '');  // strip out all whitespace
+    const value = source.slice(1, -1);  // strip off the "'" delimiters
     var base = 32;  // default value
     if (parameters) {
         base = parameters.getValue(1).toNumber();
     }
     switch (base) {
         case 2:
-            return codex.base2Decode(string);
+            return codex.base2Decode(value);
         case 16:
-            return codex.base16Decode(string);
+            return codex.base16Decode(value);
         case 32:
-            return codex.base32Decode(string);
+            return codex.base32Decode(value);
         case 64:
-            return codex.base64Decode(string);
+            return codex.base64Decode(value);
         default:
             throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
     }
