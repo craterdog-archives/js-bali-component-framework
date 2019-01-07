@@ -420,32 +420,8 @@ DocumentVisitor.prototype.visitMoment = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#undefinedNumber.
-DocumentVisitor.prototype.visitUndefinedNumber = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#infiniteNumber.
-DocumentVisitor.prototype.visitInfiniteNumber = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#realNumber.
-DocumentVisitor.prototype.visitRealNumber = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#imaginaryNumber.
-DocumentVisitor.prototype.visitImaginaryNumber = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#complexNumber.
-DocumentVisitor.prototype.visitComplexNumber = function(ctx) {
+// Visit a parse tree produced by DocumentParser#number.
+DocumentVisitor.prototype.visitNumber = function(ctx) {
   return this.visitChildren(ctx);
 };
 

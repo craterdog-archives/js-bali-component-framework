@@ -623,48 +623,12 @@ DocumentListener.prototype.exitMoment = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#undefinedNumber.
-DocumentListener.prototype.enterUndefinedNumber = function(ctx) {
+// Enter a parse tree produced by DocumentParser#number.
+DocumentListener.prototype.enterNumber = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#undefinedNumber.
-DocumentListener.prototype.exitUndefinedNumber = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#infiniteNumber.
-DocumentListener.prototype.enterInfiniteNumber = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#infiniteNumber.
-DocumentListener.prototype.exitInfiniteNumber = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#realNumber.
-DocumentListener.prototype.enterRealNumber = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#realNumber.
-DocumentListener.prototype.exitRealNumber = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#imaginaryNumber.
-DocumentListener.prototype.enterImaginaryNumber = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#imaginaryNumber.
-DocumentListener.prototype.exitImaginaryNumber = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#complexNumber.
-DocumentListener.prototype.enterComplexNumber = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#complexNumber.
-DocumentListener.prototype.exitComplexNumber = function(ctx) {
+// Exit a parse tree produced by DocumentParser#number.
+DocumentListener.prototype.exitNumber = function(ctx) {
 };
 
 

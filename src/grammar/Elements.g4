@@ -31,11 +31,11 @@ imaginary: IMAGINARY;
 moment: MOMENT;
 
 number:
-    'undefined'                                    #undefinedNumber |
-    'infinity'                                     #infiniteNumber  |
-    real                                           #realNumber      |
-    imaginary                                      #imaginaryNumber |
-    '(' real (',' imaginary | 'e^' angle 'i') ')'  #complexNumber
+    'undefined' |
+    'infinity' |
+    real |
+    imaginary |
+    '(' real (',' imaginary | 'e^' angle 'i') ')'
 ;
 
 percent: PERCENT;

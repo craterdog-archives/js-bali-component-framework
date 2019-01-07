@@ -5848,188 +5848,38 @@ function NumberContext(parser, parent, invokingState) {
 NumberContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 NumberContext.prototype.constructor = NumberContext;
 
-
- 
-NumberContext.prototype.copyFrom = function(ctx) {
-    antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
-};
-
-
-function RealNumberContext(parser, ctx) {
-	NumberContext.call(this, parser);
-    NumberContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-RealNumberContext.prototype = Object.create(NumberContext.prototype);
-RealNumberContext.prototype.constructor = RealNumberContext;
-
-DocumentParser.RealNumberContext = RealNumberContext;
-
-RealNumberContext.prototype.real = function() {
-    return this.getTypedRuleContext(RealContext,0);
-};
-RealNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterRealNumber(this);
-	}
-};
-
-RealNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitRealNumber(this);
-	}
-};
-
-RealNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitRealNumber(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function InfiniteNumberContext(parser, ctx) {
-	NumberContext.call(this, parser);
-    NumberContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-InfiniteNumberContext.prototype = Object.create(NumberContext.prototype);
-InfiniteNumberContext.prototype.constructor = InfiniteNumberContext;
-
-DocumentParser.InfiniteNumberContext = InfiniteNumberContext;
-
-InfiniteNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterInfiniteNumber(this);
-	}
-};
-
-InfiniteNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitInfiniteNumber(this);
-	}
-};
-
-InfiniteNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitInfiniteNumber(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function UndefinedNumberContext(parser, ctx) {
-	NumberContext.call(this, parser);
-    NumberContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-UndefinedNumberContext.prototype = Object.create(NumberContext.prototype);
-UndefinedNumberContext.prototype.constructor = UndefinedNumberContext;
-
-DocumentParser.UndefinedNumberContext = UndefinedNumberContext;
-
-UndefinedNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterUndefinedNumber(this);
-	}
-};
-
-UndefinedNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitUndefinedNumber(this);
-	}
-};
-
-UndefinedNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitUndefinedNumber(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function ComplexNumberContext(parser, ctx) {
-	NumberContext.call(this, parser);
-    NumberContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-ComplexNumberContext.prototype = Object.create(NumberContext.prototype);
-ComplexNumberContext.prototype.constructor = ComplexNumberContext;
-
-DocumentParser.ComplexNumberContext = ComplexNumberContext;
-
-ComplexNumberContext.prototype.real = function() {
+NumberContext.prototype.real = function() {
     return this.getTypedRuleContext(RealContext,0);
 };
 
-ComplexNumberContext.prototype.imaginary = function() {
+NumberContext.prototype.imaginary = function() {
     return this.getTypedRuleContext(ImaginaryContext,0);
 };
 
-ComplexNumberContext.prototype.angle = function() {
+NumberContext.prototype.angle = function() {
     return this.getTypedRuleContext(AngleContext,0);
 };
-ComplexNumberContext.prototype.enterRule = function(listener) {
+
+NumberContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterComplexNumber(this);
+        listener.enterNumber(this);
 	}
 };
 
-ComplexNumberContext.prototype.exitRule = function(listener) {
+NumberContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitComplexNumber(this);
+        listener.exitNumber(this);
 	}
 };
 
-ComplexNumberContext.prototype.accept = function(visitor) {
+NumberContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitComplexNumber(this);
+        return visitor.visitNumber(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
-
-function ImaginaryNumberContext(parser, ctx) {
-	NumberContext.call(this, parser);
-    NumberContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-ImaginaryNumberContext.prototype = Object.create(NumberContext.prototype);
-ImaginaryNumberContext.prototype.constructor = ImaginaryNumberContext;
-
-DocumentParser.ImaginaryNumberContext = ImaginaryNumberContext;
-
-ImaginaryNumberContext.prototype.imaginary = function() {
-    return this.getTypedRuleContext(ImaginaryContext,0);
-};
-ImaginaryNumberContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterImaginaryNumber(this);
-	}
-};
-
-ImaginaryNumberContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitImaginaryNumber(this);
-	}
-};
-
-ImaginaryNumberContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitImaginaryNumber(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
 
 
 
@@ -6044,31 +5894,26 @@ DocumentParser.prototype.number = function() {
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DocumentParser.T__62:
-            localctx = new UndefinedNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 458;
             this.match(DocumentParser.T__62);
             break;
         case DocumentParser.T__63:
-            localctx = new InfiniteNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 459;
             this.match(DocumentParser.T__63);
             break;
         case DocumentParser.REAL:
-            localctx = new RealNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 460;
             this.real();
             break;
         case DocumentParser.IMAGINARY:
-            localctx = new ImaginaryNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 4);
             this.state = 461;
             this.imaginary();
             break;
         case DocumentParser.T__2:
-            localctx = new ComplexNumberContext(this, localctx);
             this.enterOuterAlt(localctx, 5);
             this.state = 462;
             this.match(DocumentParser.T__2);

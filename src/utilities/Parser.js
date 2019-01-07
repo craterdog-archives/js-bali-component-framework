@@ -33,7 +33,6 @@ const Component = require('../abstractions/Component').Component;
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
-const literals = require('../utilities/Literals');
 
 
 // PUBLIC FUNCTIONS
@@ -256,8 +255,13 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// complexNumber: '(' real (',' imaginary | 'e^' angle 'i') ')'
-ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
+// number:
+//    'undefined' |
+//    'infinity' |
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
+ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText();
     const number = elements.Number.from(value, parameters);
@@ -455,36 +459,12 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 };
 
 
-// imaginary: IMAGINARY
-ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    this.result = literals.parseImaginary(ctx.getText());
-};
-
-
-// imaginaryNumber: imaginary
-ParsingVisitor.prototype.visitImaginaryNumber = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = elements.Number.from(value, parameters);
-    this.result = number;
-};
-
-
 // indices: '[' list ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
     const tree = new composites.Tree(types.INDICES, 0);
     ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// infiniteNumber: 'infinity'
-ParsingVisitor.prototype.visitInfiniteNumber = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = elements.Number.from(value, parameters);
-    this.result = number;
 };
 
 
@@ -727,21 +707,6 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// real: '0' | REAL
-ParsingVisitor.prototype.visitReal = function(ctx) {
-    this.result = literals.parseReal(ctx.getText());
-};
-
-
-// realNumber: real
-ParsingVisitor.prototype.visitRealNumber = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = elements.Number.from(value, parameters);
-    this.result = number;
-};
-
-
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
@@ -893,15 +858,6 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// undefinedNumber: 'undefined'
-ParsingVisitor.prototype.visitUndefinedNumber = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = elements.Number.from(value, parameters);
-    this.result = number;
 };
 
 

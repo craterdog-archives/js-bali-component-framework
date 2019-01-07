@@ -96,42 +96,36 @@ Complex.from = function(source, parameters) {
     parser.buildParseTrees = true;
     const ctx = parser.number();
     var real, imaginary;
-    const nodeType = ctx.constructor.name;
-    switch (nodeType) {
-        case 'UndefinedNumberContext':
-            real = NaN;
-            imaginary = NaN;
-            break;
-        case 'InfiniteNumberContext':
-            real = Infinity;
-            imaginary = Infinity;
-            break;
-        case 'RealNumberContext':
-            real = literals.parseReal(ctx.real().getText());
-            imaginary = 0;
-            break;
-        case 'ImaginaryNumberContext':
-            real = 0;
-            imaginary = literals.parseImaginary(ctx.imaginary().getText());
-            break;
-        case 'ComplexNumberContext':
-            real = ctx.real();
-            real = literals.parseReal(real.getText());
-            imaginary = ctx.imaginary();
-            if (imaginary) {
-                imaginary = literals.parseImaginary(imaginary.getText());
-            } else {
-                const angle = ctx.angle();
-                imaginary = literals.parseAngle(angle.getText());
-            }
-            if (real === Infinity || imaginary === Infinity) {
+    if (ctx.children.length === 1) {
+        switch (ctx.getText()) {
+            case 'undefined':
+                real = NaN;
+                imaginary = NaN;
+                break;
+            case 'infinity':
                 real = Infinity;
                 imaginary = Infinity;
                 break;
-            }
-            break;
-        default:
-            throw new Error('BUG: An invalid complex number source string was passed to the constructor: ' + source);
+            default:
+                if (ctx.real()) {
+                    real = literals.parseReal(ctx.real().getText());
+                    imaginary = 0;
+                } else {
+                    real = 0;
+                    imaginary = literals.parseImaginary(ctx.imaginary().getText());
+                }
+        }
+    } else {
+        real = literals.parseReal(ctx.real().getText());
+        if (ctx.imaginary()) {
+            imaginary = literals.parseImaginary(ctx.imaginary().getText());
+        } else {
+            imaginary = Angle.from(ctx.angle().getText());
+        }
+        if (real === Infinity || imaginary === Infinity) {
+            real = Infinity;
+            imaginary = Infinity;
+        }
     }
     return new Complex(real, imaginary, parameters);
 };
