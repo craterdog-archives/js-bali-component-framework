@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 const codex = require('../utilities/Codex');
@@ -70,6 +71,22 @@ Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
 
 
+/**
+ * This constructor creates an immutable instance of a tag using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the tag.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Tag} The new tag.
+ */
+Tag.from = function(source, parameters) {
+    const value = literals.parseTag(source, parameters);
+    const tag = new Tag(value, parameters);
+    return tag;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -78,8 +95,8 @@ exports.Tag = Tag;
  * @returns {String} The corresponding literal string representation.
  */
 Tag.prototype.toLiteral = function() {
-    const string = '#' + this.value;
-    return string;
+    const source = literals.formatTag(this.value, this.parameters);
+    return source;
 };
 
 

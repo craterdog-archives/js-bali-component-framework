@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * reserved identifier.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -41,6 +42,22 @@ Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
 
 
+/**
+ * This constructor creates an immutable instance of a reserved symbol using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the reserved symbol.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Reserved} The new reserved symbol.
+ */
+Reserved.from = function(source, parameters) {
+    const value = literals.parseReserved(source, parameters);
+    const reserved = new Reserved(value, parameters);
+    return reserved;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -49,7 +66,7 @@ exports.Reserved = Reserved;
  * @returns {String} The corresponding literal string representation.
  */
 Reserved.prototype.toLiteral = function() {
-    const string = '$$' + this.value;  // add the leading '$$'
-    return string;
+    const source = literals.formatReserved(this.value, this.parameters);
+    return source;
 };
 

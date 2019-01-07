@@ -14,7 +14,10 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
+const antlr = require('antlr4');
+const grammar = require('../grammar');
 const precision = require('../utilities/Precision');
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 const Angle = require('./Angle').Angle;
@@ -23,14 +26,15 @@ const Angle = require('./Angle').Angle;
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates an immutable instance of a complex number using the format defined
- * in the specified parameters, or 'rectangular' if no parameters are provided.
+ * This constructor creates an immutable instance of a complex number using the specified
+ * real and imaginary values.  If the imaginary value is an angle then the complex number
+ * is in polar form, otherwise it is in rectangular form.
  * 
  * @constructor
  * @param {Number} real The real value of the complex number.
  * @param {Number|Angle} imaginary The imaginary value of the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Complex} The new complex element.
+ * @returns {Complex} The new complex number.
  */
 function Complex(real, imaginary, parameters) {
     Element.call(this, types.NUMBER, parameters);
@@ -57,6 +61,7 @@ function Complex(real, imaginary, parameters) {
         var magnitude = real;
         var phase = imaginary;
         if (magnitude < 0) {
+            // normalize the magnitude
             magnitude = -magnitude;
             phase = Angle.inverse(phase);
         }
@@ -74,7 +79,83 @@ Complex.prototype.constructor = Complex;
 exports.Complex = Complex;
 
 
+/**
+ * This constructor creates an immutable instance of a complex number using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the complex number.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Complex} The new complex number.
+ */
+Complex.from = function(source, parameters) {
+    const object = literals.parseComplex(source, parameters);
+    const complex = new Complex(object.real, object.imaginary, parameters);
+    return complex;
+
+    const chars = new antlr.InputStream(source);
+    const lexer = new grammar.DocumentLexer(chars);
+    const tokens = new antlr.CommonTokenStream(lexer);
+    const parser = new grammar.DocumentParser(tokens);
+    parser.buildParseTrees = true;
+    const tree = parser.number();
+    var real, imaginary;
+    const nodeType = tree.constructor.name;
+    switch (nodeType) {
+        case 'UndefinedNumberContext':
+            real = NaN;
+            imaginary = NaN;
+            break;
+        case 'InfiniteNumberContext':
+            real = Infinity;
+            imaginary = Infinity;
+            break;
+        case 'RealNumberContext':
+            real = literals.parseReal(tree.real().getText());
+            imaginary = 0;
+            break;
+        case 'ImaginaryNumberContext':
+            real = 0;
+            imaginary = literals.parseImaginary(tree.imaginary().getText());
+            break;
+        case 'ComplexNumberContext':
+            real = literals.parseReal(tree.real().getText());
+            imaginary = literals.parseImaginary(tree.imaginary().getText());
+            if (real === Infinity || imaginary === Infinity) {
+                real = Infinity;
+                imaginary = Infinity;
+                break;
+            }
+            const delimiter = tree.del.text;
+            if (delimiter !== ',') {
+                // polar format
+                imaginary = new Angle(imaginary);
+            }
+            break;
+        default:
+            throw new Error('BUG: An invalid complex number source string was passed to the constructor: ' + source);
+    }
+    return new Complex(real, imaginary, parameters);
+};
+
+
 // PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Complex.prototype.toLiteral = function() {
+    if (this.parameters) {
+        const format = this.parameters.getValue(1);
+        if (format.toString() === '$polar') {
+            return this.toPolar();
+        }
+    }
+    return this.toRectangular();
+};
+
 
 /**
  * This method determines whether this complex number is undefined.
@@ -155,22 +236,6 @@ Complex.prototype.getPhase = function() {
 
 
 /**
- * This method returns a literal string representation of the component.
- * 
- * @returns {String} The corresponding literal string representation.
- */
-Complex.prototype.toLiteral = function() {
-    if (this.parameters) {
-        const format = this.parameters.getValue(1);
-        if (format.toString() === '$polar') {
-            return this.toPolar();
-        }
-    }
-    return this.toRectangular();
-};
-
-
-/**
  * This method determines whether or not this complex number is equal to another complex number.
  * 
  * @param {Object} that The object that is being compared.
@@ -220,12 +285,12 @@ Complex.prototype.toRectangular = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    if (this.imaginary === 0) return Element.numberToSource(this.real);  // real part isn't zero
-    if (this.real === 0) return imaginaryToSource(this.imaginary);  // imaginary part isn't zero
+    if (this.imaginary === 0) return literals.formatReal(this.real);  // real part isn't zero
+    if (this.real === 0) return literals.formatImaginary(this.imaginary);  // imaginary part isn't zero
     var source = '(';
-    source += Element.numberToSource(this.real);
+    source += literals.formatReal(this.real);
     source += ', ';
-    source += imaginaryToSource(this.imaginary);
+    source += literals.formatImaginary(this.imaginary);
     source += ')';
     return source;
 };
@@ -241,11 +306,11 @@ Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    if (this.imaginary === 0 && this.real > 0) return Element.numberToSource(this.real);
+    if (this.imaginary === 0 && this.real > 0) return literals.formatReal(this.real);
     var source = '(';
-    source += Element.numberToSource(this.getMagnitude());
+    source += literals.formatReal(this.getMagnitude());
     source += ' e^~';
-    source += imaginaryToSource(this.getPhase().value);
+    source += literals.formatImaginary(this.getPhase().value);
     source += ')';
     return source;
 };
@@ -423,22 +488,4 @@ function gamma(number) {
     }
  
     return Math.sqrt(2 * precision.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
-}
-
-
-function imaginaryToSource(imaginary) {
-    var source = Element.numberToSource(imaginary);
-    switch (source) {
-        case 'undefined':
-        case 'infinity':
-            break;
-        case 'e':
-        case 'pi':
-        case 'phi':
-            source += ' i';
-            break;
-        default:
-            source += 'i';
-    }
-    return source;
 }

@@ -35,48 +35,6 @@ Element.prototype.constructor = Element;
 exports.Element = Element;
 
 
-
-/**
- * This function returns the Bali Document Notation™ representation of a JS number.
- * 
- * @param {number} number The JS number.
- * @returns {String} The source code for that number.
- */
-Element.numberToSource = function(number) {
-    var source = Number(number.toPrecision(14)).toString();
-    switch (source) {
-        case '-2.718281828459':
-            source = '-e';
-            break;
-        case '2.718281828459':
-            source = 'e';
-            break;
-        case '-3.1415926535898':
-            source = '-pi';
-            break;
-        case '3.1415926535898':
-            source = 'pi';
-            break;
-        case '-1.6180339887499':
-            source = '-phi';
-            break;
-        case '1.6180339887499':
-            source = 'phi';
-            break;
-        case 'Infinity':
-        case '-Infinity':
-            source = 'infinity';
-            break;
-        case 'NaN':
-            source = 'undefined';
-            break;
-        default:
-            source = number.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
-    }
-    return source;
-};
-
-
 // PUBLIC METHODS
 
 /**

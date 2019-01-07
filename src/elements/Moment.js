@@ -12,9 +12,10 @@
 
 /*
  * This element class captures the state and methods associated with a moment
- * in time element.
+ * in time.
  */
 const moment = require('moment');
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -34,11 +35,11 @@ const FORMATS = [
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates a new moment element.
+ * This constructor creates a new moment in time.
  * 
  * @param {String} value The ISO compliant value of the date/time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Moment} The new moment element.
+ * @returns {Moment} The new moment in time.
  */
 function Moment(value, parameters) {
     if (value === undefined || value === null) value = moment().format(FORMATS[7]);  // current moment
@@ -61,6 +62,22 @@ Moment.prototype.constructor = Moment;
 exports.Moment = Moment;
 
 
+/**
+ * This constructor creates an immutable instance of a moment in time using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the moment in time.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Moment} The new moment in time.
+ */
+Moment.from = function(source, parameters) {
+    const value = literals.parseMoment(source, parameters);
+    const moment = new Moment(value, parameters);
+    return moment;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -69,9 +86,9 @@ exports.Moment = Moment;
  * @returns {String} The corresponding literal string representation.
  */
 Moment.prototype.toLiteral = function() {
-    // TODO: need to handle the location context in the parameters
-    const string = '<' + this.value.format(this.format) + '>';
-    return string;
+    const value = this.value.format(this.format);
+    const source = literals.formatMoment(value, this.parameters);
+    return source;
 };
 
 

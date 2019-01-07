@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * percent element.
  */
+const literals = require('../utilities/Literals');
 const precision = require('../utilities/Precision');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
@@ -39,6 +40,22 @@ Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
 
 
+/**
+ * This constructor creates an immutable instance of a percent using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the percent.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Percent} The new percent.
+ */
+Percent.from = function(source, parameters) {
+    const value = literals.parsePercent(source, parameters);
+    const percent = new Percent(value, parameters);
+    return percent;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -47,10 +64,8 @@ exports.Percent = Percent;
  * @returns {String} The corresponding literal string representation.
  */
 Percent.prototype.toLiteral = function() {
-    var string = Element.numberToSource(this.value);
-    string = string.replace(/e\+?/g, 'E');  // convert to the canonical exponent format
-    string += '%';  // append the %
-    return string;
+    const source = literals.formatPercent(this.value, this.parameters);
+    return source;
 };
 
 
@@ -62,7 +77,6 @@ Percent.prototype.toLiteral = function() {
 Percent.prototype.toNumber = function() {
     return precision.quotient(this.value, 100);
 };
-
 
 
 // PUBLIC FUNCTIONS

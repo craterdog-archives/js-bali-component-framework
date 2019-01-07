@@ -33,8 +33,7 @@ const Component = require('../abstractions/Component').Component;
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
-const precision = require('../utilities/Precision');
-const codex = require('../utilities/Codex');
+const literals = require('../utilities/Literals');
 
 
 // PUBLIC FUNCTIONS
@@ -98,23 +97,6 @@ function convertParseTree(antlrTree) {
 }
 
 
-function stringToNumber(string) {
-    switch (string) {
-        case 'e':
-            return precision.E;
-            break;
-        case 'pi':
-            return precision.PI;
-            break;
-        case 'phi':
-            return precision.PHI;
-            break;
-        default:
-            return Number(string);
-    }
-}
-
-
 // PRIVATE CLASSES
 
 /*
@@ -151,9 +133,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
-    const string = ctx.getText().slice(1);  // remove leading '~'
-    const value = stringToNumber(string);
-    const angle = new elements.Angle(value, parameters);
+    const angle = elements.Angle.from(ctx.getText(), parameters);
     this.result = angle;
 };
 
@@ -186,37 +166,7 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
-    var encoded = ctx.BINARY().getText();
-    encoded = encoded.slice(1, -1);  // strip off the "'" delimiters
-    encoded = encoded.replace(/\s/g, '');  // strip out all whitespace
-    var base = 32;  // default value
-    if (parameters) {
-        base = parameters.getValue(1).toNumber();
-    }
-    var value;
-    switch (base) {
-        case 2:
-            value = codex.base2Decode(encoded);
-            break;
-        case 16:
-            value = codex.base16Decode(encoded);
-            break;
-        case 32:
-            value = codex.base32Decode(encoded);
-            break;
-        case 64:
-            value = codex.base64Decode(encoded);
-            break;
-        default:
-            const exception = collections.Catalog.from({
-                $exception: '$invalidFormat',
-                $type: '$Binary',
-                $procedure: '$decode',
-                $base: base
-            });
-            throw new Exception(exception);
-    }
-    const binary = new elements.Binary(value, parameters);
+    const binary = elements.Binary.from(ctx.getText(), parameters);
     this.result = binary;
 };
 
@@ -312,7 +262,8 @@ ParsingVisitor.prototype.visitComplexNumber = function(ctx) {
     const real = this.result;
     ctx.imaginary().accept(this);
     var imaginary = this.result;
-    if (ctx.del.text !== ',') {
+    const delimiter = ctx.del.text;
+    if (delimiter !== ',') {
         imaginary = new elements.Angle(imaginary);
     }
     const number = new elements.Number(real, imaginary, parameters);
@@ -396,8 +347,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1);  // remove the leading '~'
-    const duration = new elements.Duration(value, parameters);
+    const duration = elements.Duration.from(ctx.getText(), parameters);
     this.result = duration;
 };
 
@@ -459,23 +409,6 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 };
 
 
-// falseProbability: 'false'
-ParsingVisitor.prototype.visitFalseProbability = function(ctx) {
-    const parameters = this.getParameters();
-    const probability = new elements.Probability(0, parameters);
-    this.result = probability;
-};
-
-
-// fractionalProbability: FRACTION
-ParsingVisitor.prototype.visitFractionalProbability = function(ctx) {
-    const parameters = this.getParameters();
-    const value = Number('0' + ctx.getText());
-    const probability = new elements.Probability(value, parameters);
-    this.result = probability;
-};
-
-
 // functionExpression: function parameters
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     const tree = new composites.Tree(types.FUNCTION_EXPRESSION, 0);
@@ -530,8 +463,7 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 
 // imaginary: IMAGINARY
 ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    var string = ctx.getText().slice(0, -1).trim();  // remove the trailing 'i'
-    this.result = stringToNumber(string);
+    this.result = literals.parseImaginary(ctx.getText());
 };
 
 
@@ -580,15 +512,6 @@ ParsingVisitor.prototype.visitInlineList = function(ctx) {
 ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
     // delegate to abstract type
     this.visitProcedure(ctx);
-};
-
-
-// inlineText: TEXT
-ParsingVisitor.prototype.visitInlineText = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText().slice(1, -1);  // remove the '"' delimitors
-    const text = new elements.Text(value, parameters);
-    this.result = text;
 };
 
 
@@ -687,8 +610,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
-    const moment = new elements.Moment(value, parameters);
+    const moment = elements.Moment.from(ctx.getText(), parameters);
     this.result = moment;
 };
 
@@ -714,18 +636,6 @@ ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 };
 
 
-// newlineText: TEXT_BLOCK
-ParsingVisitor.prototype.visitNewlineText = function(ctx) {
-    const parameters = this.getParameters();
-    const indentation = this.getIndentation();
-    const regex = new RegExp('\\n' + indentation, 'g');
-    var value = ctx.TEXT_BLOCK().getText().slice(1, -1);  // remove the '"' delimitors
-    value = value.replace(regex, '\n');
-    const text = new elements.Text(value, parameters);
-    this.result = text;
-};
-
-
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     ctx.collection().accept(this);
@@ -738,8 +648,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 // pattern: 'none' | 'any'
 ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const pattern = new elements.Pattern(value, parameters);
+    const pattern = elements.Pattern.from(ctx.getText(), parameters);
     this.result = pattern;
 };
 
@@ -747,9 +656,7 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 // percent: PERCENT
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     const parameters = this.getParameters();
-    const string = ctx.getText().slice(0, -1);  // remove the trailing '%'
-    const value = stringToNumber(string);
-    const percent = new elements.Percent(value, parameters);
+    const percent = elements.Percent.from(ctx.getText(), parameters);
     this.result = percent;
 };
 
@@ -760,6 +667,14 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+// probability: 'false' | FRACTION | 'true'
+ParsingVisitor.prototype.visitProbability = function(ctx) {
+    const parameters = this.getParameters();
+    const probability = elements.Probability.from(ctx.getText(), parameters);
+    this.result = probability;
 };
 
 
@@ -820,8 +735,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 
 // real: '0' | REAL
 ParsingVisitor.prototype.visitReal = function(ctx) {
-    const string = ctx.getText();
-    this.result = stringToNumber(string);
+    this.result = literals.parseReal(ctx.getText());
 };
 
 
@@ -838,8 +752,7 @@ ParsingVisitor.prototype.visitRealNumber = function(ctx) {
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
-    const reference = new elements.Reference(value, parameters);
+    const reference = elements.Reference.from(ctx.getText(), parameters);
     this.result = reference;
 };
 
@@ -847,8 +760,7 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 // reserved: RESERVED
 ParsingVisitor.prototype.visitReserved = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(2);  // remove the leading '$$'
-    const reserved = new elements.Reserved(value, parameters);
+    const reserved = elements.Reserved.from(ctx.getText(), parameters);
     this.result = reserved;
 };
 
@@ -958,8 +870,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1);  // remove the leading '$'
-    const symbol = new elements.Symbol(value, parameters);
+    const symbol = elements.Symbol.from(ctx.getText(), parameters);
     this.result = symbol;
 };
 
@@ -967,9 +878,19 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1);  // remove the leading '#'
-    const tag = new elements.Tag(value, parameters);
+    const tag = elements.Tag.from(ctx.getText(), parameters);
     this.result = tag;
+};
+
+
+// text: TEXT | BLOCK_TEXT
+ParsingVisitor.prototype.visitText = function(ctx) {
+    const parameters = this.getParameters();
+    const indentation = this.getIndentation();
+    const regex = new RegExp('\\n' + indentation, 'g');
+    const value = ctx.getText().replace(regex, '\n');  // remove the indentation
+    const text = elements.Text.from(value, parameters);
+    this.result = text;
 };
 
 
@@ -979,14 +900,6 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// trueProbability: 'true'
-ParsingVisitor.prototype.visitTrueProbability = function(ctx) {
-    const parameters = this.getParameters();
-    const probability = new elements.Probability(1, parameters);
-    this.result = probability;
 };
 
 
@@ -1009,12 +922,7 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     const parameters = this.getParameters();
-    const levels = ctx.getText().slice(1).split('.');
-    var value = [];
-    levels.forEach(function(level) {
-        value.push(Number(level));
-    });
-    const version = new elements.Version(value, parameters);
+    const version = elements.Version.from(ctx.getText(), parameters);
     this.result = version;
 };
 

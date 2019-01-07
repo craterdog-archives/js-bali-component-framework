@@ -24,10 +24,7 @@ binary: BINARY;
 
 duration: DURATION;
 
-pattern:
-    'none' |
-    'any'
-;
+pattern: 'none' | 'any';
 
 imaginary: IMAGINARY;
 
@@ -43,11 +40,7 @@ number:
 
 percent: PERCENT;
 
-probability:
-    'false'   #falseProbability      |
-    FRACTION  #fractionalProbability |
-    'true'    #trueProbability
-;
+probability: 'false' | FRACTION | 'true';
 
 real: REAL;
 
@@ -59,9 +52,6 @@ symbol: SYMBOL;
 
 tag: TAG;
 
-text:
-    TEXT        #inlineText |
-    TEXT_BLOCK  #newlineText
-;
+text: TEXT | TEXT_BLOCK;
 
 version: VERSION;

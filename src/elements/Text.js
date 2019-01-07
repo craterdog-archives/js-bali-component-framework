@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -40,21 +41,19 @@ Text.prototype.constructor = Text;
 exports.Text = Text;
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function returns a new text string that contains the bytes from the second text
- * concatenated onto the end of the first text string.
- *
- * @param {List} text1 The first text string to be operated on.
- * @param {List} text2 The second text string to be operated on.
- * @returns {List} The resulting text string.
+ * This constructor creates an immutable instance of a text string using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the text string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Text} The new text string.
  */
-Text.concatenation = function(text1, text2) {
-    const string1 = text1.value;
-    const string2 = text2.value;
-    const string = string1 + string2;
-    return new Text(string, text1.parameters);
+Text.from = function(source, parameters) {
+    const value = literals.parseText(source, parameters);
+    const text = new Text(value, parameters);
+    return text;
 };
 
 
@@ -66,8 +65,8 @@ Text.concatenation = function(text1, text2) {
  * @returns {String} The corresponding literal string representation.
  */
 Text.prototype.toLiteral = function() {
-    const string = '"' + this.value + '"';  // add surrounding double quote marks
-    return string;
+    var source = literals.formatText(this.value, this.parameters);
+    return source;
 };
 
 
@@ -99,6 +98,24 @@ Text.prototype.getSize = function() {
 Text.prototype.getIterator = function() {
     const iterator = new TextIterator(this.value);
     return iterator;
+};
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new text string that contains the bytes from the second text
+ * concatenated onto the end of the first text string.
+ *
+ * @param {List} text1 The first text string to be operated on.
+ * @param {List} text2 The second text string to be operated on.
+ * @returns {List} The resulting text string.
+ */
+Text.concatenation = function(text1, text2) {
+    const string1 = text1.value;
+    const string2 = text2.value;
+    const string = string1 + string2;
+    return new Text(string, text1.parameters);
 };
 
 

@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * symbol element.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -41,6 +42,22 @@ Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
 
+/**
+ * This constructor creates an immutable instance of a symbol using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the symbol.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Symbol} The new symbol.
+ */
+Symbol.from = function(source, parameters) {
+    const value = literals.parseSymbol(source, parameters);
+    const symbol = new Symbol(value, parameters);
+    return symbol;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -49,7 +66,7 @@ exports.Symbol = Symbol;
  * @returns {String} The corresponding literal string representation.
  */
 Symbol.prototype.toLiteral = function() {
-    const string = '$' + this.value;  // add the leading '$'
-    return string;
+    const source = literals.formatSymbol(this.value, this.parameters);
+    return source;
 };
 

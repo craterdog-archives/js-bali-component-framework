@@ -12,6 +12,7 @@
 /*
  * This element class captures the state and methods associated with a pattern element.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -38,6 +39,22 @@ Pattern.prototype.constructor = Pattern;
 exports.Pattern = Pattern;
 
 
+/**
+ * This constructor creates an immutable instance of a text pattern using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the text pattern.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Pattern} The new text pattern.
+ */
+Pattern.from = function(source, parameters) {
+    const value = literals.parsePattern(source, parameters);
+    const pattern = new Pattern(value, parameters);
+    return pattern;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -46,6 +63,7 @@ exports.Pattern = Pattern;
  * @returns {String} The corresponding literal string representation.
  */
 Pattern.prototype.toLiteral = function() {
-    return this.value;
+    const source = literals.formatPattern(this.value, this.parameters);
+    return source;
 };
 

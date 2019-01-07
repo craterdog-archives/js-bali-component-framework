@@ -456,20 +456,8 @@ DocumentVisitor.prototype.visitPercent = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#falseProbability.
-DocumentVisitor.prototype.visitFalseProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#fractionalProbability.
-DocumentVisitor.prototype.visitFractionalProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#trueProbability.
-DocumentVisitor.prototype.visitTrueProbability = function(ctx) {
+// Visit a parse tree produced by DocumentParser#probability.
+DocumentVisitor.prototype.visitProbability = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -504,14 +492,8 @@ DocumentVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#inlineText.
-DocumentVisitor.prototype.visitInlineText = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#newlineText.
-DocumentVisitor.prototype.visitNewlineText = function(ctx) {
+// Visit a parse tree produced by DocumentParser#text.
+DocumentVisitor.prototype.visitText = function(ctx) {
   return this.visitChildren(ctx);
 };
 

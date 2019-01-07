@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
+const literals = require('../utilities/Literals');
 const precision = require('../utilities/Precision');
 const random = require('../utilities/Random');
 const types = require('../abstractions/Types');
@@ -45,6 +46,22 @@ Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
 
 
+/**
+ * This constructor creates an immutable instance of a probability using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the probability.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Probability} The new probability.
+ */
+Probability.from = function(source, parameters) {
+    const value = literals.parseProbability(source, parameters);
+    const probability = new Probability(value, parameters);
+    return probability;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -53,14 +70,8 @@ exports.Probability = Probability;
  * @returns {String} The corresponding literal string representation.
  */
 Probability.prototype.toLiteral = function() {
-    switch (this.value) {
-        case 0:
-            return 'false';
-        case 1:
-            return 'true';
-        default:
-            return this.value.toString().substring(1);  // remove the leading '0'
-    }
+    const source = literals.formatProbability(this.value, this.parameters);
+    return source;
 };
 
 

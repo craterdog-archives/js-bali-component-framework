@@ -677,30 +677,12 @@ DocumentListener.prototype.exitPercent = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#falseProbability.
-DocumentListener.prototype.enterFalseProbability = function(ctx) {
+// Enter a parse tree produced by DocumentParser#probability.
+DocumentListener.prototype.enterProbability = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#falseProbability.
-DocumentListener.prototype.exitFalseProbability = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#fractionalProbability.
-DocumentListener.prototype.enterFractionalProbability = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#fractionalProbability.
-DocumentListener.prototype.exitFractionalProbability = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#trueProbability.
-DocumentListener.prototype.enterTrueProbability = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#trueProbability.
-DocumentListener.prototype.exitTrueProbability = function(ctx) {
+// Exit a parse tree produced by DocumentParser#probability.
+DocumentListener.prototype.exitProbability = function(ctx) {
 };
 
 
@@ -749,21 +731,12 @@ DocumentListener.prototype.exitTag = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#inlineText.
-DocumentListener.prototype.enterInlineText = function(ctx) {
+// Enter a parse tree produced by DocumentParser#text.
+DocumentListener.prototype.enterText = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#inlineText.
-DocumentListener.prototype.exitInlineText = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#newlineText.
-DocumentListener.prototype.enterNewlineText = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#newlineText.
-DocumentListener.prototype.exitNewlineText = function(ctx) {
+// Exit a parse tree produced by DocumentParser#text.
+DocumentListener.prototype.exitText = function(ctx) {
 };
 
 

@@ -13,6 +13,7 @@
  * This class captures the state, methods, and functions associated with an angle element.
  */
 const precision = require('../utilities/Precision');
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -20,11 +21,11 @@ const Element = require('../abstractions/Element').Element;
 // PUBLIC CONSTRUCTORS
 
 /**
- * This constructor creates an immutable instance of an angle using the units defined
- * in the specified parameters, or radians if no parameters are provided.
+ * This constructor creates an immutable instance of an angle using the specified
+ * value in radians.
  * 
  * @constructor
- * @param {Number} value The value of the angle.
+ * @param {Number} value The value of the angle in radians.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle element.
  */
@@ -34,13 +35,6 @@ function Angle(value, parameters) {
     // analyze the value
     if (value === undefined || value === null) value = 0;  // default value
     if (!isFinite(value)) value = 0;
-    if (parameters) {
-        const units = parameters.getValue(1);
-        if (units.toString() === '$degrees') {
-            // convert degrees to radians
-            value = precision.quotient(precision.product(value, precision.PI), 180);
-        }
-    }
 
     // lock onto pi if appropriate
     value = precision.lockOnAngle(value);
@@ -66,6 +60,22 @@ Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
 
 
+/**
+ * This constructor creates an immutable instance of an angle using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the angle.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Angle} The new angle.
+ */
+Angle.from = function(source, parameters) {
+    const value = literals.parseAngle(source, parameters);
+    const angle = new Angle(value, parameters);
+    return angle;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -74,16 +84,8 @@ exports.Angle = Angle;
  * @returns {String} The corresponding literal string representation.
  */
 Angle.prototype.toLiteral = function() {
-    var value = this.value;
-    if (this.parameters) {
-        const units = this.parameters.getValue(1);
-        if (units.toString() === '$degrees') {
-            // convert radians to degrees
-            value = precision.quotient(precision.product(value, 180), precision.PI);
-        }
-    }
-    const string = '~' + Element.numberToSource(value);
-    return string;
+    const source = literals.formatAngle(this.value, this.parameters);
+    return source;
 };
 
 

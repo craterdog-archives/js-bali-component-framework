@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * version element.
  */
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -39,6 +40,101 @@ function Version(value, parameters) {
 Version.prototype = Object.create(Element.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
+
+
+/**
+ * This constructor creates an immutable instance of a version string using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the version string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Version} The new version string.
+ */
+Version.from = function(source, parameters) {
+    const value = literals.parseVersion(source, parameters);
+    const version = new Version(value, parameters);
+    return version;
+};
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a literal string representation of the component.
+ * 
+ * @returns {String} The corresponding literal string representation.
+ */
+Version.prototype.toLiteral = function() {
+    var source = literals.formatVersion(this.value, this.parameters);
+    return source;
+};
+
+
+/**
+ * This method compares two versions for ordering.
+ * 
+ * @param {Version} that The other version to be compared with. 
+ * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
+ */
+Version.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+
+    // compare types
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
+    if (thisType !== thatType) {
+        return thisType.localeCompare(thatType);
+    }
+
+    // compare levels
+    const thisLevels = this.value;
+    const thatLevels = that.value;
+    var index = 0;
+    while (index < thisLevels.length && index < thatLevels.length) {
+        if (thisLevels[index] < thatLevels[index]) return -1;
+        if (thisLevels[index] > thatLevels[index]) return 1;
+        index++;
+    }
+
+    // so far they are the same...
+    if (thisLevels.length < thatLevels.length) return -1;
+    if (thisLevels.length > thatLevels.length) return 1;
+
+    // they are exactly the same version levels
+    return 0;
+};
+
+
+/**
+ * This method returns whether or not this version string has any levels.
+ * 
+ * @returns {Boolean} Whether or not this version string has any levels.
+ */
+Version.prototype.isEmpty = function() {
+    return false;  // a version string requires at least one level
+};
+
+
+/**
+ * This method returns the number of levels that this version string has.
+ * 
+ * @returns {Number} The number of levels that this version string has.
+ */
+Version.prototype.getSize = function() {
+    return this.value.length;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the levels in
+ * this version string.
+ * @returns {Iterator} An iterator for this version string.
+ */
+Version.prototype.getIterator = function() {
+    const iterator = new VersionIterator(this.value);
+    return iterator;
+};
 
 
 // PUBLIC FUNCTIONS
@@ -112,85 +208,6 @@ Version.validNextVersion = function(currentVersion, nextVersion) {
     }
     // check for a next subversion level of one
     return (nextLevels.length === index + 1 && nextLevels[index] === 1);
-};
-
-
-// PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @returns {String} The corresponding literal string representation.
- */
-Version.prototype.toLiteral = function() {
-    const string = 'v' + this.value.join('.');
-    return string;
-};
-
-
-/**
- * This method compares two versions for ordering.
- * 
- * @param {Version} that The other version to be compared with. 
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Version.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-
-    // compare types
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return thisType.localeCompare(thatType);
-    }
-
-    // compare levels
-    const thisLevels = this.value;
-    const thatLevels = that.value;
-    var index = 0;
-    while (index < thisLevels.length && index < thatLevels.length) {
-        if (thisLevels[index] < thatLevels[index]) return -1;
-        if (thisLevels[index] > thatLevels[index]) return 1;
-        index++;
-    }
-
-    // so far they are the same...
-    if (thisLevels.length < thatLevels.length) return -1;
-    if (thisLevels.length > thatLevels.length) return 1;
-
-    // they are exactly the same version levels
-    return 0;
-};
-
-
-/**
- * This method returns whether or not this version string has any levels.
- * 
- * @returns {Boolean} Whether or not this version string has any levels.
- */
-Version.prototype.isEmpty = function() {
-    return false;  // a version string requires at least one level
-};
-
-
-/**
- * This method returns the number of levels that this version string has.
- * 
- * @returns {Number} The number of levels that this version string has.
- */
-Version.prototype.getSize = function() {
-    return this.value.length;
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the levels in
- * this version string.
- * @returns {Iterator} An iterator for this version string.
- */
-Version.prototype.getIterator = function() {
-    const iterator = new VersionIterator(this.value);
-    return iterator;
 };
 
 

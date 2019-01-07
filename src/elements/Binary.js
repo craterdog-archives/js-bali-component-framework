@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
+const literals = require('../utilities/Literals');
 const random = require('../utilities/Random');
 const codex = require('../utilities/Codex');
 const types = require('../abstractions/Types');
@@ -45,23 +46,19 @@ Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function returns a new binary string that contains the bytes from the second binary
- * concatenated onto the end of the first binary string.
- *
- * @param {List} binary1 The first binary string to be operated on.
- * @param {List} binary2 The second binary string to be operated on.
- * @returns {List} The resulting binary string.
+ * This constructor creates an immutable instance of a binary string using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the binary string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Binary} The new binary string.
  */
-Binary.concatenation = function(binary1, binary2) {
-    const buffer1 = binary1.value;
-    const buffer2 = binary2.value;
-    const buffer = Buffer.alloc(buffer1.length + buffer2.length);
-    buffer1.copy(buffer);
-    buffer2.copy(buffer, buffer1.length);
-    return new Binary(buffer, binary1.parameters);
+Binary.from = function(source, parameters) {
+    const value = literals.parseBinary(source, parameters);
+    const binary = new Binary(value, parameters);
+    return binary;
 };
 
 
@@ -73,30 +70,8 @@ Binary.concatenation = function(binary1, binary2) {
  * @returns {String} The corresponding literal string representation.
  */
 Binary.prototype.toLiteral = function() {
-    var string;
-    if (this.parameters) {
-        const base = this.parameters.getValue(1).toNumber();
-        switch (base) {
-            case 2:
-                string = codex.base2Encode(this.value);
-                break;
-            case 16:
-                string = codex.base16Encode(this.value);
-                break;
-            case 32:
-                string = codex.base32Encode(this.value);
-                break;
-            case 64:
-                string = codex.base64Encode(this.value);
-                break;
-            default:
-                throw new Error('BUG: An invalid binary base value is specified in the parameters: ' + base);
-            }
-    } else {
-        string = codex.base32Encode(this.value);
-    }
-    string = "'" + string + "'";
-    return string;
+    var source = literals.formatBinary(this.value, this.parameters);
+    return source;
 };
 
 
@@ -283,6 +258,24 @@ Binary.xor = function(binary1, binary2) {
         buffer[index] = binary1.value[index] ^ binary2.value[index];
     }
     return new Binary(buffer);
+};
+
+
+/**
+ * This function returns a new binary string that contains the bytes from the second binary
+ * concatenated onto the end of the first binary string.
+ *
+ * @param {List} binary1 The first binary string to be operated on.
+ * @param {List} binary2 The second binary string to be operated on.
+ * @returns {List} The resulting binary string.
+ */
+Binary.concatenation = function(binary1, binary2) {
+    const buffer1 = binary1.value;
+    const buffer2 = binary2.value;
+    const buffer = Buffer.alloc(buffer1.length + buffer2.length);
+    buffer1.copy(buffer);
+    buffer2.copy(buffer, buffer1.length);
+    return new Binary(buffer, binary1.parameters);
 };
 
 

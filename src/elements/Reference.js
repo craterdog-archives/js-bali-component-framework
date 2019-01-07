@@ -15,6 +15,7 @@
  * reference element.
  */
 const URL = require('url').URL;
+const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -41,6 +42,22 @@ Reference.prototype.constructor = Reference;
 exports.Reference = Reference;
 
 
+/**
+ * This constructor creates an immutable instance of a reference using the specified
+ * source string.
+ * 
+ * @constructor
+ * @param {String} source The source string defining the reference.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Reference} The new reference.
+ */
+Reference.from = function(source, parameters) {
+    const value = literals.parseReference(source, parameters);
+    const reference = new Reference(value, parameters);
+    return reference;
+};
+
+
 // PUBLIC METHODS
 
 /**
@@ -49,7 +66,8 @@ exports.Reference = Reference;
  * @returns {String} The corresponding literal string representation.
  */
 Reference.prototype.toLiteral = function() {
-    const string = '<' + this.value + '>';  // embed in angle brackets
-    return string;
+    const value = this.value.toString();
+    const source = literals.formatReference(value, this.parameters);
+    return source;
 };
 
