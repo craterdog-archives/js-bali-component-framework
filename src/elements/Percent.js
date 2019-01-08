@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * percent element.
  */
-const literals = require('../utilities/Literals');
 const precision = require('../utilities/Precision');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
@@ -42,15 +41,16 @@ exports.Percent = Percent;
 
 /**
  * This constructor creates an immutable instance of a percent using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the percent.
+ * @param {String} literal The literal string defining the percent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Percent} The new percent.
  */
-Percent.from = function(source, parameters) {
-    const value = literals.parsePercent(source, parameters);
+Percent.from = function(literal, parameters) {
+    literal = literal.slice(0, -1);  // remove the trailing '%'
+    const value = Element.literalToNumber(literal);
     const percent = new Percent(value, parameters);
     return percent;
 };
@@ -61,11 +61,14 @@ Percent.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Percent.prototype.toLiteral = function() {
-    const source = literals.formatPercent(this.value, this.parameters);
-    return source;
+Percent.prototype.toLiteral = function(asCanonical) {
+    var literal = Element.numberToLiteral(this.value);
+    literal += '%';  // append the %
+    return literal;
 };
 
 

@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 const codex = require('../utilities/Codex');
@@ -73,15 +72,15 @@ exports.Tag = Tag;
 
 /**
  * This constructor creates an immutable instance of a tag using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the tag.
+ * @param {String} literal The literal string defining the tag.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Tag} The new tag.
  */
-Tag.from = function(source, parameters) {
-    const value = literals.parseTag(source, parameters);
+Tag.from = function(literal, parameters) {
+    const value = literal.slice(1);  // remove the leading '#'
     const tag = new Tag(value, parameters);
     return tag;
 };
@@ -92,11 +91,13 @@ Tag.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Tag.prototype.toLiteral = function() {
-    const source = literals.formatTag(this.value, this.parameters);
-    return source;
+Tag.prototype.toLiteral = function(asCanonical) {
+    const literal = '#' + this.value;  // add the leading '#'
+    return literal;
 };
 
 

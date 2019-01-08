@@ -17,7 +17,6 @@
 const antlr = require('antlr4');
 const grammar = require('../grammar');
 const precision = require('../utilities/Precision');
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 const Angle = require('./Angle').Angle;
@@ -81,15 +80,15 @@ exports.Complex = Complex;
 
 /**
  * This constructor creates an immutable instance of a complex number using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the complex number.
+ * @param {String} literal The literal string defining the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Complex} The new complex number.
  */
-Complex.from = function(source, parameters) {
-    const chars = new antlr.InputStream(source);
+Complex.from = function(literal, parameters) {
+    const chars = new antlr.InputStream(literal);
     const lexer = new grammar.DocumentLexer(chars);
     const tokens = new antlr.CommonTokenStream(lexer);
     const parser = new grammar.DocumentParser(tokens);
@@ -108,17 +107,17 @@ Complex.from = function(source, parameters) {
                 break;
             default:
                 if (ctx.real()) {
-                    real = literals.parseReal(ctx.real().getText());
+                    real = parseReal(ctx.real().getText());
                     imaginary = 0;
                 } else {
                     real = 0;
-                    imaginary = literals.parseImaginary(ctx.imaginary().getText());
+                    imaginary = parseImaginary(ctx.imaginary().getText());
                 }
         }
     } else {
-        real = literals.parseReal(ctx.real().getText());
+        real = parseReal(ctx.real().getText());
         if (ctx.imaginary()) {
-            imaginary = literals.parseImaginary(ctx.imaginary().getText());
+            imaginary = parseImaginary(ctx.imaginary().getText());
         } else {
             imaginary = Angle.from(ctx.angle().getText());
         }
@@ -136,9 +135,11 @@ Complex.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Complex.prototype.toLiteral = function() {
+Complex.prototype.toLiteral = function(asCanonical) {
     if (this.parameters) {
         const format = this.parameters.getValue(1);
         if (format.toString() === '$polar') {
@@ -271,20 +272,20 @@ Complex.prototype.comparedTo = function(that) {
  * This method returns the Bali Document Notation™ for this complex number
  * in retangular form.
  * 
- * @returns {String} The source string.
+ * @returns {String} The literal string.
  */
 Complex.prototype.toRectangular = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    if (this.imaginary === 0) return literals.formatReal(this.real);  // real part isn't zero
-    if (this.real === 0) return literals.formatImaginary(this.imaginary);  // imaginary part isn't zero
-    var source = '(';
-    source += literals.formatReal(this.real);
-    source += ', ';
-    source += literals.formatImaginary(this.imaginary);
-    source += ')';
-    return source;
+    if (this.imaginary === 0) return formatReal(this.real);  // real part isn't zero
+    if (this.real === 0) return formatImaginary(this.imaginary);  // imaginary part isn't zero
+    var literal = '(';
+    literal += formatReal(this.real);
+    literal += ', ';
+    literal += formatImaginary(this.imaginary);
+    literal += ')';
+    return literal;
 };
 
 
@@ -292,19 +293,19 @@ Complex.prototype.toRectangular = function() {
  * This method returns the Bali Document Notation™ for this complex number
  * in polar form.
  * 
- * @returns {String} The source string.
+ * @returns {String} The literal string.
  */
 Complex.prototype.toPolar = function() {
     if (this.isUndefined()) return 'undefined';
     if (this.isInfinite()) return 'infinity';
     if (this.isZero()) return '0';
-    if (this.imaginary === 0 && this.real > 0) return literals.formatReal(this.real);
-    var source = '(';
-    source += literals.formatReal(this.getMagnitude());
-    source += ' e^~';
-    source += literals.formatImaginary(this.getPhase().value);
-    source += ')';
-    return source;
+    if (this.imaginary === 0 && this.real > 0) return formatReal(this.real);
+    var literal = '(';
+    literal += formatReal(this.getMagnitude());
+    literal += ' e^~';
+    literal += formatImaginary(this.getPhase().value);
+    literal += ')';
+    return literal;
 };
 
 
@@ -459,6 +460,71 @@ Complex.remainder = function(first, second) {
 
 
 // PRIVATE FUNCTIONS
+
+/**
+ * This function parses the literal string for an imaginary number and returns the numeric value
+ * of the imaginary number.
+ *
+ * @param {String} literal The literal string for the imaginary number.
+ * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
+ * @return {Number} The numeric value of the imaginary number.
+ */
+function parseImaginary(literal, parameters) {
+    literal = literal.slice(0, -1).trim();  // remove the trailing 'i'
+    const value = Element.literalToNumber(literal);
+    return value;
+}
+
+
+/**
+ * This function formats an imaginary number as a literal string.
+ * 
+ * @param {Number} value The imaginary number.
+ * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
+ * @returns {String} The literal string for the imaginary number.
+ */
+function formatImaginary(value, parameters) {
+    var literal = Element.numberToLiteral(value);
+    switch (literal) {
+        case 'undefined':
+        case 'infinity':
+            return literal;
+        case 'e':
+        case 'pi':
+        case 'phi':
+            return literal + ' i';
+        default:
+            return literal + 'i';
+    }
+}
+
+
+/**
+ * This function parses the literal string for a real number and returns the numeric value
+ * of the real number.
+ *
+ * @param {String} literal The literal string for the real number.
+ * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
+ * @return {Number} The numeric value of the real number.
+ */
+function parseReal(literal, parameters) {
+    const value = Element.literalToNumber(literal);
+    return value;
+}
+
+
+/**
+ * This function formats a real number as a literal string.
+ * 
+ * @param {Number} value The real number.
+ * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
+ * @returns {String} The literal string for the real number.
+ */
+function formatReal(value, parameters) {
+    var literal = Element.numberToLiteral(value);
+    return literal;
+}
+
 
 // TODO: should the math in the gamma function use the precision module?
 function gamma(number) {

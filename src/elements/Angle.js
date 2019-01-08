@@ -13,7 +13,6 @@
  * This class captures the state, methods, and functions associated with an angle element.
  */
 const precision = require('../utilities/Precision');
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -62,15 +61,23 @@ exports.Angle = Angle;
 
 /**
  * This constructor creates an immutable instance of an angle using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the angle.
+ * @param {String} literal The literal string defining the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle.
  */
-Angle.from = function(source, parameters) {
-    const value = literals.parseAngle(source, parameters);
+Angle.from = function(literal, parameters) {
+    literal = literal.slice(1);  // remove the leading '~'
+    var value = Element.literalToNumber(literal);
+    if (parameters) {
+        const units = parameters.getValue(1);
+        if (units.toString() === '$degrees') {
+            // convert degrees to radians
+            value = precision.quotient(precision.product(value, precision.PI), 180);
+        }
+    }
     const angle = new Angle(value, parameters);
     return angle;
 };
@@ -81,11 +88,21 @@ Angle.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Angle.prototype.toLiteral = function() {
-    const source = literals.formatAngle(this.value, this.parameters);
-    return source;
+Angle.prototype.toLiteral = function(asCanonical) {
+    var value = this.value;
+    if (!asCanonical && this.parameters) {
+        const units = this.parameters.getValue(1);
+        if (units.toString() === '$degrees') {
+            // convert radians to degrees
+            value = precision.quotient(precision.product(value, 180), precision.PI);
+        }
+    }
+    const literal = '~' + Element.numberToLiteral(value);  // add the leading '~'
+    return literal;
 };
 
 

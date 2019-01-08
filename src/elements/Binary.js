@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-const literals = require('../utilities/Literals');
 const random = require('../utilities/Random');
 const codex = require('../utilities/Codex');
 const types = require('../abstractions/Types');
@@ -48,15 +47,35 @@ exports.Binary = Binary;
 
 /**
  * This constructor creates an immutable instance of a binary string using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the binary string.
+ * @param {String} literal The literal string defining the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
-Binary.from = function(source, parameters) {
-    const value = literals.parseBinary(source, parameters);
+Binary.from = function(literal, parameters) {
+    var value = literal.slice(1, -1);  // strip off the "'" delimiters
+    var base = 32;  // default value
+    if (parameters) {
+        base = parameters.getValue(1).toNumber();
+    }
+    switch (base) {
+        case 2:
+            value = codex.base2Decode(value);
+            break;
+        case 16:
+            value = codex.base16Decode(value);
+            break;
+        case 32:
+            value = codex.base32Decode(value);
+            break;
+        case 64:
+            value = codex.base64Decode(value);
+            break;
+        default:
+            throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
+    }
     const binary = new Binary(value, parameters);
     return binary;
 };
@@ -67,11 +86,34 @@ Binary.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Binary.prototype.toLiteral = function() {
-    var source = literals.formatBinary(this.value, this.parameters);
-    return source;
+Binary.prototype.toLiteral = function(asCanonical) {
+    var literal;
+    var base = 32;  // default value
+    if (!asCanonical && this.parameters) {
+        base = this.parameters.getValue(1).toNumber();
+    }
+    switch (base) {
+        case 2:
+            literal = codex.base2Encode(this.value);
+            break;
+        case 16:
+            literal = codex.base16Encode(this.value);
+            break;
+        case 32:
+            literal = codex.base32Encode(this.value);
+            break;
+        case 64:
+            literal = codex.base64Encode(this.value);
+            break;
+        default:
+            throw new Error('BUG: An invalid binary base value was specified in the parameters: ' + base);
+    }
+    literal = "'" + literal + "'";
+    return literal;
 };
 
 

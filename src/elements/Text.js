@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -43,15 +42,15 @@ exports.Text = Text;
 
 /**
  * This constructor creates an immutable instance of a text string using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the text string.
+ * @param {String} literal The literal string defining the text string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Text} The new text string.
  */
-Text.from = function(source, parameters) {
-    const value = literals.parseText(source, parameters);
+Text.from = function(literal, parameters) {
+    const value = literal.slice(1, -1);  // remove the '"' delimitors
     const text = new Text(value, parameters);
     return text;
 };
@@ -62,11 +61,13 @@ Text.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Text.prototype.toLiteral = function() {
-    var source = literals.formatText(this.value, this.parameters);
-    return source;
+Text.prototype.toLiteral = function(asCanonical) {
+    const literal = '"' + this.value + '"';  // add the '"' delimitors
+    return literal;
 };
 
 

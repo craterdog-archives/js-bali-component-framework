@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
-const literals = require('../utilities/Literals');
 const precision = require('../utilities/Precision');
 const random = require('../utilities/Random');
 const types = require('../abstractions/Types');
@@ -48,15 +47,25 @@ exports.Probability = Probability;
 
 /**
  * This constructor creates an immutable instance of a probability using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the probability.
+ * @param {String} literal The literal string defining the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability.
  */
-Probability.from = function(source, parameters) {
-    const value = literals.parseProbability(source, parameters);
+Probability.from = function(literal, parameters) {
+    var value;
+    switch (literal) {
+        case 'false':
+            value = 0;
+            break;
+        case 'true':
+            value = 1;
+            break;
+        default:
+            value = Number('0' + literal);  // add the leading '0'
+    }
     const probability = new Probability(value, parameters);
     return probability;
 };
@@ -67,11 +76,23 @@ Probability.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Probability.prototype.toLiteral = function() {
-    const source = literals.formatProbability(this.value, this.parameters);
-    return source;
+Probability.prototype.toLiteral = function(asCanonical) {
+    var literal;
+    switch (this.value) {
+        case 0:
+            literal = 'false';
+            break;
+        case 1:
+            literal = 'true';
+            break;
+        default:
+            literal = this.value.toString().substring(1);  // remove the leading '0'
+    }
+    return literal;
 };
 
 

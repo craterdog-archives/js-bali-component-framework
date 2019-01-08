@@ -15,7 +15,6 @@
  * in time.
  */
 const moment = require('moment');
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -64,15 +63,16 @@ exports.Moment = Moment;
 
 /**
  * This constructor creates an immutable instance of a moment in time using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the moment in time.
+ * @param {String} literal The literal string defining the moment in time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment in time.
  */
-Moment.from = function(source, parameters) {
-    const value = literals.parseMoment(source, parameters);
+Moment.from = function(literal, parameters) {
+    const value = literal.slice(1, -1);  // remove the '<' and '>' delimiters
+    // TODO: adjust for timezone offset based on location specified in parameters
     const moment = new Moment(value, parameters);
     return moment;
 };
@@ -83,12 +83,14 @@ Moment.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
 Moment.prototype.toLiteral = function() {
     const value = this.value.format(this.format);
-    const source = literals.formatMoment(value, this.parameters);
-    return source;
+    const literal = '<' + value + '>';  // add the '<' and '>' delimiters
+    return literal;
 };
 
 

@@ -14,7 +14,6 @@
  * This element class captures the state and methods associated with a
  * version element.
  */
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -44,15 +43,19 @@ exports.Version = Version;
 
 /**
  * This constructor creates an immutable instance of a version string using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the version string.
+ * @param {String} literal The literal string defining the version string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Version} The new version string.
  */
-Version.from = function(source, parameters) {
-    const value = literals.parseVersion(source, parameters);
+Version.from = function(literal, parameters) {
+    const levels = literal.slice(1).split('.');  // pull out the version level strings
+    const value = [];
+    levels.forEach(function(level) {
+        value.push(Number(level));
+    });
     const version = new Version(value, parameters);
     return version;
 };
@@ -63,11 +66,13 @@ Version.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Version.prototype.toLiteral = function() {
-    var source = literals.formatVersion(this.value, this.parameters);
-    return source;
+Version.prototype.toLiteral = function(asCanonical) {
+    const literal = 'v' + this.value.join('.');
+    return literal;
 };
 
 

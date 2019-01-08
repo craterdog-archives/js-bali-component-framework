@@ -15,7 +15,6 @@
  * duration element.
  */
 const duration = require('moment').duration;
-const literals = require('../utilities/Literals');
 const types = require('../abstractions/Types');
 const Element = require('../abstractions/Element').Element;
 
@@ -43,15 +42,15 @@ exports.Duration = Duration;
 
 /**
  * This constructor creates an immutable instance of a time duration using the specified
- * source string.
+ * literal string.
  * 
  * @constructor
- * @param {String} source The source string defining the time duration.
+ * @param {String} literal The literal string defining the time duration.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Duration} The new time duration.
  */
-Duration.from = function(source, parameters) {
-    const value = literals.parseDuration(source, parameters);
+Duration.from = function(literal, parameters) {
+    const value = literal.slice(1);  // remove the leading '~'
     const duration = new Duration(value, parameters);
     return duration;
 };
@@ -62,12 +61,14 @@ Duration.from = function(source, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
+ * @param {Boolean} asCanonical Whether or not the element should be formatted using its
+ * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Duration.prototype.toLiteral = function() {
+Duration.prototype.toLiteral = function(asCanonical) {
     const value = this.value.toISOString();
-    const source = literals.formatDuration(value, this.parameters);
-    return source;
+    const literal = '~' + value;  // add the leading '~'
+    return literal;
 };
 
 
