@@ -87,7 +87,7 @@ exports.Complex = Complex;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Complex} The new complex number.
  */
-Complex.from = function(literal, parameters) {
+Complex.fromLiteral = function(literal, parameters) {
     const chars = new antlr.InputStream(literal);
     const lexer = new grammar.DocumentLexer(chars);
     const tokens = new antlr.CommonTokenStream(lexer);
@@ -119,7 +119,7 @@ Complex.from = function(literal, parameters) {
         if (ctx.imaginary()) {
             imaginary = parseImaginary(ctx.imaginary().getText());
         } else {
-            imaginary = Angle.from(ctx.angle().getText());
+            imaginary = Angle.fromLiteral(ctx.angle().getText());
         }
         if (real === Infinity || imaginary === Infinity) {
             real = Infinity;

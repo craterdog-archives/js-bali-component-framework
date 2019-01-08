@@ -51,35 +51,35 @@ exports.Queue = Queue;
 
 
 /**
- * This function creates a new queue using the specified collection to seed the
+ * This function creates a new queue using the specified sequential object to seed the
  * initial items in the queue. The queue may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
+ * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * items to be used to seed the new queue.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this queue.
  * @returns {Queue} The new queue.
  */
-Queue.from = function(collection, parameters) {
+Queue.fromSequential = function(sequential, parameters) {
     const queue = new Queue(parameters);
     var iterator;
-    const type = collection.constructor.name;
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(item) {
+            sequential.forEach(function(item) {
                 queue.addItem(item);
             });
             break;
         case 'List':
         case 'Queue':
         case 'Set':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 queue.addItem(iterator.getNext());
             }
             break;
         case 'Stack':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             // a stack's iterator starts at the top, we need to start at the bottom
             iterator.toEnd();
             while (iterator.hasPrevious()) {
@@ -87,7 +87,7 @@ Queue.from = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('BUG: A queue cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A queue cannot be initialized using an object of type: ' + type);
     }
     return queue;
 };
@@ -141,7 +141,7 @@ Queue.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
-    const exception = Catalog.from({
+    const exception = Catalog.fromSequential({
         $exception: '$resourceLimit',
         $type: '$Queue',
         $procedure: '$addItem',

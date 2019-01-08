@@ -79,7 +79,7 @@ exports.Tag = Tag;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Tag} The new tag.
  */
-Tag.from = function(literal, parameters) {
+Tag.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1);  // remove the leading '#'
     const tag = new Tag(value, parameters);
     return tag;

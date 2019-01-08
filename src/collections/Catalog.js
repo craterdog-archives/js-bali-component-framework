@@ -46,23 +46,23 @@ exports.Catalog = Catalog;
 
 
 /**
- * This function creates a new catalog using the specified collection to seed the
+ * This function creates a new catalog using the specified sequential object to seed the
  * initial associations. The list may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
+ * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * associations to be used to seed the new catalog.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this catalog.
  * @returns {Catalog} The new catalog.
  */
-Catalog.from = function(collection, parameters) {
+Catalog.fromSequential = function(sequential, parameters) {
     const catalog = new Catalog(parameters);
     var index = 1;
     var iterator;
-    const type = collection.constructor.name;
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(item) {
+            sequential.forEach(function(item) {
                 if (item.constructor.name === 'Association') {
                     catalog.addItem(item);
                 } else {
@@ -72,7 +72,7 @@ Catalog.from = function(collection, parameters) {
             break;
         case 'List':
         case 'Set':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const item = iterator.getNext();
                 if (item.constructor.name === 'Association') {
@@ -83,20 +83,20 @@ Catalog.from = function(collection, parameters) {
             }
             break;
         case 'Object':
-            const keys = Object.keys(collection);
+            const keys = Object.keys(sequential);
             keys.forEach(function(key) {
-                catalog.setValue('$' + key, collection[key]);
+                catalog.setValue('$' + key, sequential[key]);
             });
             break;
         case 'Catalog':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 catalog.setValue(association.key, association.value);
             }
             break;
         default:
-            throw new Error('BUG: A catalog cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A catalog cannot be initialized using an object of type: ' + type);
     }
     return catalog;
 };
@@ -113,7 +113,7 @@ Catalog.from = function(collection, parameters) {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    const result = Catalog.from(catalog1, catalog1.parameters);
+    const result = Catalog.fromSequential(catalog1, catalog1.parameters);
     result.addItems(catalog2);
     return result;
 };

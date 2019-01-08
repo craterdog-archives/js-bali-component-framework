@@ -16,6 +16,12 @@ describe('Bali Component Framework™', function() {
 
     describe('Test probability constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Probability.fromLiteral('false').toNumber()).to.equal(0);
+            expect(elements.Probability.fromLiteral('.5').toNumber()).to.equal(0.5);
+            expect(elements.Probability.fromLiteral('true').toNumber()).to.equal(1);
+        });
+
         it('should construct a default probability of zero', function() {
             const empty = new elements.Probability();
             const number = empty.toNumber();

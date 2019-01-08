@@ -38,31 +38,31 @@ exports.Parameters = Parameters;
 
 
 /**
- * This function creates a new parameter list using the specified collection as the
- * parameter values.
+ * This function creates a new parameter list using the specified sequential object
+ * as the parameter values.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
- * parameters to be used to seed the new parameter list.
+ * @param {Array|Object|Collection} sequential The sequential object containing the
+ * initial parameters to be used to seed the new parameter list.
  * @returns {Parameters} The new parameter list.
  */
-Parameters.from = function(collection) {
-    const type = collection.constructor.name;
+Parameters.fromSequential = function(sequential) {
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
         case 'List':
         case 'Queue':
         case 'Set':
         case 'Stack':
-            collection = collections.List.from(collection);
+            sequential = collections.List.fromSequential(sequential);
             break;
         case 'Object':
         case 'Catalog':
-            collection = collections.Catalog.from(collection);
+            sequential = collections.Catalog.fromSequential(sequential);
             break;
         default:
-            throw new Error('BUG: A parameters list cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A parameters list cannot be initialized using an object of type: ' + type);
     }
-    const parameters = new Parameters(collection);
+    const parameters = new Parameters(sequential);
     return parameters;
 };
 

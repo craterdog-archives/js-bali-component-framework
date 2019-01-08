@@ -47,7 +47,7 @@ exports.Pattern = Pattern;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new text pattern.
  */
-Pattern.from = function(literal, parameters) {
+Pattern.fromLiteral = function(literal, parameters) {
     const value = literal;  // no changes needed
     const pattern = new Pattern(value, parameters);
     return pattern;

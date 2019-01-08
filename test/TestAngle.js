@@ -10,28 +10,40 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const precision = require('../src/utilities/Precision');
+const utilities = require('../src/utilities');
 const elements = require('../src/elements');
+const composites = require('../src/composites');
 /* global NaN, Infinity */
 
 describe('Bali Component Framework™', function() {
 
     describe('Test angle constructors', function() {
 
+        it('should construct using literals', function() {
+            const degrees = composites.Parameters.fromSequential({$units: '$degrees'});
+            const radians = composites.Parameters.fromSequential({$units: '$radians'});
+            expect(elements.Angle.fromLiteral('~0').toNumber()).to.equal(0);
+            expect(elements.Angle.fromLiteral('~pi').toNumber()).to.equal(utilities.precision.PI);
+            expect(elements.Angle.fromLiteral('~pi', radians).toNumber()).to.equal(utilities.precision.PI);
+            expect(elements.Angle.fromLiteral('~90', degrees).toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
+            expect(utilities.parser.parseDocument('~pi($units: $radians)').toNumber()).to.equal(utilities.precision.PI);
+            expect(utilities.parser.parseDocument('~90($units: $degrees)').toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
+        });
+
         it('should construct and equal zero', function() {
             expect(new elements.Angle().toNumber()).to.equal(0);
             expect(new elements.Angle(0).toNumber()).to.equal(0);
             expect(new elements.Angle(-0).toNumber()).to.equal(0);
-            expect(new elements.Angle(2 * precision.PI).toNumber()).to.equal(0);
+            expect(new elements.Angle(2 * utilities.precision.PI).toNumber()).to.equal(0);
         });
 
         it('should construct and equal pi', function() {
-            expect(new elements.Angle(precision.PI).toNumber()).to.equal(precision.PI);
-            expect(new elements.Angle(-precision.PI).toNumber()).to.equal(precision.PI);
+            expect(new elements.Angle(utilities.precision.PI).toNumber()).to.equal(utilities.precision.PI);
+            expect(new elements.Angle(-utilities.precision.PI).toNumber()).to.equal(utilities.precision.PI);
         });
 
         it('should construct and equal pi/2', function() {
-            expect(new elements.Angle(precision.PI / 2).toNumber()).to.equal(precision.PI / 2);
+            expect(new elements.Angle(utilities.precision.PI / 2).toNumber()).to.equal(utilities.precision.PI / 2);
         });
 
         it('should default to zero', function() {
@@ -63,163 +75,163 @@ describe('Bali Component Framework™', function() {
     describe('Test angle functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(elements.Angle.inverse(new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(-precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(-precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(-precision.PI * 3 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.inverse(new elements.Angle(-precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(-utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(-utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(-utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.inverse(new elements.Angle(-utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
         });
 
         it('should perform the complement function correctly', function() {
-            expect(elements.Angle.complement(new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(-precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(-precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(-precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.complement(new elements.Angle(-precision.PI)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(-utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(-utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(-utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.complement(new elements.Angle(-utilities.precision.PI)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
         });
 
         it('should perform the supplement function correctly', function() {
-            expect(elements.Angle.supplement(new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(-precision.PI / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(-precision.PI / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(-precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.supplement(new elements.Angle(-precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(-utilities.precision.PI / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(-utilities.precision.PI / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(-utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.supplement(new elements.Angle(-utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
         });
 
         it('should perform the conjugate function correctly', function() {
             expect(elements.Angle.conjugate(new elements.Angle(0)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(-precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(-precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(-precision.PI * 3 / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.conjugate(new elements.Angle(-precision.PI)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(-utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(-utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(-utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.conjugate(new elements.Angle(-utilities.precision.PI)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
             expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(0)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.sum(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.sum(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
             expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(0)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI / 2), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(0)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI / 4)).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI / 2)).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 3 / 4)).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 3 / 2)).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 7 / 4)).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.difference(new elements.Angle(precision.PI), new elements.Angle(precision.PI * 2)).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(0), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI / 2), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(0)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI / 4)).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI / 2)).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 3 / 4)).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI)).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 5 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 3 / 2)).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 7 / 4)).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.difference(new elements.Angle(utilities.precision.PI), new elements.Angle(utilities.precision.PI * 2)).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
             expect(elements.Angle.scaled(new elements.Angle(0), -1).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), -1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), -1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI), -1).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), -1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), -1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), -1).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 4), -1).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 2), -1).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI), -1).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 4), -1).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 2), -1).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI * 3 / 4), -1).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI), -1).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
             expect(elements.Angle.scaled(new elements.Angle(0), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 2), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI * 3 / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 2), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI * 3 / 4), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI), 0).isEqualTo(new elements.Angle(0))).to.equal(true);
             expect(elements.Angle.scaled(new elements.Angle(0), 1).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), 1).isEqualTo(new elements.Angle(precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), 1).isEqualTo(new elements.Angle(precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI), 1).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), 1).isEqualTo(new elements.Angle(-precision.PI / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), 1).isEqualTo(new elements.Angle(-precision.PI / 2))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(-precision.PI * 3 / 4))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), 1).isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 4), 1).isEqualTo(new elements.Angle(utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 2), 1).isEqualTo(new elements.Angle(utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI), 1).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 4), 1).isEqualTo(new elements.Angle(-utilities.precision.PI / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 2), 1).isEqualTo(new elements.Angle(-utilities.precision.PI / 2))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI * 3 / 4), 1).isEqualTo(new elements.Angle(-utilities.precision.PI * 3 / 4))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI), 1).isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
             expect(elements.Angle.scaled(new elements.Angle(0), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI / 2), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI * 3 / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(precision.PI), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI / 2), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI * 3 / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(elements.Angle.scaled(new elements.Angle(-precision.PI), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI / 2), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI * 3 / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(utilities.precision.PI), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI / 2), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI * 3 / 4), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
+            expect(elements.Angle.scaled(new elements.Angle(-utilities.precision.PI), Infinity).isEqualTo(new elements.Angle(0))).to.equal(true);
         });
 
         it('should run round-trip angle methods', function() {
             const expectedValues = [
-                new elements.Angle(precision.PI),
-                new elements.Angle(precision.PI / 2),
-                new elements.Angle(precision.PI / 3),
+                new elements.Angle(utilities.precision.PI),
+                new elements.Angle(utilities.precision.PI / 2),
+                new elements.Angle(utilities.precision.PI / 3),
                 new elements.Angle('~0.54321'),
                 new elements.Angle(0),
                 new elements.Angle('~-0.54321'),
-                new elements.Angle(-precision.PI),
-                new elements.Angle(-precision.PI / 2),
-                new elements.Angle(-precision.PI / 3)
+                new elements.Angle(-utilities.precision.PI),
+                new elements.Angle(-utilities.precision.PI / 2),
+                new elements.Angle(-utilities.precision.PI / 3)
             ];
             for (var i = 0; i < expectedValues.length; i++) {
                 const angle = expectedValues[i];
@@ -239,20 +251,20 @@ const testValues = [
     new elements.Angle(-0),
     new elements.Angle(0),
     new elements.Angle(),
-    new elements.Angle(precision.PI),
-    new elements.Angle(-precision.PI),
-    new elements.Angle(precision.PI / 4),
-    new elements.Angle(-precision.PI / 4),
-    new elements.Angle(precision.PI / 2),
-    new elements.Angle(-precision.PI / 2),
-    new elements.Angle(precision.PI * 3 / 4),
-    new elements.Angle(-precision.PI * 3 / 4),
-    new elements.Angle(precision.PI * 5 / 4),
-    new elements.Angle(-precision.PI * 5 / 4),
-    new elements.Angle(precision.PI * 7 / 4),
-    new elements.Angle(-precision.PI * 7 / 4),
-    new elements.Angle(2 * precision.PI),
-    new elements.Angle(-2 * precision.PI)
+    new elements.Angle(utilities.precision.PI),
+    new elements.Angle(-utilities.precision.PI),
+    new elements.Angle(utilities.precision.PI / 4),
+    new elements.Angle(-utilities.precision.PI / 4),
+    new elements.Angle(utilities.precision.PI / 2),
+    new elements.Angle(-utilities.precision.PI / 2),
+    new elements.Angle(utilities.precision.PI * 3 / 4),
+    new elements.Angle(-utilities.precision.PI * 3 / 4),
+    new elements.Angle(utilities.precision.PI * 5 / 4),
+    new elements.Angle(-utilities.precision.PI * 5 / 4),
+    new elements.Angle(utilities.precision.PI * 7 / 4),
+    new elements.Angle(-utilities.precision.PI * 7 / 4),
+    new elements.Angle(2 * utilities.precision.PI),
+    new elements.Angle(-2 * utilities.precision.PI)
 ];
 
 const stringValues = [
@@ -279,14 +291,14 @@ const numericValues = [
     0,
     0,
     0,
-    precision.PI,
-    precision.PI,
-    precision.PI / 4,
-    -precision.PI / 4,
-    precision.PI / 2,
-    -precision.PI / 2,
-    precision.PI * 3 / 4,
-    -precision.PI * 3 / 4,
+    utilities.precision.PI,
+    utilities.precision.PI,
+    utilities.precision.PI / 4,
+    -utilities.precision.PI / 4,
+    utilities.precision.PI / 2,
+    -utilities.precision.PI / 2,
+    utilities.precision.PI * 3 / 4,
+    -utilities.precision.PI * 3 / 4,
     -2.356194490192345,
     2.356194490192345,
     -0.785398163397448,

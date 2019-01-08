@@ -41,34 +41,34 @@ exports.Set = Set;
 
 
 /**
- * This function creates a new set using the specified collection to seed the
+ * This function creates a new set using the specified sequential object to seed the
  * initial items in the set. The set may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
+ * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * items to be used to seed the new set.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {List} The new set.
  */
-Set.from = function(collection, parameters) {
+Set.fromSequential = function(sequential, parameters) {
     const set = new Set(parameters);
     var iterator;
-    const type = collection.constructor.name;
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(item) {
+            sequential.forEach(function(item) {
                 set.addItem(item);
             });
             break;
         case 'List':
         case 'Set':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 set.addItem(iterator.getNext());
             }
             break;
         default:
-            throw new Error('BUG: A set cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A set cannot be initialized using an object of type: ' + type);
     }
     return set;
 };
@@ -85,7 +85,7 @@ Set.from = function(collection, parameters) {
  * @returns {Set} The resulting collection.
  */
 Set.or = function(collection1, collection2) {
-    const result = Set.from(collection1, collection1.parameters);
+    const result = Set.fromSequential(collection1, collection1.parameters);
     result.addItems(collection2);
     return result;
 };
@@ -121,7 +121,7 @@ Set.and = function(collection1, collection2) {
  * @returns {Set} The resulting collection.
  */
 Set.sans = function(collection1, collection2) {
-    const result = Set.from(collection1, collection1.parameters);
+    const result = Set.fromSequential(collection1, collection1.parameters);
     result.removeItems(collection2);
     return result;
 };

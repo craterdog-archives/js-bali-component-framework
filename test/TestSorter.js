@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
     array.forEach(function(item, index) {
         this[index] = '$' + item;
     }, array);
-    const set = collections.Set.from(array);
+    const set = collections.Set.fromSequential(array);
 
     describe('Test the sorter on lists.', function() {
 
@@ -38,7 +38,7 @@ describe('Bali Component Framework™', function() {
 
 
         it('should sort an out of order list', function() {
-            const list = collections.List.from(array);
+            const list = collections.List.fromSequential(array);
             list.sortItems();
             expect(list.toString()).to.equal(set.toString());
         });
@@ -55,7 +55,7 @@ describe('Bali Component Framework™', function() {
 
 
         it('should sort an out of order catalog', function() {
-            const catalog = collections.Catalog.from(object);
+            const catalog = collections.Catalog.fromSequential(object);
             catalog.sortItems();
             const keys = catalog.getKeys();
             expect(keys.toString()).to.equal(set.toString());

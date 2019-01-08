@@ -51,35 +51,35 @@ exports.Stack = Stack;
 
 
 /**
- * This function creates a new stack using the specified collection to seed the
+ * This function creates a new stack using the specified sequential object to seed the
  * initial items on the stack. The stack may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
+ * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * items to be used to seed the new stack.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this stack. 
  * @returns {Stack} The new stack.
  */
-Stack.from = function(collection, parameters) {
+Stack.fromSequential = function(sequential, parameters) {
     const stack = new Stack(parameters);
     var iterator;
-    const type = collection.constructor.name;
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(item) {
+            sequential.forEach(function(item) {
                 stack.addItem(item);
             });
             break;
         case 'List':
         case 'Queue':
         case 'Set':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 stack.addItem(iterator.getNext());
             }
             break;
         case 'Stack':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             // a stack's iterator starts at the top, we need to start at the bottom
             iterator.toEnd();
             while (iterator.hasPrevious()) {
@@ -87,7 +87,7 @@ Stack.from = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('BUG: A stack cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A stack cannot be initialized using an object of type: ' + type);
     }
     return stack;
 };
@@ -155,7 +155,7 @@ Stack.prototype.addItem = function(item) {
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
-        const exception = Catalog.from({
+        const exception = Catalog.fromSequential({
             $exception: '$resourceLimit',
             $type: '$Stack',
             $procedure: '$addItem',

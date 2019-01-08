@@ -16,6 +16,12 @@ describe('Bali Component Framework™', function() {
 
     describe('Test moment constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Moment.fromLiteral('<2017-12-30T17:38:35.726>').toLiteral()).to.equal('<2017-12-30T17:38:35.726>');
+            expect(elements.Moment.fromLiteral('<-10000>').toLiteral()).to.equal('<-10000>');
+            // TODO: add tests for parameterized locations
+        });
+
         it('should construct a default moment of zero', function() {
             const time = new elements.Moment();
             const string = time.toString();

@@ -16,6 +16,11 @@ describe('Bali Component Framework™', function() {
 
     describe('Test percent constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Percent.fromLiteral('0%').toNumber()).to.equal(0);
+            expect(elements.Percent.fromLiteral('-50%').toNumber()).to.equal(-0.5);
+        });
+
         it('should construct a default percent of zero', function() {
             const empty = new elements.Percent();
             const number = empty.toNumber();

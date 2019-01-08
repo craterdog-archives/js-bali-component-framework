@@ -16,6 +16,10 @@ describe('Bali Component Framework™', function() {
 
     describe('Test tag constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Tag.fromLiteral('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toLiteral()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
+        });
+
         it('should generate default random tags with 20 bytes', function() {
             for (var i = 0; i < 10; i++) {
                 const random = new elements.Tag();

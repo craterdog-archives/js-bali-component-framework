@@ -50,7 +50,7 @@ exports.Version = Version;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Version} The new version string.
  */
-Version.from = function(literal, parameters) {
+Version.fromLiteral = function(literal, parameters) {
     const levels = literal.slice(1).split('.');  // pull out the version level strings
     const value = [];
     levels.forEach(function(level) {

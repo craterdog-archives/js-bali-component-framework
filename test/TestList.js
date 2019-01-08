@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from an array', function() {
-            const list = collections.List.from(array);
+            const list = collections.List.fromSequential(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -57,8 +57,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a list', function() {
-            var list = collections.List.from(array);
-            list = collections.List.from(list);
+            var list = collections.List.fromSequential(array);
+            list = collections.List.fromSequential(list);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +76,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a list from a set', function() {
-            const set = collections.Set.from(array);
-            const list = collections.List.from(set);
+            const set = collections.Set.fromSequential(array);
+            const list = collections.List.fromSequential(set);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -131,7 +131,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a list', function() {
-            const list = collections.List.from(array);
+            const list = collections.List.fromSequential(array);
             var size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -185,8 +185,8 @@ describe('Bali Component Framework™', function() {
                 'xi',
                 'zeta'
             ];
-            const list = collections.List.from(original);
-            const sorted = collections.List.from(original);
+            const list = collections.List.fromSequential(original);
+            const sorted = collections.List.fromSequential(original);
             sorted.shuffleItems();
             expect(sorted.isEqualTo(list)).to.equal(false);
             sorted.sortItems();
@@ -201,7 +201,7 @@ describe('Bali Component Framework™', function() {
             const list2 = new collections.List();
             list2.addItem('"epsilon"');
             list2.addItem('"gamma"');
-            const list3 = collections.List.from(array);
+            const list3 = collections.List.fromSequential(array);
             expect(collections.List.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
@@ -210,7 +210,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the list iterators.', function() {
 
         it('should iterate over a list forwards and backwards', function() {
-            const list = collections.List.from(array);
+            const list = collections.List.fromSequential(array);
             const iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

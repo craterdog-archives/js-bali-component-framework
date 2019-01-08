@@ -54,7 +54,7 @@ exports.Binary = Binary;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
-Binary.from = function(literal, parameters) {
+Binary.fromLiteral = function(literal, parameters) {
     var value = literal.slice(1, -1);  // strip off the "'" delimiters
     var base = 32;  // default value
     if (parameters) {

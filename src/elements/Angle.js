@@ -68,7 +68,7 @@ exports.Angle = Angle;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle.
  */
-Angle.from = function(literal, parameters) {
+Angle.fromLiteral = function(literal, parameters) {
     literal = literal.slice(1);  // remove the leading '~'
     var value = Element.literalToNumber(literal);
     if (parameters) {

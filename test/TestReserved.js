@@ -14,53 +14,53 @@ const elements = require('../src/elements');
 
 describe('Bali Component Framework™', function() {
 
-    describe('Test symbol constructors', function() {
+    describe('Test reserved symbol constructors', function() {
 
         it('should construct using literals', function() {
-            expect(elements.Symbol.fromLiteral('$foo').toLiteral()).to.equal('$foo');
+            expect(elements.Reserved.fromLiteral('$$foo').toLiteral()).to.equal('$$foo');
         });
 
-        it('should throw an exception for an empty symbol', function() {
+        it('should throw an exception for an empty reserved', function() {
             expect(
                 function() {
-                    const empty = new elements.Symbol();
+                    const empty = new elements.Reserved();
                 }
             ).to.throw();
             expect(
                 function() {
-                    const empty = new elements.Symbol('');
-                }
-            ).to.throw();
-        });
-
-        it('should throw an exception for a symbol containing white space', function() {
-            expect(
-                function() {
-                    const bad = new elements.Symbol(' ');
-                }
-            ).to.throw();
-            expect(
-                function() {
-                    const bad = new elements.Symbol('White Space');
+                    const empty = new elements.Reserved('');
                 }
             ).to.throw();
         });
 
-        it('should construct a symbol and format the same symbol', function() {
-            const symbol = new elements.Symbol('foobar');
-            const string = symbol.toString();
-            expect(string).to.equal('$foobar');
-            const identifier = symbol.value;
+        it('should throw an exception for a reserved symbol containing white space', function() {
+            expect(
+                function() {
+                    const bad = new elements.Reserved(' ');
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const bad = new elements.Reserved('White Space');
+                }
+            ).to.throw();
+        });
+
+        it('should construct a reserved symbol and format the same reserved symbol', function() {
+            const reserved = new elements.Reserved('foobar');
+            const string = reserved.toString();
+            expect(string).to.equal('$$foobar');
+            const identifier = reserved.value;
             expect(identifier).to.equal('foobar');
         });
 
     });
 
-    describe('Test symbol methods', function() {
+    describe('Test reserved symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Symbol('foobar').getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#R4N28VY9D39002WL3PSM6ZSXDC6FT730,$version:v1,$digest:none]>');
+            const type = new elements.Reserved('foobar').getType();
+            expect(type).to.equal('<bali:[$protocol:v1,$tag:#HKTQFZ328SXYW6Q08CCHW90NQ6FW77KB,$version:v1,$digest:none]>');
         });
 
     });

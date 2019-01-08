@@ -50,7 +50,7 @@ exports.Reserved = Reserved;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reserved} The new reserved symbol.
  */
-Reserved.from = function(literal, parameters) {
+Reserved.fromLiteral = function(literal, parameters) {
     const value = literal.slice(2);  // remove the leading '$$'
     const reserved = new Reserved(value, parameters);
     return reserved;

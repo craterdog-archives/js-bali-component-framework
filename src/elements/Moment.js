@@ -70,7 +70,7 @@ exports.Moment = Moment;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment in time.
  */
-Moment.from = function(literal, parameters) {
+Moment.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1, -1);  // remove the '<' and '>' delimiters
     // TODO: adjust for timezone offset based on location specified in parameters
     const moment = new Moment(value, parameters);

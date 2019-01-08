@@ -50,7 +50,7 @@ exports.Symbol = Symbol;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Symbol} The new symbol.
  */
-Symbol.from = function(literal, parameters) {
+Symbol.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1);  // remove the leading '$'
     const symbol = new Symbol(value, parameters);
     return symbol;

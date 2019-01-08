@@ -50,7 +50,7 @@ exports.Reference = Reference;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reference} The new reference.
  */
-Reference.from = function(literal, parameters) {
+Reference.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1, -1);  // remove the '<' and '>' delimiters
     const reference = new Reference(value, parameters);
     return reference;

@@ -97,7 +97,7 @@ Collection.prototype.getItems = function(range) {
         const item = this.getItem(index);
         array.push(item);
     }
-    const items = this.constructor.from(array);
+    const items = this.constructor.fromSequential(array);
     return items;
 };
 

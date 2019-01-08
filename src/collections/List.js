@@ -51,35 +51,35 @@ exports.List = List;
 
 
 /**
- * This function creates a new list using the specified collection to seed the
+ * This function creates a new list using the specified sequential object to seed the
  * initial items in the list. The list may be parameterized by specifying optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Array|Object|Collection} collection The collection containing the initial
+ * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * items to be used to seed the new list.
  * @param {Parameters} parameters Optional parameters used to parameterize this list. 
  * @returns {List} The new list.
  */
-List.from = function(collection, parameters) {
+List.fromSequential = function(sequential, parameters) {
     const list = new List(parameters);
     var iterator;
-    const type = collection.constructor.name;
+    const type = sequential.constructor.name;
     switch (type) {
         case 'Array':
-            collection.forEach(function(item) {
+            sequential.forEach(function(item) {
                 list.addItem(item);
             });
             break;
         case 'List':
         case 'Queue':
         case 'Set':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 list.addItem(iterator.getNext());
             }
             break;
         case 'Stack':
-            iterator = collection.getIterator();
+            iterator = sequential.getIterator();
             // a stack's iterator starts at the top, we need to start at the bottom
             iterator.toEnd();
             while (iterator.hasPrevious()) {
@@ -87,7 +87,7 @@ List.from = function(collection, parameters) {
             }
             break;
         default:
-            throw new Error('BUG: A list cannot be initialized using a collection of type: ' + type);
+            throw new Error('BUG: A list cannot be initialized using an object of type: ' + type);
     }
     return list;
 };
@@ -104,7 +104,7 @@ List.from = function(collection, parameters) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    const result = List.from(list1, list1.parameters);
+    const result = List.fromSequential(list1, list1.parameters);
     result.addItems(list2);
     return result;
 };
@@ -259,7 +259,7 @@ List.prototype.removeItems = function(range) {
         const item = this.removeItem(index);
         array.push(item);
     }
-    const items = List.from(array);
+    const items = List.fromSequential(array);
     return items;
 };
 

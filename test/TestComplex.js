@@ -10,13 +10,27 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const precision = require('../src/utilities/Precision');
+const utilities = require('../src/utilities');
 const elements = require('../src/elements');
+const composites = require('../src/composites');
 /* global NaN, Infinity */
 
 describe('Bali Component Framework™', function() {
 
     describe('Test complex constructors', function() {
+
+        it('should construct using literals', function() {
+            const rectangular = composites.Parameters.fromSequential({$format: '$rectangular'});
+            const polar = composites.Parameters.fromSequential({$format: '$polar'});
+            expect(elements.Number.fromLiteral('0').toNumber()).to.equal(0);
+            expect(elements.Number.fromLiteral('e').toNumber()).to.equal(utilities.precision.E);
+            expect(elements.Number.fromLiteral('phi i').getImaginary()).to.equal(utilities.precision.PHI);
+            expect(elements.Number.fromLiteral('(3, 4i)', rectangular).getMagnitude()).to.equal(5);
+            expect(elements.Number.fromLiteral('(-5 e^~pi i)').getMagnitude()).to.equal(5);
+            expect(elements.Number.fromLiteral('(-5 e^~pi i)', polar).getMagnitude()).to.equal(5);
+            expect(utilities.parser.parseDocument('(3, -4i)($format: $polar)').toLiteral()).to.equal('(5 e^~-0.9272952180016122i)');
+            expect(utilities.parser.parseDocument('(3, -4i)($format: $rectangular)').toLiteral()).to.equal('(3, -4i)');
+        });
 
         it('should construct and equal zero', function() {
             expect(new elements.Number().toString()).to.equal('0');
@@ -79,7 +93,7 @@ describe('Bali Component Framework™', function() {
             expect(new elements.Number(NaN).getPhase()).to.equal(undefined);
             expect(new elements.Number(Infinity).getPhase()).to.equal(undefined);
             expect(new elements.Number(0).getPhase().isEqualTo(new elements.Angle(0))).to.equal(true);
-            expect(new elements.Number(-1).getPhase().isEqualTo(new elements.Angle(precision.PI))).to.equal(true);
+            expect(new elements.Number(-1).getPhase().isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
         });
 
         it('should return the correct type', function() {
@@ -95,14 +109,14 @@ describe('Bali Component Framework™', function() {
             expect(elements.Number.inverse(new elements.Number(NaN)).isEqualTo(new elements.Number(NaN))).to.equal(true);
             expect(elements.Number.inverse(new elements.Number(Infinity)).isEqualTo(new elements.Number(Infinity))).to.equal(true);
             expect(elements.Number.inverse(new elements.Number(0)).isEqualTo(new elements.Number(0))).to.equal(true);
-            expect(elements.Number.inverse(new elements.Number(3)).isEqualTo(new elements.Number(3, new elements.Angle(precision.PI)))).to.equal(true);
+            expect(elements.Number.inverse(new elements.Number(3)).isEqualTo(new elements.Number(3, new elements.Angle(utilities.precision.PI)))).to.equal(true);
         });
 
         it('should perform the reciprocal function correctly', function() {
             expect(elements.Number.reciprocal(new elements.Number(NaN)).isEqualTo(new elements.Number(NaN))).to.equal(true);
             expect(elements.Number.reciprocal(new elements.Number(Infinity)).isEqualTo(new elements.Number(0))).to.equal(true);
             expect(elements.Number.reciprocal(new elements.Number(0)).isEqualTo(new elements.Number(Infinity))).to.equal(true);
-            expect(elements.Number.reciprocal(new elements.Number(2, new elements.Angle(precision.PI))).isEqualTo(new elements.Number(0.5, new elements.Angle(precision.PI)))).to.equal(true);
+            expect(elements.Number.reciprocal(new elements.Number(2, new elements.Angle(utilities.precision.PI))).isEqualTo(new elements.Number(0.5, new elements.Angle(utilities.precision.PI)))).to.equal(true);
         });
 
         it('should perform the conjugate function correctly', function() {
@@ -138,7 +152,7 @@ describe('Bali Component Framework™', function() {
             expect(elements.Number.scaled(new elements.Number(5), Infinity).isEqualTo(new elements.Number(Infinity))).to.equal(true);
             expect(elements.Number.scaled(new elements.Number(5), 0).isEqualTo(new elements.Number(0))).to.equal(true);
             expect(elements.Number.scaled(new elements.Number(0), 5).isEqualTo(new elements.Number(0))).to.equal(true);
-            expect(elements.Number.scaled(new elements.Number(3, new elements.Angle(precision.PI)), -1).isEqualTo(new elements.Number(-3, new elements.Angle(precision.PI)))).to.equal(true);
+            expect(elements.Number.scaled(new elements.Number(3, new elements.Angle(utilities.precision.PI)), -1).isEqualTo(new elements.Number(-3, new elements.Angle(utilities.precision.PI)))).to.equal(true);
         });
 
         it('should perform the product function correctly', function() {
@@ -178,7 +192,7 @@ const testValues = [
     new elements.Number(0, 1),
     new elements.Number(0, -1),
     new elements.Number(1.23E-56, -7.8E90),
-    new elements.Number(5, new elements.Angle(precision.PI))
+    new elements.Number(5, new elements.Angle(utilities.precision.PI))
 ];
 const isUndefinedValues = [
     true,

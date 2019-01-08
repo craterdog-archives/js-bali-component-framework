@@ -16,22 +16,27 @@ describe('Bali Component Framework™', function() {
 
     describe('Test duration constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Duration.fromLiteral('~P0D').toNumber()).to.equal(0);
+            expect(elements.Duration.fromLiteral('~P5W').toLiteral()).to.equal('~P35D');
+        });
+
         it('should construct a default duration of zero', function() {
             const duration = new elements.Duration();
-            const string = duration.toString();
+            const string = duration.toLiteral();
             expect(string).to.equal('~' + tests[0]);
         });
 
         it('should construct a duration of days from weeks', function() {
             const duration = new elements.Duration('P5W');
-            const string = duration.toString();
+            const string = duration.toLiteral();
             expect(string).to.equal('~P35D');
         });
 
         it('should construct a duration and format it the same', function() {
             tests.forEach(function(expected) {
                 const duration = new elements.Duration(expected);
-                const string = duration.toString();
+                const string = duration.toLiteral();
                 expect(string).to.equal('~' + expected);
             });
         });

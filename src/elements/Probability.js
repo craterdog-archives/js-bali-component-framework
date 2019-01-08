@@ -54,7 +54,7 @@ exports.Probability = Probability;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability.
  */
-Probability.from = function(literal, parameters) {
+Probability.fromLiteral = function(literal, parameters) {
     var value;
     switch (literal) {
         case 'false':

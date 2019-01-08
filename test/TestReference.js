@@ -16,6 +16,10 @@ describe('Bali Component Framework™', function() {
 
     describe('Test reference constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Reference.fromLiteral('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toLiteral()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
+        });
+
         it('should throw an exception for an empty reference', function() {
             expect(
                 function() {

@@ -16,6 +16,11 @@ describe('Bali Component Framework™', function() {
 
     describe('Test text constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Text.fromLiteral('""').toLiteral()).to.equal('""');
+            expect(elements.Text.fromLiteral('"Hello World!"').toLiteral()).to.equal('"Hello World!"');
+        });
+
         it('should generate a default empty text string', function() {
             const text = new elements.Text();
             const string = text.toString();

@@ -49,7 +49,7 @@ exports.Text = Text;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Text} The new text string.
  */
-Text.from = function(literal, parameters) {
+Text.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1, -1);  // remove the '"' delimitors
     const text = new Text(value, parameters);
     return text;

@@ -65,6 +65,7 @@ describe('Bali Component Framework™', function() {
             for (var i = 0; i < 121; i++) {
                 const expectedBuffer = random.bytes(i);
                 const expectedBase64 = codex.base64Encode(expectedBuffer, '    ');
+                console.log('base64: ' + expectedBase64);
                 const buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
                 const base64 = codex.base64Encode(buffer, '    ');

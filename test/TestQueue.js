@@ -81,7 +81,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from an array', function() {
-            const queue = collections.Queue.from(array);
+            const queue = collections.Queue.fromSequential(array);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -99,8 +99,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a list', function() {
-            const list = collections.List.from(array);
-            queue = collections.Queue.from(list);
+            const list = collections.List.fromSequential(array);
+            queue = collections.Queue.fromSequential(list);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -118,8 +118,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a queue', function() {
-            const expected = collections.Queue.from(array);
-            const queue = collections.Queue.from(expected);
+            const expected = collections.Queue.fromSequential(array);
+            const queue = collections.Queue.fromSequential(expected);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -147,7 +147,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a queue', function() {
-            const queue = collections.Queue.from(array);
+            const queue = collections.Queue.fromSequential(array);
             const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -188,7 +188,7 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a queue forwards and backwards', function() {
             // REMEMBER: The iterator for a queue iterates through the items in FIFO order
-            const queue = collections.Queue.from(array);
+            const queue = collections.Queue.fromSequential(array);
             // iterate through the items from beginning to end
             const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line

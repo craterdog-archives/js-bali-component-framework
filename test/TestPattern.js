@@ -16,6 +16,11 @@ describe('Bali Component Framework™', function() {
 
     describe('Test pattern constructors', function() {
 
+        it('should construct using literals', function() {
+            expect(elements.Pattern.fromLiteral('none').toLiteral()).to.equal('none');
+            expect(elements.Pattern.fromLiteral('any').toLiteral()).to.equal('any');
+        });
+
         it('should generate a default none pattern', function() {
             expect(new elements.Pattern().isEqualTo(new elements.Pattern('none'))).to.equal(true);
             expect(new elements.Pattern().matches(new elements.Pattern('none'))).to.equal(false);

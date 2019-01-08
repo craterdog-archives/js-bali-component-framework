@@ -49,7 +49,7 @@ exports.Duration = Duration;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Duration} The new time duration.
  */
-Duration.from = function(literal, parameters) {
+Duration.fromLiteral = function(literal, parameters) {
     const value = literal.slice(1);  // remove the leading '~'
     const duration = new Duration(value, parameters);
     return duration;

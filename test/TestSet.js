@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from an array', function() {
-            const set = collections.Set.from(array);
+            const set = collections.Set.fromSequential(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -57,8 +57,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a list', function() {
-            const list = collections.List.from(array);
-            const set = collections.Set.from(list);
+            const list = collections.List.fromSequential(array);
+            const set = collections.Set.fromSequential(list);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -76,8 +76,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a set', function() {
-            var set = collections.Set.from(array);
-            set = collections.Set.from(set);
+            var set = collections.Set.fromSequential(array);
+            set = collections.Set.fromSequential(set);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -134,7 +134,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a set', function() {
-            const set = collections.Set.from(array);
+            const set = collections.Set.fromSequential(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -196,7 +196,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the set iterators.', function() {
 
         it('should iterate over a set forwards and backwards', function() {
-            const set = collections.Set.from(array);
+            const set = collections.Set.fromSequential(array);
             const iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

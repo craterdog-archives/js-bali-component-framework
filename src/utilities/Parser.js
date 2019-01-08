@@ -132,7 +132,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
-    const angle = elements.Angle.from(ctx.getText(), parameters);
+    const angle = elements.Angle.fromLiteral(ctx.getText(), parameters);
     this.result = angle;
 };
 
@@ -166,7 +166,7 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().replace(/\s/g, '');  // strip out all whitespace
-    const binary = elements.Binary.from(value, parameters);
+    const binary = elements.Binary.fromLiteral(value, parameters);
     this.result = binary;
 };
 
@@ -264,7 +264,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText();
-    const number = elements.Number.from(value, parameters);
+    const number = elements.Number.fromLiteral(value, parameters);
     this.result = number;
 };
 
@@ -345,7 +345,7 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
-    const duration = elements.Duration.from(ctx.getText(), parameters);
+    const duration = elements.Duration.fromLiteral(ctx.getText(), parameters);
     this.result = duration;
 };
 
@@ -584,7 +584,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     const parameters = this.getParameters();
-    const moment = elements.Moment.from(ctx.getText(), parameters);
+    const moment = elements.Moment.fromLiteral(ctx.getText(), parameters);
     this.result = moment;
 };
 
@@ -622,7 +622,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 // pattern: 'none' | 'any'
 ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
-    const pattern = elements.Pattern.from(ctx.getText(), parameters);
+    const pattern = elements.Pattern.fromLiteral(ctx.getText(), parameters);
     this.result = pattern;
 };
 
@@ -630,7 +630,7 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 // percent: PERCENT
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     const parameters = this.getParameters();
-    const percent = elements.Percent.from(ctx.getText(), parameters);
+    const percent = elements.Percent.fromLiteral(ctx.getText(), parameters);
     this.result = percent;
 };
 
@@ -647,7 +647,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 // probability: 'false' | FRACTION | 'true'
 ParsingVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
-    const probability = elements.Probability.from(ctx.getText(), parameters);
+    const probability = elements.Probability.fromLiteral(ctx.getText(), parameters);
     this.result = probability;
 };
 
@@ -710,7 +710,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
-    const reference = elements.Reference.from(ctx.getText(), parameters);
+    const reference = elements.Reference.fromLiteral(ctx.getText(), parameters);
     this.result = reference;
 };
 
@@ -718,7 +718,7 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 // reserved: RESERVED
 ParsingVisitor.prototype.visitReserved = function(ctx) {
     const parameters = this.getParameters();
-    const reserved = elements.Reserved.from(ctx.getText(), parameters);
+    const reserved = elements.Reserved.fromLiteral(ctx.getText(), parameters);
     this.result = reserved;
 };
 
@@ -828,7 +828,7 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
     const parameters = this.getParameters();
-    const symbol = elements.Symbol.from(ctx.getText(), parameters);
+    const symbol = elements.Symbol.fromLiteral(ctx.getText(), parameters);
     this.result = symbol;
 };
 
@@ -836,7 +836,7 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
     const parameters = this.getParameters();
-    const tag = elements.Tag.from(ctx.getText(), parameters);
+    const tag = elements.Tag.fromLiteral(ctx.getText(), parameters);
     this.result = tag;
 };
 
@@ -847,7 +847,7 @@ ParsingVisitor.prototype.visitText = function(ctx) {
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n' + indentation, 'g');
     const value = ctx.getText().replace(regex, '\n');  // remove the indentation
-    const text = elements.Text.from(value, parameters);
+    const text = elements.Text.fromLiteral(value, parameters);
     this.result = text;
 };
 
@@ -872,7 +872,7 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     const parameters = this.getParameters();
-    const version = elements.Version.from(ctx.getText(), parameters);
+    const version = elements.Version.fromLiteral(ctx.getText(), parameters);
     this.result = version;
 };
 
@@ -942,7 +942,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    const exception = collections.Catalog.from({
+    const exception = collections.Catalog.fromSequential({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
@@ -988,7 +988,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     logMessage(recognizer, message);
 
     // stop processing
-    const exception = collections.Catalog.from({
+    const exception = collections.Catalog.fromSequential({
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',

@@ -48,7 +48,7 @@ exports.Percent = Percent;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Percent} The new percent.
  */
-Percent.from = function(literal, parameters) {
+Percent.fromLiteral = function(literal, parameters) {
     literal = literal.slice(0, -1);  // remove the trailing '%'
     const value = Element.literalToNumber(literal);
     const percent = new Percent(value, parameters);
