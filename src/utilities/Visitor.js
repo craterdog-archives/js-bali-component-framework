@@ -209,7 +209,7 @@ Visitor.prototype.visitFactorialExpression = function(tree) {
 
 
 // function: IDENTIFIER
-Visitor.prototype.visitFunction = function(funxtion) {
+Visitor.prototype.visitFunction = function(tree) {
 };
 
 
@@ -305,7 +305,7 @@ Visitor.prototype.visitMagnitudeExpression = function(tree) {
 
 
 // message: IDENTIFIER
-Visitor.prototype.visitMessage = function(message) {
+Visitor.prototype.visitMessage = function(tree) {
 };
 
 
@@ -513,7 +513,7 @@ Visitor.prototype.visitThrowClause = function(tree) {
 
 
 // variable: IDENTIFIER
-Visitor.prototype.visitVariable = function(variable) {
+Visitor.prototype.visitVariable = function(tree) {
 };
 
 

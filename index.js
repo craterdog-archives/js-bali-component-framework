@@ -22,7 +22,6 @@ var elements = require('./src/elements');
 exports.Angle = elements.Angle;
 exports.Binary = elements.Binary;
 exports.Duration = elements.Duration;
-exports.Identifier = elements.Identifier;
 exports.Moment = elements.Moment;
 exports.Number = elements.Number;
 exports.Pattern = elements.Pattern;

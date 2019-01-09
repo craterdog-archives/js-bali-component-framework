@@ -12,7 +12,6 @@
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
 exports.Duration = require('./Duration').Duration;
-exports.Identifier = require('./Identifier').Identifier;
 exports.Moment = require('./Moment').Moment;
 exports.Number = require('./Complex').Complex;
 exports.Pattern = require('./Pattern').Pattern;

@@ -49,6 +49,7 @@ function Tree(type, complexity) {
         case types.EVALUATE_CLAUSE:
         case types.EXPONENTIAL_EXPRESSION:
         case types.FACTORIAL_EXPRESSION:
+        case types.FUNCTION:
         case types.FUNCTION_EXPRESSION:
         case types.HANDLE_CLAUSE:
         case types.IF_CLAUSE:
@@ -56,6 +57,7 @@ function Tree(type, complexity) {
         case types.INVERSION_EXPRESSION:
         case types.LOGICAL_EXPRESSION:
         case types.MAGNITUDE_EXPRESSION:
+        case types.MESSAGE:
         case types.MESSAGE_EXPRESSION:
         case types.PRECEDENCE_EXPRESSION:
         case types.PROCEDURE:
@@ -68,6 +70,7 @@ function Tree(type, complexity) {
         case types.SUBCOMPONENT:
         case types.SUBCOMPONENT_EXPRESSION:
         case types.THROW_CLAUSE:
+        case types.VARIABLE:
         case types.WAIT_CLAUSE:
         case types.WHILE_CLAUSE:
         case types.WITH_CLAUSE:
@@ -189,6 +192,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
         case types.FACTORIAL_EXPRESSION:
             visitor.visitFactorialExpression(this);
             break;
+        case types.FUNCTION:
+            visitor.visitFunction(this);
+            break;
         case types.FUNCTION_EXPRESSION:
             visitor.visitFunctionExpression(this);
             break;
@@ -209,6 +215,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
             break;
         case types.MAGNITUDE_EXPRESSION:
             visitor.visitMagnitudeExpression(this);
+            break;
+        case types.MESSAGE:
+            visitor.visitMessage(this);
             break;
         case types.MESSAGE_EXPRESSION:
             visitor.visitMessageExpression(this);
@@ -245,6 +254,9 @@ Tree.prototype.acceptVisitor = function(visitor) {
             break;
         case types.THROW_CLAUSE:
             visitor.visitThrowClause(this);
+            break;
+        case types.VARIABLE:
+            visitor.visitVariable(this);
             break;
         case types.WAIT_CLAUSE:
             visitor.visitWaitClause(this);

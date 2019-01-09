@@ -310,8 +310,8 @@ FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
 
 
 // function: IDENTIFIER
-FormattingVisitor.prototype.visitFunction = function(identifier) {
-    this.source += identifier.source;
+FormattingVisitor.prototype.visitFunction = function(tree) {
+    this.source += tree.identifier;
 };
 
 
@@ -377,7 +377,8 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
         if (left.type === types.INVERSION_EXPRESSION || left.type === types.NUMBER && left.source.startsWith('-')) {
             this.source += ' ';
         }
-        if (!left.array) break;
+        // check for a leaf node (i.e. an element or an identifier node
+        if (!left.array || left.array.length === 0) break;
         left = left.getChild(1);
     }
     operand.acceptVisitor(this);
@@ -428,8 +429,8 @@ FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
 
 
 // message: IDENTIFIER
-FormattingVisitor.prototype.visitMessage = function(identifier) {
-    this.source += identifier.source;
+FormattingVisitor.prototype.visitMessage = function(tree) {
+    this.source += tree.identifier;
 };
 
 
@@ -672,8 +673,8 @@ FormattingVisitor.prototype.visitThrowClause = function(tree) {
 
 
 // variable: IDENTIFIER
-FormattingVisitor.prototype.visitVariable = function(identifier) {
-    this.source += identifier.source;
+FormattingVisitor.prototype.visitVariable = function(tree) {
+    this.source += tree.identifier;
 };
 
 

@@ -264,6 +264,36 @@ exports.isNumerical = function(type) {
 
 
 /**
+ * This function determines whether or not the specified type can be displayed as a literal
+ * value.
+ * 
+ * @param {Number} type The type being analyzed.
+ * @returns {Boolean} Whether or not the specified type can be displayed as a literal value.
+ */
+exports.isLiteral = function(type) {
+    switch (type) {
+        case exports.ANGLE:
+        case exports.BINARY:
+        case exports.DURATION:
+        case exports.MOMENT:
+        case exports.NUMBER:
+        case exports.PATTERN:
+        case exports.PERCENT:
+        case exports.PROBABILITY:
+        case exports.REFERENCE:
+        case exports.RESERVED:
+        case exports.SYMBOL:
+        case exports.TAG:
+        case exports.TEXT:
+        case exports.VERSION:
+            return true;
+        default:
+            return false;
+    }
+};
+
+
+/**
  * This function determines whether or not the specified type supports iterator operations:
  * <pre>
  *  * iterator
@@ -301,7 +331,7 @@ exports.isSequential = function(type) {
  * @param {Number} type The type being analyzed.
  * @returns {Boolean} Whether or not the specified type supports concatenation operations.
  */
-exports.isCombinable = function(type) {
+exports.isChainable = function(type) {
     switch (type) {
         case exports.BINARY:
         case exports.CATALOG:

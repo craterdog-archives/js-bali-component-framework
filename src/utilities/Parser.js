@@ -420,9 +420,10 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 // funxtion: IDENTIFIER
 ParsingVisitor.prototype.visitFunxtion = function(ctx) {
-    const value = ctx.getText();
-    const identifier = new elements.Identifier(types.FUNCTION, value);
-    this.result = identifier;
+    const identifier = ctx.getText();
+    const funxtion = new composites.Tree(types.FUNCTION, identifier.length);
+    funxtion.identifier = identifier;
+    this.result = funxtion;
 };
 
 
@@ -562,9 +563,10 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
-    const value = ctx.getText();
-    const identifier = new elements.Identifier(types.MESSAGE, value);
-    this.result = identifier;
+    const identifier = ctx.getText();
+    const message = new composites.Tree(types.MESSAGE, identifier.length);
+    message.identifier = identifier;
+    this.result = message;
 };
 
 
@@ -863,9 +865,10 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
-    const value = ctx.getText();
-    const identifier = new elements.Identifier(types.VARIABLE, value);
-    this.result = identifier;
+    const identifier = ctx.getText();
+    const variable = new composites.Tree(types.VARIABLE, identifier.length);
+    variable.identifier = identifier;
+    this.result = variable;
 };
 
 
