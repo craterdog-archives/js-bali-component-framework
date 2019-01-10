@@ -50,7 +50,7 @@ exports.Text = Text;
  * @returns {Text} The new text string.
  */
 Text.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1, -1);  // remove the '"' delimitors
+    const value = literal.slice(1, -1);  // remove the '"' delimiters
     const text = new Text(value, parameters);
     return text;
 };
@@ -66,7 +66,7 @@ Text.fromLiteral = function(literal, parameters) {
  * @returns {String} The corresponding literal string representation.
  */
 Text.prototype.toLiteral = function(asCanonical) {
-    const literal = '"' + this.value + '"';  // add the '"' delimitors
+    const literal = '"' + this.value + '"';  // add the '"' delimiters
     return literal;
 };
 

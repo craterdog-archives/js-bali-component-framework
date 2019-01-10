@@ -621,7 +621,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 };
 
 
-// pattern: 'none' | 'any'
+// pattern: 'none' | REGEX | 'any'
 ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
     const pattern = elements.Pattern.fromLiteral(ctx.getText(), parameters);

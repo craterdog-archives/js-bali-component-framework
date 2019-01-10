@@ -63,31 +63,45 @@ exports.Stack = Stack;
 Stack.fromSequential = function(sequential, parameters) {
     const stack = new Stack(parameters);
     var iterator;
-    const type = sequential.constructor.name;
-    switch (type) {
-        case 'Array':
-            sequential.forEach(function(item) {
-                stack.addItem(item);
-            });
+    if (typeof sequential !== 'object') {
+        const type = sequential.constructor.name;
+        throw new Error('BUG: A stack cannot be initialized using an object of type: ' + type);
+    }
+    switch (sequential.type) {
+        case types.CATALOG:
+            iterator = sequential.getIterator();
+            while (iterator.hasNext()) {
+                const association = iterator.getNext();
+                stack.addItem(association.value);
+            }
             break;
-        case 'List':
-        case 'Queue':
-        case 'Set':
+        case types.LIST:
+        case types.QUEUE:
+        case types.SET:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 stack.addItem(iterator.getNext());
             }
             break;
-        case 'Stack':
+        case types.STACK:
             iterator = sequential.getIterator();
-            // a stack's iterator starts at the top, we need to start at the bottom
+            // a stack's iterator starts at the top, and we need to start at the bottom
             iterator.toEnd();
             while (iterator.hasPrevious()) {
                 stack.addItem(iterator.getPrevious());
             }
             break;
         default:
-            throw new Error('BUG: A stack cannot be initialized using an object of type: ' + type);
+            if (Array.isArray(sequential)) {
+                sequential.forEach(function(item) {
+                    stack.addItem(item);
+                });
+            } else {
+                const keys = Object.keys(sequential);
+                keys.forEach(function(key) {
+                    stack.addItem(sequential[key]);
+                });
+            }
     }
     return stack;
 };

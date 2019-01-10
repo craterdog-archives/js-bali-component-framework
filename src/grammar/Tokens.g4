@@ -39,6 +39,8 @@ VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
+REGEX: TEXT '?';
+
 // a text block takes precedence over a regular text string
 TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
 

@@ -63,31 +63,38 @@ exports.Queue = Queue;
 Queue.fromSequential = function(sequential, parameters) {
     const queue = new Queue(parameters);
     var iterator;
-    const type = sequential.constructor.name;
-    switch (type) {
-        case 'Array':
-            sequential.forEach(function(item) {
-                queue.addItem(item);
-            });
+    if (typeof sequential !== 'object') {
+        const type = sequential.constructor.name;
+        throw new Error('BUG: A queue cannot be initialized using an object of type: ' + type);
+    }
+    switch (sequential.type) {
+        case types.CATALOG:
+            iterator = sequential.getIterator();
+            while (iterator.hasNext()) {
+                const association = iterator.getNext();
+                queue.addItem(association.value);
+            }
             break;
-        case 'List':
-        case 'Queue':
-        case 'Set':
+        case types.LIST:
+        case types.QUEUE:
+        case types.SET:
+        case types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 queue.addItem(iterator.getNext());
             }
             break;
-        case 'Stack':
-            iterator = sequential.getIterator();
-            // a stack's iterator starts at the top, we need to start at the bottom
-            iterator.toEnd();
-            while (iterator.hasPrevious()) {
-                queue.addItem(iterator.getPrevious());
-            }
-            break;
         default:
-            throw new Error('BUG: A queue cannot be initialized using an object of type: ' + type);
+            if (Array.isArray(sequential)) {
+                sequential.forEach(function(item) {
+                    queue.addItem(item);
+                });
+            } else {
+                const keys = Object.keys(sequential);
+                keys.forEach(function(key) {
+                    queue.addItem(sequential[key]);
+                });
+            }
     }
     return queue;
 };

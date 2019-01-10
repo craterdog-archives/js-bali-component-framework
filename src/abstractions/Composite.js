@@ -51,8 +51,8 @@ exports.Composite = Composite;
  */
 Composite.asComponent = function(value) {
     var component;
-    switch (value.constructor.name) {
-        case 'String':
+    switch (typeof value) {
+        case 'string':
             if (value.startsWith('~P')) { // Duration must come before Angle
                 component = new elements.Duration(value);
             } else if (value.startsWith('~')) {
@@ -115,19 +115,20 @@ Composite.asComponent = function(value) {
                 component = new elements.Text(value);
             }
             break;
-        case 'Boolean':
+        case 'boolean':
             value = value ? 1 : 0;
             component = new elements.Probability(value);
             break;
-        case 'Number':
+        case 'number':
             component = new elements.Number(value);
             break;
-        case 'Array':
-        case 'Object':
-            throw new Error('BUG: Only primitive JS types (strings, numbers, and booleans) can be converted to components.');
         default:
-            // it's already a component, leave it as is
-            component = value;
+            if (value instanceof Component) {
+                // leave it since it is already a component
+                component = value;
+            } else {
+                throw new Error('BUG: Only primitive JS types (strings, numbers, and booleans) can be converted to components.');
+            }
     }
     return component;
 };

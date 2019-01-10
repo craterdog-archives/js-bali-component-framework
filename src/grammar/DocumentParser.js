@@ -7,7 +7,7 @@ var DocumentVisitor = require('./DocumentVisitor').DocumentVisitor;
 var grammarFileName = "Document.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
-    "\u0003X\u01f1\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003Y\u01f1\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
     "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
@@ -74,37 +74,37 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "7\u00038\u00038\u00039\u00039\u00039\u0002\u0003F:\u0002\u0004\u0006",
     "\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*",
     ",.02468:<>@BDFHJLNPRTVXZ\\^`bdfhjlnp\u0002\t\u0003\u0002.0\u0003\u0002",
-    ".2\u0003\u000248\u0003\u0002:=\u0003\u0002?@\u0004\u0002EFJJ\u0003\u0002",
-    "RS\u0002\u0205\u0002u\u0003\u0002\u0002\u0002\u0004\u0081\u0003\u0002",
-    "\u0002\u0002\u0006\u0088\u0003\u0002\u0002\u0002\b\u008a\u0003\u0002",
-    "\u0002\u0002\n\u008e\u0003\u0002\u0002\u0002\f\u0095\u0003\u0002\u0002",
-    "\u0002\u000e\u0097\u0003\u0002\u0002\u0002\u0010\u00ad\u0003\u0002\u0002",
-    "\u0002\u0012\u00c1\u0003\u0002\u0002\u0002\u0014\u00c3\u0003\u0002\u0002",
-    "\u0002\u0016\u00c7\u0003\u0002\u0002\u0002\u0018\u00dd\u0003\u0002\u0002",
-    "\u0002\u001a\u00df\u0003\u0002\u0002\u0002\u001c\u00f6\u0003\u0002\u0002",
-    "\u0002\u001e\u00f8\u0003\u0002\u0002\u0002 \u00ff\u0003\u0002\u0002",
-    "\u0002\"\u0106\u0003\u0002\u0002\u0002$\u010a\u0003\u0002\u0002\u0002",
-    "&\u010f\u0003\u0002\u0002\u0002(\u0114\u0003\u0002\u0002\u0002*\u0117",
-    "\u0003\u0002\u0002\u0002,\u011c\u0003\u0002\u0002\u0002.\u011f\u0003",
-    "\u0002\u0002\u00020\u0124\u0003\u0002\u0002\u00022\u012a\u0003\u0002",
-    "\u0002\u00024\u013d\u0003\u0002\u0002\u00026\u014c\u0003\u0002\u0002",
-    "\u00028\u0157\u0003\u0002\u0002\u0002:\u015c\u0003\u0002\u0002\u0002",
-    "<\u015f\u0003\u0002\u0002\u0002>\u0162\u0003\u0002\u0002\u0002@\u0166",
-    "\u0003\u0002\u0002\u0002B\u016b\u0003\u0002\u0002\u0002D\u016d\u0003",
-    "\u0002\u0002\u0002F\u0184\u0003\u0002\u0002\u0002H\u01a6\u0003\u0002",
-    "\u0002\u0002J\u01a8\u0003\u0002\u0002\u0002L\u01aa\u0003\u0002\u0002",
-    "\u0002N\u01ac\u0003\u0002\u0002\u0002P\u01be\u0003\u0002\u0002\u0002",
-    "R\u01c0\u0003\u0002\u0002\u0002T\u01c2\u0003\u0002\u0002\u0002V\u01c4",
-    "\u0003\u0002\u0002\u0002X\u01c6\u0003\u0002\u0002\u0002Z\u01c8\u0003",
-    "\u0002\u0002\u0002\\\u01ca\u0003\u0002\u0002\u0002^\u01dc\u0003\u0002",
-    "\u0002\u0002`\u01de\u0003\u0002\u0002\u0002b\u01e0\u0003\u0002\u0002",
-    "\u0002d\u01e2\u0003\u0002\u0002\u0002f\u01e4\u0003\u0002\u0002\u0002",
-    "h\u01e6\u0003\u0002\u0002\u0002j\u01e8\u0003\u0002\u0002\u0002l\u01ea",
-    "\u0003\u0002\u0002\u0002n\u01ec\u0003\u0002\u0002\u0002p\u01ee\u0003",
-    "\u0002\u0002\u0002rt\u0007W\u0002\u0002sr\u0003\u0002\u0002\u0002tw",
-    "\u0003\u0002\u0002\u0002us\u0003\u0002\u0002\u0002uv\u0003\u0002\u0002",
+    ".2\u0003\u000248\u0003\u0002:=\u0004\u0002?@RR\u0004\u0002EFJJ\u0003",
+    "\u0002ST\u0002\u0205\u0002u\u0003\u0002\u0002\u0002\u0004\u0081\u0003",
+    "\u0002\u0002\u0002\u0006\u0088\u0003\u0002\u0002\u0002\b\u008a\u0003",
+    "\u0002\u0002\u0002\n\u008e\u0003\u0002\u0002\u0002\f\u0095\u0003\u0002",
+    "\u0002\u0002\u000e\u0097\u0003\u0002\u0002\u0002\u0010\u00ad\u0003\u0002",
+    "\u0002\u0002\u0012\u00c1\u0003\u0002\u0002\u0002\u0014\u00c3\u0003\u0002",
+    "\u0002\u0002\u0016\u00c7\u0003\u0002\u0002\u0002\u0018\u00dd\u0003\u0002",
+    "\u0002\u0002\u001a\u00df\u0003\u0002\u0002\u0002\u001c\u00f6\u0003\u0002",
+    "\u0002\u0002\u001e\u00f8\u0003\u0002\u0002\u0002 \u00ff\u0003\u0002",
+    "\u0002\u0002\"\u0106\u0003\u0002\u0002\u0002$\u010a\u0003\u0002\u0002",
+    "\u0002&\u010f\u0003\u0002\u0002\u0002(\u0114\u0003\u0002\u0002\u0002",
+    "*\u0117\u0003\u0002\u0002\u0002,\u011c\u0003\u0002\u0002\u0002.\u011f",
+    "\u0003\u0002\u0002\u00020\u0124\u0003\u0002\u0002\u00022\u012a\u0003",
+    "\u0002\u0002\u00024\u013d\u0003\u0002\u0002\u00026\u014c\u0003\u0002",
+    "\u0002\u00028\u0157\u0003\u0002\u0002\u0002:\u015c\u0003\u0002\u0002",
+    "\u0002<\u015f\u0003\u0002\u0002\u0002>\u0162\u0003\u0002\u0002\u0002",
+    "@\u0166\u0003\u0002\u0002\u0002B\u016b\u0003\u0002\u0002\u0002D\u016d",
+    "\u0003\u0002\u0002\u0002F\u0184\u0003\u0002\u0002\u0002H\u01a6\u0003",
+    "\u0002\u0002\u0002J\u01a8\u0003\u0002\u0002\u0002L\u01aa\u0003\u0002",
+    "\u0002\u0002N\u01ac\u0003\u0002\u0002\u0002P\u01be\u0003\u0002\u0002",
+    "\u0002R\u01c0\u0003\u0002\u0002\u0002T\u01c2\u0003\u0002\u0002\u0002",
+    "V\u01c4\u0003\u0002\u0002\u0002X\u01c6\u0003\u0002\u0002\u0002Z\u01c8",
+    "\u0003\u0002\u0002\u0002\\\u01ca\u0003\u0002\u0002\u0002^\u01dc\u0003",
+    "\u0002\u0002\u0002`\u01de\u0003\u0002\u0002\u0002b\u01e0\u0003\u0002",
+    "\u0002\u0002d\u01e2\u0003\u0002\u0002\u0002f\u01e4\u0003\u0002\u0002",
+    "\u0002h\u01e6\u0003\u0002\u0002\u0002j\u01e8\u0003\u0002\u0002\u0002",
+    "l\u01ea\u0003\u0002\u0002\u0002n\u01ec\u0003\u0002\u0002\u0002p\u01ee",
+    "\u0003\u0002\u0002\u0002rt\u0007X\u0002\u0002sr\u0003\u0002\u0002\u0002",
+    "tw\u0003\u0002\u0002\u0002us\u0003\u0002\u0002\u0002uv\u0003\u0002\u0002",
     "\u0002vx\u0003\u0002\u0002\u0002wu\u0003\u0002\u0002\u0002x|\u0005\u0004",
-    "\u0003\u0002y{\u0007W\u0002\u0002zy\u0003\u0002\u0002\u0002{~\u0003",
+    "\u0003\u0002y{\u0007X\u0002\u0002zy\u0003\u0002\u0002\u0002{~\u0003",
     "\u0002\u0002\u0002|z\u0003\u0002\u0002\u0002|}\u0003\u0002\u0002\u0002",
     "}\u007f\u0003\u0002\u0002\u0002~|\u0003\u0002\u0002\u0002\u007f\u0080",
     "\u0007\u0002\u0002\u0003\u0080\u0003\u0003\u0002\u0002\u0002\u0081\u0083",
@@ -127,8 +127,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u009e\u009c\u0003\u0002\u0002\u0002\u009f\u00a2\u0003\u0002\u0002\u0002",
     "\u00a0\u009e\u0003\u0002\u0002\u0002\u00a0\u00a1\u0003\u0002\u0002\u0002",
     "\u00a1\u00ae\u0003\u0002\u0002\u0002\u00a2\u00a0\u0003\u0002\u0002\u0002",
-    "\u00a3\u00a9\u0007W\u0002\u0002\u00a4\u00a5\u0005F$\u0002\u00a5\u00a6",
-    "\u0007W\u0002\u0002\u00a6\u00a8\u0003\u0002\u0002\u0002\u00a7\u00a4",
+    "\u00a3\u00a9\u0007X\u0002\u0002\u00a4\u00a5\u0005F$\u0002\u00a5\u00a6",
+    "\u0007X\u0002\u0002\u00a6\u00a8\u0003\u0002\u0002\u0002\u00a7\u00a4",
     "\u0003\u0002\u0002\u0002\u00a8\u00ab\u0003\u0002\u0002\u0002\u00a9\u00a7",
     "\u0003\u0002\u0002\u0002\u00a9\u00aa\u0003\u0002\u0002\u0002\u00aa\u00ae",
     "\u0003\u0002\u0002\u0002\u00ab\u00a9\u0003\u0002\u0002\u0002\u00ac\u00ae",
@@ -139,8 +139,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003\u0002\u0002\u0002\u00b3\u00b6\u0003\u0002\u0002\u0002\u00b4\u00b2",
     "\u0003\u0002\u0002\u0002\u00b4\u00b5\u0003\u0002\u0002\u0002\u00b5\u00c2",
     "\u0003\u0002\u0002\u0002\u00b6\u00b4\u0003\u0002\u0002\u0002\u00b7\u00bd",
-    "\u0007W\u0002\u0002\u00b8\u00b9\u0005\u0014\u000b\u0002\u00b9\u00ba",
-    "\u0007W\u0002\u0002\u00ba\u00bc\u0003\u0002\u0002\u0002\u00bb\u00b8",
+    "\u0007X\u0002\u0002\u00b8\u00b9\u0005\u0014\u000b\u0002\u00b9\u00ba",
+    "\u0007X\u0002\u0002\u00ba\u00bc\u0003\u0002\u0002\u0002\u00bb\u00b8",
     "\u0003\u0002\u0002\u0002\u00bc\u00bf\u0003\u0002\u0002\u0002\u00bd\u00bb",
     "\u0003\u0002\u0002\u0002\u00bd\u00be\u0003\u0002\u0002\u0002\u00be\u00c2",
     "\u0003\u0002\u0002\u0002\u00bf\u00bd\u0003\u0002\u0002\u0002\u00c0\u00c2",
@@ -154,8 +154,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u00cd\u00cf\u0005\u001a\u000e\u0002\u00ce\u00cc\u0003\u0002",
     "\u0002\u0002\u00cf\u00d2\u0003\u0002\u0002\u0002\u00d0\u00ce\u0003\u0002",
     "\u0002\u0002\u00d0\u00d1\u0003\u0002\u0002\u0002\u00d1\u00de\u0003\u0002",
-    "\u0002\u0002\u00d2\u00d0\u0003\u0002\u0002\u0002\u00d3\u00d9\u0007W",
-    "\u0002\u0002\u00d4\u00d5\u0005\u001a\u000e\u0002\u00d5\u00d6\u0007W",
+    "\u0002\u0002\u00d2\u00d0\u0003\u0002\u0002\u0002\u00d3\u00d9\u0007X",
+    "\u0002\u0002\u00d4\u00d5\u0005\u001a\u000e\u0002\u00d5\u00d6\u0007X",
     "\u0002\u0002\u00d6\u00d8\u0003\u0002\u0002\u0002\u00d7\u00d4\u0003\u0002",
     "\u0002\u0002\u00d8\u00db\u0003\u0002\u0002\u0002\u00d9\u00d7\u0003\u0002",
     "\u0002\u0002\u00d9\u00da\u0003\u0002\u0002\u0002\u00da\u00de\u0003\u0002",
@@ -273,9 +273,9 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01a1\u019f\u0003\u0002\u0002\u0002\u01a2\u01a5\u0003\u0002\u0002\u0002",
     "\u01a3\u01a1\u0003\u0002\u0002\u0002\u01a3\u01a4\u0003\u0002\u0002\u0002",
     "\u01a4G\u0003\u0002\u0002\u0002\u01a5\u01a3\u0003\u0002\u0002\u0002",
-    "\u01a6\u01a7\u0007V\u0002\u0002\u01a7I\u0003\u0002\u0002\u0002\u01a8",
-    "\u01a9\u0007V\u0002\u0002\u01a9K\u0003\u0002\u0002\u0002\u01aa\u01ab",
-    "\u0007V\u0002\u0002\u01abM\u0003\u0002\u0002\u0002\u01ac\u01ad\u0007",
+    "\u01a6\u01a7\u0007W\u0002\u0002\u01a7I\u0003\u0002\u0002\u0002\u01a8",
+    "\u01a9\u0007W\u0002\u0002\u01a9K\u0003\u0002\u0002\u0002\u01aa\u01ab",
+    "\u0007W\u0002\u0002\u01abM\u0003\u0002\u0002\u0002\u01ac\u01ad\u0007",
     "\u0003\u0002\u0002\u01ad\u01ae\u0005\u0010\t\u0002\u01ae\u01af\u0007",
     "\u0004\u0002\u0002\u01afO\u0003\u0002\u0002\u0002\u01b0\u01bf\u0005",
     "R*\u0002\u01b1\u01bf\u0005T+\u0002\u01b2\u01bf\u0005V,\u0002\u01b3\u01bf",
@@ -310,8 +310,8 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "a\u0003\u0002\u0002\u0002\u01e0\u01e1\t\u0007\u0002\u0002\u01e1c\u0003",
     "\u0002\u0002\u0002\u01e2\u01e3\u0007K\u0002\u0002\u01e3e\u0003\u0002",
     "\u0002\u0002\u01e4\u01e5\u0007O\u0002\u0002\u01e5g\u0003\u0002\u0002",
-    "\u0002\u01e6\u01e7\u0007U\u0002\u0002\u01e7i\u0003\u0002\u0002\u0002",
-    "\u01e8\u01e9\u0007T\u0002\u0002\u01e9k\u0003\u0002\u0002\u0002\u01ea",
+    "\u0002\u01e6\u01e7\u0007V\u0002\u0002\u01e7i\u0003\u0002\u0002\u0002",
+    "\u01e8\u01e9\u0007U\u0002\u0002\u01e9k\u0003\u0002\u0002\u0002\u01ea",
     "\u01eb\u0007I\u0002\u0002\u01ebm\u0003\u0002\u0002\u0002\u01ec\u01ed",
     "\t\b\u0002\u0002\u01edo\u0003\u0002\u0002\u0002\u01ee\u01ef\u0007P\u0002",
     "\u0002\u01efq\u0003\u0002\u0002\u0002 u|\u0083\u0088\u0095\u00a0\u00a9",
@@ -347,9 +347,9 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, "ANGLE", "PERCENT", 
                       "TAG", "FRACTION", "REAL", "IMAGINARY", "MOMENT", 
-                      "DURATION", "RESOURCE", "VERSION", "BINARY", "TEXT_BLOCK", 
-                      "TEXT", "SYMBOL", "RESERVED", "IDENTIFIER", "EOL", 
-                      "SPACE" ];
+                      "DURATION", "RESOURCE", "VERSION", "BINARY", "REGEX", 
+                      "TEXT_BLOCK", "TEXT", "SYMBOL", "RESERVED", "IDENTIFIER", 
+                      "EOL", "SPACE" ];
 
 var ruleNames =  [ "document", "component", "value", "structure", "parameters", 
                    "collection", "range", "list", "catalog", "association", 
@@ -462,13 +462,14 @@ DocumentParser.DURATION = 76;
 DocumentParser.RESOURCE = 77;
 DocumentParser.VERSION = 78;
 DocumentParser.BINARY = 79;
-DocumentParser.TEXT_BLOCK = 80;
-DocumentParser.TEXT = 81;
-DocumentParser.SYMBOL = 82;
-DocumentParser.RESERVED = 83;
-DocumentParser.IDENTIFIER = 84;
-DocumentParser.EOL = 85;
-DocumentParser.SPACE = 86;
+DocumentParser.REGEX = 80;
+DocumentParser.TEXT_BLOCK = 81;
+DocumentParser.TEXT = 82;
+DocumentParser.SYMBOL = 83;
+DocumentParser.RESERVED = 84;
+DocumentParser.IDENTIFIER = 85;
+DocumentParser.EOL = 86;
+DocumentParser.SPACE = 87;
 
 DocumentParser.RULE_document = 0;
 DocumentParser.RULE_component = 1;
@@ -791,6 +792,7 @@ DocumentParser.prototype.value = function() {
         case DocumentParser.RESOURCE:
         case DocumentParser.VERSION:
         case DocumentParser.BINARY:
+        case DocumentParser.REGEX:
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.SYMBOL:
@@ -1330,6 +1332,7 @@ DocumentParser.prototype.list = function() {
         case DocumentParser.RESOURCE:
         case DocumentParser.VERSION:
         case DocumentParser.BINARY:
+        case DocumentParser.REGEX:
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.SYMBOL:
@@ -1360,7 +1363,7 @@ DocumentParser.prototype.list = function() {
             this.state = 167;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
                 this.state = 162;
                 this.expression(0);
                 this.state = 163;
@@ -1576,6 +1579,7 @@ DocumentParser.prototype.catalog = function() {
         case DocumentParser.RESOURCE:
         case DocumentParser.VERSION:
         case DocumentParser.BINARY:
+        case DocumentParser.REGEX:
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.SYMBOL:
@@ -1605,7 +1609,7 @@ DocumentParser.prototype.catalog = function() {
             this.state = 187;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 61)) & ~0x1f) == 0 && ((1 << (_la - 61)) & ((1 << (DocumentParser.T__60 - 61)) | (1 << (DocumentParser.T__61 - 61)) | (1 << (DocumentParser.T__62 - 61)) | (1 << (DocumentParser.T__63 - 61)) | (1 << (DocumentParser.T__66 - 61)) | (1 << (DocumentParser.T__67 - 61)) | (1 << (DocumentParser.ANGLE - 61)) | (1 << (DocumentParser.PERCENT - 61)) | (1 << (DocumentParser.TAG - 61)) | (1 << (DocumentParser.FRACTION - 61)) | (1 << (DocumentParser.REAL - 61)) | (1 << (DocumentParser.IMAGINARY - 61)) | (1 << (DocumentParser.MOMENT - 61)) | (1 << (DocumentParser.DURATION - 61)) | (1 << (DocumentParser.RESOURCE - 61)) | (1 << (DocumentParser.VERSION - 61)) | (1 << (DocumentParser.BINARY - 61)) | (1 << (DocumentParser.TEXT_BLOCK - 61)) | (1 << (DocumentParser.TEXT - 61)) | (1 << (DocumentParser.SYMBOL - 61)) | (1 << (DocumentParser.RESERVED - 61)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 61)) & ~0x1f) == 0 && ((1 << (_la - 61)) & ((1 << (DocumentParser.T__60 - 61)) | (1 << (DocumentParser.T__61 - 61)) | (1 << (DocumentParser.T__62 - 61)) | (1 << (DocumentParser.T__63 - 61)) | (1 << (DocumentParser.T__66 - 61)) | (1 << (DocumentParser.T__67 - 61)) | (1 << (DocumentParser.ANGLE - 61)) | (1 << (DocumentParser.PERCENT - 61)) | (1 << (DocumentParser.TAG - 61)) | (1 << (DocumentParser.FRACTION - 61)) | (1 << (DocumentParser.REAL - 61)) | (1 << (DocumentParser.IMAGINARY - 61)) | (1 << (DocumentParser.MOMENT - 61)) | (1 << (DocumentParser.DURATION - 61)) | (1 << (DocumentParser.RESOURCE - 61)) | (1 << (DocumentParser.VERSION - 61)) | (1 << (DocumentParser.BINARY - 61)) | (1 << (DocumentParser.REGEX - 61)) | (1 << (DocumentParser.TEXT_BLOCK - 61)) | (1 << (DocumentParser.TEXT - 61)) | (1 << (DocumentParser.SYMBOL - 61)) | (1 << (DocumentParser.RESERVED - 61)))) !== 0)) {
                 this.state = 182;
                 this.association();
                 this.state = 183;
@@ -1988,6 +1992,7 @@ DocumentParser.prototype.procedure = function() {
         case DocumentParser.RESOURCE:
         case DocumentParser.VERSION:
         case DocumentParser.BINARY:
+        case DocumentParser.REGEX:
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.SYMBOL:
@@ -2018,7 +2023,7 @@ DocumentParser.prototype.procedure = function() {
             this.state = 215;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7) | (1 << DocumentParser.T__12) | (1 << DocumentParser.T__14) | (1 << DocumentParser.T__16) | (1 << DocumentParser.T__18) | (1 << DocumentParser.T__19) | (1 << DocumentParser.T__20) | (1 << DocumentParser.T__21) | (1 << DocumentParser.T__23) | (1 << DocumentParser.T__25) | (1 << DocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (DocumentParser.T__32 - 33)) | (1 << (DocumentParser.T__33 - 33)) | (1 << (DocumentParser.T__35 - 33)) | (1 << (DocumentParser.T__36 - 33)) | (1 << (DocumentParser.T__37 - 33)) | (1 << (DocumentParser.T__38 - 33)) | (1 << (DocumentParser.T__43 - 33)) | (1 << (DocumentParser.T__44 - 33)) | (1 << (DocumentParser.T__45 - 33)) | (1 << (DocumentParser.T__48 - 33)) | (1 << (DocumentParser.T__54 - 33)) | (1 << (DocumentParser.T__60 - 33)) | (1 << (DocumentParser.T__61 - 33)) | (1 << (DocumentParser.T__62 - 33)) | (1 << (DocumentParser.T__63 - 33)))) !== 0) || ((((_la - 67)) & ~0x1f) == 0 && ((1 << (_la - 67)) & ((1 << (DocumentParser.T__66 - 67)) | (1 << (DocumentParser.T__67 - 67)) | (1 << (DocumentParser.ANGLE - 67)) | (1 << (DocumentParser.PERCENT - 67)) | (1 << (DocumentParser.TAG - 67)) | (1 << (DocumentParser.FRACTION - 67)) | (1 << (DocumentParser.REAL - 67)) | (1 << (DocumentParser.IMAGINARY - 67)) | (1 << (DocumentParser.MOMENT - 67)) | (1 << (DocumentParser.DURATION - 67)) | (1 << (DocumentParser.RESOURCE - 67)) | (1 << (DocumentParser.VERSION - 67)) | (1 << (DocumentParser.BINARY - 67)) | (1 << (DocumentParser.TEXT_BLOCK - 67)) | (1 << (DocumentParser.TEXT - 67)) | (1 << (DocumentParser.SYMBOL - 67)) | (1 << (DocumentParser.RESERVED - 67)) | (1 << (DocumentParser.IDENTIFIER - 67)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7) | (1 << DocumentParser.T__12) | (1 << DocumentParser.T__14) | (1 << DocumentParser.T__16) | (1 << DocumentParser.T__18) | (1 << DocumentParser.T__19) | (1 << DocumentParser.T__20) | (1 << DocumentParser.T__21) | (1 << DocumentParser.T__23) | (1 << DocumentParser.T__25) | (1 << DocumentParser.T__28))) !== 0) || ((((_la - 33)) & ~0x1f) == 0 && ((1 << (_la - 33)) & ((1 << (DocumentParser.T__32 - 33)) | (1 << (DocumentParser.T__33 - 33)) | (1 << (DocumentParser.T__35 - 33)) | (1 << (DocumentParser.T__36 - 33)) | (1 << (DocumentParser.T__37 - 33)) | (1 << (DocumentParser.T__38 - 33)) | (1 << (DocumentParser.T__43 - 33)) | (1 << (DocumentParser.T__44 - 33)) | (1 << (DocumentParser.T__45 - 33)) | (1 << (DocumentParser.T__48 - 33)) | (1 << (DocumentParser.T__54 - 33)) | (1 << (DocumentParser.T__60 - 33)) | (1 << (DocumentParser.T__61 - 33)) | (1 << (DocumentParser.T__62 - 33)) | (1 << (DocumentParser.T__63 - 33)))) !== 0) || ((((_la - 67)) & ~0x1f) == 0 && ((1 << (_la - 67)) & ((1 << (DocumentParser.T__66 - 67)) | (1 << (DocumentParser.T__67 - 67)) | (1 << (DocumentParser.ANGLE - 67)) | (1 << (DocumentParser.PERCENT - 67)) | (1 << (DocumentParser.TAG - 67)) | (1 << (DocumentParser.FRACTION - 67)) | (1 << (DocumentParser.REAL - 67)) | (1 << (DocumentParser.IMAGINARY - 67)) | (1 << (DocumentParser.MOMENT - 67)) | (1 << (DocumentParser.DURATION - 67)) | (1 << (DocumentParser.RESOURCE - 67)) | (1 << (DocumentParser.VERSION - 67)) | (1 << (DocumentParser.BINARY - 67)) | (1 << (DocumentParser.REGEX - 67)) | (1 << (DocumentParser.TEXT_BLOCK - 67)) | (1 << (DocumentParser.TEXT - 67)) | (1 << (DocumentParser.SYMBOL - 67)) | (1 << (DocumentParser.RESERVED - 67)) | (1 << (DocumentParser.IDENTIFIER - 67)))) !== 0)) {
                 this.state = 210;
                 this.statement();
                 this.state = 211;
@@ -2278,6 +2283,7 @@ DocumentParser.prototype.mainClause = function() {
         case DocumentParser.RESOURCE:
         case DocumentParser.VERSION:
         case DocumentParser.BINARY:
+        case DocumentParser.REGEX:
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.SYMBOL:
@@ -3362,7 +3368,7 @@ DocumentParser.prototype.selectClause = function() {
             this.state = 324; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0));
+        } while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0));
         this.state = 328;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -3747,7 +3753,7 @@ DocumentParser.prototype.returnClause = function() {
         this.state = 354;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
+        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__0) | (1 << DocumentParser.T__2) | (1 << DocumentParser.T__7))) !== 0) || ((((_la - 39)) & ~0x1f) == 0 && ((1 << (_la - 39)) & ((1 << (DocumentParser.T__38 - 39)) | (1 << (DocumentParser.T__43 - 39)) | (1 << (DocumentParser.T__44 - 39)) | (1 << (DocumentParser.T__45 - 39)) | (1 << (DocumentParser.T__48 - 39)) | (1 << (DocumentParser.T__54 - 39)) | (1 << (DocumentParser.T__60 - 39)) | (1 << (DocumentParser.T__61 - 39)) | (1 << (DocumentParser.T__62 - 39)) | (1 << (DocumentParser.T__63 - 39)) | (1 << (DocumentParser.T__66 - 39)) | (1 << (DocumentParser.T__67 - 39)) | (1 << (DocumentParser.ANGLE - 39)) | (1 << (DocumentParser.PERCENT - 39)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.TEXT_BLOCK - 71)) | (1 << (DocumentParser.TEXT - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.RESERVED - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
             this.state = 353;
             this.expression(0);
         }
@@ -5361,6 +5367,7 @@ DocumentParser.prototype.element = function() {
             break;
         case DocumentParser.T__60:
         case DocumentParser.T__61:
+        case DocumentParser.REGEX:
             this.enterOuterAlt(localctx, 6);
             this.state = 435;
             this.pattern();
@@ -5642,6 +5649,9 @@ function PatternContext(parser, parent, invokingState) {
 PatternContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 PatternContext.prototype.constructor = PatternContext;
 
+PatternContext.prototype.REGEX = function() {
+    return this.getToken(DocumentParser.REGEX, 0);
+};
 
 PatternContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
@@ -5677,7 +5687,7 @@ DocumentParser.prototype.pattern = function() {
         this.enterOuterAlt(localctx, 1);
         this.state = 452;
         _la = this._input.LA(1);
-        if(!(_la===DocumentParser.T__60 || _la===DocumentParser.T__61)) {
+        if(!(((((_la - 61)) & ~0x1f) == 0 && ((1 << (_la - 61)) & ((1 << (DocumentParser.T__60 - 61)) | (1 << (DocumentParser.T__61 - 61)) | (1 << (DocumentParser.REGEX - 61)))) !== 0))) {
         this._errHandler.recoverInline(this);
         }
         else {

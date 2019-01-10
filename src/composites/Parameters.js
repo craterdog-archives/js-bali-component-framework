@@ -46,21 +46,19 @@ exports.Parameters = Parameters;
  * @returns {Parameters} The new parameter list.
  */
 Parameters.fromSequential = function(sequential) {
-    const type = sequential.constructor.name;
-    switch (type) {
-        case 'Array':
-        case 'List':
-        case 'Queue':
-        case 'Set':
-        case 'Stack':
+    if (typeof sequential !== 'object') {
+        const type = sequential.constructor.name;
+        throw new Error('BUG: A parameter list cannot be initialized using an object of type: ' + type);
+    }
+    switch (sequential.type) {
+        case types.LIST:
+        case types.QUEUE:
+        case types.SET:
+        case types.STACK:
             sequential = collections.List.fromSequential(sequential);
             break;
-        case 'Object':
-        case 'Catalog':
-            sequential = collections.Catalog.fromSequential(sequential);
-            break;
         default:
-            throw new Error('BUG: A parameters list cannot be initialized using an object of type: ' + type);
+            sequential = collections.Catalog.fromSequential(sequential);
     }
     const parameters = new Parameters(sequential);
     return parameters;
@@ -110,7 +108,7 @@ Parameters.prototype.toArray = function() {
  */
 Parameters.prototype.getKey = function(index) {
     var key = this.collection.getItem(index);
-    if (this.collection.constructor.name === 'Catalog') {
+    if (this.collection.type === types.CATALOG) {
         key = key.key;  // the item is an association
     }
     return key;
@@ -125,7 +123,7 @@ Parameters.prototype.getKey = function(index) {
  */
 Parameters.prototype.getValue = function(key) {
     var value;
-    if (this.collection.constructor.name === 'Catalog') {
+    if (this.collection.type === types.CATALOG) {
         value = this.collection.getValue(key);
         if (value === undefined) {
             value = this.collection.getItem(key).value;

@@ -133,30 +133,53 @@ Component.prototype.comparedTo = function(that) {
 /**
  * This method determines whether or not this component matches the specified pattern.
  * 
- * @param {String|Pattern} pattern The pattern to be used for matching.
+ * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Component.prototype.matches = function(pattern) {
-    var regex;
-    const type = pattern.constructor.name;
-    switch (type) {
-        case 'String':
-            regex = new RegExp(pattern);
-            break;
-        case 'Pattern':
-            switch (pattern.value) {
-                case 'none':
-                    regex = new RegExp('\u0000');
-                    break;
-                case 'any':
-                    regex = new RegExp('.*');
-                    break;
+    if (pattern.type === types.PATTERN) {
+        // handle a pattern component differently from other elements
+        return pattern.isMatchedBy(this);
+    } else if (this.type !== pattern.type) {
+        // the component and pattern must be the same type
+        return false;
+    } else if (types.isLiteral(pattern)) {
+        // elements are tested for equality
+        return this.isEqualTo(pattern);
+    } else if (pattern.type === types.RANGE) {
+        // handle a range component differently from other collections
+        if (!this.firstItem.matches(pattern.firstItem)) return false;
+        if (!this.secondItem.matches(pattern.secondItem)) return false;
+        // both endpoints matched
+        return true;
+    } else if (pattern.type === types.CATALOG) {
+        // handle a catalog component differently from other collections
+        const keys = pattern.getKeys();
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            var key = iterator.getNext();
+            var thisValue = this.getValue(key);
+            if (thisValue) {
+                var patternValue = pattern.getValue(key);
+                if (!thisValue.matches(patternValue)) return false;
             }
-            break;
-        default:
-            throw new Error('BUG: An invalid pattern type was passed to match: ' + pattern);
+        }
+        // all pattern item values matched
+        return true;
+    } else if (types.isSequential(pattern)) {
+        // iterate through a collection's items
+        const thisIterator = this.getIterator();
+        const patternIterator = pattern.getIterator();
+        while (thisIterator.hasNext() && patternIterator.hasNext()) {
+            var thisItem = thisIterator.getNext();
+            var patternItem = patternIterator.getNext();
+            if (!thisItem.matches(patternItem)) return false;
+        }
+        // all pattern items matched
+        return true;
+    } else {
+        throw new Error('BUG: An invalid pattern type was passed to match: ' + pattern);
     }
-    return regex.test(this.toString());
 };
 
 

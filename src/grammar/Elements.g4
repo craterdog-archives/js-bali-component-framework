@@ -24,7 +24,7 @@ binary: BINARY;
 
 duration: DURATION;
 
-pattern: 'none' | 'any';
+pattern: 'none' | REGEX | 'any';
 
 imaginary: IMAGINARY;
 

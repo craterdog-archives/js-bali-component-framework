@@ -59,44 +59,43 @@ Catalog.fromSequential = function(sequential, parameters) {
     const catalog = new Catalog(parameters);
     var index = 1;
     var iterator;
-    const type = sequential.constructor.name;
-    switch (type) {
-        case 'Array':
-            sequential.forEach(function(item) {
-                if (item.constructor.name === 'Association') {
-                    catalog.addItem(item);
-                } else {
-                    catalog.setValue(index++, item);
-                }
-            });
-            break;
-        case 'List':
-        case 'Set':
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                const item = iterator.getNext();
-                if (item.constructor.name === 'Association') {
-                    catalog.addItem(item);
-                } else {
-                    catalog.setValue(index++, item);
-                }
-            }
-            break;
-        case 'Object':
-            const keys = Object.keys(sequential);
-            keys.forEach(function(key) {
-                catalog.setValue('$' + key, sequential[key]);
-            });
-            break;
-        case 'Catalog':
+    if (typeof sequential !== 'object') {
+        const type = sequential.constructor.name;
+        throw new Error('BUG: A catalog cannot be initialized using an object of type: ' + type);
+    }
+    switch (sequential.type) {
+        case types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
-                catalog.setValue(association.key, association.value);
+                catalog.addItem(association);
+            }
+            break;
+        case types.LIST:
+        case types.QUEUE:
+        case types.SET:
+        case types.STACK:
+            iterator = sequential.getIterator();
+            while (iterator.hasNext()) {
+                const item = iterator.getNext();
+                catalog.setValue(index++, item);
             }
             break;
         default:
-            throw new Error('BUG: A catalog cannot be initialized using an object of type: ' + type);
+            if (Array.isArray(sequential)) {
+                sequential.forEach(function(item) {
+                    if (item.type === types.ASSOCIATION) {
+                        catalog.addItem(item);
+                    } else {
+                        catalog.setValue(index++, item);
+                    }
+                });
+            } else {
+                const keys = Object.keys(sequential);
+                keys.forEach(function(key) {
+                    catalog.setValue('$' + key, sequential[key]);
+                });
+            }
     }
     return catalog;
 };

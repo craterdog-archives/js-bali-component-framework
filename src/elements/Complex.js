@@ -55,7 +55,7 @@ function Complex(real, imaginary, parameters) {
         real = Infinity;
         imaginary = Infinity;
     }
-    if (imaginary.constructor.name === 'Angle') {
+    if (imaginary.type === types.ANGLE) {
         // convert polar to rectangular
         var magnitude = real;
         var phase = imaginary;

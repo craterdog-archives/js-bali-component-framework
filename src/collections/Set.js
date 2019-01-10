@@ -53,22 +53,38 @@ exports.Set = Set;
 Set.fromSequential = function(sequential, parameters) {
     const set = new Set(parameters);
     var iterator;
-    const type = sequential.constructor.name;
-    switch (type) {
-        case 'Array':
-            sequential.forEach(function(item) {
-                set.addItem(item);
-            });
+    if (typeof sequential !== 'object') {
+        const type = sequential.constructor.name;
+        throw new Error('BUG: A set cannot be initialized using an object of type: ' + type);
+    }
+    switch (sequential.type) {
+        case types.CATALOG:
+            iterator = sequential.getIterator();
+            while (iterator.hasNext()) {
+                const association = iterator.getNext();
+                set.addItem(association.value);
+            }
             break;
-        case 'List':
-        case 'Set':
+        case types.LIST:
+        case types.QUEUE:
+        case types.SET:
+        case types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 set.addItem(iterator.getNext());
             }
             break;
         default:
-            throw new Error('BUG: A set cannot be initialized using an object of type: ' + type);
+            if (Array.isArray(sequential)) {
+                sequential.forEach(function(item) {
+                    set.addItem(item);
+                });
+            } else {
+                const keys = Object.keys(sequential);
+                keys.forEach(function(key) {
+                    set.addItem(sequential[key]);
+                });
+            }
     }
     return set;
 };

@@ -122,7 +122,7 @@ Collection.prototype.addItem = function(item) {
  */
 Collection.prototype.addItems = function(items) {
     var count = 0;
-    if (items.constructor.name === 'Array') {
+    if (Array.isArray(items)) {
         items.forEach(function(item) {
             if (this.addItem(item)) {
                 count++;

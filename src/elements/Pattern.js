@@ -22,14 +22,13 @@ const Element = require('../abstractions/Element').Element;
  * This constructor creates a new pattern element.
  * 
  * @constructor
- * @param {String} value The value of the pattern element.
+ * @param {RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
     Element.call(this, types.PATTERN, parameters);
-    if (!value) value = 'none';  // default value
-    this.value = value;
+    this.value = value || new RegExp('\u0000');  // default value
     this.setSource(this.toLiteral());
     return this;
 }
@@ -48,7 +47,18 @@ exports.Pattern = Pattern;
  * @returns {Pattern} The new text pattern.
  */
 Pattern.fromLiteral = function(literal, parameters) {
-    const value = literal;  // no changes needed
+    literal = literal || 'none';
+    var value;
+    switch (literal) {
+        case 'none':
+            value = new RegExp('\u0000');  // should never find nulls in text strings
+            break;
+        case 'any':
+            value = new RegExp('.*');  // match anything
+            break;
+        default:
+            value = new RegExp(literal.slice(1, -2));  // remove the delimiters
+    }
     const pattern = new Pattern(value, parameters);
     return pattern;
 };
@@ -64,7 +74,28 @@ Pattern.fromLiteral = function(literal, parameters) {
  * @returns {String} The corresponding literal string representation.
  */
 Pattern.prototype.toLiteral = function(asCanonical) {
-    const literal = this.value;  // no changes needed
+    var literal;
+    switch (this.value.source) {
+        case '\u0000':
+            literal = 'none';
+            break;
+        case '.*':
+            literal = 'any';
+            break;
+        default:
+            literal = '"' + this.value.source + '"?';  // add the delimiters
+    }
     return literal;
 };
 
+
+/**
+ * This method determines whether or not this pattern is matched by the source string of the
+ * specified component.
+ * 
+ * @param {Component} component The component to be tested.
+ * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
+ */
+Pattern.prototype.isMatchedBy = function(component) {
+    return this.value.test(component.toString());
+};
