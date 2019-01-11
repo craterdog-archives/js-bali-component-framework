@@ -13,9 +13,8 @@
  * This element class captures the state and methods associated with a
  * percent element.
  */
-const precision = require('../utilities/Precision');
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -28,13 +27,13 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Percent} The new percent element.
  */
 function Percent(value, parameters) {
-    Element.call(this, types.PERCENT, parameters);
+    abstractions.Element.call(this, utilities.types.PERCENT, parameters);
     if (value === undefined || value === null) value = 0;  // default value
     this.value = value;
     this.setSource(this.toLiteral());
     return this;
 }
-Percent.prototype = Object.create(Element.prototype);
+Percent.prototype = Object.create(abstractions.Element.prototype);
 Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
 
@@ -50,7 +49,7 @@ exports.Percent = Percent;
  */
 Percent.fromLiteral = function(literal, parameters) {
     literal = literal.slice(0, -1);  // remove the trailing '%'
-    const value = Element.literalToNumber(literal);
+    const value = abstractions.Element.literalToNumber(literal);
     const percent = new Percent(value, parameters);
     return percent;
 };
@@ -66,7 +65,7 @@ Percent.fromLiteral = function(literal, parameters) {
  * @returns {String} The corresponding literal string representation.
  */
 Percent.prototype.toLiteral = function(asCanonical) {
-    var literal = Element.numberToLiteral(this.value);
+    var literal = abstractions.Element.numberToLiteral(this.value);
     literal += '%';  // append the %
     return literal;
 };
@@ -78,7 +77,7 @@ Percent.prototype.toLiteral = function(asCanonical) {
  * @returns {number} The numeric value of the percent element.
  */
 Percent.prototype.toNumber = function() {
-    return precision.quotient(this.value, 100);
+    return utilities.precision.quotient(this.value, 100);
 };
 
 
@@ -103,7 +102,7 @@ Percent.inverse = function(percent) {
  * @returns {Percent} The normalized sum of the two percents.
  */
 Percent.sum = function(firstPercent, secondPercent) {
-    return new Percent(precision.sum(firstPercent.value, secondPercent.value));
+    return new Percent(utilities.precision.sum(firstPercent.value, secondPercent.value));
 };
 
 
@@ -115,7 +114,7 @@ Percent.sum = function(firstPercent, secondPercent) {
  * @returns {Percent} The normalized difference of the two percents.
  */
 Percent.difference = function(firstPercent, secondPercent) {
-    return new Percent(precision.difference(firstPercent.value, secondPercent.value));
+    return new Percent(utilities.precision.difference(firstPercent.value, secondPercent.value));
 };
 
 
@@ -127,6 +126,6 @@ Percent.difference = function(firstPercent, secondPercent) {
  * @returns {Percent} The normalized scaled percent.
  */
 Percent.scaled = function(percent, factor) {
-    return new Percent(precision.product(percent.value, factor));
+    return new Percent(utilities.precision.product(percent.value, factor));
 };
 

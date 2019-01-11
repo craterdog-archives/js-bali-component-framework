@@ -15,8 +15,8 @@
  * in time.
  */
 const moment = require('moment');
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 const FORMATS = [
     'Y',
@@ -42,7 +42,7 @@ const FORMATS = [
  */
 function Moment(value, parameters) {
     if (value === undefined || value === null) value = moment().format(FORMATS[7]);  // current moment
-    Element.call(this, types.MOMENT, parameters);
+    abstractions.Element.call(this, utilities.types.MOMENT, parameters);
     FORMATS.find(function(format) {
         const attempt = moment(value, format, true);  // true means strict mode
         if (attempt.isValid()) {
@@ -56,7 +56,7 @@ function Moment(value, parameters) {
     this.setSource(this.value.format(this.format));
     return this;
 }
-Moment.prototype = Object.create(Element.prototype);
+Moment.prototype = Object.create(abstractions.Element.prototype);
 Moment.prototype.constructor = Moment;
 exports.Moment = Moment;
 

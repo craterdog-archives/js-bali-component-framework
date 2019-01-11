@@ -13,8 +13,8 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -28,14 +28,14 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Text} The new text string.
  */
 function Text(value, parameters) {
-    Element.call(this, types.TEXT, parameters);
+    abstractions.Element.call(this, utilities.types.TEXT, parameters);
     if (value === undefined || value === null) value = '';  // default value
     this.value = value;
     this.setSource(this.toLiteral());
     if (value.startsWith('\n')) this.setToComplex();
     return this;
 }
-Text.prototype = Object.create(Element.prototype);
+Text.prototype = Object.create(abstractions.Element.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
 

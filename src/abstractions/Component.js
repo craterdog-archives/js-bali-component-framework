@@ -12,9 +12,7 @@
 /**
  * This abstract class defines the methods that all components must support.
  */
-const types = require('../abstractions/Types');
-const Comparator = require('../utilities/Comparator').Comparator;
-const Formatter = require('../utilities/Formatter').Formatter;
+const utilities = require('../utilities');
 
 
 // PUBLIC FUNCTIONS
@@ -46,12 +44,12 @@ exports.Component = Component;
  */
 Component.prototype.getType = function() {
     var type = this.type;
-    if (type === types.CATALOG && this.isParameterized()) {
-        type = types.typeBySymbol(this.parameters.getValue(1));
+    if (type === utilities.types.CATALOG && this.isParameterized()) {
+        type = utilities.types.typeBySymbol(this.parameters.getValue(1));
     }
     if (type > 0) {
         // system type
-        type = types.typeReference(type);
+        type = utilities.types.typeReference(type);
     } else {
         // user defined type
         type = this.parameters.getValue(1).toString();
@@ -75,7 +73,7 @@ Component.prototype.isParameterized = function() {
  * for a simple component.
  */
 Component.prototype.setToComplex = function() {
-    this.complexity = types.IS_COMPLEX;
+    this.complexity = utilities.types.IS_COMPLEX;
 };
 
 
@@ -99,7 +97,7 @@ Component.prototype.toString = function() {
  * @returns {String} The source code for this component.
  */
 Component.prototype.toDocument = function(indentation) {
-    const formatter = new Formatter(indentation);
+    const formatter = new utilities.Formatter(indentation);
     const source = formatter.formatComponent(this);
     return source;
 };
@@ -112,7 +110,7 @@ Component.prototype.toDocument = function(indentation) {
  * @returns {Boolean} Whether or not this component is equal to another component.
  */
 Component.prototype.isEqualTo = function(that) {
-    const comparator = new Comparator();
+    const comparator = new utilities.Comparator();
     return comparator.componentsAreEqual(this, that);
 };
 
@@ -125,7 +123,7 @@ Component.prototype.isEqualTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
-    const comparator = new Comparator();
+    const comparator = new utilities.Comparator();
     return comparator.compareComponents(this, that);
 };
 
@@ -137,22 +135,22 @@ Component.prototype.comparedTo = function(that) {
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Component.prototype.matches = function(pattern) {
-    if (pattern.type === types.PATTERN) {
+    if (pattern.type === utilities.types.PATTERN) {
         // handle a pattern component differently from other elements
         return pattern.isMatchedBy(this);
     } else if (this.type !== pattern.type) {
         // the component and pattern must be the same type
         return false;
-    } else if (types.isLiteral(pattern)) {
+    } else if (utilities.types.isLiteral(pattern)) {
         // elements are tested for equality
         return this.isEqualTo(pattern);
-    } else if (pattern.type === types.RANGE) {
+    } else if (pattern.type === utilities.types.RANGE) {
         // handle a range component differently from other collections
         if (!this.firstItem.matches(pattern.firstItem)) return false;
         if (!this.secondItem.matches(pattern.secondItem)) return false;
         // both endpoints matched
         return true;
-    } else if (pattern.type === types.CATALOG) {
+    } else if (pattern.type === utilities.types.CATALOG) {
         // handle a catalog component differently from other collections
         const keys = pattern.getKeys();
         const iterator = keys.getIterator();
@@ -166,7 +164,7 @@ Component.prototype.matches = function(pattern) {
         }
         // all pattern item values matched
         return true;
-    } else if (types.isSequential(pattern)) {
+    } else if (utilities.types.isSequential(pattern)) {
         // iterate through a collection's items
         const thisIterator = this.getIterator();
         const patternIterator = pattern.getIterator();

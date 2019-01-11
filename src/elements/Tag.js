@@ -13,10 +13,8 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
-const codex = require('../utilities/Codex');
-const random = require('../utilities/Random');
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -37,35 +35,35 @@ const random = require('../utilities/Random');
  * @returns {Tag} The new tag element.
  */
 function Tag(optionalSizeOrValue, parameters) {
-    Element.call(this, types.TAG, parameters);
+    abstractions.Element.call(this, utilities.types.TAG, parameters);
     var bytes;
 
     const type = typeof optionalSizeOrValue;
     switch (type) {
         case 'undefined':
             this.size = 20;  // default size
-            bytes = random.bytes(this.size);
-            this.value = codex.base32Encode(bytes);
+            bytes = utilities.random.bytes(this.size);
+            this.value = utilities.codex.base32Encode(bytes);
             break;
         case 'number':
             this.size = optionalSizeOrValue;
-            bytes = random.bytes(this.size);
-            this.value = codex.base32Encode(bytes);
+            bytes = utilities.random.bytes(this.size);
+            this.value = utilities.codex.base32Encode(bytes);
             break;
         case 'string':
             this.value = optionalSizeOrValue;
-            bytes = codex.base32Decode(this.value);
+            bytes = utilities.codex.base32Decode(this.value);
             this.size = bytes.length;
             break;
         default:
             throw new Error('BUG: An invalid tag value type was passed to the constructor: ' + type);
     }
-    this.hash = codex.bytesToInteger(bytes);  // the first four bytes work perfectly
+    this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
     this.setSource(this.toLiteral());
     this.setToComplex();  // tags should never be inlined
     return this;
 }
-Tag.prototype = Object.create(Element.prototype);
+Tag.prototype = Object.create(abstractions.Element.prototype);
 Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
 
@@ -108,7 +106,7 @@ Tag.prototype.toLiteral = function(asCanonical) {
  */
 Tag.prototype.getBytes = function() {
     // not called very often so do it on demand
-    return codex.base32Decode(this.value.substring(1));
+    return utilities.codex.base32Decode(this.value.substring(1));
 };
 
 

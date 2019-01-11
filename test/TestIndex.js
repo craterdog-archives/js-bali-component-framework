@@ -11,6 +11,7 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 
+
 describe('Bali Component Framework™', function() {
 
     describe('Test the require of the top level index.', function() {

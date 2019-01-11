@@ -10,9 +10,8 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const composites = require('../src/composites');
+const utilities = require('../src/utilities');
 const collections = require('../src/collections');
-const Exception = require('../src/utilities/Exception').Exception;
 
 
 describe('Bali Component Framework™', function() {
@@ -48,7 +47,7 @@ describe('Bali Component Framework™', function() {
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.addItem('"beta"');}).to.throw(Exception);
+            expect(function() {stack.addItem('"beta"');}).to.throw(utilities.Exception);
             const top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('"alpha"');

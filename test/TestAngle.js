@@ -13,6 +13,9 @@ const expect = require('chai').expect;
 const utilities = require('../src/utilities');
 const elements = require('../src/elements');
 const composites = require('../src/composites');
+const collections = require('../src/collections');
+const Parser = require('../src/utilities/Parser').Parser;
+const parser = new Parser(true);
 /* global NaN, Infinity */
 
 describe('Bali Component Framework™', function() {
@@ -20,14 +23,14 @@ describe('Bali Component Framework™', function() {
     describe('Test angle constructors', function() {
 
         it('should construct using literals', function() {
-            const degrees = composites.Parameters.fromSequential({$units: '$degrees'});
-            const radians = composites.Parameters.fromSequential({$units: '$radians'});
+            const degrees = new composites.Parameters(collections.Catalog.fromSequential({$units: '$degrees'}));
+            const radians = new composites.Parameters(collections.Catalog.fromSequential({$units: '$radians'}));
             expect(elements.Angle.fromLiteral('~0').toNumber()).to.equal(0);
             expect(elements.Angle.fromLiteral('~pi').toNumber()).to.equal(utilities.precision.PI);
             expect(elements.Angle.fromLiteral('~pi', radians).toNumber()).to.equal(utilities.precision.PI);
             expect(elements.Angle.fromLiteral('~90', degrees).toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
-            expect(utilities.parser.parseDocument('~pi($units: $radians)').toNumber()).to.equal(utilities.precision.PI);
-            expect(utilities.parser.parseDocument('~90($units: $degrees)').toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
+            expect(parser.parseDocument('~pi($units: $radians)').toNumber()).to.equal(utilities.precision.PI);
+            expect(parser.parseDocument('~90($units: $degrees)').toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
         });
 
         it('should construct and equal zero', function() {

@@ -9,9 +9,25 @@
  ************************************************************************/
 'use strict';
 
+
+// GENERAL UTILITIES
+var utilities = require('./src/utilities');
+exports.types = utilities.types;
+exports.precision = utilities.precision;
+exports.codex = utilities.codex;
+exports.random = utilities.random;
+
+exports.Comparator = utilities.Comparator;
+exports.Exception = utilities.Exception;
+exports.Formatter = utilities.Formatter;
+exports.Iterator = utilities.Iterator;
+exports.Sorter = utilities.Sorter;
+exports.Visitor = utilities.Visitor;
+
+exports.formatter = new utilities.Formatter();
+
 // ABSTRACT TYPES
 var abstractions = require('./src/abstractions');
-exports.types = abstractions.types;
 exports.Component = abstractions.Component;
 exports.Element = abstractions.Element;
 exports.Composite = abstractions.Composite;
@@ -49,20 +65,4 @@ exports.Catalog = collections.Catalog;
 exports.Queue = collections.Stack;
 exports.Set = collections.Set;
 exports.Stack = collections.Stack;
-
-// GENERAL UTILITIES
-var utilities = require('./src/utilities');
-exports.Comparator = utilities.Comparator;
-exports.Exception = utilities.Exception;
-exports.Formatter = utilities.Formatter;
-exports.Iterator = utilities.Iterator;
-exports.Parser = utilities.Parser;
-exports.Sorter = utilities.Sorter;
-exports.Visitor = utilities.Visitor;
-exports.precision = utilities.precision;
-exports.codex = utilities.codex;
-exports.random = utilities.random;
-exports.formatter = new utilities.Formatter();
-exports.parser = new utilities.Parser(false);
-
 

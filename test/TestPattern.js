@@ -13,6 +13,7 @@ const expect = require('chai').expect;
 const elements = require('../src/elements');
 const collections = require('../src/collections');
 
+
 describe('Bali Component Framework™', function() {
 
     describe('Test pattern constructors', function() {

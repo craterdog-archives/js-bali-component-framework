@@ -17,8 +17,8 @@
  * are used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -32,59 +32,59 @@ const Composite = require('../abstractions/Composite').Composite;
  * @returns {Tree} The new tree node component.
  */
 function Tree(type, complexity) {
-    Composite.call(this, type);
+    abstractions.Composite.call(this, type);
     switch(type) {
-        case types.ARITHMETIC_EXPRESSION:
-        case types.BLOCK:
-        case types.BREAK_CLAUSE:
-        case types.CHECKOUT_CLAUSE:
-        case types.COMMIT_CLAUSE:
-        case types.COMPARISON_EXPRESSION:
-        case types.COMPLEMENT_EXPRESSION:
-        case types.CONCATENATION_EXPRESSION:
-        case types.CONTINUE_CLAUSE:
-        case types.DEFAULT_EXPRESSION:
-        case types.DEREFERENCE_EXPRESSION:
-        case types.DISCARD_CLAUSE:
-        case types.EVALUATE_CLAUSE:
-        case types.EXPONENTIAL_EXPRESSION:
-        case types.FACTORIAL_EXPRESSION:
-        case types.FUNCTION:
-        case types.FUNCTION_EXPRESSION:
-        case types.HANDLE_CLAUSE:
-        case types.IF_CLAUSE:
-        case types.INDICES:
-        case types.INVERSION_EXPRESSION:
-        case types.LOGICAL_EXPRESSION:
-        case types.MAGNITUDE_EXPRESSION:
-        case types.MESSAGE:
-        case types.MESSAGE_EXPRESSION:
-        case types.PRECEDENCE_EXPRESSION:
-        case types.PROCEDURE:
-        case types.PUBLISH_CLAUSE:
-        case types.QUEUE_CLAUSE:
-        case types.RETURN_CLAUSE:
-        case types.SAVE_CLAUSE:
-        case types.SELECT_CLAUSE:
-        case types.STATEMENT:
-        case types.SUBCOMPONENT:
-        case types.SUBCOMPONENT_EXPRESSION:
-        case types.THROW_CLAUSE:
-        case types.VARIABLE:
-        case types.WAIT_CLAUSE:
-        case types.WHILE_CLAUSE:
-        case types.WITH_CLAUSE:
+        case utilities.types.ARITHMETIC_EXPRESSION:
+        case utilities.types.BLOCK:
+        case utilities.types.BREAK_CLAUSE:
+        case utilities.types.CHECKOUT_CLAUSE:
+        case utilities.types.COMMIT_CLAUSE:
+        case utilities.types.COMPARISON_EXPRESSION:
+        case utilities.types.COMPLEMENT_EXPRESSION:
+        case utilities.types.CONCATENATION_EXPRESSION:
+        case utilities.types.CONTINUE_CLAUSE:
+        case utilities.types.DEFAULT_EXPRESSION:
+        case utilities.types.DEREFERENCE_EXPRESSION:
+        case utilities.types.DISCARD_CLAUSE:
+        case utilities.types.EVALUATE_CLAUSE:
+        case utilities.types.EXPONENTIAL_EXPRESSION:
+        case utilities.types.FACTORIAL_EXPRESSION:
+        case utilities.types.FUNCTION:
+        case utilities.types.FUNCTION_EXPRESSION:
+        case utilities.types.HANDLE_CLAUSE:
+        case utilities.types.IF_CLAUSE:
+        case utilities.types.INDICES:
+        case utilities.types.INVERSION_EXPRESSION:
+        case utilities.types.LOGICAL_EXPRESSION:
+        case utilities.types.MAGNITUDE_EXPRESSION:
+        case utilities.types.MESSAGE:
+        case utilities.types.MESSAGE_EXPRESSION:
+        case utilities.types.PRECEDENCE_EXPRESSION:
+        case utilities.types.PROCEDURE:
+        case utilities.types.PUBLISH_CLAUSE:
+        case utilities.types.QUEUE_CLAUSE:
+        case utilities.types.RETURN_CLAUSE:
+        case utilities.types.SAVE_CLAUSE:
+        case utilities.types.SELECT_CLAUSE:
+        case utilities.types.STATEMENT:
+        case utilities.types.SUBCOMPONENT:
+        case utilities.types.SUBCOMPONENT_EXPRESSION:
+        case utilities.types.THROW_CLAUSE:
+        case utilities.types.VARIABLE:
+        case utilities.types.WAIT_CLAUSE:
+        case utilities.types.WHILE_CLAUSE:
+        case utilities.types.WITH_CLAUSE:
             // these are fine
             break;
         default:
             // anything else isn't
-            throw new Error('BUG: An invalid tree type was passed to the constructor: ' + types.typeName(type));
+            throw new Error('BUG: An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
     }
     this.array = [];
     this.complexity += complexity;
     return this;
 }
-Tree.prototype = Object.create(Composite.prototype);
+Tree.prototype = Object.create(abstractions.Composite.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
 
@@ -147,127 +147,127 @@ Tree.prototype.getChild = function(index) {
  */
 Tree.prototype.acceptVisitor = function(visitor) {
     switch(this.type) {
-        case types.ARITHMETIC_EXPRESSION:
+        case utilities.types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
-        case types.BLOCK:
+        case utilities.types.BLOCK:
             visitor.visitBlock(this);
             break;
-        case types.BREAK_CLAUSE:
+        case utilities.types.BREAK_CLAUSE:
             visitor.visitBreakClause(this);
             break;
-        case types.CHECKOUT_CLAUSE:
+        case utilities.types.CHECKOUT_CLAUSE:
             visitor.visitCheckoutClause(this);
             break;
-        case types.COMMIT_CLAUSE:
+        case utilities.types.COMMIT_CLAUSE:
             visitor.visitCommitClause(this);
             break;
-        case types.COMPARISON_EXPRESSION:
+        case utilities.types.COMPARISON_EXPRESSION:
             visitor.visitComparisonExpression(this);
             break;
-        case types.COMPLEMENT_EXPRESSION:
+        case utilities.types.COMPLEMENT_EXPRESSION:
             visitor.visitComplementExpression(this);
             break;
-        case types.CONCATENATION_EXPRESSION:
+        case utilities.types.CONCATENATION_EXPRESSION:
             visitor.visitConcatenationExpression(this);
             break;
-        case types.CONTINUE_CLAUSE:
+        case utilities.types.CONTINUE_CLAUSE:
             visitor.visitContinueClause(this);
             break;
-        case types.DEFAULT_EXPRESSION:
+        case utilities.types.DEFAULT_EXPRESSION:
             visitor.visitDefaultExpression(this);
             break;
-        case types.DEREFERENCE_EXPRESSION:
+        case utilities.types.DEREFERENCE_EXPRESSION:
             visitor.visitDereferenceExpression(this);
             break;
-        case types.DISCARD_CLAUSE:
+        case utilities.types.DISCARD_CLAUSE:
             visitor.visitDiscardClause(this);
             break;
-        case types.EVALUATE_CLAUSE:
+        case utilities.types.EVALUATE_CLAUSE:
             visitor.visitEvaluateClause(this);
             break;
-        case types.EXPONENTIAL_EXPRESSION:
+        case utilities.types.EXPONENTIAL_EXPRESSION:
             visitor.visitExponentialExpression(this);
             break;
-        case types.FACTORIAL_EXPRESSION:
+        case utilities.types.FACTORIAL_EXPRESSION:
             visitor.visitFactorialExpression(this);
             break;
-        case types.FUNCTION:
+        case utilities.types.FUNCTION:
             visitor.visitFunction(this);
             break;
-        case types.FUNCTION_EXPRESSION:
+        case utilities.types.FUNCTION_EXPRESSION:
             visitor.visitFunctionExpression(this);
             break;
-        case types.HANDLE_CLAUSE:
+        case utilities.types.HANDLE_CLAUSE:
             visitor.visitHandleClause(this);
             break;
-        case types.IF_CLAUSE:
+        case utilities.types.IF_CLAUSE:
             visitor.visitIfClause(this);
             break;
-        case types.INDICES:
+        case utilities.types.INDICES:
             visitor.visitIndices(this);
             break;
-        case types.INVERSION_EXPRESSION:
+        case utilities.types.INVERSION_EXPRESSION:
             visitor.visitInversionExpression(this);
             break;
-        case types.LOGICAL_EXPRESSION:
+        case utilities.types.LOGICAL_EXPRESSION:
             visitor.visitLogicalExpression(this);
             break;
-        case types.MAGNITUDE_EXPRESSION:
+        case utilities.types.MAGNITUDE_EXPRESSION:
             visitor.visitMagnitudeExpression(this);
             break;
-        case types.MESSAGE:
+        case utilities.types.MESSAGE:
             visitor.visitMessage(this);
             break;
-        case types.MESSAGE_EXPRESSION:
+        case utilities.types.MESSAGE_EXPRESSION:
             visitor.visitMessageExpression(this);
             break;
-        case types.PRECEDENCE_EXPRESSION:
+        case utilities.types.PRECEDENCE_EXPRESSION:
             visitor.visitPrecedenceExpression(this);
             break;
-        case types.PROCEDURE:
+        case utilities.types.PROCEDURE:
             visitor.visitProcedure(this);
             break;
-        case types.PUBLISH_CLAUSE:
+        case utilities.types.PUBLISH_CLAUSE:
             visitor.visitPublishClause(this);
             break;
-        case types.QUEUE_CLAUSE:
+        case utilities.types.QUEUE_CLAUSE:
             visitor.visitQueueClause(this);
             break;
-        case types.RETURN_CLAUSE:
+        case utilities.types.RETURN_CLAUSE:
             visitor.visitReturnClause(this);
             break;
-        case types.SAVE_CLAUSE:
+        case utilities.types.SAVE_CLAUSE:
             visitor.visitSaveClause(this);
             break;
-        case types.SELECT_CLAUSE:
+        case utilities.types.SELECT_CLAUSE:
             visitor.visitSelectClause(this);
             break;
-        case types.STATEMENT:
+        case utilities.types.STATEMENT:
             visitor.visitStatement(this);
             break;
-        case types.SUBCOMPONENT:
+        case utilities.types.SUBCOMPONENT:
             visitor.visitSubcomponent(this);
             break;
-        case types.SUBCOMPONENT_EXPRESSION:
+        case utilities.types.SUBCOMPONENT_EXPRESSION:
             visitor.visitSubcomponentExpression(this);
             break;
-        case types.THROW_CLAUSE:
+        case utilities.types.THROW_CLAUSE:
             visitor.visitThrowClause(this);
             break;
-        case types.VARIABLE:
+        case utilities.types.VARIABLE:
             visitor.visitVariable(this);
             break;
-        case types.WAIT_CLAUSE:
+        case utilities.types.WAIT_CLAUSE:
             visitor.visitWaitClause(this);
             break;
-        case types.WHILE_CLAUSE:
+        case utilities.types.WHILE_CLAUSE:
             visitor.visitWhileClause(this);
             break;
-        case types.WITH_CLAUSE:
+        case utilities.types.WITH_CLAUSE:
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('BUG: A visitor found an invalid tree node type: ' + types.typeName(this.type));
+            throw new Error('BUG: A visitor found an invalid tree node type: ' + utilities.types.typeName(this.type));
     }
 };

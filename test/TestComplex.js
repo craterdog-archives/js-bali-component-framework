@@ -13,6 +13,9 @@ const expect = require('chai').expect;
 const utilities = require('../src/utilities');
 const elements = require('../src/elements');
 const composites = require('../src/composites');
+const collections = require('../src/collections');
+const Parser = require('../src/utilities/Parser').Parser;
+const parser = new Parser(true);
 /* global NaN, Infinity */
 
 describe('Bali Component Framework™', function() {
@@ -20,16 +23,16 @@ describe('Bali Component Framework™', function() {
     describe('Test complex constructors', function() {
 
         it('should construct using literals', function() {
-            const rectangular = composites.Parameters.fromSequential({$format: '$rectangular'});
-            const polar = composites.Parameters.fromSequential({$format: '$polar'});
+            const rectangular = new composites.Parameters(collections.Catalog.fromSequential({$format: '$rectangular'}));
+            const polar = new composites.Parameters(collections.Catalog.fromSequential({$format: '$polar'}));
             expect(elements.Number.fromLiteral('0').toNumber()).to.equal(0);
             expect(elements.Number.fromLiteral('e').toNumber()).to.equal(utilities.precision.E);
             expect(elements.Number.fromLiteral('phi i').getImaginary()).to.equal(utilities.precision.PHI);
             expect(elements.Number.fromLiteral('(3, 4i)', rectangular).getMagnitude()).to.equal(5);
             expect(elements.Number.fromLiteral('(-5 e^~pi i)').getMagnitude()).to.equal(5);
             expect(elements.Number.fromLiteral('(-5 e^~pi i)', polar).getMagnitude()).to.equal(5);
-            expect(utilities.parser.parseDocument('(3, -4i)($format: $polar)').toLiteral()).to.equal('(5 e^~-0.9272952180016122i)');
-            expect(utilities.parser.parseDocument('(3, -4i)($format: $rectangular)').toLiteral()).to.equal('(3, -4i)');
+            expect(parser.parseDocument('(3, -4i)($format: $polar)').toLiteral()).to.equal('(5 e^~-0.9272952180016122i)');
+            expect(parser.parseDocument('(3, -4i)($format: $rectangular)').toLiteral()).to.equal('(3, -4i)');
         });
 
         it('should construct and equal zero', function() {

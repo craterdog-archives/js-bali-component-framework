@@ -10,7 +10,8 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const random = require('../src/utilities/Random');
+const utilities = require('../src/utilities');
+
 
 describe('Bali Component Framework™', function() {
 
@@ -18,8 +19,8 @@ describe('Bali Component Framework™', function() {
 
         it('should test extreme coin tosses', function() {
             for (var i = 0; i < 100; i++) {
-                expect(random.coinToss(0)).is.false;  // jshint ignore:line
-                expect(random.coinToss(1)).is.true;  // jshint ignore:line
+                expect(utilities.random.coinToss(0)).is.false;  // jshint ignore:line
+                expect(utilities.random.coinToss(1)).is.true;  // jshint ignore:line
             }
         });
 
@@ -27,7 +28,7 @@ describe('Bali Component Framework™', function() {
             var gotOne = false;
             var gotThree = false;
             for (var i = 0; i < 100; i++) {
-                const index = random.index(3);
+                const index = utilities.random.index(3);
                 expect(index >= 1).is.true;  // jshint ignore:line
                 expect(index <= 3).is.true;  // jshint ignore:line
                 if (index === 1) gotOne = true;
@@ -39,7 +40,7 @@ describe('Bali Component Framework™', function() {
 
         it('should test endpoints of random probabilities', function() {
             for (var i = 0; i < 100; i++) {
-                const probability = random.probability();
+                const probability = utilities.random.probability();
                 expect(probability >= 0).is.true;  // jshint ignore:line
                 expect(probability <= 1).is.true;  // jshint ignore:line
             }

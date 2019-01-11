@@ -10,9 +10,12 @@
 'use strict';
 
 
+// PUBLIC CONSTRUCTORS
+
 /**
  * This constructor creates a new Bali exception with the specified attributes.
  * 
+ * @constructor
  * @param {Catalog} exception A catalog containing the exception attributes.
  * @returns {Exception} The new exception.
  */

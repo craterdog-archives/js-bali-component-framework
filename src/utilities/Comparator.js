@@ -15,7 +15,7 @@
  */
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This comparator class implements a natural comparison algorithm using the
@@ -27,6 +27,8 @@ function Comparator() {
 Comparator.prototype.constructor = Comparator;
 exports.Comparator = Comparator;
 
+
+// PUBLIC METHODS
 
 /**
  * This method determines whether or not two components are equal.

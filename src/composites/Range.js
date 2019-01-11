@@ -8,6 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
+/* global NaN, Infinity */
 
 /**
  * This collection class defines a range of items.
@@ -16,9 +17,8 @@
  * This collection class implements a data structure that defines a range of items. The
  * structure is static once the first and last items in the range have been defined.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-/* global NaN, Infinity */
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -33,14 +33,14 @@ const Composite = require('../abstractions/Composite').Composite;
  * @returns {Range} The new range.
  */
 function Range(firstItem, lastItem, parameters) {
-    Composite.call(this, types.RANGE, parameters);
-    this.firstItem = Composite.asComponent(firstItem);
-    this.lastItem = Composite.asComponent(lastItem);
+    abstractions.Composite.call(this, utilities.types.RANGE, parameters);
+    this.firstItem = abstractions.Composite.asComponent(firstItem);
+    this.lastItem = abstractions.Composite.asComponent(lastItem);
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += this.firstItem.complexity + this.lastItem.complexity + 2;  // account for the '..' separator
     return this;
 }
-Range.prototype = Object.create(Composite.prototype);
+Range.prototype = Object.create(abstractions.Composite.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -91,7 +91,7 @@ Range.prototype.toArray = function() {
     if (last === Infinity) {
         throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
-    while (index <= last) array.push(Composite.asComponent(index++));
+    while (index <= last) array.push(abstractions.Composite.asComponent(index++));
     return array;
 };
 
@@ -103,7 +103,7 @@ Range.prototype.toArray = function() {
  * @returns {Boolean} Whether or not the item is in this range.
  */
 Range.prototype.isInRange = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     const index = item.toNumber();
     return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
 };
@@ -149,7 +149,7 @@ RangeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
     this.slot--;
     var number = this.range.firstItem.toNumber() + this.slot;
-    number = Composite.asComponent(number);
+    number = abstractions.Composite.asComponent(number);
     return number;
 };
 
@@ -157,7 +157,7 @@ RangeIterator.prototype.getPrevious = function() {
 RangeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
     var number = this.range.firstItem.toNumber() + this.slot;
-    number = Composite.asComponent(number);
+    number = abstractions.Composite.asComponent(number);
     this.slot++;
     return number;
 };

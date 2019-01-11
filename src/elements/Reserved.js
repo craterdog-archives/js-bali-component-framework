@@ -14,8 +14,8 @@
  * This element class captures the state and methods associated with a
  * reserved identifier.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -28,7 +28,7 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Reserved} The new reserved identifier.
  */
 function Reserved(value, parameters) {
-    Element.call(this, types.RESERVED, parameters);
+    abstractions.Element.call(this, utilities.types.RESERVED, parameters);
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
@@ -36,7 +36,7 @@ function Reserved(value, parameters) {
     this.setSource(this.toLiteral());
     return this;
 }
-Reserved.prototype = Object.create(Element.prototype);
+Reserved.prototype = Object.create(abstractions.Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
 

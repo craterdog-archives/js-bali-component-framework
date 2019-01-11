@@ -13,6 +13,9 @@ const expect = require('chai').expect;
 const utilities = require('../src/utilities');
 const elements = require('../src/elements');
 const composites = require('../src/composites');
+const collections = require('../src/collections');
+const Parser = require('../src/utilities/Parser').Parser;
+const parser = new Parser(true);
 
 describe('Bali Component Framework™', function() {
 
@@ -24,18 +27,18 @@ describe('Bali Component Framework™', function() {
     describe('Test binary constructors', function() {
 
         it('should construct using literals', function() {
-            const base2 = composites.Parameters.fromSequential({$base: 2});
-            const base16 = composites.Parameters.fromSequential({$base: 16});
-            const base32 = composites.Parameters.fromSequential({$base: 32});
-            const base64 = composites.Parameters.fromSequential({$base: 64});
+            const base2 = new composites.Parameters(collections.Catalog.fromSequential({$base: 2}));
+            const base16 = new composites.Parameters(collections.Catalog.fromSequential({$base: 16}));
+            const base32 = new composites.Parameters(collections.Catalog.fromSequential({$base: 32}));
+            const base64 = new composites.Parameters(collections.Catalog.fromSequential({$base: 64}));
             expect(elements.Binary.fromLiteral("''").value.length).to.equal(0);
             expect(elements.Binary.fromLiteral("'ABC0'").toLiteral()).to.equal("'ABC0'");
             expect(elements.Binary.fromLiteral("'01101010'", base2).toLiteral()).to.equal("'01101010'");
             expect(elements.Binary.fromLiteral("'ABC0'", base16).toLiteral()).to.equal("'ABC0'");
             expect(elements.Binary.fromLiteral("'ABC0'", base32).toLiteral()).to.equal("'ABC0'");
             expect(elements.Binary.fromLiteral("'gV2qMVdiG7XYRSqV6jg='", base64).toLiteral()).to.equal("'gV2qMVdiG7XYRSqV6jg='");
-            expect(utilities.parser.parseDocument("'ABC0'").toLiteral()).to.equal("'ABC0'");
-            expect(utilities.parser.parseDocument("'gV2qMVdiG7XYRSqV6jg='($base: 64)").toLiteral()).to.equal("'gV2qMVdiG7XYRSqV6jg='");
+            expect(parser.parseDocument("'ABC0'").toLiteral()).to.equal("'ABC0'");
+            expect(parser.parseDocument("'gV2qMVdiG7XYRSqV6jg='($base: 64)").toLiteral()).to.equal("'gV2qMVdiG7XYRSqV6jg='");
         });
 
         it('should construct binary values from buffer with no base', function() {
@@ -45,25 +48,25 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct binary values from buffer with base 2 format', function() {
-            const parameters = composites.Parameters.fromSequential({base: 2});
+            const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 2}));
             const binary = new elements.Binary(expected, parameters);
             expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base2Encode(expected));
         });
 
         it('should construct binary values from buffer with base 16 format', function() {
-            const parameters = composites.Parameters.fromSequential({base: 16});
+            const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 16}));
             const binary = new elements.Binary(expected, parameters);
             expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base16Encode(expected));
         });
 
         it('should construct binary values from buffer with base 32 format', function() {
-            const parameters = composites.Parameters.fromSequential({base: 32});
+            const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 32}));
             const binary = new elements.Binary(expected, parameters);
             expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base32Encode(expected));
         });
 
         it('should construct binary values from buffer with base 64 format', function() {
-            const parameters = composites.Parameters.fromSequential({base: 64});
+            const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 64}));
             const binary = new elements.Binary(expected, parameters);
             expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base64Encode(expected));
         });
@@ -71,7 +74,7 @@ describe('Bali Component Framework™', function() {
         it('should throw and exception when constructing a binary value with an illegal base', function() {
             expect(
                 function() {
-                    const parameters = composites.Parameters.fromSequential({base: 25});
+                    const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 25}));
                     const bad = new elements.Binary(expected, parameters);
                     bad.toLiteral();
                 }

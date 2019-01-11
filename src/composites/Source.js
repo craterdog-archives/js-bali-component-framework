@@ -13,8 +13,8 @@
  * This composite class implements a source code component that can be assigned as
  * the value of an association.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -28,13 +28,13 @@ const Composite = require('../abstractions/Composite').Composite;
  * @returns {Source} A new source code component.
  */
 function Source(procedure, parameters) {
-    Composite.call(this, types.SOURCE, parameters);
+    abstractions.Composite.call(this, utilities.types.SOURCE, parameters);
     this.procedure = procedure;
     this.complexity += this.procedure.complexity;
     //this.complexity += 2;  // account for the '{' '}' delimiters
     return this;
 }
-Source.prototype = Object.create(Composite.prototype);
+Source.prototype = Object.create(abstractions.Composite.prototype);
 Source.prototype.constructor = Source;
 exports.Source = Source;
 

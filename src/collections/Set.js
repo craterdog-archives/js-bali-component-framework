@@ -14,10 +14,9 @@
  * duplicate items. A set automatically orders its items based on the natural order
  * defined by the <code>Comparator</code> class.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const Collection = require('../abstractions/Collection').Collection;
-const Comparator = require('../utilities/Comparator').Comparator;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const composites = require('../composites');
 
 
 // PUBLIC CONSTRUCTORS
@@ -30,12 +29,12 @@ const Comparator = require('../utilities/Comparator').Comparator;
  * @returns {Set} The new set.
  */
 function Set(parameters) {
-    Collection.call(this, types.SET, parameters);
-    this.tree = new RandomizedTree(new Comparator());
+    abstractions.Collection.call(this, utilities.types.SET, parameters);
+    this.tree = new RandomizedTree(new utilities.Comparator());
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Set.prototype = Object.create(Collection.prototype);
+Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
 
@@ -58,17 +57,17 @@ Set.fromSequential = function(sequential, parameters) {
         throw new Error('BUG: A set cannot be initialized using an object of type: ' + type);
     }
     switch (sequential.type) {
-        case types.CATALOG:
+        case utilities.types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 set.addItem(association.value);
             }
             break;
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
-        case types.STACK:
+        case utilities.types.LIST:
+        case utilities.types.QUEUE:
+        case utilities.types.SET:
+        case utilities.types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 set.addItem(iterator.getNext());
@@ -244,7 +243,7 @@ Set.prototype.toArray = function() {
  * @returns {Number} The index of the specified item.
  */
 Set.prototype.getIndex = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     const index = this.tree.index(item) + 1;  // convert to ordinal based indexing
     return index;
 };
@@ -271,7 +270,7 @@ Set.prototype.getItem = function(index) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Set.prototype.addItem = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     const result = this.tree.insert(item);
     if (result) {
         this.complexity += item.complexity;
@@ -289,7 +288,7 @@ Set.prototype.addItem = function(item) {
  * @returns {Boolean} Whether or not the item was removed.
  */
 Set.prototype.removeItem = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     const result = this.tree.remove(item);
     if (result) {
         this.complexity -= item.complexity;

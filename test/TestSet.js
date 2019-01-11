@@ -10,7 +10,6 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const abstractions = require('../src/abstractions');
 const composites = require('../src/composites');
 const collections = require('../src/collections');
 

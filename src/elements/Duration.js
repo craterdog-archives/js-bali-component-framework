@@ -15,8 +15,8 @@
  * duration element.
  */
 const duration = require('moment').duration;
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -29,13 +29,13 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Duration} The new duration element.
  */
 function Duration(value, parameters) {
-    Element.call(this, types.DURATION, parameters);
+    abstractions.Element.call(this, utilities.types.DURATION, parameters);
     if (value === undefined || value === null) value = 'P0D';  // default value
     this.value = duration(value);
     this.setSource(this.toLiteral());
     return this;
 }
-Duration.prototype = Object.create(Element.prototype);
+Duration.prototype = Object.create(abstractions.Element.prototype);
 Duration.prototype.constructor = Duration;
 exports.Duration = Duration;
 

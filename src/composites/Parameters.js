@@ -13,56 +13,28 @@
  * This collection class implements a parameter list data structure. The structure is static
  * such that once parameters have been added to it they cannot be reordered or removed.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const collections = require('../collections');
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new parameter catalog or list.
  * 
+ * @constructor
  * @param {Collection} collection The collection of parameters. 
  * @returns {Parameters} The new parameter list.
  */
 function Parameters(collection) {
-    Composite.call(this, types.PARAMETERS);
-    this.collection = collection;
+    abstractions.Composite.call(this, utilities.types.PARAMETERS);
+    this.collection = collection.constructor.fromSequential(collection);  // static so copy it
     this.complexity += collection.complexity;
     return this;
 }
-Parameters.prototype = Object.create(Composite.prototype);
+Parameters.prototype = Object.create(abstractions.Composite.prototype);
 Parameters.prototype.constructor = Parameters;
 exports.Parameters = Parameters;
-
-
-/**
- * This function creates a new parameter list using the specified sequential object
- * as the parameter values.
- * 
- * @param {Array|Object|Collection} sequential The sequential object containing the
- * initial parameters to be used to seed the new parameter list.
- * @returns {Parameters} The new parameter list.
- */
-Parameters.fromSequential = function(sequential) {
-    if (typeof sequential !== 'object') {
-        const type = sequential.constructor.name;
-        throw new Error('BUG: A parameter list cannot be initialized using an object of type: ' + type);
-    }
-    switch (sequential.type) {
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
-        case types.STACK:
-            sequential = collections.List.fromSequential(sequential);
-            break;
-        default:
-            sequential = collections.Catalog.fromSequential(sequential);
-    }
-    const parameters = new Parameters(sequential);
-    return parameters;
-};
 
 
 // PUBLIC METHODS
@@ -108,7 +80,7 @@ Parameters.prototype.toArray = function() {
  */
 Parameters.prototype.getKey = function(index) {
     var key = this.collection.getItem(index);
-    if (this.collection.type === types.CATALOG) {
+    if (this.collection.type === utilities.types.CATALOG) {
         key = key.key;  // the item is an association
     }
     return key;
@@ -123,7 +95,7 @@ Parameters.prototype.getKey = function(index) {
  */
 Parameters.prototype.getValue = function(key) {
     var value;
-    if (this.collection.type === types.CATALOG) {
+    if (this.collection.type === utilities.types.CATALOG) {
         value = this.collection.getValue(key);
         if (value === undefined) {
             value = this.collection.getItem(key).value;

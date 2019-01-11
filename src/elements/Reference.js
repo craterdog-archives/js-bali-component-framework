@@ -15,8 +15,8 @@
  * reference element.
  */
 const URL = require('url').URL;
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -29,14 +29,14 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Reference} The new reference element.
  */
 function Reference(value, parameters) {
-    Element.call(this, types.REFERENCE, parameters);
+    abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     this.value = new URL(value);
     this.setSource(this.toLiteral());
     this.setToComplex();  // references should never be inlined
     return this;
 }
-Reference.prototype = Object.create(Element.prototype);
+Reference.prototype = Object.create(abstractions.Element.prototype);
 Reference.prototype.constructor = Reference;
 exports.Reference = Reference;
 

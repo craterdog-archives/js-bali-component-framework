@@ -13,12 +13,11 @@
  * This collection class implements a stack (LIFO) data structure.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const Collection = require('../abstractions/Collection').Collection;
-const Iterator = require('../utilities/Iterator').Iterator;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
-const Exception = require('../utilities/Exception').Exception;
+
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -39,13 +38,17 @@ Array.prototype.peek = function() {
  * @returns {Stack} The new stack.
  */
 function Stack(parameters) {
-    Collection.call(this, types.STACK, parameters);
-    this.capacity = 1024;
+    abstractions.Collection.call(this, utilities.types.STACK, parameters);
+    var capacity = 1024;  // default capacity
+    if (parameters) {
+        capacity = parameters.getValue(1).toNumber();
+    }
+    this.capacity = capacity;
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Stack.prototype = Object.create(Collection.prototype);
+Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 
@@ -68,22 +71,22 @@ Stack.fromSequential = function(sequential, parameters) {
         throw new Error('BUG: A stack cannot be initialized using an object of type: ' + type);
     }
     switch (sequential.type) {
-        case types.CATALOG:
+        case utilities.types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 stack.addItem(association.value);
             }
             break;
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
+        case utilities.types.LIST:
+        case utilities.types.QUEUE:
+        case utilities.types.SET:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 stack.addItem(iterator.getNext());
             }
             break;
-        case types.STACK:
+        case utilities.types.STACK:
             iterator = sequential.getIterator();
             // a stack's iterator starts at the top, and we need to start at the bottom
             iterator.toEnd();
@@ -139,7 +142,7 @@ Stack.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this stack.
  */
 Stack.prototype.getIterator = function() {
-    const iterator = new Iterator(this.array.slice().reverse());
+    const iterator = new utilities.Iterator(this.array.slice().reverse());
     return iterator;
 };
 
@@ -162,7 +165,7 @@ Stack.prototype.toArray = function() {
  * @throws {Exception} Attempted to add an item to a full stack.
  */
 Stack.prototype.addItem = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
@@ -176,7 +179,7 @@ Stack.prototype.addItem = function(item) {
             $capacity: this.capacity,
             $message: '"The stack has reached its maximum capacity."'
         });
-        throw new Exception(exception);
+        throw new utilities.Exception(exception);
     }
 };
 

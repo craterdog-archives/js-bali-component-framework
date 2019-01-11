@@ -16,11 +16,12 @@
  */
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This constructor creates a new visitor component.
  * 
+ * @constructor
  * @returns {Visitor} The new visitor.
  */
 function Visitor() {
@@ -64,7 +65,7 @@ Visitor.prototype.visitBreakClause = function(tree) {
 // catalog:
 //     association (',' association)* |
 //     EOL (association EOL)* |
-//     ':' /*empty catalog*/
+//     ':' {empty catalog}
 Visitor.prototype.visitCatalog = function(catalog) {
     // delegate to collection
     this.visitCollection(catalog);
@@ -277,7 +278,7 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 // list:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty list*/
+//     {empty list}
 Visitor.prototype.visitList = function(list) {
     // delegate to collection
     this.visitCollection(list);
@@ -346,7 +347,7 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 // procedure:
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
-//     /*empty procedure*/
+//     {empty procedure}
 Visitor.prototype.visitProcedure = function(tree) {
     const iterator = tree.getIterator();
     this.depth++;
@@ -368,7 +369,7 @@ Visitor.prototype.visitPublishClause = function(tree) {
 // queue:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty queue*/
+//     {empty queue}
 Visitor.prototype.visitQueue = function(queue) {
     // delegate to collection
     this.visitCollection(queue);
@@ -443,7 +444,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 // set:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty set*/
+//     {empty set}
 Visitor.prototype.visitSet = function(set) {
     // delegate to collection
     this.visitCollection(set);
@@ -465,7 +466,7 @@ Visitor.prototype.visitSource = function(source) {
 // stack:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty stack*/
+//     {empty stack}
 Visitor.prototype.visitStack = function(stack) {
     // delegate to collection
     this.visitCollection(stack);

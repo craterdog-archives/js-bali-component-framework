@@ -12,8 +12,8 @@
 /*
  * This element class captures the state and methods associated with a pattern element.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -27,12 +27,12 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
-    Element.call(this, types.PATTERN, parameters);
+    abstractions.Element.call(this, utilities.types.PATTERN, parameters);
     this.value = value || new RegExp('\u0000');  // default value
     this.setSource(this.toLiteral());
     return this;
 }
-Pattern.prototype = Object.create(Element.prototype);
+Pattern.prototype = Object.create(abstractions.Element.prototype);
 Pattern.prototype.constructor = Pattern;
 exports.Pattern = Pattern;
 

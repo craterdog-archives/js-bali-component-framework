@@ -16,13 +16,14 @@
 const Comparator = require('./Comparator').Comparator;
 
 
-// PUBLIC FUNCTIONS
+// PUBLIC CONSTRUCTORS
 
 /**
  * This sorter class implements a standard merge sort algorithm.  The collection to be sorted
  * is recursively split into two collections each of which are then sorted and then the two
  * collections are merged back into a sorted collection.
  * 
+ * @constructor
  * @param {Comparator} comparator An optional comparator to be used when comparing items during
  * sorting. If none is specified, the natural comparator will be used.
  */
@@ -33,6 +34,8 @@ function Sorter(comparator) {
 Sorter.prototype.constructor = Sorter;
 exports.Sorter = Sorter;
 
+
+// PUBLIC METHODS
 
 /**
  * This method sorts the specified collection using the natural ordering of its items.

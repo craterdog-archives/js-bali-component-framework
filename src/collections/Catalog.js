@@ -15,11 +15,9 @@
  * multiple keys. The key-value associations are maintained in the order in which they were
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const Collection = require('../abstractions/Collection').Collection;
-const Sorter = require('../utilities/Sorter').Sorter;
-const Association = require('../composites/Association').Association;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const composites = require('../composites');
 const List = require('./List').List;
 
 
@@ -33,14 +31,14 @@ const List = require('./List').List;
  * @returns {Catalog} The new catalog.
  */
 function Catalog(parameters) {
-    Collection.call(this, types.CATALOG, parameters);
+    abstractions.Collection.call(this, utilities.types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
     this.array = [];  // maintains the order of the associations
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += 1;  // account for the ':' in the empty catalog
     return this;
 }
-Catalog.prototype = Object.create(Collection.prototype);
+Catalog.prototype = Object.create(abstractions.Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 
@@ -64,17 +62,17 @@ Catalog.fromSequential = function(sequential, parameters) {
         throw new Error('BUG: A catalog cannot be initialized using an object of type: ' + type);
     }
     switch (sequential.type) {
-        case types.CATALOG:
+        case utilities.types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 catalog.addItem(association);
             }
             break;
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
-        case types.STACK:
+        case utilities.types.LIST:
+        case utilities.types.QUEUE:
+        case utilities.types.SET:
+        case utilities.types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const item = iterator.getNext();
@@ -84,7 +82,7 @@ Catalog.fromSequential = function(sequential, parameters) {
         default:
             if (Array.isArray(sequential)) {
                 sequential.forEach(function(item) {
-                    if (item.type === types.ASSOCIATION) {
+                    if (item.type === utilities.types.ASSOCIATION) {
                         catalog.addItem(item);
                     } else {
                         catalog.setValue(index++, item);
@@ -289,8 +287,8 @@ Catalog.prototype.getValues = function(keys) {
  * @returns {Component} The value previously associated with the key.
  */
 Catalog.prototype.setValue = function(key, value) {
-    key = Composite.asComponent(key);
-    value = Composite.asComponent(value);
+    key = abstractions.Composite.asComponent(key);
+    value = abstractions.Composite.asComponent(value);
     const index = key.toString();
     var association = this.map[index];
     var oldValue;
@@ -300,7 +298,7 @@ Catalog.prototype.setValue = function(key, value) {
         association.setValue(value);
         this.complexity += value.complexity;
     } else {
-        association = new Association(key, value);
+        association = new composites.Association(key, value);
         this.map[index] = association;
         this.array.push(association);
         this.complexity += association.complexity;
@@ -422,7 +420,7 @@ Catalog.prototype.getAssociations = function() {
  * specified, the default natural sorter will be used.
  */
 Catalog.prototype.sortItems = function(sorter) {
-    sorter = sorter || new Sorter();
+    sorter = sorter || new utilities.Sorter();
     sorter.sortCollection(this);
 };
 

@@ -14,16 +14,21 @@
  * by the <code>Parser</code> class and generates a canonical version of
  * the corresponding Bali Document Notation™ source code string.
  */
-const types = require('../abstractions/Types');
+const types = require('./Types');
+const Visitor = require('./Visitor').Visitor;
 
 
-// PUBLIC FUNCTIONS
+// This private constant sets the POSIX end of line character
+const EOL = '\n';
+
+
+// PUBLIC CONSTRUCTORS
 
 /**
- * This class implements a formatter that formats component structures as strings
- * containing Bali Document Notation™ in a canonical way. If an optional indentation
- * string is specified, then each line of the generated source code will be indented
- * using that string.
+ * This class implements a formatter that uses a visitor to format component structures
+ * as strings containing Bali Document Notation™ in a canonical way. If an optional
+ * indentation string is specified, then each line of the generated source code will be
+ * indented using that string.
  * 
  * @constructor
  * @param {String} indentation A blank string that will be prepended to each indented line in
@@ -37,6 +42,8 @@ function Formatter(indentation) {
 Formatter.prototype.constructor = Formatter;
 exports.Formatter = Formatter;
 
+
+// PUBLIC METHODS
 
 /**
  * This method generates the canonical source code for the specified parse tree
@@ -54,20 +61,14 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
-const EOL = '\n';  // POSIX end of line character
-
-
-/* NOTE: This visitor cannot inherit from the Visitor class or it would introduce a circular
- * dependency since the Visitor class inherits from the Component class which uses the
- * FormattingVisitor class.
- */
-
 function FormattingVisitor(indentation) {
+    Visitor.call(this);
     this.indentation = indentation ? indentation : '';
     this.source = '';
     this.depth = 0;
     return this;
 }
+FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
@@ -123,7 +124,7 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 // catalog:
 //     association (',' association)* |
 //     EOL (association EOL)* |
-//     ':' /*empty catalog*/
+//     ':' {empty catalog}
 FormattingVisitor.prototype.visitCatalog = function(catalog) {
     this.source += '[';
     // delegate to collection
@@ -395,7 +396,7 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 // list:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty list*/
+//     {empty list}
 FormattingVisitor.prototype.visitList = function(list) {
     this.source += '[';
     // delegate to collection
@@ -467,7 +468,7 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 // procedure:
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
-//     /*empty procedure*/
+//     {empty procedure}
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     if (!tree.isEmpty()) {
         const iterator = tree.getIterator();
@@ -509,7 +510,7 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 // queue:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty queue*/
+//     {empty queue}
 FormattingVisitor.prototype.visitQueue = function(queue) {
     this.source += '[';
     // delegate to collection
@@ -598,7 +599,7 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 // set:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty set*/
+//     {empty set}
 FormattingVisitor.prototype.visitSet = function(set) {
     this.source += '[';
     // delegate to collection
@@ -624,7 +625,7 @@ FormattingVisitor.prototype.visitSource = function(source) {
 // stack:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
-//     /*empty stack*/
+//     {empty stack}
 FormattingVisitor.prototype.visitStack = function(stack) {
     this.source += '[';
     // delegate to collection

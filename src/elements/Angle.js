@@ -12,9 +12,8 @@
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
-const precision = require('../utilities/Precision');
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -29,24 +28,24 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Angle} The new angle element.
  */
 function Angle(value, parameters) {
-    Element.call(this, types.ANGLE, parameters);
+    abstractions.Element.call(this, utilities.types.ANGLE, parameters);
 
     // analyze the value
     if (value === undefined || value === null) value = 0;  // default value
     if (!isFinite(value)) value = 0;
 
     // lock onto pi if appropriate
-    value = precision.lockOnAngle(value);
+    value = utilities.precision.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
-    const twoPi = precision.product(precision.PI, 2);
+    const twoPi = utilities.precision.product(utilities.precision.PI, 2);
     if (value < -twoPi || value > twoPi) {
-        value = precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
+        value = utilities.precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
     }
-    if (value > precision.PI) {
-        value = precision.difference(value, twoPi);  // make in the range (-pi..pi]
-    } else if (value <= -precision.PI) {
-        value = precision.sum(value, twoPi);  // make in the range (-pi..pi]
+    if (value > utilities.precision.PI) {
+        value = utilities.precision.difference(value, twoPi);  // make in the range (-pi..pi]
+    } else if (value <= -utilities.precision.PI) {
+        value = utilities.precision.sum(value, twoPi);  // make in the range (-pi..pi]
     }
     if (value === -0) value = 0;  // normalize to positive zero
     this.value = value;
@@ -54,7 +53,7 @@ function Angle(value, parameters) {
     this.setSource(this.toLiteral());
     return this;
 }
-Angle.prototype = Object.create(Element.prototype);
+Angle.prototype = Object.create(abstractions.Element.prototype);
 Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
 
@@ -70,12 +69,12 @@ exports.Angle = Angle;
  */
 Angle.fromLiteral = function(literal, parameters) {
     literal = literal.slice(1);  // remove the leading '~'
-    var value = Element.literalToNumber(literal);
+    var value = abstractions.Element.literalToNumber(literal);
     if (parameters) {
         const units = parameters.getValue(1);
         if (units.toString() === '$degrees') {
             // convert degrees to radians
-            value = precision.quotient(precision.product(value, precision.PI), 180);
+            value = utilities.precision.quotient(utilities.precision.product(value, utilities.precision.PI), 180);
         }
     }
     const angle = new Angle(value, parameters);
@@ -98,10 +97,10 @@ Angle.prototype.toLiteral = function(asCanonical) {
         const units = this.parameters.getValue(1);
         if (units.toString() === '$degrees') {
             // convert radians to degrees
-            value = precision.quotient(precision.product(value, 180), precision.PI);
+            value = utilities.precision.quotient(utilities.precision.product(value, 180), utilities.precision.PI);
         }
     }
-    const literal = '~' + Element.numberToLiteral(value);  // add the leading '~'
+    const literal = '~' + abstractions.Element.numberToLiteral(value);  // add the leading '~'
     return literal;
 };
 
@@ -161,7 +160,7 @@ Angle.prototype.toNumber = function() {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
-    return new Angle(precision.difference(angle.value, precision.PI), angle.parameters);
+    return new Angle(utilities.precision.difference(angle.value, utilities.precision.PI), angle.parameters);
 };
 
 
@@ -173,7 +172,7 @@ Angle.inverse = function(angle) {
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle) {
-    return new Angle(precision.difference(precision.PI / 2, angle.value), angle.parameters);
+    return new Angle(utilities.precision.difference(utilities.precision.PI / 2, angle.value), angle.parameters);
 };
 
 
@@ -185,7 +184,7 @@ Angle.complement = function(angle) {
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle) {
-    return new Angle(precision.difference(precision.PI, angle.value), angle.parameters);
+    return new Angle(utilities.precision.difference(utilities.precision.PI, angle.value), angle.parameters);
 };
 
 
@@ -211,7 +210,7 @@ Angle.conjugate = function(angle) {
  */
 Angle.sum = function(firstAngle, secondAngle) {
     // TODO: add check to make sure the parameters for both angles are the same
-    return new Angle(precision.sum(firstAngle.value, secondAngle.value), firstAngle.parameters);
+    return new Angle(utilities.precision.sum(firstAngle.value, secondAngle.value), firstAngle.parameters);
 };
 
 
@@ -225,7 +224,7 @@ Angle.sum = function(firstAngle, secondAngle) {
  */
 Angle.difference = function(firstAngle, secondAngle) {
     // TODO: add check to make sure the parameters for both angles are the same
-    return new Angle(precision.difference(firstAngle.value, secondAngle.value), firstAngle.parameters);
+    return new Angle(utilities.precision.difference(firstAngle.value, secondAngle.value), firstAngle.parameters);
 };
 
 
@@ -238,7 +237,7 @@ Angle.difference = function(firstAngle, secondAngle) {
  * @returns {Angle} The normalized scaled angle.
  */
 Angle.scaled = function(angle, factor) {
-    return new Angle(precision.product(angle.value, factor), angle.parameters);
+    return new Angle(utilities.precision.product(angle.value, factor), angle.parameters);
 };
 
 
@@ -250,7 +249,7 @@ Angle.scaled = function(angle, factor) {
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle) {
-    return precision.sine(angle.value);
+    return utilities.precision.sine(angle.value);
 };
 
 
@@ -261,7 +260,7 @@ Angle.sine = function(angle) {
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle) {
-    return precision.cosine(angle.value);
+    return utilities.precision.cosine(angle.value);
 };
 
 
@@ -272,7 +271,7 @@ Angle.cosine = function(angle) {
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle) {
-    return precision.tangent(angle.value);
+    return utilities.precision.tangent(angle.value);
 };
 
 
@@ -285,7 +284,7 @@ Angle.tangent = function(angle) {
  * @param {Parameters} parameters Optional parameters used to parameterize the resulting angle.
  */
 Angle.arcsine = function(ratio, parameters) {
-    return new Angle(precision.arcsine(ratio), parameters);
+    return new Angle(utilities.precision.arcsine(ratio), parameters);
 };
 
 
@@ -298,7 +297,7 @@ Angle.arcsine = function(ratio, parameters) {
  * @param {Parameters} parameters Optional parameters used to parameterize the resulting angle.
  */
 Angle.arccosine = function(ratio, parameters) {
-    return new Angle(precision.arccosine(ratio), parameters);
+    return new Angle(utilities.precision.arccosine(ratio), parameters);
 };
 
 
@@ -312,5 +311,5 @@ Angle.arccosine = function(ratio, parameters) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, parameters) {
-    return new Angle(precision.arctangent(opposite, adjacent), parameters);
+    return new Angle(utilities.precision.arctangent(opposite, adjacent), parameters);
 };

@@ -14,8 +14,8 @@
  * This element class captures the state and methods associated with a
  * version element.
  */
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -28,7 +28,7 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Symbol} The new version element.
  */
 function Version(value, parameters) {
-    Element.call(this, types.VERSION, parameters);
+    abstractions.Element.call(this, utilities.types.VERSION, parameters);
     this.value = value || [1];  // default value is v1
     if (this.value.indexOf(0) >= 0) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
@@ -36,7 +36,7 @@ function Version(value, parameters) {
     this.setSource(this.toLiteral());
     return this;
 }
-Version.prototype = Object.create(Element.prototype);
+Version.prototype = Object.create(abstractions.Element.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
 

@@ -15,15 +15,14 @@
  */
 
 
-// PUBLIC FUNCTIONS
-
-/*
- * This private constant sets the line width for formatting encoded byte strings.
- */
+// This private constant sets the line width for formatting encoded byte strings.
 const LINE_WIDTH = 60;
 
-const EOL = '\n';  // POSIX end of line character
+// This private constant sets the POSIX end of line character
+const EOL = '\n';
 
+
+// PUBLIC FUNCTIONS
 
 /**
  * This function returns a formatted version of a string with LINE_WIDTH characters per line.

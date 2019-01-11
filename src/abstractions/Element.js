@@ -12,7 +12,7 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
-const precision = require('../utilities/Precision');
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
 
 
@@ -78,11 +78,11 @@ Element.prototype.setSource = function(source) {
 Element.literalToNumber = function(literal) {
     switch (literal) {
         case 'e':
-            return precision.E;
+            return utilities.precision.E;
         case 'pi':
-            return precision.PI;
+            return utilities.precision.PI;
         case 'phi':
-            return precision.PHI;
+            return utilities.precision.PHI;
         default:
             return Number(literal);
     }

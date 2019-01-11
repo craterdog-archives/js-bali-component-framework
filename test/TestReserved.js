@@ -12,6 +12,7 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const elements = require('../src/elements');
 
+
 describe('Bali Component Framework™', function() {
 
     describe('Test reserved symbol constructors', function() {
@@ -20,7 +21,7 @@ describe('Bali Component Framework™', function() {
             expect(elements.Reserved.fromLiteral('$$foo').toLiteral()).to.equal('$$foo');
         });
 
-        it('should throw an exception for an empty reserved', function() {
+        it('should throw an exception for an empty reserved symbol', function() {
             expect(
                 function() {
                     const empty = new elements.Reserved();

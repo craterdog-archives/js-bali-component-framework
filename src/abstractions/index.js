@@ -9,7 +9,6 @@
  ************************************************************************/
 'use strict';
 
-exports.types = require('./Types');
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;
 exports.Composite = require('./Composite').Composite;

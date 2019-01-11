@@ -13,10 +13,8 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-const random = require('../utilities/Random');
-const codex = require('../utilities/Codex');
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -31,7 +29,7 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Binary} The new binary string.
  */
 function Binary(value, parameters) {
-    Element.call(this, types.BINARY, parameters);
+    abstractions.Element.call(this, utilities.types.BINARY, parameters);
 
     // analyze the value
     if (value === undefined || value === null) value = Buffer.alloc(0);  // default value
@@ -40,7 +38,7 @@ function Binary(value, parameters) {
     this.setSource(this.toLiteral());
     return this;
 }
-Binary.prototype = Object.create(Element.prototype);
+Binary.prototype = Object.create(abstractions.Element.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 
@@ -62,16 +60,16 @@ Binary.fromLiteral = function(literal, parameters) {
     }
     switch (base) {
         case 2:
-            value = codex.base2Decode(value);
+            value = utilities.codex.base2Decode(value);
             break;
         case 16:
-            value = codex.base16Decode(value);
+            value = utilities.codex.base16Decode(value);
             break;
         case 32:
-            value = codex.base32Decode(value);
+            value = utilities.codex.base32Decode(value);
             break;
         case 64:
-            value = codex.base64Decode(value);
+            value = utilities.codex.base64Decode(value);
             break;
         default:
             throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
@@ -98,16 +96,16 @@ Binary.prototype.toLiteral = function(asCanonical) {
     }
     switch (base) {
         case 2:
-            literal = codex.base2Encode(this.value);
+            literal = utilities.codex.base2Encode(this.value);
             break;
         case 16:
-            literal = codex.base16Encode(this.value);
+            literal = utilities.codex.base16Encode(this.value);
             break;
         case 32:
-            literal = codex.base32Encode(this.value);
+            literal = utilities.codex.base32Encode(this.value);
             break;
         case 64:
-            literal = codex.base64Encode(this.value);
+            literal = utilities.codex.base64Encode(this.value);
             break;
         default:
             throw new Error('BUG: An invalid binary base value was specified in the parameters: ' + base);
@@ -156,7 +154,7 @@ Binary.prototype.getIterator = function() {
  * @returns {String} The encoded binary string.
  */
 Binary.prototype.toBase2 = function(indentation) {
-    return "'" + codex.base2Encode(this.value, indentation) + "'";
+    return "'" + utilities.codex.base2Encode(this.value, indentation) + "'";
 };
 
 
@@ -168,7 +166,7 @@ Binary.prototype.toBase2 = function(indentation) {
  * @returns {String} The encoded binary string.
  */
 Binary.prototype.toBase16 = function(indentation) {
-    return "'" + codex.base16Encode(this.value, indentation) + "'";
+    return "'" + utilities.codex.base16Encode(this.value, indentation) + "'";
 };
 
 
@@ -180,7 +178,7 @@ Binary.prototype.toBase16 = function(indentation) {
  * @returns {String} The encoded binary string.
  */
 Binary.prototype.toBase32 = function(indentation) {
-    return "'" + codex.base32Encode(this.value, indentation) + "'";
+    return "'" + utilities.codex.base32Encode(this.value, indentation) + "'";
 };
 
 
@@ -192,7 +190,7 @@ Binary.prototype.toBase32 = function(indentation) {
  * @returns {String} The encoded binary string.
  */
 Binary.prototype.toBase64 = function(indentation) {
-    return "'" + codex.base64Encode(this.value, indentation) + "'";
+    return "'" + utilities.codex.base64Encode(this.value, indentation) + "'";
 };
 
 
@@ -205,7 +203,7 @@ Binary.prototype.toBase64 = function(indentation) {
  * @returns {Binary} A new binary string containing the specified number of random bytes.
  */
 Binary.random = function(numberOfBytes) {
-    const buffer = random.bytes(numberOfBytes);
+    const buffer = utilities.random.bytes(numberOfBytes);
     return new Binary(buffer);
 };
 

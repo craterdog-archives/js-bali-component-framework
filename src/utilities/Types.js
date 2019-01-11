@@ -15,7 +15,7 @@
  */
 
 
-// PRIVATE ATTRIBUTES
+// PRIVATE CONSTANTS
 
 const PROTOCOL = 'v1';
 const VERSION = 'v1';

@@ -9,17 +9,18 @@
  ************************************************************************/
 'use strict';
 
+exports.types = require('./Types');
+exports.codex = require('./Codex');
+exports.precision = require('./Precision');
+exports.random = require('./Random');
+
 exports.Comparator = require('./Comparator').Comparator;
 exports.Exception = require('./Exception').Exception;
 exports.Formatter = require('./Formatter').Formatter;
 exports.Iterator = require('./Iterator').Iterator;
-exports.Parser = require('./Parser').Parser;
+// NOTE: Can't include the Parser module since it depends on all components and that
+//       would result in serious circular dependencies!
 exports.Sorter = require('./Sorter').Sorter;
 exports.Visitor = require('./Visitor').Visitor;
 
-exports.precision = require('./Precision');
-exports.codex = require('./Codex');
-exports.random = require('./Random');
 exports.formatter = new exports.Formatter();
-exports.parser = new exports.Parser(false);
-

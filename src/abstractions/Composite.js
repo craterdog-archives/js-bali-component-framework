@@ -12,11 +12,8 @@
 /**
  * This abstract class defines the methods that all composite components must support.
  */
-const types = require('./Types');
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const Iterator = require('../utilities/Iterator').Iterator;
-const precision = require('../utilities/Precision');
-const codex = require('../utilities/Codex');
 const elements = require('../elements');
 
 
@@ -131,7 +128,7 @@ Composite.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this composite component.
  */
 Composite.prototype.getIterator = function() {
-    const iterator = new Iterator(this.toArray());
+    const iterator = new utilities.Iterator(this.toArray());
     return iterator;
 };
 

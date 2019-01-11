@@ -13,10 +13,8 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
-const precision = require('../utilities/Precision');
-const random = require('../utilities/Random');
-const types = require('../abstractions/Types');
-const Element = require('../abstractions/Element').Element;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC CONSTRUCTORS
@@ -29,7 +27,7 @@ const Element = require('../abstractions/Element').Element;
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters) {
-    Element.call(this, types.PROBABILITY, parameters);
+    abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
     if (value === undefined || value === null) value = false;  // default value
     if (typeof value === 'boolean') value = value ? 1 : 0;
     if (value < 0 || value > 1) {
@@ -40,7 +38,7 @@ function Probability(value, parameters) {
     return this;
 
 }
-Probability.prototype = Object.create(Element.prototype);
+Probability.prototype = Object.create(abstractions.Element.prototype);
 Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
 
@@ -131,7 +129,7 @@ Probability.TRUE = new Probability('true');
  * @returns {Probability} A new random probability.
  */
 Probability.random = function() {
-    const probability = random.probability();
+    const probability = utilities.random.probability();
     return new Probability(probability);
 };
 
@@ -146,7 +144,7 @@ Probability.random = function() {
  * @returns {Boolean} The resulting probability.
  */
 Probability.coinToss = function(weighting) {
-    const probability = random.probability();
+    const probability = utilities.random.probability();
     return probability < weighting;
 };
 
@@ -163,7 +161,7 @@ Probability.coinToss = function(weighting) {
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability) {
-    const p = precision.difference(1, probability.value);
+    const p = utilities.precision.difference(1, probability.value);
     const result = new Probability(p);
     return result;
 };
@@ -184,7 +182,7 @@ Probability.not = function(probability) {
 Probability.and = function(probability1, probability2) {
     const p1 = probability1.value;
     const p2 = probability2.value;
-    const p = precision.product(p1, p2);
+    const p = utilities.precision.product(p1, p2);
     const result = new Probability(p);
     return result;
 };
@@ -206,7 +204,7 @@ Probability.and = function(probability1, probability2) {
 Probability.sans = function(probability1, probability2) {
     const p1 = probability1.value;
     const p2 = probability2.value;
-    const p = precision.product(p1, precision.difference(1, p2));
+    const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
     const result = new Probability(p);
     return result;
 };
@@ -229,7 +227,7 @@ Probability.sans = function(probability1, probability2) {
 Probability.or = function(probability1, probability2) {
     const p1 = probability1.value;
     const p2 = probability2.value;
-    const p = precision.sum(p1, p2, precision.product(-p1, p2));
+    const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
     const result = new Probability(p);
     return result;
 };
@@ -252,7 +250,7 @@ Probability.or = function(probability1, probability2) {
 Probability.xor = function(probability1, probability2) {
     const p1 = probability1.value;
     const p2 = probability2.value;
-    const p = precision.sum(p1, p2, precision.product(-2, p1, p2));
+    const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));
     const result = new Probability(p);
     return result;
 };

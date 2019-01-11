@@ -10,7 +10,6 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const abstractions = require('../src/abstractions');
 const composites = require('../src/composites');
 const collections = require('../src/collections');
 
@@ -218,7 +217,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should return the correct user defined type', function() {
-            const parameters = composites.Parameters.fromSequential(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']);
+            const parameters = new composites.Parameters(collections.List.fromSequential(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']));
             type = new collections.Catalog(parameters).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>');
         });

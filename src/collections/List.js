@@ -23,11 +23,9 @@
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const Collection = require('../abstractions/Collection').Collection;
-const Sorter = require('../utilities/Sorter').Sorter;
-const random = require('../utilities/Random');
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const composites = require('../composites');
 
 
 // PUBLIC CONSTRUCTORS
@@ -40,12 +38,12 @@ const random = require('../utilities/Random');
  * @returns {List} The new list.
  */
 function List(parameters) {
-    Collection.call(this, types.LIST, parameters);
+    abstractions.Collection.call(this, utilities.types.LIST, parameters);
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-List.prototype = Object.create(Collection.prototype);
+List.prototype = Object.create(abstractions.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
 
@@ -68,17 +66,17 @@ List.fromSequential = function(sequential, parameters) {
         throw new Error('BUG: A list cannot be initialized using an object of type: ' + type);
     }
     switch (sequential.type) {
-        case types.CATALOG:
+        case utilities.types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 list.addItem(association.value);
             }
             break;
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
-        case types.STACK:
+        case utilities.types.LIST:
+        case utilities.types.QUEUE:
+        case utilities.types.SET:
+        case utilities.types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 list.addItem(iterator.getNext());
@@ -174,7 +172,7 @@ List.prototype.getItem = function(index) {
  * @returns The existing item that was at the specified index.
  */
 List.prototype.setItem = function(index, item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
     const oldItem = this.array[index];
     this.array[index] = item;
@@ -190,7 +188,7 @@ List.prototype.setItem = function(index, item) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 List.prototype.addItem = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     this.array.push(item);
     this.complexity += item.complexity;
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
@@ -206,7 +204,7 @@ List.prototype.addItem = function(item) {
  * @param {Component} item The new item to be inserted into this list.
  */
 List.prototype.insertItem = function(index, item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     index = this.normalizeIndex(index);
     index--;  // convert to javascript zero based indexing
     this.array.splice(index, 0, item);
@@ -289,7 +287,7 @@ List.prototype.removeAll = function() {
  * specified, the default natural sorter will be used.
  */
 List.prototype.sortItems = function(sorter) {
-    sorter = sorter || new Sorter();
+    sorter = sorter || new utilities.Sorter();
     sorter.sortCollection(this);
 };
 
@@ -310,7 +308,7 @@ List.prototype.reverseItems = function() {
 List.prototype.shuffleItems = function() {
     const size = this.getSize();
     for (var index = size; index > 1; index--) {
-        const randomIndex = random.index(index);  // in range [1..index] ordinal indexing
+        const randomIndex = utilities.random.index(index);  // in range [1..index] ordinal indexing
         const item = this.getItem(index);
         this.setItem(index, this.getItem(randomIndex));
         this.setItem(randomIndex, item);

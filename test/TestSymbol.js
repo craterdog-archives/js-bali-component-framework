@@ -12,6 +12,7 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const elements = require('../src/elements');
 
+
 describe('Bali Component Framework™', function() {
 
     describe('Test symbol constructors', function() {

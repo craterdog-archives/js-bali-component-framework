@@ -14,11 +14,10 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
-const types = require('../abstractions/Types');
-const Composite = require('../abstractions/Composite').Composite;
-const Collection = require('../abstractions/Collection').Collection;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
-const Exception = require('../utilities/Exception').Exception;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -39,13 +38,17 @@ Array.prototype.peek = function() {
  * @returns {Queue} The new queue.
  */
 function Queue(parameters) {
-    Collection.call(this, types.QUEUE, parameters);
-    this.capacity = 1024;
+    abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
+    var capacity = 1024;  // default capacity
+    if (parameters) {
+        capacity = parameters.getValue(1).toNumber();
+    }
+    this.capacity = capacity;
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
-Queue.prototype = Object.create(Collection.prototype);
+Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;
 
@@ -68,17 +71,17 @@ Queue.fromSequential = function(sequential, parameters) {
         throw new Error('BUG: A queue cannot be initialized using an object of type: ' + type);
     }
     switch (sequential.type) {
-        case types.CATALOG:
+        case utilities.types.CATALOG:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
                 queue.addItem(association.value);
             }
             break;
-        case types.LIST:
-        case types.QUEUE:
-        case types.SET:
-        case types.STACK:
+        case utilities.types.LIST:
+        case utilities.types.QUEUE:
+        case utilities.types.SET:
+        case utilities.types.STACK:
             iterator = sequential.getIterator();
             while (iterator.hasNext()) {
                 queue.addItem(iterator.getNext());
@@ -141,7 +144,7 @@ Queue.prototype.toArray = function() {
  * @throws {Exception} Attempted to add an item to a full queue.
  */
 Queue.prototype.addItem = function(item) {
-    item = Composite.asComponent(item);
+    item = abstractions.Composite.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
@@ -155,7 +158,7 @@ Queue.prototype.addItem = function(item) {
         $capacity: this.capacity,
         $message: '"The queue has reached its maximum capacity."'
     });
-    throw new Exception(exception);
+    throw new utilities.Exception(exception);
 };
 
 
