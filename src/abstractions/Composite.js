@@ -54,63 +54,31 @@ Composite.asComponent = function(value) {
     switch (typeof value) {
         case 'string':
             if (value.startsWith('~P')) { // Duration must come before Angle
-                component = new elements.Duration(value);
+                component = elements.Duration.fromLiteral(value);
             } else if (value.startsWith('~')) {
-                value = value.slice(1);  // remove leading '~'
-                switch (value) {
-                    case 'e':
-                        value = precision.E;
-                        break;
-                    case 'pi':
-                        value = precision.PI;
-                        break;
-                    case 'phi':
-                        value = precision.PHI;
-                        break;
-                    default:
-                        value = Number(value);
-                }
-                component = new elements.Angle(value);
+                component = elements.Angle.fromLiteral(value);
             } else if (value.startsWith("'")) {
-                value = value.slice(1, -1);  // strip off the "'" delimiters
-                value = value.replace(/\s/g, '');  // strip out all whitespace
-                value = codex.base32Decode(value);
-                component = new elements.Binary(value);
+                component = elements.Binary.fromLiteral(value);
             } else if (value.match(/^<-?[1-9]/)) {
-                value = value.slice(1, -1);  // strip off the '<' and '>' delimiters
-                component = new elements.Moment(value);
-            } else if (value === 'none' || value === 'any') {
-                component = new elements.Pattern(value);
-            } else if (value.match(/%$/)) {
-                value = Number(value.slice(0, -1));  // strip off the trailing '%'
-                component = new elements.Percent(value);
-            } else if (value === 'false') {
-                component = new elements.Probability(0);
-            } else if (value === 'true') {
-                component = new elements.Probability(1);
-            } else if (value.match(/^</)) {
-                value = value.slice(1, -1);  // strip off the '<' and '>' delimiters
-                component = new elements.Reference(value);
+                component = elements.Moment.fromLiteral(value);
+            } else if (value === 'none' || value === 'any' || value.endsWith('"?')) {
+                component = elements.Pattern.fromLiteral(value);
+            } else if (value.endsWith('%')) {
+                component = elements.Percent.fromLiteral(value);
+            } else if (value === 'false' || value === 'true' || value.startsWith('.')) {
+                component = elements.Probability.fromLiteral(value);
+            } else if (value.startsWith('<')) {
+                component = elements.Reference.fromLiteral(value);
             } else if (value.startsWith('$$')) {  // Reserved must come before Symbol
-                value = value.slice(2);  // strip off the leading '$$'
-                component = new elements.Reserved(value);
+                component = elements.Reserved.fromLiteral(value);
             } else if (value.startsWith('$')) {
-                value = value.slice(1);  // strip off the leading '$'
-                component = new elements.Symbol(value);
+                component = elements.Symbol.fromLiteral(value);
             } else if (value.startsWith('#')) {
-                value = value.slice(1);  // strip off the leading '#'
-                component = new elements.Tag(value);
+                component = elements.Tag.fromLiteral(value);
             } else if (value.startsWith('"')) {
-                value = value.slice(1, -1);  // strip off the '"' and '"' delimiters
-                component = new elements.Text(value);
+                component = elements.Text.fromLiteral(value);
             } else if (value.match(/^v[1-9]/)) {
-                value = value.slice(1);  // strip off the leading 'v'
-                const levels = value.split('.');  // split into level strings
-                value = [];
-                levels.forEach(function(level) {
-                    value.push(Number(level));
-                });
-                component = new elements.Version(value);
+                component = elements.Version.fromLiteral(value);
             } else {  // must come last
                 component = new elements.Text(value);
             }
