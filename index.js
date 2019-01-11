@@ -66,3 +66,6 @@ exports.Queue = collections.Stack;
 exports.Set = collections.Set;
 exports.Stack = collections.Stack;
 
+// PARSER
+exports.Parser = require('./src/utilities/Parser').Parser;
+exports.parser = new exports.Parser(false);

@@ -14,7 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const elements = require('../elements');
+const elements = require('../elements');  // circular dependency!!
 
 
 // PUBLIC FUNCTIONS
