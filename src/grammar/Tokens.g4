@@ -39,12 +39,12 @@ VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
-REGEX: TEXT '?';
-
 // a text block takes precedence over a regular text string
-TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
+TEXT_BLOCK: '"' EOL UNICODE*? EOL SPACE* '"';
 
 TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
+
+REGEX: TEXT '?';
 
 SYMBOL: '$' IDENTIFIER;
 
@@ -57,7 +57,10 @@ EOL: '\r'? '\n';
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
 
 fragment
-CHARACTER: .;
+CHARACTER: ~["\r\n];
+
+fragment
+UNICODE: .;
 
 fragment
 NUMBER: '1'..'9' ('0'..'9')*;
@@ -103,6 +106,6 @@ BASE32: '0'..'9' | 'A'..'D' | 'F'..'H' | 'J'..'N' | 'P'..'T' | 'V'..'Z';
 fragment
 BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/';
 
-// replace with actual characters when read
+// replaced with actual characters when read
 fragment
-ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '`' | '\\');
+ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '\\');

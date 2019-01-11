@@ -29,10 +29,10 @@ const antlr = require('antlr4');
 const ErrorStrategy = require('antlr4/error/ErrorStrategy');
 const grammar = require('../grammar');
 const types = require('../abstractions/Types');
-const Component = require('../abstractions/Component').Component;
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
+const Exception = require('../utilities/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -429,7 +429,7 @@ ParsingVisitor.prototype.visitFunxtion = function(ctx) {
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    const tree = new composites.Tree(types.HANDLE_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.HANDLE_CLAUSE, types.IS_COMPLEX);
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -442,7 +442,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    const tree = new composites.Tree(types.IF_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.IF_CLAUSE, types.IS_COMPLEX);
     const expressions = ctx.expression();
     const blocks = ctx.block();
     const hasElseBlock = blocks.length > expressions.length;
@@ -752,7 +752,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    const tree = new composites.Tree(types.SELECT_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.SELECT_CLAUSE, types.IS_COMPLEX);
     var expressions = ctx.expression();
     const selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -893,7 +893,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    const tree = new composites.Tree(types.WHILE_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.WHILE_CLAUSE, types.IS_COMPLEX);
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -904,7 +904,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    const tree = new composites.Tree(types.WITH_CLAUSE, Component.IS_COMPLEX);
+    const tree = new composites.Tree(types.WITH_CLAUSE, types.IS_COMPLEX);
     const symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);
@@ -1049,10 +1049,10 @@ function logMessage(recognizer, message) {
     const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
     const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
     if (lineNumber > 1) {
-        console.error(lines[lineNumber - 2]);
+        console.error('[' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2]);
     }
-    console.error(lines[lineNumber - 1]);
-    var line = '';
+    console.error('[' + lineNumber + ']: ' + lines[lineNumber - 1]);
+    var line = '[' + lineNumber + ']: ';
     for (var i = 0; i < columnNumber; i++) {
         line += ' ';
     }
@@ -1062,5 +1062,5 @@ function logMessage(recognizer, message) {
         line += '^';
     }
     console.error(line);
-    if (lineNumber < lines.length) console.error(lines[lineNumber]);
+    if (lineNumber < lines.length) console.error('[' + (lineNumber + 1) + ']: ' + lines[lineNumber]);
 }

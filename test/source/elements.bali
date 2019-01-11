@@ -54,7 +54,11 @@
         (-1, phi i)
         -1
     ]
-    $patterns: [none, any]
+    $patterns: [
+        none
+        "foobarbaz.*"?
+        any
+    ]
     $percents: [
         0%
         0.1%
@@ -79,6 +83,7 @@
     $texts: [
         "This is a single line text string."
         "This is a string with \"quotes\" in it."
+        "This is a literal text string\ncontaining an \` and spanning multiple lines."
         "
             Dear {party[guest]},
             
