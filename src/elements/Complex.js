@@ -139,7 +139,7 @@ Complex.fromLiteral = function(literal, parameters) {
  * @returns {String} The corresponding literal string representation.
  */
 Complex.prototype.toLiteral = function(asCanonical) {
-    if (this.parameters) {
+    if (!asCanonical && this.parameters) {
         const format = this.parameters.getValue('$format');
         if (format && format.toString() === '$polar') {
             return this.toPolar();

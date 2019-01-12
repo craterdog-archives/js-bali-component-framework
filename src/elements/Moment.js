@@ -87,7 +87,7 @@ Moment.fromLiteral = function(literal, parameters) {
  * default format.
  * @returns {String} The corresponding literal string representation.
  */
-Moment.prototype.toLiteral = function() {
+Moment.prototype.toLiteral = function(asCanonical) {
     const value = this.value.format(this.format);
     const literal = '<' + value + '>';  // add the '<' and '>' delimiters
     return literal;
