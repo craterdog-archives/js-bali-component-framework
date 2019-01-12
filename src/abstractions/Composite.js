@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Element = require('./Element').Element;
 
 
 // PUBLIC FUNCTIONS
@@ -92,7 +93,7 @@ Composite.asComponent = function(value) {
                 component = value;
             } else {
                 throw new Error('BUG: Only primitive JS types (strings, numbers, and booleans) can be converted to components: ' + value);
-            }
+        }
     }
     return component;
 };
