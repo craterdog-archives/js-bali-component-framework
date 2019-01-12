@@ -140,7 +140,7 @@ Complex.fromLiteral = function(literal, parameters) {
  */
 Complex.prototype.toLiteral = function(asCanonical) {
     if (this.parameters) {
-        const format = this.parameters.getValue('$format', 1);
+        const format = this.parameters.getValue('$format');
         if (format && format.toString() === '$polar') {
             return this.toPolar();
         }

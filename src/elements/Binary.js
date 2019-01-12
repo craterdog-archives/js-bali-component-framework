@@ -56,7 +56,7 @@ Binary.fromLiteral = function(literal, parameters) {
     var value = literal.slice(1, -1);  // strip off the "'" delimiters
     var base = 32;  // default value
     if (parameters) {
-        base = parameters.getValue('$base', 1).toNumber();
+        base = parameters.getValue('$base').toNumber();
     }
     switch (base) {
         case 2:
@@ -92,7 +92,7 @@ Binary.prototype.toLiteral = function(asCanonical) {
     var literal;
     var base = 32;  // default value
     if (!asCanonical && this.parameters) {
-        base = this.parameters.getValue('$base', 1).toNumber();
+        base = this.parameters.getValue('$base').toNumber();
     }
     switch (base) {
         case 2:

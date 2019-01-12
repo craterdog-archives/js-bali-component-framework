@@ -46,7 +46,7 @@ Component.prototype.getType = function() {
     var reference;
     var type = this.type;
     if (type === utilities.types.CATALOG && this.isParameterized()) {
-        const value = this.parameters.getValue('$type', 1);
+        const value = this.parameters.getValue('$type');
         if (value && value.type === utilities.types.SYMBOL) {
             // the value is a symbol for a system type
             reference = utilities.types.typeBySymbol(value.toLiteral());

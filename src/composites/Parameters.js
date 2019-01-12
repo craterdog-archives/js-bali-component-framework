@@ -72,6 +72,22 @@ Parameters.prototype.toArray = function() {
 
 
 /**
+ * This method returns the parameter value associated with the specified index from
+ * the parameter list.
+ *
+ * @param {Number} index The index for the parameter value.
+ * @returns {Component} The parameter value associated with the index.
+ */
+Parameters.prototype.getParameter = function(index) {
+    var parameter = this.collection.getItem(index);
+    if (parameter.type === utilities.types.ASSOCIATION) {
+        parameter = parameter.value;
+    }
+    return parameter;
+};
+
+
+/**
  * This method returns the parameter value associated with the specified key or index
  * from the parameter list.
  *
@@ -81,6 +97,7 @@ Parameters.prototype.toArray = function() {
  */
 Parameters.prototype.getValue = function(key, index) {
     var value;
+    index = index || 1;  // default is the first parameter
     if (this.collection.type === utilities.types.CATALOG) {
         value = this.collection.getValue(key);
     } else {
