@@ -47,7 +47,11 @@
             none: none
             #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN
             $foo: $bar
-            <2017-04-01>("Hong Kong"): $date
+            <2017-04-01>(
+                $city: "Hong Kong"
+                $region: "Guangdong"
+                $country: "China"
+            ): $date
             <https://craterdog.com/>: <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"

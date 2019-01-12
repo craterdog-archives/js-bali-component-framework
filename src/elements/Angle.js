@@ -71,8 +71,8 @@ Angle.fromLiteral = function(literal, parameters) {
     literal = literal.slice(1);  // remove the leading '~'
     var value = abstractions.Element.literalToNumber(literal);
     if (parameters) {
-        const units = parameters.getValue(1);
-        if (units.toString() === '$degrees') {
+        const units = parameters.getValue('$units', 1);
+        if (units && units.toString() === '$degrees') {
             // convert degrees to radians
             value = utilities.precision.quotient(utilities.precision.product(value, utilities.precision.PI), 180);
         }
@@ -94,8 +94,8 @@ Angle.fromLiteral = function(literal, parameters) {
 Angle.prototype.toLiteral = function(asCanonical) {
     var value = this.value;
     if (!asCanonical && this.parameters) {
-        const units = this.parameters.getValue(1);
-        if (units.toString() === '$degrees') {
+        const units = this.parameters.getValue('$units', 1);
+        if (units && units.toString() === '$degrees') {
             // convert radians to degrees
             value = utilities.precision.quotient(utilities.precision.product(value, 180), utilities.precision.PI);
         }

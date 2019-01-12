@@ -72,36 +72,19 @@ Parameters.prototype.toArray = function() {
 
 
 /**
- * This method returns the key for the parameter with the specified index in the
- * parameter list.
+ * This method returns the parameter value associated with the specified key or index
+ * from the parameter list.
  *
- * @param {Number} index The index for the parameter with the desired key.
- * @returns {Component} The key for the parameter associated with the index.
+ * @param {String|Component} key The key for the desired parameter value.
+ * @param {Number} index The index for the parameter value if no matching key is found.
+ * @returns {Component} The parameter value associated with the key (or index).
  */
-Parameters.prototype.getKey = function(index) {
-    var key = this.collection.getItem(index);
-    if (this.collection.type === utilities.types.CATALOG) {
-        key = key.key;  // the item is an association
-    }
-    return key;
-};
-
-
-/**
- * This method returns the value associated with the specified key from the parameter list.
- *
- * @param {String|Number|Boolean|Component} key The key (or index) for the desired parameter.
- * @returns {Component} The parameter value associated with the key.
- */
-Parameters.prototype.getValue = function(key) {
+Parameters.prototype.getValue = function(key, index) {
     var value;
     if (this.collection.type === utilities.types.CATALOG) {
         value = this.collection.getValue(key);
-        if (value === undefined) {
-            value = this.collection.getItem(key).value;
-        }
     } else {
-        value = this.collection.getItem(key);
+        value = this.collection.getItem(index);
     }
     return value;
 };

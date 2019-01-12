@@ -91,7 +91,7 @@ Catalog.fromSequential = function(sequential, parameters) {
             } else {
                 const keys = Object.keys(sequential);
                 keys.forEach(function(key) {
-                    catalog.setValue('$' + key, sequential[key]);
+                    catalog.setValue(key, sequential[key]);
                 });
             }
     }

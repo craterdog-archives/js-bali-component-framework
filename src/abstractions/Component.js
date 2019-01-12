@@ -43,18 +43,22 @@ exports.Component = Component;
  * @returns {String} A string containing a type reference for this component.
  */
 Component.prototype.getType = function() {
+    var reference;
     var type = this.type;
     if (type === utilities.types.CATALOG && this.isParameterized()) {
-        type = utilities.types.typeBySymbol(this.parameters.getValue(1));
-    }
-    if (type > 0) {
-        // system type
-        type = utilities.types.typeReference(type);
+        const value = this.parameters.getValue('$type', 1);
+        if (value && value.type === utilities.types.SYMBOL) {
+            // the value is a symbol for a system type
+            reference = utilities.types.typeBySymbol(value.toLiteral());
+        } else {
+            // the value is a reference to a user defined type
+            reference = value.toLiteral();
+        }
     } else {
-        // user defined type
-        type = this.parameters.getValue(1).toString();
+        // the type is a system type
+        reference = utilities.types.typeReference(type);
     }
-    return type;
+    return reference;
 };
 
 

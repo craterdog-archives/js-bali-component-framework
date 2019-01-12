@@ -39,11 +39,13 @@ Array.prototype.peek = function() {
  */
 function Queue(parameters) {
     abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
-    var capacity = 1024;  // default capacity
+    this.capacity = 1024;  // default capacity
     if (parameters) {
-        capacity = parameters.getValue(1).toNumber();
+        const value = parameters.getValue('$capacity', 2);
+        if (value) {
+            this.capacity = value.toNumber();
+        }
     }
-    this.capacity = capacity;
     this.array = [];
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;

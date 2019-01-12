@@ -15,15 +15,15 @@ const collections = require('../src/collections');
 
 describe('Bali Component Framework™', function() {
     const object = {
-        'beta': 1,
-        'gamma': 2,
-        'delta': 3,
-        'alpha': 4,
-        'epsilon': 5
+        $beta: 1,
+        $gamma: 2,
+        $delta: 3,
+        $alpha: 4,
+        $epsilon: 5
     };
     const array = Object.keys(object);
     array.forEach(function(item, index) {
-        this[index] = '$' + item;
+        this[index] = item;
     }, array);
     const set = collections.Set.fromSequential(array);
 

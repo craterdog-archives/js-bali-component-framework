@@ -139,11 +139,11 @@ describe('Bali Component Framework™', function() {
 
         it('should create a catalog from an object', function() {
             const object = {
-                alpha: '"alpha"',
-                beta: '"beta"',
-                delta: '"delta"',
-                epsilon: '"epsilon"',
-                gamma: '"gamma"'
+                $alpha: '"alpha"',
+                $beta: '"beta"',
+                $delta: '"delta"',
+                $epsilon: '"epsilon"',
+                $gamma: '"gamma"'
             };
             const catalog = collections.Catalog.fromSequential(object);
             var size = catalog.getSize();
