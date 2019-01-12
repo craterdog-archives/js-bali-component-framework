@@ -88,12 +88,8 @@ Composite.asComponent = function(value) {
             component = new elements.Number(value);
             break;
         default:
-            if (value instanceof Component) {
-                // leave it since it is already a component
-                component = value;
-            } else {
-                throw new Error('BUG: Only primitive JS types (strings, numbers, and booleans) can be converted to components: ' + value);
-        }
+            // leave it since it is already a component
+            component = value;
     }
     return component;
 };
