@@ -14,7 +14,6 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const Element = require('./Element').Element;
 
 
 // PUBLIC FUNCTIONS

@@ -10,6 +10,6 @@
 'use strict';
 
 exports.DocumentLexer = require('./DocumentLexer').DocumentLexer;
-exports.DocumentParser = require('./DocumentParser').DocumentParser;
-exports.DocumentVisitor = require('./DocumentVisitor').DocumentVisitor;
 exports.DocumentListener = require('./DocumentListener').DocumentListener;
+exports.DocumentVisitor = require('./DocumentVisitor').DocumentVisitor;
+exports.DocumentParser = require('./DocumentParser').DocumentParser;  // depends on DocumentListener and DocumentVisitor

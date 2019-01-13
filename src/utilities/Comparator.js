@@ -13,6 +13,7 @@
  * This component class implements a comparator that can be used to compare any two components
  * for their natural ordering.
  */
+const types = require('./Types');
 
 
 // PUBLIC CONSTRUCTORS
@@ -67,10 +68,10 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
     if (typeof firstComponent === 'number' && typeof secondComponent === 'number') {
         return Math.sign(firstComponent - secondComponent);
     }
-    if (firstComponent.prototype && firstComponent.prototype.toNumber && typeof secondComponent === 'number') {
+    if (firstComponent.prototype.toNumber && typeof secondComponent === 'number') {
         return Math.sign(firstComponent.toNumber() - secondComponent);
     }
-    if (typeof firstComponent === 'number' && secondComponent.prototype && secondComponent.prototype.toNumber) {
+    if (typeof firstComponent === 'number' && secondComponent.prototype.toNumber) {
         return Math.sign(firstComponent - secondComponent.toNumber());
     }
 
@@ -78,11 +79,11 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
     if (typeof firstComponent === 'string' && typeof secondComponent === 'string') {
         return Math.sign(firstComponent.localeCompare(secondComponent));
     }
-    if (firstComponent.source && typeof secondComponent === 'string') {
-        return Math.sign(firstComponent.source.localeCompare('"' + secondComponent + '"'));
+    if (firstComponent.type === types.TEXT && typeof secondComponent === 'string') {
+        return Math.sign(firstComponent.toLiteral().localeCompare('"' + secondComponent + '"'));
     }
-    if (typeof firstComponent === 'string' && secondComponent.source) {
-        return Math.sign(String('"' + firstComponent + '"').localeCompare(secondComponent.source));
+    if (typeof firstComponent === 'string' && secondComponent.type === types.TEXT) {
+        return Math.sign(String('"' + firstComponent + '"').localeCompare(secondComponent.toLiteral()));
     }
 
     // handle different object types

@@ -196,7 +196,7 @@ Collection.prototype.containsAll = function(items) {
  * This abstract method removes all of the items from this collection. It must
  * be implemented by a subclass.
  */
-Collection.prototype.removeAll = function() {
-    throw new Error('BUG: The abstract method removeAll() must be implemented by a concrete subclass.');
+Collection.prototype.clear = function() {
+    throw new Error('BUG: The abstract method clear() must be implemented by a concrete subclass.');
 };
 

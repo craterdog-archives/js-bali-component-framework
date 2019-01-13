@@ -51,7 +51,7 @@ Sorter.prototype.sortCollection = function(collection) {
         array = this.sortArray(array);
 
         // convert it back to a collection
-        collection.removeAll();
+        collection.clear();
         collection.addItems(array);
     }
 };

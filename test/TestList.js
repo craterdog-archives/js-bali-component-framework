@@ -29,7 +29,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            list.removeAll();
+            list.clear();
             const copy = list.constructor(list.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(list.isEqualTo(copy)).to.equal(true);
@@ -49,7 +49,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.removeAll();
+            list.clear();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -68,7 +68,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.removeAll();
+            list.clear();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -87,7 +87,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.removeAll();
+            list.clear();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

@@ -16,7 +16,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const composites = require('../composites');
 
 
 // PUBLIC CONSTRUCTORS
@@ -271,6 +270,8 @@ Set.prototype.getItem = function(index) {
  */
 Set.prototype.addItem = function(item) {
     item = abstractions.Composite.asComponent(item);
+    console.log('item: ' + item);
+    console.log('item type: ' + item.constructor.name);
     const result = this.tree.insert(item);
     if (result) {
         this.complexity += item.complexity;
@@ -321,7 +322,7 @@ Set.prototype.removeItems = function(items) {
 /**
  * This method removes all items from this set.
  */
-Set.prototype.removeAll = function() {
+Set.prototype.clear = function() {
     const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.tree.clear();

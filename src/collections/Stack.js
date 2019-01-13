@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
 
 
@@ -227,7 +226,7 @@ Stack.prototype.getTop = function() {
 /**
  * This method removes all items from this stack.
  */
-Stack.prototype.removeAll = function() {
+Stack.prototype.clear = function() {
     const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);

@@ -9,8 +9,10 @@
  ************************************************************************/
 'use strict';
 
+const utilities = require('../utilities');
+
 exports.Component = require('./Component').Component;
-exports.Element = require('./Element').Element;
-exports.Composite = require('./Composite').Composite;
-exports.Collection = require('./Collection').Collection;
+exports.Element = require('./Element').Element;  // depends on Component
+exports.Composite = require('./Composite').Composite;  // depends on Component
+exports.Collection = require('./Collection').Collection;  // depends on Component and Composite
 

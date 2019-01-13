@@ -192,7 +192,7 @@ Catalog.prototype.toObject = function() {
  * this catalog.
  * 
  * @param {Number} index The index of the desired association.
- * @returns {Component} The association at the index in this catalog.
+ * @returns {Association} The association at the index in this catalog.
  */
 Catalog.prototype.getItem = function(index) {
     index = this.normalizeIndex(index);
@@ -231,6 +231,7 @@ Catalog.prototype.addItem = function(association) {
  * catalog.
  * 
  * @param {Association} association The association to be searched for in this catalog.
+ * @returns {Boolean} Whether or not the catalog contains the specified association.
  */
 Catalog.prototype.containsItem = function(association) {
     var result = false;
@@ -263,7 +264,7 @@ Catalog.prototype.getValue = function(key) {
  * keys. The values are returned as a list with the values in the same order as the
  * specified keys.
  *
- * @param {List} keys The list of keys for the values to be retrieved.
+ * @param {Collection} keys The collection of keys for the values to be retrieved.
  * @returns A list of the values that were retrieved from this catalog.
  */
 Catalog.prototype.getValues = function(keys) {
@@ -351,7 +352,7 @@ Catalog.prototype.removeValue = function(key) {
  * keys. The values are returned as a list with the values in the same order as the
  * specified keys.
  *
- * @param {List} keys The list of keys for the values to be removed.
+ * @param {Collection} keys The collection of keys for the values to be removed.
  * @returns A list of the values that were removed from this catalog.
  */
 Catalog.prototype.removeValues = function(keys) {
@@ -369,7 +370,7 @@ Catalog.prototype.removeValues = function(keys) {
 /**
  * This method removes all associations from this catalog.
  */
-Catalog.prototype.removeAll = function() {
+Catalog.prototype.clear = function() {
     const size = this.getSize();
     if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     Object.keys(this.map).forEach(function(key) {
@@ -394,21 +395,6 @@ Catalog.prototype.getKeys = function() {
         keys.addItem(key);
     });
     return keys;
-};
-
-
-/**
- * This method returns the list of associations between keys and values for this catalog. The
- * associations are in the same order as the associations in the catalog.
- *
- * @returns {List} A list of the associations for this catalog.
- */
-Catalog.prototype.getAssociations = function() {
-    const associations = new List();
-    this.array.forEach(function(association) {
-        associations.addItem(association);
-    });
-    return associations;
 };
 
 

@@ -10,13 +10,24 @@
 'use strict';
 
 
-// GENERAL UTILITIES
-var utilities = require('./src/utilities');
-exports.types = utilities.types;
-exports.precision = utilities.precision;
-exports.codex = utilities.codex;
-exports.random = utilities.random;
+// BALI GRAMMAR
+const grammar = require('./src/grammar');  // depends on antlr4
+exports.DocumentLexer = grammar.DocumentLexer;
+exports.DocumentListener = grammar.DocumentListener;
+exports.DocumentParser = grammar.DocumentParser;
+exports.DocumentVisitor = grammar.DocumentVisitor;
 
+
+// GENERAL UTILITIES
+const utilities = require('./src/utilities');  // depends on grammar (by fiat)
+exports.codex = utilities.codex;
+exports.formatter = new utilities.Formatter();
+exports.precision = utilities.precision;
+exports.random = utilities.random;
+exports.types = utilities.types;
+
+
+// GENERAL TYPES
 exports.Comparator = utilities.Comparator;
 exports.Exception = utilities.Exception;
 exports.Formatter = utilities.Formatter;
@@ -24,17 +35,17 @@ exports.Iterator = utilities.Iterator;
 exports.Sorter = utilities.Sorter;
 exports.Visitor = utilities.Visitor;
 
-exports.formatter = new utilities.Formatter();
 
 // ABSTRACT TYPES
-var abstractions = require('./src/abstractions');
+const abstractions = require('./src/abstractions');  // depends on utilities
 exports.Component = abstractions.Component;
 exports.Element = abstractions.Element;
 exports.Composite = abstractions.Composite;
 exports.Collection = abstractions.Collection;
 
-// PRIMITIVE ELEMENT TYPES
-var elements = require('./src/elements');
+
+// ELEMENT TYPES
+const elements = require('./src/elements');  // depends on abstractions
 exports.Angle = elements.Angle;
 exports.Binary = elements.Binary;
 exports.Duration = elements.Duration;
@@ -50,22 +61,24 @@ exports.Tag = elements.Tag;
 exports.Text = elements.Text;
 exports.Version = elements.Version;
 
-// PRIMITIVE COMPOSITE TYPES
-var composites = require('./src/composites');
+
+// COMPOSITE TYPES
+const composites = require('./src/composites');  // depends on abstractions
 exports.Association = composites.Association;
 exports.Parameters = composites.Parameters;
 exports.Range = composites.Range;
 exports.Source = composites.Source;
 exports.Tree = composites.Tree;
 
+
 // COLLECTION TYPES
-var collections = require('./src/collections');
-exports.List = collections.List;
+const collections = require('./src/collections');  // depends on composites
 exports.Catalog = collections.Catalog;
+exports.List = collections.List;
 exports.Queue = collections.Stack;
 exports.Set = collections.Set;
 exports.Stack = collections.Stack;
 
 // PARSER
-exports.Parser = require('./src/utilities/Parser').Parser;
-exports.parser = new exports.Parser(false);
+exports.Parser = require('./src/utilities/Parser').Parser;  // depends on EVERYTHING
+exports.parser = new exports.Parser(false);  // depends on Parser

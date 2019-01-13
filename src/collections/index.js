@@ -9,9 +9,11 @@
  ************************************************************************/
 'use strict';
 
-exports.List = require('./List').List;
-exports.Catalog = require('./Catalog').Catalog;
-exports.Queue = require('./Queue').Queue;
+const composites = require('../composites/');
+
 exports.Set = require('./Set').Set;
-exports.Stack = require('./Stack').Stack;
+exports.List = require('./List').List;
+exports.Catalog = require('./Catalog').Catalog;  // depends on List
+exports.Queue = require('./Queue').Queue;  // depends on Catalog
+exports.Stack = require('./Stack').Stack;  // depends on Catalog
 

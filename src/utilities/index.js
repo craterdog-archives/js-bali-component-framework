@@ -9,18 +9,21 @@
  ************************************************************************/
 'use strict';
 
-exports.types = require('./Types');
-exports.codex = require('./Codex');
-exports.precision = require('./Precision');
-exports.random = require('./Random');
+const grammar = require('../grammar');
 
-exports.Comparator = require('./Comparator').Comparator;
+exports.types = require('./Types');
+exports.precision = require('./Precision');
+exports.codex = require('./Codex');
+exports.random = require('./Random');  // depends on codex
+
 exports.Exception = require('./Exception').Exception;
-exports.Formatter = require('./Formatter').Formatter;
 exports.Iterator = require('./Iterator').Iterator;
+exports.Visitor = require('./Visitor').Visitor;
+exports.Comparator = require('./Comparator').Comparator;  // depends on types
+exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
+exports.Formatter = require('./Formatter').Formatter;  // depends on types and Visitor
+
+exports.formatter = new exports.Formatter();  // depends on Formatter
+
 // NOTE: Can't include the Parser module since it depends on all components and that
 //       would result in serious circular dependencies!
-exports.Sorter = require('./Sorter').Sorter;
-exports.Visitor = require('./Visitor').Visitor;
-
-exports.formatter = new exports.Formatter();

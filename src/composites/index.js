@@ -9,6 +9,8 @@
  ************************************************************************/
 'use strict';
 
+const abstractions = require('../abstractions/');
+
 exports.Association = require('./Association').Association;
 exports.Parameters = require('./Parameters').Parameters;
 exports.Range = require('./Range').Range;

@@ -34,7 +34,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            catalog.removeAll();
+            catalog.clear();
             const copy = catalog.constructor(catalog.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(catalog.isEqualTo(copy)).to.equal(true);
@@ -67,7 +67,7 @@ describe('Bali Component Framework™', function() {
             expect(association.key.toString()).to.equal('5');
             expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.clear();
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -99,7 +99,7 @@ describe('Bali Component Framework™', function() {
             expect(association.key.toString()).to.equal('5');
             expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.clear();
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -131,7 +131,7 @@ describe('Bali Component Framework™', function() {
             expect(association.key.toString()).to.equal('5');
             expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.clear();
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -169,7 +169,7 @@ describe('Bali Component Framework™', function() {
             expect(association.key.toString()).to.equal('$gamma');
             expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.clear();
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -201,7 +201,7 @@ describe('Bali Component Framework™', function() {
             expect(association.key.toString()).to.equal('5');
             expect(association.value.toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.clear();
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -269,9 +269,6 @@ describe('Bali Component Framework™', function() {
             expect(size).to.equal(array.length);
             const keyIterator = keys.getIterator();
             expect(keyIterator).to.exist;  // jshint ignore:line
-            const associations = catalog.getAssociations();
-            size = associations.getSize();
-            expect(size).to.equal(array.length);
             const associationIterator = catalog.getIterator();
             expect(associationIterator).to.exist;  // jshint ignore:line
             var key;
@@ -304,7 +301,7 @@ describe('Bali Component Framework™', function() {
             expect(catalog.getValue(1).toString()).to.equal('"gamma"');
             catalog.setValue(6, '"kappa"');
             expect(catalog.getValue(6).toString()).to.equal('"kappa"');
-            catalog.removeAll();
+            catalog.clear();
             expect(catalog.getValue(6)).to.equal(undefined);
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line

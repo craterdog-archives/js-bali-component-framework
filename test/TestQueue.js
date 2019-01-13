@@ -29,7 +29,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            queue.removeAll();
+            queue.clear();
             const copy = new collections.Queue();
             expect(copy).to.exist;  // jshint ignore:line
             expect(queue.isEqualTo(copy)).to.equal(true);
@@ -91,7 +91,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.removeAll();
+            queue.clear();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -110,7 +110,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.removeAll();
+            queue.clear();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -130,7 +130,7 @@ describe('Bali Component Framework™', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.removeAll();
+            queue.clear();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
