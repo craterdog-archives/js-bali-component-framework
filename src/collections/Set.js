@@ -25,12 +25,14 @@ const composites = require('../composites');
  * This constructor creates a new set component with optional parameters that are
  * used to parameterize its type.
  * 
+ * @param {Comparator} comparator An optional comparator.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {Set} The new set.
  */
-function Set(parameters) {
+function Set(comparator, parameters) {
     abstractions.Collection.call(this, utilities.types.SET, parameters);
-    this.tree = new RandomizedTree(new utilities.Comparator());
+    comparator = comparator || new utilities.Comparator();
+    this.tree = new RandomizedTree(comparator);
     this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
@@ -46,11 +48,12 @@ exports.Set = Set;
  * 
  * @param {Array|Object|Collection} sequential The sequential object containing the initial
  * items to be used to seed the new set.
+ * @param {Comparator} comparator An optional comparator.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {List} The new set.
  */
-Set.fromSequential = function(sequential, parameters) {
-    const set = new Set(parameters);
+Set.fromSequential = function(sequential, comparator, parameters) {
+    const set = new Set(comparator, parameters);
     var iterator;
     if (typeof sequential !== 'object') {
         const type = sequential.constructor.name;
@@ -92,34 +95,34 @@ Set.fromSequential = function(sequential, parameters) {
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a new collection that contains all the items that are in
- * the first collection or the second collection or both.
+ * This function returns a new set that contains all the items that are in
+ * the first set or the second set or both.
  *
- * @param {Set} collection1 The first collection to be operated on.
- * @param {Set} collection2 The second collection to be operated on.
- * @returns {Set} The resulting collection.
+ * @param {Set} first The first set to be operated on.
+ * @param {Set} second The second set to be operated on.
+ * @returns {Set} The resulting set.
  */
-Set.or = function(collection1, collection2) {
-    const result = Set.fromSequential(collection1, collection1.parameters);
-    result.addItems(collection2);
+Set.or = function(first, second) {
+    const result = Set.fromSequential(first, first.comparator, first.parameters);
+    result.addItems(second);
     return result;
 };
 
 
 /**
- * This function returns a new collection that contains the items that are in
- * both the first collection and the second collection.
+ * This function returns a new set that contains the items that are in
+ * both the first set and the second set.
  *
- * @param {Set} collection1 The first collection to be operated on.
- * @param {Set} collection2 The second collection to be operated on.
- * @returns {Set} The resulting collection.
+ * @param {Set} first The first set to be operated on.
+ * @param {Set} second The second set to be operated on.
+ * @returns {Set} The resulting set.
  */
-Set.and = function(collection1, collection2) {
-    const result = new Set(collection1.parameters);
-    const iterator = collection1.getIterator();
+Set.and = function(first, second) {
+    const result = new Set(first.comparator, first.parameters);
+    const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
-        if (collection2.containsItem(item)) {
+        if (second.containsItem(item)) {
             result.addItem(item);
         }
     }
@@ -128,33 +131,33 @@ Set.and = function(collection1, collection2) {
 
 
 /**
- * This function returns a new collection that contains the items that are in
- * the first collection but not in the second collection.
+ * This function returns a new set that contains the items that are in
+ * the first set but not in the second set.
  *
- * @param {Set} collection1 The first collection to be operated on.
- * @param {Set} collection2 The second collection to be operated on.
- * @returns {Set} The resulting collection.
+ * @param {Set} first The first set to be operated on.
+ * @param {Set} second The second set to be operated on.
+ * @returns {Set} The resulting set.
  */
-Set.sans = function(collection1, collection2) {
-    const result = Set.fromSequential(collection1, collection1.parameters);
-    result.removeItems(collection2);
+Set.sans = function(first, second) {
+    const result = Set.fromSequential(first, first.comparator, first.parameters);
+    result.removeItems(second);
     return result;
 };
 
 
 /**
- * This function returns a new collection that contains all the items that are in
- * the first collection or the second collection but not both.
+ * This function returns a new set that contains all the items that are in
+ * the first set or the second set but not both.
  *
- * @param {Set} collection1 The first collection to be operated on.
- * @param {Set} collection2 The second collection to be operated on.
- * @returns {Set} The resulting collection.
+ * @param {Set} first The first set to be operated on.
+ * @param {Set} second The second set to be operated on.
+ * @returns {Set} The resulting set.
  */
-Set.xor = function(collection1, collection2) {
-    const result = new Set(collection1.parameters);
-    const iterator1 = collection1.getIterator();
+Set.xor = function(first, second) {
+    const result = new Set(first.comparator, first.parameters);
+    const iterator1 = first.getIterator();
     var item1;
-    const iterator2 = collection2.getIterator();
+    const iterator2 = second.getIterator();
     var item2;
     while (iterator1.hasNext() && iterator2.hasNext()) {
         if (item1 === undefined) item1 = iterator1.getNext();
