@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const converter = require('../utilities/Converter');
 
 
 // PUBLIC FUNCTIONS
@@ -28,8 +29,8 @@ const abstractions = require('../abstractions');
  */
 function Association(key, value) {
     abstractions.Composite.call(this, utilities.types.ASSOCIATION);
-    this.key = abstractions.Composite.asComponent(key);
-    this.value = abstractions.Composite.asComponent(value);
+    this.key = converter.asComponent(key);
+    this.value = converter.asComponent(value);
     this.complexity += this.key.complexity + this.value.complexity;
     this.complexity += 2;  // account for the ': ' separator
     return this;
@@ -81,7 +82,7 @@ Association.prototype.toArray = function() {
  * @returns {Component} The value previously associated with the key.
  */
 Association.prototype.setValue = function(value) {
-    value = abstractions.Composite.asComponent(value);
+    value = converter.asComponent(value);
     const oldValue = this.value;
     this.complexity -= oldValue.complexity;
     this.value = value;

@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
 
 
@@ -166,7 +167,7 @@ Stack.prototype.toArray = function() {
  * @throws {Exception} Attempted to add an item to a full stack.
  */
 Stack.prototype.addItem = function(item) {
-    item = abstractions.Composite.asComponent(item);
+    item = composites.converter.asComponent(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;

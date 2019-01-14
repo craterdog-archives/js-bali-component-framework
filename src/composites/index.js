@@ -9,7 +9,9 @@
  ************************************************************************/
 'use strict';
 
-const abstractions = require('../abstractions/');
+const elements = require('../elements/');
+
+exports.converter = require('../utilities/Converter');
 
 exports.Association = require('./Association').Association;
 exports.Parameters = require('./Parameters').Parameters;

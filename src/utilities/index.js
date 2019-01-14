@@ -26,4 +26,6 @@ exports.Formatter = require('./Formatter').Formatter;  // depends on types and V
 exports.formatter = new exports.Formatter();  // depends on Formatter
 
 // NOTE: Can't include the Parser module since it depends on all components and that
-//       would result in serious circular dependencies!
+//       would result in serious circular dependencies!  Also, cannot include the
+//       Converter module since it depends on the elements modules which would also
+//       cause circular dependencies.

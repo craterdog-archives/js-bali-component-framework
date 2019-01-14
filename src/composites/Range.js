@@ -19,6 +19,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const converter = require('../utilities/Converter');
 
 
 // PUBLIC FUNCTIONS
@@ -34,8 +35,8 @@ const abstractions = require('../abstractions');
  */
 function Range(firstItem, lastItem, parameters) {
     abstractions.Composite.call(this, utilities.types.RANGE, parameters);
-    this.firstItem = abstractions.Composite.asComponent(firstItem);
-    this.lastItem = abstractions.Composite.asComponent(lastItem);
+    this.firstItem = converter.asComponent(firstItem);
+    this.lastItem = converter.asComponent(lastItem);
     this.complexity += 2;  // account for the '[' ']' delimiters
     this.complexity += this.firstItem.complexity + this.lastItem.complexity + 2;  // account for the '..' separator
     return this;
@@ -91,7 +92,7 @@ Range.prototype.toArray = function() {
     if (last === Infinity) {
         throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
-    while (index <= last) array.push(abstractions.Composite.asComponent(index++));
+    while (index <= last) array.push(converter.asComponent(index++));
     return array;
 };
 
@@ -103,7 +104,7 @@ Range.prototype.toArray = function() {
  * @returns {Boolean} Whether or not the item is in this range.
  */
 Range.prototype.isInRange = function(item) {
-    item = abstractions.Composite.asComponent(item);
+    item = converter.asComponent(item);
     const index = item.toNumber();
     return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
 };
@@ -149,7 +150,7 @@ RangeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
     this.slot--;
     var number = this.range.firstItem.toNumber() + this.slot;
-    number = abstractions.Composite.asComponent(number);
+    number = converter.asComponent(number);
     return number;
 };
 
@@ -157,7 +158,7 @@ RangeIterator.prototype.getPrevious = function() {
 RangeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
     var number = this.range.firstItem.toNumber() + this.slot;
-    number = abstractions.Composite.asComponent(number);
+    number = converter.asComponent(number);
     this.slot++;
     return number;
 };

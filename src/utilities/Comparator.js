@@ -68,10 +68,10 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
     if (typeof firstComponent === 'number' && typeof secondComponent === 'number') {
         return Math.sign(firstComponent - secondComponent);
     }
-    if (firstComponent.prototype.toNumber && typeof secondComponent === 'number') {
+    if (firstComponent.constructor.toNumber && typeof secondComponent === 'number') {
         return Math.sign(firstComponent.toNumber() - secondComponent);
     }
-    if (typeof firstComponent === 'number' && secondComponent.prototype.toNumber) {
+    if (typeof firstComponent === 'number' && secondComponent.toNumber) {
         return Math.sign(firstComponent - secondComponent.toNumber());
     }
 

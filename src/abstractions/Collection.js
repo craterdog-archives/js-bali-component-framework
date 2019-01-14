@@ -59,13 +59,12 @@ Collection.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    const component = Composite.asComponent(item);
     var index = 0;
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
         const candidate = iterator.getNext();
         index++;
-        if (component.isEqualTo(candidate)) return index;
+        if (candidate.toString() === item.toString()) return index;
     }
     return 0;  // not found
 };

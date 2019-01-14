@@ -63,7 +63,7 @@ exports.Version = elements.Version;
 
 
 // COMPOSITE TYPES
-const composites = require('./src/composites');  // depends on abstractions
+const composites = require('./src/composites');  // depends on elements
 exports.Association = composites.Association;
 exports.Parameters = composites.Parameters;
 exports.Range = composites.Range;
@@ -79,6 +79,6 @@ exports.Queue = collections.Stack;
 exports.Set = collections.Set;
 exports.Stack = collections.Stack;
 
-// PARSER
+// BALI PARSER
 exports.Parser = require('./src/utilities/Parser').Parser;  // depends on EVERYTHING
 exports.parser = new exports.Parser(false);  // depends on Parser
