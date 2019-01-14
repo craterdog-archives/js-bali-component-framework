@@ -64,7 +64,7 @@ Collection.prototype.getIndex = function(item) {
     while (iterator.hasNext()) {
         const candidate = iterator.getNext();
         index++;
-        if (candidate.toString() === item.toString()) return index;
+        if (candidate.isEqualTo(item)) return index;
     }
     return 0;  // not found
 };

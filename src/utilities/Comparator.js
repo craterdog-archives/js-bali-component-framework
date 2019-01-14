@@ -79,11 +79,11 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
     if (typeof firstComponent === 'string' && typeof secondComponent === 'string') {
         return Math.sign(firstComponent.localeCompare(secondComponent));
     }
-    if (firstComponent.type === types.TEXT && typeof secondComponent === 'string') {
-        return Math.sign(firstComponent.toLiteral().localeCompare('"' + secondComponent + '"'));
+    if (types.isLiteral(firstComponent.type) && typeof secondComponent === 'string') {
+        return Math.sign(firstComponent.toLiteral().localeCompare(secondComponent));
     }
-    if (typeof firstComponent === 'string' && secondComponent.type === types.TEXT) {
-        return Math.sign(String('"' + firstComponent + '"').localeCompare(secondComponent.toLiteral()));
+    if (typeof firstComponent === 'string' && types.isLiteral(secondComponent.type)) {
+        return Math.sign(String(firstComponent).localeCompare(secondComponent.toLiteral()));
     }
 
     // handle different object types
