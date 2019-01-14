@@ -29,7 +29,7 @@ const elements = require('../elements');
  * @param {String|Number|Boolean|Component} value The value to be converted (if necessary).
  * @returns {Component} The value as a component.
  */
-exports.asComponent = function(value) {
+exports.asElement = function(value) {
     var component;
     switch (typeof value) {
         case 'string':

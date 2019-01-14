@@ -288,8 +288,8 @@ Catalog.prototype.getValues = function(keys) {
  * @returns {Component} The value previously associated with the key.
  */
 Catalog.prototype.setValue = function(key, value) {
-    key = composites.converter.asComponent(key);
-    value = composites.converter.asComponent(value);
+    key = composites.converter.asElement(key);
+    value = composites.converter.asElement(value);
     const index = key.toString();
     var association = this.map[index];
     var oldValue;

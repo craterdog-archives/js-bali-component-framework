@@ -243,7 +243,7 @@ Set.prototype.toArray = function() {
  * @returns {Number} The index of the specified item.
  */
 Set.prototype.getIndex = function(item) {
-    item = composites.converter.asComponent(item);
+    item = composites.converter.asElement(item);
     const index = this.tree.index(item) + 1;  // convert to ordinal based indexing
     return index;
 };
@@ -270,7 +270,7 @@ Set.prototype.getItem = function(index) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Set.prototype.addItem = function(item) {
-    item = composites.converter.asComponent(item);
+    item = composites.converter.asElement(item);
     const result = this.tree.insert(item);
     if (result) {
         this.complexity += item.complexity;
@@ -288,7 +288,7 @@ Set.prototype.addItem = function(item) {
  * @returns {Boolean} Whether or not the item was removed.
  */
 Set.prototype.removeItem = function(item) {
-    item = composites.converter.asComponent(item);
+    item = composites.converter.asElement(item);
     const result = this.tree.remove(item);
     if (result) {
         this.complexity -= item.complexity;
