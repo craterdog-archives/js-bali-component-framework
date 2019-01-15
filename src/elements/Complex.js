@@ -219,10 +219,9 @@ Complex.prototype.getMagnitude = function() {
  * infinite or undefined.
  */
 Complex.prototype.getPhase = function() {
-    var phase;
-    if (!this.isInfinite() && !this.isUndefined()) {
-        phase = Angle.arctangent(this.imaginary, this.real);
-    }
+    if (this.isInfinite()) return new Angle(0);
+    if (this.isUndefined()) return undefined;
+    const phase = Angle.arctangent(this.imaginary, this.real);
     return phase;
 };
 
@@ -254,16 +253,18 @@ Complex.prototype.comparedTo = function(that) {
         return thisType.localeCompare(thatType);
     }
 
-    // the types are the same, check the real parts
-    if (Math.fround(this.real) < Math.fround(that.real)) return -1;
-    if (Math.fround(this.real) > Math.fround(that.real)) return 1;
+    // the types are the same, check the magnitudes
+    const thisMagnitude = this.getMagnitude();
+    const thatMagnitude = that.getMagnitude();
+    if (Math.fround(thisMagnitude) < Math.fround(thatMagnitude)) return -1;
+    if (Math.fround(thisMagnitude) > Math.fround(thatMagnitude)) return 1;
 
-    // the real parts are equal, check the imaginary parts
-    if (Math.fround(this.imaginary) < Math.fround(that.imaginary)) return -1;
-    if (Math.fround(this.imaginary) > Math.fround(that.imaginary)) return 1;
+    // the magnitudes are equal, check the phases
+    const thisPhase = this.getPhase();
+    const thatPhase = that.getPhase();
+    if (thisPhase) return thisPhase.comparedTo(thatPhase);
 
-    // they are also equal
-    return 0;
+    return 0;  // both must be undefined
 };
 
 
@@ -309,12 +310,12 @@ Complex.prototype.toPolar = function() {
 
 
 /**
- * This method returns the real part of this complex number.
+ * This method returns the magnitude of this complex number.
  * 
- * @returns {Number} The real part of this complex number.
+ * @returns {Number} The magnitude of this complex number.
  */
 Complex.prototype.toNumber = function() {
-    return this.real;
+    return this.getMagnitude();
 };
 
 

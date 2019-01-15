@@ -42,12 +42,13 @@ describe('Bali Component Framework™', function() {
 
         it('should construct and equal five', function() {
             expect(new elements.Number(5).toNumber()).to.equal(5);
-            expect(new elements.Number(-5).toNumber()).to.equal(-5);
+            expect(new elements.Number(-5).toNumber()).to.equal(5);
         });
 
         it('should construct and equal infinity', function() {
             expect(new elements.Number(Infinity).toNumber()).to.equal(Infinity);
             expect(new elements.Number(-Infinity).toNumber()).to.equal(Infinity);
+            expect(new elements.Number(-Infinity).isEqualTo(new elements.Number(Infinity))).to.equal(true);
         });
 
         it('should construct and equal undefined', function() {
@@ -94,7 +95,7 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the getPhase method correctly', function() {
             expect(new elements.Number(NaN).getPhase()).to.equal(undefined);
-            expect(new elements.Number(Infinity).getPhase()).to.equal(undefined);
+            expect(new elements.Number(Infinity).getPhase().isEqualTo(new elements.Angle(0))).to.equal(true);
             expect(new elements.Number(0).getPhase().isEqualTo(new elements.Angle(0))).to.equal(true);
             expect(new elements.Number(-1).getPhase().isEqualTo(new elements.Angle(utilities.precision.PI))).to.equal(true);
         });
