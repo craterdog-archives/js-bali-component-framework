@@ -115,12 +115,6 @@ Probability.prototype.toNumber = function() {
 };
 
 
-// PUBLIC CONSTANTS
-
-Probability.FALSE = new Probability('false');
-Probability.TRUE = new Probability('true');
-
-
 // PUBLIC FUNCTIONS
 
 /**
@@ -129,8 +123,8 @@ Probability.TRUE = new Probability('true');
  * @returns {Probability} A new random probability.
  */
 Probability.random = function() {
-    const probability = utilities.random.probability();
-    return new Probability(probability);
+    const value = utilities.random.probability();
+    return new Probability(value);
 };
 
 
@@ -145,7 +139,7 @@ Probability.random = function() {
  */
 Probability.coinToss = function(weighting) {
     const probability = utilities.random.probability();
-    return probability < weighting;
+    return probability < weighting.value;
 };
 
 

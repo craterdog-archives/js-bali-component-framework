@@ -39,6 +39,7 @@ describe('Bali Component Framework™', function() {
             const string = zero.toString();
             expect(string).to.equal('false');
             expect(zero.toBoolean()).to.be.false;  // jshint ignore:line
+            expect(elements.Probability.coinToss(zero)).to.equal(false);
         });
 
         it('should construct a probability of one half', function() {
@@ -56,6 +57,7 @@ describe('Bali Component Framework™', function() {
             const string = one.toString();
             expect(string).to.equal('true');
             expect(one.toBoolean()).to.be.true;  // jshint ignore:line
+            expect(elements.Probability.coinToss(one)).to.equal(true);
         });
 
         it('should throw an exception for negative probabilities', function() {
