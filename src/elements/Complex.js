@@ -321,6 +321,15 @@ Complex.prototype.toNumber = function() {
 
 // PUBLIC FUNCTIONS
 
+/**
+ * This function returns the arithmetic inverse of the specified complex number.
+ * <pre>
+ *     inverse(z): (-z.real, -z.imaginary i)
+ * </pre>
+ * 
+ * @param {Complex} complex The complex number to be inverted.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.inverse = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
@@ -328,11 +337,21 @@ Complex.inverse = function(complex) {
     const real = -complex.real;
     const imaginary = -complex.imaginary;
     const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
     return result;
 };
 
 
+/**
+ * This function returns the multiplicative inverse of the specified complex number.
+ * <pre>
+ *     reciprocal(z): (z.real, -z.imaginary i)/z.magnitude^2
+ *                    or
+ *     reciprocal(z): (1/z.magnitude e^~-z.phase i)
+ * </pre>
+ * 
+ * @param {Complex} complex The complex number to be inverted.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.reciprocal = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(0);
@@ -341,11 +360,19 @@ Complex.reciprocal = function(complex) {
     const real = utilities.precision.quotient(complex.real, squared);
     const imaginary = -utilities.precision.quotient(complex.imaginary, squared);
     const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
     return result;
 };
 
 
+/**
+ * This function returns the complex conjugate of the specified complex number.
+ * <pre>
+ *     conjugate(z): (z.real, -z.imaginary i)
+ * </pre>
+ * 
+ * @param {Complex} complex The complex number to be conjugated.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.conjugate = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
@@ -353,48 +380,38 @@ Complex.conjugate = function(complex) {
     const real = complex.real;
     const imaginary = -complex.imaginary;
     const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
     return result;
 };
 
 
-Complex.exponential = function(complex) {
-    if (complex.isUndefined()) return new Complex(NaN);
-    if (complex.isInfinite()) return new Complex(Infinity);
-    if (complex.isZero()) return new Complex(1);
-    const scale = utilities.precision.exponential(utilities.precision.E, complex.real);
-    const real = utilities.precision.product(scale, (utilities.precision.cosine(complex.imaginary)));
-    const imaginary = utilities.precision.product(scale, (utilities.precision.sine(complex.imaginary)));
-    const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
-    return result;
-};
-
-
-Complex.logarithm = function(complex) {
-    if (complex.isUndefined()) return new Complex(NaN);
-    if (complex.isInfinite()) return new Complex(Infinity);
-    if (complex.isZero()) return new Complex(Infinity);
-    const real = utilities.precision.logarithm(utilities.precision.E, Complex.magnitude(complex));
-    const imaginary = Complex.phase(complex).value;
-    const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
-    return result;
-};
-
-
+/**
+ * This function returns the complex factorial of the specified complex number.
+ * 
+ * @param {Complex} complex The complex number.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.factorial = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(1);
     // just implement real factorials for now...
+    // TODO: what should a complex factorial be?
     const factorial = gamma(complex.real + 1);
     const result = new Complex(factorial);
-    result.format = complex.format;
     return result;
 };
 
 
+/**
+ * This function returns the sum of two complex numbers.
+ * <pre>
+ *     sum(x, y): (x.real + y.real, (x.imaginary + y.imaginary) i)
+ * </pre>
+ * 
+ * @param {Complex} first The first complex number to be added.
+ * @param {Complex} second The second complex number to be added.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.sum = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
@@ -402,16 +419,37 @@ Complex.sum = function(first, second) {
     const real = utilities.precision.sum(first.real, second.real);
     const imaginary = utilities.precision.sum(first.imaginary, second.imaginary);
     const result = new Complex(real, imaginary, first.parameters);
-    result.format = first.format;
     return result;
 };
 
 
+/**
+ * This function returns the difference of two complex numbers.
+ * <pre>
+ *     difference(x, y): (x.real - y.real, (x.imaginary - y.imaginary) i)
+ * </pre>
+ * 
+ * @param {Complex} first The first complex number to be subtracted from.
+ * @param {Complex} second The second complex number to be subtracted.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.difference = function(first, second) {
     return Complex.sum(first, Complex.inverse(second));
 };
 
 
+/**
+ * This function returns a scaled version of a complex number.
+ * <pre>
+ *     scaled(z, factor): (factor * z.real, factor * z.imaginary i)
+ *                              or
+ *     scaled(z, factor): (factor * z.magnitude, z.phase i)
+ * </pre>
+ * 
+ * @param {Complex} complex The complex number to be scaled.
+ * @param {Complex} factor The scale factor.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.scaled = function(complex, factor) {
     if (complex.isUndefined() || Number.isNaN(factor)) return new Complex(NaN);
     if (complex.isZero() && !Number.isFinite(factor)) return new Complex(NaN);
@@ -421,11 +459,20 @@ Complex.scaled = function(complex, factor) {
     const real = utilities.precision.product(complex.real, factor);
     const imaginary = utilities.precision.product(complex.imaginary, factor);
     const result = new Complex(real, imaginary, complex.parameters);
-    result.format = complex.format;
     return result;
 };
 
 
+/**
+ * This function returns the product of two complex numbers.
+ * <pre>
+ *     product(x, y): (x.magnitude * y.magnitude e^~(x.phase + y.phase) i)
+ * </pre>
+ * 
+ * @param {Complex} first The first complex number to be multiplied.
+ * @param {Complex} second The second complex number to be multiplied.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.product = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isZero() && second.isInfinite()) return new Complex(NaN);
@@ -435,16 +482,32 @@ Complex.product = function(first, second) {
     const real = utilities.precision.difference(utilities.precision.product(first.real, second.real), utilities.precision.product(first.imaginary, second.imaginary));
     const imaginary = utilities.precision.sum(utilities.precision.product(first.real, second.imaginary), utilities.precision.product(first.imaginary * second.real));
     const result = new Complex(real, imaginary, first.parameters);
-    result.format = first.format;
     return result;
 };
 
 
+/**
+ * This function returns the quotient of two complex numbers.
+ * <pre>
+ *     quotient(x, y): (x.magnitude / y.magnitude e^~(x.phase - y.phase) i)
+ * </pre>
+ * 
+ * @param {Complex} first The first complex number to be divided.
+ * @param {Complex} second The second complex number to be divided by.
+ * @returns {Complex} The resulting complex number.
+ */
 Complex.quotient = function(first, second) {
     return Complex.product(first, Complex.reciprocal(second));
 };
 
 
+/**
+ * This function returns the remainder of the quotient of two real numbers.
+ * 
+ * @param {Complex} first The first real number to be divided.
+ * @param {Complex} second The second real number to be divided by.
+ * @returns {Complex} The resulting real number.
+ */
 Complex.remainder = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isInfinite() && second.isInfinite()) return new Complex(NaN);
@@ -456,6 +519,49 @@ Complex.remainder = function(first, second) {
     const firstInteger = Math.round(first.real);
     const secondInteger = Math.round(second.real);
     return new Complex(utilities.precision.remainder(firstInteger, secondInteger));
+};
+
+
+/**
+ * This function returns the complex exponential of the specified complex number.
+ * <pre>
+ *     exponential(base, exponent): exp(exponent * ln(base))
+ * </pre>
+ * 
+ * @param {Complex} base The complex base.
+ * @param {Complex} exponent The complex exponent.
+ * @returns {Complex} The resulting complex number.
+ */
+Complex.exponential = function(base, exponent) {
+    if (base.isUndefined() || exponent.isUndefined()) return new Complex(NaN);
+    if (base.isZero() && (exponent.isZero() || exponent.isInfinite())) return new Complex(NaN);
+    if (base.isInfinite() && exponent.isZero()) return new Complex(NaN);
+    if (exponent.isInfinite()) return new Complex(Infinity);
+    if (exponent.isZero()) return new Complex(1);
+    const result = exp(Complex.product(exponent, ln(base)));
+    return result;
+};
+
+
+/**
+ * This function returns the complex logarithm with the specified base of the
+ * specified complex number.
+ * <pre>
+ *     logarithm(base, value): ln(value)/ln(base)
+ * </pre>
+ * 
+ * @param {Complex} base The base of the resulting exponent.
+ * @param {Complex} value The complex number.
+ * @returns {Complex} The resulting complex number.
+ */
+Complex.logarithm = function(base, value) {
+    if (base.isUndefined() || value.isUndefined()) return new Complex(NaN);
+    if (base.isZero() && (value.isZero() || value.isInfinite())) return new Complex(NaN);
+    if (base.isInfinite() && (value.isZero() || value.isInfinite())) return new Complex(NaN);
+    if (value.isInfinite()) return new Complex(Infinity);
+    if (value.isZero()) return new Complex(Infinity);
+    const result = Complex.quotient(ln(value), ln(base));
+    return result;
 };
 
 
@@ -546,4 +652,27 @@ function gamma(number) {
     }
  
     return Math.sqrt(2 * utilities.precision.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
+}
+
+
+function exp(complex) {
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
+    if (complex.isZero()) return new Complex(1);
+    const scale = utilities.precision.exponential(complex.real);
+    const real = utilities.precision.product(scale, utilities.precision.cosine(complex.imaginary));
+    const imaginary = utilities.precision.product(scale, utilities.precision.sine(complex.imaginary));
+    const result = new Complex(real, imaginary, complex.parameters);
+    return result;
+}
+
+
+function ln(complex) {
+    if (complex.isUndefined()) return new Complex(NaN);
+    if (complex.isInfinite()) return new Complex(Infinity);
+    if (complex.isZero()) return new Complex(Infinity);
+    const real = utilities.precision.logarithm(complex.getMagnitude());
+    const imaginary = complex.getPhase().value;
+    const result = new Complex(real, imaginary, complex.parameters);
+    return result;
 }

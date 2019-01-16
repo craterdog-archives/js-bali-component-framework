@@ -334,35 +334,31 @@ exports.remainder = function(dividend, divisor) {
 
 
 /**
- * This function returns the value of a base number raised to an exponential power. The
+ * This function returns the value of e raised to an exponential power. The
  * number of significant digits in the result is equal to the number of significant digits
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
  * <pre>
- *                      |                       |
- *   error digits: log  | exponent * log (base) |
- *                    10|               e       |
+ *                      |          |
+ *   error digits: log  | exponent |
+ *                    10|          |
  * </pre>
  * 
- * @param {Number} base The base value.
  * @param {Number} exponent The exponent value.
  * @returns {Number} The value of the base raised to the exponent.
  */
-exports.exponential = function(base, exponent) {
-    base = exports.lockOnExtreme(base);
+exports.exponential = function(exponent) {
     exponent = exports.lockOnExtreme(exponent);
-    // check for cases where Math.pow(0, 0) and Math.pow(Infinity, 0) are wrong!
-    if ((base === 0 || base === Infinity) && exponent === 0) return NaN;
-    var result = exports.lockOnExtreme(Math.pow(base, exponent));
-    const digits = exports.valueDigits(exponent, base);
-    const error = exponent * Math.log(base);
+    var result = exports.lockOnExtreme(Math.exp(exponent));
+    const digits = exports.valueDigits(exponent);
+    const error = exponent;
     result = exports.normalizeValue(result, digits, error);
     return result;
 };
 
 
 /**
- * This function returns the value of the logarithm with a base number of an exponential value.
+ * This function returns the value of the natural logarithm of an exponential value.
  * The number of significant digits in the result is equal to the number of significant digits
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
@@ -373,15 +369,13 @@ exports.exponential = function(base, exponent) {
  *                      |    e              |
  * </pre>
  * 
- * @param {Number} base The base value.
  * @param {Number} exponential The value that is equal to base^exponent.
  * @returns {Number} The value of the base logarith of the exponential.
  */
-exports.logarithm = function(base, exponential) {
-    base = exports.lockOnExtreme(base);
+exports.logarithm = function(exponential) {
     exponential = exports.lockOnExtreme(exponential);
-    var result = exports.lockOnExtreme(Math.log(exponential)/Math.log(base));
-    const digits = exports.valueDigits(exponential, base);
+    var result = exports.lockOnExtreme(Math.log(exponential));
+    const digits = exports.valueDigits(exponential);
     const error = exports.lockOnExtreme(1 / Math.log(exponential));
     result = exports.normalizeValue(result, digits, error);
     return result;
