@@ -193,6 +193,22 @@ Set.xor = function(first, second) {
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this set.
+ * 
+ * @returns {Array} An array containing the items in this set.
+ */
+Set.prototype.toArray = function() {
+    const array = [];
+    const iterator = new TreeIterator(this.tree);
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        array.push(item);
+    }
+    return array;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this set.
@@ -220,22 +236,6 @@ Set.prototype.getSize = function() {
 Set.prototype.getIterator = function() {
     const iterator = new TreeIterator(this.tree);
     return iterator;
-};
-
-
-/**
- * This method returns an array containing the items in this set.
- * 
- * @returns {Array} An array containing the items in this set.
- */
-Set.prototype.toArray = function() {
-    const array = [];
-    const iterator = new TreeIterator(this.tree);
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        array.push(item);
-    }
-    return array;
 };
 
 

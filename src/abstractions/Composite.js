@@ -38,6 +38,28 @@ exports.Composite = Composite;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this composite has a meaningful value. If the composite
+ * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this composite has a meaningful value.
+ */
+Composite.prototype.toBoolean = function() {
+    return !this.isEmpty();
+};
+
+
+/**
+ * This abstract method returns an array containing the subcomponents in this composite
+ * component. It must be implemented by a subclass.
+ * 
+ * @returns {Array} An array containing the subcomponents in this composite component.
+ */
+Composite.prototype.toArray = function() {
+    throw new Error('COMPOSITE: Abstract method toArray() must be implemented by a concrete subclass.');
+};
+
+
+/**
  * This method returns whether or not this composite component has any subcomponents.
  * 
  * @returns {Boolean} Whether or not this composite component has any subcomponents.
@@ -66,17 +88,6 @@ Composite.prototype.getSize = function() {
 Composite.prototype.getIterator = function() {
     const iterator = new utilities.Iterator(this.toArray());
     return iterator;
-};
-
-
-/**
- * This abstract method returns an array containing the subcomponents in this composite
- * component. It must be implemented by a subclass.
- * 
- * @returns {Array} An array containing the subcomponents in this composite component.
- */
-Composite.prototype.toArray = function() {
-    throw new Error('COMPOSITE: Abstract method toArray() must be implemented by a concrete subclass.');
 };
 
 

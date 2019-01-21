@@ -118,6 +118,16 @@ List.concatenation = function(list1, list2) {
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this list.
+ * 
+ * @returns {Array} An array containing the items in this list.
+ */
+List.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this list.
@@ -135,16 +145,6 @@ List.prototype.acceptVisitor = function(visitor) {
 List.prototype.getSize = function() {
     const size = this.array.length;
     return size;
-};
-
-
-/**
- * This method returns an array containing the items in this list.
- * 
- * @returns {Array} An array containing the items in this list.
- */
-List.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
 };
 
 

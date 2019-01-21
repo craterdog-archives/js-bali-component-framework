@@ -42,16 +42,6 @@ exports.Source = Source;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this source code.
- */
-Source.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSource(this);
-};
-
-
-/**
  * This method returns an array containing the procedure for this source code.
  * 
  * @returns {Array} An array containing the procedure for this source code.
@@ -60,4 +50,14 @@ Source.prototype.toArray = function() {
     const array = [];
     array.push(this.procedure);
     return array;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this source code.
+ */
+Source.prototype.acceptVisitor = function(visitor) {
+    visitor.visitSource(this);
 };

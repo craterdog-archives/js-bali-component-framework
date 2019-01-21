@@ -141,27 +141,6 @@ Catalog.extraction = function(catalog, keys) {
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this catalog.
- */
-Catalog.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCatalog(this);
-};
-
-
-/**
- * This method returns the number of items that are currently in this catalog.
- * 
- * @returns {Number} The number of items in this catalog.
- */
-Catalog.prototype.getSize = function() {
-    const size = this.array.length;
-    return size;
-};
-
-
-/**
  * This method returns an array containing the items in this catalog.
  * 
  * @returns {Array} An array containing the items in this catalog.
@@ -184,6 +163,27 @@ Catalog.prototype.toObject = function() {
         object[association.key.toString()] = association.value;
     }
     return object;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this catalog.
+ */
+Catalog.prototype.acceptVisitor = function(visitor) {
+    visitor.visitCatalog(this);
+};
+
+
+/**
+ * This method returns the number of items that are currently in this catalog.
+ * 
+ * @returns {Number} The number of items in this catalog.
+ */
+Catalog.prototype.getSize = function() {
+    const size = this.array.length;
+    return size;
 };
 
 

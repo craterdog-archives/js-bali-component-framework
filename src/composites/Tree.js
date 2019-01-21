@@ -92,17 +92,6 @@ exports.Tree = Tree;
 // PUBLIC METHODS
 
 /**
- * This method returns the number of components that are children of this tree node.
- * 
- * @returns {Number} The number of components that are children of this tree node.
- */
-Tree.prototype.getSize = function() {
-    const size = this.array.length;
-    return size;
-};
-
-
-/**
  * This method returns an array containing the components that are children of this
  * tree node.
  * 
@@ -111,6 +100,17 @@ Tree.prototype.getSize = function() {
 Tree.prototype.toArray = function() {
     const array = this.array.slice();  // copy the array
     return array;
+};
+
+
+/**
+ * This method returns the number of components that are children of this tree node.
+ * 
+ * @returns {Number} The number of components that are children of this tree node.
+ */
+Tree.prototype.getSize = function() {
+    const size = this.array.length;
+    return size;
 };
 
 

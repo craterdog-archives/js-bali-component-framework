@@ -82,6 +82,18 @@ Component.prototype.setToComplex = function() {
 
 
 /**
+ * This abstract method returns a boolean value for this component. It allows each component to be
+ * used as a boolean in a condition that determines whether of not the component has a meaningful
+ * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
+ * 
+ * @returns {Boolean} Whether or not this component has a meaningful value.
+ */
+Component.prototype.toBoolean = function() {
+    throw new Error('BUG: The abstract method toBoolean() must be implemented by a concrete subclass.');
+};
+
+
+/**
  * This method returns a string representation of the component.
  * 
  * @returns {String} The corresponding string representation.

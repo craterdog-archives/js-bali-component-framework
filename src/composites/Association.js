@@ -43,6 +43,19 @@ exports.Association = Association;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the attributes of this association.
+ * 
+ * @returns {Array} An array containing the attributes of this association.
+ */
+Association.prototype.toArray = function() {
+    const array = [];
+    array.push(this.key);
+    array.push(this.value);
+    return array;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this association.
@@ -59,19 +72,6 @@ Association.prototype.acceptVisitor = function(visitor) {
  */
 Association.prototype.getSize = function() {
     return 2;
-};
-
-
-/**
- * This method returns an array containing the attributes of this association.
- * 
- * @returns {Array} An array containing the attributes of this association.
- */
-Association.prototype.toArray = function() {
-    const array = [];
-    array.push(this.key);
-    array.push(this.value);
-    return array;
 };
 
 

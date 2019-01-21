@@ -49,6 +49,23 @@ exports.Range = Range;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this range.
+ * 
+ * @returns {Array} An array containing the items in this range.
+ */
+Range.prototype.toArray = function() {
+    const array = [];
+    var index = this.firstItem.toNumber();
+    const last = this.lastItem.toNumber();
+    if (last === Infinity) {
+        throw new Error('BUG: Unable to generate an array from an infinite range.');
+    }
+    while (index <= last) array.push(converter.asElement(index++));
+    return array;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this range.
@@ -77,23 +94,6 @@ Range.prototype.getSize = function() {
 Range.prototype.getIterator = function() {
     const iterator = new RangeIterator(this);
     return iterator;
-};
-
-
-/**
- * This method returns an array containing the items in this range.
- * 
- * @returns {Array} An array containing the items in this range.
- */
-Range.prototype.toArray = function() {
-    const array = [];
-    var index = this.firstItem.toNumber();
-    const last = this.lastItem.toNumber();
-    if (last === Infinity) {
-        throw new Error('BUG: Unable to generate an array from an infinite range.');
-    }
-    while (index <= last) array.push(converter.asElement(index++));
-    return array;
 };
 
 

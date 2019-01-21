@@ -115,6 +115,16 @@ Stack.fromSequential = function(sequential, parameters) {
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items on this stack.
+ * 
+ * @returns {Array} An array containing the items on this stack.
+ */
+Stack.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this stack.
@@ -146,16 +156,6 @@ Stack.prototype.getSize = function() {
 Stack.prototype.getIterator = function() {
     const iterator = new utilities.Iterator(this.array.slice().reverse());
     return iterator;
-};
-
-
-/**
- * This method returns an array containing the items on this stack.
- * 
- * @returns {Array} An array containing the items on this stack.
- */
-Stack.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
 };
 
 

@@ -108,6 +108,16 @@ Queue.fromSequential = function(sequential, parameters) {
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this queue.
+ * 
+ * @returns {Array} An array containing the items in this queue.
+ */
+Queue.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this queue.
@@ -125,16 +135,6 @@ Queue.prototype.acceptVisitor = function(visitor) {
 Queue.prototype.getSize = function() {
     const size = this.array.length;
     return size;
-};
-
-
-/**
- * This method returns an array containing the items in this queue.
- * 
- * @returns {Array} An array containing the items in this queue.
- */
-Queue.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
 };
 
 

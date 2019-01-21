@@ -40,6 +40,17 @@ exports.Parameters = Parameters;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the parameters in this list.
+ * 
+ * @returns {Array} An array containing the parameters in this list.
+ */
+Parameters.prototype.toArray = function() {
+    const array = this.collection.toArray();
+    return array;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this parameter list.
@@ -57,17 +68,6 @@ Parameters.prototype.acceptVisitor = function(visitor) {
 Parameters.prototype.getSize = function() {
     const size = this.collection.getSize();
     return size;
-};
-
-
-/**
- * This method returns an array containing the parameters in this list.
- * 
- * @returns {Array} An array containing the parameters in this list.
- */
-Parameters.prototype.toArray = function() {
-    const array = this.collection.toArray();
-    return array;
 };
 
 
