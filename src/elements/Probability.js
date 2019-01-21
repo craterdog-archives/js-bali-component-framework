@@ -95,10 +95,9 @@ Probability.prototype.toLiteral = function(asCanonical) {
 
 
 /**
- * This method returns a boolean representation of the probability element. A
- * coin weighted with the probability is tossed and the boolean outcome is returned.
+ * This method returns whether or not this probability is greater or equal to 0.5.
  * 
- * @returns {number} The boolean representation of the probability element.
+ * @returns {Boolean} Whether or not this probability is greater or equal to 0.5.
  */
 Probability.prototype.toBoolean = function() {
     return this.value >= 0.5;
@@ -135,11 +134,11 @@ Probability.random = function() {
  * <code>false</code>.
  *
  * @param {Probability} weighting The probability.
- * @returns {Boolean} The resulting probability.
+ * @returns {Probability} The resulting boolean probability.
  */
 Probability.coinToss = function(weighting) {
     const probability = utilities.random.probability();
-    return probability < weighting.value;
+    return probability < weighting.value ? new Probability(true) : new Probability(false);
 };
 
 

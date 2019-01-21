@@ -71,3 +71,14 @@ Reserved.prototype.toLiteral = function(asCanonical) {
     return literal;
 };
 
+
+/**
+ * This method returns whether or not this reserved symbol has a meaningful value. Reserved
+ * symbols always have a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this reserved symbol has a meaningful value.
+ */
+Reserved.prototype.toBoolean = function() {
+    return true;
+};
+

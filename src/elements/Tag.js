@@ -100,6 +100,17 @@ Tag.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this tag has a meaningful value. Tags always have
+ * a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this tag has a meaningful value.
+ */
+Tag.prototype.toBoolean = function() {
+    return true;
+};
+
+
+/**
  * This method returns the raw byte string for the tag element.
  * 
  * @returns {String} The raw byte string for the tag element.

@@ -72,6 +72,17 @@ Text.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this text string has a meaningful value. If the text
+ * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this text string has a meaningful value.
+ */
+Text.prototype.toBoolean = function() {
+    return !this.isEmpty();
+};
+
+
+/**
  * This method returns whether or not this text string has any characters.
  * 
  * @returns {Boolean} Whether or not this text string has any characters.

@@ -77,6 +77,17 @@ Version.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this version string has a meaningful value. Version
+ * strings always have a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this version string has a meaningful value.
+ */
+Version.prototype.toBoolean = function() {
+    return true;
+};
+
+
+/**
  * This method compares two versions for ordering.
  * 
  * @param {Version} that The other version to be compared with. 

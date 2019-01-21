@@ -52,6 +52,18 @@ Element.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This abstract method returns a boolean value for this element. It allows each element to be
+ * used as a boolean in a condition that determines whether of not the element has a meaningful
+ * value. Each element decides what is meaningful.  This method must be implemented by a subclass.
+ * 
+ * @returns {Boolean} Whether or not this element has a meaningful value.
+ */
+Element.prototype.toBoolean = function() {
+    throw new Error('BUG: The abstract method toBoolean() must be implemented by a concrete subclass.');
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.

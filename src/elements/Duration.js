@@ -73,6 +73,17 @@ Duration.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this duration has a meaningful value. If the value is zero
+ * it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this duration has a meaningful value.
+ */
+Duration.prototype.toBoolean = function() {
+    return this.toNumber() !== 0;
+};
+
+
+/**
  * This method returns the number of milliseconds of the duration.
  * 
  * @returns {number} The number of milliseconds of the duration.

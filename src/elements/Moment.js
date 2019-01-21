@@ -95,6 +95,17 @@ Moment.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this moment has a meaningful value. A moment always has
+ * a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this moment has a meaningful value.
+ */
+Moment.prototype.toBoolean = function() {
+    return true;
+};
+
+
+/**
  * This method compares two moments for ordering.
  * 
  * @param {Moment} that The other moment to be compared with. 

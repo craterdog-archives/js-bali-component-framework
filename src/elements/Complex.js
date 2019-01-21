@@ -150,6 +150,17 @@ Complex.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this complex number has a meaningful value. If the magnitude
+ * is undefined, zero or infinity it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this complex number has a meaningful value.
+ */
+Complex.prototype.toBoolean = function() {
+    return !(this.isZero() || this.isUndefined() || this.isInfinite());
+};
+
+
+/**
  * This method determines whether this complex number is undefined.
  * 
  * @returns {boolean} Whether or not this complex number is undefined.

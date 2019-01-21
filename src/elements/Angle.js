@@ -106,6 +106,17 @@ Angle.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this angle has a meaningful value. If the value is zero
+ * it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this angle has a meaningful value.
+ */
+Angle.prototype.toBoolean = function() {
+    return this.value !== 0;
+};
+
+
+/**
  * This method determines whether or not this angle is equal to another angle.
  * 
  * @param {Object} that The object that is being compared.

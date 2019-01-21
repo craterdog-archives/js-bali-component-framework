@@ -71,3 +71,14 @@ Symbol.prototype.toLiteral = function(asCanonical) {
     return literal;
 };
 
+
+/**
+ * This method returns whether or not this symbol has a meaningful value. Symbols
+ * always have a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this symbol has a meaningful value.
+ */
+Symbol.prototype.toBoolean = function() {
+    return true;
+};
+

@@ -72,6 +72,17 @@ Percent.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this percent has a meaningful value. If the value is zero
+ * it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this percent has a meaningful value.
+ */
+Percent.prototype.toBoolean = function() {
+    return this.value !== 0;
+};
+
+
+/**
  * This method returns the numeric value of the percent element, e.g. 25% => 0.25
  * 
  * @returns {number} The numeric value of the percent element.

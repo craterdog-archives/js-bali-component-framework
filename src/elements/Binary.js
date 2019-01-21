@@ -116,6 +116,17 @@ Binary.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this binary string has a meaningful value. If the binary
+ * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this binary string has a meaningful value.
+ */
+Binary.prototype.toBoolean = function() {
+    return !this.isEmpty();
+};
+
+
+/**
  * This method returns whether or not this binary string has any bytes.
  * 
  * @returns {Boolean} Whether or not this binary string has any bytes.

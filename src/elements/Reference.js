@@ -72,3 +72,14 @@ Reference.prototype.toLiteral = function(asCanonical) {
     return literal;
 };
 
+
+/**
+ * This method returns whether or not this reference has a meaningful value. A reference always
+ * has a meaningful value.
+ * 
+ * @returns {Boolean} Whether or not this reference has a meaningful value.
+ */
+Reference.prototype.toBoolean = function() {
+    return true;
+};
+

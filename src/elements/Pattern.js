@@ -90,6 +90,17 @@ Pattern.prototype.toLiteral = function(asCanonical) {
 
 
 /**
+ * This method returns whether or not this pattern has a meaningful value. If the value is 'none'
+ * it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * 
+ * @returns {Boolean} Whether or not this pattern has a meaningful value.
+ */
+Pattern.prototype.toBoolean = function() {
+    return this.value.toLiteral() !== 'none';
+};
+
+
+/**
  * This method determines whether or not this pattern is matched by the source string of the
  * specified component.
  * 
