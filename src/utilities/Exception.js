@@ -20,10 +20,18 @@
  * @returns {Exception} The new exception.
  */
 function Exception(attributes) {
-    Error.call(this, 'BALI: The following Bali exception was thrown: ' + attributes);
+    this.message = 'BALI: The following Bali exception was thrown: ' + attributes;
+    this.stack = Error().stack;
+    if (this.stack) this.stack = 'Exception' + this.stack.slice(5);  // replace 'Error' with 'Exception'
     this.attributes = attributes;
     return this;
 }
 Exception.prototype = Object.create(Error.prototype);
+Exception.prototype.name = 'Exception';
 Exception.prototype.constructor = Exception;
 exports.Exception = Exception;
+
+
+Exception.prototype.toString = function() {
+    return this.name + ': ' + this.message;
+};
