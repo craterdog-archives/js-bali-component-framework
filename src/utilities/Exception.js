@@ -20,7 +20,7 @@
  * @returns {Exception} The new exception.
  */
 function Exception(attributes) {
-    Error.call(this, 'EXCEPTION: The following Bali exception was thrown: ' + attributes);
+    Error.call(this, 'BALI: The following Bali exception was thrown: ' + attributes);
     this.attributes = attributes;
     return this;
 }
