@@ -55,7 +55,7 @@ Composite.prototype.toBoolean = function() {
  * @returns {Array} An array containing the subcomponents in this composite component.
  */
 Composite.prototype.toArray = function() {
-    throw new Error('COMPOSITE: Abstract method toArray() must be implemented by a concrete subclass.');
+    throw new Error('BUG: The abstract method toArray() must be implemented by a concrete subclass.');
 };
 
 
@@ -76,7 +76,7 @@ Composite.prototype.isEmpty = function() {
  * @returns {Number} The number of subcomponents that this composite component has.
  */
 Composite.prototype.getSize = function() {
-    throw new Error('COMPOSITE: Abstract method getSize() must be implemented by a concrete subclass.');
+    throw new Error('BUG: The abstract method getSize() must be implemented by a concrete subclass.');
 };
 
 
