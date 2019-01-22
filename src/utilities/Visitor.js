@@ -390,8 +390,8 @@ Visitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 Visitor.prototype.visitRange = function(range) {
-    range.firstItem.acceptVisitor(this);
-    range.lastItem.acceptVisitor(this);
+    range.getFirst().acceptVisitor(this);
+    range.getLast().acceptVisitor(this);
     if (range.isParameterized()) {
         range.parameters.acceptVisitor(this);
     }

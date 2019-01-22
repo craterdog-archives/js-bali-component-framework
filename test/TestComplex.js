@@ -42,7 +42,7 @@ describe('Bali Component Framework™', function() {
 
         it('should construct and equal five', function() {
             expect(new elements.Number(5).toNumber()).to.equal(5);
-            expect(new elements.Number(-5).toNumber()).to.equal(5);
+            expect(new elements.Number(-5).toNumber()).to.equal(-5);
         });
 
         it('should construct and equal infinity', function() {

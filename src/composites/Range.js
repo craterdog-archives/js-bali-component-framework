@@ -28,17 +28,32 @@ const converter = require('../utilities/Converter');
  * This constructor creates a new range of items with optional parameters that are used
  * to parameterize its type.
  * 
- * @param {Component} firstItem The first item in the range.
- * @param {Component} lastItem The last item in the range.
+ * @param {Number|Component} first The first item in the range.
+ * @param {Number|Component} last The last item in the range.
  * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
-function Range(firstItem, lastItem, parameters) {
+function Range(first, last, parameters) {
     abstractions.Composite.call(this, utilities.types.RANGE, parameters);
-    this.firstItem = converter.asElement(firstItem);
-    this.lastItem = converter.asElement(lastItem);
-    this.complexity += 2;  // account for the '[' ']' delimiters
-    this.complexity += this.firstItem.complexity + this.lastItem.complexity + 2;  // account for the '..' separator
+    if (parameters) {
+        this.collection = parameters.getValue('$collection');
+        this.first = this.collection.getIndex(first);
+        this.last = this.collection.getIndex(last);
+    } else {
+        if (first.type === utilities.types.NUMBER) first = first.toNumber();
+        if (typeof first !== 'number') {
+            throw new Error('BUG: The first value must be a number: ' + first);
+        }
+        if (last.type === utilities.types.NUMBER) last = last.toNumber();
+        if (typeof last !== 'number') {
+            throw new Error('BUG: The last value must be a number: ' + last);
+        }
+        this.first = first;
+        this.last = last;
+    }
+    this.complexity += 4;  // account for the '[' '..' ']' delimiters
+    this.complexity += first.toString().length;
+    this.complexity += last.toString().length;
     return this;
 }
 Range.prototype = Object.create(abstractions.Composite.prototype);
@@ -54,13 +69,18 @@ exports.Range = Range;
  * @returns {Array} An array containing the items in this range.
  */
 Range.prototype.toArray = function() {
-    const array = [];
-    var index = this.firstItem.toNumber();
-    const last = this.lastItem.toNumber();
-    if (last === Infinity) {
+    if (this.last === Infinity) {
         throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
-    while (index <= last) array.push(converter.asElement(index++));
+    const array = [];
+    var index = this.first;
+    while (index <= this.last) {
+        if (this.collection) {
+            array.push(this.collection.getItem(index++));  // retrieve the next item
+        } else {
+            array.push(converter.asElement(index++));  // the index is the next item
+        }
+    }
     return array;
 };
 
@@ -81,8 +101,57 @@ Range.prototype.acceptVisitor = function(visitor) {
  * @returns {Component} The number of numbers that fall in this range.
  */
 Range.prototype.getSize = function() {
-    const size = this.lastItem.toNumber() - this.firstItem.toNumber() + 1;
+    const size = this.last - this.first + 1;
     return size;
+};
+
+
+/**
+ * This method returns the first item in this range.
+ * 
+ * @returns {Component} The first item in this range.
+ */
+Range.prototype.getFirst = function() {
+    var item;
+    if (this.collection) {
+        item = this.collection.getItem(this.first);  // retrieve the item
+    } else {
+        item = converter.asElement(this.first);  // the index is the item
+    }
+    return item;
+};
+
+
+/**
+ * This method returns the specified item in this range.
+ * 
+ * @param {Number} index The index of the desired item. 
+ * @returns {Component} The specified item in this range.
+ */
+Range.prototype.getItem = function(index) {
+    var item;
+    if (this.collection) {
+        item = this.collection.getItem(this.first + index - 1);
+    } else {
+        item = converter.asElement(this.first + index - 1);
+    }
+    return item;
+};
+
+
+/**
+ * This method returns the last item in this range.
+ * 
+ * @returns {Component} The last item in this range.
+ */
+Range.prototype.getLast = function() {
+    var item;
+    if (this.collection) {
+        item = this.collection.getItem(this.last);  // retrieve the item
+    } else {
+        item = converter.asElement(this.last);  // the index is the item
+    }
+    return item;
 };
 
 
@@ -104,9 +173,16 @@ Range.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item is in this range.
  */
 Range.prototype.isInRange = function(item) {
-    item = converter.asElement(item);
-    const index = item.toNumber();
-    return index >= this.firstItem.toNumber() && index <= this.lastItem.toNumber();
+    var index;
+    if (this.collection) {
+        index = this.collection.getIndex(item);
+    } else {
+        if (typeof item !== 'number') {
+            throw new Error('BUG: The item must be a number: ' + item);
+        }
+        index = item;
+    }
+    return index >= this.first && index <= this.last;
 };
 
 
@@ -149,16 +225,26 @@ RangeIterator.prototype.hasNext = function() {
 RangeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
     this.slot--;
-    var number = this.range.firstItem.toNumber() + this.slot;
-    number = converter.asElement(number);
-    return number;
+    const index = this.range.first + this.slot;
+    var item;
+    if (this.range.collection) {
+        item = this.range.collection.getItem(index);  // retrieve the item
+    } else {
+        item = converter.asElement(index);  // the index is the item
+    }
+    return item;
 };
 
 
 RangeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
-    var number = this.range.firstItem.toNumber() + this.slot;
-    number = converter.asElement(number);
+    const index = this.range.first + this.slot;
+    var item;
+    if (this.range.collection) {
+        item = this.range.collection.getItem(index);  // retrieve the item
+    } else {
+        item = converter.asElement(index);  // the index is the item
+    }
     this.slot++;
-    return number;
+    return item;
 };

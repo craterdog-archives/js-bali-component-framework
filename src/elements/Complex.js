@@ -160,6 +160,57 @@ Complex.prototype.toBoolean = function() {
 
 
 /**
+ * This method returns the real part of this complex number.
+ * 
+ * @returns {Number} The real part of this complex number.
+ */
+Complex.prototype.toNumber = function() {
+    return this.real;
+};
+
+
+/**
+ * This method returns the Bali Document Notation™ for this complex number
+ * in retangular form.
+ * 
+ * @returns {String} The literal string.
+ */
+Complex.prototype.toRectangular = function() {
+    if (this.isUndefined()) return 'undefined';
+    if (this.isInfinite()) return 'infinity';
+    if (this.isZero()) return '0';
+    if (this.imaginary === 0) return formatReal(this.real);  // real part isn't zero
+    if (this.real === 0) return formatImaginary(this.imaginary);  // imaginary part isn't zero
+    var literal = '(';
+    literal += formatReal(this.real);
+    literal += ', ';
+    literal += formatImaginary(this.imaginary);
+    literal += ')';
+    return literal;
+};
+
+
+/**
+ * This method returns the Bali Document Notation™ for this complex number
+ * in polar form.
+ * 
+ * @returns {String} The literal string.
+ */
+Complex.prototype.toPolar = function() {
+    if (this.isUndefined()) return 'undefined';
+    if (this.isInfinite()) return 'infinity';
+    if (this.isZero()) return '0';
+    if (this.imaginary === 0 && this.real > 0) return formatReal(this.real);
+    var literal = '(';
+    literal += formatReal(this.getMagnitude());
+    literal += ' e^~';
+    literal += formatImaginary(this.getPhase().value);
+    literal += ')';
+    return literal;
+};
+
+
+/**
  * This method determines whether this complex number is undefined.
  * 
  * @returns {boolean} Whether or not this complex number is undefined.
@@ -275,57 +326,6 @@ Complex.prototype.comparedTo = function(that) {
     if (thisPhase) return thisPhase.comparedTo(thatPhase);
 
     return 0;  // both must be undefined
-};
-
-
-/**
- * This method returns the Bali Document Notation™ for this complex number
- * in retangular form.
- * 
- * @returns {String} The literal string.
- */
-Complex.prototype.toRectangular = function() {
-    if (this.isUndefined()) return 'undefined';
-    if (this.isInfinite()) return 'infinity';
-    if (this.isZero()) return '0';
-    if (this.imaginary === 0) return formatReal(this.real);  // real part isn't zero
-    if (this.real === 0) return formatImaginary(this.imaginary);  // imaginary part isn't zero
-    var literal = '(';
-    literal += formatReal(this.real);
-    literal += ', ';
-    literal += formatImaginary(this.imaginary);
-    literal += ')';
-    return literal;
-};
-
-
-/**
- * This method returns the Bali Document Notation™ for this complex number
- * in polar form.
- * 
- * @returns {String} The literal string.
- */
-Complex.prototype.toPolar = function() {
-    if (this.isUndefined()) return 'undefined';
-    if (this.isInfinite()) return 'infinity';
-    if (this.isZero()) return '0';
-    if (this.imaginary === 0 && this.real > 0) return formatReal(this.real);
-    var literal = '(';
-    literal += formatReal(this.getMagnitude());
-    literal += ' e^~';
-    literal += formatImaginary(this.getPhase().value);
-    literal += ')';
-    return literal;
-};
-
-
-/**
- * This method returns the magnitude of this complex number.
- * 
- * @returns {Number} The magnitude of this complex number.
- */
-Complex.prototype.toNumber = function() {
-    return this.getMagnitude();
 };
 
 

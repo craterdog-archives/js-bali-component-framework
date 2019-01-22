@@ -536,9 +536,9 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 // range: expression '..' expression
 FormattingVisitor.prototype.visitRange = function(range) {
     this.source += '[';
-    range.firstItem.acceptVisitor(this);
+    range.getFirst().acceptVisitor(this);
     this.source += '..';
-    range.lastItem.acceptVisitor(this);
+    range.getLast().acceptVisitor(this);
     this.source += ']';
     if (range.isParameterized()) {
         range.parameters.acceptVisitor(this);

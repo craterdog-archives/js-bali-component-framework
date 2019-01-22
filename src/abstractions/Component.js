@@ -162,8 +162,8 @@ Component.prototype.matches = function(pattern) {
         return this.isEqualTo(pattern);
     } else if (pattern.type === utilities.types.RANGE) {
         // handle a range component differently from other collections
-        if (!this.firstItem.matches(pattern.firstItem)) return false;
-        if (!this.secondItem.matches(pattern.secondItem)) return false;
+        if (!this.getFirst().matches(pattern.getFirst())) return false;
+        if (!this.getLast().matches(pattern.getLast())) return false;
         // both endpoints matched
         return true;
     } else if (pattern.type === utilities.types.CATALOG) {

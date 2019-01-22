@@ -11,6 +11,7 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const composites = require('../src/composites');
+const collections = require('../src/collections');
 
 
 describe('Bali Component Framework™', function() {
@@ -35,6 +36,40 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasPrevious() === true);
         });
 
+        it('should create a symbol range for a list of symbols', function() {
+            const list = collections.List.fromSequential([
+                '$first',
+                '$second',
+                '$third',
+                '$fourth',
+                '$fifth',
+                '$sixth',
+                '$seventh',
+                '$eighth',
+                '$nineth'
+            ]);
+            const parameters = new composites.Parameters(collections.Catalog.fromSequential({$collection: list}));
+            const range = new composites.Range('$third', '$seventh', parameters);
+            expect(range).to.exist;  // jshint ignore:line
+            const size = range.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(5);
+            expect(range.getFirst().toString()).to.equal('$third');
+            expect(range.getItem(3).toString()).to.equal('$fifth');
+            expect(range.getLast().toString()).to.equal('$seventh');
+            const iterator = range.getIterator();
+            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+            expect(iterator.getNext().toString()).to.equal('$third');
+            expect(iterator.getNext().toString()).to.equal('$fourth');
+            expect(iterator.getNext().toString()).to.equal('$fifth');
+            expect(iterator.getNext().toString()).to.equal('$sixth');
+            expect(iterator.getNext().toString()).to.equal('$seventh');
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+        });
+
     });
 
     describe('Test the range methods.', function() {
@@ -44,13 +79,16 @@ describe('Bali Component Framework™', function() {
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L,$version:v1,$digest:none]>');
         });
 
-        it('should be able to call the Collection class methods on the range', function() {
+        it('should be able to call the methods on the range', function() {
             const range1 = new composites.Range(1, 8);
             var size = range1.getSize();
             expect(size).to.equal(8);
             const range2 = new composites.Range(4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
+            expect(range2.getFirst().toNumber()).to.equal(4);
+            expect(range2.getItem(2).toNumber()).to.equal(5);
+            expect(range2.getLast().toNumber()).to.equal(6);
             expect(range1.isInRange(2)).to.equal(true);
             expect(range2.isInRange(7)).to.equal(false);
         });
