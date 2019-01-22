@@ -49,10 +49,10 @@ Component.prototype.getType = function() {
         const value = this.parameters.getValue('$type');
         if (value && value.type === utilities.types.SYMBOL) {
             // the value is a symbol for a system type
-            reference = utilities.types.typeBySymbol(value.toLiteral());
+            reference = utilities.types.typeBySymbol(value.toLiteral(value.parameters));
         } else {
             // the value is a reference to a user defined type
-            reference = value.toLiteral();
+            reference = value.toLiteral(value.parameters);
         }
     } else {
         // the type is a system type

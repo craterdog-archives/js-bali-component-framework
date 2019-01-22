@@ -59,7 +59,7 @@ function Tag(optionalSizeOrValue, parameters) {
             throw new Error('BUG: An invalid tag value type was passed to the constructor: ' + type);
     }
     this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     this.setToComplex();  // tags should never be inlined
     return this;
 }
@@ -89,11 +89,10 @@ Tag.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Tag.prototype.toLiteral = function(asCanonical) {
+Tag.prototype.toLiteral = function(parameters) {
     const literal = '#' + this.value;  // add the leading '#'
     return literal;
 };

@@ -50,7 +50,7 @@ function Angle(value, parameters) {
     if (value === -0) value = 0;  // normalize to positive zero
     this.value = value;
 
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Angle.prototype = Object.create(abstractions.Element.prototype);
@@ -87,14 +87,13 @@ Angle.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Angle.prototype.toLiteral = function(asCanonical) {
+Angle.prototype.toLiteral = function(parameters) {
     var value = this.value;
-    if (!asCanonical && this.parameters) {
-        const units = this.parameters.getValue('$units');
+    if (parameters) {
+        const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
             // convert radians to degrees
             value = utilities.precision.quotient(utilities.precision.product(value, 180), utilities.precision.PI);

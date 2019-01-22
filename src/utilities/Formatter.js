@@ -271,7 +271,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 FormattingVisitor.prototype.visitElement = function(element) {
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
-    const source = element.toLiteral().replace(regex, EOL + indentation);
+    const source = element.toLiteral(element.parameters).replace(regex, EOL + indentation);
     this.source += source;
     if (element.isParameterized()) {
         element.parameters.acceptVisitor(this);

@@ -32,7 +32,7 @@ function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     this.value = new URL(value);
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     this.setToComplex();  // references should never be inlined
     return this;
 }
@@ -62,11 +62,10 @@ Reference.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Reference.prototype.toLiteral = function(asCanonical) {
+Reference.prototype.toLiteral = function(parameters) {
     const value = this.value.toString();
     const literal = '<' + value + '>';  // add the '<' and '>' delimiters
     return literal;

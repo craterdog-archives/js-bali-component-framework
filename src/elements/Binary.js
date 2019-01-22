@@ -35,7 +35,7 @@ function Binary(value, parameters) {
     if (value === undefined || value === null) value = Buffer.alloc(0);  // default value
     this.value = value;
 
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Binary.prototype = Object.create(abstractions.Element.prototype);
@@ -84,15 +84,14 @@ Binary.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Binary.prototype.toLiteral = function(asCanonical) {
+Binary.prototype.toLiteral = function(parameters) {
     var literal;
     var base = 32;  // default value
-    if (!asCanonical && this.parameters) {
-        base = this.parameters.getValue('$base').toNumber();
+    if (parameters) {
+        base = parameters.getValue('$base').toNumber();
     }
     switch (base) {
         case 2:

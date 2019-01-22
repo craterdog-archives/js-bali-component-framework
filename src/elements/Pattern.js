@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
 function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
     this.value = value || new RegExp('\u0000');  // default value
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Pattern.prototype = Object.create(abstractions.Element.prototype);
@@ -69,11 +69,10 @@ Pattern.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Pattern.prototype.toLiteral = function(asCanonical) {
+Pattern.prototype.toLiteral = function(parameters) {
     var literal;
     switch (this.value.source) {
         case '\u0000':
@@ -96,7 +95,7 @@ Pattern.prototype.toLiteral = function(asCanonical) {
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
-    return this.value.toLiteral() !== 'none';
+    return this.toLiteral(this.parameters) !== 'none';
 };
 
 

@@ -34,7 +34,7 @@ function Probability(value, parameters) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 
 }
@@ -74,11 +74,10 @@ Probability.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Probability.prototype.toLiteral = function(asCanonical) {
+Probability.prototype.toLiteral = function(parameters) {
     var literal;
     switch (this.value) {
         case 0:

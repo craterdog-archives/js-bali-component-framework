@@ -33,7 +33,7 @@ function Symbol(value, parameters) {
         throw new Error('BUG: An invalid symbol value was passed to the constructor.');
     }
     this.value = value;
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Symbol.prototype = Object.create(abstractions.Element.prototype);
@@ -62,11 +62,10 @@ Symbol.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Symbol.prototype.toLiteral = function(asCanonical) {
+Symbol.prototype.toLiteral = function(parameters) {
     const literal = '$' + this.value;  // add the leading '$'
     return literal;
 };

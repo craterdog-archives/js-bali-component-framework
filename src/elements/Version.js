@@ -33,7 +33,7 @@ function Version(value, parameters) {
     if (this.value.indexOf(0) >= 0) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Version.prototype = Object.create(abstractions.Element.prototype);
@@ -66,11 +66,10 @@ Version.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Version.prototype.toLiteral = function(asCanonical) {
+Version.prototype.toLiteral = function(parameters) {
     const literal = 'v' + this.value.join('.');
     return literal;
 };

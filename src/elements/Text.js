@@ -31,7 +31,7 @@ function Text(value, parameters) {
     abstractions.Element.call(this, utilities.types.TEXT, parameters);
     if (value === undefined || value === null) value = '';  // default value
     this.value = value;
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     if (value.startsWith('\n')) this.setToComplex();
     return this;
 }
@@ -61,11 +61,10 @@ Text.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Text.prototype.toLiteral = function(asCanonical) {
+Text.prototype.toLiteral = function(parameters) {
     const literal = '"' + this.value + '"';  // add the '"' delimiters
     return literal;
 };

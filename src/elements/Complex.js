@@ -45,15 +45,6 @@ function Complex(real, imaginary, parameters) {
     if (imaginary === undefined || imaginary === null || imaginary === -0) {
         imaginary = 0;
     }
-    imaginary = utilities.precision.lockOnExtreme(imaginary);
-    if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
-        real = NaN;
-        imaginary = NaN;
-    }
-    if (real === Infinity || real === -Infinity || imaginary === Infinity || imaginary === -Infinity) {
-        real = Infinity;
-        imaginary = Infinity;
-    }
     if (imaginary.type === utilities.types.ANGLE) {
         // convert polar to rectangular
         var magnitude = real;
@@ -66,10 +57,19 @@ function Complex(real, imaginary, parameters) {
         real = magnitude * Angle.cosine(phase);
         imaginary = magnitude * Angle.sine(phase);
     }
+    imaginary = utilities.precision.lockOnExtreme(imaginary);
+    if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
+        real = NaN;
+        imaginary = NaN;
+    }
+    if (real === Infinity || real === -Infinity || imaginary === Infinity || imaginary === -Infinity) {
+        real = Infinity;
+        imaginary = Infinity;
+    }
     this.real = real;
     this.imaginary = imaginary;
 
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Complex.prototype = Object.create(abstractions.Element.prototype);
@@ -134,13 +134,12 @@ Complex.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Complex.prototype.toLiteral = function(asCanonical) {
-    if (!asCanonical && this.parameters) {
-        const format = this.parameters.getValue('$format');
+Complex.prototype.toLiteral = function(parameters) {
+    if (parameters) {
+        const format = parameters.getValue('$format');
         if (format && format.toString() === '$polar') {
             return this.toPolar();
         }

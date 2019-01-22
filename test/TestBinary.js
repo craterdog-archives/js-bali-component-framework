@@ -33,12 +33,12 @@ describe('Bali Component Framework™', function() {
             const base64 = new composites.Parameters(collections.Catalog.fromSequential({$base: 64}));
             expect(elements.Binary.fromLiteral("''").value.length).to.equal(0);
             expect(elements.Binary.fromLiteral("'ABC0'").toLiteral()).to.equal("'ABC0'");
-            expect(elements.Binary.fromLiteral("'01101010'", base2).toLiteral()).to.equal("'01101010'");
-            expect(elements.Binary.fromLiteral("'ABC0'", base16).toLiteral()).to.equal("'ABC0'");
-            expect(elements.Binary.fromLiteral("'ABC0'", base32).toLiteral()).to.equal("'ABC0'");
-            expect(elements.Binary.fromLiteral("'gV2qMVdiG7XYRSqV6jg='", base64).toLiteral()).to.equal("'gV2qMVdiG7XYRSqV6jg='");
+            expect(elements.Binary.fromLiteral("'01101010'", base2).toLiteral(base2)).to.equal("'01101010'");
+            expect(elements.Binary.fromLiteral("'ABC0'", base16).toLiteral(base16)).to.equal("'ABC0'");
+            expect(elements.Binary.fromLiteral("'ABC0'", base32).toLiteral(base32)).to.equal("'ABC0'");
+            expect(elements.Binary.fromLiteral("'gV2qMVdiG7XYRSqV6jg='", base64).toLiteral(base64)).to.equal("'gV2qMVdiG7XYRSqV6jg='");
             expect(parser.parseDocument("'ABC0'").toLiteral()).to.equal("'ABC0'");
-            expect(parser.parseDocument("'gV2qMVdiG7XYRSqV6jg='($base: 64)").toLiteral()).to.equal("'gV2qMVdiG7XYRSqV6jg='");
+            expect(parser.parseDocument("'gV2qMVdiG7XYRSqV6jg='($base: 64)").toLiteral(base64)).to.equal("'gV2qMVdiG7XYRSqV6jg='");
         });
 
         it('should construct binary values from buffer with no base', function() {
@@ -50,13 +50,13 @@ describe('Bali Component Framework™', function() {
         it('should construct binary values from buffer with base 2 format', function() {
             const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 2}));
             const binary = new elements.Binary(expected, parameters);
-            expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base2Encode(expected));
+            expect(binary.toLiteral(parameters).slice(1, -1)).to.equal(utilities.codex.base2Encode(expected));
         });
 
         it('should construct binary values from buffer with base 16 format', function() {
             const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 16}));
             const binary = new elements.Binary(expected, parameters);
-            expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base16Encode(expected));
+            expect(binary.toLiteral(parameters).slice(1, -1)).to.equal(utilities.codex.base16Encode(expected));
         });
 
         it('should construct binary values from buffer with base 32 format', function() {
@@ -68,7 +68,7 @@ describe('Bali Component Framework™', function() {
         it('should construct binary values from buffer with base 64 format', function() {
             const parameters = new composites.Parameters(collections.Catalog.fromSequential({$base: 64}));
             const binary = new elements.Binary(expected, parameters);
-            expect(binary.toLiteral().slice(1, -1)).to.equal(utilities.codex.base64Encode(expected));
+            expect(binary.toLiteral(parameters).slice(1, -1)).to.equal(utilities.codex.base64Encode(expected));
         });
 
         it('should throw and exception when constructing a binary value with an illegal base', function() {

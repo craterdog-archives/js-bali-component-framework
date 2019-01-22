@@ -42,11 +42,10 @@ exports.Element = Element;
  * This abstract method returns the formatted literal source string for this element.
  * It must be implemented by a subclass.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The formatted literal source string for this element.
  */
-Element.prototype.toLiteral = function(asCanonical) {
+Element.prototype.toLiteral = function(parameters) {
     throw new Error('BUG: The abstract method toLiteral(asCanonical) must be implemented by a concrete subclass.');
 };
 

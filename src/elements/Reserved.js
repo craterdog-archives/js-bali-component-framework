@@ -33,7 +33,7 @@ function Reserved(value, parameters) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Reserved.prototype = Object.create(abstractions.Element.prototype);
@@ -62,11 +62,10 @@ Reserved.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Reserved.prototype.toLiteral = function(asCanonical) {
+Reserved.prototype.toLiteral = function(parameters) {
     const literal = '$$' + this.value;  // add the leading '$$'
     return literal;
 };

@@ -31,7 +31,7 @@ describe('Bali Component Framework™', function() {
             expect(elements.Number.fromLiteral('(3, 4i)', rectangular).getMagnitude()).to.equal(5);
             expect(elements.Number.fromLiteral('(-5 e^~pi i)').getMagnitude()).to.equal(5);
             expect(elements.Number.fromLiteral('(-5 e^~pi i)', polar).getMagnitude()).to.equal(5);
-            expect(parser.parseDocument('(3, -4i)($format: $polar)').toLiteral()).to.equal('(5 e^~-0.9272952180016122i)');
+            expect(parser.parseDocument('(3, -4i)($format: $polar)').toLiteral(polar)).to.equal('(5 e^~-0.9272952180016122i)');
             expect(parser.parseDocument('(3, -4i)($format: $rectangular)').toLiteral()).to.equal('(3, -4i)');
         });
 

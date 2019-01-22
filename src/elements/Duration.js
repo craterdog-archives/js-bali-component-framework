@@ -32,7 +32,7 @@ function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
     if (value === undefined || value === null) value = 'P0D';  // default value
     this.value = duration(value);
-    this.setSource(this.toLiteral());
+    this.setSource(this.toLiteral(parameters));
     return this;
 }
 Duration.prototype = Object.create(abstractions.Element.prototype);
@@ -61,11 +61,10 @@ Duration.fromLiteral = function(literal, parameters) {
 /**
  * This method returns a literal string representation of the component.
  * 
- * @param {Boolean} asCanonical Whether or not the element should be formatted using its
- * default format.
+ * @param {Parameters} parameters Any parameters that are needed for formatting.
  * @returns {String} The corresponding literal string representation.
  */
-Duration.prototype.toLiteral = function(asCanonical) {
+Duration.prototype.toLiteral = function(parameters) {
     const value = this.value.toISOString();
     const literal = '~' + value;  // add the leading '~'
     return literal;

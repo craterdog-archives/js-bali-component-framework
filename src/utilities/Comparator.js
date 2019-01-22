@@ -52,48 +52,48 @@ Comparator.prototype.componentsAreEqual = function(firstComponent, secondCompone
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  * 
  */
-Comparator.prototype.compareComponents = function(firstComponent, secondComponent) {
+Comparator.prototype.compareComponents = function(first, second) {
     // handle undefined components
-    if (firstComponent && !secondComponent) {
+    if (first && !second) {
         return 1;  // anything is greater than nothing
     }
-    if (!firstComponent && secondComponent) {
+    if (!first && second) {
         return -1;  // nothing is less than anything
     }
-    if (!firstComponent && !secondComponent) {
+    if (!first && !second) {
         return 0;  // nothing is equal to nothing
     }
 
     // handle numeric components
-    if (typeof firstComponent === 'number' && typeof secondComponent === 'number') {
-        return Math.sign(firstComponent - secondComponent);
+    if (typeof first === 'number' && typeof second === 'number') {
+        return Math.sign(first - second);
     }
-    if (firstComponent.constructor.toNumber && typeof secondComponent === 'number') {
-        return Math.sign(firstComponent.toNumber() - secondComponent);
+    if (first.constructor.toNumber && typeof second === 'number') {
+        return Math.sign(first.toNumber() - second);
     }
-    if (typeof firstComponent === 'number' && secondComponent.toNumber) {
-        return Math.sign(firstComponent - secondComponent.toNumber());
+    if (typeof first === 'number' && second.toNumber) {
+        return Math.sign(first - second.toNumber());
     }
 
     // handle string components
-    if (typeof firstComponent === 'string' && typeof secondComponent === 'string') {
-        return Math.sign(firstComponent.localeCompare(secondComponent));
+    if (typeof first === 'string' && typeof second === 'string') {
+        return Math.sign(first.localeCompare(second));
     }
-    if (types.isLiteral(firstComponent.type) && typeof secondComponent === 'string') {
-        return Math.sign(firstComponent.toLiteral().localeCompare(secondComponent));
+    if (types.isLiteral(first.type) && typeof second === 'string') {
+        return Math.sign(first.toLiteral(first.parameters).localeCompare(second));
     }
-    if (typeof firstComponent === 'string' && types.isLiteral(secondComponent.type)) {
-        return Math.sign(String(firstComponent).localeCompare(secondComponent.toLiteral()));
+    if (typeof first === 'string' && types.isLiteral(second.type)) {
+        return Math.sign(String(first).localeCompare(second.toLiteral(second.parameters)));
     }
 
     // handle different object types
-    var result = firstComponent.constructor.name.localeCompare(secondComponent.constructor.name);
+    var result = first.constructor.name.localeCompare(second.constructor.name);
     if (result !== 0) return result;
 
     // handle composite components
-    if (firstComponent.prototype && firstComponent.prototype.getIterator && secondComponent.prototype && secondComponent.prototype.getIterator) {
-        const firstIterator = firstComponent.getIterator();
-        const secondIterator = secondComponent.getIterator();
+    if (first.prototype && first.prototype.getIterator && second.prototype && second.prototype.getIterator) {
+        const firstIterator = first.getIterator();
+        const secondIterator = second.getIterator();
         result = 0;
         while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
             result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
@@ -105,5 +105,5 @@ Comparator.prototype.compareComponents = function(firstComponent, secondComponen
     }
 
     // must be two elemental objects of the same type, compare their string values
-    return Math.sign(firstComponent.toString().localeCompare(secondComponent.toString()));
+    return Math.sign(first.toString().localeCompare(second.toString()));
 };
