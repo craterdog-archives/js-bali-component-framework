@@ -41,13 +41,7 @@ function Range(first, last, parameters) {
         this.last = this.collection.getIndex(last);
     } else {
         if (first.type === utilities.types.NUMBER) first = first.toNumber();
-        if (typeof first !== 'number') {
-            throw new Error('BUG: The first value must be a number: ' + first);
-        }
         if (last.type === utilities.types.NUMBER) last = last.toNumber();
-        if (typeof last !== 'number') {
-            throw new Error('BUG: The last value must be a number: ' + last);
-        }
         this.first = first;
         this.last = last;
     }
