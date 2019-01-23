@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
             const degrees = new composites.Parameters(collections.Catalog.fromSequential({$units: '$degrees'}));
             const radians = new composites.Parameters(collections.Catalog.fromSequential({$units: '$radians'}));
             expect(elements.Angle.fromLiteral('~0').toNumber()).to.equal(0);
-            expect(elements.Angle.fromLiteral('~pi').toNumber()).to.equal(utilities.precision.PI);
+            expect(elements.Angle.fromLiteral('~-pi').toNumber()).to.equal(utilities.precision.PI);
             expect(elements.Angle.fromLiteral('~pi', radians).toNumber()).to.equal(utilities.precision.PI);
             expect(elements.Angle.fromLiteral('~90', degrees).toNumber()).to.equal(utilities.precision.quotient(utilities.precision.PI, 2));
             expect(parser.parseDocument('~pi($units: $radians)').toNumber()).to.equal(utilities.precision.PI);
