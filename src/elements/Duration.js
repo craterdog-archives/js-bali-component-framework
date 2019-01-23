@@ -95,13 +95,15 @@ Duration.prototype.toNumber = function() {
 // PUBLIC FUNCTIONS
 
 /**
- * This function throws an exception since a duration cannot be negative.
+ * This function returns the inverse of a duration. If the specified duration is
+ * positive, its inverse is negative and vice versa.
  * 
  * @param {Duration} duration The duration to be inverted.
- * @throws {Error} The duration cannot be negative.
+ * @returns {Duration} The inverse of the specified duration.
  */
 Duration.inverse = function(duration) {
-    throw new Error('BUG: Durations cannot be negative.');
+    const zero = new Duration();
+    return new Duration(zero.value.subtract(duration.value));
 };
 
 

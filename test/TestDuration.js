@@ -55,12 +55,9 @@ describe('Bali Component Framework™', function() {
 
     describe('Test duration functions', function() {
 
-        it('should throw an exception for inverse function', function() {
-            expect(
-                function() {
-                    const error = elements.Duration.inverse(new elements.Duration('P0D'));
-                }
-            ).to.throw();
+        it('should perform the inverse function correctly', function() {
+            expect(elements.Duration.inverse(new elements.Duration('P3D')).isEqualTo(new elements.Duration('-P3D'))).to.equal(true);
+            expect(elements.Duration.inverse(new elements.Duration('-P2Y3M6D')).isEqualTo(new elements.Duration('P2Y3M6D'))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
