@@ -76,10 +76,16 @@ Element.prototype.setSource = function(source) {
  */
 Element.literalToNumber = function(literal) {
     switch (literal) {
+        case '-e':
+            return -utilities.precision.E;
         case 'e':
             return utilities.precision.E;
+        case '-pi':
+            return -utilities.precision.PI;
         case 'pi':
             return utilities.precision.PI;
+        case '-phi':
+            return -utilities.precision.PHI;
         case 'phi':
             return utilities.precision.PHI;
         default:

@@ -116,6 +116,16 @@ Angle.prototype.toBoolean = function() {
 
 
 /**
+ * This method returns the numeric value of the angle.
+ * 
+ * @returns {Number} The numeric value of the angle.
+ */
+Angle.prototype.toNumber = function() {
+    return this.value;
+};
+
+
+/**
  * This method determines whether or not this angle is equal to another angle.
  * 
  * @param {Object} that The object that is being compared.
@@ -148,16 +158,6 @@ Angle.prototype.comparedTo = function(that) {
 
     // they are also equal
     return 0;
-};
-
-
-/**
- * This method returns the numeric value of the angle.
- * 
- * @returns {Number} The numeric value of the angle.
- */
-Angle.prototype.toNumber = function() {
-    return this.value;
 };
 
 

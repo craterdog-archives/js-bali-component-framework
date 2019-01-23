@@ -48,7 +48,7 @@ exports.Percent = Percent;
  * @returns {Percent} The new percent.
  */
 Percent.fromLiteral = function(literal, parameters) {
-    literal = literal.slice(0, -1);  // remove the trailing '%'
+    literal = literal.slice(0, -1).trim();  // remove the trailing '%'
     const value = abstractions.Element.literalToNumber(literal);
     const percent = new Percent(value, parameters);
     return percent;
