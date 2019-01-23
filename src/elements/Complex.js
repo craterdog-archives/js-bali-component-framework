@@ -288,17 +288,6 @@ Complex.prototype.getPhase = function() {
 
 
 /**
- * This method determines whether or not this complex number is equal to another complex number.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Boolean} Whether or not this component is equal to another component.
- */
-Complex.prototype.isEqualTo = function(that) {
-    return this.comparedTo(that) === 0;
-};
-
-
-/**
  * This method compares this complex number to another for ordering.
  * 
  * @param {Object} that The other complex number to be compared with. 

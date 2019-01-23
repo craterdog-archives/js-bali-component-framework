@@ -106,15 +106,15 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the bitwise NOT function correctly', function() {
             for (var i = 0; i < 256; i++) {
-                const expected = elements.Binary.random(i);
+                const expected = elements.Binary.fromRandom(i);
                 expect(elements.Binary.not(elements.Binary.not(expected)).isEqualTo(expected)).to.equal(true);
             }
         });
 
         it('should perform the bitwise SANS function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = elements.Binary.random(i);
-                const B = elements.Binary.random(i);
+                const A = elements.Binary.fromRandom(i);
+                const B = elements.Binary.fromRandom(i);
                 const C = elements.Binary.sans(A, B);
                 const D = elements.Binary.sans(B, A);
                 expect(elements.Binary.or(C, D).isEqualTo(elements.Binary.xor(A, B))).to.equal(true);
@@ -123,8 +123,8 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the bitwise XOR function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = elements.Binary.random(i);
-                const B = elements.Binary.random(i);
+                const A = elements.Binary.fromRandom(i);
+                const B = elements.Binary.fromRandom(i);
                 const C = elements.Binary.xor(A, B);
                 expect(elements.Binary.xor(B, C).isEqualTo(A)).to.equal(true);
                 expect(elements.Binary.xor(C, A).isEqualTo(B)).to.equal(true);
@@ -133,8 +133,8 @@ describe('Bali Component Framework™', function() {
 
         it("should perform the De Morgan's Laws correctly", function() {
             for (var i = 0; i < 10; i++) {
-                const A = elements.Binary.random(i);
-                const B = elements.Binary.random(i);
+                const A = elements.Binary.fromRandom(i);
+                const B = elements.Binary.fromRandom(i);
                 expect(elements.Binary.not(elements.Binary.and(A, B)).isEqualTo(elements.Binary.or(elements.Binary.not(A), elements.Binary.not(B)))).to.equal(true);
                 expect(elements.Binary.not(elements.Binary.or(A, B)).isEqualTo(elements.Binary.and(elements.Binary.not(A), elements.Binary.not(B)))).to.equal(true);
             }

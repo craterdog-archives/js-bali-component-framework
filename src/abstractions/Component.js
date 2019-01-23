@@ -126,8 +126,7 @@ Component.prototype.toDocument = function(indentation) {
  * @returns {Boolean} Whether or not this component is equal to another component.
  */
 Component.prototype.isEqualTo = function(that) {
-    const comparator = new utilities.Comparator();
-    return comparator.componentsAreEqual(this, that);
+    return this.comparedTo(that) === 0;
 };
 
 

@@ -44,6 +44,21 @@ exports.Binary = Binary;
 
 
 /**
+ * This constructor creates an immutable instance of a random binary string using the base defined
+ * in the specified parameters, or base 32 if no parameters are provided.
+ * 
+ * @constructor
+ * @param {Number} numberOfBytes The number of random bytes to be created.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Binary} A new binary string containing the specified number of random bytes.
+ */
+Binary.fromRandom = function(numberOfBytes, parameters) {
+    const buffer = utilities.random.bytes(numberOfBytes);
+    return new Binary(buffer, parameters);
+};
+
+
+/**
  * This constructor creates an immutable instance of a binary string using the specified
  * literal string.
  * 
@@ -126,37 +141,6 @@ Binary.prototype.toBoolean = function() {
 
 
 /**
- * This method returns whether or not this binary string has any bytes.
- * 
- * @returns {Boolean} Whether or not this binary string has any bytes.
- */
-Binary.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
- * This method returns the number of bytes that this binary string has.
- * 
- * @returns {Number} The number of bytes that this binary string has.
- */
-Binary.prototype.getSize = function() {
-    return this.value.length;
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the bytes in
- * this binary string.
- * @returns {Iterator} An iterator for this binary string.
- */
-Binary.prototype.getIterator = function() {
-    const iterator = new BufferIterator(this.value);
-    return iterator;
-};
-
-
-/**
  * This method returns a formatted base 2 encoding of the binary string
  * with an optional indentation prefix.
  * 
@@ -204,19 +188,59 @@ Binary.prototype.toBase64 = function(indentation) {
 };
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function returns a new binary string containing the specified number of random bytes.
+ * This method compares this binary string to another for ordering.
  * 
- * @param {Number} numberOfBytes The number of random bytes to be created.
- * @returns {Binary} A new binary string containing the specified number of random bytes.
+ * @param {Object} that The other binary string to be compared with. 
+ * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
-Binary.random = function(numberOfBytes) {
-    const buffer = utilities.random.bytes(numberOfBytes);
-    return new Binary(buffer);
+Binary.prototype.comparedTo = function(that) {
+    if (!that) return 1;  // anything is greater than nothing
+
+    // check the types
+    const thisType = this.constructor.name;
+    const thatType = that.constructor.name;
+    if (thisType !== thatType) {
+        return thisType.localeCompare(thatType);
+    }
+
+    // the types are the same, check the values
+    return Buffer.compare(this.value, that.value);
 };
 
+
+/**
+ * This method returns whether or not this binary string has any bytes.
+ * 
+ * @returns {Boolean} Whether or not this binary string has any bytes.
+ */
+Binary.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
+
+/**
+ * This method returns the number of bytes that this binary string has.
+ * 
+ * @returns {Number} The number of bytes that this binary string has.
+ */
+Binary.prototype.getSize = function() {
+    return this.value.length;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the bytes in
+ * this binary string.
+ * @returns {Iterator} An iterator for this binary string.
+ */
+Binary.prototype.getIterator = function() {
+    const iterator = new BufferIterator(this.value);
+    return iterator;
+};
+
+
+// PUBLIC FUNCTIONS
 
 /**
  * This function returns a new binary string that is the logical NOT of the bits
@@ -231,7 +255,7 @@ Binary.not = function(binary) {
     binary.value.forEach(function(byte, index) {
         buffer[index] = ~byte;
     });
-    return new Binary(buffer);
+    return new Binary(buffer, binary.parameters);
 };
 
 
@@ -239,18 +263,18 @@ Binary.not = function(binary) {
  * This function returns a new binary string that is the logical AND of the bits
  * of the two specified binary strings.
  *
- * @param {Binary} binary1 The first binary string.
- * @param {Binary} binary2 The second binary string.
+ * @param {Binary} first The first binary string.
+ * @param {Binary} second The second binary string.
  * @returns {Binary} The resulting binary string.
  */
-Binary.and = function(binary1, binary2) {
-    var length = Math.max(binary1.value.length, binary2.value.length);
+Binary.and = function(first, second) {
+    var length = Math.max(first.value.length, second.value.length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(binary1.value.length, binary2.value.length);
+    length = Math.min(first.value.length, second.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1.value[index] & binary2.value[index];
+        buffer[index] = first.value[index] & second.value[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.parameters);
 };
 
 
@@ -258,18 +282,18 @@ Binary.and = function(binary1, binary2) {
  * This function returns a new binary string that is the logical SANS of the bits
  * of the two specified binary strings.
  *
- * @param {Binary} binary1 The first binary string.
- * @param {Binary} binary2 The second binary string.
+ * @param {Binary} first The first binary string.
+ * @param {Binary} second The second binary string.
  * @returns {Binary} The resulting binary string.
  */
-Binary.sans = function(binary1, binary2) {
-    var length = Math.max(binary1.value.length, binary2.value.length);
+Binary.sans = function(first, second) {
+    var length = Math.max(first.value.length, second.value.length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(binary1.value.length, binary2.value.length);
+    length = Math.min(first.value.length, second.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1.value[index] & ~binary2.value[index];
+        buffer[index] = first.value[index] & ~second.value[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.parameters);
 };
 
 
@@ -277,18 +301,18 @@ Binary.sans = function(binary1, binary2) {
  * This function returns a new binary string that is the logical OR of the bits
  * of the two specified binary strings.
  *
- * @param {Binary} binary1 The first binary string.
- * @param {Binary} binary2 The second binary string.
+ * @param {Binary} first The first binary string.
+ * @param {Binary} second The second binary string.
  * @returns {Binary} The resulting binary string.
  */
-Binary.or = function(binary1, binary2) {
-    var length = Math.max(binary1.value.length, binary2.value.length);
+Binary.or = function(first, second) {
+    var length = Math.max(first.value.length, second.value.length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(binary1.value.length, binary2.value.length);
+    length = Math.min(first.value.length, second.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1.value[index] | binary2.value[index];
+        buffer[index] = first.value[index] | second.value[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.parameters);
 };
 
 
@@ -296,18 +320,18 @@ Binary.or = function(binary1, binary2) {
  * This function returns a new binary string that is the logical XOR of the bits
  * of the two specified binary strings.
  *
- * @param {Binary} binary1 The first binary string.
- * @param {Binary} binary2 The second binary string.
+ * @param {Binary} first The first binary string.
+ * @param {Binary} second The second binary string.
  * @returns {Binary} The resulting binary string.
  */
-Binary.xor = function(binary1, binary2) {
-    var length = Math.max(binary1.value.length, binary2.value.length);
+Binary.xor = function(first, second) {
+    var length = Math.max(first.value.length, second.value.length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(binary1.value.length, binary2.value.length);
+    length = Math.min(first.value.length, second.value.length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = binary1.value[index] ^ binary2.value[index];
+        buffer[index] = first.value[index] ^ second.value[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.parameters);
 };
 
 
@@ -315,17 +339,17 @@ Binary.xor = function(binary1, binary2) {
  * This function returns a new binary string that contains the bytes from the second binary
  * concatenated onto the end of the first binary string.
  *
- * @param {List} binary1 The first binary string to be operated on.
- * @param {List} binary2 The second binary string to be operated on.
+ * @param {List} first The first binary string to be operated on.
+ * @param {List} second The second binary string to be operated on.
  * @returns {List} The resulting binary string.
  */
-Binary.concatenation = function(binary1, binary2) {
-    const buffer1 = binary1.value;
-    const buffer2 = binary2.value;
+Binary.concatenation = function(first, second) {
+    const buffer1 = first.value;
+    const buffer2 = second.value;
     const buffer = Buffer.alloc(buffer1.length + buffer2.length);
     buffer1.copy(buffer);
     buffer2.copy(buffer, buffer1.length);
-    return new Binary(buffer, binary1.parameters);
+    return new Binary(buffer, first.parameters);
 };
 
 

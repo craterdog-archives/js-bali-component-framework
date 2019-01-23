@@ -126,17 +126,6 @@ Angle.prototype.toNumber = function() {
 
 
 /**
- * This method determines whether or not this angle is equal to another angle.
- * 
- * @param {Object} that The object that is being compared.
- * @returns {Boolean} Whether or not this component is equal to another component.
- */
-Angle.prototype.isEqualTo = function(that) {
-    return this.comparedTo(that) === 0;
-};
-
-
-/**
  * This method compares this angle to another for ordering.
  * 
  * @param {Object} that The other angle to be compared with. 
