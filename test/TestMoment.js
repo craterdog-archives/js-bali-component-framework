@@ -40,10 +40,26 @@ describe('Bali Component Framework™', function() {
     });
 
     describe('Test moment methods', function() {
+        const first = new elements.Moment();
+        const second = new elements.Moment();
 
         it('should return the correct type', function() {
             const type = new elements.Moment('2018').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR,$version:v1,$digest:none]>');
+        });
+
+        it('should compare two moments correctly', function() {
+            expect(first.comparedTo(second)).to.equal(-1);
+            expect(first.isEqualTo(first)).to.equal(true);
+            expect(second.comparedTo(first)).to.equal(1);
+        });
+
+        it('should calculate durations correctly', function() {
+            const duration = elements.Moment.duration(first, second);
+            const later = elements.Moment.later(first, duration);
+            const earlier = elements.Moment.earlier(later, duration);
+            expect(earlier.isEqualTo(first)).to.equal(true);
+            expect(later.isEqualTo(second)).to.equal(true);
         });
 
     });

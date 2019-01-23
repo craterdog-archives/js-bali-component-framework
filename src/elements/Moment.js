@@ -17,6 +17,7 @@
 const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const Duration = require('./Duration').Duration;
 
 const FORMATS = [
     'Y',
@@ -120,4 +121,47 @@ Moment.prototype.comparedTo = function(that) {
     if (this.value.isBefore(that.value)) return -1;
     if (this.value.isAfter(that.value)) return 1;
     return 0;
+};
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns the duration between two moments in time.
+ * 
+ * @param {Moment} first The first moment in time.
+ * @param {Moment} second The second moment in time.
+ * @returns {Duration} The duration between the two moments in time.
+ */
+Moment.duration = function(first, second) {
+    const duration = moment.duration(second.value.diff(first.value));
+    return new Duration(duration.toISOString());
+};
+
+
+/**
+ * This function returns a moment in time that is earlier than the specified moment
+ * by the specified duration of time.
+ * 
+ * @param {Moment} moment The initial moment in time.
+ * @param {Duration} duration The duration of time to be subtracted.
+ * @returns {Moment} The resulting moment in time.
+ */
+Moment.earlier = function(moment, duration) {
+    const earlier = moment.value.clone().subtract(duration.value);  // must clone first!
+    return new Moment(earlier.format(FORMATS[7]));
+};
+
+
+/**
+ * This function returns a moment in time that is later than the specified moment
+ * by the specified duration of time.
+ * 
+ * @param {Moment} moment The initial moment in time.
+ * @param {Duration} duration The duration of time to be added.
+ * @returns {Moment} The resulting moment in time.
+ */
+Moment.later = function(moment, duration) {
+    const later = moment.value.clone().add(duration.value);  // must clone first!
+    return new Moment(later.format(FORMATS[7]));
 };
