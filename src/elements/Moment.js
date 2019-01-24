@@ -106,21 +106,12 @@ Moment.prototype.toBoolean = function() {
 
 
 /**
- * This method compares two moments for ordering.
+ * This method returns the number of milliseconds for the moment.
  * 
- * @param {Moment} that The other moment to be compared with. 
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
+ * @returns {number} The number of milliseconds for the moment.
  */
-Moment.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return thisType.localeCompare(thatType);
-    }
-    if (this.value.isBefore(that.value)) return -1;
-    if (this.value.isAfter(that.value)) return 1;
-    return 0;
+Moment.prototype.toNumber = function() {
+    return this.value.valueOf();
 };
 
 

@@ -99,7 +99,7 @@ Version.prototype.comparedTo = function(that) {
     const thisType = this.constructor.name;
     const thatType = that.constructor.name;
     if (thisType !== thatType) {
-        return thisType.localeCompare(thatType);
+        return this.toString().localeCompare(that.toString());
     }
 
     // compare levels

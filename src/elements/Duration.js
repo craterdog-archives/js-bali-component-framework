@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a time
  * duration element.
  */
-const duration = require('moment').duration;
+const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +31,7 @@ const abstractions = require('../abstractions');
 function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
     if (value === undefined || value === null) value = 'P0D';  // default value
-    this.value = duration(value);
+    this.value = moment.duration(value);
     this.setSource(this.toLiteral(parameters));
     return this;
 }
@@ -102,8 +102,7 @@ Duration.prototype.toNumber = function() {
  * @returns {Duration} The inverse of the specified duration.
  */
 Duration.inverse = function(duration) {
-    const zero = new Duration();
-    return new Duration(zero.value.subtract(duration.value));
+    return new Duration(moment.duration().subtract(duration.value));
 };
 
 
@@ -115,7 +114,7 @@ Duration.inverse = function(duration) {
  * @returns {Duration} The normalized sum of the two durations.
  */
 Duration.sum = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.value.add(secondDuration.value).toISOString());
+    return new Duration(firstDuration.value.clone().add(secondDuration.value).toISOString());
 };
 
 
@@ -127,18 +126,18 @@ Duration.sum = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized difference of the two durations.
  */
 Duration.difference = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.value.subtract(secondDuration.value).toISOString());
+    return new Duration(firstDuration.value.clone().subtract(secondDuration.value).toISOString());
 };
 
 
 /**
  * This function returns the specified duration scaled to the specified factor.
  * 
- * @param {Duration} baseDuration The duration to be scaled.
+ * @param {Duration} duration The duration to be scaled.
  * @param {Number} factor The scale factor.
  * @returns {Duration} The normalized scaled duration.
  */
-Duration.scaled = function(baseDuration, factor) {
-    return new Duration(duration(Math.round(baseDuration.value.asMilliseconds() * factor)).toISOString());
+Duration.scaled = function(duration, factor) {
+    return new Duration(moment.duration(Math.round(duration.value.asMilliseconds() * factor)).toISOString());
 };
 

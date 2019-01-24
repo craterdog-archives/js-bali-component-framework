@@ -47,8 +47,8 @@ Comparator.prototype.componentsAreEqual = function(firstComponent, secondCompone
 /**
  * This method compares two components for their natural ordering.
  * 
- * @param {Component} firstComponent The first component to be compared.
- * @param {Component} secondComponent The second component to be compared.
+ * @param {Component} first The first component to be compared.
+ * @param {Component} second The second component to be compared.
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  * 
  */
@@ -64,15 +64,29 @@ Comparator.prototype.compareComponents = function(first, second) {
         return 0;  // nothing is equal to nothing
     }
 
+    // handle boolean components
+    if (typeof first === 'boolean' && typeof second === 'boolean') {
+        return Math.sign(first - second);
+    }
+    if (first.toBoolean && typeof second === 'boolean') {
+        return Math.sign(first.toBoolean() - second);
+    }
+    if (typeof first === 'boolean' && second.toBoolean) {
+        return Math.sign(first - second.toBoolean());
+    }
+
     // handle numeric components
     if (typeof first === 'number' && typeof second === 'number') {
         return Math.sign(first - second);
     }
-    if (first.constructor.toNumber && typeof second === 'number') {
+    if (first.toNumber && typeof second === 'number') {
         return Math.sign(first.toNumber() - second);
     }
     if (typeof first === 'number' && second.toNumber) {
         return Math.sign(first - second.toNumber());
+    }
+    if (first.toNumber && second.toNumber) {
+        return Math.sign(first.toNumber() - second.toNumber());
     }
 
     // handle string components
@@ -86,15 +100,11 @@ Comparator.prototype.compareComponents = function(first, second) {
         return Math.sign(String(first).localeCompare(second.toLiteral(second.parameters)));
     }
 
-    // handle different object types
-    var result = first.constructor.name.localeCompare(second.constructor.name);
-    if (result !== 0) return result;
-
     // handle composite components
-    if (first.prototype && first.prototype.getIterator && second.prototype && second.prototype.getIterator) {
+    if (first.getIterator && second.getIterator) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();
-        result = 0;
+        var result = 0;
         while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
             result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
         }

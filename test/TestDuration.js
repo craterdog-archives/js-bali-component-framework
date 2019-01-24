@@ -51,6 +51,15 @@ describe('Bali Component Framework™', function() {
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y6572KBG2SBYSCBHR88KB1GR616LFK8N,$version:v1,$digest:none]>');
         });
 
+        it('should compare two durations correctly', function() {
+            const days = new elements.Duration('P7D');
+            const week = new elements.Duration('P1W');
+            const month = new elements.Duration('P1M');
+            expect(week.comparedTo(month)).to.equal(-1);
+            expect(week.isEqualTo(days)).to.equal(true);
+            expect(month.comparedTo(days)).to.equal(1);
+        });
+
     });
 
     describe('Test duration functions', function() {
