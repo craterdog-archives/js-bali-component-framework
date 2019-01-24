@@ -91,6 +91,9 @@ exports.format = function(component) {
 exports.parse = function(document) {
     return exports.parser.parseDocument(document);
 };
+exports.parameters = function(object) {
+    return new exports.Parameters(exports.Catalog.fromSequential(object));
+};
 
 
 // CONSTANTS
@@ -109,11 +112,11 @@ exports.INFINITY = exports.Number.fromLiteral('infinity');
 
 
 // PARAMETERS
-exports.degrees = new exports.Parameters(exports.parse('[$units: $degrees]'));
-exports.radians = new exports.Parameters(exports.parse('[$units: $radians]'));
-exports.polar = new exports.Parameters(exports.parse('[$format: $polar]'));
-exports.rectangular = new exports.Parameters(exports.parse('[$format: $rectangular]'));
-exports.base2 = new exports.Parameters(exports.parse('[$base: 2]'));
-exports.base16 = new exports.Parameters(exports.parse('[$base: 16]'));
-exports.base32 = new exports.Parameters(exports.parse('[$base: 32]'));
-exports.base64 = new exports.Parameters(exports.parse('[$base: 64]'));
+exports.degrees = exports.parameters({$units: '$degrees'});
+exports.radians = exports.parameters({$units: '$radians'});
+exports.polar = exports.parameters({$format: '$polar'});
+exports.rectangular = exports.parameters({$format: '$rectangular'});
+exports.base2 = exports.parameters({$base: 2});
+exports.base16 = exports.parameters({$base: 16});
+exports.base32 = exports.parameters({$base: 32});
+exports.base64 = exports.parameters({$base: 64});
