@@ -32,51 +32,45 @@ const FORMATS = [
 ];
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new moment in time.
+ * This constructor creates a new moment in time using the specified value and parameters.
  * 
- * @param {String} value The ISO compliant value of the date/time.
+ * @param {String|Number} value The source string value of the moment in time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment in time.
  */
 function Moment(value, parameters) {
-    if (value === undefined || value === null) value = moment().format(FORMATS[7]);  // current moment
     abstractions.Element.call(this, utilities.types.MOMENT, parameters);
-    FORMATS.find(function(format) {
-        const attempt = moment(value, format, true);  // true means strict mode
-        if (attempt.isValid()) {
-            this.value = attempt;
-            this.format = format;
-            return true;
-        } 
-        return false;
-    }, this);
-    if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
+    if (value === undefined || value === null) {
+        this.format = FORMATS[7];
+        this.value = moment();  // the current moment
+    } else {
+        switch (typeof value) {
+            case 'number':
+                this.format = FORMATS[7];
+                this.value = moment(value);  // in milliseconds since EPOC
+                break;
+            case 'string':
+                FORMATS.find(function(format) {
+                    const attempt = moment(value, format, true);  // true means strict mode
+                    if (attempt.isValid()) {
+                        this.format = format;
+                        this.value = attempt;
+                        return true;
+                    } 
+                    return false;
+                }, this);
+        }
+        if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
+    }
     this.setSource(this.value.format(this.format));
     return this;
 }
 Moment.prototype = Object.create(abstractions.Element.prototype);
 Moment.prototype.constructor = Moment;
 exports.Moment = Moment;
-
-
-/**
- * This constructor creates an immutable instance of a moment in time using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the moment in time.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Moment} The new moment in time.
- */
-Moment.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1, -1);  // remove the '<' and '>' delimiters
-    // TODO: adjust for timezone offset based on location specified in parameters
-    const moment = new Moment(value, parameters);
-    return moment;
-};
 
 
 // PUBLIC METHODS

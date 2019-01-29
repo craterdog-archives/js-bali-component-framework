@@ -18,10 +18,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new reserved identifier.
+ * This constructor creates a new reserved identifier using the specified value.
  * 
  * @param {String} value The value of the reserved identifier.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -39,22 +39,6 @@ function Reserved(value, parameters) {
 Reserved.prototype = Object.create(abstractions.Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
-
-
-/**
- * This constructor creates an immutable instance of a reserved symbol using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the reserved symbol.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Reserved} The new reserved symbol.
- */
-Reserved.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(2);  // remove the leading '$$'
-    const reserved = new Reserved(value, parameters);
-    return reserved;
-};
 
 
 // PUBLIC METHODS

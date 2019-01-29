@@ -10,8 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const composites = require('../src/composites');
-const collections = require('../src/collections');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -20,7 +19,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the set constructors.', function() {
 
         it('should create an empty set', function() {
-            const set = new collections.Set();
+            const set = bali.set();
             expect(set).to.exist;  // jshint ignore:line
             const size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -38,7 +37,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from an array', function() {
-            const set = collections.Set.fromSequential(array);
+            const set = bali.set(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -56,8 +55,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a list', function() {
-            const list = collections.List.fromSequential(array);
-            const set = collections.Set.fromSequential(list);
+            const list = bali.list(array);
+            const set = bali.set(list);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -75,8 +74,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a set from a set', function() {
-            var set = collections.Set.fromSequential(array);
-            set = collections.Set.fromSequential(set);
+            var set = bali.set(array);
+            set = bali.set(set);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -98,16 +97,16 @@ describe('Bali Component Framework™', function() {
     describe('Test the set methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = new collections.Set().getType();
+            const type = bali.set().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#PB33C4Z89QTKBD8P824JMN83STXZGHY9,$version:v1,$digest:none]>');
         });
 
         it('should be able to call the Set class methods on the set', function() {
-            const set1 = new collections.Set();
+            const set1 = bali.set();
             set1.addItem('"alpha"');
             set1.addItem('"beta"');
             set1.addItem('"delta"');
-            const set2 = new collections.Set();
+            const set2 = bali.set();
             set2.addItem('"epsilon"');
             set2.addItem('"gamma"');
             set1.addItems(set2);
@@ -116,7 +115,7 @@ describe('Bali Component Framework™', function() {
             expect(set1.containsAll(set2)).to.equal(true);
             expect(set2.containsAll(set1)).to.equal(false);
             expect(set2.containsAny(set1)).to.equal(true);
-            const set3 = set1.getItems(new composites.Range(2, 4));
+            const set3 = set1.getItems(bali.range(2, 4));
             size = set3.getSize();
             expect(size).to.equal(3);
             expect(set3.containsItem('"epsilon"')).to.equal(true);
@@ -133,7 +132,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to add and remove items from a set', function() {
-            const set = collections.Set.fromSequential(array);
+            const set = bali.set(array);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
@@ -160,34 +159,34 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should be able to perform set operations on sets', function() {
-            const set1 = new collections.Set();
+            const set1 = bali.set();
             set1.addItem('"alpha"');
             set1.addItem('"beta"');
             set1.addItem('"delta"');
-            const set2 = new collections.Set();
+            const set2 = bali.set();
             set2.addItem('"beta"');
             set2.addItem('"delta"');
             set2.addItem('"epsilon"');
             set2.addItem('"gamma"');
-            const set3 = new collections.Set();
+            const set3 = bali.set();
             set3.addItem('"beta"');
             set3.addItem('"delta"');
-            expect(collections.Set.and(set1, set2).isEqualTo(set3)).to.equal(true);
-            const set4 = new collections.Set();
+            expect(bali.set.and(set1, set2).isEqualTo(set3)).to.equal(true);
+            const set4 = bali.set();
             set4.addItem('"alpha"');
-            expect(collections.Set.sans(set1, set2).isEqualTo(set4)).to.equal(true);
-            const set5 = new collections.Set();
+            expect(bali.set.sans(set1, set2).isEqualTo(set4)).to.equal(true);
+            const set5 = bali.set();
             set5.addItem('"alpha"');
             set5.addItem('"beta"');
             set5.addItem('"delta"');
             set5.addItem('"epsilon"');
             set5.addItem('"gamma"');
-            expect(collections.Set.or(set1, set2).isEqualTo(set5)).to.equal(true);
-            const set6 = new collections.Set();
+            expect(bali.set.or(set1, set2).isEqualTo(set5)).to.equal(true);
+            const set6 = bali.set();
             set6.addItem('"alpha"');
             set6.addItem('"epsilon"');
             set6.addItem('"gamma"');
-            expect(collections.Set.xor(set1, set2).isEqualTo(set6)).to.equal(true);
+            expect(bali.set.xor(set1, set2).isEqualTo(set6)).to.equal(true);
         });
 
     });
@@ -195,7 +194,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the set iterators.', function() {
 
         it('should iterate over a set forwards and backwards', function() {
-            const set = collections.Set.fromSequential(array);
+            const set = bali.set(array);
             const iterator = set.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

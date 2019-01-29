@@ -17,14 +17,16 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates an immutable instance of a binary string using the base defined
- * in the specified parameters, or base 32 if no parameters are provided.
+ * This constructor creates an immutable instance of a binary string using the specified
+ * value.
  * 
  * @constructor
- * @param {Buffer} value The byte buffer the containing the bytes for the binary string.
+ * @param {Number|String|Buffer} value The number of random bytes to be generated or the
+ * bytes to be used to create the binary string. If the bytes are encoded the base used
+ * to encode them may be specified in the parameters. The default base encoding is 32.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
@@ -32,66 +34,41 @@ function Binary(value, parameters) {
     abstractions.Element.call(this, utilities.types.BINARY, parameters);
 
     // analyze the value
-    if (value === undefined || value === null) value = Buffer.alloc(0);  // default value
-    this.value = value;
+    value = value || Buffer.alloc(0);  // the default value is an empty buffer
 
+    switch (typeof value) {
+        case 'number':
+            // the value is the number of random bytes to generate
+            value = utilities.random.bytes(value);
+            break;
+        case 'string':
+            var base = 32;  // default value
+            if (parameters) base = parameters.getValue('$base').toNumber();
+            switch (base) {
+                case 2:
+                    value = utilities.codex.base2Decode(value);
+                    break;
+                case 16:
+                    value = utilities.codex.base16Decode(value);
+                    break;
+                case 32:
+                    value = utilities.codex.base32Decode(value);
+                    break;
+                case 64:
+                    value = utilities.codex.base64Decode(value);
+                    break;
+                default:
+                    throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
+            }
+            break;
+    }
+    this.value = value;
     this.setSource(this.toLiteral(parameters));
     return this;
 }
 Binary.prototype = Object.create(abstractions.Element.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
-
-
-/**
- * This constructor creates an immutable instance of a random binary string using the base defined
- * in the specified parameters, or base 32 if no parameters are provided.
- * 
- * @constructor
- * @param {Number} numberOfBytes The number of random bytes to be created.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Binary} A new binary string containing the specified number of random bytes.
- */
-Binary.fromRandom = function(numberOfBytes, parameters) {
-    const buffer = utilities.random.bytes(numberOfBytes);
-    return new Binary(buffer, parameters);
-};
-
-
-/**
- * This constructor creates an immutable instance of a binary string using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the binary string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Binary} The new binary string.
- */
-Binary.fromLiteral = function(literal, parameters) {
-    var value = literal.slice(1, -1);  // strip off the "'" delimiters
-    var base = 32;  // default value
-    if (parameters) {
-        base = parameters.getValue('$base').toNumber();
-    }
-    switch (base) {
-        case 2:
-            value = utilities.codex.base2Decode(value);
-            break;
-        case 16:
-            value = utilities.codex.base16Decode(value);
-            break;
-        case 32:
-            value = utilities.codex.base32Decode(value);
-            break;
-        case 64:
-            value = utilities.codex.base64Decode(value);
-            break;
-        default:
-            throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
-    }
-    const binary = new Binary(value, parameters);
-    return binary;
-};
 
 
 // PUBLIC METHODS

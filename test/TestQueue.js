@@ -10,8 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const utilities = require('../src/utilities');
-const collections = require('../src/collections');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -20,7 +19,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue constructors.', function() {
 
         it('should create an empty queue', function() {
-            const queue = new collections.Queue();
+            const queue = bali.queue();
             expect(queue).to.exist;  // jshint ignore:line
             const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -30,7 +29,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             queue.clear();
-            const copy = new collections.Queue();
+            const copy = bali.queue();
             expect(copy).to.exist;  // jshint ignore:line
             expect(queue.isEqualTo(copy)).to.equal(true);
             const signum = queue.comparedTo(copy);
@@ -38,7 +37,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty queue with small capacity', function() {
-            const queue = new collections.Queue();
+            const queue = bali.queue();
             queue.capacity = 3;
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -58,7 +57,7 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
             expect(queue.getHead().toString()).to.equal('"alpha"');
-            expect(function() {queue.addItem('"delta"');}).to.throw(utilities.Exception);
+            expect(function() {queue.addItem('"delta"');}).to.throw(bali.utilities.Exception);
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
             expect(item.toString()).to.equal('"alpha"');
@@ -80,7 +79,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from an array', function() {
-            const queue = collections.Queue.fromSequential(array);
+            const queue = bali.queue(array);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -98,8 +97,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a list', function() {
-            const list = collections.List.fromSequential(array);
-            queue = collections.Queue.fromSequential(list);
+            const list = bali.list(array);
+            queue = bali.queue(list);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -117,8 +116,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a queue from a queue', function() {
-            const expected = collections.Queue.fromSequential(array);
-            const queue = collections.Queue.fromSequential(expected);
+            const expected = bali.queue(array);
+            const queue = bali.queue(expected);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -141,12 +140,12 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = new collections.Queue().getType();
+            const type = bali.queue().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4,$version:v1,$digest:none]>');
         });
 
         it('should be able to add and remove items from a queue', function() {
-            const queue = collections.Queue.fromSequential(array);
+            const queue = bali.queue(array);
             const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
@@ -187,7 +186,7 @@ describe('Bali Component Framework™', function() {
 
         it('should iterate over a queue forwards and backwards', function() {
             // REMEMBER: The iterator for a queue iterates through the items in FIFO order
-            const queue = collections.Queue.fromSequential(array);
+            const queue = bali.queue(array);
             // iterate through the items from beginning to end
             const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line

@@ -16,14 +16,14 @@
  * This constructor creates a new Bali exception with the specified attributes.
  * 
  * @constructor
- * @param {Catalog} attributes A catalog containing the exception attributes.
+ * @param {Object} attributes An object containing the exception attributes.
  * @returns {Exception} The new exception.
  */
 function Exception(attributes) {
-    this.message = 'BALI: The following Bali exception was thrown: ' + attributes;
     this.stack = Error().stack;
     if (this.stack) this.stack = 'Exception' + this.stack.slice(5);  // replace 'Error' with 'Exception'
-    this.attributes = attributes;
+    this.attributes = this.convert(attributes);
+    this.message = 'BALI: The following Bali exception was thrown: ' + this.attributes;
     return this;
 }
 Exception.prototype = Object.create(Error.prototype);

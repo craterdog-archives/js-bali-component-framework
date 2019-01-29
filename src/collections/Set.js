@@ -41,57 +41,6 @@ Set.prototype.constructor = Set;
 exports.Set = Set;
 
 
-/**
- * This function creates a new set using the specified sequential object to seed the
- * initial items in the set. The set may be parameterized by specifying optional
- * parameters that are used to parameterize its type.
- * 
- * @param {Array|Object|Collection} sequential The sequential object containing the initial
- * items to be used to seed the new set.
- * @param {Comparator} comparator An optional comparator.
- * @param {Parameters} parameters Optional parameters used to parameterize this set. 
- * @returns {List} The new set.
- */
-Set.fromSequential = function(sequential, comparator, parameters) {
-    const set = new Set(comparator, parameters);
-    var iterator;
-    if (typeof sequential !== 'object') {
-        const type = sequential.constructor.name;
-        throw new Error('BUG: A set cannot be initialized using an object of type: ' + type);
-    }
-    switch (sequential.type) {
-        case utilities.types.CATALOG:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                set.addItem(association.value);
-            }
-            break;
-        case utilities.types.LIST:
-        case utilities.types.QUEUE:
-        case utilities.types.SET:
-        case utilities.types.STACK:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                set.addItem(iterator.getNext());
-            }
-            break;
-        default:
-            if (Array.isArray(sequential)) {
-                sequential.forEach(function(item) {
-                    set.addItem(item);
-                });
-            } else {
-                const keys = Object.keys(sequential);
-                keys.forEach(function(key) {
-                    set.addItem(sequential[key]);
-                });
-            }
-    }
-    return set;
-};
-
-
 // PUBLIC FUNCTIONS
 
 /**
@@ -103,7 +52,8 @@ Set.fromSequential = function(sequential, comparator, parameters) {
  * @returns {Set} The resulting set.
  */
 Set.or = function(first, second) {
-    const result = Set.fromSequential(first, first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.parameters);
+    result.addItems(first);
     result.addItems(second);
     return result;
 };
@@ -139,7 +89,8 @@ Set.and = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second) {
-    const result = Set.fromSequential(first, first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.parameters);
+    result.addItems(first);
     result.removeItems(second);
     return result;
 };
@@ -246,7 +197,7 @@ Set.prototype.getIterator = function() {
  * @returns {Number} The index of the specified item.
  */
 Set.prototype.getIndex = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     const index = this.tree.index(item) + 1;  // convert to ordinal based indexing
     return index;
 };
@@ -273,7 +224,7 @@ Set.prototype.getItem = function(index) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Set.prototype.addItem = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     const result = this.tree.insert(item);
     if (result) {
         this.complexity += item.complexity;
@@ -291,7 +242,7 @@ Set.prototype.addItem = function(item) {
  * @returns {Boolean} Whether or not the item was removed.
  */
 Set.prototype.removeItem = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     const result = this.tree.remove(item);
     if (result) {
         this.complexity -= item.complexity;

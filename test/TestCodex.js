@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const utilities = require('../src/utilities');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -19,55 +19,55 @@ describe('Bali Component Framework™', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {
-                const expectedBuffer = utilities.random.bytes(4);
-                const expectedInteger = utilities.codex.bytesToInteger(expectedBuffer);
-                const buffer = utilities.codex.integerToBytes(expectedInteger);
+                const expectedBuffer = bali.utilities.random.bytes(4);
+                const expectedInteger = bali.utilities.codex.bytesToInteger(expectedBuffer);
+                const buffer = bali.utilities.codex.integerToBytes(expectedInteger);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const integer = utilities.codex.bytesToInteger(buffer);
+                const integer = bali.utilities.codex.bytesToInteger(buffer);
                 expect(integer).to.equal(expectedInteger);
             }
         });
 
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
-                const expectedBuffer = utilities.random.bytes(i);
-                const expectedBase2 = utilities.codex.base2Encode(expectedBuffer, '    ');
-                const buffer = utilities.codex.base2Decode(expectedBase2);
+                const expectedBuffer = bali.utilities.random.bytes(i);
+                const expectedBase2 = bali.utilities.codex.base2Encode(expectedBuffer, '    ');
+                const buffer = bali.utilities.codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base2 = utilities.codex.base2Encode(buffer, '    ');
+                const base2 = bali.utilities.codex.base2Encode(buffer, '    ');
                 expect(base2).to.equal(expectedBase2);
             }
         });
 
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
-                const expectedBuffer = utilities.random.bytes(i);
-                const expectedBase16 = utilities.codex.base16Encode(expectedBuffer, '    ');
-                const buffer = utilities.codex.base16Decode(expectedBase16);
+                const expectedBuffer = bali.utilities.random.bytes(i);
+                const expectedBase16 = bali.utilities.codex.base16Encode(expectedBuffer, '    ');
+                const buffer = bali.utilities.codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base16 = utilities.codex.base16Encode(buffer, '    ');
+                const base16 = bali.utilities.codex.base16Encode(buffer, '    ');
                 expect(base16).to.equal(expectedBase16);
             }
         });
 
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
-                const expectedBuffer = utilities.random.bytes(i);
-                const expectedBase32 = utilities.codex.base32Encode(expectedBuffer, '    ');
-                const buffer = utilities.codex.base32Decode(expectedBase32);
+                const expectedBuffer = bali.utilities.random.bytes(i);
+                const expectedBase32 = bali.utilities.codex.base32Encode(expectedBuffer, '    ');
+                const buffer = bali.utilities.codex.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base32 = utilities.codex.base32Encode(buffer, '    ');
+                const base32 = bali.utilities.codex.base32Encode(buffer, '    ');
                 expect(base32).to.equal(expectedBase32);
             }
         });
 
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
-                const expectedBuffer = utilities.random.bytes(i);
-                const expectedBase64 = utilities.codex.base64Encode(expectedBuffer, '    ');
-                const buffer = utilities.codex.base64Decode(expectedBase64);
+                const expectedBuffer = bali.utilities.random.bytes(i);
+                const expectedBase64 = bali.utilities.codex.base64Encode(expectedBuffer, '    ');
+                const buffer = bali.utilities.codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base64 = utilities.codex.base64Encode(buffer, '    ');
+                const base64 = bali.utilities.codex.base64Encode(buffer, '    ');
                 expect(base64).to.equal(expectedBase64);
             }
         });

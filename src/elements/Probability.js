@@ -17,19 +17,35 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new probability element.
+ * This constructor creates a new probability element using the specified value.
  * 
- * @param {Number|Boolean} value The value of the probability.
+ * @param {String|Number|Boolean} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
-    if (value === undefined || value === null) value = false;  // default value
-    if (typeof value === 'boolean') value = value ? 1 : 0;
+    value = value || false;  // the default value
+    switch (typeof value) {
+        case 'boolean':
+            value = value ? 1 : 0;
+            break;
+        case 'string':
+            switch (value) {
+                case 'false':
+                    value = 0;
+                    break;
+                case 'true':
+                    value = 1;
+                    break;
+                default:
+                    value = Number(value);
+            }
+            break;
+    }
     if (value < 0 || value > 1) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
@@ -41,32 +57,6 @@ function Probability(value, parameters) {
 Probability.prototype = Object.create(abstractions.Element.prototype);
 Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
-
-
-/**
- * This constructor creates an immutable instance of a probability using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the probability.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Probability} The new probability.
- */
-Probability.fromLiteral = function(literal, parameters) {
-    var value;
-    switch (literal) {
-        case 'false':
-            value = 0;
-            break;
-        case 'true':
-            value = 1;
-            break;
-        default:
-            value = Number('0' + literal);  // add the leading '0'
-    }
-    const probability = new Probability(value, parameters);
-    return probability;
-};
 
 
 // PUBLIC METHODS

@@ -19,7 +19,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const converter = require('../utilities/Converter');
+const elements = require('../elements');
 
 
 // PUBLIC FUNCTIONS
@@ -72,7 +72,7 @@ Range.prototype.toArray = function() {
         if (this.collection) {
             array.push(this.collection.getItem(index++));  // retrieve the next item
         } else {
-            array.push(converter.asElement(index++));  // the index is the next item
+            array.push(new elements.Number(index++));  // the index is the next item
         }
     }
     return array;
@@ -110,7 +110,7 @@ Range.prototype.getFirst = function() {
     if (this.collection) {
         item = this.collection.getItem(this.first);  // retrieve the item
     } else {
-        item = converter.asElement(this.first);  // the index is the item
+        item = new elements.Number(this.first);  // the index is the item
     }
     return item;
 };
@@ -127,7 +127,7 @@ Range.prototype.getItem = function(index) {
     if (this.collection) {
         item = this.collection.getItem(this.first + index - 1);
     } else {
-        item = converter.asElement(this.first + index - 1);
+        item = new elements.Number(this.first + index - 1);
     }
     return item;
 };
@@ -143,7 +143,7 @@ Range.prototype.getLast = function() {
     if (this.collection) {
         item = this.collection.getItem(this.last);  // retrieve the item
     } else {
-        item = converter.asElement(this.last);  // the index is the item
+        item = new elements.Number(this.last);  // the index is the item
     }
     return item;
 };
@@ -224,7 +224,7 @@ RangeIterator.prototype.getPrevious = function() {
     if (this.range.collection) {
         item = this.range.collection.getItem(index);  // retrieve the item
     } else {
-        item = converter.asElement(index);  // the index is the item
+        item = new elements.Number(index);  // the index is the item
     }
     return item;
 };
@@ -237,7 +237,7 @@ RangeIterator.prototype.getNext = function() {
     if (this.range.collection) {
         item = this.range.collection.getItem(index);  // retrieve the item
     } else {
-        item = converter.asElement(index);  // the index is the item
+        item = new elements.Number(index);  // the index is the item
     }
     this.slot++;
     return item;

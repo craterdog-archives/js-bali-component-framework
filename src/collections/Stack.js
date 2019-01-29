@@ -55,63 +55,6 @@ Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 
 
-/**
- * This function creates a new stack using the specified sequential object to seed the
- * initial items on the stack. The stack may be parameterized by specifying optional
- * parameters that are used to parameterize its type.
- * 
- * @param {Array|Object|Collection} sequential The sequential object containing the initial
- * items to be used to seed the new stack.
- * @param {Parameters} parameters Optional parameters used to parameterize this stack. 
- * @returns {Stack} The new stack.
- */
-Stack.fromSequential = function(sequential, parameters) {
-    const stack = new Stack(parameters);
-    var iterator;
-    if (typeof sequential !== 'object') {
-        const type = sequential.constructor.name;
-        throw new Error('BUG: A stack cannot be initialized using an object of type: ' + type);
-    }
-    switch (sequential.type) {
-        case utilities.types.CATALOG:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                stack.addItem(association.value);
-            }
-            break;
-        case utilities.types.LIST:
-        case utilities.types.QUEUE:
-        case utilities.types.SET:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                stack.addItem(iterator.getNext());
-            }
-            break;
-        case utilities.types.STACK:
-            iterator = sequential.getIterator();
-            // a stack's iterator starts at the top, and we need to start at the bottom
-            iterator.toEnd();
-            while (iterator.hasPrevious()) {
-                stack.addItem(iterator.getPrevious());
-            }
-            break;
-        default:
-            if (Array.isArray(sequential)) {
-                sequential.forEach(function(item) {
-                    stack.addItem(item);
-                });
-            } else {
-                const keys = Object.keys(sequential);
-                keys.forEach(function(key) {
-                    stack.addItem(sequential[key]);
-                });
-            }
-    }
-    return stack;
-};
-
-
 // PUBLIC METHODS
 
 /**
@@ -167,21 +110,21 @@ Stack.prototype.getIterator = function() {
  * @throws {Exception} Attempted to add an item to a full stack.
  */
 Stack.prototype.addItem = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
-        const exception = Catalog.fromSequential({
+        const attributes = {
             $exception: '$resourceLimit',
             $type: '$Stack',
             $procedure: '$addItem',
             $capacity: this.capacity,
             $message: '"The stack has reached its maximum capacity."'
-        });
-        throw new utilities.Exception(exception);
+        };
+        throw new utilities.Exception(attributes);
     }
 };
 

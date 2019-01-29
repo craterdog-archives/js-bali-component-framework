@@ -11,9 +11,7 @@
 const fs = require('fs');
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const utilities = require('../src/utilities');
-const Parser = require('../src/utilities/Parser').Parser;
-const parser = new Parser(true);
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -26,14 +24,14 @@ describe('Bali Component Framework™', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;  // jshint ignore:line
-            var component = parser.parseDocument(document, DEBUG);
+            var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = parser.parseDocument(formatted, DEBUG);
+            component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             expect(formatted).to.equal(document);
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -42,7 +40,7 @@ describe('Bali Component Framework™', function() {
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
                     const string = item.toString();
-                    const element = parser.parseDocument(string, DEBUG);
+                    const element = bali.parse(string, undefined, DEBUG);
                     expect(element.isEqualTo(item)).to.equal(true);
                 }
             }
@@ -53,14 +51,14 @@ describe('Bali Component Framework™', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;  // jshint ignore:line
-            var component = parser.parseDocument(document, DEBUG);
+            var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = parser.parseDocument(formatted, DEBUG);
+            component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             expect(formatted).to.equal(document);
         });
 
@@ -69,14 +67,14 @@ describe('Bali Component Framework™', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;  // jshint ignore:line
-            var component = parser.parseDocument(document, DEBUG);
+            var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = parser.parseDocument(formatted, DEBUG);
+            component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             expect(formatted).to.equal(document);
         });
 
@@ -85,14 +83,14 @@ describe('Bali Component Framework™', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;  // jshint ignore:line
-            var component = parser.parseDocument(document, DEBUG);
+            var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = parser.parseDocument(formatted, DEBUG);
+            component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = utilities.formatter.formatComponent(component) + '\n';  // add POSIX <EOL>
+            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
             expect(formatted).to.equal(document);
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -101,7 +99,7 @@ describe('Bali Component Framework™', function() {
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
                     const string = item.toString();
-                    component = parser.parseDocument(string, DEBUG);
+                    component = bali.parse(string, undefined, DEBUG);
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }

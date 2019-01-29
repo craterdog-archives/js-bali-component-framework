@@ -18,47 +18,29 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new version element.
+ * This constructor creates a new version element using the specified value.
  * 
- * @param {Array} value An array of version levels for the version number.
+ * @param {String|Array} value The source string for the version or an array of version
+ * levels for the version string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Symbol} The new version element.
  */
 function Version(value, parameters) {
     abstractions.Element.call(this, utilities.types.VERSION, parameters);
-    this.value = value || [1];  // default value is v1
-    if (this.value.indexOf(0) >= 0) {
+    value = value || [1];  // the default value
+    if (value.indexOf(0) >= 0) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
+    this.value = value;
     this.setSource(this.toLiteral(parameters));
     return this;
 }
 Version.prototype = Object.create(abstractions.Element.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
-
-
-/**
- * This constructor creates an immutable instance of a version string using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the version string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Version} The new version string.
- */
-Version.fromLiteral = function(literal, parameters) {
-    const levels = literal.slice(1).split('.');  // pull out the version level strings
-    const value = [];
-    levels.forEach(function(level) {
-        value.push(Number(level));
-    });
-    const version = new Version(value, parameters);
-    return version;
-};
 
 
 // PUBLIC METHODS

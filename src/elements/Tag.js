@@ -17,46 +17,31 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new tag element.
- * The allowed ways to call it include:
- * <pre><code>
- * new Tag()
- * new Tag(numberOfBytes)  // e.g. new Tag(16)
- * new Tag(value)  // e.g. new Tag('#P5LG5KX4VZLW5W4A70F6HJ5PTCX1XQA8')
- * </code></pre>
+ * This constructor creates a new tag element using the specified value.
  * 
- * 
- * @param {Number|String} optionalSizeOrValue An optional parameter defining
- * the size of the new tag or the value it should represent.
+ * @param {Number|String} value An optional parameter defining the size of the new tag
+ * or the value it should represent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Tag} The new tag element.
  */
-function Tag(optionalSizeOrValue, parameters) {
+function Tag(value, parameters) {
     abstractions.Element.call(this, utilities.types.TAG, parameters);
+    value = value || 20;  // the default number of bytes
     var bytes;
-
-    const type = typeof optionalSizeOrValue;
-    switch (type) {
-        case 'undefined':
-            this.size = 20;  // default size
-            bytes = utilities.random.bytes(this.size);
-            this.value = utilities.codex.base32Encode(bytes);
-            break;
+    switch (typeof value) {
         case 'number':
-            this.size = optionalSizeOrValue;
-            bytes = utilities.random.bytes(this.size);
+            bytes = utilities.random.bytes(value);
             this.value = utilities.codex.base32Encode(bytes);
+            this.size = value;
             break;
         case 'string':
-            this.value = optionalSizeOrValue;
-            bytes = utilities.codex.base32Decode(this.value);
+            bytes = utilities.codex.base32Decode(value);
+            this.value = value;
             this.size = bytes.length;
             break;
-        default:
-            throw new Error('BUG: An invalid tag value type was passed to the constructor: ' + type);
     }
     this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
     this.setSource(this.toLiteral(parameters));
@@ -66,22 +51,6 @@ function Tag(optionalSizeOrValue, parameters) {
 Tag.prototype = Object.create(abstractions.Element.prototype);
 Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
-
-
-/**
- * This constructor creates an immutable instance of a tag using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the tag.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Tag} The new tag.
- */
-Tag.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1);  // remove the leading '#'
-    const tag = new Tag(value, parameters);
-    return tag;
-};
 
 
 // PUBLIC METHODS

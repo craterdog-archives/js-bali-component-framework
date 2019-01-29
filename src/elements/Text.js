@@ -17,10 +17,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new text string element.
+ * This constructor creates a new text string element using the specified value.
  * 
  * @constructor
  * @param {String} value The value of the text string.
@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
  */
 function Text(value, parameters) {
     abstractions.Element.call(this, utilities.types.TEXT, parameters);
-    if (value === undefined || value === null) value = '';  // default value
+    value = value || '';  // default value
     this.value = value;
     this.setSource(this.toLiteral(parameters));
     if (value.startsWith('\n')) this.setToComplex();
@@ -38,22 +38,6 @@ function Text(value, parameters) {
 Text.prototype = Object.create(abstractions.Element.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
-
-
-/**
- * This constructor creates an immutable instance of a text string using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the text string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Text} The new text string.
- */
-Text.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1, -1);  // remove the '"' delimiters
-    const text = new Text(value, parameters);
-    return text;
-};
 
 
 // PUBLIC METHODS

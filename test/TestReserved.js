@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const elements = require('../src/elements');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -18,18 +18,18 @@ describe('Bali Component Framework™', function() {
     describe('Test reserved symbol constructors', function() {
 
         it('should construct using literals', function() {
-            expect(elements.Reserved.fromLiteral('$$foo').toLiteral()).to.equal('$$foo');
+            expect(bali.reserved('$$foo').toLiteral()).to.equal('$$foo');
         });
 
         it('should throw an exception for an empty reserved symbol', function() {
             expect(
                 function() {
-                    const empty = new elements.Reserved();
+                    const empty = bali.reserved();
                 }
             ).to.throw();
             expect(
                 function() {
-                    const empty = new elements.Reserved('');
+                    const empty = bali.reserved('');
                 }
             ).to.throw();
         });
@@ -37,18 +37,18 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for a reserved symbol containing white space', function() {
             expect(
                 function() {
-                    const bad = new elements.Reserved(' ');
+                    const bad = bali.reserved(' ');
                 }
             ).to.throw();
             expect(
                 function() {
-                    const bad = new elements.Reserved('White Space');
+                    const bad = bali.reserved('White Space');
                 }
             ).to.throw();
         });
 
         it('should construct a reserved symbol and format the same reserved symbol', function() {
-            const reserved = new elements.Reserved('foobar');
+            const reserved = bali.reserved('$$foobar');
             const string = reserved.toString();
             expect(string).to.equal('$$foobar');
             const identifier = reserved.value;
@@ -60,7 +60,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reserved symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Reserved('foobar').getType();
+            const type = bali.reserved('$$foobar').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#HKTQFZ328SXYW6Q08CCHW90NQ6FW77KB,$version:v1,$digest:none]>');
         });
 

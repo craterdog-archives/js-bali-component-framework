@@ -17,10 +17,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new percent element.
+ * This constructor creates a new percent element using the specified value.
  * 
  * @param {Number} value The value of the percent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  */
 function Percent(value, parameters) {
     abstractions.Element.call(this, utilities.types.PERCENT, parameters);
-    if (value === undefined || value === null) value = 0;  // default value
+    value = value || 0;  // the default value
     this.value = value;
     this.setSource(this.toLiteral(parameters));
     return this;
@@ -36,23 +36,6 @@ function Percent(value, parameters) {
 Percent.prototype = Object.create(abstractions.Element.prototype);
 Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
-
-
-/**
- * This constructor creates an immutable instance of a percent using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the percent.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Percent} The new percent.
- */
-Percent.fromLiteral = function(literal, parameters) {
-    literal = literal.slice(0, -1).trim();  // remove the trailing '%'
-    const value = abstractions.Element.literalToNumber(literal);
-    const percent = new Percent(value, parameters);
-    return percent;
-};
 
 
 // PUBLIC METHODS

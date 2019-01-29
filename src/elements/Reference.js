@@ -19,19 +19,20 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new reference element.
+ * This constructor creates a new reference element using the specified value.
  * 
- * @param {String} value The value of the reference.
+ * @param {String|URL} value The value of the reference.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reference} The new reference element.
  */
 function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
-    this.value = new URL(value);
+    if (typeof value === 'string') value = new URL(value);
+    this.value = value;
     this.setSource(this.toLiteral(parameters));
     this.setToComplex();  // references should never be inlined
     return this;
@@ -39,22 +40,6 @@ function Reference(value, parameters) {
 Reference.prototype = Object.create(abstractions.Element.prototype);
 Reference.prototype.constructor = Reference;
 exports.Reference = Reference;
-
-
-/**
- * This constructor creates an immutable instance of a reference using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the reference.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Reference} The new reference.
- */
-Reference.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1, -1);  // remove the '<' and '>' delimiters
-    const reference = new Reference(value, parameters);
-    return reference;
-};
 
 
 // PUBLIC METHODS

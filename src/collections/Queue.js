@@ -55,56 +55,6 @@ Queue.prototype.constructor = Queue;
 exports.Queue = Queue;
 
 
-/**
- * This function creates a new queue using the specified sequential object to seed the
- * initial items in the queue. The queue may be parameterized by specifying optional
- * parameters that are used to parameterize its type.
- * 
- * @param {Array|Object|Collection} sequential The sequential object containing the initial
- * items to be used to seed the new queue.
- * @param {Parameters} parameters Optional parameters used to parameterize this queue.
- * @returns {Queue} The new queue.
- */
-Queue.fromSequential = function(sequential, parameters) {
-    const queue = new Queue(parameters);
-    var iterator;
-    if (typeof sequential !== 'object') {
-        const type = sequential.constructor.name;
-        throw new Error('BUG: A queue cannot be initialized using an object of type: ' + type);
-    }
-    switch (sequential.type) {
-        case utilities.types.CATALOG:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                queue.addItem(association.value);
-            }
-            break;
-        case utilities.types.LIST:
-        case utilities.types.QUEUE:
-        case utilities.types.SET:
-        case utilities.types.STACK:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                queue.addItem(iterator.getNext());
-            }
-            break;
-        default:
-            if (Array.isArray(sequential)) {
-                sequential.forEach(function(item) {
-                    queue.addItem(item);
-                });
-            } else {
-                const keys = Object.keys(sequential);
-                keys.forEach(function(key) {
-                    queue.addItem(sequential[key]);
-                });
-            }
-    }
-    return queue;
-};
-
-
 // PUBLIC METHODS
 
 /**
@@ -146,21 +96,21 @@ Queue.prototype.getSize = function() {
  * @throws {Exception} Attempted to add an item to a full queue.
  */
 Queue.prototype.addItem = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         this.complexity += item.complexity;
         if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
-    const exception = Catalog.fromSequential({
+    const attributes = {
         $exception: '$resourceLimit',
         $type: '$Queue',
         $procedure: '$addItem',
         $capacity: this.capacity,
         $message: '"The queue has reached its maximum capacity."'
-    });
-    throw new utilities.Exception(exception);
+    };
+    throw new utilities.Exception(attributes);
 };
 
 

@@ -16,52 +16,38 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new pattern element.
+ * This constructor creates a new pattern element using the specified value.
  * 
  * @constructor
- * @param {RegExp} value A regular expression for the pattern element.
+ * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
-    this.value = value || new RegExp('\u0000');  // default value
+    value = value || 'none';  // the default value
+    if (typeof value === 'string') {
+        switch (value) {
+            case 'none':
+                value = new RegExp('\u0000');  // should never find nulls in text strings
+                break;
+            case 'any':
+                value = new RegExp('.*');  // match anything
+                break;
+            default:
+                value = new RegExp(value);
+        }
+    }
+    this.value = value;
     this.setSource(this.toLiteral(parameters));
     return this;
 }
 Pattern.prototype = Object.create(abstractions.Element.prototype);
 Pattern.prototype.constructor = Pattern;
 exports.Pattern = Pattern;
-
-
-/**
- * This constructor creates an immutable instance of a text pattern using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the text pattern.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Pattern} The new text pattern.
- */
-Pattern.fromLiteral = function(literal, parameters) {
-    literal = literal || 'none';
-    var value;
-    switch (literal) {
-        case 'none':
-            value = new RegExp('\u0000');  // should never find nulls in text strings
-            break;
-        case 'any':
-            value = new RegExp('.*');  // match anything
-            break;
-        default:
-            value = new RegExp(literal.slice(1, -2));  // remove the delimiters
-    }
-    const pattern = new Pattern(value, parameters);
-    return pattern;
-};
 
 
 // PUBLIC METHODS

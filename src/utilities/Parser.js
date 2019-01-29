@@ -59,13 +59,14 @@ exports.Parser = Parser;
  * This method parses a string containing Bali Document Notation™ and returns the corresponding
  * component.
  * 
- * @param {String} document The Bali Document Notation™ source string.
+ * @param {String} value The Bali Document Notation™ source string.
+ * @param {Parameters} parameters Optional parameters used to parameterize the resulting component.
  * @returns {Component} The resulting component.
  */
-Parser.prototype.parseDocument = function(document) {
-    const parser = initializeParser(document, this.debug);
+Parser.prototype.parseDocument = function(value, parameters) {
+    const parser = initializeParser(value, this.debug);
     const antlrTree = parser.document();
-    const component = convertParseTree(antlrTree);
+    const component = convertParseTree(antlrTree, parameters);
     return component;
 };
 
@@ -88,8 +89,8 @@ function initializeParser(document, debug) {
 }
 
 
-function convertParseTree(antlrTree) {
-    const visitor = new ParsingVisitor();
+function convertParseTree(antlrTree, parameters) {
+    const visitor = new ParsingVisitor(parameters);
     antlrTree.accept(visitor);
     const baliTree = visitor.result;
     return baliTree;
@@ -104,9 +105,10 @@ function convertParseTree(antlrTree) {
  * tree into a clean parse tree.
  */
 
-function ParsingVisitor() {
+function ParsingVisitor(parameters) {
     grammar.DocumentVisitor.call(this);
     this.depth = 0;
+    this.parameters = parameters;
     return this;
 }
 ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
@@ -132,7 +134,8 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
-    const angle = elements.Angle.fromLiteral(ctx.getText(), parameters);
+    const value = abstractions.Element.literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
+    const angle = new elements.Angle(value, parameters);
     this.result = angle;
 };
 
@@ -165,8 +168,8 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().replace(/\s/g, '');  // strip out all whitespace
-    const binary = elements.Binary.fromLiteral(value, parameters);
+    const value = ctx.getText().slice(1, -1).replace(/\s/g, '');  // strip out delimeters and whitespace
+    const binary = new elements.Binary(value, parameters);
     this.result = binary;
 };
 
@@ -263,9 +266,31 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
 ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
-    const number = elements.Number.fromLiteral(value, parameters);
-    this.result = number;
+    var real = ctx.real();
+    if (real) {
+        real.accept(this);
+        real = this.result;
+    }
+    var imaginary = ctx.imaginary();
+    if (imaginary) {
+        imaginary.accept(this);
+        imaginary = this.result;
+    }
+    const angle = ctx.angle();
+    if (angle) {
+        angle.accept(this);
+        imaginary = this.result;
+    }
+    const literal = ctx.getText();
+    switch (literal) {
+        case 'undefined':
+            real = NaN;
+            break;
+        case 'infinity':
+            real = Infinity;
+            break;
+    }
+    this.result = new elements.Number(real, imaginary, parameters);
 };
 
 
@@ -345,7 +370,8 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
-    const duration = elements.Duration.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(1);  // remove the leading '~'
+    const duration = new elements.Duration(value, parameters);
     this.result = duration;
 };
 
@@ -457,6 +483,12 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
         tree.addChild(this.result);
     }
     this.result = tree;
+};
+
+
+// imaginary: IMAGINARY
+ParsingVisitor.prototype.visitImaginary = function(ctx) {
+    this.result = abstractions.Element.literalToNumber(ctx.getText().slice(0, -1).trim());  // remove the trailing 'i'
 };
 
 
@@ -586,7 +618,8 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 // moment: MOMENT
 ParsingVisitor.prototype.visitMoment = function(ctx) {
     const parameters = this.getParameters();
-    const moment = elements.Moment.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
+    const moment = new elements.Moment(value, parameters);
     this.result = moment;
 };
 
@@ -624,7 +657,12 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 // pattern: 'none' | REGEX | 'any'
 ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
-    const pattern = elements.Pattern.fromLiteral(ctx.getText(), parameters);
+    var value = ctx.getText();
+    if (value.endsWith('?')) {
+        value = value.slice(1, -2);  // remove the trailing '?' and '"' delimiters
+        value = new RegExp(value);
+    }
+    const pattern = new elements.Pattern(value, parameters);
     this.result = pattern;
 };
 
@@ -632,7 +670,8 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 // percent: PERCENT
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     const parameters = this.getParameters();
-    const percent = elements.Percent.fromLiteral(ctx.getText(), parameters);
+    const value = abstractions.Element.literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
+    const percent = new elements.Percent(value, parameters);
     this.result = percent;
 };
 
@@ -649,7 +688,8 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 // probability: 'false' | FRACTION | 'true'
 ParsingVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
-    const probability = elements.Probability.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText();
+    const probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
 
@@ -709,10 +749,17 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
+// real: REAL
+ParsingVisitor.prototype.visitReal = function(ctx) {
+    this.result = abstractions.Element.literalToNumber(ctx.getText());
+};
+
+
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
-    const reference = elements.Reference.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
+    const reference = new elements.Reference(value, parameters);
     this.result = reference;
 };
 
@@ -720,7 +767,8 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 // reserved: RESERVED
 ParsingVisitor.prototype.visitReserved = function(ctx) {
     const parameters = this.getParameters();
-    const reserved = elements.Reserved.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(2);  // remove the leading '$$'
+    const reserved = new elements.Reserved(value, parameters);
     this.result = reserved;
 };
 
@@ -830,7 +878,8 @@ ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
 // symbol: SYMBOL
 ParsingVisitor.prototype.visitSymbol = function(ctx) {
     const parameters = this.getParameters();
-    const symbol = elements.Symbol.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(1);  // remove the leading '$'
+    const symbol = new elements.Symbol(value, parameters);
     this.result = symbol;
 };
 
@@ -838,7 +887,8 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 // tag: TAG
 ParsingVisitor.prototype.visitTag = function(ctx) {
     const parameters = this.getParameters();
-    const tag = elements.Tag.fromLiteral(ctx.getText(), parameters);
+    const value = ctx.getText().slice(1);  // remove the leading '#'
+    const tag = new elements.Tag(value, parameters);
     this.result = tag;
 };
 
@@ -848,8 +898,8 @@ ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n' + indentation, 'g');
-    const value = ctx.getText().replace(regex, '\n');  // remove the indentation
-    const text = elements.Text.fromLiteral(value, parameters);
+    const value = ctx.getText().slice(1, -1).replace(regex, '\n');  // remove the indentation and '"' delimiters
+    const text = new elements.Text(value, parameters);
     this.result = text;
 };
 
@@ -875,7 +925,12 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 // version: VERSION
 ParsingVisitor.prototype.visitVersion = function(ctx) {
     const parameters = this.getParameters();
-    const version = elements.Version.fromLiteral(ctx.getText(), parameters);
+    const levels = ctx.getText().slice(1).split('.');  // pull out the version level strings
+    const value = [];
+    levels.forEach(function(level) {
+        value.push(Number(level));
+    });
+    const version = new elements.Version(value, parameters);
     this.result = version;
 };
 
@@ -945,13 +1000,13 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    const exception = collections.Catalog.fromSequential({
+    const attributes = {
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
-        $message: e.message
-    });
-    throw new utilities.Exception(exception);
+        $message: '"' + e.message + '"'
+    };
+    throw new utilities.Exception(attributes);
 };
 
 
@@ -978,7 +1033,7 @@ CustomErrorListener.prototype.constructor = CustomErrorListener;
 
 
 CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken, lineNumber, columnNumber, message, e) {
-    // log a message
+    // create the error message
     const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     const input = token ? offendingToken.getInputStream() : recognizer._input;
     const lines = input.toString().split('\n');
@@ -988,16 +1043,21 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     } else {
         message = 'An invalid token was encountered: ' + token;
     }
-    logMessage(recognizer, message);
+    message = addContext(recognizer, message);
 
-    // stop processing
-    const exception = collections.Catalog.fromSequential({
+    // log the error message if in debug mode
+    if (this.debug) {
+        console.error(message);
+    }
+
+    // stop the processing
+    const attributes = {
         $exception: '$syntaxError',
         $type: '$Parser',
         $procedure: '$parseDocument',
-        $message: message
-    });
-    throw new utilities.Exception(exception);
+        $message: '"' + message + '"'
+    };
+    throw new utilities.Exception(attributes);
 };
 
 
@@ -1010,7 +1070,8 @@ CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startI
         });
         alternatives = "{" + alternatives.join(", ") + "}";
         const message = 'PARSER: Ambiguous input was encountered for rule: ' + rule + ', alternatives: ' + alternatives;
-        logMessage(recognizer, message);
+        message = addContext(recognizer, message);
+        console.error(message);
     }
 };
 
@@ -1019,7 +1080,8 @@ CustomErrorListener.prototype.reportContextSensitivity = function(recognizer, df
     if (this.debug) {
         const rule = getRule(recognizer, dfa);
         const message = 'PARSER Encountered a context sensitive rule: ' + rule;
-        logMessage(recognizer, message);
+        message = addContext(recognizer, message);
+        console.error(message);
     }
 };
 
@@ -1037,11 +1099,11 @@ function getRule(recognizer, dfa) {
 }
 
 
-function logMessage(recognizer, message) {
-    // log the error message
-    console.error(message.slice(0, 160));
+function addContext(recognizer, message) {
+    // truncate the main message as needed
+    message = '\n    ' + message.slice(0, 160) + '\n';
 
-    // log the lines before and after the invalid line and highlight the invalid token
+    // add the lines before and after the invalid line and highlight the invalid token
     const offendingToken = recognizer._precedenceStack ? recognizer.getCurrentToken() : undefined;
     const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     const input = token ? offendingToken.getInputStream() : recognizer._input;
@@ -1049,10 +1111,10 @@ function logMessage(recognizer, message) {
     const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
     const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
     if (lineNumber > 1) {
-        console.error('[' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2]);
+        message += '    [' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2] + '\n';
     }
-    console.error('[' + lineNumber + ']: ' + lines[lineNumber - 1]);
-    var line = '[' + lineNumber + ']: ';
+    message += '    [' + lineNumber + ']: ' + lines[lineNumber - 1] + '\n';
+    var line = '    [' + lineNumber + ']: ';
     for (var i = 0; i < columnNumber; i++) {
         line += ' ';
     }
@@ -1061,6 +1123,9 @@ function logMessage(recognizer, message) {
     while (start++ <= stop) {
         line += '^';
     }
-    console.error(line);
-    if (lineNumber < lines.length) console.error('[' + (lineNumber + 1) + ']: ' + lines[lineNumber]);
+    message += line + '\n';
+    if (lineNumber < lines.length) {
+        message += '    [' + (lineNumber + 1) + ']: ' + lines[lineNumber] + '\n';
+    }
+    return message;
 }

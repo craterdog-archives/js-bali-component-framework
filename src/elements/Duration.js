@@ -19,18 +19,18 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new duration element.
+ * This constructor creates a new duration element using the specified value.
  * 
- * @param {String} value The ISO compliant value of the duration.
+ * @param {String|Number} value The source string the duration.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Duration} The new duration element.
  */
 function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
-    if (value === undefined || value === null) value = 'P0D';  // default value
+    value = value || 0;  // the default value
     this.value = moment.duration(value);
     this.setSource(this.toLiteral(parameters));
     return this;
@@ -38,22 +38,6 @@ function Duration(value, parameters) {
 Duration.prototype = Object.create(abstractions.Element.prototype);
 Duration.prototype.constructor = Duration;
 exports.Duration = Duration;
-
-
-/**
- * This constructor creates an immutable instance of a time duration using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the time duration.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Duration} The new time duration.
- */
-Duration.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1);  // remove the leading '~'
-    const duration = new Duration(value, parameters);
-    return duration;
-};
 
 
 // PUBLIC METHODS

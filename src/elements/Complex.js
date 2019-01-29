@@ -14,8 +14,6 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
-const antlr = require('antlr4');
-const grammar = require('../grammar');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Angle = require('./Angle').Angle;
@@ -75,58 +73,6 @@ function Complex(real, imaginary, parameters) {
 Complex.prototype = Object.create(abstractions.Element.prototype);
 Complex.prototype.constructor = Complex;
 exports.Complex = Complex;
-
-
-/**
- * This constructor creates an immutable instance of a complex number using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the complex number.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Complex} The new complex number.
- */
-Complex.fromLiteral = function(literal, parameters) {
-    const chars = new antlr.InputStream(literal);
-    const lexer = new grammar.DocumentLexer(chars);
-    const tokens = new antlr.CommonTokenStream(lexer);
-    const parser = new grammar.DocumentParser(tokens);
-    parser.buildParseTrees = true;
-    const ctx = parser.number();
-    var real, imaginary;
-    if (ctx.children.length === 1) {
-        switch (ctx.getText()) {
-            case 'undefined':
-                real = NaN;
-                imaginary = NaN;
-                break;
-            case 'infinity':
-                real = Infinity;
-                imaginary = Infinity;
-                break;
-            default:
-                if (ctx.real()) {
-                    real = parseReal(ctx.real().getText());
-                    imaginary = 0;
-                } else {
-                    real = 0;
-                    imaginary = parseImaginary(ctx.imaginary().getText());
-                }
-        }
-    } else {
-        real = parseReal(ctx.real().getText());
-        if (ctx.imaginary()) {
-            imaginary = parseImaginary(ctx.imaginary().getText());
-        } else {
-            imaginary = Angle.fromLiteral(ctx.angle().getText());
-        }
-        if (real === Infinity || imaginary === Infinity) {
-            real = Infinity;
-            imaginary = Infinity;
-        }
-    }
-    return new Complex(real, imaginary, parameters);
-};
 
 
 // PUBLIC METHODS
@@ -566,29 +512,7 @@ Complex.logarithm = function(base, value) {
 
 // PRIVATE FUNCTIONS
 
-/**
- * This function parses the literal string for an imaginary number and returns the numeric value
- * of the imaginary number.
- *
- * @param {String} literal The literal string for the imaginary number.
- * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
- * @return {Number} The numeric value of the imaginary number.
- */
-function parseImaginary(literal, parameters) {
-    literal = literal.slice(0, -1).trim();  // remove the trailing 'i'
-    const value = abstractions.Element.literalToNumber(literal);
-    return value;
-}
-
-
-/**
- * This function formats an imaginary number as a literal string.
- * 
- * @param {Number} value The imaginary number.
- * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
- * @returns {String} The literal string for the imaginary number.
- */
-function formatImaginary(value, parameters) {
+function formatImaginary(value) {
     var literal = abstractions.Element.numberToLiteral(value);
     switch (literal) {
         case 'undefined':
@@ -604,28 +528,7 @@ function formatImaginary(value, parameters) {
 }
 
 
-/**
- * This function parses the literal string for a real number and returns the numeric value
- * of the real number.
- *
- * @param {String} literal The literal string for the real number.
- * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
- * @return {Number} The numeric value of the real number.
- */
-function parseReal(literal, parameters) {
-    const value = abstractions.Element.literalToNumber(literal);
-    return value;
-}
-
-
-/**
- * This function formats a real number as a literal string.
- * 
- * @param {Number} value The real number.
- * @param {Parameters} parameters An optional set of parameters used to parameterize the type.
- * @returns {String} The literal string for the real number.
- */
-function formatReal(value, parameters) {
+function formatReal(value) {
     var literal = abstractions.Element.numberToLiteral(value);
     return literal;
 }

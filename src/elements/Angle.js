@@ -16,14 +16,13 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates an immutable instance of an angle using the specified
- * value in radians.
+ * This constructor creates an immutable instance of an angle using the specified value.
  * 
  * @constructor
- * @param {Number} value The value of the angle in radians.
+ * @param {String|Number} value The value of the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle element.
  */
@@ -31,8 +30,15 @@ function Angle(value, parameters) {
     abstractions.Element.call(this, utilities.types.ANGLE, parameters);
 
     // analyze the value
-    if (value === undefined || value === null) value = 0;  // default value
+    value = value || 0;  // the default value
     if (!isFinite(value)) value = 0;
+    if (parameters) {
+        const units = parameters.getValue('$units');
+        if (units && units.toString() === '$degrees') {
+            // convert degrees to radians
+            value = utilities.precision.quotient(utilities.precision.product(value, utilities.precision.PI), 180);
+        }
+    }
 
     // lock onto pi if appropriate
     value = utilities.precision.lockOnAngle(value);
@@ -56,30 +62,6 @@ function Angle(value, parameters) {
 Angle.prototype = Object.create(abstractions.Element.prototype);
 Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
-
-
-/**
- * This constructor creates an immutable instance of an angle using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the angle.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Angle} The new angle.
- */
-Angle.fromLiteral = function(literal, parameters) {
-    literal = literal.slice(1);  // remove the leading '~'
-    var value = abstractions.Element.literalToNumber(literal);
-    if (parameters) {
-        const units = parameters.getValue('$units');
-        if (units && units.toString() === '$degrees') {
-            // convert degrees to radians
-            value = utilities.precision.quotient(utilities.precision.product(value, utilities.precision.PI), 180);
-        }
-    }
-    const angle = new Angle(value, parameters);
-    return angle;
-};
 
 
 // PUBLIC METHODS

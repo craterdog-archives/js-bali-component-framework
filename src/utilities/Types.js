@@ -80,6 +80,7 @@ const MAP = {
     Tag:                          '#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2',
     Text:                         '#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL',
     ThrowClause:                  '#0CB0H5GSZK8NW9MTQ7NSKWPV07P82TR6',
+    Tree:                         '#QG0F4876N2XYFWWY9FJQQT55XRXDW916',
     Variable:                     '#CBZ2CQLQM3JXMQT8P041PXGWW6MWB4J0',
     Version:                      '#VVF92PYR76BJRFV932KMG7VHCD0MAS5R',
     WaitClause:                   '#ANWBB52Q07PRHB4T3R3KP18VFB5M9B4R',
@@ -160,6 +161,7 @@ exports.SYMBOL = NAMES.indexOf('Symbol');
 exports.TAG = NAMES.indexOf('Tag');
 exports.TEXT = NAMES.indexOf('Text');
 exports.THROW_CLAUSE = NAMES.indexOf('ThrowClause');
+exports.TREE = NAMES.indexOf('Tree');
 exports.VARIABLE = NAMES.indexOf('Variable');
 exports.VERSION = NAMES.indexOf('Version');
 exports.WAIT_CLAUSE = NAMES.indexOf('WaitClause');

@@ -48,56 +48,6 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
-/**
- * This function creates a new list using the specified sequential object to seed the
- * initial items in the list. The list may be parameterized by specifying optional
- * parameters that are used to parameterize its type.
- * 
- * @param {Array|Object|Collection} sequential The sequential object containing the initial
- * items to be used to seed the new list.
- * @param {Parameters} parameters Optional parameters used to parameterize this list. 
- * @returns {List} The new list.
- */
-List.fromSequential = function(sequential, parameters) {
-    const list = new List(parameters);
-    var iterator;
-    if (typeof sequential !== 'object') {
-        const type = sequential.constructor.name;
-        throw new Error('BUG: A list cannot be initialized using an object of type: ' + type);
-    }
-    switch (sequential.type) {
-        case utilities.types.CATALOG:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                list.addItem(association.value);
-            }
-            break;
-        case utilities.types.LIST:
-        case utilities.types.QUEUE:
-        case utilities.types.SET:
-        case utilities.types.STACK:
-            iterator = sequential.getIterator();
-            while (iterator.hasNext()) {
-                list.addItem(iterator.getNext());
-            }
-            break;
-        default:
-            if (Array.isArray(sequential)) {
-                sequential.forEach(function(item) {
-                    list.addItem(item);
-                });
-            } else {
-                const keys = Object.keys(sequential);
-                keys.forEach(function(key) {
-                    list.addItem(sequential[key]);
-                });
-            }
-    }
-    return list;
-};
-
-
 // PUBLIC FUNCTIONS
 
 /**
@@ -109,7 +59,8 @@ List.fromSequential = function(sequential, parameters) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    const result = List.fromSequential(list1, list1.parameters);
+    const result = new List(list1.parameters);
+    result.addItems(list1);
     result.addItems(list2);
     return result;
 };
@@ -172,7 +123,7 @@ List.prototype.getItem = function(index) {
  * @returns The existing item that was at the specified index.
  */
 List.prototype.setItem = function(index, item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
     const oldItem = this.array[index];
     this.array[index] = item;
@@ -188,7 +139,7 @@ List.prototype.setItem = function(index, item) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 List.prototype.addItem = function(item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     this.array.push(item);
     this.complexity += item.complexity;
     if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
@@ -204,7 +155,7 @@ List.prototype.addItem = function(item) {
  * @param {Component} item The new item to be inserted into this list.
  */
 List.prototype.insertItem = function(index, item) {
-    item = composites.converter.asElement(item);
+    if (this.convert) item = this.convert(item);
     index = this.normalizeIndex(index);
     index--;  // convert to javascript zero based indexing
     this.array.splice(index, 0, item);
@@ -257,14 +208,13 @@ List.prototype.removeItem = function(index) {
  * @returns The list of the items that were removed from this list.
  */
 List.prototype.removeItems = function(range) {
+    const items = new List(this.parameters);
     const iterator = range.getIterator();
-    const array = [];
     while (iterator.hasNext()) {
         const index = iterator.getNext();
         const item = this.removeItem(index);
-        array.push(item);
+        items.addItem(item);
     }
-    const items = List.fromSequential(array);
     return items;
 };
 

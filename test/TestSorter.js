@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const collections = require('../src/collections');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -25,19 +25,19 @@ describe('Bali Component Framework™', function() {
     array.forEach(function(item, index) {
         this[index] = item;
     }, array);
-    const set = collections.Set.fromSequential(array);
+    const set = bali.set(array);
 
     describe('Test the sorter on lists.', function() {
 
         it('should sort an empty list', function() {
-            const list = new collections.List();
+            const list = bali.list();
             list.sortItems();
             expect(list.isEmpty()).to.equal(true);
         });
 
 
         it('should sort an out of order list', function() {
-            const list = collections.List.fromSequential(array);
+            const list = bali.list(array);
             list.sortItems();
             expect(list.toString()).to.equal(set.toString());
         });
@@ -47,14 +47,14 @@ describe('Bali Component Framework™', function() {
     describe('Test the sorter on catalogs.', function() {
 
         it('should sort an empty catalogs', function() {
-            const catalog = new collections.Catalog();
+            const catalog = bali.catalog();
             catalog.sortItems();
             expect(catalog.isEmpty()).to.equal(true);
         });
 
 
         it('should sort an out of order catalog', function() {
-            const catalog = collections.Catalog.fromSequential(object);
+            const catalog = bali.catalog(object);
             catalog.sortItems();
             const keys = catalog.getKeys();
             expect(keys.toString()).to.equal(set.toString());

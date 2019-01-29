@@ -18,10 +18,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC CONSTRUCTOR
 
 /**
- * This constructor creates a new symbol element.
+ * This constructor creates a new symbol element using the specified value.
  * 
  * @param {String} value The value of the symbol.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -39,22 +39,6 @@ function Symbol(value, parameters) {
 Symbol.prototype = Object.create(abstractions.Element.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
-
-
-/**
- * This constructor creates an immutable instance of a symbol using the specified
- * literal string.
- * 
- * @constructor
- * @param {String} literal The literal string defining the symbol.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Symbol} The new symbol.
- */
-Symbol.fromLiteral = function(literal, parameters) {
-    const value = literal.slice(1);  // remove the leading '$'
-    const symbol = new Symbol(value, parameters);
-    return symbol;
-};
 
 
 // PUBLIC METHODS

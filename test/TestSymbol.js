@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const elements = require('../src/elements');
+const bali = require('../');
 
 
 describe('Bali Component Framework™', function() {
@@ -18,18 +18,18 @@ describe('Bali Component Framework™', function() {
     describe('Test symbol constructors', function() {
 
         it('should construct using literals', function() {
-            expect(elements.Symbol.fromLiteral('$foo').toLiteral()).to.equal('$foo');
+            expect(bali.symbol('$foo').toLiteral()).to.equal('$foo');
         });
 
         it('should throw an exception for an empty symbol', function() {
             expect(
                 function() {
-                    const empty = new elements.Symbol();
+                    const empty = bali.symbol();
                 }
             ).to.throw();
             expect(
                 function() {
-                    const empty = new elements.Symbol('');
+                    const empty = bali.symbol('');
                 }
             ).to.throw();
         });
@@ -37,18 +37,18 @@ describe('Bali Component Framework™', function() {
         it('should throw an exception for a symbol containing white space', function() {
             expect(
                 function() {
-                    const bad = new elements.Symbol(' ');
+                    const bad = bali.symbol(' ');
                 }
             ).to.throw();
             expect(
                 function() {
-                    const bad = new elements.Symbol('White Space');
+                    const bad = bali.symbol('White Space');
                 }
             ).to.throw();
         });
 
         it('should construct a symbol and format the same symbol', function() {
-            const symbol = new elements.Symbol('foobar');
+            const symbol = bali.symbol('$foobar');
             const string = symbol.toString();
             expect(string).to.equal('$foobar');
             const identifier = symbol.value;
@@ -60,7 +60,7 @@ describe('Bali Component Framework™', function() {
     describe('Test symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = new elements.Symbol('foobar').getType();
+            const type = bali.symbol('$foobar').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#R4N28VY9D39002WL3PSM6ZSXDC6FT730,$version:v1,$digest:none]>');
         });
 
