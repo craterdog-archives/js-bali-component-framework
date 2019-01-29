@@ -28,6 +28,8 @@ IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
 DURATION:
+    '~-P' SPAN 'W' |
+    '~-P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)? |
     '~P' SPAN 'W' |
     '~P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)?
 ; 
@@ -69,7 +71,7 @@ fragment
 FLOAT: '-'? (NUMBER FRACTION? | '0' FRACTION) ('E' '-'? NUMBER)?;
 
 fragment
-SPAN: ('0' | NUMBER) FRACTION?;
+SPAN: ('0' | '-'? NUMBER) FRACTION?;
 
 fragment
 SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
