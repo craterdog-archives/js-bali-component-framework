@@ -18,8 +18,8 @@ describe('Bali Component Framework™', function() {
     describe('Test text constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.text('""').toLiteral()).to.equal('""');
-            expect(bali.text('"Hello World!"').toLiteral()).to.equal('"Hello World!"');
+            expect(bali.text('""').toString()).to.equal('""');
+            expect(bali.text('"Hello World!"').toString()).to.equal('"Hello World!"');
         });
 
         it('should generate a default empty text string', function() {

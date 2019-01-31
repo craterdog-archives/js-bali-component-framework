@@ -15,6 +15,8 @@
  * the corresponding Bali Document Notation™ source code string.
  */
 const types = require('./Types');
+const precision = require('./Precision');
+const codex = require('./Codex');
 const Visitor = require('./Visitor').Visitor;
 
 
@@ -36,7 +38,7 @@ const EOL = '\n';
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
-    this.indentation = indentation;
+    this.indentation = indentation || '';
     return this;
 }
 Formatter.prototype.constructor = Formatter;
@@ -46,11 +48,27 @@ exports.Formatter = Formatter;
 // PUBLIC METHODS
 
 /**
- * This method generates the canonical source code for the specified parse tree
+ * This method generates the canonical literal string for the specified element.
+ * 
+ * @param {Element} element The element.
+ * @returns {String} The literal string for the element.
+ */
+Formatter.prototype.formatLiteral = function(element) {
+    if (!types.isLiteral(element.type)) {
+        throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
+    }
+    const visitor = new FormattingVisitor(this.indentation, true);
+    element.acceptVisitor(visitor);
+    return visitor.source;
+};
+
+
+/**
+ * This method generates the canonical source string document for the specified parse tree
  * component.
  * 
  * @param {Component} component The parse tree representing a component.
- * @returns {String} The source code for the parse tree component.
+ * @returns {String} The source code document for the parse tree component.
  */
 Formatter.prototype.formatComponent = function(component) {
     const visitor = new FormattingVisitor(this.indentation);
@@ -61,9 +79,10 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation) {
+function FormattingVisitor(indentation, asLiteral) {
     Visitor.call(this);
-    this.indentation = indentation ? indentation : '';
+    this.indentation = indentation;
+    this.asLiteral = asLiteral || false;
     this.source = '';
     this.depth = 0;
     return this;
@@ -87,6 +106,29 @@ FormattingVisitor.prototype.getIndentation = function() {
 };
 
 
+FormattingVisitor.prototype.getParameters = function(component) {
+    if (!this.asLiteral && component.parameters) return component.parameters;
+};
+
+
+// angle: ANGLE
+FormattingVisitor.prototype.visitAngle = function(angle) {
+    var value = angle.value;
+    const parameters = this.getParameters(angle);
+    if (parameters) {
+        const units = parameters.getValue('$units');
+        if (units && units.toString() === '$degrees') {
+            // convert radians to degrees
+            value = precision.quotient(precision.product(value, 180), precision.PI);
+        }
+    }
+    this.source += '~' + formatReal(value);
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
     var operand = tree.getChild(1);
@@ -104,6 +146,40 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
     association.key.acceptVisitor(this);
     this.source += ': ';
     association.value.acceptVisitor(this);
+};
+
+
+// binary: BINARY
+FormattingVisitor.prototype.visitBinary = function(binary) {
+    var value = binary.value;
+    var base = 32;  // default value
+    const parameters = this.getParameters(binary);
+    if (parameters) {
+        base = parameters.getValue('$base').toNumber();
+    }
+    switch (base) {
+        case 2:
+            value = codex.base2Encode(value);
+            break;
+        case 16:
+            value = codex.base16Encode(value);
+            break;
+        case 32:
+            value = codex.base32Encode(value);
+            break;
+        case 64:
+            value = codex.base64Encode(value);
+            break;
+        default:
+            throw new Error('BUG: An invalid binary base value was specified in the parameters: ' + base);
+    }
+    const indentation = this.getIndentation();
+    const regex = new RegExp('\\n', 'g');
+    value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
+    this.source += "'" + value + "'";
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
 };
 
 
@@ -254,27 +330,13 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 };
 
 
-// element:
-//     angle |
-//     binary |
-//     duration |
-//     moment |
-//     number |
-//     pattern |
-//     percent |
-//     probability |
-//     reference |
-//     symbol |
-//     tag |
-//     text |
-//     version
-FormattingVisitor.prototype.visitElement = function(element) {
-    const indentation = this.getIndentation();
-    const regex = new RegExp('\\n', 'g');
-    const source = element.toLiteral(element.parameters).replace(regex, EOL + indentation);
-    this.source += source;
-    if (element.isParameterized()) {
-        element.parameters.acceptVisitor(this);
+// duration: DURATION
+FormattingVisitor.prototype.visitDuration = function(duration) {
+    const value = duration.value.toISOString();
+    const parameters = this.getParameters(duration);
+    this.source += '~' + value;
+    if (parameters) {
+        parameters.acceptVisitor(this);
     }
 };
 
@@ -447,6 +509,57 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 };
 
 
+// moment: MOMENT
+FormattingVisitor.prototype.visitMoment = function(moment) {
+    const value = moment.value.format(moment.format);
+    const parameters = this.getParameters(moment);
+    this.source += '<' + value + '>';
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
+// number:
+//    'undefined' |
+//    'infinity' |
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')' 
+FormattingVisitor.prototype.visitNumber = function(number) {
+    const parameters = this.getParameters(number);
+    if (number.isUndefined()) {
+        this.source += 'undefined';
+    } else if (number.isInfinite()) {
+        this.source += 'infinity';
+    } else if (number.isZero()) {
+        this.source += '0';
+    } else if (number.imaginary === 0) {
+        // we know the real part isn't zero
+        this.source += formatReal(number.getReal());
+    } else if (number.real === 0) {
+        // we know the imaginary part isn't zero
+        this.source += formatImaginary(number.getImaginary());
+    } else {
+        // must be a complex number
+        this.source += '(';
+        if (parameters && parameters.getValue('$format').toString() === '$polar') {
+            this.source += formatReal(number.getMagnitude());
+            this.source += ' e^~';
+            this.source += formatImaginary(number.getPhase().value);
+        } else {
+            this.source += formatReal(number.getReal());
+            this.source += ', ';
+            this.source += formatImaginary(number.getImaginary());
+        }
+        this.source += ')';
+    }
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
 // parameters: '(' collection ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     this.source += '(';
@@ -456,12 +569,64 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
 };
 
 
+// pattern: 'none' | REGEX | 'any'
+FormattingVisitor.prototype.visitPattern = function(pattern) {
+    const value = pattern.value.source;
+    const parameters = this.getParameters(pattern);
+    switch (value) {
+        case '\u0000':
+            this.source += 'none';
+            break;
+        case '.*':
+            this.source += 'any';
+            break;
+        default:
+            this.source += '"' + value + '"?';
+    }
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
+// percent: PERCENT
+FormattingVisitor.prototype.visitPercent = function(percent) {
+    const value = percent.value;
+    const parameters = this.getParameters(percent);
+    this.source += formatReal(value) + '%';
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
 // precedenceExpression: '(' expression ')'
 FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
     this.source += '(';
     const expression = tree.getChild(1);
     expression.acceptVisitor(this);
     this.source += ')';
+};
+
+
+// probability: 'false' | FRACTION | 'true'
+FormattingVisitor.prototype.visitProbability = function(probability) {
+    const value = probability.value;
+    const parameters = this.getParameters(probability);
+    switch (value) {
+        case 0:
+            this.source += 'false';
+            break;
+        case 1:
+            this.source += 'true';
+            break;
+        default:
+            // must remove the leading '0' for probabilities
+            this.source += value.toString().substring(1);
+    }
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
 };
 
 
@@ -542,6 +707,28 @@ FormattingVisitor.prototype.visitRange = function(range) {
     this.source += ']';
     if (range.isParameterized()) {
         range.parameters.acceptVisitor(this);
+    }
+};
+
+
+// reference: RESOURCE
+FormattingVisitor.prototype.visitReference = function(reference) {
+    const value = reference.value.toString();
+    const parameters = this.getParameters(reference);
+    this.source += '<' + value + '>';
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
+// reserved: RESERVED
+FormattingVisitor.prototype.visitReserved = function(reserved) {
+    const value = reserved.value;
+    const parameters = this.getParameters(reserved);
+    this.source += '$$' + value;
+    if (parameters) {
+        parameters.acceptVisitor(this);
     }
 };
 
@@ -665,6 +852,42 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 };
 
 
+// symbol: SYMBOL
+FormattingVisitor.prototype.visitSymbol = function(symbol) {
+    const value = symbol.value;
+    const parameters = this.getParameters(symbol);
+    this.source += '$' + value;
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
+// tag: TAG
+FormattingVisitor.prototype.visitTag = function(tag) {
+    const value = tag.value;
+    const parameters = this.getParameters(tag);
+    this.source += '#' + value;
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
+// text: TEXT | TEXT_BLOCK
+Visitor.prototype.visitText = function(text) {
+    var value = text.value;
+    const parameters = this.getParameters(text);
+    const indentation = this.getIndentation();
+    const regex = new RegExp('\\n', 'g');
+    value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
+    this.source += '"' + value + '"';
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
+};
+
+
 // throwClause: 'throw' expression
 FormattingVisitor.prototype.visitThrowClause = function(tree) {
     this.source += 'throw ';
@@ -676,6 +899,17 @@ FormattingVisitor.prototype.visitThrowClause = function(tree) {
 // variable: IDENTIFIER
 FormattingVisitor.prototype.visitVariable = function(tree) {
     this.source += tree.identifier;
+};
+
+
+// version: VERSION
+FormattingVisitor.prototype.visitVersion = function(version) {
+    const value = version.value;
+    const parameters = this.getParameters(version);
+    this.source += 'v' + value.join('.');  // concatentat the version levels
+    if (parameters) {
+        parameters.acceptVisitor(this);
+    }
 };
 
 
@@ -717,3 +951,47 @@ FormattingVisitor.prototype.visitWithClause = function(tree) {
     const block = tree.getChild(size);
     block.acceptVisitor(this);
 };
+
+
+function formatReal(value) {
+    var string = Number(value.toPrecision(14)).toString();
+    switch (string) {
+        case '-2.718281828459':
+            return '-e';
+        case '2.718281828459':
+            return 'e';
+        case '-3.1415926535898':
+            return '-pi';
+        case '3.1415926535898':
+            return 'pi';
+        case '-1.6180339887499':
+            return '-phi';
+        case '1.6180339887499':
+            return 'phi';
+        case 'Infinity':
+        case '-Infinity':
+            return 'infinity';
+        case '-0':
+            return '0';
+        case 'NaN':
+            return 'undefined';
+        default:
+            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
+    }
+}
+
+
+function formatImaginary(value) {
+    var literal = formatReal(value);
+    switch (literal) {
+        case 'undefined':
+        case 'infinity':
+            return literal;
+        case 'e':
+        case 'pi':
+        case 'phi':
+            return literal + ' i';
+        default:
+            return literal + 'i';
+    }
+}

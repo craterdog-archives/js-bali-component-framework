@@ -24,8 +24,8 @@ describe('Bali Component Framework™', function() {
             expect(bali.number('(3, 4i)', bali.rectangular).getMagnitude()).to.equal(5);
             expect(bali.number('(-5 e^~pi i)').getMagnitude()).to.equal(5);
             expect(bali.number('(-5 e^~pi i)', bali.polar).getMagnitude()).to.equal(5);
-            expect(bali.number('(3, -4i)($format: $polar)').toLiteral(bali.polar)).to.equal('(5 e^~-0.9272952180016122i)');
-            expect(bali.number('(3, -4i)($format: $rectangular)').toLiteral()).to.equal('(3, -4i)');
+            expect(bali.number('(3, -4i)($format: $polar)').toPolar()).to.equal('(5 e^~-0.9272952180016122i)');
+            expect(bali.number('(3, -4i)($format: $rectangular)').toRectangular()).to.equal('(3, -4i)');
         });
 
         it('should construct and equal zero', function() {

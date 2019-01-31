@@ -30,7 +30,7 @@ function Percent(value, parameters) {
     abstractions.Element.call(this, utilities.types.PERCENT, parameters);
     value = value || 0;  // the default value
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Percent.prototype = Object.create(abstractions.Element.prototype);
@@ -39,19 +39,6 @@ exports.Percent = Percent;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Percent.prototype.toLiteral = function(parameters) {
-    var literal = abstractions.Element.numberToLiteral(this.value);
-    literal += '%';  // append the %
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this percent has a meaningful value. If the value is zero
@@ -71,6 +58,16 @@ Percent.prototype.toBoolean = function() {
  */
 Percent.prototype.toNumber = function() {
     return utilities.precision.quotient(this.value, 100);
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Percent.prototype.acceptVisitor = function(visitor) {
+    visitor.visitPercent(this);
 };
 
 

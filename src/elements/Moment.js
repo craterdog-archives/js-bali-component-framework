@@ -65,7 +65,7 @@ function Moment(value, parameters) {
         }
         if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
     }
-    this.setSource(this.value.format(this.format));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Moment.prototype = Object.create(abstractions.Element.prototype);
@@ -74,19 +74,6 @@ exports.Moment = Moment;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Moment.prototype.toLiteral = function(parameters) {
-    const value = this.value.format(this.format);
-    const literal = '<' + value + '>';  // add the '<' and '>' delimiters
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this moment has a meaningful value. A moment always has
@@ -106,6 +93,16 @@ Moment.prototype.toBoolean = function() {
  */
 Moment.prototype.toNumber = function() {
     return this.value.valueOf();
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Moment.prototype.acceptVisitor = function(visitor) {
+    visitor.visitMoment(this);
 };
 
 

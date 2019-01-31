@@ -18,8 +18,8 @@ describe('Bali Component Framework™', function() {
     describe('Test pattern constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.pattern('none').toLiteral()).to.equal('none');
-            expect(bali.pattern('any').toLiteral()).to.equal('any');
+            expect(bali.pattern('none').toString()).to.equal('none');
+            expect(bali.pattern('any').toString()).to.equal('any');
         });
 
         it('should generate a default none pattern', function() {

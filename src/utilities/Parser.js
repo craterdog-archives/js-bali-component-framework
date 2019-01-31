@@ -34,6 +34,9 @@ const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
 
+// This private constant sets the POSIX end of line character
+const EOL = '\n';
+
 
 // PUBLIC FUNCTIONS
 
@@ -97,6 +100,26 @@ function convertParseTree(antlrTree, parameters) {
 }
 
 
+function literalToNumber(literal) {
+    switch (literal) {
+        case '-e':
+            return -utilities.precision.E;
+        case 'e':
+            return utilities.precision.E;
+        case '-pi':
+            return -utilities.precision.PI;
+        case 'pi':
+            return utilities.precision.PI;
+        case '-phi':
+            return -utilities.precision.PHI;
+        case 'phi':
+            return utilities.precision.PHI;
+        default:
+            return Number(literal);
+    }
+}
+
+
 // PRIVATE CLASSES
 
 /*
@@ -134,7 +157,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
-    const value = abstractions.Element.literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
+    const value = literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
     const angle = new elements.Angle(value, parameters);
     this.result = angle;
 };
@@ -168,7 +191,8 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 // binary: BINARY
 ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1, -1).replace(/\s/g, '');  // strip out delimeters and whitespace
+    var value = ctx.getText().slice(1, -1);  // remove the "'" delimiters
+    value = value.replace(/\s/g, '');  // strip out any whitespace
     const binary = new elements.Binary(value, parameters);
     this.result = binary;
 };
@@ -255,42 +279,6 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// number:
-//    'undefined' |
-//    'infinity' |
-//    real |
-//    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')'
-ParsingVisitor.prototype.visitNumber = function(ctx) {
-    const parameters = this.getParameters();
-    var real = ctx.real();
-    if (real) {
-        real.accept(this);
-        real = this.result;
-    }
-    var imaginary = ctx.imaginary();
-    if (imaginary) {
-        imaginary.accept(this);
-        imaginary = this.result;
-    }
-    const angle = ctx.angle();
-    if (angle) {
-        angle.accept(this);
-        imaginary = this.result;
-    }
-    const literal = ctx.getText();
-    switch (literal) {
-        case 'undefined':
-            real = NaN;
-            break;
-        case 'infinity':
-            real = Infinity;
-            break;
-    }
-    this.result = new elements.Number(real, imaginary, parameters);
 };
 
 
@@ -488,7 +476,7 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 
 // imaginary: IMAGINARY
 ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    this.result = abstractions.Element.literalToNumber(ctx.getText().slice(0, -1).trim());  // remove the trailing 'i'
+    this.result = literalToNumber(ctx.getText().slice(0, -1).trim());  // remove the trailing 'i'
 };
 
 
@@ -645,6 +633,42 @@ ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
 };
 
 
+// number:
+//    'undefined' |
+//    'infinity' |
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
+ParsingVisitor.prototype.visitNumber = function(ctx) {
+    const parameters = this.getParameters();
+    var real = ctx.real();
+    if (real) {
+        real.accept(this);
+        real = this.result;
+    }
+    var imaginary = ctx.imaginary();
+    if (imaginary) {
+        imaginary.accept(this);
+        imaginary = this.result;
+    }
+    const angle = ctx.angle();
+    if (angle) {
+        angle.accept(this);
+        imaginary = this.result;
+    }
+    const literal = ctx.getText();
+    switch (literal) {
+        case 'undefined':
+            real = NaN;
+            break;
+        case 'infinity':
+            real = Infinity;
+            break;
+    }
+    this.result = new elements.Number(real, imaginary, parameters);
+};
+
+
 // parameters: '(' collection ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     ctx.collection().accept(this);
@@ -670,7 +694,7 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 // percent: PERCENT
 ParsingVisitor.prototype.visitPercent = function(ctx) {
     const parameters = this.getParameters();
-    const value = abstractions.Element.literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
+    const value = literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
     const percent = new elements.Percent(value, parameters);
     this.result = percent;
 };
@@ -751,7 +775,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 
 // real: REAL
 ParsingVisitor.prototype.visitReal = function(ctx) {
-    this.result = abstractions.Element.literalToNumber(ctx.getText());
+    this.result = literalToNumber(ctx.getText());
 };
 
 
@@ -898,7 +922,8 @@ ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n' + indentation, 'g');
-    const value = ctx.getText().slice(1, -1).replace(regex, '\n');  // remove the indentation and '"' delimiters
+    var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
+    value = value.replace(regex, EOL);  // remove the indentation
     const text = new elements.Text(value, parameters);
     this.result = text;
 };
@@ -1036,7 +1061,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     // create the error message
     const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     const input = token ? offendingToken.getInputStream() : recognizer._input;
-    const lines = input.toString().split('\n');
+    const lines = input.toString().split(EOL);
     const character = lines[lineNumber - 1][columnNumber];
     if (!token) {
         message = "An unexpected character was encountered: '" + character + "'";
@@ -1101,19 +1126,19 @@ function getRule(recognizer, dfa) {
 
 function addContext(recognizer, message) {
     // truncate the main message as needed
-    message = '\n    ' + message.slice(0, 160) + '\n';
+    message = EOL + '    ' + message.slice(0, 160) + EOL;
 
     // add the lines before and after the invalid line and highlight the invalid token
     const offendingToken = recognizer._precedenceStack ? recognizer.getCurrentToken() : undefined;
     const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     const input = token ? offendingToken.getInputStream() : recognizer._input;
-    const lines = input.toString().split('\n');
+    const lines = input.toString().split(EOL);
     const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
     const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
     if (lineNumber > 1) {
-        message += '    [' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2] + '\n';
+        message += '    [' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2] + EOL;
     }
-    message += '    [' + lineNumber + ']: ' + lines[lineNumber - 1] + '\n';
+    message += '    [' + lineNumber + ']: ' + lines[lineNumber - 1] + EOL;
     var line = '    [' + lineNumber + ']: ';
     for (var i = 0; i < columnNumber; i++) {
         line += ' ';
@@ -1123,9 +1148,9 @@ function addContext(recognizer, message) {
     while (start++ <= stop) {
         line += '^';
     }
-    message += line + '\n';
+    message += line + EOL;
     if (lineNumber < lines.length) {
-        message += '    [' + (lineNumber + 1) + ']: ' + lines[lineNumber] + '\n';
+        message += '    [' + (lineNumber + 1) + ']: ' + lines[lineNumber] + EOL;
     }
     return message;
 }

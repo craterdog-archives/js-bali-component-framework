@@ -32,7 +32,7 @@ function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
     value = value || 0;  // the default value
     this.value = moment.duration(value);
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Duration.prototype = Object.create(abstractions.Element.prototype);
@@ -41,19 +41,6 @@ exports.Duration = Duration;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Duration.prototype.toLiteral = function(parameters) {
-    const value = this.value.toISOString();
-    const literal = '~' + value;  // add the leading '~'
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this duration has a meaningful value. If the value is zero
@@ -73,6 +60,16 @@ Duration.prototype.toBoolean = function() {
  */
 Duration.prototype.toNumber = function() {
     return this.value.asMilliseconds();
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Duration.prototype.acceptVisitor = function(visitor) {
+    visitor.visitDuration(this);
 };
 
 

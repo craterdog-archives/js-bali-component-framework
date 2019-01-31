@@ -39,18 +39,6 @@ exports.Element = Element;
 // PUBLIC METHODS
 
 /**
- * This abstract method returns the formatted literal source string for this element.
- * It must be implemented by a subclass.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The formatted literal source string for this element.
- */
-Element.prototype.toLiteral = function(parameters) {
-    throw new Error('BUG: The abstract method toLiteral(asCanonical) must be implemented by a concrete subclass.');
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.
@@ -63,66 +51,4 @@ Element.prototype.acceptVisitor = function(visitor) {
 Element.prototype.setSource = function(source) {
     this.source = source;
     this.complexity += source.length;
-};
-
-
-// PUBLIC FUNCTIONS
-
-/**
- * This function returns the JS number for a Bali Document Notation™ numeric string.
- * 
- * @param {String} literal The literal string for the number.
- * @returns {Number} The JS number.
- */
-Element.literalToNumber = function(literal) {
-    switch (literal) {
-        case '-e':
-            return -utilities.precision.E;
-        case 'e':
-            return utilities.precision.E;
-        case '-pi':
-            return -utilities.precision.PI;
-        case 'pi':
-            return utilities.precision.PI;
-        case '-phi':
-            return -utilities.precision.PHI;
-        case 'phi':
-            return utilities.precision.PHI;
-        default:
-            return Number(literal);
-    }
-};
-
-
-/**
- * This function returns the Bali Document Notation™ representation of a JS number.
- * 
- * @param {Number} number The JS number.
- * @returns {String} The literal string for that number.
- */
-Element.numberToLiteral = function(number) {
-    var string = Number(number.toPrecision(14)).toString();
-    switch (string) {
-        case '-2.718281828459':
-            return '-e';
-        case '2.718281828459':
-            return 'e';
-        case '-3.1415926535898':
-            return '-pi';
-        case '3.1415926535898':
-            return 'pi';
-        case '-1.6180339887499':
-            return '-phi';
-        case '1.6180339887499':
-            return 'phi';
-        case 'Infinity':
-        case '-Infinity':
-            return 'infinity';
-        case '-0':
-            return '0';
-        case 'NaN':
-            return 'undefined';
-        default:
-            return number.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
-    }
 };

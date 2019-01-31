@@ -18,7 +18,7 @@ describe('Bali Component Framework™', function() {
     describe('Test symbol constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.symbol('$foo').toLiteral()).to.equal('$foo');
+            expect(bali.symbol('$foo').toString()).to.equal('$foo');
         });
 
         it('should throw an exception for an empty symbol', function() {

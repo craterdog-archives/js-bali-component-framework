@@ -18,7 +18,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reserved symbol constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.reserved('$$foo').toLiteral()).to.equal('$$foo');
+            expect(bali.reserved('$$foo').toString()).to.equal('$$foo');
         });
 
         it('should throw an exception for an empty reserved symbol', function() {

@@ -22,6 +22,7 @@ exports.Visitor = require('./Visitor').Visitor;
 exports.Comparator = require('./Comparator').Comparator;  // depends on types
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
 exports.Formatter = require('./Formatter').Formatter;  // depends on types and Visitor
+exports.formatter = new exports.Formatter();
 
 // NOTE: Can't include the Parser module since it depends on all components and that
 //       would result in serious circular dependencies!

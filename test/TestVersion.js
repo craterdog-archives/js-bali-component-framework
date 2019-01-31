@@ -18,8 +18,8 @@ describe('Bali Component Framework™', function() {
     describe('Test version constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.version('v1').toLiteral()).to.equal('v1');
-            expect(bali.version('v1.2').toLiteral()).to.equal('v1.2');
+            expect(bali.version('v1').toString()).to.equal('v1');
+            expect(bali.version('v1.2').toString()).to.equal('v1.2');
         });
 
         it('should generate a default first version string', function() {

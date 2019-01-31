@@ -56,7 +56,7 @@ function Angle(value, parameters) {
     if (value === -0) value = 0;  // normalize to positive zero
     this.value = value;
 
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Angle.prototype = Object.create(abstractions.Element.prototype);
@@ -65,26 +65,6 @@ exports.Angle = Angle;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Angle.prototype.toLiteral = function(parameters) {
-    var value = this.value;
-    if (parameters) {
-        const units = parameters.getValue('$units');
-        if (units && units.toString() === '$degrees') {
-            // convert radians to degrees
-            value = utilities.precision.quotient(utilities.precision.product(value, 180), utilities.precision.PI);
-        }
-    }
-    const literal = '~' + abstractions.Element.numberToLiteral(value);  // add the leading '~'
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this angle has a meaningful value. If the value is zero
@@ -104,6 +84,16 @@ Angle.prototype.toBoolean = function() {
  */
 Angle.prototype.toNumber = function() {
     return this.value;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Angle.prototype.acceptVisitor = function(visitor) {
+    visitor.visitAngle(this);
 };
 
 

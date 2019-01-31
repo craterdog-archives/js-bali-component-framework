@@ -19,25 +19,25 @@ describe('Bali Component Framework™', function() {
 
         it('should construct using literals', function() {
             expect(bali.duration('~P0D').toNumber()).to.equal(0);
-            expect(bali.duration('~P5W').toLiteral()).to.equal('~P35D');
+            expect(bali.duration('~P5W').toString()).to.equal('~P35D');
         });
 
         it('should construct a default duration of zero', function() {
             const duration = bali.duration();
-            const string = duration.toLiteral();
+            const string = duration.toString();
             expect(string).to.equal(tests[0]);
         });
 
         it('should construct a duration of days from weeks', function() {
             const duration = bali.duration('~P5W');
-            const string = duration.toLiteral();
+            const string = duration.toString();
             expect(string).to.equal('~P35D');
         });
 
         it('should construct a duration and format it the same', function() {
             tests.forEach(function(expected) {
                 const duration = bali.duration(expected);
-                const string = duration.toLiteral();
+                const string = duration.toString();
                 expect(string).to.equal(expected);
             });
         });

@@ -47,12 +47,13 @@ Component.prototype.getType = function() {
     var type = this.type;
     if (type === utilities.types.CATALOG && this.isParameterized()) {
         const value = this.parameters.getValue('$type');
+        const string = utilities.formatter.formatLiteral(value);
         if (value && value.type === utilities.types.SYMBOL) {
             // the value is a symbol for a system type
-            reference = utilities.types.typeBySymbol(value.toLiteral(value.parameters));
+            reference = utilities.types.typeBySymbol(string);
         } else {
             // the value is a reference to a user defined type
-            reference = value.toLiteral(value.parameters);
+            reference = string;
         }
     } else {
         // the type is a system type
@@ -99,23 +100,9 @@ Component.prototype.toBoolean = function() {
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
-    const string = this.toDocument();
+    const formatter = new utilities.Formatter();
+    const string = utilities.formatter.formatComponent(this);
     return string;
-};
-
-
-/**
- * This method provides the canonical way to export this component in
- * Bali Document Notation™.
- * 
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code.
- * @returns {String} The source code for this component.
- */
-Component.prototype.toDocument = function(indentation) {
-    const formatter = new utilities.Formatter(indentation);
-    const source = formatter.formatComponent(this);
-    return source;
 };
 
 

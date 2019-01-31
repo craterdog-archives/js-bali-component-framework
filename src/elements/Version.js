@@ -35,7 +35,7 @@ function Version(value, parameters) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Version.prototype = Object.create(abstractions.Element.prototype);
@@ -46,18 +46,6 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Version.prototype.toLiteral = function(parameters) {
-    const literal = 'v' + this.value.join('.');
-    return literal;
-};
-
-
-/**
  * This method returns whether or not this version string has a meaningful value. Version
  * strings always have a meaningful value.
  * 
@@ -65,6 +53,16 @@ Version.prototype.toLiteral = function(parameters) {
  */
 Version.prototype.toBoolean = function() {
     return true;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Version.prototype.acceptVisitor = function(visitor) {
+    visitor.visitVersion(this);
 };
 
 

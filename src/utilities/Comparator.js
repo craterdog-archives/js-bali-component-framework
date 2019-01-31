@@ -94,10 +94,10 @@ Comparator.prototype.compareComponents = function(first, second) {
         return Math.sign(first.localeCompare(second));
     }
     if (types.isLiteral(first.type) && typeof second === 'string') {
-        return Math.sign(first.toLiteral(first.parameters).localeCompare(second));
+        return Math.sign(first.toString().localeCompare(second));
     }
     if (typeof first === 'string' && types.isLiteral(second.type)) {
-        return Math.sign(String(first).localeCompare(second.toLiteral(second.parameters)));
+        return Math.sign(first.localeCompare(second.toString()));
     }
 
     // handle composite components

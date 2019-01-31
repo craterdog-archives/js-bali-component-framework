@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
                 const array = association.value.toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
-                    const string = item.toString();
+                    const string = bali.format(item);
                     const element = bali.parse(string, undefined, DEBUG);
                     expect(element.isEqualTo(item)).to.equal(true);
                 }
@@ -98,7 +98,7 @@ describe('Bali Component Framework™', function() {
                 const array = association.value.toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
-                    const string = item.toString();
+                    const string = bali.format(item);
                     component = bali.parse(string, undefined, DEBUG);
                     expect(component.isEqualTo(item)).to.equal(true);
                 }

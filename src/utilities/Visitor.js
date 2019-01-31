@@ -34,6 +34,13 @@ exports.Visitor = Visitor;
 
 // PUBLIC METHODS
 
+// angle: ANGLE
+Visitor.prototype.visitAngle = function(angle) {
+    // delegate to element
+    this.visitElement(angle);
+};
+
+
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 Visitor.prototype.visitArithmeticExpression = function(tree) {
     var operand = tree.getChild(1);
@@ -48,6 +55,13 @@ Visitor.prototype.visitArithmeticExpression = function(tree) {
 Visitor.prototype.visitAssociation = function(association) {
     association.key.acceptVisitor(this);
     association.value.acceptVisitor(this);
+};
+
+
+// binary: BINARY
+Visitor.prototype.visitBinary = function(binary) {
+    // delegate to element
+    this.visitElement(binary);
 };
 
 
@@ -156,6 +170,13 @@ Visitor.prototype.visitDereferenceExpression = function(tree) {
 Visitor.prototype.visitDiscardClause = function(tree) {
     const draft = tree.getChild(1);
     draft.acceptVisitor(this);
+};
+
+
+// duration: DURATION
+Visitor.prototype.visitDuration = function(duration) {
+    // delegate to element
+    this.visitElement(duration);
 };
 
 
@@ -321,6 +342,25 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 };
 
 
+// moment: MOMENT
+Visitor.prototype.visitMoment = function(moment) {
+    // delegate to element
+    this.visitElement(moment);
+};
+
+
+// number:
+//    'undefined' |
+//    'infinity' |
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')' 
+Visitor.prototype.visitNumber = function(number) {
+    // delegate to element
+    this.visitElement(number);
+};
+
+
 // parameters: '(' collection ')'
 Visitor.prototype.visitParameters = function(parameters) {
     const iterator = parameters.getIterator();
@@ -337,10 +377,31 @@ Visitor.prototype.visitParameters = function(parameters) {
 };
 
 
+// pattern: 'none' | REGEX | 'any'
+Visitor.prototype.visitPattern = function(pattern) {
+    // delegate to element
+    this.visitElement(pattern);
+};
+
+
+// percent: PERCENT
+Visitor.prototype.visitPercent = function(percent) {
+    // delegate to element
+    this.visitElement(percent);
+};
+
+
 // precedenceExpression: '(' expression ')'
 Visitor.prototype.visitPrecedenceExpression = function(tree) {
     const expression = tree.getChild(1);
     expression.acceptVisitor(this);
+};
+
+
+// probability: 'false' | FRACTION | 'true'
+Visitor.prototype.visitProbability = function(probability) {
+    // delegate to element
+    this.visitElement(probability);
 };
 
 
@@ -395,6 +456,20 @@ Visitor.prototype.visitRange = function(range) {
     if (range.isParameterized()) {
         range.parameters.acceptVisitor(this);
     }
+};
+
+
+// reference: RESOURCE
+Visitor.prototype.visitReference = function(reference) {
+    // delegate to element
+    this.visitElement(reference);
+};
+
+
+// reserved: RESERVED
+Visitor.prototype.visitReserved = function(reserved) {
+    // delegate to element
+    this.visitElement(reserved);
 };
 
 
@@ -506,6 +581,27 @@ Visitor.prototype.visitSubcomponentExpression = function(tree) {
 };
 
 
+// symbol: SYMBOL
+Visitor.prototype.visitSymbol = function(symbol) {
+    // delegate to element
+    this.visitElement(symbol);
+};
+
+
+// tag: TAG
+Visitor.prototype.visitTag = function(tag) {
+    // delegate to element
+    this.visitElement(tag);
+};
+
+
+// text: TEXT | TEXT_BLOCK
+Visitor.prototype.visitText = function(text) {
+    // delegate to element
+    this.visitElement(text);
+};
+
+
 // throwClause: 'throw' expression
 Visitor.prototype.visitThrowClause = function(tree) {
     const exception = tree.getChild(1);
@@ -515,6 +611,13 @@ Visitor.prototype.visitThrowClause = function(tree) {
 
 // variable: IDENTIFIER
 Visitor.prototype.visitVariable = function(tree) {
+};
+
+
+// version: VERSION
+Visitor.prototype.visitVersion = function(version) {
+    // delegate to element
+    this.visitElement(version);
 };
 
 

@@ -33,7 +33,7 @@ function Reference(value, parameters) {
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     if (typeof value === 'string') value = new URL(value);
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     this.setToComplex();  // references should never be inlined
     return this;
 }
@@ -45,15 +45,12 @@ exports.Reference = Reference;
 // PUBLIC METHODS
 
 /**
- * This method returns a literal string representation of the component.
+ * This method accepts a visitor as part of the visitor pattern.
  * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
+ * @param {Visitor} visitor The visitor that wants to visit this element.
  */
-Reference.prototype.toLiteral = function(parameters) {
-    const value = this.value.toString();
-    const literal = '<' + value + '>';  // add the '<' and '>' delimiters
-    return literal;
+Reference.prototype.acceptVisitor = function(visitor) {
+    visitor.visitReference(this);
 };
 
 

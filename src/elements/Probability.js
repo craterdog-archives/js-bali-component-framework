@@ -50,7 +50,7 @@ function Probability(value, parameters) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 
 }
@@ -60,28 +60,6 @@ exports.Probability = Probability;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Probability.prototype.toLiteral = function(parameters) {
-    var literal;
-    switch (this.value) {
-        case 0:
-            literal = 'false';
-            break;
-        case 1:
-            literal = 'true';
-            break;
-        default:
-            literal = this.value.toString().substring(1);  // remove the leading '0'
-    }
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this probability is greater or equal to 0.5.
@@ -100,6 +78,16 @@ Probability.prototype.toBoolean = function() {
  */
 Probability.prototype.toNumber = function() {
     return this.value;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Probability.prototype.acceptVisitor = function(visitor) {
+    visitor.visitProbability(this);
 };
 
 

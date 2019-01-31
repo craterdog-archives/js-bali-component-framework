@@ -18,8 +18,8 @@ describe('Bali Component Framework™', function() {
     describe('Test moment constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.moment('<2017-12-30T17:38:35.726>').toLiteral()).to.equal('<2017-12-30T17:38:35.726>');
-            expect(bali.moment('<-10000>').toLiteral()).to.equal('<-10000>');
+            expect(bali.moment('<2017-12-30T17:38:35.726>').toString()).to.equal('<2017-12-30T17:38:35.726>');
+            expect(bali.moment('<-10000>').toString()).to.equal('<-10000>');
             // TODO: add tests for parameterized locations
         });
 

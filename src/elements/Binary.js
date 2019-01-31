@@ -63,7 +63,7 @@ function Binary(value, parameters) {
             break;
     }
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Binary.prototype = Object.create(abstractions.Element.prototype);
@@ -72,39 +72,6 @@ exports.Binary = Binary;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Binary.prototype.toLiteral = function(parameters) {
-    var literal;
-    var base = 32;  // default value
-    if (parameters) {
-        base = parameters.getValue('$base').toNumber();
-    }
-    switch (base) {
-        case 2:
-            literal = utilities.codex.base2Encode(this.value);
-            break;
-        case 16:
-            literal = utilities.codex.base16Encode(this.value);
-            break;
-        case 32:
-            literal = utilities.codex.base32Encode(this.value);
-            break;
-        case 64:
-            literal = utilities.codex.base64Encode(this.value);
-            break;
-        default:
-            throw new Error('BUG: An invalid binary base value was specified in the parameters: ' + base);
-    }
-    literal = "'" + literal + "'";
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this binary string has a meaningful value. If the binary
@@ -162,6 +129,16 @@ Binary.prototype.toBase32 = function(indentation) {
  */
 Binary.prototype.toBase64 = function(indentation) {
     return "'" + utilities.codex.base64Encode(this.value, indentation) + "'";
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Binary.prototype.acceptVisitor = function(visitor) {
+    visitor.visitBinary(this);
 };
 
 

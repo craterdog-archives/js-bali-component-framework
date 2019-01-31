@@ -67,7 +67,7 @@ function Complex(real, imaginary, parameters) {
     this.real = real;
     this.imaginary = imaginary;
 
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Complex.prototype = Object.create(abstractions.Element.prototype);
@@ -76,23 +76,6 @@ exports.Complex = Complex;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Complex.prototype.toLiteral = function(parameters) {
-    if (parameters) {
-        const format = parameters.getValue('$format');
-        if (format && format.toString() === '$polar') {
-            return this.toPolar();
-        }
-    }
-    return this.toRectangular();
-};
-
 
 /**
  * This method returns whether or not this complex number has a meaningful value. If the magnitude
@@ -153,6 +136,16 @@ Complex.prototype.toPolar = function() {
     literal += formatImaginary(this.getPhase().value);
     literal += ')';
     return literal;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Complex.prototype.acceptVisitor = function(visitor) {
+    visitor.visitNumber(this);
 };
 
 
@@ -512,28 +505,6 @@ Complex.logarithm = function(base, value) {
 
 // PRIVATE FUNCTIONS
 
-function formatImaginary(value) {
-    var literal = abstractions.Element.numberToLiteral(value);
-    switch (literal) {
-        case 'undefined':
-        case 'infinity':
-            return literal;
-        case 'e':
-        case 'pi':
-        case 'phi':
-            return literal + ' i';
-        default:
-            return literal + 'i';
-    }
-}
-
-
-function formatReal(value) {
-    var literal = abstractions.Element.numberToLiteral(value);
-    return literal;
-}
-
-
 // TODO: should the math in the gamma function use the precision module?
 function gamma(number) {
     const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
@@ -577,4 +548,48 @@ function ln(complex) {
     const imaginary = complex.getPhase().value;
     const result = new Complex(real, imaginary, complex.parameters);
     return result;
+}
+
+
+function formatReal(value) {
+    var string = Number(value.toPrecision(14)).toString();
+    switch (string) {
+        case '-2.718281828459':
+            return '-e';
+        case '2.718281828459':
+            return 'e';
+        case '-3.1415926535898':
+            return '-pi';
+        case '3.1415926535898':
+            return 'pi';
+        case '-1.6180339887499':
+            return '-phi';
+        case '1.6180339887499':
+            return 'phi';
+        case 'Infinity':
+        case '-Infinity':
+            return 'infinity';
+        case '-0':
+            return '0';
+        case 'NaN':
+            return 'undefined';
+        default:
+            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
+    }
+}
+
+
+function formatImaginary(value) {
+    var literal = formatReal(value);
+    switch (literal) {
+        case 'undefined':
+        case 'infinity':
+            return literal;
+        case 'e':
+        case 'pi':
+        case 'phi':
+            return literal + ' i';
+        default:
+            return literal + 'i';
+    }
 }

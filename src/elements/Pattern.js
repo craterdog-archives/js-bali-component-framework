@@ -42,7 +42,7 @@ function Pattern(value, parameters) {
         }
     }
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Pattern.prototype = Object.create(abstractions.Element.prototype);
@@ -53,35 +53,23 @@ exports.Pattern = Pattern;
 // PUBLIC METHODS
 
 /**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Pattern.prototype.toLiteral = function(parameters) {
-    var literal;
-    switch (this.value.source) {
-        case '\u0000':
-            literal = 'none';
-            break;
-        case '.*':
-            literal = 'any';
-            break;
-        default:
-            literal = '"' + this.value.source + '"?';  // add the delimiters
-    }
-    return literal;
-};
-
-
-/**
  * This method returns whether or not this pattern has a meaningful value. If the value is 'none'
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
-    return this.toLiteral(this.parameters) !== 'none';
+    return this.toString() !== 'none';
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Pattern.prototype.acceptVisitor = function(visitor) {
+    visitor.visitPattern(this);
 };
 
 

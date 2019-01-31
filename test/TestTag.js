@@ -18,7 +18,7 @@ describe('Bali Component Framework™', function() {
     describe('Test tag constructors', function() {
 
         it('should construct using literals', function() {
-            expect(bali.tag('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toLiteral()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
+            expect(bali.tag('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
         });
 
         it('should generate default random tags with 20 bytes', function() {

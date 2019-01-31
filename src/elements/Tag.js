@@ -44,7 +44,7 @@ function Tag(value, parameters) {
             break;
     }
     this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     this.setToComplex();  // tags should never be inlined
     return this;
 }
@@ -56,18 +56,6 @@ exports.Tag = Tag;
 // PUBLIC METHODS
 
 /**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Tag.prototype.toLiteral = function(parameters) {
-    const literal = '#' + this.value;  // add the leading '#'
-    return literal;
-};
-
-
-/**
  * This method returns whether or not this tag has a meaningful value. Tags always have
  * a meaningful value.
  * 
@@ -75,6 +63,16 @@ Tag.prototype.toLiteral = function(parameters) {
  */
 Tag.prototype.toBoolean = function() {
     return true;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Tag.prototype.acceptVisitor = function(visitor) {
+    visitor.visitTag(this);
 };
 
 

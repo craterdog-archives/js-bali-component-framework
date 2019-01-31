@@ -31,7 +31,7 @@ function Text(value, parameters) {
     abstractions.Element.call(this, utilities.types.TEXT, parameters);
     value = value || '';  // default value
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     if (value.startsWith('\n')) this.setToComplex();
     return this;
 }
@@ -43,18 +43,6 @@ exports.Text = Text;
 // PUBLIC METHODS
 
 /**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Text.prototype.toLiteral = function(parameters) {
-    const literal = '"' + this.value + '"';  // add the '"' delimiters
-    return literal;
-};
-
-
-/**
  * This method returns whether or not this text string has a meaningful value. If the text
  * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
@@ -62,6 +50,16 @@ Text.prototype.toLiteral = function(parameters) {
  */
 Text.prototype.toBoolean = function() {
     return !this.isEmpty();
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Text.prototype.acceptVisitor = function(visitor) {
+    visitor.visitText(this);
 };
 
 

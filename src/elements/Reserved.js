@@ -33,7 +33,7 @@ function Reserved(value, parameters) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(this.toLiteral(parameters));
+    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Reserved.prototype = Object.create(abstractions.Element.prototype);
@@ -42,18 +42,6 @@ exports.Reserved = Reserved;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns a literal string representation of the component.
- * 
- * @param {Parameters} parameters Any parameters that are needed for formatting.
- * @returns {String} The corresponding literal string representation.
- */
-Reserved.prototype.toLiteral = function(parameters) {
-    const literal = '$$' + this.value;  // add the leading '$$'
-    return literal;
-};
-
 
 /**
  * This method returns whether or not this reserved symbol has a meaningful value. Reserved
@@ -65,3 +53,12 @@ Reserved.prototype.toBoolean = function() {
     return true;
 };
 
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Reserved.prototype.acceptVisitor = function(visitor) {
+    visitor.visitReserved(this);
+};
