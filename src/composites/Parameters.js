@@ -30,7 +30,6 @@ function Parameters(collection) {
     abstractions.Composite.call(this, utilities.types.PARAMETERS);
     this.collection = new collection.constructor(collection.parameters);
     this.collection.addItems(collection);  // static so copy it
-    this.complexity += collection.complexity;
     return this;
 }
 Parameters.prototype = Object.create(abstractions.Composite.prototype);

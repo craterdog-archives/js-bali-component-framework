@@ -66,7 +66,6 @@ function Complex(real, imaginary, parameters) {
         this.real = real;
         this.imaginary = imaginary;
     }
-    this.complexity = real.toString().length + imaginary.toString().length;
     return this;
 }
 Complex.prototype = Object.create(abstractions.Element.prototype);

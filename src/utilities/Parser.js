@@ -170,7 +170,6 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
-    tree.complexity += tree.operator.length;  // operators have different lengths
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -223,7 +222,6 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     const procedure = this.result;
-    procedure.setToComplex();  // force the procedure in a block NOT to be formatted inline
     const tree = new composites.Tree(utilities.types.BLOCK, 2);
     tree.addChild(procedure);
     this.result = tree;
@@ -287,7 +285,6 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
-    tree.complexity += tree.operator.length;  // operators have different lengths
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -413,7 +410,6 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     if (recipient) {
         recipient.accept(this);
         tree.addChild(this.result);
-        tree.complexity += 4;  // for the ' := ' after the recipient
     }
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -586,7 +582,6 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     expressions[0].accept(this);
     tree.addChild(this.result);
     tree.operator = ctx.op.text;
-    tree.complexity += tree.operator.length;  // operators have different lengths
     expressions[1].accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -769,7 +764,6 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
         statements.forEach(function(statement) {
             statement.accept(this);
             tree.addChild(this.result);
-            if (tree.getSize() > 1) tree.complexity += 2;  // account for the '; ' separator
         }, this);
         this.depth--;
     }
@@ -840,7 +834,6 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     const tree = new composites.Tree(utilities.types.RETURN_CLAUSE, 6);
     const expression = ctx.expression();
     if (expression) {
-        tree.complexity += 1;  // for the ' ' before the expression
         expression.accept(this);
         tree.addChild(this.result);
     }
@@ -901,7 +894,6 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
     tree.addChild(this.result);
     const handleClauses = ctx.handleClause();
     handleClauses.forEach(function(clause) {
-        tree.complexity += 1;  // for the ' ' before each clause
         clause.accept(this);
         tree.addChild(this.result);
     }, this);

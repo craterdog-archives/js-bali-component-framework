@@ -33,7 +33,6 @@ function Set(comparator, parameters) {
     abstractions.Collection.call(this, utilities.types.SET, parameters);
     comparator = comparator || new utilities.Comparator();
     this.tree = new RandomizedTree(comparator);
-    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Set.prototype = Object.create(abstractions.Collection.prototype);
@@ -227,8 +226,6 @@ Set.prototype.addItem = function(item) {
     if (this.convert) item = this.convert(item);
     const result = this.tree.insert(item);
     if (result) {
-        this.complexity += item.complexity;
-        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
     return result;
 };
@@ -245,8 +242,6 @@ Set.prototype.removeItem = function(item) {
     if (this.convert) item = this.convert(item);
     const result = this.tree.remove(item);
     if (result) {
-        this.complexity -= item.complexity;
-        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     }
     return result;
 };
@@ -277,7 +272,6 @@ Set.prototype.removeItems = function(items) {
  */
 Set.prototype.clear = function() {
     const size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.tree.clear();
 };
 

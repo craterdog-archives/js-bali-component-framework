@@ -40,7 +40,6 @@ function Binary(value, parameters) {
         value = utilities.random.bytes(value);
     }
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Binary.prototype = Object.create(abstractions.Element.prototype);

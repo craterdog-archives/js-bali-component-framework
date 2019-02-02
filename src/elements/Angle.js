@@ -56,7 +56,6 @@ function Angle(value, parameters) {
     if (value === -0) value = 0;  // normalize to positive zero
     this.value = value;
 
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Angle.prototype = Object.create(abstractions.Element.prototype);

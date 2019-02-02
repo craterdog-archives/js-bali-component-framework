@@ -33,7 +33,6 @@ function Probability(value, parameters) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 
 }

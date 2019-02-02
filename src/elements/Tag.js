@@ -44,8 +44,6 @@ function Tag(value, parameters) {
             break;
     }
     this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
-    this.setSource(utilities.formatter.formatLiteral(this));
-    this.setToComplex();  // tags should never be inlined
     return this;
 }
 Tag.prototype = Object.create(abstractions.Element.prototype);

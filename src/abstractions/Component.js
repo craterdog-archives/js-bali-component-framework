@@ -28,7 +28,6 @@ const utilities = require('../utilities');
 function Component(type, parameters) {
     this.type = type;
     this.parameters = parameters;
-    this.complexity = parameters ? parameters.complexity : 0;  // number of characters in its source code
     return this;
 }
 Component.prototype.constructor = Component;
@@ -70,15 +69,6 @@ Component.prototype.getType = function() {
  */
 Component.prototype.isParameterized = function() {
     return !!this.parameters;
-};
-
-
-/**
- * This method sets the complexity of this component to be greater than the maximum complexity
- * for a simple component.
- */
-Component.prototype.setToComplex = function() {
-    this.complexity = utilities.types.IS_COMPLEX;
 };
 
 

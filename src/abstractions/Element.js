@@ -28,7 +28,6 @@ const Component = require('./Component').Component;
  */
 function Element(type, parameters) {
     Component.call(this, type, parameters);
-    this.source = '';
     return this;
 }
 Element.prototype = Object.create(Component.prototype);
@@ -47,8 +46,3 @@ Element.prototype.acceptVisitor = function(visitor) {
     visitor.visitElement(this);
 };
 
-
-Element.prototype.setSource = function(source) {
-    this.source = source;
-    this.complexity += source.length;
-};

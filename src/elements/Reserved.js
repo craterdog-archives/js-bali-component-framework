@@ -33,7 +33,6 @@ function Reserved(value, parameters) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Reserved.prototype = Object.create(abstractions.Element.prototype);

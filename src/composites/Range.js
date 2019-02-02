@@ -45,9 +45,6 @@ function Range(first, last, parameters) {
         this.first = first;
         this.last = last;
     }
-    this.complexity += 4;  // account for the '[' '..' ']' delimiters
-    this.complexity += first.toString().length;
-    this.complexity += last.toString().length;
     return this;
 }
 Range.prototype = Object.create(abstractions.Composite.prototype);

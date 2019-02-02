@@ -32,7 +32,6 @@ function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
     value = value || 0;  // the default value
     this.value = moment.duration(value);
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Duration.prototype = Object.create(abstractions.Element.prototype);

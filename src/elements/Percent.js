@@ -30,7 +30,6 @@ function Percent(value, parameters) {
     abstractions.Element.call(this, utilities.types.PERCENT, parameters);
     value = value || 0;  // the default value
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Percent.prototype = Object.create(abstractions.Element.prototype);

@@ -30,7 +30,6 @@ function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
     value = value || new RegExp('\u0000');  // the default value
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Pattern.prototype = Object.create(abstractions.Element.prototype);

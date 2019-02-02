@@ -65,7 +65,6 @@ function Moment(value, parameters) {
         }
         if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
     }
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Moment.prototype = Object.create(abstractions.Element.prototype);

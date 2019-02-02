@@ -34,8 +34,6 @@ function Association(key, value) {
     }
     this.key = key;
     this.value = value;
-    this.complexity += this.key.complexity + this.value.complexity;
-    this.complexity += 2;  // account for the ': ' separator
     return this;
 }
 Association.prototype = Object.create(abstractions.Composite.prototype);
@@ -87,8 +85,6 @@ Association.prototype.getSize = function() {
 Association.prototype.setValue = function(value) {
     if (this.convert) value = this.convert(value);
     const oldValue = this.value;
-    this.complexity -= oldValue.complexity;
     this.value = value;
-    this.complexity += value.complexity;
     return oldValue;
 };

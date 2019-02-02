@@ -34,7 +34,6 @@ function Version(value, parameters) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Version.prototype = Object.create(abstractions.Element.prototype);

@@ -33,7 +33,6 @@ function Symbol(value, parameters) {
         throw new Error('BUG: An invalid symbol value was passed to the constructor.');
     }
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
     return this;
 }
 Symbol.prototype = Object.create(abstractions.Element.prototype);

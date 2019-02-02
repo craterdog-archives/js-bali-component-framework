@@ -81,7 +81,6 @@ function Tree(type, complexity) {
             throw new Error('BUG: An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
     }
     this.array = [];
-    this.complexity += complexity;
     return this;
 }
 Tree.prototype = Object.create(abstractions.Composite.prototype);
@@ -121,7 +120,6 @@ Tree.prototype.getSize = function() {
  */
 Tree.prototype.addChild = function(child) {
     this.array.push(child);
-    this.complexity += child.complexity;
     child.parent = this;
 };
 

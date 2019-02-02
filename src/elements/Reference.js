@@ -33,8 +33,6 @@ function Reference(value, parameters) {
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     if (typeof value === 'string') value = new URL(value);
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
-    this.setToComplex();  // references should never be inlined
     return this;
 }
 Reference.prototype = Object.create(abstractions.Element.prototype);

@@ -98,7 +98,7 @@ const TAGS = Object.values(MAP);
  * This constant defines the number of characters allowed in Bali Document Notation™
  * for a component before the source code can no longer be inline (on a single line).
  */
-exports.IS_COMPLEX = 25;
+exports.MAXIMUM_LENGTH = 25;
 
 /*
  * These constants define numeric values for each of the types.
@@ -170,18 +170,6 @@ exports.WITH_CLAUSE = NAMES.indexOf('WithClause');
 
 
 // PUBLIC FUNCTIONS
-
-/**
- * This function determines whether or not the specified complexity is less than the maximum
- * complexity (IS_COMPLEX) for a simple component.
- * 
- * @param {Number} complexity The complexity in number of source code characters.
- * @returns {Boolean} Whether or not the specified complexity is simple.
- */
-exports.isSimple = function(complexity) {
-    return complexity < exports.IS_COMPLEX;
-};
-
 
 /**
  * This function determines whether or not the specified type supports logical operations:

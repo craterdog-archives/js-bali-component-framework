@@ -64,6 +64,7 @@
                 $a: pi
                 $b: -e
                 $c: phi
+                $d: infinity
             ]
         ]
     ]($type: $Foo)

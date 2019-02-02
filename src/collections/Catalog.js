@@ -34,8 +34,6 @@ function Catalog(parameters) {
     abstractions.Collection.call(this, utilities.types.CATALOG, parameters);
     this.map = {};  // maps key strings to associations
     this.array = [];  // maintains the order of the associations
-    this.complexity += 2;  // account for the '[' ']' delimiters
-    this.complexity += 1;  // account for the ':' in the empty catalog
     return this;
 }
 Catalog.prototype = Object.create(abstractions.Collection.prototype);
@@ -165,8 +163,6 @@ Catalog.prototype.addItem = function(association) {
     // add a new association
     this.map[index] = association;
     this.array.push(association);
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
-    this.complexity += association.complexity;
     return true;
 };
 
@@ -242,15 +238,11 @@ Catalog.prototype.setValue = function(key, value) {
     var oldValue;
     if (association) {
         oldValue = association.value;
-        this.complexity -= oldValue.complexity;
         association.setValue(value);
-        this.complexity += value.complexity;
     } else {
         association = new composites.Association(key, value);
         this.map[index] = association;
         this.array.push(association);
-        this.complexity += association.complexity;
-        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     }
     return oldValue;
 };
@@ -287,8 +279,6 @@ Catalog.prototype.removeValue = function(key) {
             return item.isEqualTo(association);
         });
         this.array.splice(index, 1);
-        this.complexity -= association.complexity;
-        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
         return association.value;
     }
 };
@@ -319,10 +309,8 @@ Catalog.prototype.removeValues = function(keys) {
  */
 Catalog.prototype.clear = function() {
     const size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     Object.keys(this.map).forEach(function(key) {
         const association = this.map[key];
-        this.complexity -= association.complexity;
         delete this.map[key];
     }, this);
     this.array.splice(0);

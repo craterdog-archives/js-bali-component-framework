@@ -31,8 +31,6 @@ function Text(value, parameters) {
     abstractions.Element.call(this, utilities.types.TEXT, parameters);
     value = value || '';  // default value
     this.value = value;
-    this.setSource(utilities.formatter.formatLiteral(this));
-    if (value.startsWith('\n')) this.setToComplex();
     return this;
 }
 Text.prototype = Object.create(abstractions.Element.prototype);

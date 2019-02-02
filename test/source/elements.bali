@@ -56,7 +56,7 @@
     ]
     $patterns: [
         none
-        "foobarbaz.*"?
+        "foobarbazbot.*"?
         any
     ]
     $percents: [

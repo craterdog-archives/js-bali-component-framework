@@ -47,7 +47,6 @@ function Stack(parameters) {
         }
     }
     this.array = [];
-    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Stack.prototype = Object.create(abstractions.Collection.prototype);
@@ -113,8 +112,6 @@ Stack.prototype.addItem = function(item) {
     if (this.convert) item = this.convert(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
-        this.complexity += item.complexity;
-        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     } else {
         const attributes = {
@@ -140,8 +137,6 @@ Stack.prototype.removeItem = function() {
     const size = this.array.length;
     if (size > 0) {
         item = this.array.pop();
-        this.complexity -= item.complexity;
-        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     } else {
         throw new Error('BUG: Attempted to pop an item off of an empty stack.');
     }
@@ -172,6 +167,5 @@ Stack.prototype.getTop = function() {
  */
 Stack.prototype.clear = function() {
     const size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };

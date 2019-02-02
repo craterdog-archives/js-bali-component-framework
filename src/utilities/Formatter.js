@@ -5,14 +5,14 @@
  *                                                                      *
  * This code is free software; you can redistribute it and/or modify it *
  * under the terms of The MIT License (MIT), as published by the Open   *
- * Source Initiative. (See http://opensource.org/licenses/MIT)          *
+ * Source Initiative. (See http://openformatted.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
 
 /**
  * This library provides functions that format a parse tree structure produced
  * by the <code>Parser</code> class and generates a canonical version of
- * the corresponding Bali Document Notation™ source code string.
+ * the corresponding Bali Document Notation™ formatted code string.
  */
 const types = require('./Types');
 const codex = require('./Codex');
@@ -28,12 +28,12 @@ const EOL = '\n';
 /**
  * This class implements a formatter that uses a visitor to format component structures
  * as strings containing Bali Document Notation™ in a canonical way. If an optional
- * indentation string is specified, then each line of the generated source code will be
+ * indentation string is specified, then each line of the generated formatted code will be
  * indented using that string.
  * 
  * @constructor
  * @param {String} indentation A blank string that will be prepended to each indented line in
- * the source code. The default is the empty string.
+ * the formatted code. The default is the empty string.
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
@@ -59,21 +59,21 @@ Formatter.prototype.formatLiteral = function(element, format) {
     }
     const visitor = new FormattingVisitor(this.indentation, format);
     element.acceptVisitor(visitor);
-    return visitor.source;
+    return visitor.result;
 };
 
 
 /**
- * This method generates the canonical source string document for the specified parse tree
+ * This method generates the canonical formatted string document for the specified parse tree
  * component.
  * 
  * @param {Component} component The parse tree representing a component.
- * @returns {String} The source code document for the parse tree component.
+ * @returns {String} The formatted code document for the parse tree component.
  */
 Formatter.prototype.formatComponent = function(component) {
     const visitor = new FormattingVisitor(this.indentation);
     component.acceptVisitor(visitor);
-    return visitor.source;
+    return visitor.result;
 };
 
 
@@ -83,18 +83,11 @@ function FormattingVisitor(indentation, format) {
     Visitor.call(this);
     this.indentation = indentation;
     this.format = format;
-    this.source = '';
     this.depth = 0;
     return this;
 }
 FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
-
-
-FormattingVisitor.prototype.appendNewline = function() {
-    this.source += EOL;
-    this.source += this.getIndentation();
-};
 
 
 FormattingVisitor.prototype.getIndentation = function() {
@@ -120,6 +113,7 @@ FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
 
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
+    var formatted = '';
     var value;
     const format = this.getFormat(angle, '$units', '$radians');
     switch (format) {
@@ -132,35 +126,46 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
         default:
             throw new Error('BUG: An invalid angle format was specified: ' + format);
     }
-    this.source += '~' + formatReal(value);
+    formatted += '~' + formatReal(value);
     if (!this.format && angle.parameters) {
         angle.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
+    var formatted = '';
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += ' ';
-    this.source += tree.operator;
-    this.source += ' ';
+    formatted += this.result;
+    formatted += ' ';
+    formatted += tree.operator;
+    formatted += ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // association: component ':' expression
 FormattingVisitor.prototype.visitAssociation = function(association) {
+    var formatted = '';
     association.key.acceptVisitor(this);
-    this.source += ': ';
+    formatted += this.result;
+    formatted += ': ';
     association.value.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // binary: BINARY
 FormattingVisitor.prototype.visitBinary = function(binary) {
+    var formatted = '';
     var value = binary.value;
     const format = this.getFormat(binary, '$encoding', '$base32');
     switch (format) {
@@ -182,24 +187,29 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
-    this.source += "'" + value + "'";
+    formatted += "'" + value + "'";
     if (!this.format && binary.parameters) {
         binary.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // block: '{' procedure '}'
 FormattingVisitor.prototype.visitBlock = function(tree) {
-    this.source += '{';
+    var formatted = '{';
+    this.allowInline = false;
     tree.getChild(1).acceptVisitor(this);
-    this.source += '}';
+    formatted += this.result;
+    formatted += '}';
+    this.result = formatted;
 };
 
 
 // breakClause: 'break' 'loop'
 FormattingVisitor.prototype.visitBreakClause = function(tree) {
-    this.source += 'break loop';
+    this.result = 'break loop';
 };
 
 
@@ -208,248 +218,311 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 //     EOL (association EOL)* |
 //     ':' {empty catalog}
 FormattingVisitor.prototype.visitCatalog = function(catalog) {
-    this.source += '[';
+    var formatted = '[';
     // delegate to collection
     this.visitCollection(catalog);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (catalog.isParameterized()) {
         catalog.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // checkoutClause: 'checkout' recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
-    this.source += 'checkout ';
+    var formatted = 'checkout ';
     const component = tree.getChild(1);
     component.acceptVisitor(this);
-    this.source += ' from ';
+    formatted += this.result;
+    formatted += ' from ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
+    var formatted = '';
     if (!collection.isEmpty()) {
+        var length = 0;
+        const items = [];
+
+        // format each item separately first summing the total length
         const iterator = collection.getIterator();
-        var item;
-        // don't include the length of the parameters in the length of the combined items
-        var complexity = collection.complexity;
-        if (collection.parameters) complexity -= collection.parameters.complexity;
-        if (types.isSimple(complexity)) {
-            // inline the items
-            item = iterator.getNext();
+        this.depth++;
+        while (iterator.hasNext()) {
+            var item = iterator.getNext();
             item.acceptVisitor(this);
-            while (iterator.hasNext()) {
-                this.source += ', ';
-                item = iterator.getNext();
-                item.acceptVisitor(this);
-            };
+            items.push(this.result);
+            length += 2 + this.result.length;
+        };
+        length -= 2;  // remove the space for the extra separator
+        this.depth--;
+
+        // concatentate the formatted items
+        if (length <= types.MAXIMUM_LENGTH) {
+            // inline the items
+            formatted += items[0];
+            items.slice(1).forEach(function(item) {
+                formatted += ', ' + item;
+            }, this);
         } else {
             // each item is on a separate line
             this.depth++;
-            while (iterator.hasNext()) {
-                this.appendNewline();
-                item = iterator.getNext();
-                item.acceptVisitor(this);
-            };
+            items.forEach(function(item) {
+                formatted += EOL + this.getIndentation() + item;
+            }, this);
             this.depth--;
-            this.appendNewline();
+            formatted += EOL + this.getIndentation();
         }
     } else if (collection.type === types.CATALOG) {
-        this.source += ':';  // empty catalog
+        formatted += ':';  // empty catalog
     }
+    this.result = formatted;
 };
 
 
 // commitClause: 'commit' expression 'to' expression
 FormattingVisitor.prototype.visitCommitClause = function(tree) {
-    this.source += 'commit ';
+    var formatted = 'commit ';
     const component = tree.getChild(1);
     component.acceptVisitor(this);
-    this.source += ' to ';
+    formatted += this.result;
+    formatted += ' to ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
 FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
+    var formatted = '';
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += ' ';
-    this.source += tree.operator;
-    this.source += ' ';
+    formatted += this.result;
+    formatted += ' ' + tree.operator + ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // complementExpression: 'not' expression
 FormattingVisitor.prototype.visitComplementExpression = function(tree) {
-    this.source += 'not ';
+    var formatted = 'not ';
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // concatenationExpression: expression '&' expression
 FormattingVisitor.prototype.visitConcatenationExpression = function(tree) {
+    var formatted = '';
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += ' & ';
+    formatted += this.result;
+    formatted += ' & ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // continueClause: 'continue' 'loop'
 FormattingVisitor.prototype.visitContinueClause = function(tree) {
-    this.source += 'continue loop';
+    this.result = 'continue loop';
 };
 
 
 // defaultExpression: expression '?' expression
 FormattingVisitor.prototype.visitDefaultExpression = function(tree) {
+    var formatted = '';
     const value = tree.getChild(1);
     value.acceptVisitor(this);
-    this.source += ' ? ';
+    formatted += this.result;
+    formatted += ' ? ';
     const defaultValue = tree.getChild(2);
     defaultValue.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // dereferenceExpression: '@' expression
 FormattingVisitor.prototype.visitDereferenceExpression = function(tree) {
-    this.source += '@';
+    var formatted = '@';
     const reference = tree.getChild(1);
     reference.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // discardClause: 'discard' expression
 FormattingVisitor.prototype.visitDiscardClause = function(tree) {
-    this.source += 'discard ';
+    var formatted = 'discard ';
     const draft = tree.getChild(1);
     draft.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
+    var formatted = '';
     const value = duration.value.toISOString();
-    this.source += '~' + value;
+    formatted += '~' + value;
     if (!this.format && duration.parameters) {
         duration.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // evaluateClause: (recipient ':=')? expression
 FormattingVisitor.prototype.visitEvaluateClause = function(tree) {
+    var formatted = '';
     const size = tree.getSize();
     if (size > 1) {
         const recipient = tree.getChild(1);
         recipient.acceptVisitor(this);
-        this.source += ' := ';
+        formatted += this.result;
+        formatted += ' := ';
     }
     const expression = tree.getChild(size);
     expression.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
 FormattingVisitor.prototype.visitExponentialExpression = function(tree) {
+    var formatted = '';
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += ' ^ ';
+    formatted += this.result;
+    formatted += ' ^ ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // factorialExpression: expression '!'
 FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
+    var formatted = '';
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += '!';
+    formatted += this.result;
+    formatted += '!';
+    this.result = formatted;
 };
 
 
 // function: IDENTIFIER
 FormattingVisitor.prototype.visitFunction = function(tree) {
-    this.source += tree.identifier;
+    this.result = tree.identifier;
 };
 
 
 // functionExpression: function parameters
 FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
+    var formatted = '';
     const functionName = tree.getChild(1);
     functionName.acceptVisitor(this);
+    formatted += this.result;
     const parameters = tree.getChild(2);
     parameters.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 FormattingVisitor.prototype.visitHandleClause = function(tree) {
-    this.source += ' handle ';
+    var formatted = ' handle ';
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    this.source += ' matching ';
+    formatted += this.result;
+    formatted += ' matching ';
     const pattern = tree.getChild(2);
     pattern.acceptVisitor(this);
-    this.source += ' with ';
+    formatted += this.result;
+    formatted += ' with ';
     const block = tree.getChild(3);
     block.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 FormattingVisitor.prototype.visitIfClause = function(tree) {
     // handle first condition
-    this.source += 'if ';
+    var formatted = 'if ';
     var condition = tree.getChild(1);
     condition.acceptVisitor(this);
-    this.source += ' then ';
+    formatted += this.result;
+    formatted += ' then ';
     var block = tree.getChild(2);
     block.acceptVisitor(this);
+    formatted += this.result;
 
     // handle optional additional conditions
     const size = tree.getSize();
     for (var i = 3; i <= size; i += 2) {
         if (i === size) {
-            this.source += ' else ';
+            formatted += ' else ';
             block = tree.getChild(i);
             block.acceptVisitor(this);
+            formatted += this.result;
         } else {
-            this.source += ' else if ';
+            formatted += ' else if ';
             condition = tree.getChild(i);
             condition.acceptVisitor(this);
-            this.source += ' then ';
+            formatted += this.result;
+            formatted += ' then ';
             block = tree.getChild(i + 1);
             block.acceptVisitor(this);
+            formatted += this.result;
         }
     }
+    this.result = formatted;
 };
 
 
 // inversionExpression: ('-' | '/' | '*') expression
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
-    this.source += tree.operator;
+    var formatted = tree.operator;
     const operand = tree.getChild(1);
     // should insert a space before a negative number or another inversion
     var left = operand;
     while (true) {
-        if (left.type === types.INVERSION_EXPRESSION || left.type === types.NUMBER && left.source.startsWith('-')) {
-            this.source += ' ';
+        if (left.type === types.INVERSION_EXPRESSION || left.type === types.NUMBER && left.real.toString().startsWith('-')) {
+            formatted += ' ';
         }
         // check for a leaf node (i.e. an element or an identifier node
         if (!left.array || left.array.length === 0) break;
         left = left.getChild(1);
     }
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
@@ -465,62 +538,77 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty list}
 FormattingVisitor.prototype.visitList = function(list) {
-    this.source += '[';
+    var formatted = '[';
     // delegate to collection
     this.visitCollection(list);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (list.isParameterized()) {
         list.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
 FormattingVisitor.prototype.visitLogicalExpression = function(tree) {
+    var formatted = '';
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += ' ';
-    this.source += tree.operator;
-    this.source += ' ';
+    formatted += this.result;
+    formatted += ' ' + tree.operator + ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // magnitudeExpression: '|' expression '|'
 FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
-    this.source += '|';
+    var formatted = '|';
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    this.source += '|';
+    formatted += this.result;
+    formatted += '|';
+    this.result = formatted;
 };
 
 
 // message: IDENTIFIER
 FormattingVisitor.prototype.visitMessage = function(tree) {
-    this.source += tree.identifier;
+    this.result = tree.identifier;
 };
 
 
 // messageExpression: expression '.' message parameters
 FormattingVisitor.prototype.visitMessageExpression = function(tree) {
+    var formatted = '';
     const target = tree.getChild(1);
     target.acceptVisitor(this);
-    this.source += '.';
+    formatted += this.result;
+    formatted += '.';
     const messageName = tree.getChild(2);
     messageName.acceptVisitor(this);
+    formatted += this.result;
     const parameters = tree.getChild(3);
     parameters.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
+    var formatted = '';
     const value = moment.value.format(moment.format);
-    this.source += '<' + value + '>';
+    formatted += '<' + value + '>';
     if (!this.format && moment.parameters) {
         moment.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
@@ -531,111 +619,123 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 FormattingVisitor.prototype.visitNumber = function(number) {
+    var formatted = '';
     const format = this.getFormat(number, '$format', '$rectangular');
     if (number.isUndefined()) {
-        this.source += 'undefined';
+        formatted += 'undefined';
     } else if (number.isInfinite()) {
-        console.log('sourceInf: ' + number.source);
-        this.source += 'infinity';
+        formatted += 'infinity';
     } else if (number.isZero()) {
-        this.source += '0';
+        formatted += '0';
     } else if ((format !== '$polar' || number.real > 0) && number.imaginary === 0) {
         // we know the real part isn't zero
-        console.log('source0: ' + number.source);
-        this.source += formatReal(number.getReal());
+        formatted += formatReal(number.getReal());
     } else if (format !== '$polar' && number.real === 0) {
         // we know the imaginary part isn't zero
-        console.log('source1: ' + number.source);
-        this.source += formatImaginary(number.getImaginary());
+        formatted += formatImaginary(number.getImaginary());
     } else {
-        console.log('source2: ' + number.source);
         // must be a complex number
-        this.source += '(';
+        formatted += '(';
         switch (format) {
             case '$rectangular':
-                this.source += formatReal(number.getReal());
-                this.source += ', ';
-                this.source += formatImaginary(number.getImaginary());
+                formatted += formatReal(number.getReal());
+                formatted += ', ';
+                formatted += formatImaginary(number.getImaginary());
                 break;
             case '$polar':
-                this.source += formatReal(number.getMagnitude());
-                this.source += ' e^~';
-                this.source += formatImaginary(number.getPhase().value);
+                formatted += formatReal(number.getMagnitude());
+                formatted += ' e^~';
+                formatted += formatImaginary(number.getPhase().value);
                 break;
             default:
         }
-        this.source += ')';
+        formatted += ')';
     }
     if (!this.format && number.parameters) {
         number.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // parameters: '(' collection ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
-    this.source += '(';
+    var formatted = '(';
     // delegate to collection
     this.visitCollection(parameters.collection);
-    this.source += ')';
+    formatted += this.result;
+    formatted += ')';
+    this.result = formatted;
 };
 
 
 // pattern: 'none' | REGEX | 'any'
 FormattingVisitor.prototype.visitPattern = function(pattern) {
+    var formatted = '';
     const value = pattern.value.source;
     switch (value) {
         case '\u0000':
-            this.source += 'none';
+            formatted += 'none';
             break;
         case '.*':
-            this.source += 'any';
+            formatted += 'any';
             break;
         default:
-            this.source += '"' + value + '"?';
+            formatted += '"' + value + '"?';
     }
     if (!this.format && pattern.parameters) {
         pattern.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // percent: PERCENT
 FormattingVisitor.prototype.visitPercent = function(percent) {
+    var formatted = '';
     const value = percent.value;
-    this.source += formatReal(value) + '%';
+    formatted += formatReal(value) + '%';
     if (!this.format && percent.parameters) {
         percent.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // precedenceExpression: '(' expression ')'
 FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
-    this.source += '(';
+    var formatted = '(';
     const expression = tree.getChild(1);
     expression.acceptVisitor(this);
-    this.source += ')';
+    formatted += this.result;
+    formatted += ')';
+    this.result = formatted;
 };
 
 
 // probability: 'false' | FRACTION | 'true'
 FormattingVisitor.prototype.visitProbability = function(probability) {
+    var formatted = '';
     const value = probability.value;
     switch (value) {
         case 0:
-            this.source += 'false';
+            formatted += 'false';
             break;
         case 1:
-            this.source += 'true';
+            formatted += 'true';
             break;
         default:
             // must remove the leading '0' for probabilities
-            this.source += value.toString().substring(1);
+            formatted += value.toString().substring(1);
     }
     if (!this.format && probability.parameters) {
         probability.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
@@ -644,40 +744,49 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 //     EOL (statement EOL)* |
 //     {empty procedure}
 FormattingVisitor.prototype.visitProcedure = function(tree) {
-    if (!tree.isEmpty()) {
+    var formatted = '';
+        var length = 0;
+        const statements = [];
+
+        // format each item separately first summing the total length
         const iterator = tree.getIterator();
-        var statement;
-        if (types.isSimple(tree.complexity)) {
-            // inline the statements
-            statement = iterator.getNext();
+        this.depth++;
+        while (iterator.hasNext()) {
+            var statement = iterator.getNext();
             statement.acceptVisitor(this);
-            while (iterator.hasNext()) {
-                this.source += '; ';
-                statement = iterator.getNext();
-                statement.acceptVisitor(this);
-            }
+            statements.push(this.result);
+            length += 2 + this.result.length;
+        };
+        length -= 2;  // remove the space for the extra separator
+        this.depth--;
+
+        // concatentate the formatted items
+        if (this.allowInline && length <= types.MAXIMUM_LENGTH) {
+            // inline the statements
+            if (statements.length > 0) formatted += statements[0];
+            statements.slice(1).forEach(function(statement) {
+                formatted += '; ' + statement;
+            }, this);
         } else {
             // each statement is on a separate line
             this.depth++;
-            while (iterator.hasNext()) {
-                this.appendNewline();
-                statement = iterator.getNext();
-                statement.acceptVisitor(this);
-            }
+            statements.forEach(function(statement) {
+                formatted += EOL + this.getIndentation() + statement;
+            }, this);
             this.depth--;
-            this.appendNewline();
+            formatted += EOL + this.getIndentation();
         }
-    } else if (!types.isSimple(tree.complexity)) {
-        this.appendNewline();
-    }
+    this.result = formatted;
 };
 
 
 // publishClause: 'publish' expression
 FormattingVisitor.prototype.visitPublishClause = function(tree) {
-    this.source += 'publish ';
+    var formatted = 'publish ';
     const event = tree.getChild(1);
     event.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
@@ -686,107 +795,133 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty queue}
 FormattingVisitor.prototype.visitQueue = function(queue) {
-    this.source += '[';
+    var formatted = '[';
     // delegate to collection
     this.visitCollection(queue);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (queue.isParameterized()) {
         queue.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // queueClause: 'queue' expression 'on' expression
 FormattingVisitor.prototype.visitQueueClause = function(tree) {
-    this.source += 'queue ';
+    var formatted = 'queue ';
     const message = tree.getChild(1);
     message.acceptVisitor(this);
-    this.source += ' on ';
+    formatted += this.result;
+    formatted += ' on ';
     const queue = tree.getChild(2);
     queue.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // range: expression '..' expression
 FormattingVisitor.prototype.visitRange = function(range) {
-    this.source += '[';
+    var formatted = '[';
     range.getFirst().acceptVisitor(this);
-    this.source += '..';
+    formatted += this.result;
+    formatted += '..';
     range.getLast().acceptVisitor(this);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (range.isParameterized()) {
         range.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
+    var formatted = '';
     const value = reference.value.toString();
-    this.source += '<' + value + '>';
+    formatted += '<' + value + '>';
     if (!this.format && reference.parameters) {
         reference.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
+    var formatted = '';
     const value = reserved.value;
-    this.source += '$$' + value;
+    formatted += '$$' + value;
     if (!this.format && reserved.parameters) {
         reserved.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // returnClause: 'return' expression?
 FormattingVisitor.prototype.visitReturnClause = function(tree) {
-    this.source += 'return';
+    var formatted = 'return';
     if (!tree.isEmpty()) {
-        this.source += ' ';
+        formatted += ' ';
         const result = tree.getChild(1);
         result.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // saveClause: 'save' expression 'to' expression
 FormattingVisitor.prototype.visitSaveClause = function(tree) {
-    this.source += 'save ';
+    var formatted = 'save ';
     const draft = tree.getChild(1);
     draft.acceptVisitor(this);
-    this.source += ' to ';
+    formatted += this.result;
+    formatted += ' to ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 FormattingVisitor.prototype.visitSelectClause = function(tree) {
     // handle the selection
-    this.source += 'select ';
+    var formatted = 'select ';
     const value = tree.getChild(1);
     value.acceptVisitor(this);
-    this.source += ' from';
+    formatted += this.result;
+    formatted += ' from';
 
     // handle option blocks
     var block;
     const size = tree.getSize();
     for (var i = 2; i <= size; i += 2) {
         if (i === size) {
-            this.source += ' else ';
+            formatted += ' else ';
             block = tree.getChild(i);
             block.acceptVisitor(this);
+            formatted += this.result;
         } else {
-            this.source += ' ';
+            formatted += ' ';
             const option = tree.getChild(i);
             option.acceptVisitor(this);
-            this.source += ' do ';
+            formatted += this.result;
+            formatted += ' do ';
             block = tree.getChild(i + 1);
             block.acceptVisitor(this);
+            formatted += this.result;
         }
     }
+    this.result = formatted;
 };
 
 
@@ -795,24 +930,31 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty set}
 FormattingVisitor.prototype.visitSet = function(set) {
-    this.source += '[';
+    var formatted = '[';
     // delegate to collection
     this.visitCollection(set);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (set.isParameterized()) {
         set.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
-// source: '{' procedure '}'
+// formatted: '{' procedure '}'
 FormattingVisitor.prototype.visitSource = function(source) {
-    this.source += '{';
+    var formatted = '{';
+    this.allowInline = true;
     source.procedure.acceptVisitor(this);
-    this.source += '}';
+    formatted += this.result;
+    formatted += '}';
     if (source.isParameterized()) {
         source.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
@@ -821,138 +963,176 @@ FormattingVisitor.prototype.visitSource = function(source) {
 //     EOL (expression EOL)* |
 //     {empty stack}
 FormattingVisitor.prototype.visitStack = function(stack) {
-    this.source += '[';
+    var formatted = '[';
     // delegate to collection
     this.visitCollection(stack);
-    this.source += ']';
+    formatted += this.result;
+    formatted += ']';
     if (stack.isParameterized()) {
         stack.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // statement: mainClause handleClause*
 FormattingVisitor.prototype.visitStatement = function(tree) {
+    var formatted = '';
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         const child = iterator.getNext();
         child.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // subcomponent: variable indices
 FormattingVisitor.prototype.visitSubcomponent = function(tree) {
+    var formatted = '';
     const variable = tree.getChild(1);
     variable.acceptVisitor(this);
+    formatted += this.result;
     const indices = tree.getChild(2);
     indices.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // subcomponentExpression: expression indices
 FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+    var formatted = '';
     const component = tree.getChild(1);
     component.acceptVisitor(this);
+    formatted += this.result;
     const indices = tree.getChild(2);
     indices.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
+    var formatted = '';
     const value = symbol.value;
-    this.source += '$' + value;
+    formatted += '$' + value;
     if (!this.format && symbol.parameters) {
         symbol.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
+    var formatted = '';
     const value = tag.value;
-    this.source += '#' + value;
+    formatted += '#' + value;
     if (!this.format && tag.parameters) {
         tag.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // text: TEXT | TEXT_BLOCK
 Visitor.prototype.visitText = function(text) {
+    var formatted = '';
     var value = text.value;
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
-    this.source += '"' + value + '"';
+    formatted += '"' + value + '"';
     if (!this.format && text.parameters) {
         text.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // throwClause: 'throw' expression
 FormattingVisitor.prototype.visitThrowClause = function(tree) {
-    this.source += 'throw ';
+    var formatted = 'throw ';
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // variable: IDENTIFIER
 FormattingVisitor.prototype.visitVariable = function(tree) {
-    this.source += tree.identifier;
+    this.result = tree.identifier;
 };
 
 
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
+    var formatted = '';
     const value = version.value;
-    this.source += 'v' + value.join('.');  // concatentat the version levels
+    formatted += 'v' + value.join('.');  // concatentat the version levels
     if (!this.format && version.parameters) {
         version.parameters.acceptVisitor(this);
+        formatted += this.result;
     }
+    this.result = formatted;
 };
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 FormattingVisitor.prototype.visitWaitClause = function(tree) {
-    this.source += 'wait for ';
+    var formatted = 'wait for ';
     const message = tree.getChild(1);
     message.acceptVisitor(this);
-    this.source += ' from ';
+    formatted += this.result;
+    formatted += ' from ';
     const queue = tree.getChild(2);
     queue.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // whileClause: 'while' expression 'do' block
 FormattingVisitor.prototype.visitWhileClause = function(tree) {
-    this.source += 'while ';
+    var formatted = 'while ';
     const condition = tree.getChild(1);
     condition.acceptVisitor(this);
-    this.source += ' do ';
+    formatted += this.result;
+    formatted += ' do ';
     const block = tree.getChild(2);
     block.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 FormattingVisitor.prototype.visitWithClause = function(tree) {
+    var formatted = 'with ';
     const size = tree.getSize();
-    this.source += 'with ';
     if (size > 2) {
-        this.source += 'each ';
+        formatted += 'each ';
         const item = tree.getChild(1);
         item.acceptVisitor(this);
-        this.source += ' in ';
+        formatted += this.result;
+        formatted += ' in ';
     }
     const collection = tree.getChild(size - 1);
     collection.acceptVisitor(this);
-    this.source += ' do ';
+    formatted += this.result;
+    formatted += ' do ';
     const block = tree.getChild(size);
     block.acceptVisitor(this);
+    formatted += this.result;
+    this.result = formatted;
 };
 
 

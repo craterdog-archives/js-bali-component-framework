@@ -77,15 +77,19 @@ Comparator.prototype.compareComponents = function(first, second) {
 
     // handle numeric components
     if (typeof first === 'number' && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
         return Math.sign(first - second);
     }
     if (first.toNumber && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
         return Math.sign(first.toNumber() - second);
     }
     if (typeof first === 'number' && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
         return Math.sign(first - second.toNumber());
     }
     if (first.toNumber && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
         return Math.sign(first.toNumber() - second.toNumber());
     }
 
@@ -108,9 +112,15 @@ Comparator.prototype.compareComponents = function(first, second) {
         while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
             result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
         }
-        if (result !== 0) return result;  // found a difference
-        if (firstIterator.hasNext()) return 1;  // the first is longer than the second
-        if (secondIterator.hasNext()) return -1;  // the second is longer than the first
+        if (result !== 0) {
+            return result;
+        }  // found a difference
+        if (firstIterator.hasNext()) {
+            return 1;
+        }  // the first is longer than the second
+        if (secondIterator.hasNext()) {
+            return -1;
+        }  // the second is longer than the first
         return 0;  // they are the same length and all items are equal
     }
 

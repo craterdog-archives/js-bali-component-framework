@@ -47,7 +47,6 @@ function Queue(parameters) {
         }
     }
     this.array = [];
-    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 Queue.prototype = Object.create(abstractions.Collection.prototype);
@@ -99,8 +98,6 @@ Queue.prototype.addItem = function(item) {
     if (this.convert) item = this.convert(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
-        this.complexity += item.complexity;
-        if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
         return true;
     }
     const attributes = {
@@ -124,8 +121,6 @@ Queue.prototype.removeItem = function() {
     const size = this.array.length;
     if (size > 0) {
         const item = this.array.splice(0, 1)[0];  // remove the first item in the array
-        this.complexity -= item.complexity;
-        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
         return item;
     }
 };
@@ -147,6 +142,5 @@ Queue.prototype.getHead = function() {
  */
 Queue.prototype.clear = function() {
     const size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };

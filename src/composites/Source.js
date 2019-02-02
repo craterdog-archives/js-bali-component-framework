@@ -30,8 +30,6 @@ const abstractions = require('../abstractions');
 function Source(procedure, parameters) {
     abstractions.Composite.call(this, utilities.types.SOURCE, parameters);
     this.procedure = procedure;
-    this.complexity += this.procedure.complexity;
-    //this.complexity += 2;  // account for the '{' '}' delimiters
     return this;
 }
 Source.prototype = Object.create(abstractions.Composite.prototype);

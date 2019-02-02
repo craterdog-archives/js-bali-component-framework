@@ -40,7 +40,6 @@ const composites = require('../composites');
 function List(parameters) {
     abstractions.Collection.call(this, utilities.types.LIST, parameters);
     this.array = [];
-    this.complexity += 2;  // account for the '[' ']' delimiters
     return this;
 }
 List.prototype = Object.create(abstractions.Collection.prototype);
@@ -127,7 +126,6 @@ List.prototype.setItem = function(index, item) {
     index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
     const oldItem = this.array[index];
     this.array[index] = item;
-    this.complexity += item.complexity - oldItem.complexity;
     return oldItem;
 };
 
@@ -141,8 +139,6 @@ List.prototype.setItem = function(index, item) {
 List.prototype.addItem = function(item) {
     if (this.convert) item = this.convert(item);
     this.array.push(item);
-    this.complexity += item.complexity;
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
     return true;
 };
 
@@ -159,8 +155,6 @@ List.prototype.insertItem = function(index, item) {
     index = this.normalizeIndex(index);
     index--;  // convert to javascript zero based indexing
     this.array.splice(index, 0, item);
-    this.complexity += item.complexity;
-    if (this.getSize() > 1) this.complexity += 2;  // account for the ', ' separator
 };
 
 
@@ -193,8 +187,6 @@ List.prototype.removeItem = function(index) {
     const oldItem = this.array[index];
     if (oldItem) {
         this.array.splice(index, 1);
-        this.complexity -= oldItem.complexity;
-        if (this.getSize() > 0) this.complexity -= 2;  // account for the ', ' separator
     }
     return oldItem;
 };
@@ -224,7 +216,6 @@ List.prototype.removeItems = function(range) {
  */
 List.prototype.clear = function() {
     const size = this.getSize();
-    if (size > 1) this.complexity -= (size - 1) * 2;  // account for all the ', ' separators
     this.array.splice(0);
 };
 
