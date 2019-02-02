@@ -24,9 +24,8 @@ const abstractions = require('../abstractions');
  * value.
  * 
  * @constructor
- * @param {Number|String|Buffer} value The number of random bytes to be generated or the
- * bytes to be used to create the binary string. If the bytes are encoded the base used
- * to encode them may be specified in the parameters. The default base encoding is 32.
+ * @param {Number|Buffer} value The number of random bytes to be generated or the
+ * bytes to be used to create the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
@@ -36,31 +35,9 @@ function Binary(value, parameters) {
     // analyze the value
     value = value || Buffer.alloc(0);  // the default value is an empty buffer
 
-    switch (typeof value) {
-        case 'number':
-            // the value is the number of random bytes to generate
-            value = utilities.random.bytes(value);
-            break;
-        case 'string':
-            var base = 32;  // default value
-            if (parameters) base = parameters.getValue('$base').toNumber();
-            switch (base) {
-                case 2:
-                    value = utilities.codex.base2Decode(value);
-                    break;
-                case 16:
-                    value = utilities.codex.base16Decode(value);
-                    break;
-                case 32:
-                    value = utilities.codex.base32Decode(value);
-                    break;
-                case 64:
-                    value = utilities.codex.base64Decode(value);
-                    break;
-                default:
-                    throw new Error('BUG: An invalid base for the binary string was passed to the constructor: ' + base);
-            }
-            break;
+    if (typeof value === 'number') {
+        // the value is the number of random bytes to generate
+        value = utilities.random.bytes(value);
     }
     this.value = value;
     this.setSource(utilities.formatter.formatLiteral(this));
@@ -81,54 +58,6 @@ exports.Binary = Binary;
  */
 Binary.prototype.toBoolean = function() {
     return !this.isEmpty();
-};
-
-
-/**
- * This method returns a formatted base 2 encoding of the binary string
- * with an optional indentation prefix.
- * 
- * @param {String} indentation The indentation string to be prefixed to each line. 
- * @returns {String} The encoded binary string.
- */
-Binary.prototype.toBase2 = function(indentation) {
-    return "'" + utilities.codex.base2Encode(this.value, indentation) + "'";
-};
-
-
-/**
- * This method returns a formatted base 16 encoding of the binary string
- * with an optional indentation prefix.
- * 
- * @param {String} indentation The indentation string to be prefixed to each line. 
- * @returns {String} The encoded binary string.
- */
-Binary.prototype.toBase16 = function(indentation) {
-    return "'" + utilities.codex.base16Encode(this.value, indentation) + "'";
-};
-
-
-/**
- * This method returns a formatted base 32 encoding of the binary string
- * with an optional indentation prefix.
- * 
- * @param {String} indentation The indentation string to be prefixed to each line. 
- * @returns {String} The encoded binary string.
- */
-Binary.prototype.toBase32 = function(indentation) {
-    return "'" + utilities.codex.base32Encode(this.value, indentation) + "'";
-};
-
-
-/**
- * This method returns a formatted base 64 encoding of the binary string
- * with an optional indentation prefix.
- * 
- * @param {String} indentation The indentation string to be prefixed to each line. 
- * @returns {String} The encoded binary string.
- */
-Binary.prototype.toBase64 = function(indentation) {
-    return "'" + utilities.codex.base64Encode(this.value, indentation) + "'";
 };
 
 

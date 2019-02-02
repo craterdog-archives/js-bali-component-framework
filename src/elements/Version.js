@@ -12,7 +12,7 @@
 
 /*
  * This element class captures the state and methods associated with a
- * version element.
+ * version string element.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -23,10 +23,9 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new version element using the specified value.
  * 
- * @param {String|Array} value The source string for the version or an array of version
- * levels for the version string.
+ * @param {Array} value An array containing the version levels for the version string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
- * @returns {Symbol} The new version element.
+ * @returns {Symbol} The new version string element.
  */
 function Version(value, parameters) {
     abstractions.Element.call(this, utilities.types.VERSION, parameters);

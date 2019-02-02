@@ -22,8 +22,8 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new tag element using the specified value.
  * 
- * @param {Number|String} value An optional parameter defining the size of the new tag
- * or the value it should represent.
+ * @param {Number|String} value An optional parameter defining the size of a new random
+ * tag or the value it should represent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Tag} The new tag element.
  */

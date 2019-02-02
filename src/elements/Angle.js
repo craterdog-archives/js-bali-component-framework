@@ -22,7 +22,7 @@ const abstractions = require('../abstractions');
  * This constructor creates an immutable instance of an angle using the specified value.
  * 
  * @constructor
- * @param {String|Number} value The value of the angle.
+ * @param {Number} value The value of the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle element.
  */
@@ -94,6 +94,27 @@ Angle.prototype.toNumber = function() {
  */
 Angle.prototype.acceptVisitor = function(visitor) {
     visitor.visitAngle(this);
+};
+
+
+/**
+ * This function returns the value of the angle in radians.
+ * 
+ * @returns {Number} The value of the angle in radians.
+ */
+Angle.prototype.getRadians = function() {
+    return this.value;
+};
+
+
+/**
+ * This function returns the value of the angle in degrees.
+ * 
+ * @returns {Number} The value of the angle in degrees.
+ */
+Angle.prototype.getDegrees = function() {
+    const value = utilities.precision.quotient(utilities.precision.product(this.value, 180), utilities.precision.PI);
+    return value;
 };
 
 

@@ -22,30 +22,13 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new probability element using the specified value.
  * 
- * @param {String|Number|Boolean} value The value of the probability.
+ * @param {Number} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
-    value = value || false;  // the default value
-    switch (typeof value) {
-        case 'boolean':
-            value = value ? 1 : 0;
-            break;
-        case 'string':
-            switch (value) {
-                case 'false':
-                    value = 0;
-                    break;
-                case 'true':
-                    value = 1;
-                    break;
-                default:
-                    value = Number(value);
-            }
-            break;
-    }
+    value = value || 0;  // the default value
     if (value < 0 || value > 1) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }

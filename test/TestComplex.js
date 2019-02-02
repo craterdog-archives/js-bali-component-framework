@@ -24,8 +24,8 @@ describe('Bali Component Framework™', function() {
             expect(bali.number('(3, 4i)', bali.rectangular).getMagnitude()).to.equal(5);
             expect(bali.number('(-5 e^~pi i)').getMagnitude()).to.equal(5);
             expect(bali.number('(-5 e^~pi i)', bali.polar).getMagnitude()).to.equal(5);
-            expect(bali.number('(3, -4i)($format: $polar)').toPolar()).to.equal('(5 e^~-0.9272952180016122i)');
-            expect(bali.number('(3, -4i)($format: $rectangular)').toRectangular()).to.equal('(3, -4i)');
+            expect(bali.literal(bali.number('(3, -4i)($format: $polar)'), '$polar')).to.equal('(5 e^~-0.9272952180016122i)');
+            expect(bali.literal(bali.number('(3, -4i)($format: $rectangular)'), '$rectangular')).to.equal('(3, -4i)');
         });
 
         it('should construct and equal zero', function() {
@@ -60,8 +60,8 @@ describe('Bali Component Framework™', function() {
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);
                 expect(complex.toString()).to.equal(stringValues[i]);
-                expect(complex.toRectangular()).to.equal(rectangularValues[i]);
-                expect(complex.toPolar()).to.equal(polarValues[i]);
+                expect(bali.literal(complex, '$rectangular')).to.equal(rectangularValues[i]);
+                expect(bali.literal(complex, '$polar')).to.equal(polarValues[i]);
             }
         });
 

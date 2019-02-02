@@ -18,7 +18,7 @@
             <https://google.com/>
             v123
             "text"
-            '0110101101010001'($base: 2)
+            '0110101101010001'($encoding: $base2)
             true
             index
             example
@@ -55,7 +55,7 @@
             <https://craterdog.com/>: <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"
-            'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($base: 16)
+            'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($encoding: $base16)
             true: false
             pi: -3.14159265
             (1, 2i): -1.4142135623730951
@@ -83,25 +83,25 @@
         )
     ]
     $binaries: [
-        ''($base: 2)
+        ''($encoding: $base2)
         '
             001011011001110101000001010011111011110100110111000111100000
             00000100011001001101
-        '($base: 16)
+        '($encoding: $base16)
         '
             C3393B1543ACD32429A15D22A557C42DDD227DDDDA69D9CD55A7923D214A
             49D8A9C1AAC975C02B58
-        '($base: 32)
+        '($encoding: $base32)
         '
             51540EF86BC3660D4F4F95D3EF1E57E5A79396A2C6D4590A50202A849881
             45ADAEB3DC84737D6021CC0DB3E13EFDC90DBF4917172BA27E426FA6398A
             790CE723DB70712361EDDF7DAEE5EDB706CA1A631DBCD80988E98171E166
             C8BF8D3BE0E97F6E655105E74D96F9F86026504B752854B9316D0AB8263A
-        '($base: 16)
+        '($encoding: $base16)
         '
             234VDR3AFBR3N596XPHCZL7HNL2NX9FTV858QH33QQR62GP176PW7DAKCB1H
             DW411WRC0YS71NWKA93S
-        '(64)
+        '($base64)
     ]
     $moments: [
         <-10000-01-01T00:00:00>("Atlantis")

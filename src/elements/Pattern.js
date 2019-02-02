@@ -22,25 +22,13 @@ const abstractions = require('../abstractions');
  * This constructor creates a new pattern element using the specified value.
  * 
  * @constructor
- * @param {String|RegExp} value A regular expression for the pattern element.
+ * @param {RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
-    value = value || 'none';  // the default value
-    if (typeof value === 'string') {
-        switch (value) {
-            case 'none':
-                value = new RegExp('\u0000');  // should never find nulls in text strings
-                break;
-            case 'any':
-                value = new RegExp('.*');  // match anything
-                break;
-            default:
-                value = new RegExp(value);
-        }
-    }
+    value = value || new RegExp('\u0000');  // the default value
     this.value = value;
     this.setSource(utilities.formatter.formatLiteral(this));
     return this;
@@ -53,13 +41,13 @@ exports.Pattern = Pattern;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this pattern has a meaningful value. If the value is 'none'
+ * This method returns whether or not this pattern has a meaningful value. If the value is '\u0000'
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
-    return this.toString() !== 'none';
+    return this.value.source !== '\u0000';
 };
 
 

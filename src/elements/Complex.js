@@ -57,17 +57,16 @@ function Complex(real, imaginary, parameters) {
     }
     imaginary = utilities.precision.lockOnExtreme(imaginary);
     if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
-        real = NaN;
-        imaginary = NaN;
+        this.real = NaN;
+        this.imaginary = NaN;
+    } else if (real === Infinity || real === -Infinity || imaginary === Infinity || imaginary === -Infinity) {
+        this.real = Infinity;
+        this.imaginary = Infinity;
+    } else {
+        this.real = real;
+        this.imaginary = imaginary;
     }
-    if (real === Infinity || real === -Infinity || imaginary === Infinity || imaginary === -Infinity) {
-        real = Infinity;
-        imaginary = Infinity;
-    }
-    this.real = real;
-    this.imaginary = imaginary;
-
-    this.setSource(utilities.formatter.formatLiteral(this));
+    this.complexity = real.toString().length + imaginary.toString().length;
     return this;
 }
 Complex.prototype = Object.create(abstractions.Element.prototype);
@@ -95,47 +94,6 @@ Complex.prototype.toBoolean = function() {
  */
 Complex.prototype.toNumber = function() {
     return this.real;
-};
-
-
-/**
- * This method returns the Bali Document Notation™ for this complex number
- * in retangular form.
- * 
- * @returns {String} The literal string.
- */
-Complex.prototype.toRectangular = function() {
-    if (this.isUndefined()) return 'undefined';
-    if (this.isInfinite()) return 'infinity';
-    if (this.isZero()) return '0';
-    if (this.imaginary === 0) return formatReal(this.real);  // real part isn't zero
-    if (this.real === 0) return formatImaginary(this.imaginary);  // imaginary part isn't zero
-    var literal = '(';
-    literal += formatReal(this.real);
-    literal += ', ';
-    literal += formatImaginary(this.imaginary);
-    literal += ')';
-    return literal;
-};
-
-
-/**
- * This method returns the Bali Document Notation™ for this complex number
- * in polar form.
- * 
- * @returns {String} The literal string.
- */
-Complex.prototype.toPolar = function() {
-    if (this.isUndefined()) return 'undefined';
-    if (this.isInfinite()) return 'infinity';
-    if (this.isZero()) return '0';
-    if (this.imaginary === 0 && this.real > 0) return formatReal(this.real);
-    var literal = '(';
-    literal += formatReal(this.getMagnitude());
-    literal += ' e^~';
-    literal += formatImaginary(this.getPhase().value);
-    literal += ')';
-    return literal;
 };
 
 
@@ -182,7 +140,7 @@ Complex.prototype.isInfinite = function() {
 /**
  * This function returns the real part of a complex number.
  * 
- * @returns {number} The real part of the complex number.
+ * @returns {Number} The real part of the complex number.
  */
 Complex.prototype.getReal = function() {
     return this.real;
@@ -192,7 +150,7 @@ Complex.prototype.getReal = function() {
 /**
  * This function returns the imaginary part of a complex number.
  * 
- * @returns {number} The imaginary part of the complex number.
+ * @returns {Number} The imaginary part of the complex number.
  */
 Complex.prototype.getImaginary = function() {
     return this.imaginary;
@@ -202,7 +160,7 @@ Complex.prototype.getImaginary = function() {
 /**
  * This function returns the magnitude of a complex number.
  * 
- * @returns {number} The magnitude of the complex number.
+ * @returns {Number} The magnitude of the complex number.
  */
 Complex.prototype.getMagnitude = function() {
     // need to preserve full precision on this except for the sum part

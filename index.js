@@ -118,6 +118,12 @@ const exception = function(object) {
 };
 exports.exception = exception;
 
+const literal = function(element, format) {
+    const formatter = new utilities.Formatter();
+    return formatter.formatLiteral(element, format);
+};
+exports.literal = literal;
+
 const format = function(component, indentation) {
     const formatter = new utilities.Formatter(indentation);
     return formatter.formatComponent(component);
@@ -605,7 +611,7 @@ exports.degrees = parameters({$units: '$degrees'});
 exports.radians = parameters({$units: '$radians'});
 exports.polar = parameters({$format: '$polar'});
 exports.rectangular = parameters({$format: '$rectangular'});
-exports.base2 = parameters({$base: 2});
-exports.base16 = parameters({$base: 16});
-exports.base32 = parameters({$base: 32});
-exports.base64 = parameters({$base: 64});
+exports.base2 = parameters({$encoding: '$base2'});
+exports.base16 = parameters({$encoding: '$base16'});
+exports.base32 = parameters({$encoding: '$base32'});
+exports.base64 = parameters({$encoding: '$base64'});

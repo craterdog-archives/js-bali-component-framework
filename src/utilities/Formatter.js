@@ -15,7 +15,6 @@
  * the corresponding Bali Document Notation™ source code string.
  */
 const types = require('./Types');
-const precision = require('./Precision');
 const codex = require('./Codex');
 const Visitor = require('./Visitor').Visitor;
 
@@ -51,13 +50,14 @@ exports.Formatter = Formatter;
  * This method generates the canonical literal string for the specified element.
  * 
  * @param {Element} element The element.
+ * @param {String} format An optional format to be used.
  * @returns {String} The literal string for the element.
  */
-Formatter.prototype.formatLiteral = function(element) {
+Formatter.prototype.formatLiteral = function(element, format) {
     if (!types.isLiteral(element.type)) {
         throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
     }
-    const visitor = new FormattingVisitor(this.indentation, true);
+    const visitor = new FormattingVisitor(this.indentation, format);
     element.acceptVisitor(visitor);
     return visitor.source;
 };
@@ -79,10 +79,10 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, asLiteral) {
+function FormattingVisitor(indentation, format) {
     Visitor.call(this);
     this.indentation = indentation;
-    this.asLiteral = asLiteral || false;
+    this.format = format;
     this.source = '';
     this.depth = 0;
     return this;
@@ -106,25 +106,35 @@ FormattingVisitor.prototype.getIndentation = function() {
 };
 
 
-FormattingVisitor.prototype.getParameters = function(component) {
-    if (!this.asLiteral && component.parameters) return component.parameters;
+FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
+    var format = this.format;
+    const parameters = element.parameters;
+    if (!format && parameters) {
+        format = parameters.getValue(key, 1);
+        if (format) format = format.toString();
+    }
+    format = format || defaultValue;
+    return format;
 };
 
 
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
-    var value = angle.value;
-    const parameters = this.getParameters(angle);
-    if (parameters) {
-        const units = parameters.getValue('$units');
-        if (units && units.toString() === '$degrees') {
-            // convert radians to degrees
-            value = precision.quotient(precision.product(value, 180), precision.PI);
-        }
+    var value;
+    const format = this.getFormat(angle, '$units', '$radians');
+    switch (format) {
+        case '$radians':
+            value = angle.getRadians();
+            break;
+        case '$degrees':
+            value = angle.getDegrees();
+            break;
+        default:
+            throw new Error('BUG: An invalid angle format was specified: ' + format);
     }
     this.source += '~' + formatReal(value);
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && angle.parameters) {
+        angle.parameters.acceptVisitor(this);
     }
 };
 
@@ -152,33 +162,29 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 // binary: BINARY
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.value;
-    var base = 32;  // default value
-    const parameters = this.getParameters(binary);
-    if (parameters) {
-        base = parameters.getValue('$base').toNumber();
-    }
-    switch (base) {
-        case 2:
+    const format = this.getFormat(binary, '$encoding', '$base32');
+    switch (format) {
+        case '$base2':
             value = codex.base2Encode(value);
             break;
-        case 16:
+        case '$base16':
             value = codex.base16Encode(value);
             break;
-        case 32:
+        case '$base32':
             value = codex.base32Encode(value);
             break;
-        case 64:
+        case '$base64':
             value = codex.base64Encode(value);
             break;
         default:
-            throw new Error('BUG: An invalid binary base value was specified in the parameters: ' + base);
+            throw new Error('BUG: An invalid binary encoding format was specified: ' + format);
     }
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     this.source += "'" + value + "'";
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && binary.parameters) {
+        binary.parameters.acceptVisitor(this);
     }
 };
 
@@ -333,10 +339,9 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
     const value = duration.value.toISOString();
-    const parameters = this.getParameters(duration);
     this.source += '~' + value;
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && duration.parameters) {
+        duration.parameters.acceptVisitor(this);
     }
 };
 
@@ -512,10 +517,9 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     const value = moment.value.format(moment.format);
-    const parameters = this.getParameters(moment);
     this.source += '<' + value + '>';
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && moment.parameters) {
+        moment.parameters.acceptVisitor(this);
     }
 };
 
@@ -527,35 +531,43 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 FormattingVisitor.prototype.visitNumber = function(number) {
-    const parameters = this.getParameters(number);
+    const format = this.getFormat(number, '$format', '$rectangular');
     if (number.isUndefined()) {
         this.source += 'undefined';
     } else if (number.isInfinite()) {
+        console.log('sourceInf: ' + number.source);
         this.source += 'infinity';
     } else if (number.isZero()) {
         this.source += '0';
-    } else if (number.imaginary === 0) {
+    } else if ((format !== '$polar' || number.real > 0) && number.imaginary === 0) {
         // we know the real part isn't zero
+        console.log('source0: ' + number.source);
         this.source += formatReal(number.getReal());
-    } else if (number.real === 0) {
+    } else if (format !== '$polar' && number.real === 0) {
         // we know the imaginary part isn't zero
+        console.log('source1: ' + number.source);
         this.source += formatImaginary(number.getImaginary());
     } else {
+        console.log('source2: ' + number.source);
         // must be a complex number
         this.source += '(';
-        if (parameters && parameters.getValue('$format').toString() === '$polar') {
-            this.source += formatReal(number.getMagnitude());
-            this.source += ' e^~';
-            this.source += formatImaginary(number.getPhase().value);
-        } else {
-            this.source += formatReal(number.getReal());
-            this.source += ', ';
-            this.source += formatImaginary(number.getImaginary());
+        switch (format) {
+            case '$rectangular':
+                this.source += formatReal(number.getReal());
+                this.source += ', ';
+                this.source += formatImaginary(number.getImaginary());
+                break;
+            case '$polar':
+                this.source += formatReal(number.getMagnitude());
+                this.source += ' e^~';
+                this.source += formatImaginary(number.getPhase().value);
+                break;
+            default:
         }
         this.source += ')';
     }
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && number.parameters) {
+        number.parameters.acceptVisitor(this);
     }
 };
 
@@ -572,7 +584,6 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
 // pattern: 'none' | REGEX | 'any'
 FormattingVisitor.prototype.visitPattern = function(pattern) {
     const value = pattern.value.source;
-    const parameters = this.getParameters(pattern);
     switch (value) {
         case '\u0000':
             this.source += 'none';
@@ -583,8 +594,8 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
         default:
             this.source += '"' + value + '"?';
     }
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && pattern.parameters) {
+        pattern.parameters.acceptVisitor(this);
     }
 };
 
@@ -592,10 +603,9 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 // percent: PERCENT
 FormattingVisitor.prototype.visitPercent = function(percent) {
     const value = percent.value;
-    const parameters = this.getParameters(percent);
     this.source += formatReal(value) + '%';
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && percent.parameters) {
+        percent.parameters.acceptVisitor(this);
     }
 };
 
@@ -612,7 +622,6 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 // probability: 'false' | FRACTION | 'true'
 FormattingVisitor.prototype.visitProbability = function(probability) {
     const value = probability.value;
-    const parameters = this.getParameters(probability);
     switch (value) {
         case 0:
             this.source += 'false';
@@ -624,8 +633,8 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
             // must remove the leading '0' for probabilities
             this.source += value.toString().substring(1);
     }
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && probability.parameters) {
+        probability.parameters.acceptVisitor(this);
     }
 };
 
@@ -714,10 +723,9 @@ FormattingVisitor.prototype.visitRange = function(range) {
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.value.toString();
-    const parameters = this.getParameters(reference);
     this.source += '<' + value + '>';
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && reference.parameters) {
+        reference.parameters.acceptVisitor(this);
     }
 };
 
@@ -725,10 +733,9 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     const value = reserved.value;
-    const parameters = this.getParameters(reserved);
     this.source += '$$' + value;
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && reserved.parameters) {
+        reserved.parameters.acceptVisitor(this);
     }
 };
 
@@ -855,10 +862,9 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     const value = symbol.value;
-    const parameters = this.getParameters(symbol);
     this.source += '$' + value;
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && symbol.parameters) {
+        symbol.parameters.acceptVisitor(this);
     }
 };
 
@@ -866,10 +872,9 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
     const value = tag.value;
-    const parameters = this.getParameters(tag);
     this.source += '#' + value;
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && tag.parameters) {
+        tag.parameters.acceptVisitor(this);
     }
 };
 
@@ -877,13 +882,12 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 // text: TEXT | TEXT_BLOCK
 Visitor.prototype.visitText = function(text) {
     var value = text.value;
-    const parameters = this.getParameters(text);
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     this.source += '"' + value + '"';
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && text.parameters) {
+        text.parameters.acceptVisitor(this);
     }
 };
 
@@ -905,10 +909,9 @@ FormattingVisitor.prototype.visitVariable = function(tree) {
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
     const value = version.value;
-    const parameters = this.getParameters(version);
     this.source += 'v' + value.join('.');  // concatentat the version levels
-    if (parameters) {
-        parameters.acceptVisitor(this);
+    if (!this.format && version.parameters) {
+        version.parameters.acceptVisitor(this);
     }
 };
 

@@ -193,6 +193,27 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the "'" delimiters
     value = value.replace(/\s/g, '');  // strip out any whitespace
+    var encoding = '$base32';  // default value
+    if (parameters) {
+        encoding = parameters.getValue('$encoding');
+        if (encoding) encoding = encoding.toString();
+    }
+    switch (encoding) {
+        case '$base2':
+            value = utilities.codex.base2Decode(value);
+            break;
+        case '$base16':
+            value = utilities.codex.base16Decode(value);
+            break;
+        case '$base32':
+            value = utilities.codex.base32Decode(value);
+            break;
+        case '$base64':
+            value = utilities.codex.base64Decode(value);
+            break;
+        default:
+            throw new Error('BUG: An invalid encoding for a binary string was specified: ' + encoding);
+    }
     const binary = new elements.Binary(value, parameters);
     this.result = binary;
 };
@@ -682,9 +703,16 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
-    if (value.endsWith('?')) {
-        value = value.slice(1, -2);  // remove the trailing '?' and '"' delimiters
-        value = new RegExp(value);
+    switch (value) {
+        case 'none':
+            value = new RegExp('\u0000');  // should never find nulls in text strings
+            break;
+        case 'any':
+            value = new RegExp('.*');  // match anything
+            break;
+        default:
+            value = value.slice(1, -2);  // remove the trailing '?' and '"' delimiters
+            value = new RegExp(value);
     }
     const pattern = new elements.Pattern(value, parameters);
     this.result = pattern;
@@ -712,7 +740,17 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 // probability: 'false' | FRACTION | 'true'
 ParsingVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText();
+    var value = ctx.getText();
+    switch (value) {
+        case 'false':
+            value = 0;
+            break;
+        case 'true':
+            value = 1;
+            break;
+        default:
+            value = Number(value);
+    }
     const probability = new elements.Probability(value, parameters);
     this.result = probability;
 };
