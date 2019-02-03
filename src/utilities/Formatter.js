@@ -57,7 +57,7 @@ Formatter.prototype.formatLiteral = function(element, format) {
     if (!types.isLiteral(element.type)) {
         throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
     }
-    const visitor = new FormattingVisitor(this.indentation, format);
+    const visitor = new FormattingVisitor(this.indentation, false, format);
     element.acceptVisitor(visitor);
     return visitor.result;
 };
@@ -71,7 +71,7 @@ Formatter.prototype.formatLiteral = function(element, format) {
  * @returns {String} The formatted code document for the parse tree component.
  */
 Formatter.prototype.formatComponent = function(component) {
-    const visitor = new FormattingVisitor(this.indentation);
+    const visitor = new FormattingVisitor(this.indentation, true);
     component.acceptVisitor(visitor);
     return visitor.result;
 };
@@ -79,9 +79,10 @@ Formatter.prototype.formatComponent = function(component) {
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, format) {
+function FormattingVisitor(indentation, allowParameters, format) {
     Visitor.call(this);
     this.indentation = indentation;
+    this.allowParameters = allowParameters;
     this.format = format;
     this.depth = 0;
     return this;
@@ -100,12 +101,16 @@ FormattingVisitor.prototype.getIndentation = function() {
 
 
 FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
+    // a specified format takes precedence
     var format = this.format;
+    if (format) return format;
+    // then any format parameters that parameterize the element
     const parameters = element.parameters;
-    if (!format && parameters) {
+    if (this.allowParameters && parameters) {
         format = parameters.getValue(key, 1);
         if (format) format = format.toString();
     }
+    // and finally the default format
     format = format || defaultValue;
     return format;
 };
@@ -127,7 +132,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             throw new Error('BUG: An invalid angle format was specified: ' + format);
     }
     formatted += '~' + formatReal(value);
-    if (!this.format && angle.parameters) {
+    if (this.allowParameters && angle.parameters) {
         angle.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -188,7 +193,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     formatted += "'" + value + "'";
-    if (!this.format && binary.parameters) {
+    if (this.allowParameters && binary.parameters) {
         binary.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -384,7 +389,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
     var formatted = '';
     const value = duration.value.toISOString();
     formatted += '~' + value;
-    if (!this.format && duration.parameters) {
+    if (this.allowParameters && duration.parameters) {
         duration.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -604,7 +609,7 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
     var formatted = '';
     const value = moment.value.format(moment.format);
     formatted += '<' + value + '>';
-    if (!this.format && moment.parameters) {
+    if (this.allowParameters && moment.parameters) {
         moment.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -651,7 +656,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         }
         formatted += ')';
     }
-    if (!this.format && number.parameters) {
+    if (this.allowParameters && number.parameters) {
         number.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -684,7 +689,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
         default:
             formatted += '"' + value + '"?';
     }
-    if (!this.format && pattern.parameters) {
+    if (this.allowParameters && pattern.parameters) {
         pattern.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -697,7 +702,7 @@ FormattingVisitor.prototype.visitPercent = function(percent) {
     var formatted = '';
     const value = percent.value;
     formatted += formatReal(value) + '%';
-    if (!this.format && percent.parameters) {
+    if (this.allowParameters && percent.parameters) {
         percent.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -731,7 +736,7 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
             // must remove the leading '0' for probabilities
             formatted += value.toString().substring(1);
     }
-    if (!this.format && probability.parameters) {
+    if (this.allowParameters && probability.parameters) {
         probability.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -844,7 +849,7 @@ FormattingVisitor.prototype.visitReference = function(reference) {
     var formatted = '';
     const value = reference.value.toString();
     formatted += '<' + value + '>';
-    if (!this.format && reference.parameters) {
+    if (this.allowParameters && reference.parameters) {
         reference.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -857,7 +862,7 @@ FormattingVisitor.prototype.visitReserved = function(reserved) {
     var formatted = '';
     const value = reserved.value;
     formatted += '$$' + value;
-    if (!this.format && reserved.parameters) {
+    if (this.allowParameters && reserved.parameters) {
         reserved.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -1020,7 +1025,7 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
     var formatted = '';
     const value = symbol.value;
     formatted += '$' + value;
-    if (!this.format && symbol.parameters) {
+    if (this.allowParameters && symbol.parameters) {
         symbol.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -1033,7 +1038,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
     var formatted = '';
     const value = tag.value;
     formatted += '#' + value;
-    if (!this.format && tag.parameters) {
+    if (this.allowParameters && tag.parameters) {
         tag.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -1049,7 +1054,7 @@ Visitor.prototype.visitText = function(text) {
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     formatted += '"' + value + '"';
-    if (!this.format && text.parameters) {
+    if (this.allowParameters && text.parameters) {
         text.parameters.acceptVisitor(this);
         formatted += this.result;
     }
@@ -1078,7 +1083,7 @@ FormattingVisitor.prototype.visitVersion = function(version) {
     var formatted = '';
     const value = version.value;
     formatted += 'v' + value.join('.');  // concatentat the version levels
-    if (!this.format && version.parameters) {
+    if (this.allowParameters && version.parameters) {
         version.parameters.acceptVisitor(this);
         formatted += this.result;
     }

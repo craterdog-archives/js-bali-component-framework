@@ -151,7 +151,7 @@ Angle.prototype.comparedTo = function(that) {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
-    return new Angle(utilities.precision.difference(angle.value, utilities.precision.PI), angle.parameters);
+    return new Angle(utilities.precision.difference(angle.value, utilities.precision.PI));
 };
 
 
@@ -163,7 +163,7 @@ Angle.inverse = function(angle) {
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle) {
-    return new Angle(utilities.precision.difference(utilities.precision.PI / 2, angle.value), angle.parameters);
+    return new Angle(utilities.precision.difference(utilities.precision.PI / 2, angle.value));
 };
 
 
@@ -175,7 +175,7 @@ Angle.complement = function(angle) {
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle) {
-    return new Angle(utilities.precision.difference(utilities.precision.PI, angle.value), angle.parameters);
+    return new Angle(utilities.precision.difference(utilities.precision.PI, angle.value));
 };
 
 
@@ -187,7 +187,7 @@ Angle.supplement = function(angle) {
  * @returns {Angle} The conjugated angle.
  */
 Angle.conjugate = function(angle) {
-    return new Angle(-angle.value, angle.parameters);
+    return new Angle(-angle.value);
 };
 
 
@@ -195,13 +195,12 @@ Angle.conjugate = function(angle) {
  * This function returns the sum of two angles. The result will be normalized to be in
  * the range (-pi..pi].
  * 
- * @param {Angle} firstAngle The first angle to be summed.
- * @param {Angle} secondAngle The second angle to be summed.
+ * @param {Angle} first The first angle to be summed.
+ * @param {Angle} second The second angle to be summed.
  * @returns {Angle} The normalized sum of the two angles.
  */
-Angle.sum = function(firstAngle, secondAngle) {
-    // TODO: add check to make sure the parameters for both angles are the same
-    return new Angle(utilities.precision.sum(firstAngle.value, secondAngle.value), firstAngle.parameters);
+Angle.sum = function(first, second) {
+    return new Angle(utilities.precision.sum(first.value, second.value));
 };
 
 
@@ -209,13 +208,12 @@ Angle.sum = function(firstAngle, secondAngle) {
  * This function returns the difference of two angles. The result will be normalized to be in
  * the range (-pi..pi].
  * 
- * @param {Angle} firstAngle The angle to be subtracted from.
- * @param {Angle} secondAngle The angle to subtract from the first angle.
+ * @param {Angle} first The angle to be subtracted from.
+ * @param {Angle} second The angle to subtract from the first angle.
  * @returns {Angle} The normalized difference of the two angles.
  */
-Angle.difference = function(firstAngle, secondAngle) {
-    // TODO: add check to make sure the parameters for both angles are the same
-    return new Angle(utilities.precision.difference(firstAngle.value, secondAngle.value), firstAngle.parameters);
+Angle.difference = function(first, second) {
+    return new Angle(utilities.precision.difference(first.value, second.value));
 };
 
 
@@ -228,7 +226,7 @@ Angle.difference = function(firstAngle, secondAngle) {
  * @returns {Angle} The normalized scaled angle.
  */
 Angle.scaled = function(angle, factor) {
-    return new Angle(utilities.precision.product(angle.value, factor), angle.parameters);
+    return new Angle(utilities.precision.product(angle.value, factor));
 };
 
 
@@ -272,10 +270,9 @@ Angle.tangent = function(angle) {
  * 
  * @param {Number} ratio The ratio of the opposite to the hypotenuse for the triangle. 
  * @returns {Angle} The angle of the triangle.
- * @param {Parameters} parameters Optional parameters used to parameterize the resulting angle.
  */
-Angle.arcsine = function(ratio, parameters) {
-    return new Angle(utilities.precision.arcsine(ratio), parameters);
+Angle.arcsine = function(ratio) {
+    return new Angle(utilities.precision.arcsine(ratio));
 };
 
 
@@ -285,10 +282,9 @@ Angle.arcsine = function(ratio, parameters) {
  * 
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse for the triangle. 
  * @returns {Angle} The angle of the triangle.
- * @param {Parameters} parameters Optional parameters used to parameterize the resulting angle.
  */
-Angle.arccosine = function(ratio, parameters) {
-    return new Angle(utilities.precision.arccosine(ratio), parameters);
+Angle.arccosine = function(ratio) {
+    return new Angle(utilities.precision.arccosine(ratio));
 };
 
 
@@ -298,9 +294,8 @@ Angle.arccosine = function(ratio, parameters) {
  * 
  * @param {Number} opposite The length of the side opposite the angle.
  * @param {Number} adjacent The length of the side adjacent to the angle.
- * @param {Parameters} parameters Optional parameters used to parameterize the resulting angle.
  * @returns {Angle} The angle of the triangle.
  */
-Angle.arctangent = function(opposite, adjacent, parameters) {
-    return new Angle(utilities.precision.arctangent(opposite, adjacent), parameters);
+Angle.arctangent = function(opposite, adjacent) {
+    return new Angle(utilities.precision.arctangent(opposite, adjacent));
 };

@@ -231,7 +231,7 @@ Complex.inverse = function(complex) {
     if (complex.isZero()) return new Complex(0);
     const real = -complex.real;
     const imaginary = -complex.imaginary;
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -254,7 +254,7 @@ Complex.reciprocal = function(complex) {
     const squared = utilities.precision.sum(utilities.precision.product(complex.real, complex.real), utilities.precision.product(complex.imaginary, complex.imaginary));
     const real = utilities.precision.quotient(complex.real, squared);
     const imaginary = -utilities.precision.quotient(complex.imaginary, squared);
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -274,7 +274,7 @@ Complex.conjugate = function(complex) {
     if (complex.isZero()) return new Complex(0);
     const real = complex.real;
     const imaginary = -complex.imaginary;
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -313,7 +313,7 @@ Complex.sum = function(first, second) {
     if (first.isEqualTo(Complex.inverse(second))) return new Complex(0);
     const real = utilities.precision.sum(first.real, second.real);
     const imaginary = utilities.precision.sum(first.imaginary, second.imaginary);
-    const result = new Complex(real, imaginary, first.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -353,7 +353,7 @@ Complex.scaled = function(complex, factor) {
     if (complex.isZero() || factor === 0) return new Complex(0);
     const real = utilities.precision.product(complex.real, factor);
     const imaginary = utilities.precision.product(complex.imaginary, factor);
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -376,7 +376,7 @@ Complex.product = function(first, second) {
     if (first.isZero() || second.isZero()) return new Complex(0);
     const real = utilities.precision.difference(utilities.precision.product(first.real, second.real), utilities.precision.product(first.imaginary, second.imaginary));
     const imaginary = utilities.precision.sum(utilities.precision.product(first.real, second.imaginary), utilities.precision.product(first.imaginary * second.real));
-    const result = new Complex(real, imaginary, first.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 };
 
@@ -492,7 +492,7 @@ function exp(complex) {
     const scale = utilities.precision.exponential(complex.real);
     const real = utilities.precision.product(scale, utilities.precision.cosine(complex.imaginary));
     const imaginary = utilities.precision.product(scale, utilities.precision.sine(complex.imaginary));
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 }
 
@@ -503,7 +503,7 @@ function ln(complex) {
     if (complex.isZero()) return new Complex(Infinity);
     const real = utilities.precision.logarithm(complex.getMagnitude());
     const imaginary = complex.getPhase().value;
-    const result = new Complex(real, imaginary, complex.parameters);
+    const result = new Complex(real, imaginary);
     return result;
 }
 

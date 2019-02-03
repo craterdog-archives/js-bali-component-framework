@@ -51,7 +51,7 @@ exports.Set = Set;
  * @returns {Set} The resulting set.
  */
 Set.or = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set();
     result.addItems(first);
     result.addItems(second);
     return result;

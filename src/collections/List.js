@@ -58,7 +58,7 @@ exports.List = List;
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
-    const result = new List(list1.parameters);
+    const result = new List();
     result.addItems(list1);
     result.addItems(list2);
     return result;

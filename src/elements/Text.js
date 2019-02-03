@@ -106,7 +106,7 @@ Text.concatenation = function(text1, text2) {
     const string1 = text1.value;
     const string2 = text2.value;
     const string = string1 + string2;
-    return new Text(string, text1.parameters);
+    return new Text(string);
 };
 
 

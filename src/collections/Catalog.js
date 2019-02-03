@@ -52,7 +52,7 @@ exports.Catalog = Catalog;
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    const result = new Catalog(catalog1.parameters);
+    const result = new Catalog();
     result.addItems(catalog1);
     result.addItems(catalog2);
     return result;

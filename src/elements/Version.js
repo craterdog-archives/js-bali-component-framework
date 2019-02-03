@@ -160,7 +160,7 @@ Version.nextVersion = function(currentVersion, level) {
     } else {
         levels.push(1);
     }
-    const nextVersion = new Version(levels, currentVersion.parameters);
+    const nextVersion = new Version(levels);
     return nextVersion;
 };
 

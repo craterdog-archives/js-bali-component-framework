@@ -137,7 +137,7 @@ Binary.not = function(binary) {
     binary.value.forEach(function(byte, index) {
         buffer[index] = ~byte;
     });
-    return new Binary(buffer, binary.parameters);
+    return new Binary(buffer);
 };
 
 
@@ -156,7 +156,7 @@ Binary.and = function(first, second) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.value[index] & second.value[index];
     }
-    return new Binary(buffer, first.parameters);
+    return new Binary(buffer);
 };
 
 
@@ -175,7 +175,7 @@ Binary.sans = function(first, second) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.value[index] & ~second.value[index];
     }
-    return new Binary(buffer, first.parameters);
+    return new Binary(buffer);
 };
 
 
@@ -194,7 +194,7 @@ Binary.or = function(first, second) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.value[index] | second.value[index];
     }
-    return new Binary(buffer, first.parameters);
+    return new Binary(buffer);
 };
 
 
@@ -213,7 +213,7 @@ Binary.xor = function(first, second) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.value[index] ^ second.value[index];
     }
-    return new Binary(buffer, first.parameters);
+    return new Binary(buffer);
 };
 
 
@@ -231,7 +231,7 @@ Binary.concatenation = function(first, second) {
     const buffer = Buffer.alloc(buffer1.length + buffer2.length);
     buffer1.copy(buffer);
     buffer2.copy(buffer, buffer1.length);
-    return new Binary(buffer, first.parameters);
+    return new Binary(buffer);
 };
 
 
