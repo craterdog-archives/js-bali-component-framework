@@ -15,28 +15,35 @@ const bali = require('../');
 
 describe('Bali Component Framework™', function() {
 
-    describe('Test duration constructors', function() {
+    describe('Test time duration constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.duration('~P0D').toNumber()).to.equal(0);
-            expect(bali.duration('~P5W').toString()).to.equal('~P35D');
+        it('should construct time durations using literals', function() {
+            expect(bali.parse('~P0D').toBoolean()).to.equal(false);
+            expect(bali.parse('~P0D').toNumber()).to.equal(0);
+            expect(bali.parse('~P0D').toString()).to.equal('~P0D');
+            expect(bali.parse('~P3M7DT8H29M54.321S').toBoolean()).to.equal(true);
+            expect(bali.parse('~P3M7DT8H29M54.321S').toNumber()).to.equal(8497794321);
+            expect(bali.parse('~P3M7DT8H29M54.321S').toString()).to.equal('~P3M7DT8H29M54.321S');
         });
 
-        it('should construct a default duration of zero', function() {
-            const duration = bali.duration();
-            const string = duration.toString();
-            expect(string).to.equal(tests[0]);
+        it('should construct time durations that equal zero', function() {
+            expect(bali.duration().toBoolean()).to.equal(false);
+            expect(bali.duration().toNumber()).to.equal(0);
+            expect(bali.duration().toString()).to.equal('~P0D');
+            expect(bali.duration(0).toBoolean()).to.equal(false);
+            expect(bali.duration(0).toNumber()).to.equal(0);
+            expect(bali.duration(0).toString()).to.equal('~P0D');
         });
 
-        it('should construct a duration of days from weeks', function() {
-            const duration = bali.duration('~P5W');
+        it('should construct a time duration of days from weeks', function() {
+            const duration = bali.parse('~P5W');
             const string = duration.toString();
             expect(string).to.equal('~P35D');
         });
 
-        it('should construct a duration and format it the same', function() {
+        it('should construct a time duration and format it the same', function() {
             tests.forEach(function(expected) {
-                const duration = bali.duration(expected);
+                const duration = bali.parse(expected);
                 const string = duration.toString();
                 expect(string).to.equal(expected);
             });
@@ -44,17 +51,17 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test duration methods', function() {
+    describe('Test time duration methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.duration('~P0D').getType();
+            const type = bali.duration().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y6572KBG2SBYSCBHR88KB1GR616LFK8N,$version:v1,$digest:none]>');
         });
 
-        it('should compare two durations correctly', function() {
-            const days = bali.duration('~P7D');
-            const week = bali.duration('~P1W');
-            const month = bali.duration('~P1M');
+        it('should compare two time durations correctly', function() {
+            const days = bali.parse('~P7D');
+            const week = bali.parse('~P1W');
+            const month = bali.parse('~P1M');
             expect(week.comparedTo(month)).to.equal(-1);
             expect(week.isEqualTo(days)).to.equal(true);
             expect(month.comparedTo(days)).to.equal(1);
@@ -62,23 +69,23 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test duration functions', function() {
+    describe('Test time duration functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.duration.inverse(bali.duration('~P3D')).isEqualTo(bali.duration('~-P3D'))).to.equal(true);
-            expect(bali.duration.inverse(bali.duration('~-P2Y3M6D')).isEqualTo(bali.duration('~P2Y3M6D'))).to.equal(true);
+            expect(bali.duration.inverse(bali.parse('~P3D')).isEqualTo(bali.parse('~-P3D'))).to.equal(true);
+            expect(bali.duration.inverse(bali.parse('~-P2Y3M6D')).isEqualTo(bali.parse('~P2Y3M6D'))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.duration.sum(bali.duration('~P2Y3M6D'), bali.duration('~P2M4D')).isEqualTo(bali.duration('~P2Y5M10D'))).to.equal(true);
+            expect(bali.duration.sum(bali.parse('~P2Y3M6D'), bali.parse('~P2M4D')).isEqualTo(bali.parse('~P2Y5M10D'))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.duration.difference(bali.duration('~P2Y3M6D'), bali.duration('~P2M4D')).isEqualTo(bali.duration('~P2Y1M2D'))).to.equal(true);
+            expect(bali.duration.difference(bali.parse('~P2Y3M6D'), bali.parse('~P2M4D')).isEqualTo(bali.parse('~P2Y1M2D'))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.duration.scaled(bali.duration('~P6D'), 3).isEqualTo(bali.duration('~P18D'))).to.equal(true);
+            expect(bali.duration.scaled(bali.parse('~P6D'), 3).isEqualTo(bali.parse('~P18D'))).to.equal(true);
         });
 
     });

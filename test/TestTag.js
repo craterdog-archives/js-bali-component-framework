@@ -17,8 +17,9 @@ describe('Bali Component Framework™', function() {
 
     describe('Test tag constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.tag('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
+        it('should construct tags using literals', function() {
+            expect(bali.parse('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
+            expect(bali.parse('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN');
         });
 
         it('should generate default random tags with 20 bytes', function() {
@@ -26,7 +27,7 @@ describe('Bali Component Framework™', function() {
                 const random = bali.tag();
                 expect(random.getNumberOfBytes()).to.equal(20);
                 const expected = random.toString();
-                const tag = bali.tag(expected);
+                const tag = bali.parse(expected);
                 const result = tag.toString();
                 console.log('        ' + result);
                 expect(result).to.equal(expected);
@@ -37,19 +38,19 @@ describe('Bali Component Framework™', function() {
             const random = bali.tag(15);
             expect(random.getNumberOfBytes()).to.equal(15);
             const expected = random.toString();
-            const tag = bali.tag(expected);
+            const tag = bali.parse(expected);
             const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a predefined tag', function() {
             expected = '#NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
-            const tag = bali.tag(expected);
+            const tag = bali.parse(expected);
             const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
-        it('should throw an exception for an empty symbol', function() {
+        it('should throw an exception for an invalid tag', function() {
             expect(
                 function() {
                     const bad = bali.tag('This is not a tag!');
@@ -62,7 +63,7 @@ describe('Bali Component Framework™', function() {
     describe('Test tag methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.tag('#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2').getType();
+            const type = bali.parse('#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#JT3HJVCQ0A2TLK2D9LLXV1RWY963ZPS2,$version:v1,$digest:none]>');
         });
 

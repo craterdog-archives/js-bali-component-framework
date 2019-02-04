@@ -17,8 +17,9 @@ describe('Bali Component Framework™', function() {
 
     describe('Test reference constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.reference('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toString()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
+        it('should construct references using literals', function() {
+            expect(bali.parse('<https://google.com/>').toString()).to.equal('<https://google.com/>');
+            expect(bali.parse('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toString()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
         });
 
         it('should throw an exception for an empty reference', function() {
@@ -34,14 +35,14 @@ describe('Bali Component Framework™', function() {
             ).to.throw();
             expect(
                 function() {
-                    const empty = bali.reference('<>');
+                    const empty = bali.parse('<>');
                 }
             ).to.throw();
         });
 
         it('should construct references and format matching references', function() {
             tests.forEach(function(expected) {
-                const reference = bali.reference(expected);
+                const reference = bali.parse(expected);
                 const string = reference.toString();
                 expect(string).to.equal(expected);
             });
@@ -52,7 +53,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reference methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.reference('<https://google.com/>').getType();
+            const type = bali.reference('https://google.com/').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
         });
 

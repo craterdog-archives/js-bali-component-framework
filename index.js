@@ -101,9 +101,9 @@ const fillCollection = function(procedure, collection, sequence) {
             throw exception({
                 $exception: '$parameterType',
                 $procedure: procedure,
-                $expected: ['$Collection', '$Object', '$Array', '$Undefined'],
-                $actual: sequence.constructor.name,
-                $message: 'An invalid value type was passed to the constructor.'
+                $expected: ['$Collection', '$Object', '$Array'],
+                $actual: '$' + sequence.constructor.name,
+                $message: '"An invalid value type was passed to the constructor."'
             });
         }
     }
@@ -117,12 +117,6 @@ const exception = function(object) {
     return new utilities.Exception(attributes);
 };
 exports.exception = exception;
-
-const literal = function(element, format) {
-    const formatter = new utilities.Formatter();
-    return formatter.formatLiteral(element, format);
-};
-exports.literal = literal;
 
 const format = function(component, indentation) {
     const formatter = new utilities.Formatter(indentation);
@@ -165,22 +159,21 @@ exports.INFINITY = parse('infinity');
 
 // TYPES
 const angle = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'number':
-            return new elements.Angle(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$angle',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the angle constructor.'
+                $expected: ['$Undefined', '$Number'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the angle constructor."'
             });
     }
+    return new elements.Angle(value, parameters);
 };
 angle.inverse = elements.Angle.inverse;
 angle.complement = elements.Angle.complement;
@@ -205,25 +198,23 @@ const association = function(key, value) {
 exports.association = association;
 
 const binary = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'number':
-            return new elements.Binary(value, parameters);
+            break;
         default:
             if (!(value instanceof Buffer)) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$binary',
-                    $expected: ['$Buffer', '$Number', '$String', '$Undefined'],
-                    $actual: value.constructor.name,
-                    $message: 'An invalid value type was passed to the binary string constructor.'
+                    $expected: ['$Undefined', '$Number', '$Buffer'],
+                    $actual: '$' + value.constructor.name,
+                    $message: '"An invalid value type was passed to the binary string constructor."'
                 });
             }
-            return new elements.Binary(value, parameters);
     }
+    return new elements.Binary(value, parameters);
 };
 binary.not = elements.Binary.not;
 binary.and = elements.Binary.and;
@@ -267,9 +258,9 @@ const catalog = function(sequence, parameters) {
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$catalog',
-                $expected: ['$Collection', '$Object', '$Array', '$Undefined'],
-                $actual: sequence.constructor.name,
-                $message: 'An invalid value type was passed to the constructor.'
+                $expected: ['$Undefined', '$Collection', '$Object', '$Array'],
+                $actual: '$' + sequence.constructor.name,
+                $message: '"An invalid value type was passed to the constructor."'
             });
         }
     }
@@ -280,22 +271,22 @@ catalog.concatenation = collections.Catalog.concatenation;
 catalog.extraction = collections.Catalog.extraction;
 
 const duration = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
         case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'number':
-            return new elements.Duration(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$duration',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the duration of time constructor.'
+                $expected: ['$Undefined', '$Number', '$String'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the duration of time constructor."'
             });
     }
+    return new elements.Duration(value, parameters);
 };
 duration.inverse = elements.Duration.inverse;
 duration.sum = elements.Duration.sum;
@@ -313,22 +304,22 @@ exports.list = list;
 list.concatenation = collections.List.concatenation;
 
 const moment = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
         case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'number':
-            return new elements.Moment(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$moment',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the moment in time constructor.'
+                $expected: ['$Undefined', '$Number', '$String'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the moment in time constructor."'
             });
     }
+    return new elements.Moment(value, parameters);
 };
 moment.duration = elements.Moment.duration;
 moment.earlier = elements.Moment.earlier;
@@ -339,30 +330,28 @@ const number = function(value1, value2, parameters) {
     if (value1 === null) value1 = undefined;  // force the default value
     if (value2 === null) value2 = undefined;  // force the default value
     switch (typeof value1) {
-        case 'string':
-            return parse(value1);
         case 'undefined':
-            return new elements.Number(value1, value2, parameters);
         case 'number':
             if (value2 && typeof value2 !== 'number' && value2.type !== utilities.types.ANGLE) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$number',
-                    $expected: ['$Number', '$Angle', '$String', '$Undefined'],
-                    $actual: value2.constructor.name,
-                    $message: 'An invalid imaginary value type was passed to the complex number constructor.'
+                    $expected: ['$Undefined', '$Number', '$Angle'],
+                    $actual: '$' + value2.constructor.name,
+                    $message: '"An invalid imaginary value type was passed to the complex number constructor."'
                 });
             }
-            return new elements.Number(value1, value2, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$number',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value1.constructor.name,
-                $message: 'An invalid real value type was passed to the complex number constructor.'
+                $expected: ['$Undefined', '$Number'],
+                $actual: '$' + value1.constructor.name,
+                $message: '"An invalid real value type was passed to the complex number constructor."'
             });
     }
+    return new elements.Number(value1, value2, parameters);
 };
 exports.number = number;
 number.conjugate = elements.Number.conjugate;
@@ -379,44 +368,42 @@ number.scaled = elements.Number.scaled;
 number.sum = elements.Number.sum;
 
 const pattern = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
-            return new elements.Pattern(value, parameters);
+        case 'string':
+            break;
         default:
             if (!(value instanceof RegExp)) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$pattern',
-                    $expected: ['$RegExp', '$String', '$Undefined'],
-                    $actual: value.constructor.name,
-                    $message: 'An invalid value type was passed to the pattern constructor.'
+                    $expected: ['$Undefined', '$String', '$RegExp'],
+                    $actual: '$' + value.constructor.name,
+                    $message: '"An invalid value type was passed to the pattern constructor."'
                 });
             }
-            return new elements.Pattern(value, parameters);
     }
+    return new elements.Pattern(value, parameters);
 };
 exports.pattern = pattern;
 
 const percent = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'number':
-            return new elements.Percent(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$percent',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the percent constructor.'
+                $expected: ['$Undefined', '$Number'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the percent constructor."'
             });
     }
+    return new elements.Percent(value, parameters);
 };
 percent.inverse = elements.Percent.inverse;
 percent.sum = elements.Percent.sum;
@@ -425,23 +412,22 @@ percent.scaled = elements.Percent.scaled;
 exports.percent = percent;
 
 const probability = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
         case 'boolean':
         case 'number':
-            return new elements.Probability(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$probability',
-                $expected: ['$Boolean', '$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the probability constructor.'
+                $expected: ['$Undefined', '$Boolean', '$Number'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the probability constructor."'
             });
     }
+    return new elements.Probability(value, parameters);
 };
 probability.not = elements.Probability.not;
 probability.and = elements.Probability.and;
@@ -468,39 +454,41 @@ const range = function(first, last, parameters) {
 exports.range = range;
 
 const reference = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
+        case 'undefined':
         case 'string':
-            return parse(value, parameters);
+            break;
         default:
             if (!(value instanceof URL)) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$reference',
-                    $expected: ['$URL', '$String', '$Undefined'],
-                    $actual: value.constructor.name,
-                    $message: 'An invalid value type was passed to the reference constructor.'
+                    $expected: ['$Undefined', '$String', '$URL'],
+                    $actual: '$' + value.constructor.name,
+                    $message: '"An invalid value type was passed to the reference constructor."'
                 });
             }
-            return new elements.Reference(value, parameters);
     }
+    return new elements.Reference(value, parameters);
 };
 exports.reference = reference;
 
 const reserved = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
         case 'string':
-            return parse(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$reserved',
                 $expected: ['$String'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the reserved symbol constructor.'
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the reserved symbol constructor."'
             });
     }
+    return new elements.Reserved(value, parameters);
 };
 exports.reserved = reserved;
 
@@ -525,81 +513,75 @@ const stack = function(sequence, parameters) {
 exports.stack = stack;
 
 const symbol = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
         case 'string':
-            return parse(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$symbol',
                 $expected: ['$String'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the symbol constructor.'
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the symbol constructor."'
             });
     }
+    return new elements.Symbol(value, parameters);
 };
 exports.symbol = symbol;
 
 const tag = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
+        case 'string':
         case 'number':
-            return new elements.Tag(value, parameters);
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$tag',
-                $expected: ['$Number', '$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the tag constructor.'
+                $expected: ['$Undefined', '$Number', '$String'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the tag constructor."'
             });
     }
+    return new elements.Tag(value, parameters);
 };
 exports.tag = tag;
 
 const text = function(value, parameters) {
-    value = value || undefined;  // force the default value
+    if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
         case 'undefined':
-            return new elements.Text(value, parameters);
+        case 'string':
+            break;
         default:
             throw exception({
                 $exception: '$parameterType',
                 $procedure: '$text',
-                $expected: ['$String', '$Undefined'],
-                $actual: value.constructor.name,
-                $message: 'An invalid value type was passed to the text string constructor.'
+                $expected: ['$Undefined', '$String'],
+                $actual: '$' + value.constructor.name,
+                $message: '"An invalid value type was passed to the text string constructor."'
             });
     }
+    return new elements.Text(value, parameters);
 };
 text.concatenation = elements.Text.concatenation;
 exports.text = text;
 
 const version = function(value, parameters) {
-    value = value || undefined;  // force the default value
-    switch (typeof value) {
-        case 'string':
-            return parse(value, parameters);
-        case 'undefined':
-            return new elements.Version(value, parameters);
-        default:
-            if (!Array.isArray(value)) {
-                throw exception({
-                    $exception: '$parameterType',
-                    $procedure: '$version',
-                    $expected: ['$Array', '$String', '$Undefined'],
-                    $actual: value.constructor.name,
-                    $message: 'An invalid value type was passed to the version string constructor.'
-                });
-            }
-            return new elements.Version(value, parameters);
+    if (value === null) value = undefined;  // force the default value
+    if (value && !Array.isArray(value)) {
+        throw exception({
+            $exception: '$parameterType',
+            $procedure: '$version',
+            $expected: ['$Undefined', '$Array'],
+            $actual: '$' + value.constructor.name,
+            $message: '"An invalid value type was passed to the version string constructor."'
+        });
     }
+    return new elements.Version(value, parameters);
 };
 version.nextVersion = elements.Version.nextVersion;
 version.validNextVersion = elements.Version.validNextVersion;

@@ -17,78 +17,42 @@ describe('Bali Component Framework™', function() {
 
     describe('Test percent constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.percent('0%').toNumber()).to.equal(0);
-            expect(bali.percent('-50%').toNumber()).to.equal(-0.5);
+        it('should construct percentages using literals', function() {
+            expect(bali.parse('0%').toString()).to.equal('0%');
+            expect(bali.parse('27.4%').toString()).to.equal('27.4%');
+            expect(bali.parse('-50%').toString()).to.equal('-50%');
         });
 
-        it('should construct a default percent of zero', function() {
-            const empty = bali.percent();
-            const number = empty.toNumber();
-            expect(number).to.equal(0);
-            const string = empty.toString();
-            expect(string).to.equal('0%');
+        it('should construct percentages that equal zero', function() {
+            expect(bali.percent().toBoolean()).to.equal(false);
+            expect(bali.percent().toNumber()).to.equal(0);
+            expect(bali.percent().toString()).to.equal('0%');
+            expect(bali.percent(0).toBoolean()).to.equal(false);
+            expect(bali.percent(0).toNumber()).to.equal(0);
+            expect(bali.percent(0).toString()).to.equal('0%');
         });
 
-        it('should construct a percent of zero', function() {
-            const zero = bali.percent(0);
-            const number = zero.toNumber();
-            expect(number).to.equal(0);
-            const string = zero.toString();
-            expect(string).to.equal('0%');
+        it('should construct percentages that equal 13.25%', function() {
+            expect(bali.percent(13.25).toBoolean()).to.equal(true);
+            expect(bali.percent(13.25).toNumber()).to.equal(0.1325);
+            expect(bali.percent(13.25).toString()).to.equal('13.25%');
         });
 
-        it('should construct a percent of 13.25%', function() {
-            const decimal = bali.percent(13.25);
-            const number = decimal.toNumber();
-            expect(number).to.equal(0.1325);
-            const string = decimal.toString();
-            expect(string).to.equal('13.25%');
+        it('should construct percentages that equal -2%', function() {
+            expect(bali.percent(-2).toBoolean()).to.equal(true);
+            expect(bali.percent(-2).toNumber()).to.equal(-0.02);
+            expect(bali.percent(-2).toString()).to.equal('-2%');
         });
 
-        it('should construct a percent of -2%', function() {
-            const negative = bali.percent(-2);
-            const number = negative.toNumber();
-            expect(number).to.equal(-0.02);
-            const string = negative.toString();
-            expect(string).to.equal('-2%');
-        });
-
-        it('should construct a percent of 50%', function() {
-            const fifty = bali.percent(50);
-            const number = fifty.toNumber();
-            expect(number).to.equal(0.5);
-            const string = fifty.toString();
-            expect(string).to.equal('50%');
-        });
-
-        it('should construct a percent of -0.234%', function() {
-            const fractional = bali.percent(-0.234);
-            const number = fractional.toNumber();
-            expect(number).to.equal(-0.00234);
-            const string = fractional.toString();
-            expect(string).to.equal('-0.234%');
-        });
-
-        it('should construct a percent of 100%', function() {
-            const hundred = bali.percent(100);
-            const number = hundred.toNumber();
-            expect(number).to.equal(1);
-            const string = hundred.toString();
-            expect(string).to.equal('100%');
-        });
-
-        it('should construct a percent of 150%', function() {
-            const hundred = bali.percent(150);
-            const number = hundred.toNumber();
-            expect(number).to.equal(1.5);
-            const string = hundred.toString();
-            expect(string).to.equal('150%');
+        it('should construct percentages that equal 150%', function() {
+            expect(bali.percent(150).toBoolean()).to.equal(true);
+            expect(bali.percent(150).toNumber()).to.equal(1.5);
+            expect(bali.percent(150).toString()).to.equal('150%');
         });
 
     });
 
-    describe('Test percent methods', function() {
+    describe('Test percentage methods', function() {
 
         it('should return the correct type', function() {
             const type = bali.percent(50).getType();
@@ -97,7 +61,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test percent functions', function() {
+    describe('Test percentage functions', function() {
 
         it('should perform the inverse function correctly', function() {
             expect(bali.percent.inverse(bali.percent(25)).isEqualTo(bali.percent(-25))).to.equal(true);

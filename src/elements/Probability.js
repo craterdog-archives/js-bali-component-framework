@@ -28,8 +28,8 @@ const abstractions = require('../abstractions');
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
-    value = value || 0;  // the default value
-    if (value < 0 || value > 1) {
+    if (value === undefined) value = 0;  // default value
+    if (!isFinite(value) || value < 0 || value > 1) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
     this.value = value;

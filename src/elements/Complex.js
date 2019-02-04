@@ -82,7 +82,7 @@ exports.Complex = Complex;
  * @returns {Boolean} Whether or not this complex number has a meaningful value.
  */
 Complex.prototype.toBoolean = function() {
-    return !(this.isZero() || this.isUndefined() || this.isInfinite());
+    return !(this.isZero() || this.isUndefined());
 };
 
 
@@ -93,6 +93,28 @@ Complex.prototype.toBoolean = function() {
  */
 Complex.prototype.toNumber = function() {
     return this.real;
+};
+
+
+/**
+ * This method returns this complex number in rectangular form.
+ * 
+ * @returns {String} This complex number in rectangular form.
+ */
+Complex.prototype.toRectangular = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$rectangular');
+};
+
+
+/**
+ * This method returns this complex number in polar form.
+ * 
+ * @returns {String} This complex number in polar form.
+ */
+Complex.prototype.toPolar = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$polar');
 };
 
 

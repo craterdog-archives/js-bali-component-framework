@@ -17,8 +17,9 @@ describe('Bali Component Framework™', function() {
 
     describe('Test symbol constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.symbol('$foo').toString()).to.equal('$foo');
+        it('should construct symbols using literals', function() {
+            expect(bali.parse('$foo').toString()).to.equal('$foo');
+            expect(bali.parse('$bar').toString()).to.equal('$bar');
         });
 
         it('should throw an exception for an empty symbol', function() {
@@ -30,6 +31,11 @@ describe('Bali Component Framework™', function() {
             expect(
                 function() {
                     const empty = bali.symbol('');
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const empty = bali.parse('$');
                 }
             ).to.throw();
         });
@@ -47,20 +53,12 @@ describe('Bali Component Framework™', function() {
             ).to.throw();
         });
 
-        it('should construct a symbol and format the same symbol', function() {
-            const symbol = bali.symbol('$foobar');
-            const string = symbol.toString();
-            expect(string).to.equal('$foobar');
-            const identifier = symbol.value;
-            expect(identifier).to.equal('foobar');
-        });
-
     });
 
     describe('Test symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.symbol('$foobar').getType();
+            const type = bali.parse('$foobar').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#R4N28VY9D39002WL3PSM6ZSXDC6FT730,$version:v1,$digest:none]>');
         });
 

@@ -22,13 +22,14 @@ const abstractions = require('../abstractions');
  * This constructor creates a new pattern element using the specified value.
  * 
  * @constructor
- * @param {RegExp} value A regular expression for the pattern element.
+ * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
-    value = value || new RegExp('\u0000');  // the default value
+    value = value || '\u0000';  // the default value matches nothing
+    if (typeof value === 'string') value = new RegExp(value);
     this.value = value;
     return this;
 }

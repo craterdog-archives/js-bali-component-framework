@@ -17,8 +17,9 @@ describe('Bali Component Framework™', function() {
 
     describe('Test reserved symbol constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.reserved('$$foo').toString()).to.equal('$$foo');
+        it('should construct reserved symbols using literals', function() {
+            expect(bali.parse('$$foo').toString()).to.equal('$$foo');
+            expect(bali.parse('$$bar').toString()).to.equal('$$bar');
         });
 
         it('should throw an exception for an empty reserved symbol', function() {
@@ -30,6 +31,11 @@ describe('Bali Component Framework™', function() {
             expect(
                 function() {
                     const empty = bali.reserved('');
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const empty = bali.parse('$$');
                 }
             ).to.throw();
         });
@@ -47,20 +53,12 @@ describe('Bali Component Framework™', function() {
             ).to.throw();
         });
 
-        it('should construct a reserved symbol and format the same reserved symbol', function() {
-            const reserved = bali.reserved('$$foobar');
-            const string = reserved.toString();
-            expect(string).to.equal('$$foobar');
-            const identifier = reserved.value;
-            expect(identifier).to.equal('foobar');
-        });
-
     });
 
     describe('Test reserved symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.reserved('$$foobar').getType();
+            const type = bali.parse('$$foobar').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#HKTQFZ328SXYW6Q08CCHW90NQ6FW77KB,$version:v1,$digest:none]>');
         });
 

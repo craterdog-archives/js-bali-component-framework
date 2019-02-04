@@ -30,8 +30,8 @@ function Angle(value, parameters) {
     abstractions.Element.call(this, utilities.types.ANGLE, parameters);
 
     // analyze the value
-    value = value || 0;  // the default value
-    if (!isFinite(value)) value = 0;
+    if (value === undefined) value = 0;  // default value
+    if (!isFinite(value)) throw new Error('BUG: An invalid angle value was passed to the constructor: ' + value);
     if (parameters) {
         const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
@@ -83,6 +83,28 @@ Angle.prototype.toBoolean = function() {
  */
 Angle.prototype.toNumber = function() {
     return this.value;
+};
+
+
+/**
+ * This method returns the value of this angle in degrees.
+ * 
+ * @returns {String} The value of this angle in degrees.
+ */
+Angle.prototype.toDegrees = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$degrees');
+};
+
+
+/**
+ * This method returns the value of this angle in radians.
+ * 
+ * @returns {String} The value of this angle in radians.
+ */
+Angle.prototype.toRadians = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$radians');
 };
 
 

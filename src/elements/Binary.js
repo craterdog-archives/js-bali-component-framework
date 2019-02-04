@@ -61,6 +61,50 @@ Binary.prototype.toBoolean = function() {
 
 
 /**
+ * This method returns the base 2 encoded value of this binary string.
+ * 
+ * @returns {String} The base 2 encoded value of this binary string.
+ */
+Binary.prototype.toBase2 = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$base2');
+};
+
+
+/**
+ * This method returns the base 16 encoded value of this binary string.
+ * 
+ * @returns {String} The base 16 encoded value of this binary string.
+ */
+Binary.prototype.toBase16 = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$base16');
+};
+
+
+/**
+ * This method returns the base 32 encoded value of this binary string.
+ * 
+ * @returns {String} The base 32 encoded value of this binary string.
+ */
+Binary.prototype.toBase32 = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$base32');
+};
+
+
+/**
+ * This method returns the base 64 encoded value of this binary string.
+ * 
+ * @returns {String} The base 64 encoded value of this binary string.
+ */
+Binary.prototype.toBase64 = function() {
+    const formatter = new utilities.Formatter();
+    return utilities.formatter.formatLiteral(this, '$base64');
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this element.

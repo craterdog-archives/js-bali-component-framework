@@ -21,44 +21,46 @@ describe('Bali Component Framework™', function() {
 
     describe('Test binary constructors', function() {
 
-        it('should construct using literals', function() {
-            expect(bali.binary("''").value.length).to.equal(0);
-            expect(bali.binary("'ABC0'").toString()).to.equal("'ABC0'");
-            expect(bali.literal(bali.binary("'01101010'", bali.base2), '$base2')).to.equal("'01101010'");
-            expect(bali.literal(bali.binary("'ABC0'", bali.base16), '$base16')).to.equal("'ABC0'");
-            expect(bali.literal(bali.binary("'ABC0'", bali.base32), '$base32')).to.equal("'ABC0'");
-            expect(bali.literal(bali.binary("'gV2qMVdiG7XYRSqV6jg='", bali.base64), '$base64')).to.equal("'gV2qMVdiG7XYRSqV6jg='");
+        it('should construct binary strings using literals', function() {
             expect(bali.parse("'ABC0'").toString()).to.equal("'ABC0'");
+            expect(bali.parse("'01101010'($encoding: $base2)").toString()).to.equal("'01101010'($encoding: $base2)");
+            expect(bali.parse("'ABC0'($encoding: $base16)").toString()).to.equal("'ABC0'($encoding: $base16)");
+            expect(bali.parse("'ABC0'($encoding: $base32)").toString()).to.equal("'ABC0'($encoding: $base32)");
             expect(bali.parse("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)").toString()).to.equal("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)");
         });
 
-        it('should construct binary values from buffer with no base', function() {
+        it('should construct random binary strings from the number of bytes', function() {
+            expect(bali.binary().getSize()).to.equal(0);
+            expect(bali.binary(20).getSize()).to.equal(20);
+        });
+
+        it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
             expect(binary.value.toString('hex')).to.equal(expected.toString('hex'));
-            expect(bali.literal(binary)).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
+            expect(binary.toString()).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
         });
 
-        it('should construct binary values from buffer with base 2 format', function() {
+        it('should construct binary values from a buffer with base 2 encoding', function() {
             const binary = bali.binary(expected, bali.base2);
-            expect(bali.literal(binary, '$base2')).to.equal("'" + bali.utilities.codex.base2Encode(expected) + "'");
+            expect(binary.toBase2()).to.equal("'" + bali.utilities.codex.base2Encode(expected) + "'");
         });
 
-        it('should construct binary values from buffer with base 16 format', function() {
+        it('should construct binary values from a buffer with base 16 encoding', function() {
             const binary = bali.binary(expected, bali.base16);
-            expect(bali.literal(binary, '$base16')).to.equal("'" + bali.utilities.codex.base16Encode(expected) + "'");
+            expect(binary.toBase16()).to.equal("'" + bali.utilities.codex.base16Encode(expected) + "'");
         });
 
-        it('should construct binary values from buffer with base 32 format', function() {
+        it('should construct binary values from a buffer with base 32 encoding', function() {
             const binary = bali.binary(expected, bali.base32);
-            expect(bali.literal(binary, '$base32')).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
+            expect(binary.toBase32()).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
         });
 
-        it('should construct binary values from buffer with base 64 format', function() {
+        it('should construct binary values from a buffer with base 64 encoding', function() {
             const binary = bali.binary(expected, bali.base64);
-            expect(bali.literal(binary, '$base64')).to.equal("'" + bali.utilities.codex.base64Encode(expected) + "'");
+            expect(binary.toBase64()).to.equal("'" + bali.utilities.codex.base64Encode(expected) + "'");
         });
 
-        it('should throw and exception when constructing a binary value with an illegal base', function() {
+        it('should throw and exception when constructing a binary string with an illegal encoding', function() {
             expect(
                 function() {
                     const parameters = bali.parameters({$encoding: '$base25'});
