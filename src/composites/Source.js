@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
  */
 function Source(procedure, parameters) {
     abstractions.Composite.call(this, utilities.types.SOURCE, parameters);
-    this.procedure = procedure;
+    this.getProcedure = function() { return procedure; };
     return this;
 }
 Source.prototype = Object.create(abstractions.Composite.prototype);
@@ -46,7 +46,7 @@ exports.Source = Source;
  */
 Source.prototype.toArray = function() {
     const array = [];
-    array.push(this.procedure);
+    array.push(this.getProcedure());
     return array;
 };
 

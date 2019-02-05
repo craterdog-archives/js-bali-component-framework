@@ -75,7 +75,7 @@ describe('Bali Component Framework™', function() {
     describe('Test binary methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.binary(expected).getType();
+            const type = bali.binary(expected).getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S858FKVC1YTL20J9M0WQK89MQLS4TK8Z,$version:v1,$digest:none]>');
         });
 

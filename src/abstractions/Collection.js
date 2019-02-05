@@ -89,7 +89,7 @@ Collection.prototype.getItem = function(index) {
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
-    const items = new this.constructor(this.parameters);
+    const items = new this.constructor(this.getParameters());
     const iterator = range.getIterator();
     while (iterator.hasNext()) {
         const index = iterator.getNext();

@@ -129,7 +129,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should return the correct type', function() {
-            const type = bali.ZERO.getType();
+            const type = bali.ZERO.getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#HYPTA0PX51J7K2VQ88NZMH9GDPHR6G0B,$version:v1,$digest:none]>');
         });
 

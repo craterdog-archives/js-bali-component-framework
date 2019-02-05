@@ -67,7 +67,7 @@ Set.or = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
@@ -88,7 +88,7 @@ Set.and = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     result.addItems(first);
     result.removeItems(second);
     return result;
@@ -104,7 +104,7 @@ Set.sans = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();

@@ -37,8 +37,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty queue with small capacity', function() {
-            const queue = bali.queue();
-            queue.capacity = 3;
+            const parameters = bali.parameters({$capacity: 3});
+            const queue = bali.queue([], parameters);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -140,7 +140,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.queue().getType();
+            const type = bali.queue().getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4,$version:v1,$digest:none]>');
         });
 

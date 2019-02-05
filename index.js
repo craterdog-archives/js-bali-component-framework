@@ -61,7 +61,7 @@ const convert = function(value) {
             if (Array.isArray(value)) {
                 // convert the array to a list
                 component = list(value);
-            } else if (value.constructor.prototype.acceptVisitor && value.type) {
+            } else if (value.constructor.prototype.acceptVisitor && value.getType) {
                 // leave it since it is already a component
                 component = value;
             } else {
@@ -79,18 +79,18 @@ const fillCollection = function(procedure, collection, sequence) {
         if (Array.isArray(sequence)) {
             sequence.forEach(function(item) {
                 item = convert(item);
-                if (item.type === utilities.types.ASSOCIATION) {
-                    item = item.value;
+                if (item.getType() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
                 }
                 collection.addItem(item);
             });
-        } else if (utilities.types.isSequential(sequence.type)) {
+        } else if (utilities.types.isSequential(sequence.getType())) {
             const iterator = sequence.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.type === utilities.types.ASSOCIATION) {
-                    item = item.value;
+                if (item.getType() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
                 }
                 collection.addItem(item);
             }
@@ -125,6 +125,11 @@ const format = function(component, indentation) {
     return formatter.formatComponent(component);
 };
 exports.format = format;
+
+const iterator = function(array) {
+    return new utilities.Iterator(array);
+};
+exports.iterator = iterator;
 
 const parameters = function(object) {
     var collection;
@@ -234,18 +239,18 @@ const catalog = function(sequence, parameters) {
         if (Array.isArray(sequence)) {
             sequence.forEach(function(item) {
                 item = convert(item);
-                if (item.type === utilities.types.ASSOCIATION) {
+                if (item.getType() === utilities.types.ASSOCIATION) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);
                 }
             });
-        } else if (utilities.types.isSequential(sequence.type)) {
+        } else if (sequence.getType && utilities.types.isSequential(sequence.getType())) {
             const iterator = sequence.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.type === utilities.types.ASSOCIATION) {
+                if (item.getType() === utilities.types.ASSOCIATION) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);
@@ -334,7 +339,7 @@ const number = function(value1, value2, parameters) {
     switch (typeof value1) {
         case 'undefined':
         case 'number':
-            if (value2 && typeof value2 !== 'number' && value2.type !== utilities.types.ANGLE) {
+            if (value2 && typeof value2 !== 'number' && value2.getType() !== utilities.types.ANGLE) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$number',

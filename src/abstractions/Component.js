@@ -26,8 +26,8 @@ const utilities = require('../utilities');
  * @returns {Component} The new component.
  */
 function Component(type, parameters) {
-    this.type = type;
-    this.parameters = parameters;
+    this.getType = function() { return type; };
+    this.getParameters = function() { return parameters; };
     return this;
 }
 Component.prototype.constructor = Component;
@@ -41,13 +41,13 @@ exports.Component = Component;
  * 
  * @returns {String} A string containing a type reference for this component.
  */
-Component.prototype.getType = function() {
+Component.prototype.getTypeReference = function() {
     var reference;
-    var type = this.type;
+    var type = this.getType();
     if (type === utilities.types.CATALOG && this.isParameterized()) {
-        const value = this.parameters.getValue('$type');
+        const value = this.getParameters().getValue('$type');
         const string = utilities.formatter.formatLiteral(value);
-        if (value && value.type === utilities.types.SYMBOL) {
+        if (value && value.getType() === utilities.types.SYMBOL) {
             // the value is a symbol for a system type
             reference = utilities.types.typeBySymbol(string);
         } else {
@@ -68,7 +68,7 @@ Component.prototype.getType = function() {
  * @returns {Boolean} Whether or not this component is parameterized.
  */
 Component.prototype.isParameterized = function() {
-    return !!this.parameters;
+    return !!this.getParameters();
 };
 
 
@@ -127,22 +127,22 @@ Component.prototype.comparedTo = function(that) {
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Component.prototype.matches = function(pattern) {
-    if (pattern.type === utilities.types.PATTERN) {
+    if (pattern.getType() === utilities.types.PATTERN) {
         // handle a pattern component differently from other elements
         return pattern.isMatchedBy(this);
-    } else if (this.type !== pattern.type) {
+    } else if (this.getType() !== pattern.getType()) {
         // the component and pattern must be the same type
         return false;
     } else if (utilities.types.isLiteral(pattern)) {
         // elements are tested for equality
         return this.isEqualTo(pattern);
-    } else if (pattern.type === utilities.types.RANGE) {
+    } else if (pattern.getType() === utilities.types.RANGE) {
         // handle a range component differently from other collections
         if (!this.getFirst().matches(pattern.getFirst())) return false;
         if (!this.getLast().matches(pattern.getLast())) return false;
         // both endpoints matched
         return true;
-    } else if (pattern.type === utilities.types.CATALOG) {
+    } else if (pattern.getType() === utilities.types.CATALOG) {
         // handle a catalog component differently from other collections
         const keys = pattern.getKeys();
         const iterator = keys.getIterator();

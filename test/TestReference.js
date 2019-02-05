@@ -53,7 +53,7 @@ describe('Bali Component Framework™', function() {
     describe('Test reference methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.reference('https://google.com/').getType();
+            const type = bali.reference('https://google.com/').getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#CLP455XN9HV4CM5S6XDWS38SJNT7T5T3,$version:v1,$digest:none]>');
         });
 

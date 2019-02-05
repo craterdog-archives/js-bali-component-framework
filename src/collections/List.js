@@ -39,7 +39,58 @@ const composites = require('../composites');
  */
 function List(parameters) {
     abstractions.Collection.call(this, utilities.types.LIST, parameters);
-    this.array = [];
+
+    // the array is a private attribute so methods that use it are defined in the constructor
+    const array = [];
+
+    this.toArray = function() {
+        return array.slice();  // copy the array
+    };
+
+    this.getSize = function() {
+        return array.length;
+    };
+    
+    this.getItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        return array[index];
+    };
+    
+    this.setItem = function(index, item) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        item = this.convert(item);
+        const oldItem = array[index];
+        array[index] = item;
+        return oldItem;
+    };
+    
+    this.addItem = function(item) {
+        item = this.convert(item);
+        array.push(item);
+        return true;
+    };
+    
+    this.insertItem = function(index, item) {
+        item = this.convert(item);
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        array.splice(index, 0, item);
+    };
+    
+    this.removeItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        const oldItem = array[index];
+        if (oldItem) array.splice(index, 1);
+        return oldItem;
+    };
+    
+    this.clear = function() {
+        array.splice(0);
+    };
+
+    this.reverseItems = function() {
+        array.reverse();
+    };
+
     return this;
 }
 List.prototype = Object.create(abstractions.Collection.prototype);
@@ -47,35 +98,7 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
-// PUBLIC FUNCTIONS
-
-/**
- * This function returns a new list that contains the items from the second list concatenated
- * onto the end of the first list.
- *
- * @param {List} list1 The first list to be operated on.
- * @param {List} list2 The second list to be operated on.
- * @returns {List} The resulting list.
- */
-List.concatenation = function(list1, list2) {
-    const result = new List();
-    result.addItems(list1);
-    result.addItems(list2);
-    return result;
-};
-
-
 // PUBLIC METHODS
-
-/**
- * This method returns an array containing the items in this list.
- * 
- * @returns {Array} An array containing the items in this list.
- */
-List.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -84,77 +107,6 @@ List.prototype.toArray = function() {
  */
 List.prototype.acceptVisitor = function(visitor) {
     visitor.visitList(this);
-};
-
-
-/**
- * This method returns the number of items that are currently in this list.
- * 
- * @returns {Number} The number of items in this list.
- */
-List.prototype.getSize = function() {
-    const size = this.array.length;
-    return size;
-};
-
-
-/**
- * This method retrieves the item that is associated with the specified index from this list.
- * 
- * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this list.
- */
-List.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    const item = this.array[index];
-    return item;
-};
-
-
-/**
- * This method replaces an existing item in this list with a new one.  The new
- * item replaces the existing item at the specified index.
- *
- * @param {Number} index The index of the existing item.
- * @param {Component} item The new item that will replace the existing one.
- *
- * @returns The existing item that was at the specified index.
- */
-List.prototype.setItem = function(index, item) {
-    if (this.convert) item = this.convert(item);
-    index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
-    const oldItem = this.array[index];
-    this.array[index] = item;
-    return oldItem;
-};
-
-
-/*
- * This method appends the specified item to this list.
- * 
- * @param {String|Number|Boolean|Component} item The item to be added to this list.
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-List.prototype.addItem = function(item) {
-    if (this.convert) item = this.convert(item);
-    this.array.push(item);
-    return true;
-};
-
-
-/**
- * This method inserts the specified item into this list before the item
- * associated with the specified index.
- *
- * @param {Number} index The index of the item before which the new item is to be inserted.
- * @param {Component} item The new item to be inserted into this list.
- */
-List.prototype.insertItem = function(index, item) {
-    if (this.convert) item = this.convert(item);
-    index = this.normalizeIndex(index);
-    index--;  // convert to javascript zero based indexing
-    this.array.splice(index, 0, item);
 };
 
 
@@ -175,24 +127,6 @@ List.prototype.insertItems = function(index, items) {
 
 
 /**
- * This method removes from this list the item associated with the specified
- * index.
- *
- * @param {Number} index The index of the item to be removed.
- * @returns {Component} The item at the specified index.
- */
-List.prototype.removeItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to javascript zero based indexing
-    const oldItem = this.array[index];
-    if (oldItem) {
-        this.array.splice(index, 1);
-    }
-    return oldItem;
-};
-
-
-/**
  * This method removes from this list the items associated with the specified
  * index range.
  *
@@ -200,7 +134,7 @@ List.prototype.removeItem = function(index) {
  * @returns The list of the items that were removed from this list.
  */
 List.prototype.removeItems = function(range) {
-    const items = new List(this.parameters);
+    const items = new List(this.getParameters());
     const iterator = range.getIterator();
     while (iterator.hasNext()) {
         const index = iterator.getNext();
@@ -208,15 +142,6 @@ List.prototype.removeItems = function(range) {
         items.addItem(item);
     }
     return items;
-};
-
-
-/**
- * This method removes all items from this list.
- */
-List.prototype.clear = function() {
-    const size = this.getSize();
-    this.array.splice(0);
 };
 
 
@@ -234,14 +159,6 @@ List.prototype.sortItems = function(sorter) {
 
 
 /**
- * This method reverses the order of the items in this list.
- */
-List.prototype.reverseItems = function() {
-    this.array.reverse();
-};
-
-
-/**
  * This method shuffles the items in this list using a randomizing algorithm.  It uses ordinal
  * indexing with the modern version of the Fisher-Yates shuffle:
  * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
@@ -254,4 +171,22 @@ List.prototype.shuffleItems = function() {
         this.setItem(index, this.getItem(randomIndex));
         this.setItem(randomIndex, item);
     }
+};
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new list that contains the items from the second list concatenated
+ * onto the end of the first list.
+ *
+ * @param {List} list1 The first list to be operated on.
+ * @param {List} list2 The second list to be operated on.
+ * @returns {List} The resulting list.
+ */
+List.concatenation = function(list1, list2) {
+    const result = new List();
+    result.addItems(list1);
+    result.addItems(list2);
+    return result;
 };
