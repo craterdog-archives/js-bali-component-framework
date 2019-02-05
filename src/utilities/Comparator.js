@@ -34,13 +34,13 @@ exports.Comparator = Comparator;
 /**
  * This method determines whether or not two components are equal.
  * 
- * @param {Component} firstComponent The first component to be compared.
- * @param {Component} secondComponent The second component to be compared.
+ * @param {Component} first The first component to be compared.
+ * @param {Component} second The second component to be compared.
  * @returns {Boolean} Whether or not the two components are equal.
  * 
  */
-Comparator.prototype.componentsAreEqual = function(firstComponent, secondComponent) {
-    return this.compareComponents(firstComponent, secondComponent) === 0;
+Comparator.prototype.componentsAreEqual = function(first, second) {
+    return this.compareComponents(first, second) === 0;
 };
 
 

@@ -26,6 +26,9 @@ const utilities = require('../utilities');
  * @returns {Component} The new component.
  */
 function Component(type, parameters) {
+
+    // type and parameters are read-only attributes so methods that access their values directly
+    // are defined in the constructor
     this.getType = function() { return type; };
     this.getParameters = function() { return parameters; };
     return this;
