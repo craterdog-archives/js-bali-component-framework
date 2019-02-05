@@ -59,12 +59,14 @@ const convert = function(value) {
             break;
         default:
             if (Array.isArray(value)) {
+                // convert the array to a list
                 component = list(value);
-            } else if (!(value instanceof abstractions.Component)) {
-                component = catalog(value);
-            } else {
+            } else if (value.constructor.prototype.acceptVisitor && value.type) {
                 // leave it since it is already a component
                 component = value;
+            } else {
+                // convert the object to a catalog
+                component = catalog(value);
             }
     }
     return component;
