@@ -45,27 +45,26 @@ function Moment(value, parameters) {
     abstractions.Element.call(this, utilities.types.MOMENT, parameters);
     if (value === undefined || value === null) {
         this.format = FORMATS[7];
-        value = moment();  // the current moment
+        this.value = moment();  // the current moment
     } else {
         switch (typeof value) {
             case 'number':
                 this.format = FORMATS[7];
-                value = moment(value);  // in milliseconds since EPOC
+                this.value = moment(value);  // in milliseconds since EPOC
                 break;
             case 'string':
                 FORMATS.find(function(format) {
                     const attempt = moment(value, format, true);  // true means strict mode
                     if (attempt.isValid()) {
                         this.format = format;
-                        value = attempt;
+                        this.value = attempt;
                         return true;
                     } 
                     return false;
                 }, this);
         }
-        if (!value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
+        if (!this.value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
     }
-    this.getValue = function() { return value; };  // make the value read-only
     return this;
 }
 Moment.prototype = Object.create(abstractions.Element.prototype);
@@ -92,7 +91,7 @@ Moment.prototype.toBoolean = function() {
  * @returns {number} The number of milliseconds for the moment.
  */
 Moment.prototype.toNumber = function() {
-    return this.getValue().valueOf();
+    return this.value.valueOf();
 };
 
 
@@ -116,7 +115,7 @@ Moment.prototype.acceptVisitor = function(visitor) {
  * @returns {Duration} The duration between the two moments in time.
  */
 Moment.duration = function(first, second) {
-    const duration = moment.duration(second.getValue().diff(first.getValue()));
+    const duration = moment.duration(second.value.diff(first.value));
     return new Duration(duration.toISOString());
 };
 
@@ -130,7 +129,7 @@ Moment.duration = function(first, second) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.earlier = function(moment, duration) {
-    const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
+    const earlier = moment.value.clone().subtract(duration.value);  // must clone first!
     return new Moment(earlier.format(FORMATS[7]));
 };
 
@@ -144,6 +143,6 @@ Moment.earlier = function(moment, duration) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.later = function(moment, duration) {
-    const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
+    const later = moment.value.clone().add(duration.value);  // must clone first!
     return new Moment(later.format(FORMATS[7]));
 };

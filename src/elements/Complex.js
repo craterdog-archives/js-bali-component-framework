@@ -524,7 +524,7 @@ function ln(complex) {
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(Infinity);
     const real = utilities.precision.logarithm(complex.getMagnitude());
-    const imaginary = complex.getPhase().getValue();
+    const imaginary = complex.getPhase().value;
     const result = new Complex(real, imaginary);
     return result;
 }

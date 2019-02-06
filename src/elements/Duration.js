@@ -31,8 +31,7 @@ const abstractions = require('../abstractions');
 function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
     value = value || 0;  // the default value
-    value = moment.duration(value);
-    this.getValue = function() { return value; };  // make the value read-only
+    this.value = moment.duration(value);
     return this;
 }
 Duration.prototype = Object.create(abstractions.Element.prototype);
@@ -59,7 +58,7 @@ Duration.prototype.toBoolean = function() {
  * @returns {number} The number of milliseconds of the duration.
  */
 Duration.prototype.toNumber = function() {
-    return this.getValue().asMilliseconds();
+    return this.value.asMilliseconds();
 };
 
 
@@ -83,7 +82,7 @@ Duration.prototype.acceptVisitor = function(visitor) {
  * @returns {Duration} The inverse of the specified duration.
  */
 Duration.inverse = function(duration) {
-    return new Duration(moment.duration().subtract(duration.getValue()));
+    return new Duration(moment.duration().subtract(duration.value));
 };
 
 
@@ -95,7 +94,7 @@ Duration.inverse = function(duration) {
  * @returns {Duration} The normalized sum of the two durations.
  */
 Duration.sum = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.getValue().clone().add(secondDuration.getValue()).toISOString());
+    return new Duration(firstDuration.value.clone().add(secondDuration.value).toISOString());
 };
 
 
@@ -107,7 +106,7 @@ Duration.sum = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized difference of the two durations.
  */
 Duration.difference = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.getValue().clone().subtract(secondDuration.getValue()).toISOString());
+    return new Duration(firstDuration.value.clone().subtract(secondDuration.value).toISOString());
 };
 
 
@@ -119,6 +118,6 @@ Duration.difference = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized scaled duration.
  */
 Duration.scaled = function(duration, factor) {
-    return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString());
+    return new Duration(moment.duration(Math.round(duration.value.asMilliseconds() * factor)).toISOString());
 };
 

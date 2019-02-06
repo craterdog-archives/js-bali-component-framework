@@ -33,7 +33,7 @@ function Version(value, parameters) {
     if (value.indexOf(0) >= 0) {
         throw new Error('BUG: An invalid version level was passed to the constructor: ' + value);
     }
-    this.getValue = function() { return value; };  // make the value read-only
+    this.value = value;
     return this;
 }
 Version.prototype = Object.create(abstractions.Element.prototype);
@@ -81,8 +81,8 @@ Version.prototype.comparedTo = function(that) {
     }
 
     // compare levels
-    const thisLevels = this.getValue();
-    const thatLevels = that.getValue();
+    const thisLevels = this.value;
+    const thatLevels = that.value;
     var index = 0;
     while (index < thisLevels.length && index < thatLevels.length) {
         if (thisLevels[index] < thatLevels[index]) return -1;
@@ -115,7 +115,7 @@ Version.prototype.isEmpty = function() {
  * @returns {Number} The number of levels that this version string has.
  */
 Version.prototype.getSize = function() {
-    return this.getValue().length;
+    return this.value.length;
 };
 
 
@@ -125,7 +125,7 @@ Version.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this version string.
  */
 Version.prototype.getIterator = function() {
-    const iterator = new VersionIterator(this.getValue());
+    const iterator = new VersionIterator(this.value);
     return iterator;
 };
 
@@ -152,7 +152,7 @@ Version.prototype.getIterator = function() {
  * @returns {Version} The next version string.
  */
 Version.nextVersion = function(currentVersion, level) {
-    const levels = currentVersion.getValue().slice();  // copy the array since we are going to splice it!
+    const levels = currentVersion.value.slice();  // copy the array since we are going to splice it!
     const index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
     if (index < levels.length) {
         levels[index]++;
@@ -184,8 +184,8 @@ Version.nextVersion = function(currentVersion, level) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion) {
     // extract the version levels
-    const currentLevels = currentVersion.getValue();
-    const nextLevels = nextVersion.getValue();
+    const currentLevels = currentVersion.value;
+    const nextLevels = nextVersion.value;
 
     // walk the lists looking for the first different version levels
     var index = 0;

@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text();
             const string = text.toString();
             expect(string).to.equal('""');
-            const raw = text.getValue();
+            const raw = text.value;
             expect(raw).to.equal('');
         });
 
@@ -34,7 +34,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text('');
             const string = text.toString();
             expect(string).to.equal('""');
-            const raw = text.getValue();
+            const raw = text.value;
             expect(raw).to.equal('');
         });
 
@@ -42,7 +42,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text('\nThis is a \"text block\" containing \'quotes\'.\n');
             const string = text.toString();
             expect(string).to.equal('"\nThis is a \"text block\" containing \'quotes\'.\n"');
-            const raw = text.getValue();
+            const raw = text.value;
             expect(raw).to.equal('\nThis is a \"text block\" containing \'quotes\'.\n');
         });
 
@@ -84,13 +84,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             character = iterator.getNext();
-            expect(character).to.equal(text.getValue()[0]);
+            expect(character).to.equal(text.value[0]);
             character = iterator.getNext();
-            expect(character).to.equal(text.getValue()[1]);
+            expect(character).to.equal(text.value[1]);
             character = iterator.getPrevious();
-            expect(character).to.equal(text.getValue()[1]);
+            expect(character).to.equal(text.value[1]);
             character = iterator.getPrevious();
-            expect(character).to.equal(text.getValue()[0]);
+            expect(character).to.equal(text.value[0]);
             while (iterator.hasNext()) {
                 character = iterator.getNext();
             }

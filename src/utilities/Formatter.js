@@ -155,7 +155,7 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 // binary: BINARY
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var formatted = '';
-    var value = binary.getValue();
+    var value = binary.value;
     const format = this.getFormat(binary, '$encoding', '$base32');
     switch (format) {
         case '$base2':
@@ -371,7 +371,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
     var formatted = '';
-    const value = duration.getValue().toISOString();
+    const value = duration.value.toISOString();
     formatted += '~' + value;
     if (this.allowParameters && duration.isParameterized()) {
         duration.getParameters().acceptVisitor(this);
@@ -591,7 +591,7 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     var formatted = '';
-    const value = moment.getValue().format(moment.format);
+    const value = moment.value.format(moment.format);
     formatted += '<' + value + '>';
     if (this.allowParameters && moment.isParameterized()) {
         moment.getParameters().acceptVisitor(this);
@@ -634,7 +634,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
             case '$polar':
                 formatted += formatReal(number.getMagnitude());
                 formatted += ' e^~';
-                formatted += formatImaginary(number.getPhase().getValue());
+                formatted += formatImaginary(number.getPhase().value);
                 break;
             default:
         }
@@ -662,7 +662,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
 // pattern: 'none' | REGEX | 'any'
 FormattingVisitor.prototype.visitPattern = function(pattern) {
     var formatted = '';
-    const value = pattern.getValue().source;
+    const value = pattern.value.source;
     switch (value) {
         case '\u0000':
             formatted += 'none';
@@ -684,7 +684,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 // percent: PERCENT
 FormattingVisitor.prototype.visitPercent = function(percent) {
     var formatted = '';
-    const value = percent.getValue();
+    const value = percent.value;
     formatted += formatReal(value) + '%';
     if (this.allowParameters && percent.isParameterized()) {
         percent.getParameters().acceptVisitor(this);
@@ -708,7 +708,7 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 // probability: 'false' | FRACTION | 'true'
 FormattingVisitor.prototype.visitProbability = function(probability) {
     var formatted = '';
-    const value = probability.getValue();
+    const value = probability.value;
     switch (value) {
         case 0:
             formatted += 'false';
@@ -831,7 +831,7 @@ FormattingVisitor.prototype.visitRange = function(range) {
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     var formatted = '';
-    const value = reference.getValue().toString();
+    const value = reference.value.toString();
     formatted += '<' + value + '>';
     if (this.allowParameters && reference.isParameterized()) {
         reference.getParameters().acceptVisitor(this);
@@ -844,7 +844,7 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     var formatted = '';
-    const value = reserved.getValue();
+    const value = reserved.value;
     formatted += '$$' + value;
     if (this.allowParameters && reserved.isParameterized()) {
         reserved.getParameters().acceptVisitor(this);
@@ -1007,7 +1007,7 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     var formatted = '';
-    const value = symbol.getValue();
+    const value = symbol.value;
     formatted += '$' + value;
     if (this.allowParameters && symbol.isParameterized()) {
         symbol.getParameters().acceptVisitor(this);
@@ -1020,7 +1020,7 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
     var formatted = '';
-    const value = tag.getValue();
+    const value = tag.value;
     formatted += '#' + value;
     if (this.allowParameters && tag.isParameterized()) {
         tag.getParameters().acceptVisitor(this);
@@ -1033,7 +1033,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 // text: TEXT | TEXT_BLOCK
 FormattingVisitor.prototype.visitText = function(text) {
     var formatted = '';
-    var value = text.getValue();
+    var value = text.value;
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
@@ -1065,7 +1065,7 @@ FormattingVisitor.prototype.visitVariable = function(tree) {
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
     var formatted = '';
-    const value = version.getValue();
+    const value = version.value;
     formatted += 'v' + value.join('.');  // concatentat the version levels
     if (this.allowParameters && version.isParameterized()) {
         version.getParameters().acceptVisitor(this);
