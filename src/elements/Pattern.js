@@ -30,7 +30,7 @@ function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
     value = value || '\u0000';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
-    this.value = value;
+    this.getValue = function() { return value; };  // make the value read-only
     return this;
 }
 Pattern.prototype = Object.create(abstractions.Element.prototype);
@@ -47,7 +47,7 @@ exports.Pattern = Pattern;
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
-    return this.value.source !== '\u0000';
+    return this.getValue().source !== '\u0000';
 };
 
 
@@ -69,5 +69,5 @@ Pattern.prototype.acceptVisitor = function(visitor) {
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
 Pattern.prototype.isMatchedBy = function(component) {
-    return this.value.test(component.toString());
+    return this.getValue().test(component.toString());
 };

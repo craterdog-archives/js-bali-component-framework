@@ -36,7 +36,7 @@ describe('Bali Component Framework™', function() {
 
         it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
-            expect(binary.value.toString('hex')).to.equal(expected.toString('hex'));
+            expect(binary.getValue().toString('hex')).to.equal(expected.toString('hex'));
             expect(binary.toString()).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
         });
 
@@ -147,13 +147,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             byte = iterator.getNext();
-            expect(byte).to.equal(binary.value[0]);
+            expect(byte).to.equal(binary.getValue()[0]);
             byte = iterator.getNext();
-            expect(byte).to.equal(binary.value[1]);
+            expect(byte).to.equal(binary.getValue()[1]);
             byte = iterator.getPrevious();
-            expect(byte).to.equal(binary.value[1]);
+            expect(byte).to.equal(binary.getValue()[1]);
             byte = iterator.getPrevious();
-            expect(byte).to.equal(binary.value[0]);
+            expect(byte).to.equal(binary.getValue()[0]);
             while (iterator.hasNext()) {
                 byte = iterator.getNext();
             }

@@ -32,7 +32,7 @@ function Symbol(value, parameters) {
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
         throw new Error('BUG: An invalid symbol value was passed to the constructor.');
     }
-    this.value = value;
+    this.getValue = function() { return value; };  // make the value read-only
     return this;
 }
 Symbol.prototype = Object.create(abstractions.Element.prototype);

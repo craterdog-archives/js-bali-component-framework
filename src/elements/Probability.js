@@ -32,7 +32,7 @@ function Probability(value, parameters) {
     if (!isFinite(value) || value < 0 || value > 1) {
         throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
     }
-    this.value = value;
+    this.getValue = function() { return value; };  // make the value read-only
     return this;
 
 }
@@ -49,7 +49,7 @@ exports.Probability = Probability;
  * @returns {Boolean} Whether or not this probability is greater or equal to 0.5.
  */
 Probability.prototype.toBoolean = function() {
-    return this.value >= 0.5;
+    return this.getValue() >= 0.5;
 };
 
 
@@ -59,7 +59,7 @@ Probability.prototype.toBoolean = function() {
  * @returns {number} The numeric representation of the probability element.
  */
 Probability.prototype.toNumber = function() {
-    return this.value;
+    return this.getValue();
 };
 
 
@@ -97,7 +97,7 @@ Probability.random = function() {
  */
 Probability.coinToss = function(weighting) {
     const probability = utilities.random.probability();
-    return probability < weighting.value ? new Probability(true) : new Probability(false);
+    return probability < weighting.getValue() ? new Probability(true) : new Probability(false);
 };
 
 
@@ -113,7 +113,7 @@ Probability.coinToss = function(weighting) {
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability) {
-    const p = utilities.precision.difference(1, probability.value);
+    const p = utilities.precision.difference(1, probability.getValue());
     const result = new Probability(p);
     return result;
 };
@@ -132,8 +132,8 @@ Probability.not = function(probability) {
  * @returns {Probability} The resulting probability.
  */
 Probability.and = function(probability1, probability2) {
-    const p1 = probability1.value;
-    const p2 = probability2.value;
+    const p1 = probability1.getValue();
+    const p2 = probability2.getValue();
     const p = utilities.precision.product(p1, p2);
     const result = new Probability(p);
     return result;
@@ -154,8 +154,8 @@ Probability.and = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.sans = function(probability1, probability2) {
-    const p1 = probability1.value;
-    const p2 = probability2.value;
+    const p1 = probability1.getValue();
+    const p2 = probability2.getValue();
     const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
     const result = new Probability(p);
     return result;
@@ -177,8 +177,8 @@ Probability.sans = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.or = function(probability1, probability2) {
-    const p1 = probability1.value;
-    const p2 = probability2.value;
+    const p1 = probability1.getValue();
+    const p2 = probability2.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
     const result = new Probability(p);
     return result;
@@ -200,8 +200,8 @@ Probability.or = function(probability1, probability2) {
  * @returns {Probability} The resulting probability.
  */
 Probability.xor = function(probability1, probability2) {
-    const p1 = probability1.value;
-    const p2 = probability2.value;
+    const p1 = probability1.getValue();
+    const p2 = probability2.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));
     const result = new Probability(p);
     return result;

@@ -30,20 +30,23 @@ const abstractions = require('../abstractions');
 function Tag(value, parameters) {
     abstractions.Element.call(this, utilities.types.TAG, parameters);
     value = value || 20;  // the default number of bytes
-    var bytes;
+    var bytes, numberOfBytes;
     switch (typeof value) {
         case 'number':
+            numberOfBytes = value;
             bytes = utilities.random.bytes(value);
-            this.value = utilities.codex.base32Encode(bytes);
-            this.size = value;
+            value = utilities.codex.base32Encode(bytes);
             break;
         case 'string':
             bytes = utilities.codex.base32Decode(value);
-            this.value = value;
-            this.size = bytes.length;
+            numberOfBytes = bytes.length;
             break;
     }
-    this.hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
+    const hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
+    // make the attributes read-only
+    this.getHash = function() { return hash; };
+    this.getValue = function() { return value; };
+    this.getNumberOfBytes = function() { return numberOfBytes; };
     return this;
 }
 Tag.prototype = Object.create(abstractions.Element.prototype);
@@ -80,26 +83,6 @@ Tag.prototype.acceptVisitor = function(visitor) {
  * @returns {String} The raw byte string for the tag element.
  */
 Tag.prototype.getBytes = function() {
-    // not called very often so do it on demand
-    return utilities.codex.base32Decode(this.value.substring(1));
-};
-
-
-/**
- * This method returns number of bytes in the tag element.
- * 
- * @returns {Number} The number of bytes in the tag element.
- */
-Tag.prototype.getNumberOfBytes = function() {
-    return this.size;
-};
-
-
-/**
- * This method returns the hash value for the tag element.
- * 
- * @returns {Number} The the hash value for the tag element.
- */
-Tag.prototype.getHash = function() {
-    return this.hash;
+    // not called very often so save space and do it on demand
+    return utilities.codex.base32Decode(this.getValue());
 };

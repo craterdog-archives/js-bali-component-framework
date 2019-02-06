@@ -30,7 +30,7 @@ const abstractions = require('../abstractions');
 function Text(value, parameters) {
     abstractions.Element.call(this, utilities.types.TEXT, parameters);
     value = value || '';  // default value
-    this.value = value;
+    this.getValue = function() { return value; };  // make the value read-only
     return this;
 }
 Text.prototype = Object.create(abstractions.Element.prototype);
@@ -77,7 +77,7 @@ Text.prototype.isEmpty = function() {
  * @returns {Number} The number of characters that this text string has.
  */
 Text.prototype.getSize = function() {
-    return this.value.length;
+    return this.getValue().length;
 };
 
 
@@ -87,7 +87,7 @@ Text.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this text string.
  */
 Text.prototype.getIterator = function() {
-    const iterator = new TextIterator(this.value);
+    const iterator = new TextIterator(this.getValue());
     return iterator;
 };
 
@@ -103,8 +103,8 @@ Text.prototype.getIterator = function() {
  * @returns {List} The resulting text string.
  */
 Text.concatenation = function(text1, text2) {
-    const string1 = text1.value;
-    const string2 = text2.value;
+    const string1 = text1.getValue();
+    const string2 = text2.getValue();
     const string = string1 + string2;
     return new Text(string);
 };

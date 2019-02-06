@@ -132,13 +132,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             number = iterator.getNext();
-            expect(number).to.equal(version.value[0]);
+            expect(number).to.equal(version.getValue()[0]);
             number = iterator.getNext();
-            expect(number).to.equal(version.value[1]);
+            expect(number).to.equal(version.getValue()[1]);
             number = iterator.getPrevious();
-            expect(number).to.equal(version.value[1]);
+            expect(number).to.equal(version.getValue()[1]);
             number = iterator.getPrevious();
-            expect(number).to.equal(version.value[0]);
+            expect(number).to.equal(version.getValue()[0]);
             while (iterator.hasNext()) {
                 number = iterator.getNext();
             }
