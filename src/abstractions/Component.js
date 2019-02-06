@@ -31,6 +31,7 @@ function Component(type, parameters) {
     // are defined in the constructor
     this.getType = function() { return type; };
     this.getParameters = function() { return parameters; };
+
     return this;
 }
 Component.prototype.constructor = Component;

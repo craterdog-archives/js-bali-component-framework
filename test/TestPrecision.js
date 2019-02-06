@@ -181,7 +181,7 @@ describe('Bali Component Framework™', function() {
             expect(bali.utilities.precision.logarithm(3.4367)).to.equal(1.2345);
             expect(bali.utilities.precision.logarithm(229800.1)).to.equal(12.345);
             expect(bali.utilities.precision.logarithm(4.11e+32)).to.equal(75.096146004318);
-            expect(bali.utilities.precision.logarithm(bali.utilities.precision.E)).to.equal(1);
+            expect(bali.utilities.precision.logarithm(Math.E)).to.equal(1);
         });
 
     });
@@ -190,57 +190,57 @@ describe('Bali Component Framework™', function() {
 
         it('should test sine', function() {
             expect(bali.utilities.precision.sine(0)).to.equal(0);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI / 4)).to.equal(0.7071067811865475);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI / 2)).to.equal(1);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI * 3 / 5)).to.equal(0.9510565162951536);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI)).to.equal(0);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI * 5 / 3)).to.equal(-0.8660254037844386);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI * 3 / 2)).to.equal(-1);
-            expect(bali.utilities.precision.sine(bali.utilities.precision.PI * 2)).to.equal(0);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI / 4)).to.equal(-0.7071067811865475);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI / 2)).to.equal(-1);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI * 3 / 5)).to.equal(-0.9510565162951536);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI)).to.equal(0);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI * 5 / 3)).to.equal(0.8660254037844386);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI * 3 / 2)).to.equal(1);
-            expect(bali.utilities.precision.sine(-bali.utilities.precision.PI * 2)).to.equal(0);
+            expect(bali.utilities.precision.sine(Math.PI / 4)).to.equal(0.7071067811865475);
+            expect(bali.utilities.precision.sine(Math.PI / 2)).to.equal(1);
+            expect(bali.utilities.precision.sine(Math.PI * 3 / 5)).to.equal(0.9510565162951536);
+            expect(bali.utilities.precision.sine(Math.PI)).to.equal(0);
+            expect(bali.utilities.precision.sine(Math.PI * 5 / 3)).to.equal(-0.8660254037844386);
+            expect(bali.utilities.precision.sine(Math.PI * 3 / 2)).to.equal(-1);
+            expect(bali.utilities.precision.sine(Math.PI * 2)).to.equal(0);
+            expect(bali.utilities.precision.sine(-Math.PI / 4)).to.equal(-0.7071067811865475);
+            expect(bali.utilities.precision.sine(-Math.PI / 2)).to.equal(-1);
+            expect(bali.utilities.precision.sine(-Math.PI * 3 / 5)).to.equal(-0.9510565162951536);
+            expect(bali.utilities.precision.sine(-Math.PI)).to.equal(0);
+            expect(bali.utilities.precision.sine(-Math.PI * 5 / 3)).to.equal(0.8660254037844386);
+            expect(bali.utilities.precision.sine(-Math.PI * 3 / 2)).to.equal(1);
+            expect(bali.utilities.precision.sine(-Math.PI * 2)).to.equal(0);
         });
 
         it('should test cosine', function() {
             expect(bali.utilities.precision.cosine(0)).to.equal(1);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI / 4)).to.equal(0.7071067811865476);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI / 2)).to.equal(0);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI * 3 / 5)).to.equal(-0.309016994374947);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI)).to.equal(-1);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI * 5 / 3)).to.equal(0.5);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI * 3 / 2)).to.equal(0);
-            expect(bali.utilities.precision.cosine(bali.utilities.precision.PI * 2)).to.equal(1);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI / 4)).to.equal(0.7071067811865476);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI / 2)).to.equal(0);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI * 3 / 5)).to.equal(-0.309016994374947);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI)).to.equal(-1);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI * 5 / 3)).to.equal(0.5);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI * 3 / 2)).to.equal(0);
-            expect(bali.utilities.precision.cosine(-bali.utilities.precision.PI * 2)).to.equal(1);
+            expect(bali.utilities.precision.cosine(Math.PI / 4)).to.equal(0.7071067811865476);
+            expect(bali.utilities.precision.cosine(Math.PI / 2)).to.equal(0);
+            expect(bali.utilities.precision.cosine(Math.PI * 3 / 5)).to.equal(-0.309016994374947);
+            expect(bali.utilities.precision.cosine(Math.PI)).to.equal(-1);
+            expect(bali.utilities.precision.cosine(Math.PI * 5 / 3)).to.equal(0.5);
+            expect(bali.utilities.precision.cosine(Math.PI * 3 / 2)).to.equal(0);
+            expect(bali.utilities.precision.cosine(Math.PI * 2)).to.equal(1);
+            expect(bali.utilities.precision.cosine(-Math.PI / 4)).to.equal(0.7071067811865476);
+            expect(bali.utilities.precision.cosine(-Math.PI / 2)).to.equal(0);
+            expect(bali.utilities.precision.cosine(-Math.PI * 3 / 5)).to.equal(-0.309016994374947);
+            expect(bali.utilities.precision.cosine(-Math.PI)).to.equal(-1);
+            expect(bali.utilities.precision.cosine(-Math.PI * 5 / 3)).to.equal(0.5);
+            expect(bali.utilities.precision.cosine(-Math.PI * 3 / 2)).to.equal(0);
+            expect(bali.utilities.precision.cosine(-Math.PI * 2)).to.equal(1);
         });
 
         it('should test tangent', function() {
             expect(bali.utilities.precision.tangent(0)).to.equal(0);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI / 4)).to.equal(1);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI / 2)).to.equal(Infinity);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI * 3 / 5)).to.equal(-3.07768353717525);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI)).to.equal(0);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI * 5 / 3)).to.equal(-1.73205080756888);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI * 3 / 2)).to.equal(Infinity);
-            expect(bali.utilities.precision.tangent(bali.utilities.precision.PI * 2)).to.equal(0);
+            expect(bali.utilities.precision.tangent(Math.PI / 4)).to.equal(1);
+            expect(bali.utilities.precision.tangent(Math.PI / 2)).to.equal(Infinity);
+            expect(bali.utilities.precision.tangent(Math.PI * 3 / 5)).to.equal(-3.07768353717525);
+            expect(bali.utilities.precision.tangent(Math.PI)).to.equal(0);
+            expect(bali.utilities.precision.tangent(Math.PI * 5 / 3)).to.equal(-1.73205080756888);
+            expect(bali.utilities.precision.tangent(Math.PI * 3 / 2)).to.equal(Infinity);
+            expect(bali.utilities.precision.tangent(Math.PI * 2)).to.equal(0);
             expect(bali.utilities.precision.tangent(-0)).to.equal(0);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI / 4)).to.equal(-1);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI / 2)).to.equal(Infinity);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI * 3 / 5)).to.equal(3.07768353717525);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI)).to.equal(0);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI * 5 / 3)).to.equal(1.73205080756888);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI * 3 / 2)).to.equal(Infinity);
-            expect(bali.utilities.precision.tangent(-bali.utilities.precision.PI * 2)).to.equal(0);
+            expect(bali.utilities.precision.tangent(-Math.PI / 4)).to.equal(-1);
+            expect(bali.utilities.precision.tangent(-Math.PI / 2)).to.equal(Infinity);
+            expect(bali.utilities.precision.tangent(-Math.PI * 3 / 5)).to.equal(3.07768353717525);
+            expect(bali.utilities.precision.tangent(-Math.PI)).to.equal(0);
+            expect(bali.utilities.precision.tangent(-Math.PI * 5 / 3)).to.equal(1.73205080756888);
+            expect(bali.utilities.precision.tangent(-Math.PI * 3 / 2)).to.equal(Infinity);
+            expect(bali.utilities.precision.tangent(-Math.PI * 2)).to.equal(0);
         });
 
     });

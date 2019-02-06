@@ -36,7 +36,7 @@ function Angle(value, parameters) {
         const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
             // convert degrees to radians
-            value = utilities.precision.quotient(utilities.precision.product(value, utilities.precision.PI), 180);
+            value = utilities.precision.quotient(utilities.precision.product(value, Math.PI), 180);
         }
     }
 
@@ -44,13 +44,13 @@ function Angle(value, parameters) {
     value = utilities.precision.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
-    const twoPi = utilities.precision.product(utilities.precision.PI, 2);
+    const twoPi = utilities.precision.product(Math.PI, 2);
     if (value < -twoPi || value > twoPi) {
         value = utilities.precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
     }
-    if (value > utilities.precision.PI) {
+    if (value > Math.PI) {
         value = utilities.precision.difference(value, twoPi);  // make in the range (-pi..pi]
-    } else if (value <= -utilities.precision.PI) {
+    } else if (value <= -Math.PI) {
         value = utilities.precision.sum(value, twoPi);  // make in the range (-pi..pi]
     }
     if (value === -0) value = 0;  // normalize to positive zero
@@ -134,7 +134,7 @@ Angle.prototype.getRadians = function() {
  * @returns {Number} The value of the angle in degrees.
  */
 Angle.prototype.getDegrees = function() {
-    const value = utilities.precision.quotient(utilities.precision.product(this.value, 180), utilities.precision.PI);
+    const value = utilities.precision.quotient(utilities.precision.product(this.value, 180), Math.PI);
     return value;
 };
 
@@ -173,7 +173,7 @@ Angle.prototype.comparedTo = function(that) {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle) {
-    return new Angle(utilities.precision.difference(angle.value, utilities.precision.PI));
+    return new Angle(utilities.precision.difference(angle.value, Math.PI));
 };
 
 
@@ -185,7 +185,7 @@ Angle.inverse = function(angle) {
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle) {
-    return new Angle(utilities.precision.difference(utilities.precision.PI / 2, angle.value));
+    return new Angle(utilities.precision.difference(Math.PI / 2, angle.value));
 };
 
 
@@ -197,7 +197,7 @@ Angle.complement = function(angle) {
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle) {
-    return new Angle(utilities.precision.difference(utilities.precision.PI, angle.value));
+    return new Angle(utilities.precision.difference(Math.PI, angle.value));
 };
 
 
