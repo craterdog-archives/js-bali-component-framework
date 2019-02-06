@@ -37,29 +37,44 @@ const EOL = '\n';
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
-
-    // the indentation is a private attribute so methods that use it are defined in the constructor
-    indentation = indentation || '';
-
-    this.formatLiteral = function(element, format) {
-        if (!types.isLiteral(element.getType())) {
-            throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
-        }
-        const visitor = new FormattingVisitor(indentation, false, format);
-        element.acceptVisitor(visitor);
-        return visitor.result;
-    };
-
-    this.formatComponent = function(component) {
-        const visitor = new FormattingVisitor(indentation, true);
-        component.acceptVisitor(visitor);
-        return visitor.result;
-    };
-
+    this.indentation = indentation || '';
     return this;
 }
 Formatter.prototype.constructor = Formatter;
 exports.Formatter = Formatter;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method generates the canonical literal string for the specified element.
+ * 
+ * @param {Element} element The element.
+ * @param {String} format An optional format to be used.
+ * @returns {String} The literal string for the element.
+ */
+Formatter.prototype.formatLiteral = function(element, format) {
+    if (!types.isLiteral(element.getType())) {
+        throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
+    }
+    const visitor = new FormattingVisitor(this.indentation, false, format);
+    element.acceptVisitor(visitor);
+    return visitor.result;
+};
+
+
+/**
+ * This method generates the canonical formatted string document for the specified parse tree
+ * component.
+ * 
+ * @param {Component} component The parse tree representing a component.
+ * @returns {String} The formatted code document for the parse tree component.
+ */
+Formatter.prototype.formatComponent = function(component) {
+    const visitor = new FormattingVisitor(this.indentation, true);
+    component.acceptVisitor(visitor);
+    return visitor.result;
+};
 
 
 // PRIVATE CLASSES
