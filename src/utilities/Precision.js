@@ -28,6 +28,9 @@
 
 // PUBLIC CONSTANTS
 
+exports.E = Math.E;
+exports.PI = Math.PI;
+exports.PHI = (Math.sqrt(5) + 1) / 2;
 exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
 
 
@@ -119,7 +122,7 @@ exports.lockOnPole = function(number) {
  */
 exports.lockOnAngle = function(angle) {
     // use single precision comparisons to lock on
-    if (Math.fround(Math.PI) === Math.fround(Math.abs(angle))) angle = Math.PI;
+    if (Math.fround(exports.PI) === Math.fround(Math.abs(angle))) angle = exports.PI;
     return angle;
 };
 

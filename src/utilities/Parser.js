@@ -92,22 +92,20 @@ function convertParseTree(antlrTree, parameters) {
     return baliTree;
 }
 
-Math.PHI = (Math.sqrt(5) + 1) / 2;
-
 function literalToNumber(literal) {
     switch (literal) {
         case '-e':
-            return -Math.E;
+            return -utilities.precision.E;
         case 'e':
-            return Math.E;
+            return utilities.precision.E;
         case '-pi':
-            return -Math.PI;
+            return -utilities.precision.PI;
         case 'pi':
-            return Math.PI;
+            return utilities.precision.PI;
         case '-phi':
-            return -Math.PHI;
+            return -utilities.precision.PHI;
         case 'phi':
-            return Math.PHI;
+            return utilities.precision.PHI;
         default:
             return Number(literal);
     }

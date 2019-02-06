@@ -493,7 +493,7 @@ function gamma(number) {
  
     const g = 7;
     if (number < 0.5) {
-        return Math.PI / (Math.sin(Math.PI * number) * gamma(1 - number));
+        return utilities.precision.PI / (Math.sin(utilities.precision.PI * number) * gamma(1 - number));
     }
  
     number -= 1;
@@ -503,7 +503,7 @@ function gamma(number) {
         a += p[i] / (number + i);
     }
  
-    return Math.sqrt(2 * Math.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
+    return Math.sqrt(2 * utilities.precision.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
 }
 
 
