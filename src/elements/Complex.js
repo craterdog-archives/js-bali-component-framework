@@ -43,7 +43,7 @@ function Complex(real, imaginary, parameters) {
     if (imaginary === undefined || imaginary === null || imaginary === -0) {
         imaginary = 0;
     }
-    if (imaginary.getType && imaginary.getType() === utilities.types.ANGLE) {
+    if (imaginary.type === utilities.types.ANGLE) {
         // convert polar to rectangular
         var magnitude = real;
         var phase = imaginary;

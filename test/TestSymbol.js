@@ -58,7 +58,7 @@ describe('Bali Component Framework™', function() {
     describe('Test symbol methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.parse('$foobar').getTypeReference();
+            const type = bali.parse('$foobar').getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#R4N28VY9D39002WL3PSM6ZSXDC6FT730,$version:v1,$digest:none]>');
         });
 

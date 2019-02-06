@@ -35,24 +35,16 @@ const elements = require('../elements');
  */
 function Range(first, last, parameters) {
     abstractions.Composite.call(this, utilities.types.RANGE, parameters);
-    var firstIndex;
-    var lastIndex;
-    var collection;
     if (parameters) {
-        collection = parameters.getValue('$collection');
-        if (collection) {
-            // determine the indices of the items in the collection
-            firstIndex = collection.getIndex(first);
-            lastIndex = collection.getIndex(last);
-        }
+        this.collection = parameters.getValue('$collection');
+        this.first = this.collection.getIndex(first);
+        this.last = this.collection.getIndex(last);
     } else {
-        // the first and last items are indices into the integers
-        firstIndex = (typeof first === 'number') ? first : first.toNumber();
-        lastIndex = (typeof last === 'number') ? last : last.toNumber();
+        if (first.type === utilities.types.NUMBER) first = first.toNumber();
+        if (last.type === utilities.types.NUMBER) last = last.toNumber();
+        this.first = first;
+        this.last = last;
     }
-    this.getFirstIndex = function() { return firstIndex; };
-    this.getLastIndex = function() { return lastIndex; };
-    this.getCollection = function() { return collection; };
     return this;
 }
 Range.prototype = Object.create(abstractions.Composite.prototype);
@@ -68,14 +60,14 @@ exports.Range = Range;
  * @returns {Array} An array containing the items in this range.
  */
 Range.prototype.toArray = function() {
-    if (this.getLastIndex() === Infinity) {
+    if (this.last === Infinity) {
         throw new Error('BUG: Unable to generate an array from an infinite range.');
     }
     const array = [];
-    var index = this.getFirstIndex();
-    while (index <= this.getLastIndex()) {
-        if (this.getCollection()) {
-            array.push(this.getCollection().getItem(index++));  // retrieve the next item
+    var index = this.first;
+    while (index <= this.last) {
+        if (this.collection) {
+            array.push(this.collection.getItem(index++));  // retrieve the next item
         } else {
             array.push(new elements.Number(index++));  // the index is the next item
         }
@@ -100,7 +92,7 @@ Range.prototype.acceptVisitor = function(visitor) {
  * @returns {Component} The number of numbers that fall in this range.
  */
 Range.prototype.getSize = function() {
-    const size = this.getLastIndex() - this.getFirstIndex() + 1;
+    const size = this.last - this.first + 1;
     return size;
 };
 
@@ -112,10 +104,10 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.getFirst = function() {
     var item;
-    if (this.getCollection()) {
-        item = this.getCollection().getItem(this.getFirstIndex());  // retrieve the item
+    if (this.collection) {
+        item = this.collection.getItem(this.first);  // retrieve the item
     } else {
-        item = new elements.Number(this.getFirstIndex());  // the index is the item
+        item = new elements.Number(this.first);  // the index is the item
     }
     return item;
 };
@@ -129,10 +121,10 @@ Range.prototype.getFirst = function() {
  */
 Range.prototype.getItem = function(index) {
     var item;
-    if (this.getCollection()) {
-        item = this.getCollection().getItem(this.getFirstIndex() + index - 1);
+    if (this.collection) {
+        item = this.collection.getItem(this.first + index - 1);
     } else {
-        item = new elements.Number(this.getFirstIndex() + index - 1);
+        item = new elements.Number(this.first + index - 1);
     }
     return item;
 };
@@ -145,10 +137,10 @@ Range.prototype.getItem = function(index) {
  */
 Range.prototype.getLast = function() {
     var item;
-    if (this.getCollection()) {
-        item = this.getCollection().getItem(this.getLastIndex());  // retrieve the item
+    if (this.collection) {
+        item = this.collection.getItem(this.last);  // retrieve the item
     } else {
-        item = new elements.Number(this.getLastIndex());  // the index is the item
+        item = new elements.Number(this.last);  // the index is the item
     }
     return item;
 };
@@ -173,15 +165,15 @@ Range.prototype.getIterator = function() {
  */
 Range.prototype.isInRange = function(item) {
     var index;
-    if (this.getCollection()) {
-        index = this.getCollection().getIndex(item);
+    if (this.collection) {
+        index = this.collection.getIndex(item);
     } else {
         if (typeof item !== 'number') {
             throw new Error('BUG: The item must be a number: ' + item);
         }
         index = item;
     }
-    return index >= this.getFirstIndex() && index <= this.getLastIndex();
+    return index >= this.first && index <= this.last;
 };
 
 
@@ -224,10 +216,10 @@ RangeIterator.prototype.hasNext = function() {
 RangeIterator.prototype.getPrevious = function() {
     if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
     this.slot--;
-    const index = this.range.getFirstIndex() + this.slot;
+    const index = this.range.first + this.slot;
     var item;
-    if (this.range.getCollection()) {
-        item = this.range.getCollection().getItem(index);  // retrieve the item
+    if (this.range.collection) {
+        item = this.range.collection.getItem(index);  // retrieve the item
     } else {
         item = new elements.Number(index);  // the index is the item
     }
@@ -237,10 +229,10 @@ RangeIterator.prototype.getPrevious = function() {
 
 RangeIterator.prototype.getNext = function() {
     if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
-    const index = this.range.getFirstIndex() + this.slot;
+    const index = this.range.first + this.slot;
     var item;
-    if (this.range.getCollection()) {
-        item = this.range.getCollection().getItem(index);  // retrieve the item
+    if (this.range.collection) {
+        item = this.range.collection.getItem(index);  // retrieve the item
     } else {
         item = new elements.Number(index);  // the index is the item
     }

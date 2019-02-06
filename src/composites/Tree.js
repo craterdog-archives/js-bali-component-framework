@@ -27,37 +27,60 @@ const abstractions = require('../abstractions');
  * This constructor creates a new tree node component.
  * 
  * @param {Number} type The type of the tree node component.
+ * @param {Number} complexity The initial complexity (character length) of the tree node
+ * source code.
  * @returns {Tree} The new tree node component.
  */
-function Tree(type) {
+function Tree(type, complexity) {
     abstractions.Composite.call(this, type);
-    if (!utilities.types.isProcedural(type)) {
-        throw new Error('BUG: An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
+    switch(type) {
+        case utilities.types.ARITHMETIC_EXPRESSION:
+        case utilities.types.BLOCK:
+        case utilities.types.BREAK_CLAUSE:
+        case utilities.types.CHECKOUT_CLAUSE:
+        case utilities.types.COMMIT_CLAUSE:
+        case utilities.types.COMPARISON_EXPRESSION:
+        case utilities.types.COMPLEMENT_EXPRESSION:
+        case utilities.types.CONCATENATION_EXPRESSION:
+        case utilities.types.CONTINUE_CLAUSE:
+        case utilities.types.DEFAULT_EXPRESSION:
+        case utilities.types.DEREFERENCE_EXPRESSION:
+        case utilities.types.DISCARD_CLAUSE:
+        case utilities.types.EVALUATE_CLAUSE:
+        case utilities.types.EXPONENTIAL_EXPRESSION:
+        case utilities.types.FACTORIAL_EXPRESSION:
+        case utilities.types.FUNCTION:
+        case utilities.types.FUNCTION_EXPRESSION:
+        case utilities.types.HANDLE_CLAUSE:
+        case utilities.types.IF_CLAUSE:
+        case utilities.types.INDICES:
+        case utilities.types.INVERSION_EXPRESSION:
+        case utilities.types.LOGICAL_EXPRESSION:
+        case utilities.types.MAGNITUDE_EXPRESSION:
+        case utilities.types.MESSAGE:
+        case utilities.types.MESSAGE_EXPRESSION:
+        case utilities.types.PRECEDENCE_EXPRESSION:
+        case utilities.types.PROCEDURE:
+        case utilities.types.PUBLISH_CLAUSE:
+        case utilities.types.QUEUE_CLAUSE:
+        case utilities.types.RETURN_CLAUSE:
+        case utilities.types.SAVE_CLAUSE:
+        case utilities.types.SELECT_CLAUSE:
+        case utilities.types.STATEMENT:
+        case utilities.types.SUBCOMPONENT:
+        case utilities.types.SUBCOMPONENT_EXPRESSION:
+        case utilities.types.THROW_CLAUSE:
+        case utilities.types.VARIABLE:
+        case utilities.types.WAIT_CLAUSE:
+        case utilities.types.WHILE_CLAUSE:
+        case utilities.types.WITH_CLAUSE:
+            // these are fine
+            break;
+        default:
+            // anything else isn't
+            throw new Error('BUG: An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
     }
-
-    // the array is a private attribute so methods that use it are defined in the constructor
-    const array = [];
-
-    this.toArray = function() {
-        return array.slice(); // copy the array
-    };
-
-    this.getSize = function() {
-        return array.length;
-    };
-
-    this.addChild = function(child) {
-        array.push(child);
-        child.getParent = function() { return this; };
-    };
-
-    this.getChild = function(index) {
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        return array[index];
-    };
-
-    this.getParent = function() { };  // will be reset by parent when added as a child
-
+    this.array = [];
     return this;
 }
 Tree.prototype = Object.create(abstractions.Composite.prototype);
@@ -68,12 +91,60 @@ exports.Tree = Tree;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the components that are children of this
+ * tree node.
+ * 
+ * @returns {Array} An array containing the components that are children of this tree node.
+ */
+Tree.prototype.toArray = function() {
+    const array = this.array.slice();  // copy the array
+    return array;
+};
+
+
+/**
+ * This method returns the number of components that are children of this tree node.
+ * 
+ * @returns {Number} The number of components that are children of this tree node.
+ */
+Tree.prototype.getSize = function() {
+    const size = this.array.length;
+    return size;
+};
+
+
+/**
+ * This method adds a new child component to this tree node.
+ * 
+ * @param {Component} child The new child component.
+ */
+Tree.prototype.addChild = function(child) {
+    this.array.push(child);
+    child.parent = this;
+};
+
+
+/**
+ * This method retrieves the child node that is associated with the specified index.
+ * 
+ * @param {Number} index The index of the desired child node.
+ * @returns {Component} The child node at the position in this tree.
+ */
+Tree.prototype.getChild = function(index) {
+    index = this.normalizeIndex(index);
+    index--;  // convert to JS zero based indexing
+    const item = this.array[index];
+    return item;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
-    switch(this.getType()) {
+    switch(this.type) {
         case utilities.types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
@@ -195,6 +266,6 @@ Tree.prototype.acceptVisitor = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('BUG: A visitor found an invalid tree node type: ' + utilities.types.typeName(this.getType()));
+            throw new Error('BUG: A visitor found an invalid tree node type: ' + utilities.types.typeName(this.type));
     }
 };

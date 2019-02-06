@@ -335,61 +335,6 @@ exports.isChainable = function(type) {
 
 
 /**
- * This function determines whether or not the specified type is procedural.
- * 
- * @param {Number} type The type being analyzed.
- * @returns {Boolean} Whether or not the specified type is procedural.
- */
-exports.isProcedural = function(type) {
-    switch (type) {
-        case exports.ARITHMETIC_EXPRESSION:
-        case exports.BLOCK:
-        case exports.BREAK_CLAUSE:
-        case exports.CHECKOUT_CLAUSE:
-        case exports.COMMIT_CLAUSE:
-        case exports.COMPARISON_EXPRESSION:
-        case exports.COMPLEMENT_EXPRESSION:
-        case exports.CONCATENATION_EXPRESSION:
-        case exports.CONTINUE_CLAUSE:
-        case exports.DEFAULT_EXPRESSION:
-        case exports.DEREFERENCE_EXPRESSION:
-        case exports.DISCARD_CLAUSE:
-        case exports.EVALUATE_CLAUSE:
-        case exports.EXPONENTIAL_EXPRESSION:
-        case exports.FACTORIAL_EXPRESSION:
-        case exports.FUNCTION:
-        case exports.FUNCTION_EXPRESSION:
-        case exports.HANDLE_CLAUSE:
-        case exports.IF_CLAUSE:
-        case exports.INDICES:
-        case exports.INVERSION_EXPRESSION:
-        case exports.LOGICAL_EXPRESSION:
-        case exports.MAGNITUDE_EXPRESSION:
-        case exports.MESSAGE:
-        case exports.MESSAGE_EXPRESSION:
-        case exports.PRECEDENCE_EXPRESSION:
-        case exports.PROCEDURE:
-        case exports.PUBLISH_CLAUSE:
-        case exports.QUEUE_CLAUSE:
-        case exports.RETURN_CLAUSE:
-        case exports.SAVE_CLAUSE:
-        case exports.SELECT_CLAUSE:
-        case exports.STATEMENT:
-        case exports.SUBCOMPONENT:
-        case exports.SUBCOMPONENT_EXPRESSION:
-        case exports.THROW_CLAUSE:
-        case exports.VARIABLE:
-        case exports.WAIT_CLAUSE:
-        case exports.WHILE_CLAUSE:
-        case exports.WITH_CLAUSE:
-            return true;
-        default:
-            return false;
-    }
-};
-
-
-/**
  * This function returns the name of the specified type.
  * 
  * @param {Number} type The type to be looked up.

@@ -28,10 +28,8 @@ const abstractions = require('../abstractions');
  */
 function Parameters(collection) {
     abstractions.Composite.call(this, utilities.types.PARAMETERS);
-    const copy = new collection.constructor(collection.getParameters());
-    // TODO: the parameters are static so we really should DEEP copy them
-    copy.addItems(collection);
-    this.getCollection = function() { return copy; };
+    this.collection = new collection.constructor(collection.parameters);
+    this.collection.addItems(collection);  // static so copy it
     return this;
 }
 Parameters.prototype = Object.create(abstractions.Composite.prototype);
@@ -47,7 +45,7 @@ exports.Parameters = Parameters;
  * @returns {Array} An array containing the parameters in this list.
  */
 Parameters.prototype.toArray = function() {
-    const array = this.getCollection().toArray();
+    const array = this.collection.toArray();
     return array;
 };
 
@@ -68,7 +66,7 @@ Parameters.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The number of parameters that are in this list.
  */
 Parameters.prototype.getSize = function() {
-    const size = this.getCollection().getSize();
+    const size = this.collection.getSize();
     return size;
 };
 
@@ -81,9 +79,9 @@ Parameters.prototype.getSize = function() {
  * @returns {Component} The parameter value associated with the index.
  */
 Parameters.prototype.getParameter = function(index) {
-    var parameter = this.getCollection().getItem(index);
-    if (parameter.getType() === utilities.types.ASSOCIATION) {
-        parameter = parameter.getValue();
+    var parameter = this.collection.getItem(index);
+    if (parameter.type === utilities.types.ASSOCIATION) {
+        parameter = parameter.value;
     }
     return parameter;
 };
@@ -100,10 +98,10 @@ Parameters.prototype.getParameter = function(index) {
 Parameters.prototype.getValue = function(key, index) {
     var value;
     index = index || 1;  // default is the first parameter
-    if (this.getCollection().getType() === utilities.types.CATALOG) {
-        value = this.getCollection().getValue(key);
+    if (this.collection.type === utilities.types.CATALOG) {
+        value = this.collection.getValue(key);
     } else {
-        value = this.getCollection().getItem(index);
+        value = this.collection.getItem(index);
     }
     return value;
 };

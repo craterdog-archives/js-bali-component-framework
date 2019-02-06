@@ -29,7 +29,7 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             set.clear();
-            const copy = set.constructor(set.getParameters());
+            const copy = set.constructor(set.parameters);
             expect(copy).to.exist;  // jshint ignore:line
             expect(set.isEqualTo(copy)).to.equal(true);
             const signum = set.comparedTo(copy);
@@ -97,7 +97,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the set methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.set().getTypeReference();
+            const type = bali.set().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#PB33C4Z89QTKBD8P824JMN83STXZGHY9,$version:v1,$digest:none]>');
         });
 

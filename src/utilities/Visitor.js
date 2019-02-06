@@ -53,8 +53,8 @@ Visitor.prototype.visitArithmeticExpression = function(tree) {
 
 // association: component ':' expression
 Visitor.prototype.visitAssociation = function(association) {
-    association.getKey().acceptVisitor(this);
-    association.getValue().acceptVisitor(this);
+    association.key.acceptVisitor(this);
+    association.value.acceptVisitor(this);
 };
 
 
@@ -84,7 +84,7 @@ Visitor.prototype.visitCatalog = function(catalog) {
     // delegate to collection
     this.visitCollection(catalog);
     if (catalog.isParameterized()) {
-        catalog.getParameters().acceptVisitor(this);
+        catalog.parameters.acceptVisitor(this);
     }
 };
 
@@ -197,7 +197,7 @@ Visitor.prototype.visitDuration = function(duration) {
 //     version
 Visitor.prototype.visitElement = function(element) {
     if (element.isParameterized()) {
-        element.getParameters().acceptVisitor(this);
+        element.parameters.acceptVisitor(this);
     }
 };
 
@@ -304,7 +304,7 @@ Visitor.prototype.visitList = function(list) {
     // delegate to collection
     this.visitCollection(list);
     if (list.isParameterized()) {
-        list.getParameters().acceptVisitor(this);
+        list.parameters.acceptVisitor(this);
     }
 };
 
@@ -369,7 +369,7 @@ Visitor.prototype.visitParameters = function(parameters) {
         var parameter = iterator.getNext();
         if (parameters.isList) {
             // for list format we only want the value of the association
-            parameter = parameter.getValue();
+            parameter = parameter.value;
         }
         parameter.acceptVisitor(this);
     };
@@ -435,7 +435,7 @@ Visitor.prototype.visitQueue = function(queue) {
     // delegate to collection
     this.visitCollection(queue);
     if (queue.isParameterized()) {
-        queue.getParameters().acceptVisitor(this);
+        queue.parameters.acceptVisitor(this);
     }
 };
 
@@ -454,7 +454,7 @@ Visitor.prototype.visitRange = function(range) {
     range.getFirst().acceptVisitor(this);
     range.getLast().acceptVisitor(this);
     if (range.isParameterized()) {
-        range.getParameters().acceptVisitor(this);
+        range.parameters.acceptVisitor(this);
     }
 };
 
@@ -524,16 +524,16 @@ Visitor.prototype.visitSet = function(set) {
     // delegate to collection
     this.visitCollection(set);
     if (set.isParameterized()) {
-        set.getParameters().acceptVisitor(this);
+        set.parameters.acceptVisitor(this);
     }
 };
 
 
 // source: '{' procedure '}'
 Visitor.prototype.visitSource = function(source) {
-    source.getProcedure().acceptVisitor(this);
+    source.procedure.acceptVisitor(this);
     if (source.isParameterized()) {
-        source.getParameters().acceptVisitor(this);
+        source.parameters.acceptVisitor(this);
     }
 };
 
@@ -546,7 +546,7 @@ Visitor.prototype.visitStack = function(stack) {
     // delegate to collection
     this.visitCollection(stack);
     if (stack.isParameterized()) {
-        stack.getParameters().acceptVisitor(this);
+        stack.parameters.acceptVisitor(this);
     }
 };
 

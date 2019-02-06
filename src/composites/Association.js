@@ -28,21 +28,12 @@ const abstractions = require('../abstractions');
  */
 function Association(key, value) {
     abstractions.Composite.call(this, utilities.types.ASSOCIATION);
-
-    // key and value are read-only attributes so methods that access their values directly
-    // are defined in the constructor
-    key = this.convert(key);
-    value = this.convert(value);
-
-    this.getKey = function() { return key; };
-    this.getValue = function() { return value; };
-
-    this.setValue = function(newValue) {
-        const oldValue = value;
-        value = this.convert(newValue);
-        return oldValue;
-    };
-
+    if (this.convert) {
+        key = this.convert(key);
+        value = this.convert(value);
+    }
+    this.key = key;
+    this.value = value;
     return this;
 }
 Association.prototype = Object.create(abstractions.Composite.prototype);
@@ -59,8 +50,8 @@ exports.Association = Association;
  */
 Association.prototype.toArray = function() {
     const array = [];
-    array.push(this.getKey());
-    array.push(this.getValue());
+    array.push(this.key);
+    array.push(this.value);
     return array;
 };
 
@@ -82,4 +73,18 @@ Association.prototype.acceptVisitor = function(visitor) {
  */
 Association.prototype.getSize = function() {
     return 2;
+};
+
+
+/**
+ * This method sets a new value for this association.
+ * 
+ * @param {String|Component} value The value of this association.
+ * @returns {Component} The value previously associated with the key.
+ */
+Association.prototype.setValue = function(value) {
+    if (this.convert) value = this.convert(value);
+    const oldValue = this.value;
+    this.value = value;
+    return oldValue;
 };

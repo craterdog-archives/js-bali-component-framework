@@ -39,57 +39,14 @@ Array.prototype.peek = function() {
  */
 function Stack(parameters) {
     abstractions.Collection.call(this, utilities.types.STACK, parameters);
-
-    // the capacity and array are private attributes so methods that use it are
-    // defined in the constructor
-    var capacity = 1024;  // default capacity
+    this.capacity = 1024;  // default capacity
     if (parameters) {
         const value = parameters.getValue('$capacity', 2);
-        if (value) capacity = value.toNumber();
+        if (value) {
+            this.capacity = value.toNumber();
+        }
     }
-    const array = [];
-
-    this.toArray = function() {
-        return array.slice();  // copy the array
-    };
-    
-    this.getSize = function() {
-        return array.length;
-    };
-    
-    this.addItem = function(item) {
-        if (array.length < capacity) {
-            item = this.convert(item);
-            array.push(item);
-            return true;
-        }
-        throw new utilities.Exception({
-            $exception: '$resourceLimit',
-            $type: '$Stack',
-            $procedure: '$addItem',
-            $capacity: capacity,
-            $message: '"The stack has reached its maximum capacity."'
-        });
-    };
-    
-    this.removeItem = function() {
-        if (array.length > 0) {
-            return array.pop();
-        }
-        throw new Error('BUG: Attempted to pop an item off of an empty stack.');
-    };
-    
-    this.getTop = function() {
-        if (array.length > 0) {
-            return array.peek();
-        }
-        throw new Error('BUG: Attempted to access the top item of an empty stack.');
-    };
-    
-    this.clear = function() {
-        array.splice(0);
-    };
-    
+    this.array = [];
     return this;
 }
 Stack.prototype = Object.create(abstractions.Collection.prototype);
@@ -98,6 +55,16 @@ exports.Stack = Stack;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method returns an array containing the items on this stack.
+ * 
+ * @returns {Array} An array containing the items on this stack.
+ */
+Stack.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -110,6 +77,17 @@ Stack.prototype.acceptVisitor = function(visitor) {
 
 
 /**
+ * This method returns the number of items that are currently on this stack.
+ * 
+ * @returns {Number} The number of items on this stack.
+ */
+Stack.prototype.getSize = function() {
+    const size = this.array.length;
+    return size;
+};
+
+
+/**
  * This method returns an object that can be used to iterate over the items on this
  * stack.
  * 
@@ -118,6 +96,76 @@ Stack.prototype.acceptVisitor = function(visitor) {
  * @returns {Iterator} An iterator for this stack.
  */
 Stack.prototype.getIterator = function() {
-    return new utilities.Iterator(this.toArray().reverse());
+    const iterator = new utilities.Iterator(this.array.slice().reverse());
+    return iterator;
 };
-    
+
+
+/**
+ * This method adds a new item onto the top of this stack.
+ *
+ * @param {Component} item The new item to be added.
+ * @returns {Boolean} Whether or not the item was successfully added.
+ * @throws {Exception} Attempted to add an item to a full stack.
+ */
+Stack.prototype.addItem = function(item) {
+    if (this.convert) item = this.convert(item);
+    if (this.array.length < this.capacity) {
+        this.array.push(item);
+        return true;
+    } else {
+        const attributes = {
+            $exception: '$resourceLimit',
+            $type: '$Stack',
+            $procedure: '$addItem',
+            $capacity: this.capacity,
+            $message: '"The stack has reached its maximum capacity."'
+        };
+        throw new utilities.Exception(attributes);
+    }
+};
+
+
+/**
+ * This method removes the top item from this stack.  If this stack is empty
+ * an exception is thrown.
+ *
+ * @returns {Component} The top item from this stack.
+ */
+Stack.prototype.removeItem = function() {
+    var item;
+    const size = this.array.length;
+    if (size > 0) {
+        item = this.array.pop();
+    } else {
+        throw new Error('BUG: Attempted to pop an item off of an empty stack.');
+    }
+    return item;
+};
+
+
+/**
+ * This method returns a reference to the top item on this stack without
+ * removing it from this stack.  If this stack is empty an exception is thrown.
+ *
+ * @returns {Component} The top item on this stack.
+ */
+Stack.prototype.getTop = function() {
+    var item = null;
+    const size = this.array.length;
+    if (size > 0) {
+        item = this.array.peek();
+    } else {
+        throw new Error('BUG: Attempted to access the top item of an empty stack.');
+    }
+    return item;
+};
+
+
+/**
+ * This method removes all items from this stack.
+ */
+Stack.prototype.clear = function() {
+    const size = this.getSize();
+    this.array.splice(0);
+};

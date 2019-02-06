@@ -39,51 +39,14 @@ Array.prototype.peek = function() {
  */
 function Queue(parameters) {
     abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
-
-    // the capacity and array are private attributes so methods that use it are
-    // defined in the constructor
-    var capacity = 1024;  // default capacity
+    this.capacity = 1024;  // default capacity
     if (parameters) {
         const value = parameters.getValue('$capacity', 2);
-        if (value) capacity = value.toNumber();
-    }
-    const array = [];
-
-    this.toArray = function() {
-        return array.slice();  // copy the array
-    };
-
-    this.getSize = function() {
-        return array.length;
-    };
-
-    this.addItem = function(item) {
-        if (array.length < capacity) {
-            item = this.convert(item);
-            array.push(item);
-            return true;
+        if (value) {
+            this.capacity = value.toNumber();
         }
-        throw new utilities.Exception({
-            $exception: '$resourceLimit',
-            $type: '$Queue',
-            $procedure: '$addItem',
-            $capacity: capacity,
-            $message: '"The queue has reached its maximum capacity."'
-        });
-    };
-
-    this.removeItem = function() {
-        if (array.length > 0) return array.splice(0, 1)[0];  // remove the first item in the array
-    };
-
-    this.getHead = function() {
-        return array[0];
-    };
-
-    this.clear = function() {
-        array.splice(0);
-    };
-
+    }
+    this.array = [];
     return this;
 }
 Queue.prototype = Object.create(abstractions.Collection.prototype);
@@ -94,10 +57,90 @@ exports.Queue = Queue;
 // PUBLIC METHODS
 
 /**
+ * This method returns an array containing the items in this queue.
+ * 
+ * @returns {Array} An array containing the items in this queue.
+ */
+Queue.prototype.toArray = function() {
+    return this.array.slice();  // copy the array
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this queue.
  */
 Queue.prototype.acceptVisitor = function(visitor) {
-    visitor.visitStack(this);
+    visitor.visitQueue(this);
+};
+
+
+/**
+ * This method returns the number of items that are currently in this queue.
+ * 
+ * @returns {Number} The number of items in this queue.
+ */
+Queue.prototype.getSize = function() {
+    const size = this.array.length;
+    return size;
+};
+
+
+/**
+ * This method adds a new item to the end of this queue.
+ *
+ * @param {Component} item The new item to be added.
+ * @returns {Boolean} Whether or not the item was successfully added.
+ * @throws {Exception} Attempted to add an item to a full queue.
+ */
+Queue.prototype.addItem = function(item) {
+    if (this.convert) item = this.convert(item);
+    if (this.array.length < this.capacity) {
+        this.array.push(item);
+        return true;
+    }
+    const attributes = {
+        $exception: '$resourceLimit',
+        $type: '$Queue',
+        $procedure: '$addItem',
+        $capacity: this.capacity,
+        $message: '"The queue has reached its maximum capacity."'
+    };
+    throw new utilities.Exception(attributes);
+};
+
+
+/**
+ * This method removes the item at the beginning of this queue.  If this queue is empty
+ * undefined is returned.
+ *
+ * @returns {Component} The first item in this queue or undefined if the queue is empty.
+ */
+Queue.prototype.removeItem = function() {
+    const size = this.array.length;
+    if (size > 0) {
+        const item = this.array.splice(0, 1)[0];  // remove the first item in the array
+        return item;
+    }
+};
+
+
+/**
+ * This method returns a reference to the item that is at the head of this queue without
+ * removing it from the queue.  If this queue is empty undefined is returned.
+ *
+ * @returns {Component} The item that is at the head of this queue or undefined if the queue is empty.
+ */
+Queue.prototype.getHead = function() {
+    return this.array[0];
+};
+
+
+/**
+ * This method removes all items from this queue.
+ */
+Queue.prototype.clear = function() {
+    const size = this.getSize();
+    this.array.splice(0);
 };

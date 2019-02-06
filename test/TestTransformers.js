@@ -36,7 +36,7 @@ describe('Bali Component Framework™', function() {
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
-                const array = association.getValue().toArray();
+                const array = association.value.toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
                     const string = bali.format(item);
@@ -95,7 +95,7 @@ describe('Bali Component Framework™', function() {
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
-                const array = association.getValue().toArray();
+                const array = association.value.toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
                     const string = bali.format(item);

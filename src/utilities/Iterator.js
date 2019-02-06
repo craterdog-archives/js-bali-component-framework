@@ -40,48 +40,87 @@
  * @returns {Iterator} The new array iterator.
  */
 function Iterator(array) {
-
-    // the array and current slot index are private attributes so methods that use them
-    // are defined in the constructor
-    var currentSlot = 0;  // the slot before the first item
-
-    this.toStart = function() {
-        currentSlot = 0;  // the slot before the first item
-    };
-
-    this.toSlot = function(slot) {
-        const size = array.length;
-        if (slot > size) slot = size;
-        if (slot < -size) slot = -size;
-        if (slot < 0) slot = slot + size + 1;
-        currentSlot = slot;
-    };
-
-    this.toEnd = function() {
-        currentSlot = array.length;  // the slot after the last item
-    };
-
-    this.hasPrevious = function() {
-        return currentSlot > 0;
-    };
-
-    this.hasNext = function() {
-        return currentSlot < array.length;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous element from an iterator that is at the beginning of an array.');
-        const item = array[--currentSlot];
-        return item;
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next element from an iterator that is at the end of an array.');
-        const item = array[currentSlot++];
-        return item;
-    };
-
+    this.slot = 0;  // the slot before the first item
+    this.array = array;
     return this;
 }
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method moves the iterator to the slot before the first item.
+ */
+Iterator.prototype.toStart = function() {
+    this.slot = 0;  // the slot before the first item
+};
+
+
+/**
+ * This method moves the iterator to the specified slot.
+ * 
+ * @param {Number} slot The slot before the next desired item. 
+ */
+Iterator.prototype.toSlot = function(slot) {
+    const size = this.array.length;
+    if (slot > size) slot = size;
+    if (slot < -size) slot = -size;
+    if (slot < 0) slot = slot + size + 1;
+    this.slot = slot;
+};
+
+
+/**
+ * This method moves the iterator to the slot after the last item.
+ */
+Iterator.prototype.toEnd = function() {
+    this.slot = this.array.length;  // the slot after the last item
+};
+
+
+/**
+ * This method determines whether or not the iterator has an item before the current slot.
+ * 
+ * @returns {Boolean} Whether or not the iterator has an item before the current slot.
+ */
+Iterator.prototype.hasPrevious = function() {
+    return this.slot > 0;
+};
+
+
+/**
+ * This method determines whether or not the iterator has an item after the current slot.
+ * 
+ * @returns {Boolean} Whether or not the iterator has an item after the current slot.
+ */
+Iterator.prototype.hasNext = function() {
+    return this.slot < this.array.length;
+};
+
+
+/**
+ * This method returns the item before the current slot and moves the iterator to the
+ * previous slot.
+ * 
+ * @returns {Component} The item before the current slot.
+ */
+Iterator.prototype.getPrevious = function() {
+    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous element from an iterator that is at the beginning of an array.');
+    const item = this.array[--this.slot];
+    return item;
+};
+
+
+/**
+ * This method returns the item after the current slot and moves the iterator to the
+ * next slot.
+ * 
+ * @returns {Component} The item after the current slot.
+ */
+Iterator.prototype.getNext = function() {
+    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next element from an iterator that is at the end of an array.');
+    const item = this.array[this.slot++];
+    return item;
+};

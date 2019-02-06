@@ -37,8 +37,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty stack with small capacity', function() {
-            const parameters = bali.parameters({$capacity: 1});
-            const stack = bali.stack([], parameters);
+            const stack = bali.stack();
+            stack.capacity = 1;
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -120,7 +120,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.stack().getTypeReference();
+            const type = bali.stack().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Q2BJ8CAR3HW39A5GFC2C2S1JZVX4PSX9,$version:v1,$digest:none]>');
         });
 
