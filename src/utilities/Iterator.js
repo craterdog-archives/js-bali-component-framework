@@ -71,14 +71,12 @@ function Iterator(array) {
 
     this.getPrevious = function() {
         if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous element from an iterator that is at the beginning of an array.');
-        const item = array[--currentSlot];
-        return item;
+        return array[--currentSlot];
     };
 
     this.getNext = function() {
         if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next element from an iterator that is at the end of an array.');
-        const item = array[currentSlot++];
-        return item;
+        return array[currentSlot++];
     };
 
     return this;
