@@ -43,32 +43,29 @@ const FORMATS = [
  */
 function Moment(value, parameters) {
     abstractions.Element.call(this, utilities.types.MOMENT, parameters);
-    var format;
     if (value === undefined || value === null) {
-        format = FORMATS[7];
+        this.format = FORMATS[7];
         value = moment();  // the current moment
     } else {
         switch (typeof value) {
             case 'number':
-                format = FORMATS[7];
+                this.format = FORMATS[7];
                 value = moment(value);  // in milliseconds since EPOC
                 break;
             case 'string':
-                FORMATS.find(function(candidate) {
-                    const attempt = moment(value, candidate, true);  // true means strict mode
+                FORMATS.find(function(format) {
+                    const attempt = moment(value, format, true);  // true means strict mode
                     if (attempt.isValid()) {
-                        format = candidate;
+                        this.format = format;
                         value = attempt;
                         return true;
                     } 
                     return false;
-                });
+                }, this);
         }
         if (!value) throw new Error('BUG: An invalid moment value was passed to the constructor: ' + value);
     }
-    // make the attributes read-only
-    this.getFormat = function() { return format; };
-    this.getValue = function() { return value; };
+    this.getValue = function() { return value; };  // make the value read-only
     return this;
 }
 Moment.prototype = Object.create(abstractions.Element.prototype);

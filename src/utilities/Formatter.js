@@ -502,7 +502,7 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     // should insert a space before a negative number or another inversion
     var left = operand;
     while (true) {
-        if (left.getType() === types.INVERSION_EXPRESSION || left.getType() === types.NUMBER && left.getReal().toString().startsWith('-')) {
+        if (left.getType() === types.INVERSION_EXPRESSION || left.getType() === types.NUMBER && left.real.toString().startsWith('-')) {
             formatted += ' ';
         }
         // check for a leaf node (i.e. an element or an identifier node
@@ -591,7 +591,7 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     var formatted = '';
-    const value = moment.getValue().format(moment.getFormat());
+    const value = moment.getValue().format(moment.format);
     formatted += '<' + value + '>';
     if (this.allowParameters && moment.isParameterized()) {
         moment.getParameters().acceptVisitor(this);
@@ -616,10 +616,10 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         formatted += 'infinity';
     } else if (number.isZero()) {
         formatted += '0';
-    } else if ((format !== '$polar' || number.getReal() > 0) && number.getImaginary() === 0) {
+    } else if ((format !== '$polar' || number.real > 0) && number.imaginary === 0) {
         // we know the real part isn't zero
         formatted += formatReal(number.getReal());
-    } else if (format !== '$polar' && number.getReal() === 0) {
+    } else if (format !== '$polar' && number.real === 0) {
         // we know the imaginary part isn't zero
         formatted += formatImaginary(number.getImaginary());
     } else {
