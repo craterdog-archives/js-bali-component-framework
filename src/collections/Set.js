@@ -37,6 +37,10 @@ function Set(comparator, parameters) {
     comparator = comparator || new utilities.Comparator();
     const tree = new RandomizedTree(comparator);
 
+    this.acceptVisitor = function(visitor) {
+        visitor.visitSet(this);
+    };
+
     this.toArray = function() {
         const array = [];
         const iterator = new TreeIterator(tree);
@@ -72,6 +76,18 @@ function Set(comparator, parameters) {
         return tree.remove(item);
     };
     
+    this.removeItems = function(items) {
+        var count = 0;
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            if (this.removeItem(item)) {
+                count++;
+            }
+        }
+        return count;
+    };
+
     this.clear = function() {
         tree.clear();
     };
@@ -82,38 +98,6 @@ function Set(comparator, parameters) {
 Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
-
-
-// PUBLIC METHODS
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this set.
- */
-Set.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSet(this);
-};
-
-
-/**
- * This method removes the specified items from this set.  The number of
- * matching items is returned.
- *
- * @param {Collection} items The collection of items to be removed from this set.
- * @returns {Number} The number of items that were actually removed.
- */
-Set.prototype.removeItems = function(items) {
-    var count = 0;
-    const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        if (this.removeItem(item)) {
-            count++;
-        }
-    }
-    return count;
-};
 
 
 // PUBLIC FUNCTIONS

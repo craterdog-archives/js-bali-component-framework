@@ -37,8 +37,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty stack with small capacity', function() {
-            const stack = bali.stack();
-            stack.capacity = 1;
+            const parameters = bali.parameters({$capacity: 1});
+            const stack = bali.stack([], parameters);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

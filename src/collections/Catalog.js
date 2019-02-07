@@ -32,8 +32,140 @@ const List = require('./List').List;
  */
 function Catalog(parameters) {
     abstractions.Collection.call(this, utilities.types.CATALOG, parameters);
-    this.map = {};  // maps key strings to associations
-    this.array = [];  // maintains the order of the associations
+
+    // the map and array are private attributes so methods that use them are defined
+    // in the constructor
+    const map = {};  // maps key strings to associations
+    const array = [];  // maintains the order of the associations
+
+    this.acceptVisitor = function(visitor) {
+        visitor.visitCatalog(this);
+    };
+    
+    this.toArray = function() {
+        return array.slice();  // copy the array
+    };
+
+    this.toObject = function() {
+        const object = {};
+        const iterator = this.getIterator();
+        while (iterator.hasNext()) {
+            const association = iterator.getNext();
+            object[association.getKey().toString()] = association.getValue();
+        }
+        return object;
+    };
+    
+    this.getSize = function() {
+        return array.length;
+    };
+
+    this.getItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        return array[index];
+    };
+
+    this.addItem = function(association) {
+        const key = association.getKey().toString();
+        if (map[key]) return false;
+        map[key] = association;
+        array.push(association);
+        return true;
+    };
+
+    this.containsItem = function(association) {
+        const key = association.getKey().toString();
+        const candidate = map[key];
+        if (candidate) return candidate.isEqualTo(association);
+        return false;
+    };
+
+    this.getValue = function(key) {
+        const association = map[key.toString()];
+        if (association) return association.getValue();
+    };
+
+    this.getValues = function(keys) {
+        const values = new List();
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = this.getValue(key);
+            if (value !== undefined) values.addItem(value);
+        }
+        return values;
+    };
+    
+    this.setValue = function(key, value) {
+        var association = map[key.toString()];
+        if (association) {
+            const oldValue = association.getValue();
+            association.setValue(value);
+            return oldValue;
+        } else {
+            association = new composites.Association(key, value);
+            map[key.toString()] = association;
+            array.push(association);
+        }
+    };
+
+    this.setValues = function(associations) {
+        const iterator = associations.getIterator();
+        while (iterator.hasNext()) {
+            const association = iterator.getNext();
+            this.setValue(association.getKey(), association.getValue());
+        }
+    };
+    
+    this.removeValue = function(key) {
+        const association = map[key.toString()];
+        if (association) {
+            delete map[key.toString()];
+            const index = array.findIndex(function(item) {
+                return item.isEqualTo(association);
+            });
+            array.splice(index, 1);
+            return association.getValue();
+        }
+    };
+
+    this.removeValues = function(keys) {
+        const values = new List();
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = this.removeValue(key);
+            if (value !== undefined) values.addItem(value);
+        }
+        return values;
+    };
+    
+    this.getKeys = function() {
+        const keys = new List();
+        array.forEach(function(association) {
+            const key = association.getKey();
+            keys.addItem(key);
+        });
+        return keys;
+    };
+
+    this.reverseItems = function() {
+        array.reverse();
+    };
+
+    this.sortItems = function(sorter) {
+        sorter = sorter || new utilities.Sorter();
+        sorter.sortCollection(this);
+    };
+    
+    this.clear = function() {
+        Object.keys(map).forEach(function(key) {
+            const association = map[key];
+            delete map[key];
+        });
+        array.splice(0);
+    };
+
     return this;
 }
 Catalog.prototype = Object.create(abstractions.Collection.prototype);
@@ -78,273 +210,4 @@ Catalog.extraction = function(catalog, keys) {
         }
     }
     return result;
-};
-
-
-// PUBLIC METHODS
-
-/**
- * This method returns an array containing the items in this catalog.
- * 
- * @returns {Array} An array containing the items in this catalog.
- */
-Catalog.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
- * This method returns an object containing the items in this catalog.
- * 
- * @returns {Object} An object containing the items in this catalog.
- */
-Catalog.prototype.toObject = function() {
-    const object = {};
-    const iterator = this.getIterator();
-    while (iterator.hasNext()) {
-        const association = iterator.getNext();
-        object[association.getKey().toString()] = association.getValue();
-    }
-    return object;
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this catalog.
- */
-Catalog.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCatalog(this);
-};
-
-
-/**
- * This method returns the number of items that are currently in this catalog.
- * 
- * @returns {Number} The number of items in this catalog.
- */
-Catalog.prototype.getSize = function() {
-    const size = this.array.length;
-    return size;
-};
-
-
-/**
- * This method retrieves the association that is associated with the specified index from
- * this catalog.
- * 
- * @param {Number} index The index of the desired association.
- * @returns {Association} The association at the index in this catalog.
- */
-Catalog.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    const item = this.array[index];
-    return item;
-};
-
-
-/**
- * This method adds the specified association to this catalog. If an association with
- * the same key already exists in this catalog, its value will be replaced with the
- * the value of the specified association. The order of associations will not be
- * affected in this case.
- * 
- * @param {Association} association The association to be added to this catalog. 
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-Catalog.prototype.addItem = function(association) {
-    const index = association.getKey().toString();
-    if (this.map[index]) {
-        // an association with the specified key already exists
-        return false;
-    }
-    // add a new association
-    this.map[index] = association;
-    this.array.push(association);
-    return true;
-};
-
-
-/**
- * This method returns whether or not the specified association is contained in the
- * catalog.
- * 
- * @param {Association} association The association to be searched for in this catalog.
- * @returns {Boolean} Whether or not the catalog contains the specified association.
- */
-Catalog.prototype.containsItem = function(association) {
-    var result = false;
-    const index = association.getKey().toString();
-    const candidate = this.map[index];
-    if (candidate) {
-        result = candidate.isEqualTo(association);
-    }
-    return result;
-};
-
-
-/**
- * This method returns the value associated with the specified key in this catalog.
- *
- * @param {String|Number|Boolean|Component} key The key for the desired value.
- * @returns {Component} The value associated with the key.
- */
-Catalog.prototype.getValue = function(key) {
-    var value;
-    const index = key.toString();
-    const association = this.map[index];
-    if (association) value = association.getValue();
-    return value;
-};
-
-
-/**
- * This method retrieves from this catalog the values associated with the specified
- * keys. The values are returned as a list with the values in the same order as the
- * specified keys.
- *
- * @param {Collection} keys The collection of keys for the values to be retrieved.
- * @returns A list of the values that were retrieved from this catalog.
- */
-Catalog.prototype.getValues = function(keys) {
-    const values = new List();
-    const iterator = keys.getIterator();
-    while (iterator.hasNext()) {
-        const key = iterator.getNext();
-        const value = this.getValue(key);
-        if (value !== undefined) values.addItem(value);
-    }
-    return values;
-};
-
-
-/**
- * This method associates in this catalog a new value with a key.  If there is already
- * a value associated with the specified key, the new value replaces the old value.
- *
- * @param {String|Number|Boolean|Component} key The key for the new value.
- * @param {String|Number|Boolean|Component} value The new value to be associated with the key.
- * @returns {Component} The value previously associated with the key.
- */
-Catalog.prototype.setValue = function(key, value) {
-    const index = key.toString();
-    var association = this.map[index];
-    var oldValue;
-    if (association) {
-        oldValue = association.getValue();
-        association.setValue(value);
-    } else {
-        association = new composites.Association(key, value);
-        this.map[index] = association;
-        this.array.push(association);
-    }
-    return oldValue;
-};
-
-
-/**
- * This method adds to this catalog the associations in the specified catalog.  If there
- * is already a value associated with a specified key, the new value replaces the old value.
- *
- * @param {Catalog} associations A catalog containing the new associations to be added.
- */
-Catalog.prototype.setValues = function(associations) {
-    const iterator = associations.getIterator();
-    while (iterator.hasNext()) {
-        const association = iterator.getNext();
-        this.setValue(association.getKey(), association.getValue());
-    }
-};
-
-
-/**
- * This method removes from this catalog the value associated with a key.  If no value
- * is associated with the specified key then the return value is undefined.
- *
- * @param {String|Number|Boolean|Component} key The key for the value to be removed.
- * @returns {Component} The value that was associated with the key.
- */
-Catalog.prototype.removeValue = function(key) {
-    var index = key.toString();
-    const association = this.map[index];
-    if (association) {
-        delete this.map[index];
-        index = this.array.findIndex(function(item) {
-            return item.isEqualTo(association);
-        });
-        this.array.splice(index, 1);
-        return association.getValue();
-    }
-};
-
-
-/**
- * This method removes from this catalog the values associated with the specified
- * keys. The values are returned as a list with the values in the same order as the
- * specified keys.
- *
- * @param {Collection} keys The collection of keys for the values to be removed.
- * @returns A list of the values that were removed from this catalog.
- */
-Catalog.prototype.removeValues = function(keys) {
-    const values = new List();
-    const iterator = keys.getIterator();
-    while (iterator.hasNext()) {
-        const key = iterator.getNext();
-        const value = this.removeValue(key);
-        if (value !== undefined) values.addItem(value);
-    }
-    return values;
-};
-
-
-/**
- * This method removes all associations from this catalog.
- */
-Catalog.prototype.clear = function() {
-    const size = this.getSize();
-    Object.keys(this.map).forEach(function(key) {
-        const association = this.map[key];
-        delete this.map[key];
-    }, this);
-    this.array.splice(0);
-};
-
-
-/**
- * This method returns a list of the keys for the associations in this catalog. The
- * keys are in the same order as the associations in the catalog.
- *
- * @returns {List} A list of the keys for this catalog.
- */
-Catalog.prototype.getKeys = function() {
-    const keys = new List();
-    this.array.forEach(function(association) {
-        const key = association.getKey();
-        keys.addItem(key);
-    });
-    return keys;
-};
-
-
-/**
- * This method sorts the items in this catalog into their natural order as defined
- * by the <code>this.comparedTo(that)</code> method of the keys being compared.
- * 
- * @param {Sorter} sorter An optional sorter to use for sorting the items. If none is
- * specified, the default natural sorter will be used.
- */
-Catalog.prototype.sortItems = function(sorter) {
-    sorter = sorter || new utilities.Sorter();
-    sorter.sortCollection(this);
-};
-
-
-/**
- * This method reverses the order of the items in this catalog.
- */
-Catalog.prototype.reverseItems = function() {
-    this.array.reverse();
 };

@@ -39,7 +39,96 @@ const composites = require('../composites');
  */
 function List(parameters) {
     abstractions.Collection.call(this, utilities.types.LIST, parameters);
-    this.array = [];
+
+    // the array is a private attribute so methods that use it are defined in the constructor
+    const array = [];
+
+    this.acceptVisitor = function(visitor) {
+        visitor.visitList(this);
+    };
+    
+    this.toArray = function() {
+        return array.slice();  // copy the array
+    };
+
+    this.getSize = function() {
+        return array.length;
+    };
+    
+    this.getItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        return array[index];
+    };
+    
+    this.setItem = function(index, item) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        item = this.convert(item);
+        const oldItem = array[index];
+        array[index] = item;
+        return oldItem;
+    };
+    
+    this.addItem = function(item) {
+        item = this.convert(item);
+        array.push(item);
+        return true;
+    };
+    
+    this.insertItem = function(index, item) {
+        item = this.convert(item);
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        array.splice(index, 0, item);
+    };
+    
+    this.insertItems = function(index, items) {
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            this.insertItem(index++, item);
+        }
+    };
+    
+    this.removeItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        const oldItem = array[index];
+        if (oldItem) array.splice(index, 1);
+        return oldItem;
+    };
+    
+    this.removeItems = function(range) {
+        const items = new List(this.getParameters());
+        const iterator = range.getIterator();
+        while (iterator.hasNext()) {
+            const index = iterator.getNext();
+            const item = this.removeItem(index);
+            items.addItem(item);
+        }
+        return items;
+    };
+    
+    this.sortItems = function(sorter) {
+        sorter = sorter || new utilities.Sorter();
+        sorter.sortCollection(this);
+    };
+    
+    this.reverseItems = function() {
+        array.reverse();
+    };
+
+    this.shuffleItems = function() {
+        const size = this.getSize();
+        for (var index = size; index > 1; index--) {
+            const randomIndex = utilities.random.index(index);  // in range [1..index] ordinal indexing
+            const item = this.getItem(index);
+            this.setItem(index, this.getItem(randomIndex));
+            this.setItem(randomIndex, item);
+        }
+    };
+    
+    this.clear = function() {
+        array.splice(0);
+    };
+
     return this;
 }
 List.prototype = Object.create(abstractions.Collection.prototype);
@@ -62,196 +151,4 @@ List.concatenation = function(list1, list2) {
     result.addItems(list1);
     result.addItems(list2);
     return result;
-};
-
-
-// PUBLIC METHODS
-
-/**
- * This method returns an array containing the items in this list.
- * 
- * @returns {Array} An array containing the items in this list.
- */
-List.prototype.toArray = function() {
-    return this.array.slice();  // copy the array
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this list.
- */
-List.prototype.acceptVisitor = function(visitor) {
-    visitor.visitList(this);
-};
-
-
-/**
- * This method returns the number of items that are currently in this list.
- * 
- * @returns {Number} The number of items in this list.
- */
-List.prototype.getSize = function() {
-    const size = this.array.length;
-    return size;
-};
-
-
-/**
- * This method retrieves the item that is associated with the specified index from this list.
- * 
- * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this list.
- */
-List.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to JS zero based indexing
-    const item = this.array[index];
-    return item;
-};
-
-
-/**
- * This method replaces an existing item in this list with a new one.  The new
- * item replaces the existing item at the specified index.
- *
- * @param {Number} index The index of the existing item.
- * @param {Component} item The new item that will replace the existing one.
- *
- * @returns The existing item that was at the specified index.
- */
-List.prototype.setItem = function(index, item) {
-    item = this.convert(item);
-    index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
-    const oldItem = this.array[index];
-    this.array[index] = item;
-    return oldItem;
-};
-
-
-/*
- * This method appends the specified item to this list.
- * 
- * @param {String|Number|Boolean|Component} item The item to be added to this list.
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-List.prototype.addItem = function(item) {
-    item = this.convert(item);
-    this.array.push(item);
-    return true;
-};
-
-
-/**
- * This method inserts the specified item into this list before the item
- * associated with the specified index.
- *
- * @param {Number} index The index of the item before which the new item is to be inserted.
- * @param {Component} item The new item to be inserted into this list.
- */
-List.prototype.insertItem = function(index, item) {
-    item = this.convert(item);
-    index = this.normalizeIndex(index);
-    index--;  // convert to javascript zero based indexing
-    this.array.splice(index, 0, item);
-};
-
-
-/**
- * This method inserts the specified collection of items into this list before the item
- * associated with the specified index.
- *
- * @param {Number} index The index of the item before which the new items are to be inserted.
- * @param {Collection} items A collection containing the new items to be inserted into this list.
- */
-List.prototype.insertItems = function(index, items) {
-    const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        this.insertItem(index++, item);
-    }
-};
-
-
-/**
- * This method removes from this list the item associated with the specified
- * index.
- *
- * @param {Number} index The index of the item to be removed.
- * @returns {Component} The item at the specified index.
- */
-List.prototype.removeItem = function(index) {
-    index = this.normalizeIndex(index);
-    index--;  // convert to javascript zero based indexing
-    const oldItem = this.array[index];
-    if (oldItem) {
-        this.array.splice(index, 1);
-    }
-    return oldItem;
-};
-
-
-/**
- * This method removes from this list the items associated with the specified
- * index range.
- *
- * @param {Range} range A range depicting the first and last items to be removed.
- * @returns The list of the items that were removed from this list.
- */
-List.prototype.removeItems = function(range) {
-    const items = new List(this.getParameters());
-    const iterator = range.getIterator();
-    while (iterator.hasNext()) {
-        const index = iterator.getNext();
-        const item = this.removeItem(index);
-        items.addItem(item);
-    }
-    return items;
-};
-
-
-/**
- * This method removes all items from this list.
- */
-List.prototype.clear = function() {
-    const size = this.getSize();
-    this.array.splice(0);
-};
-
-
-/**
- * This method sorts the items in this list into their natural order as defined
- * by the <code>this.comparedTo(that)</code> method of the items being compared.
- * 
- * @param {Sorter} sorter An optional sorter to use for sorting the items. If none is
- * specified, the default natural sorter will be used.
- */
-List.prototype.sortItems = function(sorter) {
-    sorter = sorter || new utilities.Sorter();
-    sorter.sortCollection(this);
-};
-
-
-/**
- * This method reverses the order of the items in this list.
- */
-List.prototype.reverseItems = function() {
-    this.array.reverse();
-};
-
-
-/**
- * This method shuffles the items in this list using a randomizing algorithm.  It uses ordinal
- * indexing with the modern version of the Fisher-Yates shuffle:
- * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
- */
-List.prototype.shuffleItems = function() {
-    const size = this.getSize();
-    for (var index = size; index > 1; index--) {
-        const randomIndex = utilities.random.index(index);  // in range [1..index] ordinal indexing
-        const item = this.getItem(index);
-        this.setItem(index, this.getItem(randomIndex));
-        this.setItem(randomIndex, item);
-    }
 };

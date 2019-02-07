@@ -37,8 +37,8 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create an empty queue with small capacity', function() {
-            const queue = bali.queue();
-            queue.capacity = 3;
+            const parameters = bali.parameters({$capacity: 3});
+            const queue = bali.queue([], parameters);
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
