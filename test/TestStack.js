@@ -64,9 +64,8 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
-            iterator.toEnd();  // stacks iterate from the top
             array.forEach(function(item) {
-                expect(item).to.equal(iterator.getPrevious().toString());
+                expect(item).to.equal(iterator.getNext().toString());
             });
             stack.clear();
             size = stack.getSize();
@@ -84,9 +83,8 @@ describe('Bali Component Framework™', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
-            iterator.toEnd();  // stacks iterate from the top
             array.forEach(function(item) {
-                expect(item).to.equal(iterator.getPrevious().toString());
+                expect(item).to.equal(iterator.getNext().toString());
             });
             stack.clear();
             size = stack.getSize();
@@ -95,18 +93,17 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should create a stack from a stack', function() {
-            const unexpected = bali.stack(array);
-            const stack = bali.stack(unexpected);
+            const expected = bali.stack(array);
+            const stack = bali.stack(expected);
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            expect(stack.isEqualTo(unexpected)).to.equal(false);  // reversed!
+            expect(stack.isEqualTo(expected)).to.equal(true);
             const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
-                // remember, we are traversing the reversed stack
                 expect(item).to.equal(iterator.getNext().toString());
             });
             stack.clear();
@@ -163,19 +160,17 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack iterators.', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
-            // REMEMBER: The iterator for a stack iterates through the items in LIFO order
             const stack = bali.stack(array);
-            // iterate through the items from top down
             const iterator = stack.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);
-            // now go through in LIFO order
-            var index = array.length;
+            // iterator through the items from bottom to top
+            var index = 0;
             var item;
-            while (index > 0) {
+            while (index > array.length) {
                 item = iterator.getNext().toString();
-                expect(array[--index]).to.equal(item);
+                expect(array[index++]).to.equal(item);
             }
             // should be at the last slot in the iterator
             expect(iterator.hasPrevious() === true);
@@ -188,10 +183,11 @@ describe('Bali Component Framework™', function() {
             iterator.toEnd();
             expect(iterator.hasPrevious() === true);
             expect(iterator.hasNext() === false);
-            // iterator through the items from bottom up
-            while (index < array.length) {
+            // iterator through the items from top to bottom
+            index = array.length;
+            while (index > 0) {
                 item = iterator.getPrevious().toString();
-                expect(array[index++]).to.equal(item);
+                expect(array[--index]).to.equal(item);
             }
             // should be at the first slot in the iterator
             expect(iterator.hasPrevious() === false);

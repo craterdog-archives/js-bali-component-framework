@@ -47,8 +47,8 @@ function Range(first, last, parameters) {
         }
     } else {
         // the first and last items are indices into the integers
-        firstIndex = (typeof first === 'number') ? first : first.toNumber();
-        lastIndex = (typeof last === 'number') ? last : last.toNumber();
+        firstIndex = (first.getType && first.getType() === utilities.types.NUMBER) ? first.toNumber() : first;
+        lastIndex = (last.getType && last.getType() === utilities.types.NUMBER) ? last.toNumber() : last;
     }
 
     // to protect the attributes the methods are defined in the constructor
@@ -87,8 +87,10 @@ function Range(first, last, parameters) {
         var item;
         if (collection) {
             item = collection.getItem(firstIndex);  // retrieve the item
-        } else {
+        } else if (typeof firstIndex === 'number') {
             item = new elements.Number(firstIndex);  // the index is the item
+        } else {
+            item = firstIndex;
         }
         return item;
     };
@@ -97,7 +99,7 @@ function Range(first, last, parameters) {
         var item;
         if (collection) {
             item = collection.getItem(firstIndex + index - 1);
-        } else {
+        } else if (typeof firstIndex === 'number') {
             item = new elements.Number(firstIndex + index - 1);
         }
         return item;
@@ -107,8 +109,10 @@ function Range(first, last, parameters) {
         var item;
         if (collection) {
             item = collection.getItem(lastIndex);  // retrieve the item
-        } else {
+        } else if (typeof lastIndex === 'number') {
             item = new elements.Number(lastIndex);  // the index is the item
+        } else {
+            item = lastIndex;
         }
         return item;
     };

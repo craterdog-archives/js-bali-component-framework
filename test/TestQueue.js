@@ -185,9 +185,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue iterators.', function() {
 
         it('should iterate over a queue forwards and backwards', function() {
-            // REMEMBER: The iterator for a queue iterates through the items in FIFO order
             const queue = bali.queue(array);
-            // iterate through the items from beginning to end
             const iterator = queue.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasPrevious() === false);

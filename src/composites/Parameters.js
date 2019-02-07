@@ -34,6 +34,8 @@ function Parameters(collection) {
     const copy = new collection.constructor(collection.getParameters());
     copy.addItems(collection);
 
+    this.getCollection = function() { return collection; };
+
     this.toArray = function() {
         const array = copy.toArray();
         return array;

@@ -136,6 +136,11 @@ const format = function(component, indentation) {
 };
 exports.format = format;
 
+const iterator = function(array) {
+    return new utilities.Iterator(array);
+};
+exports.iterator = iterator;
+
 const parameters = function(object) {
     var collection;
     if (Array.isArray(object)) {

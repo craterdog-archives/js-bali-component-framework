@@ -791,9 +791,9 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     const parameters = this.getParameters();
     const expressions = ctx.expression();
     expressions[0].accept(this);
-    const first= this.result;
+    const first = this.result;
     expressions[1].accept(this);
-    const last= this.result;
+    const last = this.result;
     const range = new composites.Range(first, last, parameters);
     this.result = range;
 };

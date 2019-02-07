@@ -61,10 +61,6 @@ function Stack(parameters) {
         return array.length;
     };
     
-    this.getIterator = function() {
-        return new utilities.Iterator(array.slice().reverse());
-    };
-    
     this.addItem = function(item) {
         if (array.length < capacity) {
             item = this.convert(item);
