@@ -37,44 +37,29 @@ const EOL = '\n';
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
-    this.indentation = indentation || '';
+
+    // the indentation is a private attribute so methods that use it are defined in the constructor
+    indentation = indentation || '';
+
+    this.formatLiteral = function(element, format) {
+        if (!types.isLiteral(element.getType())) {
+            throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
+        }
+        const visitor = new FormattingVisitor(indentation, false, format);
+        element.acceptVisitor(visitor);
+        return visitor.result;
+    };
+
+    this.formatComponent = function(component) {
+        const visitor = new FormattingVisitor(indentation, true);
+        component.acceptVisitor(visitor);
+        return visitor.result;
+    };
+
     return this;
 }
 Formatter.prototype.constructor = Formatter;
 exports.Formatter = Formatter;
-
-
-// PUBLIC METHODS
-
-/**
- * This method generates the canonical literal string for the specified element.
- * 
- * @param {Element} element The element.
- * @param {String} format An optional format to be used.
- * @returns {String} The literal string for the element.
- */
-Formatter.prototype.formatLiteral = function(element, format) {
-    if (!types.isLiteral(element.getType())) {
-        throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
-    }
-    const visitor = new FormattingVisitor(this.indentation, false, format);
-    element.acceptVisitor(visitor);
-    return visitor.result;
-};
-
-
-/**
- * This method generates the canonical formatted string document for the specified parse tree
- * component.
- * 
- * @param {Component} component The parse tree representing a component.
- * @returns {String} The formatted code document for the parse tree component.
- */
-Formatter.prototype.formatComponent = function(component) {
-    const visitor = new FormattingVisitor(this.indentation, true);
-    component.acceptVisitor(visitor);
-    return visitor.result;
-};
 
 
 // PRIVATE CLASSES
@@ -105,9 +90,8 @@ FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
     var format = this.format;
     if (format) return format;
     // then any format parameters that parameterize the element
-    const parameters = element.getParameters();
-    if (this.allowParameters && parameters) {
-        format = parameters.getValue(key, 1);
+    if (this.allowParameters && element.isParameterized()) {
+        format = element.getParameters().getValue(key, 1);
         if (format) format = format.toString();
     }
     // and finally the default format
@@ -132,7 +116,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             throw new Error('BUG: An invalid angle format was specified: ' + format);
     }
     formatted += '~' + formatReal(value);
-    if (this.allowParameters && angle.getParameters()) {
+    if (this.allowParameters && angle.isParameterized()) {
         angle.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -193,7 +177,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     formatted += "'" + value + "'";
-    if (this.allowParameters && binary.getParameters()) {
+    if (this.allowParameters && binary.isParameterized()) {
         binary.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -389,7 +373,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
     var formatted = '';
     const value = duration.getValue().toISOString();
     formatted += '~' + value;
-    if (this.allowParameters && duration.getParameters()) {
+    if (this.allowParameters && duration.isParameterized()) {
         duration.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -609,7 +593,7 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
     var formatted = '';
     const value = moment.getValue().format(moment.getFormat());
     formatted += '<' + value + '>';
-    if (this.allowParameters && moment.getParameters()) {
+    if (this.allowParameters && moment.isParameterized()) {
         moment.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -656,7 +640,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         }
         formatted += ')';
     }
-    if (this.allowParameters && number.getParameters()) {
+    if (this.allowParameters && number.isParameterized()) {
         number.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -689,7 +673,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
         default:
             formatted += '"' + value + '"?';
     }
-    if (this.allowParameters && pattern.getParameters()) {
+    if (this.allowParameters && pattern.isParameterized()) {
         pattern.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -702,7 +686,7 @@ FormattingVisitor.prototype.visitPercent = function(percent) {
     var formatted = '';
     const value = percent.getValue();
     formatted += formatReal(value) + '%';
-    if (this.allowParameters && percent.getParameters()) {
+    if (this.allowParameters && percent.isParameterized()) {
         percent.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -736,7 +720,7 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
             // must remove the leading '0' for probabilities
             formatted += value.toString().substring(1);
     }
-    if (this.allowParameters && probability.getParameters()) {
+    if (this.allowParameters && probability.isParameterized()) {
         probability.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -849,7 +833,7 @@ FormattingVisitor.prototype.visitReference = function(reference) {
     var formatted = '';
     const value = reference.getValue().toString();
     formatted += '<' + value + '>';
-    if (this.allowParameters && reference.getParameters()) {
+    if (this.allowParameters && reference.isParameterized()) {
         reference.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -862,7 +846,7 @@ FormattingVisitor.prototype.visitReserved = function(reserved) {
     var formatted = '';
     const value = reserved.getValue();
     formatted += '$$' + value;
-    if (this.allowParameters && reserved.getParameters()) {
+    if (this.allowParameters && reserved.isParameterized()) {
         reserved.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -1025,7 +1009,7 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
     var formatted = '';
     const value = symbol.getValue();
     formatted += '$' + value;
-    if (this.allowParameters && symbol.getParameters()) {
+    if (this.allowParameters && symbol.isParameterized()) {
         symbol.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -1038,7 +1022,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
     var formatted = '';
     const value = tag.getValue();
     formatted += '#' + value;
-    if (this.allowParameters && tag.getParameters()) {
+    if (this.allowParameters && tag.isParameterized()) {
         tag.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -1047,14 +1031,14 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 
 
 // text: TEXT | TEXT_BLOCK
-Visitor.prototype.visitText = function(text) {
+FormattingVisitor.prototype.visitText = function(text) {
     var formatted = '';
     var value = text.getValue();
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
     formatted += '"' + value + '"';
-    if (this.allowParameters && text.getParameters()) {
+    if (this.allowParameters && text.isParameterized()) {
         text.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
@@ -1083,7 +1067,7 @@ FormattingVisitor.prototype.visitVersion = function(version) {
     var formatted = '';
     const value = version.getValue();
     formatted += 'v' + value.join('.');  // concatentat the version levels
-    if (this.allowParameters && version.getParameters()) {
+    if (this.allowParameters && version.isParameterized()) {
         version.getParameters().acceptVisitor(this);
         formatted += this.result;
     }

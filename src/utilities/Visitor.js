@@ -531,7 +531,7 @@ Visitor.prototype.visitSet = function(set) {
 
 // source: '{' procedure '}'
 Visitor.prototype.visitSource = function(source) {
-    source.procedure.acceptVisitor(this);
+    source.getProcedure().acceptVisitor(this);
     if (source.isParameterized()) {
         source.getParameters().acceptVisitor(this);
     }
