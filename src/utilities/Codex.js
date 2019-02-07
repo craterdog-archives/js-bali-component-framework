@@ -24,30 +24,6 @@ const EOL = '\n';
 
 // PUBLIC FUNCTIONS
 
-/**
- * This function returns a formatted version of a string with LINE_WIDTH characters per line.
- * 
- * @param {String} string The string to be formatted.
- * @param {String} indentation The string to be prepended to each line of the result.
- * @returns {String} The formatted string.
- */
-exports.formatLines = function(string, indentation) {
-    indentation = indentation ? indentation : '';
-    var formatted = '';
-    const length = string.length;
-    if (length > LINE_WIDTH) {
-        for (var index = 0; index < length; index += LINE_WIDTH) {
-            formatted += EOL + '    ' + indentation;
-            formatted += string.substring(index, index + LINE_WIDTH);
-        }
-        formatted += EOL;
-    } else {
-        formatted += string;
-    }
-    return formatted;
-};
-
-
 /*
  * This private string acts as a lookup table for mapping one bit values to base 2
  * characters.
@@ -77,7 +53,7 @@ exports.base2Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    const base2 = exports.formatLines(string, indentation);
+    const base2 = formatLines(string, indentation);
     return base2;
 };
 
@@ -150,7 +126,7 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    const base16 = exports.formatLines(string, indentation);
+    const base16 = formatLines(string, indentation);
     return base16;
 };
 
@@ -236,7 +212,7 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLastChunk(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    const base32 = exports.formatLines(string, indentation);
+    const base32 = formatLines(string, indentation);
     return base32;
 };
 
@@ -295,7 +271,7 @@ exports.base64Encode = function(buffer, indentation) {
     const string = buffer.toString('base64');
 
     // break the string into formatted lines
-    const base64 = exports.formatLines(string, indentation);
+    const base64 = formatLines(string, indentation);
     return base64;
 };
 
@@ -524,3 +500,27 @@ function base32DecodeLastCharacter(chunk, characterIndex, buffer, index) {
             break;
     }
 }
+
+
+/**
+ * This function returns a formatted version of a string with LINE_WIDTH characters per line.
+ * 
+ * @param {String} string The string to be formatted.
+ * @param {String} indentation The string to be prepended to each line of the result.
+ * @returns {String} The formatted string.
+ */
+function formatLines(string, indentation) {
+    indentation = indentation ? indentation : '';
+    var formatted = '';
+    const length = string.length;
+    if (length > LINE_WIDTH) {
+        for (var index = 0; index < length; index += LINE_WIDTH) {
+            formatted += EOL + '    ' + indentation;
+            formatted += string.substring(index, index + LINE_WIDTH);
+        }
+        formatted += EOL;
+    } else {
+        formatted += string;
+    }
+    return formatted;
+};

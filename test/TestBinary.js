@@ -36,28 +36,28 @@ describe('Bali Component Framework™', function() {
 
         it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
-            expect(binary.value.toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.toString()).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
+            expect(binary.getValue().toString('hex')).to.equal(expected.toString('hex'));
+            expect(binary.toString()).to.equal("'" + bali.codex.base32Encode(expected) + "'");
         });
 
         it('should construct binary values from a buffer with base 2 encoding', function() {
             const binary = bali.binary(expected, bali.base2);
-            expect(binary.toBase2()).to.equal("'" + bali.utilities.codex.base2Encode(expected) + "'");
+            expect(binary.toBase2()).to.equal("'" + bali.codex.base2Encode(expected) + "'");
         });
 
         it('should construct binary values from a buffer with base 16 encoding', function() {
             const binary = bali.binary(expected, bali.base16);
-            expect(binary.toBase16()).to.equal("'" + bali.utilities.codex.base16Encode(expected) + "'");
+            expect(binary.toBase16()).to.equal("'" + bali.codex.base16Encode(expected) + "'");
         });
 
         it('should construct binary values from a buffer with base 32 encoding', function() {
             const binary = bali.binary(expected, bali.base32);
-            expect(binary.toBase32()).to.equal("'" + bali.utilities.codex.base32Encode(expected) + "'");
+            expect(binary.toBase32()).to.equal("'" + bali.codex.base32Encode(expected) + "'");
         });
 
         it('should construct binary values from a buffer with base 64 encoding', function() {
             const binary = bali.binary(expected, bali.base64);
-            expect(binary.toBase64()).to.equal("'" + bali.utilities.codex.base64Encode(expected) + "'");
+            expect(binary.toBase64()).to.equal("'" + bali.codex.base64Encode(expected) + "'");
         });
 
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {
@@ -75,7 +75,7 @@ describe('Bali Component Framework™', function() {
     describe('Test binary methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.binary(expected).getType();
+            const type = bali.binary(expected).getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S858FKVC1YTL20J9M0WQK89MQLS4TK8Z,$version:v1,$digest:none]>');
         });
 
@@ -84,8 +84,8 @@ describe('Bali Component Framework™', function() {
     describe('Test binary functions', function() {
 
         it('should perform concatenation of two binary strings', function() {
-            const binary1 = bali.binary(bali.utilities.random.bytes(40));
-            const binary2 = bali.binary(bali.utilities.random.bytes(40));
+            const binary1 = bali.binary(bali.random.bytes(40));
+            const binary2 = bali.binary(bali.random.bytes(40));
             const binary3 = bali.binary.concatenation(binary1, binary2);
             const string1 = binary1.toString().slice(1, -1).replace(/\s/g, '');
             const string2 = binary2.toString().slice(1, -1).replace(/\s/g, '');
@@ -134,7 +134,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the binary iterators.', function() {
 
         it('should iterate over a binary string forwards and backwards', function() {
-            const binary = bali.binary(bali.utilities.random.bytes(4));
+            const binary = bali.binary(bali.random.bytes(4));
             const iterator = binary.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();
@@ -147,13 +147,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             byte = iterator.getNext();
-            expect(byte).to.equal(binary.value[0]);
+            expect(byte).to.equal(binary.getValue()[0]);
             byte = iterator.getNext();
-            expect(byte).to.equal(binary.value[1]);
+            expect(byte).to.equal(binary.getValue()[1]);
             byte = iterator.getPrevious();
-            expect(byte).to.equal(binary.value[1]);
+            expect(byte).to.equal(binary.getValue()[1]);
             byte = iterator.getPrevious();
-            expect(byte).to.equal(binary.value[0]);
+            expect(byte).to.equal(binary.getValue()[0]);
             while (iterator.hasNext()) {
                 byte = iterator.getNext();
             }

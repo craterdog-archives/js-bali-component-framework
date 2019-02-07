@@ -74,7 +74,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the range methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.range(1, 5).getType();
+            const type = bali.range(1, 5).getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#S6XRX1KCJD683A2FKC121WZ0A5TYVL9L,$version:v1,$digest:none]>');
         });
 

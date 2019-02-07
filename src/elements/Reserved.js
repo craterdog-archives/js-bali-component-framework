@@ -32,7 +32,10 @@ function Reserved(value, parameters) {
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new Error('BUG: An invalid reserved identifier string was passed to the constructor: ' + value);
     }
-    this.value = value;
+
+    // since this element is immutable the value must be read-only
+    this.getValue = function() { return value; };
+
     return this;
 }
 Reserved.prototype = Object.create(abstractions.Element.prototype);

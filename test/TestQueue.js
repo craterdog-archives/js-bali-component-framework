@@ -57,7 +57,7 @@ describe('Bali Component Framework™', function() {
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
             expect(queue.getHead().toString()).to.equal('"alpha"');
-            expect(function() {queue.addItem('"delta"');}).to.throw(bali.utilities.Exception);
+            expect(function() {queue.addItem('"delta"');}).to.throw(bali.Exception);
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
             expect(item.toString()).to.equal('"alpha"');
@@ -140,7 +140,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.queue().getType();
+            const type = bali.queue().getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4,$version:v1,$digest:none]>');
         });
 

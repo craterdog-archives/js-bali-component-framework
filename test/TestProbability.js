@@ -75,7 +75,7 @@ describe('Bali Component Framework™', function() {
     describe('Test probability methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.probability().getType();
+            const type = bali.probability().getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#2YBVYV11HS4CKZ7X8RDJ0RYC7TKKAV2D,$version:v1,$digest:none]>');
         });
 
@@ -86,7 +86,7 @@ describe('Bali Component Framework™', function() {
         it('should perform the random function correctly', function() {
             for (var i = 0; i < 100; i++) {
                 const probability = bali.probability.random();
-                expect(probability.value >= 0 && probability.value <= 1).to.equal(true);
+                expect(probability.getValue() >= 0 && probability.getValue() <= 1).to.equal(true);
             }
         });
 

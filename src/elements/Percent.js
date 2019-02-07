@@ -29,7 +29,10 @@ const abstractions = require('../abstractions');
 function Percent(value, parameters) {
     abstractions.Element.call(this, utilities.types.PERCENT, parameters);
     value = value || 0;  // the default value
-    this.value = value;
+
+    // since this element is immutable the value must be read-only
+    this.getValue = function() { return value; };
+
     return this;
 }
 Percent.prototype = Object.create(abstractions.Element.prototype);
@@ -46,7 +49,7 @@ exports.Percent = Percent;
  * @returns {Boolean} Whether or not this percent has a meaningful value.
  */
 Percent.prototype.toBoolean = function() {
-    return this.value !== 0;
+    return this.getValue() !== 0;
 };
 
 
@@ -56,7 +59,7 @@ Percent.prototype.toBoolean = function() {
  * @returns {number} The numeric value of the percent element.
  */
 Percent.prototype.toNumber = function() {
-    return utilities.precision.quotient(this.value, 100);
+    return utilities.precision.quotient(this.getValue(), 100);
 };
 
 
@@ -79,7 +82,7 @@ Percent.prototype.acceptVisitor = function(visitor) {
  * @throws {Error} The percent cannot be negative.
  */
 Percent.inverse = function(percent) {
-    return new Percent(-percent.value);
+    return new Percent(-percent.getValue());
 };
 
 
@@ -91,7 +94,7 @@ Percent.inverse = function(percent) {
  * @returns {Percent} The normalized sum of the two percents.
  */
 Percent.sum = function(firstPercent, secondPercent) {
-    return new Percent(utilities.precision.sum(firstPercent.value, secondPercent.value));
+    return new Percent(utilities.precision.sum(firstPercent.getValue(), secondPercent.getValue()));
 };
 
 
@@ -103,7 +106,7 @@ Percent.sum = function(firstPercent, secondPercent) {
  * @returns {Percent} The normalized difference of the two percents.
  */
 Percent.difference = function(firstPercent, secondPercent) {
-    return new Percent(utilities.precision.difference(firstPercent.value, secondPercent.value));
+    return new Percent(utilities.precision.difference(firstPercent.getValue(), secondPercent.getValue()));
 };
 
 
@@ -115,6 +118,6 @@ Percent.difference = function(firstPercent, secondPercent) {
  * @returns {Percent} The normalized scaled percent.
  */
 Percent.scaled = function(percent, factor) {
-    return new Percent(utilities.precision.product(percent.value, factor));
+    return new Percent(utilities.precision.product(percent.getValue(), factor));
 };
 

@@ -110,7 +110,7 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should return the correct type', function() {
-            const type = bali.version([1, 2, 3]).getType();
+            const type = bali.version([1, 2, 3]).getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#VVF92PYR76BJRFV932KMG7VHCD0MAS5R,$version:v1,$digest:none]>');
         });
 
@@ -132,13 +132,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             number = iterator.getNext();
-            expect(number).to.equal(version.value[0]);
+            expect(number).to.equal(version.getValue()[0]);
             number = iterator.getNext();
-            expect(number).to.equal(version.value[1]);
+            expect(number).to.equal(version.getValue()[1]);
             number = iterator.getPrevious();
-            expect(number).to.equal(version.value[1]);
+            expect(number).to.equal(version.getValue()[1]);
             number = iterator.getPrevious();
-            expect(number).to.equal(version.value[0]);
+            expect(number).to.equal(version.getValue()[0]);
             while (iterator.hasNext()) {
                 number = iterator.getNext();
             }

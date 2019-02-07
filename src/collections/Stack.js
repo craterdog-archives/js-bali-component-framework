@@ -109,7 +109,7 @@ Stack.prototype.getIterator = function() {
  * @throws {Exception} Attempted to add an item to a full stack.
  */
 Stack.prototype.addItem = function(item) {
-    if (this.convert) item = this.convert(item);
+    item = this.convert(item);
     if (this.array.length < this.capacity) {
         this.array.push(item);
         return true;

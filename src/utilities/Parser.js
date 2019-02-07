@@ -51,27 +51,21 @@ const EOL = '\n';
  * @returns {Parser} The new string parser.
  */
 function Parser(debug) {
-    this.debug = debug || false;
+
+    // the debug flag is a private attribute so methods that use it are defined in the constructor
+    debug = debug || false;
+
+    this.parseDocument = function(value, parameters) {
+        const parser = initializeParser(value, debug);
+        const antlrTree = parser.document();
+        const component = convertParseTree(antlrTree, parameters);
+        return component;
+    };
+
     return this;
 }
 Parser.prototype.constructor = Parser;
 exports.Parser = Parser;
-
-
-/**
- * This method parses a string containing Bali Document Notation™ and returns the corresponding
- * component.
- * 
- * @param {String} value The Bali Document Notation™ source string.
- * @param {Parameters} parameters Optional parameters used to parameterize the resulting component.
- * @returns {Component} The resulting component.
- */
-Parser.prototype.parseDocument = function(value, parameters) {
-    const parser = initializeParser(value, this.debug);
-    const antlrTree = parser.document();
-    const component = convertParseTree(antlrTree, parameters);
-    return component;
-};
 
 
 // PRIVATE FUNCTIONS
@@ -91,7 +85,6 @@ function initializeParser(document, debug) {
     return parser;
 }
 
-
 function convertParseTree(antlrTree, parameters) {
     const visitor = new ParsingVisitor(parameters);
     antlrTree.accept(visitor);
@@ -99,21 +92,22 @@ function convertParseTree(antlrTree, parameters) {
     return baliTree;
 }
 
+Math.PHI = (Math.sqrt(5) + 1) / 2;
 
 function literalToNumber(literal) {
     switch (literal) {
         case '-e':
-            return -utilities.precision.E;
+            return -Math.E;
         case 'e':
-            return utilities.precision.E;
+            return Math.E;
         case '-pi':
-            return -utilities.precision.PI;
+            return -Math.PI;
         case 'pi':
-            return utilities.precision.PI;
+            return Math.PI;
         case '-phi':
-            return -utilities.precision.PHI;
+            return -Math.PHI;
         case 'phi':
-            return utilities.precision.PHI;
+            return Math.PHI;
         default:
             return Number(literal);
     }

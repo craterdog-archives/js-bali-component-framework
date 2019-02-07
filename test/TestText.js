@@ -26,7 +26,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text();
             const string = text.toString();
             expect(string).to.equal('""');
-            const raw = text.value;
+            const raw = text.getValue();
             expect(raw).to.equal('');
         });
 
@@ -34,7 +34,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text('');
             const string = text.toString();
             expect(string).to.equal('""');
-            const raw = text.value;
+            const raw = text.getValue();
             expect(raw).to.equal('');
         });
 
@@ -42,7 +42,7 @@ describe('Bali Component Framework™', function() {
             const text = bali.text('\nThis is a \"text block\" containing \'quotes\'.\n');
             const string = text.toString();
             expect(string).to.equal('"\nThis is a \"text block\" containing \'quotes\'.\n"');
-            const raw = text.value;
+            const raw = text.getValue();
             expect(raw).to.equal('\nThis is a \"text block\" containing \'quotes\'.\n');
         });
 
@@ -51,7 +51,7 @@ describe('Bali Component Framework™', function() {
     describe('Test text methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.parse('"Hello World!"').getType();
+            const type = bali.parse('"Hello World!"').getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL,$version:v1,$digest:none]>');
         });
 
@@ -84,13 +84,13 @@ describe('Bali Component Framework™', function() {
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             character = iterator.getNext();
-            expect(character).to.equal(text.value[0]);
+            expect(character).to.equal(text.getValue()[0]);
             character = iterator.getNext();
-            expect(character).to.equal(text.value[1]);
+            expect(character).to.equal(text.getValue()[1]);
             character = iterator.getPrevious();
-            expect(character).to.equal(text.value[1]);
+            expect(character).to.equal(text.getValue()[1]);
             character = iterator.getPrevious();
-            expect(character).to.equal(text.value[0]);
+            expect(character).to.equal(text.getValue()[0]);
             while (iterator.hasNext()) {
                 character = iterator.getNext();
             }

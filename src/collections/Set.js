@@ -31,13 +31,89 @@ const composites = require('../composites');
  */
 function Set(comparator, parameters) {
     abstractions.Collection.call(this, utilities.types.SET, parameters);
+
+    // the comparator and tree are private attributes so methods that use
+    // them are defined in the constructor
     comparator = comparator || new utilities.Comparator();
-    this.tree = new RandomizedTree(comparator);
+    const tree = new RandomizedTree(comparator);
+
+    this.toArray = function() {
+        const array = [];
+        const iterator = new TreeIterator(tree);
+        while (iterator.hasNext()) array.push(iterator.getNext());
+        return array;
+    };
+
+    this.getSize = function() {
+        return tree.size;
+    };
+    
+    this.getIterator = function() {
+        return new TreeIterator(tree);
+    };
+    
+    this.getIndex = function(item) {
+        item = this.convert(item);
+        return tree.index(item) + 1;  // convert to ordinal based indexing
+    };
+    
+    this.getItem = function(index) {
+        index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
+        return tree.node(index).value;
+    };
+    
+    this.addItem = function(item) {
+        item = this.convert(item);
+        return tree.insert(item);
+    };
+    
+    this.removeItem = function(item) {
+        item = this.convert(item);
+        return tree.remove(item);
+    };
+    
+    this.clear = function() {
+        tree.clear();
+    };
+    
+
     return this;
 }
 Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this set.
+ */
+Set.prototype.acceptVisitor = function(visitor) {
+    visitor.visitSet(this);
+};
+
+
+/**
+ * This method removes the specified items from this set.  The number of
+ * matching items is returned.
+ *
+ * @param {Collection} items The collection of items to be removed from this set.
+ * @returns {Number} The number of items that were actually removed.
+ */
+Set.prototype.removeItems = function(items) {
+    var count = 0;
+    const iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        if (this.removeItem(item)) {
+            count++;
+        }
+    }
+    return count;
+};
 
 
 // PUBLIC FUNCTIONS
@@ -67,7 +143,7 @@ Set.or = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
@@ -88,7 +164,7 @@ Set.and = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     result.addItems(first);
     result.removeItems(second);
     return result;
@@ -104,7 +180,7 @@ Set.sans = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second) {
-    const result = new Set(first.comparator, first.parameters);
+    const result = new Set(first.comparator, first.getParameters());
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();
@@ -140,142 +216,6 @@ Set.xor = function(first, second) {
 };
 
 
-// PUBLIC METHODS
-
-/**
- * This method returns an array containing the items in this set.
- * 
- * @returns {Array} An array containing the items in this set.
- */
-Set.prototype.toArray = function() {
-    const array = [];
-    const iterator = new TreeIterator(this.tree);
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        array.push(item);
-    }
-    return array;
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this set.
- */
-Set.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSet(this);
-};
-
-
-/**
- * This method returns the number of items that are currently in this set.
- * 
- * @returns {Number} The number of items that are in this set.
- */
-Set.prototype.getSize = function() {
-    return this.tree.size;
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this set.
- * @returns {Iterator} An iterator for this set.
- */
-Set.prototype.getIterator = function() {
-    const iterator = new TreeIterator(this.tree);
-    return iterator;
-};
-
-
-/**
- * This method determines the index of the specified item in this set.
- * 
- * @param {String|Number|Boolean|Component} item The item to be indexed.
- * @returns {Number} The index of the specified item.
- */
-Set.prototype.getIndex = function(item) {
-    if (this.convert) item = this.convert(item);
-    const index = this.tree.index(item) + 1;  // convert to ordinal based indexing
-    return index;
-};
-
-
-/**
- * This method retrieves the item that is associated with the specified index from this set.
- * 
- * @param {Number} index The index of the desired item in this set.
- * @returns {Component} The item in this set that is associated with the specified index.
- */
-Set.prototype.getItem = function(index) {
-    index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
-    const item = this.tree.node(index).value;
-    return item;
-};
-
-
-/**
- * This method attempts to add the specified item to this set. If the item is already
- * in the set this method returns false.
- * 
- * @param {String|Number|Boolean|Component} item The item to be added.
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-Set.prototype.addItem = function(item) {
-    if (this.convert) item = this.convert(item);
-    const result = this.tree.insert(item);
-    if (result) {
-    }
-    return result;
-};
-
-
-/*
- * This method attempts to remove the specified item from this set. If the set does
- * not contain the item the method returns false.
- * 
- * @param {String|Number|Boolean|Component} item The item to be removed from the set.
- * @returns {Boolean} Whether or not the item was removed.
- */
-Set.prototype.removeItem = function(item) {
-    if (this.convert) item = this.convert(item);
-    const result = this.tree.remove(item);
-    if (result) {
-    }
-    return result;
-};
-
-
-/**
- * This method removes the specified items from this set.  The number of
- * matching items is returned.
- *
- * @param {Collection} items The collection of items to be removed from this set.
- * @returns {Number} The number of items that were actually removed.
- */
-Set.prototype.removeItems = function(items) {
-    var count = 0;
-    const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        if (this.removeItem(item)) {
-            count++;
-        }
-    }
-    return count;
-};
-
-
-/**
- * This method removes all items from this set.
- */
-Set.prototype.clear = function() {
-    const size = this.getSize();
-    this.tree.clear();
-};
-
-
 // PRIVATE CLASSES
 
 /*
@@ -284,64 +224,60 @@ Set.prototype.clear = function() {
  */
 
 function TreeIterator(tree) {
-    this.tree = tree;
-    this.slot = 0;  // the slot before the first item
-    this.previous = undefined;
-    this.next = this.tree.minimum(this.tree.root);
+
+    // the tree, current slot index, and previous and next pointers are private attributes
+    // so methods that use them are defined in the constructor
+    var currentSlot = 0;  // the slot before the first item
+    var previous = undefined;
+    var next = minimum(tree.root);
+
+    this.toStart = function() {
+        currentSlot = 0;  // the slot before the first item
+        previous = undefined;
+        next = minimum(tree.root);
+    };
+
+    this.toSlot = function(slot) {
+        currentSlot = slot;
+        previous = tree.node(slot - 1);  // javascript index of item before the slot
+        next = successor(previous);
+    };
+
+    this.toEnd = function() {
+        currentSlot = tree.size;  // the slot after the last item
+        previous = maximum(tree.root);
+        next = undefined;
+    };
+
+    this.hasPrevious = function() {
+        return currentSlot > 0;
+    };
+
+    this.hasNext = function() {
+        return currentSlot < tree.size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous item from an iterator that is at the beginning of a set.');
+        const value = previous.value;
+        next = previous;
+        previous = predecessor(next);
+        currentSlot--;
+        return value;
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next item from an iterator that is at the end of a set.');
+        const value = next.value;
+        previous = next;
+        next = successor(previous);
+        currentSlot++;
+        return value;
+    };
+
     return this;
 }
 TreeIterator.prototype.constructor = TreeIterator;
-
-
-TreeIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first item
-    this.previous = undefined;
-    this.next = this.tree.minimum(this.tree.root);
-};
-
-
-TreeIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-    this.previous = this.tree.node(slot - 1);  // javascript index of item before the slot
-    this.next = this.tree.successor(this.previous);
-};
-
-
-TreeIterator.prototype.toEnd = function() {
-    this.slot = this.tree.size;  // the slot after the last item
-    this.previous = this.tree.maximum(this.tree.root);
-    this.next = undefined;
-};
-
-
-TreeIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-TreeIterator.prototype.hasNext = function() {
-    return this.slot < this.tree.size;
-};
-
-
-TreeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous item from an iterator that is at the beginning of a set.');
-    const value = this.previous.value;
-    this.next = this.previous;
-    this.previous = this.tree.predecessor(this.next);
-    this.slot--;
-    return value;
-};
-
-
-TreeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next item from an iterator that is at the end of a set.');
-    const value = this.next.value;
-    this.previous = this.next;
-    this.next = this.tree.successor(this.previous);
-    this.slot++;
-    return value;
-};
 
 
 /*
@@ -351,6 +287,8 @@ TreeIterator.prototype.getNext = function() {
  */
 
 function RandomizedTree(comparator) {
+    // NOTE: we don't want to make these attributes private because of the performance
+    // issues with having each node in the tree have its own local methods.
     this.size = 0;
     this.comparator = comparator;
     return this;
@@ -365,9 +303,9 @@ RandomizedTree.prototype.contains = function(value) {
 
 RandomizedTree.prototype.index = function(value) {
     var index = 0;
-    var candidate = this.minimum(this.root);
+    var candidate = minimum(this.root);
     while (candidate && !this.comparator.componentsAreEqual(candidate.value, value)) {
-        candidate = this.successor(candidate);
+        candidate = successor(candidate);
         index++;
     }
     if (candidate) {
@@ -379,9 +317,9 @@ RandomizedTree.prototype.index = function(value) {
 
 
 RandomizedTree.prototype.node = function(index) {
-    var candidate = this.minimum(this.root);
+    var candidate = minimum(this.root);
     while (index > 0 && index < this.size) {
-        candidate = this.successor(candidate);
+        candidate = successor(candidate);
         index--;
     }
     return candidate;
@@ -456,7 +394,7 @@ RandomizedTree.prototype.remove = function(value) {
         } else if (candidate.right === undefined) {
             this.replace(candidate, candidate.left);
         } else {
-            const successor = this.minimum(candidate.right);
+            const successor = minimum(candidate.right);
             if (successor.parent !== candidate) {
                 this.replace(successor, successor.right);
                 successor.right = candidate.right;
@@ -485,56 +423,6 @@ RandomizedTree.prototype.remove = function(value) {
 RandomizedTree.prototype.clear = function() {
     this.root = undefined;
     this.size = 0;
-};
-
-
-RandomizedTree.prototype.minimum = function(node) {
-    while (node && node.left) {
-        node = node.left;
-    }
-    return node;
-};
-
-
-RandomizedTree.prototype.maximum = function(node) {
-    while (node && node.right) {
-        node = node.right;
-    }
-    return node;
-};
-
-
-RandomizedTree.prototype.predecessor = function(node) {
-    if (node.left) {
-        // there is a left branch, so the predecessor is the rightmost node of that subtree
-        return this.maximum(node.left);
-    } else {
-        // it is the lowest ancestor whose right child is also an ancestor of node
-        var current = node;
-        var parent = node.parent;
-        while (parent && current === parent.left) {
-            current = parent;
-            parent = parent.parent;
-        }
-        return parent;
-    }
-};
-
-
-RandomizedTree.prototype.successor = function(node) {
-    if (node.right) {
-        // there is a right branch, so the successor is the leftmost node of that subtree
-        return this.minimum(node.right);
-    } else {
-        // it is the lowest ancestor whose left child is also an ancestor of node
-        var current = node;
-        var parent = node.parent;
-        while (parent && current === parent.right) {
-            current = parent;
-            parent = parent.parent;
-        }
-        return parent;
-    }
 };
 
 
@@ -633,3 +521,56 @@ RandomizedTree.prototype.rotateDown = function(node) {
         }
     }
 };
+
+
+// PRIVATE FUNCTIONS
+
+function minimum(node) {
+    while (node && node.left) {
+        node = node.left;
+    }
+    return node;
+}
+
+
+function maximum(node) {
+    while (node && node.right) {
+        node = node.right;
+    }
+    return node;
+}
+
+
+function predecessor(node) {
+    if (node.left) {
+        // there is a left branch, so the predecessor is the rightmost node of that subtree
+        return maximum(node.left);
+    } else {
+        // it is the lowest ancestor whose right child is also an ancestor of node
+        var current = node;
+        var parent = node.parent;
+        while (parent && current === parent.left) {
+            current = parent;
+            parent = parent.parent;
+        }
+        return parent;
+    }
+}
+
+
+function successor(node) {
+    if (node.right) {
+        // there is a right branch, so the successor is the leftmost node of that subtree
+        return minimum(node.right);
+    } else {
+        // it is the lowest ancestor whose left child is also an ancestor of node
+        var current = node;
+        var parent = node.parent;
+        while (parent && current === parent.right) {
+            current = parent;
+            parent = parent.parent;
+        }
+        return parent;
+    }
+}
+

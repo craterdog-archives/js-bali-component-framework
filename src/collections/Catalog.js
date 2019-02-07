@@ -103,7 +103,7 @@ Catalog.prototype.toObject = function() {
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
         const association = iterator.getNext();
-        object[association.key.toString()] = association.value;
+        object[association.getKey().toString()] = association.getValue();
     }
     return object;
 };
@@ -155,7 +155,7 @@ Catalog.prototype.getItem = function(index) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Catalog.prototype.addItem = function(association) {
-    const index = association.key.toString();
+    const index = association.getKey().toString();
     if (this.map[index]) {
         // an association with the specified key already exists
         return false;
@@ -176,7 +176,7 @@ Catalog.prototype.addItem = function(association) {
  */
 Catalog.prototype.containsItem = function(association) {
     var result = false;
-    const index = association.key.toString();
+    const index = association.getKey().toString();
     const candidate = this.map[index];
     if (candidate) {
         result = candidate.isEqualTo(association);
@@ -195,7 +195,7 @@ Catalog.prototype.getValue = function(key) {
     var value;
     const index = key.toString();
     const association = this.map[index];
-    if (association) value = association.value;
+    if (association) value = association.getValue();
     return value;
 };
 
@@ -229,15 +229,11 @@ Catalog.prototype.getValues = function(keys) {
  * @returns {Component} The value previously associated with the key.
  */
 Catalog.prototype.setValue = function(key, value) {
-    if (this.convert) {
-        key = this.convert(key);
-        value = this.convert(value);
-    }
     const index = key.toString();
     var association = this.map[index];
     var oldValue;
     if (association) {
-        oldValue = association.value;
+        oldValue = association.getValue();
         association.setValue(value);
     } else {
         association = new composites.Association(key, value);
@@ -258,7 +254,7 @@ Catalog.prototype.setValues = function(associations) {
     const iterator = associations.getIterator();
     while (iterator.hasNext()) {
         const association = iterator.getNext();
-        this.setValue(association.key, association.value);
+        this.setValue(association.getKey(), association.getValue());
     }
 };
 
@@ -279,7 +275,7 @@ Catalog.prototype.removeValue = function(key) {
             return item.isEqualTo(association);
         });
         this.array.splice(index, 1);
-        return association.value;
+        return association.getValue();
     }
 };
 
@@ -326,7 +322,7 @@ Catalog.prototype.clear = function() {
 Catalog.prototype.getKeys = function() {
     const keys = new List();
     this.array.forEach(function(association) {
-        const key = association.key;
+        const key = association.getKey();
         keys.addItem(key);
     });
     return keys;

@@ -19,8 +19,8 @@ describe('Bali Component Framework™', function() {
 
         it('should test extreme coin tosses', function() {
             for (var i = 0; i < 100; i++) {
-                expect(bali.utilities.random.coinToss(0)).is.false;  // jshint ignore:line
-                expect(bali.utilities.random.coinToss(1)).is.true;  // jshint ignore:line
+                expect(bali.random.coinToss(0)).is.false;  // jshint ignore:line
+                expect(bali.random.coinToss(1)).is.true;  // jshint ignore:line
             }
         });
 
@@ -28,7 +28,7 @@ describe('Bali Component Framework™', function() {
             var gotOne = false;
             var gotThree = false;
             for (var i = 0; i < 100; i++) {
-                const index = bali.utilities.random.index(3);
+                const index = bali.random.index(3);
                 expect(index >= 1).is.true;  // jshint ignore:line
                 expect(index <= 3).is.true;  // jshint ignore:line
                 if (index === 1) gotOne = true;
@@ -40,7 +40,7 @@ describe('Bali Component Framework™', function() {
 
         it('should test endpoints of random probabilities', function() {
             for (var i = 0; i < 100; i++) {
-                const probability = bali.utilities.random.probability();
+                const probability = bali.random.probability();
                 expect(probability >= 0).is.true;  // jshint ignore:line
                 expect(probability <= 1).is.true;  // jshint ignore:line
             }

@@ -32,7 +32,10 @@ function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     if (!value) throw new Error('BUG: An invalid reference value was passed to the constructor: ' + value);
     if (typeof value === 'string') value = new URL(value);
-    this.value = value;
+
+    // since this element is immutable the value must be read-only
+    this.getValue = function() { return value; };
+
     return this;
 }
 Reference.prototype = Object.create(abstractions.Element.prototype);

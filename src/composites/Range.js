@@ -11,9 +11,6 @@
 /* global NaN, Infinity */
 
 /**
- * This collection class defines a range of items.
- */
-/**
  * This collection class implements a data structure that defines a range of items. The
  * structure is static once the first and last items in the range have been defined.
  */
@@ -35,16 +32,100 @@ const elements = require('../elements');
  */
 function Range(first, last, parameters) {
     abstractions.Composite.call(this, utilities.types.RANGE, parameters);
+
+    // the range is immutable so the collection is private and the indices must be read-only
+    var firstIndex;
+    var lastIndex;
+    var collection;
     if (parameters) {
-        this.collection = parameters.getValue('$collection');
-        this.first = this.collection.getIndex(first);
-        this.last = this.collection.getIndex(last);
+        // parameters are immutable so we don't need to copy the collection
+        collection = parameters.getValue('$collection');
+        if (collection) {
+            // determine the indices of the items in the collection
+            firstIndex = collection.getIndex(first);
+            lastIndex = collection.getIndex(last);
+        }
     } else {
-        if (first.type === utilities.types.NUMBER) first = first.toNumber();
-        if (last.type === utilities.types.NUMBER) last = last.toNumber();
-        this.first = first;
-        this.last = last;
+        // the first and last items are indices into the integers
+        firstIndex = (typeof first === 'number') ? first : first.toNumber();
+        lastIndex = (typeof last === 'number') ? last : last.toNumber();
     }
+
+    // to protect the attributes the methods are defined in the constructor
+    this.getFirstIndex = function() { return firstIndex; };
+    this.getLastIndex = function() { return lastIndex; };
+
+    this.acceptVisitor = function(visitor) {
+        visitor.visitRange(this);
+    };
+
+    this.toArray = function() {
+        if (lastIndex === Infinity) {
+            throw new Error('BUG: Unable to generate an array from an infinite range.');
+        }
+        const array = [];
+        var index = firstIndex;
+        while (index <= lastIndex) {
+            if (collection) {
+                array.push(collection.getItem(index++));  // retrieve the next item
+            } else {
+                array.push(new elements.Number(index++));  // the index is the next item
+            }
+        }
+        return array;
+    };
+
+    this.getIterator = function() {
+        return new RangeIterator(this, collection);
+    };
+
+    this.getSize = function() {
+        return lastIndex - firstIndex + 1;
+    };
+    
+    this.getFirst = function() {
+        var item;
+        if (collection) {
+            item = collection.getItem(firstIndex);  // retrieve the item
+        } else {
+            item = new elements.Number(firstIndex);  // the index is the item
+        }
+        return item;
+    };
+    
+    this.getItem = function(index) {
+        var item;
+        if (collection) {
+            item = collection.getItem(firstIndex + index - 1);
+        } else {
+            item = new elements.Number(firstIndex + index - 1);
+        }
+        return item;
+    };
+    
+    this.getLast = function() {
+        var item;
+        if (collection) {
+            item = collection.getItem(lastIndex);  // retrieve the item
+        } else {
+            item = new elements.Number(lastIndex);  // the index is the item
+        }
+        return item;
+    };
+    
+    this.isInRange = function(item) {
+        var index;
+        if (collection) {
+            index = collection.getIndex(item);
+        } else {
+            if (typeof item !== 'number') {
+                throw new Error('BUG: The item must be a number: ' + item);
+            }
+            index = item;
+        }
+        return index >= firstIndex && index <= lastIndex;
+    };
+
     return this;
 }
 Range.prototype = Object.create(abstractions.Composite.prototype);
@@ -52,190 +133,61 @@ Range.prototype.constructor = Range;
 exports.Range = Range;
 
 
-// PUBLIC METHODS
-
-/**
- * This method returns an array containing the items in this range.
- * 
- * @returns {Array} An array containing the items in this range.
- */
-Range.prototype.toArray = function() {
-    if (this.last === Infinity) {
-        throw new Error('BUG: Unable to generate an array from an infinite range.');
-    }
-    const array = [];
-    var index = this.first;
-    while (index <= this.last) {
-        if (this.collection) {
-            array.push(this.collection.getItem(index++));  // retrieve the next item
-        } else {
-            array.push(new elements.Number(index++));  // the index is the next item
-        }
-    }
-    return array;
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this range.
- */
-Range.prototype.acceptVisitor = function(visitor) {
-    visitor.visitRange(this);
-};
-
-
-/**
- * This method returns the number of numbers that are in this range.
- * 
- * @returns {Component} The number of numbers that fall in this range.
- */
-Range.prototype.getSize = function() {
-    const size = this.last - this.first + 1;
-    return size;
-};
-
-
-/**
- * This method returns the first item in this range.
- * 
- * @returns {Component} The first item in this range.
- */
-Range.prototype.getFirst = function() {
-    var item;
-    if (this.collection) {
-        item = this.collection.getItem(this.first);  // retrieve the item
-    } else {
-        item = new elements.Number(this.first);  // the index is the item
-    }
-    return item;
-};
-
-
-/**
- * This method returns the specified item in this range.
- * 
- * @param {Number} index The index of the desired item. 
- * @returns {Component} The specified item in this range.
- */
-Range.prototype.getItem = function(index) {
-    var item;
-    if (this.collection) {
-        item = this.collection.getItem(this.first + index - 1);
-    } else {
-        item = new elements.Number(this.first + index - 1);
-    }
-    return item;
-};
-
-
-/**
- * This method returns the last item in this range.
- * 
- * @returns {Component} The last item in this range.
- */
-Range.prototype.getLast = function() {
-    var item;
-    if (this.collection) {
-        item = this.collection.getItem(this.last);  // retrieve the item
-    } else {
-        item = new elements.Number(this.last);  // the index is the item
-    }
-    return item;
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this collection.
- * @returns {Iterator} An iterator for this collection.
- */
-Range.prototype.getIterator = function() {
-    const iterator = new RangeIterator(this);
-    return iterator;
-};
-
-
-/**
- * This method determines whether or not the specified item is in this range.
- *
- * @param {Component} item The item to check.
- * @returns {Boolean} Whether or not the item is in this range.
- */
-Range.prototype.isInRange = function(item) {
-    var index;
-    if (this.collection) {
-        index = this.collection.getIndex(item);
-    } else {
-        if (typeof item !== 'number') {
-            throw new Error('BUG: The item must be a number: ' + item);
-        }
-        index = item;
-    }
-    return index >= this.first && index <= this.last;
-};
-
-
 // PRIVATE CLASSES
 
-function RangeIterator(range) {
-    this.slot = 0;  // the slot before the first number
-    this.size = range.getSize();  // static so we can cache it here
-    this.range = range;
+function RangeIterator(range, collection) {
+
+    // the range, size, collection, and current slot index are private attributes
+    // so methods that use them are defined in the constructor
+    var currentSlot = 0;  // the slot before the first number
+    const size = range.getSize();  // static so we can cache it here
+
+    this.toStart = function() {
+        currentSlot = 0;  // the slot before the first number
+    };
+    
+    this.toSlot = function(slot) {
+        currentSlot = slot;
+    };
+    
+    this.toEnd = function() {
+        currentSlot = size;  // the slot after the last number
+    };
+    
+    this.hasPrevious = function() {
+        return currentSlot > 0;
+    };
+    
+    this.hasNext = function() {
+        return currentSlot < size;
+    };
+    
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
+        currentSlot--;
+        const index = range.getFirstIndex() + currentSlot;
+        var item;
+        if (collection) {
+            item = collection.getItem(index);  // retrieve the item
+        } else {
+            item = new elements.Number(index);  // the index is the item
+        }
+        return item;
+    };
+    
+    this.getNext = function() {
+        if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
+        const index = range.getFirstIndex() + currentSlot;
+        var item;
+        if (collection) {
+            item = collection.getItem(index);  // retrieve the item
+        } else {
+            item = new elements.Number(index);  // the index is the item
+        }
+        currentSlot++;
+        return item;
+    };
+    
     return this;
 }
 RangeIterator.prototype.constructor = RangeIterator;
-
-
-RangeIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
-};
-
-
-RangeIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-RangeIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
-};
-
-
-RangeIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-RangeIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-RangeIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
-    this.slot--;
-    const index = this.range.first + this.slot;
-    var item;
-    if (this.range.collection) {
-        item = this.range.collection.getItem(index);  // retrieve the item
-    } else {
-        item = new elements.Number(index);  // the index is the item
-    }
-    return item;
-};
-
-
-RangeIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next entity from an iterator that is at the end of a range.');
-    const index = this.range.first + this.slot;
-    var item;
-    if (this.range.collection) {
-        item = this.range.collection.getItem(index);  // retrieve the item
-    } else {
-        item = new elements.Number(index);  // the index is the item
-    }
-    this.slot++;
-    return item;
-};

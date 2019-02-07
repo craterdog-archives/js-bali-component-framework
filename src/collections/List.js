@@ -122,7 +122,7 @@ List.prototype.getItem = function(index) {
  * @returns The existing item that was at the specified index.
  */
 List.prototype.setItem = function(index, item) {
-    if (this.convert) item = this.convert(item);
+    item = this.convert(item);
     index = this.normalizeIndex(index) - 1;  // convert to JS zero based indexing
     const oldItem = this.array[index];
     this.array[index] = item;
@@ -137,7 +137,7 @@ List.prototype.setItem = function(index, item) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 List.prototype.addItem = function(item) {
-    if (this.convert) item = this.convert(item);
+    item = this.convert(item);
     this.array.push(item);
     return true;
 };
@@ -151,7 +151,7 @@ List.prototype.addItem = function(item) {
  * @param {Component} item The new item to be inserted into this list.
  */
 List.prototype.insertItem = function(index, item) {
-    if (this.convert) item = this.convert(item);
+    item = this.convert(item);
     index = this.normalizeIndex(index);
     index--;  // convert to javascript zero based indexing
     this.array.splice(index, 0, item);
@@ -200,7 +200,7 @@ List.prototype.removeItem = function(index) {
  * @returns The list of the items that were removed from this list.
  */
 List.prototype.removeItems = function(range) {
-    const items = new List(this.parameters);
+    const items = new List(this.getParameters());
     const iterator = range.getIterator();
     while (iterator.hasNext()) {
         const index = iterator.getNext();

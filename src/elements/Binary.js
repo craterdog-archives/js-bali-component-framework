@@ -14,6 +14,7 @@
  * binary string element.
  */
 const utilities = require('../utilities');
+const formatter = new utilities.Formatter();
 const abstractions = require('../abstractions');
 
 
@@ -39,7 +40,10 @@ function Binary(value, parameters) {
         // the value is the number of random bytes to generate
         value = utilities.random.bytes(value);
     }
-    this.value = value;
+
+    // since this element is immutable the value must be read-only
+    this.getValue = function() { return value; };
+
     return this;
 }
 Binary.prototype = Object.create(abstractions.Element.prototype);
@@ -66,8 +70,7 @@ Binary.prototype.toBoolean = function() {
  * @returns {String} The base 2 encoded value of this binary string.
  */
 Binary.prototype.toBase2 = function() {
-    const formatter = new utilities.Formatter();
-    return utilities.formatter.formatLiteral(this, '$base2');
+    return formatter.formatLiteral(this, '$base2');
 };
 
 
@@ -77,8 +80,7 @@ Binary.prototype.toBase2 = function() {
  * @returns {String} The base 16 encoded value of this binary string.
  */
 Binary.prototype.toBase16 = function() {
-    const formatter = new utilities.Formatter();
-    return utilities.formatter.formatLiteral(this, '$base16');
+    return formatter.formatLiteral(this, '$base16');
 };
 
 
@@ -88,8 +90,7 @@ Binary.prototype.toBase16 = function() {
  * @returns {String} The base 32 encoded value of this binary string.
  */
 Binary.prototype.toBase32 = function() {
-    const formatter = new utilities.Formatter();
-    return utilities.formatter.formatLiteral(this, '$base32');
+    return formatter.formatLiteral(this, '$base32');
 };
 
 
@@ -99,8 +100,7 @@ Binary.prototype.toBase32 = function() {
  * @returns {String} The base 64 encoded value of this binary string.
  */
 Binary.prototype.toBase64 = function() {
-    const formatter = new utilities.Formatter();
-    return utilities.formatter.formatLiteral(this, '$base64');
+    return formatter.formatLiteral(this, '$base64');
 };
 
 
@@ -131,7 +131,7 @@ Binary.prototype.comparedTo = function(that) {
     }
 
     // the types are the same, check the values
-    return Buffer.compare(this.value, that.value);
+    return Buffer.compare(this.getValue(), that.getValue());
 };
 
 
@@ -151,7 +151,7 @@ Binary.prototype.isEmpty = function() {
  * @returns {Number} The number of bytes that this binary string has.
  */
 Binary.prototype.getSize = function() {
-    return this.value.length;
+    return this.getValue().length;
 };
 
 
@@ -161,7 +161,7 @@ Binary.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this binary string.
  */
 Binary.prototype.getIterator = function() {
-    const iterator = new BufferIterator(this.value);
+    const iterator = new BufferIterator(this.getValue());
     return iterator;
 };
 
@@ -176,9 +176,9 @@ Binary.prototype.getIterator = function() {
  * @returns {Binary} The resulting binary.
  */
 Binary.not = function(binary) {
-    const length = binary.value.length;
+    const length = binary.getValue().length;
     const buffer = Buffer.alloc(length);
-    binary.value.forEach(function(byte, index) {
+    binary.getValue().forEach(function(byte, index) {
         buffer[index] = ~byte;
     });
     return new Binary(buffer);
@@ -194,11 +194,11 @@ Binary.not = function(binary) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.and = function(first, second) {
-    var length = Math.max(first.value.length, second.value.length);
+    var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(first.value.length, second.value.length);
+    length = Math.min(first.getValue().length, second.getValue().length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = first.value[index] & second.value[index];
+        buffer[index] = first.getValue()[index] & second.getValue()[index];
     }
     return new Binary(buffer);
 };
@@ -213,11 +213,11 @@ Binary.and = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.sans = function(first, second) {
-    var length = Math.max(first.value.length, second.value.length);
+    var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(first.value.length, second.value.length);
+    length = Math.min(first.getValue().length, second.getValue().length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = first.value[index] & ~second.value[index];
+        buffer[index] = first.getValue()[index] & ~second.getValue()[index];
     }
     return new Binary(buffer);
 };
@@ -232,11 +232,11 @@ Binary.sans = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.or = function(first, second) {
-    var length = Math.max(first.value.length, second.value.length);
+    var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(first.value.length, second.value.length);
+    length = Math.min(first.getValue().length, second.getValue().length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = first.value[index] | second.value[index];
+        buffer[index] = first.getValue()[index] | second.getValue()[index];
     }
     return new Binary(buffer);
 };
@@ -251,11 +251,11 @@ Binary.or = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.xor = function(first, second) {
-    var length = Math.max(first.value.length, second.value.length);
+    var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
-    length = Math.min(first.value.length, second.value.length);
+    length = Math.min(first.getValue().length, second.getValue().length);
     for (var index = 0; index < length; index++) {
-        buffer[index] = first.value[index] ^ second.value[index];
+        buffer[index] = first.getValue()[index] ^ second.getValue()[index];
     }
     return new Binary(buffer);
 };
@@ -270,8 +270,8 @@ Binary.xor = function(first, second) {
  * @returns {List} The resulting binary string.
  */
 Binary.concatenation = function(first, second) {
-    const buffer1 = first.value;
-    const buffer2 = second.value;
+    const buffer1 = first.getValue();
+    const buffer2 = second.getValue();
     const buffer = Buffer.alloc(buffer1.length + buffer2.length);
     buffer1.copy(buffer);
     buffer2.copy(buffer, buffer1.length);

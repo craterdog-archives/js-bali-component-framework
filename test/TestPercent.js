@@ -55,7 +55,7 @@ describe('Bali Component Framework™', function() {
     describe('Test percentage methods', function() {
 
         it('should return the correct type', function() {
-            const type = bali.percent(50).getType();
+            const type = bali.percent(50).getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#WCXVKQC0BM03CNBD2JSF8VLVVHJ1A6P4,$version:v1,$digest:none]>');
         });
 

@@ -46,7 +46,7 @@ describe('Bali Component Framework™', function() {
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(function() {stack.addItem('"beta"');}).to.throw(bali.utilities.Exception);
+            expect(function() {stack.addItem('"beta"');}).to.throw(bali.Exception);
             const top = stack.removeItem();
             expect(top).to.exist;  // jshint ignore:line
             expect(top.toString()).to.equal('"alpha"');
@@ -120,7 +120,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the stack methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.stack().getType();
+            const type = bali.stack().getTypeReference();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Q2BJ8CAR3HW39A5GFC2C2S1JZVX4PSX9,$version:v1,$digest:none]>');
         });
 
