@@ -19,28 +19,28 @@ Object.keys(utilities).forEach(function(key) {
 // ABSTRACTIONS
 const abstractions = require('./src/abstractions');  // depends on utilities
 Object.keys(abstractions).forEach(function(key) {
-    exports[key] = utilities[key];
+    exports[key] = abstractions[key];
 });
 
 
 // ELEMENTS
 const elements = require('./src/elements');  // depends on abstractions
 Object.keys(elements).forEach(function(key) {
-    exports[key] = utilities[key];
+    exports[key] = elements[key];
 });
 
 
 // COMPOSITES
 const composites = require('./src/composites');  // depends on elements
 Object.keys(composites).forEach(function(key) {
-    exports[key] = utilities[key];
+    exports[key] = composites[key];
 });
 
 
 // COLLECTIONS
 const collections = require('./src/collections');  // depends on composites
 Object.keys(collections).forEach(function(key) {
-    exports[key] = utilities[key];
+    exports[key] = collections[key];
 });
 
 
