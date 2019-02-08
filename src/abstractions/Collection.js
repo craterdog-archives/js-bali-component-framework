@@ -78,7 +78,7 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    throw new Error('BUG: The abstract method getItem(index) must be implemented by a concrete subclass.');
+    throw new Error('The abstract method getItem(index) must be implemented by a concrete subclass.');
 };
 
 
@@ -108,7 +108,7 @@ Collection.prototype.getItems = function(range) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    throw new Error('BUG: The abstract method addItem(item) must be implemented by a concrete subclass.');
+    throw new Error('The abstract method addItem(item) must be implemented by a concrete subclass.');
 };
 
 
@@ -195,6 +195,6 @@ Collection.prototype.containsAll = function(items) {
  * be implemented by a subclass.
  */
 Collection.prototype.clear = function() {
-    throw new Error('BUG: The abstract method clear() must be implemented by a concrete subclass.');
+    throw new Error('The abstract method clear() must be implemented by a concrete subclass.');
 };
 

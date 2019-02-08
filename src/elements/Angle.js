@@ -32,7 +32,7 @@ function Angle(value, parameters) {
 
     // analyze the value
     if (value === undefined) value = 0;  // default value
-    if (!isFinite(value)) throw new Error('BUG: An invalid angle value was passed to the constructor: ' + value);
+    if (!isFinite(value)) throw new Error('An invalid angle value was passed to the constructor: ' + value);
     if (parameters) {
         const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {

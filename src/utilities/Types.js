@@ -272,6 +272,7 @@ exports.isLiteral = function(type) {
         case exports.PROBABILITY:
         case exports.REFERENCE:
         case exports.RESERVED:
+        case exports.SOURCE:
         case exports.SYMBOL:
         case exports.TAG:
         case exports.TEXT:

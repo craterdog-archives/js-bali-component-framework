@@ -205,7 +205,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = utilities.codex.base64Decode(value);
             break;
         default:
-            throw new Error('BUG: An invalid encoding for a binary string was specified: ' + encoding);
+            throw new Error('An invalid encoding for a binary string was specified: ' + encoding);
     }
     const binary = new elements.Binary(value, parameters);
     this.result = binary;

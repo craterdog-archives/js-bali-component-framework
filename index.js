@@ -142,13 +142,12 @@ const iterator = function(array) {
 exports.iterator = iterator;
 
 const parameters = function(object) {
-    var collection;
     if (Array.isArray(object)) {
-        collection = list(object);
-    } else {
-        collection = catalog(object);
+        object = list(object);
+    } else if (!object.getType) {
+        object = catalog(object);
     }
-    return new composites.Parameters(collection);
+    return new composites.Parameters(object);
 };
 exports.parameters = parameters;
 

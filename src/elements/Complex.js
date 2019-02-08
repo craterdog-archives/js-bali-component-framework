@@ -218,8 +218,8 @@ Complex.inverse = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(0);
-    const real = -complex.real;
-    const imaginary = -complex.imaginary;
+    const real = -complex.getReal();
+    const imaginary = -complex.getImaginary();
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -240,9 +240,9 @@ Complex.reciprocal = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(0);
     if (complex.isZero()) return new Complex(Infinity);
-    const squared = utilities.precision.sum(utilities.precision.product(complex.real, complex.real), utilities.precision.product(complex.imaginary, complex.imaginary));
-    const real = utilities.precision.quotient(complex.real, squared);
-    const imaginary = -utilities.precision.quotient(complex.imaginary, squared);
+    const squared = utilities.precision.sum(utilities.precision.product(complex.getReal(), complex.getReal()), utilities.precision.product(complex.getImaginary(), complex.getImaginary()));
+    const real = utilities.precision.quotient(complex.getReal(), squared);
+    const imaginary = -utilities.precision.quotient(complex.getImaginary(), squared);
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -261,8 +261,8 @@ Complex.conjugate = function(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(0);
-    const real = complex.real;
-    const imaginary = -complex.imaginary;
+    const real = complex.getReal();
+    const imaginary = -complex.getImaginary();
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -280,7 +280,7 @@ Complex.factorial = function(complex) {
     if (complex.isZero()) return new Complex(1);
     // just implement real factorials for now...
     // TODO: what should a complex factorial be?
-    const factorial = gamma(complex.real + 1);
+    const factorial = gamma(complex.getReal() + 1);
     const result = new Complex(factorial);
     return result;
 };
@@ -300,8 +300,8 @@ Complex.sum = function(first, second) {
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
     if (first.isEqualTo(Complex.inverse(second))) return new Complex(0);
-    const real = utilities.precision.sum(first.real, second.real);
-    const imaginary = utilities.precision.sum(first.imaginary, second.imaginary);
+    const real = utilities.precision.sum(first.getReal(), second.getReal());
+    const imaginary = utilities.precision.sum(first.getImaginary(), second.getImaginary());
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -340,8 +340,8 @@ Complex.scaled = function(complex, factor) {
     if (complex.isInfinite() && factor === 0) return new Complex(NaN);
     if (complex.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity);
     if (complex.isZero() || factor === 0) return new Complex(0);
-    const real = utilities.precision.product(complex.real, factor);
-    const imaginary = utilities.precision.product(complex.imaginary, factor);
+    const real = utilities.precision.product(complex.getReal(), factor);
+    const imaginary = utilities.precision.product(complex.getImaginary(), factor);
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -363,8 +363,8 @@ Complex.product = function(first, second) {
     if (first.isInfinite() && second.isZero()) return new Complex(NaN);
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
     if (first.isZero() || second.isZero()) return new Complex(0);
-    const real = utilities.precision.difference(utilities.precision.product(first.real, second.real), utilities.precision.product(first.imaginary, second.imaginary));
-    const imaginary = utilities.precision.sum(utilities.precision.product(first.real, second.imaginary), utilities.precision.product(first.imaginary * second.real));
+    const real = utilities.precision.difference(utilities.precision.product(first.getReal(), second.getReal()), utilities.precision.product(first.getImaginary(), second.getImaginary()));
+    const imaginary = utilities.precision.sum(utilities.precision.product(first.getReal(), second.getImaginary()), utilities.precision.product(first.getImaginary() * second.getReal()));
     const result = new Complex(real, imaginary);
     return result;
 };
@@ -400,8 +400,8 @@ Complex.remainder = function(first, second) {
     if (second.isZero()) return new Complex(Infinity);
     // just implement for integer values
     // TODO: what does remainder mean for complex numbers?
-    const firstInteger = Math.round(first.real);
-    const secondInteger = Math.round(second.real);
+    const firstInteger = Math.round(first.getReal());
+    const secondInteger = Math.round(second.getReal());
     return new Complex(utilities.precision.remainder(firstInteger, secondInteger));
 };
 
@@ -478,9 +478,9 @@ function exp(complex) {
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(1);
-    const scale = utilities.precision.exponential(complex.real);
-    const real = utilities.precision.product(scale, utilities.precision.cosine(complex.imaginary));
-    const imaginary = utilities.precision.product(scale, utilities.precision.sine(complex.imaginary));
+    const scale = utilities.precision.exponential(complex.getReal());
+    const real = utilities.precision.product(scale, utilities.precision.cosine(complex.getImaginary()));
+    const imaginary = utilities.precision.product(scale, utilities.precision.sine(complex.getImaginary()));
     const result = new Complex(real, imaginary);
     return result;
 }

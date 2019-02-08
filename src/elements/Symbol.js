@@ -30,7 +30,7 @@ const abstractions = require('../abstractions');
 function Symbol(value, parameters) {
     abstractions.Element.call(this, utilities.types.SYMBOL, parameters);
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Error('BUG: An invalid symbol value was passed to the constructor.');
+        throw new Error('An invalid symbol value was passed to the constructor.');
     }
 
     // since this element is immutable the value must be read-only

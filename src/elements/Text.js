@@ -150,12 +150,12 @@ TextIterator.prototype.hasNext = function() {
 
 
 TextIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous character from an iterator that is at the beginning of a text string.');
+    if (!this.hasPrevious()) throw new Error('Unable to retrieve the previous character from an iterator that is at the beginning of a text string.');
     return this.text[--this.slot];
 };
 
 
 TextIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next character from an iterator that is at the end of a text string.');
+    if (!this.hasNext()) throw new Error('Unable to retrieve the next character from an iterator that is at the end of a text string.');
     return this.text[this.slot++];
 };

@@ -43,7 +43,7 @@ function Formatter(indentation) {
 
     this.formatLiteral = function(element, format) {
         if (!types.isLiteral(element.getType())) {
-            throw new Error('BUG: Attempted to format a non-element as a literal: ' + element);
+            throw new Error('Attempted to format a non-element as a literal: ' + element);
         }
         const visitor = new FormattingVisitor(indentation, false, format);
         element.acceptVisitor(visitor);
@@ -113,7 +113,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            throw new Error('BUG: An invalid angle format was specified: ' + format);
+            throw new Error('An invalid angle format was specified: ' + format);
     }
     formatted += '~' + formatReal(value);
     if (this.allowParameters && angle.isParameterized()) {
@@ -171,7 +171,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = codex.base64Encode(value);
             break;
         default:
-            throw new Error('BUG: An invalid binary encoding format was specified: ' + format);
+            throw new Error('An invalid binary encoding format was specified: ' + format);
     }
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');

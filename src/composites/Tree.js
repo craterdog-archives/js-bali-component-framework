@@ -32,7 +32,7 @@ const abstractions = require('../abstractions');
 function Tree(type) {
     abstractions.Composite.call(this, type);
     if (!utilities.types.isProcedural(type)) {
-        throw new Error('BUG: An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
+        throw new Error('An invalid tree type was passed to the constructor: ' + utilities.types.typeName(type));
     }
 
     // the array is a private attribute so methods that use it are defined in the constructor
@@ -195,6 +195,6 @@ Tree.prototype.acceptVisitor = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('BUG: A visitor found an invalid tree node type: ' + utilities.types.typeName(this.getType()));
+            throw new Error('A visitor found an invalid tree node type: ' + utilities.types.typeName(this.getType()));
     }
 };

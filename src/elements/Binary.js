@@ -316,12 +316,12 @@ BufferIterator.prototype.hasNext = function() {
 
 
 BufferIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('BUG: Unable to retrieve the previous byte from an iterator that is at the beginning of a binary string.');
+    if (!this.hasPrevious()) throw new Error('Unable to retrieve the previous byte from an iterator that is at the beginning of a binary string.');
     return this.buffer[--this.slot];
 };
 
 
 BufferIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('BUG: Unable to retrieve the next byte from an iterator that is at the end of a binary string.');
+    if (!this.hasNext()) throw new Error('Unable to retrieve the next byte from an iterator that is at the end of a binary string.');
     return this.buffer[this.slot++];
 };

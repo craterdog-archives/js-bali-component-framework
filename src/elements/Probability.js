@@ -30,7 +30,7 @@ function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
     if (value === undefined) value = 0;  // default value
     if (!isFinite(value) || value < 0 || value > 1) {
-        throw new Error('BUG: An invalid probability value was passed to the constructor: ' + value);
+        throw new Error('An invalid probability value was passed to the constructor: ' + value);
     }
 
     // since this element is immutable the value must be read-only

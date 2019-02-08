@@ -80,14 +80,14 @@ function Stack(parameters) {
         if (array.length > 0) {
             return array.pop();
         }
-        throw new Error('BUG: Attempted to pop an item off of an empty stack.');
+        throw new Error('Attempted to pop an item off of an empty stack.');
     };
     
     this.getTop = function() {
         if (array.length > 0) {
             return array.peek();
         }
-        throw new Error('BUG: Attempted to access the top item of an empty stack.');
+        throw new Error('Attempted to access the top item of an empty stack.');
     };
     
     this.clear = function() {
