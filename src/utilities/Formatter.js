@@ -42,7 +42,7 @@ function Formatter(indentation) {
     indentation = indentation || '';
 
     this.formatLiteral = function(element, format) {
-        if (!types.isLiteral(element.getType())) {
+        if (!types.isLiteral(element.getTypeId())) {
             throw new Error('Attempted to format a non-element as a literal: ' + element);
         }
         const visitor = new FormattingVisitor(indentation, false, format);
@@ -269,7 +269,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
             this.depth--;
             formatted += EOL + this.getIndentation();
         }
-    } else if (collection.getType() === types.CATALOG) {
+    } else if (collection.getTypeId() === types.CATALOG) {
         formatted += ':';  // empty catalog
     }
     this.result = formatted;
@@ -502,7 +502,7 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     // should insert a space before a negative number or another inversion
     var left = operand;
     while (true) {
-        if (left.getType() === types.INVERSION_EXPRESSION || left.getType() === types.NUMBER && left.getReal().toString().startsWith('-')) {
+        if (left.getTypeId() === types.INVERSION_EXPRESSION || left.getTypeId() === types.NUMBER && left.getReal().toString().startsWith('-')) {
             formatted += ' ';
         }
         // check for a leaf node (i.e. an element or an identifier node

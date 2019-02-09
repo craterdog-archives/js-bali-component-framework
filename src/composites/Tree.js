@@ -73,7 +73,7 @@ exports.Tree = Tree;
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
-    switch(this.getType()) {
+    switch(this.getTypeId()) {
         case utilities.types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
@@ -195,6 +195,6 @@ Tree.prototype.acceptVisitor = function(visitor) {
             visitor.visitWithClause(this);
             break;
         default:
-            throw new Error('A visitor found an invalid tree node type: ' + utilities.types.typeName(this.getType()));
+            throw new Error('A visitor found an invalid tree node type: ' + utilities.types.typeName(this.getTypeId()));
     }
 };

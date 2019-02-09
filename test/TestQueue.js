@@ -140,7 +140,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the queue methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.queue().getTypeReference();
+            const type = bali.queue().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#7F20TGXVDQB8DDDB7ZRL989N1PCTLFB4,$version:v1,$digest:none]>');
         });
 

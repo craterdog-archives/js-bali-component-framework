@@ -97,7 +97,7 @@ describe('Bali Component Framework™', function() {
     describe('Test the list methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.list().getTypeReference();
+            const type = bali.list().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#TRYB04LK9Z1TSABALD7W31K8YFSN1F0F,$version:v1,$digest:none]>');
         });
 

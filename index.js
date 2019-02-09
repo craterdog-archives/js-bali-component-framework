@@ -71,7 +71,7 @@ const convert = function(value) {
             if (Array.isArray(value)) {
                 // convert the array to a list
                 component = list(value);
-            } else if (value.constructor.prototype.acceptVisitor && value.getType()) {
+            } else if (value.constructor.prototype.acceptVisitor && value.getTypeId()) {
                 // leave it since it is already a component
                 component = value;
             } else {
@@ -89,17 +89,17 @@ const fillCollection = function(procedure, collection, sequence) {
         if (Array.isArray(sequence)) {
             sequence.forEach(function(item) {
                 item = convert(item);
-                if (item.getType() === utilities.types.ASSOCIATION) {
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
                     item = item.getValue();
                 }
                 collection.addItem(item);
             });
-        } else if (utilities.types.isSequential(sequence.getType())) {
+        } else if (utilities.types.isSequential(sequence.getTypeId())) {
             const iterator = sequence.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.getType() === utilities.types.ASSOCIATION) {
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
                     item = item.getValue();
                 }
                 collection.addItem(item);
@@ -144,7 +144,7 @@ exports.iterator = iterator;
 const parameters = function(object) {
     if (Array.isArray(object)) {
         object = list(object);
-    } else if (!object.getType) {
+    } else if (!object.getTypeId) {
         object = catalog(object);
     }
     return new composites.Parameters(object);
@@ -248,18 +248,18 @@ const catalog = function(sequence, parameters) {
         if (Array.isArray(sequence)) {
             sequence.forEach(function(item) {
                 item = convert(item);
-                if (item.getType() === utilities.types.ASSOCIATION) {
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);
                 }
             });
-        } else if (sequence.getType && utilities.types.isSequential(sequence.getType())) {
+        } else if (sequence.getTypeId && utilities.types.isSequential(sequence.getTypeId())) {
             const iterator = sequence.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.getType() === utilities.types.ASSOCIATION) {
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);
@@ -348,7 +348,7 @@ const number = function(value1, value2, parameters) {
     switch (typeof value1) {
         case 'undefined':
         case 'number':
-            if (value2 && typeof value2 !== 'number' && value2.getType() !== utilities.types.ANGLE) {
+            if (value2 && typeof value2 !== 'number' && value2.getTypeId() !== utilities.types.ANGLE) {
                 throw exception({
                     $exception: '$parameterType',
                     $procedure: '$number',

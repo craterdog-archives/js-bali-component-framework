@@ -211,13 +211,13 @@ describe('Bali Component Framework™', function() {
     describe('Test the catalog methods.', function() {
 
         it('should return the correct primitive type', function() {
-            const type = bali.catalog().getTypeReference();
+            const type = bali.catalog().getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#4XR1NCZKATC5DPT2WAVQH89Q6Y4BCLP6,$version:v1,$digest:none]>');
         });
 
         it('should return the correct user defined type', function() {
             const parameters = bali.parameters(['<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>']);
-            type = bali.catalog(undefined, parameters).getTypeReference();
+            type = bali.catalog(undefined, parameters).getType();
             expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y9PPY714VCVTMY32HPNCAMV66S2A7N5X,$version:v1,$digest:none]>');
         });
 

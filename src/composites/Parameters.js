@@ -52,7 +52,7 @@ function Parameters(collection) {
     
     this.getParameter = function(index) {
         var parameter = copy.getItem(index);
-        if (parameter.getType() === utilities.types.ASSOCIATION) {
+        if (parameter.getTypeId() === utilities.types.ASSOCIATION) {
             parameter = parameter.getValue();
         }
         return parameter;
@@ -61,7 +61,7 @@ function Parameters(collection) {
     this.getValue = function(key, index) {
         var value;
         index = index || 1;  // default is the first parameter
-        if (copy.getType() === utilities.types.CATALOG) {
+        if (copy.getTypeId() === utilities.types.CATALOG) {
             value = copy.getValue(key);
         } else {
             value = copy.getItem(index);
