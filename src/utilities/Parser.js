@@ -188,7 +188,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     value = value.replace(/\s/g, '');  // strip out any whitespace
     var encoding = '$base32';  // default value
     if (parameters) {
-        encoding = parameters.getValue('$encoding');
+        encoding = parameters.getParameter('$encoding');
         if (encoding) encoding = encoding.toString();
     }
     switch (encoding) {
@@ -540,7 +540,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = utilities.types.LIST;
     const parameters = this.getParameters();
     if (parameters) {
-        type = utilities.types.typeBySymbol(parameters.getValue('$type'));
+        type = utilities.types.typeBySymbol(parameters.getParameter('$type'));
     }
     switch (type) {
         case utilities.types.QUEUE:

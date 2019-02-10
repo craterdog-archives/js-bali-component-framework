@@ -85,7 +85,7 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the random function correctly', function() {
             for (var i = 0; i < 100; i++) {
-                const probability = bali.probability.random();
+                const probability = bali.probability(bali.random.probability());
                 expect(probability.getValue() >= 0 && probability.getValue() <= 1).to.equal(true);
             }
         });

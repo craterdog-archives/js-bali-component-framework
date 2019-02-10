@@ -39,7 +39,7 @@ function Range(first, last, parameters) {
     var collection;
     if (parameters) {
         // parameters are immutable so we don't need to copy the collection
-        collection = parameters.getValue('$collection');
+        collection = parameters.getParameter('$collection');
         if (collection) {
             // determine the indices of the items in the collection
             firstIndex = collection.getIndex(first);

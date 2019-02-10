@@ -44,7 +44,7 @@ function Stack(parameters) {
     // defined in the constructor
     var capacity = 1024;  // default capacity
     if (parameters) {
-        const value = parameters.getValue('$capacity', 2);
+        const value = parameters.getParameter('$capacity', 2);
         if (value) capacity = value.toNumber();
     }
     const array = [];

@@ -79,17 +79,6 @@ Probability.prototype.acceptVisitor = function(visitor) {
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a new random probability element in the range [false..true].
- * 
- * @returns {Probability} A new random probability.
- */
-Probability.random = function() {
-    const value = utilities.random.probability();
-    return new Probability(value);
-};
-
-
-/**
  * This function returns a boolean valued probability by flipping a coin that is
  * weighted using the specified probability. If a random probability is less than
  * the specified weighting then the result is <code>true</code>, otherwise it is

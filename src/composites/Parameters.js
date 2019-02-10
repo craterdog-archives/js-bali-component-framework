@@ -50,15 +50,7 @@ function Parameters(collection) {
         return size;
     };
     
-    this.getParameter = function(index) {
-        var parameter = copy.getItem(index);
-        if (parameter.getTypeId() === utilities.types.ASSOCIATION) {
-            parameter = parameter.getValue();
-        }
-        return parameter;
-    };
-    
-    this.getValue = function(key, index) {
+    this.getParameter = function(key, index) {
         var value;
         index = index || 1;  // default is the first parameter
         if (copy.getTypeId() === utilities.types.CATALOG) {

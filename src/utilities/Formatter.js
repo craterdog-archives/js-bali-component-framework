@@ -91,7 +91,7 @@ FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
     if (format) return format;
     // then any format parameters that parameterize the element
     if (this.allowParameters && element.isParameterized()) {
-        format = element.getParameters().getValue(key, 1);
+        format = element.getParameters().getParameter(key, 1);
         if (format) format = format.toString();
     }
     // and finally the default format

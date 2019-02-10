@@ -34,7 +34,7 @@ function Angle(value, parameters) {
     if (value === undefined) value = 0;  // default value
     if (!isFinite(value)) throw new Error('An invalid angle value was passed to the constructor: ' + value);
     if (parameters) {
-        const units = parameters.getValue('$units');
+        const units = parameters.getParameter('$units');
         if (units && units.toString() === '$degrees') {
             // convert degrees to radians
             value = utilities.precision.quotient(utilities.precision.product(value, Math.PI), 180);
