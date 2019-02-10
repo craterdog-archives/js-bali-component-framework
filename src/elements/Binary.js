@@ -25,8 +25,7 @@ const abstractions = require('../abstractions');
  * value.
  * 
  * @constructor
- * @param {Number|Buffer} value The number of random bytes to be generated or the
- * bytes to be used to create the binary string.
+ * @param {Buffer} value a buffer containing the bytes for the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */
@@ -35,11 +34,6 @@ function Binary(value, parameters) {
 
     // analyze the value
     value = value || Buffer.alloc(0);  // the default value is an empty buffer
-
-    if (typeof value === 'number') {
-        // the value is the number of random bytes to generate
-        value = utilities.random.bytes(value);
-    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

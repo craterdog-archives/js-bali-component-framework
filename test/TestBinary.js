@@ -29,9 +29,8 @@ describe('Bali Component Framework™', function() {
             expect(bali.parse("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)").toString()).to.equal("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)");
         });
 
-        it('should construct random binary strings from the number of bytes', function() {
+        it('should construct an empty binary string', function() {
             expect(bali.binary().getSize()).to.equal(0);
-            expect(bali.binary(20).getSize()).to.equal(20);
         });
 
         it('should construct binary strings from a buffer with default encoding', function() {
@@ -95,7 +94,7 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the bitwise NOT function correctly', function() {
             for (var i = 0; i < 256; i++) {
-                const expected = bali.binary(i);
+                const expected = bali.binary(bali.random.bytes(i));
                 expect(bali.binary.not(bali.binary.not(expected)).isEqualTo(expected)).to.equal(true);
             }
         });
@@ -112,8 +111,8 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the bitwise XOR function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(i);
-                const B = bali.binary(i);
+                const A = bali.binary(bali.random.bytes(i));
+                const B = bali.binary(bali.random.bytes(i));
                 const C = bali.binary.xor(A, B);
                 expect(bali.binary.xor(B, C).isEqualTo(A)).to.equal(true);
                 expect(bali.binary.xor(C, A).isEqualTo(B)).to.equal(true);
@@ -122,8 +121,8 @@ describe('Bali Component Framework™', function() {
 
         it("should perform the De Morgan's Laws correctly", function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(i);
-                const B = bali.binary(i);
+                const A = bali.binary(bali.random.bytes(i));
+                const B = bali.binary(bali.random.bytes(i));
                 expect(bali.binary.not(bali.binary.and(A, B)).isEqualTo(bali.binary.or(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
                 expect(bali.binary.not(bali.binary.or(A, B)).isEqualTo(bali.binary.and(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
             }
