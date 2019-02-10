@@ -24,6 +24,16 @@ describe('Bali Component Framework™', function() {
             }
         });
 
+        it('should average very near 50% for many coin flips', function() {
+            const even = 0.5;
+            var heads = 0;
+            const tosses = 10000;
+            for (var i = 1; i < tosses; i++) {
+                if (bali.random.coinToss(even)) heads++;
+            }
+            expect(tosses * 0.485 < heads && heads < tosses * 0.515).to.be.true;  // jshint ignore:line
+        });
+
         it('should test endpoints of random indexes', function() {
             var gotOne = false;
             var gotThree = false;

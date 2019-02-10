@@ -79,21 +79,6 @@ Probability.prototype.acceptVisitor = function(visitor) {
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a boolean valued probability by flipping a coin that is
- * weighted using the specified probability. If a random probability is less than
- * the specified weighting then the result is <code>true</code>, otherwise it is
- * <code>false</code>.
- *
- * @param {Probability} weighting The probability.
- * @returns {Probability} The resulting boolean probability.
- */
-Probability.coinToss = function(weighting) {
-    const probability = utilities.random.probability();
-    return probability < weighting.getValue() ? new Probability(true) : new Probability(false);
-};
-
-
-/**
  * This function returns a new probability that is the logical NOT of the specified
  * probability. It represents the likelihood that the probability is false.
  * The logical NOT is equal to:
