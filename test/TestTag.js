@@ -25,7 +25,7 @@ describe('Bali Component Framework™', function() {
         it('should generate default random tags with 20 bytes', function() {
             for (var i = 0; i < 10; i++) {
                 const random = bali.tag();
-                expect(random.getNumberOfBytes()).to.equal(20);
+                expect(random.getSize()).to.equal(20);
                 const expected = random.toString();
                 const tag = bali.parse(expected);
                 const result = tag.toString();
@@ -36,7 +36,7 @@ describe('Bali Component Framework™', function() {
 
         it('should generate a random tag with 15 bytes', function() {
             const random = bali.tag(15);
-            expect(random.getNumberOfBytes()).to.equal(15);
+            expect(random.getSize()).to.equal(15);
             const expected = random.toString();
             const tag = bali.parse(expected);
             const result = tag.toString();

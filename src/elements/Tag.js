@@ -45,7 +45,7 @@ function Tag(value, parameters) {
     hash = utilities.codex.bytesToInteger(bytes);  // the first four bytes work perfectly
 
     // since this element is immutable the attributes must be read-only
-    this.getNumberOfBytes = function() { return numberOfBytes; };
+    this.getSize = function() { return numberOfBytes; };
     this.getValue = function() { return value; };
     this.getHash = function() { return hash; };
 
@@ -82,7 +82,7 @@ Tag.prototype.acceptVisitor = function(visitor) {
 /**
  * This method returns the raw byte string for the tag element.
  * 
- * @returns {String} The raw byte string for the tag element.
+ * @returns {Buffer} A buffer containing the bytes for this tag element.
  */
 Tag.prototype.getBytes = function() {
     // not called very often so save space by doing it on demand
