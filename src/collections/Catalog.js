@@ -158,7 +158,7 @@ function Catalog(parameters) {
         sorter.sortCollection(this);
     };
     
-    this.clear = function() {
+    this.deleteAll = function() {
         Object.keys(map).forEach(function(key) {
             const association = map[key];
             delete map[key];

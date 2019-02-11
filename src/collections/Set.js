@@ -88,7 +88,7 @@ function Set(comparator, parameters) {
         return count;
     };
 
-    this.clear = function() {
+    this.deleteAll = function() {
         tree.clear();
     };
     

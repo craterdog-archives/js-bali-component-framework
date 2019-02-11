@@ -90,7 +90,7 @@ function Stack(parameters) {
         throw new Error('Attempted to access the top item of an empty stack.');
     };
     
-    this.clear = function() {
+    this.deleteAll = function() {
         array.splice(0);
     };
     

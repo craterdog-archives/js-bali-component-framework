@@ -84,7 +84,7 @@ function Queue(parameters) {
         return array[0];
     };
 
-    this.clear = function() {
+    this.deleteAll = function() {
         array.splice(0);
     };
 

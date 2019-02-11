@@ -125,7 +125,7 @@ function List(parameters) {
         }
     };
     
-    this.clear = function() {
+    this.deleteAll = function() {
         array.splice(0);
     };
 
