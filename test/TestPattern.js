@@ -54,9 +54,13 @@ describe('Bali Component Framework™', function() {
 
     describe('Test the component isMatchedBy method', function() {
 
-        it('should not match the none pattern', function() {
-            expect(bali.pattern().isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.NONE.isMatchedBy(bali.NONE)).to.equal(false);
+        it('the none pattern should only match the none pattern', function() {
+            expect(bali.pattern().isMatchedBy(bali.NONE)).to.equal(true);
+            expect(bali.pattern('^none$').isMatchedBy(bali.NONE)).to.equal(true);
+            expect(bali.NONE.isMatchedBy(bali.NONE)).to.equal(true);
+        });
+
+        it('nothing else should match the none pattern', function() {
             expect(bali.ANY.isMatchedBy(bali.NONE)).to.equal(false);
             expect(bali.text('any').isMatchedBy(bali.NONE)).to.equal(false);
             expect(bali.text('none').isMatchedBy(bali.NONE)).to.equal(false);
@@ -75,27 +79,33 @@ describe('Bali Component Framework™', function() {
         it('should match matching patterns', function() {
             expect(bali.text('foobar').isMatchedBy(bali.text('foobar'))).to.equal(true);
             expect(bali.range(1, 5).isMatchedBy(bali.range(bali.ANY, 5))).to.equal(true);
-            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('fo+')]))).to.equal(true);
+            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('^"fo+"')]))).to.equal(true);
             expect(bali.catalog({
                 $foo: '"bar"',
                 $bar: '"baz"',
                 $baz: '"foo"'
             }).isMatchedBy(bali.catalog({
-                $foo: 'any',
-                $baz: '"foo"'
+                $baz: '"foo"',
+                $foo: 'any'  // should match (order doesn't matter)
             }))).to.equal(true);
             expect(bali.catalog({
                 $foo: [1, 2, 3],
                 $bar: {
                     $alpha: '$a',
+                    $omega: 'none',
                     $beta: '$b',
-                    $delta: '$d'
+                    $delta: '$d',
+                    $theta: 'none'
                 }
             }).isMatchedBy(bali.catalog({
                 $foo: [2],
                 $bar: {
-                    $beta: 'any',
-                    $delta: '$d'
+                    $delta: '$d',
+                    $theta: 'none',  // should match since the actual value is also 'none'
+                    $beta: 'any',  // should match (order doesn't matter)
+                    $epsilon: 'any',  // should match even if the actual value doesn't exist
+                    $omega: 'any',  // should match even if the actual value is 'none'
+                    $gamma: 'none'  // should match since there is no actual value for that key
                 }
             }))).to.equal(true);
         });
@@ -109,8 +119,8 @@ describe('Bali Component Framework™', function() {
                 $bar: '"baz"',
                 $baz: '"foo"'
             }).isMatchedBy(bali.catalog({
-                $foo: 'none',
-                $baz: '"foo"'
+                $baz: '"foo"',
+                $foo: 'none'  // should fail since there is an actual value for that key
             }))).to.equal(false);
             expect(bali.catalog({
                 $foo: [1, 2, 3],
@@ -123,7 +133,7 @@ describe('Bali Component Framework™', function() {
                 $foo: [4],
                 $bar: {
                     $beta: '$b',
-                    $gamma: '$g',
+                    $gamma: '$g',  // should fail since there is not actual value for that key
                     $delta: '$d'
                 }
             }))).to.equal(false);

@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, utilities.types.PATTERN, parameters);
-    value = value || '\u0000';  // the default value matches nothing
+    value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 
     // since this element is immutable the value must be read-only
@@ -44,13 +44,13 @@ exports.Pattern = Pattern;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this pattern has a meaningful value. If the value is '\u0000'
+ * This method returns whether or not this pattern has a meaningful value. If the value is '^none$'
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
-    return this.getValue().source !== '\u0000';
+    return this.getValue().source !== '^none$';
 };
 
 

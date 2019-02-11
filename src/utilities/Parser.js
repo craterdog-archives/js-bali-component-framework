@@ -694,7 +694,7 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
     var value = ctx.getText();
     switch (value) {
         case 'none':
-            value = new RegExp('\u0000');  // should never find nulls in text strings
+            value = new RegExp('^none$');  // only match none itself
             break;
         case 'any':
             value = new RegExp('.*');  // match anything

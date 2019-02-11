@@ -664,7 +664,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
     var formatted = '';
     const value = pattern.getValue().source;
     switch (value) {
-        case '\u0000':
+        case '^none$':
             formatted += 'none';
             break;
         case '.*':

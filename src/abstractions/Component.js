@@ -143,23 +143,20 @@ Component.prototype.isMatchedBy = function(pattern) {
     }
     /* Case 2
      * If the pattern component is not an actual bali.Pattern element then the pattern
-     * must be the same type as this component to even possibly match.
+     * must be the same type as this component to have a chance of matching.
      */
     if (this.getTypeId() !== pattern.getTypeId()) {
         return false;
     }
     /* Case 3
-     * If the pattern component and this component are both elements then check to see
-     * if they are equal.
+     * If the pattern component and this component are both elements then if they are
+     * equal they match.
      */
-    console.log('pattern type: ' + pattern.constructor.name);
-    console.log('pattern: ' + pattern);
     if (utilities.types.isLiteral(pattern.getTypeId())) {
-        console.log('isLiteral');
         return this.isEqualTo(pattern);
     }
     /* Case 4
-     * If the pattern component is a bali.Range then see if its endpoints match the
+     * If the pattern component is a bali.Range then its endpoint patterns must match the
      * endpoints of this component.
      */
     if (pattern.getTypeId() === utilities.types.RANGE) {
@@ -172,27 +169,41 @@ Component.prototype.isMatchedBy = function(pattern) {
      * must be EQUAL and the pattern value must MATCH this value.
      */
     if (pattern.getTypeId() === utilities.types.ASSOCIATION) {
-        if (!this.getKey().isEqualTo(pattern.getKey())) return false;
-        if (!this.getValue().isMatchedBy(pattern.getValue())) return false;
-        return true;
+        if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
+        if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
+        return true;  // they match
     }
     /* Case 6
      * If the pattern component is sequential then each of its items must match an
-     * item in this component.
+     * item in this component. Note: if the pattern item is an association with a
+     * value of 'none' then this component should not contain an association with
+     * that key and a non-'none' value. If the pattern item is an association with a
+     * value of 'any' then this component may or may not have an item with that key.
      */
     if (utilities.types.isSequential(pattern.getTypeId())) {
         // iterate through a pattern's items
-        const thisIterator = this.getIterator();
         const patternIterator = pattern.getIterator();
         outer: while (patternIterator.hasNext()) {
             var patternItem = patternIterator.getNext();
-            while (thisIterator.hasNext()) {
+            var thisIterator = this.getIterator();
+            try { while (thisIterator.hasNext()) {
                 var thisItem = thisIterator.getNext();
                 if (thisItem.isMatchedBy(patternItem)) continue outer;
+            } } catch (e) {
+                return false;  // aborted, an association value that should be 'none' wasn't
             }
-            return false;  // didn't find a matching item
+            if (patternItem.getTypeId() === utilities.types.ASSOCIATION) {
+                var patternValue = patternItem.getValue();
+                if (patternValue.getTypeId() === utilities.types.PATTERN && (
+                    patternValue.toString() === 'any' ||
+                    patternValue.toString() === 'none'
+                )) {
+                    continue;  // fine, 'any' or 'none' matched no actual value
+                }
+            }
+            return false;  // aborted, we didn't find a matching item
         }
-        return true;  // all pattern items matched
+        return true;  // all pattern items matched successfully
     }
     throw new Error('An invalid pattern type was passed to match: ' + pattern);
 };
