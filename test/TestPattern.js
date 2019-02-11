@@ -76,6 +76,57 @@ describe('Bali Component Framework™', function() {
             expect(bali.text('foobar').isMatchedBy(bali.text('foobar'))).to.equal(true);
             expect(bali.range(1, 5).isMatchedBy(bali.range(bali.ANY, 5))).to.equal(true);
             expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('fo+')]))).to.equal(true);
+            expect(bali.catalog({
+                $foo: '"bar"',
+                $bar: '"baz"',
+                $baz: '"foo"'
+            }).isMatchedBy(bali.catalog({
+                $foo: 'any',
+                $baz: '"foo"'
+            }))).to.equal(true);
+            expect(bali.catalog({
+                $foo: [1, 2, 3],
+                $bar: {
+                    $alpha: '$a',
+                    $beta: '$b',
+                    $delta: '$d'
+                }
+            }).isMatchedBy(bali.catalog({
+                $foo: [2],
+                $bar: {
+                    $beta: 'any',
+                    $delta: '$d'
+                }
+            }))).to.equal(true);
+        });
+
+        it('should not match mismatched patterns', function() {
+            expect(bali.text('foobar').isMatchedBy(bali.text('foobaz'))).to.equal(false);
+            expect(bali.range(1, 5).isMatchedBy(bali.range(bali.NONE, 5))).to.equal(false);
+            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('bo+')]))).to.equal(false);
+            expect(bali.catalog({
+                $foo: '"bar"',
+                $bar: '"baz"',
+                $baz: '"foo"'
+            }).isMatchedBy(bali.catalog({
+                $foo: 'none',
+                $baz: '"foo"'
+            }))).to.equal(false);
+            expect(bali.catalog({
+                $foo: [1, 2, 3],
+                $bar: {
+                    $alpha: '$a',
+                    $beta: '$b',
+                    $delta: '$d'
+                }
+            }).isMatchedBy(bali.catalog({
+                $foo: [4],
+                $bar: {
+                    $beta: '$b',
+                    $gamma: '$g',
+                    $delta: '$d'
+                }
+            }))).to.equal(false);
         });
 
     });
