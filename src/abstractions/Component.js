@@ -121,55 +121,80 @@ Component.prototype.comparedTo = function(that) {
 
 
 /**
- * This method determines whether or not this component matches the specified pattern.
+ * This method determines whether or not the specified pattern matches this component.
+ * The pattern may be a bali.pattern element or an composite component containing
+ * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
+ * string version of the component or its corresponding attribute. If the pattern does
+ * not consist of any bali.pattern elements then a strict equality comparison of the
+ * attributes listed in the pattern is used for matching. Note, this means that the
+ * component may contain additional attributes not found in the pattern component and
+ * it still matches.
  * 
  * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Component.prototype.isMatchedBy = function(pattern) {
+    /* Case 1
+     * If the pattern component is an actual bali.Pattern element then see if it
+     * matches this component.
+     */
     if (pattern.getTypeId() === utilities.types.PATTERN) {
-        // handle a pattern component differently from other elements
         return pattern.matches(this);
-    } else if (this.getTypeId() !== pattern.getTypeId()) {
-        // the component and pattern must be the same type
+    }
+    /* Case 2
+     * If the pattern component is not an actual bali.Pattern element then the pattern
+     * must be the same type as this component to even possibly match.
+     */
+    if (this.getTypeId() !== pattern.getTypeId()) {
         return false;
-    } else if (utilities.types.isLiteral(pattern)) {
-        // elements are tested for equality
+    }
+    /* Case 3
+     * If the pattern component and this component are both elements then check to see
+     * if they are equal.
+     */
+    console.log('pattern type: ' + pattern.constructor.name);
+    console.log('pattern: ' + pattern);
+    if (utilities.types.isLiteral(pattern.getTypeId())) {
+        console.log('isLiteral');
         return this.isEqualTo(pattern);
-    } else if (pattern.getTypeId() === utilities.types.RANGE) {
-        // handle a range component differently from other collections
+    }
+    /* Case 4
+     * If the pattern component is a bali.Range then see if its endpoints match the
+     * endpoints of this component.
+     */
+    if (pattern.getTypeId() === utilities.types.RANGE) {
         if (!this.getFirst().isMatchedBy(pattern.getFirst())) return false;
         if (!this.getLast().isMatchedBy(pattern.getLast())) return false;
-        // both endpoints matched
         return true;
-    } else if (pattern.getTypeId() === utilities.types.CATALOG) {
-        // handle a catalog component differently from other collections
-        const keys = pattern.getKeys();
-        const iterator = keys.getIterator();
-        while (iterator.hasNext()) {
-            var key = iterator.getNext();
-            var thisValue = this.getValue(key);
-            if (thisValue) {
-                var patternValue = pattern.getValue(key);
-                if (!thisValue.isMatchedBy(patternValue)) return false;
-            }
-        }
-        // all pattern item values matched
+    }
+    /* Case 5
+     * If the pattern component is a bali.Association then the pattern key and this key
+     * must be EQUAL and the pattern value must MATCH this value.
+     */
+    if (pattern.getTypeId() === utilities.types.ASSOCIATION) {
+        if (!this.getKey().isEqualTo(pattern.getKey())) return false;
+        if (!this.getValue().isMatchedBy(pattern.getValue())) return false;
         return true;
-    } else if (utilities.types.isSequential(pattern)) {
-        // iterate through a collection's items
+    }
+    /* Case 6
+     * If the pattern component is sequential then each of its items must match an
+     * item in this component.
+     */
+    if (utilities.types.isSequential(pattern.getTypeId())) {
+        // iterate through a pattern's items
         const thisIterator = this.getIterator();
         const patternIterator = pattern.getIterator();
-        while (thisIterator.hasNext() && patternIterator.hasNext()) {
-            var thisItem = thisIterator.getNext();
+        outer: while (patternIterator.hasNext()) {
             var patternItem = patternIterator.getNext();
-            if (!thisItem.isMatchedBy(patternItem)) return false;
+            while (thisIterator.hasNext()) {
+                var thisItem = thisIterator.getNext();
+                if (thisItem.isMatchedBy(patternItem)) continue outer;
+            }
+            return false;  // didn't find a matching item
         }
-        // all pattern items matched
-        return true;
-    } else {
-        throw new Error('An invalid pattern type was passed to match: ' + pattern);
+        return true;  // all pattern items matched
     }
+    throw new Error('An invalid pattern type was passed to match: ' + pattern);
 };
 
 

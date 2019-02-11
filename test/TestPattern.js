@@ -22,31 +22,10 @@ describe('Bali Component Framework™', function() {
             expect(bali.ANY.toString()).to.equal('any');
         });
 
-        it('should generate a default none pattern', function() {
+        it('should compare patterns for equality', function() {
             expect(bali.pattern().isEqualTo(bali.NONE)).to.equal(true);
-            expect(bali.pattern().isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.pattern().isMatchedBy(bali.ANY)).to.equal(true);
-            expect(bali.text('"any"').isMatchedBy(bali.pattern())).to.equal(false);
-            expect(bali.text('"none"').isMatchedBy(bali.pattern())).to.equal(false);
-            expect(bali.text('"foobar"').isMatchedBy(bali.pattern())).to.equal(false);
-        });
-
-        it('should generate an explicit none pattern', function() {
             expect(bali.NONE.isEqualTo(bali.parse('none'))).to.equal(true);
-            expect(bali.NONE.isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.NONE.isMatchedBy(bali.ANY)).to.equal(true);
-            expect(bali.text('"any"').isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.text('"none"').isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.text('"foobar"').isMatchedBy(bali.NONE)).to.equal(false);
-        });
-
-        it('should generate an explicit any pattern', function() {
             expect(bali.ANY.isEqualTo(bali.parse('any'))).to.equal(true);
-            expect(bali.ANY.isMatchedBy(bali.NONE)).to.equal(false);
-            expect(bali.ANY.isMatchedBy(bali.ANY)).to.equal(true);
-            expect(bali.text('"any"').isMatchedBy(bali.ANY)).to.equal(true);
-            expect(bali.text('"none"').isMatchedBy(bali.ANY)).to.equal(true);
-            expect(bali.text('"foobar"').isMatchedBy(bali.ANY)).to.equal(true);
         });
 
     });
@@ -69,6 +48,34 @@ describe('Bali Component Framework™', function() {
             expect(bali.ANY.matches(bali.list([1, 2, 3]))).to.equal(true);
             expect(bali.parse('"\\[([1-9](, )?)*\\]"?').matches(bali.list([1, 2, 3]))).to.equal(true);
             expect(bali.NONE.matches(bali.list([1, 2, 3]))).to.equal(false);
+        });
+
+    });
+
+    describe('Test the component isMatchedBy method', function() {
+
+        it('should not match the none pattern', function() {
+            expect(bali.pattern().isMatchedBy(bali.NONE)).to.equal(false);
+            expect(bali.NONE.isMatchedBy(bali.NONE)).to.equal(false);
+            expect(bali.ANY.isMatchedBy(bali.NONE)).to.equal(false);
+            expect(bali.text('any').isMatchedBy(bali.NONE)).to.equal(false);
+            expect(bali.text('none').isMatchedBy(bali.NONE)).to.equal(false);
+            expect(bali.text('foobar').isMatchedBy(bali.NONE)).to.equal(false);
+        });
+
+        it('should match the any pattern', function() {
+            expect(bali.pattern().isMatchedBy(bali.ANY)).to.equal(true);
+            expect(bali.NONE.isMatchedBy(bali.ANY)).to.equal(true);
+            expect(bali.ANY.isMatchedBy(bali.ANY)).to.equal(true);
+            expect(bali.text('any').isMatchedBy(bali.ANY)).to.equal(true);
+            expect(bali.text('none').isMatchedBy(bali.ANY)).to.equal(true);
+            expect(bali.text('foobar').isMatchedBy(bali.ANY)).to.equal(true);
+        });
+
+        it('should match matching patterns', function() {
+            expect(bali.text('foobar').isMatchedBy(bali.text('foobar'))).to.equal(true);
+            expect(bali.range(1, 5).isMatchedBy(bali.range(bali.ANY, 5))).to.equal(true);
+            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('fo+')]))).to.equal(true);
         });
 
     });
