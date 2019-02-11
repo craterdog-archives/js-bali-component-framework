@@ -71,6 +71,6 @@ Pattern.prototype.acceptVisitor = function(visitor) {
  * @param {Component} component The component to be tested.
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
-Pattern.prototype.isMatchedBy = function(component) {
+Pattern.prototype.matches = function(component) {
     return this.getValue().test(component.toString());
 };

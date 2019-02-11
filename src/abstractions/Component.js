@@ -126,10 +126,10 @@ Component.prototype.comparedTo = function(that) {
  * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
-Component.prototype.matches = function(pattern) {
+Component.prototype.isMatchedBy = function(pattern) {
     if (pattern.getTypeId() === utilities.types.PATTERN) {
         // handle a pattern component differently from other elements
-        return pattern.isMatchedBy(this);
+        return pattern.matches(this);
     } else if (this.getTypeId() !== pattern.getTypeId()) {
         // the component and pattern must be the same type
         return false;
@@ -138,8 +138,8 @@ Component.prototype.matches = function(pattern) {
         return this.isEqualTo(pattern);
     } else if (pattern.getTypeId() === utilities.types.RANGE) {
         // handle a range component differently from other collections
-        if (!this.getFirst().matches(pattern.getFirst())) return false;
-        if (!this.getLast().matches(pattern.getLast())) return false;
+        if (!this.getFirst().isMatchedBy(pattern.getFirst())) return false;
+        if (!this.getLast().isMatchedBy(pattern.getLast())) return false;
         // both endpoints matched
         return true;
     } else if (pattern.getTypeId() === utilities.types.CATALOG) {
@@ -151,7 +151,7 @@ Component.prototype.matches = function(pattern) {
             var thisValue = this.getValue(key);
             if (thisValue) {
                 var patternValue = pattern.getValue(key);
-                if (!thisValue.matches(patternValue)) return false;
+                if (!thisValue.isMatchedBy(patternValue)) return false;
             }
         }
         // all pattern item values matched
@@ -163,7 +163,7 @@ Component.prototype.matches = function(pattern) {
         while (thisIterator.hasNext() && patternIterator.hasNext()) {
             var thisItem = thisIterator.getNext();
             var patternItem = patternIterator.getNext();
-            if (!thisItem.matches(patternItem)) return false;
+            if (!thisItem.isMatchedBy(patternItem)) return false;
         }
         // all pattern items matched
         return true;
