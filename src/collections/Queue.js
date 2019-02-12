@@ -38,6 +38,8 @@ Array.prototype.peek = function() {
  * @returns {Queue} The new queue.
  */
 function Queue(parameters) {
+    parameters = parameters || new composites.Parameters(new Catalog());
+    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '$Queue');
     abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
 
     // the capacity and array are private attributes so methods that use it are

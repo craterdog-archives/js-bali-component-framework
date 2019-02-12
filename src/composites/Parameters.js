@@ -34,7 +34,7 @@ function Parameters(collection) {
     const copy = new collection.constructor(collection.getParameters());
     copy.addItems(collection);
 
-    this.getCollection = function() { return collection; };
+    this.getCollection = function() { return copy; };
 
     this.toArray = function() {
         const array = copy.toArray();
@@ -59,6 +59,15 @@ function Parameters(collection) {
             value = copy.getItem(index);
         }
         return value;
+    };
+
+    this.setParameter = function(key, value, index) {
+        index = index || 1;  // default is the first parameter
+        if (copy.getTypeId() === utilities.types.CATALOG) {
+            copy.setValue(key, value);
+        } else {
+            copy.setItem(index, value);
+        }
     };
 
     return this;

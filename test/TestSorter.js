@@ -39,7 +39,7 @@ describe('Bali Component Framework™', function() {
         it('should sort an out of order list', function() {
             const list = bali.list(array);
             list.sortItems();
-            expect(list.toString()).to.equal(set.toString());
+            expect(list.toString()).to.equal(bali.list(set).toString());
         });
 
     });
@@ -55,9 +55,13 @@ describe('Bali Component Framework™', function() {
 
         it('should sort an out of order catalog', function() {
             const catalog = bali.catalog(object);
+            var keys = catalog.getKeys();
+            const list = bali.list(array);
+            expect(keys.toString()).to.equal(list.toString());
             catalog.sortItems();
-            const keys = catalog.getKeys();
-            expect(keys.toString()).to.equal(set.toString());
+            list.sortItems();
+            keys = catalog.getKeys();
+            expect(keys.toString()).to.equal(list.toString());
         });
 
     });

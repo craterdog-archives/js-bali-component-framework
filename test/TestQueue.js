@@ -164,6 +164,7 @@ describe('Bali Component Framework™', function() {
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 3);
+            expect(queue.toString()).to.equal('["epsilon", "gamma"]($type: $Queue)');
             first = queue.getHead();
             expect(first.toString()).to.equal('"epsilon"');
             item = queue.removeItem();

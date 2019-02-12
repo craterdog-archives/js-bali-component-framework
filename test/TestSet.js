@@ -56,6 +56,7 @@ describe('Bali Component Framework™', function() {
 
         it('should create a set from a list', function() {
             const list = bali.list(array);
+            list.shuffleItems();
             const set = bali.set(list);
             var size = set.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -106,6 +107,7 @@ describe('Bali Component Framework™', function() {
             set1.addItem('"alpha"');
             set1.addItem('"beta"');
             set1.addItem('"delta"');
+            expect(set1.toString()).to.equal('["alpha", "beta", "delta"]($type: $Set)');
             const set2 = bali.set();
             set2.addItem('"epsilon"');
             set2.addItem('"gamma"');

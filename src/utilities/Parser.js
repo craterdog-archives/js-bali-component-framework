@@ -547,7 +547,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Queue(parameters);
             break;
         case utilities.types.SET:
-            collection = new collections.Set(undefined, parameters);
+            collection = new collections.Set(parameters);
             break;
         case utilities.types.STACK:
             collection = new collections.Stack(parameters);

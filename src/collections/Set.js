@@ -17,6 +17,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
+const Catalog = require('./Catalog').Catalog;
 
 
 // PUBLIC CONSTRUCTORS
@@ -25,11 +26,13 @@ const composites = require('../composites');
  * This constructor creates a new set component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Comparator} comparator An optional comparator.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
+ * @param {Comparator} comparator An optional comparator.
  * @returns {Set} The new set.
  */
-function Set(comparator, parameters) {
+function Set(parameters, comparator) {
+    parameters = parameters || new composites.Parameters(new Catalog());
+    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '$Set');
     abstractions.Collection.call(this, utilities.types.SET, parameters);
 
     // the comparator and tree are private attributes so methods that use
@@ -127,7 +130,7 @@ Set.or = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second) {
-    const result = new Set(first.comparator, first.getParameters());
+    const result = new Set(first.getParameters(), first.comparator);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
@@ -148,7 +151,7 @@ Set.and = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second) {
-    const result = new Set(first.comparator, first.getParameters());
+    const result = new Set(first.getParameters(), first.comparator);
     result.addItems(first);
     result.removeItems(second);
     return result;
@@ -164,7 +167,7 @@ Set.sans = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second) {
-    const result = new Set(first.comparator, first.getParameters());
+    const result = new Set(first.getParameters(), first.comparator);
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();

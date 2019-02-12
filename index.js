@@ -10,34 +10,28 @@
 'use strict';
 const URL = require('url').URL;
 
-// UTILITIES
+// EXPORTS
+
 const utilities = require('./src/utilities');
 Object.keys(utilities).forEach(function(key) {
     exports[key] = utilities[key];
 });
 
-// ABSTRACTIONS
 const abstractions = require('./src/abstractions');  // depends on utilities
 Object.keys(abstractions).forEach(function(key) {
     exports[key] = abstractions[key];
 });
 
-
-// ELEMENTS
 const elements = require('./src/elements');  // depends on abstractions
 Object.keys(elements).forEach(function(key) {
     exports[key] = elements[key];
 });
 
-
-// COMPOSITES
 const composites = require('./src/composites');  // depends on elements
 Object.keys(composites).forEach(function(key) {
     exports[key] = composites[key];
 });
 
-
-// COLLECTIONS
 const collections = require('./src/collections');  // depends on composites
 Object.keys(collections).forEach(function(key) {
     exports[key] = collections[key];
@@ -159,6 +153,7 @@ exports.parse = parse;
 
 
 // CONSTANTS
+
 exports.NONE = parse('none');
 exports.ANY = parse('any');
 exports.FALSE = parse('false');
@@ -174,6 +169,7 @@ exports.INFINITY = parse('infinity');
 
 
 // TYPES
+
 const angle = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -510,7 +506,7 @@ exports.reserved = reserved;
 
 const set = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
-    const collection = new collections.Set(undefined, parameters);
+    const collection = new collections.Set(parameters);
     fillCollection('$set', collection, sequence);
     return collection;
 };
@@ -605,6 +601,7 @@ exports.version = version;
 
 
 // PARAMETERS
+
 exports.degrees = parameters({$units: '$degrees'});
 exports.radians = parameters({$units: '$radians'});
 exports.polar = parameters({$format: '$polar'});
