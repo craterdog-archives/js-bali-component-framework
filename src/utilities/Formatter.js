@@ -734,37 +734,37 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 //     {empty procedure}
 FormattingVisitor.prototype.visitProcedure = function(tree) {
     var formatted = '';
-        var length = 0;
-        const statements = [];
+    var length = 0;
+    const statements = [];
 
-        // format each item separately first summing the total length
-        const iterator = tree.getIterator();
+    // format each item separately first summing the total length
+    const iterator = tree.getIterator();
+    this.depth++;
+    while (iterator.hasNext()) {
+        var statement = iterator.getNext();
+        statement.acceptVisitor(this);
+        statements.push(this.result);
+        length += 2 + this.result.length;
+    };
+    length -= 2;  // remove the space for the extra separator
+    this.depth--;
+
+    // concatentate the formatted items
+    if (this.allowInline && length <= types.MAXIMUM_LENGTH) {
+        // inline the statements
+        if (statements.length > 0) formatted += statements[0];
+        statements.slice(1).forEach(function(statement) {
+            formatted += '; ' + statement;
+        }, this);
+    } else {
+        // each statement is on a separate line
         this.depth++;
-        while (iterator.hasNext()) {
-            var statement = iterator.getNext();
-            statement.acceptVisitor(this);
-            statements.push(this.result);
-            length += 2 + this.result.length;
-        };
-        length -= 2;  // remove the space for the extra separator
+        statements.forEach(function(statement) {
+            formatted += EOL + this.getIndentation() + statement;
+        }, this);
         this.depth--;
-
-        // concatentate the formatted items
-        if (this.allowInline && length <= types.MAXIMUM_LENGTH) {
-            // inline the statements
-            if (statements.length > 0) formatted += statements[0];
-            statements.slice(1).forEach(function(statement) {
-                formatted += '; ' + statement;
-            }, this);
-        } else {
-            // each statement is on a separate line
-            this.depth++;
-            statements.forEach(function(statement) {
-                formatted += EOL + this.getIndentation() + statement;
-            }, this);
-            this.depth--;
-            formatted += EOL + this.getIndentation();
-        }
+        formatted += EOL + this.getIndentation();
+    }
     this.result = formatted;
 };
 

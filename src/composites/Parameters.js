@@ -30,9 +30,8 @@ function Parameters(collection) {
     abstractions.Composite.call(this, utilities.types.PARAMETERS);
 
     // the parameters are immutable so the methods are included in the constructor
-    // TODO: the collection really should be DEEP copied
-    const copy = new collection.constructor(collection.getParameters());
-    copy.addItems(collection);
+    const duplicator = new utilities.Duplicator();
+    const copy = duplicator.duplicateComponent(collection);
 
     this.getCollection = function() { return copy; };
 

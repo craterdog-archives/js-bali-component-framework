@@ -118,6 +118,12 @@ const fillCollection = function(procedure, collection, sequence) {
 
 // FUNCTIONS
 
+const duplicate = function(component) {
+    const duplicator = new utilities.Duplicator();
+    return duplicator.duplicateComponent(component);
+};
+exports.duplicate = duplicate;
+
 const exception = function(object) {
     const attributes = convert(object);
     return new utilities.Exception(attributes);

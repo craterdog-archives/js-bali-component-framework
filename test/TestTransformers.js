@@ -26,7 +26,9 @@ describe('Bali Component Framework™', function() {
             expect(document).to.exist;  // jshint ignore:line
             var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
+            var copy = bali.duplicate(component);
+            expect(copy).to.exist;  // jshint ignore:line
+            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
@@ -53,7 +55,9 @@ describe('Bali Component Framework™', function() {
             expect(document).to.exist;  // jshint ignore:line
             var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
+            var copy = bali.duplicate(component);
+            expect(copy).to.exist;  // jshint ignore:line
+            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
@@ -69,7 +73,9 @@ describe('Bali Component Framework™', function() {
             expect(document).to.exist;  // jshint ignore:line
             var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
+            var copy = bali.duplicate(component);
+            expect(copy).to.exist;  // jshint ignore:line
+            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
@@ -85,7 +91,9 @@ describe('Bali Component Framework™', function() {
             expect(document).to.exist;  // jshint ignore:line
             var component = bali.parse(document, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            var formatted = bali.format(component) + '\n';  // add POSIX <EOL>
+            var copy = bali.duplicate(component);
+            expect(copy).to.exist;  // jshint ignore:line
+            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
