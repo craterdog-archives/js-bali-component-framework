@@ -237,7 +237,13 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     var formatted = '';
-    if (!collection.isEmpty()) {
+    if (collection.getTypeId() === types.RANGE) {
+        collection.getFirst().acceptVisitor(this);
+        formatted += this.result;
+        formatted += '..';
+        collection.getLast().acceptVisitor(this);
+        formatted += this.result;
+    } else if (!collection.isEmpty()) {
         var length = 0;
         const items = [];
 
@@ -652,7 +658,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     var formatted = '(';
     // delegate to collection
-    this.visitCollection(parameters);
+    this.visitCollection(parameters.getCollection());
     formatted += this.result;
     formatted += ')';
     this.result = formatted;
