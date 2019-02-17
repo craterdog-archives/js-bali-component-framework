@@ -52,7 +52,7 @@
                 $region: "Guangdong"
                 $country: "China"
             ): $date
-            <https://craterdog.com/>: <bali:[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+            <https://craterdog.com/>: <bali:/FooBar?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"
             'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($encoding: $base16)

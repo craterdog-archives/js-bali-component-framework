@@ -41,11 +41,6 @@ describe('Bali Component Framework™', function() {
 
     describe('Test moment methods', function() {
 
-        it('should return the correct type', function() {
-            const type = bali.parse('<2018>').getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#NL3T40GDBZ7BLTJPWKT61YCZZHXBYTBR,$version:v1,$digest:none]>');
-        });
-
         it('should compare two moments correctly', function() {
             const first = bali.parse('<2017-12-30T17:38:35>');
             const second = bali.parse('<2017-12-30T17:38:39>');

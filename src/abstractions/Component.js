@@ -38,32 +38,6 @@ exports.Component = Component;
 // PUBLIC METHODS
 
 /**
- * This method returns the type of this component as a reference string.
- * 
- * @returns {String} A string containing a type reference for this component.
- */
-Component.prototype.getType = function() {
-    var reference;
-    var type = this.getTypeId();
-    if (type === utilities.types.CATALOG && this.isParameterized()) {
-        const value = this.getParameters().getParameter('$type');
-        const string = formatter.formatLiteral(value);
-        if (value && value.getTypeId() === utilities.types.SYMBOL) {
-            // the value is a symbol for a system type
-            reference = utilities.types.typeBySymbol(string);
-        } else {
-            // the value is a reference to a user defined type
-            reference = string;
-        }
-    } else {
-        // the type is a system type
-        reference = utilities.types.typeReference(type);
-    }
-    return reference;
-};
-
-
-/**
  * This method returns whether or not this component is parameterized.
  * 
  * @returns {Boolean} Whether or not this component is parameterized.

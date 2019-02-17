@@ -48,15 +48,6 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test text methods', function() {
-
-        it('should return the correct type', function() {
-            const type = bali.parse('"Hello World!"').getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#YA1HLLYZN3H97SCZ95JX78MZJ6WQ4VBL,$version:v1,$digest:none]>');
-        });
-
-    });
-
     describe('Test text functions', function() {
 
         it('should perform concatenation of two text strings', function() {

@@ -540,7 +540,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = utilities.types.LIST;
     const parameters = this.getParameters();
     if (parameters) {
-        type = utilities.types.typeBySymbol(parameters.getParameter('$type'));
+        type = utilities.types.typeForSymbol(parameters.getParameter('$type'));
     }
     switch (type) {
         case utilities.types.QUEUE:

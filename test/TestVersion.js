@@ -109,11 +109,6 @@ describe('Bali Component Framework™', function() {
             expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
         });
 
-        it('should return the correct type', function() {
-            const type = bali.version([1, 2, 3]).getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#VVF92PYR76BJRFV932KMG7VHCD0MAS5R,$version:v1,$digest:none]>');
-        });
-
     });
 
     describe('Test the version iterators.', function() {

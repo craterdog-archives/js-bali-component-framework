@@ -116,11 +116,6 @@ describe('Bali Component Framework™', function() {
 
     describe('Test the stack methods.', function() {
 
-        it('should return the correct primitive type', function() {
-            const type = bali.stack().getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#Q2BJ8CAR3HW39A5GFC2C2S1JZVX4PSX9,$version:v1,$digest:none]>');
-        });
-
         it('should be able to push and pop items from a stack', function() {
             const stack = bali.stack(array);
             var size = stack.getSize();

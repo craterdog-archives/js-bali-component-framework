@@ -32,11 +32,6 @@ describe('Bali Component Framework™', function() {
 
     describe('Test pattern methods', function() {
 
-        it('should return the correct type', function() {
-            const type = bali.pattern().getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#B6W55BXMVG69NR4LZHH28Y12AXZ6AJ6W,$version:v1,$digest:none]>');
-        });
-
         it('should recognize text string patterns', function() {
             expect(bali.ANY.matches(bali.text('"pretty much anything"'))).to.equal(true);
             expect(bali.parse('"bab.*"?').matches(bali.text('"babbling"'))).to.equal(true);

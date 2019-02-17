@@ -55,13 +55,4 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test reserved symbol methods', function() {
-
-        it('should return the correct type', function() {
-            const type = bali.parse('$$foobar').getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#HKTQFZ328SXYW6Q08CCHW90NQ6FW77KB,$version:v1,$digest:none]>');
-        });
-
-    });
-
 });

@@ -53,11 +53,6 @@ describe('Bali Component Framework™', function() {
 
     describe('Test time duration methods', function() {
 
-        it('should return the correct type', function() {
-            const type = bali.duration().getType();
-            expect(type).to.equal('<bali:[$protocol:v1,$tag:#Y6572KBG2SBYSCBHR88KB1GR616LFK8N,$version:v1,$digest:none]>');
-        });
-
         it('should compare two time durations correctly', function() {
             const days = bali.parse('~P7D');
             const week = bali.parse('~P1W');

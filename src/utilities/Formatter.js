@@ -22,6 +22,12 @@ const Visitor = require('./Visitor').Visitor;
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
 
+/**
+ * This constant defines the number of characters allowed in Bali Document Notation™
+ * for a component before the source code can no longer be inline (on a single line).
+ */
+const MAXIMUM_LENGTH = 25;
+
 
 // PUBLIC CONSTRUCTORS
 
@@ -260,7 +266,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
         this.depth--;
 
         // concatentate the formatted items
-        if (length <= types.MAXIMUM_LENGTH) {
+        if (length <= MAXIMUM_LENGTH) {
             // inline the items
             formatted += items[0];
             items.slice(1).forEach(function(item) {
@@ -756,7 +762,7 @@ FormattingVisitor.prototype.visitProcedure = function(tree) {
     this.depth--;
 
     // concatentate the formatted items
-    if (this.allowInline && length <= types.MAXIMUM_LENGTH) {
+    if (this.allowInline && length <= MAXIMUM_LENGTH) {
         // inline the statements
         if (statements.length > 0) formatted += statements[0];
         statements.slice(1).forEach(function(statement) {
