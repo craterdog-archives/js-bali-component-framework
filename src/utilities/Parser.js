@@ -55,8 +55,15 @@ function Parser(debug) {
     // the debug flag is a private attribute so methods that use it are defined in the constructor
     debug = debug || false;
 
-    this.parseDocument = function(value, parameters) {
-        const parser = initializeParser(value, debug);
+    this.parseComponent = function(document) {
+        const parser = initializeParser(document, debug);
+        const antlrTree = parser.component();
+        const component = convertParseTree(antlrTree);
+        return component;
+    };
+
+    this.parseDocument = function(document, parameters) {
+        const parser = initializeParser(document, debug);
         const antlrTree = parser.document();
         const component = convertParseTree(antlrTree, parameters);
         return component;

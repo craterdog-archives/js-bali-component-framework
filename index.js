@@ -10,38 +10,36 @@
 'use strict';
 const URL = require('url').URL;
 
-// EXPORTS
+// IMPORTS
 
 const utilities = require('./src/utilities');
+const abstractions = require('./src/abstractions');  // depends on utilities
+const elements = require('./src/elements');  // depends on abstractions
+const composites = require('./src/composites');  // depends on elements
+const collections = require('./src/collections');  // depends on composites
+utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
+
+
+// EXPORTS
+
 Object.keys(utilities).forEach(function(key) {
     exports[key] = utilities[key];
 });
-
-const abstractions = require('./src/abstractions');  // depends on utilities
 Object.keys(abstractions).forEach(function(key) {
     exports[key] = abstractions[key];
 });
-
-const elements = require('./src/elements');  // depends on abstractions
 Object.keys(elements).forEach(function(key) {
     exports[key] = elements[key];
 });
-
-const composites = require('./src/composites');  // depends on elements
 Object.keys(composites).forEach(function(key) {
     exports[key] = composites[key];
 });
-
-const collections = require('./src/collections');  // depends on composites
 Object.keys(collections).forEach(function(key) {
     exports[key] = collections[key];
 });
 
 
 // AVOIDING CIRCULAR DEPENDENCIES
-
-// The parser depends on everything else and must be imported last
-utilities.Parser = require('./src/utilities/Parser').Parser;
 
 // The convert method is needed by the bali.Component class and depends on everything
 // else so it must be injected into it after everything has been imported
@@ -77,43 +75,6 @@ const convert = function(value) {
 };
 abstractions.Component.prototype.convert = convert;
 utilities.Exception.prototype.convert = convert;
-
-const fillCollection = function(procedure, collection, sequence) {
-    if (sequence) {
-        if (Array.isArray(sequence)) {
-            sequence.forEach(function(item) {
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            });
-        } else if (utilities.types.isSequential(sequence.getTypeId())) {
-            const iterator = sequence.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            }
-        } else if (typeof sequence === 'object') {
-            const keys = Object.keys(sequence);
-            keys.forEach(function(key) {
-                collection.addItem(sequence[key]);
-            });
-        } else {
-            throw exception({
-                $exception: '$parameterType',
-                $procedure: procedure,
-                $expected: ['$Collection', '$Object', '$Array'],
-                $actual: '$' + sequence.constructor.name,
-                $message: '"An invalid value type was passed to the constructor."'
-            });
-        }
-    }
-};
 
 
 // FUNCTIONS
@@ -616,3 +577,43 @@ exports.base2 = parameters({$encoding: '$base2'});
 exports.base16 = parameters({$encoding: '$base16'});
 exports.base32 = parameters({$encoding: '$base32'});
 exports.base64 = parameters({$encoding: '$base64'});
+
+
+// PRIVATE FUNCTIONS
+
+const fillCollection = function(procedure, collection, sequence) {
+    if (sequence) {
+        if (Array.isArray(sequence)) {
+            sequence.forEach(function(item) {
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
+                }
+                collection.addItem(item);
+            });
+        } else if (utilities.types.isSequential(sequence.getTypeId())) {
+            const iterator = sequence.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
+                }
+                collection.addItem(item);
+            }
+        } else if (typeof sequence === 'object') {
+            const keys = Object.keys(sequence);
+            keys.forEach(function(key) {
+                collection.addItem(sequence[key]);
+            });
+        } else {
+            throw exception({
+                $exception: '$parameterType',
+                $procedure: procedure,
+                $expected: ['$Collection', '$Object', '$Array'],
+                $actual: '$' + sequence.constructor.name,
+                $message: '"An invalid value type was passed to the constructor."'
+            });
+        }
+    }
+};
