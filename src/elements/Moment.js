@@ -46,16 +46,16 @@ function Moment(value, parameters) {
     var format;
     if (value === undefined || value === null) {
         format = FORMATS[7];
-        value = moment();  // the current moment
+        value = moment.utc();  // the current moment
     } else {
         switch (typeof value) {
             case 'number':
                 format = FORMATS[7];
-                value = moment(value);  // in milliseconds since EPOC
+                value = moment.utc(value);  // in milliseconds since EPOC
                 break;
             case 'string':
                 FORMATS.find(function(candidate) {
-                    const attempt = moment(value, candidate, true);  // true means strict mode
+                    const attempt = moment.utc(value, candidate, true);  // true means strict mode
                     if (attempt.isValid()) {
                         format = candidate;
                         value = attempt;
