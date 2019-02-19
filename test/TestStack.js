@@ -147,8 +147,8 @@ describe('Bali Component Framework™', function() {
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
-            expect(function() {stack.getTop();}).to.throw(Error, 'Attempted to access the top item of an empty stack.');
-            expect(function() {stack.removeItem();}).to.throw(Error, 'Attempted to pop an item off of an empty stack.');
+            expect(function() {stack.getTop();}).to.throw(bali.Exception);
+            expect(function() {stack.removeItem();}).to.throw(bali.Exception);
         });
 
     });

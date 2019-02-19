@@ -30,8 +30,17 @@ const abstractions = require('../abstractions');
  */
 function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
-    if (!value) throw new Error('An invalid reference value was passed to the constructor: ' + value);
-    if (typeof value === 'string') value = new URL(value);
+    try {
+        if (typeof value !== 'object' || value.constructor.name !== 'URL') value = new URL(value);
+    } catch (e) {
+        throw new utilities.Exception({
+            $module: '$Reference',
+            $function: '$Reference',
+            $exception: '$invalidParameter',
+            $parameter: value.toString(),
+            $message: '"An invalid reference value was passed to the constructor."'
+        });
+    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

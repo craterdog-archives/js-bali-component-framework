@@ -61,7 +61,13 @@ function Range(first, last, parameters) {
 
     this.toArray = function() {
         if (lastIndex === Infinity) {
-            throw new Error('Unable to generate an array from an infinite range.');
+            throw new utilities.Exception({
+                $module: '$Range',
+                $function: '$toArray',
+                $exception: '$infiniteArray',
+                $range: this,
+                $message: '"Attempted to generate an array from an infinite range."'
+            });
         }
         const array = [];
         var index = firstIndex;
@@ -123,7 +129,14 @@ function Range(first, last, parameters) {
             index = collection.getIndex(item);
         } else {
             if (typeof item !== 'number') {
-                throw new Error('The item must be a number: ' + item);
+                throw new utilities.Exception({
+                    $module: '$Range',
+                    $function: '$isInRange',
+                    $exception: '$invalidParameter',
+                    $range: this,
+                    $parameter: item,
+                    $message: '"An invalid parameter type was passed."'
+                });
             }
             index = item;
         }
@@ -167,7 +180,7 @@ function RangeIterator(range, collection) {
     };
     
     this.getPrevious = function() {
-        if (!this.hasPrevious()) throw new Error('Unable to retrieve the previous entity from an iterator that is at the beginning of a range.');
+        if (!this.hasPrevious()) return;
         currentSlot--;
         const index = range.getFirstIndex() + currentSlot;
         var item;
@@ -180,7 +193,7 @@ function RangeIterator(range, collection) {
     };
     
     this.getNext = function() {
-        if (!this.hasNext()) throw new Error('Unable to retrieve the next entity from an iterator that is at the end of a range.');
+        if (!this.hasNext()) return;
         const index = range.getFirstIndex() + currentSlot;
         var item;
         if (collection) {

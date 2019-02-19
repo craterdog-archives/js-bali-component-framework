@@ -78,7 +78,12 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    throw new Error('The abstract method getItem(index) must be implemented by a concrete subclass.');
+    throw new utilities.Exception({
+        $module: '$Collection',
+        $function: '$getItem',
+        $exception: '$abstractMethod',
+        $message: '"An abstract method must be implemented by a subclass."'
+    });
 };
 
 
@@ -108,7 +113,12 @@ Collection.prototype.getItems = function(range) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    throw new Error('The abstract method addItem(item) must be implemented by a concrete subclass.');
+    throw new utilities.Exception({
+        $module: '$Collection',
+        $function: '$addItem',
+        $exception: '$abstractMethod',
+        $message: '"An abstract method must be implemented by a subclass."'
+    });
 };
 
 
@@ -195,6 +205,11 @@ Collection.prototype.containsAll = function(items) {
  * be implemented by a subclass.
  */
 Collection.prototype.deleteAll = function() {
-    throw new Error('The abstract method deleteAll() must be implemented by a concrete subclass.');
+    throw new utilities.Exception({
+        $module: '$Collection',
+        $function: '$deleteAll',
+        $exception: '$abstractMethod',
+        $message: '"An abstract method must be implemented by a subclass."'
+    });
 };
 

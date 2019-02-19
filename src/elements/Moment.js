@@ -65,7 +65,15 @@ function Moment(value, parameters) {
                 });
         }
     }
-    if (value.constructor.name !== 'Moment') throw new Error('An invalid moment value was passed to the constructor: ' + value);
+    if (value.constructor.name !== 'Moment') {
+        throw new utilities.Exception({
+            $module: '$Moment',
+            $function: '$Moment',
+            $exception: '$invalidParameter',
+            $parameter: value.toString(),
+            $message: '"An invalid moment value was passed to the constructor."'
+        });
+    }
 
     // since this element is immutable the attributes must be read-only
     this.getFormat = function() { return format; };

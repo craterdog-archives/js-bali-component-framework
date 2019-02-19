@@ -212,7 +212,13 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = utilities.codex.base64Decode(value);
             break;
         default:
-            throw new Error('An invalid encoding for a binary string was specified: ' + encoding);
+            throw new utilities.Exception({
+                $module: '$ParsingVisitor',
+                $function: '$visitBinary',
+                $exception: '$invalidFormat',
+                $format: encoding,
+                $message: '"An invalid encoding format was used for a binary string."'
+            });
     }
     const binary = new elements.Binary(value, parameters);
     this.result = binary;
@@ -1056,13 +1062,12 @@ CustomErrorStrategy.prototype.recover = function(recognizer, e) {
         context.exception = e;
         context = context.parentCtx;
     }
-    const attributes = {
+    throw new utilities.Exception({
+        $module: '$Parser',
+        $function: '$parseDocument',
         $exception: '$syntaxError',
-        $type: '$Parser',
-        $procedure: '$parseDocument',
         $message: '"' + e.message + '"'
-    };
-    throw new utilities.Exception(attributes);
+    });
 };
 
 
@@ -1107,13 +1112,12 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     }
 
     // stop the processing
-    const attributes = {
+    throw new utilities.Exception({
+        $module: '$Parser',
+        $function: '$parseDocument',
         $exception: '$syntaxError',
-        $type: '$Parser',
-        $procedure: '$parseDocument',
         $message: '"' + message + '"'
-    };
-    throw new utilities.Exception(attributes);
+    });
 };
 
 

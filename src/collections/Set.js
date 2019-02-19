@@ -249,7 +249,7 @@ function TreeIterator(tree) {
     };
 
     this.getPrevious = function() {
-        if (!this.hasPrevious()) throw new Error('Unable to retrieve the previous item from an iterator that is at the beginning of a set.');
+        if (!this.hasPrevious()) return;
         const value = previous.value;
         next = previous;
         previous = predecessor(next);
@@ -258,7 +258,7 @@ function TreeIterator(tree) {
     };
 
     this.getNext = function() {
-        if (!this.hasNext()) throw new Error('Unable to retrieve the next item from an iterator that is at the end of a set.');
+        if (!this.hasNext()) return;
         const value = next.value;
         previous = next;
         next = successor(previous);

@@ -31,7 +31,13 @@ function Version(value, parameters) {
     abstractions.Element.call(this, utilities.types.VERSION, parameters);
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
-        throw new Error('An invalid version level was passed to the constructor: ' + value);
+        throw new utilities.Exception({
+            $module: '$Version',
+            $function: '$Version',
+            $exception: '$invalidParameter',
+            $parameter: value.toString(),
+            $message: '"An invalid version value was passed to the constructor."'
+        });
     }
 
     // since this element is immutable the value must be read-only
@@ -244,12 +250,12 @@ VersionIterator.prototype.hasNext = function() {
 
 
 VersionIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) throw new Error('Unable to retrieve the previous level from an iterator that is at the beginning of a version string.');
+    if (!this.hasPrevious()) return;
     return this.levels[--this.slot];
 };
 
 
 VersionIterator.prototype.getNext = function() {
-    if (!this.hasNext()) throw new Error('Unable to retrieve the next level from an iterator that is at the end of a version string.');
+    if (!this.hasNext()) return;
     return this.levels[this.slot++];
 };

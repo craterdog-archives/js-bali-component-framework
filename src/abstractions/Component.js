@@ -55,7 +55,12 @@ Component.prototype.isParameterized = function() {
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Component.prototype.toBoolean = function() {
-    throw new Error('The abstract method toBoolean() must be implemented by a concrete subclass.');
+    throw new utilities.Exception({
+        $module: '$Component',
+        $function: '$toBoolean',
+        $exception: '$abstractMethod',
+        $message: '"An abstract method must be implemented by a subclass."'
+    });
 };
 
 
@@ -179,7 +184,14 @@ Component.prototype.isMatchedBy = function(pattern) {
         }
         return true;  // all pattern items matched successfully
     }
-    throw new Error('An invalid pattern type was passed to match: ' + pattern);
+    throw new utilities.Exception({
+        $module: '$Component',
+        $function: '$isMatchedBy',
+        $exception: '$invalidParameter',
+        $component: this,
+        $parameter: pattern,
+        $message: '"An invalid pattern was passed to match."'
+    });
 };
 
 
@@ -208,5 +220,10 @@ Component.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    throw new Error('The abstract method acceptVisitor(visitor) must be implemented by a concrete subclass.');
+    throw new utilities.Exception({
+        $module: '$Component',
+        $function: '$acceptVisitor',
+        $exception: '$abstractMethod',
+        $message: '"An abstract method must be implemented by a subclass."'
+    });
 };

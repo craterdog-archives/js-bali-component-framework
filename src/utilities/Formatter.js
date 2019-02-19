@@ -47,12 +47,18 @@ function Formatter(indentation) {
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || '';
 
-    this.formatLiteral = function(element, format) {
-        if (!types.isLiteral(element.getTypeId())) {
-            throw new Error('Attempted to format a non-element as a literal: ' + element);
+    this.formatLiteral = function(literal, format) {
+        if (!types.isLiteral(literal.getTypeId())) {
+            throw new utilities.Exception({
+                $module: '$Formatter',
+                $function: '$formatLiteral',
+                $exception: '$invalidParameter',
+                $parameter: literal,
+                $message: '"Attempted to format a non-literal component."'
+            });
         }
         const visitor = new FormattingVisitor(indentation, false, format);
-        element.acceptVisitor(visitor);
+        literal.acceptVisitor(visitor);
         return visitor.result;
     };
 
@@ -119,7 +125,13 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            throw new Error('An invalid angle format was specified: ' + format);
+            throw new utilities.Exception({
+                $module: '$FormattingVisitor',
+                $function: '$visitAngle',
+                $exception: '$invalidFormat',
+                $format: format,
+                $message: '"An invalid angle format was found."'
+            });
     }
     formatted += '~' + formatReal(value);
     if (this.allowParameters && angle.isParameterized()) {
@@ -177,7 +189,13 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = codex.base64Encode(value);
             break;
         default:
-            throw new Error('An invalid binary encoding format was specified: ' + format);
+            throw new utilities.Exception({
+                $module: '$FormattingVisitor',
+                $function: '$visitBinary',
+                $exception: '$invalidFormat',
+                $format: format,
+                $message: '"An invalid binary string format was found."'
+            });
     }
     const indentation = this.getIndentation();
     const regex = new RegExp('\\n', 'g');

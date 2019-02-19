@@ -70,9 +70,9 @@ function Stack(parameters) {
             return true;
         }
         throw new utilities.Exception({
+            $module: '$Stack',
+            $function: '$addItem',
             $exception: '$resourceLimit',
-            $type: '$Stack',
-            $procedure: '$addItem',
             $capacity: capacity,
             $message: '"The stack has reached its maximum capacity."'
         });
@@ -82,14 +82,24 @@ function Stack(parameters) {
         if (array.length > 0) {
             return array.pop();
         }
-        throw new Error('Attempted to pop an item off of an empty stack.');
+        throw new utilities.Exception({
+            $module: '$Stack',
+            $function: '$removeItem',
+            $exception: '$emptyStack',
+            $message: '"Attempted to remove an item from an empty stack."'
+        });
     };
     
     this.getTop = function() {
         if (array.length > 0) {
             return array.peek();
         }
-        throw new Error('Attempted to access the top item of an empty stack.');
+        throw new utilities.Exception({
+            $module: '$Stack',
+            $function: '$getTop',
+            $exception: '$emptyStack',
+            $message: '"Attempted to access an item on an empty stack."'
+        });
     };
     
     this.deleteAll = function() {

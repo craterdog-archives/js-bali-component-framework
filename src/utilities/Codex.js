@@ -70,7 +70,13 @@ exports.base2Decode = function(base2) {
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
     if (length % 8 !== 0) {
-        throw new Error("The number of characters in a base 2 binary string must be divisible by 8: " + base2);
+        throw new utilities.Exception({
+            $module: '$Codex',
+            $function: '$base2Decode',
+            $exception: '$invalidParameter',
+            $parameter: base2,
+            $message: '"The number of characters in the base 2 binary string was not divisible by 8."'
+        });
     }
 
     // decode each base 2 character
@@ -84,7 +90,13 @@ exports.base2Decode = function(base2) {
             const character = base2[index++];
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
-                throw new Error("Attempted to decode a string that is not base 2: " + base2);
+                throw new utilities.Exception({
+                    $module: '$Codex',
+                    $function: '$base2Decode',
+                    $exception: '$invalidParameter',
+                    $parameter: base2,
+                    $message: '"The binary string was not encoded using base 2."'
+                });
             }
             byte |= (bit << b);
         }
@@ -144,7 +156,13 @@ exports.base16Decode = function(base16) {
     base16 = base16.toUpperCase();
     const length = base16.length;
     if (length % 2 !== 0) {
-        throw new Error("The number of characters in a base 16 binary string must be divisible by 2: " + base16);
+        throw new utilities.Exception({
+            $module: '$Codex',
+            $function: '$base16Decode',
+            $exception: '$invalidParameter',
+            $parameter: base16,
+            $message: '"The number of characters in the base 16 binary string was not divisible by 2."'
+        });
     }
 
     // decode each base 16 character
@@ -156,14 +174,26 @@ exports.base16Decode = function(base16) {
         var character = base16[index++];
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
-            throw new Error("Attempted to decode a string that is not base 16: " + base16);
+            throw new utilities.Exception({
+                $module: '$Codex',
+                $function: '$base16Decode',
+                $exception: '$invalidParameter',
+                $parameter: base16,
+                $message: '"The binary string was not encoded using base 16."'
+            });
         }
 
         // decode the character for the low order nybble
         character = base16[index++];
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
-            throw new Error("Attempted to decode a string that is not base 16: " + base16);
+            throw new utilities.Exception({
+                $module: '$Codex',
+                $function: '$base16Decode',
+                $exception: '$invalidParameter',
+                $parameter: base16,
+                $message: '"The binary string was not encoded using base 16."'
+            });
         }
 
         // combine the nybbles to form the byte
@@ -240,7 +270,13 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw new Error("Attempted to decode a string that is not base 32: " + base32);
+            throw new utilities.Exception({
+                $module: '$Codex',
+                $function: '$base32Decode',
+                $exception: '$invalidParameter',
+                $parameter: base32,
+                $message: '"The binary string was not encoded using base 32."'
+            });
         }
         base32DecodeNextCharacter(chunk, index++, buffer, 0);
     }
@@ -248,7 +284,13 @@ exports.base32Decode = function(base32) {
         character = base32[index];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw new Error("Attempted to decode a string that is not base 32: " + base32);
+            throw new utilities.Exception({
+                $module: '$Codex',
+                $function: '$base32Decode',
+                $exception: '$invalidParameter',
+                $parameter: base32,
+                $message: '"The binary string was not encoded using base 32."'
+            });
         }
         base32DecodeLastCharacter(chunk, index, buffer, 0);
     }

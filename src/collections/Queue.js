@@ -70,9 +70,9 @@ function Queue(parameters) {
             return true;
         }
         throw new utilities.Exception({
+            $module: '$Queue',
+            $function: '$addItem',
             $exception: '$resourceLimit',
-            $type: '$Queue',
-            $procedure: '$addItem',
             $capacity: capacity,
             $message: '"The queue has reached its maximum capacity."'
         });
