@@ -31,7 +31,7 @@ const abstractions = require('../abstractions');
 function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     try {
-        if (typeof value !== 'object' || value.constructor.name !== 'URL') value = new URL(value);
+        if (typeof value !== 'object' || value.constructor.name !== 'URL') value = new URL(value.replace(/\$tag:#/, '$tag:%23'));
     } catch (e) {
         throw new utilities.Exception({
             $module: '$Reference',

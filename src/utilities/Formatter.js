@@ -16,6 +16,7 @@
  */
 const types = require('./Types');
 const codex = require('./Codex');
+const Exception = require('./Exception').Exception;
 const Visitor = require('./Visitor').Visitor;
 
 
@@ -49,7 +50,7 @@ function Formatter(indentation) {
 
     this.formatLiteral = function(literal, format) {
         if (!types.isLiteral(literal.getTypeId())) {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '$Formatter',
                 $function: '$formatLiteral',
                 $exception: '$invalidParameter',
@@ -125,7 +126,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '$FormattingVisitor',
                 $function: '$visitAngle',
                 $exception: '$invalidFormat',
@@ -189,7 +190,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = codex.base64Encode(value);
             break;
         default:
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '$FormattingVisitor',
                 $function: '$visitBinary',
                 $exception: '$invalidFormat',
@@ -862,7 +863,7 @@ FormattingVisitor.prototype.visitRange = function(range) {
 FormattingVisitor.prototype.visitReference = function(reference) {
     var formatted = '';
     const value = reference.getValue().toString();
-    formatted += '<' + value + '>';
+    formatted += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
     if (this.allowParameters && reference.isParameterized()) {
         reference.getParameters().acceptVisitor(this);
         formatted += this.result;
