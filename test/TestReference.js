@@ -45,6 +45,18 @@ describe('Bali Component Framework™', function() {
                 const reference = bali.parse(expected);
                 const string = reference.toString();
                 expect(string).to.equal(expected);
+                const scheme = reference.getScheme();
+                const authority = reference.getAuthority();
+                const path = reference.getPath();
+                const query = reference.getQuery();
+                const fragment = reference.getFragment();
+                var url = '<' + scheme + ':';
+                if (authority) url += '//' + authority;
+                if (path) url += path;
+                if (query) url += '?' + query;
+                if (fragment) url += '#' + fragment;
+                url += '>';
+                expect(url).to.equal(expected);
             });
         });
 
@@ -54,9 +66,10 @@ describe('Bali Component Framework™', function() {
 
 const tests = [
     '<https://google.com/>',
+    '<http://derk:pw@google.com:8080/calendar?format=week&hours=8#today>',
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
-    '<bali:/bali/elements/Text>',
+    '<bali:/Text?[$protocol:v1,$tag:#K21FK6QD5G0CZ54S773DSTSTC827Q3VS,$version:v1.2.3,$digest:none]>',
     '<bali:/bali/elements/Text?version=6.12.1>',
     '<bali:/abcCorp/reports/2010/Q3>'
 ];

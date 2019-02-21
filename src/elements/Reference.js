@@ -74,3 +74,92 @@ Reference.prototype.toBoolean = function() {
     return true;
 };
 
+
+/**
+ * This method returns the scheme part of the reference URI.  The scheme does NOT include
+ * the trailing ':'.
+ * <pre>
+ *    <https://google.com/calendar?format=week&hours=12#today>
+ *    |     |            |        |                    |     |
+ *     ----- ------------ -------- -------------------- -----
+ *   *scheme*  authority    path          query        fragment
+ * </pre>
+ * 
+ * @returns {String} The scheme part of the reference URI.
+ */
+Reference.prototype.getScheme = function() {
+    return this.getValue().protocol.slice(0, -1);  // remove trailing ':'
+};
+
+
+/**
+ * This method returns the authority part of the reference URI.  The authority does NOT
+ * include the leading '//'.
+ * <pre>
+ *    <https://google.com/calendar?format=week&hours=12#today>
+ *    |     |            |        |                    |     |
+ *     ----- ------------ -------- -------------------- -----
+ *    scheme  *authority*   path          query        fragment
+ * </pre>
+ * 
+ * @returns {String} The authority part of the reference URI.
+ */
+Reference.prototype.getAuthority = function() {
+    const url = this.getValue();
+    var authority = url.username;
+    if (authority && url.password) authority += ':' + url.password;
+    if (authority) authority += '@';
+    authority += url.host;
+    return decodeURIComponent(authority);
+};
+
+
+/**
+ * This method returns the path part of the reference URI.  The path includes
+ * the leading '/'.
+ * <pre>
+ *    <https://google.com/calendar?format=week&hours=12#today>
+ *    |     |            |        |                    |     |
+ *     ----- ------------ -------- -------------------- -----
+ *    scheme   authority   *path*         query        fragment
+ * </pre>
+ * 
+ * @returns {String} The path part of the reference URI.
+ */
+Reference.prototype.getPath = function() {
+    return decodeURIComponent(this.getValue().pathname);
+};
+
+
+/**
+ * This method returns the query part of the reference URI.
+ * <pre>
+ *    <https://google.com/calendar?format=week&hours=12#today>
+ *    |     |            |        |                    |     |
+ *     ----- ------------ -------- -------------------- -----
+ *    scheme   authority    path         *query*       fragment
+ * </pre>
+ * 
+ * @returns {String} The query part of the reference URI.  The query does NOT
+ * include the leading '?'.
+ */
+Reference.prototype.getQuery = function() {
+    return decodeURIComponent(this.getValue().search.slice(1));  // remove the leading '?'
+};
+
+
+/**
+ * This method returns the fragment part of the reference URI.  The fragement
+ * does NOT include the leading '#'.
+ * <pre>
+ *    <https://google.com/calendar?format=week&hours=12#today>
+ *    |     |            |        |                    |     |
+ *     ----- ------------ -------- -------------------- -----
+ *    scheme   authority    path          query       *fragment*
+ * </pre>
+ * 
+ * @returns {String} The fragment part of the reference URI.
+ */
+Reference.prototype.getFragment = function() {
+    return decodeURIComponent(this.getValue().hash.slice(1));  // remove the leading '#'
+};
