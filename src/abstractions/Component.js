@@ -29,6 +29,7 @@ const formatter = new utilities.Formatter();
 function Component(type, parameters) {
     this.getTypeId = function() { return type; };
     this.getParameters = function() { return parameters; };
+    this.setParameters = function(newParameters) { parameters = newParameters; };
     return this;
 }
 Component.prototype.constructor = Component;
