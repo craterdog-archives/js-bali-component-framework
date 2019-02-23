@@ -146,7 +146,7 @@ const angle = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$angle',
+                $procedure: '$angle',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value.constructor.name,
@@ -187,7 +187,7 @@ const binary = function(value, parameters) {
             if (!(value instanceof Buffer)) {
                 throw exception({
                     $module: '$bali',
-                    $function: '$binary',
+                    $procedure: '$binary',
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$Number', '$Buffer'],
                     $actual: '$' + value.constructor.name,
@@ -238,7 +238,7 @@ const catalog = function(sequence, parameters) {
         } else {
             throw exception({
                 $module: '$bali',
-                $function: '$catalog',
+                $procedure: '$catalog',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Collection', '$Object', '$Array'],
                 $actual: '$' + sequence.constructor.name,
@@ -262,7 +262,7 @@ const duration = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$duration',
+                $procedure: '$duration',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
@@ -296,7 +296,7 @@ const moment = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$moment',
+                $procedure: '$moment',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
@@ -319,7 +319,7 @@ const number = function(value1, value2, parameters) {
             if (value2 && typeof value2 !== 'number' && value2.getTypeId() !== utilities.types.ANGLE) {
                 throw exception({
                     $module: '$bali',
-                    $function: '$number',
+                    $procedure: '$number',
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$Number', '$Angle'],
                     $actual: '$' + value2.constructor.name,
@@ -330,7 +330,7 @@ const number = function(value1, value2, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$number',
+                $procedure: '$number',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value1.constructor.name,
@@ -363,7 +363,7 @@ const pattern = function(value, parameters) {
             if (!(value instanceof RegExp)) {
                 throw exception({
                     $module: '$bali',
-                    $function: '$pattern',
+                    $procedure: '$pattern',
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$String', '$RegExp'],
                     $actual: '$' + value.constructor.name,
@@ -384,7 +384,7 @@ const percent = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$percent',
+                $procedure: '$percent',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value.constructor.name,
@@ -409,7 +409,7 @@ const probability = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$probability',
+                $procedure: '$probability',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Boolean', '$Number'],
                 $actual: '$' + value.constructor.name,
@@ -452,7 +452,7 @@ const reference = function(value, parameters) {
             if (!(value instanceof URL)) {
                 throw exception({
                     $module: '$bali',
-                    $function: '$reference',
+                    $procedure: '$reference',
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$String', '$URL'],
                     $actual: '$' + value.constructor.name,
@@ -472,7 +472,7 @@ const reserved = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$reserved',
+                $procedure: '$reserved',
                 $exception: '$parameterType',
                 $expected: ['$String'],
                 $actual: '$' + value.constructor.name,
@@ -511,7 +511,7 @@ const symbol = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$symbol',
+                $procedure: '$symbol',
                 $exception: '$parameterType',
                 $expected: ['$String'],
                 $actual: '$' + value.constructor.name,
@@ -532,7 +532,7 @@ const tag = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$tag',
+                $procedure: '$tag',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
@@ -552,7 +552,7 @@ const text = function(value, parameters) {
         default:
             throw exception({
                 $module: '$bali',
-                $function: '$text',
+                $procedure: '$text',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$String'],
                 $actual: '$' + value.constructor.name,
@@ -569,7 +569,7 @@ const version = function(value, parameters) {
     if (value && !Array.isArray(value)) {
         throw exception({
             $module: '$bali',
-            $function: '$version',
+            $procedure: '$version',
             $exception: '$parameterType',
             $expected: ['$Undefined', '$Array'],
             $actual: '$' + value.constructor.name,
@@ -625,7 +625,7 @@ const fillCollection = function(procedure, collection, sequence) {
         } else {
             throw exception({
                 $module: '$bali',
-                $function: '$procedure',
+                $procedure: '$procedure',
                 $exception: '$parameterType',
                 $expected: ['$Collection', '$Object', '$Array'],
                 $actual: '$' + sequence.constructor.name,

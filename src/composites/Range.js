@@ -63,7 +63,7 @@ function Range(first, last, parameters) {
         if (lastIndex === Infinity) {
             throw new utilities.Exception({
                 $module: '$Range',
-                $function: '$toArray',
+                $procedure: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
                 $message: '"Attempted to generate an array from an infinite range."'
@@ -131,7 +131,7 @@ function Range(first, last, parameters) {
             if (typeof item !== 'number') {
                 throw new utilities.Exception({
                     $module: '$Range',
-                    $function: '$isInRange',
+                    $procedure: '$isInRange',
                     $exception: '$invalidParameter',
                     $range: this,
                     $parameter: item,

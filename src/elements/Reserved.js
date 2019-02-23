@@ -32,7 +32,7 @@ function Reserved(value, parameters) {
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new utilities.Exception({
             $module: '$Reserved',
-            $function: '$Reserved',
+            $procedure: '$Reserved',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $message: '"An invalid reserved symbol value was passed to the constructor."'

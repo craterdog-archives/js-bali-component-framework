@@ -34,7 +34,7 @@ function Tree(type) {
     if (!utilities.types.isProcedural(type)) {
         throw new utilities.Exception({
             $module: '$Tree',
-            $function: '$Tree',
+            $procedure: '$Tree',
             $exception: '$invalidParameter',
             $parameter: utilities.types.symbolForType(type),
             $message: '"An invalid tree type was passed to the constructor."'
@@ -203,7 +203,7 @@ Tree.prototype.acceptVisitor = function(visitor) {
         default:
             throw new utilities.Exception({
                 $module: '$Tree',
-                $function: '$acceptVisitor',
+                $procedure: '$acceptVisitor',
                 $exception: '$invalidParameter',
                 $parameter: visitor,
                 $tree: this,

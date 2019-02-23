@@ -32,7 +32,7 @@ function Symbol(value, parameters) {
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
         throw new utilities.Exception({
             $module: '$Symbol',
-            $function: '$Symbol',
+            $procedure: '$Symbol',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $message: '"An invalid symbol value was passed to the constructor."'
