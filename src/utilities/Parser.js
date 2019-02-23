@@ -1129,7 +1129,7 @@ CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startI
             alternatives.push(item.alt);
         });
         alternatives = "{" + alternatives.join(", ") + "}";
-        const message = 'PARSER: Ambiguous input was encountered for rule: ' + rule + ', alternatives: ' + alternatives;
+        var message = 'The parser encountered ambiguous input for rule: ' + rule + ', alternatives: ' + alternatives;
         message = addContext(recognizer, message);
         console.error(message);
     }
@@ -1139,12 +1139,14 @@ CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startI
 CustomErrorListener.prototype.reportContextSensitivity = function(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
     if (this.debug) {
         const rule = getRule(recognizer, dfa);
-        const message = 'PARSER Encountered a context sensitive rule: ' + rule;
+        var message = 'The parser encountered a context sensitive rule: ' + rule;
         message = addContext(recognizer, message);
         console.error(message);
     }
 };
 
+
+// PRIVATE FUNCTIONS
 
 function getRule(recognizer, dfa) {
     const description = dfa.decision.toString();
