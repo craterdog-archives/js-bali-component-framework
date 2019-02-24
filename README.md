@@ -27,3 +27,6 @@ var bali = require('bali-component-framework);
 
 Check out the example code [here](https://github.com/craterdog-bali/js-bali-component-framework/wiki/code-examples).
 
+### Contributing
+Project contributors are always welcome. Create a [fork](https://github.com/craterdog-bali/js-bali-component-framework) of the project and add cool new things to the framework. When you are ready to contribute the changes create a subsequent ["pull request"](https://help.github.com/articles/about-pull-requests/). Any questions and comments can be sent to craterdog@gmail.com.
+
