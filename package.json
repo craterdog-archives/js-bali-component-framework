@@ -1,6 +1,6 @@
 {
   "name": "bali-component-framework",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "This library provides a JavaScript based implementation of the Bali Component Framework™.",
   "main": "index.js",
   "repository": {
