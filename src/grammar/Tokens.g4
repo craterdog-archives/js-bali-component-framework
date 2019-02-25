@@ -14,7 +14,7 @@ PERCENT: REAL '%';
 
 TAG: '#' BASE32*;
 
-FRACTION: '.' ('0'..'9')* '1'..'9';
+FRACTION: '.' ('0'..'9')+;
 
 
 // NOTE: We cannot define negative constants here because the scanner would scan
