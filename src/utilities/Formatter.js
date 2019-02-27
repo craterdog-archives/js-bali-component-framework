@@ -97,13 +97,14 @@ FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
-FormattingVisitor.prototype.getIndentation = function() {
-    var indentation = '';
-    var levels = this.depth + this.indentation;
+FormattingVisitor.prototype.getSeparator = function(character) {
+    if (this.indentation < 0) return character;
+    var separator = EOL;
+    const levels = this.depth + this.indentation;
     for (var i = 0; i < levels; i++) {
-        indentation += '    ';
+        separator += '    ';
     }
-    return indentation;
+    return separator;
 };
 
 
@@ -207,10 +208,13 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
                 $message: '"An invalid binary string format was found."'
             });
     }
-    const indentation = this.getIndentation();
+    this.depth++;
+    const separator = this.getSeparator('');
     const regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
+    value = value.replace(regex, separator);
     formatted += "'" + value + "'";
+    formatted = formatted.replace(/    '/, "'");  // unindent last line
+    this.depth--;
     if (this.allowParameters && binary.isParameterized()) {
         binary.getParameters().acceptVisitor(this);
         formatted += this.result;
@@ -303,11 +307,12 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
         } else {
             // each item is on a separate line
             this.depth++;
-            items.forEach(function(item) {
-                formatted += EOL + this.getIndentation() + item;
+            formatted += this.getSeparator('') + items[0];
+            items.slice(1).forEach(function(item) {
+                formatted += this.getSeparator(', ') + item;
             }, this);
             this.depth--;
-            formatted += EOL + this.getIndentation();
+            formatted += this.getSeparator('');
         }
     } else if (collection.getTypeId() === types.CATALOG) {
         formatted += ':';  // empty catalog
@@ -799,11 +804,12 @@ FormattingVisitor.prototype.visitProcedure = function(tree) {
     } else {
         // each statement is on a separate line
         this.depth++;
-        statements.forEach(function(statement) {
-            formatted += EOL + this.getIndentation() + statement;
+        if (statements.length > 0) formatted += this.getSeparator('') + statements[0];
+        statements.slice(1).forEach(function(statement) {
+            formatted += this.getSeparator('; ') + statement;
         }, this);
         this.depth--;
-        formatted += EOL + this.getIndentation();
+        formatted += this.getSeparator('');
     }
     this.result = formatted;
 };
@@ -1074,10 +1080,13 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 FormattingVisitor.prototype.visitText = function(text) {
     var formatted = '';
     var value = text.getValue();
-    const indentation = this.getIndentation();
+    this.depth++;
+    const separator = this.getSeparator('\n');
     const regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, EOL + indentation);  // prepend to each line the indentation
+    value = value.replace(regex, separator);
     formatted += '"' + value + '"';
+    formatted = formatted.replace(/    "/, '"');  // unindent last line
+    this.depth--;
     if (this.allowParameters && text.isParameterized()) {
         text.getParameters().acceptVisitor(this);
         formatted += this.result;

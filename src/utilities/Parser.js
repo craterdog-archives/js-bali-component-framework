@@ -957,10 +957,15 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 // text: TEXT | BLOCK_TEXT
 ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
-    const indentation = this.getIndentation();
-    const regex = new RegExp('\\n' + indentation, 'g');
     var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
-    value = value.replace(regex, EOL);  // remove the indentation
+    this.depth++;
+    var indentation = this.getIndentation();
+    var regex = new RegExp('\\n' + indentation, 'g');
+    value = value.replace(regex, EOL);  // remove the indentation before each text line
+    this.depth--;
+    indentation = this.getIndentation();
+    var regex = new RegExp('\\n' + indentation, 'g');
+    value = value.replace(regex, EOL);  // remove the indentation from last quote line
     const text = new elements.Text(value, parameters);
     this.result = text;
 };

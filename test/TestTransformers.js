@@ -33,8 +33,8 @@ describe('Bali Component Framework™', function() {
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(document);
+            formatted = bali.format(component, -1);  // inline formatting
+            component = bali.parse(formatted, undefined, DEBUG);
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
@@ -62,8 +62,8 @@ describe('Bali Component Framework™', function() {
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(document);
+            formatted = bali.format(component, -1);  // inline formatting
+            component = bali.parse(formatted, undefined, DEBUG);
         });
 
         it('should parse and format the same statements', function() {
@@ -80,8 +80,8 @@ describe('Bali Component Framework™', function() {
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(document);
+            formatted = bali.format(component, -1);  // inline formatting
+            component = bali.parse(formatted, undefined, DEBUG);
         });
 
         it('should parse and format the same components', function() {
@@ -98,8 +98,8 @@ describe('Bali Component Framework™', function() {
             expect(formatted).to.equal(document);
             component = bali.parse(formatted, undefined, DEBUG);
             expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component) + '\n';  // add POSIX <EOL>
-            expect(formatted).to.equal(document);
+            formatted = bali.format(component, -1);  // inline formatting
+            component = bali.parse(formatted, undefined, DEBUG);
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();

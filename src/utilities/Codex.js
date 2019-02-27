@@ -557,7 +557,7 @@ function formatLines(string, indentation) {
     const length = string.length;
     if (length > LINE_WIDTH) {
         for (var index = 0; index < length; index += LINE_WIDTH) {
-            formatted += EOL + '    ' + indentation;
+            formatted += EOL + indentation;
             formatted += string.substring(index, index + LINE_WIDTH);
         }
         formatted += EOL;
