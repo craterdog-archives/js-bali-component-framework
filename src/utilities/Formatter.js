@@ -34,19 +34,27 @@ const MAXIMUM_LENGTH = 25;
 
 /**
  * This class implements a formatter that uses a visitor to format component structures
- * as strings containing Bali Document Notation™ in a canonical way. If an optional
- * indentation string is specified, then each line of the generated formatted code will be
- * indented using that string.
+ * as strings containing Bali Document Notation™ in a canonical way.
  * 
  * @constructor
- * @param {String} indentation A blank string that will be prepended to each indented line in
- * the formatted code. The default is the empty string.
+ * @param {Number} indentation The number of levels of indentation that should be inserted
+ * to each formatted line at the top level. The default is zero, a value of -1 will result
+ * in an inline formatting.
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
 
     // the indentation is a private attribute so methods that use it are defined in the constructor
-    indentation = indentation || '';
+    indentation = indentation || 0;
+    if (typeof indentation !== 'number') {
+        throw new Exception({
+            $module: '$Formatter',
+            $procedure: '$Formatter',
+            $exception: '$invalidParameter',
+            $parameter: indentation,
+            $message: '"The indentation parameter should be the number of levels to indent."'
+        });
+    }
 
     this.formatLiteral = function(literal, format) {
         if (!types.isLiteral(literal.getTypeId())) {
@@ -90,8 +98,9 @@ FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
 FormattingVisitor.prototype.getIndentation = function() {
-    var indentation = this.indentation;
-    for (var i = 0; i < this.depth; i++) {
+    var indentation = '';
+    var levels = this.depth + this.indentation;
+    for (var i = 0; i < levels; i++) {
         indentation += '    ';
     }
     return indentation;
