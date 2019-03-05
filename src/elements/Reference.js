@@ -31,14 +31,15 @@ const abstractions = require('../abstractions');
 function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
     try {
-        if (typeof value !== 'object' || value.constructor.name !== 'URL') value = new URL(value.replace(/\$tag:#/, '$tag:%23'));
-    } catch (e) {
+        if (value.constructor.name !== 'URL') value = new URL(value.replace(/\$tag:#/, '$tag:%23'));
+    } catch (exception) {
         throw new utilities.Exception({
             $module: '$Reference',
             $procedure: '$Reference',
             $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $message: '"An invalid reference value was passed to the constructor."'
+            $parameter: '"' + value + '"',
+            $message: '"An invalid reference value was passed to the constructor."',
+            $cause: exception
         });
     }
 

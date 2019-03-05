@@ -17,21 +17,28 @@
  * 
  * @constructor
  * @param {Object} attributes An object containing the exception attributes.
+ * @param {Object} cause An optional exception that caused this one.
  * @returns {Exception} The new exception.
  */
-function Exception(attributes) {
+function Exception(attributes, cause) {
     this.stack = Error().stack;
     if (this.stack) this.stack = 'Exception' + this.stack.slice(5);  // replace 'Error' with 'Exception'
     this.attributes = this.convert(attributes);
-    this.message = 'BALI: The following Bali exception was thrown: ' + this.attributes;
+    this.message = this.attributes.getValue('$message').getValue();
+    this.cause = cause;
     return this;
 }
 Exception.prototype = Object.create(Error.prototype);
-Exception.prototype.name = 'Exception';
 Exception.prototype.constructor = Exception;
 exports.Exception = Exception;
 
 
 Exception.prototype.toString = function() {
-    return this.name + ': ' + this.message;
+    var string = 'Exception: The following Bali exception was thrown:\n';
+    var cause = this;
+    while (cause) {
+        string += cause.attributes + '\n';
+        cause = cause.cause;
+    }
+    return string;
 };

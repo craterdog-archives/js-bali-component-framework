@@ -1061,17 +1061,17 @@ CustomErrorStrategy.prototype.reportError = function(recognizer, e) {
 };
 
 
-CustomErrorStrategy.prototype.recover = function(recognizer, e) {
+CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
     var context = recognizer._ctx;
     while (context !== null) {
-        context.exception = e;
+        context.exception = exception;
         context = context.parentCtx;
     }
     throw new utilities.Exception({
         $module: '$Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $message: '"' + e.message + '"'
+        $message: '"' + exception + '"'
     });
 };
 
@@ -1111,18 +1111,21 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     }
     message = addContext(recognizer, message);
 
-    // log the error message if in debug mode
-    if (this.debug) {
-        console.error(message);
-    }
-
-    // stop the processing
-    throw new utilities.Exception({
+    // capture the exception
+    const exception = new utilities.Exception({
         $module: '$Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
         $message: '"' + message + '"'
     });
+
+    // log the exception if in debug mode
+    if (this.debug) {
+        console.error(exception.toString());
+    }
+
+    // stop the processing
+    throw exception;
 };
 
 

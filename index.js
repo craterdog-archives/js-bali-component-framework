@@ -86,8 +86,7 @@ const duplicate = function(component) {
 exports.duplicate = duplicate;
 
 const exception = function(object) {
-    const attributes = convert(object);
-    return new utilities.Exception(attributes);
+    return new utilities.Exception(object);
 };
 exports.exception = exception;
 

@@ -79,7 +79,8 @@ exports.Tree = Tree;
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
-    switch(this.getTypeId()) {
+    const typeId = this.getTypeId();
+    switch(typeId) {
         case utilities.types.ARITHMETIC_EXPRESSION:
             visitor.visitArithmeticExpression(this);
             break;
@@ -204,8 +205,8 @@ Tree.prototype.acceptVisitor = function(visitor) {
             throw new utilities.Exception({
                 $module: '$Tree',
                 $procedure: '$acceptVisitor',
-                $exception: '$invalidParameter',
-                $parameter: visitor,
+                $exception: '$invalidType',
+                $type: utilities.types.symbolForType(type),
                 $tree: this,
                 $message: '"Attempted to visit an invalid tree node."'
             });
