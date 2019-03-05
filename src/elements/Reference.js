@@ -38,9 +38,8 @@ function Reference(value, parameters) {
             $procedure: '$Reference',
             $exception: '$invalidParameter',
             $parameter: '"' + value + '"',
-            $message: '"An invalid reference value was passed to the constructor."',
-            $cause: exception
-        });
+            $message: '"An invalid reference value was passed to the constructor."'
+        }, exception);
     }
 
     // since this element is immutable the value must be read-only
