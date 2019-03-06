@@ -32,7 +32,7 @@ function Probability(value, parameters) {
     if (!isFinite(value) || value < 0 || value > 1) {
         throw new utilities.Exception({
             $module: '$Probability',
-            $procedure: '$Probability',
+            $function: '$Probability',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $message: '"An invalid probability value was passed to the constructor."'

@@ -71,7 +71,7 @@ function Queue(parameters) {
         }
         throw new utilities.Exception({
             $module: '$Queue',
-            $procedure: '$addItem',
+            $function: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
             $message: '"The queue has reached its maximum capacity."'

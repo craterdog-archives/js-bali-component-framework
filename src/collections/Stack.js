@@ -71,7 +71,7 @@ function Stack(parameters) {
         }
         throw new utilities.Exception({
             $module: '$Stack',
-            $procedure: '$addItem',
+            $function: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
             $message: '"The stack has reached its maximum capacity."'
@@ -84,7 +84,7 @@ function Stack(parameters) {
         }
         throw new utilities.Exception({
             $module: '$Stack',
-            $procedure: '$removeItem',
+            $function: '$removeItem',
             $exception: '$emptyStack',
             $message: '"Attempted to remove an item from an empty stack."'
         });
@@ -96,7 +96,7 @@ function Stack(parameters) {
         }
         throw new utilities.Exception({
             $module: '$Stack',
-            $procedure: '$getTop',
+            $function: '$getTop',
             $exception: '$emptyStack',
             $message: '"Attempted to access an item on an empty stack."'
         });

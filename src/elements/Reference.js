@@ -35,7 +35,7 @@ function Reference(value, parameters) {
     } catch (exception) {
         throw new utilities.Exception({
             $module: '$Reference',
-            $procedure: '$Reference',
+            $function: '$Reference',
             $exception: '$invalidParameter',
             $parameter: '"' + value + '"',
             $message: '"An invalid reference value was passed to the constructor."'

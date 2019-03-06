@@ -80,7 +80,7 @@ Collection.prototype.getIndex = function(item) {
 Collection.prototype.getItem = function(index) {
     throw new utilities.Exception({
         $module: '$Collection',
-        $procedure: '$getItem',
+        $function: '$getItem',
         $exception: '$abstractMethod',
         $message: '"An abstract method must be implemented by a subclass."'
     });
@@ -115,7 +115,7 @@ Collection.prototype.getItems = function(range) {
 Collection.prototype.addItem = function(item) {
     throw new utilities.Exception({
         $module: '$Collection',
-        $procedure: '$addItem',
+        $function: '$addItem',
         $exception: '$abstractMethod',
         $message: '"An abstract method must be implemented by a subclass."'
     });
@@ -207,7 +207,7 @@ Collection.prototype.containsAll = function(items) {
 Collection.prototype.deleteAll = function() {
     throw new utilities.Exception({
         $module: '$Collection',
-        $procedure: '$deleteAll',
+        $function: '$deleteAll',
         $exception: '$abstractMethod',
         $message: '"An abstract method must be implemented by a subclass."'
     });

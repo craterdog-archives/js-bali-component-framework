@@ -35,7 +35,7 @@ function Angle(value, parameters) {
     if (!isFinite(value)) {
         throw new utilities.Exception({
             $module: '$Angle',
-            $procedure: '$Angle',
+            $function: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $message: '"An invalid angle value was passed to the constructor."'

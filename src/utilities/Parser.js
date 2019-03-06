@@ -214,7 +214,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
         default:
             throw new utilities.Exception({
                 $module: '$ParsingVisitor',
-                $procedure: '$visitBinary',
+                $function: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: encoding,
                 $message: '"An invalid encoding format was used for a binary string."'
@@ -1069,7 +1069,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
     }
     throw new utilities.Exception({
         $module: '$Parser',
-        $procedure: '$parseDocument',
+        $function: '$parseDocument',
         $exception: '$syntaxError',
         $message: '"' + exception + '"'
     });
@@ -1114,7 +1114,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     // capture the exception
     const exception = new utilities.Exception({
         $module: '$Parser',
-        $procedure: '$parseDocument',
+        $function: '$parseDocument',
         $exception: '$syntaxError',
         $message: '"' + message + '"'
     });

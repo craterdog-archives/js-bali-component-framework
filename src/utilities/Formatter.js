@@ -49,7 +49,7 @@ function Formatter(indentation) {
     if (typeof indentation !== 'number') {
         throw new Exception({
             $module: '$Formatter',
-            $procedure: '$Formatter',
+            $function: '$Formatter',
             $exception: '$invalidParameter',
             $parameter: indentation,
             $message: '"The indentation parameter should be the number of levels to indent."'
@@ -60,7 +60,7 @@ function Formatter(indentation) {
         if (!types.isLiteral(literal.getTypeId())) {
             throw new Exception({
                 $module: '$Formatter',
-                $procedure: '$formatLiteral',
+                $function: '$formatLiteral',
                 $exception: '$invalidParameter',
                 $parameter: literal,
                 $message: '"Attempted to format a non-literal component."'
@@ -138,7 +138,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
         default:
             throw new Exception({
                 $module: '$FormattingVisitor',
-                $procedure: '$visitAngle',
+                $function: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
                 $message: '"An invalid angle format was found."'
@@ -202,7 +202,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
         default:
             throw new Exception({
                 $module: '$FormattingVisitor',
-                $procedure: '$visitBinary',
+                $function: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
                 $message: '"An invalid binary string format was found."'

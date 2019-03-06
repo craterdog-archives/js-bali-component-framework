@@ -57,7 +57,7 @@ Composite.prototype.toBoolean = function() {
 Composite.prototype.toArray = function() {
     throw new utilities.Exception({
         $module: '$Composite',
-        $procedure: '$toArray',
+        $function: '$toArray',
         $exception: '$abstractMethod',
         $message: '"An abstract method must be implemented by a subclass."'
     });
@@ -83,7 +83,7 @@ Composite.prototype.isEmpty = function() {
 Composite.prototype.getSize = function() {
     throw new utilities.Exception({
         $module: '$Composite',
-        $procedure: '$getSize',
+        $function: '$getSize',
         $exception: '$abstractMethod',
         $message: '"An abstract method must be implemented by a subclass."'
     });

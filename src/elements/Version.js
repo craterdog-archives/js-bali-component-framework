@@ -33,7 +33,7 @@ function Version(value, parameters) {
     if (value.indexOf(0) >= 0) {
         throw new utilities.Exception({
             $module: '$Version',
-            $procedure: '$Version',
+            $function: '$Version',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $message: '"An invalid version value was passed to the constructor."'
