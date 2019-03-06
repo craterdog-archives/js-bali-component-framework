@@ -37,7 +37,7 @@ Exception.prototype.toString = function() {
     var string = 'Exception: The following Bali exception was thrown:\n';
     var cause = this;
     while (cause) {
-        string += cause.attributes + '\n';
+        string += (cause.attributes || cause) + '\n';
         cause = cause.cause;
     }
     return string;

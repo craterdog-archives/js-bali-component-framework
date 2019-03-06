@@ -85,8 +85,8 @@ const duplicate = function(component) {
 };
 exports.duplicate = duplicate;
 
-const exception = function(object) {
-    return new utilities.Exception(object);
+const exception = function(object, cause) {
+    return new utilities.Exception(object, cause);
 };
 exports.exception = exception;
 
