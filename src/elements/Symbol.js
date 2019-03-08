@@ -35,7 +35,7 @@ function Symbol(value, parameters) {
             $function: '$Symbol',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid symbol value was passed to the constructor."'
+            $text: '"An invalid symbol value was passed to the constructor."'
         });
     }
 

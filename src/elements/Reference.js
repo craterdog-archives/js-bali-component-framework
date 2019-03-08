@@ -38,7 +38,7 @@ function Reference(value, parameters) {
             $function: '$Reference',
             $exception: '$invalidParameter',
             $parameter: '"' + value + '"',
-            $message: '"An invalid reference value was passed to the constructor."'
+            $text: '"An invalid reference value was passed to the constructor."'
         }, exception);
     }
 

@@ -37,7 +37,7 @@ function Tree(type) {
             $function: '$Tree',
             $exception: '$invalidParameter',
             $parameter: utilities.types.symbolForType(type),
-            $message: '"An invalid tree type was passed to the constructor."'
+            $text: '"An invalid tree type was passed to the constructor."'
         });
     }
 
@@ -208,7 +208,7 @@ Tree.prototype.acceptVisitor = function(visitor) {
                 $exception: '$invalidType',
                 $type: utilities.types.symbolForType(type),
                 $tree: this,
-                $message: '"Attempted to visit an invalid tree node."'
+                $text: '"Attempted to visit an invalid tree node."'
             });
     }
 };

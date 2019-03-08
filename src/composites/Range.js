@@ -66,7 +66,7 @@ function Range(first, last, parameters) {
                 $function: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
-                $message: '"Attempted to generate an array from an infinite range."'
+                $text: '"Attempted to generate an array from an infinite range."'
             });
         }
         const array = [];
@@ -135,7 +135,7 @@ function Range(first, last, parameters) {
                     $exception: '$invalidParameter',
                     $range: this,
                     $parameter: item,
-                    $message: '"An invalid parameter type was passed."'
+                    $text: '"An invalid parameter type was passed."'
                 });
             }
             index = item;

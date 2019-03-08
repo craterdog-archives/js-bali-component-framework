@@ -36,7 +36,7 @@ function Version(value, parameters) {
             $function: '$Version',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid version value was passed to the constructor."'
+            $text: '"An invalid version value was passed to the constructor."'
         });
     }
 

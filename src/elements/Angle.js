@@ -38,7 +38,7 @@ function Angle(value, parameters) {
             $function: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid angle value was passed to the constructor."'
+            $text: '"An invalid angle value was passed to the constructor."'
         });
     }
     if (parameters) {

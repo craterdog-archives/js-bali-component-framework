@@ -71,7 +71,7 @@ function Moment(value, parameters) {
             $function: '$Moment',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid moment value was passed to the constructor."'
+            $text: '"An invalid moment value was passed to the constructor."'
         });
     }
 

@@ -217,7 +217,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
                 $function: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: encoding,
-                $message: '"An invalid encoding format was used for a binary string."'
+                $text: '"An invalid encoding format was used for a binary string."'
             });
     }
     const binary = new elements.Binary(value, parameters);
@@ -1071,7 +1071,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
         $module: '$Parser',
         $function: '$parseDocument',
         $exception: '$syntaxError',
-        $message: '"' + exception + '"'
+        $text: '"' + exception + '"'
     });
 };
 
@@ -1116,7 +1116,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $module: '$Parser',
         $function: '$parseDocument',
         $exception: '$syntaxError',
-        $message: '"' + message + '"'
+        $text: '"' + message + '"'
     });
 
     // log the exception if in debug mode

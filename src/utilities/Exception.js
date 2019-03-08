@@ -24,7 +24,7 @@ function Exception(attributes, cause) {
     this.stack = Error().stack;
     if (this.stack) this.stack = 'Exception' + this.stack.slice(5);  // replace 'Error' with 'Exception'
     this.attributes = this.convert(attributes);
-    this.message = this.attributes.getValue('$message').getValue();
+    this.message = this.attributes.getValue('$text').getValue();
     this.cause = cause;
     return this;
 }

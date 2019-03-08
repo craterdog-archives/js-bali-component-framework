@@ -74,7 +74,7 @@ function Queue(parameters) {
             $function: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
-            $message: '"The queue has reached its maximum capacity."'
+            $text: '"The queue has reached its maximum capacity."'
         });
     };
 

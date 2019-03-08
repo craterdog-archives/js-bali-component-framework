@@ -75,7 +75,7 @@ exports.base2Decode = function(base2) {
             $function: '$base2Decode',
             $exception: '$invalidParameter',
             $parameter: base2,
-            $message: '"The number of characters in the base 2 binary string was not divisible by 8."'
+            $text: '"The number of characters in the base 2 binary string was not divisible by 8."'
         });
     }
 
@@ -95,7 +95,7 @@ exports.base2Decode = function(base2) {
                     $function: '$base2Decode',
                     $exception: '$invalidParameter',
                     $parameter: base2,
-                    $message: '"The binary string was not encoded using base 2."'
+                    $text: '"The binary string was not encoded using base 2."'
                 });
             }
             byte |= (bit << b);
@@ -161,7 +161,7 @@ exports.base16Decode = function(base16) {
             $function: '$base16Decode',
             $exception: '$invalidParameter',
             $parameter: base16,
-            $message: '"The number of characters in the base 16 binary string was not divisible by 2."'
+            $text: '"The number of characters in the base 16 binary string was not divisible by 2."'
         });
     }
 
@@ -179,7 +179,7 @@ exports.base16Decode = function(base16) {
                 $function: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
-                $message: '"The binary string was not encoded using base 16."'
+                $text: '"The binary string was not encoded using base 16."'
             });
         }
 
@@ -192,7 +192,7 @@ exports.base16Decode = function(base16) {
                 $function: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
-                $message: '"The binary string was not encoded using base 16."'
+                $text: '"The binary string was not encoded using base 16."'
             });
         }
 
@@ -275,7 +275,7 @@ exports.base32Decode = function(base32) {
                 $function: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
-                $message: '"The binary string was not encoded using base 32."'
+                $text: '"The binary string was not encoded using base 32."'
             });
         }
         base32DecodeNextCharacter(chunk, index++, buffer, 0);
@@ -289,7 +289,7 @@ exports.base32Decode = function(base32) {
                 $function: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
-                $message: '"The binary string was not encoded using base 32."'
+                $text: '"The binary string was not encoded using base 32."'
             });
         }
         base32DecodeLastCharacter(chunk, index, buffer, 0);

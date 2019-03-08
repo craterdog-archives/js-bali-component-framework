@@ -60,7 +60,7 @@ Component.prototype.toBoolean = function() {
         $module: '$Component',
         $function: '$toBoolean',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 
@@ -191,7 +191,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         $exception: '$invalidParameter',
         $component: this,
         $parameter: pattern,
-        $message: '"An invalid pattern was passed to match."'
+        $text: '"An invalid pattern was passed to match."'
     });
 };
 
@@ -225,6 +225,6 @@ Component.prototype.acceptVisitor = function(visitor) {
         $module: '$Component',
         $function: '$acceptVisitor',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };

@@ -52,7 +52,7 @@ function Formatter(indentation) {
             $function: '$Formatter',
             $exception: '$invalidParameter',
             $parameter: indentation,
-            $message: '"The indentation parameter should be the number of levels to indent."'
+            $text: '"The indentation parameter should be the number of levels to indent."'
         });
     }
 
@@ -63,7 +63,7 @@ function Formatter(indentation) {
                 $function: '$formatLiteral',
                 $exception: '$invalidParameter',
                 $parameter: literal,
-                $message: '"Attempted to format a non-literal component."'
+                $text: '"Attempted to format a non-literal component."'
             });
         }
         const visitor = new FormattingVisitor(indentation, false, format);
@@ -141,7 +141,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
                 $function: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
-                $message: '"An invalid angle format was found."'
+                $text: '"An invalid angle format was found."'
             });
     }
     formatted += '~' + formatReal(value);
@@ -205,7 +205,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
                 $function: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
-                $message: '"An invalid binary string format was found."'
+                $text: '"An invalid binary string format was found."'
             });
     }
     this.depth++;

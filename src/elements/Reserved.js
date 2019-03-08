@@ -35,7 +35,7 @@ function Reserved(value, parameters) {
             $function: '$Reserved',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid reserved symbol value was passed to the constructor."'
+            $text: '"An invalid reserved symbol value was passed to the constructor."'
         });
     }
 

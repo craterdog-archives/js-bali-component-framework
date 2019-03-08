@@ -86,7 +86,17 @@ const duplicate = function(component) {
 exports.duplicate = duplicate;
 
 const exception = function(object, cause) {
-    return new utilities.Exception(object, cause);
+    var error;
+    if (cause.constructor.name === 'Exception' &&
+        cause.attributes.getValue('$module').toString() === object['$module']) {
+        // same module so no need to wrap it
+        error = cause;
+    } else {
+        // wrap the cause in a new exception
+        error = new utilities.Exception(object, cause);
+        error.stack = cause.stack;
+    }
+    return error;
 };
 exports.exception = exception;
 
@@ -149,7 +159,7 @@ const angle = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the angle constructor."'
+                $text: '"An invalid value type was passed to the angle constructor."'
             });
     }
     return new elements.Angle(value, parameters);
@@ -190,7 +200,7 @@ const binary = function(value, parameters) {
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$Number', '$Buffer'],
                     $actual: '$' + value.constructor.name,
-                    $message: '"An invalid value type was passed to the binary string constructor."'
+                    $text: '"An invalid value type was passed to the binary string constructor."'
                 });
             }
     }
@@ -241,7 +251,7 @@ const catalog = function(sequence, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Collection', '$Object', '$Array'],
                 $actual: '$' + sequence.constructor.name,
-                $message: '"An invalid value type was passed to the constructor."'
+                $text: '"An invalid value type was passed to the constructor."'
             });
         }
     }
@@ -265,7 +275,7 @@ const duration = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the duration of time constructor."'
+                $text: '"An invalid value type was passed to the duration of time constructor."'
             });
     }
     return new elements.Duration(value, parameters);
@@ -299,7 +309,7 @@ const moment = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the moment in time constructor."'
+                $text: '"An invalid value type was passed to the moment in time constructor."'
             });
     }
     return new elements.Moment(value, parameters);
@@ -322,7 +332,7 @@ const number = function(value1, value2, parameters) {
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$Number', '$Angle'],
                     $actual: '$' + value2.constructor.name,
-                    $message: '"An invalid imaginary value type was passed to the complex number constructor."'
+                    $text: '"An invalid imaginary value type was passed to the complex number constructor."'
                 });
             }
             break;
@@ -333,7 +343,7 @@ const number = function(value1, value2, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value1.constructor.name,
-                $message: '"An invalid real value type was passed to the complex number constructor."'
+                $text: '"An invalid real value type was passed to the complex number constructor."'
             });
     }
     return new elements.Number(value1, value2, parameters);
@@ -366,7 +376,7 @@ const pattern = function(value, parameters) {
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$String', '$RegExp'],
                     $actual: '$' + value.constructor.name,
-                    $message: '"An invalid value type was passed to the pattern constructor."'
+                    $text: '"An invalid value type was passed to the pattern constructor."'
                 });
             }
     }
@@ -387,7 +397,7 @@ const percent = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the percent constructor."'
+                $text: '"An invalid value type was passed to the percent constructor."'
             });
     }
     return new elements.Percent(value, parameters);
@@ -412,7 +422,7 @@ const probability = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Boolean', '$Number'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the probability constructor."'
+                $text: '"An invalid value type was passed to the probability constructor."'
             });
     }
     return new elements.Probability(value, parameters);
@@ -455,7 +465,7 @@ const reference = function(value, parameters) {
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$String', '$URL'],
                     $actual: '$' + value.constructor.name,
-                    $message: '"An invalid value type was passed to the reference constructor."'
+                    $text: '"An invalid value type was passed to the reference constructor."'
                 });
             }
     }
@@ -475,7 +485,7 @@ const reserved = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the reserved symbol constructor."'
+                $text: '"An invalid value type was passed to the reserved symbol constructor."'
             });
     }
     return new elements.Reserved(value, parameters);
@@ -514,7 +524,7 @@ const symbol = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the symbol constructor."'
+                $text: '"An invalid value type was passed to the symbol constructor."'
             });
     }
     return new elements.Symbol(value, parameters);
@@ -535,7 +545,7 @@ const tag = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number', '$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the tag constructor."'
+                $text: '"An invalid value type was passed to the tag constructor."'
             });
     }
     return new elements.Tag(value, parameters);
@@ -555,7 +565,7 @@ const text = function(value, parameters) {
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$String'],
                 $actual: '$' + value.constructor.name,
-                $message: '"An invalid value type was passed to the text string constructor."'
+                $text: '"An invalid value type was passed to the text string constructor."'
             });
     }
     return new elements.Text(value, parameters);
@@ -572,7 +582,7 @@ const version = function(value, parameters) {
             $exception: '$parameterType',
             $expected: ['$Undefined', '$Array'],
             $actual: '$' + value.constructor.name,
-            $message: '"An invalid value type was passed to the version string constructor."'
+            $text: '"An invalid value type was passed to the version string constructor."'
         });
     }
     return new elements.Version(value, parameters);
@@ -628,7 +638,7 @@ const fillCollection = function(functionName, collection, sequence) {
                 $exception: '$parameterType',
                 $expected: ['$Collection', '$Object', '$Array'],
                 $actual: '$' + sequence.constructor.name,
-                $message: '"An invalid value type was passed to the constructor."'
+                $text: '"An invalid value type was passed to the constructor."'
             });
         }
     }

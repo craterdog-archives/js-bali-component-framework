@@ -35,7 +35,7 @@ function Probability(value, parameters) {
             $function: '$Probability',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
-            $message: '"An invalid probability value was passed to the constructor."'
+            $text: '"An invalid probability value was passed to the constructor."'
         });
     }
 

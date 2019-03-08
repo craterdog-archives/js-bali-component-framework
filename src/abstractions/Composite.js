@@ -59,7 +59,7 @@ Composite.prototype.toArray = function() {
         $module: '$Composite',
         $function: '$toArray',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 
@@ -85,7 +85,7 @@ Composite.prototype.getSize = function() {
         $module: '$Composite',
         $function: '$getSize',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 

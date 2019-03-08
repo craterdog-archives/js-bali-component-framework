@@ -82,7 +82,7 @@ Collection.prototype.getItem = function(index) {
         $module: '$Collection',
         $function: '$getItem',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 
@@ -117,7 +117,7 @@ Collection.prototype.addItem = function(item) {
         $module: '$Collection',
         $function: '$addItem',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 
@@ -209,7 +209,7 @@ Collection.prototype.deleteAll = function() {
         $module: '$Collection',
         $function: '$deleteAll',
         $exception: '$abstractMethod',
-        $message: '"An abstract method must be implemented by a subclass."'
+        $text: '"An abstract method must be implemented by a subclass."'
     });
 };
 
