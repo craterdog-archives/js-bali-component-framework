@@ -79,12 +79,30 @@ utilities.Exception.prototype.convert = convert;
 
 // FUNCTIONS
 
+/**
+ * This function duplicates a Bali component by copying each of its attributes
+ * recursively.  Since elemental components are immutable, they are not duplicated.
+ * 
+ * @param {Component} component The component to be duplicated.
+ * @returns {Component} The duplicate component.
+ */
 const duplicate = function(component) {
     const duplicator = new utilities.Duplicator();
     return duplicator.duplicateComponent(component);
 };
 exports.duplicate = duplicate;
 
+/**
+ * This function creates a new Bali exception using the attributes defined in the
+ * specified JavaScript object.  If the optional cause of the exception is provided
+ * it is used to augment the information about the exception.
+ * 
+ * @param {Object} object A JavaScript object defining the attributes to be associated
+ * with the new exception. 
+ * @param {Error|Exception} cause The underlying exception that caused this exception.
+ * @returns {Exception} The new Bali exception, or the underlying <code>cause</code>
+ * if the cause is from the same module as the current exception.
+ */
 const exception = function(object, cause) {
     var error;
     if (cause && cause.constructor.name === 'Exception' &&
@@ -100,17 +118,43 @@ const exception = function(object, cause) {
 };
 exports.exception = exception;
 
+/**
+ * This function formats a Bali component into a JavaScript string containing
+ * Bali Document Notation™. An optional indentation level may be specified
+ * that causes the formatter to indent each line by that many additional
+ * levels.  Each level is four spaces.
+ * 
+ * @param {Component} component The Bali component to be formatted. 
+ * @param {Number} indentation An optional number of levels to indent the output.
+ * @returns {String} The resulting string containing Bali Document Notation™.
+ */
 const format = function(component, indentation) {
     const formatter = new utilities.Formatter(indentation);
     return formatter.formatComponent(component);
 };
 exports.format = format;
 
+/**
+ * This function returns a Bali iterator that operates on a JavaScript array.
+ * 
+ * @param {Array} array The JavaScript array to be iterated over. 
+ * @returns {Iterator} The resulting Bali iterator.
+ */
 const iterator = function(array) {
     return new utilities.Iterator(array);
 };
 exports.iterator = iterator;
 
+/**
+ * This function creates a new Bali parameters component containing the items
+ * defined in the specified JavaScript object. If the object is an array, the
+ * parameters will be stored as a Bali list containing the parameter values. If
+ * the object is an actual object the parameters will be stored as a Bali catalog
+ * containing the key-value pair for each parameter.
+ * 
+ * @param {Object} object A JavaScript object containing the parameter values.
+ * @returns {Parameters} The resulting Bali parameters component.
+ */
 const parameters = function(object) {
     if (Array.isArray(object)) {
         object = list(object);
@@ -121,6 +165,18 @@ const parameters = function(object) {
 };
 exports.parameters = parameters;
 
+/**
+ * This function parses a JavaScript string containing Bali Document Notation™ and
+ * returns the corresponding Bali component. If the <code>debug</code> flag is set,
+ * the parser will report possible ambiguities in the input string.
+ * 
+ * @param {String} document A string containing Bali Document Notation™ to be parsed.
+ * @param {Parameters} parameters Optional parameters to be used to parameterize the
+ * resulting component.
+ * @param {Boolean} debug An optional flag that when set will cause the parser to
+ * report possible ambiguities in the input string.
+ * @returns {Component} The corresponding Bali component.
+ */
 const parse = function(document, parameters, debug) {
     const parser = new utilities.Parser(debug);
     return parser.parseDocument(document, parameters);
