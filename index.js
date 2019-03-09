@@ -87,14 +87,14 @@ exports.duplicate = duplicate;
 
 const exception = function(object, cause) {
     var error;
-    if (cause.constructor.name === 'Exception' &&
+    if (cause && cause.constructor.name === 'Exception' &&
         cause.attributes.getValue('$module').toString() === object['$module']) {
         // same module so no need to wrap it
         error = cause;
     } else {
         // wrap the cause in a new exception
         error = new utilities.Exception(object, cause);
-        error.stack = cause.stack;
+        if (cause) error.stack = cause.stack;
     }
     return error;
 };
