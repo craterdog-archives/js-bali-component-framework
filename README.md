@@ -22,7 +22,7 @@ npm install bali-component-framework
 ```
 Then add the following line to your NodeJS modules:
 ```
-var bali = require('bali-component-framework);
+const bali = require('bali-component-framework');
 ```
 
 Check out the example code [here](https://github.com/craterdog-bali/js-bali-component-framework/wiki/code-examples).
