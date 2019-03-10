@@ -202,6 +202,13 @@ exports.INFINITY = parse('infinity');
 
 // TYPES
 
+/**
+ * This function creates an immutable instance of an angle using the specified value.
+ * 
+ * @param {Number} value The value of the angle.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Angle} The new angle element.
+ */
 const angle = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -235,6 +242,13 @@ angle.arccosine = elements.Angle.arccosine;
 angle.arctangent = elements.Angle.arctangent;
 exports.angle = angle;
 
+/**
+ * This function creates a new key-value association.
+ * 
+ * @param {String|Number|Boolean|Component} key The key of the association.
+ * @param {String|Number|Boolean|Component} value The value associated with the key.
+ * @returns {Association} A new association.
+ */
 const association = function(key, value) {
     key = convert(key);
     value = convert(value);
@@ -242,6 +256,14 @@ const association = function(key, value) {
 };
 exports.association = association;
 
+/**
+ * This function creates an immutable instance of a binary string using the specified
+ * value.
+ * 
+ * @param {Buffer} value a buffer containing the bytes for the binary string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Binary} The new binary string.
+ */
 const binary = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -270,6 +292,15 @@ binary.xor = elements.Binary.xor;
 binary.concatenation = elements.Binary.concatenation;
 exports.binary = binary;
 
+/**
+ * This function creates a new catalog component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {Object} sequence An optional JavaScript object containing the items to use
+ * to seed this catalog.
+ * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
+ * @returns {Catalog} The new catalog.
+ */
 const catalog = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Catalog(parameters);
@@ -317,6 +348,13 @@ exports.catalog = catalog;
 catalog.concatenation = collections.Catalog.concatenation;
 catalog.extraction = collections.Catalog.extraction;
 
+/**
+ * This function creates a new duration element using the specified value.
+ * 
+ * @param {String|Number} value The source string the duration.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Duration} The new duration element.
+ */
 const duration = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -342,6 +380,15 @@ duration.difference = elements.Duration.difference;
 duration.scaled = elements.Duration.scaled;
 exports.duration = duration;
 
+/**
+ * This function creates a new list component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {Object} sequence An optional JavaScript object containing the items to use
+ * to seed this list.
+ * @param {Parameters} parameters Optional parameters used to parameterize this list. 
+ * @returns {List} The new list.
+ */
 const list = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.List(parameters);
@@ -351,6 +398,13 @@ const list = function(sequence, parameters) {
 exports.list = list;
 list.concatenation = collections.List.concatenation;
 
+/**
+ * This function creates a new moment in time using the specified value and parameters.
+ * 
+ * @param {String|Number} value The source string value of the moment in time.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Moment} The new moment in time.
+ */
 const moment = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -375,19 +429,29 @@ moment.earlier = elements.Moment.earlier;
 moment.later = elements.Moment.later;
 exports.moment = moment;
 
-const number = function(value1, value2, parameters) {
-    if (value1 === null) value1 = undefined;  // force the default value
-    if (value2 === null) value2 = undefined;  // force the default value
-    switch (typeof value1) {
+/**
+ * This function creates an immutable instance of a complex number using the specified
+ * real and imaginary values.  If the imaginary value is an angle then the complex number
+ * is in polar form, otherwise it is in rectangular form.
+ * 
+ * @param {Number} real The real value of the complex number.
+ * @param {Number|Angle} imaginary The imaginary value of the complex number.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Complex} The new complex number.
+ */
+const number = function(real, imaginary, parameters) {
+    if (real === null) real = undefined;  // force the default value
+    if (imaginary === null) imaginary = undefined;  // force the default value
+    switch (typeof real) {
         case 'undefined':
         case 'number':
-            if (value2 && typeof value2 !== 'number' && value2.getTypeId() !== utilities.types.ANGLE) {
+            if (imaginary && typeof imaginary !== 'number' && imaginary.getTypeId() !== utilities.types.ANGLE) {
                 throw exception({
                     $module: '$bali',
                     $function: '$number',
                     $exception: '$parameterType',
                     $expected: ['$Undefined', '$Number', '$Angle'],
-                    $actual: '$' + value2.constructor.name,
+                    $actual: '$' + imaginary.constructor.name,
                     $text: '"An invalid imaginary value type was passed to the complex number constructor."'
                 });
             }
@@ -398,11 +462,11 @@ const number = function(value1, value2, parameters) {
                 $function: '$number',
                 $exception: '$parameterType',
                 $expected: ['$Undefined', '$Number'],
-                $actual: '$' + value1.constructor.name,
+                $actual: '$' + real.constructor.name,
                 $text: '"An invalid real value type was passed to the complex number constructor."'
             });
     }
-    return new elements.Number(value1, value2, parameters);
+    return new elements.Number(real, imaginary, parameters);
 };
 exports.number = number;
 number.conjugate = elements.Number.conjugate;
@@ -418,6 +482,13 @@ number.remainder = elements.Number.remainder;
 number.scaled = elements.Number.scaled;
 number.sum = elements.Number.sum;
 
+/**
+ * This function creates a new pattern element using the specified value.
+ * 
+ * @param {String|RegExp} value A regular expression for the pattern element.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Pattern} The new pattern element.
+ */
 const pattern = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -440,6 +511,13 @@ const pattern = function(value, parameters) {
 };
 exports.pattern = pattern;
 
+/**
+ * This function creates a new percent element using the specified value.
+ * 
+ * @param {Number} value The value of the percent.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Percent} The new percent element.
+ */
 const percent = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -464,6 +542,13 @@ percent.difference = elements.Percent.difference;
 percent.scaled = elements.Percent.scaled;
 exports.percent = percent;
 
+/**
+ * This function creates a new probability element using the specified value.
+ * 
+ * @param {Number} value The value of the probability.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Probability} The new probability element.
+ */
 const probability = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -492,6 +577,15 @@ probability.random = elements.Probability.random;
 probability.coinToss = elements.Probability.coinToss;
 exports.probability = probability;
 
+/**
+ * This function creates a new queue component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {Object} sequence An optional JavaScript object containing the items to use
+ * to seed this queue.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {Queue} The new queue.
+ */
 const queue = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Queue(parameters);
@@ -500,6 +594,15 @@ const queue = function(sequence, parameters) {
 };
 exports.queue = queue;
 
+/**
+ * This function creates a new range of items with optional parameters that are used
+ * to parameterize its type.
+ * 
+ * @param {Number|Component} first The first item in the range.
+ * @param {Number|Component} last The last item in the range.
+ * @param {Parameters} parameters Optional parameters used to parameterize this range. 
+ * @returns {Range} The new range.
+ */
 const range = function(first, last, parameters) {
     first = convert(first);
     last = convert(last);
@@ -507,6 +610,13 @@ const range = function(first, last, parameters) {
 };
 exports.range = range;
 
+/**
+ * This function creates a new reference element using the specified value.
+ * 
+ * @param {String|URL} value The value of the reference.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Reference} The new reference element.
+ */
 const reference = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -529,6 +639,13 @@ const reference = function(value, parameters) {
 };
 exports.reference = reference;
 
+/**
+ * This function creates a new reserved identifier using the specified value.
+ * 
+ * @param {String} value The value of the reserved identifier.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Reserved} The new reserved identifier.
+ */
 const reserved = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -548,6 +665,15 @@ const reserved = function(value, parameters) {
 };
 exports.reserved = reserved;
 
+/**
+ * This function creates a new set component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {Object} sequence An optional JavaScript object containing the items to use
+ * to seed this set.
+ * @param {Parameters} parameters Optional parameters used to parameterize this set. 
+ * @returns {Set} The new set.
+ */
 const set = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Set(parameters);
@@ -560,6 +686,15 @@ set.sans = collections.Set.sans;
 set.or = collections.Set.or;
 set.xor = collections.Set.xor;
 
+/**
+ * This function creates a new stack component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {Object} sequence An optional JavaScript object containing the items to use
+ * to seed this stack.
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @returns {Stack} The new stack.
+ */
 const stack = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Stack(parameters);
@@ -568,6 +703,13 @@ const stack = function(sequence, parameters) {
 };
 exports.stack = stack;
 
+/**
+ * This function creates a new symbol element using the specified value.
+ * 
+ * @param {String} value The value of the symbol.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Symbol} The new symbol element.
+ */
 const symbol = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -587,6 +729,14 @@ const symbol = function(value, parameters) {
 };
 exports.symbol = symbol;
 
+/**
+ * This function creates a new tag element using the specified value.
+ * 
+ * @param {Number|String} value An optional parameter defining the size of a new random
+ * tag or the value it should represent.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Tag} The new tag element.
+ */
 const tag = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -608,6 +758,13 @@ const tag = function(value, parameters) {
 };
 exports.tag = tag;
 
+/**
+ * This function creates a new text string element using the specified value.
+ * 
+ * @param {String} value The value of the text string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Text} The new text string.
+ */
 const text = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
@@ -629,6 +786,13 @@ const text = function(value, parameters) {
 text.concatenation = elements.Text.concatenation;
 exports.text = text;
 
+/**
+ * This function creates a new version element using the specified value.
+ * 
+ * @param {Array} value An array containing the version levels for the version string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Symbol} The new version string element.
+ */
 const version = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     if (value && !Array.isArray(value)) {
