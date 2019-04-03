@@ -329,7 +329,8 @@ const catalog = function(sequence, parameters) {
         } else if (typeof sequence === 'object') {
             const keys = Object.keys(sequence);
             keys.forEach(function(key) {
-                collection.setValue(key, sequence[key]);
+                const symbol = (key[0] === '$') ? key : '$' + key;
+                collection.setValue(symbol, sequence[key]);
             });
         } else {
             throw exception({
