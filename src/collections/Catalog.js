@@ -178,13 +178,14 @@ exports.Catalog = Catalog;
 /**
  * This function returns a new catalog that contains the associations from the second catalog
  * concatenated onto the end of the first catalog (except any duplicate keys which are ignored).
+ * The parameters for the first catalog are used as the parameters for the resulting catalog.
  *
  * @param {Collection} catalog1 The first catalog to be operated on.
  * @param {Collection} catalog2 The second catalog to be operated on.
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
-    const result = new Catalog();
+    const result = new Catalog(catalog1.getParameters());
     result.addItems(catalog1);
     result.addItems(catalog2);
     return result;
@@ -192,15 +193,15 @@ Catalog.concatenation = function(catalog1, catalog2) {
 
 
 /**
- * This function returns a new catalog that contains only the associations with
- * the specified keys.
+ * This function returns a new catalog that contains only the associations with the
+ * specified keys. The parameters for the catalog are maintained in the resulting catalog.
  *
  * @param {Catalog} catalog The catalog whose items are to be reduced.
  * @param {Set} keys The set of keys for the associations to be extracted.
  * @returns The resulting catalog.
  */
 Catalog.extraction = function(catalog, keys) {
-    const result = new Catalog();
+    const result = new Catalog(catalog.getParameters());
     const iterator = keys.getIterator();
     while (iterator.hasNext()) {
         const key = iterator.getNext();
