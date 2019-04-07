@@ -12,7 +12,7 @@ expression:                  // Precedence (highest to lowest)
     expression '&' expression                                      #concatenationExpression |
     expression '!'                                                 #factorialExpression     |
     <assoc=right> expression '^' expression                        #exponentialExpression   |
-    op=('-' | '/' | '*') expression                                #inversionExpression     |
+    op=('-' | '*') expression                                      #inversionExpression     |
     expression op=('*' | '/' | '//' | '+' | '-') expression        #arithmeticExpression    |
     '|' expression '|'                                             #magnitudeExpression     |
     expression op=('<' | '=' | '>' | 'is' | 'matches') expression  #comparisonExpression    |

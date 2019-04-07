@@ -47,6 +47,7 @@
             none: none
             #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN
             $foo: $bar
+            $name: /name
             <2017-04-01>(
                 $city: "Hong Kong"
                 $region: "Guangdong"

@@ -15,6 +15,7 @@ exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
 exports.Duration = require('./Duration').Duration;
 exports.Moment = require('./Moment').Moment;  // depends on Duration
+exports.Name = require('./Name').Name;
 exports.Number = require('./Complex').Complex;  // depends on Angle
 exports.Pattern = require('./Pattern').Pattern;
 exports.Percent = require('./Percent').Percent;

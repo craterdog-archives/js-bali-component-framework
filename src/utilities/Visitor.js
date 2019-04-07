@@ -185,6 +185,7 @@ Visitor.prototype.visitDuration = function(duration) {
 //     binary |
 //     duration |
 //     moment |
+//     name |
 //     number |
 //     pattern |
 //     percent |
@@ -288,7 +289,7 @@ Visitor.prototype.visitIndices = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '/' | '*') expression
+// inversionExpression: ('-' | '*') expression
 Visitor.prototype.visitInversionExpression = function(tree) {
     const operator = tree.operator;
     const operand = tree.getChild(1);
@@ -346,6 +347,13 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 Visitor.prototype.visitMoment = function(moment) {
     // delegate to element
     this.visitElement(moment);
+};
+
+
+// name: NAME
+Visitor.prototype.visitName = function(name) {
+    // delegate to element
+    this.visitElement(name);
 };
 
 

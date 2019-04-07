@@ -6,6 +6,7 @@ element:
     binary |
     duration |
     moment |
+    name |
     number |
     pattern |
     percent |
@@ -29,6 +30,8 @@ pattern: 'none' | REGEX | 'any';
 imaginary: IMAGINARY;
 
 moment: MOMENT;
+
+name: NAME;
 
 number:
     'undefined' |

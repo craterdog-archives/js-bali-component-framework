@@ -534,7 +534,7 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 };
 
 
-// inversionExpression: op=('-' | '/' | '*') expression
+// inversionExpression: op=('-' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     const tree = new composites.Tree(utilities.types.INVERSION_EXPRESSION);
     tree.operator = ctx.op.text;
@@ -632,6 +632,15 @@ ParsingVisitor.prototype.visitMoment = function(ctx) {
     const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
     const moment = new elements.Moment(value, parameters);
     this.result = moment;
+};
+
+
+// name: NAME
+ParsingVisitor.prototype.visitName = function(ctx) {
+    const parameters = this.getParameters();
+    const value = ctx.getText().split('/').slice(1);  // extract the parts of the name
+    const name = new elements.Name(value, parameters);
+    this.result = name;
 };
 
 

@@ -311,7 +311,7 @@ DuplicatingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '/' | '*') expression
+// inversionExpression: ('-' | '*') expression
 DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
     const copy = new tree.constructor(tree.getTypeId());
     copy.operator = tree.operator;
@@ -401,6 +401,17 @@ DuplicatingVisitor.prototype.visitMoment = function(moment) {
     }
     const value = moment.getValue().format(moment.getFormat());
     this.result = new moment.constructor(value, parameters);
+};
+
+
+// name: NAME
+DuplicatingVisitor.prototype.visitName = function(name) {
+    var parameters;
+    if (name.isParameterized()) {
+        name.getParameters().acceptVisitor(this);
+        parameters = this.result;
+    }
+    this.result = new name.constructor(name.getValue(), parameters);
 };
 
 

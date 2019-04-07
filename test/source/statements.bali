@@ -13,7 +13,7 @@
         } else if component < 5 then {
             $component := 1.2
         } else {
-            $component := - -pi i
+            $component := -pi i
         } handle $exception matching template with {
             publish exception
             throw exception

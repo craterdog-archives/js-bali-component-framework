@@ -34,6 +34,11 @@
         <1962-04-01T06:31:40>
         <1962-04-01T06:31:40.726>
     ]
+    $names: [
+        /foo
+        /foo/bar
+        /foo/bar/Type/v1.2.3
+    ]
     $numbers: [
         42
         undefined

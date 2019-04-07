@@ -540,20 +540,10 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '/' | '*') expression
+// inversionExpression: ('-' | '*') expression
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     var formatted = tree.operator;
     const operand = tree.getChild(1);
-    // should insert a space before a negative number or another inversion
-    var left = operand;
-    while (true) {
-        if (left.getTypeId() === types.INVERSION_EXPRESSION || left.getTypeId() === types.NUMBER && left.getReal().toString().startsWith('-')) {
-            formatted += ' ';
-        }
-        // check for a leaf node (i.e. an element or an identifier node
-        if (!left.array || left.array.length === 0) break;
-        left = left.getChild(1);
-    }
     operand.acceptVisitor(this);
     formatted += this.result;
     this.result = formatted;
@@ -640,6 +630,19 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
     formatted += '<' + value + '>';
     if (this.allowParameters && moment.isParameterized()) {
         moment.getParameters().acceptVisitor(this);
+        formatted += this.result;
+    }
+    this.result = formatted;
+};
+
+
+// name: NAME
+FormattingVisitor.prototype.visitName = function(name) {
+    var formatted = '';
+    const value = name.getValue();
+    formatted += '/' + value.join('/');  // concatentat the parts of the name
+    if (this.allowParameters && name.isParameterized()) {
+        name.getParameters().acceptVisitor(this);
         formatted += this.result;
     }
     this.result = formatted;

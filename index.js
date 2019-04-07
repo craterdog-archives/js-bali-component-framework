@@ -431,6 +431,31 @@ moment.later = elements.Moment.later;
 exports.moment = moment;
 
 /**
+ * This function creates a new name element using the specified value.
+ * 
+ * @param {Array} value An array containing the name parts for the name string.
+ * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @returns {Symbol} The new name string element.
+ */
+const name = function(value, parameters) {
+    if (value === null) value = undefined;  // force the default value
+    if (value && !Array.isArray(value)) {
+        throw exception({
+            $module: '$bali',
+            $function: '$name',
+            $exception: '$parameterType',
+            $expected: ['$Array'],
+            $actual: '$' + value.constructor.name,
+            $text: '"An invalid value type was passed to the name string constructor."'
+        });
+    }
+    return new elements.Version(value, parameters);
+};
+name.nextVersion = elements.Version.nextVersion;
+name.validNextVersion = elements.Version.validNextVersion;
+exports.name = name;
+
+/**
  * This function creates an immutable instance of a complex number using the specified
  * real and imaginary values.  If the imaginary value is an angle then the complex number
  * is in polar form, otherwise it is in rectangular form.

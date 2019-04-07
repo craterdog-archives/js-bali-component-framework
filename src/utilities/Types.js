@@ -123,6 +123,7 @@ exports.MAGNITUDE_EXPRESSION = SYMBOLS.indexOf('$MagnitudeExpression');
 exports.MESSAGE = SYMBOLS.indexOf('$Message');
 exports.MESSAGE_EXPRESSION = SYMBOLS.indexOf('$MessageExpression');
 exports.MOMENT = SYMBOLS.indexOf('$Moment');
+exports.NAME = SYMBOLS.indexOf('$Name');
 exports.NUMBER = SYMBOLS.indexOf('$Number');
 exports.PARAMETERS = SYMBOLS.indexOf('$Parameters');
 exports.PATTERN = SYMBOLS.indexOf('$Pattern');
@@ -286,6 +287,7 @@ exports.isSequential = function(type) {
         case exports.BINARY:
         case exports.CATALOG:
         case exports.LIST:
+        case exports.NAME:
         case exports.PARAMETERS:
         case exports.QUEUE:
         case exports.RANGE:
@@ -315,6 +317,7 @@ exports.isChainable = function(type) {
         case exports.BINARY:
         case exports.CATALOG:
         case exports.LIST:
+        case exports.NAME:
         case exports.TEXT:
             return true;
         default:

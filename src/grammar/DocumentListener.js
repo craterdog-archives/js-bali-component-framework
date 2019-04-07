@@ -623,6 +623,15 @@ DocumentListener.prototype.exitMoment = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#name.
+DocumentListener.prototype.enterName = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#name.
+DocumentListener.prototype.exitName = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#number.
 DocumentListener.prototype.enterNumber = function(ctx) {
 };

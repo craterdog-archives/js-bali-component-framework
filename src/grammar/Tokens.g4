@@ -10,22 +10,7 @@ grammar Tokens;
 
 ANGLE: '~' REAL;
 
-PERCENT: REAL '%';
-
-TAG: '#' BASE32*;
-
-FRACTION: '.' ('0'..'9')+;
-
-
-// NOTE: We cannot define negative constants here because the scanner would scan
-//       a negative variable like '-exponent' as a single '-e' token rather than
-//       two tokens '-' and 'exponent'.
-
-REAL: '0' | FLOAT | 'e' | 'pi' | 'phi';
-
-IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
-
-MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
+BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
 DURATION:
     '~-P' SPAN 'W' |
@@ -34,29 +19,49 @@ DURATION:
     '~P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)?
 ; 
 
+FRACTION: '.' ('0'..'9')+;
+
+
+IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
+
+MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
+
+NAME: ('/' IDENTIFIER)+ ('/' VERSION)?;
+
+PERCENT: REAL '%';
+
+RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
+
 RESOURCE: '<' SCHEME ':' CONTEXT '>';
 
-// a version like v123 takes precedence over an identifier
-VERSION: 'v' NUMBER ('.' NUMBER)*;
+// NOTE: We cannot define negative constants here because the scanner would scan
+//       a negative variable like '-exponent' as a single '-e' token rather than
+//       two tokens '-' and 'exponent'.
+REAL: '0' | FLOAT | 'e' | 'pi' | 'phi';
 
-BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
+REGEX: TEXT '?';
+
+SYMBOL: '$' IDENTIFIER;
+
+TAG: '#' BASE32*;
 
 // a text block takes precedence over a regular text string
 TEXT_BLOCK: '"' EOL UNICODE*? EOL SPACE* '"';
 
 TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
 
-REGEX: TEXT '?';
-
-SYMBOL: '$' IDENTIFIER;
-
-RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
+// a version like v123 takes precedence over an identifier
+VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
 
 EOL: '\r'? '\n';
 
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
+
+COMMENT_BLOCK: '/*' (COMMENT_BLOCK | CHARACTER)*? '*/' -> channel(HIDDEN);
+
+COMMENT: '--' CHARACTER*? '\n' -> channel(HIDDEN);
 
 fragment
 CHARACTER: ~["\r\n];

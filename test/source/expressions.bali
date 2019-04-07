@@ -63,10 +63,9 @@
     ]
     $inversions: [
         -x
-        - -pi
-        /exponential
-        *flip
-        / *(3, 4i)
+        *-exponential
+        *complex
+        -*(3, 4i)
     ]
     $geometrics: [
         -x * scaler
