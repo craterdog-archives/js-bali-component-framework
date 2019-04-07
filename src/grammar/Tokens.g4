@@ -46,9 +46,9 @@ SYMBOL: '$' IDENTIFIER;
 TAG: '#' BASE32*;
 
 // a text block takes precedence over a regular text string
-TEXT_BLOCK: '"' EOL UNICODE*? EOL SPACE* '"';
+TEXT_BLOCK: '"' EOL CHARACTER*? EOL SPACE* '"';
 
-TEXT: '"' (ESCAPE | '\\"' | CHARACTER)*? '"';
+TEXT: '"' (ESCAPE | '\\"' | ~["\r\n])*? '"';
 
 // a version like v123 takes precedence over an identifier
 VERSION: 'v' NUMBER ('.' NUMBER)*;
@@ -64,10 +64,7 @@ COMMENT_BLOCK: '/*' (COMMENT_BLOCK | CHARACTER)*? '*/' -> channel(HIDDEN);
 COMMENT: '--' CHARACTER*? '\n' -> channel(HIDDEN);
 
 fragment
-CHARACTER: ~["\r\n];
-
-fragment
-UNICODE: .;
+CHARACTER: .;
 
 fragment
 NUMBER: '1'..'9' ('0'..'9')*;
