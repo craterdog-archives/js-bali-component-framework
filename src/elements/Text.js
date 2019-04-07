@@ -101,9 +101,9 @@ Text.prototype.getIterator = function() {
  * This function returns a new text string that contains the bytes from the second text
  * concatenated onto the end of the first text string.
  *
- * @param {List} text1 The first text string to be operated on.
- * @param {List} text2 The second text string to be operated on.
- * @returns {List} The resulting text string.
+ * @param {Text} text1 The first text string to be operated on.
+ * @param {Text} text2 The second text string to be operated on.
+ * @returns {Text} The resulting text string.
  */
 Text.concatenation = function(text1, text2) {
     const string1 = text1.getValue();

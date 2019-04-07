@@ -255,6 +255,7 @@ exports.isLiteral = function(type) {
         case exports.BINARY:
         case exports.DURATION:
         case exports.MOMENT:
+        case exports.NAME:
         case exports.NUMBER:
         case exports.PATTERN:
         case exports.PERCENT:

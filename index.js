@@ -449,10 +449,9 @@ const name = function(value, parameters) {
             $text: '"An invalid value type was passed to the name string constructor."'
         });
     }
-    return new elements.Version(value, parameters);
+    return new elements.Name(value, parameters);
 };
-name.nextVersion = elements.Version.nextVersion;
-name.validNextVersion = elements.Version.validNextVersion;
+name.concatenation = elements.Name.concatenation;
 exports.name = name;
 
 /**

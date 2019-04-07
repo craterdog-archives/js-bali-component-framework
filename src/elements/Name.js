@@ -103,6 +103,24 @@ Name.prototype.getIterator = function() {
 };
 
 
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new name string that contains the bytes from the second name
+ * concatenated onto the end of the first name string.
+ *
+ * @param {Name} name1 The first name string to be operated on.
+ * @param {Name} name2 The second name string to be operated on.
+ * @returns {Name} The resulting name string.
+ */
+Name.concatenation = function(name1, name2) {
+    const parts1 = name1.getValue();
+    const parts2 = name2.getValue();
+    const parts = parts1.concat(parts2);
+    return new Name(parts);
+};
+
+
 // PRIVATE CLASSES
 
 function NameIterator(parts) {
