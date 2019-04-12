@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 function Queue(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '$Queue');
+    if (!parameters.getParameter('$Type')) parameters.setParameter('$Type', '/bali/types/Queue/v1');
     abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
 
     // the capacity and array are private attributes so methods that use it are

@@ -3,7 +3,9 @@
         3E23("m/s")
         ~pi($units: $radians)
         [1, 2, 3](
-            $type: $Stack($Number([1..infinity]))
+            $Type: /bali/types/Stack/v1(
+                $ItemType: /bali/types/Number/v1([1..infinity])
+            )
         )
     ]
     $variables: [

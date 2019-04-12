@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 function Stack(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '$Stack');
+    if (!parameters.getParameter('$Type')) parameters.setParameter('$Type', '/bali/types/Stack/v1');
     abstractions.Collection.call(this, utilities.types.STACK, parameters);
 
     // the capacity and array are private attributes so methods that use it are

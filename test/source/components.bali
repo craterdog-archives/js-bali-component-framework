@@ -8,7 +8,7 @@
             $beta
             $delta
             $gamma
-        ]($type: $Set)
+        ]($Type: /bali/types/Set/v1)
         [
             none
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
@@ -67,8 +67,10 @@
                 $c: phi
                 $d: infinity
             ]
-        ]
-    ]($type: $Foo)
+        ](
+            $Type: /acme/types/Foo/v1.2.3
+        )
+    ]
     $code: [
         {}
         {$foo := bar; $bar := baz}($bar, $baz)

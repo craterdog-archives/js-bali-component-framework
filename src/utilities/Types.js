@@ -400,6 +400,5 @@ exports.symbolForType = function(type) {
  * @returns {Number} The type for the specified symbol.
  */
 exports.typeForSymbol = function(symbol) {
-    const name = '$' + symbol.getValue();
-    return SYMBOLS.indexOf(name);
+    return SYMBOLS.indexOf(symbol.toString());
 };

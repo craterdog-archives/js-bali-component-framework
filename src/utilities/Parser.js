@@ -549,25 +549,27 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     EOL (expression EOL)* |
 //     /*empty list*/
 ParsingVisitor.prototype.visitList = function(ctx) {
-    var collection;
-    var type = utilities.types.LIST;
+    var type = 'List';
     const parameters = this.getParameters();
     if (parameters) {
-        type = utilities.types.typeForSymbol(parameters.getParameter('$type'));
+        type = parameters.getParameter('$Type').getValue()[2];  // /bali/types/<type>/v1
     }
+    var collection;
     switch (type) {
-        case utilities.types.QUEUE:
+        case 'List':
+            collection = new collections.List(parameters);
+            break;
+        case 'Queue':
             collection = new collections.Queue(parameters);
             break;
-        case utilities.types.SET:
+        case 'Set':
             collection = new collections.Set(parameters);
             break;
-        case utilities.types.STACK:
+        case 'Stack':
             collection = new collections.Stack(parameters);
             break;
-        case utilities.types.LIST:
         default:
-            collection = new collections.List(parameters);
+            throw Error('Invalid collection type: ' + type);
     }
     if (ctx.constructor.name !== 'EmptyListContext') {
         const expressions = ctx.expression();
