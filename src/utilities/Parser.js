@@ -552,7 +552,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
     if (parameters) {
-        type = parameters.getParameter('$Type').getValue()[2];  // /bali/types/<type>/v1
+        type = parameters.getParameter('$type').getValue()[2];  // /bali/types/<type>/v1
     }
     var collection;
     switch (type) {

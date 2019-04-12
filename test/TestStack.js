@@ -136,7 +136,7 @@ describe('Bali Component Framework™', function() {
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
-            expect(stack.toString()).to.equal('["alpha", "beta"](\n    $Type: /bali/types/Stack/v1\n)');
+            expect(stack.toString()).to.equal('["alpha", "beta"](\n    $type: /bali/types/Stack/v1\n)');
             top = stack.getTop();
             expect(top.toString()).to.equal('"beta"');
             pop = stack.removeItem();
