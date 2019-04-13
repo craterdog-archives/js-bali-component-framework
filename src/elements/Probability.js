@@ -31,8 +31,8 @@ function Probability(value, parameters) {
     if (value === undefined) value = 0;  // default value
     if (!isFinite(value) || value < 0 || value > 1) {
         throw new utilities.Exception({
-            $module: '$Probability',
-            $function: '$Probability',
+            $module: '/bali/elements/Probability',
+            $procedure: '$Probability',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid probability value was passed to the constructor."'

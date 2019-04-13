@@ -71,8 +71,8 @@ exports.base2Decode = function(base2) {
     const length = base2.length;
     if (length % 8 !== 0) {
         throw new utilities.Exception({
-            $module: '$Codex',
-            $function: '$base2Decode',
+            $module: '/bali/utilities/Codex',
+            $procedure: '$base2Decode',
             $exception: '$invalidParameter',
             $parameter: base2,
             $text: '"The number of characters in the base 2 binary string was not divisible by 8."'
@@ -91,8 +91,8 @@ exports.base2Decode = function(base2) {
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
                 throw new utilities.Exception({
-                    $module: '$Codex',
-                    $function: '$base2Decode',
+                    $module: '/bali/utilities/Codex',
+                    $procedure: '$base2Decode',
                     $exception: '$invalidParameter',
                     $parameter: base2,
                     $text: '"The binary string was not encoded using base 2."'
@@ -157,8 +157,8 @@ exports.base16Decode = function(base16) {
     const length = base16.length;
     if (length % 2 !== 0) {
         throw new utilities.Exception({
-            $module: '$Codex',
-            $function: '$base16Decode',
+            $module: '/bali/utilities/Codex',
+            $procedure: '$base16Decode',
             $exception: '$invalidParameter',
             $parameter: base16,
             $text: '"The number of characters in the base 16 binary string was not divisible by 2."'
@@ -175,8 +175,8 @@ exports.base16Decode = function(base16) {
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
             throw new utilities.Exception({
-                $module: '$Codex',
-                $function: '$base16Decode',
+                $module: '/bali/utilities/Codex',
+                $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
                 $text: '"The binary string was not encoded using base 16."'
@@ -188,8 +188,8 @@ exports.base16Decode = function(base16) {
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
             throw new utilities.Exception({
-                $module: '$Codex',
-                $function: '$base16Decode',
+                $module: '/bali/utilities/Codex',
+                $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
                 $text: '"The binary string was not encoded using base 16."'
@@ -271,8 +271,8 @@ exports.base32Decode = function(base32) {
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
             throw new utilities.Exception({
-                $module: '$Codex',
-                $function: '$base32Decode',
+                $module: '/bali/utilities/Codex',
+                $procedure: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
                 $text: '"The binary string was not encoded using base 32."'
@@ -285,8 +285,8 @@ exports.base32Decode = function(base32) {
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
             throw new utilities.Exception({
-                $module: '$Codex',
-                $function: '$base32Decode',
+                $module: '/bali/utilities/Codex',
+                $procedure: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
                 $text: '"The binary string was not encoded using base 32."'

@@ -34,8 +34,8 @@ function Reference(value, parameters) {
         if (value.constructor.name !== 'URL') value = new URL(value.replace(/\$tag:#/, '$tag:%23'));
     } catch (exception) {
         throw new utilities.Exception({
-            $module: '$Reference',
-            $function: '$Reference',
+            $module: '/bali/elements/Reference',
+            $procedure: '$Reference',
             $exception: '$invalidParameter',
             $parameter: '"' + value + '"',
             $text: '"An invalid reference value was passed to the constructor."'

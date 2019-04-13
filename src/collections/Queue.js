@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 function Queue(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/types/Queue/v1');
+    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Queue/v1');
     abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
 
     // the capacity and array are private attributes so methods that use it are
@@ -70,8 +70,8 @@ function Queue(parameters) {
             return true;
         }
         throw new utilities.Exception({
-            $module: '$Queue',
-            $function: '$addItem',
+            $module: '/bali/collections/Queue',
+            $procedure: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
             $text: '"The queue has reached its maximum capacity."'

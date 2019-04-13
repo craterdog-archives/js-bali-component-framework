@@ -62,8 +62,8 @@ function Range(first, last, parameters) {
     this.toArray = function() {
         if (lastIndex === Infinity) {
             throw new utilities.Exception({
-                $module: '$Range',
-                $function: '$toArray',
+                $module: '/bali/composites/Range',
+                $procedure: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
                 $text: '"Attempted to generate an array from an infinite range."'
@@ -130,8 +130,8 @@ function Range(first, last, parameters) {
         } else {
             if (typeof item !== 'number') {
                 throw new utilities.Exception({
-                    $module: '$Range',
-                    $function: '$isInRange',
+                    $module: '/bali/composites/Range',
+                    $procedure: '$isInRange',
                     $exception: '$invalidParameter',
                     $range: this,
                     $parameter: item,

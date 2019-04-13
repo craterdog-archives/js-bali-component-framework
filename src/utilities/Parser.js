@@ -213,8 +213,8 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             break;
         default:
             throw new utilities.Exception({
-                $module: '$ParsingVisitor',
-                $function: '$visitBinary',
+                $module: '/bali/utilities/Parser',
+                $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: encoding,
                 $text: '"An invalid encoding format was used for a binary string."'
@@ -552,7 +552,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
     if (parameters) {
-        type = parameters.getParameter('$type').getValue()[2];  // /bali/types/<type>/v1
+        type = parameters.getParameter('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
     }
     var collection;
     switch (type) {
@@ -1079,8 +1079,8 @@ CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
         context = context.parentCtx;
     }
     throw new utilities.Exception({
-        $module: '$Parser',
-        $function: '$parseDocument',
+        $module: '/bali/utilities/Parser',
+        $procedure: '$parseDocument',
         $exception: '$syntaxError',
         $text: '"' + exception + '"'
     });
@@ -1124,8 +1124,8 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
 
     // capture the exception
     const exception = new utilities.Exception({
-        $module: '$Parser',
-        $function: '$parseDocument',
+        $module: '/bali/utilities/Parser',
+        $procedure: '$parseDocument',
         $exception: '$syntaxError',
         $text: '"' + message + '"'
     });

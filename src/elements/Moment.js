@@ -67,8 +67,8 @@ function Moment(value, parameters) {
     }
     if (value.constructor.name !== 'Moment') {
         throw new utilities.Exception({
-            $module: '$Moment',
-            $function: '$Moment',
+            $module: '/bali/elements/Moment',
+            $procedure: '$Moment',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid moment value was passed to the constructor."'

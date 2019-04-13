@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 function Stack(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/types/Stack/v1');
+    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Stack/v1');
     abstractions.Collection.call(this, utilities.types.STACK, parameters);
 
     // the capacity and array are private attributes so methods that use it are
@@ -70,8 +70,8 @@ function Stack(parameters) {
             return true;
         }
         throw new utilities.Exception({
-            $module: '$Stack',
-            $function: '$addItem',
+            $module: '/bali/collections/Stack',
+            $procedure: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
             $text: '"The stack has reached its maximum capacity."'
@@ -83,8 +83,8 @@ function Stack(parameters) {
             return array.pop();
         }
         throw new utilities.Exception({
-            $module: '$Stack',
-            $function: '$removeItem',
+            $module: '/bali/collections/Stack',
+            $procedure: '$removeItem',
             $exception: '$emptyStack',
             $text: '"Attempted to remove an item from an empty stack."'
         });
@@ -95,8 +95,8 @@ function Stack(parameters) {
             return array.peek();
         }
         throw new utilities.Exception({
-            $module: '$Stack',
-            $function: '$getTop',
+            $module: '/bali/collections/Stack',
+            $procedure: '$getTop',
             $exception: '$emptyStack',
             $text: '"Attempted to access an item on an empty stack."'
         });

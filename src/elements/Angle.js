@@ -34,8 +34,8 @@ function Angle(value, parameters) {
     if (value === undefined) value = 0;  // default value
     if (!isFinite(value)) {
         throw new utilities.Exception({
-            $module: '$Angle',
-            $function: '$Angle',
+            $module: '/bali/elements/Angle',
+            $procedure: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid angle value was passed to the constructor."'

@@ -48,8 +48,8 @@ function Formatter(indentation) {
     indentation = indentation || 0;
     if (typeof indentation !== 'number') {
         throw new Exception({
-            $module: '$Formatter',
-            $function: '$Formatter',
+            $module: '/bali/utilities/Formatter',
+            $procedure: '$Formatter',
             $exception: '$invalidParameter',
             $parameter: indentation,
             $text: '"The indentation parameter should be the number of levels to indent."'
@@ -59,8 +59,8 @@ function Formatter(indentation) {
     this.formatLiteral = function(literal, format) {
         if (!types.isLiteral(literal.getTypeId())) {
             throw new Exception({
-                $module: '$Formatter',
-                $function: '$formatLiteral',
+                $module: '/bali/utilities/Formatter',
+                $procedure: '$formatLiteral',
                 $exception: '$invalidParameter',
                 $parameter: literal,
                 $text: '"Attempted to format a non-literal component."'
@@ -137,8 +137,8 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             break;
         default:
             throw new Exception({
-                $module: '$FormattingVisitor',
-                $function: '$visitAngle',
+                $module: '/bali/utilities/Formatter',
+                $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
                 $text: '"An invalid angle format was found."'
@@ -201,8 +201,8 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             break;
         default:
             throw new Exception({
-                $module: '$FormattingVisitor',
-                $function: '$visitBinary',
+                $module: '/bali/utilities/Formatter',
+                $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
                 $text: '"An invalid binary string format was found."'

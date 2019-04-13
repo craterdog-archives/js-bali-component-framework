@@ -217,11 +217,15 @@ const angle = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$angle',
+                $module: '/bali/elements/Angle',
+                $procedure: '$Angle',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the angle constructor."'
             });
     }
@@ -273,11 +277,16 @@ const binary = function(value, parameters) {
         default:
             if (!(value instanceof Buffer)) {
                 throw exception({
-                    $module: '$bali',
-                    $function: '$binary',
+                    $module: '/bali/elements/Binary',
+                    $procedure: '$Binary',
                     $exception: '$parameterType',
-                    $expected: ['$Undefined', '$Number', '$Buffer'],
-                    $actual: '$' + value.constructor.name,
+                    $expected: [
+                        '/javascript/Undefined',
+                        '/javascript/Number',
+                        '/nodejs/Buffer'
+                    ],
+                    $actual: '/javascript/' + value.constructor.name,
+                    $value: bali.text(value.toString()),
                     $text: '"An invalid value type was passed to the binary string constructor."'
                 });
             }
@@ -334,11 +343,17 @@ const catalog = function(sequence, parameters) {
             });
         } else {
             throw exception({
-                $module: '$bali',
-                $function: '$catalog',
+                $module: '/bali/collections/Catalog',
+                $procedure: '$Catalog',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Collection', '$Object', '$Array'],
-                $actual: '$' + sequence.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the constructor."'
             });
         }
@@ -365,11 +380,16 @@ const duration = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$duration',
+                $module: '/bali/elements/Duration',
+                $procedure: '$Duration',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number', '$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number',
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the duration of time constructor."'
             });
     }
@@ -393,7 +413,7 @@ exports.duration = duration;
 const list = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.List(parameters);
-    fillCollection('$list', collection, sequence);
+    fillCollection('/bali/collections/List', '$List', collection, sequence);
     return collection;
 };
 exports.list = list;
@@ -415,11 +435,16 @@ const moment = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$moment',
+                $module: '/bali/elements/Moment',
+                $procedure: '$Moment',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number', '$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number',
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the moment in time constructor."'
             });
     }
@@ -441,11 +466,14 @@ const name = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     if (value && !Array.isArray(value)) {
         throw exception({
-            $module: '$bali',
-            $function: '$name',
+            $module: '/bali/elements/Name',
+            $procedure: '$Name',
             $exception: '$parameterType',
-            $expected: ['$Array'],
-            $actual: '$' + value.constructor.name,
+            $expected: [
+                '/javascript/Array'
+            ],
+            $actual: '/javascript/' + value.constructor.name,
+            $value: bali.text(value.toString()),
             $text: '"An invalid value type was passed to the name string constructor."'
         });
     }
@@ -472,22 +500,31 @@ const number = function(real, imaginary, parameters) {
         case 'number':
             if (imaginary && typeof imaginary !== 'number' && imaginary.getTypeId() !== utilities.types.ANGLE) {
                 throw exception({
-                    $module: '$bali',
-                    $function: '$number',
+                    $module: '/bali/elements/Number',
+                    $procedure: '$Number',
                     $exception: '$parameterType',
-                    $expected: ['$Undefined', '$Number', '$Angle'],
-                    $actual: '$' + imaginary.constructor.name,
+                    $expected: [
+                        '/javascript/Undefined',
+                        '/javascript/Number',
+                        '/bali/elements/Angle'
+                    ],
+                    $actual: '/javascript/' + value.constructor.name,
+                    $value: bali.text(value.toString()),
                     $text: '"An invalid imaginary value type was passed to the complex number constructor."'
                 });
             }
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$number',
+                $module: '/bali/elements/Number',
+                $procedure: '$Number',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number'],
-                $actual: '$' + real.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid real value type was passed to the complex number constructor."'
             });
     }
@@ -523,11 +560,16 @@ const pattern = function(value, parameters) {
         default:
             if (!(value instanceof RegExp)) {
                 throw exception({
-                    $module: '$bali',
-                    $function: '$pattern',
+                    $module: '/bali/elements/Pattern',
+                    $procedure: '$Pattern',
                     $exception: '$parameterType',
-                    $expected: ['$Undefined', '$String', '$RegExp'],
-                    $actual: '$' + value.constructor.name,
+                    $expected: [
+                        '/javascript/Undefined',
+                        '/javascript/String',
+                        '/javascript/RegExp'
+                    ],
+                    $actual: '/javascript/' + value.constructor.name,
+                    $value: bali.text(value.toString()),
                     $text: '"An invalid value type was passed to the pattern constructor."'
                 });
             }
@@ -551,11 +593,15 @@ const percent = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$percent',
+                $module: '/bali/elements/Percent',
+                $procedure: '$Percent',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the percent constructor."'
             });
     }
@@ -583,11 +629,16 @@ const probability = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$probability',
+                $module: '/bali/elements/Probability',
+                $procedure: '$Probability',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Boolean', '$Number'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Boolean',
+                    '/javascript/Number'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the probability constructor."'
             });
     }
@@ -614,7 +665,7 @@ exports.probability = probability;
 const queue = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Queue(parameters);
-    fillCollection('$queue', collection, sequence);
+    fillCollection('/bali/collections/Queue', '$Queue', collection, sequence);
     return collection;
 };
 exports.queue = queue;
@@ -651,11 +702,16 @@ const reference = function(value, parameters) {
         default:
             if (!(value instanceof URL)) {
                 throw exception({
-                    $module: '$bali',
-                    $function: '$reference',
+                    $module: '/bali/elements/Reference',
+                    $procedure: '$Reference',
                     $exception: '$parameterType',
-                    $expected: ['$Undefined', '$String', '$URL'],
-                    $actual: '$' + value.constructor.name,
+                    $expected: [
+                        '/javascript/Undefined',
+                        '/javascript/String',
+                        '/nodejs/URL'
+                    ],
+                    $actual: '/javascript/' + value.constructor.name,
+                    $value: bali.text(value.toString()),
                     $text: '"An invalid value type was passed to the reference constructor."'
                 });
             }
@@ -678,11 +734,14 @@ const reserved = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$reserved',
+                $module: '/bali/elements/Reserved',
+                $procedure: '$Reserved',
                 $exception: '$parameterType',
-                $expected: ['$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the reserved symbol constructor."'
             });
     }
@@ -702,7 +761,7 @@ exports.reserved = reserved;
 const set = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Set(parameters);
-    fillCollection('$set', collection, sequence);
+    fillCollection('/bali/collections/Set', '$Set', collection, sequence);
     return collection;
 };
 exports.set = set;
@@ -723,7 +782,7 @@ set.xor = collections.Set.xor;
 const stack = function(sequence, parameters) {
     sequence = sequence || undefined;  // force nulls to undefined
     const collection = new collections.Stack(parameters);
-    fillCollection('$stack', collection, sequence);
+    fillCollection('/bali/collections/Stack', '$Stack', collection, sequence);
     return collection;
 };
 exports.stack = stack;
@@ -742,11 +801,14 @@ const symbol = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$symbol',
+                $module: '/bali/elements/Symbol',
+                $procedure: '$Symbol',
                 $exception: '$parameterType',
-                $expected: ['$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the symbol constructor."'
             });
     }
@@ -771,11 +833,16 @@ const tag = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$tag',
+                $module: '/bali/elements/Tag',
+                $procedure: '$Tag',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$Number', '$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Number',
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the tag constructor."'
             });
     }
@@ -798,11 +865,15 @@ const text = function(value, parameters) {
             break;
         default:
             throw exception({
-                $module: '$bali',
-                $function: '$text',
+                $module: '/bali/elements/Text',
+                $procedure: '$Text',
                 $exception: '$parameterType',
-                $expected: ['$Undefined', '$String'],
-                $actual: '$' + value.constructor.name,
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/String'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the text string constructor."'
             });
     }
@@ -822,11 +893,15 @@ const version = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     if (value && !Array.isArray(value)) {
         throw exception({
-            $module: '$bali',
-            $function: '$version',
+            $module: '/bali/elements/Version',
+            $procedure: '$Version',
             $exception: '$parameterType',
-            $expected: ['$Undefined', '$Array'],
-            $actual: '$' + value.constructor.name,
+            $expected: [
+                '/javascript/Undefined',
+                '/javascript/Array'
+            ],
+            $actual: '/javascript/' + value.constructor.name,
+            $value: bali.text(value.toString()),
             $text: '"An invalid value type was passed to the version string constructor."'
         });
     }
@@ -851,7 +926,7 @@ exports.base64 = parameters({$encoding: '$base64'});
 
 // PRIVATE FUNCTIONS
 
-const fillCollection = function(functionName, collection, sequence) {
+const fillCollection = function(moduleName, procedureName, collection, sequence) {
     if (sequence) {
         if (Array.isArray(sequence)) {
             sequence.forEach(function(item) {
@@ -878,11 +953,16 @@ const fillCollection = function(functionName, collection, sequence) {
             });
         } else {
             throw exception({
-                $module: '$bali',
-                $function: functionName,
+                $module: moduleName,
+                $procedure: procedureName,
                 $exception: '$parameterType',
-                $expected: ['$Collection', '$Object', '$Array'],
-                $actual: '$' + sequence.constructor.name,
+                $expected: [
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + value.constructor.name,
+                $value: bali.text(value.toString()),
                 $text: '"An invalid value type was passed to the constructor."'
             });
         }

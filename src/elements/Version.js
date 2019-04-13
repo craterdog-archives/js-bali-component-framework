@@ -32,8 +32,8 @@ function Version(value, parameters) {
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
         throw new utilities.Exception({
-            $module: '$Version',
-            $function: '$Version',
+            $module: '/bali/elements/Version',
+            $procedure: '$Version',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid version value was passed to the constructor."'

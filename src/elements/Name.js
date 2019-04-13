@@ -31,8 +31,8 @@ function Name(value, parameters) {
     abstractions.Element.call(this, utilities.types.NAME, parameters);
     if (!Array.isArray(value) || value.length === 0) {
         throw new utilities.Exception({
-            $module: '$Name',
-            $function: '$Name',
+            $module: '/bali/elements/Name',
+            $procedure: '$Name',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid name value was passed to the constructor."'

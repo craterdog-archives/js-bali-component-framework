@@ -57,8 +57,8 @@ Component.prototype.isParameterized = function() {
  */
 Component.prototype.toBoolean = function() {
     throw new utilities.Exception({
-        $module: '$Component',
-        $function: '$toBoolean',
+        $module: '/bali/abstractions/Component',
+        $procedure: '$toBoolean',
         $exception: '$abstractMethod',
         $text: '"An abstract method must be implemented by a subclass."'
     });
@@ -186,8 +186,8 @@ Component.prototype.isMatchedBy = function(pattern) {
         return true;  // all pattern items matched successfully
     }
     throw new utilities.Exception({
-        $module: '$Component',
-        $function: '$isMatchedBy',
+        $module: '/bali/abstractions/Component',
+        $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
         $component: this,
         $parameter: pattern,
@@ -222,8 +222,8 @@ Component.prototype.getHash = function() {
  */
 Component.prototype.acceptVisitor = function(visitor) {
     throw new utilities.Exception({
-        $module: '$Component',
-        $function: '$acceptVisitor',
+        $module: '/bali/abstractions/Component',
+        $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',
         $text: '"An abstract method must be implemented by a subclass."'
     });

@@ -102,7 +102,7 @@ describe('Bali Component Framework™', function() {
             set1.addItem('"alpha"');
             set1.addItem('"beta"');
             set1.addItem('"delta"');
-            expect(set1.toString()).to.equal('["alpha", "beta", "delta"]($type: /bali/types/Set/v1)');
+            expect(set1.toString()).to.equal('["alpha", "beta", "delta"](\n    $type: /bali/collections/Set/v1\n)');
             const set2 = bali.set();
             set2.addItem('"epsilon"');
             set2.addItem('"gamma"');

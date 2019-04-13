@@ -33,8 +33,8 @@ function Tree(type) {
     abstractions.Composite.call(this, type);
     if (!utilities.types.isProcedural(type)) {
         throw new utilities.Exception({
-            $module: '$Tree',
-            $function: '$Tree',
+            $module: '/bali/composites/Tree',
+            $procedure: '$Tree',
             $exception: '$invalidParameter',
             $parameter: utilities.types.symbolForType(type),
             $text: '"An invalid tree type was passed to the constructor."'
@@ -203,8 +203,8 @@ Tree.prototype.acceptVisitor = function(visitor) {
             break;
         default:
             throw new utilities.Exception({
-                $module: '$Tree',
-                $function: '$acceptVisitor',
+                $module: '/bali/composites/Tree',
+                $procedure: '$acceptVisitor',
                 $exception: '$invalidType',
                 $type: utilities.types.symbolForType(type),
                 $tree: this,

@@ -31,8 +31,8 @@ function Reserved(value, parameters) {
     abstractions.Element.call(this, utilities.types.RESERVED, parameters);
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new utilities.Exception({
-            $module: '$Reserved',
-            $function: '$Reserved',
+            $module: '/bali/elements/Reserved',
+            $procedure: '$Reserved',
             $exception: '$invalidParameter',
             $parameter: value.toString(),
             $text: '"An invalid reserved symbol value was passed to the constructor."'
