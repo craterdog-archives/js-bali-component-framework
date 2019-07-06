@@ -278,7 +278,7 @@ exports.base32Decode = function(base32) {
                 $text: '"The binary string was not encoded using base 32."'
             });
         }
-        base32DecodeNextCharacter(chunk, index++, buffer, 0);
+        base32DecodeNextCharacter(chunk, index++, buffer);
     }
     if (index < length) {
         character = base32[index];
@@ -292,7 +292,7 @@ exports.base32Decode = function(base32) {
                 $text: '"The binary string was not encoded using base 32."'
             });
         }
-        base32DecodeLastCharacter(chunk, index, buffer, 0);
+        base32DecodeLastCharacter(chunk, index, buffer);
     }
     return buffer;
 };
@@ -479,8 +479,8 @@ function base32EncodeLastChunk(last, byteIndex, base32) {
  * byte:  00000111|11222223|33334444|45555566|66677777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
-function base32DecodeNextCharacter(chunk, characterIndex, buffer, index) {
-    const byteIndex = Math.floor(index + (characterIndex * 5) / 8);
+function base32DecodeNextCharacter(chunk, characterIndex, buffer) {
+    const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
         case 0:
@@ -521,8 +521,8 @@ function base32DecodeNextCharacter(chunk, characterIndex, buffer, index) {
  * byte:  xxxxx111|00xxxxx3|00004444|0xxxxx66|00077777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
-function base32DecodeLastCharacter(chunk, characterIndex, buffer, index) {
-    const byteIndex = Math.floor(index + (characterIndex * 5) / 8);
+function base32DecodeLastCharacter(chunk, characterIndex, buffer) {
+    const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
         case 1:
