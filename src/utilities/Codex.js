@@ -234,12 +234,12 @@ exports.base32Encode = function(buffer, indentation) {
         const currentByte = buffer[i];
 
         // encode next one or two 5 bit chunks
-        string = base32EncodeNextChucks(previousByte, currentByte, i, string);
+        string = base32EncodeBytes(previousByte, currentByte, i, string);
     }
 
-    // encode the last chunk
+    // encode the last 5 bit chunk
     const lastByte = buffer[length - 1];
-    string = base32EncodeLastChunk(lastByte, length - 1, string);
+    string = base32EncodeLast(lastByte, length - 1, string);
 
     // break the string into formatted lines
     const base32 = formatLines(string, indentation);
@@ -265,9 +265,8 @@ exports.base32Decode = function(base32) {
 
     // decode each base 32 character
     const buffer = Buffer.alloc(Math.floor(length * 5 / 8));
-    var index = 0;
-    while (index < length - 1) {
-        character = base32[index];
+    for (var i = 0; i < length; i++) {
+        character = base32[i];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
             throw new utilities.Exception({
@@ -278,21 +277,11 @@ exports.base32Decode = function(base32) {
                 $text: '"The binary string was not encoded using base 32."'
             });
         }
-        base32DecodeNextCharacter(chunk, index++, buffer);
-    }
-    if (index < length) {
-        character = base32[index];
-        chunk = base32LookupTable.indexOf(character);
-        if (chunk < 0) {
-            throw new utilities.Exception({
-                $module: '/bali/utilities/Codex',
-                $procedure: '$base32Decode',
-                $exception: '$invalidParameter',
-                $parameter: base32,
-                $text: '"The binary string was not encoded using base 32."'
-            });
+        if (i < length - 1) {
+            base32DecodeBytes(chunk, i, buffer);
+        } else {
+            base32DecodeLast(chunk, i, buffer);
         }
-        base32DecodeLastCharacter(chunk, index, buffer);
     }
     return buffer;
 };
@@ -405,7 +394,7 @@ exports.bytesToInteger = function(buffer) {
  * byte:  00000111|11222223|33334444|45555566|66677777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
-function base32EncodeNextChucks(previous, current, byteIndex, base32) {
+function base32EncodeBytes(previous, current, byteIndex, base32) {
     var chunk;
     const offset = byteIndex % 5;
     switch (offset) {
@@ -446,7 +435,7 @@ function base32EncodeNextChucks(previous, current, byteIndex, base32) {
  * byte:  xxxxx111|00xxxxx3|00004444|0xxxxx66|000xxxxx|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
-function base32EncodeLastChunk(last, byteIndex, base32) {
+function base32EncodeLast(last, byteIndex, base32) {
     var chunk;
     const offset = byteIndex % 5;
     switch (offset) {
@@ -479,7 +468,7 @@ function base32EncodeLastChunk(last, byteIndex, base32) {
  * byte:  00000111|11222223|33334444|45555566|66677777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
-function base32DecodeNextCharacter(chunk, characterIndex, buffer) {
+function base32DecodeBytes(chunk, characterIndex, buffer) {
     const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
@@ -521,7 +510,7 @@ function base32DecodeNextCharacter(chunk, characterIndex, buffer) {
  * byte:  xxxxx111|00xxxxx3|00004444|0xxxxx66|00077777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
-function base32DecodeLastCharacter(chunk, characterIndex, buffer) {
+function base32DecodeLast(chunk, characterIndex, buffer) {
     const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
