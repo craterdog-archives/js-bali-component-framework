@@ -225,7 +225,7 @@ const angle = function(value, parameters) {
                     '/javascript/Number'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the angle constructor."'
             });
     }
@@ -286,7 +286,7 @@ const binary = function(value, parameters) {
                         '/nodejs/Buffer'
                     ],
                     $actual: '/javascript/' + value.constructor.name,
-                    $value: bali.text(value.toString()),
+                    $value: text(value.toString()),
                     $text: '"An invalid value type was passed to the binary string constructor."'
                 });
             }
@@ -352,8 +352,8 @@ const catalog = function(sequence, parameters) {
                     '/javascript/Object',
                     '/bali/interfaces/Sequential'
                 ],
-                $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $actual: '/javascript/' + sequence.constructor.name,
+                $value: text(sequence.toString()),
                 $text: '"An invalid value type was passed to the constructor."'
             });
         }
@@ -389,7 +389,7 @@ const duration = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the duration of time constructor."'
             });
     }
@@ -444,7 +444,7 @@ const moment = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the moment in time constructor."'
             });
     }
@@ -473,7 +473,7 @@ const name = function(value, parameters) {
                 '/javascript/Array'
             ],
             $actual: '/javascript/' + value.constructor.name,
-            $value: bali.text(value.toString()),
+            $value: text(value.toString()),
             $text: '"An invalid value type was passed to the name string constructor."'
         });
     }
@@ -508,8 +508,8 @@ const number = function(real, imaginary, parameters) {
                         '/javascript/Number',
                         '/bali/elements/Angle'
                     ],
-                    $actual: '/javascript/' + value.constructor.name,
-                    $value: bali.text(value.toString()),
+                    $actual: '/javascript/' + imaginary.constructor.name,
+                    $value: text(imaginary.toString()),
                     $text: '"An invalid imaginary value type was passed to the complex number constructor."'
                 });
             }
@@ -523,8 +523,8 @@ const number = function(real, imaginary, parameters) {
                     '/javascript/Undefined',
                     '/javascript/Number'
                 ],
-                $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $actual: '/javascript/' + real.constructor.name,
+                $value: text(real.toString()),
                 $text: '"An invalid real value type was passed to the complex number constructor."'
             });
     }
@@ -569,7 +569,7 @@ const pattern = function(value, parameters) {
                         '/javascript/RegExp'
                     ],
                     $actual: '/javascript/' + value.constructor.name,
-                    $value: bali.text(value.toString()),
+                    $value: text(value.toString()),
                     $text: '"An invalid value type was passed to the pattern constructor."'
                 });
             }
@@ -601,7 +601,7 @@ const percent = function(value, parameters) {
                     '/javascript/Number'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the percent constructor."'
             });
     }
@@ -638,7 +638,7 @@ const probability = function(value, parameters) {
                     '/javascript/Number'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the probability constructor."'
             });
     }
@@ -711,7 +711,7 @@ const reference = function(value, parameters) {
                         '/nodejs/URL'
                     ],
                     $actual: '/javascript/' + value.constructor.name,
-                    $value: bali.text(value.toString()),
+                    $value: text(value.toString()),
                     $text: '"An invalid value type was passed to the reference constructor."'
                 });
             }
@@ -741,7 +741,7 @@ const reserved = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the reserved symbol constructor."'
             });
     }
@@ -808,7 +808,7 @@ const symbol = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the symbol constructor."'
             });
     }
@@ -842,7 +842,7 @@ const tag = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the tag constructor."'
             });
     }
@@ -873,7 +873,7 @@ const text = function(value, parameters) {
                     '/javascript/String'
                 ],
                 $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $value: text(value.toString()),
                 $text: '"An invalid value type was passed to the text string constructor."'
             });
     }
@@ -901,7 +901,7 @@ const version = function(value, parameters) {
                 '/javascript/Array'
             ],
             $actual: '/javascript/' + value.constructor.name,
-            $value: bali.text(value.toString()),
+            $value: text(value.toString()),
             $text: '"An invalid value type was passed to the version string constructor."'
         });
     }
@@ -961,8 +961,8 @@ const fillCollection = function(moduleName, procedureName, collection, sequence)
                     '/javascript/Object',
                     '/bali/interfaces/Sequential'
                 ],
-                $actual: '/javascript/' + value.constructor.name,
-                $value: bali.text(value.toString()),
+                $actual: '/javascript/' + sequence.constructor.name,
+                $value: text(sequence.toString()),
                 $text: '"An invalid value type was passed to the constructor."'
             });
         }
