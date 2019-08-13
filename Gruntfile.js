@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('generate', 'Generate the parser code.', ['clean:generate', 'antlr4']);
   grunt.registerTask('build', 'Build the module.', ['clean:build', 'eslint', 'mochaTest']);
-  grunt.registerTask('package', 'Package the libraries.', ['clean:build', 'eslint', 'mochaTest', 'webpack']);
+  grunt.registerTask('package', 'Package the libraries.', ['clean:build', 'eslint', 'webpack']);
   grunt.registerTask('default', 'Default targets.', ['generate', 'build']);
 
   grunt.registerMultiTask('antlr4', 'Task for antlr4 parser/lexer generation in JS', function () {

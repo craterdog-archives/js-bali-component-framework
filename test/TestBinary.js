@@ -92,8 +92,8 @@ describe('Bali Component Framework™', function() {
 
         it('should perform the bitwise SANS function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(i);
-                const B = bali.binary(i);
+                const A = bali.binary(bali.random.bytes(i));
+                const B = bali.binary(bali.random.bytes(i));
                 const C = bali.binary.sans(A, B);
                 const D = bali.binary.sans(B, A);
                 expect(bali.binary.or(C, D).isEqualTo(bali.binary.xor(A, B))).to.equal(true);

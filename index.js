@@ -57,19 +57,58 @@ const convert = function(value) {
             component = new elements.Number(value);
             break;
         case 'string':
-            component = parse(value);
+            try {
+                const parser = new utilities.Parser();
+                component = parser.parseDocument(value);
+            } catch (cause) {
+                const error = utilities.Exception({
+                    $module: '/bali/abstractions/Component',
+                    $procedure: '$convert',
+                    $exception: '$parameterValue',
+                    $source: new elements.Text(value),
+                    $text: new elements.Text('The source string to be converted is invalid.')
+                }, cause);
+                if (cause) error.stack = cause.stack;
+                throw error;
+            }
             break;
-        default:
+        case 'object':
             if (Array.isArray(value)) {
                 // convert the array to a list
-                component = list(value);
+                component = new collections.List();
+                value.forEach(function(item) {
+                    component.addItem(item);
+                });
             } else if (value.constructor.prototype.acceptVisitor && value.getTypeId()) {
                 // leave it since it is already a component
                 component = value;
             } else {
                 // convert the object to a catalog
-                component = catalog(value);
+                component = new collections.Catalog();
+                const keys = Object.keys(value);
+                keys.forEach(function(key) {
+                    const symbol = (key[0] === '$') ? key : '$' + key;
+                    component.setValue(symbol, value[key]);
+                });
             }
+            break;
+        default:
+            const type = typeof value;
+            type = type.charAt(0).toUpperCase() + type.slice(1);
+            throw utilities.Exception({
+                $module: '/bali/abstractions/Component',
+                $procedure: '$convert',
+                $exception: '$parameterType',
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Boolean',
+                    '/javascript/Number',
+                    '/javascript/String',
+                    '/javascript/Object'
+                ],
+                $actual: '/javascript/' + type,
+                $text: new elements.Text('Attempted to convert an invalid value type.')
+            });
     }
     return component;
 };
@@ -78,6 +117,52 @@ utilities.Exception.prototype.convert = convert;
 
 
 // FUNCTIONS
+
+const typeName = function(value) {
+    if (value === null) value = undefined;  // null is of type 'object' so undefine it!
+    if (typeof value === 'undefined') return '/javascript/Undefined';
+    if (typeof value === 'boolean') return '/javascript/Boolean';
+    if (typeof value === 'number') return '/javascript/Number';
+    if (typeof value === 'string') return '/javascript/String';
+    if (typeof value === 'function') return '/javascript/Function';
+    if (value instanceof Array) return '/javascript/Array';
+    if (value instanceof Date) return '/javascript/Date';
+    if (value instanceof Error) return '/javascript/Error';
+    if (value instanceof Promise) return '/javascript/Promise';
+    if (value instanceof RegExp) return '/javascript/RegExp';
+    if (value instanceof Buffer) return '/nodejs/Buffer';
+    if (value instanceof Timeout) return '/nodejs/Timeout';
+    if (value instanceof URL) return '/nodejs/URL';
+    if (value instanceof elements.Angle) return '/bali/elements/Angle';
+    if (value instanceof composites.Association) return '/bali/composites/Association';
+    if (value instanceof elements.Binary) return '/bali/elements/Binary';
+    if (value instanceof collections.Catalog) return '/bali/collections/Catalog';
+    if (value instanceof elements.Duration) return '/bali/elements/Duration';
+    if (value instanceof utilities.Exception) return '/bali/utilities/Exception';
+    if (value instanceof utilities.Iterator) return '/bali/utilities/Iterator';
+    if (value instanceof collections.List) return '/bali/collections/List';
+    if (value instanceof elements.Moment) return '/bali/elements/Moment';
+    if (value instanceof elements.Name) return '/bali/elements/Name';
+    if (value instanceof elements.Complex) return '/bali/elements/Number';
+    if (value instanceof composites.Parameters) return '/bali/composites/Parameters';
+    if (value instanceof elements.Pattern) return '/bali/elements/Pattern';
+    if (value instanceof elements.Percent) return '/bali/elements/Percent';
+    if (value instanceof elements.Probability) return '/bali/elements/Probability';
+    if (value instanceof collections.Queue) return '/bali/collections/Queue';
+    if (value instanceof composites.Range) return '/bali/composites/Range';
+    if (value instanceof elements.Reference) return '/bali/elements/Reference';
+    if (value instanceof elements.Reserved) return '/bali/elements/Reserved';
+    if (value instanceof collections.Set) return '/bali/collections/Set';
+    if (value instanceof composites.Source) return '/bali/composites/Source';
+    if (value instanceof collections.Stack) return '/bali/collections/Stack';
+    if (value instanceof elements.Symbol) return '/bali/elements/Symbol';
+    if (value instanceof elements.Tag) return '/bali/elements/Tag';
+    if (value instanceof elements.Text) return '/bali/elements/Text';
+    if (value instanceof composites.Tree) return '/bali/composites/Tree';
+    if (value instanceof elements.Version) return '/bali/elements/Version';
+    return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
+};
+exports.typeName = typeName;
 
 /**
  * This function duplicates a Bali component by copying each of its attributes
@@ -178,6 +263,18 @@ exports.parameters = parameters;
  * @returns {Component} The corresponding Bali component.
  */
 const parse = function(document, parameters, debug) {
+    if (typeof document !== 'string') {
+        throw exception({
+            $module: '/bali/utilities/Parser',
+            $procedure: '$parseDocument',
+            $exception: '$parameterType',
+            $expected: [
+                '/javascript/String'
+            ],
+            $actual: '/javascript/' + typeof document,
+            $text: '"An invalid value type was passed to the parser."'
+        });
+    }
     const parser = new utilities.Parser(debug);
     return parser.parseDocument(document, parameters);
 };
@@ -272,7 +369,6 @@ const binary = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
         case 'undefined':
-        case 'number':
             break;
         default:
             if (!(value instanceof Buffer)) {
@@ -374,8 +470,8 @@ catalog.extraction = collections.Catalog.extraction;
 const duration = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
         case 'undefined':
+        case 'string':
         case 'number':
             break;
         default:
@@ -429,8 +525,8 @@ list.concatenation = collections.List.concatenation;
 const moment = function(value, parameters) {
     if (value === null) value = undefined;  // force the default value
     switch (typeof value) {
-        case 'string':
         case 'undefined':
+        case 'string':
         case 'number':
             break;
         default:
