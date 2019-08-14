@@ -20,13 +20,6 @@ const collections = require('./src/collections');  // depends on composites
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
-// EXPORT UTILITIES
-
-Object.keys(utilities).forEach(function(key) {
-    exports[key] = utilities[key];
-});
-
-
 // AVOIDING CIRCULAR DEPENDENCIES
 
 /*
@@ -111,211 +104,69 @@ abstractions.Composite.prototype.convert = convert;
 utilities.Exception.prototype.convert = convert;
 
 
-// FUNCTIONS
+// PRIVATE FUNCTIONS
 
-/**
- * This function duplicates a Bali component by copying each of its attributes
- * recursively.  Since elemental components are immutable, they are not duplicated.
- * 
- * @param {Component} component The component to be duplicated.
- * @returns {Component} The duplicate component.
- */
-const duplicate = function(component) {
-    validateType('/bali/utilities/Duplicator', '$duplicator', '$component', component, [
-        '/bali/abstractions/Component'
-    ]);
-    const duplicator = new utilities.Duplicator();
-    return duplicator.duplicateComponent(component);
+const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
+    const actualType = type(parameterValue);
+    if (allowedTypes.indexOf(actualType) > -1) return;
+    if (allowedTypes.indexOf('/bali/abstractions/Component') > -1 && parameterValue.getTypeId) return;
+    throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+        $module: moduleName,
+        $procedure: procedureName,
+        $parameter: parameterName,
+        $exception: '$parameterType',
+        $expected: allowedTypes,
+        $actual: actualType,
+        $text: new elements.Text('An invalid parameter type was passed to the procedure.')  // ditto
+    });
 };
-exports.duplicate = duplicate;
 
-/**
- * This function creates a new Bali exception using the attributes defined in the
- * specified JavaScript object.  If the optional cause of the exception is provided
- * it is used to augment the information about the exception.
- * 
- * @param {Object} object A JavaScript object defining the attributes to be associated
- * with the new exception. 
- * @param {Error|Exception} cause The underlying exception that caused this exception.
- * @returns {Exception} The new Bali exception, or the underlying <code>cause</code>
- * if the cause is from the same module as the current exception.
- */
-const exception = function(object, cause) {
-    validateType('/bali/utilities/Exception', '$exception', '$object', object, [
-        '/javascript/Object'
-    ]);
-    validateType('/bali/utilities/Exception', '$exception', '$cause', cause, [
-        '/javascript/Error',
-        '/bali/utilities/Exception'
-    ]);
-    var error;
-    if (cause && cause.constructor.name === 'Exception' &&
-        cause.attributes.getValue('$module').toString() === object['$module']) {
-        // same module so no need to wrap it
-        error = cause;
-    } else {
-        // wrap the cause in a new exception
-        error = new utilities.Exception(object, cause);
-        if (cause) error.stack = cause.stack;
+const fillCollection = function(moduleName, procedureName, collection, sequence) {
+    sequence = sequence || undefined;  // normalize nulls to undefined
+    if (sequence) {
+        if (Array.isArray(sequence)) {
+            sequence.forEach(function(item) {
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
+                }
+                collection.addItem(item);
+            });
+        } else if (utilities.types.isSequential(sequence.getTypeId())) {
+            const iterator = sequence.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    item = item.getValue();
+                }
+                collection.addItem(item);
+            }
+        } else if (typeof sequence === 'object') {
+            const keys = Object.keys(sequence);
+            keys.forEach(function(key) {
+                collection.addItem(sequence[key]);
+            });
+        } else {
+            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+                $module: moduleName,
+                $procedure: procedureName,
+                $exception: '$parameterType',
+                $expected: [
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + sequence.constructor.name,
+                $value: new elements.Text(sequence.toString()),  // ditto
+                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
+            });
+        }
     }
-    return error;
 };
-exports.exception = exception;
-
-/**
- * This function formats a Bali component into a JavaScript string containing
- * Bali Document Notation™. An optional indentation level may be specified
- * that causes the formatter to indent each line by that many additional
- * levels.  Each level is four spaces.
- * 
- * @param {Component} component The Bali component to be formatted. 
- * @param {Number} indentation An optional number of levels to indent the output.
- * @returns {String} The resulting string containing Bali Document Notation™.
- */
-const format = function(component, indentation) {
-    validateType('/bali/utilities/Formatter', '$formatter', '$component', component, [
-        '/bali/abstractions/Component'
-    ]);
-    validateType('/bali/utilities/Formatter', '$formatter', '$indentation', indentation, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ]);
-    const formatter = new utilities.Formatter(indentation);
-    return formatter.formatComponent(component);
-};
-exports.format = format;
-
-/**
- * This function returns a Bali iterator that operates on a JavaScript array.
- * 
- * @param {Array} array The JavaScript array to be iterated over. 
- * @returns {Iterator} The resulting Bali iterator.
- */
-const iterator = function(array) {
-    validateType('/bali/utilities/Iterator', '$iterator', '$array', array, [
-        '/javascript/Array'
-    ]);
-    return new utilities.Iterator(array);
-};
-exports.iterator = iterator;
-
-/**
- * This function creates a new Bali parameters component containing the items
- * defined in the specified JavaScript object. If the object is an array, the
- * parameters will be stored as a Bali list containing the parameter values. If
- * the object is an actual object the parameters will be stored as a Bali catalog
- * containing the key-value pair for each parameter.
- * 
- * @param {Object} object A JavaScript object containing the parameter values.
- * @returns {Parameters} The resulting Bali parameters component.
- */
-const parameters = function(object) {
-    validateType('/bali/composites/Parameters', '$parameters', '$object', object, [
-        '/javascript/Array',
-        '/javascript/Object'
-    ]);
-    if (Array.isArray(object)) {
-        object = list(object);
-    } else {
-        object = catalog(object);
-    }
-    return new composites.Parameters(object);
-};
-exports.parameters = parameters;
-
-/**
- * This function parses a JavaScript string containing Bali Document Notation™ and
- * returns the corresponding Bali component. If the <code>debug</code> flag is set,
- * the parser will report possible ambiguities in the input string.
- * 
- * @param {String} document A string containing Bali Document Notation™ to be parsed.
- * @param {Parameters} parameters Optional parameters to be used to parameterize the
- * resulting component.
- * @param {Boolean} debug An optional flag that when set will cause the parser to
- * report possible ambiguities in the input string.
- * @returns {Component} The corresponding Bali component.
- */
-const parse = function(document, parameters, debug) {
-    validateType('/bali/utilities/Parser', '$parse', '$document', document, [
-        '/javascript/String'
-    ]);
-    validateType('/bali/utilities/Parser', '$parse', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    validateType('/bali/utilities/Parser', '$parse', '$debug', debug, [
-        '/javascript/Undefined',
-        '/javascript/Boolean'
-    ]);
-    const parser = new utilities.Parser(debug);
-    return parser.parseDocument(document, parameters);
-};
-exports.parse = parse;
-
-/**
- * this function returns a string containing the Bali name for the type of the specified value.
- * 
- * @param {Any} value The value to be evaluated. 
- * @returns {String} A string containing the Bali name for the type of the specified value.
- */
-const typeName = function(value) {
-    // handle null legacy
-    if (value === null) value = undefined;  // null is of type 'object' so undefine it!
-
-    // handle primitive types
-    if (typeof value === 'undefined') return '/javascript/Undefined';
-    if (typeof value === 'boolean') return '/javascript/Boolean';
-    if (typeof value === 'number') return '/javascript/Number';
-    if (typeof value === 'bigint') return '/javascript/BigInt';
-    if (typeof value === 'string') return '/javascript/String';
-    if (typeof value === 'symbol') return '/javascript/Symbol';
-    if (typeof value === 'function') return '/javascript/Function';
-
-    // handle common object types
-    if (value instanceof Array) return '/javascript/Array';
-    if (value instanceof Date) return '/javascript/Date';
-    if (value instanceof Error) return '/javascript/Error';
-    if (value instanceof Promise) return '/javascript/Promise';
-    if (value instanceof RegExp) return '/javascript/RegExp';
-    if (value instanceof Buffer) return '/nodejs/Buffer';
-    if (value instanceof URL) return '/nodejs/URL';
-
-    // handle Bali component types
-    if (value instanceof elements.Angle) return '/bali/elements/Angle';
-    if (value instanceof composites.Association) return '/bali/composites/Association';
-    if (value instanceof elements.Binary) return '/bali/elements/Binary';
-    if (value instanceof collections.Catalog) return '/bali/collections/Catalog';
-    if (value instanceof elements.Duration) return '/bali/elements/Duration';
-    if (value instanceof utilities.Exception) return '/bali/utilities/Exception';
-    if (value instanceof utilities.Iterator) return '/bali/utilities/Iterator';
-    if (value instanceof collections.List) return '/bali/collections/List';
-    if (value instanceof elements.Moment) return '/bali/elements/Moment';
-    if (value instanceof elements.Name) return '/bali/elements/Name';
-    if (value instanceof elements.Number) return '/bali/elements/Number';
-    if (value instanceof composites.Parameters) return '/bali/composites/Parameters';
-    if (value instanceof elements.Pattern) return '/bali/elements/Pattern';
-    if (value instanceof elements.Percent) return '/bali/elements/Percent';
-    if (value instanceof elements.Probability) return '/bali/elements/Probability';
-    if (value instanceof collections.Queue) return '/bali/collections/Queue';
-    if (value instanceof composites.Range) return '/bali/composites/Range';
-    if (value instanceof elements.Reference) return '/bali/elements/Reference';
-    if (value instanceof elements.Reserved) return '/bali/elements/Reserved';
-    if (value instanceof collections.Set) return '/bali/collections/Set';
-    if (value instanceof composites.Source) return '/bali/composites/Source';
-    if (value instanceof collections.Stack) return '/bali/collections/Stack';
-    if (value instanceof elements.Symbol) return '/bali/elements/Symbol';
-    if (value instanceof elements.Tag) return '/bali/elements/Tag';
-    if (value instanceof elements.Text) return '/bali/elements/Text';
-    if (value instanceof composites.Tree) return '/bali/composites/Tree';
-    if (value instanceof elements.Version) return '/bali/elements/Version';
-
-    // handle anything else
-    return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
-};
-exports.typeName = typeName;
 
 
-// TYPES
+// PUBLIC INTERFACE
 
 /**
  * This function creates an immutable instance of an angle using the specified value.
@@ -458,6 +309,27 @@ exports.catalog = catalog;
 catalog.concatenation = collections.Catalog.concatenation;
 catalog.extraction = collections.Catalog.extraction;
 
+/*
+ * This library exports the byte encoding and decoding functions.
+ */
+exports.codex = utilities.codex;
+
+/**
+ * This function duplicates a Bali component by copying each of its attributes
+ * recursively.  Since elemental components are immutable, they are not duplicated.
+ * 
+ * @param {Component} component The component to be duplicated.
+ * @returns {Component} The duplicate component.
+ */
+const duplicate = function(component) {
+    validateType('/bali/utilities/Duplicator', '$duplicator', '$component', component, [
+        '/bali/abstractions/Component'
+    ]);
+    const duplicator = new utilities.Duplicator();
+    return duplicator.duplicateComponent(component);
+};
+exports.duplicate = duplicate;
+
 /**
  * This function creates a new duration element using the specified value.
  * 
@@ -482,6 +354,76 @@ duration.sum = elements.Duration.sum;
 duration.difference = elements.Duration.difference;
 duration.scaled = elements.Duration.scaled;
 exports.duration = duration;
+
+/**
+ * This function creates a new Bali exception using the attributes defined in the
+ * specified JavaScript object.  If the optional cause of the exception is provided
+ * it is used to augment the information about the exception.
+ * 
+ * @param {Object} object A JavaScript object defining the attributes to be associated
+ * with the new exception. 
+ * @param {Error|Exception} cause The underlying exception that caused this exception.
+ * @returns {Exception} The new Bali exception, or the underlying <code>cause</code>
+ * if the cause is from the same module as the current exception.
+ */
+const exception = function(object, cause) {
+    validateType('/bali/utilities/Exception', '$exception', '$object', object, [
+        '/javascript/Object'
+    ]);
+    validateType('/bali/utilities/Exception', '$exception', '$cause', cause, [
+        '/javascript/Error',
+        '/bali/utilities/Exception'
+    ]);
+    var error;
+    if (cause && cause.constructor.name === 'Exception' &&
+        cause.attributes.getValue('$module').toString() === object['$module']) {
+        // same module so no need to wrap it
+        error = cause;
+    } else {
+        // wrap the cause in a new exception
+        error = new utilities.Exception(object, cause);
+        if (cause) error.stack = cause.stack;
+    }
+    return error;
+};
+exports.exception = exception;
+
+/**
+ * This function formats a Bali component into a JavaScript string containing
+ * Bali Document Notation™. An optional indentation level may be specified
+ * that causes the formatter to indent each line by that many additional
+ * levels.  Each level is four spaces.
+ * 
+ * @param {Component} component The Bali component to be formatted. 
+ * @param {Number} indentation An optional number of levels to indent the output.
+ * @returns {String} The resulting string containing Bali Document Notation™.
+ */
+const format = function(component, indentation) {
+    validateType('/bali/utilities/Formatter', '$formatter', '$component', component, [
+        '/bali/abstractions/Component'
+    ]);
+    validateType('/bali/utilities/Formatter', '$formatter', '$indentation', indentation, [
+        '/javascript/Undefined',
+        '/javascript/Number'
+    ]);
+    const formatter = new utilities.Formatter(indentation);
+    return formatter.formatComponent(component);
+};
+exports.format = format;
+
+/**
+ * This function returns a Bali iterator that operates on a JavaScript array.
+ * 
+ * @param {Array} array The JavaScript array to be iterated over. 
+ * @returns {Iterator} The resulting Bali iterator.
+ */
+const iterator = function(array) {
+    validateType('/bali/utilities/Iterator', '$iterator', '$array', array, [
+        '/javascript/Array'
+    ]);
+    return new utilities.Iterator(array);
+};
+exports.iterator = iterator;
 
 /**
  * This function creates a new list component with optional parameters that are
@@ -589,6 +531,59 @@ number.scaled = elements.Number.scaled;
 number.sum = elements.Number.sum;
 
 /**
+ * This function creates a new Bali parameters component containing the items
+ * defined in the specified JavaScript object. If the object is an array, the
+ * parameters will be stored as a Bali list containing the parameter values. If
+ * the object is an actual object the parameters will be stored as a Bali catalog
+ * containing the key-value pair for each parameter.
+ * 
+ * @param {Object} object A JavaScript object containing the parameter values.
+ * @returns {Parameters} The resulting Bali parameters component.
+ */
+const parameters = function(object) {
+    validateType('/bali/composites/Parameters', '$parameters', '$object', object, [
+        '/javascript/Array',
+        '/javascript/Object'
+    ]);
+    if (Array.isArray(object)) {
+        object = list(object);
+    } else {
+        object = catalog(object);
+    }
+    return new composites.Parameters(object);
+};
+exports.parameters = parameters;
+
+/**
+ * This function parses a JavaScript string containing Bali Document Notation™ and
+ * returns the corresponding Bali component. If the <code>debug</code> flag is set,
+ * the parser will report possible ambiguities in the input string.
+ * 
+ * @param {String} document A string containing Bali Document Notation™ to be parsed.
+ * @param {Parameters} parameters Optional parameters to be used to parameterize the
+ * resulting component.
+ * @param {Boolean} debug An optional flag that when set will cause the parser to
+ * report possible ambiguities in the input string.
+ * @returns {Component} The corresponding Bali component.
+ */
+const parse = function(document, parameters, debug) {
+    validateType('/bali/utilities/Parser', '$parse', '$document', document, [
+        '/javascript/String'
+    ]);
+    validateType('/bali/utilities/Parser', '$parse', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+    validateType('/bali/utilities/Parser', '$parse', '$debug', debug, [
+        '/javascript/Undefined',
+        '/javascript/Boolean'
+    ]);
+    const parser = new utilities.Parser(debug);
+    return parser.parseDocument(document, parameters);
+};
+exports.parse = parse;
+
+/**
  * This function creates a new pattern element using the specified value.
  * 
  * @param {String|RegExp} value A regular expression for the pattern element.
@@ -632,6 +627,11 @@ percent.sum = elements.Percent.sum;
 percent.difference = elements.Percent.difference;
 percent.scaled = elements.Percent.scaled;
 exports.percent = percent;
+
+/*
+ * This library exports accurate precision arithmetic functions.
+ */
+exports.precision = utilities.precision;
 
 /**
  * This function creates a new probability element using the specified value.
@@ -680,6 +680,11 @@ const queue = function(sequence, parameters) {
     return collection;
 };
 exports.queue = queue;
+
+/*
+ * This library exports the random number generator functions.
+ */
+exports.random = utilities.random;
 
 /**
  * This function creates a new range of items with optional parameters that are used
@@ -848,6 +853,73 @@ text.concatenation = elements.Text.concatenation;
 exports.text = text;
 
 /**
+ * this function returns a string containing the Bali name for the type of the specified value.
+ * 
+ * @param {Any} value The value to be evaluated. 
+ * @returns {String} A string containing the Bali name for the type of the specified value.
+ */
+const type = function(value) {
+    // handle null legacy
+    if (value === null) value = undefined;  // null is of type 'object' so undefine it!
+
+    // handle primitive types
+    if (typeof value === 'undefined') return '/javascript/Undefined';
+    if (typeof value === 'boolean') return '/javascript/Boolean';
+    if (typeof value === 'number') return '/javascript/Number';
+    if (typeof value === 'bigint') return '/javascript/BigInt';
+    if (typeof value === 'string') return '/javascript/String';
+    if (typeof value === 'symbol') return '/javascript/Symbol';
+    if (typeof value === 'function') return '/javascript/Function';
+
+    // handle common object types
+    if (value instanceof Array) return '/javascript/Array';
+    if (value instanceof Date) return '/javascript/Date';
+    if (value instanceof Error) return '/javascript/Error';
+    if (value instanceof Promise) return '/javascript/Promise';
+    if (value instanceof RegExp) return '/javascript/RegExp';
+    if (value instanceof Buffer) return '/nodejs/Buffer';
+    if (value instanceof URL) return '/nodejs/URL';
+
+    // handle Bali component types
+    if (value instanceof elements.Angle) return '/bali/elements/Angle';
+    if (value instanceof composites.Association) return '/bali/composites/Association';
+    if (value instanceof elements.Binary) return '/bali/elements/Binary';
+    if (value instanceof collections.Catalog) return '/bali/collections/Catalog';
+    if (value instanceof elements.Duration) return '/bali/elements/Duration';
+    if (value instanceof utilities.Exception) return '/bali/utilities/Exception';
+    if (value instanceof utilities.Iterator) return '/bali/utilities/Iterator';
+    if (value instanceof collections.List) return '/bali/collections/List';
+    if (value instanceof elements.Moment) return '/bali/elements/Moment';
+    if (value instanceof elements.Name) return '/bali/elements/Name';
+    if (value instanceof elements.Number) return '/bali/elements/Number';
+    if (value instanceof composites.Parameters) return '/bali/composites/Parameters';
+    if (value instanceof elements.Pattern) return '/bali/elements/Pattern';
+    if (value instanceof elements.Percent) return '/bali/elements/Percent';
+    if (value instanceof elements.Probability) return '/bali/elements/Probability';
+    if (value instanceof collections.Queue) return '/bali/collections/Queue';
+    if (value instanceof composites.Range) return '/bali/composites/Range';
+    if (value instanceof elements.Reference) return '/bali/elements/Reference';
+    if (value instanceof elements.Reserved) return '/bali/elements/Reserved';
+    if (value instanceof collections.Set) return '/bali/collections/Set';
+    if (value instanceof composites.Source) return '/bali/composites/Source';
+    if (value instanceof collections.Stack) return '/bali/collections/Stack';
+    if (value instanceof elements.Symbol) return '/bali/elements/Symbol';
+    if (value instanceof elements.Tag) return '/bali/elements/Tag';
+    if (value instanceof elements.Text) return '/bali/elements/Text';
+    if (value instanceof composites.Tree) return '/bali/composites/Tree';
+    if (value instanceof elements.Version) return '/bali/elements/Version';
+
+    // handle anything else
+    return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
+};
+exports.type = type;
+
+/*
+ * This library exports the Bali component types.
+ */
+exports.types = utilities.types;
+
+/**
  * This function creates a new version element using the specified value.
  * 
  * @param {Array} value An optional array containing the version levels for the version string.
@@ -869,94 +941,32 @@ version.nextVersion = elements.Version.nextVersion;
 version.validNextVersion = elements.Version.validNextVersion;
 exports.version = version;
 
+/*
+ * This section exports constants to the public interface.
+ */
+angle.PI = parse('~pi');
 
-// PRIVATE FUNCTIONS
+angle.DEGREES = parameters({$units: '$degrees'});
+angle.RADIANS = parameters({$units: '$radians'});
 
-const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
-    const actualType = typeName(parameterValue);
-    if (allowedTypes.indexOf(actualType) > -1) return;
-    if (allowedTypes.indexOf('/bali/abstractions/Component') > -1 && parameterValue.getTypeId) return;
-    throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
-        $module: moduleName,
-        $procedure: procedureName,
-        $parameter: parameterName,
-        $exception: '$parameterType',
-        $expected: allowedTypes,
-        $actual: actualType,
-        $text: new elements.Text('An invalid parameter type was passed to the procedure.')  // ditto
-    });
-};
+binary.BASE2 = parameters({$encoding: '$base2'});
+binary.BASE16 = parameters({$encoding: '$base16'});
+binary.BASE32 = parameters({$encoding: '$base32'});
+binary.BASE64 = parameters({$encoding: '$base64'});
 
+number.UNDEFINED = parse('undefined');
+number.ZERO = parse('0');
+number.ONE = parse('1');
+number.PHI = parse('phi');
+number.E = parse('e');
+number.INFINITY = parse('infinity');
+number.I = parse('1i');
 
-const fillCollection = function(moduleName, procedureName, collection, sequence) {
-    sequence = sequence || undefined;  // normalize nulls to undefined
-    if (sequence) {
-        if (Array.isArray(sequence)) {
-            sequence.forEach(function(item) {
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            });
-        } else if (utilities.types.isSequential(sequence.getTypeId())) {
-            const iterator = sequence.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            }
-        } else if (typeof sequence === 'object') {
-            const keys = Object.keys(sequence);
-            keys.forEach(function(key) {
-                collection.addItem(sequence[key]);
-            });
-        } else {
-            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
-                $module: moduleName,
-                $procedure: procedureName,
-                $exception: '$parameterType',
-                $expected: [
-                    '/javascript/Array',
-                    '/javascript/Object',
-                    '/bali/interfaces/Sequential'
-                ],
-                $actual: '/javascript/' + sequence.constructor.name,
-                $value: new elements.Text(sequence.toString()),  // ditto
-                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
-            });
-        }
-    }
-};
+number.POLAR = parameters({$format: '$polar'});
+number.RECTANGULAR = parameters({$format: '$rectangular'});
 
+pattern.ANY = parse('any');
+pattern.NONE = parse('none');
 
-// CONSTANTS
-
-exports.NONE = parse('none');
-exports.ANY = parse('any');
-exports.FALSE = parse('false');
-exports.TRUE = parse('true');
-exports.PI = parse('~pi');
-exports.E = parse('e');
-exports.PHI = parse('phi');
-exports.ZERO = parse('0');
-exports.ONE = parse('1');
-exports.I = parse('1i');
-exports.UNDEFINED = parse('undefined');
-exports.INFINITY = parse('infinity');
-
-
-// PARAMETERS
-
-exports.degrees = parameters({$units: '$degrees'});
-exports.radians = parameters({$units: '$radians'});
-exports.polar = parameters({$format: '$polar'});
-exports.rectangular = parameters({$format: '$rectangular'});
-exports.base2 = parameters({$encoding: '$base2'});
-exports.base16 = parameters({$encoding: '$base16'});
-exports.base32 = parameters({$encoding: '$base32'});
-exports.base64 = parameters({$encoding: '$base64'});
-
+probability.FALSE = parse('false');
+probability.TRUE = parse('true');

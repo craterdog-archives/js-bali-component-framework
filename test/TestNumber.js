@@ -27,9 +27,9 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct numbers that equal zero', function() {
-            expect(bali.ZERO.toBoolean()).to.equal(false);
-            expect(bali.ZERO.toString()).to.equal('0');
-            expect(bali.ZERO.toNumber()).to.equal(0);
+            expect(bali.number.ZERO.toBoolean()).to.equal(false);
+            expect(bali.number.ZERO.toString()).to.equal('0');
+            expect(bali.number.ZERO.toNumber()).to.equal(0);
             expect(bali.number().toBoolean()).to.equal(false);
             expect(bali.number().toString()).to.equal('0');
             expect(bali.number().toNumber()).to.equal(0);
@@ -59,25 +59,25 @@ describe('Bali Component Framework™', function() {
             expect(bali.number(3, 4).toBoolean()).to.equal(true);
             expect(bali.number(3, 4).toString()).to.equal('(3, 4i)');
             expect(bali.number(3, 4).toNumber()).to.equal(3);
-            expect(bali.number(3, 4, bali.polar).toString()).to.equal('(5 e^~0.9272952180016122i)($format: $polar)');
+            expect(bali.number(3, 4, bali.number.POLAR).toString()).to.equal('(5 e^~0.9272952180016122i)($format: $polar)');
             expect(bali.number(1, bali.angle(Math.PI/2)).toString()).to.equal('1i');
         });
 
         it('should construct infinite numbers', function() {
-            expect(bali.INFINITY.toBoolean()).to.equal(true);
-            expect(bali.INFINITY.toString()).to.equal('infinity');
-            expect(bali.INFINITY.toNumber()).to.equal(Infinity);
+            expect(bali.number.INFINITY.toBoolean()).to.equal(true);
+            expect(bali.number.INFINITY.toString()).to.equal('infinity');
+            expect(bali.number.INFINITY.toNumber()).to.equal(Infinity);
             expect(bali.number(Infinity).toBoolean()).to.equal(true);
             expect(bali.number(Infinity).toString()).to.equal('infinity');
             expect(bali.number(Infinity).toNumber()).to.equal(Infinity);
             expect(bali.number(-Infinity).toNumber()).to.equal(Infinity);
-            expect(bali.number(-Infinity).isEqualTo(bali.INFINITY)).to.equal(true);
+            expect(bali.number(-Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
         });
 
         it('should construct undefined numbers', function() {
-            expect(bali.UNDEFINED.toBoolean()).to.equal(false);
-            expect(bali.UNDEFINED.toString()).to.equal('undefined');
-            expect(bali.UNDEFINED.toNumber().toString()).to.equal('NaN');  // NaN !== NaN
+            expect(bali.number.UNDEFINED.toBoolean()).to.equal(false);
+            expect(bali.number.UNDEFINED.toString()).to.equal('undefined');
+            expect(bali.number.UNDEFINED.toNumber().toString()).to.equal('NaN');  // NaN !== NaN
             expect(bali.number(NaN).toBoolean()).to.equal(false);
             expect(bali.number(NaN).toString()).to.equal('undefined');
             expect(bali.number(NaN).toNumber().toString()).to.equal('NaN');  // NaN !== NaN
@@ -101,30 +101,30 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should perform the getReal method correctly', function() {
-            expect(bali.UNDEFINED.getReal().toString()).to.equal('NaN');
-            expect(bali.INFINITY.getReal()).to.equal(Infinity);
-            expect(bali.ZERO.getReal()).to.equal(0);
+            expect(bali.number.UNDEFINED.getReal().toString()).to.equal('NaN');
+            expect(bali.number.INFINITY.getReal()).to.equal(Infinity);
+            expect(bali.number.ZERO.getReal()).to.equal(0);
             expect(bali.number(3, 4).getReal()).to.equal(3);
         });
 
         it('should perform the getImaginary method correctly', function() {
-            expect(bali.UNDEFINED.getImaginary().toString()).to.equal('NaN');
-            expect(bali.INFINITY.getImaginary()).to.equal(Infinity);
-            expect(bali.ZERO.getImaginary()).to.equal(0);
+            expect(bali.number.UNDEFINED.getImaginary().toString()).to.equal('NaN');
+            expect(bali.number.INFINITY.getImaginary()).to.equal(Infinity);
+            expect(bali.number.ZERO.getImaginary()).to.equal(0);
             expect(bali.number(3, -4).getImaginary()).to.equal(-4);
         });
 
         it('should perform the getMagnitude method correctly', function() {
-            expect(bali.UNDEFINED.getMagnitude().toString()).to.equal('NaN');
-            expect(bali.INFINITY.getMagnitude()).to.equal(Infinity);
-            expect(bali.ZERO.getMagnitude()).to.equal(0);
+            expect(bali.number.UNDEFINED.getMagnitude().toString()).to.equal('NaN');
+            expect(bali.number.INFINITY.getMagnitude()).to.equal(Infinity);
+            expect(bali.number.ZERO.getMagnitude()).to.equal(0);
             expect(bali.number(3, 4).getMagnitude()).to.equal(5);
         });
 
         it('should perform the getPhase method correctly', function() {
-            expect(bali.UNDEFINED.getPhase()).to.equal(undefined);
-            expect(bali.INFINITY.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.ZERO.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.number.UNDEFINED.getPhase()).to.equal(undefined);
+            expect(bali.number.INFINITY.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.number.ZERO.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.number(-1).getPhase().isEqualTo(bali.angle(Math.PI))).to.equal(true);
         });
 
@@ -133,73 +133,73 @@ describe('Bali Component Framework™', function() {
     describe('Test complex number functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.number.inverse(bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.inverse(bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.inverse(bali.ZERO).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.inverse(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.inverse(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.inverse(bali.number.ZERO).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.inverse(bali.number(3)).isEqualTo(bali.number(3, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the reciprocal function correctly', function() {
-            expect(bali.number.reciprocal(bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.reciprocal(bali.INFINITY).isEqualTo(bali.ZERO)).to.equal(true);
-            expect(bali.number.reciprocal(bali.ZERO).isEqualTo(bali.INFINITY)).to.equal(true);
+            expect(bali.number.reciprocal(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.reciprocal(bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
+            expect(bali.number.reciprocal(bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
             expect(bali.number.reciprocal(bali.number(2, bali.angle(Math.PI))).isEqualTo(bali.number(0.5, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the conjugate function correctly', function() {
-            expect(bali.number.conjugate(bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.conjugate(bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.conjugate(bali.ZERO).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.conjugate(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.conjugate(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.conjugate(bali.number.ZERO).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.conjugate(bali.number(3, 4)).isEqualTo(bali.number(3, -4))).to.equal(true);
         });
 
         it('should perform the factorial function correctly', function() {
-            expect(bali.number.factorial(bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.factorial(bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.factorial(bali.ZERO).isEqualTo(bali.number(1))).to.equal(true);
+            expect(bali.number.factorial(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.factorial(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.factorial(bali.number.ZERO).isEqualTo(bali.number(1))).to.equal(true);
             expect(bali.number.factorial(bali.number(20)).isEqualTo(bali.number(2432902008176638000))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.number.sum(bali.number(5), bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.sum(bali.number(5), bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.sum(bali.number(-3, 4), bali.number(3, -4)).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.sum(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.sum(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.sum(bali.number(-3, 4), bali.number(3, -4)).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.sum(bali.number(3, 4), bali.number(2, -2)).isEqualTo(bali.number(5, 2))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.number.difference(bali.number(5), bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.difference(bali.number(5), bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.difference(bali.number(3, 4), bali.number(3, 4)).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.difference(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.difference(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.difference(bali.number(3, 4), bali.number(3, 4)).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.difference(bali.number(3, 4), bali.number(2, -2)).isEqualTo(bali.number(1, 6))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.number.scaled(bali.number(5), NaN).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.scaled(bali.number(5), Infinity).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.scaled(bali.number(5), 0).isEqualTo(bali.ZERO)).to.equal(true);
-            expect(bali.number.scaled(bali.ZERO, 5).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.scaled(bali.number(5), NaN).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.scaled(bali.number(5), Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.scaled(bali.number(5), 0).isEqualTo(bali.number.ZERO)).to.equal(true);
+            expect(bali.number.scaled(bali.number.ZERO, 5).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.scaled(bali.number(3, bali.angle(Math.PI)), -1).isEqualTo(bali.number(-3, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the product function correctly', function() {
-            expect(bali.number.product(bali.number(5), bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.product(bali.number(5), bali.INFINITY).isEqualTo(bali.INFINITY)).to.equal(true);
-            expect(bali.number.product(bali.ZERO, bali.number(3, 4)).isEqualTo(bali.ZERO)).to.equal(true);
+            expect(bali.number.product(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.product(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.product(bali.number.ZERO, bali.number(3, 4)).isEqualTo(bali.number.ZERO)).to.equal(true);
             expect(bali.number.product(bali.number(3, bali.angle(2)), bali.number(2, bali.angle(1))).isEqualTo(bali.number(6, bali.angle(3)))).to.equal(true);
         });
 
         it('should perform the quotient function correctly', function() {
-            expect(bali.number.quotient(bali.number(5), bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.quotient(bali.number(5), bali.INFINITY).isEqualTo(bali.ZERO)).to.equal(true);
-            expect(bali.number.quotient(bali.number(3, 4), bali.ZERO).isEqualTo(bali.INFINITY)).to.equal(true);
+            expect(bali.number.quotient(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.quotient(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
+            expect(bali.number.quotient(bali.number(3, 4), bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
             expect(bali.number.quotient(bali.number(4, bali.angle(2)), bali.number(2, bali.angle(1))).isEqualTo(bali.number(2, bali.angle(1)))).to.equal(true);
         });
 
         it('should perform the remainder function correctly', function() {
-            expect(bali.number.remainder(bali.number(5), bali.UNDEFINED).isEqualTo(bali.UNDEFINED)).to.equal(true);
-            expect(bali.number.remainder(bali.number(5), bali.INFINITY).isEqualTo(bali.ZERO)).to.equal(true);
-            expect(bali.number.remainder(bali.number(5), bali.ZERO).isEqualTo(bali.INFINITY)).to.equal(true);
+            expect(bali.number.remainder(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.remainder(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
+            expect(bali.number.remainder(bali.number(5), bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
             expect(bali.number.remainder(bali.number(23), bali.number(7)).isEqualTo(bali.number(2))).to.equal(true);
         });
 
@@ -208,9 +208,9 @@ describe('Bali Component Framework™', function() {
 });
 
 const testValues = [
-    bali.UNDEFINED,
-    bali.ZERO,
-    bali.INFINITY,
+    bali.number.UNDEFINED,
+    bali.number.ZERO,
+    bali.number.INFINITY,
     bali.number(),
     bali.number(-5),
     bali.number(5),

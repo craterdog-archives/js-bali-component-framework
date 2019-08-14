@@ -39,21 +39,21 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should construct angles that equal 45 degrees', function() {
-            expect(bali.angle(45, bali.degrees).toBoolean()).to.equal(true);
-            expect(bali.angle(45, bali.degrees).toString()).to.equal('~45($units: $degrees)');
-            expect(bali.angle(45, bali.degrees).toNumber()).to.equal(Math.PI/4);
+            expect(bali.angle(45, bali.angle.DEGREES).toBoolean()).to.equal(true);
+            expect(bali.angle(45, bali.angle.DEGREES).toString()).to.equal('~45($units: $degrees)');
+            expect(bali.angle(45, bali.angle.DEGREES).toNumber()).to.equal(Math.PI/4);
             expect(bali.angle(Math.PI/4).toNumber()).to.equal(Math.PI/4);
             expect(bali.angle(Math.PI/4).toString()).to.equal('~0.7853981633974483');
-            expect(bali.angle(Math.PI/4, bali.radians).toString()).to.equal('~0.7853981633974483($units: $radians)');
+            expect(bali.angle(Math.PI/4, bali.angle.RADIANS).toString()).to.equal('~0.7853981633974483($units: $radians)');
         });
 
         it('should construct angles that equal pi', function() {
-            expect(bali.PI.toNumber()).to.equal(Math.PI);
+            expect(bali.angle.PI.toNumber()).to.equal(Math.PI);
             expect(bali.angle(-Math.PI).toNumber()).to.equal(Math.PI);
-            expect(bali.angle(180, bali.degrees).toNumber()).to.equal(Math.PI);
-            expect(bali.angle(-180, bali.degrees).toNumber()).to.equal(Math.PI);
-            expect(bali.angle(-180, bali.degrees).toString()).to.equal('~180($units: $degrees)');
-            expect(bali.PI.isEqualTo(bali.angle(180, bali.degrees))).to.equal(true);
+            expect(bali.angle(180, bali.angle.DEGREES).toNumber()).to.equal(Math.PI);
+            expect(bali.angle(-180, bali.angle.DEGREES).toNumber()).to.equal(Math.PI);
+            expect(bali.angle(-180, bali.angle.DEGREES).toString()).to.equal('~180($units: $degrees)');
+            expect(bali.angle.PI.isEqualTo(bali.angle(180, bali.angle.DEGREES))).to.equal(true);
         });
 
         it('should throw an exception when constructing an angle with an invalid value', function() {
@@ -92,11 +92,11 @@ describe('Bali Component Framework™', function() {
     describe('Test angle functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.angle.inverse(bali.angle(0)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.inverse(bali.angle(0)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.inverse(bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
-            expect(bali.angle.inverse(bali.PI).isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.angle.inverse(bali.angle.PI).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(-Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(-Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(-Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
@@ -108,19 +108,19 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.complement(bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.complement(bali.angle(Math.PI / 2)).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.complement(bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
-            expect(bali.angle.complement(bali.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
+            expect(bali.angle.complement(bali.angle.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.complement(bali.angle(-Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.complement(bali.angle(-Math.PI / 2)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.complement(bali.angle(-Math.PI / 2)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.complement(bali.angle(-Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.complement(bali.angle(-Math.PI)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
         });
 
         it('should perform the supplement function correctly', function() {
-            expect(bali.angle.supplement(bali.angle(0)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.supplement(bali.angle(0)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.supplement(bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.supplement(bali.angle(Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.supplement(bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
-            expect(bali.angle.supplement(bali.PI).isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.angle.supplement(bali.angle.PI).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.supplement(bali.angle(-Math.PI / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.supplement(bali.angle(-Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.supplement(bali.angle(-Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
@@ -132,11 +132,11 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.conjugate(bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.conjugate(bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.conjugate(bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.conjugate(bali.PI).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.conjugate(bali.angle.PI).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.conjugate(bali.angle(-Math.PI / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.conjugate(bali.angle(-Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.conjugate(bali.angle(-Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.conjugate(bali.angle(-Math.PI)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.conjugate(bali.angle(-Math.PI)).isEqualTo(bali.angle.PI)).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
@@ -144,29 +144,29 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.angle(0), bali.PI).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.sum(bali.angle(0), bali.angle.PI).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.sum(bali.angle(0), bali.angle(Math.PI * 2)).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(0)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI / 2)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI / 2)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
+            expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.sum(bali.angle(Math.PI / 2), bali.angle(Math.PI * 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(0)).isEqualTo(bali.PI)).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.PI).isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.sum(bali.PI, bali.angle(Math.PI * 2)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(0)).isEqualTo(bali.angle.PI)).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle.PI).isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
+            expect(bali.angle.sum(bali.angle.PI, bali.angle(Math.PI * 2)).isEqualTo(bali.angle.PI)).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
@@ -174,7 +174,7 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.angle(0), bali.PI).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.difference(bali.angle(0), bali.angle.PI).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.difference(bali.angle(0), bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
@@ -183,20 +183,20 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI / 2)).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
+            expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle.PI).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
             expect(bali.angle.difference(bali.angle(Math.PI / 2), bali.angle(Math.PI * 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(0)).isEqualTo(bali.PI)).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.PI).isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.difference(bali.PI, bali.angle(Math.PI * 2)).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(0)).isEqualTo(bali.angle.PI)).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI / 4)).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI / 2)).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle.PI).isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI * 5 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI * 3 / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI * 7 / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
+            expect(bali.angle.difference(bali.angle.PI, bali.angle(Math.PI * 2)).isEqualTo(bali.angle.PI)).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
@@ -204,16 +204,16 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.scaled(bali.angle(Math.PI / 4), -1).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI / 2), -1).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI * 3 / 4), -1).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.scaled(bali.PI, -1).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.scaled(bali.angle.PI, -1).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 4), -1).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 2), -1).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI * 3 / 4), -1).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.scaled(bali.angle(-Math.PI), -1).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.scaled(bali.angle(-Math.PI), -1).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.scaled(bali.angle(0), 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI / 4), 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI / 2), 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI * 3 / 4), 0).isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.angle.scaled(bali.PI, 0).isEqualTo(bali.angle(0))).to.equal(true);
+            expect(bali.angle.scaled(bali.angle.PI, 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 4), 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 2), 0).isEqualTo(bali.angle(0))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI * 3 / 4), 0).isEqualTo(bali.angle(0))).to.equal(true);
@@ -222,16 +222,16 @@ describe('Bali Component Framework™', function() {
             expect(bali.angle.scaled(bali.angle(Math.PI / 4), 1).isEqualTo(bali.angle(Math.PI / 4))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI / 2), 1).isEqualTo(bali.angle(Math.PI / 2))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(Math.PI * 3 / 4), 1).isEqualTo(bali.angle(Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.scaled(bali.PI, 1).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.scaled(bali.angle.PI, 1).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 4), 1).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI / 2), 1).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.scaled(bali.angle(-Math.PI * 3 / 4), 1).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
-            expect(bali.angle.scaled(bali.angle(-Math.PI), 1).isEqualTo(bali.PI)).to.equal(true);
+            expect(bali.angle.scaled(bali.angle(-Math.PI), 1).isEqualTo(bali.angle.PI)).to.equal(true);
         });
 
         it('should run round-trip angle methods', function() {
             const expectedValues = [
-                bali.PI,
+                bali.angle.PI,
                 bali.angle(Math.PI / 2),
                 bali.angle(Math.PI / 3),
                 bali.parse('~0.54321'),
@@ -259,7 +259,7 @@ const testValues = [
     bali.angle(-0),
     bali.angle(0),
     bali.angle(),
-    bali.PI,
+    bali.angle.PI,
     bali.angle(-Math.PI),
     bali.angle(Math.PI / 4),
     bali.angle(-Math.PI / 4),

@@ -72,40 +72,40 @@ describe('Bali Component Framework™', function() {
         });
 
         it('should perform the logical NOT function correctly', function() {
-            expect(bali.probability.not(bali.FALSE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.not(bali.TRUE).isEqualTo(bali.FALSE)).to.equal(true);
+            expect(bali.probability.not(bali.probability.FALSE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.not(bali.probability.TRUE).isEqualTo(bali.probability.FALSE)).to.equal(true);
             expect(bali.probability.not(bali.probability(0.25)).isEqualTo(bali.probability(0.75))).to.equal(true);
         });
 
         it('should perform the logical OR function correctly', function() {
-            expect(bali.probability.or(bali.FALSE, bali.FALSE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.or(bali.FALSE, bali.TRUE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.or(bali.TRUE, bali.FALSE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.or(bali.TRUE, bali.TRUE).isEqualTo(bali.TRUE)).to.equal(true);
+            expect(bali.probability.or(bali.probability.FALSE, bali.probability.FALSE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.or(bali.probability.FALSE, bali.probability.TRUE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.or(bali.probability.TRUE, bali.probability.FALSE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.or(bali.probability.TRUE, bali.probability.TRUE).isEqualTo(bali.probability.TRUE)).to.equal(true);
             expect(bali.probability.or(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.83))).to.equal(true);
         });
 
         it('should perform the logical AND function correctly', function() {
-            expect(bali.probability.and(bali.FALSE, bali.FALSE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.and(bali.FALSE, bali.TRUE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.and(bali.TRUE, bali.FALSE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.and(bali.TRUE, bali.TRUE).isEqualTo(bali.TRUE)).to.equal(true);
+            expect(bali.probability.and(bali.probability.FALSE, bali.probability.FALSE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.and(bali.probability.FALSE, bali.probability.TRUE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.and(bali.probability.TRUE, bali.probability.FALSE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.and(bali.probability.TRUE, bali.probability.TRUE).isEqualTo(bali.probability.TRUE)).to.equal(true);
             expect(bali.probability.and(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.25))).to.equal(true);
         });
 
         it('should perform the logical SANS function correctly', function() {
-            expect(bali.probability.sans(bali.FALSE, bali.FALSE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.sans(bali.FALSE, bali.TRUE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.sans(bali.TRUE, bali.FALSE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.sans(bali.TRUE, bali.TRUE).isEqualTo(bali.FALSE)).to.equal(true);
+            expect(bali.probability.sans(bali.probability.FALSE, bali.probability.FALSE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.sans(bali.probability.FALSE, bali.probability.TRUE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.sans(bali.probability.TRUE, bali.probability.FALSE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.sans(bali.probability.TRUE, bali.probability.TRUE).isEqualTo(bali.probability.FALSE)).to.equal(true);
             expect(bali.probability.sans(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.5))).to.equal(true);
         });
 
         it('should perform the logical XOR function correctly', function() {
-            expect(bali.probability.xor(bali.FALSE, bali.FALSE).isEqualTo(bali.FALSE)).to.equal(true);
-            expect(bali.probability.xor(bali.FALSE, bali.TRUE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.xor(bali.TRUE, bali.FALSE).isEqualTo(bali.TRUE)).to.equal(true);
-            expect(bali.probability.xor(bali.TRUE, bali.TRUE).isEqualTo(bali.FALSE)).to.equal(true);
+            expect(bali.probability.xor(bali.probability.FALSE, bali.probability.FALSE).isEqualTo(bali.probability.FALSE)).to.equal(true);
+            expect(bali.probability.xor(bali.probability.FALSE, bali.probability.TRUE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.xor(bali.probability.TRUE, bali.probability.FALSE).isEqualTo(bali.probability.TRUE)).to.equal(true);
+            expect(bali.probability.xor(bali.probability.TRUE, bali.probability.TRUE).isEqualTo(bali.probability.FALSE)).to.equal(true);
             expect(bali.probability.xor(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.6))).to.equal(true);
         });
 
