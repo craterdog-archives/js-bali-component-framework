@@ -97,6 +97,8 @@ function Catalog(parameters) {
     };
     
     this.setValue = function(key, value) {
+        key = this.convert(key);
+        value = this.convert(value);
         var association = map[key.toString()];
         if (association) {
             const oldValue = association.getValue();

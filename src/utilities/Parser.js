@@ -63,6 +63,7 @@ function Parser(debug) {
     };
 
     this.parseDocument = function(document, parameters) {
+        parameters = parameters || undefined;
         const parser = initializeParser(document, debug);
         const antlrTree = parser.document();
         const component = convertParseTree(antlrTree, parameters);

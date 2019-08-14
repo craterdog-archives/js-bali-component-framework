@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
-    if (value === undefined) value = 0;  // default value
+    value = value || 0;  // default value
     if (!isFinite(value) || value < 0 || value > 1) {
         throw new utilities.Exception({
             $module: '/bali/elements/Probability',

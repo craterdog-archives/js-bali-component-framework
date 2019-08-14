@@ -30,7 +30,7 @@ const abstractions = require('../abstractions');
  */
 function Duration(value, parameters) {
     abstractions.Element.call(this, utilities.types.DURATION, parameters);
-    value = value || 0;  // the default value
+    value = value || 0;  // default value
     value = moment.duration(value);
 
     // since this element is immutable the value must be read-only

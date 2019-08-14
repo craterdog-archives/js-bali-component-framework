@@ -36,13 +36,9 @@ function Complex(real, imaginary, parameters) {
     abstractions.Element.call(this, utilities.types.NUMBER, parameters);
 
     // normalize the values
-    if (real === undefined || real === null || real === -0) {
-        real = 0;
-    }
+    if (real === real) real = real || 0;  // default value if not NaN and not defined
     real = utilities.precision.lockOnExtreme(real);
-    if (imaginary === undefined || imaginary === null || imaginary === -0) {
-        imaginary = 0;
-    }
+    if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined
     if (imaginary.getTypeId && imaginary.getTypeId() === utilities.types.ANGLE) {
         // convert polar to rectangular
         var magnitude = real;

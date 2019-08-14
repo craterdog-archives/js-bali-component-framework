@@ -25,7 +25,7 @@ const abstractions = require('../abstractions');
  * value.
  * 
  * @constructor
- * @param {Buffer} value a buffer containing the bytes for the binary string.
+ * @param {Buffer} value An optional buffer containing the bytes for the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.
  */

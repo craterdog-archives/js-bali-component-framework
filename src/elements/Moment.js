@@ -37,14 +37,16 @@ const FORMATS = [
 /**
  * This constructor creates a new moment in time using the specified value and parameters.
  * 
- * @param {String|Number} value The source string value of the moment in time.
+ * @param {String|Number} value The optional source string value or millisecond value of
+ * the moment in time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment in time.
  */
 function Moment(value, parameters) {
     abstractions.Element.call(this, utilities.types.MOMENT, parameters);
+    value = value || undefined;
     var format;
-    if (value === undefined || value === null) {
+    if (!value) {
         format = FORMATS[7];
         value = moment.utc();  // the current moment
     } else {
@@ -64,15 +66,6 @@ function Moment(value, parameters) {
                     return false;
                 });
         }
-    }
-    if (value.constructor.name !== 'Moment') {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Moment',
-            $procedure: '$Moment',
-            $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $text: '"An invalid moment value was passed to the constructor."'
-        });
     }
 
     // since this element is immutable the attributes must be read-only

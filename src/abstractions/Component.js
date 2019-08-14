@@ -27,6 +27,7 @@ const formatter = new utilities.Formatter();
  * @returns {Component} The new component.
  */
 function Component(type, parameters) {
+    parameters = parameters || undefined;  // normalize nulls to undefined
     this.getTypeId = function() { return type; };
     this.getParameters = function() { return parameters; };
     this.setParameters = function(newParameters) { parameters = newParameters; };

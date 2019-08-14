@@ -46,15 +46,6 @@ function Formatter(indentation) {
 
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || 0;
-    if (typeof indentation !== 'number') {
-        throw new Exception({
-            $module: '/bali/utilities/Formatter',
-            $procedure: '$Formatter',
-            $exception: '$invalidParameter',
-            $parameter: indentation,
-            $text: '"The indentation parameter should be the number of levels to indent."'
-        });
-    }
 
     this.formatLiteral = function(literal, format) {
         if (!types.isLiteral(literal.getTypeId())) {

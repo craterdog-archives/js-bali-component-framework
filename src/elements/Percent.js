@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  */
 function Percent(value, parameters) {
     abstractions.Element.call(this, utilities.types.PERCENT, parameters);
-    value = value || 0;  // the default value
+    value = value || 0;  // default value
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
