@@ -109,7 +109,20 @@ utilities.Exception.prototype.convert = convert;
 const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
-    if (allowedTypes.indexOf('/bali/abstractions/Component') > -1 && parameterValue.getTypeId) return;
+    if (parameterValue.getTypeId) {
+        const typeId = parameterValue.getTypeId();
+        if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && !parameterValue.normalizeIndex) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.normalizeIndex) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && parameterValue.containsAny) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && utilities.types.isLogical(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && utilities.types.isScalable(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Numeric') > -1 && utilities.types.isNumeric(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && utilities.types.isLiteral(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && utilities.types.isSequential(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && utilities.types.isChainable(typeId)) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && utilities.types.isProcedural(typeId)) return;
+    }
     throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
         $module: moduleName,
         $procedure: procedureName,
@@ -399,10 +412,10 @@ exports.exception = exception;
  * @returns {String} The resulting string containing Bali Document Notation™.
  */
 const format = function(component, indentation) {
-    validateType('/bali/utilities/Formatter', '$formatter', '$component', component, [
+    validateType('/bali/utilities/Formatter', '$format', '$component', component, [
         '/bali/abstractions/Component'
     ]);
-    validateType('/bali/utilities/Formatter', '$formatter', '$indentation', indentation, [
+    validateType('/bali/utilities/Formatter', '$format', '$indentation', indentation, [
         '/javascript/Undefined',
         '/javascript/Number'
     ]);
@@ -445,6 +458,22 @@ const list = function(sequence, parameters) {
 };
 exports.list = list;
 list.concatenation = collections.List.concatenation;
+
+/**
+ * This function formats a Bali literal into a JavaScript string containing
+ * Bali Document Notation™.
+ * 
+ * @param {Element} element The Bali element to be formatted. 
+ * @returns {String} The resulting string containing Bali Document Notation™.
+ */
+const literal = function(element) {
+    validateType('/bali/utilities/Formatter', '$literal', '$element', element, [
+        '/bali/interfaces/Literal'
+    ]);
+    const formatter = new utilities.Formatter();
+    return formatter.formatLiteral(element);
+};
+exports.literal = literal;
 
 /**
  * This function creates a new moment in time using the specified value and parameters.
@@ -940,6 +969,11 @@ const version = function(value, parameters) {
 version.nextVersion = elements.Version.nextVersion;
 version.validNextVersion = elements.Version.validNextVersion;
 exports.version = version;
+
+/*
+ * Make the Visitor interface available to subclass from.
+ */
+const visitor = utilities.Visitor;
 
 /*
  * This section exports constants to the public interface.
