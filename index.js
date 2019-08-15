@@ -109,7 +109,7 @@ utilities.Exception.prototype.convert = convert;
 const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
-    if (parameterValue.getTypeId) {
+    if (parameterValue && parameterValue.getTypeId) {
         const typeId = parameterValue.getTypeId();
         if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
         if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && !parameterValue.normalizeIndex) return;
