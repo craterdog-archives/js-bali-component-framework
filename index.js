@@ -973,7 +973,7 @@ exports.version = version;
 /*
  * Make the Visitor interface available to subclass from.
  */
-const visitor = utilities.Visitor;
+exports.visitor = utilities.Visitor;
 
 /*
  * This section exports constants to the public interface.
