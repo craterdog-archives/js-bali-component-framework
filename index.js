@@ -384,6 +384,7 @@ const exception = function(object, cause) {
         '/javascript/Object'
     ]);
     validateType('/bali/utilities/Exception', '$exception', '$cause', cause, [
+        '/javascript/Undefined',
         '/javascript/Error',
         '/bali/utilities/Exception'
     ]);
