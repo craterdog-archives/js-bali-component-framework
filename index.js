@@ -128,19 +128,19 @@ const validateType = function(moduleName, procedureName, parameterName, paramete
     });
 };
 
-const addItems = function(moduleName, procedureName, collection, sequence) {
-    sequence = sequence || undefined;  // normalize nulls to undefined
-    if (sequence) {
-        if (Array.isArray(sequence)) {
-            sequence.forEach(function(item) {
+const addItems = function(moduleName, procedureName, collection, items) {
+    items = items || undefined;  // normalize nulls to undefined
+    if (items) {
+        if (Array.isArray(items)) {
+            items.forEach(function(item) {
                 item = convert(item);
                 if (item.getTypeId() === utilities.types.ASSOCIATION) {
                     item = item.getValue();
                 }
                 collection.addItem(item);
             });
-        } else if (utilities.types.isSequential(sequence.getTypeId())) {
-            const iterator = sequence.getIterator();
+        } else if (utilities.types.isSequential(items.getTypeId())) {
+            const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
@@ -149,58 +149,10 @@ const addItems = function(moduleName, procedureName, collection, sequence) {
                 }
                 collection.addItem(item);
             }
-        } else if (typeof sequence === 'object') {
-            const keys = Object.keys(sequence);
+        } else if (typeof items === 'object') {
+            const keys = Object.keys(items);
             keys.forEach(function(key) {
-                collection.addItem(sequence[key]);
-            });
-        } else {
-            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
-                $module: moduleName,
-                $procedure: procedureName,
-                $exception: '$parameterType',
-                $expected: [
-                    '/javascript/Array',
-                    '/javascript/Object',
-                    '/bali/interfaces/Sequential'
-                ],
-                $actual: '/javascript/' + sequence.constructor.name,
-                $value: new elements.Text(sequence.toString()),  // ditto
-                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
-            });
-        }
-    }
-};
-
-const addAssociations = function(moduleName, procedureName, collection, sequence) {
-    var index = 1;
-    sequence = sequence || undefined;  // normalize nulls to undefined
-    if (sequence) {
-        if (Array.isArray(sequence)) {
-            sequence.forEach(function(item) {
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            });
-        } else if (sequence.getTypeId && utilities.types.isSequential(sequence.getTypeId())) {
-            const iterator = sequence.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            }
-        } else if (typeof sequence === 'object') {
-            const keys = Object.keys(sequence);
-            keys.forEach(function(key) {
-                const symbol = (key[0] === '$') ? key : '$' + key;
-                collection.setValue(symbol, sequence[key]);
+                collection.addItem(items[key]);
             });
         } else {
             throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
@@ -213,13 +165,14 @@ const addAssociations = function(moduleName, procedureName, collection, sequence
                     '/javascript/Object',
                     '/bali/interfaces/Sequential'
                 ],
-                $actual: '/javascript/' + sequence.constructor.name,
-                $value: new elements.Text(sequence.toString()),  // ditto
+                $actual: '/javascript/' + items.constructor.name,
+                $value: new elements.Text(items.toString()),  // ditto
                 $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
             });
         }
     }
 };
+
 
 // PUBLIC INTERFACE
 
@@ -301,18 +254,63 @@ exports.binary = binary;
  * This function creates a new catalog component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Object} sequence An optional JavaScript object containing the items to use
- * to seed this catalog.
+ * @param {Sequence|Array|Object} associations An optional sequential object containing the
+ * items to use to seed this catalog.
  * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
  * @returns {Catalog} The new catalog.
  */
-const catalog = function(sequence, parameters) {
+const catalog = function(associations, parameters) {
     validateType('/bali/collections/Catalog', '$catalog', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Catalog(parameters);
-    addAssociations('/bali/collections/Catalog', '$catalog', collection, sequence);
+    var index = 1;
+    associations = associations || undefined;  // normalize nulls to undefined
+    if (associations) {
+        if (Array.isArray(associations)) {
+            associations.forEach(function(item) {
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.setValue(index++, item);
+                }
+            });
+        } else if (associations.getTypeId && utilities.types.isSequential(associations.getTypeId())) {
+            const iterator = associations.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.setValue(index++, item);
+                }
+            }
+        } else if (typeof associations === 'object') {
+            const keys = Object.keys(associations);
+            keys.forEach(function(key) {
+                const symbol = (key[0] === '$') ? key : '$' + key;
+                collection.setValue(symbol, associations[key]);
+            });
+        } else {
+            throw exception({
+                $module: '/bali/collections/Catalog',
+                $procedure: '$catalog',
+                $exception: '$parameterType',
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + associations.constructor.name,
+                $value: text(associations.toString()),
+                $text: text('An invalid value type was passed to the constructor.')
+            });
+        }
+    }
     return collection;
 };
 exports.catalog = catalog;
@@ -440,18 +438,18 @@ exports.iterator = iterator;
  * This function creates a new list component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Object} sequence An optional JavaScript object containing the items to use
+ * @param {Object} items An optional JavaScript object containing the items to use
  * to seed this list.
  * @param {Parameters} parameters Optional parameters used to parameterize this list. 
  * @returns {List} The new list.
  */
-const list = function(sequence, parameters) {
+const list = function(items, parameters) {
     validateType('/bali/collections/List', '$list', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.List(parameters);
-    addItems('/bali/collections/List', '$list', collection, sequence);
+    addItems('/bali/collections/List', '$list', collection, items);
     return collection;
 };
 exports.list = list;
@@ -692,18 +690,18 @@ exports.probability = probability;
  * This function creates a new queue component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Object} sequence An optional JavaScript object containing the items to use
+ * @param {Object} items An optional JavaScript object containing the items to use
  * to seed this queue.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Queue} The new queue.
  */
-const queue = function(sequence, parameters) {
+const queue = function(items, parameters) {
     validateType('/bali/collections/Queue', '$queue', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Queue(parameters);
-    addItems('/bali/collections/Queue', '$queue', collection, sequence);
+    addItems('/bali/collections/Queue', '$queue', collection, items);
     return collection;
 };
 exports.queue = queue;
@@ -777,20 +775,20 @@ exports.reserved = reserved;
  * This function creates a new set component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Object} sequence An optional JavaScript object containing the items to use
+ * @param {Object} items An optional JavaScript object containing the items to use
  * to seed this set.
  * @param {Comparator} comparator An optional comparator used to compare two components
  * for ordering in this set.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {Set} The new set.
  */
-const set = function(sequence, comparator, parameters) {
+const set = function(items, comparator, parameters) {
     validateType('/bali/collections/Set', '$set', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Set(parameters, comparator);
-    addItems('/bali/collections/Set', '$set', collection, sequence);
+    addItems('/bali/collections/Set', '$set', collection, items);
     return collection;
 };
 exports.set = set;
@@ -803,18 +801,18 @@ set.xor = collections.Set.xor;
  * This function creates a new stack component with optional parameters that are
  * used to parameterize its type.
  * 
- * @param {Object} sequence An optional JavaScript object containing the items to use
+ * @param {Object} items An optional JavaScript object containing the items to use
  * to seed this stack.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Stack} The new stack.
  */
-const stack = function(sequence, parameters) {
+const stack = function(items, parameters) {
     validateType('/bali/collections/Stack', '$stack', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Stack(parameters);
-    addItems('/bali/collections/Stack', '$stack', collection, sequence);
+    addItems('/bali/collections/Stack', '$stack', collection, items);
     return collection;
 };
 exports.stack = stack;
@@ -844,7 +842,7 @@ exports.symbol = symbol;
  * 
  * @param {String} tableName The name of the table.
  * @param {List|Array} columnNames A list of the column names.
- * @param {Catalog|Object} rows An optional catalog or JavaScript object containing associations
+ * @param {Sequence|Array|Object} rows An optional sequential object containing associations
  * between row names and the list of cell components for that row.
  * @param {Parameters} parameters Optional parameters used to parameterize this table. 
  * @returns {Table} The new table.
@@ -855,7 +853,52 @@ const table = function(tableName, columnNames, rows, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Table(parameters, tableName, columnNames);
-    addAssociations('/bali/collections/Table', '$table', collection, rows);
+    var index = 1;
+    rows = rows || undefined;  // normalize nulls to undefined
+    if (rows) {
+        if (Array.isArray(rows)) {
+            rows.forEach(function(item) {
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.addRow(index++, item);
+                }
+            });
+        } else if (rows.getTypeId && utilities.types.isSequential(rows.getTypeId())) {
+            const iterator = rows.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.addRow(index++, item);
+                }
+            }
+        } else if (typeof rows === 'object') {
+            const keys = Object.keys(rows);
+            keys.forEach(function(key) {
+                const symbol = (key[0] === '$') ? key : '$' + key;
+                collection.addRow(symbol, rows[key]);
+            });
+        } else {
+            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+                $module: moduleName,
+                $procedure: procedureName,
+                $exception: '$parameterType',
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + rows.constructor.name,
+                $value: new elements.Text(rows.toString()),  // ditto
+                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
+            });
+        }
+    }
     return collection;
 };
 exports.table = table;

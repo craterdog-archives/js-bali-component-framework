@@ -41,6 +41,24 @@ describe('Bali Component Framework™', function() {
             expect(signum).to.equal(0);
         });
 
+        it('should create an simple table', function() {
+            const table = bali.table('X', [1, 2, 3], [
+                [1, 2, 3],
+                [2, 4, 6],
+                [3, 6, 9]
+            ]);
+            expect(table).to.exist;
+            const size = table.getSize();
+            expect(size).to.exist;
+            expect(size).to.equal(3);
+            const iterator = table.getIterator();
+            expect(iterator).to.exist;
+            expect(iterator.hasNext() === true);
+            expect(iterator.hasPrevious() === false);
+            console.log('size: ' + table.getSize());
+            console.log('table: ' + table);
+        });
+
     });
 
 });
