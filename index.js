@@ -224,6 +224,36 @@ const association = function(key, value) {
 exports.association = association;
 
 /**
+ * This constructor creates a new finite state automaton using the specified event type
+ * array and state transition object.
+ * <pre>
+ * eventTypes:  [  $event1,   $event2, ...   $eventM]
+ * nextStates: {
+ *     $state1: [undefined,   $state2, ... undefined]
+ *     $state2: [  $state3,   $stateN, ...   $state1]
+ *                         ...
+ *     $stateN: [  $state1, undefined, ...   $state3]
+ * }
+ * </pre>
+ * The first state in the nextStates object is the initial state of the finite state automaton.
+ * 
+ * @param {Array} eventTypes An array of the possible event types.
+ * @param {Object} nextStates An object defining the possible states and allowed transitions
+ * between them given specific event types.
+ * @returns {Automaton} A new finite state automaton.
+ */
+const automaton = function(eventTypes, nextStates) {
+    validateType('/bali/utilities/Automaton', '$automaton', '$array', eventTypes, [
+        '/javascript/Array'
+    ]);
+    validateType('/bali/utilities/Automaton', '$automaton', '$object', nextStates, [
+        '/javascript/Object'
+    ]);
+    return new utilities.Automaton(eventTypes, nextStates);
+};
+exports.automaton = automaton;
+
+/**
  * This function creates an immutable instance of a binary string using the specified
  * value.
  * 
@@ -835,73 +865,6 @@ const symbol = function(value, parameters) {
     return new elements.Symbol(value, parameters);
 };
 exports.symbol = symbol;
-
-/**
- * This function creates a new table component with optional parameters that are
- * used to parameterize its type.
- * 
- * @param {String} tableName The name of the table.
- * @param {List|Array} columnNames A list of the column names.
- * @param {Sequence|Array|Object} rows An optional sequential object containing associations
- * between row names and the list of cell components for that row.
- * @param {Parameters} parameters Optional parameters used to parameterize this table. 
- * @returns {Table} The new table.
- */
-const table = function(tableName, columnNames, rows, parameters) {
-    validateType('/bali/collections/Table', '$table', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    const collection = new collections.Table(parameters, tableName, columnNames);
-    var index = 1;
-    rows = rows || undefined;  // normalize nulls to undefined
-    if (rows) {
-        if (Array.isArray(rows)) {
-            rows.forEach(function(item) {
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.addRow(index++, item);
-                }
-            });
-        } else if (rows.getTypeId && utilities.types.isSequential(rows.getTypeId())) {
-            const iterator = rows.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.addRow(index++, item);
-                }
-            }
-        } else if (typeof rows === 'object') {
-            const keys = Object.keys(rows);
-            keys.forEach(function(key) {
-                const symbol = (key[0] === '$') ? key : '$' + key;
-                collection.addRow(symbol, rows[key]);
-            });
-        } else {
-            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
-                $module: moduleName,
-                $procedure: procedureName,
-                $exception: '$parameterType',
-                $expected: [
-                    '/javascript/Undefined',
-                    '/javascript/Array',
-                    '/javascript/Object',
-                    '/bali/interfaces/Sequential'
-                ],
-                $actual: '/javascript/' + rows.constructor.name,
-                $value: new elements.Text(rows.toString()),  // ditto
-                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
-            });
-        }
-    }
-    return collection;
-};
-exports.table = table;
 
 /**
  * This function creates a new tag element using the specified value.

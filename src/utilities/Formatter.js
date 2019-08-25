@@ -1057,29 +1057,6 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 };
 
 
-// table:
-//     association (',' association)* |
-//     EOL (association EOL)*
-FormattingVisitor.prototype.visitTable = function(table) {
-    var formatted = '[';
-    const iterator = table.getIterator();
-    this.depth++;
-    while (iterator.hasNext()) {
-        var row = iterator.getNext();
-        row.acceptVisitor(this);
-        formatted += this.getSeparator(', ') + this.result;
-    };
-    this.depth--;
-    formatted += this.getSeparator('');
-    formatted += ']';
-    if (table.isParameterized()) {
-        table.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
-};
-
-
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
     var formatted = '';

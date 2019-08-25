@@ -248,35 +248,18 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
-    var type = 'Catalog';
     const parameters = this.getParameters();
-    if (parameters) {
-        type = parameters.getParameter('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
-    }
-    var collection;
-    const associations = ctx.association ? ctx.association() : [];
-    switch (type) {
-        case 'Table':
-            const header = associations.shift();
-            this.depth++;
-            header.accept(this);
-            const tableName = this.result.getKey();
-            const columnNames = this.result.getValue();
-            collection = new collections.Table(parameters, tableName, columnNames);
-            this.depth--;
-            break;
-        default:
-            collection = new collections.Catalog(parameters);
-    }
-    if (associations.length) {
+    const component = new collections.Catalog(parameters);
+    if (ctx.association) {
         this.depth++;
+        const associations = ctx.association();
         associations.forEach(function(association) {
             association.accept(this);
-            collection.addItem(this.result);
+            component.addItem(this.result);
         }, this);
         this.depth--;
     }
-    this.result = collection;
+    this.result = component;
 };
 
 
@@ -589,7 +572,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
         default:
             throw Error('Invalid collection type: ' + type);
     }
-    if (ctx.constructor.name !== 'EmptyListContext') {
+    if (ctx.expression) {
         const expressions = ctx.expression();
         this.depth++;
         expressions.forEach(function(expression) {
@@ -793,8 +776,7 @@ ParsingVisitor.prototype.visitProbability = function(ctx) {
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
     const tree = new composites.Tree(utilities.types.PROCEDURE);
-    const type = ctx.constructor.name;
-    if (type !== 'EmptyProcedureContext') {
+    if (ctx.statement) {
         const statements = ctx.statement();
         this.depth++;
         statements.forEach(function(statement) {

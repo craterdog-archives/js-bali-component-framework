@@ -15,5 +15,4 @@ exports.Association = require('./Association').Association;
 exports.Parameters = require('./Parameters').Parameters;
 exports.Range = require('./Range').Range;
 exports.Source = require('./Source').Source;
-exports.State = require('./State').State;
 exports.Tree = require('./Tree').Tree;
