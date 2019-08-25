@@ -28,10 +28,18 @@ const abstractions = require('../abstractions');
  */
 function Association(key, value) {
     abstractions.Composite.call(this, utilities.types.ASSOCIATION);
+    key = this.convert(key);
+    value = this.convert(value);
 
     // access to this component's attributes is tightly controlled
-    this.getKey = function() { return key; };
-    this.getValue = function() { return value; };
+    this.getKey = function() {
+        return key;
+    };
+
+    this.getValue = function() {
+        return value;
+    };
+
     this.setValue = function(newValue) {
         newValue = this.convert(newValue);
         const oldValue = value;

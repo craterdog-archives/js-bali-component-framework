@@ -248,18 +248,35 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     EOL (association EOL)* |
 //     ':' /*empty catalog*/
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
+    var type = 'Catalog';
     const parameters = this.getParameters();
-    const component = new collections.Catalog(parameters);
-    if (ctx.constructor.name !== 'EmptyCatalogContext') {
+    if (parameters) {
+        type = parameters.getParameter('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
+    }
+    var collection;
+    const associations = ctx.association ? ctx.association() : [];
+    switch (type) {
+        case 'Table':
+            const header = associations.shift();
+            this.depth++;
+            header.accept(this);
+            const tableName = this.result.getKey();
+            const columnNames = this.result.getValue();
+            collection = new collections.Table(parameters, tableName, columnNames);
+            this.depth--;
+            break;
+        default:
+            collection = new collections.Catalog(parameters);
+    }
+    if (associations.length) {
         this.depth++;
-        const associations = ctx.association();
         associations.forEach(function(association) {
             association.accept(this);
-            component.addItem(this.result);
+            collection.addItem(this.result);
         }, this);
         this.depth--;
     }
-    this.result = component;
+    this.result = collection;
 };
 
 

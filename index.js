@@ -45,18 +45,12 @@ const convert = function(value) {
             break;
         case 'string':
             try {
+                // first try to parse it as Bali Document Notation™
                 const parser = new utilities.Parser();
                 component = parser.parseDocument(value);
             } catch (cause) {
-                const error = new utilities.Exception({
-                    $module: '/bali/abstractions/Component',
-                    $procedure: '$convert',
-                    $exception: '$parameterValue',
-                    $source: new elements.Text(value),
-                    $text: new elements.Text('The source string to be converted is not valid.')
-                }, cause);
-                if (cause) error.stack = cause.stack;
-                throw error;
+                // ok, then convert it to a text element
+                component = new elements.Text(value);
             }
             break;
         case 'object':
@@ -134,7 +128,7 @@ const validateType = function(moduleName, procedureName, parameterName, paramete
     });
 };
 
-const fillCollection = function(moduleName, procedureName, collection, sequence) {
+const addItems = function(moduleName, procedureName, collection, sequence) {
     sequence = sequence || undefined;  // normalize nulls to undefined
     if (sequence) {
         if (Array.isArray(sequence)) {
@@ -178,6 +172,54 @@ const fillCollection = function(moduleName, procedureName, collection, sequence)
     }
 };
 
+const addAssociations = function(moduleName, procedureName, collection, sequence) {
+    var index = 1;
+    sequence = sequence || undefined;  // normalize nulls to undefined
+    if (sequence) {
+        if (Array.isArray(sequence)) {
+            sequence.forEach(function(item) {
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.setValue(index++, item);
+                }
+            });
+        } else if (sequence.getTypeId && utilities.types.isSequential(sequence.getTypeId())) {
+            const iterator = sequence.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = convert(item);
+                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                    collection.addItem(item);
+                } else {
+                    collection.setValue(index++, item);
+                }
+            }
+        } else if (typeof sequence === 'object') {
+            const keys = Object.keys(sequence);
+            keys.forEach(function(key) {
+                const symbol = (key[0] === '$') ? key : '$' + key;
+                collection.setValue(symbol, sequence[key]);
+            });
+        } else {
+            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+                $module: moduleName,
+                $procedure: procedureName,
+                $exception: '$parameterType',
+                $expected: [
+                    '/javascript/Undefined',
+                    '/javascript/Array',
+                    '/javascript/Object',
+                    '/bali/interfaces/Sequential'
+                ],
+                $actual: '/javascript/' + sequence.constructor.name,
+                $value: new elements.Text(sequence.toString()),  // ditto
+                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
+            });
+        }
+    }
+};
 
 // PUBLIC INTERFACE
 
@@ -270,52 +312,7 @@ const catalog = function(sequence, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Catalog(parameters);
-    var index = 1;
-    sequence = sequence || undefined;  // normalize nulls to undefined
-    if (sequence) {
-        if (Array.isArray(sequence)) {
-            sequence.forEach(function(item) {
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            });
-        } else if (sequence.getTypeId && utilities.types.isSequential(sequence.getTypeId())) {
-            const iterator = sequence.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            }
-        } else if (typeof sequence === 'object') {
-            const keys = Object.keys(sequence);
-            keys.forEach(function(key) {
-                const symbol = (key[0] === '$') ? key : '$' + key;
-                collection.setValue(symbol, sequence[key]);
-            });
-        } else {
-            throw exception({
-                $module: '/bali/collections/Catalog',
-                $procedure: '$catalog',
-                $exception: '$parameterType',
-                $expected: [
-                    '/javascript/Undefined',
-                    '/javascript/Array',
-                    '/javascript/Object',
-                    '/bali/interfaces/Sequential'
-                ],
-                $actual: '/javascript/' + sequence.constructor.name,
-                $value: text(sequence.toString()),
-                $text: text('An invalid value type was passed to the constructor.')
-            });
-        }
-    }
+    addAssociations('/bali/collections/Catalog', '$catalog', collection, sequence);
     return collection;
 };
 exports.catalog = catalog;
@@ -454,7 +451,7 @@ const list = function(sequence, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.List(parameters);
-    fillCollection('/bali/collections/List', '$list', collection, sequence);
+    addItems('/bali/collections/List', '$list', collection, sequence);
     return collection;
 };
 exports.list = list;
@@ -706,7 +703,7 @@ const queue = function(sequence, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Queue(parameters);
-    fillCollection('/bali/collections/Queue', '$queue', collection, sequence);
+    addItems('/bali/collections/Queue', '$queue', collection, sequence);
     return collection;
 };
 exports.queue = queue;
@@ -782,16 +779,18 @@ exports.reserved = reserved;
  * 
  * @param {Object} sequence An optional JavaScript object containing the items to use
  * to seed this set.
+ * @param {Comparator} comparator An optional comparator used to compare two components
+ * for ordering in this set.
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @returns {Set} The new set.
  */
-const set = function(sequence, parameters) {
+const set = function(sequence, comparator, parameters) {
     validateType('/bali/collections/Set', '$set', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
-    const collection = new collections.Set(parameters);
-    fillCollection('/bali/collections/Set', '$set', collection, sequence);
+    const collection = new collections.Set(parameters, comparator);
+    addItems('/bali/collections/Set', '$set', collection, sequence);
     return collection;
 };
 exports.set = set;
@@ -815,7 +814,7 @@ const stack = function(sequence, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Stack(parameters);
-    fillCollection('/bali/collections/Stack', '$stack', collection, sequence);
+    addItems('/bali/collections/Stack', '$stack', collection, sequence);
     return collection;
 };
 exports.stack = stack;
@@ -838,6 +837,28 @@ const symbol = function(value, parameters) {
     return new elements.Symbol(value, parameters);
 };
 exports.symbol = symbol;
+
+/**
+ * This function creates a new table component with optional parameters that are
+ * used to parameterize its type.
+ * 
+ * @param {String} tableName The name of the table.
+ * @param {List|Array} columnNames A list of the column names.
+ * @param {Catalog|Object} rows An optional catalog or JavaScript object containing associations
+ * between row names and the list of cell components for that row.
+ * @param {Parameters} parameters Optional parameters used to parameterize this table. 
+ * @returns {Table} The new table.
+ */
+const table = function(tableName, columnNames, rows, parameters) {
+    validateType('/bali/collections/Table', '$table', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+    const collection = new collections.Table(parameters, tableName, columnNames);
+    addAssociations('/bali/collections/Table', '$table', collection, rows);
+    return collection;
+};
+exports.table = table;
 
 /**
  * This function creates a new tag element using the specified value.

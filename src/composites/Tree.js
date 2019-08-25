@@ -53,6 +53,7 @@ function Tree(type) {
     };
 
     this.addChild = function(child) {
+        child = this.convert(child);
         array.push(child);
         child.getParent = function() { return this; };
     };
