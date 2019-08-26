@@ -1101,7 +1101,7 @@ exports.version = version;
 /*
  * Make the Visitor interface available to subclass from.
  */
-exports.visitor = utilities.Visitor;
+exports.visitor = abstractions.Visitor;
 
 /*
  * This section exports constants to the public interface.
