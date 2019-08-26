@@ -13,7 +13,7 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Codex', function() {
 
     describe('Test encoding utilities with round-trip conversions', function() {
 

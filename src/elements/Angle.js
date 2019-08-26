@@ -9,12 +9,13 @@
  ************************************************************************/
 'use strict';
 
+
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
 const utilities = require('../utilities');
-const formatter = new utilities.Formatter();
 const abstractions = require('../abstractions');
+const formatter = new utilities.Formatter();
 
 
 // PUBLIC CONSTRUCTOR
@@ -22,25 +23,14 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates an immutable instance of an angle using the specified value.
  * 
- * @constructor
- * @param {Number} value The optional value of the angle (default is zero).
+ * @param {Number} value The value of the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle element.
  */
 function Angle(value, parameters) {
     abstractions.Element.call(this, utilities.types.ANGLE, parameters);
 
-    // analyze the value
-    if (value === value) value = value || 0;  // default value if not NaN and not defined
-    if (!isFinite(value)) {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Angle',
-            $procedure: '$Angle',
-            $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $text: '"An invalid angle value was passed to the constructor."'
-        });
-    }
+    // convert the value if necessary
     if (parameters) {
         const units = parameters.getParameter('$units');
         if (units && units.toString() === '$degrees') {
@@ -103,7 +93,6 @@ Angle.prototype.toNumber = function() {
  * @returns {String} The value of this angle in degrees.
  */
 Angle.prototype.toDegrees = function() {
-    const formatter = new utilities.Formatter();
     return formatter.formatLiteral(this, '$degrees');
 };
 
@@ -114,7 +103,6 @@ Angle.prototype.toDegrees = function() {
  * @returns {String} The value of this angle in radians.
  */
 Angle.prototype.toRadians = function() {
-    const formatter = new utilities.Formatter();
     return formatter.formatLiteral(this, '$radians');
 };
 

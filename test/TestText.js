@@ -13,7 +13,7 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Text', function() {
 
     describe('Test text constructors', function() {
 
@@ -59,7 +59,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the text iterators.', function() {
+    describe('Test the text iterators', function() {
 
         it('should iterate over a text string forwards and backwards', function() {
             const text = bali.text('Hello World!');

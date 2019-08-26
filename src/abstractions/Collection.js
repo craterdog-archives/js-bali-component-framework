@@ -9,10 +9,12 @@
  ************************************************************************/
 'use strict';
 
+
 /*
  * This abstract class defines the invariant methods that all collections must inherit.
  */
 const Composite = require('./Composite').Composite;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -78,11 +80,11 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 
@@ -113,11 +115,11 @@ Collection.prototype.getItems = function(range) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 
@@ -205,11 +207,11 @@ Collection.prototype.containsAll = function(items) {
  * be implemented by a subclass.
  */
 Collection.prototype.deleteAll = function() {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$deleteAll',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 

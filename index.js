@@ -9,8 +9,11 @@
  ************************************************************************/
 'use strict';
 
-// IMPORTS
-
+/*
+ * This package provides a robust and simple to use interface into the Bali Nebula™
+ * component framework.
+ */
+const EOL = '\n';
 const URL = require('url').URL;
 const utilities = require('./src/utilities');
 const abstractions = require('./src/abstractions');  // depends on utilities
@@ -20,36 +23,39 @@ const collections = require('./src/collections');  // depends on composites
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
-// AVOIDING CIRCULAR DEPENDENCIES
+// PRIVATE FUNCTIONS
 
-/*
- * The convert method is needed by the bali.Composite and bali.Exception classes and
- * depends on everything else so it must be injected into them after everything has
- * been imported. Just to be safe, this function does not depend on any functions
- * defined later in this file, even though that should not matter. When possible
- * circular dependencies are involved we can't be too careful!
+/*                            AVOIDING CIRCULAR DEPENDENCIES
+ * This function is used to convert most JavaScript values into their corresponding
+ * Bali Nebula™ component values.  It is needed by the Composite and Exception classes and
+ * depends on everything else so it must be injected into them after everything has been
+ * imported. Just to be safe, this function does not depend on any functions defined later
+ * in this file, even though that should not matter. When possible circular dependencies
+ * are involved we can't be too careful!  Also, no exceptions are thrown by this function
+ * since the Exception class calls the convert function on its attributes and again we
+ * want to avoid circular dependencies.
  */
 const convert = function(value) {
     if (value === null) value = undefined;
     var component;
     switch (typeof value) {
         case 'undefined':
-            component = new elements.Pattern();
+            component = new elements.Pattern();  // none
             break;
         case 'boolean':
-            value = value ? 1 : 0;
+            value = value ? 1 : 0;  // convert to probability
             component = new elements.Probability(value);
             break;
-        case 'number':
+        case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
             component = new elements.Number(value);
             break;
         case 'string':
             try {
-                // first try to parse it as Bali Document Notation™
+                // first try to parse it as a Bali Document Notation™ string
                 const parser = new utilities.Parser();
                 component = parser.parseDocument(value);
             } catch (cause) {
-                // ok, then convert it to a text element
+                // otherwise convert it to a text element
                 component = new elements.Text(value);
             }
             break;
@@ -68,38 +74,24 @@ const convert = function(value) {
                 component = new collections.Catalog();
                 const keys = Object.keys(value);
                 keys.forEach(function(key) {
-                    const symbol = (key[0] === '$') ? key : '$' + key;
-                    component.setValue(symbol, value[key]);  // symbol and value are converted in setValue()
+                    component.setValue(key, value[key]);  // key and value are converted in setValue()
                 });
             }
             break;
         default:
-            const invalidType = typeof value;
-            invalidType = invalidType.charAt(0).toUpperCase() + invalidType.slice(1);  // capitalize
-            throw new utilities.Exception({
-                $module: '/bali/abstractions/Component',
-                $procedure: '$convert',
-                $exception: '$parameterType',
-                $expected: [
-                    '/javascript/Undefined',
-                    '/javascript/Boolean',
-                    '/javascript/Number',
-                    '/javascript/String',
-                    '/javascript/Array',
-                    '/javascript/Object'
-                ],
-                $actual: '/javascript/' + invalidType,
-                $text: new elements.Text('Attempted to convert an invalid value type.')
-            });
+            // punt, convert whatever it is to a multi-line text element
+            component = new elements.Text('"' + EOL + value + EOL + '"');
     }
     return component;
 };
 abstractions.Composite.prototype.convert = convert;
-utilities.Exception.prototype.convert = convert;
+composites.Exception.prototype.convert = convert;
 
 
-// PRIVATE FUNCTIONS
-
+/*
+ * This function compares the type of a parameter value with the allowed types for that
+ * parameter and throws an exception if it does not match.
+ */
 const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
@@ -117,17 +109,22 @@ const validateType = function(moduleName, procedureName, parameterName, paramete
         if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && utilities.types.isChainable(typeId)) return;
         if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && utilities.types.isProcedural(typeId)) return;
     }
-    throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+    throw new composites.Exception({  // must not be exception() to avoid infinite recursion
         $module: moduleName,
         $procedure: procedureName,
         $parameter: parameterName,
         $exception: '$parameterType',
         $expected: allowedTypes,
         $actual: actualType,
-        $text: new elements.Text('An invalid parameter type was passed to the procedure.')  // ditto
+        $text: 'An invalid parameter type was passed to the procedure.'
     });
 };
 
+
+/*
+ * This function adds the specified items to the specified collection converting the items
+ * as needed.
+ */
 const addItems = function(moduleName, procedureName, collection, items) {
     items = items || undefined;  // normalize nulls to undefined
     if (items) {
@@ -155,7 +152,7 @@ const addItems = function(moduleName, procedureName, collection, items) {
                 collection.addItem(items[key]);
             });
         } else {
-            throw new utilities.Exception({  // must not be exception() to avoid infinite recursion
+            throw new composites.Exception({  // must not be exception() to avoid infinite recursion
                 $module: moduleName,
                 $procedure: procedureName,
                 $exception: '$parameterType',
@@ -166,8 +163,8 @@ const addItems = function(moduleName, procedureName, collection, items) {
                     '/bali/interfaces/Sequential'
                 ],
                 $actual: '/javascript/' + items.constructor.name,
-                $value: new elements.Text(items.toString()),  // ditto
-                $text: new elements.Text('An invalid value type was passed to the constructor.')  // ditto
+                $value: items,
+                $text: 'An invalid value type was passed to the constructor.'
             });
         }
     }
@@ -192,6 +189,16 @@ const angle = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    if (value === value) value = value || 0;  // default value if not NaN and not defined
+    if (!isFinite(value)) {
+        throw exception({
+            $module: '/bali/elements/Angle',
+            $procedure: '$angle',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid angle value was passed to the constructor.'
+        });
+    }
     return new elements.Angle(value, parameters);
 };
 angle.inverse = elements.Angle.inverse;
@@ -224,7 +231,7 @@ const association = function(key, value) {
 exports.association = association;
 
 /**
- * This constructor creates a new finite state automaton using the specified event type
+ * This function creates a new finite state automaton using the specified event type
  * array and state transition object.
  * <pre>
  * eventTypes:  [  $event1,   $event2, ...   $eventM]
@@ -237,9 +244,9 @@ exports.association = association;
  * </pre>
  * The first state in the nextStates object is the initial state of the finite state automaton.
  * 
- * @param {Array} eventTypes An array of the possible event types.
- * @param {Object} nextStates An object defining the possible states and allowed transitions
- * between them given specific event types.
+ * @param {Array} eventTypes An array of the possible event types as strings.
+ * @param {Object} nextStates An object defining the possible states as strings and allowed
+ * transitions between them given specific event types.
  * @returns {Automaton} A new finite state automaton.
  */
 const automaton = function(eventTypes, nextStates) {
@@ -336,8 +343,8 @@ const catalog = function(associations, parameters) {
                     '/bali/interfaces/Sequential'
                 ],
                 $actual: '/javascript/' + associations.constructor.name,
-                $value: text(associations.toString()),
-                $text: text('An invalid value type was passed to the constructor.')
+                $value: associations,
+                $text: 'An invalid value type was passed to the constructor.'
             });
         }
     }
@@ -420,7 +427,7 @@ const exception = function(object, cause) {
         error = cause;
     } else {
         // wrap the cause in a new exception
-        error = new utilities.Exception(object, cause);
+        error = new composites.Exception(object, cause);
         if (cause) error.stack = cause.stack;
     }
     return error;
@@ -540,6 +547,15 @@ const name = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    if (!Array.isArray(value) || value.length === 0) {
+        throw exception({
+            $module: '/bali/elements/Name',
+            $procedure: '$name',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid name value was passed to the constructor.'
+        });
+    }
     return new elements.Name(value, parameters);
 };
 name.concatenation = elements.Name.concatenation;
@@ -705,6 +721,16 @@ const probability = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    if (value === value) value = value || 0;  // default value if not NaN and not defined
+    if (!isFinite(value) || value < 0 || value > 1) {
+        throw exception({
+            $module: '/bali/elements/Probability',
+            $procedure: '$probability',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid probability value was passed to the constructor.'
+        });
+    }
     return new elements.Probability(value, parameters);
 };
 probability.not = elements.Probability.not;
@@ -770,7 +796,6 @@ exports.range = range;
  */
 const reference = function(value, parameters) {
     validateType('/bali/elements/Reference', '$reference', '$value', value, [
-        '/javascript/Undefined',
         '/javascript/String',
         '/nodejs/URL'
     ]);
@@ -778,6 +803,19 @@ const reference = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    try {
+        if (value.constructor.name !== 'URL') {
+            value = new URL(value.replace(/\$tag:#/, '$tag:%23'));  // escape the '#'
+        }
+    } catch (exception) {
+        throw exception({
+            $module: '/bali/elements/Reference',
+            $procedure: '$reference',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid reference value was passed to the constructor.'
+        }, exception);
+    }
     return new elements.Reference(value, parameters);
 };
 exports.reference = reference;
@@ -797,6 +835,15 @@ const reserved = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
+        throw exception({
+            $module: '/bali/elements/Reserved',
+            $procedure: '$reserved',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid reserved symbol value was passed to the constructor.'
+        });
+    }
     return new elements.Reserved(value, parameters);
 };
 exports.reserved = reserved;
@@ -826,6 +873,26 @@ set.and = collections.Set.and;
 set.sans = collections.Set.sans;
 set.or = collections.Set.or;
 set.xor = collections.Set.xor;
+
+/**
+ * This function creates a new source code component with optional parameters that are
+ * used to parameterize its behavior.
+ * 
+ * @param {Tree} procedure The procedure that is contained within the source code.
+ * @param {Parameters} parameters Optional parameters used to parameterize the source code. 
+ * @returns {Source} A new source code component.
+ */
+const source = function(procedure, parameters) {
+    validateType('/bali/composites/Source', '$source', '$procedure', procedure, [
+        '/bali/composites/Tree'
+    ]);
+    validateType('/bali/composites/Source', '$source', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+    return new composites.Source(procedure, parameters);
+};
+exports.source = source;
 
 /**
  * This function creates a new stack component with optional parameters that are
@@ -862,6 +929,15 @@ const symbol = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
+        throw exception({
+            $module: '/bali/elements/Symbol',
+            $procedure: '$symbol',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid symbol value was passed to the constructor.'
+        });
+    }
     return new elements.Symbol(value, parameters);
 };
 exports.symbol = symbol;
@@ -910,6 +986,20 @@ text.concatenation = elements.Text.concatenation;
 exports.text = text;
 
 /**
+ * This function creates a new tree node component.
+ * 
+ * @param {Number} type The type of the tree node component.
+ * @returns {Tree} The new tree node component.
+ */
+const tree = function(type) {
+    validateType('/bali/composites/Tree', '$tree', '$number', type, [
+        '/javascript/Number'
+    ]);
+    return new composites.Tree(type);
+};
+exports.tree = tree;
+
+/**
  * this function returns a string containing the Bali name for the type of the specified value.
  * 
  * @param {Any} value The value to be evaluated. 
@@ -943,7 +1033,7 @@ const type = function(value) {
     if (value instanceof elements.Binary) return '/bali/elements/Binary';
     if (value instanceof collections.Catalog) return '/bali/collections/Catalog';
     if (value instanceof elements.Duration) return '/bali/elements/Duration';
-    if (value instanceof utilities.Exception) return '/bali/utilities/Exception';
+    if (value instanceof composites.Exception) return '/bali/utilities/Exception';
     if (value instanceof utilities.Iterator) return '/bali/utilities/Iterator';
     if (value instanceof collections.List) return '/bali/collections/List';
     if (value instanceof elements.Moment) return '/bali/elements/Moment';
@@ -992,6 +1082,16 @@ const version = function(value, parameters) {
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
+    value = value || [1];  // the default value
+    if (value.indexOf(0) >= 0) {
+        throw exception({
+            $module: '/bali/elements/Version',
+            $procedure: '$version',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid version value was passed to the constructor.'
+        });
+    }
     return new elements.Version(value, parameters);
 };
 version.nextVersion = elements.Version.nextVersion;

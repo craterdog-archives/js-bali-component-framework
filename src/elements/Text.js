@@ -22,7 +22,6 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new text string element using the specified value.
  * 
- * @constructor
  * @param {String} value The value of the text string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Text} The new text string.

@@ -13,9 +13,9 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Range', function() {
 
-    describe('Test the range constructors.', function() {
+    describe('Test the range constructors', function() {
 
         it('should create an integer range with two endpoints', function() {
             const range = bali.range(2, 5);
@@ -71,7 +71,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the range methods.', function() {
+    describe('Test the range methods', function() {
 
         it('should be able to call the methods on the range', function() {
             const range1 = bali.range(1, 8);
@@ -89,7 +89,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the range iterators.', function() {
+    describe('Test the range iterators', function() {
 
         it('should iterate over a range forwards and backwards', function() {
             const range = bali.range(1, 3);

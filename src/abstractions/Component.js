@@ -9,11 +9,13 @@
  ************************************************************************/
 'use strict';
 
+
 /**
  * This abstract class defines the methods that all components must support.
  */
 const utilities = require('../utilities');
 const formatter = new utilities.Formatter();
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -57,11 +59,11 @@ Component.prototype.isParameterized = function() {
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Component.prototype.toBoolean = function() {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$toBoolean',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 
@@ -186,13 +188,13 @@ Component.prototype.isMatchedBy = function(pattern) {
         }
         return true;  // all pattern items matched successfully
     }
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
         $component: this,
         $parameter: pattern,
-        $text: '"An invalid pattern was passed to match."'
+        $text: 'An invalid pattern was passed to match.'
     });
 };
 
@@ -222,10 +224,10 @@ Component.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };

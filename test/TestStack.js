@@ -13,10 +13,11 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Stack', function() {
+
     const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
-    describe('Test the stack constructors.', function() {
+    describe('Test the stack constructors', function() {
 
         it('should create an empty stack', function() {
             const stack = bali.stack();
@@ -114,7 +115,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the stack methods.', function() {
+    describe('Test the stack methods', function() {
 
         it('should be able to push and pop items from a stack', function() {
             const stack = bali.stack(array);
@@ -153,7 +154,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the stack iterators.', function() {
+    describe('Test the stack iterators', function() {
 
         it('should iterate over a stack forwards and backwards', function() {
             const stack = bali.stack(array);

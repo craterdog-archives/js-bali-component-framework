@@ -13,7 +13,8 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Catalog', function() {
+
     const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
     const association1 = bali.association(1, '"alpha"');
     const association2 = bali.association(2, '"beta"');
@@ -21,7 +22,7 @@ describe('Bali Component Framework™', function() {
     const association4 = bali.association(4, '"epsilon"');
     const association5 = bali.association(5, '"gamma"');
 
-    describe('Test the catalog constructors.', function() {
+    describe('Test the catalog constructors', function() {
 
         it('should create an empty catalog', function() {
             const catalog = bali.catalog();
@@ -208,7 +209,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the catalog methods.', function() {
+    describe('Test the catalog methods', function() {
 
         it('should be able to call the Catalog class methods on the catalog', function() {
             const catalog1 = bali.catalog();
@@ -311,7 +312,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the catalog iterators.', function() {
+    describe('Test the catalog iterators', function() {
 
         it('should iterate over a catalog forwards and backwards', function() {
             const catalog = bali.catalog(array);

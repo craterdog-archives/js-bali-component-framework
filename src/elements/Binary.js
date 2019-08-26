@@ -24,7 +24,6 @@ const abstractions = require('../abstractions');
  * This constructor creates an immutable instance of a binary string using the specified
  * value.
  * 
- * @constructor
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Binary} The new binary string.

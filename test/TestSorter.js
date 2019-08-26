@@ -13,7 +13,8 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Sorter', function() {
+
     const object = {
         $beta: 1,
         $gamma: 2,
@@ -27,7 +28,7 @@ describe('Bali Component Framework™', function() {
     }, array);
     const set = bali.set(array);
 
-    describe('Test the sorter on lists.', function() {
+    describe('Test the sorter on lists', function() {
 
         it('should sort an empty list', function() {
             const list = bali.list();
@@ -44,7 +45,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the sorter on catalogs.', function() {
+    describe('Test the sorter on catalogs', function() {
 
         it('should sort an empty catalogs', function() {
             const catalog = bali.catalog();

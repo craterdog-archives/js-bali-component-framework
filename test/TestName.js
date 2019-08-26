@@ -13,7 +13,7 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Name', function() {
 
     describe('Test name constructors', function() {
 
@@ -65,7 +65,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the name iterators.', function() {
+    describe('Test the name iterators', function() {
 
         it('should iterate over a name string forwards and backwards', function() {
             const name = bali.name(['foo', 'bar', 'v1.2.3']);

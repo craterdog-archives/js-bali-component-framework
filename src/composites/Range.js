@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-/* global NaN, Infinity */
 
 /**
  * This collection class implements a data structure that defines a range of items. The
@@ -17,6 +16,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const elements = require('../elements');
+const Exception = require('./Exception');
 
 
 // PUBLIC FUNCTIONS
@@ -61,12 +61,12 @@ function Range(first, last, parameters) {
 
     this.toArray = function() {
         if (lastIndex === Infinity) {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/composites/Range',
                 $procedure: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
-                $text: '"Attempted to generate an array from an infinite range."'
+                $text: 'Attempted to generate an array from an infinite range.'
             });
         }
         const array = [];
@@ -129,13 +129,13 @@ function Range(first, last, parameters) {
             index = collection.getIndex(item);
         } else {
             if (typeof item !== 'number') {
-                throw new utilities.Exception({
+                throw new Exception({
                     $module: '/bali/composites/Range',
                     $procedure: '$isInRange',
                     $exception: '$invalidParameter',
                     $range: this,
                     $parameter: item,
-                    $text: '"An invalid parameter type was passed."'
+                    $text: 'An invalid parameter type was passed.'
                 });
             }
             index = item;

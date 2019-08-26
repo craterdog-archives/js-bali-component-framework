@@ -14,10 +14,11 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Transformers', function() {
+
     const DEBUG = true;
 
-    describe('Test Parser and Formatter', function() {
+    describe('Test parser and formatter', function() {
 
         it('should parse and format the same elements', function() {
             const file = 'test/source/elements.bali';

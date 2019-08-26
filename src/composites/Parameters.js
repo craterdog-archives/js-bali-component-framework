@@ -22,7 +22,6 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new parameter catalog or list.
  * 
- * @constructor
  * @param {Collection} collection The collection of parameters. 
  * @returns {Parameters} The new parameter list.
  */

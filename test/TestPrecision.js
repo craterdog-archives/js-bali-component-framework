@@ -8,14 +8,12 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-/* global NaN, Infinity */
-
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Precision', function() {
 
     describe('Test arithmetic operations', function() {
 

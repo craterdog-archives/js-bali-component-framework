@@ -69,12 +69,12 @@ function Queue(parameters) {
             array.push(item);
             return true;
         }
-        throw new utilities.Exception({
+        throw new composites.Exception({
             $module: '/bali/collections/Queue',
             $procedure: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
-            $text: '"The queue has reached its maximum capacity."'
+            $text: 'The queue has reached its maximum capacity.'
         });
     };
 

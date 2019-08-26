@@ -13,7 +13,7 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Tag', function() {
 
     describe('Test tag constructors', function() {
 

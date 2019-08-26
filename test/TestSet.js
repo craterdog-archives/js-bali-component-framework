@@ -13,10 +13,11 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Set', function() {
+
     const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
-    describe('Test the set constructors.', function() {
+    describe('Test the set constructors', function() {
 
         it('should create an empty set', function() {
             const set = bali.set();
@@ -95,7 +96,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the set methods.', function() {
+    describe('Test the set methods', function() {
 
         it('should be able to call the Set class methods on the set', function() {
             const set1 = bali.set();
@@ -188,7 +189,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the set iterators.', function() {
+    describe('Test the set iterators', function() {
 
         it('should iterate over a set forwards and backwards', function() {
             const set = bali.set(array);

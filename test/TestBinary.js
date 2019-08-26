@@ -12,7 +12,8 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../');
 
-describe('Bali Component Framework™', function() {
+
+describe('Bali Nebula™ Component Framework - Binary', function() {
 
     const expected = Buffer.alloc(256);
     for (var i = 0; i < 256; i++) {
@@ -121,7 +122,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the binary iterators.', function() {
+    describe('Test the binary iterators', function() {
 
         it('should iterate over a binary string forwards and backwards', function() {
             const binary = bali.binary(bali.random.bytes(4));

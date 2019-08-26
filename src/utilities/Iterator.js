@@ -35,7 +35,6 @@
  * This constructor creates a new array iterator that allows the items in the array
  * to be iterated over in either direction.
  * 
- * @constructor
  * @param {Array} array The array to be iterated over.
  * @returns {Iterator} The new array iterator.
  */

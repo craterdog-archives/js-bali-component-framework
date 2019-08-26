@@ -13,10 +13,11 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - List', function() {
+
     const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
-    describe('Test the list constructors.', function() {
+    describe('Test the list constructors', function() {
 
         it('should create an empty list', function() {
             const list = bali.list();
@@ -94,7 +95,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the list methods.', function() {
+    describe('Test the list methods', function() {
 
         it('should be able to call the List class methods on the list', function() {
             const list1 = bali.list();
@@ -200,7 +201,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the list iterators.', function() {
+    describe('Test the list iterators', function() {
 
         it('should iterate over a list forwards and backwards', function() {
             const list = bali.list(array);

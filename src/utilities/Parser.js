@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-/* global NaN, Infinity */
 
 /**
  * This module provides a class that parses a document containing
@@ -25,6 +24,7 @@
  * makes up all of the modules for the Bali Nebula™ is simpler, clean and
  * easy to read. You're welcome ;-)
  */
+const URL = require('url').URL;
 const antlr = require('antlr4');
 const ErrorStrategy = require('antlr4/error/ErrorStrategy');
 const grammar = require('../grammar');
@@ -44,7 +44,6 @@ const EOL = '\n';
  * This class implements a parser that parses strings containing Bali Document Notation™ and
  * generates the corresponding component structures.
  * 
- * @constructor
  * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
  * default is false. Debug mode is only useful for debugging the language grammar and
  * need not be used otherwise.
@@ -213,12 +212,12 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = utilities.codex.base64Decode(value);
             break;
         default:
-            throw new utilities.Exception({
+            throw new composites.Exception({
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: encoding,
-                $text: '"An invalid encoding format was used for a binary string."'
+                $text: elements.Text('An invalid encoding format was used for a binary string.')
             });
     }
     const binary = new elements.Binary(value, parameters);
@@ -832,7 +831,7 @@ ParsingVisitor.prototype.visitReal = function(ctx) {
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
+    const value = new URL(ctx.getText().slice(1, -1));  // remove the '<' and '>' delimiters
     const reference = new elements.Reference(value, parameters);
     this.result = reference;
 };
@@ -1078,11 +1077,11 @@ CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
         context.exception = exception;
         context = context.parentCtx;
     }
-    throw new utilities.Exception({
+    throw new composites.Exception({
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: '"' + exception + '"'
+        $text: elements.Text(exception.toString())  // must be converted to text explicitly to avoid infinity loop!
     });
 };
 
@@ -1123,11 +1122,11 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     message = addContext(recognizer, message);
 
     // capture the exception
-    const exception = new utilities.Exception({
+    const exception = new composites.Exception({
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: '"' + message + '"'
+        $text: new elements.Text(message)  // must be converted to text explicitly to avoid infinite loop!
     });
 
     // log the exception if in debug mode

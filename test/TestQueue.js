@@ -13,10 +13,11 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Queue', function() {
+
     const array = ['"alpha"', '"beta"', '"delta"', '"epsilon"', '"gamma"'];
 
-    describe('Test the queue constructors.', function() {
+    describe('Test the queue constructors', function() {
 
         it('should create an empty queue', function() {
             const queue = bali.queue();
@@ -137,7 +138,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the queue methods.', function() {
+    describe('Test the queue methods', function() {
 
         it('should be able to add and remove items from a queue', function() {
             const queue = bali.queue(array);
@@ -178,7 +179,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the queue iterators.', function() {
+    describe('Test the queue iterators', function() {
 
         it('should iterate over a queue forwards and backwards', function() {
             const queue = bali.queue(array);

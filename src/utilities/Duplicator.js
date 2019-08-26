@@ -13,7 +13,7 @@
  * This library provides functions that duplicate a parse tree structure produced
  * by the <code>Parser</code> class.
  */
-const Visitor = require('./Visitor').Visitor;
+const Visitor = require('../abstractions/Visitor').Visitor;
 
 
 // This private constant sets the POSIX end of line character
@@ -26,7 +26,6 @@ const EOL = '\n';
  * This class implements a duplicator that uses a visitor to create a deep copy of a
  * component. Since elements are immutable, they are not copied, only referenced.
  * 
- * @constructor
  * @returns {Duplicator} The new component duplicator.
  */
 function Duplicator() {

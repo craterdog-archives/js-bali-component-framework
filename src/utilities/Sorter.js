@@ -23,7 +23,6 @@ const Comparator = require('./Comparator').Comparator;
  * is recursively split into two collections each of which are then sorted and then the two
  * collections are merged back into a sorted collection.
  * 
- * @constructor
  * @param {Comparator} comparator An optional comparator to be used when comparing items during
  * sorting. If none is specified, the natural comparator will be used.
  */

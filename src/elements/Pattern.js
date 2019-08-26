@@ -21,7 +21,6 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new pattern element using the specified value.
  * 
- * @constructor
  * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.

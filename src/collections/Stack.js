@@ -69,12 +69,12 @@ function Stack(parameters) {
             array.push(item);
             return true;
         }
-        throw new utilities.Exception({
+        throw new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$addItem',
             $exception: '$resourceLimit',
             $capacity: capacity,
-            $text: '"The stack has reached its maximum capacity."'
+            $text: 'The stack has reached its maximum capacity.'
         });
     };
     
@@ -82,11 +82,11 @@ function Stack(parameters) {
         if (array.length > 0) {
             return array.pop();
         }
-        throw new utilities.Exception({
+        throw new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$removeItem',
             $exception: '$emptyStack',
-            $text: '"Attempted to remove an item from an empty stack."'
+            $text: 'Attempted to remove an item from an empty stack.'
         });
     };
     
@@ -94,11 +94,11 @@ function Stack(parameters) {
         if (array.length > 0) {
             return array.peek();
         }
-        throw new utilities.Exception({
+        throw new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$getTop',
             $exception: '$emptyStack',
-            $text: '"Attempted to access an item on an empty stack."'
+            $text: 'Attempted to access an item on an empty stack.'
         });
     };
     

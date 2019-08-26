@@ -17,9 +17,7 @@ exports.codex = require('./Codex');
 exports.random = require('./Random');  // depends on codex
 
 exports.Automaton = require('./Automaton').Automaton;
-exports.Exception = require('./Exception').Exception;
 exports.Iterator = require('./Iterator').Iterator;
-exports.Visitor = require('./Visitor').Visitor;
 exports.Duplicator = require('./Duplicator').Duplicator;  // depends on Visitor
 exports.Comparator = require('./Comparator').Comparator;  // depends on types
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator

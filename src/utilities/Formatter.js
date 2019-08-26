@@ -9,6 +9,7 @@
  ************************************************************************/
 'use strict';
 
+
 /**
  * This library provides functions that format a parse tree structure produced
  * by the <code>Parser</code> class and generates a canonical version of
@@ -16,8 +17,8 @@
  */
 const types = require('./Types');
 const codex = require('./Codex');
-const Exception = require('./Exception').Exception;
-const Visitor = require('./Visitor').Visitor;
+const Visitor = require('../abstractions/Visitor').Visitor;
+const Exception = require('../composites/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character
@@ -36,7 +37,6 @@ const MAXIMUM_LENGTH = 25;
  * This class implements a formatter that uses a visitor to format component structures
  * as strings containing Bali Document Notation™ in a canonical way.
  * 
- * @constructor
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero, a value of -1 will result
  * in an inline formatting.
@@ -54,7 +54,7 @@ function Formatter(indentation) {
                 $procedure: '$formatLiteral',
                 $exception: '$invalidParameter',
                 $parameter: literal,
-                $text: '"Attempted to format a non-literal component."'
+                $text: 'Attempted to format a non-literal component.'
             });
         }
         const visitor = new FormattingVisitor(indentation, false, format);
@@ -132,7 +132,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
-                $text: '"An invalid angle format was found."'
+                $text: 'An invalid angle format was found.'
             });
     }
     formatted += '~' + formatReal(value);
@@ -196,7 +196,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
-                $text: '"An invalid binary string format was found."'
+                $text: 'An invalid binary string format was found.'
             });
     }
     this.depth++;

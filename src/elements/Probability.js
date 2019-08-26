@@ -9,6 +9,7 @@
  ************************************************************************/
 'use strict';
 
+
 /*
  * This element class captures the state and methods associated with a
  * probability element.
@@ -28,16 +29,6 @@ const abstractions = require('../abstractions');
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
-    value = value || 0;  // default value
-    if (!isFinite(value) || value < 0 || value > 1) {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Probability',
-            $procedure: '$Probability',
-            $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $text: '"An invalid probability value was passed to the constructor."'
-        });
-    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

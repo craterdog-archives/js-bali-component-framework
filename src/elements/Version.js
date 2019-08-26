@@ -29,19 +29,9 @@ const abstractions = require('../abstractions');
  */
 function Version(value, parameters) {
     abstractions.Element.call(this, utilities.types.VERSION, parameters);
-    value = value || [1];  // the default value
-    if (value.indexOf(0) >= 0) {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Version',
-            $procedure: '$Version',
-            $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $text: '"An invalid version value was passed to the constructor."'
-        });
-    }
 
     // since this element is immutable the value must be read-only
-    this.getValue = function() { return value; };
+    this.getValue = function() { return value.slice(0); };  // return a copy
 
     return this;
 }

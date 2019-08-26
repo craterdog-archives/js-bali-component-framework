@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-/* global NaN, Infinity */
 
 /*
  * This element class captures the state and methods associated with a
@@ -26,7 +25,6 @@ const Angle = require('./Angle').Angle;
  * real and imaginary values.  If the imaginary value is an angle then the complex number
  * is in polar form, otherwise it is in rectangular form.
  * 
- * @constructor
  * @param {Number} real The real value of the complex number.
  * @param {Number|Angle} imaginary The imaginary value of the complex number.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 

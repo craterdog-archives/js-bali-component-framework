@@ -13,7 +13,7 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Version', function() {
 
     describe('Test version constructors', function() {
 
@@ -111,7 +111,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the version iterators.', function() {
+    describe('Test the version iterators', function() {
 
         it('should iterate over a version string forwards and backwards', function() {
             const version = bali.version([1, 2, 3]);

@@ -29,18 +29,9 @@ const abstractions = require('../abstractions');
  */
 function Name(value, parameters) {
     abstractions.Element.call(this, utilities.types.NAME, parameters);
-    if (!Array.isArray(value) || value.length === 0) {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Name',
-            $procedure: '$Name',
-            $exception: '$invalidParameter',
-            $parameter: value.toString(),
-            $text: '"An invalid name value was passed to the constructor."'
-        });
-    }
 
     // since this element is immutable the value must be read-only
-    this.getValue = function() { return value; };
+    this.getValue = function() { return value.slice(0); };  // return a copy
 
     return this;
 }

@@ -8,7 +8,6 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 'use strict';
-/* global NaN, Infinity */
 
 /**
  * This library provides functions that perform arithmetic and trigonometric operations

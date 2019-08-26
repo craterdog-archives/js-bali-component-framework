@@ -9,12 +9,13 @@
  ************************************************************************/
 'use strict';
 
+
 /**
  * This class implements a finite state automaton. It defines the possible states of the
  * machine and allowed transitions between states given a finite set of possible event
  * types.
  */
-const utilities = require('../utilities');
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -43,46 +44,46 @@ function Automaton(eventTypes, nextStates) {
     const numberOfEventTypes = eventTypes.length;
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidType',
-                $event: '"' + event + '"',
-                $text: '"Each event must be of type string."'
+                $event: event,
+                $text: 'Each event must be of type string.'
             });
         }
     });
     var numberOfStates = 0;
     for (const state in nextStates) {
         if (typeof state !== 'string') {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidType',
-                $state: '"' + state + '"',
-                $text: '"Each state must be of type string."'
+                $state: state,
+                $text: 'Each state must be of type string.'
             });
         }
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidParameter',
                 $expected: numberOfEventTypes,
                 $actual: nextStates[state].length,
-                $text: '"Each next state list must have the same length as the number of event types."'
+                $text: 'Each next state list must have the same length as the number of event types.'
             });
         }
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
-                throw new utilities.Exception({
+                throw new Exception({
                     $module: '/bali/utilities/Automaton',
                     $procedure: '$Automaton',
                     $exception: '$invalidParameter',
                     $expected: Object.keys(nextStates),
                     $actual: transition,
-                    $text: '"A next state was found that is not in the possible states."'
+                    $text: 'A next state was found that is not in the possible states.'
                 });
             }
         });
@@ -96,13 +97,13 @@ function Automaton(eventTypes, nextStates) {
     this.validateEvent = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
                 $event: event,
                 $state: currentState,
-                $text: '"The event is not allowed in the current state."'
+                $text: 'The event is not allowed in the current state.'
             });
         }
     };
@@ -110,13 +111,13 @@ function Automaton(eventTypes, nextStates) {
     this.transitionState = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            throw new utilities.Exception({
+            throw new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',
                 $event: event,
                 $state: currentState,
-                $text: '"The event is not allowed in the current state."'
+                $text: 'The event is not allowed in the current state.'
             });
         }
         currentState = nextStates[currentState][index];

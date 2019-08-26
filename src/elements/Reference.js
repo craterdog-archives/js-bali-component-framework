@@ -14,7 +14,6 @@
  * This element class captures the state and methods associated with a
  * reference element.
  */
-const URL = require('url').URL;
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -24,23 +23,12 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new reference element using the specified value.
  * 
- * @param {String|URL} value The value of the reference.
+ * @param {URL} value The URL value of the reference.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reference} The new reference element.
  */
 function Reference(value, parameters) {
     abstractions.Element.call(this, utilities.types.REFERENCE, parameters);
-    try {
-        if (value.constructor.name !== 'URL') value = new URL(value.replace(/\$tag:#/, '$tag:%23'));
-    } catch (exception) {
-        throw new utilities.Exception({
-            $module: '/bali/elements/Reference',
-            $procedure: '$Reference',
-            $exception: '$invalidParameter',
-            $parameter: '"' + value + '"',
-            $text: '"An invalid reference value was passed to the constructor."'
-        }, exception);
-    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

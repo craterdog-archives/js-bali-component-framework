@@ -11,9 +11,9 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../');
-/* global NaN, Infinity */
 
-describe('Bali Component Framework™', function() {
+
+describe('Bali Nebula™ Component Framework - Number', function() {
 
     describe('Test complex number constructors', function() {
 

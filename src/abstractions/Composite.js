@@ -9,11 +9,13 @@
  ************************************************************************/
 'use strict';
 
+
 /**
  * This abstract class defines the methods that all composite components must support.
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -55,11 +57,11 @@ Composite.prototype.toBoolean = function() {
  * @returns {Array} An array containing the subcomponents in this composite component.
  */
 Composite.prototype.toArray = function() {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Composite',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 
@@ -81,11 +83,11 @@ Composite.prototype.isEmpty = function() {
  * @returns {Number} The number of subcomponents that this composite component has.
  */
 Composite.prototype.getSize = function() {
-    throw new utilities.Exception({
+    throw new Exception({
         $module: '/bali/abstractions/Composite',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
-        $text: '"An abstract method must be implemented by a subclass."'
+        $text: 'An abstract method must be implemented by a subclass.'
     });
 };
 

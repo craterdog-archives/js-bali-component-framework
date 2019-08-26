@@ -13,9 +13,9 @@ const expect = require('chai').expect;
 const bali = require('../');
 
 
-describe('Bali Component Framework™', function() {
+describe('Bali Nebula™ Component Framework - Automaton', function() {
 
-    describe('Test the automaton with invalid parameters.', function() {
+    describe('Test the automaton with invalid parameters', function() {
 
         it('should detect an empty event types array', function() {
             expect(
@@ -49,7 +49,7 @@ describe('Bali Component Framework™', function() {
 
     });
 
-    describe('Test the automaton with valid parameters.', function() {
+    describe('Test the automaton with valid parameters', function() {
 
         it('should run a new automaton correctly', function() {
             const fsa = bali.automaton([ '$event1', '$event2' ], {

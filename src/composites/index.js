@@ -12,6 +12,7 @@
 const elements = require('../elements/');
 
 exports.Association = require('./Association').Association;
+exports.Exception = require('./Exception').Exception;
 exports.Parameters = require('./Parameters').Parameters;
 exports.Range = require('./Range').Range;
 exports.Source = require('./Source').Source;

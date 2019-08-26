@@ -1,7 +1,7 @@
 {
   "name": "bali-component-framework",
-  "version": "1.12.3",
-  "description": "This library provides a JavaScript based implementation of the Bali Component Framework™.",
+  "version": "1.13.0",
+  "description": "This library provides a JavaScript based implementation of the Bali Nebula™ Component Framework.",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
     "JavaScript",
     "NodeJS",
     "Bali Nebula",
-    "Bali Component Framework",
+    "Component Framework",
     "Bali Document Notation",
     "Primitive Types",
     "Collection Classes",

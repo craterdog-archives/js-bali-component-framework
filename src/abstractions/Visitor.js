@@ -21,7 +21,6 @@
 /**
  * This constructor creates a new visitor component.
  * 
- * @constructor
  * @returns {Visitor} The new visitor.
  */
 function Visitor() {
