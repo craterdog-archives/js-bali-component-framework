@@ -47,6 +47,51 @@ exports.Binary = Binary;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports logical operations.
+ * <pre>
+ *  * false
+ *  * true
+ *  * not
+ *  * and
+ *  * sans
+ *  * or
+ *  * xor
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports logical operations.
+ */
+Binary.prototype.isLogical = function() {
+    return true;
+};
+
+
+/**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Binary.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+Binary.prototype.isChainable = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this binary string has a meaningful value. If the binary
  * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
@@ -98,16 +143,6 @@ Binary.prototype.toBase64 = function() {
 
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Binary.prototype.acceptVisitor = function(visitor) {
-    visitor.visitBinary(this);
-};
-
-
-/**
  * This method compares this binary string to another for ordering.
  * 
  * @param {Object} that The other binary string to be compared with. 
@@ -125,6 +160,16 @@ Binary.prototype.comparedTo = function(that) {
 
     // the types are the same, check the values
     return Buffer.compare(this.getValue(), that.getValue());
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Binary.prototype.acceptVisitor = function(visitor) {
+    visitor.visitBinary(this);
 };
 
 

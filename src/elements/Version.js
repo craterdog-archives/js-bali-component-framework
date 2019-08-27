@@ -43,6 +43,19 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Version.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this version string has a meaningful value. Version
  * strings always have a meaningful value.
  * 

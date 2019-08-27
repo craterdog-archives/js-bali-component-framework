@@ -52,6 +52,142 @@ Component.prototype.isParameterized = function() {
 
 
 /**
+ * This method returns whether or not this component supports logical operations.
+ * <pre>
+ *  * false
+ *  * true
+ *  * not
+ *  * and
+ *  * sans
+ *  * or
+ *  * xor
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports logical operations.
+ */
+Component.prototype.isLogical = function() {
+    return false;  // default
+};
+
+
+/**
+ * This method returns whether or not this component supports scaling operations.
+ * <pre>
+ *  * inverse
+ *  * sum
+ *  * difference
+ *  * scaled
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports scaling operations.
+ */
+Component.prototype.isScalable = function() {
+    return false;  // default
+};
+
+
+/**
+ * This method returns whether or not this component supports numeric operations.
+ * <pre>
+ *  * inverse
+ *  * reciprocal
+ *  * conjugate
+ *  * factorial
+ *  * sum
+ *  * difference
+ *  * scaled
+ *  * product
+ *  * quotient
+ *  * remainder
+ *  * exponential
+ *  * logarithm
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports numeric operations.
+ */
+Component.prototype.isNumerical = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component can be displayed as a literal
+ * value.
+ * 
+ * @returns {Boolean} Whether or not this component can be displayed as a literal value.
+ */
+Component.prototype.isLiteral = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Component.prototype.isSequential = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+Component.prototype.isChainable = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component is procedural.
+ * 
+ * @returns {Boolean} Whether or not this component is procedural.
+ */
+Component.prototype.isProcedural = function() {
+    return utilities.types.isProcedural(this.getTypeId());
+};
+
+
+/**
+ * This function determines whether or not this component is an element.
+ * 
+ * @returns {Boolean} Whether or not this component is an element.
+ */
+Component.prototype.isElement = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component is a composite.
+ * 
+ * @returns {Boolean} Whether or not this component is a composite.
+ */
+Component.prototype.isComposite = function() {
+    return false;  // default
+};
+
+
+/**
+ * This function determines whether or not this component is a collection.
+ * 
+ * @returns {Boolean} Whether or not this component is a collection.
+ */
+Component.prototype.isCollection = function() {
+    return false;  // default
+};
+
+
+/**
  * This abstract method returns a boolean value for this component. It allows each component to be
  * used as a boolean in a condition that determines whether of not the component has a meaningful
  * value. Each component decides what is meaningful.  This method must be implemented by a subclass.

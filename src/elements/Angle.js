@@ -67,6 +67,22 @@ exports.Angle = Angle;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports scaling operations.
+ * <pre>
+ *  * inverse
+ *  * sum
+ *  * difference
+ *  * scaled
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports scaling operations.
+ */
+Angle.prototype.isScalable = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this angle has a meaningful value. If the value is zero
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
@@ -104,16 +120,6 @@ Angle.prototype.toDegrees = function() {
  */
 Angle.prototype.toRadians = function() {
     return formatter.formatLiteral(this, '$radians');
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Angle.prototype.acceptVisitor = function(visitor) {
-    visitor.visitAngle(this);
 };
 
 
@@ -160,6 +166,16 @@ Angle.prototype.comparedTo = function(that) {
 
     // they are also equal
     return 0;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Angle.prototype.acceptVisitor = function(visitor) {
+    visitor.visitAngle(this);
 };
 
 

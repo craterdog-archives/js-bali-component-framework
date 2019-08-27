@@ -40,6 +40,29 @@ exports.Composite = Composite;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Composite.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
+ * This function determines whether or not this component is a composite.
+ * 
+ * @returns {Boolean} Whether or not this component is a composite.
+ */
+Composite.prototype.isComposite = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this composite has a meaningful value. If the composite
  * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 

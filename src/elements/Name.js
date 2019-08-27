@@ -43,6 +43,32 @@ exports.Name = Name;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Name.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+Name.prototype.isChainable = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this name string has a meaningful value. Name
  * strings always have a meaningful value.
  * 

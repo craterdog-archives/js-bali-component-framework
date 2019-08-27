@@ -84,6 +84,46 @@ exports.Complex = Complex;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports scaling operations.
+ * <pre>
+ *  * inverse
+ *  * sum
+ *  * difference
+ *  * scaled
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports scaling operations.
+ */
+Complex.prototype.isScalable = function() {
+    return true;
+};
+
+
+/**
+ * This method returns whether or not this component supports numeric operations.
+ * <pre>
+ *  * inverse
+ *  * reciprocal
+ *  * conjugate
+ *  * factorial
+ *  * sum
+ *  * difference
+ *  * scaled
+ *  * product
+ *  * quotient
+ *  * remainder
+ *  * exponential
+ *  * logarithm
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports numeric operations.
+ */
+Complex.prototype.isNumerical = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this complex number has a meaningful value. If the magnitude
  * is undefined, zero or infinity it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 
@@ -123,16 +163,6 @@ Complex.prototype.toRectangular = function() {
 Complex.prototype.toPolar = function() {
     const formatter = new utilities.Formatter();
     return formatter.formatLiteral(this, '$polar');
-};
-
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Complex.prototype.acceptVisitor = function(visitor) {
-    visitor.visitNumber(this);
 };
 
 
@@ -194,6 +224,16 @@ Complex.prototype.comparedTo = function(that) {
     if (thisPhase) return thisPhase.comparedTo(thatPhase);
 
     return 0;  // both must be undefined
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Complex.prototype.acceptVisitor = function(visitor) {
+    visitor.visitNumber(this);
 };
 
 

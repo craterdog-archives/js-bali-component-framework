@@ -40,10 +40,6 @@ function Set(parameters, comparator) {
     comparator = comparator || new utilities.Comparator();
     const tree = new RandomizedTree(comparator);
 
-    this.acceptVisitor = function(visitor) {
-        visitor.visitSet(this);
-    };
-
     this.toArray = function() {
         const array = [];
         const iterator = new TreeIterator(tree);
@@ -106,6 +102,37 @@ Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
 
+
+// PUBLIC METHODS
+
+/**
+ * This method returns whether or not this component supports logical operations.
+ * <pre>
+ *  * false
+ *  * true
+ *  * not
+ *  * and
+ *  * sans
+ *  * or
+ *  * xor
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports logical operations.
+ */
+Set.prototype.isLogical = function() {
+    return true;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this component.
+ */
+Set.prototype.acceptVisitor = function(visitor) {
+    visitor.visitSet(this);
+};
+    
 
 // PUBLIC FUNCTIONS
 

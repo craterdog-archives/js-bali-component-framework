@@ -29,32 +29,27 @@
  * @returns {Exception} The new exception.
  */
 function Exception(attributes, cause) {
-    // make sure parameters are of the correct types
-    attributes = (typeof attributes === 'object') ? attributes : {};
-    cause = cause || undefined;
+
+    // convert the attributes into a catalog
+    if (attributes === null || typeof attributes !== 'object') attributes = {};
+    this.attributes = this.convert(attributes);
+
+    // set the error message and cause
+    this.message = attributes['$text'] || 'An undefined exception occurred.';
+    this.cause = cause || undefined;
 
     // save the current error stack if possible
     try {
         this.stack = Error().stack;
-        if (this.stack) {
-            this.stack = 'Exception' + this.stack.slice(5);  // replace 'Error' with 'Exception'
-        }
     } catch (ignore) {
         // a stack trace is not supported on this platform
     }
-
-    // convert the attributes into a catalog
-    this.attributes = this.convert(attributes);
-
-    // set the error message and cause
-    const text = this.attributes.getValue('$text');
-    this.message = text ? text.getValue() : 'An unknown exception occurred.';
-    this.cause = cause;
 
     return this;
 }
 Exception.prototype = Object.create(Error.prototype);
 Exception.prototype.constructor = Exception;
+Exception.prototype.name = 'Exception';
 exports.Exception = Exception;
 
 

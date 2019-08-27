@@ -43,6 +43,32 @@ exports.Text = Text;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Text.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+Text.prototype.isChainable = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this text string has a meaningful value. If the text
  * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 

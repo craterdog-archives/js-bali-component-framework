@@ -44,6 +44,25 @@ exports.Probability = Probability;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports logical operations.
+ * <pre>
+ *  * false
+ *  * true
+ *  * not
+ *  * and
+ *  * sans
+ *  * or
+ *  * xor
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports logical operations.
+ */
+Probability.prototype.isLogical = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this probability is greater or equal to 0.5.
  * 
  * @returns {Boolean} Whether or not this probability is greater or equal to 0.5.

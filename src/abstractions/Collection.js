@@ -39,6 +39,16 @@ exports.Collection = Collection;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component is a collection.
+ * 
+ * @returns {Boolean} Whether or not this component is a collection.
+ */
+Collection.prototype.isCollection = function() {
+    return true;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this collection.

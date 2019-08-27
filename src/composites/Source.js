@@ -40,6 +40,17 @@ exports.Source = Source;
 // PUBLIC METHODS
 
 /**
+ * This function determines whether or not this component can be displayed as a literal
+ * value.
+ * 
+ * @returns {Boolean} Whether or not this component can be displayed as a literal value.
+ */
+Source.prototype.isLiteral = function() {
+    return true;
+};
+
+
+/**
  * This method returns an array containing the procedure for this source code.
  * 
  * @returns {Array} An array containing the procedure for this source code.

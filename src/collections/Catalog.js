@@ -38,24 +38,10 @@ function Catalog(parameters) {
     const map = {};  // maps key strings to associations
     const array = [];  // maintains the order of the associations
 
-    this.acceptVisitor = function(visitor) {
-        visitor.visitCatalog(this);
-    };
-    
     this.toArray = function() {
         return array.slice();  // copy the array
     };
 
-    this.toObject = function() {
-        const object = {};
-        const iterator = this.getIterator();
-        while (iterator.hasNext()) {
-            const association = iterator.getNext();
-            object[association.getKey().toString()] = association.getValue();
-        }
-        return object;
-    };
-    
     this.getSize = function() {
         return array.length;
     };
@@ -173,6 +159,47 @@ Catalog.prototype = Object.create(abstractions.Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 
+
+// PUBLIC METHODS
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+Catalog.prototype.isChainable = function() {
+    return true;
+};
+
+
+/**
+ * This method returns a JavaScript object containing the attributes of this catalog.
+ * 
+ * @returns {Object} The resulting object.
+ */
+Catalog.prototype.toObject = function() {
+    const object = {};
+    const iterator = this.getIterator();
+    while (iterator.hasNext()) {
+        const association = iterator.getNext();
+        object[association.getKey().toString()] = association.getValue();
+    }
+    return object;
+};
+    
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this component.
+ */
+Catalog.prototype.acceptVisitor = function(visitor) {
+    visitor.visitCatalog(this);
+};
+    
 
 // PUBLIC FUNCTIONS
 

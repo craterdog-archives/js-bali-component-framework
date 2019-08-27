@@ -43,6 +43,22 @@ exports.Percent = Percent;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports scaling operations.
+ * <pre>
+ *  * inverse
+ *  * sum
+ *  * difference
+ *  * scaled
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports scaling operations.
+ */
+Percent.prototype.isScalable = function() {
+    return true;
+};
+
+
+/**
  * This method returns whether or not this percent has a meaningful value. If the value is zero
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
  * 

@@ -43,10 +43,6 @@ function List(parameters) {
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
 
-    this.acceptVisitor = function(visitor) {
-        visitor.visitList(this);
-    };
-    
     this.toArray = function() {
         return array.slice();  // copy the array
     };
@@ -135,6 +131,31 @@ List.prototype = Object.create(abstractions.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
 
+
+// PUBLIC METHODS
+
+/**
+ * This function determines whether or not this component supports concatenation operations:
+ * <pre>
+ *  * concatenation
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports concatenation operations.
+ */
+List.prototype.isChainable = function() {
+    return true;
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this component.
+ */
+List.prototype.acceptVisitor = function(visitor) {
+    visitor.visitList(this);
+};
+    
 
 // PUBLIC FUNCTIONS
 

@@ -295,7 +295,7 @@ exports.isSequential = function(type) {
         case exports.SET:
         case exports.STACK:
         case exports.TEXT:
-        case exports.TREE:
+        case exports.TREE:  // TODO: never used!
         case exports.VERSION:
             return true;
         default:

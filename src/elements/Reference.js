@@ -43,16 +43,6 @@ exports.Reference = Reference;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Reference.prototype.acceptVisitor = function(visitor) {
-    visitor.visitReference(this);
-};
-
-
-/**
  * This method returns whether or not this reference has a meaningful value. A reference always
  * has a meaningful value.
  * 
@@ -150,4 +140,14 @@ Reference.prototype.getQuery = function() {
  */
 Reference.prototype.getFragment = function() {
     return decodeURIComponent(this.getValue().hash.slice(1));  // remove the leading '#'
+};
+
+
+/**
+ * This method accepts a visitor as part of the visitor pattern.
+ * 
+ * @param {Visitor} visitor The visitor that wants to visit this element.
+ */
+Reference.prototype.acceptVisitor = function(visitor) {
+    visitor.visitReference(this);
 };
