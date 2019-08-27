@@ -47,8 +47,8 @@ function Range(first, last, parameters) {
         }
     } else {
         // the first and last items are indices into the integers
-        firstIndex = (first.getTypeId && first.getTypeId() === utilities.types.NUMBER) ? first.toNumber() : first;
-        lastIndex = (last.getTypeId && last.getTypeId() === utilities.types.NUMBER) ? last.toNumber() : last;
+        firstIndex = (first.isNumerical && first.isNumerical()) ? first.toNumber() : first;
+        lastIndex = (last.isNumerical && last.isNumerical()) ? last.toNumber() : last;
     }
 
     // to protect the attributes the methods are defined in the constructor

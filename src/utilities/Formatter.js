@@ -48,7 +48,7 @@ function Formatter(indentation) {
     indentation = indentation || 0;
 
     this.formatLiteral = function(literal, format) {
-        if (!types.isLiteral(literal.getTypeId())) {
+        if (!literal.isLiteral()) {
             throw new Exception({
                 $module: '/bali/utilities/Formatter',
                 $procedure: '$formatLiteral',
@@ -266,7 +266,7 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     var formatted = '';
-    if (collection.getTypeId() === types.RANGE) {
+    if (collection.isType('$Range')) {
         collection.getFirst().acceptVisitor(this);
         formatted += this.result;
         formatted += '..';
@@ -305,7 +305,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
             this.depth--;
             formatted += this.getSeparator('');
         }
-    } else if (collection.getTypeId() === types.CATALOG) {
+    } else if (collection.isType('$Catalog')) {
         formatted += ':';  // empty catalog
     }
     this.result = formatted;

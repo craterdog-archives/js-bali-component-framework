@@ -51,7 +51,7 @@ function Parameters(collection) {
     this.getParameter = function(key, index) {
         var value;
         index = index || 1;  // default is the first parameter
-        if (copy.getTypeId() === utilities.types.CATALOG) {
+        if (copy.isType('$Catalog')) {
             value = copy.getValue(key);
         } else {
             value = copy.getItem(index);
@@ -61,7 +61,7 @@ function Parameters(collection) {
 
     this.setParameter = function(key, value, index) {
         index = index || 1;  // default is the first parameter
-        if (copy.getTypeId() === utilities.types.CATALOG) {
+        if (copy.isType('$Catalog')) {
             copy.setValue(key, value);
         } else {
             copy.setItem(index, value);

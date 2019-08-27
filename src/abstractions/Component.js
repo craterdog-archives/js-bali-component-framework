@@ -24,13 +24,13 @@ const Exception = require('../composites/Exception').Exception;
  * This constructor creates a new component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of component.
+ * @param {Number} typeId The type identifier for the component.
  * @param {Parameters} parameters Optional parameters used to parameterize this component. 
  * @returns {Component} The new component.
  */
-function Component(type, parameters) {
+function Component(typeId, parameters) {
     parameters = parameters || undefined;  // normalize nulls to undefined
-    this.getTypeId = function() { return type; };
+    this.getTypeId = function() { return typeId; };
     this.getParameters = function() { return parameters; };
     this.setParameters = function(newParameters) { parameters = newParameters; };
     return this;
@@ -40,6 +40,17 @@ exports.Component = Component;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method returns whether or not this component has the specified type.
+ * 
+ * @param {String} type The symbol for the type in question. 
+ * @returns {Boolean} Whether or not this component has the specified type.
+ */
+Component.prototype.isType = function(type) {
+    return utilities.types.symbolForType(this.getTypeId()) === type;
+};
+
 
 /**
  * This method returns whether or not this component is parameterized.
@@ -257,7 +268,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is an actual bali.Pattern element then see if it
      * matches this component.
      */
-    if (pattern.getTypeId() === utilities.types.PATTERN) {
+    if (pattern.isType('$Pattern')) {
         return pattern.matches(this);
     }
     /* Case 2
@@ -271,14 +282,14 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component and this component are both elements then if they are
      * equal they match.
      */
-    if (utilities.types.isLiteral(pattern.getTypeId())) {
+    if (pattern.isLiteral()) {
         return this.isEqualTo(pattern);
     }
     /* Case 4
      * If the pattern component is a bali.Range then its endpoint patterns must match the
      * endpoints of this component.
      */
-    if (pattern.getTypeId() === utilities.types.RANGE) {
+    if (pattern.isType('$Range')) {
         if (!this.getFirst().isMatchedBy(pattern.getFirst())) return false;
         if (!this.getLast().isMatchedBy(pattern.getLast())) return false;
         return true;
@@ -287,7 +298,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
-    if (pattern.getTypeId() === utilities.types.ASSOCIATION) {
+    if (pattern.isType('$Association')) {
         if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -299,7 +310,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * that key and a non-'none' value. If the pattern item is an association with a
      * value of 'any' then this component may or may not have an item with that key.
      */
-    if (utilities.types.isSequential(pattern.getTypeId())) {
+    if (pattern.isSequential()) {
         // iterate through a pattern's items
         const patternIterator = pattern.getIterator();
         outer: while (patternIterator.hasNext()) {
@@ -311,9 +322,9 @@ Component.prototype.isMatchedBy = function(pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.getTypeId() === utilities.types.ASSOCIATION) {
+            if (patternItem.isType('$Association')) {
                 var patternValue = patternItem.getValue();
-                if (patternValue.getTypeId() === utilities.types.PATTERN && (
+                if (patternValue.isType('$Pattern') && (
                     patternValue.toString() === 'any' ||
                     patternValue.toString() === 'none'
                 )) {

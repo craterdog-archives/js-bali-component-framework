@@ -66,7 +66,7 @@ const convert = function(value) {
                 value.forEach(function(item) {
                     component.addItem(item);  // item converted in addItem()
                 });
-            } else if (value.constructor.prototype.acceptVisitor && value.getTypeId()) {
+            } else if (value.getTypeId) {
                 // leave it since it is already a component
                 component = value;
             } else {
@@ -96,18 +96,17 @@ const validateType = function(moduleName, procedureName, parameterName, paramete
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
     if (parameterValue && parameterValue.getTypeId) {
-        const typeId = parameterValue.getTypeId();
         if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && !parameterValue.normalizeIndex) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.normalizeIndex) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && parameterValue.containsAny) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && utilities.types.isLogical(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && utilities.types.isScalable(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Numeric') > -1 && utilities.types.isNumeric(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && utilities.types.isLiteral(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && utilities.types.isSequential(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && utilities.types.isChainable(typeId)) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && utilities.types.isProcedural(typeId)) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && parameterValue.isElement()) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.isComposite()) return;
+        if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && parameterValue.isCollection()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && parameterValue.isLogicial()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && parameterValue.isScalable()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Numerical') > -1 && parameterValue.isNumerical()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && parameterValue.isLiteral()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && parameterValue.isSequential()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && parameterValue.isChainable()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && parameterValue.isProcedural()) return;
     }
     throw new composites.Exception({  // must not be exception() to avoid infinite recursion
         $module: moduleName,
@@ -131,17 +130,17 @@ const addItems = function(moduleName, procedureName, collection, items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
                 item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                if (item.isType('$Association')) {
                     item = item.getValue();
                 }
                 collection.addItem(item);
             });
-        } else if (utilities.types.isSequential(items.getTypeId())) {
+        } else if (items.isSequential()) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                if (item.isType('$Association')) {
                     item = item.getValue();
                 }
                 collection.addItem(item);
@@ -308,18 +307,18 @@ const catalog = function(associations, parameters) {
         if (Array.isArray(associations)) {
             associations.forEach(function(item) {
                 item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                if (item.isType('$Association')) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);
                 }
             });
-        } else if (associations.getTypeId && utilities.types.isSequential(associations.getTypeId())) {
+        } else if (associations.isSequential && associations.isSequential()) {
             const iterator = associations.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = convert(item);
-                if (item.getTypeId() === utilities.types.ASSOCIATION) {
+                if (item.isType('$Association')) {
                     collection.addItem(item);
                 } else {
                     collection.setValue(index++, item);

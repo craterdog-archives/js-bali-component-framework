@@ -37,7 +37,7 @@ function Complex(real, imaginary, parameters) {
     if (real === real) real = real || 0;  // default value if not NaN and not defined
     real = utilities.precision.lockOnExtreme(real);
     if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined
-    if (imaginary.getTypeId && imaginary.getTypeId() === utilities.types.ANGLE) {
+    if (imaginary.isType && imaginary.isType('$Angle')) {
         // convert polar to rectangular
         var magnitude = real;
         var phase = imaginary;
