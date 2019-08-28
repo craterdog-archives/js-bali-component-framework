@@ -66,7 +66,7 @@ const convert = function(value) {
                 value.forEach(function(item) {
                     component.addItem(item);  // item converted in addItem()
                 });
-            } else if (value.getType) {
+            } else if (value.isComponent) {
                 // leave it since it is already a component
                 component = value;
             } else {
@@ -95,7 +95,7 @@ composites.Exception.prototype.convert = convert;
 const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
-    if (parameterValue && parameterValue.getType) {
+    if (parameterValue && parameterValue.isComponent) {
         if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
         if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && parameterValue.isElement()) return;
         if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.isComposite()) return;
@@ -411,13 +411,13 @@ exports.duration = duration;
  * if the cause is from the same module as the current exception.
  */
 const exception = function(object, cause) {
-    validateType('/bali/utilities/Exception', '$exception', '$object', object, [
+    validateType('/bali/composites/Exception', '$exception', '$object', object, [
         '/javascript/Object'
     ]);
-    validateType('/bali/utilities/Exception', '$exception', '$cause', cause, [
+    validateType('/bali/composites/Exception', '$exception', '$cause', cause, [
         '/javascript/Undefined',
         '/javascript/Error',
-        '/bali/utilities/Exception'
+        '/bali/composites/Exception'
     ]);
     var error;
     if (cause && cause.constructor.name === 'Exception' &&
@@ -1020,12 +1020,12 @@ const type = function(value) {
     // handle common object types
     if (value instanceof Array) return '/javascript/Array';
     if (value instanceof Date) return '/javascript/Date';
-    if (value instanceof Error) return '/javascript/Error';
+    if (value instanceof Error && !value.isComponent) return '/javascript/Error';
     if (value instanceof Promise) return '/javascript/Promise';
     if (value instanceof RegExp) return '/javascript/RegExp';
     if (value instanceof Buffer) return '/nodejs/Buffer';
     if (value instanceof URL) return '/nodejs/URL';
-    if (!value.isType) return '/javascript/Object';
+    if (!value.isComponent) return '/javascript/Object';
 
     // handle Bali component types
     if (value.isType('$Angle')) return '/bali/elements/Angle';
@@ -1033,7 +1033,7 @@ const type = function(value) {
     if (value.isType('$Binary')) return '/bali/elements/Binary';
     if (value.isType('$Catalog')) return '/bali/collections/Catalog';
     if (value.isType('$Duration')) return '/bali/elements/Duration';
-    if (value.isType('$Exception')) return '/bali/utilities/Exception';
+    if (value.isType('$Exception')) return '/bali/composites/Exception';
     if (value.isType('$Iterator')) return '/bali/utilities/Iterator';
     if (value.isType('$List')) return '/bali/collections/List';
     if (value.isType('$Moment')) return '/bali/elements/Moment';
@@ -1053,7 +1053,7 @@ const type = function(value) {
     if (value.isType('$Symbol')) return '/bali/elements/Symbol';
     if (value.isType('$Tag')) return '/bali/elements/Tag';
     if (value.isType('$Text')) return '/bali/elements/Text';
-    if (value.isType('$Tree')) return '/bali/composites/Tree';
+    if (value.isProcedural()) return '/bali/composites/Tree';
     if (value.isType('$Version')) return '/bali/elements/Version';
 
     // handle anything else

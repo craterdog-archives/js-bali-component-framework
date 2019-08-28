@@ -80,6 +80,6 @@ exports.Tree = Tree;
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
-    const functionName = 'visit' + this.getType().slice(1);
+    const functionName = 'visit' + this.getType().slice(1);  // remove the leading '$'
     visitor[functionName](this);
 };

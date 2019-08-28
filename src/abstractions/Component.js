@@ -30,6 +30,7 @@ const Exception = require('../composites/Exception').Exception;
  */
 function Component(type, parameters) {
     parameters = parameters || undefined;  // normalize nulls to undefined
+    this.isComponent = true;
     this.getType = function() { return type; };
     this.getParameters = function() { return parameters; };
     this.setParameters = function(newParameters) { parameters = newParameters; };
