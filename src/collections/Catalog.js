@@ -31,7 +31,7 @@ const List = require('./List').List;
  * @returns {Catalog} The new catalog.
  */
 function Catalog(parameters) {
-    abstractions.Collection.call(this, utilities.types.CATALOG, parameters);
+    abstractions.Collection.call(this, '$Catalog', parameters);
 
     // the map and array are private attributes so methods that use them are defined
     // in the constructor

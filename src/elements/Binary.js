@@ -14,8 +14,8 @@
  * binary string element.
  */
 const utilities = require('../utilities');
-const formatter = new utilities.Formatter();
 const abstractions = require('../abstractions');
+const formatter = new utilities.Formatter();
 
 
 // PUBLIC CONSTRUCTOR
@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
  * @returns {Binary} The new binary string.
  */
 function Binary(value, parameters) {
-    abstractions.Element.call(this, utilities.types.BINARY, parameters);
+    abstractions.Element.call(this, '$Binary', parameters);
 
     // analyze the value
     value = value || Buffer.alloc(0);  // the default value is an empty buffer

@@ -12,7 +12,6 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
-const utilities = require('../utilities');
 const Component = require('./Component').Component;
 
 

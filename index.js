@@ -66,7 +66,7 @@ const convert = function(value) {
                 value.forEach(function(item) {
                     component.addItem(item);  // item converted in addItem()
                 });
-            } else if (value.getTypeId) {
+            } else if (value.getType) {
                 // leave it since it is already a component
                 component = value;
             } else {
@@ -95,7 +95,7 @@ composites.Exception.prototype.convert = convert;
 const validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
     const actualType = type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
-    if (parameterValue && parameterValue.getTypeId) {
+    if (parameterValue && parameterValue.getType) {
         if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
         if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && parameterValue.isElement()) return;
         if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.isComposite()) return;
@@ -1025,45 +1025,41 @@ const type = function(value) {
     if (value instanceof RegExp) return '/javascript/RegExp';
     if (value instanceof Buffer) return '/nodejs/Buffer';
     if (value instanceof URL) return '/nodejs/URL';
+    if (!value.isType) return '/javascript/Object';
 
     // handle Bali component types
-    if (value instanceof elements.Angle) return '/bali/elements/Angle';
-    if (value instanceof composites.Association) return '/bali/composites/Association';
-    if (value instanceof elements.Binary) return '/bali/elements/Binary';
-    if (value instanceof collections.Catalog) return '/bali/collections/Catalog';
-    if (value instanceof elements.Duration) return '/bali/elements/Duration';
-    if (value instanceof composites.Exception) return '/bali/utilities/Exception';
-    if (value instanceof utilities.Iterator) return '/bali/utilities/Iterator';
-    if (value instanceof collections.List) return '/bali/collections/List';
-    if (value instanceof elements.Moment) return '/bali/elements/Moment';
-    if (value instanceof elements.Name) return '/bali/elements/Name';
-    if (value instanceof elements.Number) return '/bali/elements/Number';
-    if (value instanceof composites.Parameters) return '/bali/composites/Parameters';
-    if (value instanceof elements.Pattern) return '/bali/elements/Pattern';
-    if (value instanceof elements.Percent) return '/bali/elements/Percent';
-    if (value instanceof elements.Probability) return '/bali/elements/Probability';
-    if (value instanceof collections.Queue) return '/bali/collections/Queue';
-    if (value instanceof composites.Range) return '/bali/composites/Range';
-    if (value instanceof elements.Reference) return '/bali/elements/Reference';
-    if (value instanceof elements.Reserved) return '/bali/elements/Reserved';
-    if (value instanceof collections.Set) return '/bali/collections/Set';
-    if (value instanceof composites.Source) return '/bali/composites/Source';
-    if (value instanceof collections.Stack) return '/bali/collections/Stack';
-    if (value instanceof elements.Symbol) return '/bali/elements/Symbol';
-    if (value instanceof elements.Tag) return '/bali/elements/Tag';
-    if (value instanceof elements.Text) return '/bali/elements/Text';
-    if (value instanceof composites.Tree) return '/bali/composites/Tree';
-    if (value instanceof elements.Version) return '/bali/elements/Version';
+    if (value.isType('$Angle')) return '/bali/elements/Angle';
+    if (value.isType('$Association')) return '/bali/composites/Association';
+    if (value.isType('$Binary')) return '/bali/elements/Binary';
+    if (value.isType('$Catalog')) return '/bali/collections/Catalog';
+    if (value.isType('$Duration')) return '/bali/elements/Duration';
+    if (value.isType('$Exception')) return '/bali/utilities/Exception';
+    if (value.isType('$Iterator')) return '/bali/utilities/Iterator';
+    if (value.isType('$List')) return '/bali/collections/List';
+    if (value.isType('$Moment')) return '/bali/elements/Moment';
+    if (value.isType('$Name')) return '/bali/elements/Name';
+    if (value.isType('$Number')) return '/bali/elements/Number';
+    if (value.isType('$Parameters')) return '/bali/composites/Parameters';
+    if (value.isType('$Pattern')) return '/bali/elements/Pattern';
+    if (value.isType('$Percent')) return '/bali/elements/Percent';
+    if (value.isType('$Probability')) return '/bali/elements/Probability';
+    if (value.isType('$Queue')) return '/bali/collections/Queue';
+    if (value.isType('$Range')) return '/bali/composites/Range';
+    if (value.isType('$Reference')) return '/bali/elements/Reference';
+    if (value.isType('$Reserved')) return '/bali/elements/Reserved';
+    if (value.isType('$Set')) return '/bali/collections/Set';
+    if (value.isType('$Source')) return '/bali/composites/Source';
+    if (value.isType('$Stack')) return '/bali/collections/Stack';
+    if (value.isType('$Symbol')) return '/bali/elements/Symbol';
+    if (value.isType('$Tag')) return '/bali/elements/Tag';
+    if (value.isType('$Text')) return '/bali/elements/Text';
+    if (value.isType('$Tree')) return '/bali/composites/Tree';
+    if (value.isType('$Version')) return '/bali/elements/Version';
 
     // handle anything else
     return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
 };
 exports.type = type;
-
-/*
- * This library exports the Bali component types.
- */
-exports.types = utilities.types;
 
 /**
  * This function creates a new version element using the specified value.

@@ -13,7 +13,6 @@
  * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -27,7 +26,7 @@ const abstractions = require('../abstractions');
  * @returns {Association} A new association.
  */
 function Association(key, value) {
-    abstractions.Composite.call(this, utilities.types.ASSOCIATION);
+    abstractions.Composite.call(this, '$Association');
     key = this.convert(key);
     value = this.convert(value);
 

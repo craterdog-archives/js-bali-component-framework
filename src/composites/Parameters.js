@@ -26,7 +26,7 @@ const abstractions = require('../abstractions');
  * @returns {Parameters} The new parameter list.
  */
 function Parameters(collection) {
-    abstractions.Composite.call(this, utilities.types.PARAMETERS);
+    abstractions.Composite.call(this, '$Parameters');
 
     // the parameters are immutable so the methods are included in the constructor
     const duplicator = new utilities.Duplicator();

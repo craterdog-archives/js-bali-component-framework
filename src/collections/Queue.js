@@ -14,7 +14,6 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
@@ -40,7 +39,7 @@ Array.prototype.peek = function() {
 function Queue(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
     if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Queue/v1');
-    abstractions.Collection.call(this, utilities.types.QUEUE, parameters);
+    abstractions.Collection.call(this, '$Queue', parameters);
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor

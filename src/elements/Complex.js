@@ -31,7 +31,7 @@ const Angle = require('./Angle').Angle;
  * @returns {Complex} The new complex number.
  */
 function Complex(real, imaginary, parameters) {
-    abstractions.Element.call(this, utilities.types.NUMBER, parameters);
+    abstractions.Element.call(this, '$Number', parameters);
 
     // normalize the values
     if (real === real) real = real || 0;  // default value if not NaN and not defined

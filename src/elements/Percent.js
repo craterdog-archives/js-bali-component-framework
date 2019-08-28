@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Percent} The new percent element.
  */
 function Percent(value, parameters) {
-    abstractions.Element.call(this, utilities.types.PERCENT, parameters);
+    abstractions.Element.call(this, '$Percent', parameters);
     value = value || 0;  // default value
 
     // since this element is immutable the value must be read-only

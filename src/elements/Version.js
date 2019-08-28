@@ -14,7 +14,6 @@
  * This element class captures the state and methods associated with a
  * version string element.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -28,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Symbol} The new version string element.
  */
 function Version(value, parameters) {
-    abstractions.Element.call(this, utilities.types.VERSION, parameters);
+    abstractions.Element.call(this, '$Version', parameters);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value.slice(0); };  // return a copy

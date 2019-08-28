@@ -15,7 +15,6 @@
  * duration element.
  */
 const moment = require('moment');
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -29,7 +28,7 @@ const abstractions = require('../abstractions');
  * @returns {Duration} The new duration element.
  */
 function Duration(value, parameters) {
-    abstractions.Element.call(this, utilities.types.DURATION, parameters);
+    abstractions.Element.call(this, '$Duration', parameters);
     value = value || 0;  // default value
     value = moment.duration(value);
 

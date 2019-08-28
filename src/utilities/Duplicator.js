@@ -66,7 +66,7 @@ DuplicatingVisitor.prototype.visitAngle = function(angle) {
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 DuplicatingVisitor.prototype.visitArithmeticExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     copy.operator = tree.operator;
@@ -99,7 +99,7 @@ DuplicatingVisitor.prototype.visitBinary = function(binary) {
 
 // block: '{' procedure '}'
 DuplicatingVisitor.prototype.visitBlock = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -108,7 +108,7 @@ DuplicatingVisitor.prototype.visitBlock = function(tree) {
 
 // breakClause: 'break' 'loop'
 DuplicatingVisitor.prototype.visitBreakClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     this.result = copy;
 };
 
@@ -136,7 +136,7 @@ DuplicatingVisitor.prototype.visitCatalog = function(catalog) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -147,7 +147,7 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 
 // commitClause: 'commit' expression 'to' expression
 DuplicatingVisitor.prototype.visitCommitClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -158,7 +158,7 @@ DuplicatingVisitor.prototype.visitCommitClause = function(tree) {
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
 DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     copy.operator = tree.operator;
@@ -170,7 +170,7 @@ DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
 
 // complementExpression: 'not' expression
 DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -179,7 +179,7 @@ DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
 
 // concatenationExpression: expression '&' expression
 DuplicatingVisitor.prototype.visitConcatenationExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -190,14 +190,14 @@ DuplicatingVisitor.prototype.visitConcatenationExpression = function(tree) {
 
 // continueClause: 'continue' 'loop'
 DuplicatingVisitor.prototype.visitContinueClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     this.result = copy;
 };
 
 
 // defaultExpression: expression '?' expression
 DuplicatingVisitor.prototype.visitDefaultExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -208,7 +208,7 @@ DuplicatingVisitor.prototype.visitDefaultExpression = function(tree) {
 
 // dereferenceExpression: '@' expression
 DuplicatingVisitor.prototype.visitDereferenceExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -217,7 +217,7 @@ DuplicatingVisitor.prototype.visitDereferenceExpression = function(tree) {
 
 // discardClause: 'discard' expression
 DuplicatingVisitor.prototype.visitDiscardClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -237,7 +237,7 @@ DuplicatingVisitor.prototype.visitDuration = function(duration) {
 
 // evaluateClause: (recipient ':=')? expression
 DuplicatingVisitor.prototype.visitEvaluateClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -249,7 +249,7 @@ DuplicatingVisitor.prototype.visitEvaluateClause = function(tree) {
 
 // exponentialExpression: <assoc=right> expression '^' expression
 DuplicatingVisitor.prototype.visitExponentialExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -260,7 +260,7 @@ DuplicatingVisitor.prototype.visitExponentialExpression = function(tree) {
 
 // factorialExpression: expression '!'
 DuplicatingVisitor.prototype.visitFactorialExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -269,7 +269,7 @@ DuplicatingVisitor.prototype.visitFactorialExpression = function(tree) {
 
 // function: IDENTIFIER
 DuplicatingVisitor.prototype.visitFunction = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     copy.identifier = tree.identifier;
     this.result = copy;
 };
@@ -277,7 +277,7 @@ DuplicatingVisitor.prototype.visitFunction = function(tree) {
 
 // functionExpression: function parameters
 DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -288,7 +288,7 @@ DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 DuplicatingVisitor.prototype.visitHandleClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -300,7 +300,7 @@ DuplicatingVisitor.prototype.visitHandleClause = function(tree) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 DuplicatingVisitor.prototype.visitIfClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -312,7 +312,7 @@ DuplicatingVisitor.prototype.visitIfClause = function(tree) {
 
 // inversionExpression: ('-' | '*') expression
 DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     copy.operator = tree.operator;
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
@@ -322,7 +322,7 @@ DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
 
 // indices: '[' list ']'
 DuplicatingVisitor.prototype.visitIndices = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -352,7 +352,7 @@ DuplicatingVisitor.prototype.visitList = function(list) {
 
 // logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
 DuplicatingVisitor.prototype.visitLogicalExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     copy.operator = tree.operator;
@@ -364,7 +364,7 @@ DuplicatingVisitor.prototype.visitLogicalExpression = function(tree) {
 
 // magnitudeExpression: '|' expression '|'
 DuplicatingVisitor.prototype.visitMagnitudeExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -373,7 +373,7 @@ DuplicatingVisitor.prototype.visitMagnitudeExpression = function(tree) {
 
 // message: IDENTIFIER
 DuplicatingVisitor.prototype.visitMessage = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     copy.identifier = tree.identifier;
     this.result = copy;
 };
@@ -381,7 +381,7 @@ DuplicatingVisitor.prototype.visitMessage = function(tree) {
 
 // messageExpression: expression '.' message parameters
 DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -462,7 +462,7 @@ DuplicatingVisitor.prototype.visitPercent = function(percent) {
 
 // precedenceExpression: '(' expression ')'
 DuplicatingVisitor.prototype.visitPrecedenceExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -485,7 +485,7 @@ DuplicatingVisitor.prototype.visitProbability = function(probability) {
 //     EOL (statement EOL)* |
 //     {empty procedure}
 DuplicatingVisitor.prototype.visitProcedure = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -497,7 +497,7 @@ DuplicatingVisitor.prototype.visitProcedure = function(tree) {
 
 // publishClause: 'publish' expression
 DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -527,7 +527,7 @@ DuplicatingVisitor.prototype.visitQueue = function(queue) {
 
 // queueClause: 'queue' expression 'on' expression
 DuplicatingVisitor.prototype.visitQueueClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -576,7 +576,7 @@ DuplicatingVisitor.prototype.visitReserved = function(reserved) {
 
 // returnClause: 'return' expression?
 DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     if (!tree.isEmpty()) {
         tree.getChild(1).acceptVisitor(this);
         copy.addChild(this.result);
@@ -587,7 +587,7 @@ DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
 
 // saveClause: 'save' expression 'to' expression
 DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -598,7 +598,7 @@ DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -666,7 +666,7 @@ DuplicatingVisitor.prototype.visitStack = function(stack) {
 
 // statement: mainClause handleClause*
 DuplicatingVisitor.prototype.visitStatement = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
@@ -678,7 +678,7 @@ DuplicatingVisitor.prototype.visitStatement = function(tree) {
 
 // subcomponent: variable indices
 DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -689,7 +689,7 @@ DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
 
 // subcomponentExpression: expression indices
 DuplicatingVisitor.prototype.visitSubcomponentExpression = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -733,7 +733,7 @@ DuplicatingVisitor.prototype.visitText = function(text) {
 
 // throwClause: 'throw' expression
 DuplicatingVisitor.prototype.visitThrowClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
@@ -742,7 +742,7 @@ DuplicatingVisitor.prototype.visitThrowClause = function(tree) {
 
 // variable: IDENTIFIER
 DuplicatingVisitor.prototype.visitVariable = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     copy.identifier = tree.identifier;
     this.result = copy;
 };
@@ -761,7 +761,7 @@ DuplicatingVisitor.prototype.visitVersion = function(version) {
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 DuplicatingVisitor.prototype.visitWaitClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -772,7 +772,7 @@ DuplicatingVisitor.prototype.visitWaitClause = function(tree) {
 
 // whileClause: 'while' expression 'do' block
 DuplicatingVisitor.prototype.visitWhileClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
@@ -783,7 +783,7 @@ DuplicatingVisitor.prototype.visitWhileClause = function(tree) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 DuplicatingVisitor.prototype.visitWithClause = function(tree) {
-    const copy = new tree.constructor(tree.getTypeId());
+    const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);

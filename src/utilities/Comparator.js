@@ -13,7 +13,6 @@
  * This component class implements a comparator that can be used to compare any two components
  * for their natural ordering.
  */
-const types = require('./Types');
 
 
 // PUBLIC CONSTRUCTORS

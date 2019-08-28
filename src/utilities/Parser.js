@@ -166,7 +166,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.ARITHMETIC_EXPRESSION);
+    const tree = new composites.Tree('$ArithmeticExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -229,7 +229,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.procedure().accept(this);
     const procedure = this.result;
-    const tree = new composites.Tree(utilities.types.BLOCK);
+    const tree = new composites.Tree('$Block');
     tree.addChild(procedure);
     this.result = tree;
 };
@@ -237,7 +237,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.BREAK_CLAUSE);
+    const tree = new composites.Tree('$BreakClause');
     this.result = tree;
 };
 
@@ -264,7 +264,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 
 // checkoutClause: 'checkout' recipient 'from' expression
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.CHECKOUT_CLAUSE);
+    const tree = new composites.Tree('$CheckoutClause');
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -275,7 +275,7 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 
 // commitClause: 'commit' expression 'to' expression
 ParsingVisitor.prototype.visitCommitClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.COMMIT_CLAUSE);
+    const tree = new composites.Tree('$CommitClause');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -287,7 +287,7 @@ ParsingVisitor.prototype.visitCommitClause = function(ctx) {
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.COMPARISON_EXPRESSION);
+    const tree = new composites.Tree('$ComparisonExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -300,7 +300,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 // complementExpression: 'not' expression
 ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.COMPLEMENT_EXPRESSION);
+    const tree = new composites.Tree('$ComplementExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -327,7 +327,7 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 
 // concatenationExpression: expression '&' expression
 ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.CONCATENATION_EXPRESSION);
+    const tree = new composites.Tree('$ConcatenationExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -339,14 +339,14 @@ ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
 
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.CONTINUE_CLAUSE);
+    const tree = new composites.Tree('$ContinueClause');
     this.result = tree;
 };
 
 
 // defaultExpression: expression '?' expression
 ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.DEFAULT_EXPRESSION);
+    const tree = new composites.Tree('$DefaultExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -358,7 +358,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // dereferenceExpression: '@' expression
 ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.DEREFERENCE_EXPRESSION);
+    const tree = new composites.Tree('$DereferenceExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -367,7 +367,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // discardClause: 'discard' expression
 ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.DISCARD_CLAUSE);
+    const tree = new composites.Tree('$DiscardClause');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -412,7 +412,7 @@ ParsingVisitor.prototype.visitEmptyProcedure = function(ctx) {
 
 // evaluateClause: (recipient ':=')? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.EVALUATE_CLAUSE);
+    const tree = new composites.Tree('$EvaluateClause');
     const recipient = ctx.recipient();
     if (recipient) {
         recipient.accept(this);
@@ -426,7 +426,7 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 // exponentialExpression: <assoc=right> expression '^' expression
 ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.EXPONENTIAL_EXPRESSION);
+    const tree = new composites.Tree('$ExponentialExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -438,7 +438,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.FACTORIAL_EXPRESSION);
+    const tree = new composites.Tree('$FactorialExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -447,7 +447,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 // functionExpression: function parameters
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.FUNCTION_EXPRESSION);
+    const tree = new composites.Tree('$FunctionExpression');
     ctx.funxtion().accept(this);
     tree.addChild(this.result);
     ctx.parameters().accept(this);
@@ -459,7 +459,7 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 // funxtion: IDENTIFIER
 ParsingVisitor.prototype.visitFunxtion = function(ctx) {
     const identifier = ctx.getText();
-    const funxtion = new composites.Tree(utilities.types.FUNCTION);
+    const funxtion = new composites.Tree('$Function');
     funxtion.identifier = identifier;
     this.result = funxtion;
 };
@@ -467,7 +467,7 @@ ParsingVisitor.prototype.visitFunxtion = function(ctx) {
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.HANDLE_CLAUSE);
+    const tree = new composites.Tree('$HandleClause');
     ctx.symbol().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -480,7 +480,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.IF_CLAUSE);
+    const tree = new composites.Tree('$IfClause');
     const expressions = ctx.expression();
     const blocks = ctx.block();
     const hasElseBlock = blocks.length > expressions.length;
@@ -506,7 +506,7 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 
 // indices: '[' list ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
-    const tree = new composites.Tree(utilities.types.INDICES);
+    const tree = new composites.Tree('$Indices');
     ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -536,7 +536,7 @@ ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
 
 // inversionExpression: op=('-' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.INVERSION_EXPRESSION);
+    const tree = new composites.Tree('$InversionExpression');
     tree.operator = ctx.op.text;
     ctx.expression().accept(this);
     tree.addChild(this.result);
@@ -586,7 +586,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 // logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.LOGICAL_EXPRESSION);
+    const tree = new composites.Tree('$LogicalExpression');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -599,7 +599,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 // magnitudeExpression: '|' expression '|'
 ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.MAGNITUDE_EXPRESSION);
+    const tree = new composites.Tree('$MagnitudeExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -609,7 +609,7 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
     const identifier = ctx.getText();
-    const message = new composites.Tree(utilities.types.MESSAGE);
+    const message = new composites.Tree('$Message');
     message.identifier = identifier;
     this.result = message;
 };
@@ -617,7 +617,7 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 
 // messageExpression: expression '.' message parameters
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.MESSAGE_EXPRESSION);
+    const tree = new composites.Tree('$MessageExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.message().accept(this);
@@ -743,7 +743,7 @@ ParsingVisitor.prototype.visitPercent = function(ctx) {
 
 // precedenceExpression: '(' expression ')'
 ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.PRECEDENCE_EXPRESSION);
+    const tree = new composites.Tree('$PrecedenceExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -774,7 +774,7 @@ ParsingVisitor.prototype.visitProbability = function(ctx) {
 //     EOL (statement EOL)* |
 //     /*empty statements*/
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    const tree = new composites.Tree(utilities.types.PROCEDURE);
+    const tree = new composites.Tree('$Procedure');
     if (ctx.statement) {
         const statements = ctx.statement();
         this.depth++;
@@ -790,7 +790,7 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
 
 // publishClause: 'publish' expression
 ParsingVisitor.prototype.visitPublishClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.PUBLISH_CLAUSE);
+    const tree = new composites.Tree('$PublishClause');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -799,7 +799,7 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 
 // queueClause: 'queue' expression 'on' expression
 ParsingVisitor.prototype.visitQueueClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.QUEUE_CLAUSE);
+    const tree = new composites.Tree('$QueueClause');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -848,7 +848,7 @@ ParsingVisitor.prototype.visitReserved = function(ctx) {
 
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.RETURN_CLAUSE);
+    const tree = new composites.Tree('$ReturnClause');
     const expression = ctx.expression();
     if (expression) {
         expression.accept(this);
@@ -860,7 +860,7 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 
 // saveClause: 'save' expression 'to' expression
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.SAVE_CLAUSE);
+    const tree = new composites.Tree('$SaveClause');
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addChild(this.result);
@@ -872,7 +872,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.SELECT_CLAUSE);
+    const tree = new composites.Tree('$SelectClause');
     var expressions = ctx.expression();
     const selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -906,7 +906,7 @@ ParsingVisitor.prototype.visitSource = function(ctx) {
 
 // statement: mainClause handleClause*
 ParsingVisitor.prototype.visitStatement = function(ctx) {
-    const tree = new composites.Tree(utilities.types.STATEMENT);
+    const tree = new composites.Tree('$Statement');
     ctx.mainClause().accept(this);
     tree.addChild(this.result);
     const handleClauses = ctx.handleClause();
@@ -926,7 +926,7 @@ ParsingVisitor.prototype.visitStructure = function(ctx) {
 
 // subcomponent: variable indices
 ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
-    const tree = new composites.Tree(utilities.types.SUBCOMPONENT);
+    const tree = new composites.Tree('$Subcomponent');
     ctx.variable().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -937,7 +937,7 @@ ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
 
 // subcomponentExpression: expression indices
 ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
-    const tree = new composites.Tree(utilities.types.SUBCOMPONENT_EXPRESSION);
+    const tree = new composites.Tree('$SubcomponentExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.indices().accept(this);
@@ -983,7 +983,7 @@ ParsingVisitor.prototype.visitText = function(ctx) {
 
 // throwClause: 'throw' expression
 ParsingVisitor.prototype.visitThrowClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.THROW_CLAUSE);
+    const tree = new composites.Tree('$ThrowClause');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
@@ -993,7 +993,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
     const identifier = ctx.getText();
-    const variable = new composites.Tree(utilities.types.VARIABLE);
+    const variable = new composites.Tree('$Variable');
     variable.identifier = identifier;
     this.result = variable;
 };
@@ -1014,7 +1014,7 @@ ParsingVisitor.prototype.visitVersion = function(ctx) {
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 ParsingVisitor.prototype.visitWaitClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.WAIT_CLAUSE);
+    const tree = new composites.Tree('$WaitClause');
     ctx.recipient().accept(this);
     tree.addChild(this.result);
     ctx.expression().accept(this);
@@ -1025,7 +1025,7 @@ ParsingVisitor.prototype.visitWaitClause = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.WHILE_CLAUSE);
+    const tree = new composites.Tree('$WhileClause');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.block().accept(this);
@@ -1036,7 +1036,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    const tree = new composites.Tree(utilities.types.WITH_CLAUSE);
+    const tree = new composites.Tree('$WithClause');
     const symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);

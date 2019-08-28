@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters) {
-    abstractions.Element.call(this, utilities.types.PROBABILITY, parameters);
+    abstractions.Element.call(this, '$Probability', parameters);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

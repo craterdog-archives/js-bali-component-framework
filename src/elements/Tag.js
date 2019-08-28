@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @returns {Tag} The new tag element.
  */
 function Tag(value, parameters) {
-    abstractions.Element.call(this, utilities.types.TAG, parameters);
+    abstractions.Element.call(this, '$Tag', parameters);
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
     switch (typeof value) {

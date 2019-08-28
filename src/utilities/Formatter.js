@@ -15,7 +15,6 @@
  * by the <code>Parser</code> class and generates a canonical version of
  * the corresponding Bali Document Notation™ formatted code string.
  */
-const types = require('./Types');
 const codex = require('./Codex');
 const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../composites/Exception').Exception;

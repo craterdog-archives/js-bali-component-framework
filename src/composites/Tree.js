@@ -17,9 +17,8 @@
  * are used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('./Exception');
+const Exception = require('./Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -32,12 +31,12 @@ const Exception = require('./Exception');
  */
 function Tree(type) {
     abstractions.Composite.call(this, type);
-    if (!utilities.types.isProcedural(type)) {
+    if (!this.isProcedural()) {
         throw new Exception({
             $module: '/bali/composites/Tree',
             $procedure: '$Tree',
             $exception: '$invalidParameter',
-            $parameter: utilities.types.symbolForType(type),
+            $parameter: type,
             $text: 'An invalid tree type was passed to the constructor.'
         });
     }
@@ -81,136 +80,6 @@ exports.Tree = Tree;
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
-    const typeId = this.getTypeId();
-    switch(typeId) {
-        case utilities.types.ARITHMETIC_EXPRESSION:
-            visitor.visitArithmeticExpression(this);
-            break;
-        case utilities.types.BLOCK:
-            visitor.visitBlock(this);
-            break;
-        case utilities.types.BREAK_CLAUSE:
-            visitor.visitBreakClause(this);
-            break;
-        case utilities.types.CHECKOUT_CLAUSE:
-            visitor.visitCheckoutClause(this);
-            break;
-        case utilities.types.COMMIT_CLAUSE:
-            visitor.visitCommitClause(this);
-            break;
-        case utilities.types.COMPARISON_EXPRESSION:
-            visitor.visitComparisonExpression(this);
-            break;
-        case utilities.types.COMPLEMENT_EXPRESSION:
-            visitor.visitComplementExpression(this);
-            break;
-        case utilities.types.CONCATENATION_EXPRESSION:
-            visitor.visitConcatenationExpression(this);
-            break;
-        case utilities.types.CONTINUE_CLAUSE:
-            visitor.visitContinueClause(this);
-            break;
-        case utilities.types.DEFAULT_EXPRESSION:
-            visitor.visitDefaultExpression(this);
-            break;
-        case utilities.types.DEREFERENCE_EXPRESSION:
-            visitor.visitDereferenceExpression(this);
-            break;
-        case utilities.types.DISCARD_CLAUSE:
-            visitor.visitDiscardClause(this);
-            break;
-        case utilities.types.EVALUATE_CLAUSE:
-            visitor.visitEvaluateClause(this);
-            break;
-        case utilities.types.EXPONENTIAL_EXPRESSION:
-            visitor.visitExponentialExpression(this);
-            break;
-        case utilities.types.FACTORIAL_EXPRESSION:
-            visitor.visitFactorialExpression(this);
-            break;
-        case utilities.types.FUNCTION:
-            visitor.visitFunction(this);
-            break;
-        case utilities.types.FUNCTION_EXPRESSION:
-            visitor.visitFunctionExpression(this);
-            break;
-        case utilities.types.HANDLE_CLAUSE:
-            visitor.visitHandleClause(this);
-            break;
-        case utilities.types.IF_CLAUSE:
-            visitor.visitIfClause(this);
-            break;
-        case utilities.types.INDICES:
-            visitor.visitIndices(this);
-            break;
-        case utilities.types.INVERSION_EXPRESSION:
-            visitor.visitInversionExpression(this);
-            break;
-        case utilities.types.LOGICAL_EXPRESSION:
-            visitor.visitLogicalExpression(this);
-            break;
-        case utilities.types.MAGNITUDE_EXPRESSION:
-            visitor.visitMagnitudeExpression(this);
-            break;
-        case utilities.types.MESSAGE:
-            visitor.visitMessage(this);
-            break;
-        case utilities.types.MESSAGE_EXPRESSION:
-            visitor.visitMessageExpression(this);
-            break;
-        case utilities.types.PRECEDENCE_EXPRESSION:
-            visitor.visitPrecedenceExpression(this);
-            break;
-        case utilities.types.PROCEDURE:
-            visitor.visitProcedure(this);
-            break;
-        case utilities.types.PUBLISH_CLAUSE:
-            visitor.visitPublishClause(this);
-            break;
-        case utilities.types.QUEUE_CLAUSE:
-            visitor.visitQueueClause(this);
-            break;
-        case utilities.types.RETURN_CLAUSE:
-            visitor.visitReturnClause(this);
-            break;
-        case utilities.types.SAVE_CLAUSE:
-            visitor.visitSaveClause(this);
-            break;
-        case utilities.types.SELECT_CLAUSE:
-            visitor.visitSelectClause(this);
-            break;
-        case utilities.types.STATEMENT:
-            visitor.visitStatement(this);
-            break;
-        case utilities.types.SUBCOMPONENT:
-            visitor.visitSubcomponent(this);
-            break;
-        case utilities.types.SUBCOMPONENT_EXPRESSION:
-            visitor.visitSubcomponentExpression(this);
-            break;
-        case utilities.types.THROW_CLAUSE:
-            visitor.visitThrowClause(this);
-            break;
-        case utilities.types.VARIABLE:
-            visitor.visitVariable(this);
-            break;
-        case utilities.types.WAIT_CLAUSE:
-            visitor.visitWaitClause(this);
-            break;
-        case utilities.types.WHILE_CLAUSE:
-            visitor.visitWhileClause(this);
-            break;
-        case utilities.types.WITH_CLAUSE:
-            visitor.visitWithClause(this);
-            break;
-        default:
-            throw new Exception({
-                $module: '/bali/composites/Tree',
-                $procedure: '$acceptVisitor',
-                $exception: '$invalidType',
-                $type: utilities.types.symbolForType(type),
-                $tree: this,
-                $text: 'Attempted to visit an invalid tree node.'
-            });
-    }
+    const functionName = 'visit' + this.getType().slice(1);
+    visitor[functionName](this);
 };

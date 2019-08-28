@@ -13,7 +13,6 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -27,7 +26,7 @@ const abstractions = require('../abstractions');
  * @returns {Text} The new text string.
  */
 function Text(value, parameters) {
-    abstractions.Element.call(this, utilities.types.TEXT, parameters);
+    abstractions.Element.call(this, '$Text', parameters);
     value = value || '';  // default value
 
     // since this element is immutable the value must be read-only

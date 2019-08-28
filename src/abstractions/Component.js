@@ -24,13 +24,13 @@ const Exception = require('../composites/Exception').Exception;
  * This constructor creates a new component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Number} typeId The type identifier for the component.
+ * @param {String} type The type string for the component.
  * @param {Parameters} parameters Optional parameters used to parameterize this component. 
  * @returns {Component} The new component.
  */
-function Component(typeId, parameters) {
+function Component(type, parameters) {
     parameters = parameters || undefined;  // normalize nulls to undefined
-    this.getTypeId = function() { return typeId; };
+    this.getType = function() { return type; };
     this.getParameters = function() { return parameters; };
     this.setParameters = function(newParameters) { parameters = newParameters; };
     return this;
@@ -48,7 +48,7 @@ exports.Component = Component;
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Component.prototype.isType = function(type) {
-    return utilities.types.symbolForType(this.getTypeId()) === type;
+    return this.getType() === type;
 };
 
 
@@ -164,7 +164,51 @@ Component.prototype.isChainable = function() {
  * @returns {Boolean} Whether or not this component is procedural.
  */
 Component.prototype.isProcedural = function() {
-    return utilities.types.isProcedural(this.getTypeId());
+    switch (this.getType()) {
+        case '$ArithmeticExpression':
+        case '$Block':
+        case '$BreakClause':
+        case '$CheckoutClause':
+        case '$CommitClause':
+        case '$ComparisonExpression':
+        case '$ComplementExpression':
+        case '$ConcatenationExpression':
+        case '$ContinueClause':
+        case '$DefaultExpression':
+        case '$DereferenceExpression':
+        case '$DiscardClause':
+        case '$EvaluateClause':
+        case '$ExponentialExpression':
+        case '$FactorialExpression':
+        case '$Function':
+        case '$FunctionExpression':
+        case '$HandleClause':
+        case '$IfClause':
+        case '$Indices':
+        case '$InversionExpression':
+        case '$LogicalExpression':
+        case '$MagnitudeExpression':
+        case '$Message':
+        case '$MessageExpression':
+        case '$PrecedenceExpression':
+        case '$Procedure':
+        case '$PublishClause':
+        case '$QueueClause':
+        case '$ReturnClause':
+        case '$SaveClause':
+        case '$SelectClause':
+        case '$Statement':
+        case '$Subcomponent':
+        case '$SubcomponentExpression':
+        case '$ThrowClause':
+        case '$Variable':
+        case '$WaitClause':
+        case '$WhileClause':
+        case '$WithClause':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
@@ -275,7 +319,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is not an actual bali.Pattern element then the pattern
      * must be the same type as this component to have a chance of matching.
      */
-    if (this.getTypeId() !== pattern.getTypeId()) {
+    if (this.getType() !== pattern.getType()) {
         return false;
     }
     /* Case 3

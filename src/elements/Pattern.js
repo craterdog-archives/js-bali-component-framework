@@ -12,7 +12,6 @@
 /*
  * This element class captures the state and methods associated with a pattern element.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -26,7 +25,7 @@ const abstractions = require('../abstractions');
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters) {
-    abstractions.Element.call(this, utilities.types.PATTERN, parameters);
+    abstractions.Element.call(this, '$Pattern', parameters);
     value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 

@@ -14,7 +14,6 @@
  * This element class captures the state and methods associated with a
  * reserved identifier.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -28,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Reserved} The new reserved identifier.
  */
 function Reserved(value, parameters) {
-    abstractions.Element.call(this, utilities.types.RESERVED, parameters);
+    abstractions.Element.call(this, '$Reserved', parameters);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

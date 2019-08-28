@@ -38,7 +38,7 @@ const composites = require('../composites');
  * @returns {List} The new list.
  */
 function List(parameters) {
-    abstractions.Collection.call(this, utilities.types.LIST, parameters);
+    abstractions.Collection.call(this, '$List', parameters);
 
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];

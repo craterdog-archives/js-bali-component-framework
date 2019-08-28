@@ -13,7 +13,6 @@
  * This collection class implements a stack (LIFO) data structure.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
@@ -40,7 +39,7 @@ Array.prototype.peek = function() {
 function Stack(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
     if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Stack/v1');
-    abstractions.Collection.call(this, utilities.types.STACK, parameters);
+    abstractions.Collection.call(this, '$Stack', parameters);
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor

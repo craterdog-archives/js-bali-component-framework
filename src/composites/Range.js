@@ -13,10 +13,9 @@
  * This collection class implements a data structure that defines a range of items. The
  * structure is static once the first and last items in the range have been defined.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const elements = require('../elements');
-const Exception = require('./Exception');
+const Exception = require('./Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -31,7 +30,7 @@ const Exception = require('./Exception');
  * @returns {Range} The new range.
  */
 function Range(first, last, parameters) {
-    abstractions.Composite.call(this, utilities.types.RANGE, parameters);
+    abstractions.Composite.call(this, '$Range', parameters);
 
     // the range is immutable so the collection is private and the indices must be read-only
     var firstIndex;

@@ -14,7 +14,6 @@
  * This element class captures the state and methods associated with a
  * name string element.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -28,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Symbol} The new name string element.
  */
 function Name(value, parameters) {
-    abstractions.Element.call(this, utilities.types.NAME, parameters);
+    abstractions.Element.call(this, '$Name', parameters);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value.slice(0); };  // return a copy

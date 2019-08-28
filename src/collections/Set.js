@@ -33,7 +33,7 @@ const Catalog = require('./Catalog').Catalog;
 function Set(parameters, comparator) {
     parameters = parameters || new composites.Parameters(new Catalog());
     if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Set/v1');
-    abstractions.Collection.call(this, utilities.types.SET, parameters);
+    abstractions.Collection.call(this, '$Set', parameters);
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor

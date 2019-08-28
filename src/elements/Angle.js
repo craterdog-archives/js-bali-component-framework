@@ -28,7 +28,7 @@ const formatter = new utilities.Formatter();
  * @returns {Angle} The new angle element.
  */
 function Angle(value, parameters) {
-    abstractions.Element.call(this, utilities.types.ANGLE, parameters);
+    abstractions.Element.call(this, '$Angle', parameters);
 
     // convert the value if necessary
     if (parameters) {

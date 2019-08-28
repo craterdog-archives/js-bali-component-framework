@@ -15,7 +15,6 @@
  * in time.
  */
 const moment = require('moment');
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
 
@@ -43,7 +42,7 @@ const FORMATS = [
  * @returns {Moment} The new moment in time.
  */
 function Moment(value, parameters) {
-    abstractions.Element.call(this, utilities.types.MOMENT, parameters);
+    abstractions.Element.call(this, '$Moment', parameters);
     value = value || undefined;
     var format;
     if (!value) {

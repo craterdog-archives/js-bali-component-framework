@@ -13,7 +13,6 @@
  * This composite class implements a source code component that can be assigned as
  * the value of an association.
  */
-const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -28,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Source} A new source code component.
  */
 function Source(procedure, parameters) {
-    abstractions.Composite.call(this, utilities.types.SOURCE, parameters);
+    abstractions.Composite.call(this, '$Source', parameters);
     this.getProcedure = function() { return procedure; };
     return this;
 }
