@@ -996,66 +996,14 @@ const tree = function(type) {
 exports.tree = tree;
 
 /**
- * this function returns a string containing the Bali name for the type of the specified value.
+ * This function returns a string containing the Bali name for the type of the specified value.
  * 
  * @param {Any} value The value to be evaluated. 
  * @returns {String} A string containing the Bali name for the type of the specified value.
  */
 const type = function(value) {
-    // handle null legacy
-    if (value === null) value = undefined;  // null is of type 'object' so undefine it!
-
-    // handle primitive types
-    if (typeof value === 'undefined') return '/javascript/Undefined';
-    if (typeof value === 'boolean') return '/javascript/Boolean';
-    if (typeof value === 'number') return '/javascript/Number';
-    if (typeof value === 'bigint') return '/javascript/BigInt';
-    if (typeof value === 'string') return '/javascript/String';
-    if (typeof value === 'symbol') return '/javascript/Symbol';
-    if (typeof value === 'function') return '/javascript/Function';
-
-    // handle common object types
-    if (value instanceof Array) return '/javascript/Array';
-    if (value instanceof Date) return '/javascript/Date';
-    if (value instanceof Error && !value.isComponent) return '/javascript/Error';
-    if (value instanceof Promise) return '/javascript/Promise';
-    if (value instanceof RegExp) return '/javascript/RegExp';
-    if (value instanceof Buffer) return '/nodejs/Buffer';
-    if (value instanceof URL) return '/nodejs/URL';
-    if (!value.isComponent) return '/javascript/Object';
-
-    // handle Bali component types
-    if (value.isType('$Angle')) return '/bali/elements/Angle';
-    if (value.isType('$Association')) return '/bali/composites/Association';
-    if (value.isType('$Binary')) return '/bali/elements/Binary';
-    if (value.isType('$Catalog')) return '/bali/collections/Catalog';
-    if (value.isType('$Duration')) return '/bali/elements/Duration';
-    if (value.isType('$Exception')) return '/bali/composites/Exception';
-    if (value.isType('$Iterator')) return '/bali/utilities/Iterator';
-    if (value.isType('$List')) return '/bali/collections/List';
-    if (value.isType('$Moment')) return '/bali/elements/Moment';
-    if (value.isType('$Name')) return '/bali/elements/Name';
-    if (value.isType('$Number')) return '/bali/elements/Number';
-    if (value.isType('$Parameters')) return '/bali/composites/Parameters';
-    if (value.isType('$Pattern')) return '/bali/elements/Pattern';
-    if (value.isType('$Percent')) return '/bali/elements/Percent';
-    if (value.isType('$Probability')) return '/bali/elements/Probability';
-    if (value.isType('$Queue')) return '/bali/collections/Queue';
-    if (value.isType('$Range')) return '/bali/composites/Range';
-    if (value.isType('$Reference')) return '/bali/elements/Reference';
-    if (value.isType('$Reserved')) return '/bali/elements/Reserved';
-    if (value.isType('$Set')) return '/bali/collections/Set';
-    if (value.isType('$Source')) return '/bali/composites/Source';
-    if (value.isType('$Stack')) return '/bali/collections/Stack';
-    if (value.isType('$Symbol')) return '/bali/elements/Symbol';
-    if (value.isType('$Tag')) return '/bali/elements/Tag';
-    if (value.isType('$Text')) return '/bali/elements/Text';
-    if (value.isProcedural()) return '/bali/composites/Tree';
-    if (value.isType('$Version')) return '/bali/elements/Version';
-
-    // handle anything else
-    return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
-};
+    return abstractions.Component.type(value);
+}
 exports.type = type;
 
 /**
@@ -1070,33 +1018,9 @@ exports.type = type;
  * value.
  */
 const validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
-    const actualType = type(parameterValue);
-    if (allowedTypes.indexOf(actualType) > -1) return;
-    if (parameterValue && parameterValue.isComponent) {
-        if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && parameterValue.isElement()) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && parameterValue.isComposite()) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && parameterValue.isCollection()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && parameterValue.isLogicial()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && parameterValue.isScalable()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Numerical') > -1 && parameterValue.isNumerical()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && parameterValue.isLiteral()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && parameterValue.isSequential()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && parameterValue.isChainable()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && parameterValue.isProcedural()) return;
-    }
-    throw new composites.Exception({  // must not be exception() to avoid infinite recursion
-        $module: moduleName,
-        $procedure: procedureName,
-        $parameter: parameterName,
-        $exception: '$parameterType',
-        $expected: allowedTypes,
-        $actual: actualType,
-        $text: 'An invalid parameter type was passed to the procedure.'
-    });
-};
+    return abstractions.Component.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes);
+}
 exports.validate = validate;
-
 
 /**
  * This function creates a new version element using the specified value.
