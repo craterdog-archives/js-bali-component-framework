@@ -45,9 +45,9 @@ function Range(first, last, parameters) {
             lastIndex = collection.getIndex(last);
         }
     } else {
-        // the first and last items are indices into the integers
-        firstIndex = (first.isNumerical && first.isNumerical()) ? first.toNumber() : first;
-        lastIndex = (last.isNumerical && last.isNumerical()) ? last.toNumber() : last;
+        // the first and last items are indices into the range of integers
+        firstIndex = (first.isComponent && first.isNumerical()) ? first.toNumber() : first;
+        lastIndex = (last.isComponent && last.isNumerical()) ? last.toNumber() : last;
     }
 
     // to protect the attributes the methods are defined in the constructor

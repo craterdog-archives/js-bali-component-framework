@@ -73,11 +73,13 @@ function Catalog(parameters) {
 
     this.getValues = function(keys) {
         const values = new List();
-        const iterator = keys.getIterator();
-        while (iterator.hasNext()) {
-            const key = iterator.getNext();
-            const value = this.getValue(key);
-            if (value !== undefined) values.addItem(value);
+        if (keys.getIterator) {
+            const iterator = keys.getIterator();
+            while (iterator.hasNext()) {
+                const key = iterator.getNext();
+                const value = this.getValue(key);
+                if (value !== undefined) values.addItem(value);
+            }
         }
         return values;
     };
@@ -98,10 +100,12 @@ function Catalog(parameters) {
     };
 
     this.setValues = function(associations) {
-        const iterator = associations.getIterator();
-        while (iterator.hasNext()) {
-            const association = iterator.getNext();
-            this.setValue(association.getKey(), association.getValue());
+        if (associations.getIterator) {
+            const iterator = associations.getIterator();
+            while (iterator.hasNext()) {
+                const association = iterator.getNext();
+                this.setValue(association.getKey(), association.getValue());
+            }
         }
     };
     
@@ -119,11 +123,13 @@ function Catalog(parameters) {
 
     this.removeValues = function(keys) {
         const values = new List();
-        const iterator = keys.getIterator();
-        while (iterator.hasNext()) {
-            const key = iterator.getNext();
-            const value = this.removeValue(key);
-            if (value !== undefined) values.addItem(value);
+        if (keys.getIterator) {
+            const iterator = keys.getIterator();
+            while (iterator.hasNext()) {
+                const key = iterator.getNext();
+                const value = this.removeValue(key);
+                if (value !== undefined) values.addItem(value);
+            }
         }
         return values;
     };
