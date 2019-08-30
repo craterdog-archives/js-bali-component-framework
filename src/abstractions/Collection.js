@@ -107,11 +107,13 @@ Collection.prototype.getItem = function(index) {
  */
 Collection.prototype.getItems = function(range) {
     const items = new this.constructor(this.getParameters());
-    const iterator = range.getIterator();
-    while (iterator.hasNext()) {
-        const index = iterator.getNext();
-        const item = this.getItem(index);
-        items.addItem(item);
+    if (range.getIterator) {
+        const iterator = range.getIterator();
+        while (iterator.hasNext()) {
+            const index = iterator.getNext();
+            const item = this.getItem(index);
+            items.addItem(item);
+        }
     }
     return items;
 };
@@ -148,7 +150,7 @@ Collection.prototype.addItems = function(items) {
                 count++;
             }
         }, this);
-    } else {
+    } else if (items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
@@ -183,11 +185,13 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     var result = false;
-    const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        result = this.containsItem(item);
-        if (result) break;
+    if (items.getIterator) {
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            result = this.containsItem(item);
+            if (result) break;
+        }
     }
     return result;
 };
@@ -202,11 +206,13 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     var result = false;
-    const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        result = this.containsItem(item);
-        if (!result) break;
+    if (items.getIterator) {
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            result = this.containsItem(item);
+            if (!result) break;
+        }
     }
     return result;
 };

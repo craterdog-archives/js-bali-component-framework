@@ -607,20 +607,22 @@ number.sum = elements.Number.sum;
  * the object is an actual object the parameters will be stored as a Bali catalog
  * containing the key-value pair for each parameter.
  * 
- * @param {Object} object A JavaScript object containing the parameter values.
+ * @param {Object} sequence A JavaScript object containing the parameter values.
  * @returns {Parameters} The resulting Bali parameters component.
  */
-const parameters = function(object) {
-    validateType('/bali/composites/Parameters', '$parameters', '$object', object, [
+const parameters = function(sequence) {
+    validateType('/bali/composites/Parameters', '$parameters', '$sequence', sequence, [
         '/javascript/Array',
-        '/javascript/Object'
+        '/javascript/Object',
+        '/bali/collections/List',
+        '/bali/collections/Catalog'
     ]);
-    if (Array.isArray(object)) {
-        object = list(object);
-    } else {
-        object = catalog(object);
+    if (Array.isArray(sequence)) {
+        sequence = list(sequence);
+    } else if (!sequence.isComponent) {
+        sequence = catalog(sequence);
     }
-    return new composites.Parameters(object);
+    return new composites.Parameters(sequence);
 };
 exports.parameters = parameters;
 
