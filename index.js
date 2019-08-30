@@ -1018,7 +1018,17 @@ exports.type = type;
  * value.
  */
 const validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
-    return abstractions.Component.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes);
+    // can't use validate to validate its own parameters so do it manually
+    if (typeof moduleName === 'string' && typeof procedureName === 'string' &&
+        typeof parameterName === 'string' && Array.isArray(allowedTypes)) {
+            return abstractions.Component.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes);
+    }
+    throw exception({
+        $module: '/bali/abstractions/Component',
+        $procedure: '$validate',
+        $exception: '$invalidParameter',
+        $text: 'An invalid parameter was passed as part of the validation attempt.'
+    });
 }
 exports.validate = validate;
 

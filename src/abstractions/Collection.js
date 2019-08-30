@@ -39,7 +39,7 @@ exports.Collection = Collection;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component is a collection.
+ * This method determines whether or not this component is a collection.
  * 
  * @returns {Boolean} Whether or not this component is a collection.
  */
@@ -71,6 +71,14 @@ Collection.prototype.acceptVisitor = function(visitor) {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
+    this.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
+        '/javascript/Boolean',
+        '/javascript/Number',
+        '/javascript/String',
+        '/javascript/Array',
+        '/javascript/Object',
+        '/bali/abstractions/Component'
+    ]);
     var index = 0;
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
@@ -106,6 +114,10 @@ Collection.prototype.getItem = function(index) {
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
+    this.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
+        '/javascript/Undefined',
+        '/bali/composites/Range'
+    ]);
     const items = new this.constructor(this.getParameters());
     if (range.getIterator) {
         const iterator = range.getIterator();
@@ -139,10 +151,15 @@ Collection.prototype.addItem = function(item) {
 /**
  * This method adds a collection of new items to this collection.
  *
- * @param {Array|Collection} items The collection of new items to be added.
+ * @param {Array|Sequential} items The collection of new items to be added.
  * @returns {Number} The number of items that were actually added to this collection.
  */
 Collection.prototype.addItems = function(items) {
+    this.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
+        '/javascript/Undefined',
+        '/javascript/Array',
+        '/bali/interfaces/Sequential'
+    ]);
     var count = 0;
     if (Array.isArray(items)) {
         items.forEach(function(item) {
@@ -170,6 +187,7 @@ Collection.prototype.addItems = function(items) {
  * @returns {Boolean} Whether or not the specified item is contained in this collection.
  */
 Collection.prototype.containsItem = function(item) {
+    // validated in getIndex()
     const index = this.getIndex(item);
     const result = index > 0;
     return result;
@@ -180,12 +198,22 @@ Collection.prototype.containsItem = function(item) {
  * This method determines whether any of the specified items are contained in
  * this collection.
  *
- * @param {Collection} items The items to be checked for in this collection.
+ * @param {Array|Sequential} items The items to be checked for in this collection.
  * @returns {Boolean} Whether or not any of the specified items are contained in this collection.
  */
 Collection.prototype.containsAny = function(items) {
+    this.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
+        '/javascript/Undefined',
+        '/javascript/Array',
+        '/bali/interfaces/Sequential'
+    ]);
     var result = false;
-    if (items.getIterator) {
+    if (Array.isArray(items)) {
+        items.forEach(function(item) {
+            result = this.containsItem(item);
+            if (result) return;
+        }, this);
+    } else if (items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
@@ -201,12 +229,22 @@ Collection.prototype.containsAny = function(items) {
  * This method determines whether all of the specified items are contained in
  * this collection.
  *
- * @param {Collection} items The items to be checked for in this collection.
+ * @param {Array|Sequence} items The items to be checked for in this collection.
  * @returns {Boolean} Whether or not all of the specified items are contained in this collection.
  */
 Collection.prototype.containsAll = function(items) {
+    this.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
+        '/javascript/Undefined',
+        '/javascript/Array',
+        '/bali/interfaces/Sequential'
+    ]);
     var result = false;
-    if (items.getIterator) {
+    if (Array.isArray(items)) {
+        items.forEach(function(item) {
+            result = this.containsItem(item);
+            if (!result) return;
+        }, this);
+    } else if (items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();

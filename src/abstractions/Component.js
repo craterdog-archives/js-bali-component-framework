@@ -22,7 +22,7 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new component of the specified type with the optional
+ * This function creates a new component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
  * @param {String} type The type string for the component.
@@ -226,7 +226,7 @@ Component.prototype.isNumerical = function() {
 
 
 /**
- * This function determines whether or not this component can be displayed as a literal
+ * This method determines whether or not this component can be displayed as a literal
  * value.
  * 
  * @returns {Boolean} Whether or not this component can be displayed as a literal value.
@@ -237,7 +237,7 @@ Component.prototype.isLiteral = function() {
 
 
 /**
- * This function determines whether or not this component supports iteration:
+ * This method determines whether or not this component supports iteration:
  * <pre>
  *  * iterator
  * </pre>
@@ -250,7 +250,7 @@ Component.prototype.isSequential = function() {
 
 
 /**
- * This function determines whether or not this component supports concatenation operations:
+ * This method determines whether or not this component supports concatenation operations:
  * <pre>
  *  * concatenation
  * </pre>
@@ -263,7 +263,7 @@ Component.prototype.isChainable = function() {
 
 
 /**
- * This function determines whether or not this component is procedural.
+ * This method determines whether or not this component is procedural.
  * 
  * @returns {Boolean} Whether or not this component is procedural.
  */
@@ -317,7 +317,7 @@ Component.prototype.isProcedural = function() {
 
 
 /**
- * This function determines whether or not this component is an element.
+ * This method determines whether or not this component is an element.
  * 
  * @returns {Boolean} Whether or not this component is an element.
  */
@@ -327,7 +327,7 @@ Component.prototype.isElement = function() {
 
 
 /**
- * This function determines whether or not this component is a composite.
+ * This method determines whether or not this component is a composite.
  * 
  * @returns {Boolean} Whether or not this component is a composite.
  */
@@ -337,12 +337,28 @@ Component.prototype.isComposite = function() {
 
 
 /**
- * This function determines whether or not this component is a collection.
+ * This method determines whether or not this component is a collection.
  * 
  * @returns {Boolean} Whether or not this component is a collection.
  */
 Component.prototype.isCollection = function() {
     return false;  // default
+};
+
+
+/**
+ * This method compares the type of a parameter value with the allowed types for that
+ * parameter and throws an exception if it does not match.
+ * 
+ * @param {String} moduleName The name of the module being called.
+ * @param {String} procedureName The name of the procedure being called.
+ * @param {String} parameterName The name of the parameter being validated.
+ * @param {Any} parameterValue The value of the parameter being validated.
+ * @param {Array} allowedTypes An array of strings representing the allowed types for the parameter
+ * value.
+ */
+Component.prototype.validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
+    return Component.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes);
 };
 
 
