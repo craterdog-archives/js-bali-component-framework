@@ -88,41 +88,6 @@ abstractions.Composite.prototype.convert = convert;
 composites.Exception.prototype.convert = convert;
 
 
-/*
- * This function adds the specified items to the specified collection converting the items
- * as needed.
- */
-const addItems = function(collection, items) {
-    items = items || undefined;  // normalize nulls to undefined
-    if (items) {
-        if (Array.isArray(items)) {
-            items.forEach(function(item) {
-                item = convert(item);
-                if (item.isType('$Association')) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            });
-        } else if (items.isSequential()) {
-            const iterator = items.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.isType('$Association')) {
-                    item = item.getValue();
-                }
-                collection.addItem(item);
-            }
-        } else if (typeof items === 'object') {
-            const keys = Object.keys(items);
-            keys.forEach(function(key) {
-                collection.addItem(items[key]);
-            });
-        }
-    }
-};
-
-
 // PUBLIC INTERFACE
 
 /**
@@ -277,37 +242,7 @@ const catalog = function(associations, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Catalog(parameters);
-    var index = 1;
-    associations = associations || undefined;  // normalize nulls to undefined
-    if (associations) {
-        if (Array.isArray(associations)) {
-            associations.forEach(function(item) {
-                item = convert(item);
-                if (item.isType('$Association')) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            });
-        } else if (associations.isSequential && associations.isSequential()) {
-            const iterator = associations.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = convert(item);
-                if (item.isType('$Association')) {
-                    collection.addItem(item);
-                } else {
-                    collection.setValue(index++, item);
-                }
-            }
-        } else if (typeof associations === 'object') {
-            const keys = Object.keys(associations);
-            keys.forEach(function(key) {
-                const symbol = (key[0] === '$') ? key : '$' + key;
-                collection.setValue(symbol, associations[key]);
-            });
-        }
-    }
+    collection.addItems(associations);
     return collection;
 };
 exports.catalog = catalog;
@@ -452,7 +387,7 @@ const list = function(items, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.List(parameters);
-    addItems(collection, items);
+    collection.addItems(items);
     return collection;
 };
 exports.list = list;
@@ -731,7 +666,7 @@ const queue = function(items, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Queue(parameters);
-    addItems(collection, items);
+    collection.addItems(items);
     return collection;
 };
 exports.queue = queue;
@@ -855,7 +790,7 @@ const set = function(items, comparator, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Set(parameters, comparator);
-    addItems(collection, items);
+    collection.addItems(items);
     return collection;
 };
 exports.set = set;
@@ -905,7 +840,7 @@ const stack = function(items, parameters) {
         '/bali/composites/Parameters'
     ]);
     const collection = new collections.Stack(parameters);
-    addItems(collection, items);
+    collection.addItems(items);
     return collection;
 };
 exports.stack = stack;
@@ -1003,7 +938,7 @@ exports.tree = tree;
  */
 const type = function(value) {
     return abstractions.Component.type(value);
-}
+};
 exports.type = type;
 
 /**
@@ -1029,7 +964,7 @@ const validate = function(moduleName, procedureName, parameterName, parameterVal
         $exception: '$invalidParameter',
         $text: 'An invalid parameter was passed as part of the validation attempt.'
     });
-}
+};
 exports.validate = validate;
 
 /**

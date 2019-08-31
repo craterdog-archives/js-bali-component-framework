@@ -60,32 +60,77 @@ function Set(parameters, comparator) {
     };
     
     this.getIndex = function(item) {
-        item = this.convert(item);
-        return tree.index(item) + 1;  // convert to ordinal based indexing
+        this.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        var index = 0;
+        if (item) {
+            item = this.convert(item);
+            index = tree.index(item) + 1;  // convert to ordinal based indexing
+        }
+        return index;
     };
     
     this.getItem = function(index) {
+        this.validateType('/bali/collections/Set', '$getItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
         index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
     
     this.addItem = function(item) {
-        item = this.convert(item);
-        return tree.insert(item);
+        this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        if (item) {
+            item = this.convert(item);
+            return tree.insert(item);
+        }
+        return false;
     };
     
     this.removeItem = function(item) {
-        item = this.convert(item);
-        return tree.remove(item);
+        this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        if (item) {
+            item = this.convert(item);
+            return tree.remove(item);
+        }
+        return false;
     };
     
     this.removeItems = function(items) {
+        this.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
         var count = 0;
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            if (this.removeItem(item)) {
-                count++;
+        if (items && items.getIterator) {
+            const iterator = items.getIterator();
+            while (iterator.hasNext()) {
+                const item = iterator.getNext();
+                if (this.removeItem(item)) {
+                    count++;
+                }
             }
         }
         return count;

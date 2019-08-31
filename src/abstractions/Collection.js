@@ -164,19 +164,34 @@ Collection.prototype.addItems = function(items) {
         '/bali/interfaces/Sequential'
     ]);
     var count = 0;
-    if (Array.isArray(items)) {
-        items.forEach(function(item) {
-            if (this.addItem(item)) {
+    items = items || undefined;  // normalize nulls to undefined
+    if (items) {
+        if (Array.isArray(items)) {
+            items.forEach(function(item) {
+                item = this.convert(item);
+                if (item.isType('$Association')) {
+                    item = item.getValue();
+                }
+                this.addItem(item);
+                count++;
+            }, this);
+        } else if (items.isSequential()) {
+            const iterator = items.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = this.convert(item);
+                if (item.isType('$Association')) {
+                    item = item.getValue();
+                }
+                this.addItem(item);
                 count++;
             }
-        }, this);
-    } else if (items && items.getIterator) {
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            if (this.addItem(item)) {
+        } else if (typeof items === 'object') {
+            const keys = Object.keys(items);
+            keys.forEach(function(key) {
+                this.addItem(items[key]);
                 count++;
-            }
+            }, this);
         }
     }
     return count;

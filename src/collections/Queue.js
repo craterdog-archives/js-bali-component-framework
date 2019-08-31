@@ -59,18 +59,29 @@ function Queue(parameters) {
     };
 
     this.addItem = function(item) {
-        if (array.length < capacity) {
+        this.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        if (array.length === capacity) {
+            throw new composites.Exception({
+                $module: '/bali/collections/Queue',
+                $procedure: '$addItem',
+                $exception: '$resourceLimit',
+                $capacity: capacity,
+                $text: 'The queue has reached its maximum capacity.'
+            });
+        }
+        if (item) {
             item = this.convert(item);
             array.push(item);
             return true;
         }
-        throw new composites.Exception({
-            $module: '/bali/collections/Queue',
-            $procedure: '$addItem',
-            $exception: '$resourceLimit',
-            $capacity: capacity,
-            $text: 'The queue has reached its maximum capacity.'
-        });
+        return false;
     };
 
     this.removeItem = function() {

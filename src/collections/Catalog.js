@@ -70,6 +70,51 @@ function Catalog(parameters) {
         return false;
     };
 
+    this.addItems = function(associations) {
+        this.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/interfaces/Sequential'
+        ]);
+        var count = 0;
+        var index = 1;
+        associations = associations || undefined;  // normalize nulls to undefined
+        if (associations) {
+            if (Array.isArray(associations)) {
+                associations.forEach(function(item) {
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        this.addItem(item);
+                    } else {
+                        this.setValue(index++, item);
+                    }
+                    count++;
+                }, this);
+            } else if (associations.isSequential && associations.isSequential()) {
+                const iterator = associations.getIterator();
+                while (iterator.hasNext()) {
+                    var item = iterator.getNext();
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        this.addItem(item);
+                    } else {
+                        this.setValue(index++, item);
+                    }
+                    count++;
+                }
+            } else if (typeof associations === 'object') {
+                const keys = Object.keys(associations);
+                keys.forEach(function(key) {
+                    const symbol = (key[0] === '$') ? key : '$' + key;
+                    this.setValue(symbol, associations[key]);
+                    count++;
+                }, this);
+            }
+        }
+        return count;
+    };
+
     this.containsItem = function(association) {
         this.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
             '/javascript/Undefined',
@@ -140,17 +185,19 @@ function Catalog(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        key = this.convert(key);
-        value = this.convert(value);
-        var association = map[key.toString()];
-        if (association) {
-            const oldValue = association.getValue();
-            association.setValue(value);
-            return oldValue;
-        } else {
-            association = new composites.Association(key, value);
-            map[key.toString()] = association;
-            array.push(association);
+        if (key) {
+            key = this.convert(key);
+            value = this.convert(value);
+            var association = map[key.toString()];
+            if (association) {
+                const oldValue = association.getValue();
+                association.setValue(value);
+                return oldValue;
+            } else {
+                association = new composites.Association(key, value);
+                map[key.toString()] = association;
+                array.push(association);
+            }
         }
     };
 

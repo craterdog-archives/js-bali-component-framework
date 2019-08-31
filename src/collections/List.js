@@ -74,14 +74,16 @@ function List(parameters) {
             '/bali/abstractions/Component'
         ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        item = this.convert(item);
-        const oldItem = array[index];
-        array[index] = item;
-        return oldItem;
+        if (item) {
+            item = this.convert(item);
+            const oldItem = array[index];
+            array[index] = item;
+            return oldItem;
+        }
     };
     
     this.addItem = function(item) {
-        this.validateType('/bali/collections/List', '$setItem', '$item', item, [
+        this.validateType('/bali/collections/List', '$addItem', '$item', item, [
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -89,9 +91,12 @@ function List(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        item = this.convert(item);
-        array.push(item);
-        return true;
+        if (item) {
+            item = this.convert(item);
+            array.push(item);
+            return true;
+        }
+        return false;
     };
     
     this.insertItem = function(index, item) {
@@ -107,9 +112,11 @@ function List(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        item = this.convert(item);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        array.splice(index, 0, item);
+        if (item) {
+            item = this.convert(item);
+            index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+            array.splice(index, 0, item);
+        }
     };
     
     this.insertItems = function(index, items) {
@@ -122,10 +129,12 @@ function List(parameters) {
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            this.insertItem(index++, item);
+        if (items && items.getIterator) {
+            const iterator = items.getIterator();
+            while (iterator.hasNext()) {
+                const item = iterator.getNext();
+                this.insertItem(index++, item);
+            }
         }
     };
     
@@ -146,11 +155,13 @@ function List(parameters) {
             '/bali/composites/Range'
         ]);
         const items = new List(this.getParameters());
-        const iterator = range.getIterator();
-        while (iterator.hasNext()) {
-            const index = iterator.getNext();
-            const item = this.removeItem(index);
-            items.addItem(item);
+        if (range && range.getIterator) {
+            const iterator = range.getIterator();
+            while (iterator.hasNext()) {
+                const index = iterator.getNext();
+                const item = this.removeItem(index);
+                items.addItem(item);
+            }
         }
         return items;
     };
