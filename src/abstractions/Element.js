@@ -33,6 +33,9 @@ Element.prototype = Object.create(Component.prototype);
 Element.prototype.constructor = Element;
 exports.Element = Element;
 
+Element.type = Component.type;
+Element.validate = Component.validate;
+
 
 // PUBLIC METHODS
 

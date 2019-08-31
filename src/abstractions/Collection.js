@@ -35,6 +35,9 @@ Collection.prototype = Object.create(Composite.prototype);
 Collection.prototype.constructor = Collection;
 exports.Collection = Collection;
 
+Collection.type = Composite.type;
+Collection.validate = Composite.validate;
+
 
 // PUBLIC METHODS
 
@@ -119,7 +122,7 @@ Collection.prototype.getItems = function(range) {
         '/bali/composites/Range'
     ]);
     const items = new this.constructor(this.getParameters());
-    if (range.getIterator) {
+    if (range && range.getIterator) {
         const iterator = range.getIterator();
         while (iterator.hasNext()) {
             const index = iterator.getNext();
@@ -167,7 +170,7 @@ Collection.prototype.addItems = function(items) {
                 count++;
             }
         }, this);
-    } else if (items.getIterator) {
+    } else if (items && items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
@@ -213,7 +216,7 @@ Collection.prototype.containsAny = function(items) {
             result = this.containsItem(item);
             if (result) return;
         }, this);
-    } else if (items.getIterator) {
+    } else if (items && items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
@@ -244,7 +247,7 @@ Collection.prototype.containsAll = function(items) {
             result = this.containsItem(item);
             if (!result) return;
         }, this);
-    } else if (items.getIterator) {
+    } else if (items && items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();

@@ -47,44 +47,99 @@ function Catalog(parameters) {
     };
 
     this.getItem = function(index) {
+    this.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
+        '/javascript/Number',
+        '/bali/elements/Number'
+    ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.addItem = function(association) {
-        const key = association.getKey().toString();
-        if (map[key]) return false;
-        map[key] = association;
-        array.push(association);
-        return true;
+        this.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
+            '/javascript/Undefined',
+            '/bali/composites/Association'
+        ]);
+        if (association) {
+            const key = association.getKey().toString();
+            if (map[key]) return false;
+            map[key] = association;
+            array.push(association);
+            return true;
+        }
+        return false;
     };
 
     this.containsItem = function(association) {
-        const key = association.getKey().toString();
-        const candidate = map[key];
-        if (candidate) return candidate.isEqualTo(association);
+        this.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
+            '/javascript/Undefined',
+            '/bali/composites/Association'
+        ]);
+        if (association) {
+            const key = association.getKey().toString();
+            const candidate = map[key];
+            if (candidate) return candidate.isEqualTo(association);
+        }
         return false;
     };
 
     this.getValue = function(key) {
-        const association = map[key.toString()];
-        if (association) return association.getValue();
+        this.validateType('/bali/collections/Catalog', '$getValue', '$key', key, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        if (key) {
+            const association = map[key.toString()];
+            if (association) return association.getValue();
+        }
     };
 
     this.getValues = function(keys) {
+        this.validateType('/bali/collections/Catalog', '$getValues', '$keys', keys, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
         const values = new List();
-        if (keys.getIterator) {
+        if (Array.isArray(keys)) {
+            keys.forEach(function(key) {
+                const value = this.getValue(key);
+                if (value) values.addItem(value);
+            }, this);
+        } else if (keys && keys.getIterator) {
             const iterator = keys.getIterator();
             while (iterator.hasNext()) {
                 const key = iterator.getNext();
                 const value = this.getValue(key);
-                if (value !== undefined) values.addItem(value);
+                if (value) values.addItem(value);
             }
         }
         return values;
     };
     
     this.setValue = function(key, value) {
+        this.validateType('/bali/collections/Catalog', '$setValue', '$key', key, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        this.validateType('/bali/collections/Catalog', '$setValue', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
         key = this.convert(key);
         value = this.convert(value);
         var association = map[key.toString()];
@@ -100,7 +155,12 @@ function Catalog(parameters) {
     };
 
     this.setValues = function(associations) {
-        if (associations.getIterator) {
+        this.validateType('/bali/collections/Catalog', '$setValues', '$associations', associations, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+        if (associations && associations.getIterator) {
             const iterator = associations.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
@@ -110,25 +170,45 @@ function Catalog(parameters) {
     };
     
     this.removeValue = function(key) {
-        const association = map[key.toString()];
-        if (association) {
-            delete map[key.toString()];
-            const index = array.findIndex(function(item) {
-                return item.isEqualTo(association);
-            });
-            array.splice(index, 1);
-            return association.getValue();
+        this.validateType('/bali/collections/Catalog', '$removeValue', '$key', key, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        if (key) {
+            const association = map[key.toString()];
+            if (association) {
+                delete map[key.toString()];
+                const index = array.findIndex(function(item) {
+                    return item.isEqualTo(association);
+                });
+                array.splice(index, 1);
+                return association.getValue();
+            }
         }
     };
 
     this.removeValues = function(keys) {
+        this.validateType('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
         const values = new List();
-        if (keys.getIterator) {
+        if (Array.isArray(keys)) {
+            keys.forEach(function(key) {
+                const value = this.removeValue(key);
+                if (value) values.addItem(value);
+            }, this);
+        } else if (keys && keys.getIterator) {
             const iterator = keys.getIterator();
             while (iterator.hasNext()) {
                 const key = iterator.getNext();
                 const value = this.removeValue(key);
-                if (value !== undefined) values.addItem(value);
+                if (value) values.addItem(value);
             }
         }
         return values;
@@ -219,6 +299,12 @@ Catalog.prototype.acceptVisitor = function(visitor) {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(catalog1, catalog2) {
+    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$catalog1', catalog1, [
+        '/bali/collections/Catalog'
+    ]);
+    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$catalog2', catalog2, [
+        '/bali/collections/Catalog'
+    ]);
     const result = new Catalog(catalog1.getParameters());
     result.addItems(catalog1);
     result.addItems(catalog2);
@@ -235,13 +321,26 @@ Catalog.concatenation = function(catalog1, catalog2) {
  * @returns The resulting catalog.
  */
 Catalog.extraction = function(catalog, keys) {
+    abstractions.Collection.validate('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
+        '/bali/collections/Catalog'
+    ]);
+    abstractions.Collection.validate('/bali/collections/Catalog', '$extraction', '$keys', keys, [
+        '/javascript/Undefined',
+        '/javascript/Array',
+        '/bali/interfaces/Sequential'
+    ]);
     const result = new Catalog(catalog.getParameters());
-    const iterator = keys.getIterator();
-    while (iterator.hasNext()) {
-        const key = iterator.getNext();
-        const value = catalog.getValue(key);
-        if (value) {
-            result.setValue(key, value);
+    if (Array.isArray(keys)) {
+        keys.forEach(function(key) {
+            const value = catalog.getValue(key);
+            if (value) result.setValue(key, value);
+        }, this);
+    } else if (keys && keys.getIterator) {
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = catalog.getValue(key);
+            if (value) result.setValue(key, value);
         }
     }
     return result;

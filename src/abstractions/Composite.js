@@ -36,6 +36,9 @@ Composite.prototype = Object.create(Component.prototype);
 Composite.prototype.constructor = Composite;
 exports.Composite = Composite;
 
+Composite.type = Component.type;
+Composite.validate = Component.validate;
+
 
 // PUBLIC METHODS
 
@@ -141,6 +144,10 @@ Composite.prototype.getIterator = function() {
  * @returns {Number} The normalized [1..N] index.
  */
 Composite.prototype.normalizeIndex = function(index) {
+    this.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
+        '/javascript/Number',
+        '/bali/elements/Number'
+    ]);
     const size = this.getSize();
     if (index > size) index = size;
     if (index < -size) index = -size;
