@@ -28,6 +28,11 @@ const abstractions = require('../abstractions');
 function Parameters(collection) {
     abstractions.Composite.call(this, '$Parameters');
 
+    this.validateType('/bali/composites/Parameters', '$Parameters', '$collection', collection, [
+        '/bali/collections/List',
+        '/bali/collections/Catalog'
+    ]);
+
     // the parameters are immutable so the methods are included in the constructor
     const duplicator = new utilities.Duplicator();
     const copy = duplicator.duplicateComponent(collection);
@@ -49,6 +54,20 @@ function Parameters(collection) {
     };
     
     this.getParameter = function(key, index) {
+        this.validateType('/bali/composites/Parameters', '$getParameter', '$key', key, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        this.validateType('/bali/composites/Parameters', '$getParameter', '$index', index, [
+            '/javascript/Undefined',
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+        key = this.convert(key);
         var value;
         index = index || 1;  // default is the first parameter
         if (copy.isType('$Catalog')) {
@@ -60,6 +79,30 @@ function Parameters(collection) {
     };
 
     this.setParameter = function(key, value, index) {
+        this.validateType('/bali/composites/Parameters', '$setParameter', '$key', key, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        this.validateType('/bali/composites/Parameters', '$setParameter', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        this.validateType('/bali/composites/Parameters', '$setParameter', '$index', index, [
+            '/javascript/Undefined',
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+        key = this.convert(key);
+        value = this.convert(value);
         index = index || 1;  // default is the first parameter
         if (copy.isType('$Catalog')) {
             copy.setValue(key, value);

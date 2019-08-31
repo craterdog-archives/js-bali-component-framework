@@ -152,6 +152,9 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Component.prototype.isType = function(type) {
+    this.validateType('/bali/abstractions/Component', '$isType', '$type', type, [
+        '/javascript/String'
+    ]);
     return this.getType() === type;
 };
 

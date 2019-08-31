@@ -26,6 +26,15 @@ const abstractions = require('../abstractions');
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, '$Pattern', parameters);
+    this.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/String',
+        '/javascript/RegExp'
+    ]);
+    this.validateType('/bali/elements/Pattern', '$Pattern', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
     value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 
@@ -60,6 +69,16 @@ Pattern.prototype.toBoolean = function() {
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
 Pattern.prototype.matches = function(component) {
+    this.validateType('/bali/elements/Pattern', '$matches', '$component', component, [
+        '/javascript/Undefined',
+        '/javascript/Boolean',
+        '/javascript/Number',
+        '/javascript/String',
+        '/javascript/Array',
+        '/javascript/Object',
+        '/bali/abstractions/Component'
+    ]);
+    component = this.convert(component);
     return this.getValue().test(component.toString());
 };
 

@@ -41,6 +41,22 @@ const Exception = require('../composites/Exception').Exception;
  */
 function Automaton(eventTypes, nextStates) {
     var currentState;
+    if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
+        throw new Exception({
+            $module: '/bali/utilities/Automaton',
+            $procedure: '$Automaton',
+            $exception: '$invalidType',
+            $text: 'One of the parameters to the constructor is not the right type.'
+        });
+    }
+    if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
+        throw new Exception({
+            $module: '/bali/utilities/Automaton',
+            $procedure: '$Automaton',
+            $exception: '$noStates',
+            $text: 'The state machine must have at least one state and event.'
+        });
+    }
     const numberOfEventTypes = eventTypes.length;
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {

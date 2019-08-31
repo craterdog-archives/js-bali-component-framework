@@ -32,6 +32,19 @@ const Angle = require('./Angle').Angle;
  */
 function Complex(real, imaginary, parameters) {
     abstractions.Element.call(this, '$Number', parameters);
+    this.validateType('/bali/elements/Number', '$Number', '$real', real, [
+        '/javascript/Undefined',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
+        '/javascript/Undefined',
+        '/javascript/Number',
+        '/bali/elements/Angle'
+    ]);
+    this.validateType('/bali/elements/Number', '$Number', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // normalize the values
     if (real === real) real = real || 0;  // default value if not NaN and not defined
@@ -249,6 +262,9 @@ Complex.prototype.acceptVisitor = function(visitor) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.inverse = function(complex) {
+    abstractions.Element.validate('/bali/elements/Number', '$inverse', '$complex', complex, [
+        '/bali/elements/Number'
+    ]);
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(0);
@@ -271,6 +287,9 @@ Complex.inverse = function(complex) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.reciprocal = function(complex) {
+    abstractions.Element.validate('/bali/elements/Number', '$reciprocal', '$complex', complex, [
+        '/bali/elements/Number'
+    ]);
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(0);
     if (complex.isZero()) return new Complex(Infinity);
@@ -292,6 +311,9 @@ Complex.reciprocal = function(complex) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.conjugate = function(complex) {
+    abstractions.Element.validate('/bali/elements/Number', '$conjugate', '$complex', complex, [
+        '/bali/elements/Number'
+    ]);
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(0);
@@ -309,6 +331,9 @@ Complex.conjugate = function(complex) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.factorial = function(complex) {
+    abstractions.Element.validate('/bali/elements/Number', '$factorial', '$complex', complex, [
+        '/bali/elements/Number'
+    ]);
     if (complex.isUndefined()) return new Complex(NaN);
     if (complex.isInfinite()) return new Complex(Infinity);
     if (complex.isZero()) return new Complex(1);
@@ -331,6 +356,12 @@ Complex.factorial = function(complex) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.sum = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Number', '$sum', '$first', first, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$sum', '$second', second, [
+        '/bali/elements/Number'
+    ]);
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity);
     if (first.isEqualTo(Complex.inverse(second))) return new Complex(0);
@@ -352,6 +383,12 @@ Complex.sum = function(first, second) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.difference = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Number', '$difference', '$first', first, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$difference', '$second', second, [
+        '/bali/elements/Number'
+    ]);
     return Complex.sum(first, Complex.inverse(second));
 };
 
@@ -365,10 +402,16 @@ Complex.difference = function(first, second) {
  * </pre>
  * 
  * @param {Complex} complex The complex number to be scaled.
- * @param {Complex} factor The scale factor.
+ * @param {Number} factor The numeric scale factor.
  * @returns {Complex} The resulting complex number.
  */
 Complex.scaled = function(complex, factor) {
+    abstractions.Element.validate('/bali/elements/Number', '$scaled', '$complex', complex, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$scaled', '$factor', factor, [
+        '/javascript/Number'
+    ]);
     if (complex.isUndefined() || Number.isNaN(factor)) return new Complex(NaN);
     if (complex.isZero() && !Number.isFinite(factor)) return new Complex(NaN);
     if (complex.isInfinite() && factor === 0) return new Complex(NaN);
@@ -392,6 +435,12 @@ Complex.scaled = function(complex, factor) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.product = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Number', '$product', '$first', first, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$product', '$second', second, [
+        '/bali/elements/Number'
+    ]);
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isZero() && second.isInfinite()) return new Complex(NaN);
     if (first.isInfinite() && second.isZero()) return new Complex(NaN);
@@ -415,6 +464,12 @@ Complex.product = function(first, second) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.quotient = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Number', '$quotient', '$first', first, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$quotient', '$second', second, [
+        '/bali/elements/Number'
+    ]);
     return Complex.product(first, Complex.reciprocal(second));
 };
 
@@ -427,6 +482,12 @@ Complex.quotient = function(first, second) {
  * @returns {Complex} The resulting real number.
  */
 Complex.remainder = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Number', '$remainder', '$first', first, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$remainder', '$second', second, [
+        '/bali/elements/Number'
+    ]);
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN);
     if (first.isInfinite() && second.isInfinite()) return new Complex(NaN);
     if (first.isZero() && second.isZero()) return new Complex(NaN);
@@ -451,6 +512,12 @@ Complex.remainder = function(first, second) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.exponential = function(base, exponent) {
+    abstractions.Element.validate('/bali/elements/Number', '$exponential', '$base', base, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$exponential', '$exponent', exponent, [
+        '/bali/elements/Number'
+    ]);
     if (base.isUndefined() || exponent.isUndefined()) return new Complex(NaN);
     if (base.isZero() && (exponent.isZero() || exponent.isInfinite())) return new Complex(NaN);
     if (base.isInfinite() && exponent.isZero()) return new Complex(NaN);
@@ -473,6 +540,12 @@ Complex.exponential = function(base, exponent) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.logarithm = function(base, value) {
+    abstractions.Element.validate('/bali/elements/Number', '$logarithm', '$base', base, [
+        '/bali/elements/Number'
+    ]);
+    abstractions.Element.validate('/bali/elements/Number', '$logarithm', '$value', value, [
+        '/bali/elements/Number'
+    ]);
     if (base.isUndefined() || value.isUndefined()) return new Complex(NaN);
     if (base.isZero() && (value.isZero() || value.isInfinite())) return new Complex(NaN);
     if (base.isInfinite() && (value.isZero() || value.isInfinite())) return new Complex(NaN);

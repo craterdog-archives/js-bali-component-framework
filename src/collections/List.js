@@ -39,6 +39,10 @@ const composites = require('../composites');
  */
 function List(parameters) {
     abstractions.Collection.call(this, '$List', parameters);
+    this.validateType('/bali/collections/List', '$List', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
@@ -66,6 +70,7 @@ function List(parameters) {
             '/bali/elements/Number'
         ]);
         this.validateType('/bali/collections/List', '$setItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -74,16 +79,15 @@ function List(parameters) {
             '/bali/abstractions/Component'
         ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        if (item) {
-            item = this.convert(item);
-            const oldItem = array[index];
-            array[index] = item;
-            return oldItem;
-        }
+        item = this.convert(item);
+        const oldItem = array[index];
+        array[index] = item;
+        return oldItem;
     };
     
     this.addItem = function(item) {
         this.validateType('/bali/collections/List', '$addItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -91,12 +95,9 @@ function List(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (item) {
-            item = this.convert(item);
-            array.push(item);
-            return true;
-        }
-        return false;
+        item = this.convert(item);
+        array.push(item);
+        return true;
     };
     
     this.insertItem = function(index, item) {
@@ -105,6 +106,7 @@ function List(parameters) {
             '/bali/elements/Number'
         ]);
         this.validateType('/bali/collections/List', '$insertItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -112,11 +114,9 @@ function List(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (item) {
-            item = this.convert(item);
-            index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-            array.splice(index, 0, item);
-        }
+        item = this.convert(item);
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        array.splice(index, 0, item);
     };
     
     this.insertItems = function(index, items) {
@@ -227,19 +227,19 @@ List.prototype.acceptVisitor = function(visitor) {
  * This function returns a new list that contains the items from the second list concatenated
  * onto the end of the first list.
  *
- * @param {List} list1 The first list to be operated on.
- * @param {List} list2 The second list to be operated on.
+ * @param {List} first The first list to be operated on.
+ * @param {List} second The second list to be operated on.
  * @returns {List} The resulting list.
  */
-List.concatenation = function(list1, list2) {
-    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$list1', list1, [
+List.concatenation = function(first, second) {
+    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$first', first, [
         '/bali/collections/List'
     ]);
-    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$list2', list2, [
+    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$second', second, [
         '/bali/collections/List'
     ]);
     const result = new List();
-    result.addItems(list1);
-    result.addItems(list2);
+    result.addItems(first);
+    result.addItems(second);
     return result;
 };

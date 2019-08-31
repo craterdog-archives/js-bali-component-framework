@@ -27,7 +27,7 @@ utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on ever
 
 /*                            AVOIDING CIRCULAR DEPENDENCIES
  * This function is used to convert most JavaScript values into their corresponding
- * Bali Nebula™ component values.  It is needed by the Composite and Exception classes and
+ * Bali Nebula™ component values.  It is needed by the Component and Exception classes and
  * depends on everything else so it must be injected into them after everything has been
  * imported. Just to be safe, this function does not depend on any functions defined later
  * in this file, even though that should not matter. When possible circular dependencies
@@ -84,7 +84,7 @@ const convert = function(value) {
     }
     return component;
 };
-abstractions.Composite.prototype.convert = convert;
+abstractions.Component.prototype.convert = convert;
 composites.Exception.prototype.convert = convert;
 
 
@@ -98,24 +98,6 @@ composites.Exception.prototype.convert = convert;
  * @returns {Angle} The new angle element.
  */
 const angle = function(value, parameters) {
-    validate('/bali/elements/Angle', '$angle', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Angle', '$angle', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    if (value === value) value = value || 0;  // default value if not NaN and not defined
-    if (!isFinite(value)) {
-        throw exception({
-            $module: '/bali/elements/Angle',
-            $procedure: '$angle',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid angle value was passed to the constructor.'
-        });
-    }
     return new elements.Angle(value, parameters);
 };
 angle.inverse = elements.Angle.inverse;
@@ -141,25 +123,6 @@ exports.angle = angle;
  * @returns {Association} A new association.
  */
 const association = function(key, value) {
-    validate('/bali/composites/Association', '$association', '$key', key, [
-        '/javascript/String',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ]);
-    validate('/bali/composites/Association', '$association', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ]);
-    key = convert(key);
-    value = convert(value);
     return new composites.Association(key, value);
 };
 exports.association = association;
@@ -184,10 +147,11 @@ exports.association = association;
  * @returns {Automaton} A new finite state automaton.
  */
 const automaton = function(eventTypes, nextStates) {
-    validate('/bali/utilities/Automaton', '$automaton', '$array', eventTypes, [
+    // must check these here since an automaton is a utility rather than a component
+    validate('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
         '/javascript/Array'
     ]);
-    validate('/bali/utilities/Automaton', '$automaton', '$object', nextStates, [
+    validate('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
         '/javascript/Object'
     ]);
     return new utilities.Automaton(eventTypes, nextStates);
@@ -203,14 +167,6 @@ exports.automaton = automaton;
  * @returns {Binary} The new binary string.
  */
 const binary = function(value, parameters) {
-    validate('/bali/elements/Binary', '$binary', '$value', value, [
-        '/javascript/Undefined',
-        '/nodejs/Buffer'
-    ]);
-    validate('/bali/elements/Binary', '$binary', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Binary(value, parameters);
 };
 binary.not = elements.Binary.not;
@@ -231,16 +187,6 @@ exports.binary = binary;
  * @returns {Catalog} The new catalog.
  */
 const catalog = function(associations, parameters) {
-    validate('/bali/collections/Catalog', '$catalog', '$associations', associations, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/interfaces/Sequential'
-    ]);
-    validate('/bali/collections/Catalog', '$catalog', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     const collection = new collections.Catalog(parameters);
     collection.addItems(associations);
     return collection;
@@ -262,6 +208,7 @@ exports.codex = utilities.codex;
  * @returns {Component} The duplicate component.
  */
 const duplicate = function(component) {
+    // must check these here since a duplicator is a utility rather than a component
     validate('/bali/utilities/Duplicator', '$duplicator', '$component', component, [
         '/bali/abstractions/Component'
     ]);
@@ -278,15 +225,6 @@ exports.duplicate = duplicate;
  * @returns {Duration} The new duration element.
  */
 const duration = function(value, parameters) {
-    validate('/bali/elements/Duration', '$duration', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Duration', '$duration', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Duration(value, parameters);
 };
 duration.inverse = elements.Duration.inverse;
@@ -300,14 +238,15 @@ exports.duration = duration;
  * specified JavaScript object.  If the optional cause of the exception is provided
  * it is used to augment the information about the exception.
  * 
- * @param {Object} object A JavaScript object defining the attributes to be associated
+ * @param {Object} attributes A JavaScript object defining the attributes to be associated
  * with the new exception. 
  * @param {Error|Exception} cause The underlying exception that caused this exception.
  * @returns {Exception} The new Bali exception, or the underlying <code>cause</code>
  * if the cause is from the same module as the current exception.
  */
-const exception = function(object, cause) {
-    validate('/bali/composites/Exception', '$exception', '$object', object, [
+const exception = function(attributes, cause) {
+    // must check these here since Exception class only "pretends" to inherit from Composite
+    validate('/bali/composites/Exception', '$exception', '$attributes', attributes, [
         '/javascript/Object'
     ]);
     validate('/bali/composites/Exception', '$exception', '$cause', cause, [
@@ -317,12 +256,12 @@ const exception = function(object, cause) {
     ]);
     var error;
     if (cause && cause.constructor.name === 'Exception' &&
-        cause.attributes.getValue('$module').toString() === object['$module']) {
+        cause.attributes.getValue('$module').toString() === attributes['$module']) {
         // same module so no need to wrap it
         error = cause;
     } else {
         // wrap the cause in a new exception
-        error = new composites.Exception(object, cause);
+        error = new composites.Exception(attributes, cause);
         if (cause) error.stack = cause.stack;
     }
     return error;
@@ -340,10 +279,11 @@ exports.exception = exception;
  * @returns {String} The resulting string containing Bali Document Notation™.
  */
 const format = function(component, indentation) {
-    validate('/bali/utilities/Formatter', '$format', '$component', component, [
+    // must check these here since a formatter is a utility rather than a component
+    validate('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
         '/bali/abstractions/Component'
     ]);
-    validate('/bali/utilities/Formatter', '$format', '$indentation', indentation, [
+    validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
         '/javascript/Undefined',
         '/javascript/Number'
     ]);
@@ -376,16 +316,6 @@ exports.iterator = iterator;
  * @returns {List} The new list.
  */
 const list = function(items, parameters) {
-    validate('/bali/collections/List', '$list', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/interfaces/Sequential'
-    ]);
-    validate('/bali/collections/List', '$list', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     const collection = new collections.List(parameters);
     collection.addItems(items);
     return collection;
@@ -401,7 +331,8 @@ list.concatenation = collections.List.concatenation;
  * @returns {String} The resulting string containing Bali Document Notation™.
  */
 const literal = function(element) {
-    validate('/bali/utilities/Formatter', '$literal', '$element', element, [
+    // must check these here since a formatter is a utility rather than a component
+    validate('/bali/utilities/Formatter', '$formatLiteral', '$element', element, [
         '/bali/interfaces/Literal'
     ]);
     const formatter = new utilities.Formatter();
@@ -417,15 +348,6 @@ exports.literal = literal;
  * @returns {Moment} The new moment in time.
  */
 const moment = function(value, parameters) {
-    validate('/bali/elements/Moment', '$moment', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Moment', '$moment', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Moment(value, parameters);
 };
 moment.duration = elements.Moment.duration;
@@ -441,22 +363,6 @@ exports.moment = moment;
  * @returns {Symbol} The new name string element.
  */
 const name = function(value, parameters) {
-    validate('/bali/elements/Name', '$name', '$value', value, [
-        '/javascript/Array'
-    ]);
-    validate('/bali/elements/Name', '$name', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    if (!Array.isArray(value) || value.length === 0) {
-        throw exception({
-            $module: '/bali/elements/Name',
-            $procedure: '$name',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid name value was passed to the constructor.'
-        });
-    }
     return new elements.Name(value, parameters);
 };
 name.concatenation = elements.Name.concatenation;
@@ -473,19 +379,6 @@ exports.name = name;
  * @returns {Complex} The new complex number.
  */
 const number = function(real, imaginary, parameters) {
-    validate('/bali/elements/Number', '$number', '$real', real, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Number', '$number', '$imaginary', imaginary, [
-        '/javascript/Undefined',
-        '/javascript/Number',
-        '/bali/elements/Angle'
-    ]);
-    validate('/bali/elements/Number', '$number', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Number(real, imaginary, parameters);
 };
 exports.number = number;
@@ -513,12 +406,6 @@ number.sum = elements.Number.sum;
  * @returns {Parameters} The resulting Bali parameters component.
  */
 const parameters = function(sequence) {
-    validate('/bali/composites/Parameters', '$parameters', '$sequence', sequence, [
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/collections/List',
-        '/bali/collections/Catalog'
-    ]);
     if (Array.isArray(sequence)) {
         sequence = list(sequence);
     } else if (!sequence.isComponent) {
@@ -541,6 +428,7 @@ exports.parameters = parameters;
  * @returns {Component} The corresponding Bali component.
  */
 const parse = function(document, parameters, debug) {
+    // must check these here since a parser is a utility rather than a component
     validate('/bali/utilities/Parser', '$parse', '$document', document, [
         '/javascript/String'
     ]);
@@ -565,15 +453,6 @@ exports.parse = parse;
  * @returns {Pattern} The new pattern element.
  */
 const pattern = function(value, parameters) {
-    validate('/bali/elements/Pattern', '$pattern', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/RegExp'
-    ]);
-    validate('/bali/elements/Pattern', '$pattern', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Pattern(value, parameters);
 };
 exports.pattern = pattern;

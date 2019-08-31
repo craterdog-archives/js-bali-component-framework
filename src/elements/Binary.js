@@ -30,6 +30,14 @@ const formatter = new utilities.Formatter();
  */
 function Binary(value, parameters) {
     abstractions.Element.call(this, '$Binary', parameters);
+    this.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
+        '/javascript/Undefined',
+        '/nodejs/Buffer'
+    ]);
+    this.validateType('/bali/elements/Binary', '$Binary', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // analyze the value
     value = value || Buffer.alloc(0);  // the default value is an empty buffer
@@ -210,10 +218,13 @@ Binary.prototype.getIterator = function() {
  * This function returns a new binary string that is the logical NOT of the bits
  * of the specified binary string.
  *
- * @param {Binary} binary The binary.
+ * @param {Binary} binary The binary value.
  * @returns {Binary} The resulting binary.
  */
 Binary.not = function(binary) {
+    abstractions.Element.validate('/bali/elements/Binary', '$not', '$binary', binary, [
+        '/bali/elements/Binary'
+    ]);
     const length = binary.getValue().length;
     const buffer = Buffer.alloc(length);
     binary.getValue().forEach(function(byte, index) {
@@ -232,6 +243,12 @@ Binary.not = function(binary) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.and = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Binary', '$and', '$first', first, [
+        '/bali/elements/Binary'
+    ]);
+    abstractions.Element.validate('/bali/elements/Binary', '$and', '$second', second, [
+        '/bali/elements/Binary'
+    ]);
     var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
     length = Math.min(first.getValue().length, second.getValue().length);
@@ -251,6 +268,12 @@ Binary.and = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.sans = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Binary', '$sans', '$first', first, [
+        '/bali/elements/Binary'
+    ]);
+    abstractions.Element.validate('/bali/elements/Binary', '$sans', '$second', second, [
+        '/bali/elements/Binary'
+    ]);
     var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
     length = Math.min(first.getValue().length, second.getValue().length);
@@ -270,6 +293,12 @@ Binary.sans = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.or = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Binary', '$or', '$first', first, [
+        '/bali/elements/Binary'
+    ]);
+    abstractions.Element.validate('/bali/elements/Binary', '$or', '$second', second, [
+        '/bali/elements/Binary'
+    ]);
     var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
     length = Math.min(first.getValue().length, second.getValue().length);
@@ -289,6 +318,12 @@ Binary.or = function(first, second) {
  * @returns {Binary} The resulting binary string.
  */
 Binary.xor = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Binary', '$xor', '$first', first, [
+        '/bali/elements/Binary'
+    ]);
+    abstractions.Element.validate('/bali/elements/Binary', '$xor', '$second', second, [
+        '/bali/elements/Binary'
+    ]);
     var length = Math.max(first.getValue().length, second.getValue().length);
     const buffer = Buffer.alloc(length);
     length = Math.min(first.getValue().length, second.getValue().length);
@@ -308,6 +343,12 @@ Binary.xor = function(first, second) {
  * @returns {List} The resulting binary string.
  */
 Binary.concatenation = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Binary', '$concatenation', '$first', first, [
+        '/bali/elements/Binary'
+    ]);
+    abstractions.Element.validate('/bali/elements/Binary', '$concatenation', '$second', second, [
+        '/bali/elements/Binary'
+    ]);
     const buffer1 = first.getValue();
     const buffer2 = second.getValue();
     const buffer = Buffer.alloc(buffer1.length + buffer2.length);

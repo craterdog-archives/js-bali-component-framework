@@ -29,6 +29,15 @@ const abstractions = require('../abstractions');
  */
 function Duration(value, parameters) {
     abstractions.Element.call(this, '$Duration', parameters);
+    this.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/String',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Duration', '$Duration', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
     value = value || 0;  // default value
     value = moment.duration(value);
 
@@ -101,31 +110,46 @@ Duration.prototype.acceptVisitor = function(visitor) {
  * @returns {Duration} The inverse of the specified duration.
  */
 Duration.inverse = function(duration) {
-    return new Duration(moment.duration().subtract(duration.getValue()));
+    abstractions.Element.validate('/bali/elements/Duration', '$inverse', '$duration', duration, [
+        '/bali/elements/Duration'
+    ]);
+    return new Duration(moment.duration().subtract(duration.getValue()).toISOString());
 };
 
 
 /**
  * This function returns the sum of two durations.
  * 
- * @param {Duration} firstDuration The first duration to be summed.
- * @param {Duration} secondDuration The second duration to be summed.
+ * @param {Duration} first The first duration to be summed.
+ * @param {Duration} second The second duration to be summed.
  * @returns {Duration} The normalized sum of the two durations.
  */
-Duration.sum = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.getValue().clone().add(secondDuration.getValue()).toISOString());
+Duration.sum = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Duration', '$sum', '$first', first, [
+        '/bali/elements/Duration'
+    ]);
+    abstractions.Element.validate('/bali/elements/Duration', '$sum', '$second', second, [
+        '/bali/elements/Duration'
+    ]);
+    return new Duration(first.getValue().clone().add(second.getValue()).toISOString());
 };
 
 
 /**
  * This function returns the difference of two durations.
  * 
- * @param {Duration} firstDuration The duration to be subtracted from.
- * @param {Duration} secondDuration The duration to subtract from the first duration.
+ * @param {Duration} first The duration to be subtracted from.
+ * @param {Duration} second The duration to subtract from the first duration.
  * @returns {Duration} The normalized difference of the two durations.
  */
-Duration.difference = function(firstDuration, secondDuration) {
-    return new Duration(firstDuration.getValue().clone().subtract(secondDuration.getValue()).toISOString());
+Duration.difference = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Duration', '$difference', '$first', first, [
+        '/bali/elements/Duration'
+    ]);
+    abstractions.Element.validate('/bali/elements/Duration', '$difference', '$second', second, [
+        '/bali/elements/Duration'
+    ]);
+    return new Duration(first.getValue().clone().subtract(second.getValue()).toISOString());
 };
 
 
@@ -137,6 +161,12 @@ Duration.difference = function(firstDuration, secondDuration) {
  * @returns {Duration} The normalized scaled duration.
  */
 Duration.scaled = function(duration, factor) {
+    abstractions.Element.validate('/bali/elements/Duration', '$scaled', '$duration', duration, [
+        '/bali/elements/Duration'
+    ]);
+    abstractions.Element.validate('/bali/elements/Duration', '$scaled', '$factor', factor, [
+        '/javascript/Number'
+    ]);
     return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString());
 };
 

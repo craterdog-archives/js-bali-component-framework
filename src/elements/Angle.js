@@ -16,6 +16,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const formatter = new utilities.Formatter();
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC CONSTRUCTOR
@@ -29,6 +30,26 @@ const formatter = new utilities.Formatter();
  */
 function Angle(value, parameters) {
     abstractions.Element.call(this, '$Angle', parameters);
+    this.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Angle', '$Angle', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
+    // check the value
+    if (value === value) value = value || 0;  // default value if not NaN and not defined
+    if (!isFinite(value)) {
+        throw new Exception({
+            $module: '/bali/elements/Angle',
+            $procedure: '$angle',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid angle value was passed to the constructor.'
+        });
+    }
 
     // convert the value if necessary
     if (parameters) {

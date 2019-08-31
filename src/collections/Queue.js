@@ -60,6 +60,7 @@ function Queue(parameters) {
 
     this.addItem = function(item) {
         this.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -76,11 +77,9 @@ function Queue(parameters) {
                 $text: 'The queue has reached its maximum capacity.'
             });
         }
-        if (item) {
-            item = this.convert(item);
-            array.push(item);
-            return true;
-        }
+        item = this.convert(item);
+        array.push(item);
+        return true;
         return false;
     };
 

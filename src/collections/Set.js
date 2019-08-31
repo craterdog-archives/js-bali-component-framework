@@ -61,6 +61,7 @@ function Set(parameters, comparator) {
     
     this.getIndex = function(item) {
         this.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -69,10 +70,8 @@ function Set(parameters, comparator) {
             '/bali/abstractions/Component'
         ]);
         var index = 0;
-        if (item) {
-            item = this.convert(item);
-            index = tree.index(item) + 1;  // convert to ordinal based indexing
-        }
+        item = this.convert(item);
+        index = tree.index(item) + 1;  // convert to ordinal based indexing
         return index;
     };
     
@@ -87,6 +86,7 @@ function Set(parameters, comparator) {
     
     this.addItem = function(item) {
         this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -94,15 +94,13 @@ function Set(parameters, comparator) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (item) {
-            item = this.convert(item);
-            return tree.insert(item);
-        }
-        return false;
+        item = this.convert(item);
+        return tree.insert(item);
     };
     
     this.removeItem = function(item) {
         this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -110,11 +108,8 @@ function Set(parameters, comparator) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (item) {
-            item = this.convert(item);
-            return tree.remove(item);
-        }
-        return false;
+        item = this.convert(item);
+        return tree.remove(item);
     };
     
     this.removeItems = function(items) {
@@ -182,22 +177,6 @@ Set.prototype.acceptVisitor = function(visitor) {
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a new set that contains all the items that are in
- * the first set or the second set or both.
- *
- * @param {Set} first The first set to be operated on.
- * @param {Set} second The second set to be operated on.
- * @returns {Set} The resulting set.
- */
-Set.or = function(first, second) {
-    const result = new Set(first.getParameters(), first.comparator);
-    result.addItems(first);
-    result.addItems(second);
-    return result;
-};
-
-
-/**
  * This function returns a new set that contains the items that are in
  * both the first set and the second set.
  *
@@ -206,6 +185,12 @@ Set.or = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second) {
+    abstractions.Element.validate('/bali/collections/Set', '$and', '$first', first, [
+        '/bali/collections/Set'
+    ]);
+    abstractions.Element.validate('/bali/collections/Set', '$and', '$second', second, [
+        '/bali/collections/Set'
+    ]);
     const result = new Set(first.getParameters(), first.comparator);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
@@ -227,9 +212,37 @@ Set.and = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second) {
+    abstractions.Element.validate('/bali/collections/Set', '$sans', '$first', first, [
+        '/bali/collections/Set'
+    ]);
+    abstractions.Element.validate('/bali/collections/Set', '$sans', '$second', second, [
+        '/bali/collections/Set'
+    ]);
     const result = new Set(first.getParameters(), first.comparator);
     result.addItems(first);
     result.removeItems(second);
+    return result;
+};
+
+
+/**
+ * This function returns a new set that contains all the items that are in
+ * the first set or the second set or both.
+ *
+ * @param {Set} first The first set to be operated on.
+ * @param {Set} second The second set to be operated on.
+ * @returns {Set} The resulting set.
+ */
+Set.or = function(first, second) {
+    abstractions.Element.validate('/bali/collections/Set', '$or', '$first', first, [
+        '/bali/collections/Set'
+    ]);
+    abstractions.Element.validate('/bali/collections/Set', '$or', '$second', second, [
+        '/bali/collections/Set'
+    ]);
+    const result = new Set(first.getParameters(), first.comparator);
+    result.addItems(first);
+    result.addItems(second);
     return result;
 };
 
@@ -243,6 +256,12 @@ Set.sans = function(first, second) {
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second) {
+    abstractions.Element.validate('/bali/collections/Set', '$xor', '$first', first, [
+        '/bali/collections/Set'
+    ]);
+    abstractions.Element.validate('/bali/collections/Set', '$xor', '$second', second, [
+        '/bali/collections/Set'
+    ]);
     const result = new Set(first.getParameters(), first.comparator);
     const iterator1 = first.getIterator();
     var item1;

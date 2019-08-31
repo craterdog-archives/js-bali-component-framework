@@ -43,6 +43,17 @@ const FORMATS = [
  */
 function Moment(value, parameters) {
     abstractions.Element.call(this, '$Moment', parameters);
+
+    this.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/String',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Moment', '$Moment', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     value = value || undefined;
     var format;
     if (!value) {
@@ -121,6 +132,12 @@ Moment.prototype.acceptVisitor = function(visitor) {
  * @returns {Duration} The duration between the two moments in time.
  */
 Moment.duration = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Moment', '$duration', '$first', first, [
+        '/bali/elements/Moment'
+    ]);
+    abstractions.Element.validate('/bali/elements/Moment', '$duration', '$second', second, [
+        '/bali/elements/Moment'
+    ]);
     const duration = moment.duration(second.getValue().diff(first.getValue()));
     return new Duration(duration.toISOString());
 };
@@ -135,6 +152,12 @@ Moment.duration = function(first, second) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.earlier = function(moment, duration) {
+    abstractions.Element.validate('/bali/elements/Moment', '$earlier', '$moment', moment, [
+        '/bali/elements/Moment'
+    ]);
+    abstractions.Element.validate('/bali/elements/Duration', '$earlier', '$duration', duration, [
+        '/bali/elements/Duration'
+    ]);
     const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
     return new Moment(earlier.format(FORMATS[7]));
 };
@@ -149,6 +172,12 @@ Moment.earlier = function(moment, duration) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.later = function(moment, duration) {
+    abstractions.Element.validate('/bali/elements/Moment', '$later', '$moment', moment, [
+        '/bali/elements/Moment'
+    ]);
+    abstractions.Element.validate('/bali/elements/Duration', '$later', '$duration', duration, [
+        '/bali/elements/Duration'
+    ]);
     const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
     return new Moment(later.format(FORMATS[7]));
 };

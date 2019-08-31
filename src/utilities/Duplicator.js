@@ -231,7 +231,7 @@ DuplicatingVisitor.prototype.visitDuration = function(duration) {
         duration.getParameters().acceptVisitor(this);
         parameters = this.result;
     }
-    this.result = new duration.constructor(duration.getValue(), parameters);
+    this.result = new duration.constructor(duration.getValue().toISOString(), parameters);
 };
 
 

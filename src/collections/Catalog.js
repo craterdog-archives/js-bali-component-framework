@@ -32,6 +32,10 @@ const List = require('./List').List;
  */
 function Catalog(parameters) {
     abstractions.Collection.call(this, '$Catalog', parameters);
+    this.validateType('/bali/collections/Catalog', '$Catalog', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // the map and array are private attributes so methods that use them are defined
     // in the constructor
@@ -138,10 +142,9 @@ function Catalog(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (key) {
-            const association = map[key.toString()];
-            if (association) return association.getValue();
-        }
+        key = this.convert(key);
+        const association = map[key.toString()];
+        if (association) return association.getValue();
     };
 
     this.getValues = function(keys) {
@@ -169,6 +172,7 @@ function Catalog(parameters) {
     
     this.setValue = function(key, value) {
         this.validateType('/bali/collections/Catalog', '$setValue', '$key', key, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -185,19 +189,17 @@ function Catalog(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (key) {
-            key = this.convert(key);
-            value = this.convert(value);
-            var association = map[key.toString()];
-            if (association) {
-                const oldValue = association.getValue();
-                association.setValue(value);
-                return oldValue;
-            } else {
-                association = new composites.Association(key, value);
-                map[key.toString()] = association;
-                array.push(association);
-            }
+        key = this.convert(key);
+        value = this.convert(value);
+        var association = map[key.toString()];
+        if (association) {
+            const oldValue = association.getValue();
+            association.setValue(value);
+            return oldValue;
+        } else {
+            association = new composites.Association(key, value);
+            map[key.toString()] = association;
+            array.push(association);
         }
     };
 
@@ -218,6 +220,7 @@ function Catalog(parameters) {
     
     this.removeValue = function(key) {
         this.validateType('/bali/collections/Catalog', '$removeValue', '$key', key, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -225,16 +228,15 @@ function Catalog(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        if (key) {
-            const association = map[key.toString()];
-            if (association) {
-                delete map[key.toString()];
-                const index = array.findIndex(function(item) {
-                    return item.isEqualTo(association);
-                });
-                array.splice(index, 1);
-                return association.getValue();
-            }
+        key = this.convert(key);
+        const association = map[key.toString()];
+        if (association) {
+            delete map[key.toString()];
+            const index = array.findIndex(function(item) {
+                return item.isEqualTo(association);
+            });
+            array.splice(index, 1);
+            return association.getValue();
         }
     };
 
@@ -341,20 +343,20 @@ Catalog.prototype.acceptVisitor = function(visitor) {
  * concatenated onto the end of the first catalog (except any duplicate keys which are ignored).
  * The parameters for the first catalog are used as the parameters for the resulting catalog.
  *
- * @param {Collection} catalog1 The first catalog to be operated on.
- * @param {Collection} catalog2 The second catalog to be operated on.
+ * @param {Collection} first The first catalog to be operated on.
+ * @param {Collection} second The second catalog to be operated on.
  * @returns {Collection} The resulting catalog.
  */
-Catalog.concatenation = function(catalog1, catalog2) {
-    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$catalog1', catalog1, [
+Catalog.concatenation = function(first, second) {
+    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$first', first, [
         '/bali/collections/Catalog'
     ]);
-    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$catalog2', catalog2, [
+    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$second', second, [
         '/bali/collections/Catalog'
     ]);
-    const result = new Catalog(catalog1.getParameters());
-    result.addItems(catalog1);
-    result.addItems(catalog2);
+    const result = new Catalog(first.getParameters());
+    result.addItems(first);
+    result.addItems(second);
     return result;
 };
 

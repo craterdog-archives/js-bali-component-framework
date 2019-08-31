@@ -60,6 +60,7 @@ function Stack(parameters) {
     
     this.addItem = function(item) {
         this.validateType('/bali/collections/Stack', '$addItem', '$item', item, [
+            '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
@@ -76,12 +77,9 @@ function Stack(parameters) {
                 $text: 'The stack has reached its maximum capacity.'
             });
         }
-        if (item) {
-            item = this.convert(item);
-            array.push(item);
-            return true;
-        }
-        return false;
+        item = this.convert(item);
+        array.push(item);
+        return true;
     };
     
     this.removeItem = function() {

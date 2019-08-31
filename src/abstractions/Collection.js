@@ -75,6 +75,7 @@ Collection.prototype.acceptVisitor = function(visitor) {
  */
 Collection.prototype.getIndex = function(item) {
     this.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
+        '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number',
         '/javascript/String',
@@ -206,6 +207,7 @@ Collection.prototype.addItems = function(items) {
  */
 Collection.prototype.containsItem = function(item) {
     this.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+        '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number',
         '/javascript/String',

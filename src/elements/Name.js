@@ -15,6 +15,7 @@
  * name string element.
  */
 const abstractions = require('../abstractions');
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC CONSTRUCTOR
@@ -28,6 +29,24 @@ const abstractions = require('../abstractions');
  */
 function Name(value, parameters) {
     abstractions.Element.call(this, '$Name', parameters);
+
+    this.validateType('/bali/elements/Name', '$Name', '$value', value, [
+        '/javascript/Array'
+    ]);
+    this.validateType('/bali/elements/Name', '$Name', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
+    if (!Array.isArray(value) || value.length === 0) {
+        throw new Exception({
+            $module: '/bali/elements/Name',
+            $procedure: '$Name',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid name value was passed to the constructor.'
+        });
+    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value.slice(0); };  // return a copy
@@ -125,13 +144,19 @@ Name.prototype.getIterator = function() {
  * This function returns a new name string that contains the bytes from the second name
  * concatenated onto the end of the first name string.
  *
- * @param {Name} name1 The first name string to be operated on.
- * @param {Name} name2 The second name string to be operated on.
+ * @param {Name} first The first name string to be operated on.
+ * @param {Name} second The second name string to be operated on.
  * @returns {Name} The resulting name string.
  */
-Name.concatenation = function(name1, name2) {
-    const parts1 = name1.getValue();
-    const parts2 = name2.getValue();
+Name.concatenation = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Name', '$concatenation', '$first', first, [
+        '/bali/elements/Name'
+    ]);
+    abstractions.Element.validate('/bali/elements/Name', '$concatenation', '$second', second, [
+        '/bali/elements/Name'
+    ]);
+    const parts1 = first.getValue();
+    const parts2 = second.getValue();
     const parts = parts1.concat(parts2);
     return new Name(parts);
 };
