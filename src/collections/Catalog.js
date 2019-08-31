@@ -47,10 +47,10 @@ function Catalog(parameters) {
     };
 
     this.getItem = function(index) {
-    this.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
-        '/javascript/Number',
-        '/bali/elements/Number'
-    ]);
+        this.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };

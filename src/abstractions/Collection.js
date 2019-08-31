@@ -190,7 +190,14 @@ Collection.prototype.addItems = function(items) {
  * @returns {Boolean} Whether or not the specified item is contained in this collection.
  */
 Collection.prototype.containsItem = function(item) {
-    // validated in getIndex()
+    this.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+        '/javascript/Boolean',
+        '/javascript/Number',
+        '/javascript/String',
+        '/javascript/Array',
+        '/javascript/Object',
+        '/bali/abstractions/Component'
+    ]);
     const index = this.getIndex(item);
     const result = index > 0;
     return result;

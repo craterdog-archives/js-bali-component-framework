@@ -52,11 +52,27 @@ function List(parameters) {
     };
     
     this.getItem = function(index) {
+        this.validateType('/bali/collections/List', '$getItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
     
     this.setItem = function(index, item) {
+        this.validateType('/bali/collections/List', '$setItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+        this.validateType('/bali/collections/List', '$setItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         item = this.convert(item);
         const oldItem = array[index];
@@ -65,18 +81,47 @@ function List(parameters) {
     };
     
     this.addItem = function(item) {
+        this.validateType('/bali/collections/List', '$setItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
         item = this.convert(item);
         array.push(item);
         return true;
     };
     
     this.insertItem = function(index, item) {
+        this.validateType('/bali/collections/List', '$insertItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+        this.validateType('/bali/collections/List', '$insertItem', '$item', item, [
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
         item = this.convert(item);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
     
     this.insertItems = function(index, items) {
+        this.validateType('/bali/collections/List', '$insertItems', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+        this.validateType('/bali/collections/List', '$insertItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
@@ -85,6 +130,10 @@ function List(parameters) {
     };
     
     this.removeItem = function(index) {
+        this.validateType('/bali/collections/List', '$removeItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         const oldItem = array[index];
         if (oldItem) array.splice(index, 1);
@@ -92,6 +141,10 @@ function List(parameters) {
     };
     
     this.removeItems = function(range) {
+        this.validateType('/bali/collections/List', '$removeItems', '$range', range, [
+            '/javascript/Undefined',
+            '/bali/composites/Range'
+        ]);
         const items = new List(this.getParameters());
         const iterator = range.getIterator();
         while (iterator.hasNext()) {
@@ -168,6 +221,12 @@ List.prototype.acceptVisitor = function(visitor) {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(list1, list2) {
+    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$list1', list1, [
+        '/bali/collections/List'
+    ]);
+    abstractions.Collection.validate('/bali/collections/List', '$concatenation', '$list2', list2, [
+        '/bali/collections/List'
+    ]);
     const result = new List();
     result.addItems(list1);
     result.addItems(list2);
