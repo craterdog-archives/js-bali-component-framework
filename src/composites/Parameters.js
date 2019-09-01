@@ -29,8 +29,9 @@ function Parameters(collection) {
     abstractions.Composite.call(this, '$Parameters');
 
     this.validateType('/bali/composites/Parameters', '$Parameters', '$collection', collection, [
+        '/bali/collections/Catalog',
         '/bali/collections/List',
-        '/bali/collections/Catalog'
+        '/bali/composites/Range'
     ]);
 
     // the parameters are immutable so the methods are included in the constructor
