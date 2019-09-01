@@ -19,10 +19,10 @@ const formatter = new utilities.Formatter();
 const Exception = require('../composites/Exception').Exception;
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates an immutable instance of an angle using the specified value.
+ * This function creates an immutable instance of an angle using the specified value.
  * 
  * @param {Number} value The value of the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -44,7 +44,7 @@ function Angle(value, parameters) {
     if (!isFinite(value)) {
         throw new Exception({
             $module: '/bali/elements/Angle',
-            $procedure: '$angle',
+            $procedure: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid angle value was passed to the constructor.'

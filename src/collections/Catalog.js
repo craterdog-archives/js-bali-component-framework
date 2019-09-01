@@ -21,10 +21,10 @@ const composites = require('../composites');
 const List = require('./List').List;
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new catalog component with optional parameters that are
+ * This function creates a new catalog component with optional parameters that are
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 

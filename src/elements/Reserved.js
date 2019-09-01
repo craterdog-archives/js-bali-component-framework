@@ -15,12 +15,13 @@
  * reserved identifier.
  */
 const abstractions = require('../abstractions');
+const Exception = require('../composites/Exception').Exception;
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new reserved identifier using the specified value.
+ * This function creates a new reserved identifier using the specified value.
  * 
  * @param {String} value The value of the reserved identifier.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -28,6 +29,24 @@ const abstractions = require('../abstractions');
  */
 function Reserved(value, parameters) {
     abstractions.Element.call(this, '$Reserved', parameters);
+
+    this.validateType('/bali/elements/Reserved', '$Reserved', '$value', value, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/elements/Reserved', '$Reserved', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
+        throw new Exception({
+            $module: '/bali/elements/Reserved',
+            $procedure: '$Reserved',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid reserved symbol value was passed to the constructor.'
+        });
+    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

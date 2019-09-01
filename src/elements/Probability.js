@@ -16,12 +16,13 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const Exception = require('../composites/Exception').Exception;
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new probability element using the specified value.
+ * This function creates a new probability element using the specified value.
  * 
  * @param {Number} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -29,6 +30,27 @@ const abstractions = require('../abstractions');
  */
 function Probability(value, parameters) {
     abstractions.Element.call(this, '$Probability', parameters);
+
+    this.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/Boolean',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Probability', '$Probability', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
+    if (value === value) value = value || 0;  // default value if not NaN and not defined
+    if (!isFinite(value) || value < 0 || value > 1) {
+        throw new Exception({
+            $module: '/bali/elements/Probability',
+            $procedure: '$Probability',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid probability value was passed to the constructor.'
+        });
+    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
@@ -106,6 +128,9 @@ Probability.prototype.acceptVisitor = function(visitor) {
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability) {
+    abstractions.Element.validate('/bali/elements/Probability', '$not', '$probability', probability, [
+        '/bali/elements/Probability'
+    ]);
     const p = utilities.precision.difference(1, probability.getValue());
     const result = new Probability(p);
     return result;
@@ -120,13 +145,19 @@ Probability.not = function(probability) {
  *    pAND = p1 * p2
  * </pre>
  *
- * @param {Probability} probability1 The first probability.
- * @param {Probability} probability2 The second probability.
+ * @param {Probability} first The first probability.
+ * @param {Probability} second The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.and = function(probability1, probability2) {
-    const p1 = probability1.getValue();
-    const p2 = probability2.getValue();
+Probability.and = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Probability', '$and', '$first', first, [
+        '/bali/elements/Probability'
+    ]);
+    abstractions.Element.validate('/bali/elements/Probability', '$and', '$second', second, [
+        '/bali/elements/Probability'
+    ]);
+    const p1 = first.getValue();
+    const p2 = second.getValue();
     const p = utilities.precision.product(p1, p2);
     const result = new Probability(p);
     return result;
@@ -142,13 +173,19 @@ Probability.and = function(probability1, probability2) {
  *          = p1 * (1 - p2)
  * </pre>
  *
- * @param {Probability} probability1 The first probability.
- * @param {Probability} probability2 The second probability.
+ * @param {Probability} first The first probability.
+ * @param {Probability} second The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.sans = function(probability1, probability2) {
-    const p1 = probability1.getValue();
-    const p2 = probability2.getValue();
+Probability.sans = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Probability', '$sans', '$first', first, [
+        '/bali/elements/Probability'
+    ]);
+    abstractions.Element.validate('/bali/elements/Probability', '$sans', '$second', second, [
+        '/bali/elements/Probability'
+    ]);
+    const p1 = first.getValue();
+    const p2 = second.getValue();
     const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
     const result = new Probability(p);
     return result;
@@ -165,13 +202,19 @@ Probability.sans = function(probability1, probability2) {
  *        = p1 + p2 - p1 * p2
  * </pre>
  *
- * @param {Probability} probability1 The first probability.
- * @param {Probability} probability2 The second probability.
+ * @param {Probability} first The first probability.
+ * @param {Probability} second The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.or = function(probability1, probability2) {
-    const p1 = probability1.getValue();
-    const p2 = probability2.getValue();
+Probability.or = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Probability', '$or', '$first', first, [
+        '/bali/elements/Probability'
+    ]);
+    abstractions.Element.validate('/bali/elements/Probability', '$or', '$second', second, [
+        '/bali/elements/Probability'
+    ]);
+    const p1 = first.getValue();
+    const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
     const result = new Probability(p);
     return result;
@@ -188,13 +231,19 @@ Probability.or = function(probability1, probability2) {
  *         = p1 + p2 - 2 * (p1 * p2)
  * </pre>
  *
- * @param {Probability} probability1 The first probability.
- * @param {Probability} probability2 The second probability.
+ * @param {Probability} first The first probability.
+ * @param {Probability} second The second probability.
  * @returns {Probability} The resulting probability.
  */
-Probability.xor = function(probability1, probability2) {
-    const p1 = probability1.getValue();
-    const p2 = probability2.getValue();
+Probability.xor = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Probability', '$xor', '$first', first, [
+        '/bali/elements/Probability'
+    ]);
+    abstractions.Element.validate('/bali/elements/Probability', '$xor', '$second', second, [
+        '/bali/elements/Probability'
+    ]);
+    const p1 = first.getValue();
+    const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));
     const result = new Probability(p);
     return result;

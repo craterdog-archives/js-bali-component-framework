@@ -16,10 +16,10 @@
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new text string element using the specified value.
+ * This function creates a new text string element using the specified value.
  * 
  * @param {String} value The value of the text string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -27,6 +27,16 @@ const abstractions = require('../abstractions');
  */
 function Text(value, parameters) {
     abstractions.Element.call(this, '$Text', parameters);
+
+    this.validateType('/bali/elements/Text', '$Text', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/elements/Text', '$Text', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     value = value || '';  // default value
 
     // since this element is immutable the value must be read-only
@@ -125,13 +135,19 @@ Text.prototype.getIterator = function() {
  * This function returns a new text string that contains the bytes from the second text
  * concatenated onto the end of the first text string.
  *
- * @param {Text} text1 The first text string to be operated on.
- * @param {Text} text2 The second text string to be operated on.
+ * @param {Text} first The first text string to be operated on.
+ * @param {Text} second The second text string to be operated on.
  * @returns {Text} The resulting text string.
  */
-Text.concatenation = function(text1, text2) {
-    const string1 = text1.getValue();
-    const string2 = text2.getValue();
+Text.concatenation = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Text', '$concatenation', '$first', first, [
+        '/bali/elements/Text'
+    ]);
+    abstractions.Element.validate('/bali/elements/Text', '$concatenation', '$second', second, [
+        '/bali/elements/Text'
+    ]);
+    const string1 = first.getValue();
+    const string2 = second.getValue();
     const string = string1 + string2;
     return new Text(string);
 };

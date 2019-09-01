@@ -19,7 +19,7 @@ const abstractions = require('../abstractions');
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new key-value association.
+ * This function creates a new key-value association.
  * 
  * @param {String|Number|Boolean|Component} key The key of the association.
  * @param {String|Number|Boolean|Component} value The value associated with the key.

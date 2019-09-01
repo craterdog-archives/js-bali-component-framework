@@ -20,7 +20,7 @@ const Visitor = require('../abstractions/Visitor').Visitor;
 const EOL = '\n';
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
  * This class implements a duplicator that uses a visitor to create a deep copy of a

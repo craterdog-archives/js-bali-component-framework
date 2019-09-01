@@ -28,10 +28,10 @@ const abstractions = require('../abstractions');
 const composites = require('../composites');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new list component with optional parameters that are
+ * This function creates a new list component with optional parameters that are
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this list. 

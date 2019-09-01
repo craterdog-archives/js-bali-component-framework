@@ -17,10 +17,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new percent element using the specified value.
+ * This function creates a new percent element using the specified value.
  * 
  * @param {Number} value The value of the percent.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -28,6 +28,14 @@ const abstractions = require('../abstractions');
  */
 function Percent(value, parameters) {
     abstractions.Element.call(this, '$Percent', parameters);
+    this.validateType('/bali/elements/Percent', '$Percent', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Percent', '$Percent', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
     value = value || 0;  // default value
 
     // since this element is immutable the value must be read-only
@@ -95,9 +103,11 @@ Percent.prototype.acceptVisitor = function(visitor) {
  * This function returns the inverse of a percent.
  * 
  * @param {Percent} percent The percent to be inverted.
- * @throws {Error} The percent cannot be negative.
  */
 Percent.inverse = function(percent) {
+    abstractions.Element.validate('/bali/elements/Percent', '$inverse', '$percent', percent, [
+        '/bali/elements/Percent'
+    ]);
     return new Percent(-percent.getValue());
 };
 
@@ -105,24 +115,36 @@ Percent.inverse = function(percent) {
 /**
  * This function returns the sum of two percents.
  * 
- * @param {Percent} firstPercent The first percent to be summed.
- * @param {Percent} secondPercent The second percent to be summed.
+ * @param {Percent} first The first percent to be summed.
+ * @param {Percent} second The second percent to be summed.
  * @returns {Percent} The normalized sum of the two percents.
  */
-Percent.sum = function(firstPercent, secondPercent) {
-    return new Percent(utilities.precision.sum(firstPercent.getValue(), secondPercent.getValue()));
+Percent.sum = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Percent', '$sum', '$first', first, [
+        '/bali/elements/Percent'
+    ]);
+    abstractions.Element.validate('/bali/elements/Percent', '$sum', '$second', second, [
+        '/bali/elements/Percent'
+    ]);
+    return new Percent(utilities.precision.sum(first.getValue(), second.getValue()));
 };
 
 
 /**
  * This function returns the difference of two percents.
  * 
- * @param {Percent} firstPercent The percent to be subtracted from.
- * @param {Percent} secondPercent The percent to subtract from the first percent.
+ * @param {Percent} first The percent to be subtracted from.
+ * @param {Percent} second The percent to subtract from the first percent.
  * @returns {Percent} The normalized difference of the two percents.
  */
-Percent.difference = function(firstPercent, secondPercent) {
-    return new Percent(utilities.precision.difference(firstPercent.getValue(), secondPercent.getValue()));
+Percent.difference = function(first, second) {
+    abstractions.Element.validate('/bali/elements/Percent', '$difference', '$first', first, [
+        '/bali/elements/Percent'
+    ]);
+    abstractions.Element.validate('/bali/elements/Percent', '$difference', '$second', second, [
+        '/bali/elements/Percent'
+    ]);
+    return new Percent(utilities.precision.difference(first.getValue(), second.getValue()));
 };
 
 
@@ -134,6 +156,12 @@ Percent.difference = function(firstPercent, secondPercent) {
  * @returns {Percent} The normalized scaled percent.
  */
 Percent.scaled = function(percent, factor) {
+    abstractions.Element.validate('/bali/elements/Percent', '$scaled', '$percent', percent, [
+        '/bali/elements/Percent'
+    ]);
+    abstractions.Element.validate('/bali/elements/Percent', '$scaled', '$factor', factor, [
+        '/javascript/Number'
+    ]);
     return new Percent(utilities.precision.product(percent.getValue(), factor));
 };
 

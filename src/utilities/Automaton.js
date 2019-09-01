@@ -21,7 +21,7 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new finite state automaton using the specified event type
+ * This function creates a new finite state automaton using the specified event type
  * array and state transition object.
  * <pre>
  * eventTypes:  ['$event1', '$event2', ... '$eventM']

@@ -15,7 +15,7 @@
  */
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
  * This comparator class implements a natural comparison algorithm using the

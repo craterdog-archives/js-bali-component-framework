@@ -15,12 +15,13 @@
  * symbol element.
  */
 const abstractions = require('../abstractions');
+const Exception = require('../composites/Exception').Exception;
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new symbol element using the specified value.
+ * This function creates a new symbol element using the specified value.
  * 
  * @param {String} value The value of the symbol.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
@@ -28,6 +29,24 @@ const abstractions = require('../abstractions');
  */
 function Symbol(value, parameters) {
     abstractions.Element.call(this, '$Symbol', parameters);
+
+    this.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/elements/Symbol', '$Symbol', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
+    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
+        throw new Exception({
+            $module: '/bali/elements/Symbol',
+            $procedure: '$Symbol',
+            $exception: '$invalidParameter',
+            $parameter: value,
+            $text: 'An invalid symbol value was passed to the constructor.'
+        });
+    }
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };

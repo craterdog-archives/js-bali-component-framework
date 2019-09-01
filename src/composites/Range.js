@@ -21,7 +21,7 @@ const Exception = require('./Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new range of items with optional parameters that are used
+ * This function creates a new range of items with optional parameters that are used
  * to parameterize its type.
  * 
  * @param {Number|Component} first The first item in the range.
@@ -31,6 +31,23 @@ const Exception = require('./Exception').Exception;
  */
 function Range(first, last, parameters) {
     abstractions.Composite.call(this, '$Range', parameters);
+
+    this.validateType('/bali/composites/Range', '$Range', '$first', first, [
+        '/javascript/Number',
+        '/javascript/String',
+        '/bali/abstractions/Component'
+    ]);
+    this.validateType('/bali/composites/Range', '$Range', '$last', last, [
+        '/javascript/Number',
+        '/javascript/String',
+        '/bali/abstractions/Component'
+    ]);
+    this.validateType('/bali/composites/Range', '$Range', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+    first = this.convert(first);
+    last = this.convert(last);
 
     // the range is immutable so the collection is private and the indices must be read-only
     var firstIndex;
@@ -101,6 +118,10 @@ function Range(first, last, parameters) {
     };
     
     this.getItem = function(index) {
+        this.validateType('/bali/composites/Range', '$getItem', '$index', index, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
         var item;
         if (collection) {
             item = collection.getItem(firstIndex + index - 1);
@@ -123,6 +144,15 @@ function Range(first, last, parameters) {
     };
     
     this.isInRange = function(item) {
+        this.validateType('/bali/composites/Range', '$isInRange', '$item', item, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
         var index;
         if (collection) {
             index = collection.getIndex(item);

@@ -27,10 +27,10 @@ Array.prototype.peek = function() {
 };
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new stack component with optional parameters that are
+ * This function creates a new stack component with optional parameters that are
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
@@ -40,6 +40,11 @@ function Stack(parameters) {
     parameters = parameters || new composites.Parameters(new Catalog());
     if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Stack/v1');
     abstractions.Collection.call(this, '$Stack', parameters);
+
+    this.validateType('/bali/collections/Stack', '$Stack', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor

@@ -18,10 +18,10 @@ const abstractions = require('../abstractions');
 const formatter = new utilities.Formatter();
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates an immutable instance of a binary string using the specified
+ * This function creates an immutable instance of a binary string using the specified
  * value.
  * 
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.

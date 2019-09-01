@@ -17,10 +17,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new tag element using the specified value.
+ * This function creates a new tag element using the specified value.
  * 
  * @param {Number|String} value An optional parameter defining the size of a new random
  * tag or the value it should represent.
@@ -29,6 +29,17 @@ const abstractions = require('../abstractions');
  */
 function Tag(value, parameters) {
     abstractions.Element.call(this, '$Tag', parameters);
+
+    this.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
+        '/javascript/Undefined',
+        '/javascript/String',
+        '/javascript/Number'
+    ]);
+    this.validateType('/bali/elements/Tag', '$Tag', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
     switch (typeof value) {

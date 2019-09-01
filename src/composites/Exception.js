@@ -23,7 +23,7 @@
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new Bali exception with the specified attributes.  It must
+ * This function creates a new Bali exception with the specified attributes.  It must
  * be very careful not to cause additional exceptions to be thrown or an infinite loop
  * may result.
  * 

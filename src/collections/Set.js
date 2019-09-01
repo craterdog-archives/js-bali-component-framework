@@ -20,10 +20,10 @@ const composites = require('../composites');
 const Catalog = require('./Catalog').Catalog;
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new set component with optional parameters that are
+ * This function creates a new set component with optional parameters that are
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
@@ -34,6 +34,11 @@ function Set(parameters, comparator) {
     parameters = parameters || new composites.Parameters(new Catalog());
     if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Set/v1');
     abstractions.Collection.call(this, '$Set', parameters);
+
+    this.validateType('/bali/collections/Set', '$Set', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor

@@ -24,13 +24,18 @@ const Exception = require('./Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new tree node component.
+ * This function creates a new tree node component.
  * 
- * @param {Number} type The type of the tree node component.
+ * @param {String} type The type of the tree node component.
  * @returns {Tree} The new tree node component.
  */
 function Tree(type) {
     abstractions.Composite.call(this, type);
+
+    this.validateType('/bali/composites/Tree', '$Tree', '$type', type, [
+        '/javascript/String'
+    ]);
+
     if (!this.isProcedural()) {
         throw new Exception({
             $module: '/bali/composites/Tree',

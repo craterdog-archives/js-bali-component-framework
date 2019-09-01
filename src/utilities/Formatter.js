@@ -30,7 +30,7 @@ const EOL = '\n';
 const MAXIMUM_LENGTH = 25;
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
  * This class implements a formatter that uses a visitor to format component structures

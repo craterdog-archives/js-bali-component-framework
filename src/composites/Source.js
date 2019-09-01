@@ -19,7 +19,7 @@ const abstractions = require('../abstractions');
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new source code component with optional parameters that are
+ * This function creates a new source code component with optional parameters that are
  * used to parameterize its behavior.
  * 
  * @param {Tree} procedure The procedure that is contained within the source code.
@@ -28,6 +28,15 @@ const abstractions = require('../abstractions');
  */
 function Source(procedure, parameters) {
     abstractions.Composite.call(this, '$Source', parameters);
+
+    this.validateType('/bali/composites/Source', '$Source', '$procedure', procedure, [
+        '/bali/composites/Tree'
+    ]);
+    this.validateType('/bali/composites/Source', '$Source', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     this.getProcedure = function() { return procedure; };
     return this;
 }

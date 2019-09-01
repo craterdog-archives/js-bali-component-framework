@@ -17,10 +17,10 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new parameter catalog or list.
+ * This function creates a new parameter catalog or list.
  * 
  * @param {Collection} collection The collection of parameters. 
  * @returns {Parameters} The new parameter list.

@@ -18,10 +18,10 @@ const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new name element using the specified value.
+ * This function creates a new name element using the specified value.
  * 
  * @param {Array} value An array containing the parts of the name string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 

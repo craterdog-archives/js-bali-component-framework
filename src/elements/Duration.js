@@ -18,10 +18,10 @@ const moment = require('moment');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new duration element using the specified value.
+ * This function creates a new duration element using the specified value.
  * 
  * @param {String|Number} value The source string the duration.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 

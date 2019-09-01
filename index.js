@@ -14,7 +14,6 @@
  * component framework.
  */
 const EOL = '\n';
-const URL = require('url').URL;
 const utilities = require('./src/utilities');
 const abstractions = require('./src/abstractions');  // depends on utilities
 const elements = require('./src/elements');  // depends on abstractions
@@ -465,14 +464,6 @@ exports.pattern = pattern;
  * @returns {Percent} The new percent element.
  */
 const percent = function(value, parameters) {
-    validate('/bali/elements/Percent', '$percent', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Percent', '$percent', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Percent(value, parameters);
 };
 percent.inverse = elements.Percent.inverse;
@@ -494,25 +485,6 @@ exports.precision = utilities.precision;
  * @returns {Probability} The new probability element.
  */
 const probability = function(value, parameters) {
-    validate('/bali/elements/Probability', '$probability', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Boolean',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Probability', '$probability', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    if (value === value) value = value || 0;  // default value if not NaN and not defined
-    if (!isFinite(value) || value < 0 || value > 1) {
-        throw exception({
-            $module: '/bali/elements/Probability',
-            $procedure: '$probability',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid probability value was passed to the constructor.'
-        });
-    }
     return new elements.Probability(value, parameters);
 };
 probability.not = elements.Probability.not;
@@ -534,16 +506,6 @@ exports.probability = probability;
  * @returns {Queue} The new queue.
  */
 const queue = function(items, parameters) {
-    validate('/bali/collections/Queue', '$queue', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/interfaces/Sequential'
-    ]);
-    validate('/bali/collections/Queue', '$queue', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     const collection = new collections.Queue(parameters);
     collection.addItems(items);
     return collection;
@@ -565,22 +527,6 @@ exports.random = utilities.random;
  * @returns {Range} The new range.
  */
 const range = function(first, last, parameters) {
-    validate('/bali/composites/Range', '$range', '$first', first, [
-        '/javascript/Number',
-        '/javascript/String',
-        '/bali/abstractions/Component'
-    ]);
-    validate('/bali/composites/Range', '$range', '$last', last, [
-        '/javascript/Number',
-        '/javascript/String',
-        '/bali/abstractions/Component'
-    ]);
-    validate('/bali/composites/Range', '$range', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    first = convert(first);
-    last = convert(last);
     return new composites.Range(first, last, parameters);
 };
 exports.range = range;
@@ -593,27 +539,6 @@ exports.range = range;
  * @returns {Reference} The new reference element.
  */
 const reference = function(value, parameters) {
-    validate('/bali/elements/Reference', '$reference', '$value', value, [
-        '/javascript/String',
-        '/nodejs/URL'
-    ]);
-    validate('/bali/elements/Reference', '$reference', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    try {
-        if (value.constructor.name !== 'URL') {
-            value = new URL(value.replace(/\$tag:#/, '$tag:%23'));  // escape the '#'
-        }
-    } catch (exception) {
-        throw exception({
-            $module: '/bali/elements/Reference',
-            $procedure: '$reference',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid reference value was passed to the constructor.'
-        }, exception);
-    }
     return new elements.Reference(value, parameters);
 };
 exports.reference = reference;
@@ -626,22 +551,6 @@ exports.reference = reference;
  * @returns {Reserved} The new reserved identifier.
  */
 const reserved = function(value, parameters) {
-    validate('/bali/elements/Reserved', '$reserved', '$value', value, [
-        '/javascript/String'
-    ]);
-    validate('/bali/elements/Reserved', '$reserved', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
-        throw exception({
-            $module: '/bali/elements/Reserved',
-            $procedure: '$reserved',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid reserved symbol value was passed to the constructor.'
-        });
-    }
     return new elements.Reserved(value, parameters);
 };
 exports.reserved = reserved;
@@ -658,16 +567,6 @@ exports.reserved = reserved;
  * @returns {Set} The new set.
  */
 const set = function(items, comparator, parameters) {
-    validate('/bali/collections/Set', '$set', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/interfaces/Sequential'
-    ]);
-    validate('/bali/collections/Set', '$set', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     const collection = new collections.Set(parameters, comparator);
     collection.addItems(items);
     return collection;
@@ -687,13 +586,6 @@ set.xor = collections.Set.xor;
  * @returns {Source} A new source code component.
  */
 const source = function(procedure, parameters) {
-    validate('/bali/composites/Source', '$source', '$procedure', procedure, [
-        '/bali/composites/Tree'
-    ]);
-    validate('/bali/composites/Source', '$source', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new composites.Source(procedure, parameters);
 };
 exports.source = source;
@@ -708,16 +600,6 @@ exports.source = source;
  * @returns {Stack} The new stack.
  */
 const stack = function(items, parameters) {
-    validate('/bali/collections/Stack', '$stack', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/interfaces/Sequential'
-    ]);
-    validate('/bali/collections/Stack', '$stack', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     const collection = new collections.Stack(parameters);
     collection.addItems(items);
     return collection;
@@ -732,22 +614,6 @@ exports.stack = stack;
  * @returns {Symbol} The new symbol element.
  */
 const symbol = function(value, parameters) {
-    validate('/bali/elements/Symbol', '$symbol', '$value', value, [
-        '/javascript/String'
-    ]);
-    validate('/bali/elements/Symbol', '$symbol', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw exception({
-            $module: '/bali/elements/Symbol',
-            $procedure: '$symbol',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid symbol value was passed to the constructor.'
-        });
-    }
     return new elements.Symbol(value, parameters);
 };
 exports.symbol = symbol;
@@ -761,15 +627,6 @@ exports.symbol = symbol;
  * @returns {Tag} The new tag element.
  */
 const tag = function(value, parameters) {
-    validate('/bali/elements/Tag', '$tag', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ]);
-    validate('/bali/elements/Tag', '$tag', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Tag(value, parameters);
 };
 exports.tag = tag;
@@ -782,14 +639,6 @@ exports.tag = tag;
  * @returns {Text} The new text string.
  */
 const text = function(value, parameters) {
-    validate('/bali/elements/Text', '$text', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String'
-    ]);
-    validate('/bali/elements/Text', '$text', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
     return new elements.Text(value, parameters);
 };
 text.concatenation = elements.Text.concatenation;
@@ -802,9 +651,6 @@ exports.text = text;
  * @returns {Tree} The new tree node component.
  */
 const tree = function(type) {
-    validate('/bali/composites/Tree', '$tree', '$number', type, [
-        '/javascript/Number'
-    ]);
     return new composites.Tree(type);
 };
 exports.tree = tree;
@@ -841,6 +687,11 @@ const validate = function(moduleName, procedureName, parameterName, parameterVal
         $module: '/bali/abstractions/Component',
         $procedure: '$validate',
         $exception: '$invalidParameter',
+        $moduleName: moduleName,
+        $procedureName: procedureName,
+        $parameterName: parameterName,
+        $parameterValue: parameterValue,
+        $allowedTypes: allowedTypes,
         $text: 'An invalid parameter was passed as part of the validation attempt.'
     });
 };
@@ -854,24 +705,6 @@ exports.validate = validate;
  * @returns {Symbol} The new version string element.
  */
 const version = function(value, parameters) {
-    validate('/bali/elements/Version', '$version', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Array'
-    ]);
-    validate('/bali/elements/Version', '$version', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    value = value || [1];  // the default value
-    if (value.indexOf(0) >= 0) {
-        throw exception({
-            $module: '/bali/elements/Version',
-            $procedure: '$version',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid version value was passed to the constructor.'
-        });
-    }
     return new elements.Version(value, parameters);
 };
 version.nextVersion = elements.Version.nextVersion;

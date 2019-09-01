@@ -18,15 +18,24 @@ const Component = require('./Component').Component;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new elemental component of the specified type with the optional
+ * This function creates a new elemental component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of component.
+ * @param {String} type The type of component.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Element} The new element.
  */
 function Element(type, parameters) {
     Component.call(this, type, parameters);
+
+    this.validateType('/bali/abstractions/Element', '$Element', '$type', type, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/abstractions/Element', '$Element', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     return this;
 }
 Element.prototype = Object.create(Component.prototype);

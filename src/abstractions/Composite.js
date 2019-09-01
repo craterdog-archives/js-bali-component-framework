@@ -21,15 +21,24 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new composite component of the specified type with the optional
+ * This function creates a new composite component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of component.
+ * @param {String} type The type of component.
  * @param {Parameters} parameters Optional parameters used to parameterize the composite component. 
  * @returns {Composite} The new composite component.
  */
 function Composite(type, parameters) {
     Component.call(this, type, parameters);
+
+    this.validateType('/bali/abstractions/Composite', '$Composite', '$type', type, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/abstractions/Composite', '$Composite', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     return this;
 }
 Composite.prototype = Object.create(Component.prototype);

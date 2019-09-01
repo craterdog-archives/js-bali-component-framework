@@ -20,15 +20,24 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new collection component of the specified type with the optional
+ * This function creates a new collection component of the specified type with the optional
  * parameters that are used to parameterize its type.
  * 
- * @param {Number} type The type of collection.
+ * @param {String} type The type of collection.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Collection} The new collection.
  */
 function Collection(type, parameters) {
     Composite.call(this, type, parameters);
+
+    this.validateType('/bali/abstractions/Collection', '$Collection', '$type', type, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/abstractions/Collection', '$Collection', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     return this;
 }
 Collection.prototype = Object.create(Composite.prototype);

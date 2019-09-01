@@ -18,10 +18,10 @@ const abstractions = require('../abstractions');
 const Angle = require('./Angle').Angle;
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates an immutable instance of a complex number using the specified
+ * This function creates an immutable instance of a complex number using the specified
  * real and imaginary values.  If the imaginary value is an angle then the complex number
  * is in polar form, otherwise it is in rectangular form.
  * 

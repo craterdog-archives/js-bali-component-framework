@@ -31,10 +31,10 @@ const FORMATS = [
 ];
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new moment in time using the specified value and parameters.
+ * This function creates a new moment in time using the specified value and parameters.
  * 
  * @param {String|Number} value The optional source string value or millisecond value of
  * the moment in time.

@@ -30,6 +30,15 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Component} The new component.
  */
 function Component(type, parameters) {
+
+    this.validateType('/bali/abstractions/Component', '$Component', '$type', type, [
+        '/javascript/String'
+    ]);
+    this.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+        '/javascript/Undefined',
+        '/bali/composites/Parameters'
+    ]);
+
     parameters = parameters || undefined;  // normalize nulls to undefined
     this.isComponent = true;
     this.getType = function() { return type; };

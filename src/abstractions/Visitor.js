@@ -16,10 +16,10 @@
  */
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new visitor component.
+ * This function creates a new visitor component.
  * 
  * @returns {Visitor} The new visitor.
  */

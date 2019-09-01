@@ -15,10 +15,10 @@
 const abstractions = require('../abstractions');
 
 
-// PUBLIC CONSTRUCTOR
+// PUBLIC FUNCTIONS
 
 /**
- * This constructor creates a new pattern element using the specified value.
+ * This function creates a new pattern element using the specified value.
  * 
  * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 

@@ -16,7 +16,7 @@
 const Comparator = require('./Comparator').Comparator;
 
 
-// PUBLIC CONSTRUCTORS
+// PUBLIC FUNCTIONS
 
 /**
  * This sorter class implements a standard merge sort algorithm.  The collection to be sorted
