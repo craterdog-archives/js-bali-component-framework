@@ -251,7 +251,7 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 // collection: '[' sequence ']'
 FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    this.visitSequence(collection);  // must explicitly call it for sequence
+    this.visitSequence(collection);
     this.result += ']';
     this.visitComponent(collection);
 };

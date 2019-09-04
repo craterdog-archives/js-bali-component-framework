@@ -86,7 +86,7 @@ Visitor.prototype.visitBreakClause = function(tree) {
 //     EOL (association EOL)* |
 //     ':' {empty catalog}
 Visitor.prototype.visitCatalog = function(catalog) {
-    this.visitCollection(catalog);
+    this.visitSequence(catalog);
 };
 
 
@@ -100,15 +100,9 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 
 
 // collection: '[' sequence ']'
-Visitor.prototype.visitCollection = function(sequence) {
-    this.visitComponent(sequence);
-    this.depth++;
-    const iterator = sequence.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        item.acceptVisitor(this);
-    }
-    this.depth--;
+Visitor.prototype.visitCollection = function(collection) {
+    this.visitComponent(collection);
+    this.visitSequence(collection);
 };
 
 
@@ -289,7 +283,7 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty list}
 Visitor.prototype.visitList = function(list) {
-    this.visitCollection(list);
+    this.visitSequence(list);
 };
 
 
@@ -392,7 +386,7 @@ Visitor.prototype.visitProbability = function(probability) {
 // procedure: '{' statements '}'
 Visitor.prototype.visitProcedure = function(procedure) {
     this.visitComponent(procedure);
-    const statements = source.getStatements();
+    const statements = procedure.getStatements();
     statements.acceptVisitor(this);
 };
 
@@ -409,7 +403,7 @@ Visitor.prototype.visitPublishClause = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty queue}
 Visitor.prototype.visitQueue = function(queue) {
-    this.visitCollection(queue);
+    this.visitSequence(queue);
 };
 
 
@@ -424,8 +418,7 @@ Visitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 Visitor.prototype.visitRange = function(range) {
-    range.getFirst().acceptVisitor(this);
-    range.getLast().acceptVisitor(this);
+    this.visitSequence(range);
 };
 
 
@@ -484,12 +477,30 @@ Visitor.prototype.visitSelectClause = function(tree) {
 };
 
 
+// sequence: range | list | catalog
+Visitor.prototype.visitSequence = function(sequence) {
+    // note: range is handled differently
+    if (sequence.isType('$Range')) {
+        sequence.getFirst().acceptVisitor(this);
+        sequence.getLast().acceptVisitor(this);
+    } else if (sequence.getSize() > 0) {
+        this.depth++;
+        const iterator = sequence.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            item.acceptVisitor(this);
+        }
+        this.depth--;
+    }
+};
+
+
 // set:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
 //     {empty set}
 Visitor.prototype.visitSet = function(set) {
-    this.visitCollection(set);
+    this.visitSequence(set);
 };
 
 
@@ -498,7 +509,7 @@ Visitor.prototype.visitSet = function(set) {
 //     EOL (expression EOL)* |
 //     {empty stack}
 Visitor.prototype.visitStack = function(stack) {
-    this.visitCollection(stack);
+    this.visitSequence(stack);
 };
 
 
