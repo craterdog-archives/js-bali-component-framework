@@ -13,9 +13,7 @@
 /**
  * This abstract class defines the methods that all composite components must support.
  */
-const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -52,19 +50,6 @@ Composite.validate = Component.validate;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
- */
-Composite.prototype.isSequential = function() {
-    return true;
-};
-
-
-/**
  * This function determines whether or not this component is a composite.
  * 
  * @returns {Boolean} Whether or not this component is a composite.
@@ -81,60 +66,7 @@ Composite.prototype.isComposite = function() {
  * @returns {Boolean} Whether or not this composite has a meaningful value.
  */
 Composite.prototype.toBoolean = function() {
-    return !this.isEmpty();
-};
-
-
-/**
- * This abstract method returns an array containing the subcomponents in this composite
- * component. It must be implemented by a subclass.
- * 
- * @returns {Array} An array containing the subcomponents in this composite component.
- */
-Composite.prototype.toArray = function() {
-    throw new Exception({
-        $module: '/bali/abstractions/Composite',
-        $procedure: '$toArray',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-};
-
-
-/**
- * This method returns whether or not this composite component has any subcomponents.
- * 
- * @returns {Boolean} Whether or not this composite component has any subcomponents.
- */
-Composite.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
- * This abstract method returns the number of subcomponents that this composite component has.
- * It must be implemented by a subclass.
- * 
- * @returns {Number} The number of subcomponents that this composite component has.
- */
-Composite.prototype.getSize = function() {
-    throw new Exception({
-        $module: '/bali/abstractions/Composite',
-        $procedure: '$getSize',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the subcomponents in
- * this composite component.
- * @returns {Iterator} An iterator for this composite component.
- */
-Composite.prototype.getIterator = function() {
-    const iterator = new utilities.Iterator(this.toArray());
-    return iterator;
+    return true;
 };
 
 
@@ -150,14 +82,16 @@ Composite.prototype.getIterator = function() {
  * </pre>
  *
  * @param {Number} index The index to be normalized [-N..N].
+ * @param {Number} size The size of the composite (N).
  * @returns {Number} The normalized [1..N] index.
  */
-Composite.prototype.normalizeIndex = function(index) {
+Composite.prototype.normalizeIndex = function(index, size) {
     this.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
-        '/javascript/Number',
-        '/bali/elements/Number'
+        '/javascript/Number'
     ]);
-    const size = this.getSize();
+    this.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
+        '/javascript/Number'
+    ]);
     if (index > size) index = size;
     if (index < -size) index = -size;
     if (index < 0) index = index + size + 1;

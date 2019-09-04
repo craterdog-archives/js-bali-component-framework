@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This collection class implements a parameter list data structure. The structure is static
+ * This composite class implements a parameter list data structure. The structure is static
  * such that once parameters have been added to it they cannot be reordered or removed.
  */
 const utilities = require('../utilities');
@@ -20,98 +20,38 @@ const abstractions = require('../abstractions');
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new parameter catalog or list.
+ * This function creates a new parameter component.
  * 
- * @param {Collection} collection The collection of parameters. 
- * @returns {Parameters} The new parameter list.
+ * @param {Object|Catalog} parameters An object containing the parameter symbol-value pairs.
+ * @returns {Parameters} The new parameter component.
  */
-function Parameters(collection) {
+function Parameters(parameters) {
     abstractions.Composite.call(this, '$Parameters');
 
-    this.validateType('/bali/composites/Parameters', '$Parameters', '$collection', collection, [
-        '/bali/collections/Catalog',
-        '/bali/collections/List',
-        '/bali/composites/Range'
+    this.validateType('/bali/composites/Parameters', '$Parameters', '$parameters', parameters, [
+        '/javascript/Object',
+        '/bali/collections/Catalog'
     ]);
 
     // the parameters are immutable so the methods are included in the constructor
-    const duplicator = new utilities.Duplicator();
-    const copy = duplicator.duplicateComponent(collection);
+    const catalog = this.convert(parameters);
 
-    this.getCollection = function() { return copy; };
-
-    this.toArray = function() {
-        const array = copy.toArray();
-        return array;
+    this.getKeys = function() {
+        return catalog.getKeys();
     };
-    
+
+    this.getValue = function(key) {
+        this.validateType('/bali/composites/Parameters', '$getParameter', '$key', key, [
+            '/javascript/String',
+            '/bali/elements/Symbol'
+        ]);
+        return catalog.getValue(key);
+    };
+
     this.acceptVisitor = function(visitor) {
         visitor.visitParameters(this);
     };
     
-    this.getSize = function() {
-        const size = copy.getSize();
-        return size;
-    };
-    
-    this.getParameter = function(key, index) {
-        this.validateType('/bali/composites/Parameters', '$getParameter', '$key', key, [
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ]);
-        this.validateType('/bali/composites/Parameters', '$getParameter', '$index', index, [
-            '/javascript/Undefined',
-            '/javascript/Number',
-            '/bali/elements/Number'
-        ]);
-        key = this.convert(key);
-        var value;
-        index = index || 1;  // default is the first parameter
-        if (copy.isType('$Catalog')) {
-            value = copy.getValue(key);
-        } else {
-            value = copy.getItem(index);
-        }
-        return value;
-    };
-
-    this.setParameter = function(key, value, index) {
-        this.validateType('/bali/composites/Parameters', '$setParameter', '$key', key, [
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ]);
-        this.validateType('/bali/composites/Parameters', '$setParameter', '$value', value, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ]);
-        this.validateType('/bali/composites/Parameters', '$setParameter', '$index', index, [
-            '/javascript/Undefined',
-            '/javascript/Number',
-            '/bali/elements/Number'
-        ]);
-        key = this.convert(key);
-        value = this.convert(value);
-        index = index || 1;  // default is the first parameter
-        if (copy.isType('$Catalog')) {
-            copy.setValue(key, value);
-        } else {
-            copy.setItem(index, value);
-        }
-    };
-
     return this;
 }
 Parameters.prototype = Object.create(abstractions.Composite.prototype);

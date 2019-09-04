@@ -15,7 +15,6 @@
  */
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const Catalog = require('./Catalog').Catalog;
 
 
 /*
@@ -37,8 +36,9 @@ Array.prototype.peek = function() {
  * @returns {Stack} The new stack.
  */
 function Stack(parameters) {
-    parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Stack/v1');
+    parameters = parameters || new composites.Parameters({
+        $type: '/bali/collections/Stack/v1'
+    });
     abstractions.Collection.call(this, '$Stack', parameters);
 
     this.validateType('/bali/collections/Stack', '$Stack', '$parameters', parameters, [
@@ -50,7 +50,7 @@ function Stack(parameters) {
     // defined in the constructor
     var capacity = 1024;  // default capacity
     if (parameters) {
-        const value = parameters.getParameter('$capacity', 2);
+        const value = parameters.getValue('$capacity');
         if (value) capacity = value.toNumber();
     }
     const array = [];
@@ -87,6 +87,46 @@ function Stack(parameters) {
         return true;
     };
     
+    this.addItems = function(items) {
+        this.validateType('/bali/collections/Stack', '$addItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+        var count = 0;
+        items = items || undefined;  // normalize nulls to undefined
+        if (items) {
+            if (Array.isArray(items)) {
+                items.forEach(function(item) {
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }, this);
+            } else if (items.isSequential()) {
+                const iterator = items.getIterator();
+                while (iterator.hasNext()) {
+                    var item = iterator.getNext();
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }
+            } else if (typeof items === 'object') {
+                const keys = Object.keys(items);
+                keys.forEach(function(key) {
+                    this.addItem(items[key]);
+                    count++;
+                }, this);
+            }
+        }
+        return count;
+    },
+
     this.removeItem = function() {
         if (array.length > 0) {
             return array.pop();
@@ -130,6 +170,6 @@ exports.Stack = Stack;
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Stack.prototype.acceptVisitor = function(visitor) {
-    visitor.visitStack(this);
+    visitor.visitCollection(this);
 };
     

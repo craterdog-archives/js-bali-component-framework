@@ -401,16 +401,11 @@ number.sum = elements.Number.sum;
  * the object is an actual object the parameters will be stored as a Bali catalog
  * containing the key-value pair for each parameter.
  * 
- * @param {Object} sequence A JavaScript object containing the parameter values.
+ * @param {Object|Catalog} object An object containing the parameter values.
  * @returns {Parameters} The resulting Bali parameters component.
  */
-const parameters = function(sequence) {
-    if (Array.isArray(sequence)) {
-        sequence = list(sequence);
-    } else if (!sequence.isComponent) {
-        sequence = catalog(sequence);
-    }
-    return new composites.Parameters(sequence);
+const parameters = function(object) {
+    return new composites.Parameters(object);
 };
 exports.parameters = parameters;
 
@@ -420,27 +415,16 @@ exports.parameters = parameters;
  * the parser will report possible ambiguities in the input string.
  * 
  * @param {String} document A string containing Bali Document Notation™ to be parsed.
- * @param {Parameters} parameters Optional parameters to be used to parameterize the
- * resulting component.
- * @param {Boolean} debug An optional flag that when set will cause the parser to
- * report possible ambiguities in the input string.
  * @returns {Component} The corresponding Bali component.
  */
-const parse = function(document, parameters, debug) {
+const parse = function(document) {
     // must check these here since a parser is a utility rather than a component
     validate('/bali/utilities/Parser', '$parse', '$document', document, [
         '/javascript/String'
     ]);
-    validate('/bali/utilities/Parser', '$parse', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-    validate('/bali/utilities/Parser', '$parse', '$debug', debug, [
-        '/javascript/Undefined',
-        '/javascript/Boolean'
-    ]);
+    const debug = false;
     const parser = new utilities.Parser(debug);
-    return parser.parseDocument(document, parameters);
+    return parser.parseDocument(document, undefined);
 };
 exports.parse = parse;
 
@@ -497,6 +481,19 @@ probability.coinToss = elements.Probability.coinToss;
 exports.probability = probability;
 
 /**
+ * This function creates a new procedure component with optional parameters that are
+ * used to parameterize its behavior.
+ * 
+ * @param {Tree} statements The statements that are contained within the procedure.
+ * @param {Parameters} parameters Optional parameters used to parameterize the procedure. 
+ * @returns {Procedure} A new procedure component.
+ */
+const procedure = function(statements, parameters) {
+    return new composites.Procedure(statements, parameters);
+};
+exports.procedure = procedure;
+
+/**
  * This function creates a new queue component with optional parameters that are
  * used to parameterize its type.
  * 
@@ -527,7 +524,7 @@ exports.random = utilities.random;
  * @returns {Range} The new range.
  */
 const range = function(first, last, parameters) {
-    return new composites.Range(first, last, parameters);
+    return new collections.Range(first, last, parameters);
 };
 exports.range = range;
 
@@ -576,19 +573,6 @@ set.and = collections.Set.and;
 set.sans = collections.Set.sans;
 set.or = collections.Set.or;
 set.xor = collections.Set.xor;
-
-/**
- * This function creates a new source code component with optional parameters that are
- * used to parameterize its behavior.
- * 
- * @param {Tree} procedure The procedure that is contained within the source code.
- * @param {Parameters} parameters Optional parameters used to parameterize the source code. 
- * @returns {Source} A new source code component.
- */
-const source = function(procedure, parameters) {
-    return new composites.Source(procedure, parameters);
-};
-exports.source = source;
 
 /**
  * This function creates a new stack component with optional parameters that are
@@ -643,17 +627,6 @@ const text = function(value, parameters) {
 };
 text.concatenation = elements.Text.concatenation;
 exports.text = text;
-
-/**
- * This function creates a new tree node component.
- * 
- * @param {Number} type The type of the tree node component.
- * @returns {Tree} The new tree node component.
- */
-const tree = function(type) {
-    return new composites.Tree(type);
-};
-exports.tree = tree;
 
 /**
  * This function returns a string containing the Bali name for the type of the specified value.

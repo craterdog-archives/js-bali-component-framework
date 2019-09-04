@@ -54,18 +54,10 @@ function Parser(debug) {
     // the debug flag is a private attribute so methods that use it are defined in the constructor
     debug = debug || false;
 
-    this.parseComponent = function(document) {
-        const parser = initializeParser(document, debug);
-        const antlrTree = parser.component();
-        const component = convertParseTree(antlrTree);
-        return component;
-    };
-
-    this.parseDocument = function(document, parameters) {
-        parameters = parameters || undefined;
+    this.parseDocument = function(document) {
         const parser = initializeParser(document, debug);
         const antlrTree = parser.document();
-        const component = convertParseTree(antlrTree, parameters);
+        const component = convertParseTree(antlrTree, debug);
         return component;
     };
 
@@ -92,8 +84,8 @@ function initializeParser(document, debug) {
     return parser;
 }
 
-function convertParseTree(antlrTree, parameters) {
-    const visitor = new ParsingVisitor(parameters);
+function convertParseTree(antlrTree, debug) {
+    const visitor = new ParsingVisitor(debug);
     antlrTree.accept(visitor);
     const baliTree = visitor.result;
     return baliTree;
@@ -129,10 +121,10 @@ function literalToNumber(literal) {
  * tree into a clean parse tree.
  */
 
-function ParsingVisitor(parameters) {
+function ParsingVisitor(debug) {
     grammar.DocumentVisitor.call(this);
+    this.debug = debug;
     this.depth = 0;
-    this.parameters = parameters;
     return this;
 }
 ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
@@ -161,6 +153,15 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
     const value = literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
     const angle = new elements.Angle(value, parameters);
     this.result = angle;
+};
+
+
+// arguments: '(' list ')'
+ParsingVisitor.prototype.visitArguments = function(ctx) {
+    const tree = new composites.Tree('$Arguments');
+    ctx.list().accept(this);
+    tree.addChild(this.result);
+    this.result = tree;
 };
 
 
@@ -195,7 +196,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     value = value.replace(/\s/g, '');  // strip out any whitespace
     var encoding = '$base32';  // default value
     if (parameters) {
-        encoding = parameters.getParameter('$encoding');
+        encoding = parameters.getValue('$encoding');
         if (encoding) encoding = encoding.toString();
     }
     switch (encoding) {
@@ -225,12 +226,12 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
-// block: '{' procedure '}'
+// block: '{' statements '}'
 ParsingVisitor.prototype.visitBlock = function(ctx) {
-    ctx.procedure().accept(this);
-    const procedure = this.result;
+    ctx.statements().accept(this);
+    const statements = this.result;
     const tree = new composites.Tree('$Block');
-    tree.addChild(procedure);
+    tree.addChild(statements);
     this.result = tree;
 };
 
@@ -270,6 +271,12 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     ctx.expression().accept(this);
     tree.addChild(this.result);
     this.result = tree;
+};
+
+
+// collection: '[' sequence ']'
+ParsingVisitor.prototype.visitCollection = function(ctx) {
+    ctx.sequence().accept(this);
 };
 
 
@@ -402,10 +409,10 @@ ParsingVisitor.prototype.visitEmptyList = function(ctx) {
 };
 
 
-// emptyProcedure: /*empty procedure*/
-ParsingVisitor.prototype.visitEmptyProcedure = function(ctx) {
+// emptyStatements: /*empty statements*/
+ParsingVisitor.prototype.visitEmptyStatements = function(ctx) {
     // delegate to abstract type
-    this.visitProcedure(ctx);
+    this.visitStatements(ctx);
 };
 
 
@@ -445,12 +452,12 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 };
 
 
-// functionExpression: function parameters
+// functionExpression: function arguments
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     const tree = new composites.Tree('$FunctionExpression');
     ctx.funxtion().accept(this);
     tree.addChild(this.result);
-    ctx.parameters().accept(this);
+    ctx.arguments().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -527,10 +534,10 @@ ParsingVisitor.prototype.visitInlineList = function(ctx) {
 };
 
 
-// inlineProcedure: statement (';' statement)*
-ParsingVisitor.prototype.visitInlineProcedure = function(ctx) {
+// inlineStatements: statement (';' statement)*
+ParsingVisitor.prototype.visitInlineStatements = function(ctx) {
     // delegate to abstract type
-    this.visitProcedure(ctx);
+    this.visitStatements(ctx);
 };
 
 
@@ -552,7 +559,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
     if (parameters) {
-        type = parameters.getParameter('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
+        type = parameters.getValue('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
     }
     var collection;
     switch (type) {
@@ -615,14 +622,14 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// messageExpression: expression '.' message parameters
+// messageExpression: expression '.' message arguments
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     const tree = new composites.Tree('$MessageExpression');
     ctx.expression().accept(this);
     tree.addChild(this.result);
     ctx.message().accept(this);
     tree.addChild(this.result);
-    ctx.parameters().accept(this);
+    ctx.arguments().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -660,10 +667,10 @@ ParsingVisitor.prototype.visitNewlineList = function(ctx) {
 };
 
 
-// newlineProcedure: EOL (statement EOL)*
-ParsingVisitor.prototype.visitNewlineProcedure = function(ctx) {
+// newlineStatements: EOL (statement EOL)*
+ParsingVisitor.prototype.visitNewlineStatements = function(ctx) {
     // delegate to abstract type
-    this.visitProcedure(ctx);
+    this.visitStatements(ctx);
 };
 
 
@@ -703,11 +710,11 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
 };
 
 
-// parameters: '(' collection ')'
+// parameters: '(' catalog ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
-    ctx.collection().accept(this);
-    const collection = this.result;
-    const parameters = new composites.Parameters(collection);
+    ctx.catalog().accept(this);
+    const catalog = this.result;
+    const parameters = new composites.Parameters(catalog);
     this.result = parameters;
 };
 
@@ -769,25 +776,6 @@ ParsingVisitor.prototype.visitProbability = function(ctx) {
 };
 
 
-// procedure:
-//     statement (';' statement)*   |
-//     EOL (statement EOL)* |
-//     /*empty statements*/
-ParsingVisitor.prototype.visitProcedure = function(ctx) {
-    const tree = new composites.Tree('$Procedure');
-    if (ctx.statement) {
-        const statements = ctx.statement();
-        this.depth++;
-        statements.forEach(function(statement) {
-            statement.accept(this);
-            tree.addChild(this.result);
-        }, this);
-        this.depth--;
-    }
-    this.result = tree;
-};
-
-
 // publishClause: 'publish' expression
 ParsingVisitor.prototype.visitPublishClause = function(ctx) {
     const tree = new composites.Tree('$PublishClause');
@@ -817,7 +805,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     const first = this.result;
     expressions[1].accept(this);
     const last = this.result;
-    const range = new composites.Range(first, last, parameters);
+    const range = new collections.Range(first, last, parameters);
     this.result = range;
 };
 
@@ -894,13 +882,13 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// source: '{' procedure '}'
-ParsingVisitor.prototype.visitSource = function(ctx) {
+// procedure: '{' statements '}'
+ParsingVisitor.prototype.visitProcedure = function(ctx) {
     const parameters = this.getParameters();
-    ctx.procedure().accept(this);
-    const procedure = this.result;
-    const source = new composites.Source(procedure, parameters);
-    this.result = source;
+    ctx.statements().accept(this);
+    const statements = this.result;
+    const procedure = new composites.Procedure(statements, parameters);
+    this.result = procedure;
 };
 
 
@@ -918,9 +906,23 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 };
 
 
-// structure: '[' collection ']'
-ParsingVisitor.prototype.visitStructure = function(ctx) {
-    ctx.collection().accept(this);
+// statements:
+//     statement (';' statement)*   |
+//     EOL (statement EOL)* |
+//     /*empty statements*/
+ParsingVisitor.prototype.visitStatements = function(ctx) {
+    const tree = new composites.Tree('$Statements');
+    if (ctx.statement) {
+        const statements = ctx.statement();
+        this.depth++;
+        statements.forEach(function(statement) {
+            statement.accept(this);
+            tree.addChild(this.result);
+        }, this);
+        this.depth--;
+    }
+    console.log('tree type: ' + tree.constructor.name);
+    this.result = tree;
 };
 
 

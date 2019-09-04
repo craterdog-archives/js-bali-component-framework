@@ -56,13 +56,13 @@ function Formatter(indentation) {
                 $text: 'Attempted to format a non-literal component.'
             });
         }
-        const visitor = new FormattingVisitor(indentation, false, format);
+        const visitor = new FormattingVisitor(indentation, true, format);
         literal.acceptVisitor(visitor);
         return visitor.result;
     };
 
     this.formatComponent = function(component) {
-        const visitor = new FormattingVisitor(indentation, true);
+        const visitor = new FormattingVisitor(indentation, false);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -75,47 +75,44 @@ exports.Formatter = Formatter;
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, allowParameters, format) {
+function FormattingVisitor(indentation, ignoreParameters, explicitFormat) {
     Visitor.call(this);
-    this.indentation = indentation;
-    this.allowParameters = allowParameters;
-    this.format = format;
+    this.ignoreParameters = ignoreParameters || false;
     this.depth = 0;
+    this.inline = 0;
+    this.result = '';
+
+    this.getNewline = function() {
+        var separator = EOL;
+        const levels = this.depth + indentation;
+        for (var i = 0; i < levels; i++) {
+            separator += '    ';
+        }
+        return separator;
+    };
+
+    this.getFormat = function(element, key, defaultValue) {
+        // a specified format takes precedence
+        if (explicitFormat) return explicitFormat;
+        // then any format parameters that parameterize the element
+        var format;
+        if (!this.ignoreParameters && element.isParameterized()) {
+            format = element.getParameters().getValue(key);
+            if (format) format = format.toString();
+        }
+        // and finally the default format
+        format = format || defaultValue;
+        return format;
+    };
+
     return this;
 }
 FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
-FormattingVisitor.prototype.getSeparator = function(character) {
-    if (this.indentation < 0) return character;
-    var separator = EOL;
-    const levels = this.depth + this.indentation;
-    for (var i = 0; i < levels; i++) {
-        separator += '    ';
-    }
-    return separator;
-};
-
-
-FormattingVisitor.prototype.getFormat = function(element, key, defaultValue) {
-    // a specified format takes precedence
-    var format = this.format;
-    if (format) return format;
-    // then any format parameters that parameterize the element
-    if (this.allowParameters && element.isParameterized()) {
-        format = element.getParameters().getParameter(key, 1);
-        if (format) format = format.toString();
-    }
-    // and finally the default format
-    format = format || defaultValue;
-    return format;
-};
-
-
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
-    var formatted = '';
     var value;
     const format = this.getFormat(angle, '$units', '$radians');
     switch (format) {
@@ -126,54 +123,58 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Formatter',
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
-                $text: 'An invalid angle format was found.'
+                $type: angle.getType(),
+                $value: angle.getValue(),
+                $text: 'An invalid angle format was specified.'
             });
+            console.error(exception.toString());
+            throw exception;
     }
-    formatted += '~' + formatReal(value);
-    if (this.allowParameters && angle.isParameterized()) {
-        angle.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '~' + formatReal(value);
+    this.visitComponent(angle);
+};
+
+
+// arguments: '(' list ')'
+FormattingVisitor.prototype.visitArguments = function(tree) {
+    this.inline++;
+    this.result += '(';
+    const list = tree.getChild(1);
+    this.visitList(list);  // must explicitly call it
+    this.result += ')';
+    this.inline--;
 };
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
 FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' ';
-    formatted += tree.operator;
-    formatted += ' ';
+    this.result += ' ';
+    this.result += tree.operator;
+    this.result += ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // association: component ':' expression
 FormattingVisitor.prototype.visitAssociation = function(association) {
-    var formatted = '';
     association.getKey().acceptVisitor(this);
-    formatted += this.result;
-    formatted += ': ';
+    this.result += ': ';
     association.getValue().acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // binary: BINARY
 FormattingVisitor.prototype.visitBinary = function(binary) {
-    var formatted = '';
     var value = binary.getValue();
     const format = this.getFormat(binary, '$encoding', '$base32');
     switch (format) {
@@ -190,43 +191,41 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = codex.base64Encode(value);
             break;
         default:
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Formatter',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
-                $text: 'An invalid binary string format was found.'
+                $text: 'An invalid binary string format was specified.'
             });
+            console.log(exception.toString());
+            throw exception;
     }
     this.depth++;
-    const separator = this.getSeparator('');
+    const separator = this.getNewline();
     const regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, separator);
-    formatted += "'" + value + "'";
-    formatted = formatted.replace(/    '/, "'");  // unindent last line
+    value = value.replace(regex, separator);  // indent each line
+    value = "'" + value + "'";
+    value = value.replace(/    '/, "'");  // unindent last line
     this.depth--;
-    if (this.allowParameters && binary.isParameterized()) {
-        binary.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += value;
+    this.visitComponent(binary);
 };
 
 
-// block: '{' procedure '}'
+// block: '{' statements '}'
 FormattingVisitor.prototype.visitBlock = function(tree) {
-    var formatted = '{';
+    this.result += '{';
     this.allowInline = false;
-    tree.getChild(1).acceptVisitor(this);
-    formatted += this.result;
-    formatted += '}';
-    this.result = formatted;
+    const statements = tree.getChild(1);
+    statements.acceptVisitor(this);
+    this.result += '}';
 };
 
 
 // breakClause: 'break' 'loop'
 FormattingVisitor.prototype.visitBreakClause = function(tree) {
-    this.result = 'break loop';
+    this.result += 'break loop';
 };
 
 
@@ -235,315 +234,241 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 //     EOL (association EOL)* |
 //     ':' {empty catalog}
 FormattingVisitor.prototype.visitCatalog = function(catalog) {
-    var formatted = '[';
-    // delegate to collection
-    this.visitCollection(catalog);
-    formatted += this.result;
-    formatted += ']';
-    if (catalog.isParameterized()) {
-        catalog.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitSequence(catalog);
 };
 
 
 // checkoutClause: 'checkout' recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
-    var formatted = 'checkout ';
+    this.result += 'checkout ';
     const component = tree.getChild(1);
     component.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' from ';
+    this.result += ' from ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
-// collection: range | list | catalog
+// collection: '[' sequence ']'
 FormattingVisitor.prototype.visitCollection = function(collection) {
-    var formatted = '';
-    if (collection.isType('$Range')) {
-        collection.getFirst().acceptVisitor(this);
-        formatted += this.result;
-        formatted += '..';
-        collection.getLast().acceptVisitor(this);
-        formatted += this.result;
-    } else if (!collection.isEmpty()) {
-        var length = 0;
-        const items = [];
-
-        // format each item separately first summing the total length
-        const iterator = collection.getIterator();
-        this.depth++;
-        while (iterator.hasNext()) {
-            var item = iterator.getNext();
-            item.acceptVisitor(this);
-            items.push(this.result);
-            length += 2 + this.result.length;
-        };
-        length -= 2;  // remove the space for the extra separator
-        this.depth--;
-
-        // concatentate the formatted items
-        if (length <= MAXIMUM_LENGTH) {
-            // inline the items
-            formatted += items[0];
-            items.slice(1).forEach(function(item) {
-                formatted += ', ' + item;
-            }, this);
-        } else {
-            // each item is on a separate line
-            this.depth++;
-            formatted += this.getSeparator('') + items[0];
-            items.slice(1).forEach(function(item) {
-                formatted += this.getSeparator(', ') + item;
-            }, this);
-            this.depth--;
-            formatted += this.getSeparator('');
-        }
-    } else if (collection.isType('$Catalog')) {
-        formatted += ':';  // empty catalog
-    }
-    this.result = formatted;
+    this.result += '[';
+    this.visitSequence(collection);  // must explicitly call it for sequence
+    this.result += ']';
+    this.visitComponent(collection);
 };
 
 
 // commitClause: 'commit' expression 'to' expression
 FormattingVisitor.prototype.visitCommitClause = function(tree) {
-    var formatted = 'commit ';
+    this.result += 'commit ';
     const component = tree.getChild(1);
     component.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' to ';
+    this.result += ' to ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
 FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' ' + tree.operator + ' ';
+    this.result += ' ' + tree.operator + ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // complementExpression: 'not' expression
 FormattingVisitor.prototype.visitComplementExpression = function(tree) {
-    var formatted = 'not ';
+    this.inline++;
+    this.result += 'not ';
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
+};
+
+
+// component: value parameters?
+FormattingVisitor.prototype.visitComponent = function(component) {
+    // assumes the visitor for value has already been called
+    if (!this.ignoreParameters && component.isParameterized()) {
+        component.getParameters().acceptVisitor(this);
+    }
 };
 
 
 // concatenationExpression: expression '&' expression
 FormattingVisitor.prototype.visitConcatenationExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' & ';
+    this.result += ' & ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // continueClause: 'continue' 'loop'
 FormattingVisitor.prototype.visitContinueClause = function(tree) {
-    this.result = 'continue loop';
+    this.result += 'continue loop';
 };
 
 
 // defaultExpression: expression '?' expression
 FormattingVisitor.prototype.visitDefaultExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     const value = tree.getChild(1);
     value.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' ? ';
+    this.result += ' ? ';
     const defaultValue = tree.getChild(2);
     defaultValue.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // dereferenceExpression: '@' expression
 FormattingVisitor.prototype.visitDereferenceExpression = function(tree) {
-    var formatted = '@';
+    this.inline++;
+    this.result += '@';
     const reference = tree.getChild(1);
     reference.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // discardClause: 'discard' expression
 FormattingVisitor.prototype.visitDiscardClause = function(tree) {
-    var formatted = 'discard ';
+    this.result += 'discard ';
     const draft = tree.getChild(1);
     draft.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
-    var formatted = '';
     const value = duration.getValue().toISOString();
-    formatted += '~' + value;
-    if (this.allowParameters && duration.isParameterized()) {
-        duration.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '~' + value;
+    this.visitComponent(duration);
 };
 
 
 // evaluateClause: (recipient ':=')? expression
 FormattingVisitor.prototype.visitEvaluateClause = function(tree) {
-    var formatted = '';
     const size = tree.getSize();
     if (size > 1) {
         const recipient = tree.getChild(1);
         recipient.acceptVisitor(this);
-        formatted += this.result;
-        formatted += ' := ';
+        this.result += ' := ';
     }
     const expression = tree.getChild(size);
     expression.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
 FormattingVisitor.prototype.visitExponentialExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' ^ ';
+    this.result += ' ^ ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // factorialExpression: expression '!'
 FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += '!';
-    this.result = formatted;
+    this.result += '!';
+    this.inline--;
 };
 
 
 // function: IDENTIFIER
 FormattingVisitor.prototype.visitFunction = function(tree) {
-    this.result = tree.identifier;
+    this.result += tree.identifier;
 };
 
 
 // functionExpression: function parameters
 FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     const functionName = tree.getChild(1);
     functionName.acceptVisitor(this);
-    formatted += this.result;
     const parameters = tree.getChild(2);
     parameters.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // handleClause: 'handle' symbol 'matching' expression 'with' block
 FormattingVisitor.prototype.visitHandleClause = function(tree) {
-    var formatted = ' handle ';
+    this.result += ' handle ';
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' matching ';
+    this.result += ' matching ';
     const pattern = tree.getChild(2);
     pattern.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' with ';
+    this.result += ' with ';
     const block = tree.getChild(3);
     block.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 FormattingVisitor.prototype.visitIfClause = function(tree) {
     // handle first condition
-    var formatted = 'if ';
+    this.result += 'if ';
     var condition = tree.getChild(1);
     condition.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' then ';
+    this.result += ' then ';
     var block = tree.getChild(2);
     block.acceptVisitor(this);
-    formatted += this.result;
 
     // handle optional additional conditions
     const size = tree.getSize();
     for (var i = 3; i <= size; i += 2) {
         if (i === size) {
-            formatted += ' else ';
+            this.result += ' else ';
             block = tree.getChild(i);
             block.acceptVisitor(this);
-            formatted += this.result;
         } else {
-            formatted += ' else if ';
+            this.result += ' else if ';
             condition = tree.getChild(i);
             condition.acceptVisitor(this);
-            formatted += this.result;
-            formatted += ' then ';
+            this.result += ' then ';
             block = tree.getChild(i + 1);
             block.acceptVisitor(this);
-            formatted += this.result;
         }
     }
-    this.result = formatted;
 };
 
 
 // inversionExpression: ('-' | '*') expression
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
-    var formatted = tree.operator;
+    this.inline++;
+    this.result += tree.operator;
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // indices: '[' list ']'
 FormattingVisitor.prototype.visitIndices = function(tree) {
+    this.inline++;
+    this.result += '[';
     const list = tree.getChild(1);
-    list.acceptVisitor(this);
+    this.visitList(list);  // must explicitly call it
+    this.result += ']';
+    this.inline--;
 };
 
 
@@ -552,90 +477,66 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty list}
 FormattingVisitor.prototype.visitList = function(list) {
-    var formatted = '[';
-    // delegate to collection
-    this.visitCollection(list);
-    formatted += this.result;
-    formatted += ']';
-    if (list.isParameterized()) {
-        list.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitSequence(list);
 };
 
 
 // logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
 FormattingVisitor.prototype.visitLogicalExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     var operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' ' + tree.operator + ' ';
+    this.result += ' ' + tree.operator + ' ';
     operand = tree.getChild(2);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // magnitudeExpression: '|' expression '|'
 FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
-    var formatted = '|';
+    this.inline++;
+    this.result += '|';
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-    formatted += this.result;
-    formatted += '|';
-    this.result = formatted;
+    this.result += '|';
+    this.inline--;
 };
 
 
 // message: IDENTIFIER
 FormattingVisitor.prototype.visitMessage = function(tree) {
-    this.result = tree.identifier;
+    this.result += tree.identifier;
 };
 
 
 // messageExpression: expression '.' message parameters
 FormattingVisitor.prototype.visitMessageExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     const target = tree.getChild(1);
     target.acceptVisitor(this);
-    formatted += this.result;
-    formatted += '.';
+    this.result += '.';
     const messageName = tree.getChild(2);
     messageName.acceptVisitor(this);
-    formatted += this.result;
     const parameters = tree.getChild(3);
     parameters.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
-    var formatted = '';
     const value = moment.getValue().format(moment.getFormat());
-    formatted += '<' + value + '>';
-    if (this.allowParameters && moment.isParameterized()) {
-        moment.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '<' + value + '>';
+    this.visitComponent(moment);
 };
 
 
 // name: NAME
 FormattingVisitor.prototype.visitName = function(name) {
-    var formatted = '';
     const value = name.getValue();
-    formatted += '/' + value.join('/');  // concatentat the parts of the name
-    if (this.allowParameters && name.isParameterized()) {
-        name.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '/' + value.join('/');  // concatentat the parts of the name
+    this.visitComponent(name);
 };
 
 
@@ -646,524 +547,394 @@ FormattingVisitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 FormattingVisitor.prototype.visitNumber = function(number) {
-    var formatted = '';
     const format = this.getFormat(number, '$format', '$rectangular');
     if (number.isUndefined()) {
-        formatted += 'undefined';
+        this.result += 'undefined';
     } else if (number.isInfinite()) {
-        formatted += 'infinity';
+        this.result += 'infinity';
     } else if (number.isZero()) {
-        formatted += '0';
+        this.result += '0';
     } else if ((format !== '$polar' || number.getReal() > 0) && number.getImaginary() === 0) {
         // we know the real part isn't zero
-        formatted += formatReal(number.getReal());
+        this.result += formatReal(number.getReal());
     } else if (format !== '$polar' && number.getReal() === 0) {
         // we know the imaginary part isn't zero
-        formatted += formatImaginary(number.getImaginary());
+        this.result += formatImaginary(number.getImaginary());
     } else {
         // must be a complex number
-        formatted += '(';
+        this.result += '(';
         switch (format) {
             case '$rectangular':
-                formatted += formatReal(number.getReal());
-                formatted += ', ';
-                formatted += formatImaginary(number.getImaginary());
+                this.result += formatReal(number.getReal());
+                this.result += ', ';
+                this.result += formatImaginary(number.getImaginary());
                 break;
             case '$polar':
-                formatted += formatReal(number.getMagnitude());
-                formatted += ' e^~';
-                formatted += formatImaginary(number.getPhase().getValue());
+                this.result += formatReal(number.getMagnitude());
+                this.result += ' e^~';
+                this.result += formatImaginary(number.getPhase().getValue());
                 break;
             default:
         }
-        formatted += ')';
+        this.result += ')';
     }
-    if (this.allowParameters && number.isParameterized()) {
-        number.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitComponent(number);
 };
 
 
-// parameters: '(' collection ')'
+// parameters: '(' catalog ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
-    var formatted = '(';
-    // delegate to collection
-    this.visitCollection(parameters.getCollection());
-    formatted += this.result;
-    formatted += ')';
-    this.result = formatted;
+    // parameters don't allow access to the catalog so interate through manually assuming
+    // one parameter per line
+    this.result += '(';
+    const keys = parameters.getKeys();
+    const iterator = keys.getIterator();
+    if (keys.length > 1) {
+        this.depth++;
+        while (iterator.hasNext()) {
+            this.result += this.getNewline();
+            const key = iterator.getNext();
+            const value = parameters.getValue(key);
+            key.acceptVisitor(this);
+            this.result += ': ';
+            value.acceptVisitor(this);
+        }
+        this.depth--;
+        this.result += this.getNewline();
+    } else {
+        // for just one parameter, inline it
+        const key = iterator.getNext();
+        const value = parameters.getValue(key);
+        key.acceptVisitor(this);
+        this.result += ': ';
+        value.acceptVisitor(this);
+    }
+    this.result += ')';
 };
 
 
 // pattern: 'none' | REGEX | 'any'
 FormattingVisitor.prototype.visitPattern = function(pattern) {
-    var formatted = '';
     const value = pattern.getValue().source;
     switch (value) {
         case '^none$':
-            formatted += 'none';
+            this.result += 'none';
             break;
         case '.*':
-            formatted += 'any';
+            this.result += 'any';
             break;
         default:
-            formatted += '"' + value + '"?';
+            this.result += '"' + value + '"?';
     }
-    if (this.allowParameters && pattern.isParameterized()) {
-        pattern.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitComponent(pattern);
 };
 
 
 // percent: PERCENT
 FormattingVisitor.prototype.visitPercent = function(percent) {
-    var formatted = '';
     const value = percent.getValue();
-    formatted += formatReal(value) + '%';
-    if (this.allowParameters && percent.isParameterized()) {
-        percent.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += formatReal(value) + '%';
+    this.visitComponent(percent);
 };
 
 
 // precedenceExpression: '(' expression ')'
 FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
-    var formatted = '(';
+    this.inline++;
+    this.result += '(';
     const expression = tree.getChild(1);
     expression.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ')';
-    this.result = formatted;
+    this.result += ')';
+    this.inline--;
 };
 
 
 // probability: 'false' | FRACTION | 'true'
 FormattingVisitor.prototype.visitProbability = function(probability) {
-    var formatted = '';
     const value = probability.getValue();
     switch (value) {
         case 0:
-            formatted += 'false';
+            this.result += 'false';
             break;
         case 1:
-            formatted += 'true';
+            this.result += 'true';
             break;
         default:
             // must remove the leading '0' for probabilities
-            formatted += value.toString().substring(1);
+            this.result += value.toString().substring(1);
     }
-    if (this.allowParameters && probability.isParameterized()) {
-        probability.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitComponent(probability);
 };
 
 
-// procedure:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-FormattingVisitor.prototype.visitProcedure = function(tree) {
-    var formatted = '';
-    var length = 0;
-    const statements = [];
-
-    // format each item separately first summing the total length
-    const iterator = tree.getIterator();
-    this.depth++;
-    while (iterator.hasNext()) {
-        var statement = iterator.getNext();
-        statement.acceptVisitor(this);
-        statements.push(this.result);
-        length += 2 + this.result.length;
-    };
-    length -= 2;  // remove the space for the extra separator
-    this.depth--;
-
-    // concatentate the formatted items
-    if (this.allowInline && length <= MAXIMUM_LENGTH) {
-        // inline the statements
-        if (statements.length > 0) formatted += statements[0];
-        statements.slice(1).forEach(function(statement) {
-            formatted += '; ' + statement;
-        }, this);
-    } else {
-        // each statement is on a separate line
-        this.depth++;
-        if (statements.length > 0) formatted += this.getSeparator('') + statements[0];
-        statements.slice(1).forEach(function(statement) {
-            formatted += this.getSeparator('; ') + statement;
-        }, this);
-        this.depth--;
-        formatted += this.getSeparator('');
-    }
-    this.result = formatted;
+// procedure: '{' statements '}'
+FormattingVisitor.prototype.visitProcedure = function(procedure) {
+    this.result += '{';
+    this.allowInline = true;
+    const statements = procedure.getStatements();
+    statements.acceptVisitor(this);
+    this.result += '}';
+    this.visitComponent(procedure);
 };
 
 
 // publishClause: 'publish' expression
 FormattingVisitor.prototype.visitPublishClause = function(tree) {
-    var formatted = 'publish ';
+    this.result += 'publish ';
     const event = tree.getChild(1);
     event.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
-};
-
-
-// queue:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty queue}
-FormattingVisitor.prototype.visitQueue = function(queue) {
-    var formatted = '[';
-    // delegate to collection
-    this.visitCollection(queue);
-    formatted += this.result;
-    formatted += ']';
-    if (queue.isParameterized()) {
-        queue.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
 };
 
 
 // queueClause: 'queue' expression 'on' expression
 FormattingVisitor.prototype.visitQueueClause = function(tree) {
-    var formatted = 'queue ';
+    this.result += 'queue ';
     const message = tree.getChild(1);
     message.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' on ';
+    this.result += ' on ';
     const queue = tree.getChild(2);
     queue.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // range: expression '..' expression
 FormattingVisitor.prototype.visitRange = function(range) {
-    var formatted = '[';
+    this.result += '[';
     range.getFirst().acceptVisitor(this);
-    formatted += this.result;
-    formatted += '..';
+    this.result += '..';
     range.getLast().acceptVisitor(this);
-    formatted += this.result;
-    formatted += ']';
-    if (range.isParameterized()) {
-        range.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += ']';
+    this.visitComponent(range);
 };
 
 
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
-    var formatted = '';
     const value = reference.getValue().toString();
-    formatted += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
-    if (this.allowParameters && reference.isParameterized()) {
-        reference.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
+    this.visitComponent(reference);
 };
 
 
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
-    var formatted = '';
     const value = reserved.getValue();
-    formatted += '$$' + value;
-    if (this.allowParameters && reserved.isParameterized()) {
-        reserved.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '$$' + value;
+    this.visitComponent(reserved);
 };
 
 
 // returnClause: 'return' expression?
 FormattingVisitor.prototype.visitReturnClause = function(tree) {
-    var formatted = 'return';
+    this.result += 'return';
     if (!tree.isEmpty()) {
-        formatted += ' ';
+        this.result += ' ';
         const result = tree.getChild(1);
         result.acceptVisitor(this);
-        formatted += this.result;
     }
-    this.result = formatted;
 };
 
 
 // saveClause: 'save' expression 'to' expression
 FormattingVisitor.prototype.visitSaveClause = function(tree) {
-    var formatted = 'save ';
+    this.result += 'save ';
     const draft = tree.getChild(1);
     draft.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' to ';
+    this.result += ' to ';
     const reference = tree.getChild(2);
     reference.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 FormattingVisitor.prototype.visitSelectClause = function(tree) {
     // handle the selection
-    var formatted = 'select ';
+    this.result += 'select ';
     const value = tree.getChild(1);
     value.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' from';
+    this.result += ' from';
 
     // handle option blocks
     var block;
     const size = tree.getSize();
     for (var i = 2; i <= size; i += 2) {
         if (i === size) {
-            formatted += ' else ';
+            this.result += ' else ';
             block = tree.getChild(i);
             block.acceptVisitor(this);
-            formatted += this.result;
         } else {
-            formatted += ' ';
+            this.result += ' ';
             const option = tree.getChild(i);
             option.acceptVisitor(this);
-            formatted += this.result;
-            formatted += ' do ';
+            this.result += ' do ';
             block = tree.getChild(i + 1);
             block.acceptVisitor(this);
-            formatted += this.result;
         }
     }
-    this.result = formatted;
 };
 
 
-// set:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty set}
-FormattingVisitor.prototype.visitSet = function(set) {
-    var formatted = '[';
-    // delegate to collection
-    this.visitCollection(set);
-    formatted += this.result;
-    formatted += ']';
-    if (set.isParameterized()) {
-        set.getParameters().acceptVisitor(this);
-        formatted += this.result;
+// sequence: range | list | catalog
+FormattingVisitor.prototype.visitSequence = function(sequence) {
+    // note: range is handled separately
+    const iterator = sequence.getIterator();
+    if (sequence.isEmpty() && sequence.isType('$Catalog')) {
+        this.result += ':';  // empty catalog
+    } else {
+        this.depth++;
+        var count = 0;
+        while (iterator.hasNext()) {
+            if (this.inline) {
+                if (count++) this.result += ', ';
+            } else {
+                this.result += this.getNewline();
+            }
+            const item = iterator.getNext();
+            item.acceptVisitor(this);
+        }
+        this.depth--;
+        if (!this.inline) this.result += this.getNewline();
     }
-    this.result = formatted;
-};
-
-
-// formatted: '{' procedure '}'
-FormattingVisitor.prototype.visitSource = function(source) {
-    var formatted = '{';
-    this.allowInline = true;
-    source.getProcedure().acceptVisitor(this);
-    formatted += this.result;
-    formatted += '}';
-    if (source.isParameterized()) {
-        source.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
-};
-
-
-// stack:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty stack}
-FormattingVisitor.prototype.visitStack = function(stack) {
-    var formatted = '[';
-    // delegate to collection
-    this.visitCollection(stack);
-    formatted += this.result;
-    formatted += ']';
-    if (stack.isParameterized()) {
-        stack.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
 };
 
 
 // statement: mainClause handleClause*
 FormattingVisitor.prototype.visitStatement = function(tree) {
-    var formatted = '';
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         const child = iterator.getNext();
         child.acceptVisitor(this);
-        formatted += this.result;
     }
-    this.result = formatted;
+};
+
+
+// statements:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     {empty procedure}
+FormattingVisitor.prototype.visitStatements = function(tree) {
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        this.result += this.getNewline();
+        const statement = iterator.getNext();
+        statement.acceptVisitor(this);
+    }
+    this.depth--;
+    this.result += this.getNewline();
 };
 
 
 // subcomponent: variable indices
 FormattingVisitor.prototype.visitSubcomponent = function(tree) {
-    var formatted = '';
     const variable = tree.getChild(1);
     variable.acceptVisitor(this);
-    formatted += this.result;
     const indices = tree.getChild(2);
     indices.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // subcomponentExpression: expression indices
 FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
-    var formatted = '';
+    this.inline++;
     const component = tree.getChild(1);
     component.acceptVisitor(this);
-    formatted += this.result;
     const indices = tree.getChild(2);
     indices.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
+    this.inline--;
 };
 
 
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
-    var formatted = '';
     const value = symbol.getValue();
-    formatted += '$' + value;
-    if (this.allowParameters && symbol.isParameterized()) {
-        symbol.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '$' + value;
+    this.visitComponent(symbol);
 };
 
 
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
-    var formatted = '';
     const value = tag.getValue();
-    formatted += '#' + value;
-    if (this.allowParameters && tag.isParameterized()) {
-        tag.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += '#' + value;
+    this.visitComponent(tag);
 };
 
 
 // text: TEXT | TEXT_BLOCK
 FormattingVisitor.prototype.visitText = function(text) {
-    var formatted = '';
     var value = text.getValue();
     this.depth++;
-    const separator = this.getSeparator('\n');
-    const regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, separator);
-    formatted += '"' + value + '"';
-    formatted = formatted.replace(/    "/, '"');  // unindent last line
+    const separator = this.getNewline();
+    var regex = new RegExp('\\n', 'g');
+    value = value.replace(regex, separator);  // indent each line
+    var regex = new RegExp('    $');
+    value = value.replace(regex, '');  // unindent last line
+    this.result += '"' + value + '"';
     this.depth--;
-    if (this.allowParameters && text.isParameterized()) {
-        text.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.visitComponent(text);
 };
 
 
 // throwClause: 'throw' expression
 FormattingVisitor.prototype.visitThrowClause = function(tree) {
-    var formatted = 'throw ';
+    this.result += 'throw ';
     const exception = tree.getChild(1);
     exception.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // variable: IDENTIFIER
 FormattingVisitor.prototype.visitVariable = function(tree) {
-    this.result = tree.identifier;
+    this.result += tree.identifier;
 };
 
 
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
-    var formatted = '';
     const value = version.getValue();
-    formatted += 'v' + value.join('.');  // concatentat the version levels
-    if (this.allowParameters && version.isParameterized()) {
-        version.getParameters().acceptVisitor(this);
-        formatted += this.result;
-    }
-    this.result = formatted;
+    this.result += 'v' + value.join('.');  // concatentat the version levels
+    this.visitComponent(version);
 };
 
 
 // waitClause: 'wait' 'for' recipient 'from' expression
 FormattingVisitor.prototype.visitWaitClause = function(tree) {
-    var formatted = 'wait for ';
+    this.result += 'wait for ';
     const message = tree.getChild(1);
     message.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' from ';
+    this.result += ' from ';
     const queue = tree.getChild(2);
     queue.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // whileClause: 'while' expression 'do' block
 FormattingVisitor.prototype.visitWhileClause = function(tree) {
-    var formatted = 'while ';
+    this.result += 'while ';
     const condition = tree.getChild(1);
     condition.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' do ';
+    this.result += ' do ';
     const block = tree.getChild(2);
     block.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 FormattingVisitor.prototype.visitWithClause = function(tree) {
-    var formatted = 'with ';
+    this.result += 'with ';
     const size = tree.getSize();
     if (size > 2) {
-        formatted += 'each ';
+        this.result += 'each ';
         const item = tree.getChild(1);
         item.acceptVisitor(this);
-        formatted += this.result;
-        formatted += ' in ';
+        this.result += ' in ';
     }
     const collection = tree.getChild(size - 1);
     collection.acceptVisitor(this);
-    formatted += this.result;
-    formatted += ' do ';
+    this.result += ' do ';
     const block = tree.getChild(size);
     block.acceptVisitor(this);
-    formatted += this.result;
-    this.result = formatted;
 };
 
 

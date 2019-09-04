@@ -1,5 +1,10 @@
 [
-    $angles: [~-0.5, ~pi, ~0, ~0.666]
+    $angles: [
+        ~-0.5
+        ~pi
+        ~0
+        ~0.666
+    ]
     $binaries: [
         ''
         '
@@ -84,7 +89,11 @@
         <bali:?[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
         <bali:/acme/types/Customer?[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>
     ]
-    $symbols: [$s, $symbol, $foo]
+    $symbols: [
+        $s
+        $symbol
+        $foo
+    ]
     $texts: [
         "This is a single line text string."
         "This is a string with \"quotes\" in it."
@@ -101,5 +110,9 @@
     $tokens: [
         #54HH2N9QBGKDJLJC8WB039V45A975TVN2VWJ4M3W
     ]
-    $versions: [v1, v1.2, v25.1.37]
+    $versions: [
+        v1
+        v1.2
+        v25.1.37
+    ]
 ]

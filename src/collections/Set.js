@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const Catalog = require('./Catalog').Catalog;
 
 
 // PUBLIC FUNCTIONS
@@ -31,8 +30,9 @@ const Catalog = require('./Catalog').Catalog;
  * @returns {Set} The new set.
  */
 function Set(parameters, comparator) {
-    parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Set/v1');
+    parameters = parameters || new composites.Parameters({
+        $type: '/bali/collections/Set/v1'
+    });
     abstractions.Collection.call(this, '$Set', parameters);
 
     this.validateType('/bali/collections/Set', '$Set', '$parameters', parameters, [
@@ -82,10 +82,9 @@ function Set(parameters, comparator) {
     
     this.getItem = function(index) {
         this.validateType('/bali/collections/Set', '$getItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
-        index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
+        index = this.normalizeIndex(index, tree.size) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
     
@@ -103,6 +102,46 @@ function Set(parameters, comparator) {
         return tree.insert(item);
     };
     
+    this.addItems = function(items) {
+        this.validateType('/bali/collections/Set', '$addItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+        var count = 0;
+        items = items || undefined;  // normalize nulls to undefined
+        if (items) {
+            if (Array.isArray(items)) {
+                items.forEach(function(item) {
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }, this);
+            } else if (items.isSequential()) {
+                const iterator = items.getIterator();
+                while (iterator.hasNext()) {
+                    var item = iterator.getNext();
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }
+            } else if (typeof items === 'object') {
+                const keys = Object.keys(items);
+                keys.forEach(function(key) {
+                    this.addItem(items[key]);
+                    count++;
+                }, this);
+            }
+        }
+        return count;
+    },
+
     this.removeItem = function(item) {
         this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
             '/javascript/Undefined',
@@ -175,7 +214,7 @@ Set.prototype.isLogical = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Set.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSet(this);
+    visitor.visitCollection(this);
 };
     
 

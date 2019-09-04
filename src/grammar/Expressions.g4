@@ -4,10 +4,10 @@ import Elements;
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression     |
     variable                                                       #variableExpression      |
-    funxtion parameters                                            #functionExpression      |
+    funxtion arguments                                             #functionExpression      |
     '(' expression ')'                                             #precedenceExpression    |
     '@' expression                                                 #dereferenceExpression   |
-    expression '.' message parameters                              #messageExpression       |
+    expression '.' message arguments                               #messageExpression       |
     expression indices                                             #subcomponentExpression  |
     expression '&' expression                                      #concatenationExpression |
     expression '!'                                                 #factorialExpression     |
@@ -26,5 +26,7 @@ variable: IDENTIFIER;
 funxtion: IDENTIFIER;
 
 message: IDENTIFIER;
+
+arguments: '(' list ')';
 
 indices: '[' list ']';

@@ -1,10 +1,10 @@
-grammar Procedures;
+grammar Statements;
 import Expressions;
 
-procedure:
-    statement (';' statement)*    #inlineProcedure  |
-    EOL (statement EOL)*  #newlineProcedure |
-    /*empty procedure*/ #emptyProcedure
+statements:
+    statement (';' statement)*         #inlineStatement  |
+    EOL (statement EOL)*               #newlineStatement |
+    /*empty statements*/                #emptyStatement
 ;
 
 statement: mainClause handleClause*;
@@ -30,7 +30,7 @@ mainClause:
 
 handleClause: 'handle' symbol 'matching' expression 'with' block;
 
-block: '{' procedure '}';
+block: '{' statements '}';
 
 evaluateClause: (recipient ':=')? expression;
 

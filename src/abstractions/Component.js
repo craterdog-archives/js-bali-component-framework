@@ -95,12 +95,12 @@ Component.type = function(value) {
     if (value.isType('$Pattern')) return '/bali/elements/Pattern';
     if (value.isType('$Percent')) return '/bali/elements/Percent';
     if (value.isType('$Probability')) return '/bali/elements/Probability';
+    if (value.isType('$Procedure')) return '/bali/composites/Procedure';
     if (value.isType('$Queue')) return '/bali/collections/Queue';
-    if (value.isType('$Range')) return '/bali/composites/Range';
+    if (value.isType('$Range')) return '/bali/collections/Range';
     if (value.isType('$Reference')) return '/bali/elements/Reference';
     if (value.isType('$Reserved')) return '/bali/elements/Reserved';
     if (value.isType('$Set')) return '/bali/collections/Set';
-    if (value.isType('$Source')) return '/bali/composites/Source';
     if (value.isType('$Stack')) return '/bali/collections/Stack';
     if (value.isType('$Symbol')) return '/bali/elements/Symbol';
     if (value.isType('$Tag')) return '/bali/elements/Tag';
@@ -147,6 +147,7 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         $exception: '$parameterType',
         $expected: allowedTypes,
         $actual: actualType,
+        $value: parameterValue,
         $text: 'An invalid parameter type was passed to the procedure.'
     });
     console.error(exception.toString());
@@ -283,6 +284,7 @@ Component.prototype.isChainable = function() {
  */
 Component.prototype.isProcedural = function() {
     switch (this.getType()) {
+        case '$Arguments':
         case '$ArithmeticExpression':
         case '$Block':
         case '$BreakClause':
@@ -309,13 +311,13 @@ Component.prototype.isProcedural = function() {
         case '$Message':
         case '$MessageExpression':
         case '$PrecedenceExpression':
-        case '$Procedure':
         case '$PublishClause':
         case '$QueueClause':
         case '$ReturnClause':
         case '$SaveClause':
         case '$SelectClause':
         case '$Statement':
+        case '$Statements':
         case '$Subcomponent':
         case '$SubcomponentExpression':
         case '$ThrowClause':

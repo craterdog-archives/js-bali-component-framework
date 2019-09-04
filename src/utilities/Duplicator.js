@@ -55,12 +55,19 @@ DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
-    var parameters;
-    if (angle.isParameterized()) {
-        angle.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(angle);
+    const parameters = this.result;
     this.result = new angle.constructor(angle.getValue(), parameters);
+};
+
+
+// arguments: '(' list ')'
+DuplicatingVisitor.prototype.visitArguments = function(tree) {
+    const copy = new tree.constructor(tree.getType());
+    const list = tree.getChild(1);
+    list.acceptVisitor(this);
+    copy.addChild(this.result);
+    this.result = copy;
 };
 
 
@@ -88,11 +95,8 @@ DuplicatingVisitor.prototype.visitAssociation = function(association) {
 
 // binary: BINARY
 DuplicatingVisitor.prototype.visitBinary = function(binary) {
-    var parameters;
-    if (binary.isParameterized()) {
-        binary.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(binary);
+    const parameters = this.result;
     this.result = new binary.constructor(binary.getValue(), parameters);
 };
 
@@ -113,27 +117,6 @@ DuplicatingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// catalog:
-//     association (',' association)* |
-//     EOL (association EOL)* |
-//     ':' {empty catalog}
-DuplicatingVisitor.prototype.visitCatalog = function(catalog) {
-    var parameters;
-    if (catalog.isParameterized()) {
-        catalog.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new catalog.constructor(parameters);
-    const iterator = catalog.getIterator();
-    while (iterator.hasNext()) {
-        var association = iterator.getNext();
-        association.acceptVisitor(this);
-        copy.addItem(this.result);
-    }
-    this.result = copy;
-};
-
-
 // checkoutClause: 'checkout' recipient 'from' expression
 DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
     const copy = new tree.constructor(tree.getType());
@@ -141,6 +124,21 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
     copy.addChild(this.result);
     tree.getChild(2).acceptVisitor(this);
     copy.addChild(this.result);
+    this.result = copy;
+};
+
+
+// collection: '[' sequence ']'
+DuplicatingVisitor.prototype.visitCollection = function(sequence) {
+    this.visitComponent(sequence);
+    const parameters = this.result;
+    const copy = new sequence.constructor(parameters);
+    const iterator = sequence.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        item.acceptVisitor(this);
+        copy.addItem(this.result);
+    }
     this.result = copy;
 };
 
@@ -174,6 +172,16 @@ DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
+};
+
+
+// component: value parameters?
+DuplicatingVisitor.prototype.visitComponent = function(component) {
+    if (component.isParameterized()) {
+        component.getParameters().acceptVisitor(this);
+    } else {
+        this.result = undefined;
+    }
 };
 
 
@@ -226,11 +234,8 @@ DuplicatingVisitor.prototype.visitDiscardClause = function(tree) {
 
 // duration: DURATION
 DuplicatingVisitor.prototype.visitDuration = function(duration) {
-    var parameters;
-    if (duration.isParameterized()) {
-        duration.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(duration);
+    const parameters = this.result;
     this.result = new duration.constructor(duration.getValue().toISOString(), parameters);
 };
 
@@ -275,7 +280,7 @@ DuplicatingVisitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function parameters
+// functionExpression: function arguments
 DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
     const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
@@ -323,29 +328,9 @@ DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
 // indices: '[' list ']'
 DuplicatingVisitor.prototype.visitIndices = function(tree) {
     const copy = new tree.constructor(tree.getType());
-    tree.getChild(1).acceptVisitor(this);
+    const list = tree.getChild(1);
+    list.acceptVisitor(this);
     copy.addChild(this.result);
-    this.result = copy;
-};
-
-
-// list:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty list}
-DuplicatingVisitor.prototype.visitList = function(list) {
-    var parameters;
-    if (list.isParameterized()) {
-        list.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new list.constructor(parameters);
-    const iterator = list.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
-    }
     this.result = copy;
 };
 
@@ -379,7 +364,7 @@ DuplicatingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message parameters
+// messageExpression: expression '.' message arguments
 DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
     const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
@@ -393,11 +378,8 @@ DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
 
 // moment: MOMENT
 DuplicatingVisitor.prototype.visitMoment = function(moment) {
-    var parameters;
-    if (moment.isParameterized()) {
-        moment.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(moment);
+    const parameters = this.result;
     const value = moment.getValue().format(moment.getFormat());
     this.result = new moment.constructor(value, parameters);
 };
@@ -405,11 +387,8 @@ DuplicatingVisitor.prototype.visitMoment = function(moment) {
 
 // name: NAME
 DuplicatingVisitor.prototype.visitName = function(name) {
-    var parameters;
-    if (name.isParameterized()) {
-        name.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(name);
+    const parameters = this.result;
     this.result = new name.constructor(name.getValue(), parameters);
 };
 
@@ -421,41 +400,39 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 DuplicatingVisitor.prototype.visitNumber = function(number) {
-    var parameters;
-    if (number.isParameterized()) {
-        number.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(number);
+    const parameters = this.result;
     this.result = new number.constructor(number.getReal(), number.getImaginary(), parameters);
 };
 
 
-// parameters: '(' collection ')'
+// parameters: '(' catalog ')'
 DuplicatingVisitor.prototype.visitParameters = function(parameters) {
-    parameters.getCollection().acceptVisitor(this);
-    const copy = new parameters.constructor(this.result);
-    this.result = copy;
+    const object = {};
+    const keys = parameters.getKeys();
+    const iterator = keys.getIterator();
+    while (iterator.hasNext()) {
+        const key = iterator.getNext();
+        const value = parameters.getValue(key);
+        value.acceptVisitor(this);
+        object[key.toString()] = this.result;
+    }
+    this.result = new parameters.constructor(object);
 };
 
 
 // pattern: 'none' | REGEX | 'any'
 DuplicatingVisitor.prototype.visitPattern = function(pattern) {
-    var parameters;
-    if (pattern.isParameterized()) {
-        pattern.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(pattern);
+    const parameters = this.result;
     this.result = new pattern.constructor(pattern.getValue(), parameters);
 };
 
 
 // percent: PERCENT
 DuplicatingVisitor.prototype.visitPercent = function(percent) {
-    var parameters;
-    if (percent.isParameterized()) {
-        percent.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(percent);
+    const parameters = this.result;
     this.result = new percent.constructor(percent.getValue(), parameters);
 };
 
@@ -471,26 +448,19 @@ DuplicatingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // probability: 'false' | FRACTION | 'true'
 DuplicatingVisitor.prototype.visitProbability = function(probability) {
-    var parameters;
-    if (probability.isParameterized()) {
-        probability.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(probability);
+    const parameters = this.result;
     this.result = new probability.constructor(probability.getValue(), parameters);
 };
 
 
-// procedure:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-DuplicatingVisitor.prototype.visitProcedure = function(tree) {
-    const copy = new tree.constructor(tree.getType());
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        iterator.getNext().acceptVisitor(this);
-        copy.addChild(this.result);
-    }
+// procedure: '{' statements '}'
+DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
+    this.visitComponent(procedure);
+    const parameters = this.result;
+    procedure.getStatements().acceptVisitor(this);
+    const statements = this.result;
+    const copy = new procedure.constructor(statements, parameters);
     this.result = copy;
 };
 
@@ -500,27 +470,6 @@ DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
     const copy = new tree.constructor(tree.getType());
     tree.getChild(1).acceptVisitor(this);
     copy.addChild(this.result);
-    this.result = copy;
-};
-
-
-// queue:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty queue}
-DuplicatingVisitor.prototype.visitQueue = function(queue) {
-    var parameters;
-    if (queue.isParameterized()) {
-        queue.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new queue.constructor(parameters);
-    const iterator = queue.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
-    }
     this.result = copy;
 };
 
@@ -538,15 +487,12 @@ DuplicatingVisitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 DuplicatingVisitor.prototype.visitRange = function(range) {
+    this.visitComponent(range);
+    const parameters = this.result;
     range.getFirst().acceptVisitor(this);
     const first = this.result;
     range.getLast().acceptVisitor(this);
     const last = this.result;
-    var parameters;
-    if (range.isParameterized()) {
-        range.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
     const copy = new range.constructor(first, last, parameters);
     this.result = copy;
 };
@@ -554,22 +500,16 @@ DuplicatingVisitor.prototype.visitRange = function(range) {
 
 // reference: RESOURCE
 DuplicatingVisitor.prototype.visitReference = function(reference) {
-    var parameters;
-    if (reference.isParameterized()) {
-        reference.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(reference);
+    const parameters = this.result;
     this.result = new reference.constructor(reference.getValue(), parameters);
 };
 
 
 // reserved: RESERVED
 DuplicatingVisitor.prototype.visitReserved = function(reserved) {
-    var parameters;
-    if (reserved.isParameterized()) {
-        reserved.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(reserved);
+    const parameters = this.result;
     this.result = new reserved.constructor(reserved.getValue(), parameters);
 };
 
@@ -608,64 +548,23 @@ DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// set:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty set}
-DuplicatingVisitor.prototype.visitSet = function(set) {
-    var parameters;
-    if (set.isParameterized()) {
-        set.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new set.constructor(parameters, set.getComparator());
-    const iterator = set.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
-    }
-    this.result = copy;
-};
-
-
-// formatted: '{' procedure '}'
-DuplicatingVisitor.prototype.visitSource = function(source) {
-    source.getProcedure().acceptVisitor(this);
-    const procedure = this.result;
-    var parameters;
-    if (source.isParameterized()) {
-        source.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new source.constructor(procedure, parameters);
-    this.result = copy;
-};
-
-
-// stack:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty stack}
-DuplicatingVisitor.prototype.visitStack = function(stack) {
-    var parameters;
-    if (stack.isParameterized()) {
-        stack.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
-    const copy = new stack.constructor(parameters);
-    const iterator = stack.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
-    }
-    this.result = copy;
-};
-
-
 // statement: mainClause handleClause*
 DuplicatingVisitor.prototype.visitStatement = function(tree) {
+    const copy = new tree.constructor(tree.getType());
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
+        copy.addChild(this.result);
+    }
+    this.result = copy;
+};
+
+
+// statements:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     {empty procedure}
+DuplicatingVisitor.prototype.visitStatements = function(tree) {
     const copy = new tree.constructor(tree.getType());
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
@@ -700,33 +599,24 @@ DuplicatingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 
 // symbol: SYMBOL
 DuplicatingVisitor.prototype.visitSymbol = function(symbol) {
-    var parameters;
-    if (symbol.isParameterized()) {
-        symbol.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(symbol);
+    const parameters = this.result;
     this.result = new symbol.constructor(symbol.getValue(), parameters);
 };
 
 
 // tag: TAG
 DuplicatingVisitor.prototype.visitTag = function(tag) {
-    var parameters;
-    if (tag.isParameterized()) {
-        tag.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(tag);
+    const parameters = this.result;
     this.result = new tag.constructor(tag.getValue(), parameters);
 };
 
 
 // text: TEXT | TEXT_BLOCK
 DuplicatingVisitor.prototype.visitText = function(text) {
-    var parameters;
-    if (text.isParameterized()) {
-        text.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(text);
+    const parameters = this.result;
     this.result = new text.constructor(text.getValue(), parameters);
 };
 
@@ -750,11 +640,8 @@ DuplicatingVisitor.prototype.visitVariable = function(tree) {
 
 // version: VERSION
 DuplicatingVisitor.prototype.visitVersion = function(version) {
-    var parameters;
-    if (version.isParameterized()) {
-        version.getParameters().acceptVisitor(this);
-        parameters = this.result;
-    }
+    this.visitComponent(version);
+    const parameters = this.result;
     this.result = new version.constructor(version.getValue(), parameters);
 };
 

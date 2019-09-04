@@ -38,12 +38,21 @@ DocumentListener.prototype.exitValue = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#structure.
-DocumentListener.prototype.enterStructure = function(ctx) {
+// Enter a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.enterCollection = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#structure.
-DocumentListener.prototype.exitStructure = function(ctx) {
+// Exit a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.exitCollection = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#sequence.
+DocumentListener.prototype.enterSequence = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#sequence.
+DocumentListener.prototype.exitSequence = function(ctx) {
 };
 
 
@@ -53,15 +62,6 @@ DocumentListener.prototype.enterParameters = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#parameters.
 DocumentListener.prototype.exitParameters = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.enterCollection = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.exitCollection = function(ctx) {
 };
 
 
@@ -137,39 +137,39 @@ DocumentListener.prototype.exitAssociation = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#source.
-DocumentListener.prototype.enterSource = function(ctx) {
+// Enter a parse tree produced by DocumentParser#procedure.
+DocumentListener.prototype.enterProcedure = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#source.
-DocumentListener.prototype.exitSource = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#inlineProcedure.
-DocumentListener.prototype.enterInlineProcedure = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#inlineProcedure.
-DocumentListener.prototype.exitInlineProcedure = function(ctx) {
+// Exit a parse tree produced by DocumentParser#procedure.
+DocumentListener.prototype.exitProcedure = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#newlineProcedure.
-DocumentListener.prototype.enterNewlineProcedure = function(ctx) {
+// Enter a parse tree produced by DocumentParser#inlineStatement.
+DocumentListener.prototype.enterInlineStatement = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#newlineProcedure.
-DocumentListener.prototype.exitNewlineProcedure = function(ctx) {
+// Exit a parse tree produced by DocumentParser#inlineStatement.
+DocumentListener.prototype.exitInlineStatement = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#emptyProcedure.
-DocumentListener.prototype.enterEmptyProcedure = function(ctx) {
+// Enter a parse tree produced by DocumentParser#newlineStatement.
+DocumentListener.prototype.enterNewlineStatement = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#emptyProcedure.
-DocumentListener.prototype.exitEmptyProcedure = function(ctx) {
+// Exit a parse tree produced by DocumentParser#newlineStatement.
+DocumentListener.prototype.exitNewlineStatement = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#emptyStatement.
+DocumentListener.prototype.enterEmptyStatement = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#emptyStatement.
+DocumentListener.prototype.exitEmptyStatement = function(ctx) {
 };
 
 
@@ -548,6 +548,15 @@ DocumentListener.prototype.enterMessage = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#message.
 DocumentListener.prototype.exitMessage = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#arguments.
+DocumentListener.prototype.enterArguments = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#arguments.
+DocumentListener.prototype.exitArguments = function(ctx) {
 };
 
 

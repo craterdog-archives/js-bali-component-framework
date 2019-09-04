@@ -82,33 +82,10 @@ exports.Association = Association;
 // PUBLIC METHODS
 
 /**
- * This method returns an array containing the attributes of this association.
- * 
- * @returns {Array} An array containing the attributes of this association.
- */
-Association.prototype.toArray = function() {
-    const array = [];
-    array.push(this.getKey());
-    array.push(this.getValue());
-    return array;
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  * 
  * @param {Visitor} visitor The visitor that wants to visit this association.
  */
 Association.prototype.acceptVisitor = function(visitor) {
     visitor.visitAssociation(this);
-};
-
-
-/**
- * This method returns the number of 
- * 
- * @returns {Number} The number of attributes that make up this composite component.
- */
-Association.prototype.getSize = function() {
-    return 2;
 };

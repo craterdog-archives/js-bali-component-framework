@@ -11,6 +11,7 @@
 
 const composites = require('../composites/');
 
+exports.Range = require('./Range').Range;
 exports.Set = require('./Set').Set;
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List

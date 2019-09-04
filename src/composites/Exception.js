@@ -163,7 +163,7 @@ Exception.prototype.isLiteral = function() {
  * @returns {Boolean} Whether or not this component supports iteration.
  */
 Exception.prototype.isSequential = function() {
-    return true;
+    return false;
 };
 
 
@@ -318,46 +318,4 @@ Exception.prototype.getHash = function() {
  */
 Exception.prototype.acceptVisitor = function(visitor) {
     visitor.visitCatalog(this.attributes);
-};
-
-
-/**
- * This abstract method returns an array containing the subcomponents in this composite
- * component. It must be implemented by a subclass.
- * 
- * @returns {Array} An array containing the subcomponents in this composite component.
- */
-Exception.prototype.toArray = function() {
-    return this.attributes.toArray();
-};
-
-
-/**
- * This method returns whether or not this composite component has any subcomponents.
- * 
- * @returns {Boolean} Whether or not this composite component has any subcomponents.
- */
-Exception.prototype.isEmpty = function() {
-    return this.attributes.isEmpty();
-};
-
-
-/**
- * This abstract method returns the number of subcomponents that this composite component has.
- * It must be implemented by a subclass.
- * 
- * @returns {Number} The number of subcomponents that this composite component has.
- */
-Exception.prototype.getSize = function() {
-    return this.attributes.getSize();
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the subcomponents in
- * this composite component.
- * @returns {Iterator} An iterator for this composite component.
- */
-Exception.prototype.getIterator = function() {
-    return this.attributes.getIterator();
 };

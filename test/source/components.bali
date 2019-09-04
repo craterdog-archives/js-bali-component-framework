@@ -1,16 +1,24 @@
 [
-    $structure: [[2..5], [], [:]]
-    $range: [[-3..5]]
+    $structure: [
+        [2..5]
+        []
+        [:]
+    ]
+    $range: [
+        [-3..5]
+    ]
     $list: [
-        [1, 2, 3]
+        [
+            1
+            2
+            3
+        ]
         [
             $alpha
             $beta
             $delta
             $gamma
-        ](
-            $type: /bali/collections/Set/v1
-        )
+        ]($type: /bali/collections/Set/v1)
         [
             none
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
@@ -26,7 +34,11 @@
             example
             -pi
             (3, 4i)
-            ["one", "two", "three"]
+            [
+                "one"
+                "two"
+                "three"
+            ]
             [
                 $foo: bar
                 $bar: 25($range: [1..100])
@@ -62,20 +74,24 @@
             true: false
             pi: -3.14159265
             (1, 2i): -1.4142135623730951
-            $sequence: ["short", "sequence"]
+            $sequence: [
+                "short"
+                "sequence"
+            ]
             $table: [
                 $a: pi
                 $b: -e
                 $c: phi
                 $d: infinity
             ]
-        ](
-            $type: /acme/types/Foo/v1.2.3
-        )
+        ]($type: /acme/types/Foo/v1.2.3)
     ]
     $code: [
         {}
-        {$foo := bar; $bar := baz}($bar, $baz)
+        {
+            $foo := bar
+            $bar := baz
+        }($bar: $baz)
         {
             if condition then {
                 $x := y
@@ -107,12 +123,12 @@
         '
             234VDR3AFBR3N596XPHCZL7HNL2NX9FTV858QH33QQR62GP176PW7DAKCB1H
             DW411WRC0YS71NWKA93S
-        '($base64)
+        '($encoding: $base64)
     ]
     $moments: [
-        <-10000-01-01T00:00:00>("Atlantis")
-        <1962-04-01>("New York City")
-        <1962-04-01T06:31>("San Francisco")
+        <-10000-01-01T00:00:00>($country: "Atlantis")
+        <1962-04-01>($city: "New York City")
+        <1962-04-01T06:31>($city: "San Francisco")
         <1962-04-01T06:31:60.726>(
             $city: "Denver"
             $region: "Colorado"

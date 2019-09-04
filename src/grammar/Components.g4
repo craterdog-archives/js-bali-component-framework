@@ -1,30 +1,30 @@
 grammar Components;
-import Procedures;
+import Statements;
 
 component: value parameters?;
 
-value: element | structure | source;
+value: element | collection | procedure;
 
-structure: '[' collection ']';
+collection: '[' sequence ']';
 
-parameters: '(' collection ')';
+sequence: range | list | catalog;
 
-collection: range | list | catalog;
+parameters: '(' catalog ')';
 
 range: expression '..' expression;
 
 list:
-    expression (',' expression)* #inlineList |
-    EOL (expression EOL)* #newlineList |
-    /*empty list*/ #emptyList
+    expression (',' expression)*       #inlineList |
+    EOL (expression EOL)*              #newlineList |
+    /*empty list*/                     #emptyList
 ;
 
 catalog:
-    association (',' association)* #inlineCatalog |
-    EOL (association EOL)* #newlineCatalog |
-    ':' /*empty catalog*/ #emptyCatalog
+    association (',' association)*     #inlineCatalog |
+    EOL (association EOL)*             #newlineCatalog |
+    ':' /*empty catalog*/              #emptyCatalog
 ;
 
 association: component ':' expression;
 
-source: '{' procedure '}';
+procedure: '{' statements '}';

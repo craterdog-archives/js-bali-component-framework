@@ -57,17 +57,15 @@ function List(parameters) {
     
     this.getItem = function(index) {
         this.validateType('/bali/collections/List', '$getItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
     
     this.setItem = function(index, item) {
         this.validateType('/bali/collections/List', '$setItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
         this.validateType('/bali/collections/List', '$setItem', '$item', item, [
             '/javascript/Undefined',
@@ -78,7 +76,7 @@ function List(parameters) {
             '/javascript/Object',
             '/bali/abstractions/Component'
         ]);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         item = this.convert(item);
         const oldItem = array[index];
         array[index] = item;
@@ -100,10 +98,49 @@ function List(parameters) {
         return true;
     };
     
+    this.addItems = function(items) {
+        this.validateType('/bali/collections/List', '$addItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+        var count = 0;
+        items = items || undefined;  // normalize nulls to undefined
+        if (items) {
+            if (Array.isArray(items)) {
+                items.forEach(function(item) {
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }, this);
+            } else if (items.isSequential()) {
+                const iterator = items.getIterator();
+                while (iterator.hasNext()) {
+                    var item = iterator.getNext();
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }
+            } else if (typeof items === 'object') {
+                const keys = Object.keys(items);
+                keys.forEach(function(key) {
+                    this.addItem(items[key]);
+                    count++;
+                }, this);
+            }
+        }
+        return count;
+    },
+
     this.insertItem = function(index, item) {
         this.validateType('/bali/collections/List', '$insertItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
         this.validateType('/bali/collections/List', '$insertItem', '$item', item, [
             '/javascript/Undefined',
@@ -115,14 +152,13 @@ function List(parameters) {
             '/bali/abstractions/Component'
         ]);
         item = this.convert(item);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
     
     this.insertItems = function(index, items) {
         this.validateType('/bali/collections/List', '$insertItems', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
         this.validateType('/bali/collections/List', '$insertItems', '$items', items, [
             '/javascript/Undefined',
@@ -140,10 +176,9 @@ function List(parameters) {
     
     this.removeItem = function(index) {
         this.validateType('/bali/collections/List', '$removeItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         const oldItem = array[index];
         if (oldItem) array.splice(index, 1);
         return oldItem;
@@ -152,7 +187,7 @@ function List(parameters) {
     this.removeItems = function(range) {
         this.validateType('/bali/collections/List', '$removeItems', '$range', range, [
             '/javascript/Undefined',
-            '/bali/composites/Range'
+            '/bali/collections/Range'
         ]);
         const items = new List(this.getParameters());
         if (range && range.getIterator) {
@@ -217,7 +252,7 @@ List.prototype.isChainable = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 List.prototype.acceptVisitor = function(visitor) {
-    visitor.visitList(this);
+    visitor.visitCollection(this);
 };
     
 

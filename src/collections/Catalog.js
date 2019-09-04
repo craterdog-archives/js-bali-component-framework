@@ -52,10 +52,9 @@ function Catalog(parameters) {
 
     this.getItem = function(index) {
         this.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+            '/javascript/Number'
         ]);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
@@ -332,7 +331,7 @@ Catalog.prototype.toObject = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Catalog.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCatalog(this);
+    visitor.visitCollection(this);
 };
     
 

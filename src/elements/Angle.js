@@ -53,7 +53,7 @@ function Angle(value, parameters) {
 
     // convert the value if necessary
     if (parameters) {
-        const units = parameters.getParameter('$units');
+        const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
             // convert degrees to radians
             value = utilities.precision.quotient(utilities.precision.product(value, Math.PI), 180);

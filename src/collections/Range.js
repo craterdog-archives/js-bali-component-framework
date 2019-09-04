@@ -15,7 +15,7 @@
  */
 const abstractions = require('../abstractions');
 const elements = require('../elements');
-const Exception = require('./Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -30,19 +30,19 @@ const Exception = require('./Exception').Exception;
  * @returns {Range} The new range.
  */
 function Range(first, last, parameters) {
-    abstractions.Composite.call(this, '$Range', parameters);
+    abstractions.Collection.call(this, '$Range', parameters);
 
-    this.validateType('/bali/composites/Range', '$Range', '$first', first, [
+    this.validateType('/bali/collections/Range', '$Range', '$first', first, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
     ]);
-    this.validateType('/bali/composites/Range', '$Range', '$last', last, [
+    this.validateType('/bali/collections/Range', '$Range', '$last', last, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
     ]);
-    this.validateType('/bali/composites/Range', '$Range', '$parameters', parameters, [
+    this.validateType('/bali/collections/Range', '$Range', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
@@ -55,7 +55,7 @@ function Range(first, last, parameters) {
     var collection;
     if (parameters) {
         // parameters are immutable so we don't need to copy the collection
-        collection = parameters.getParameter('$collection');
+        collection = parameters.getValue('$collection');
         if (collection) {
             // determine the indices of the items in the collection
             firstIndex = collection.getIndex(first);
@@ -78,7 +78,7 @@ function Range(first, last, parameters) {
     this.toArray = function() {
         if (lastIndex === Infinity) {
             throw new Exception({
-                $module: '/bali/composites/Range',
+                $module: '/bali/collections/Range',
                 $procedure: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
@@ -118,9 +118,8 @@ function Range(first, last, parameters) {
     };
     
     this.getItem = function(index) {
-        this.validateType('/bali/composites/Range', '$getItem', '$index', index, [
-            '/javascript/Number',
-            '/bali/elements/Number'
+        this.validateType('/bali/collections/Range', '$getItem', '$index', index, [
+            '/javascript/Number'
         ]);
         var item;
         if (collection) {
@@ -144,7 +143,7 @@ function Range(first, last, parameters) {
     };
     
     this.isInRange = function(item) {
-        this.validateType('/bali/composites/Range', '$isInRange', '$item', item, [
+        this.validateType('/bali/collections/Range', '$isInRange', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -159,7 +158,7 @@ function Range(first, last, parameters) {
         } else {
             if (typeof item !== 'number') {
                 throw new Exception({
-                    $module: '/bali/composites/Range',
+                    $module: '/bali/collections/Range',
                     $procedure: '$isInRange',
                     $exception: '$invalidParameter',
                     $range: this,
@@ -174,7 +173,7 @@ function Range(first, last, parameters) {
 
     return this;
 }
-Range.prototype = Object.create(abstractions.Composite.prototype);
+Range.prototype = Object.create(abstractions.Collection.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 

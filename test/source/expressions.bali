@@ -1,12 +1,12 @@
 [
     $components: [
-        3E23("m/s")
+        3E23($units: "m/s")
         ~pi($units: $radians)
-        [1, 2, 3](
-            $type: /bali/collections/Stack/v1(
-                $itemType: /bali/elements/Number/v1($range: [1..infinity])
-            )
-        )
+        [
+            1
+            2
+            3
+        ]($type: /bali/collections/Stack/v1($itemType: /bali/elements/Number/v1($range: [1..infinity])))
     ]
     $variables: [
         x
@@ -19,8 +19,8 @@
     $functions: [
         random(count)
         random(count)[1]
-        random($count: 16)
-        random($count: 16).sort(increasing)
+        random(16)
+        random(16).sort(increasing)
         random(16).sort()[-x]
     ]
     $groupings: [
@@ -46,7 +46,7 @@
     $indices: [
         values[$symbol]
         array[-1]
-        [1, 2, 3][2]
+        x[1, 2, 3][2]
         [[$a, $b], 2, 3][1, 2]
     ]
     $factorials: [

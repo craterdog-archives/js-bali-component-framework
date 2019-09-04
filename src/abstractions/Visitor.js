@@ -35,8 +35,14 @@ exports.Visitor = Visitor;
 
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
-    // delegate to element
-    this.visitElement(angle);
+    this.visitComponent(angle);
+};
+
+
+// arguments: '(' list ')'
+Visitor.prototype.visitArguments = function(tree) {
+    const list = tree.getChild(1);
+    list.acceptVisitor(this);
 };
 
 
@@ -59,14 +65,14 @@ Visitor.prototype.visitAssociation = function(association) {
 
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
-    // delegate to element
-    this.visitElement(binary);
+    this.visitComponent(binary);
 };
 
 
-// block: '{' procedure '}'
+// block: '{' statements '}'
 Visitor.prototype.visitBlock = function(tree) {
-    tree.getChild(1).acceptVisitor(this);
+    const statements = tree.getChild(1);
+    statements.acceptVisitor(this);
 };
 
 
@@ -80,11 +86,7 @@ Visitor.prototype.visitBreakClause = function(tree) {
 //     EOL (association EOL)* |
 //     ':' {empty catalog}
 Visitor.prototype.visitCatalog = function(catalog) {
-    // delegate to collection
     this.visitCollection(catalog);
-    if (catalog.isParameterized()) {
-        catalog.getParameters().acceptVisitor(this);
-    }
 };
 
 
@@ -97,14 +99,15 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: range | list | catalog
-Visitor.prototype.visitCollection = function(collection) {
-    const iterator = collection.getIterator();
+// collection: '[' sequence ']'
+Visitor.prototype.visitCollection = function(sequence) {
+    this.visitComponent(sequence);
     this.depth++;
+    const iterator = sequence.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
         item.acceptVisitor(this);
-    };
+    }
     this.depth--;
 };
 
@@ -132,6 +135,15 @@ Visitor.prototype.visitComparisonExpression = function(tree) {
 Visitor.prototype.visitComplementExpression = function(tree) {
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
+};
+
+
+// component: value parameters?
+Visitor.prototype.visitComponent = function(component) {
+    // process any parameters first since the value may depend on them
+    if (component.isParameterized()) {
+        component.getParameters().acceptVisitor(this);
+    }
 };
 
 
@@ -174,31 +186,7 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 
 // duration: DURATION
 Visitor.prototype.visitDuration = function(duration) {
-    // delegate to element
-    this.visitElement(duration);
-};
-
-
-// element:
-//     angle |
-//     binary |
-//     duration |
-//     moment |
-//     name |
-//     number |
-//     pattern |
-//     percent |
-//     probability |
-//     reference |
-//     reserved |
-//     symbol |
-//     tag |
-//     text |
-//     version
-Visitor.prototype.visitElement = function(element) {
-    if (element.isParameterized()) {
-        element.getParameters().acceptVisitor(this);
-    }
+    this.visitComponent(duration);
 };
 
 
@@ -301,11 +289,7 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty list}
 Visitor.prototype.visitList = function(list) {
-    // delegate to collection
     this.visitCollection(list);
-    if (list.isParameterized()) {
-        list.getParameters().acceptVisitor(this);
-    }
 };
 
 
@@ -344,15 +328,13 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 
 // moment: MOMENT
 Visitor.prototype.visitMoment = function(moment) {
-    // delegate to element
-    this.visitElement(moment);
+    this.visitComponent(moment);
 };
 
 
 // name: NAME
 Visitor.prototype.visitName = function(name) {
-    // delegate to element
-    this.visitElement(name);
+    this.visitComponent(name);
 };
 
 
@@ -363,38 +345,34 @@ Visitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 Visitor.prototype.visitNumber = function(number) {
-    // delegate to element
-    this.visitElement(number);
+    this.visitComponent(number);
 };
 
 
-// parameters: '(' collection ')'
+// parameters: '(' catalog ')'
 Visitor.prototype.visitParameters = function(parameters) {
-    const iterator = parameters.getIterator();
     this.depth++;
+    const keys = parameters.getKeys();
+    const iterator = keys.getIterator();
     while (iterator.hasNext()) {
-        var parameter = iterator.getNext();
-        if (parameters.isList) {
-            // for list format we only want the value of the association
-            parameter = parameter.getValue();
-        }
-        parameter.acceptVisitor(this);
-    };
+        const key = iterator.getNext();
+        const value = parameters.getValue(key);
+        key.acceptVisitor(this);
+        value.acceptVisitor(this);
+    }
     this.depth--;
 };
 
 
 // pattern: 'none' | REGEX | 'any'
 Visitor.prototype.visitPattern = function(pattern) {
-    // delegate to element
-    this.visitElement(pattern);
+    this.visitComponent(pattern);
 };
 
 
 // percent: PERCENT
 Visitor.prototype.visitPercent = function(percent) {
-    // delegate to element
-    this.visitElement(percent);
+    this.visitComponent(percent);
 };
 
 
@@ -407,23 +385,15 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // probability: 'false' | FRACTION | 'true'
 Visitor.prototype.visitProbability = function(probability) {
-    // delegate to element
-    this.visitElement(probability);
+    this.visitComponent(probability);
 };
 
 
-// procedure:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-Visitor.prototype.visitProcedure = function(tree) {
-    const iterator = tree.getIterator();
-    this.depth++;
-    while (iterator.hasNext()) {
-        const statement = iterator.getNext();
-        statement.acceptVisitor(this);
-    }
-    this.depth--;
+// procedure: '{' statements '}'
+Visitor.prototype.visitProcedure = function(procedure) {
+    this.visitComponent(procedure);
+    const statements = source.getStatements();
+    statements.acceptVisitor(this);
 };
 
 
@@ -439,11 +409,7 @@ Visitor.prototype.visitPublishClause = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty queue}
 Visitor.prototype.visitQueue = function(queue) {
-    // delegate to collection
     this.visitCollection(queue);
-    if (queue.isParameterized()) {
-        queue.getParameters().acceptVisitor(this);
-    }
 };
 
 
@@ -460,23 +426,18 @@ Visitor.prototype.visitQueueClause = function(tree) {
 Visitor.prototype.visitRange = function(range) {
     range.getFirst().acceptVisitor(this);
     range.getLast().acceptVisitor(this);
-    if (range.isParameterized()) {
-        range.getParameters().acceptVisitor(this);
-    }
 };
 
 
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
-    // delegate to element
-    this.visitElement(reference);
+    this.visitComponent(reference);
 };
 
 
 // reserved: RESERVED
 Visitor.prototype.visitReserved = function(reserved) {
-    // delegate to element
-    this.visitElement(reserved);
+    this.visitComponent(reserved);
 };
 
 
@@ -528,20 +489,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 //     EOL (expression EOL)* |
 //     {empty set}
 Visitor.prototype.visitSet = function(set) {
-    // delegate to collection
     this.visitCollection(set);
-    if (set.isParameterized()) {
-        set.getParameters().acceptVisitor(this);
-    }
-};
-
-
-// source: '{' procedure '}'
-Visitor.prototype.visitSource = function(source) {
-    source.getProcedure().acceptVisitor(this);
-    if (source.isParameterized()) {
-        source.getParameters().acceptVisitor(this);
-    }
 };
 
 
@@ -550,21 +498,32 @@ Visitor.prototype.visitSource = function(source) {
 //     EOL (expression EOL)* |
 //     {empty stack}
 Visitor.prototype.visitStack = function(stack) {
-    // delegate to collection
     this.visitCollection(stack);
-    if (stack.isParameterized()) {
-        stack.getParameters().acceptVisitor(this);
-    }
 };
 
 
 // statement: mainClause handleClause*
 Visitor.prototype.visitStatement = function(tree) {
-    const iterator = tree.getIterator();
     this.depth++;
+    const iterator = tree.getIterator();
     while (iterator.hasNext()) {
         const child = iterator.getNext();
         child.acceptVisitor(this);
+    }
+    this.depth--;
+};
+
+
+// statements:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     {empty procedure}
+Visitor.prototype.visitStatements = function(tree) {
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const statement = iterator.getNext();
+        statement.acceptVisitor(this);
     }
     this.depth--;
 };
@@ -590,22 +549,19 @@ Visitor.prototype.visitSubcomponentExpression = function(tree) {
 
 // symbol: SYMBOL
 Visitor.prototype.visitSymbol = function(symbol) {
-    // delegate to element
-    this.visitElement(symbol);
+    this.visitComponent(symbol);
 };
 
 
 // tag: TAG
 Visitor.prototype.visitTag = function(tag) {
-    // delegate to element
-    this.visitElement(tag);
+    this.visitComponent(tag);
 };
 
 
 // text: TEXT | TEXT_BLOCK
 Visitor.prototype.visitText = function(text) {
-    // delegate to element
-    this.visitElement(text);
+    this.visitComponent(text);
 };
 
 
@@ -623,8 +579,7 @@ Visitor.prototype.visitVariable = function(tree) {
 
 // version: VERSION
 Visitor.prototype.visitVersion = function(version) {
-    // delegate to element
-    this.visitElement(version);
+    this.visitComponent(version);
 };
 
 

@@ -16,7 +16,6 @@
  */
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const Catalog = require('./Catalog').Catalog;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -37,8 +36,9 @@ Array.prototype.peek = function() {
  * @returns {Queue} The new queue.
  */
 function Queue(parameters) {
-    parameters = parameters || new composites.Parameters(new Catalog());
-    if (!parameters.getParameter('$type')) parameters.setParameter('$type', '/bali/collections/Queue/v1');
+    parameters = parameters || new composites.Parameters({
+        $type: '/bali/collections/Queue/v1'
+    });
     abstractions.Collection.call(this, '$Queue', parameters);
 
     this.validateType('/bali/collections/Queue', '$queue', '$parameters', parameters, [
@@ -50,7 +50,7 @@ function Queue(parameters) {
     // defined in the constructor
     var capacity = 1024;  // default capacity
     if (parameters) {
-        const value = parameters.getParameter('$capacity', 2);
+        const value = parameters.getValue('$capacity');
         if (value) capacity = value.toNumber();
     }
     const array = [];
@@ -88,6 +88,46 @@ function Queue(parameters) {
         return false;
     };
 
+    this.addItems = function(items) {
+        this.validateType('/bali/collections/Queue', '$addItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+        var count = 0;
+        items = items || undefined;  // normalize nulls to undefined
+        if (items) {
+            if (Array.isArray(items)) {
+                items.forEach(function(item) {
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }, this);
+            } else if (items.isSequential()) {
+                const iterator = items.getIterator();
+                while (iterator.hasNext()) {
+                    var item = iterator.getNext();
+                    item = this.convert(item);
+                    if (item.isType('$Association')) {
+                        item = item.getValue();
+                    }
+                    this.addItem(item);
+                    count++;
+                }
+            } else if (typeof items === 'object') {
+                const keys = Object.keys(items);
+                keys.forEach(function(key) {
+                    this.addItem(items[key]);
+                    count++;
+                }, this);
+            }
+        }
+        return count;
+    },
+
     this.removeItem = function() {
         if (array.length > 0) return array.splice(0, 1)[0];  // remove the first item in the array
     };
@@ -115,6 +155,6 @@ exports.Queue = Queue;
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Queue.prototype.acceptVisitor = function(visitor) {
-    visitor.visitQueue(this);
+    visitor.visitCollection(this);
 };
     

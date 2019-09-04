@@ -13,6 +13,7 @@
 /*
  * This abstract class defines the invariant methods that all collections must inherit.
  */
+const utilities = require('../utilities');
 const Composite = require('./Composite').Composite;
 const Exception = require('../composites/Exception').Exception;
 
@@ -51,6 +52,19 @@ Collection.validate = Composite.validate;
 // PUBLIC METHODS
 
 /**
+ * This method determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Collection.prototype.isSequential = function() {
+    return true;
+};
+
+
+/**
  * This method determines whether or not this component is a collection.
  * 
  * @returns {Boolean} Whether or not this component is a collection.
@@ -67,6 +81,60 @@ Collection.prototype.isCollection = function() {
  */
 Collection.prototype.acceptVisitor = function(visitor) {
     visitor.visitCollection(this);
+};
+
+
+
+/**
+ * This abstract method returns an array containing the subcomponents in this collection
+ * component. It must be implemented by a subclass.
+ * 
+ * @returns {Array} An array containing the subcomponents in this collection component.
+ */
+Collection.prototype.toArray = function() {
+    throw new Exception({
+        $module: '/bali/abstractions/Collection',
+        $procedure: '$toArray',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+};
+
+
+/**
+ * This method returns whether or not this collection component has any subcomponents.
+ * 
+ * @returns {Boolean} Whether or not this collection component has any subcomponents.
+ */
+Collection.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
+
+/**
+ * This abstract method returns the number of subcomponents that this collection component has.
+ * It must be implemented by a subclass.
+ * 
+ * @returns {Number} The number of subcomponents that this collection component has.
+ */
+Collection.prototype.getSize = function() {
+    throw new Exception({
+        $module: '/bali/abstractions/Collection',
+        $procedure: '$getSize',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the subcomponents in
+ * this collection component.
+ * @returns {Iterator} An iterator for this collection component.
+ */
+Collection.prototype.getIterator = function() {
+    const iterator = new utilities.Iterator(this.toArray());
+    return iterator;
 };
 
 
@@ -129,82 +197,18 @@ Collection.prototype.getItem = function(index) {
 Collection.prototype.getItems = function(range) {
     this.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
         '/javascript/Undefined',
-        '/bali/composites/Range'
+        '/bali/collections/Range'
     ]);
     const items = new this.constructor(this.getParameters());
     if (range && range.getIterator) {
         const iterator = range.getIterator();
         while (iterator.hasNext()) {
-            const index = iterator.getNext();
+            const index = iterator.getNext().getMagnitude();
             const item = this.getItem(index);
             items.addItem(item);
         }
     }
     return items;
-};
-
-
-/**
- * This abstract method adds the specified item to this collection. It must
- * be implemented by a subclass.
- * 
- * @param {Component} item The item to be added to this collection. 
- * @returns {Boolean} Whether or not the item was successfully added.
- */
-Collection.prototype.addItem = function(item) {
-    throw new Exception({
-        $module: '/bali/abstractions/Collection',
-        $procedure: '$addItem',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-};
-
-
-/**
- * This method adds a collection of new items to this collection.
- *
- * @param {Array|Sequential} items The collection of new items to be added.
- * @returns {Number} The number of items that were actually added to this collection.
- */
-Collection.prototype.addItems = function(items) {
-    this.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/bali/interfaces/Sequential'
-    ]);
-    var count = 0;
-    items = items || undefined;  // normalize nulls to undefined
-    if (items) {
-        if (Array.isArray(items)) {
-            items.forEach(function(item) {
-                item = this.convert(item);
-                if (item.isType('$Association')) {
-                    item = item.getValue();
-                }
-                this.addItem(item);
-                count++;
-            }, this);
-        } else if (items.isSequential()) {
-            const iterator = items.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = this.convert(item);
-                if (item.isType('$Association')) {
-                    item = item.getValue();
-                }
-                this.addItem(item);
-                count++;
-            }
-        } else if (typeof items === 'object') {
-            const keys = Object.keys(items);
-            keys.forEach(function(key) {
-                this.addItem(items[key]);
-                count++;
-            }, this);
-        }
-    }
-    return count;
 };
 
 
@@ -290,18 +294,3 @@ Collection.prototype.containsAll = function(items) {
     }
     return result;
 };
-
-
-/**
- * This abstract method removes all of the items from this collection. It must
- * be implemented by a subclass.
- */
-Collection.prototype.deleteAll = function() {
-    throw new Exception({
-        $module: '/bali/abstractions/Collection',
-        $procedure: '$deleteAll',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-};
-

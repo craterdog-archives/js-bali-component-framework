@@ -17,6 +17,7 @@
  * are used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('./Exception').Exception;
 
@@ -49,26 +50,29 @@ function Tree(type) {
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
 
-    this.toArray = function() {
-        return array.slice(); // copy the array
-    };
-
-    this.getSize = function() {
-        return array.length;
-    };
-
     this.addChild = function(child) {
+        this.validateType('/bali/composites/Tree', '$addChild', '$child', child, [
+            '/bali/abstractions/Component'
+        ]);
         child = this.convert(child);
         array.push(child);
         child.getParent = function() { return this; };
     };
 
     this.getChild = function(index) {
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        this.validateType('/bali/composites/Tree', '$getChild', '$index', index, [
+            '/javascript/Number'
+        ]);
+        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.getParent = function() { };  // will be reset by parent when added as a child
+
+    this.getIterator = function() {
+        const iterator = new utilities.Iterator(array);
+        return iterator;
+    };
 
     return this;
 }
@@ -78,6 +82,19 @@ exports.Tree = Tree;
 
 
 // PUBLIC METHODS
+
+/**
+ * This function determines whether or not this component supports iteration:
+ * <pre>
+ *  * iterator
+ * </pre>
+ * 
+ * @returns {Boolean} Whether or not this component supports iteration.
+ */
+Tree.prototype.isSequential = function() {
+    return true;
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

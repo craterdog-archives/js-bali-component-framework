@@ -1,10 +1,14 @@
 [
     $empty: {}
-    $single: {$x := value}
+    $single: {
+        $x := value
+    }
     $statement: {
         while condition do {
             break loop
-        } handle $exception matching [$type: "BadException"] with {
+        } handle $exception matching [
+            $type: "BadException"
+        ] with {
             continue loop
         }
         queue message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
@@ -19,9 +23,15 @@
             throw exception
         }
     }
-    $assignValue: {$component := value}
-    $continueLoop: {continue loop}
-    $breakLoop: {break loop}
+    $assignValue: {
+        $component := value
+    }
+    $continueLoop: {
+        continue loop
+    }
+    $breakLoop: {
+        break loop
+    }
     $lifecycle: {
         checkout $component from <bali:?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:'JAH9BWDQJK7J2SMZX1V7NC1WA7J2DHNTVFKBCJ575PYCCWH121TN3BYCZVQX8J1HW4202BBX4W3JB9Z099307D6D46AB4WXAA9SACSH']>
         save component to <bali:?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
@@ -31,7 +41,9 @@
         commit components[index] to <bali:?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         discard <bali:?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
-    $publishEvent: {publish event}
+    $publishEvent: {
+        publish event
+    }
     $waitForMessage: {
         wait for $message from <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         wait for messages[$foo, 5] from <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
@@ -39,14 +51,15 @@
     $queueMessage: {
         queue message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         queue message(1) on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
-        queue message(
-            $first: 1
-            $second: second
-            $third: "3rd"
-        ) on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        queue message(1, second, "3rd") on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
-    $returnResult: {return; return result}
-    $throwException: {throw exception}
+    $returnResult: {
+        return
+        return result
+    }
+    $throwException: {
+        throw exception
+    }
     $ifThen: {
         if condition then {
         }
