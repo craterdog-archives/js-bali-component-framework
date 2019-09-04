@@ -74,57 +74,21 @@ DocumentListener.prototype.exitRange = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#inlineList.
-DocumentListener.prototype.enterInlineList = function(ctx) {
+// Enter a parse tree produced by DocumentParser#list.
+DocumentListener.prototype.enterList = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#inlineList.
-DocumentListener.prototype.exitInlineList = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#newlineList.
-DocumentListener.prototype.enterNewlineList = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#newlineList.
-DocumentListener.prototype.exitNewlineList = function(ctx) {
+// Exit a parse tree produced by DocumentParser#list.
+DocumentListener.prototype.exitList = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#emptyList.
-DocumentListener.prototype.enterEmptyList = function(ctx) {
+// Enter a parse tree produced by DocumentParser#catalog.
+DocumentListener.prototype.enterCatalog = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#emptyList.
-DocumentListener.prototype.exitEmptyList = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#inlineCatalog.
-DocumentListener.prototype.enterInlineCatalog = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#inlineCatalog.
-DocumentListener.prototype.exitInlineCatalog = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#newlineCatalog.
-DocumentListener.prototype.enterNewlineCatalog = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#newlineCatalog.
-DocumentListener.prototype.exitNewlineCatalog = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#emptyCatalog.
-DocumentListener.prototype.enterEmptyCatalog = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#emptyCatalog.
-DocumentListener.prototype.exitEmptyCatalog = function(ctx) {
+// Exit a parse tree produced by DocumentParser#catalog.
+DocumentListener.prototype.exitCatalog = function(ctx) {
 };
 
 
@@ -146,30 +110,12 @@ DocumentListener.prototype.exitProcedure = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#inlineStatement.
-DocumentListener.prototype.enterInlineStatement = function(ctx) {
+// Enter a parse tree produced by DocumentParser#statements.
+DocumentListener.prototype.enterStatements = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#inlineStatement.
-DocumentListener.prototype.exitInlineStatement = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#newlineStatement.
-DocumentListener.prototype.enterNewlineStatement = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#newlineStatement.
-DocumentListener.prototype.exitNewlineStatement = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#emptyStatement.
-DocumentListener.prototype.enterEmptyStatement = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#emptyStatement.
-DocumentListener.prototype.exitEmptyStatement = function(ctx) {
+// Exit a parse tree produced by DocumentParser#statements.
+DocumentListener.prototype.exitStatements = function(ctx) {
 };
 
 

@@ -396,27 +396,6 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// emptyCatalog: ':' /*empty catalog*/
-ParsingVisitor.prototype.visitEmptyCatalog = function(ctx) {
-    // delegate to abstract type
-    this.visitCatalog(ctx);
-};
-
-// emptyList: /*empty list*/
-ParsingVisitor.prototype.visitEmptyList = function(ctx) {
-    // delegate to abstract type
-    this.visitList(ctx);
-};
-
-
-// emptyStatements: /*empty statements*/
-ParsingVisitor.prototype.visitEmptyStatements = function(ctx) {
-    // delegate to abstract type
-    this.visitStatements(ctx);
-};
-
-
-
 // evaluateClause: (recipient ':=')? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     const tree = new composites.Tree('$EvaluateClause');
@@ -517,27 +496,6 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
     ctx.list().accept(this);
     tree.addChild(this.result);
     this.result = tree;
-};
-
-
-// inlineCatalog: association (',' association)*
-ParsingVisitor.prototype.visitInlineCatalog = function(ctx) {
-    // delegate to abstract type
-    this.visitCatalog(ctx);
-};
-
-
-// inlineList: expression (',' expression)*
-ParsingVisitor.prototype.visitInlineList = function(ctx) {
-    // delegate to abstract type
-    this.visitList(ctx);
-};
-
-
-// inlineStatements: statement (';' statement)*
-ParsingVisitor.prototype.visitInlineStatements = function(ctx) {
-    // delegate to abstract type
-    this.visitStatements(ctx);
 };
 
 
@@ -650,27 +608,6 @@ ParsingVisitor.prototype.visitName = function(ctx) {
     const value = ctx.getText().split('/').slice(1);  // extract the parts of the name
     const name = new elements.Name(value, parameters);
     this.result = name;
-};
-
-
-// newlineCatalog: EOL (association EOL)*
-ParsingVisitor.prototype.visitNewlineCatalog = function(ctx) {
-    // delegate to abstract type
-    this.visitCatalog(ctx);
-};
-
-
-// newlineList: EOL (expression EOL)*
-ParsingVisitor.prototype.visitNewlineList = function(ctx) {
-    // delegate to abstract type
-    this.visitList(ctx);
-};
-
-
-// newlineStatements: EOL (statement EOL)*
-ParsingVisitor.prototype.visitNewlineStatements = function(ctx) {
-    // delegate to abstract type
-    this.visitStatements(ctx);
 };
 
 
@@ -921,7 +858,6 @@ ParsingVisitor.prototype.visitStatements = function(ctx) {
         }, this);
         this.depth--;
     }
-    console.log('tree type: ' + tree.constructor.name);
     this.result = tree;
 };
 

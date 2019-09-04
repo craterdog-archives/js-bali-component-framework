@@ -150,7 +150,7 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         $value: parameterValue,
         $text: 'An invalid parameter type was passed to the procedure.'
     });
-    console.error(exception.toString());
+    //console.error(exception.toString());
     throw exception;
 };
 

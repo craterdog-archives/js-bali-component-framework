@@ -50,6 +50,10 @@ function Tree(type) {
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
 
+    this.getSize = function() {
+        return array.length;
+    };
+
     this.addChild = function(child) {
         this.validateType('/bali/composites/Tree', '$addChild', '$child', child, [
             '/bali/abstractions/Component'

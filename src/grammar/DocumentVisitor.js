@@ -54,38 +54,14 @@ DocumentVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#inlineList.
-DocumentVisitor.prototype.visitInlineList = function(ctx) {
+// Visit a parse tree produced by DocumentParser#list.
+DocumentVisitor.prototype.visitList = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by DocumentParser#newlineList.
-DocumentVisitor.prototype.visitNewlineList = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#emptyList.
-DocumentVisitor.prototype.visitEmptyList = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#inlineCatalog.
-DocumentVisitor.prototype.visitInlineCatalog = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#newlineCatalog.
-DocumentVisitor.prototype.visitNewlineCatalog = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#emptyCatalog.
-DocumentVisitor.prototype.visitEmptyCatalog = function(ctx) {
+// Visit a parse tree produced by DocumentParser#catalog.
+DocumentVisitor.prototype.visitCatalog = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -102,20 +78,8 @@ DocumentVisitor.prototype.visitProcedure = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#inlineStatement.
-DocumentVisitor.prototype.visitInlineStatement = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#newlineStatement.
-DocumentVisitor.prototype.visitNewlineStatement = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#emptyStatement.
-DocumentVisitor.prototype.visitEmptyStatement = function(ctx) {
+// Visit a parse tree produced by DocumentParser#statements.
+DocumentVisitor.prototype.visitStatements = function(ctx) {
   return this.visitChildren(ctx);
 };
 

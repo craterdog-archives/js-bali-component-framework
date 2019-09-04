@@ -43,9 +43,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
                     const string = bali.format(item);
-                    console.log('item: ' + string);
                     const element = bali.parse(string);
-                    console.log('element: ' + element);
                     expect(element.isEqualTo(item)).to.equal(true);
                 }
             }
@@ -55,7 +53,6 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             const file = 'test/source/expressions.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
-            console.log('document: ' + document);
             expect(document).to.exist;  // jshint ignore:line
             var component = bali.parse(document);
             expect(component).to.exist;  // jshint ignore:line

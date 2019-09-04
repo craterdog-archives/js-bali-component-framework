@@ -14,15 +14,15 @@ parameters: '(' catalog ')';
 range: expression '..' expression;
 
 list:
-    expression (',' expression)*       #inlineList |
-    EOL (expression EOL)*              #newlineList |
-    /*empty list*/                     #emptyList
+    expression (',' expression)* |
+    EOL (expression EOL)* |
+    /*empty list*/
 ;
 
 catalog:
-    association (',' association)*     #inlineCatalog |
-    EOL (association EOL)*             #newlineCatalog |
-    ':' /*empty catalog*/              #emptyCatalog
+    association (',' association)* |
+    EOL (association EOL)* |
+    ':' /*empty catalog*/
 ;
 
 association: component ':' expression;

@@ -72,7 +72,7 @@ function Range(first, last, parameters) {
     this.getLastIndex = function() { return lastIndex; };
 
     this.acceptVisitor = function(visitor) {
-        visitor.visitRange(this);
+        visitor.visitCollection(this);
     };
 
     this.toArray = function() {

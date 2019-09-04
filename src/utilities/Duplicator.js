@@ -132,12 +132,21 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 DuplicatingVisitor.prototype.visitCollection = function(sequence) {
     this.visitComponent(sequence);
     const parameters = this.result;
-    const copy = new sequence.constructor(parameters);
-    const iterator = sequence.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
+    var copy;
+    if (sequence.isType('$Range')) {
+        sequence.getFirst().acceptVisitor(this);
+        const first = this.result;
+        sequence.getLast().acceptVisitor(this);
+        const last = this.result;
+        copy = new sequence.constructor(first, last, parameters);
+    } else {
+        copy = new sequence.constructor(parameters);
+        const iterator = sequence.getIterator();
+        while (iterator.hasNext()) {
+            var item = iterator.getNext();
+            item.acceptVisitor(this);
+            copy.addItem(this.result);
+        }
     }
     this.result = copy;
 };
@@ -485,19 +494,6 @@ DuplicatingVisitor.prototype.visitQueueClause = function(tree) {
 };
 
 
-// range: expression '..' expression
-DuplicatingVisitor.prototype.visitRange = function(range) {
-    this.visitComponent(range);
-    const parameters = this.result;
-    range.getFirst().acceptVisitor(this);
-    const first = this.result;
-    range.getLast().acceptVisitor(this);
-    const last = this.result;
-    const copy = new range.constructor(first, last, parameters);
-    this.result = copy;
-};
-
-
 // reference: RESOURCE
 DuplicatingVisitor.prototype.visitReference = function(reference) {
     this.visitComponent(reference);
@@ -517,7 +513,7 @@ DuplicatingVisitor.prototype.visitReserved = function(reserved) {
 // returnClause: 'return' expression?
 DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
     const copy = new tree.constructor(tree.getType());
-    if (!tree.isEmpty()) {
+    if (tree.getSize() > 0) {
         tree.getChild(1).acceptVisitor(this);
         copy.addChild(this.result);
     }

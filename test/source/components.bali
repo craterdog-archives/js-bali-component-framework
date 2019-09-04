@@ -87,7 +87,8 @@
         ]($type: /acme/types/Foo/v1.2.3)
     ]
     $code: [
-        {}
+        {
+        }
         {
             $foo := bar
             $bar := baz

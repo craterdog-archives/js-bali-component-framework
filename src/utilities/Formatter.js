@@ -83,6 +83,7 @@ function FormattingVisitor(indentation, ignoreParameters, explicitFormat) {
     this.result = '';
 
     this.getNewline = function() {
+        if (indentation < 0) return EOL;
         var separator = EOL;
         const levels = this.depth + indentation;
         for (var i = 0; i < levels; i++) {
@@ -132,7 +133,6 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
                 $value: angle.getValue(),
                 $text: 'An invalid angle format was specified.'
             });
-            console.error(exception.toString());
             throw exception;
     }
     this.result += '~' + formatReal(value);
@@ -198,7 +198,6 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
                 $format: format,
                 $text: 'An invalid binary string format was specified.'
             });
-            console.log(exception.toString());
             throw exception;
     }
     this.depth++;
@@ -589,7 +588,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
     this.result += '(';
     const keys = parameters.getKeys();
     const iterator = keys.getIterator();
-    if (keys.length > 1) {
+    if (keys.getSize() > 1) {
         this.depth++;
         while (iterator.hasNext()) {
             this.result += this.getNewline();
@@ -697,17 +696,6 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 };
 
 
-// range: expression '..' expression
-FormattingVisitor.prototype.visitRange = function(range) {
-    this.result += '[';
-    range.getFirst().acceptVisitor(this);
-    this.result += '..';
-    range.getLast().acceptVisitor(this);
-    this.result += ']';
-    this.visitComponent(range);
-};
-
-
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
@@ -727,7 +715,7 @@ FormattingVisitor.prototype.visitReserved = function(reserved) {
 // returnClause: 'return' expression?
 FormattingVisitor.prototype.visitReturnClause = function(tree) {
     this.result += 'return';
-    if (!tree.isEmpty()) {
+    if (tree.getSize() > 0) {
         this.result += ' ';
         const result = tree.getChild(1);
         result.acceptVisitor(this);
@@ -777,12 +765,18 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 // sequence: range | list | catalog
 FormattingVisitor.prototype.visitSequence = function(sequence) {
     // note: range is handled separately
-    const iterator = sequence.getIterator();
-    if (sequence.isEmpty() && sequence.isType('$Catalog')) {
-        this.result += ':';  // empty catalog
+    if (sequence.isType('$Range')) {
+        sequence.getFirst().acceptVisitor(this);
+        this.result += '..';
+        sequence.getLast().acceptVisitor(this);
+    } else if (sequence.isEmpty()) {
+        if (sequence.isType('$Catalog')) {
+            this.result += ':';  // empty catalog
+        }
     } else {
         this.depth++;
         var count = 0;
+        const iterator = sequence.getIterator();
         while (iterator.hasNext()) {
             if (this.inline) {
                 if (count++) this.result += ', ';

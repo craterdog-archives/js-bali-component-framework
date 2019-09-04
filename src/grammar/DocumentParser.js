@@ -1173,25 +1173,18 @@ function ListContext(parser, parent, invokingState) {
 ListContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ListContext.prototype.constructor = ListContext;
 
-
- 
-ListContext.prototype.copyFrom = function(ctx) {
-    antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
+ListContext.prototype.expression = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(ExpressionContext);
+    } else {
+        return this.getTypedRuleContext(ExpressionContext,i);
+    }
 };
 
-
-function NewlineListContext(parser, ctx) {
-	ListContext.call(this, parser);
-    ListContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-NewlineListContext.prototype = Object.create(ListContext.prototype);
-NewlineListContext.prototype.constructor = NewlineListContext;
-
-DocumentParser.NewlineListContext = NewlineListContext;
-
-NewlineListContext.prototype.EOL = function(i) {
+ListContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1203,109 +1196,26 @@ NewlineListContext.prototype.EOL = function(i) {
 };
 
 
-NewlineListContext.prototype.expression = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(ExpressionContext);
-    } else {
-        return this.getTypedRuleContext(ExpressionContext,i);
-    }
-};
-NewlineListContext.prototype.enterRule = function(listener) {
+ListContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterNewlineList(this);
+        listener.enterList(this);
 	}
 };
 
-NewlineListContext.prototype.exitRule = function(listener) {
+ListContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitNewlineList(this);
+        listener.exitList(this);
 	}
 };
 
-NewlineListContext.prototype.accept = function(visitor) {
+ListContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitNewlineList(this);
+        return visitor.visitList(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
-
-function EmptyListContext(parser, ctx) {
-	ListContext.call(this, parser);
-    ListContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-EmptyListContext.prototype = Object.create(ListContext.prototype);
-EmptyListContext.prototype.constructor = EmptyListContext;
-
-DocumentParser.EmptyListContext = EmptyListContext;
-
-EmptyListContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterEmptyList(this);
-	}
-};
-
-EmptyListContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitEmptyList(this);
-	}
-};
-
-EmptyListContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitEmptyList(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function InlineListContext(parser, ctx) {
-	ListContext.call(this, parser);
-    ListContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-InlineListContext.prototype = Object.create(ListContext.prototype);
-InlineListContext.prototype.constructor = InlineListContext;
-
-DocumentParser.InlineListContext = InlineListContext;
-
-InlineListContext.prototype.expression = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(ExpressionContext);
-    } else {
-        return this.getTypedRuleContext(ExpressionContext,i);
-    }
-};
-InlineListContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterInlineList(this);
-	}
-};
-
-InlineListContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitInlineList(this);
-	}
-};
-
-InlineListContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitInlineList(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
 
 
 
@@ -1352,7 +1262,6 @@ DocumentParser.prototype.list = function() {
         case DocumentParser.TEXT:
         case DocumentParser.VERSION:
         case DocumentParser.IDENTIFIER:
-            localctx = new InlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 157;
             this.expression(0);
@@ -1370,7 +1279,6 @@ DocumentParser.prototype.list = function() {
             }
             break;
         case DocumentParser.EOL:
-            localctx = new NewlineListContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 165;
             this.match(DocumentParser.EOL);
@@ -1389,7 +1297,6 @@ DocumentParser.prototype.list = function() {
             break;
         case DocumentParser.T__1:
         case DocumentParser.T__3:
-            localctx = new EmptyListContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
             break;
@@ -1426,25 +1333,7 @@ function CatalogContext(parser, parent, invokingState) {
 CatalogContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 CatalogContext.prototype.constructor = CatalogContext;
 
-
- 
-CatalogContext.prototype.copyFrom = function(ctx) {
-    antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
-};
-
-
-function InlineCatalogContext(parser, ctx) {
-	CatalogContext.call(this, parser);
-    CatalogContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-InlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
-InlineCatalogContext.prototype.constructor = InlineCatalogContext;
-
-DocumentParser.InlineCatalogContext = InlineCatalogContext;
-
-InlineCatalogContext.prototype.association = function(i) {
+CatalogContext.prototype.association = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1454,39 +1343,8 @@ InlineCatalogContext.prototype.association = function(i) {
         return this.getTypedRuleContext(AssociationContext,i);
     }
 };
-InlineCatalogContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterInlineCatalog(this);
-	}
-};
 
-InlineCatalogContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitInlineCatalog(this);
-	}
-};
-
-InlineCatalogContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitInlineCatalog(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function NewlineCatalogContext(parser, ctx) {
-	CatalogContext.call(this, parser);
-    CatalogContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-NewlineCatalogContext.prototype = Object.create(CatalogContext.prototype);
-NewlineCatalogContext.prototype.constructor = NewlineCatalogContext;
-
-DocumentParser.NewlineCatalogContext = NewlineCatalogContext;
-
-NewlineCatalogContext.prototype.EOL = function(i) {
+CatalogContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1498,67 +1356,26 @@ NewlineCatalogContext.prototype.EOL = function(i) {
 };
 
 
-NewlineCatalogContext.prototype.association = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(AssociationContext);
-    } else {
-        return this.getTypedRuleContext(AssociationContext,i);
-    }
-};
-NewlineCatalogContext.prototype.enterRule = function(listener) {
+CatalogContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterNewlineCatalog(this);
+        listener.enterCatalog(this);
 	}
 };
 
-NewlineCatalogContext.prototype.exitRule = function(listener) {
+CatalogContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitNewlineCatalog(this);
+        listener.exitCatalog(this);
 	}
 };
 
-NewlineCatalogContext.prototype.accept = function(visitor) {
+CatalogContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitNewlineCatalog(this);
+        return visitor.visitCatalog(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
 
-
-function EmptyCatalogContext(parser, ctx) {
-	CatalogContext.call(this, parser);
-    CatalogContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-EmptyCatalogContext.prototype = Object.create(CatalogContext.prototype);
-EmptyCatalogContext.prototype.constructor = EmptyCatalogContext;
-
-DocumentParser.EmptyCatalogContext = EmptyCatalogContext;
-
-EmptyCatalogContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterEmptyCatalog(this);
-	}
-};
-
-EmptyCatalogContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitEmptyCatalog(this);
-	}
-};
-
-EmptyCatalogContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitEmptyCatalog(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
 
 
 
@@ -1599,7 +1416,6 @@ DocumentParser.prototype.catalog = function() {
         case DocumentParser.TEXT_BLOCK:
         case DocumentParser.TEXT:
         case DocumentParser.VERSION:
-            localctx = new InlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 177;
             this.association();
@@ -1617,7 +1433,6 @@ DocumentParser.prototype.catalog = function() {
             }
             break;
         case DocumentParser.EOL:
-            localctx = new NewlineCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 185;
             this.match(DocumentParser.EOL);
@@ -1635,7 +1450,6 @@ DocumentParser.prototype.catalog = function() {
             }
             break;
         case DocumentParser.T__6:
-            localctx = new EmptyCatalogContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
             this.state = 194;
             this.match(DocumentParser.T__6);
@@ -1819,25 +1633,7 @@ function StatementsContext(parser, parent, invokingState) {
 StatementsContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StatementsContext.prototype.constructor = StatementsContext;
 
-
- 
-StatementsContext.prototype.copyFrom = function(ctx) {
-    antlr4.ParserRuleContext.prototype.copyFrom.call(this, ctx);
-};
-
-
-function InlineStatementContext(parser, ctx) {
-	StatementsContext.call(this, parser);
-    StatementsContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-InlineStatementContext.prototype = Object.create(StatementsContext.prototype);
-InlineStatementContext.prototype.constructor = InlineStatementContext;
-
-DocumentParser.InlineStatementContext = InlineStatementContext;
-
-InlineStatementContext.prototype.statement = function(i) {
+StatementsContext.prototype.statement = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1847,71 +1643,8 @@ InlineStatementContext.prototype.statement = function(i) {
         return this.getTypedRuleContext(StatementContext,i);
     }
 };
-InlineStatementContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterInlineStatement(this);
-	}
-};
 
-InlineStatementContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitInlineStatement(this);
-	}
-};
-
-InlineStatementContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitInlineStatement(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function EmptyStatementContext(parser, ctx) {
-	StatementsContext.call(this, parser);
-    StatementsContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-EmptyStatementContext.prototype = Object.create(StatementsContext.prototype);
-EmptyStatementContext.prototype.constructor = EmptyStatementContext;
-
-DocumentParser.EmptyStatementContext = EmptyStatementContext;
-
-EmptyStatementContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterEmptyStatement(this);
-	}
-};
-
-EmptyStatementContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitEmptyStatement(this);
-	}
-};
-
-EmptyStatementContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitEmptyStatement(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function NewlineStatementContext(parser, ctx) {
-	StatementsContext.call(this, parser);
-    StatementsContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-NewlineStatementContext.prototype = Object.create(StatementsContext.prototype);
-NewlineStatementContext.prototype.constructor = NewlineStatementContext;
-
-DocumentParser.NewlineStatementContext = NewlineStatementContext;
-
-NewlineStatementContext.prototype.EOL = function(i) {
+StatementsContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -1923,35 +1656,26 @@ NewlineStatementContext.prototype.EOL = function(i) {
 };
 
 
-NewlineStatementContext.prototype.statement = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(StatementContext);
-    } else {
-        return this.getTypedRuleContext(StatementContext,i);
-    }
-};
-NewlineStatementContext.prototype.enterRule = function(listener) {
+StatementsContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterNewlineStatement(this);
+        listener.enterStatements(this);
 	}
 };
 
-NewlineStatementContext.prototype.exitRule = function(listener) {
+StatementsContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitNewlineStatement(this);
+        listener.exitStatements(this);
 	}
 };
 
-NewlineStatementContext.prototype.accept = function(visitor) {
+StatementsContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitNewlineStatement(this);
+        return visitor.visitStatements(this);
     } else {
         return visitor.visitChildren(this);
     }
 };
+
 
 
 
@@ -2013,7 +1737,6 @@ DocumentParser.prototype.statements = function() {
         case DocumentParser.TEXT:
         case DocumentParser.VERSION:
         case DocumentParser.IDENTIFIER:
-            localctx = new InlineStatementContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
             this.state = 205;
             this.statement();
@@ -2031,7 +1754,6 @@ DocumentParser.prototype.statements = function() {
             }
             break;
         case DocumentParser.EOL:
-            localctx = new NewlineStatementContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
             this.state = 213;
             this.match(DocumentParser.EOL);
@@ -2049,7 +1771,6 @@ DocumentParser.prototype.statements = function() {
             }
             break;
         case DocumentParser.T__8:
-            localctx = new EmptyStatementContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
 
             break;

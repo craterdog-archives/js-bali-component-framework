@@ -2,9 +2,9 @@ grammar Statements;
 import Expressions;
 
 statements:
-    statement (';' statement)*         #inlineStatement  |
-    EOL (statement EOL)*               #newlineStatement |
-    /*empty statements*/                #emptyStatement
+    statement (';' statement)* |
+    EOL (statement EOL)* |
+    /*empty statements*/
 ;
 
 statement: mainClause handleClause*;
