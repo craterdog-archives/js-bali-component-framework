@@ -460,12 +460,12 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// indices: '[' list ']'
+// indices: '[' keys ']'
 FormattingVisitor.prototype.visitIndices = function(tree) {
     this.inline++;
     this.result += '[';
-    const list = tree.getChild(1);
-    this.visitList(list);  // must explicitly call it
+    const keys = tree.getChild(1);
+    this.visitSequence(keys);  // must explicitly call it
     this.result += ']';
     this.inline--;
 };

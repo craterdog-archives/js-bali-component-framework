@@ -348,6 +348,12 @@ DocumentVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#keys.
+DocumentVisitor.prototype.visitKeys = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#element.
 DocumentVisitor.prototype.visitElement = function(ctx) {
   return this.visitChildren(ctx);

@@ -515,6 +515,15 @@ DocumentListener.prototype.exitIndices = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#keys.
+DocumentListener.prototype.enterKeys = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#keys.
+DocumentListener.prototype.exitKeys = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#element.
 DocumentListener.prototype.enterElement = function(ctx) {
 };

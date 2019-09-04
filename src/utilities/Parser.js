@@ -490,10 +490,10 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 };
 
 
-// indices: '[' list ']'
+// indices: '[' keys ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
     const tree = new composites.Tree('$Indices');
-    ctx.list().accept(this);
+    ctx.keys().accept(this);
     tree.addChild(this.result);
     this.result = tree;
 };

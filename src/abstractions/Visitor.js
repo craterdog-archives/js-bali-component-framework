@@ -263,10 +263,10 @@ Visitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// indices: '[' list ']'
+// indices: '[' keys ']'
 Visitor.prototype.visitIndices = function(tree) {
-    const list = tree.getChild(1);
-    list.acceptVisitor(this);
+    const keys = tree.getChild(1);
+    this.visitSequence(keys);  // must explicitly call it
 };
 
 

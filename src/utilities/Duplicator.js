@@ -334,11 +334,11 @@ DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// indices: '[' list ']'
+// indices: '[' keys ']'
 DuplicatingVisitor.prototype.visitIndices = function(tree) {
     const copy = new tree.constructor(tree.getType());
-    const list = tree.getChild(1);
-    list.acceptVisitor(this);
+    const keys = tree.getChild(1);
+    keys.acceptVisitor(this);
     copy.addChild(this.result);
     this.result = copy;
 };

@@ -29,4 +29,7 @@ message: IDENTIFIER;
 
 arguments: '(' list ')';
 
-indices: '[' list ']';
+indices: '[' keys ']';
+
+keys: range | list;
+
