@@ -28,3 +28,9 @@ catalog:
 association: component ':' expression;
 
 procedure: '{' statements '}';
+
+statements:
+    statement (';' statement)* |
+    EOL (statement EOL)* |
+    /*empty statements*/
+;

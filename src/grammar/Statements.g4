@@ -1,12 +1,6 @@
 grammar Statements;
 import Expressions;
 
-statements:
-    statement (';' statement)* |
-    EOL (statement EOL)* |
-    /*empty statements*/
-;
-
 statement: mainClause handleClause*;
 
 mainClause:
