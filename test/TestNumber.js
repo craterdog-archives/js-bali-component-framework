@@ -95,8 +95,6 @@ describe('Bali Nebula™ Component Framework - Number', function() {
                 expect(complex.isZero()).to.equal(isZeroValues[i]);
                 expect(complex.isInfinite()).to.equal(isInfiniteValues[i]);
                 expect(complex.toString()).to.equal(stringValues[i]);
-                expect(complex.toRectangular()).to.equal(rectangularValues[i]);
-                expect(complex.toPolar()).to.equal(polarValues[i]);
             }
         });
 

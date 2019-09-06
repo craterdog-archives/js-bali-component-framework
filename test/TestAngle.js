@@ -20,10 +20,8 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         it('should construct angles using literals', function() {
             expect(bali.parse('~0').toString()).to.equal('~0');
             expect(bali.parse('~pi').toString()).to.equal('~pi');
-            expect(bali.parse('~pi').toDegrees()).to.equal('~180');
             expect(bali.parse('~pi($units: $radians)').toString()).to.equal('~pi($units: $radians)');
             expect(bali.parse('~90($units: $degrees)').toString()).to.equal('~90($units: $degrees)');
-            expect(bali.parse('~180($units: $degrees)').toRadians()).to.equal('~pi');
         });
 
         it('should construct angles that equal zero', function() {

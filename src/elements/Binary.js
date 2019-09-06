@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const formatter = new utilities.Formatter();
 
 
 // PUBLIC FUNCTIONS
@@ -107,46 +106,6 @@ Binary.prototype.isChainable = function() {
  */
 Binary.prototype.toBoolean = function() {
     return !this.isEmpty();
-};
-
-
-/**
- * This method returns the base 2 encoded value of this binary string.
- * 
- * @returns {String} The base 2 encoded value of this binary string.
- */
-Binary.prototype.toBase2 = function() {
-    return formatter.formatLiteral(this, '$base2');
-};
-
-
-/**
- * This method returns the base 16 encoded value of this binary string.
- * 
- * @returns {String} The base 16 encoded value of this binary string.
- */
-Binary.prototype.toBase16 = function() {
-    return formatter.formatLiteral(this, '$base16');
-};
-
-
-/**
- * This method returns the base 32 encoded value of this binary string.
- * 
- * @returns {String} The base 32 encoded value of this binary string.
- */
-Binary.prototype.toBase32 = function() {
-    return formatter.formatLiteral(this, '$base32');
-};
-
-
-/**
- * This method returns the base 64 encoded value of this binary string.
- * 
- * @returns {String} The base 64 encoded value of this binary string.
- */
-Binary.prototype.toBase64 = function() {
-    return formatter.formatLiteral(this, '$base64');
 };
 
 

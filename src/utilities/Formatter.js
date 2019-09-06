@@ -37,8 +37,7 @@ const MAXIMUM_LENGTH = 25;
  * as strings containing Bali Document Notation™ in a canonical way.
  * 
  * @param {Number} indentation The number of levels of indentation that should be inserted
- * to each formatted line at the top level. The default is zero, a value of -1 will result
- * in an inline formatting.
+ * to each formatted line at the top level. The default is zero.
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation) {
@@ -46,7 +45,7 @@ function Formatter(indentation) {
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || 0;
 
-    this.formatLiteral = function(literal, format) {
+    this.formatLiteral = function(literal) {
         if (!literal.isLiteral()) {
             throw new Exception({
                 $module: '/bali/utilities/Formatter',
@@ -56,13 +55,13 @@ function Formatter(indentation) {
                 $text: 'Attempted to format a non-literal component.'
             });
         }
-        const visitor = new FormattingVisitor(indentation, true, format);
+        const visitor = new FormattingVisitor(indentation, false);
         literal.acceptVisitor(visitor);
         return visitor.result;
     };
 
     this.formatComponent = function(component) {
-        const visitor = new FormattingVisitor(indentation, false);
+        const visitor = new FormattingVisitor(indentation, true);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -75,15 +74,15 @@ exports.Formatter = Formatter;
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, ignoreParameters, explicitFormat) {
+function FormattingVisitor(indentation, includeParameters) {
     Visitor.call(this);
-    this.ignoreParameters = ignoreParameters || false;
+    this.indentation = indentation || 0;
+    this.includeParameters = typeof includeParameters === 'boolean' ? includeParameters : true;  // default is true
     this.depth = 0;
     this.inline = 0;
     this.result = '';
 
     this.getNewline = function() {
-        if (indentation < 0) return EOL;
         var separator = EOL;
         const levels = this.depth + indentation;
         for (var i = 0; i < levels; i++) {
@@ -93,15 +92,11 @@ function FormattingVisitor(indentation, ignoreParameters, explicitFormat) {
     };
 
     this.getFormat = function(element, key, defaultValue) {
-        // a specified format takes precedence
-        if (explicitFormat) return explicitFormat;
-        // then any format parameters that parameterize the element
         var format;
-        if (!this.ignoreParameters && element.isParameterized()) {
+        if (element.isParameterized()) {
             format = element.getParameters().getValue(key);
             if (format) format = format.toString();
         }
-        // and finally the default format
         format = format || defaultValue;
         return format;
     };
@@ -293,7 +288,7 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 // component: value parameters?
 FormattingVisitor.prototype.visitComponent = function(component) {
     // assumes the visitor for value has already been called
-    if (!this.ignoreParameters && component.isParameterized()) {
+    if (this.includeParameters && component.isParameterized()) {
         component.getParameters().acceptVisitor(this);
     }
 };

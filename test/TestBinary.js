@@ -40,26 +40,6 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
             expect(binary.toString()).to.equal("'" + bali.codex.base32Encode(expected, '    ') + "'");
         });
 
-        it('should construct binary values from a buffer with base 2 encoding', function() {
-            const binary = bali.binary(expected, bali.binary.BASE2);
-            expect(binary.toBase2()).to.equal("'" + bali.codex.base2Encode(expected, '    ') + "'");
-        });
-
-        it('should construct binary values from a buffer with base 16 encoding', function() {
-            const binary = bali.binary(expected, bali.binary.BASE16);
-            expect(binary.toBase16()).to.equal("'" + bali.codex.base16Encode(expected, '    ') + "'");
-        });
-
-        it('should construct binary values from a buffer with base 32 encoding', function() {
-            const binary = bali.binary(expected, bali.binary.BASE32);
-            expect(binary.toBase32()).to.equal("'" + bali.codex.base32Encode(expected, '    ') + "'");
-        });
-
-        it('should construct binary values from a buffer with base 64 encoding', function() {
-            const binary = bali.binary(expected, bali.binary.BASE64);
-            expect(binary.toBase64()).to.equal("'" + bali.codex.base64Encode(expected, '    ') + "'");
-        });
-
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {
             expect(
                 function() {

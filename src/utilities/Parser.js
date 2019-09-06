@@ -351,7 +351,7 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
         this.parameters = this.result;  // save off the parameters for the value object
     }
     const value = ctx.value();
-    value.accept(this);  // the value clears this.parameters if it is set
+    value.accept(this);
 };
 
 

@@ -158,28 +158,6 @@ Complex.prototype.toNumber = function() {
 
 
 /**
- * This method returns this complex number in rectangular form.
- * 
- * @returns {String} This complex number in rectangular form.
- */
-Complex.prototype.toRectangular = function() {
-    const formatter = new utilities.Formatter();
-    return formatter.formatLiteral(this, '$rectangular');
-};
-
-
-/**
- * This method returns this complex number in polar form.
- * 
- * @returns {String} This complex number in polar form.
- */
-Complex.prototype.toPolar = function() {
-    const formatter = new utilities.Formatter();
-    return formatter.formatLiteral(this, '$polar');
-};
-
-
-/**
  * This method determines whether this complex number is undefined.
  * 
  * @returns {boolean} Whether or not this complex number is undefined.

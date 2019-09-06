@@ -24,18 +24,16 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             const file = 'test/source/elements.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
-            expect(document).to.exist;  // jshint ignore:line
+            expect(document).to.exist;
             var component = bali.parse(document);
-            expect(component).to.exist;  // jshint ignore:line
-            var copy = bali.duplicate(component);
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(component).to.exist;
+            var copy = bali.duplicate(component, component.getParameters());
+            expect(copy).to.exist;
             var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted);
-            expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component, -1);  // inline formatting
-            component = bali.parse(formatted);
+            expect(component).to.exist;
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
@@ -53,54 +51,48 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             const file = 'test/source/expressions.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
-            expect(document).to.exist;  // jshint ignore:line
+            expect(document).to.exist;
             var component = bali.parse(document);
-            expect(component).to.exist;  // jshint ignore:line
+            expect(component).to.exist;
             var copy = bali.duplicate(component);
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted);
-            expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component, -1);  // inline formatting
-            component = bali.parse(formatted);
+            expect(component).to.exist;
         });
 
         it('should parse and format the same statements', function() {
             const file = 'test/source/statements.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
-            expect(document).to.exist;  // jshint ignore:line
+            expect(document).to.exist;
             var component = bali.parse(document);
-            expect(component).to.exist;  // jshint ignore:line
-            var copy = bali.duplicate(component);
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(component).to.exist;
+            var copy = bali.duplicate(component, component.getParameters());
+            expect(copy).to.exist;
             var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted);
-            expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component, -1);  // inline formatting
-            component = bali.parse(formatted);
+            expect(component).to.exist;
         });
 
         it('should parse and format the same components', function() {
             const file = 'test/source/components.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
-            expect(document).to.exist;  // jshint ignore:line
+            expect(document).to.exist;
             var component = bali.parse(document);
-            expect(component).to.exist;  // jshint ignore:line
+            expect(component).to.exist;
             var copy = bali.duplicate(component);
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.parse(formatted);
-            expect(component).to.exist;  // jshint ignore:line
-            formatted = bali.format(component, -1);  // inline formatting
-            component = bali.parse(formatted);
+            expect(component).to.exist;
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
@@ -112,6 +104,22 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }
+        });
+
+        it('should duplicate with different parameters', function() {
+            const document = bali.catalog({
+                $foo: 'bar'
+            }, bali.parameters({
+                $bar: 'baz'
+            }));
+            expect(document).to.exist;
+            const parameters = bali.parameters({
+                $bar: 'bif'
+            });
+            const copy = bali.duplicate(document, parameters);
+            expect(copy).to.exist;
+            expect(copy.getValue('$foo').toString()).to.equal('"bar"');
+            expect(copy.getParameters().getValue('$bar').toString()).to.equal('"bif"');
         });
 
     });

@@ -30,8 +30,8 @@ const EOL = '\n';
  */
 function Duplicator() {
 
-    this.duplicateComponent = function(component) {
-        const visitor = new DuplicatingVisitor();
+    this.duplicateComponent = function(component, parameters) {
+        const visitor = new DuplicatingVisitor(parameters);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -44,19 +44,27 @@ exports.Duplicator = Duplicator;
 
 // PRIVATE CLASSES
 
-function DuplicatingVisitor() {
+function DuplicatingVisitor(parameters) {
     Visitor.call(this);
     this.depth = 0;
+    this.parameters = parameters;
     return this;
 }
 DuplicatingVisitor.prototype = Object.create(Visitor.prototype);
 DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 
+DuplicatingVisitor.prototype.getParameters = function() {
+    const parameters = this.parameters;
+    this.parameters = undefined;  // must unset it so other values don't see it
+    return parameters;
+};
+
+
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
     this.visitComponent(angle);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new angle.constructor(angle.getValue(), parameters);
 };
 
@@ -96,7 +104,7 @@ DuplicatingVisitor.prototype.visitAssociation = function(association) {
 // binary: BINARY
 DuplicatingVisitor.prototype.visitBinary = function(binary) {
     this.visitComponent(binary);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new binary.constructor(binary.getValue(), parameters);
 };
 
@@ -131,7 +139,7 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 // collection: '[' sequence ']'
 DuplicatingVisitor.prototype.visitCollection = function(sequence) {
     this.visitComponent(sequence);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     var copy;
     if (sequence.isType('$Range')) {
         sequence.getFirst().acceptVisitor(this);
@@ -186,10 +194,12 @@ DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
 
 // component: value parameters?
 DuplicatingVisitor.prototype.visitComponent = function(component) {
-    if (component.isParameterized()) {
-        component.getParameters().acceptVisitor(this);
-    } else {
-        this.result = undefined;
+    if (this.parameters === undefined) {
+        // no parameters were passed in
+        if (component.isParameterized()) {
+            component.getParameters().acceptVisitor(this);
+            this.parameters = this.result;  // save off the parameters for the value object
+        }
     }
 };
 
@@ -244,7 +254,7 @@ DuplicatingVisitor.prototype.visitDiscardClause = function(tree) {
 // duration: DURATION
 DuplicatingVisitor.prototype.visitDuration = function(duration) {
     this.visitComponent(duration);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new duration.constructor(duration.getValue().toISOString(), parameters);
 };
 
@@ -388,7 +398,7 @@ DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
 // moment: MOMENT
 DuplicatingVisitor.prototype.visitMoment = function(moment) {
     this.visitComponent(moment);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     const value = moment.getValue().format(moment.getFormat());
     this.result = new moment.constructor(value, parameters);
 };
@@ -397,7 +407,7 @@ DuplicatingVisitor.prototype.visitMoment = function(moment) {
 // name: NAME
 DuplicatingVisitor.prototype.visitName = function(name) {
     this.visitComponent(name);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new name.constructor(name.getValue(), parameters);
 };
 
@@ -410,7 +420,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitComponent(number);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new number.constructor(number.getReal(), number.getImaginary(), parameters);
 };
 
@@ -433,7 +443,7 @@ DuplicatingVisitor.prototype.visitParameters = function(parameters) {
 // pattern: 'none' | REGEX | 'any'
 DuplicatingVisitor.prototype.visitPattern = function(pattern) {
     this.visitComponent(pattern);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new pattern.constructor(pattern.getValue(), parameters);
 };
 
@@ -441,7 +451,7 @@ DuplicatingVisitor.prototype.visitPattern = function(pattern) {
 // percent: PERCENT
 DuplicatingVisitor.prototype.visitPercent = function(percent) {
     this.visitComponent(percent);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new percent.constructor(percent.getValue(), parameters);
 };
 
@@ -458,7 +468,7 @@ DuplicatingVisitor.prototype.visitPrecedenceExpression = function(tree) {
 // probability: 'false' | FRACTION | 'true'
 DuplicatingVisitor.prototype.visitProbability = function(probability) {
     this.visitComponent(probability);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new probability.constructor(probability.getValue(), parameters);
 };
 
@@ -466,7 +476,7 @@ DuplicatingVisitor.prototype.visitProbability = function(probability) {
 // procedure: '{' statements '}'
 DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
     this.visitComponent(procedure);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     procedure.getStatements().acceptVisitor(this);
     const statements = this.result;
     const copy = new procedure.constructor(statements, parameters);
@@ -497,7 +507,7 @@ DuplicatingVisitor.prototype.visitQueueClause = function(tree) {
 // reference: RESOURCE
 DuplicatingVisitor.prototype.visitReference = function(reference) {
     this.visitComponent(reference);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new reference.constructor(reference.getValue(), parameters);
 };
 
@@ -505,7 +515,7 @@ DuplicatingVisitor.prototype.visitReference = function(reference) {
 // reserved: RESERVED
 DuplicatingVisitor.prototype.visitReserved = function(reserved) {
     this.visitComponent(reserved);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new reserved.constructor(reserved.getValue(), parameters);
 };
 
@@ -596,7 +606,7 @@ DuplicatingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 // symbol: SYMBOL
 DuplicatingVisitor.prototype.visitSymbol = function(symbol) {
     this.visitComponent(symbol);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new symbol.constructor(symbol.getValue(), parameters);
 };
 
@@ -604,7 +614,7 @@ DuplicatingVisitor.prototype.visitSymbol = function(symbol) {
 // tag: TAG
 DuplicatingVisitor.prototype.visitTag = function(tag) {
     this.visitComponent(tag);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new tag.constructor(tag.getValue(), parameters);
 };
 
@@ -612,7 +622,7 @@ DuplicatingVisitor.prototype.visitTag = function(tag) {
 // text: TEXT | TEXT_BLOCK
 DuplicatingVisitor.prototype.visitText = function(text) {
     this.visitComponent(text);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new text.constructor(text.getValue(), parameters);
 };
 
@@ -637,7 +647,7 @@ DuplicatingVisitor.prototype.visitVariable = function(tree) {
 // version: VERSION
 DuplicatingVisitor.prototype.visitVersion = function(version) {
     this.visitComponent(version);
-    const parameters = this.result;
+    const parameters = this.getParameters();
     this.result = new version.constructor(version.getValue(), parameters);
 };
 

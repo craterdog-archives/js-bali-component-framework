@@ -204,15 +204,17 @@ exports.codex = utilities.codex;
  * recursively.  Since elemental components are immutable, they are not duplicated.
  * 
  * @param {Component} component The component to be duplicated.
+ * @param {Parameters} parameters Optional parameters to be associated with the
+ * duplicate component. 
  * @returns {Component} The duplicate component.
  */
-const duplicate = function(component) {
+const duplicate = function(component, parameters) {
     // must check these here since a duplicator is a utility rather than a component
     validate('/bali/utilities/Duplicator', '$duplicator', '$component', component, [
         '/bali/abstractions/Component'
     ]);
     const duplicator = new utilities.Duplicator();
-    return duplicator.duplicateComponent(component);
+    return duplicator.duplicateComponent(component, parameters);
 };
 exports.duplicate = duplicate;
 
@@ -274,7 +276,8 @@ exports.exception = exception;
  * levels.  Each level is four spaces.
  * 
  * @param {Component} component The Bali component to be formatted. 
- * @param {Number} indentation An optional number of levels to indent the output.
+ * @param {Number} indentation The number of levels of indentation that should be inserted
+ * to each formatted line at the top level. The default is zero.
  * @returns {String} The resulting string containing Bali Document Notation™.
  */
 const format = function(component, indentation) {

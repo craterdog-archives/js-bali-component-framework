@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const formatter = new utilities.Formatter();
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -121,26 +120,6 @@ Angle.prototype.toBoolean = function() {
  */
 Angle.prototype.toNumber = function() {
     return this.getValue();
-};
-
-
-/**
- * This method returns the value of this angle in degrees.
- * 
- * @returns {String} The value of this angle in degrees.
- */
-Angle.prototype.toDegrees = function() {
-    return formatter.formatLiteral(this, '$degrees');
-};
-
-
-/**
- * This method returns the value of this angle in radians.
- * 
- * @returns {String} The value of this angle in radians.
- */
-Angle.prototype.toRadians = function() {
-    return formatter.formatLiteral(this, '$radians');
 };
 
 
