@@ -150,6 +150,26 @@ ParsingVisitor.prototype.getIndentation = function() {
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
+    var units = '$radians';  // default value
+    if (parameters) {
+        units = parameters.getValue('$units');
+        if (units) units = units.toString();
+    }
+    switch (units) {
+        case '$radians':
+        case '$degrees':
+            break;
+        default:
+            const exception = new composites.Exception({
+                $module: '/bali/utilities/Parser',
+                $procedure: '$visitAngle',
+                $exception: '$invalidUnits',
+                $units: units,
+                $text: elements.Text('An invalid unit was specified for an angle.')
+            });
+            if (debug) console.error(exception.toString());
+            throw exception;
+    }
     const value = literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
     const angle = new elements.Angle(value, parameters);
     this.result = angle;
@@ -213,13 +233,15 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = utilities.codex.base64Decode(value);
             break;
         default:
-            throw new composites.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
-                $format: encoding,
+                $encoding: encoding,
                 $text: elements.Text('An invalid encoding format was used for a binary string.')
             });
+            if (debug) console.error(exception.toString());
+            throw exception;
     }
     const binary = new elements.Binary(value, parameters);
     this.result = binary;
@@ -494,6 +516,17 @@ ParsingVisitor.prototype.visitImaginary = function(ctx) {
 ParsingVisitor.prototype.visitIndices = function(ctx) {
     const tree = new composites.Tree('$Indices');
     ctx.keys().accept(this);
+    const keys = this.result;
+    if (keys.isType('$List') && keys.isEmpty()) {
+        const exception = new composites.Exception({
+            $module: '/bali/utilities/Parser',
+            $procedure: '$visitIndices',
+            $exception: '$emptyList',
+            $text: elements.Text('An index list must contain at least one key.')
+        });
+        if (debug) console.error(exception.toString());
+        throw exception;
+    }
     tree.addChild(this.result);
     this.result = tree;
 };
@@ -534,7 +567,15 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Stack(parameters);
             break;
         default:
-            throw Error('Invalid collection type: ' + type);
+            const exception = new composites.Exception({
+                $module: '/bali/utilities/Parser',
+                $procedure: '$visitList',
+                $exception: '$invalidType',
+                $type: type,
+                $text: elements.Text('An invalid collection type was specified in the parameters.')
+            });
+            if (debug) console.error(exception.toString());
+            throw exception;
     }
     if (ctx.expression) {
         const expressions = ctx.expression();
@@ -651,6 +692,16 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     ctx.catalog().accept(this);
     const catalog = this.result;
+    if (catalog.isEmpty()) {
+        const exception = new composites.Exception({
+            $module: '/bali/utilities/Parser',
+            $procedure: '$visitParameters',
+            $exception: '$emptyCatalog',
+            $text: elements.Text('A parameter catalog must contain at least one association.')
+        });
+        if (debug) console.error(exception.toString());
+        throw exception;
+    }
     const parameters = new composites.Parameters(catalog);
     this.result = parameters;
 };
@@ -1064,7 +1115,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: new elements.Text(message)  // must be converted to text explicitly to avoid infinite loop!
+        $text: new elements.Text(EOL + message + EOL)  // must be converted to text explicitly to avoid infinite loop!
     });
 
     // log the exception if in debug mode

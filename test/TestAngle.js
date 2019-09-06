@@ -59,6 +59,11 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         it('should throw an exception when constructing an angle with an invalid value', function() {
             expect(
                 function() {
+                    bali.parse('~42($units: $invalid)');
+                }
+            ).to.throw();
+            expect(
+                function() {
                     bali.angle(NaN);
                 }
             ).to.throw();

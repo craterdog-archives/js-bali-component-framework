@@ -140,7 +140,7 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && parameterValue.isChainable()) return;
         if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && parameterValue.isProcedural()) return;
     }
-    const exception = new Exception({  // must not be exception() to avoid infinite recursion
+    throw new Exception({  // must not be exception() to avoid infinite recursion
         $module: moduleName,
         $procedure: procedureName,
         $parameter: parameterName,
@@ -150,8 +150,6 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         $value: parameterValue,
         $text: 'An invalid parameter type was passed to the procedure.'
     });
-    //console.error(exception.toString());
-    throw exception;
 };
 
 
