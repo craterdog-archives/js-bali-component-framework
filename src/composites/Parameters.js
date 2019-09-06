@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
 function Parameters(parameters) {
     abstractions.Composite.call(this, '$Parameters');
 
-    this.validateType('/bali/composites/Parameters', '$Parameters', '$parameters', parameters, [
+    abstractions.Composite.validate('/bali/composites/Parameters', '$Parameters', '$parameters', parameters, [
         '/javascript/Object',
         '/bali/collections/Catalog'
     ]);

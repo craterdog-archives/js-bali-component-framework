@@ -30,11 +30,11 @@ const Exception = require('../composites/Exception').Exception;
  */
 function Angle(value, parameters) {
     abstractions.Element.call(this, '$Angle', parameters);
-    this.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Angle', '$Angle', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Angle', '$Angle', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Angle', '$Angle', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

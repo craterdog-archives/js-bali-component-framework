@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  */
 function Association(key, value) {
     abstractions.Composite.call(this, '$Association');
-    this.validateType('/bali/composites/Association', '$Association', '$key', key, [
+    abstractions.Composite.validate('/bali/composites/Association', '$Association', '$key', key, [
         '/javascript/String',
         '/javascript/Boolean',
         '/javascript/Number',
@@ -35,7 +35,7 @@ function Association(key, value) {
         '/javascript/Object',
         '/bali/abstractions/Component'
     ]);
-    this.validateType('/bali/composites/Association', '$Association', '$value', value, [
+    abstractions.Composite.validate('/bali/composites/Association', '$Association', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Boolean',

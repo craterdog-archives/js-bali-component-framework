@@ -28,11 +28,11 @@ const abstractions = require('../abstractions');
 function Text(value, parameters) {
     abstractions.Element.call(this, '$Text', parameters);
 
-    this.validateType('/bali/elements/Text', '$Text', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Text', '$Text', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String'
     ]);
-    this.validateType('/bali/elements/Text', '$Text', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Text', '$Text', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

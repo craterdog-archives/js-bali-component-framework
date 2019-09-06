@@ -31,11 +31,11 @@ const Exception = require('../composites/Exception').Exception;
 function Reference(value, parameters) {
     abstractions.Element.call(this, '$Reference', parameters);
 
-    this.validateType('/bali/elements/Reference', '$Reference', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Reference', '$Reference', '$value', value, [
         '/javascript/String',
         '/nodejs/URL'
     ]);
-    this.validateType('/bali/elements/Reference', '$Reference', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Reference', '$Reference', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

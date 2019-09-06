@@ -32,16 +32,16 @@ const Angle = require('./Angle').Angle;
  */
 function Complex(real, imaginary, parameters) {
     abstractions.Element.call(this, '$Number', parameters);
-    this.validateType('/bali/elements/Number', '$Number', '$real', real, [
+    abstractions.Element.validate('/bali/elements/Number', '$Number', '$real', real, [
         '/javascript/Undefined',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
+    abstractions.Element.validate('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
         '/javascript/Undefined',
         '/javascript/Number',
         '/bali/elements/Angle'
     ]);
-    this.validateType('/bali/elements/Number', '$Number', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Number', '$Number', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

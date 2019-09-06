@@ -33,7 +33,7 @@ const Exception = require('./Exception').Exception;
 function Tree(type) {
     abstractions.Composite.call(this, type);
 
-    this.validateType('/bali/composites/Tree', '$Tree', '$type', type, [
+    abstractions.Composite.validate('/bali/composites/Tree', '$Tree', '$type', type, [
         '/javascript/String'
     ]);
 

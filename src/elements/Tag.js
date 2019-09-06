@@ -30,12 +30,12 @@ const abstractions = require('../abstractions');
 function Tag(value, parameters) {
     abstractions.Element.call(this, '$Tag', parameters);
 
-    this.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Tag', '$Tag', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Tag', '$Tag', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Tag', '$Tag', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

@@ -44,12 +44,12 @@ const FORMATS = [
 function Moment(value, parameters) {
     abstractions.Element.call(this, '$Moment', parameters);
 
-    this.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Moment', '$Moment', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Moment', '$Moment', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Moment', '$Moment', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

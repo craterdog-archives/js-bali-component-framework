@@ -30,10 +30,10 @@ const Exception = require('../composites/Exception').Exception;
 function Name(value, parameters) {
     abstractions.Element.call(this, '$Name', parameters);
 
-    this.validateType('/bali/elements/Name', '$Name', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Name', '$Name', '$value', value, [
         '/javascript/Array'
     ]);
-    this.validateType('/bali/elements/Name', '$Name', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Name', '$Name', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

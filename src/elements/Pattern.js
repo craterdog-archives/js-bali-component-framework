@@ -26,12 +26,12 @@ const abstractions = require('../abstractions');
  */
 function Pattern(value, parameters) {
     abstractions.Element.call(this, '$Pattern', parameters);
-    this.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Pattern', '$Pattern', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/RegExp'
     ]);
-    this.validateType('/bali/elements/Pattern', '$Pattern', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Pattern', '$Pattern', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

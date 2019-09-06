@@ -29,10 +29,10 @@ const Component = require('./Component').Component;
 function Composite(type, parameters) {
     Component.call(this, type, parameters);
 
-    this.validateType('/bali/abstractions/Composite', '$Composite', '$type', type, [
+    Component.validate('/bali/abstractions/Composite', '$Composite', '$type', type, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/abstractions/Composite', '$Composite', '$parameters', parameters, [
+    Component.validate('/bali/abstractions/Composite', '$Composite', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

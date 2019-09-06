@@ -30,11 +30,11 @@ const formatter = new utilities.Formatter();
  */
 function Binary(value, parameters) {
     abstractions.Element.call(this, '$Binary', parameters);
-    this.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Binary', '$Binary', '$value', value, [
         '/javascript/Undefined',
         '/nodejs/Buffer'
     ]);
-    this.validateType('/bali/elements/Binary', '$Binary', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Binary', '$Binary', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

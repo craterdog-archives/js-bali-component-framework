@@ -41,7 +41,7 @@ function Queue(parameters) {
     });
     abstractions.Collection.call(this, '$Queue', parameters);
 
-    this.validateType('/bali/collections/Queue', '$queue', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/Queue', '$queue', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

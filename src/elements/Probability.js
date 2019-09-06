@@ -31,12 +31,12 @@ const Exception = require('../composites/Exception').Exception;
 function Probability(value, parameters) {
     abstractions.Element.call(this, '$Probability', parameters);
 
-    this.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Probability', '$Probability', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Probability', '$Probability', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Probability', '$Probability', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

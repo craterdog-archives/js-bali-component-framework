@@ -39,7 +39,7 @@ const composites = require('../composites');
  */
 function List(parameters) {
     abstractions.Collection.call(this, '$List', parameters);
-    this.validateType('/bali/collections/List', '$List', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/List', '$List', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

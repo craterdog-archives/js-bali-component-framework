@@ -422,7 +422,7 @@ const parse = function(document) {
     validate('/bali/utilities/Parser', '$parse', '$document', document, [
         '/javascript/String'
     ]);
-    const debug = false;
+    const debug = true;
     const parser = new utilities.Parser(debug);
     return parser.parseDocument(document, undefined);
 };

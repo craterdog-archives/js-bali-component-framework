@@ -32,17 +32,17 @@ const Exception = require('../composites/Exception').Exception;
 function Range(first, last, parameters) {
     abstractions.Collection.call(this, '$Range', parameters);
 
-    this.validateType('/bali/collections/Range', '$Range', '$first', first, [
+    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$first', first, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
     ]);
-    this.validateType('/bali/collections/Range', '$Range', '$last', last, [
+    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$last', last, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
     ]);
-    this.validateType('/bali/collections/Range', '$Range', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

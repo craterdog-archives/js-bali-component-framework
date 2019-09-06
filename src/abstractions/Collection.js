@@ -31,10 +31,10 @@ const Exception = require('../composites/Exception').Exception;
 function Collection(type, parameters) {
     Composite.call(this, type, parameters);
 
-    this.validateType('/bali/abstractions/Collection', '$Collection', '$type', type, [
+    Composite.validate('/bali/abstractions/Collection', '$Collection', '$type', type, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/abstractions/Collection', '$Collection', '$parameters', parameters, [
+    Composite.validate('/bali/abstractions/Collection', '$Collection', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

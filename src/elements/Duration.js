@@ -29,12 +29,12 @@ const abstractions = require('../abstractions');
  */
 function Duration(value, parameters) {
     abstractions.Element.call(this, '$Duration', parameters);
-    this.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Duration', '$Duration', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Duration', '$Duration', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Duration', '$Duration', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

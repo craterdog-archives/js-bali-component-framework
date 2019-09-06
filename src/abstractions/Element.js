@@ -28,10 +28,10 @@ const Component = require('./Component').Component;
 function Element(type, parameters) {
     Component.call(this, type, parameters);
 
-    this.validateType('/bali/abstractions/Element', '$Element', '$type', type, [
+    Component.validate('/bali/abstractions/Element', '$Element', '$type', type, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/abstractions/Element', '$Element', '$parameters', parameters, [
+    Component.validate('/bali/abstractions/Element', '$Element', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

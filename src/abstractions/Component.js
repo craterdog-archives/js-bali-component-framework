@@ -31,10 +31,10 @@ const Exception = require('../composites/Exception').Exception;
  */
 function Component(type, parameters) {
 
-    this.validateType('/bali/abstractions/Component', '$Component', '$type', type, [
+    Component.validate('/bali/abstractions/Component', '$Component', '$type', type, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+    Component.validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

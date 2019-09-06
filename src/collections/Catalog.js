@@ -32,7 +32,7 @@ const List = require('./List').List;
  */
 function Catalog(parameters) {
     abstractions.Collection.call(this, '$Catalog', parameters);
-    this.validateType('/bali/collections/Catalog', '$Catalog', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/Catalog', '$Catalog', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

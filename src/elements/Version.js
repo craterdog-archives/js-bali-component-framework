@@ -30,11 +30,11 @@ const Exception = require('../composites/Exception').Exception;
 function Version(value, parameters) {
     abstractions.Element.call(this, '$Version', parameters);
 
-    this.validateType('/bali/elements/Version', '$Version', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Version', '$Version', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Array'
     ]);
-    this.validateType('/bali/elements/Version', '$Version', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Version', '$Version', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

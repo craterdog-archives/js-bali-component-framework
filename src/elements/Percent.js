@@ -28,11 +28,11 @@ const abstractions = require('../abstractions');
  */
 function Percent(value, parameters) {
     abstractions.Element.call(this, '$Percent', parameters);
-    this.validateType('/bali/elements/Percent', '$Percent', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Percent', '$Percent', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Number'
     ]);
-    this.validateType('/bali/elements/Percent', '$Percent', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Percent', '$Percent', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

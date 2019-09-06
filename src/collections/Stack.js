@@ -41,7 +41,7 @@ function Stack(parameters) {
     });
     abstractions.Collection.call(this, '$Stack', parameters);
 
-    this.validateType('/bali/collections/Stack', '$Stack', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/Stack', '$Stack', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

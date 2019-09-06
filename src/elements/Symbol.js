@@ -30,10 +30,10 @@ const Exception = require('../composites/Exception').Exception;
 function Symbol(value, parameters) {
     abstractions.Element.call(this, '$Symbol', parameters);
 
-    this.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Symbol', '$Symbol', '$value', value, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/elements/Symbol', '$Symbol', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Symbol', '$Symbol', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

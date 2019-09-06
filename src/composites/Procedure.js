@@ -29,10 +29,10 @@ const abstractions = require('../abstractions');
 function Procedure(statements, parameters) {
     abstractions.Composite.call(this, '$Procedure', parameters);
 
-    this.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
+    abstractions.Composite.validate('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
         '/bali/composites/Tree'
     ]);
-    this.validateType('/bali/composites/Procedure', '$Procedure', '$parameters', parameters, [
+    abstractions.Composite.validate('/bali/composites/Procedure', '$Procedure', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

@@ -165,9 +165,10 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
                 $units: units,
-                $text: elements.Text('An invalid unit was specified for an angle.')
+                $text: 'An invalid unit was specified for an angle.'
             });
-            if (debug) console.error(exception.toString());
+            //if (this.debug) console.error(exception.toString());
+            console.error(exception.toString());
             throw exception;
     }
     const value = literalToNumber(ctx.getText().slice(1));  // remove the leading '~'
@@ -238,9 +239,9 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $encoding: encoding,
-                $text: elements.Text('An invalid encoding format was used for a binary string.')
+                $text: 'An invalid encoding format was used for a binary string.'
             });
-            if (debug) console.error(exception.toString());
+            if (this.debug) console.error(exception.toString());
             throw exception;
     }
     const binary = new elements.Binary(value, parameters);
@@ -522,9 +523,9 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
             $module: '/bali/utilities/Parser',
             $procedure: '$visitIndices',
             $exception: '$emptyList',
-            $text: elements.Text('An index list must contain at least one key.')
+            $text: 'An index list must contain at least one key.'
         });
-        if (debug) console.error(exception.toString());
+        if (this.debug) console.error(exception.toString());
         throw exception;
     }
     tree.addChild(this.result);
@@ -549,8 +550,14 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
+    var name;
     if (parameters) {
-        type = parameters.getValue('$type').getValue()[2];  // /bali/<metatype>/<type>/v1
+        name = parameters.getValue('$type');
+        if (name && name.isComponent && name.isType('$Name')) {
+            type = name.getValue()[2];  // /bali/<metatype>/<type>/v1
+        } else {
+            type = '$Invalid';
+        }
     }
     var collection;
     switch (type) {
@@ -571,10 +578,10 @@ ParsingVisitor.prototype.visitList = function(ctx) {
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
-                $type: type,
-                $text: elements.Text('An invalid collection type was specified in the parameters.')
+                $type: name,
+                $text: 'An invalid collection type was specified in the parameters.'
             });
-            if (debug) console.error(exception.toString());
+            if (this.debug) console.error(exception.toString());
             throw exception;
     }
     if (ctx.expression) {
@@ -697,9 +704,9 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
             $module: '/bali/utilities/Parser',
             $procedure: '$visitParameters',
             $exception: '$emptyCatalog',
-            $text: elements.Text('A parameter catalog must contain at least one association.')
+            $text: 'A parameter catalog must contain at least one association.'
         });
-        if (debug) console.error(exception.toString());
+        if (this.debug) console.error(exception.toString());
         throw exception;
     }
     const parameters = new composites.Parameters(catalog);
@@ -1070,7 +1077,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: elements.Text(exception.toString())  // must be converted to text explicitly to avoid infinity loop!
+        $text: exception.toString()
     });
 };
 

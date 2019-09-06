@@ -30,10 +30,10 @@ const Exception = require('../composites/Exception').Exception;
 function Reserved(value, parameters) {
     abstractions.Element.call(this, '$Reserved', parameters);
 
-    this.validateType('/bali/elements/Reserved', '$Reserved', '$value', value, [
+    abstractions.Element.validate('/bali/elements/Reserved', '$Reserved', '$value', value, [
         '/javascript/String'
     ]);
-    this.validateType('/bali/elements/Reserved', '$Reserved', '$parameters', parameters, [
+    abstractions.Element.validate('/bali/elements/Reserved', '$Reserved', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);

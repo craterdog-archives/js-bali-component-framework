@@ -35,7 +35,7 @@ function Set(parameters, comparator) {
     });
     abstractions.Collection.call(this, '$Set', parameters);
 
-    this.validateType('/bali/collections/Set', '$Set', '$parameters', parameters, [
+    abstractions.Collection.validate('/bali/collections/Set', '$Set', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
     ]);
