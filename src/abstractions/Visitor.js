@@ -43,7 +43,7 @@ Visitor.prototype.visitAngle = function(angle) {
 // arguments: '(' list ')'
 Visitor.prototype.visitArguments = function(tree) {
     const list = tree.getChild(1);
-    list.acceptVisitor(this);
+    this.visitSequence(list);  // it is a sequence not a collection
 };
 
 
