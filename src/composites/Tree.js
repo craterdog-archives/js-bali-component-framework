@@ -110,6 +110,7 @@ Tree.prototype.isSequential = function() {
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
+    // call the visitor method for the specific type of tree node
     const functionName = 'visit' + this.getType().slice(1);  // remove the leading '$'
     visitor[functionName](this);
 };

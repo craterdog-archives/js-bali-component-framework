@@ -160,16 +160,3 @@ function Stack(parameters) {
 Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
-
-
-// PUBLIC METHODS
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this component.
- */
-Stack.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCollection(this);
-};
-    

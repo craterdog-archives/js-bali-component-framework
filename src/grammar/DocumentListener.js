@@ -479,12 +479,12 @@ DocumentListener.prototype.exitVariable = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#funxtion.
-DocumentListener.prototype.enterFunxtion = function(ctx) {
+// Enter a parse tree produced by DocumentParser#funxion.
+DocumentListener.prototype.enterFunxion = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#funxtion.
-DocumentListener.prototype.exitFunxtion = function(ctx) {
+// Exit a parse tree produced by DocumentParser#funxion.
+DocumentListener.prototype.exitFunxion = function(ctx) {
 };
 
 

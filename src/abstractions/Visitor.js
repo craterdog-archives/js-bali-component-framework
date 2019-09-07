@@ -35,7 +35,8 @@ exports.Visitor = Visitor;
 
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
-    this.visitComponent(angle);
+    this.visitComponent(angle);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -65,7 +66,8 @@ Visitor.prototype.visitAssociation = function(association) {
 
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
-    this.visitComponent(binary);
+    this.visitComponent(binary);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -81,15 +83,6 @@ Visitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// catalog:
-//     association (',' association)* |
-//     EOL (association EOL)* |
-//     ':' {empty catalog}
-Visitor.prototype.visitCatalog = function(catalog) {
-    this.visitSequence(catalog);
-};
-
-
 // checkoutClause: 'checkout' recipient 'from' expression
 Visitor.prototype.visitCheckoutClause = function(tree) {
     const component = tree.getChild(1);
@@ -100,9 +93,9 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 
 
 // collection: '[' sequence ']'
-Visitor.prototype.visitCollection = function(collection) {
-    this.visitComponent(collection);
-    this.visitSequence(collection);
+Visitor.prototype.visitCollection = function(sequence) {
+    this.visitComponent(sequence);  // process any parameters first
+    this.visitSequence(sequence);  // then process the items in the sequence
 };
 
 
@@ -180,7 +173,8 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 
 // duration: DURATION
 Visitor.prototype.visitDuration = function(duration) {
-    this.visitComponent(duration);
+    this.visitComponent(duration);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -278,15 +272,6 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// list:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty list}
-Visitor.prototype.visitList = function(list) {
-    this.visitSequence(list);
-};
-
-
 // logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
 Visitor.prototype.visitLogicalExpression = function(tree) {
     var operand = tree.getChild(1);
@@ -322,13 +307,15 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 
 // moment: MOMENT
 Visitor.prototype.visitMoment = function(moment) {
-    this.visitComponent(moment);
+    this.visitComponent(moment);  // process any parameters first
+    // then process the component itself
 };
 
 
 // name: NAME
 Visitor.prototype.visitName = function(name) {
-    this.visitComponent(name);
+    this.visitComponent(name);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -339,7 +326,8 @@ Visitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')' 
 Visitor.prototype.visitNumber = function(number) {
-    this.visitComponent(number);
+    this.visitComponent(number);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -360,13 +348,15 @@ Visitor.prototype.visitParameters = function(parameters) {
 
 // pattern: 'none' | REGEX | 'any'
 Visitor.prototype.visitPattern = function(pattern) {
-    this.visitComponent(pattern);
+    this.visitComponent(pattern);  // process any parameters first
+    // then process the component itself
 };
 
 
 // percent: PERCENT
 Visitor.prototype.visitPercent = function(percent) {
-    this.visitComponent(percent);
+    this.visitComponent(percent);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -379,15 +369,16 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // probability: 'false' | FRACTION | 'true'
 Visitor.prototype.visitProbability = function(probability) {
-    this.visitComponent(probability);
+    this.visitComponent(probability);  // process any parameters first
+    // then process the component itself
 };
 
 
 // procedure: '{' statements '}'
 Visitor.prototype.visitProcedure = function(procedure) {
-    this.visitComponent(procedure);
+    this.visitComponent(procedure);  // process any parameters first
     const statements = procedure.getStatements();
-    statements.acceptVisitor(this);
+    statements.acceptVisitor(this);  // then process the statements in the procedure
 };
 
 
@@ -395,15 +386,6 @@ Visitor.prototype.visitProcedure = function(procedure) {
 Visitor.prototype.visitPublishClause = function(tree) {
     const event = tree.getChild(1);
     event.acceptVisitor(this);
-};
-
-
-// queue:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty queue}
-Visitor.prototype.visitQueue = function(queue) {
-    this.visitSequence(queue);
 };
 
 
@@ -418,19 +400,22 @@ Visitor.prototype.visitQueueClause = function(tree) {
 
 // range: expression '..' expression
 Visitor.prototype.visitRange = function(range) {
-    this.visitSequence(range);
+    range.getFirst().acceptVisitor(this);
+    range.getLast().acceptVisitor(this);
 };
 
 
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
-    this.visitComponent(reference);
+    this.visitComponent(reference);  // process any parameters first
+    // then process the component itself
 };
 
 
 // reserved: RESERVED
 Visitor.prototype.visitReserved = function(reserved) {
-    this.visitComponent(reserved);
+    this.visitComponent(reserved);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -481,8 +466,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 Visitor.prototype.visitSequence = function(sequence) {
     // note: range is handled differently
     if (sequence.isType('$Range')) {
-        sequence.getFirst().acceptVisitor(this);
-        sequence.getLast().acceptVisitor(this);
+        this.visitRange(sequence);  // must be called explicitly
     } else if (sequence.getSize() > 0) {
         this.depth++;
         const iterator = sequence.getIterator();
@@ -492,24 +476,6 @@ Visitor.prototype.visitSequence = function(sequence) {
         }
         this.depth--;
     }
-};
-
-
-// set:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty set}
-Visitor.prototype.visitSet = function(set) {
-    this.visitSequence(set);
-};
-
-
-// stack:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty stack}
-Visitor.prototype.visitStack = function(stack) {
-    this.visitSequence(stack);
 };
 
 
@@ -560,19 +526,22 @@ Visitor.prototype.visitSubcomponentExpression = function(tree) {
 
 // symbol: SYMBOL
 Visitor.prototype.visitSymbol = function(symbol) {
-    this.visitComponent(symbol);
+    this.visitComponent(symbol);  // process any parameters first
+    // then process the component itself
 };
 
 
 // tag: TAG
 Visitor.prototype.visitTag = function(tag) {
-    this.visitComponent(tag);
+    this.visitComponent(tag);  // process any parameters first
+    // then process the component itself
 };
 
 
 // text: TEXT | TEXT_BLOCK
 Visitor.prototype.visitText = function(text) {
-    this.visitComponent(text);
+    this.visitComponent(text);  // process any parameters first
+    // then process the component itself
 };
 
 
@@ -590,7 +559,8 @@ Visitor.prototype.visitVariable = function(tree) {
 
 // version: VERSION
 Visitor.prototype.visitVersion = function(version) {
-    this.visitComponent(version);
+    this.visitComponent(version);  // process any parameters first
+    // then process the component itself
 };
 
 

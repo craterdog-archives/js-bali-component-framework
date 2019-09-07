@@ -131,7 +131,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             throw exception;
     }
     this.result += '~' + formatReal(value);
-    this.visitComponent(angle);
+    this.visitComponent(angle);  // format any parameterization
 };
 
 
@@ -140,7 +140,7 @@ FormattingVisitor.prototype.visitArguments = function(tree) {
     this.inline++;
     this.result += '(';
     const list = tree.getChild(1);
-    this.visitList(list);  // must explicitly call it
+    this.visitSequence(list);  // it is a sequence not a collection
     this.result += ')';
     this.inline--;
 };
@@ -203,7 +203,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     value = value.replace(/    '/, "'");  // unindent last line
     this.depth--;
     this.result += value;
-    this.visitComponent(binary);
+    this.visitComponent(binary);  // format any parameterization
 };
 
 
@@ -223,15 +223,6 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// catalog:
-//     association (',' association)* |
-//     EOL (association EOL)* |
-//     ':' {empty catalog}
-FormattingVisitor.prototype.visitCatalog = function(catalog) {
-    this.visitSequence(catalog);
-};
-
-
 // checkoutClause: 'checkout' recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.result += 'checkout ';
@@ -244,11 +235,11 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 
 
 // collection: '[' sequence ']'
-FormattingVisitor.prototype.visitCollection = function(collection) {
+FormattingVisitor.prototype.visitCollection = function(sequence) {
     this.result += '[';
-    this.visitSequence(collection);
+    this.visitSequence(sequence);  // first format the sequence of items
     this.result += ']';
-    this.visitComponent(collection);
+    this.visitComponent(sequence);  // then format any parameterization
 };
 
 
@@ -346,7 +337,7 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 FormattingVisitor.prototype.visitDuration = function(duration) {
     const value = duration.getValue().toISOString();
     this.result += '~' + value;
-    this.visitComponent(duration);
+    this.visitComponent(duration);  // format any parameterization
 };
 
 
@@ -460,18 +451,9 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
     this.inline++;
     this.result += '[';
     const keys = tree.getChild(1);
-    this.visitSequence(keys);  // must explicitly call it
+    this.visitSequence(keys);  // the keys are a sequence not a collection
     this.result += ']';
     this.inline--;
-};
-
-
-// list:
-//     expression (',' expression)* |
-//     EOL (expression EOL)* |
-//     {empty list}
-FormattingVisitor.prototype.visitList = function(list) {
-    this.visitSequence(list);
 };
 
 
@@ -522,7 +504,7 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 FormattingVisitor.prototype.visitMoment = function(moment) {
     const value = moment.getValue().format(moment.getFormat());
     this.result += '<' + value + '>';
-    this.visitComponent(moment);
+    this.visitComponent(moment);  // format any parameterization
 };
 
 
@@ -530,7 +512,7 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 FormattingVisitor.prototype.visitName = function(name) {
     const value = name.getValue();
     this.result += '/' + value.join('/');  // concatentat the parts of the name
-    this.visitComponent(name);
+    this.visitComponent(name);  // format any parameterization
 };
 
 
@@ -572,7 +554,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         }
         this.result += ')';
     }
-    this.visitComponent(number);
+    this.visitComponent(number);  // format any parameterization
 };
 
 
@@ -620,7 +602,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
         default:
             this.result += '"' + value + '"?';
     }
-    this.visitComponent(pattern);
+    this.visitComponent(pattern);  // format any parameterization
 };
 
 
@@ -628,7 +610,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 FormattingVisitor.prototype.visitPercent = function(percent) {
     const value = percent.getValue();
     this.result += formatReal(value) + '%';
-    this.visitComponent(percent);
+    this.visitComponent(percent);  // format any parameterization
 };
 
 
@@ -657,7 +639,7 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
             // must remove the leading '0' for probabilities
             this.result += value.toString().substring(1);
     }
-    this.visitComponent(probability);
+    this.visitComponent(probability);  // format any parameterization
 };
 
 
@@ -668,7 +650,7 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     const statements = procedure.getStatements();
     statements.acceptVisitor(this);
     this.result += '}';
-    this.visitComponent(procedure);
+    this.visitComponent(procedure);  // format any parameterization
 };
 
 
@@ -691,11 +673,19 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 };
 
 
+// range: expression '..' expression
+FormattingVisitor.prototype.visitRange = function(range) {
+    range.getFirst().acceptVisitor(this);
+    this.result += '..';
+    range.getLast().acceptVisitor(this);
+};
+
+
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
     this.result += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
-    this.visitComponent(reference);
+    this.visitComponent(reference);  // format any parameterization
 };
 
 
@@ -703,7 +693,7 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     const value = reserved.getValue();
     this.result += '$$' + value;
-    this.visitComponent(reserved);
+    this.visitComponent(reserved);  // format any parameterization
 };
 
 
@@ -759,11 +749,9 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 
 // sequence: range | list | catalog
 FormattingVisitor.prototype.visitSequence = function(sequence) {
-    // note: range is handled separately
+    // note: a range must be handled differently
     if (sequence.isType('$Range')) {
-        sequence.getFirst().acceptVisitor(this);
-        this.result += '..';
-        sequence.getLast().acceptVisitor(this);
+        this.visitRange(sequence);  // must be called explicitly
     } else if (sequence.isEmpty()) {
         if (sequence.isType('$Catalog')) {
             this.result += ':';  // empty catalog
@@ -838,7 +826,7 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     const value = symbol.getValue();
     this.result += '$' + value;
-    this.visitComponent(symbol);
+    this.visitComponent(symbol);  // format any parameterization
 };
 
 
@@ -846,7 +834,7 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 FormattingVisitor.prototype.visitTag = function(tag) {
     const value = tag.getValue();
     this.result += '#' + value;
-    this.visitComponent(tag);
+    this.visitComponent(tag);  // format any parameterization
 };
 
 
@@ -861,7 +849,7 @@ FormattingVisitor.prototype.visitText = function(text) {
     value = value.replace(regex, '');  // unindent last line
     this.result += '"' + value + '"';
     this.depth--;
-    this.visitComponent(text);
+    this.visitComponent(text);  // format any parameterization
 };
 
 
@@ -883,7 +871,7 @@ FormattingVisitor.prototype.visitVariable = function(tree) {
 FormattingVisitor.prototype.visitVersion = function(version) {
     const value = version.getValue();
     this.result += 'v' + value.join('.');  // concatentat the version levels
-    this.visitComponent(version);
+    this.visitComponent(version);  // format any parameterization
 };
 
 

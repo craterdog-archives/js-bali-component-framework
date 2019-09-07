@@ -369,7 +369,7 @@ var ruleNames =  [ "document", "component", "value", "collection", "sequence",
                    "queueClause", "waitClause", "ifClause", "selectClause", 
                    "withClause", "whileClause", "continueClause", "breakClause", 
                    "returnClause", "throwClause", "recipient", "subcomponent", 
-                   "expression", "variable", "funxtion", "message", "arguments", 
+                   "expression", "variable", "funxion", "message", "arguments", 
                    "indices", "keys", "element", "angle", "binary", "duration", 
                    "pattern", "imaginary", "moment", "name", "number", "percent", 
                    "probability", "real", "reference", "reserved", "symbol", 
@@ -521,7 +521,7 @@ DocumentParser.RULE_recipient = 32;
 DocumentParser.RULE_subcomponent = 33;
 DocumentParser.RULE_expression = 34;
 DocumentParser.RULE_variable = 35;
-DocumentParser.RULE_funxtion = 36;
+DocumentParser.RULE_funxion = 36;
 DocumentParser.RULE_message = 37;
 DocumentParser.RULE_arguments = 38;
 DocumentParser.RULE_indices = 39;
@@ -4129,8 +4129,8 @@ FunctionExpressionContext.prototype.constructor = FunctionExpressionContext;
 
 DocumentParser.FunctionExpressionContext = FunctionExpressionContext;
 
-FunctionExpressionContext.prototype.funxtion = function() {
-    return this.getTypedRuleContext(FunxtionContext,0);
+FunctionExpressionContext.prototype.funxion = function() {
+    return this.getTypedRuleContext(FunxionContext,0);
 };
 
 FunctionExpressionContext.prototype.arguments = function() {
@@ -4457,7 +4457,7 @@ DocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 375;
-            this.funxtion();
+            this.funxion();
             this.state = 376;
             this.arguments();
             break;
@@ -4766,7 +4766,7 @@ DocumentParser.prototype.variable = function() {
     return localctx;
 };
 
-function FunxtionContext(parser, parent, invokingState) {
+function FunxionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -4775,32 +4775,32 @@ function FunxtionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_funxtion;
+    this.ruleIndex = DocumentParser.RULE_funxion;
     return this;
 }
 
-FunxtionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-FunxtionContext.prototype.constructor = FunxtionContext;
+FunxionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+FunxionContext.prototype.constructor = FunxionContext;
 
-FunxtionContext.prototype.IDENTIFIER = function() {
+FunxionContext.prototype.IDENTIFIER = function() {
     return this.getToken(DocumentParser.IDENTIFIER, 0);
 };
 
-FunxtionContext.prototype.enterRule = function(listener) {
+FunxionContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterFunxtion(this);
+        listener.enterFunxion(this);
 	}
 };
 
-FunxtionContext.prototype.exitRule = function(listener) {
+FunxionContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitFunxtion(this);
+        listener.exitFunxion(this);
 	}
 };
 
-FunxtionContext.prototype.accept = function(visitor) {
+FunxionContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitFunxtion(this);
+        return visitor.visitFunxion(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -4809,12 +4809,12 @@ FunxtionContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.FunxtionContext = FunxtionContext;
+DocumentParser.FunxionContext = FunxionContext;
 
-DocumentParser.prototype.funxtion = function() {
+DocumentParser.prototype.funxion = function() {
 
-    var localctx = new FunxtionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 72, DocumentParser.RULE_funxtion);
+    var localctx = new FunxionContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 72, DocumentParser.RULE_funxion);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 428;

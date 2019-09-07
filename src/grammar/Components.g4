@@ -16,13 +16,13 @@ range: expression '..' expression;
 list:
     expression (',' expression)* |
     EOL (expression EOL)* |
-    /*empty list*/
+    /* empty list */
 ;
 
 catalog:
     association (',' association)* |
     EOL (association EOL)* |
-    ':' /*empty catalog*/
+    ':' /* empty catalog */
 ;
 
 association: component ':' expression;
@@ -32,5 +32,5 @@ procedure: '{' statements '}';
 statements:
     statement (';' statement)* |
     EOL (statement EOL)* |
-    /*empty statements*/
+    /* no statements */
 ;

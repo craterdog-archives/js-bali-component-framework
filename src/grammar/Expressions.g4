@@ -4,7 +4,7 @@ import Elements;
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression     |
     variable                                                       #variableExpression      |
-    funxtion arguments                                             #functionExpression      |
+    funxion arguments                                              #functionExpression      |
     '(' expression ')'                                             #precedenceExpression    |
     '@' expression                                                 #dereferenceExpression   |
     expression '.' message arguments                               #messageExpression       |
@@ -23,7 +23,7 @@ expression:                  // Precedence (highest to lowest)
 
 variable: IDENTIFIER;
 
-funxtion: IDENTIFIER;
+funxion: IDENTIFIER;
 
 message: IDENTIFIER;
 

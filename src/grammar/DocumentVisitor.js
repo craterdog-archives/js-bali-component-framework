@@ -324,8 +324,8 @@ DocumentVisitor.prototype.visitVariable = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#funxtion.
-DocumentVisitor.prototype.visitFunxtion = function(ctx) {
+// Visit a parse tree produced by DocumentParser#funxion.
+DocumentVisitor.prototype.visitFunxion = function(ctx) {
   return this.visitChildren(ctx);
 };
 

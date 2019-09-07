@@ -208,16 +208,6 @@ Set.prototype.isLogical = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this component.
- */
-Set.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCollection(this);
-};
-    
-
 // PUBLIC FUNCTIONS
 
 /**

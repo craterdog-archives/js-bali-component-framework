@@ -145,16 +145,3 @@ function Queue(parameters) {
 Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;
-
-
-// PUBLIC METHODS
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- * 
- * @param {Visitor} visitor The visitor that wants to visit this component.
- */
-Queue.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCollection(this);
-};
-    

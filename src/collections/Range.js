@@ -69,11 +69,8 @@ function Range(first, last, parameters) {
 
     // to protect the attributes the methods are defined in the constructor
     this.getFirstIndex = function() { return firstIndex; };
-    this.getLastIndex = function() { return lastIndex; };
 
-    this.acceptVisitor = function(visitor) {
-        visitor.visitCollection(this);
-    };
+    this.getLastIndex = function() { return lastIndex; };
 
     this.toArray = function() {
         if (lastIndex === Infinity) {
