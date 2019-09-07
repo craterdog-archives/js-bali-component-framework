@@ -673,14 +673,6 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 };
 
 
-// range: expression '..' expression
-FormattingVisitor.prototype.visitRange = function(range) {
-    range.getFirst().acceptVisitor(this);
-    this.result += '..';
-    range.getLast().acceptVisitor(this);
-};
-
-
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
@@ -751,7 +743,9 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 FormattingVisitor.prototype.visitSequence = function(sequence) {
     // note: a range must be handled differently
     if (sequence.isType('$Range')) {
-        this.visitRange(sequence);  // must be called explicitly
+        sequence.getFirst().acceptVisitor(this);
+        this.result += '..';
+        sequence.getLast().acceptVisitor(this);
     } else if (sequence.isEmpty()) {
         if (sequence.isType('$Catalog')) {
             this.result += ':';  // empty catalog

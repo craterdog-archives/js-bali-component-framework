@@ -399,13 +399,6 @@ Visitor.prototype.visitQueueClause = function(tree) {
 };
 
 
-// range: expression '..' expression
-Visitor.prototype.visitRange = function(range) {
-    range.getFirst().acceptVisitor(this);
-    range.getLast().acceptVisitor(this);
-};
-
-
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
     this.visitComponent(reference);  // process any parameters first
@@ -467,7 +460,8 @@ Visitor.prototype.visitSelectClause = function(tree) {
 Visitor.prototype.visitSequence = function(sequence) {
     // note: range is handled differently
     if (sequence.isType('$Range')) {
-        this.visitRange(sequence);  // must be called explicitly
+        sequence.getFirst().acceptVisitor(this);
+        sequence.getLast().acceptVisitor(this);
     } else if (sequence.getSize() > 0) {
         this.depth++;
         const iterator = sequence.getIterator();
