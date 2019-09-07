@@ -521,13 +521,13 @@ exports.random = utilities.random;
  * This function creates a new range of items with optional parameters that are used
  * to parameterize its type.
  * 
+ * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
- * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
-const range = function(first, last, parameters) {
-    return new collections.Range(first, last, parameters);
+const range = function(parameters, first, last) {
+    return new collections.Range(parameters, first, last);
 };
 exports.range = range;
 

@@ -146,7 +146,7 @@ DuplicatingVisitor.prototype.visitCollection = function(sequence) {
         const first = this.result;
         sequence.getLast().acceptVisitor(this);
         const last = this.result;
-        copy = new sequence.constructor(first, last, parameters);
+        copy = new sequence.constructor(parameters, first, last);
     } else {
         copy = new sequence.constructor(parameters);
         const iterator = sequence.getIterator();

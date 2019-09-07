@@ -18,7 +18,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range constructors', function() {
 
         it('should create an integer range with two endpoints', function() {
-            const range = bali.range(2, 5);
+            const range = bali.range(undefined, 2, 5);
             expect(range).to.exist;  // jshint ignore:line
             const size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -48,7 +48,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
                 '$nineth'
             ]);
             const parameters = bali.parameters({$collection: list});
-            const range = bali.range('$third', '$seventh', parameters);
+            const range = bali.range(parameters, '$third', '$seventh');
             expect(range).to.exist;  // jshint ignore:line
             const size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
@@ -74,10 +74,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range methods', function() {
 
         it('should be able to call the methods on the range', function() {
-            const range1 = bali.range(1, 8);
+            const range1 = bali.range(undefined, 1, 8);
             var size = range1.getSize();
             expect(size).to.equal(8);
-            const range2 = bali.range(4, 6);
+            const range2 = bali.range(undefined, 4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
             expect(range2.getFirst().toNumber()).to.equal(4);
@@ -92,7 +92,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range iterators', function() {
 
         it('should iterate over a range forwards and backwards', function() {
-            const range = bali.range(1, 3);
+            const range = bali.range(undefined, 1, 3);
             var index = range.getSize();
             const items = range.toArray();
             var item;

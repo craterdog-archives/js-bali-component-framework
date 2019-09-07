@@ -128,8 +128,9 @@ Visitor.prototype.visitComplementExpression = function(tree) {
 // component: value parameters?
 Visitor.prototype.visitComponent = function(component) {
     // process any parameters first since the value may depend on them
-    if (component.isParameterized()) {
-        component.getParameters().acceptVisitor(this);
+    const parameters = component.getParameters();
+    if (parameters) {
+        parameters.acceptVisitor(this);
     }
 };
 

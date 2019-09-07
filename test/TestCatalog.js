@@ -225,7 +225,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(catalog1.containsAll(catalog2)).to.equal(true);
             expect(catalog2.containsAll(catalog1)).to.equal(false);
             expect(catalog2.containsAny(catalog1)).to.equal(true);
-            const catalog3 = catalog1.getItems(bali.range(2, 4));
+            const catalog3 = catalog1.getItems(bali.range(undefined, 2, 4));
             size = catalog3.getSize();
             expect(size).to.equal(3);
             expect(catalog3.containsItem(association4)).to.equal(true);
@@ -235,7 +235,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog2.getSize();
             expect(size).to.equal(array.length);
             expect(catalog2.containsAll(catalog1)).to.equal(true);
-            catalog2.removeValues(bali.range(2, 3));
+            catalog2.removeValues(bali.range(undefined, 2, 3));
             size = catalog2.getSize();
             expect(size).to.equal(3);
             expect(catalog2.containsItem(association3)).to.equal(false);
