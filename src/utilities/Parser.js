@@ -800,7 +800,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     const first = this.result;
     expressions[1].accept(this);
     const last = this.result;
-    const range = new collections.Range(parameters, first, last);
+    const range = new collections.Range(first, last, parameters);
     this.result = range;
 };
 

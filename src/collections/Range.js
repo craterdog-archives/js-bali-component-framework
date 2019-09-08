@@ -24,12 +24,12 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new range of items with optional parameters that are used
  * to parameterize its type.
  * 
- * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
+ * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
-function Range(parameters, first, last) {
+function Range(first, last, parameters) {
     abstractions.Collection.call(this, '$Range', parameters);
 
     abstractions.Collection.validate('/bali/collections/Range', '$Range', '$first', first, [

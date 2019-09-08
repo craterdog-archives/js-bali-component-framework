@@ -124,7 +124,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(list1.containsAll(list2)).to.equal(true);
             expect(list2.containsAll(list1)).to.equal(false);
             expect(list2.containsAny(list1)).to.equal(true);
-            const list3 = list1.getItems(bali.range(undefined, 2, 4));
+            const list3 = list1.getItems(bali.range(2, 4));
             size = list3.getSize();
             expect(size).to.equal(3);
             expect(list3.containsItem('"epsilon"')).to.equal(true);
