@@ -45,23 +45,8 @@ function Formatter(indentation) {
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || 0;
 
-    this.formatLiteral = function(literal) {
-        if (!literal.isLiteral()) {
-            throw new Exception({
-                $module: '/bali/utilities/Formatter',
-                $procedure: '$formatLiteral',
-                $exception: '$invalidParameter',
-                $parameter: literal,
-                $text: 'Attempted to format a non-literal component.'
-            });
-        }
-        const visitor = new FormattingVisitor(indentation, false);
-        literal.acceptVisitor(visitor);
-        return visitor.result;
-    };
-
     this.formatComponent = function(component) {
-        const visitor = new FormattingVisitor(indentation, true);
+        const visitor = new FormattingVisitor(indentation);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -74,10 +59,9 @@ exports.Formatter = Formatter;
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, includeParameters) {
+function FormattingVisitor(indentation) {
     Visitor.call(this);
     this.indentation = indentation || 0;
-    this.includeParameters = typeof includeParameters === 'boolean' ? includeParameters : true;  // default is true
     this.depth = 0;
     this.inline = 0;
     this.result = '';
@@ -273,15 +257,6 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
     this.inline--;
-};
-
-
-// component: value parameters?
-FormattingVisitor.prototype.visitComponent = function(component) {
-    // assumes the visitor for value has already been called
-    if (this.includeParameters && component.isParameterized()) {
-        component.getParameters().acceptVisitor(this);
-    }
 };
 
 

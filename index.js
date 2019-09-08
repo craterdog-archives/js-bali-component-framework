@@ -326,23 +326,6 @@ exports.list = list;
 list.concatenation = collections.List.concatenation;
 
 /**
- * This function formats a Bali literal into a JavaScript string containing
- * Bali Document Notation™.
- * 
- * @param {Element} element The Bali element to be formatted. 
- * @returns {String} The resulting string containing Bali Document Notation™.
- */
-const literal = function(element) {
-    // must check these here since a formatter is a utility rather than a component
-    validate('/bali/utilities/Formatter', '$formatLiteral', '$element', element, [
-        '/bali/interfaces/Literal'
-    ]);
-    const formatter = new utilities.Formatter();
-    return formatter.formatLiteral(element);
-};
-exports.literal = literal;
-
-/**
  * This function creates a new moment in time using the specified value and parameters.
  * 
  * @param {String|Number} value The source string value of the moment in time.
