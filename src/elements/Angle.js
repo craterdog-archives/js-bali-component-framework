@@ -16,6 +16,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,16 +28,12 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Angle} The new angle element.
  */
-function Angle(value, parameters) {
-    abstractions.Element.call(this, '$Angle', parameters);
-    abstractions.Element.validate('/bali/elements/Angle', '$Angle', '$value', value, [
+function Angle(value, parameters, debug) {
+    abstractions.Element.call(this, '$Angle', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Angle', '$Angle', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Number'
-    ]);
-    abstractions.Element.validate('/bali/elements/Angle', '$Angle', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     // check the value
     if (value === value) value = value || 0;  // default value if not NaN and not defined
@@ -187,8 +184,9 @@ Angle.prototype.acceptVisitor = function(visitor) {
  * @param {Angle} angle The angle to be inverted.
  * @returns {Angle} The inverted angle.
  */
-Angle.inverse = function(angle) {
-    return new Angle(utilities.precision.difference(angle.getValue(), Math.PI));
+Angle.inverse = function(angle, debug) {
+    debug = debug || 0;  // default value
+    return new Angle(utilities.precision.difference(angle.getValue(), Math.PI), debug);
 };
 
 

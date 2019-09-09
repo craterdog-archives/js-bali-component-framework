@@ -17,6 +17,7 @@
 const URL = require('url').URL;
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -28,17 +29,12 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reference} The new reference element.
  */
-function Reference(value, parameters) {
-    abstractions.Element.call(this, '$Reference', parameters);
-
-    abstractions.Element.validate('/bali/elements/Reference', '$Reference', '$value', value, [
+function Reference(value, parameters, debug) {
+    abstractions.Element.call(this, '$Reference', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Reference', '$Reference', '$value', value, [
         '/javascript/String',
         '/nodejs/URL'
-    ]);
-    abstractions.Element.validate('/bali/elements/Reference', '$Reference', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     try {
         if (value.constructor.name !== 'URL') {

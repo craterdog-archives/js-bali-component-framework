@@ -14,6 +14,7 @@
  * catalog class.
  */
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -25,17 +26,17 @@ const abstractions = require('../abstractions');
  * @param {String|Number|Boolean|Component} value The value associated with the key.
  * @returns {Association} A new association.
  */
-function Association(key, value) {
-    abstractions.Composite.call(this, '$Association');
-    abstractions.Composite.validate('/bali/composites/Association', '$Association', '$key', key, [
+function Association(key, value, debug) {
+    abstractions.Composite.call(this, '$Association', debug);
+    if (this.debug > 1) validate('/bali/composites/Association', '$Association', '$key', key, [
         '/javascript/String',
         '/javascript/Boolean',
         '/javascript/Number',
         '/javascript/Array',
         '/javascript/Object',
         '/bali/abstractions/Component'
-    ]);
-    abstractions.Composite.validate('/bali/composites/Association', '$Association', '$value', value, [
+    ], this.debug);
+    if (this.debug > 1) validate('/bali/composites/Association', '$Association', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Boolean',
@@ -43,7 +44,9 @@ function Association(key, value) {
         '/javascript/Array',
         '/javascript/Object',
         '/bali/abstractions/Component'
-    ]);
+    ], this.debug);
+
+    // convert the arguments to components
     key = this.convert(key);
     value = this.convert(value);
 
@@ -57,7 +60,7 @@ function Association(key, value) {
     };
 
     this.setValue = function(newValue) {
-        this.validateType('/bali/composites/Association', '$setValue', '$value', value, [
+        if (this.debug > 1) validate('/bali/composites/Association', '$setValue', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -65,7 +68,7 @@ function Association(key, value) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         newValue = this.convert(newValue);
         const oldValue = value;
         value = newValue;

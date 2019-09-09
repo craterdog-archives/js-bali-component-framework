@@ -16,6 +16,7 @@
 const utilities = require('../utilities');
 const Composite = require('./Composite').Composite;
 const Exception = require('../composites/Exception').Exception;
+const validate = Composite.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,19 +27,11 @@ const Exception = require('../composites/Exception').Exception;
  * 
  * @param {String} type The type of collection.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
  */
-function Collection(type, parameters) {
-    Composite.call(this, type, parameters);
-
-    Composite.validate('/bali/abstractions/Collection', '$Collection', '$type', type, [
-        '/javascript/String'
-    ]);
-    Composite.validate('/bali/abstractions/Collection', '$Collection', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-
+function Collection(type, parameters, debug) {
+    Composite.call(this, type, parameters, debug);
     return this;
 }
 Collection.prototype = Object.create(Composite.prototype);
@@ -92,12 +85,14 @@ Collection.prototype.acceptVisitor = function(visitor) {
  * @returns {Array} An array containing the subcomponents in this collection component.
  */
 Collection.prototype.toArray = function() {
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -118,12 +113,14 @@ Collection.prototype.isEmpty = function() {
  * @returns {Number} The number of subcomponents that this collection component has.
  */
 Collection.prototype.getSize = function() {
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -151,7 +148,7 @@ Collection.prototype.getIterator = function() {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    this.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
+    if (this.debug > 1) validate('/bali/abstractions/Collection', '$getIndex', '$item', item, [
         '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number',
@@ -179,12 +176,14 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -195,10 +194,10 @@ Collection.prototype.getItem = function(index) {
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
-    this.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
+    if (this.debug > 1) validate('/bali/abstractions/Collection', '$getItems', '$range', range, [
         '/javascript/Undefined',
         '/bali/collections/Range'
-    ]);
+    ], this.debug);
     const items = new this.constructor(this.getParameters());
     if (range && range.getIterator) {
         const iterator = range.getIterator();
@@ -219,7 +218,7 @@ Collection.prototype.getItems = function(range) {
  * @returns {Boolean} Whether or not the specified item is contained in this collection.
  */
 Collection.prototype.containsItem = function(item) {
-    this.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+    validate('/bali/abstractions/Collection', '$containsItem', '$item', item, [
         '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number',
@@ -242,7 +241,7 @@ Collection.prototype.containsItem = function(item) {
  * @returns {Boolean} Whether or not any of the specified items are contained in this collection.
  */
 Collection.prototype.containsAny = function(items) {
-    this.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
+    validate('/bali/abstractions/Collection', '$containsAny', '$items', items, [
         '/javascript/Undefined',
         '/javascript/Array',
         '/bali/interfaces/Sequential'
@@ -273,7 +272,7 @@ Collection.prototype.containsAny = function(items) {
  * @returns {Boolean} Whether or not all of the specified items are contained in this collection.
  */
 Collection.prototype.containsAll = function(items) {
-    this.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
+    validate('/bali/abstractions/Collection', '$containsAll', '$items', items, [
         '/javascript/Undefined',
         '/javascript/Array',
         '/bali/interfaces/Sequential'

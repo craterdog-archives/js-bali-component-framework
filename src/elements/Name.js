@@ -16,6 +16,7 @@
  */
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,16 +28,11 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Symbol} The new name string element.
  */
-function Name(value, parameters) {
-    abstractions.Element.call(this, '$Name', parameters);
-
-    abstractions.Element.validate('/bali/elements/Name', '$Name', '$value', value, [
+function Name(value, parameters, debug) {
+    abstractions.Element.call(this, '$Name', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Name', '$Name', '$value', value, [
         '/javascript/Array'
-    ]);
-    abstractions.Element.validate('/bali/elements/Name', '$Name', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     if (!Array.isArray(value) || value.length === 0) {
         throw new Exception({
@@ -148,13 +144,13 @@ Name.prototype.getIterator = function() {
  * @param {Name} second The second name string to be operated on.
  * @returns {Name} The resulting name string.
  */
-Name.concatenation = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Name', '$concatenation', '$first', first, [
+Name.concatenation = function(first, second, debug) {
+    if (debug > 1) validate('/bali/elements/Name', '$concatenation', '$first', first, [
         '/bali/elements/Name'
-    ]);
-    abstractions.Element.validate('/bali/elements/Name', '$concatenation', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Name', '$concatenation', '$second', second, [
         '/bali/elements/Name'
-    ]);
+    ], debug);
     const parts1 = first.getValue();
     const parts2 = second.getValue();
     const parts = parts1.concat(parts2);

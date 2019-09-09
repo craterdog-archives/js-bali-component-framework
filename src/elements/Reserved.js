@@ -16,6 +16,7 @@
  */
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,16 +28,11 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Reserved} The new reserved identifier.
  */
-function Reserved(value, parameters) {
-    abstractions.Element.call(this, '$Reserved', parameters);
-
-    abstractions.Element.validate('/bali/elements/Reserved', '$Reserved', '$value', value, [
+function Reserved(value, parameters, debug) {
+    abstractions.Element.call(this, '$Reserved', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Reserved', '$Reserved', '$value', value, [
         '/javascript/String'
-    ]);
-    abstractions.Element.validate('/bali/elements/Reserved', '$Reserved', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         throw new Exception({

@@ -13,6 +13,7 @@
  * This abstract class defines the methods that all elemental components must support.
  */
 const Component = require('./Component').Component;
+const validate = Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -25,16 +26,11 @@ const Component = require('./Component').Component;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Element} The new element.
  */
-function Element(type, parameters) {
-    Component.call(this, type, parameters);
-
-    Component.validate('/bali/abstractions/Element', '$Element', '$type', type, [
+function Element(type, parameters, debug) {
+    Component.call(this, type, parameters, debug);
+    if (this.debug > 1) validate('/bali/abstractions/Element', '$Element', '$type', type, [
         '/javascript/String'
-    ]);
-    Component.validate('/bali/abstractions/Element', '$Element', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     return this;
 }

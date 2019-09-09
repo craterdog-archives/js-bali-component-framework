@@ -17,6 +17,7 @@
 const moment = require('moment');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
+const validate = abstractions.Component.validate;
 
 const FORMATS = [
     'Y',
@@ -41,19 +42,13 @@ const FORMATS = [
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Moment} The new moment in time.
  */
-function Moment(value, parameters) {
-    abstractions.Element.call(this, '$Moment', parameters);
-
-    abstractions.Element.validate('/bali/elements/Moment', '$Moment', '$value', value, [
+function Moment(value, parameters, debug) {
+    abstractions.Element.call(this, '$Moment', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Moment', '$Moment', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
-    ]);
-    abstractions.Element.validate('/bali/elements/Moment', '$Moment', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-
+    ], this.debug);
     value = value || undefined;
     var format;
     if (!value) {
@@ -131,15 +126,16 @@ Moment.prototype.acceptVisitor = function(visitor) {
  * @param {Moment} second The second moment in time.
  * @returns {Duration} The duration between the two moments in time.
  */
-Moment.duration = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Moment', '$duration', '$first', first, [
+Moment.duration = function(first, second, debug) {
+    debug = debug || 0;  // default value
+    if (debug > 1) validate('/bali/elements/Moment', '$duration', '$first', first, [
         '/bali/elements/Moment'
-    ]);
-    abstractions.Element.validate('/bali/elements/Moment', '$duration', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Moment', '$duration', '$second', second, [
         '/bali/elements/Moment'
-    ]);
+    ], debug);
     const duration = moment.duration(second.getValue().diff(first.getValue()));
-    return new Duration(duration.toISOString());
+    return new Duration(duration.toISOString(), debug);
 };
 
 
@@ -151,15 +147,15 @@ Moment.duration = function(first, second) {
  * @param {Duration} duration The duration of time to be subtracted.
  * @returns {Moment} The resulting moment in time.
  */
-Moment.earlier = function(moment, duration) {
-    abstractions.Element.validate('/bali/elements/Moment', '$earlier', '$moment', moment, [
+Moment.earlier = function(moment, duration, debug) {
+    if (debug > 1) validate('/bali/elements/Moment', '$earlier', '$moment', moment, [
         '/bali/elements/Moment'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$earlier', '$duration', duration, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Duration', '$earlier', '$duration', duration, [
         '/bali/elements/Duration'
-    ]);
+    ], debug);
     const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
-    return new Moment(earlier.format(FORMATS[7]));
+    return new Moment(earlier.format(FORMATS[7]), debug);
 };
 
 
@@ -171,13 +167,13 @@ Moment.earlier = function(moment, duration) {
  * @param {Duration} duration The duration of time to be added.
  * @returns {Moment} The resulting moment in time.
  */
-Moment.later = function(moment, duration) {
-    abstractions.Element.validate('/bali/elements/Moment', '$later', '$moment', moment, [
+Moment.later = function(moment, duration, debug) {
+    if (debug > 1) validate('/bali/elements/Moment', '$later', '$moment', moment, [
         '/bali/elements/Moment'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$later', '$duration', duration, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Duration', '$later', '$duration', duration, [
         '/bali/elements/Duration'
-    ]);
+    ], debug);
     const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
-    return new Moment(later.format(FORMATS[7]));
+    return new Moment(later.format(FORMATS[7]), debug);
 };

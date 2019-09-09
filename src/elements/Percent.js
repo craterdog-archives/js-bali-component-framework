@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,16 +27,12 @@ const abstractions = require('../abstractions');
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Percent} The new percent element.
  */
-function Percent(value, parameters) {
-    abstractions.Element.call(this, '$Percent', parameters);
-    abstractions.Element.validate('/bali/elements/Percent', '$Percent', '$value', value, [
+function Percent(value, parameters, debug) {
+    abstractions.Element.call(this, '$Percent', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Percent', '$Percent', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Number'
-    ]);
-    abstractions.Element.validate('/bali/elements/Percent', '$Percent', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
     value = value || 0;  // default value
 
     // since this element is immutable the value must be read-only
@@ -104,10 +101,10 @@ Percent.prototype.acceptVisitor = function(visitor) {
  * 
  * @param {Percent} percent The percent to be inverted.
  */
-Percent.inverse = function(percent) {
-    abstractions.Element.validate('/bali/elements/Percent', '$inverse', '$percent', percent, [
+Percent.inverse = function(percent, debug) {
+    if (debug > 1) validate('/bali/elements/Percent', '$inverse', '$percent', percent, [
         '/bali/elements/Percent'
-    ]);
+    ], debug);
     return new Percent(-percent.getValue());
 };
 
@@ -119,13 +116,13 @@ Percent.inverse = function(percent) {
  * @param {Percent} second The second percent to be summed.
  * @returns {Percent} The normalized sum of the two percents.
  */
-Percent.sum = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Percent', '$sum', '$first', first, [
+Percent.sum = function(first, second, debug) {
+    if (debug > 1) validate('/bali/elements/Percent', '$sum', '$first', first, [
         '/bali/elements/Percent'
-    ]);
-    abstractions.Element.validate('/bali/elements/Percent', '$sum', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Percent', '$sum', '$second', second, [
         '/bali/elements/Percent'
-    ]);
+    ], debug);
     return new Percent(utilities.precision.sum(first.getValue(), second.getValue()));
 };
 
@@ -137,13 +134,13 @@ Percent.sum = function(first, second) {
  * @param {Percent} second The percent to subtract from the first percent.
  * @returns {Percent} The normalized difference of the two percents.
  */
-Percent.difference = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Percent', '$difference', '$first', first, [
+Percent.difference = function(first, second, debug) {
+    if (debug > 1) validate('/bali/elements/Percent', '$difference', '$first', first, [
         '/bali/elements/Percent'
-    ]);
-    abstractions.Element.validate('/bali/elements/Percent', '$difference', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Percent', '$difference', '$second', second, [
         '/bali/elements/Percent'
-    ]);
+    ], debug);
     return new Percent(utilities.precision.difference(first.getValue(), second.getValue()));
 };
 
@@ -155,13 +152,13 @@ Percent.difference = function(first, second) {
  * @param {Number} factor The scale factor.
  * @returns {Percent} The normalized scaled percent.
  */
-Percent.scaled = function(percent, factor) {
-    abstractions.Element.validate('/bali/elements/Percent', '$scaled', '$percent', percent, [
+Percent.scaled = function(percent, factor, debug) {
+    if (debug > 1) validate('/bali/elements/Percent', '$scaled', '$percent', percent, [
         '/bali/elements/Percent'
-    ]);
-    abstractions.Element.validate('/bali/elements/Percent', '$scaled', '$factor', factor, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Percent', '$scaled', '$factor', factor, [
         '/javascript/Number'
-    ]);
+    ], debug);
     return new Percent(utilities.precision.product(percent.getValue(), factor));
 };
 

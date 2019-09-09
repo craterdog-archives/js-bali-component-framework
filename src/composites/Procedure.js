@@ -14,6 +14,7 @@
  * the value of an association.
  */
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,16 +27,11 @@ const abstractions = require('../abstractions');
  * @param {Parameters} parameters Optional parameters used to parameterize the procedure. 
  * @returns {Procedure} A new procedure component.
  */
-function Procedure(statements, parameters) {
-    abstractions.Composite.call(this, '$Procedure', parameters);
-
-    abstractions.Composite.validate('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
+function Procedure(statements, parameters, debug) {
+    abstractions.Composite.call(this, '$Procedure', parameters, debug);
+    if (this.debug > 1) validate('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
         '/bali/composites/Tree'
-    ]);
-    abstractions.Composite.validate('/bali/composites/Procedure', '$Procedure', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     this.getStatements = function() { return statements; };
     return this;

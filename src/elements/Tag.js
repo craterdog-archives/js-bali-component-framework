@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,18 +28,13 @@ const abstractions = require('../abstractions');
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Tag} The new tag element.
  */
-function Tag(value, parameters) {
-    abstractions.Element.call(this, '$Tag', parameters);
-
-    abstractions.Element.validate('/bali/elements/Tag', '$Tag', '$value', value, [
+function Tag(value, parameters, debug) {
+    abstractions.Element.call(this, '$Tag', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Tag', '$Tag', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
-    ]);
-    abstractions.Element.validate('/bali/elements/Tag', '$Tag', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;

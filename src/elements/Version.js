@@ -16,6 +16,7 @@
  */
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,17 +28,12 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Symbol} The new version string element.
  */
-function Version(value, parameters) {
-    abstractions.Element.call(this, '$Version', parameters);
-
-    abstractions.Element.validate('/bali/elements/Version', '$Version', '$value', value, [
+function Version(value, parameters, debug) {
+    abstractions.Element.call(this, '$Version', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Version', '$Version', '$value', value, [
         '/javascript/Undefined',
         '/javascript/Array'
-    ]);
-    abstractions.Element.validate('/bali/elements/Version', '$Version', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
@@ -183,14 +179,14 @@ Version.prototype.getIterator = function() {
  * the last level in the version string is incremented.
  * @returns {Version} The next version string.
  */
-Version.nextVersion = function(currentVersion, level) {
-    abstractions.Element.validate('/bali/elements/Version', '$nextVersion', '$currentVersion', currentVersion, [
+Version.nextVersion = function(currentVersion, level, debug) {
+    if (debug > 1) validate('/bali/elements/Version', '$nextVersion', '$currentVersion', currentVersion, [
         '/bali/elements/Version'
-    ]);
-    abstractions.Element.validate('/bali/elements/Version', '$nextVersion', '$level', level, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Version', '$nextVersion', '$level', level, [
         '/javascript/Undefined',
         '/javascript/Number'
-    ]);
+    ], debug);
     const levels = currentVersion.getValue().slice();  // copy the array since we are going to splice it!
     const index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
     if (index < levels.length) {
@@ -221,13 +217,13 @@ Version.nextVersion = function(currentVersion, level) {
  * @param {Version} nextVersion The proposed next version string.
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
-Version.validNextVersion = function(currentVersion, nextVersion) {
-    abstractions.Element.validate('/bali/elements/Version', '$validNextVersion', '$currentVersion', currentVersion, [
+Version.validNextVersion = function(currentVersion, nextVersion, debug) {
+    if (debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$currentVersion', currentVersion, [
         '/bali/elements/Version'
-    ]);
-    abstractions.Element.validate('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
         '/bali/elements/Version'
-    ]);
+    ], debug);
 
     // extract the version levels
     const currentLevels = currentVersion.getValue();

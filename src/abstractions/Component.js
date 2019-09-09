@@ -15,8 +15,8 @@
  */
 const URL = require('url').URL;
 const utilities = require('../utilities');
-const formatter = new utilities.Formatter();
 const Exception = require('../composites/Exception').Exception;
+const formatter = new utilities.Formatter();
 
 
 // PUBLIC FUNCTIONS
@@ -27,19 +27,21 @@ const Exception = require('../composites/Exception').Exception;
  * 
  * @param {String} type The type string for the component.
  * @param {Parameters} parameters Optional parameters used to parameterize this component. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Component} The new component.
  */
-function Component(type, parameters) {
-
-    Component.validate('/bali/abstractions/Component', '$Component', '$type', type, [
+function Component(type, parameters, debug) {
+    // analyze the arguments
+    parameters = parameters || undefined;  // normalize nulls to undefined
+    this.debug = debug || 0;  // default value
+    if (this.debug > 1) Component.validate('/bali/abstractions/Component', '$Component', '$type', type, [
         '/javascript/String'
-    ]);
-    Component.validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+    ], this.debug);
+    if (this.debug > 1) Component.validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
         '/javascript/Undefined',
         '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
 
-    parameters = parameters || undefined;  // normalize nulls to undefined
     this.isComponent = true;
     this.getType = function() { return type; };
     this.getParameters = function() { return parameters; };
@@ -121,9 +123,10 @@ Component.type = function(value) {
  * @param {String} parameterName The name of the parameter being validated.
  * @param {Any} parameterValue The value of the parameter being validated.
  * @param {Array} allowedTypes An array of strings representing the allowed types for the parameter
+ * @param {Number} debug A number in the range [0..3].
  * value.
  */
-Component.validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
+Component.validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug) {
     const actualType = Component.type(parameterValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
     if (parameterValue && parameterValue.isComponent) {
@@ -139,7 +142,7 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && parameterValue.isChainable()) return;
         if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && parameterValue.isProcedural()) return;
     }
-    throw new Exception({  // must not be exception() to avoid infinite recursion
+    const exception = new Exception({  // must not be exception() to avoid infinite recursion
         $module: moduleName,
         $procedure: procedureName,
         $parameter: parameterName,
@@ -149,6 +152,8 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
         $value: parameterValue,
         $text: 'An invalid parameter type was passed to the procedure.'
     });
+    if (debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -161,9 +166,6 @@ Component.validate = function(moduleName, procedureName, parameterName, paramete
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Component.prototype.isType = function(type) {
-    this.validateType('/bali/abstractions/Component', '$isType', '$type', type, [
-        '/javascript/String'
-    ]);
     return this.getType() === type;
 };
 
@@ -360,22 +362,6 @@ Component.prototype.isCollection = function() {
 
 
 /**
- * This method compares the type of a parameter value with the allowed types for that
- * parameter and throws an exception if it does not match.
- * 
- * @param {String} moduleName The name of the module being called.
- * @param {String} procedureName The name of the procedure being called.
- * @param {String} parameterName The name of the parameter being validated.
- * @param {Any} parameterValue The value of the parameter being validated.
- * @param {Array} allowedTypes An array of strings representing the allowed types for the parameter
- * value.
- */
-Component.prototype.validateType = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes) {
-    return Component.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes);
-};
-
-
-/**
  * This abstract method returns a boolean value for this component. It allows each component to be
  * used as a boolean in a condition that determines whether of not the component has a meaningful
  * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
@@ -383,12 +369,14 @@ Component.prototype.validateType = function(moduleName, procedureName, parameter
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Component.prototype.toBoolean = function() {
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$toBoolean',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -512,7 +500,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         }
         return true;  // all pattern items matched successfully
     }
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
@@ -520,6 +508,8 @@ Component.prototype.isMatchedBy = function(pattern) {
         $parameter: pattern,
         $text: 'An invalid pattern was passed to match.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -548,10 +538,12 @@ Component.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    throw new Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };

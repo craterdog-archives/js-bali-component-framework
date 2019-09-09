@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const bali = require('../');
+const bali = require('../').api(2);
 
 
 describe('Bali Nebula™ Component Framework - Name', function() {

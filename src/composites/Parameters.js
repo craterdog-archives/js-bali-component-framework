@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -25,13 +26,8 @@ const abstractions = require('../abstractions');
  * @param {Object|Catalog} parameters An object containing the parameter symbol-value pairs.
  * @returns {Parameters} The new parameter component.
  */
-function Parameters(parameters) {
-    abstractions.Composite.call(this, '$Parameters');
-
-    abstractions.Composite.validate('/bali/composites/Parameters', '$Parameters', '$parameters', parameters, [
-        '/javascript/Object',
-        '/bali/collections/Catalog'
-    ]);
+function Parameters(parameters, debug) {
+    abstractions.Composite.call(this, '$Parameters', debug);
 
     // the parameters are immutable so the methods are included in the constructor
     const catalog = this.convert(parameters);
@@ -41,10 +37,10 @@ function Parameters(parameters) {
     };
 
     this.getValue = function(key) {
-        this.validateType('/bali/composites/Parameters', '$getParameter', '$key', key, [
+        if (this.debug > 1) validate('/bali/composites/Parameters', '$getParameter', '$key', key, [
             '/javascript/String',
             '/bali/elements/Symbol'
-        ]);
+        ], this.debug);
         return catalog.getValue(key);
     };
 

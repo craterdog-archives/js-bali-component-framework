@@ -16,6 +16,7 @@
  */
 const moment = require('moment');
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,17 +28,13 @@ const abstractions = require('../abstractions');
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Duration} The new duration element.
  */
-function Duration(value, parameters) {
-    abstractions.Element.call(this, '$Duration', parameters);
-    abstractions.Element.validate('/bali/elements/Duration', '$Duration', '$value', value, [
+function Duration(value, parameters, debug) {
+    abstractions.Element.call(this, '$Duration', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Duration', '$Duration', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/Number'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$Duration', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
     value = value || 0;  // default value
     value = moment.duration(value);
 
@@ -109,11 +106,12 @@ Duration.prototype.acceptVisitor = function(visitor) {
  * @param {Duration} duration The duration to be inverted.
  * @returns {Duration} The inverse of the specified duration.
  */
-Duration.inverse = function(duration) {
-    abstractions.Element.validate('/bali/elements/Duration', '$inverse', '$duration', duration, [
+Duration.inverse = function(duration, debug) {
+    debug = debug || 0;  // default value
+    if (debug > 1) validate('/bali/elements/Duration', '$inverse', '$duration', duration, [
         '/bali/elements/Duration'
-    ]);
-    return new Duration(moment.duration().subtract(duration.getValue()).toISOString());
+    ], debug);
+    return new Duration(moment.duration().subtract(duration.getValue()).toISOString(), debug);
 };
 
 
@@ -124,14 +122,15 @@ Duration.inverse = function(duration) {
  * @param {Duration} second The second duration to be summed.
  * @returns {Duration} The normalized sum of the two durations.
  */
-Duration.sum = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Duration', '$sum', '$first', first, [
+Duration.sum = function(first, second, debug) {
+    debug = debug || 0;  // default value
+    if (debug > 1) validate('/bali/elements/Duration', '$sum', '$first', first, [
         '/bali/elements/Duration'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$sum', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Duration', '$sum', '$second', second, [
         '/bali/elements/Duration'
-    ]);
-    return new Duration(first.getValue().clone().add(second.getValue()).toISOString());
+    ], debug);
+    return new Duration(first.getValue().clone().add(second.getValue()).toISOString(), debug);
 };
 
 
@@ -142,14 +141,15 @@ Duration.sum = function(first, second) {
  * @param {Duration} second The duration to subtract from the first duration.
  * @returns {Duration} The normalized difference of the two durations.
  */
-Duration.difference = function(first, second) {
-    abstractions.Element.validate('/bali/elements/Duration', '$difference', '$first', first, [
+Duration.difference = function(first, second, debug) {
+    debug = debug || 0;  // default value
+    if (debug > 1) validate('/bali/elements/Duration', '$difference', '$first', first, [
         '/bali/elements/Duration'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$difference', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Duration', '$difference', '$second', second, [
         '/bali/elements/Duration'
-    ]);
-    return new Duration(first.getValue().clone().subtract(second.getValue()).toISOString());
+    ], debug);
+    return new Duration(first.getValue().clone().subtract(second.getValue()).toISOString(), debug);
 };
 
 
@@ -160,13 +160,13 @@ Duration.difference = function(first, second) {
  * @param {Number} factor The scale factor.
  * @returns {Duration} The normalized scaled duration.
  */
-Duration.scaled = function(duration, factor) {
-    abstractions.Element.validate('/bali/elements/Duration', '$scaled', '$duration', duration, [
+Duration.scaled = function(duration, factor, debug) {
+    if (debug > 1) validate('/bali/elements/Duration', '$scaled', '$duration', duration, [
         '/bali/elements/Duration'
-    ]);
-    abstractions.Element.validate('/bali/elements/Duration', '$scaled', '$factor', factor, [
+    ], debug);
+    if (debug > 1) validate('/bali/elements/Duration', '$scaled', '$factor', factor, [
         '/javascript/Number'
-    ]);
-    return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString());
+    ], debug);
+    return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString(), debug);
 };
 

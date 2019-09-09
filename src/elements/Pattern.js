@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a pattern element.
  */
 const abstractions = require('../abstractions');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -24,17 +25,13 @@ const abstractions = require('../abstractions');
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
  * @returns {Pattern} The new pattern element.
  */
-function Pattern(value, parameters) {
-    abstractions.Element.call(this, '$Pattern', parameters);
-    abstractions.Element.validate('/bali/elements/Pattern', '$Pattern', '$value', value, [
+function Pattern(value, parameters, debug) {
+    abstractions.Element.call(this, '$Pattern', parameters, debug);
+    if (this.debug > 1) validate('/bali/elements/Pattern', '$Pattern', '$value', value, [
         '/javascript/Undefined',
         '/javascript/String',
         '/javascript/RegExp'
-    ]);
-    abstractions.Element.validate('/bali/elements/Pattern', '$Pattern', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
     value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 
@@ -69,7 +66,7 @@ Pattern.prototype.toBoolean = function() {
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
 Pattern.prototype.matches = function(component) {
-    this.validateType('/bali/elements/Pattern', '$matches', '$component', component, [
+    if (this.debug > 1) validate('/bali/elements/Pattern', '$matches', '$component', component, [
         '/javascript/Undefined',
         '/javascript/Boolean',
         '/javascript/Number',
@@ -77,7 +74,7 @@ Pattern.prototype.matches = function(component) {
         '/javascript/Array',
         '/javascript/Object',
         '/bali/abstractions/Component'
-    ]);
+    ], this.debug);
     component = this.convert(component);
     return this.getValue().test(component.toString());
 };

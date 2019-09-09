@@ -14,6 +14,7 @@
  * This abstract class defines the methods that all composite components must support.
  */
 const Component = require('./Component').Component;
+const validate = Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,17 +27,8 @@ const Component = require('./Component').Component;
  * @param {Parameters} parameters Optional parameters used to parameterize the composite component. 
  * @returns {Composite} The new composite component.
  */
-function Composite(type, parameters) {
-    Component.call(this, type, parameters);
-
-    Component.validate('/bali/abstractions/Composite', '$Composite', '$type', type, [
-        '/javascript/String'
-    ]);
-    Component.validate('/bali/abstractions/Composite', '$Composite', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
-
+function Composite(type, parameters, debug) {
+    Component.call(this, type, parameters, debug);
     return this;
 }
 Composite.prototype = Object.create(Component.prototype);
@@ -86,12 +78,12 @@ Composite.prototype.toBoolean = function() {
  * @returns {Number} The normalized [1..N] index.
  */
 Composite.prototype.normalizeIndex = function(index, size) {
-    this.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
+    if (this.debug > 1) validate('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
         '/javascript/Number'
-    ]);
-    this.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
+    ], this.debug);
+    if (this.debug > 1) validate('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
         '/javascript/Number'
-    ]);
+    ], this.debug);
     if (index > size) index = size;
     if (index < -size) index = -size;
     if (index < 0) index = index + size + 1;

@@ -15,6 +15,7 @@
  */
 const abstractions = require('../abstractions');
 const composites = require('../composites');
+const validate = abstractions.Component.validate;
 
 
 /*
@@ -35,16 +36,11 @@ Array.prototype.peek = function() {
  * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
  * @returns {Stack} The new stack.
  */
-function Stack(parameters) {
+function Stack(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Stack/v1'
-    });
-    abstractions.Collection.call(this, '$Stack', parameters);
-
-    abstractions.Collection.validate('/bali/collections/Stack', '$Stack', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    }, debug);
+    abstractions.Collection.call(this, '$Stack', parameters, debug);
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor
@@ -64,7 +60,7 @@ function Stack(parameters) {
     };
     
     this.addItem = function(item) {
-        this.validateType('/bali/collections/Stack', '$addItem', '$item', item, [
+        if (this.debug > 1) validate('/bali/collections/Stack', '$addItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -72,7 +68,7 @@ function Stack(parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         if (array.length === capacity) {
             throw new composites.Exception({
                 $module: '/bali/collections/Stack',
@@ -88,11 +84,11 @@ function Stack(parameters) {
     };
     
     this.addItems = function(items) {
-        this.validateType('/bali/collections/Stack', '$addItems', '$items', items, [
+        if (this.debug > 1) validate('/bali/collections/Stack', '$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         var count = 0;
         items = items || undefined;  // normalize nulls to undefined
         if (items) {

@@ -17,6 +17,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -29,16 +30,11 @@ const composites = require('../composites');
  * @param {Comparator} comparator An optional comparator.
  * @returns {Set} The new set.
  */
-function Set(parameters, comparator) {
+function Set(parameters, comparator, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Set/v1'
-    });
-    abstractions.Collection.call(this, '$Set', parameters);
-
-    abstractions.Collection.validate('/bali/collections/Set', '$Set', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    }, debug);
+    abstractions.Collection.call(this, '$Set', parameters, debug);
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
@@ -65,7 +61,7 @@ function Set(parameters, comparator) {
     };
     
     this.getIndex = function(item) {
-        this.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -73,7 +69,7 @@ function Set(parameters, comparator) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         var index = 0;
         item = this.convert(item);
         index = tree.index(item) + 1;  // convert to ordinal based indexing
@@ -81,15 +77,15 @@ function Set(parameters, comparator) {
     };
     
     this.getItem = function(index) {
-        this.validateType('/bali/collections/Set', '$getItem', '$index', index, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$getItem', '$index', index, [
             '/javascript/Number'
-        ]);
+        ], this.debug);
         index = this.normalizeIndex(index, tree.size) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
     
     this.addItem = function(item) {
-        this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$addItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -97,17 +93,17 @@ function Set(parameters, comparator) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         item = this.convert(item);
         return tree.insert(item);
     };
     
     this.addItems = function(items) {
-        this.validateType('/bali/collections/Set', '$addItems', '$items', items, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         var count = 0;
         items = items || undefined;  // normalize nulls to undefined
         if (items) {
@@ -143,7 +139,7 @@ function Set(parameters, comparator) {
     },
 
     this.removeItem = function(item) {
-        this.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$addItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -151,17 +147,17 @@ function Set(parameters, comparator) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         item = this.convert(item);
         return tree.remove(item);
     };
     
     this.removeItems = function(items) {
-        this.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
+        if (this.debug > 1) validate('/bali/collections/Set', '$removeItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         var count = 0;
         if (items && items.getIterator) {
             const iterator = items.getIterator();
@@ -218,13 +214,13 @@ Set.prototype.isLogical = function() {
  * @param {Set} second The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-Set.and = function(first, second) {
-    abstractions.Element.validate('/bali/collections/Set', '$and', '$first', first, [
+Set.and = function(first, second, debug) {
+    if (debug > 1) validate('/bali/collections/Set', '$and', '$first', first, [
         '/bali/collections/Set'
-    ]);
-    abstractions.Element.validate('/bali/collections/Set', '$and', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Set', '$and', '$second', second, [
         '/bali/collections/Set'
-    ]);
+    ], debug);
     const result = new Set(first.getParameters(), first.comparator);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
@@ -245,13 +241,13 @@ Set.and = function(first, second) {
  * @param {Set} second The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-Set.sans = function(first, second) {
-    abstractions.Element.validate('/bali/collections/Set', '$sans', '$first', first, [
+Set.sans = function(first, second, debug) {
+    if (debug > 1) validate('/bali/collections/Set', '$sans', '$first', first, [
         '/bali/collections/Set'
-    ]);
-    abstractions.Element.validate('/bali/collections/Set', '$sans', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Set', '$sans', '$second', second, [
         '/bali/collections/Set'
-    ]);
+    ], debug);
     const result = new Set(first.getParameters(), first.comparator);
     result.addItems(first);
     result.removeItems(second);
@@ -267,13 +263,13 @@ Set.sans = function(first, second) {
  * @param {Set} second The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-Set.or = function(first, second) {
-    abstractions.Element.validate('/bali/collections/Set', '$or', '$first', first, [
+Set.or = function(first, second, debug) {
+    if (debug > 1) validate('/bali/collections/Set', '$or', '$first', first, [
         '/bali/collections/Set'
-    ]);
-    abstractions.Element.validate('/bali/collections/Set', '$or', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Set', '$or', '$second', second, [
         '/bali/collections/Set'
-    ]);
+    ], debug);
     const result = new Set(first.getParameters(), first.comparator);
     result.addItems(first);
     result.addItems(second);
@@ -289,13 +285,13 @@ Set.or = function(first, second) {
  * @param {Set} second The second set to be operated on.
  * @returns {Set} The resulting set.
  */
-Set.xor = function(first, second) {
-    abstractions.Element.validate('/bali/collections/Set', '$xor', '$first', first, [
+Set.xor = function(first, second, debug) {
+    if (debug > 1) validate('/bali/collections/Set', '$xor', '$first', first, [
         '/bali/collections/Set'
-    ]);
-    abstractions.Element.validate('/bali/collections/Set', '$xor', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Set', '$xor', '$second', second, [
         '/bali/collections/Set'
-    ]);
+    ], debug);
     const result = new Set(first.getParameters(), first.comparator);
     const iterator1 = first.getIterator();
     var item1;

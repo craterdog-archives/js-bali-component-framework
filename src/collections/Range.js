@@ -16,6 +16,7 @@
 const abstractions = require('../abstractions');
 const elements = require('../elements');
 const Exception = require('../composites/Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -29,23 +30,18 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Parameters} parameters Optional parameters used to parameterize this range. 
  * @returns {Range} The new range.
  */
-function Range(first, last, parameters) {
-    abstractions.Collection.call(this, '$Range', parameters);
-
-    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$first', first, [
+function Range(first, last, parameters, debug) {
+    abstractions.Collection.call(this, '$Range', parameters, debug);
+    if (this.debug > 1) validate('/bali/collections/Range', '$Range', '$first', first, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
-    ]);
-    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$last', last, [
+    ], this.debug);
+    if (this.debug > 1) validate('/bali/collections/Range', '$Range', '$last', last, [
         '/javascript/Number',
         '/javascript/String',
         '/bali/abstractions/Component'
-    ]);
-    abstractions.Collection.validate('/bali/collections/Range', '$Range', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+    ], this.debug);
     first = this.convert(first);
     last = this.convert(last);
 
@@ -115,9 +111,9 @@ function Range(first, last, parameters) {
     };
     
     this.getItem = function(index) {
-        this.validateType('/bali/collections/Range', '$getItem', '$index', index, [
+        if (this.debug > 1) validate('/bali/collections/Range', '$getItem', '$index', index, [
             '/javascript/Number'
-        ]);
+        ], this.debug);
         var item;
         if (collection) {
             item = collection.getItem(firstIndex + index - 1);
@@ -140,7 +136,7 @@ function Range(first, last, parameters) {
     };
     
     this.isInRange = function(item) {
-        this.validateType('/bali/collections/Range', '$isInRange', '$item', item, [
+        if (this.debug > 1) validate('/bali/collections/Range', '$isInRange', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -148,7 +144,7 @@ function Range(first, last, parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         var index;
         if (collection) {
             index = collection.getIndex(item);

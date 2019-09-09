@@ -20,6 +20,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('./Exception').Exception;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -28,14 +29,11 @@ const Exception = require('./Exception').Exception;
  * This function creates a new tree node component.
  * 
  * @param {String} type The type of the tree node component.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Tree} The new tree node component.
  */
-function Tree(type) {
-    abstractions.Composite.call(this, type);
-
-    abstractions.Composite.validate('/bali/composites/Tree', '$Tree', '$type', type, [
-        '/javascript/String'
-    ]);
+function Tree(type, debug) {
+    abstractions.Composite.call(this, type, debug);
 
     if (!this.isProcedural()) {
         throw new Exception({
@@ -59,18 +57,18 @@ function Tree(type) {
     };
 
     this.addChild = function(child) {
-        this.validateType('/bali/composites/Tree', '$addChild', '$child', child, [
+        if (this.debug > 1) validate('/bali/composites/Tree', '$addChild', '$child', child, [
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         child = this.convert(child);
         array.push(child);
         child.getParent = function() { return this; };
     };
 
     this.getChild = function(index) {
-        this.validateType('/bali/composites/Tree', '$getChild', '$index', index, [
+        if (this.debug > 1) validate('/bali/composites/Tree', '$getChild', '$index', index, [
             '/javascript/Number'
-        ]);
+        ], this.debug);
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };

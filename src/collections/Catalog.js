@@ -19,6 +19,7 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
 const List = require('./List').List;
+const validate = abstractions.Component.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -30,12 +31,8 @@ const List = require('./List').List;
  * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
  * @returns {Catalog} The new catalog.
  */
-function Catalog(parameters) {
-    abstractions.Collection.call(this, '$Catalog', parameters);
-    abstractions.Collection.validate('/bali/collections/Catalog', '$Catalog', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ]);
+function Catalog(parameters, debug) {
+    abstractions.Collection.call(this, '$Catalog', parameters, debug);
 
     // the map and array are private attributes so methods that use them are defined
     // in the constructor
@@ -51,18 +48,18 @@ function Catalog(parameters) {
     };
 
     this.getItem = function(index) {
-        this.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$getItem', '$index', index, [
             '/javascript/Number'
-        ]);
+        ], this.debug);
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.addItem = function(association) {
-        this.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$addItem', '$association', association, [
             '/javascript/Undefined',
             '/bali/composites/Association'
-        ]);
+        ], this.debug);
         if (association) {
             const key = association.getKey().toString();
             if (map[key]) return false;
@@ -74,12 +71,12 @@ function Catalog(parameters) {
     };
 
     this.addItems = function(associations) {
-        this.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$addItems', '$associations', associations, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/javascript/Object',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         var count = 0;
         var index = 1;
         associations = associations || undefined;  // normalize nulls to undefined
@@ -119,10 +116,10 @@ function Catalog(parameters) {
     };
 
     this.containsItem = function(association) {
-        this.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$containsItem', '$association', association, [
             '/javascript/Undefined',
             '/bali/composites/Association'
-        ]);
+        ], this.debug);
         if (association) {
             const key = association.getKey().toString();
             const candidate = map[key];
@@ -132,7 +129,7 @@ function Catalog(parameters) {
     };
 
     this.getValue = function(key) {
-        this.validateType('/bali/collections/Catalog', '$getValue', '$key', key, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$getValue', '$key', key, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -140,18 +137,18 @@ function Catalog(parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         key = this.convert(key);
         const association = map[key.toString()];
         if (association) return association.getValue();
     };
 
     this.getValues = function(keys) {
-        this.validateType('/bali/collections/Catalog', '$getValues', '$keys', keys, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$getValues', '$keys', keys, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         const values = new List();
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
@@ -170,7 +167,7 @@ function Catalog(parameters) {
     };
     
     this.setValue = function(key, value) {
-        this.validateType('/bali/collections/Catalog', '$setValue', '$key', key, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValue', '$key', key, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -178,8 +175,8 @@ function Catalog(parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
-        this.validateType('/bali/collections/Catalog', '$setValue', '$value', value, [
+        ], this.debug);
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValue', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -187,7 +184,7 @@ function Catalog(parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         key = this.convert(key);
         value = this.convert(value);
         var association = map[key.toString()];
@@ -203,11 +200,11 @@ function Catalog(parameters) {
     };
 
     this.setValues = function(associations) {
-        this.validateType('/bali/collections/Catalog', '$setValues', '$associations', associations, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValues', '$associations', associations, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         if (associations && associations.getIterator) {
             const iterator = associations.getIterator();
             while (iterator.hasNext()) {
@@ -218,7 +215,7 @@ function Catalog(parameters) {
     };
     
     this.removeValue = function(key) {
-        this.validateType('/bali/collections/Catalog', '$removeValue', '$key', key, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$removeValue', '$key', key, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -226,7 +223,7 @@ function Catalog(parameters) {
             '/javascript/Array',
             '/javascript/Object',
             '/bali/abstractions/Component'
-        ]);
+        ], this.debug);
         key = this.convert(key);
         const association = map[key.toString()];
         if (association) {
@@ -240,11 +237,11 @@ function Catalog(parameters) {
     };
 
     this.removeValues = function(keys) {
-        this.validateType('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
+        if (this.debug > 1) validate('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
-        ]);
+        ], this.debug);
         const values = new List();
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
@@ -336,13 +333,13 @@ Catalog.prototype.toObject = function() {
  * @param {Collection} second The second catalog to be operated on.
  * @returns {Collection} The resulting catalog.
  */
-Catalog.concatenation = function(first, second) {
-    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$first', first, [
+Catalog.concatenation = function(first, second, debug) {
+    if (debug > 1) validate('/bali/collections/Catalog', '$concatenation', '$first', first, [
         '/bali/collections/Catalog'
-    ]);
-    abstractions.Collection.validate('/bali/collections/Catalog', '$concatenation', '$second', second, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Catalog', '$concatenation', '$second', second, [
         '/bali/collections/Catalog'
-    ]);
+    ], debug);
     const result = new Catalog(first.getParameters());
     result.addItems(first);
     result.addItems(second);
@@ -358,15 +355,15 @@ Catalog.concatenation = function(first, second) {
  * @param {Set} keys The set of keys for the associations to be extracted.
  * @returns The resulting catalog.
  */
-Catalog.extraction = function(catalog, keys) {
-    abstractions.Collection.validate('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
+Catalog.extraction = function(catalog, keys, debug) {
+    if (debug > 1) validate('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
         '/bali/collections/Catalog'
-    ]);
-    abstractions.Collection.validate('/bali/collections/Catalog', '$extraction', '$keys', keys, [
+    ], debug);
+    if (debug > 1) validate('/bali/collections/Catalog', '$extraction', '$keys', keys, [
         '/javascript/Undefined',
         '/javascript/Array',
         '/bali/interfaces/Sequential'
-    ]);
+    ], debug);
     const result = new Catalog(catalog.getParameters());
     if (Array.isArray(keys)) {
         keys.forEach(function(key) {
