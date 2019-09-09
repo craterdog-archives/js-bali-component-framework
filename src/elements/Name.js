@@ -14,9 +14,10 @@
  * This element class captures the state and methods associated with a
  * name string element.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,6 +27,7 @@ const validate = abstractions.Component.validate;
  * 
  * @param {Array} value An array containing the parts of the name string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new name string element.
  */
 function Name(value, parameters, debug) {
@@ -35,13 +37,15 @@ function Name(value, parameters, debug) {
     ], this.debug);
 
     if (!Array.isArray(value) || value.length === 0) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/elements/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid name value was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // since this element is immutable the value must be read-only
@@ -142,6 +146,7 @@ Name.prototype.getIterator = function() {
  *
  * @param {Name} first The first name string to be operated on.
  * @param {Name} second The second name string to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Name} The resulting name string.
  */
 Name.concatenation = function(first, second, debug) {
@@ -154,7 +159,7 @@ Name.concatenation = function(first, second, debug) {
     const parts1 = first.getValue();
     const parts2 = second.getValue();
     const parts = parts1.concat(parts2);
-    return new Name(parts);
+    return new Name(parts, first.getParameters(), debug);
 };
 
 

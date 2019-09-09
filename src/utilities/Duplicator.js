@@ -13,6 +13,7 @@
  * This library provides functions that duplicate a parse tree structure produced
  * by the <code>Parser</code> class.
  */
+const validate = require('./Validation').validate;
 const Visitor = require('../abstractions/Visitor').Visitor;
 
 
@@ -26,12 +27,20 @@ const EOL = '\n';
  * This class implements a duplicator that uses a visitor to create a deep copy of a
  * component. Since elements are immutable, they are not copied, only referenced.
  * 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Duplicator} The new component duplicator.
  */
-function Duplicator() {
+function Duplicator(debug) {
 
     this.duplicateComponent = function(component, parameters) {
-        const visitor = new DuplicatingVisitor(parameters);
+        if (debug > 1) validate('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
+            '/bali/abstractions/Component'
+        ], debug);
+        if (debug > 1) validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+            '/javascript/Undefined',
+            '/bali/composites/Parameters'
+        ], debug);
+        const visitor = new DuplicatingVisitor(parameters, debug);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -44,10 +53,11 @@ exports.Duplicator = Duplicator;
 
 // PRIVATE CLASSES
 
-function DuplicatingVisitor(parameters) {
+function DuplicatingVisitor(parameters, debug) {
     Visitor.call(this);
     this.depth = 0;
     this.parameters = parameters;
+    this.debug = debug || 0;
     return this;
 }
 DuplicatingVisitor.prototype = Object.create(Visitor.prototype);

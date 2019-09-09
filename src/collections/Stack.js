@@ -13,9 +13,10 @@
  * This collection class implements a stack (LIFO) data structure.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 /*
@@ -70,13 +71,15 @@ function Stack(parameters, debug) {
             '/bali/abstractions/Component'
         ], this.debug);
         if (array.length === capacity) {
-            throw new composites.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/collections/Stack',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,
                 $text: 'The stack has reached its maximum capacity.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         item = this.convert(item);
         array.push(item);
@@ -127,24 +130,28 @@ function Stack(parameters, debug) {
         if (array.length > 0) {
             return array.pop();
         }
-        throw new composites.Exception({
+        const exception = new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$removeItem',
             $exception: '$emptyStack',
             $text: 'Attempted to remove an item from an empty stack.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     };
     
     this.getTop = function() {
         if (array.length > 0) {
             return array.peek();
         }
-        throw new composites.Exception({
+        const exception = new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$getTop',
             $exception: '$emptyStack',
             $text: 'Attempted to access an item on an empty stack.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     };
     
     this.deleteAll = function() {

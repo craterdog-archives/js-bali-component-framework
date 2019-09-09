@@ -33,6 +33,7 @@ const abstractions = require('../abstractions/');
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
+const validate = utilities.validation.validate;
 
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
@@ -44,9 +45,7 @@ const EOL = '\n';
  * This class implements a parser that parses strings containing Bali Document Notation™ and
  * generates the corresponding component structures.
  * 
- * @param {Boolean} debug Whether of not the parser should be run in debug mode, the
- * default is false. Debug mode is only useful for debugging the language grammar and
- * need not be used otherwise.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Parser} The new string parser.
  */
 function Parser(debug) {
@@ -55,6 +54,9 @@ function Parser(debug) {
     debug = debug || false;
 
     this.parseDocument = function(document) {
+        if (debug > 1) validate('/bali/utilities/Parser', '$parse', '$document', document, [
+            '/javascript/String'
+        ], debug);
         const parser = initializeParser(document, debug);
         const antlrTree = parser.document();
         const component = convertParseTree(antlrTree, debug);
@@ -80,7 +82,7 @@ function initializeParser(document, debug) {
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(listener);
-    parser._errHandler = new CustomErrorStrategy();
+    parser._errHandler = new CustomErrorStrategy(debug);
     return parser;
 }
 
@@ -1054,8 +1056,9 @@ grammar.DocumentLexer.prototype.recover = function(e) {
 };
 
 
-function CustomErrorStrategy() {
+function CustomErrorStrategy(debug) {
     ErrorStrategy.DefaultErrorStrategy.call(this);
+    this.debug = debug || 0;
     return this;
 }
 CustomErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
@@ -1067,18 +1070,20 @@ CustomErrorStrategy.prototype.reportError = function(recognizer, e) {
 };
 
 
-CustomErrorStrategy.prototype.recover = function(recognizer, exception) {
+CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
     var context = recognizer._ctx;
     while (context !== null) {
-        context.exception = exception;
+        context.exception = cause;
         context = context.parentCtx;
     }
-    throw new composites.Exception({
+    const exception = new composites.Exception({
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: exception.toString()
-    });
+        $text: cause.toString()
+    }, cause);
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -1096,8 +1101,8 @@ CustomErrorStrategy.prototype.sync = function(recognizer) {
 
 function CustomErrorListener(debug) {
     antlr.error.ErrorListener.call(this);
+    this.debug = debug || 0;
     this.exactOnly = false;  // 'true' results in uninteresting ambiguities so leave 'false'
-    this.debug = debug;
     return this;
 }
 CustomErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);

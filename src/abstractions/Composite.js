@@ -13,8 +13,9 @@
 /**
  * This abstract class defines the methods that all composite components must support.
  */
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const validate = Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -34,9 +35,6 @@ function Composite(type, parameters, debug) {
 Composite.prototype = Object.create(Component.prototype);
 Composite.prototype.constructor = Composite;
 exports.Composite = Composite;
-
-Composite.type = Component.type;
-Composite.validate = Component.validate;
 
 
 // PUBLIC METHODS

@@ -16,6 +16,7 @@
  * the corresponding Bali Document Notation™ formatted code string.
  */
 const codex = require('./Codex');
+const validate = require('./Validation').validate;
 const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../composites/Exception').Exception;
 
@@ -38,15 +39,23 @@ const MAXIMUM_LENGTH = 25;
  * 
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Formatter} The new component formatter.
  */
-function Formatter(indentation) {
+function Formatter(indentation, debug) {
+    if (debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
+        '/javascript/Undefined',
+        '/javascript/Number'
+    ], debug);
 
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || 0;
 
     this.formatComponent = function(component) {
-        const visitor = new FormattingVisitor(indentation);
+        if (debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
+            '/bali/abstractions/Component'
+        ], debug);
+        const visitor = new FormattingVisitor(indentation, debug);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -59,9 +68,10 @@ exports.Formatter = Formatter;
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation) {
+function FormattingVisitor(indentation, debug) {
     Visitor.call(this);
     this.indentation = indentation || 0;
+    this.debug = debug || 0;
     this.depth = 0;
     this.inline = 0;
     this.result = '';

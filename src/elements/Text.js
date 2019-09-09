@@ -13,8 +13,9 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS

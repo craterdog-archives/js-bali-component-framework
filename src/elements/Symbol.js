@@ -14,9 +14,10 @@
  * This element class captures the state and methods associated with a
  * symbol element.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -35,13 +36,15 @@ function Symbol(value, parameters, debug) {
     ], this.debug);
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/elements/Symbol',
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid symbol value was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // since this element is immutable the value must be read-only

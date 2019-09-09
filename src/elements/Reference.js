@@ -15,9 +15,10 @@
  * reference element.
  */
 const URL = require('url').URL;
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -40,14 +41,16 @@ function Reference(value, parameters, debug) {
         if (value.constructor.name !== 'URL') {
             value = new URL(value.replace(/\$tag:#/, '$tag:%23'));  // escape the '#'
         }
-    } catch (exception) {
-        throw new Exception({
+    } catch (cause) {
+        const exception = new Exception({
             $module: '/bali/elements/Reference',
             $procedure: '$Reference',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid reference value was passed to the constructor.'
-        }, exception);
+        }, cause);
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // since this element is immutable the value must be read-only

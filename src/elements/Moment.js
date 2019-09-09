@@ -15,9 +15,11 @@
  * in time.
  */
 const moment = require('moment');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
+
 
 const FORMATS = [
     'Y',
@@ -40,6 +42,7 @@ const FORMATS = [
  * @param {String|Number} value The optional source string value or millisecond value of
  * the moment in time.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Moment} The new moment in time.
  */
 function Moment(value, parameters, debug) {
@@ -124,6 +127,7 @@ Moment.prototype.acceptVisitor = function(visitor) {
  * 
  * @param {Moment} first The first moment in time.
  * @param {Moment} second The second moment in time.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Duration} The duration between the two moments in time.
  */
 Moment.duration = function(first, second, debug) {
@@ -135,7 +139,7 @@ Moment.duration = function(first, second, debug) {
         '/bali/elements/Moment'
     ], debug);
     const duration = moment.duration(second.getValue().diff(first.getValue()));
-    return new Duration(duration.toISOString(), debug);
+    return new Duration(duration.toISOString(), undefined, debug);
 };
 
 
@@ -145,6 +149,7 @@ Moment.duration = function(first, second, debug) {
  * 
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be subtracted.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Moment} The resulting moment in time.
  */
 Moment.earlier = function(moment, duration, debug) {
@@ -155,7 +160,7 @@ Moment.earlier = function(moment, duration, debug) {
         '/bali/elements/Duration'
     ], debug);
     const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
-    return new Moment(earlier.format(FORMATS[7]), debug);
+    return new Moment(earlier.format(FORMATS[7]), moment.getParameters(), debug);
 };
 
 
@@ -165,6 +170,7 @@ Moment.earlier = function(moment, duration, debug) {
  * 
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be added.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Moment} The resulting moment in time.
  */
 Moment.later = function(moment, duration, debug) {
@@ -175,5 +181,5 @@ Moment.later = function(moment, duration, debug) {
         '/bali/elements/Duration'
     ], debug);
     const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
-    return new Moment(later.format(FORMATS[7]), debug);
+    return new Moment(later.format(FORMATS[7]), moment.getParameters(), debug);
 };

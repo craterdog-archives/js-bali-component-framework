@@ -14,9 +14,10 @@
  * This element class captures the state and methods associated with a
  * version string element.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -37,13 +38,15 @@ function Version(value, parameters, debug) {
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/elements/Version',
             $procedure: '$version',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid version value was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // since this element is immutable the value must be read-only

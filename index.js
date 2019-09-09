@@ -19,7 +19,6 @@ const abstractions = require('./src/abstractions');  // depends on utilities
 const elements = require('./src/elements');  // depends on abstractions
 const composites = require('./src/composites');  // depends on elements
 const collections = require('./src/collections');  // depends on composites
-const validateType = abstractions.Component.validate;
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
@@ -112,176 +111,154 @@ composites.Exception.prototype.convert = convert;
 exports.api = function(debug) {
     const defaultLevel = debug || 0;  // default value
 
-    /**
-     * This function creates an immutable instance of an angle using the specified value.
-     * 
-     * @param {Number} value The optional value of the angle (default is zero).
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Angle} The new angle element.
-     */
+    // ANGLE
     const angle = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Angle(value, parameters, debug);
     };
-    angle.inverse = elements.Angle.inverse;
-    angle.complement = elements.Angle.complement;
-    angle.supplement = elements.Angle.supplement;
-    angle.conjugate = elements.Angle.conjugate;
-    angle.sum = elements.Angle.sum;
-    angle.difference = elements.Angle.difference;
-    angle.scaled = elements.Angle.scaled;
-    angle.sine = elements.Angle.sine;
-    angle.cosine = elements.Angle.cosine;
-    angle.tangent = elements.Angle.tangent;
-    angle.arcsine = elements.Angle.arcsine;
-    angle.arccosine = elements.Angle.arccosine;
-    angle.arctangent = elements.Angle.arctangent;
+    angle.inverse = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.inverse(angle, debug);
+    };
+    angle.complement = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.complement(angle, debug);
+    };
+    angle.supplement = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.supplement(angle, debug);
+    };
+    angle.conjugate = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.conjugate(angle, debug);
+    };
+    angle.sum = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.sum(first, second, debug);
+    };
+    angle.difference = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.difference(first, second, debug);
+    };
+    angle.scaled = function(angle, factor, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.scaled(angle, factor, debug);
+    };
+    angle.sine = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.sine(angle, debug);
+    };
+    angle.cosine = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.cosine(angle, debug);
+    };
+    angle.tangent = function(angle, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.tangent(angle, debug);
+    };
+    angle.arcsine = function(ratio, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.arcsine(ratio, debug);
+    };
+    angle.arccosine = function(ratio, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.arccosine(ratio, debug);
+    };
+    angle.arctangent = function(opposite, adjacent, debug) {
+        debug = debug || defaultLevel;
+        return elements.Angle.arctangent(opposite, adjacent, debug);
+    };
     
-    /**
-     * This function creates a new key-value association.
-     * 
-     * @param {String|Number|Boolean|Component} key The key of the association.
-     * @param {String|Number|Boolean|Component} value The value associated with the key.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Association} A new association.
-     */
+    // ASSOCIATION
     const association = function(key, value, debug) {
         debug = debug || defaultLevel;
         return new composites.Association(key, value, debug);
     };
     
-    /**
-     * This function creates a new finite state automaton using the specified event type
-     * array and state transition object.
-     * <pre>
-     * eventTypes:  [  $event1,   $event2, ...   $eventM]
-     * nextStates: {
-     *     $state1: [undefined,   $state2, ... undefined]
-     *     $state2: [  $state3,   $stateN, ...   $state1]
-     *                         ...
-     *     $stateN: [  $state1, undefined, ...   $state3]
-     * }
-     * </pre>
-     * The first state in the nextStates object is the initial state of the finite state automaton.
-     * 
-     * @param {Array} eventTypes An array of the possible event types as strings.
-     * @param {Object} nextStates An object defining the possible states as strings and allowed
-     * transitions between them given specific event types.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Automaton} A new finite state automaton.
-     */
+    // AUTOMATON
     const automaton = function(eventTypes, nextStates, debug) {
         debug = debug || defaultLevel;
-        // must check these here since an automaton is a utility rather than a component
-        if (debug > 1) validateType('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
-            '/javascript/Array'
-        ], debug);
-        if (debug > 1) validateType('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
-            '/javascript/Object'
-        ], debug);
         return new utilities.Automaton(eventTypes, nextStates, debug);
     };
     
-    /**
-     * This function creates an immutable instance of a binary string using the specified
-     * value.
-     * 
-     * @param {Buffer} value a buffer containing the bytes for the binary string.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Binary} The new binary string.
-     */
+    // BINARY
     const binary = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Binary(value, parameters, debug);
     };
-    binary.not = elements.Binary.not;
-    binary.and = elements.Binary.and;
-    binary.sans = elements.Binary.sans;
-    binary.or = elements.Binary.or;
-    binary.xor = elements.Binary.xor;
-    binary.concatenation = elements.Binary.concatenation;
+    binary.not = function(binary, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.not(binary, debug);
+    };
+    binary.and = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.and(first, second, debug);
+    };
+    binary.sans = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.sans(first, second, debug);
+    };
+    binary.or = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.or(first, second, debug);
+    };
+    binary.xor = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.xor(first, second, debug);
+    };
+    binary.concatenation = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Binary.concatenation(first, second, debug);
+    };
     
-    /**
-     * This function creates a new catalog component with optional parameters that are
-     * used to parameterize its type.
-     * 
-     * @param {Sequence|Array|Object} associations An optional sequential object containing the
-     * items to use to seed this catalog.
-     * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Catalog} The new catalog.
-     */
+    // CATALOG
     const catalog = function(associations, parameters, debug) {
         debug = debug || defaultLevel;
         const collection = new collections.Catalog(parameters, debug);
         collection.addItems(associations);
         return collection;
     };
-    catalog.concatenation = collections.Catalog.concatenation;
-    catalog.extraction = collections.Catalog.extraction;
+    catalog.concatenation = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.Catalog.concatenation(first, second, debug);
+    };
+    catalog.extraction = function(catalog, keys, debug) {
+        debug = debug || defaultLevel;
+        return collections.Catalog.extraction(catalog, keys, debug);
+    };
     
-    /**
-     * This function duplicates a Bali component by copying each of its attributes
-     * recursively.  Since elemental components are immutable, they are not duplicated.
-     * 
-     * @param {Component} component The component to be duplicated.
-     * @param {Parameters} parameters Optional parameters to be associated with the
-     * duplicate component. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Component} The duplicate component.
-     */
+    // DUPLICATE
     const duplicate = function(component, parameters, debug) {
         debug = debug || defaultLevel;
-        // must check these here since a duplicator is a utility rather than a component
-        if (debug > 1) validateType('/bali/utilities/Duplicator', '$duplicator', '$component', component, [
-            '/bali/abstractions/Component'
-        ], debug);
         const duplicator = new utilities.Duplicator(debug);
         return duplicator.duplicateComponent(component, parameters);
     };
     
-    /**
-     * This function creates a new duration element using the specified value.
-     * 
-     * @param {String|Number} value The source string the duration.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Duration} The new duration element.
-     */
+    // DURATION
     const duration = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Duration(value, parameters, debug);
     };
-    duration.inverse = elements.Duration.inverse;
-    duration.sum = elements.Duration.sum;
-    duration.difference = elements.Duration.difference;
-    duration.scaled = elements.Duration.scaled;
+    duration.inverse = function(duration, debug) {
+        debug = debug || defaultLevel;
+        return elements.Duration.inverse(duration, debug);
+    };
+    duration.sum = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Duration.sum(first, second, debug);
+    };
+    duration.difference = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Duration.difference(first, second, debug);
+    };
+    duration.scaled = function(duration, factor, debug) {
+        debug = debug || defaultLevel;
+        return elements.Duration.scaled(duration, factor, debug);
+    };
     
-    /**
-     * This function creates a new Bali exception using the attributes defined in the
-     * specified JavaScript object.  If the optional cause of the exception is provided
-     * it is used to augment the information about the exception.
-     * 
-     * @param {Object} attributes A JavaScript object defining the attributes to be associated
-     * with the new exception. 
-     * @param {Error|Exception} cause The underlying exception that caused this exception.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Exception} The new Bali exception, or the underlying <code>cause</code>
-     * if the cause is from the same module as the current exception.
-     */
+    // EXCEPTION
     const exception = function(attributes, cause, debug) {
         debug = debug || defaultLevel;
-        // must check these here since Exception class only "pretends" to inherit from Composite
-        if (debug > 1) validateType('/bali/composites/Exception', '$exception', '$attributes', attributes, [
-            '/javascript/Object'
-        ], debug);
-        if (debug > 1) validateType('/bali/composites/Exception', '$exception', '$cause', cause, [
-            '/javascript/Undefined',
-            '/javascript/Error',
-            '/bali/composites/Exception'
-        ], debug);
         var error;
         if (cause && cause.constructor.name === 'Exception' &&
             cause.attributes.getValue('$module').toString() === attributes['$module']) {
@@ -295,232 +272,195 @@ exports.api = function(debug) {
         return error;
     };
     
-    /**
-     * This function formats a Bali component into a JavaScript string containing
-     * Bali Document Notation™. An optional indentation level may be specified
-     * that causes the formatter to indent each line by that many additional
-     * levels.  Each level is four spaces.
-     * 
-     * @param {Component} component The Bali component to be formatted. 
-     * @param {Number} indentation The number of levels of indentation that should be inserted
-     * to each formatted line at the top level. The default is zero.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {String} The resulting string containing Bali Document Notation™.
-     */
+    // FORMAT
     const format = function(component, indentation, debug) {
         debug = debug || defaultLevel;
-        // must check these here since a formatter is a utility rather than a component
-        if (debug > 1) validateType('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
-            '/bali/abstractions/Component'
-        ], debug);
-        if (debug > 1) validateType('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
-            '/javascript/Undefined',
-            '/javascript/Number'
-        ], debug);
         const formatter = new utilities.Formatter(indentation, debug);
-        return formatter.formatComponent(component);
+        return formatter.formatComponent(component, debug);
     };
     
-    /**
-     * This function returns a Bali iterator that operates on a JavaScript array.
-     * 
-     * @param {Array} array The JavaScript array to be iterated over. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Iterator} The resulting Bali iterator.
-     */
+    // ITERATOR
     const iterator = function(array, debug) {
         debug = debug || defaultLevel;
-        if (debug > 1) validateType('/bali/utilities/Iterator', '$iterator', '$array', array, [
-            '/javascript/Array'
-        ], debug);
         return new utilities.Iterator(array, debug);
     };
     
-    /**
-     * This function creates a new list component with optional parameters that are
-     * used to parameterize its type.
-     * 
-     * @param {Object} items An optional JavaScript object containing the items to use
-     * to seed this list.
-     * @param {Parameters} parameters Optional parameters used to parameterize this list. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {List} The new list.
-     */
+    // LIST
     const list = function(items, parameters, debug) {
         debug = debug || defaultLevel;
         const collection = new collections.List(parameters, debug);
         collection.addItems(items);
         return collection;
     };
-    list.concatenation = collections.List.concatenation;
+    list.concatenation = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.List.concatenation(first, second, debug);
+    };
     
-    /**
-     * This function creates a new moment in time using the specified value and parameters.
-     * 
-     * @param {String|Number} value The source string value of the moment in time.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Moment} The new moment in time.
-     */
+    // MOMENT
     const moment = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Moment(value, parameters, debug);
     };
-    moment.duration = elements.Moment.duration;
-    moment.earlier = elements.Moment.earlier;
-    moment.later = elements.Moment.later;
+    moment.duration = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Moment.duration(first, second, debug);
+    };
+    moment.earlier = function(moment, duration, debug) {
+        debug = debug || defaultLevel;
+        return elements.Moment.earlier(moment, duration, debug);
+    };
+    moment.later = function(moment, duration, debug) {
+        debug = debug || defaultLevel;
+        return elements.Moment.later(moment, duration, debug);
+    };
     
-    /**
-     * This function creates a new name element using the specified value.
-     * 
-     * @param {Array} value An array containing the name parts for the name string.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Symbol} The new name string element.
-     */
+    // NAME
     const name = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Name(value, parameters, debug);
     };
-    name.concatenation = elements.Name.concatenation;
+    name.concatenation = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Name.concatenation(first, second, debug);
+    };
     
-    /**
-     * This function creates an immutable instance of a complex number using the specified
-     * real and imaginary values.  If the imaginary value is an angle then the complex number
-     * is in polar form, otherwise it is in rectangular form.
-     * 
-     * @param {Number} real The real value of the complex number.
-     * @param {Number|Angle} imaginary The imaginary value of the complex number.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Complex} The new complex number.
-     */
+    // NUMBER
     const number = function(real, imaginary, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Number(real, imaginary, parameters, debug);
     };
-    number.conjugate = elements.Number.conjugate;
-    number.difference = elements.Number.difference;
-    number.exponential = elements.Number.exponential;
-    number.factorial = elements.Number.factorial;
-    number.inverse = elements.Number.inverse;
-    number.logarithm = elements.Number.logarithm;
-    number.product = elements.Number.product;
-    number.quotient = elements.Number.quotient;
-    number.reciprocal = elements.Number.reciprocal;
-    number.remainder = elements.Number.remainder;
-    number.scaled = elements.Number.scaled;
-    number.sum = elements.Number.sum;
+    number.conjugate = function(number, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.conjugate(number, debug);
+    };
+    number.difference = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.difference(first, second, debug);
+    };
+    number.exponential = function(base, exponent, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.exponential(base, exponent, debug);
+    };
+    number.factorial = function(number, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.factorial(number, debug);
+    };
+    number.inverse = function(number, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.inverse(number, debug);
+    };
+    number.logarithm = function(base, value, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.logarithm(base, value, debug);
+    };
+    number.product = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.product(first, second, debug);
+    };
+    number.quotient = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.quotient(first, second, debug);
+    };
+    number.reciprocal = function(number, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.reciprocal(number, debug);
+    };
+    number.remainder = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.remainder(first, second, debug);
+    };
+    number.scaled = function(number, factor, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.scaled(number, factor, debug);
+    };
+    number.sum = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Number.sum(first, second, debug);
+    };
     
-    /**
-     * This function creates a new Bali parameters component containing the items
-     * defined in the specified JavaScript object. If the object is an array, the
-     * parameters will be stored as a Bali list containing the parameter values. If
-     * the object is an actual object the parameters will be stored as a Bali catalog
-     * containing the key-value pair for each parameter.
-     * 
-     * @param {Object|Catalog} object An object containing the parameter values.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Parameters} The resulting Bali parameters component.
-     */
+    // PARAMETERS
     const parameters = function(object, debug) {
         debug = debug || defaultLevel;
         return new composites.Parameters(object, debug);
     };
     
-    /**
-     * This function parses a JavaScript string containing Bali Document Notation™ and
-     * returns the corresponding Bali component. If the <code>debug</code> flag is set,
-     * the parser will report possible ambiguities in the input string.
-     * 
-     * @param {String} document A string containing Bali Document Notation™ to be parsed.
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Component} The corresponding Bali component.
-     */
+    // PARSE
     const parse = function(document, debug) {
         debug = debug || defaultLevel;
-        // must check these here since a parser is a utility rather than a component
-        if (debug > 1) validateType('/bali/utilities/Parser', '$parse', '$document', document, [
-            '/javascript/String'
-        ], debug);
         const parser = new utilities.Parser(debug);
         return parser.parseDocument(document);
     };
     
-    /**
-     * This function creates a new pattern element using the specified value.
-     * 
-     * @param {String|RegExp} value A regular expression for the pattern element.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Pattern} The new pattern element.
-     */
+    // PATTERN
     const pattern = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Pattern(value, parameters, debug);
     };
     
-    /**
-     * This function creates a new percent element using the specified value.
-     * 
-     * @param {Number} value The value of the percent.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Percent} The new percent element.
-     */
+    // PERCENT
     const percent = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Percent(value, parameters, debug);
     };
-    percent.inverse = elements.Percent.inverse;
-    percent.sum = elements.Percent.sum;
-    percent.difference = elements.Percent.difference;
-    percent.scaled = elements.Percent.scaled;
+    percent.inverse = function(percent, debug) {
+        debug = debug || defaultLevel;
+        return elements.Percent.inverse(percent, debug);
+    };
+    percent.sum = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Percent.sum(first, second, debug);
+    };
+    percent.difference = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Percent.difference(first, second, debug);
+    };
+    percent.scaled = function(percent, factor, debug) {
+        debug = debug || defaultLevel;
+        return elements.Percent.scaled(percent, factor, debug);
+    };
     
-    /**
-     * This function creates a new probability element using the specified value.
-     * 
-     * @param {Number} value The value of the probability.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Probability} The new probability element.
-     */
+    // PROBABILITY
     const probability = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Probability(value, parameters, debug);
     };
-    probability.not = elements.Probability.not;
-    probability.and = elements.Probability.and;
-    probability.sans = elements.Probability.sans;
-    probability.or = elements.Probability.or;
-    probability.xor = elements.Probability.xor;
-    probability.random = elements.Probability.random;
-    probability.coinToss = elements.Probability.coinToss;
+    probability.not = function(probability, debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.not(probability, debug);
+    };
+    probability.and = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.and(first, second, debug);
+    };
+    probability.sans = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.sans(first, second, debug);
+    };
+    probability.or = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.or(first, second, debug);
+    };
+    probability.xor = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.xor(first, second, debug);
+    };
+    probability.random = function(debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.random(debug);
+    };
+    probability.coinToss = function(debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.coinToss(debug);
+    };
     
-    /**
-     * This function creates a new procedure component with optional parameters that are
-     * used to parameterize its behavior.
-     * 
-     * @param {Tree} statements The statements that are contained within the procedure.
-     * @param {Parameters} parameters Optional parameters used to parameterize the procedure. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Procedure} A new procedure component.
-     */
+    // PROCEDURE
     const procedure = function(statements, parameters, debug) {
         debug = debug || defaultLevel;
         return new composites.Procedure(statements, parameters, debug);
     };
     
-    /**
-     * This function creates a new queue component with optional parameters that are
-     * used to parameterize its type.
-     * 
-     * @param {Object} items An optional JavaScript object containing the items to use
-     * to seed this queue.
-     * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Queue} The new queue.
-     */
+    // QUEUE
     const queue = function(items, parameters, debug) {
         debug = debug || defaultLevel;
         const collection = new collections.Queue(parameters, debug);
@@ -528,59 +468,25 @@ exports.api = function(debug) {
         return collection;
     };
     
-    /**
-     * This function creates a new range of items with optional parameters that are used
-     * to parameterize its type.
-     * 
-     * @param {Number|Component} first The first item in the range.
-     * @param {Number|Component} last The last item in the range.
-     * @param {Parameters} parameters Optional parameters used to parameterize this range. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Range} The new range.
-     */
+    // RANGE
     const range = function(first, last, parameters, debug) {
         debug = debug || defaultLevel;
         return new collections.Range(first, last, parameters, debug);
     };
     
-    /**
-     * This function creates a new reference element using the specified value.
-     * 
-     * @param {String|URL} value The value of the reference.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Reference} The new reference element.
-     */
+    // REFERENCE
     const reference = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Reference(value, parameters, debug);
     };
     
-    /**
-     * This function creates a new reserved identifier using the specified value.
-     * 
-     * @param {String} value The value of the reserved identifier.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Reserved} The new reserved identifier.
-     */
+    // RESERVED
     const reserved = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Reserved(value, parameters, debug);
     };
     
-    /**
-     * This function creates a new set component with optional parameters that are
-     * used to parameterize its type.
-     * 
-     * @param {Object} items An optional JavaScript object containing the items to use
-     * to seed this set.
-     * @param {Comparator} comparator An optional comparator used to compare two components
-     * for ordering in this set.
-     * @param {Parameters} parameters Optional parameters used to parameterize this set. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Set} The new set.
-     */
+    // SET
     const set = function(items, comparator, parameters, debug) {
         debug = debug || defaultLevel;
         const collection = new collections.Set(parameters, comparator, debug);
@@ -592,16 +498,7 @@ exports.api = function(debug) {
     set.or = collections.Set.or;
     set.xor = collections.Set.xor;
     
-    /**
-     * This function creates a new stack component with optional parameters that are
-     * used to parameterize its type.
-     * 
-     * @param {Object} items An optional JavaScript object containing the items to use
-     * to seed this stack.
-     * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Stack} The new stack.
-     */
+    // STACK
     const stack = function(items, parameters, debug) {
         debug = debug || defaultLevel;
         const collection = new collections.Stack(parameters, debug);
@@ -609,101 +506,38 @@ exports.api = function(debug) {
         return collection;
     };
     
-    /**
-     * This function creates a new symbol element using the specified value.
-     * 
-     * @param {String} value The value of the symbol.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Symbol} The new symbol element.
-     */
+    // SYMBOL
     const symbol = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Symbol(value, parameters, debug);
     };
     
-    /**
-     * This function creates a new tag element using the specified value.
-     * 
-     * @param {Number|String} value An optional parameter defining the size of a new random
-     * tag or the value it should represent.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Tag} The new tag element.
-     */
+    // TAG
     const tag = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Tag(value, parameters, debug);
     };
     
-    /**
-     * This function creates a new text string element using the specified value.
-     * 
-     * @param {String} value The optional value of the text string.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Text} The new text string.
-     */
+    // TEXT
     const text = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Text(value, parameters, debug);
     };
     text.concatenation = elements.Text.concatenation;
     
-    /**
-     * This function returns a string containing the Bali name for the type of the specified value.
-     * 
-     * @param {Any} value The value to be evaluated. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {String} A string containing the Bali name for the type of the specified value.
-     */
+    // TYPE
     const type = function(value, debug) {
         debug = debug || defaultLevel;
-        return abstractions.Component.type(value, debug);
+        return utilities.validation.type(value, debug);
     };
     
-    /**
-     * This function compares the type of a parameter value with the allowed types for that
-     * parameter and throws an exception if it does not match.
-     * 
-     * @param {String} moduleName The name of the module being called.
-     * @param {String} procedureName The name of the procedure being called.
-     * @param {String} parameterName The name of the parameter being validated.
-     * @param {Any} parameterValue The value of the parameter being validated.
-     * @param {Array} allowedTypes An array of strings representing the allowed types for the parameter
-     * value.
-     * @param {Number} debug A number in the range [0..3].
-     */
+    // VALIDATE
     const validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug) {
         debug = debug || defaultLevel;
-        // can't use validate to validate its own parameters so do it manually
-        if (typeof moduleName === 'string' && typeof procedureName === 'string' &&
-            typeof parameterName === 'string' && Array.isArray(allowedTypes)) {
-                return validateType(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug);
-        }
-        const exception = composites.Exception({
-            $module: '/bali/abstractions/Component',
-            $procedure: '$validate',
-            $exception: '$invalidParameter',
-            $moduleName: moduleName,
-            $procedureName: procedureName,
-            $parameterName: parameterName,
-            $parameterValue: parameterValue,
-            $allowedTypes: allowedTypes,
-            $text: 'An invalid parameter was passed as part of the validation attempt.'
-        });
-        if (debug > 0) console.error(exception.toString());
-        throw exception;
+        return utilities.validation.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug);
     };
     
-    /**
-     * This function creates a new version element using the specified value.
-     * 
-     * @param {Array} value An optional array containing the version levels for the version string.
-     * @param {Parameters} parameters Optional parameters used to parameterize this element. 
-     * @param {Number} debug A number in the range [0..3].
-     * @returns {Symbol} The new version string element.
-     */
+    // VERSION
     const version = function(value, parameters, debug) {
         debug = debug || defaultLevel;
         return new elements.Version(value, parameters, debug);
@@ -712,7 +546,7 @@ exports.api = function(debug) {
     version.validNextVersion = elements.Version.validNextVersion;
     
     /*
-     * This section defines constants for common 
+     * This section defines constants for common components
      */
     angle.PI = parse('~pi', defaultLevel);
     
@@ -740,7 +574,6 @@ exports.api = function(debug) {
     
     probability.FALSE = parse('false', defaultLevel);
     probability.TRUE = parse('true', defaultLevel);
-
 
     return {
         angle: angle,

@@ -20,7 +20,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('./Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -36,13 +36,15 @@ function Tree(type, debug) {
     abstractions.Composite.call(this, type, debug);
 
     if (!this.isProcedural()) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/composites/Tree',
             $procedure: '$Tree',
             $exception: '$invalidParameter',
             $parameter: type,
             $text: 'An invalid tree type was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // the array is a private attribute so methods that use it are defined in the constructor

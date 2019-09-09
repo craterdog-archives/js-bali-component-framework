@@ -13,8 +13,9 @@
  * This composite class implements a procedure component that can be assigned as
  * the value of an association.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS

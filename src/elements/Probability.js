@@ -17,7 +17,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -27,6 +27,7 @@ const validate = abstractions.Component.validate;
  * 
  * @param {Number} value The value of the probability.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The new probability element.
  */
 function Probability(value, parameters, debug) {
@@ -39,13 +40,15 @@ function Probability(value, parameters, debug) {
 
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value) || value < 0 || value > 1) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/elements/Probability',
             $procedure: '$Probability',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid probability value was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // since this element is immutable the value must be read-only
@@ -121,6 +124,7 @@ Probability.prototype.acceptVisitor = function(visitor) {
  * </pre>
  *
  * @param {Probability} probability The probability.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability, debug) {
@@ -128,7 +132,7 @@ Probability.not = function(probability, debug) {
         '/bali/elements/Probability'
     ], debug);
     const p = utilities.precision.difference(1, probability.getValue());
-    const result = new Probability(p);
+    const result = new Probability(p, probability.getParameters(), debug);
     return result;
 };
 
@@ -143,6 +147,7 @@ Probability.not = function(probability, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The resulting probability.
  */
 Probability.and = function(first, second, debug) {
@@ -155,7 +160,7 @@ Probability.and = function(first, second, debug) {
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.product(p1, p2);
-    const result = new Probability(p);
+    const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
 
@@ -171,6 +176,7 @@ Probability.and = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The resulting probability.
  */
 Probability.sans = function(first, second, debug) {
@@ -183,7 +189,7 @@ Probability.sans = function(first, second, debug) {
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
-    const result = new Probability(p);
+    const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
 
@@ -200,6 +206,7 @@ Probability.sans = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The resulting probability.
  */
 Probability.or = function(first, second, debug) {
@@ -212,7 +219,7 @@ Probability.or = function(first, second, debug) {
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
-    const result = new Probability(p);
+    const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
 
@@ -229,6 +236,7 @@ Probability.or = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The resulting probability.
  */
 Probability.xor = function(first, second, debug) {
@@ -241,7 +249,7 @@ Probability.xor = function(first, second, debug) {
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));
-    const result = new Probability(p);
+    const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
 

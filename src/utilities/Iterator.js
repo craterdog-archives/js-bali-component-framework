@@ -27,6 +27,7 @@
  *     slot 0     slot 1     slot 2                  slot N
  * </pre>
  */
+const validate = require('./Validation').validate;
 
 
 // PUBLIC FUNCTIONS
@@ -36,9 +37,13 @@
  * to be iterated over in either direction.
  * 
  * @param {Array} array The array to be iterated over.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Iterator} The new array iterator.
  */
-function Iterator(array) {
+function Iterator(array, debug) {
+    if (debug > 1) validate('/bali/utilities/Iterator', '$iterator', '$array', array, [
+        '/javascript/Array'
+    ], debug);
 
     // the array and current slot index are private attributes so methods that use them
     // are defined in the constructor

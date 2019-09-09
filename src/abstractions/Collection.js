@@ -16,7 +16,7 @@
 const utilities = require('../utilities');
 const Composite = require('./Composite').Composite;
 const Exception = require('../composites/Exception').Exception;
-const validate = Composite.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -37,9 +37,6 @@ function Collection(type, parameters, debug) {
 Collection.prototype = Object.create(Composite.prototype);
 Collection.prototype.constructor = Collection;
 exports.Collection = Collection;
-
-Collection.type = Composite.type;
-Collection.validate = Composite.validate;
 
 
 // PUBLIC METHODS

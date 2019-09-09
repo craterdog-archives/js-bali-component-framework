@@ -13,8 +13,9 @@
  * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS

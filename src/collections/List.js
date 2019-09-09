@@ -26,7 +26,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -36,6 +36,7 @@ const validate = abstractions.Component.validate;
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this list. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {List} The new list.
  */
 function List(parameters, debug) {
@@ -251,6 +252,7 @@ List.prototype.isChainable = function() {
  *
  * @param {List} first The first list to be operated on.
  * @param {List} second The second list to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {List} The resulting list.
  */
 List.concatenation = function(first, second, debug) {
@@ -260,7 +262,7 @@ List.concatenation = function(first, second, debug) {
     if (debug > 1) validate('/bali/collections/List', '$concatenation', '$second', second, [
         '/bali/collections/List'
     ], debug);
-    const result = new List();
+    const result = new List(first.getParameters(), debug);
     result.addItems(first);
     result.addItems(second);
     return result;

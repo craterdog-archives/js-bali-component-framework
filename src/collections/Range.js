@@ -13,10 +13,11 @@
  * This collection class implements a data structure that defines a range of items. The
  * structure is static once the first and last items in the range have been defined.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const elements = require('../elements');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -70,13 +71,15 @@ function Range(first, last, parameters, debug) {
 
     this.toArray = function() {
         if (lastIndex === Infinity) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/collections/Range',
                 $procedure: '$toArray',
                 $exception: '$infiniteArray',
                 $range: this,
                 $text: 'Attempted to generate an array from an infinite range.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         const array = [];
         var index = firstIndex;
@@ -150,7 +153,7 @@ function Range(first, last, parameters, debug) {
             index = collection.getIndex(item);
         } else {
             if (typeof item !== 'number') {
-                throw new Exception({
+                const exception = new Exception({
                     $module: '/bali/collections/Range',
                     $procedure: '$isInRange',
                     $exception: '$invalidParameter',
@@ -158,6 +161,8 @@ function Range(first, last, parameters, debug) {
                     $parameter: item,
                     $text: 'An invalid parameter type was passed.'
                 });
+                if (this.debug > 0) console.error(exception.toString());
+                throw exception;
             }
             index = item;
         }

@@ -15,6 +15,7 @@
  * machine and allowed transitions between states given a finite set of possible event
  * types.
  */
+const validate = require('./Validation').validate;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -37,52 +38,67 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Array} eventTypes An array of the possible event types as strings.
  * @param {Object} nextStates An object defining the possible states as strings and allowed
  * transitions between them given specific event types.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Automaton} A new finite state automaton.
  */
-function Automaton(eventTypes, nextStates) {
+function Automaton(eventTypes, nextStates, debug) {
+    if (debug > 1) validate('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
+        '/javascript/Array'
+    ], debug);
+    if (debug > 1) validate('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
+        '/javascript/Object'
+    ], debug);
     var currentState;
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/utilities/Automaton',
             $procedure: '$Automaton',
             $exception: '$invalidType',
             $text: 'One of the parameters to the constructor is not the right type.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
     if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/utilities/Automaton',
             $procedure: '$Automaton',
             $exception: '$noStates',
             $text: 'The state machine must have at least one state and event.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
     const numberOfEventTypes = eventTypes.length;
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidType',
                 $event: event,
                 $text: 'Each event must be of type string.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
     });
     var numberOfStates = 0;
     for (const state in nextStates) {
         if (typeof state !== 'string') {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidType',
                 $state: state,
                 $text: 'Each state must be of type string.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$Automaton',
                 $exception: '$invalidParameter',
@@ -90,10 +106,12 @@ function Automaton(eventTypes, nextStates) {
                 $actual: nextStates[state].length,
                 $text: 'Each next state list must have the same length as the number of event types.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
-                throw new Exception({
+                const exception = new Exception({
                     $module: '/bali/utilities/Automaton',
                     $procedure: '$Automaton',
                     $exception: '$invalidParameter',
@@ -101,6 +119,8 @@ function Automaton(eventTypes, nextStates) {
                     $actual: transition,
                     $text: 'A next state was found that is not in the possible states.'
                 });
+                if (this.debug > 0) console.error(exception.toString());
+                throw exception;
             }
         });
         numberOfStates++;
@@ -113,7 +133,7 @@ function Automaton(eventTypes, nextStates) {
     this.validateEvent = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
@@ -121,13 +141,15 @@ function Automaton(eventTypes, nextStates) {
                 $state: currentState,
                 $text: 'The event is not allowed in the current state.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
     };
 
     this.transitionState = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Automaton',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',
@@ -135,6 +157,8 @@ function Automaton(eventTypes, nextStates) {
                 $state: currentState,
                 $text: 'The event is not allowed in the current state.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         currentState = nextStates[currentState][index];
     };

@@ -14,9 +14,10 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -70,13 +71,15 @@ function Queue(parameters, debug) {
             '/bali/abstractions/Component'
         ], this.debug);
         if (array.length === capacity) {
-            throw new composites.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/collections/Queue',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,
                 $text: 'The queue has reached its maximum capacity.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         item = this.convert(item);
         array.push(item);

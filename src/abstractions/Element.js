@@ -12,8 +12,9 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const validate = Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -37,9 +38,6 @@ function Element(type, parameters, debug) {
 Element.prototype = Object.create(Component.prototype);
 Element.prototype.constructor = Element;
 exports.Element = Element;
-
-Element.type = Component.type;
-Element.validate = Component.validate;
 
 
 // PUBLIC METHODS

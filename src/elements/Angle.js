@@ -16,7 +16,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,6 +26,7 @@ const validate = abstractions.Component.validate;
  * 
  * @param {Number} value The value of the angle.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The new angle element.
  */
 function Angle(value, parameters, debug) {
@@ -38,13 +39,15 @@ function Angle(value, parameters, debug) {
     // check the value
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value)) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/elements/Angle',
             $procedure: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid angle value was passed to the constructor.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // convert the value if necessary
@@ -182,11 +185,11 @@ Angle.prototype.acceptVisitor = function(visitor) {
  * This function returns the inverse of an angle.
  * 
  * @param {Angle} angle The angle to be inverted.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle, debug) {
-    debug = debug || 0;  // default value
-    return new Angle(utilities.precision.difference(angle.getValue(), Math.PI), debug);
+    return new Angle(utilities.precision.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
 };
 
 
@@ -195,10 +198,11 @@ Angle.inverse = function(angle, debug) {
  * adds to the specified angle to equal pi/2.
  * 
  * @param {Angle} angle The angle to be complemented.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The complementary angle.
  */
-Angle.complement = function(angle) {
-    return new Angle(utilities.precision.difference(Math.PI / 2, angle.getValue()));
+Angle.complement = function(angle, debug) {
+    return new Angle(utilities.precision.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -207,10 +211,11 @@ Angle.complement = function(angle) {
  * adds to the specified angle to equal pi.
  * 
  * @param {Angle} angle The angle to be supplemented.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The supplemental angle.
  */
-Angle.supplement = function(angle) {
-    return new Angle(utilities.precision.difference(Math.PI, angle.getValue()));
+Angle.supplement = function(angle, debug) {
+    return new Angle(utilities.precision.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -219,10 +224,11 @@ Angle.supplement = function(angle) {
  * adds to the specified angle to equal 2pi.
  * 
  * @param {Angle} angle The angle to be conjugated angle.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The conjugated angle.
  */
-Angle.conjugate = function(angle) {
-    return new Angle(-angle.getValue());
+Angle.conjugate = function(angle, debug) {
+    return new Angle(-angle.getValue(), angle.getParameters(), debug);
 };
 
 
@@ -232,10 +238,11 @@ Angle.conjugate = function(angle) {
  * 
  * @param {Angle} first The first angle to be summed.
  * @param {Angle} second The second angle to be summed.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The normalized sum of the two angles.
  */
-Angle.sum = function(first, second) {
-    return new Angle(utilities.precision.sum(first.getValue(), second.getValue()));
+Angle.sum = function(first, second, debug) {
+    return new Angle(utilities.precision.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -245,10 +252,11 @@ Angle.sum = function(first, second) {
  * 
  * @param {Angle} first The angle to be subtracted from.
  * @param {Angle} second The angle to subtract from the first angle.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The normalized difference of the two angles.
  */
-Angle.difference = function(first, second) {
-    return new Angle(utilities.precision.difference(first.getValue(), second.getValue()));
+Angle.difference = function(first, second, debug) {
+    return new Angle(utilities.precision.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -258,10 +266,11 @@ Angle.difference = function(first, second) {
  * 
  * @param {Angle} angle The angle to be scaled.
  * @param {Number} factor The scale factor.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The normalized scaled angle.
  */
-Angle.scaled = function(angle, factor) {
-    return new Angle(utilities.precision.product(angle.getValue(), factor));
+Angle.scaled = function(angle, factor, debug) {
+    return new Angle(utilities.precision.product(angle.getValue(), factor), angle.getParameters(), debug);
 };
 
 
@@ -270,10 +279,11 @@ Angle.scaled = function(angle, factor) {
  * This function returns the sine (opposite/hypotenuse) of an angle.
  * 
  * @param {Angle} angle The angle to be analyzed.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
-Angle.sine = function(angle) {
-    return utilities.precision.sine(angle.getValue());
+Angle.sine = function(angle, debug) {
+    return utilities.precision.sine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -281,10 +291,11 @@ Angle.sine = function(angle) {
  * This function returns the cosine (adjacent/hypotenuse) of an angle.
  * 
  * @param {Angle} angle The angle to be analyzed.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
-Angle.cosine = function(angle) {
-    return utilities.precision.cosine(angle.getValue());
+Angle.cosine = function(angle, debug) {
+    return utilities.precision.cosine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -292,10 +303,11 @@ Angle.cosine = function(angle) {
  * This function returns the tangent (opposite/adjacent) of an angle.
  * 
  * @param {Angle} angle The angle to be analyzed.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
-Angle.tangent = function(angle) {
-    return utilities.precision.tangent(angle.getValue());
+Angle.tangent = function(angle, debug) {
+    return utilities.precision.tangent(angle.getValue(), angle.getParameters());
 };
 
 
@@ -304,10 +316,11 @@ Angle.tangent = function(angle) {
  * a right triangle.
  * 
  * @param {Number} ratio The ratio of the opposite to the hypotenuse for the triangle. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The angle of the triangle.
  */
-Angle.arcsine = function(ratio) {
-    return new Angle(utilities.precision.arcsine(ratio));
+Angle.arcsine = function(ratio, debug) {
+    return new Angle(utilities.precision.arcsine(ratio), undefined, debug);
 };
 
 
@@ -316,10 +329,11 @@ Angle.arcsine = function(ratio) {
  * a right triangle.
  * 
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse for the triangle. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The angle of the triangle.
  */
-Angle.arccosine = function(ratio) {
-    return new Angle(utilities.precision.arccosine(ratio));
+Angle.arccosine = function(ratio, debug) {
+    return new Angle(utilities.precision.arccosine(ratio), undefined, debug);
 };
 
 
@@ -329,8 +343,9 @@ Angle.arccosine = function(ratio) {
  * 
  * @param {Number} opposite The length of the side opposite the angle.
  * @param {Number} adjacent The length of the side adjacent to the angle.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The angle of the triangle.
  */
-Angle.arctangent = function(opposite, adjacent) {
-    return new Angle(utilities.precision.arctangent(opposite, adjacent));
+Angle.arctangent = function(opposite, adjacent, debug) {
+    return new Angle(utilities.precision.arctangent(opposite, adjacent), undefined, debug);
 };

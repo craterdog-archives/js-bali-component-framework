@@ -72,13 +72,15 @@ exports.base2Decode = function(base2) {
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
     if (length % 8 !== 0) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/utilities/Codex',
             $procedure: '$base2Decode',
             $exception: '$invalidParameter',
             $parameter: base2,
             $text: 'The number of characters in the base 2 binary string was not divisible by 8.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // decode each base 2 character
@@ -92,13 +94,15 @@ exports.base2Decode = function(base2) {
             const character = base2[index++];
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
-                throw new Exception({
+                const exception = new Exception({
                     $module: '/bali/utilities/Codex',
                     $procedure: '$base2Decode',
                     $exception: '$invalidParameter',
                     $parameter: base2,
                     $text: 'The binary string was not encoded using base 2.'
                 });
+                if (this.debug > 0) console.error(exception.toString());
+                throw exception;
             }
             byte |= (bit << b);
         }
@@ -158,13 +162,15 @@ exports.base16Decode = function(base16) {
     base16 = base16.toUpperCase();
     const length = base16.length;
     if (length % 2 !== 0) {
-        throw new Exception({
+        const exception = new Exception({
             $module: '/bali/utilities/Codex',
             $procedure: '$base16Decode',
             $exception: '$invalidParameter',
             $parameter: base16,
             $text: 'The number of characters in the base 16 binary string was not divisible by 2.'
         });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
     }
 
     // decode each base 16 character
@@ -176,26 +182,30 @@ exports.base16Decode = function(base16) {
         var character = base16[index++];
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Codex',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
                 $text: 'The binary string was not encoded using base 16.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
 
         // decode the character for the low order nybble
         character = base16[index++];
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Codex',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
                 $text: 'The binary string was not encoded using base 16.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
 
         // combine the nybbles to form the byte
@@ -271,13 +281,15 @@ exports.base32Decode = function(base32) {
         character = base32[i];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            throw new Exception({
+            const exception = new Exception({
                 $module: '/bali/utilities/Codex',
                 $procedure: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
                 $text: 'The binary string was not encoded using base 32.'
             });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
         }
         if (i < length - 1) {
             base32DecodeBytes(chunk, i, buffer);

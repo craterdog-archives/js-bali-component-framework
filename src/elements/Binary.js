@@ -15,7 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = abstractions.Component.validate;
+const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -26,6 +26,7 @@ const validate = abstractions.Component.validate;
  * 
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The new binary string.
  */
 function Binary(value, parameters, debug) {
@@ -175,6 +176,7 @@ Binary.prototype.getIterator = function() {
  * of the specified binary string.
  *
  * @param {Binary} binary The binary value.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The resulting binary.
  */
 Binary.not = function(binary, debug) {
@@ -186,7 +188,7 @@ Binary.not = function(binary, debug) {
     binary.getValue().forEach(function(byte, index) {
         buffer[index] = ~byte;
     });
-    return new Binary(buffer);
+    return new Binary(buffer, binary.getParameters(), debug);
 };
 
 
@@ -196,6 +198,7 @@ Binary.not = function(binary, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The resulting binary string.
  */
 Binary.and = function(first, second, debug) {
@@ -211,7 +214,7 @@ Binary.and = function(first, second, debug) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.getValue()[index] & second.getValue()[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.getParameters(), debug);
 };
 
 
@@ -221,6 +224,7 @@ Binary.and = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The resulting binary string.
  */
 Binary.sans = function(first, second, debug) {
@@ -236,7 +240,7 @@ Binary.sans = function(first, second, debug) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.getValue()[index] & ~second.getValue()[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.getParameters(), debug);
 };
 
 
@@ -246,6 +250,7 @@ Binary.sans = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The resulting binary string.
  */
 Binary.or = function(first, second, debug) {
@@ -261,7 +266,7 @@ Binary.or = function(first, second, debug) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.getValue()[index] | second.getValue()[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.getParameters(), debug);
 };
 
 
@@ -271,6 +276,7 @@ Binary.or = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The resulting binary string.
  */
 Binary.xor = function(first, second, debug) {
@@ -286,7 +292,7 @@ Binary.xor = function(first, second, debug) {
     for (var index = 0; index < length; index++) {
         buffer[index] = first.getValue()[index] ^ second.getValue()[index];
     }
-    return new Binary(buffer);
+    return new Binary(buffer, first.getParameters(), debug);
 };
 
 
@@ -296,6 +302,7 @@ Binary.xor = function(first, second, debug) {
  *
  * @param {List} first The first binary string to be operated on.
  * @param {List} second The second binary string to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {List} The resulting binary string.
  */
 Binary.concatenation = function(first, second, debug) {
@@ -310,7 +317,7 @@ Binary.concatenation = function(first, second, debug) {
     const buffer = Buffer.alloc(buffer1.length + buffer2.length);
     buffer1.copy(buffer);
     buffer2.copy(buffer, buffer1.length);
-    return new Binary(buffer);
+    return new Binary(buffer, first.getParameters(), debug);
 };
 
 
