@@ -425,6 +425,10 @@ exports.api = function(debug) {
         debug = debug || defaultLevel;
         return new elements.Probability(value, parameters, debug);
     };
+    probability.random = function(debug) {
+        debug = debug || defaultLevel;
+        return elements.Probability.random(debug);
+    };
     probability.not = function(probability, debug) {
         debug = debug || defaultLevel;
         return elements.Probability.not(probability, debug);
@@ -444,14 +448,6 @@ exports.api = function(debug) {
     probability.xor = function(first, second, debug) {
         debug = debug || defaultLevel;
         return elements.Probability.xor(first, second, debug);
-    };
-    probability.random = function(debug) {
-        debug = debug || defaultLevel;
-        return elements.Probability.random(debug);
-    };
-    probability.coinToss = function(debug) {
-        debug = debug || defaultLevel;
-        return elements.Probability.coinToss(debug);
     };
     
     // PROCEDURE

@@ -16,6 +16,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const Parameters = require('../composites/Parameters').Parameters;
 const Exception = require('../composites/Exception').Exception;
 const validate = utilities.validation.validate;
 
@@ -114,6 +115,19 @@ Probability.prototype.acceptVisitor = function(visitor) {
 
 
 // PUBLIC FUNCTIONS
+
+/**
+ * This function returns a new random probability.
+ *
+ * @param {Number} debug A number in the range [0..3].
+ * @returns {Probability} The resulting random probability.
+ */
+Probability.random = function(debug) {
+    const p = utilities.random.probability();
+    const result = new Probability(p, undefined, debug);
+    return result;
+};
+
 
 /**
  * This function returns a new probability that is the logical NOT of the specified
@@ -252,4 +266,3 @@ Probability.xor = function(first, second, debug) {
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
-

@@ -77,11 +77,11 @@ exports.probability = function() {
  * This function returns the result of a weighted coin toss. A probability of
  * zero will always return false and a probability of one will always return true.
  *
- * @param {Number} probability The probability that the toss will return true [0.0..1.0].
+ * @param {Number} weight The probability that the toss will return true [0.0..1.0].
  * @return {Boolean} The result of the coin toss.
  */
-exports.coinToss = function(probability) {
+exports.coinToss = function(weight) {
     const randomInteger = (exports.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
     const toss = randomInteger / (MAXIMUM_INTEGER - 1);  // convert to range [0.0..1.0)
-    return toss < probability;  // true: [0.0..probability) and false: [probability..1.0]
+    return toss < weight;  // true: [0.0..probability) and false: [probability..1.0]
 };
