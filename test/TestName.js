@@ -18,8 +18,8 @@ describe('Bali Nebula™ Component Framework - Name', function() {
     describe('Test name constructors', function() {
 
         it('should construct name strings using literals', function() {
-            expect(bali.parse('v1').toString()).to.equal('v1');
-            expect(bali.parse('v1.2').toString()).to.equal('v1.2');
+            expect(bali.component('v1').toString()).to.equal('v1');
+            expect(bali.component('v1.2').toString()).to.equal('v1.2');
         });
 
         it('should generate an explicit single part name string', function() {

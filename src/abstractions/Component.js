@@ -16,7 +16,6 @@
 const URL = require('url').URL;
 const utilities = require('../utilities');
 const Exception = require('../composites/Exception').Exception;
-const formatter = new utilities.Formatter();
 const validate = utilities.validation.validate;
 
 
@@ -281,8 +280,8 @@ Component.prototype.toBoolean = function() {
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
-    const string = formatter.formatComponent(this);
-    return string;
+    const formatter = new utilities.Formatter(0, this.debug);
+    return formatter.formatComponent(this);
 };
 
 
@@ -423,6 +422,18 @@ Component.prototype.getHash = function() {
         hash |= 0;  // truncate to a 32 bit integer
     }
     return hash;
+};
+
+
+Component.prototype.duplicate = function(parameters) {
+    const duplicator = new utilities.Duplicator(this.debug);
+    return duplicator.duplicateComponent(this, parameters);
+};
+
+
+Component.prototype.format = function(indentation) {
+    const formatter = new utilities.Formatter(indentation, this.debug);
+    return formatter.formatComponent(this);
 };
 
 

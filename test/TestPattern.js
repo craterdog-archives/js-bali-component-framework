@@ -24,8 +24,8 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
 
         it('should compare patterns for equality', function() {
             expect(bali.pattern().isEqualTo(bali.pattern.NONE)).to.equal(true);
-            expect(bali.pattern.NONE.isEqualTo(bali.parse('none'))).to.equal(true);
-            expect(bali.pattern.ANY.isEqualTo(bali.parse('any'))).to.equal(true);
+            expect(bali.pattern.NONE.isEqualTo(bali.component('none'))).to.equal(true);
+            expect(bali.pattern.ANY.isEqualTo(bali.component('any'))).to.equal(true);
         });
 
     });
@@ -34,14 +34,14 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
 
         it('should recognize text string patterns', function() {
             expect(bali.pattern.ANY.matches(bali.text('"pretty much anything"'))).to.equal(true);
-            expect(bali.parse('"bab.*"?').matches(bali.text('"babbling"'))).to.equal(true);
-            expect(bali.parse('"bab.*"?').matches(bali.text('"bubbling"'))).to.equal(false);
+            expect(bali.component('"bab.*"?').matches(bali.text('"babbling"'))).to.equal(true);
+            expect(bali.component('"bab.*"?').matches(bali.text('"bubbling"'))).to.equal(false);
             expect(bali.pattern.NONE.matches(bali.text('"troubling"'))).to.equal(false);
         });
 
         it('should recognize structure patterns', function() {
             expect(bali.pattern.ANY.matches(bali.list([1, 2, 3]))).to.equal(true);
-            expect(bali.parse('"\\[\\s*([1-9]\\s*)*\\]"?').matches(bali.list([1, 2, 3]))).to.equal(true);
+            expect(bali.component('"\\[\\s*([1-9]\\s*)*\\]"?').matches(bali.list([1, 2, 3]))).to.equal(true);
             expect(bali.pattern.NONE.matches(bali.list([1, 2, 3]))).to.equal(false);
         });
 

@@ -18,9 +18,9 @@ describe('Bali Nebula™ Component Framework - Percent', function() {
     describe('Test percent constructors', function() {
 
         it('should construct percentages using literals', function() {
-            expect(bali.parse('0%').toString()).to.equal('0%');
-            expect(bali.parse('27.4%').toString()).to.equal('27.4%');
-            expect(bali.parse('-50%').toString()).to.equal('-50%');
+            expect(bali.component('0%').toString()).to.equal('0%');
+            expect(bali.component('27.4%').toString()).to.equal('27.4%');
+            expect(bali.component('-50%').toString()).to.equal('-50%');
         });
 
         it('should construct percentages that equal zero', function() {

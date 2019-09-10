@@ -96,12 +96,12 @@ describe('Bali Nebula™ Component Framework - List', function() {
         it('should throw an exception when constructing a list with an invalid type', function() {
             expect(
                 function() {
-                    bali.parse('[](:)');
+                    bali.component('[](:)');
                 }
             ).to.throw();
             expect(
                 function() {
-                    bali.parse('[]($type: $Invalid)');
+                    bali.component('[]($type: $Invalid)');
                 }
             ).to.throw();
         });

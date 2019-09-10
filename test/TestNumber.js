@@ -18,12 +18,12 @@ describe('Bali Nebula™ Component Framework - Number', function() {
     describe('Test complex number constructors', function() {
 
         it('should construct numbers using literals', function() {
-            expect(bali.parse('0').toString()).to.equal('0');
-            expect(bali.parse('e').toString()).to.equal('e');
-            expect(bali.parse('phi i').toString()).to.equal('phi i');
-            expect(bali.parse('(3, 4i)').toString()).to.equal('(3, 4i)');
-            expect(bali.parse('(5 e^~pi i)').toString()).to.equal('-5');
-            expect(bali.parse('(-5 e^~pi i)').toString()).to.equal('5');
+            expect(bali.component('0').toString()).to.equal('0');
+            expect(bali.component('e').toString()).to.equal('e');
+            expect(bali.component('phi i').toString()).to.equal('phi i');
+            expect(bali.component('(3, 4i)').toString()).to.equal('(3, 4i)');
+            expect(bali.component('(5 e^~pi i)').toString()).to.equal('-5');
+            expect(bali.component('(-5 e^~pi i)').toString()).to.equal('5');
         });
 
         it('should construct numbers that equal zero', function() {

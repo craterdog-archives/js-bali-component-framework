@@ -18,8 +18,8 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
     describe('Test tag constructors', function() {
 
         it('should construct tags using literals', function() {
-            expect(bali.parse('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
-            expect(bali.parse('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN');
+            expect(bali.component('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVJF9J0SJ7ZFC3LVK1K0TCWN');
+            expect(bali.component('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN').toString()).to.equal('#2H5LSZB3VVSJ7ZFC3LVK1K0TCWN');
         });
 
         it('should generate default random tags with 20 bytes', function() {
@@ -27,7 +27,7 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
                 const random = bali.tag();
                 expect(random.getSize()).to.equal(20);
                 const expected = random.toString();
-                const tag = bali.parse(expected);
+                const tag = bali.component(expected);
                 const result = tag.toString();
                 console.log('        ' + result);
                 expect(result).to.equal(expected);
@@ -38,14 +38,14 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
             const random = bali.tag(15);
             expect(random.getSize()).to.equal(15);
             const expected = random.toString();
-            const tag = bali.parse(expected);
+            const tag = bali.component(expected);
             const result = tag.toString();
             expect(result).to.equal(expected);
         });
 
         it('should generate a predefined tag', function() {
             expected = '#NT5PG2BXZGBGV5JTNPCP2HTM4JP6CS4X';
-            const tag = bali.parse(expected);
+            const tag = bali.component(expected);
             const result = tag.toString();
             expect(result).to.equal(expected);
         });

@@ -18,12 +18,12 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
     describe('Test time duration constructors', function() {
 
         it('should construct time durations using literals', function() {
-            expect(bali.parse('~P0D').toBoolean()).to.equal(false);
-            expect(bali.parse('~P0D').toNumber()).to.equal(0);
-            expect(bali.parse('~P0D').toString()).to.equal('~P0D');
-            expect(bali.parse('~P3M7DT8H29M54.321S').toBoolean()).to.equal(true);
-            expect(bali.parse('~P3M7DT8H29M54.321S').toNumber()).to.equal(8497794321);
-            expect(bali.parse('~P3M7DT8H29M54.321S').toString()).to.equal('~P3M7DT8H29M54.321S');
+            expect(bali.component('~P0D').toBoolean()).to.equal(false);
+            expect(bali.component('~P0D').toNumber()).to.equal(0);
+            expect(bali.component('~P0D').toString()).to.equal('~P0D');
+            expect(bali.component('~P3M7DT8H29M54.321S').toBoolean()).to.equal(true);
+            expect(bali.component('~P3M7DT8H29M54.321S').toNumber()).to.equal(8497794321);
+            expect(bali.component('~P3M7DT8H29M54.321S').toString()).to.equal('~P3M7DT8H29M54.321S');
         });
 
         it('should construct time durations that equal zero', function() {
@@ -36,14 +36,14 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
         });
 
         it('should construct a time duration of days from weeks', function() {
-            const duration = bali.parse('~P5W');
+            const duration = bali.component('~P5W');
             const string = duration.toString();
             expect(string).to.equal('~P35D');
         });
 
         it('should construct a time duration and format it the same', function() {
             tests.forEach(function(expected) {
-                const duration = bali.parse(expected);
+                const duration = bali.component(expected);
                 const string = duration.toString();
                 expect(string).to.equal(expected);
             });
@@ -54,9 +54,9 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
     describe('Test time duration methods', function() {
 
         it('should compare two time durations correctly', function() {
-            const days = bali.parse('~P7D');
-            const week = bali.parse('~P1W');
-            const month = bali.parse('~P1M');
+            const days = bali.component('~P7D');
+            const week = bali.component('~P1W');
+            const month = bali.component('~P1M');
             expect(week.comparedTo(month)).to.equal(-1);
             expect(week.isEqualTo(days)).to.equal(true);
             expect(month.comparedTo(days)).to.equal(1);
@@ -67,20 +67,20 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
     describe('Test time duration functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.duration.inverse(bali.parse('~P3D')).isEqualTo(bali.parse('~-P3D'))).to.equal(true);
-            expect(bali.duration.inverse(bali.parse('~-P2Y3M6D')).isEqualTo(bali.parse('~P2Y3M6D'))).to.equal(true);
+            expect(bali.duration.inverse(bali.component('~P3D')).isEqualTo(bali.component('~-P3D'))).to.equal(true);
+            expect(bali.duration.inverse(bali.component('~-P2Y3M6D')).isEqualTo(bali.component('~P2Y3M6D'))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.duration.sum(bali.parse('~P2Y3M6D'), bali.parse('~P2M4D')).isEqualTo(bali.parse('~P2Y5M10D'))).to.equal(true);
+            expect(bali.duration.sum(bali.component('~P2Y3M6D'), bali.component('~P2M4D')).isEqualTo(bali.component('~P2Y5M10D'))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.duration.difference(bali.parse('~P2Y3M6D'), bali.parse('~P2M4D')).isEqualTo(bali.parse('~P2Y1M2D'))).to.equal(true);
+            expect(bali.duration.difference(bali.component('~P2Y3M6D'), bali.component('~P2M4D')).isEqualTo(bali.component('~P2Y1M2D'))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.duration.scaled(bali.parse('~P6D'), 3).isEqualTo(bali.parse('~P18D'))).to.equal(true);
+            expect(bali.duration.scaled(bali.component('~P6D'), 3).isEqualTo(bali.component('~P18D'))).to.equal(true);
         });
 
     });

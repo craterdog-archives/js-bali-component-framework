@@ -18,8 +18,8 @@ describe('Bali Nebula™ Component Framework - Reference', function() {
     describe('Test reference constructors', function() {
 
         it('should construct references using literals', function() {
-            expect(bali.parse('<https://google.com/>').toString()).to.equal('<https://google.com/>');
-            expect(bali.parse('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toString()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
+            expect(bali.component('<https://google.com/>').toString()).to.equal('<https://google.com/>');
+            expect(bali.component('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toString()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
         });
 
         it('should throw an exception for an empty reference', function() {
@@ -35,14 +35,14 @@ describe('Bali Nebula™ Component Framework - Reference', function() {
             ).to.throw();
             expect(
                 function() {
-                    const empty = bali.parse('<>');
+                    const empty = bali.component('<>');
                 }
             ).to.throw();
         });
 
         it('should construct references and format matching references', function() {
             tests.forEach(function(expected) {
-                const reference = bali.parse(expected);
+                const reference = bali.component(expected);
                 const string = reference.toString();
                 expect(string).to.equal(expected);
                 const scheme = reference.getScheme();

@@ -25,14 +25,14 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;
-            var component = bali.parse(document);
+            var component = bali.component(document);
             expect(component).to.exist;
-            var copy = bali.duplicate(component, component.getParameters());
+            var copy = component.duplicate(component.getParameters());
             expect(copy).to.exist;
-            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = bali.parse(formatted);
+            component = bali.component(formatted);
             expect(component).to.exist;
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -40,8 +40,8 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                 const array = association.getValue().toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
-                    const string = bali.format(item);
-                    const element = bali.parse(string);
+                    const string = item.format();
+                    const element = bali.component(string);
                     expect(element.isEqualTo(item)).to.equal(true);
                 }
             }
@@ -52,14 +52,14 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;
-            var component = bali.parse(document);
+            var component = bali.component(document);
             expect(component).to.exist;
-            var copy = bali.duplicate(component);
+            var copy = component.duplicate(component.getParameters());
             expect(copy).to.exist;
-            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = bali.parse(formatted);
+            component = bali.component(formatted);
             expect(component).to.exist;
         });
 
@@ -68,14 +68,14 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;
-            var component = bali.parse(document);
+            var component = bali.component(document);
             expect(component).to.exist;
-            var copy = bali.duplicate(component, component.getParameters());
+            var copy = component.duplicate(component.getParameters());
             expect(copy).to.exist;
-            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = bali.parse(formatted);
+            component = bali.component(formatted);
             expect(component).to.exist;
         });
 
@@ -84,14 +84,14 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;
-            var component = bali.parse(document);
+            var component = bali.component(document);
             expect(component).to.exist;
-            var copy = bali.duplicate(component);
+            var copy = component.duplicate(component.getParameters());
             expect(copy).to.exist;
-            var formatted = bali.format(copy) + '\n';  // add POSIX <EOL>
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
-            component = bali.parse(formatted);
+            component = bali.component(formatted);
             expect(component).to.exist;
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
@@ -99,8 +99,8 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                 const array = association.getValue().toArray();
                 for (var i = 0; i < array.length; i++) {
                     const item = array[i];
-                    const string = bali.format(item);
-                    component = bali.parse(string);
+                    const string = item.format();
+                    component = bali.component(string);
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }
@@ -116,7 +116,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             const parameters = bali.parameters({
                 $bar: 'bif'
             });
-            const copy = bali.duplicate(document, parameters);
+            const copy = document.duplicate(parameters);
             expect(copy).to.exist;
             expect(copy.getValue('$foo').toString()).to.equal('"bar"');
             expect(copy.getParameters().getValue('$bar').toString()).to.equal('"bif"');

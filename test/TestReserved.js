@@ -18,8 +18,8 @@ describe('Bali Nebula™ Component Framework - Reserved', function() {
     describe('Test reserved symbol constructors', function() {
 
         it('should construct reserved symbols using literals', function() {
-            expect(bali.parse('$$foo').toString()).to.equal('$$foo');
-            expect(bali.parse('$$bar').toString()).to.equal('$$bar');
+            expect(bali.component('$$foo').toString()).to.equal('$$foo');
+            expect(bali.component('$$bar').toString()).to.equal('$$bar');
         });
 
         it('should throw an exception for an empty reserved symbol', function() {
@@ -35,7 +35,7 @@ describe('Bali Nebula™ Component Framework - Reserved', function() {
             ).to.throw();
             expect(
                 function() {
-                    const empty = bali.parse('$$');
+                    const empty = bali.component('$$');
                 }
             ).to.throw();
         });

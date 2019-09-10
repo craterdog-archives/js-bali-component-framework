@@ -18,8 +18,8 @@ describe('Bali Nebula™ Component Framework - Text', function() {
     describe('Test text constructors', function() {
 
         it('should construct text strings using literals', function() {
-            expect(bali.parse('""').toString()).to.equal('""');
-            expect(bali.parse('"Hello World!"').toString()).to.equal('"Hello World!"');
+            expect(bali.component('""').toString()).to.equal('""');
+            expect(bali.component('"Hello World!"').toString()).to.equal('"Hello World!"');
         });
 
         it('should generate a default empty text string', function() {

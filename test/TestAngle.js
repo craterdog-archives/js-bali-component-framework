@@ -18,10 +18,10 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
     describe('Test angle constructors', function() {
 
         it('should construct angles using literals', function() {
-            expect(bali.parse('~0').toString()).to.equal('~0');
-            expect(bali.parse('~pi').toString()).to.equal('~pi');
-            expect(bali.parse('~pi($units: $radians)').toString()).to.equal('~pi($units: $radians)');
-            expect(bali.parse('~90($units: $degrees)').toString()).to.equal('~90($units: $degrees)');
+            expect(bali.component('~0').toString()).to.equal('~0');
+            expect(bali.component('~pi').toString()).to.equal('~pi');
+            expect(bali.component('~pi($units: $radians)').toString()).to.equal('~pi($units: $radians)');
+            expect(bali.component('~90($units: $degrees)').toString()).to.equal('~90($units: $degrees)');
         });
 
         it('should construct angles that equal zero', function() {
@@ -57,7 +57,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         it('should throw an exception when constructing an angle with an invalid value', function() {
             expect(
                 function() {
-                    bali.parse('~42($units: $invalid)');
+                    bali.component('~42($units: $invalid)');
                 }
             ).to.throw();
             expect(
@@ -237,9 +237,9 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
                 bali.angle.PI,
                 bali.angle(Math.PI / 2),
                 bali.angle(Math.PI / 3),
-                bali.parse('~0.54321'),
+                bali.component('~0.54321'),
                 bali.angle(0),
-                bali.parse('~-0.54321'),
+                bali.component('~-0.54321'),
                 bali.angle(-Math.PI),
                 bali.angle(-Math.PI / 2),
                 bali.angle(-Math.PI / 3)

@@ -227,11 +227,11 @@ exports.api = function(debug) {
         return collections.Catalog.extraction(catalog, keys, debug);
     };
     
-    // DUPLICATE
-    const duplicate = function(component, parameters, debug) {
+    // COMPONENT
+    const component = function(document, debug) {
         debug = debug || defaultLevel;
-        const duplicator = new utilities.Duplicator(debug);
-        return duplicator.duplicateComponent(component, parameters);
+        const parser = new utilities.Parser(debug);
+        return parser.parseDocument(document);
     };
     
     // DURATION
@@ -270,13 +270,6 @@ exports.api = function(debug) {
             if (cause) error.stack = cause.stack;
         }
         return error;
-    };
-    
-    // FORMAT
-    const format = function(component, indentation, debug) {
-        debug = debug || defaultLevel;
-        const formatter = new utilities.Formatter(indentation, debug);
-        return formatter.formatComponent(component, debug);
     };
     
     // ITERATOR
@@ -383,13 +376,6 @@ exports.api = function(debug) {
     const parameters = function(object, debug) {
         debug = debug || defaultLevel;
         return new composites.Parameters(object, debug);
-    };
-    
-    // PARSE
-    const parse = function(document, debug) {
-        debug = debug || defaultLevel;
-        const parser = new utilities.Parser(debug);
-        return parser.parseDocument(document);
     };
     
     // PATTERN
@@ -544,7 +530,7 @@ exports.api = function(debug) {
     /*
      * This section defines constants for common components
      */
-    angle.PI = parse('~pi', defaultLevel);
+    angle.PI = component('~pi', defaultLevel);
     
     angle.DEGREES = parameters({$units: '$degrees'}, defaultLevel);
     angle.RADIANS = parameters({$units: '$radians'}, defaultLevel);
@@ -554,22 +540,22 @@ exports.api = function(debug) {
     binary.BASE32 = parameters({$encoding: '$base32'}, defaultLevel);
     binary.BASE64 = parameters({$encoding: '$base64'}, defaultLevel);
     
-    number.UNDEFINED = parse('undefined', defaultLevel);
-    number.ZERO = parse('0', defaultLevel);
-    number.ONE = parse('1', defaultLevel);
-    number.PHI = parse('phi', defaultLevel);
-    number.E = parse('e', defaultLevel);
-    number.INFINITY = parse('infinity', defaultLevel);
-    number.I = parse('1i', defaultLevel);
+    number.UNDEFINED = component('undefined', defaultLevel);
+    number.ZERO = component('0', defaultLevel);
+    number.ONE = component('1', defaultLevel);
+    number.PHI = component('phi', defaultLevel);
+    number.E = component('e', defaultLevel);
+    number.INFINITY = component('infinity', defaultLevel);
+    number.I = component('1i', defaultLevel);
     
     number.POLAR = parameters({$format: '$polar'}, defaultLevel);
     number.RECTANGULAR = parameters({$format: '$rectangular'}, defaultLevel);
     
-    pattern.ANY = parse('any', defaultLevel);
-    pattern.NONE = parse('none', defaultLevel);
+    pattern.ANY = component('any', defaultLevel);
+    pattern.NONE = component('none', defaultLevel);
     
-    probability.FALSE = parse('false', defaultLevel);
-    probability.TRUE = parse('true', defaultLevel);
+    probability.FALSE = component('false', defaultLevel);
+    probability.TRUE = component('true', defaultLevel);
 
     return {
         angle: angle,
@@ -577,18 +563,16 @@ exports.api = function(debug) {
         automaton: automaton,
         binary: binary,
         catalog: catalog,
+        component: component,
         codex: utilities.codex,
-        duplicate: duplicate,
         duration: duration,
         exception: exception,
-        format: format,
         iterator: iterator,
         list: list,
         moment: moment,
         name: name,
         number: number,
         parameters: parameters,
-        parse: parse,
         pattern: pattern,
         percent: percent,
         precision: utilities.precision,
