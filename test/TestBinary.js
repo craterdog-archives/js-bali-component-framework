@@ -12,7 +12,8 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(2);
 const random = require('../src/utilities/Random');
-const codex = require('../src/utilities/Codex');
+const Codex = new require('../src/utilities/Codex').Codex;
+const codex = new Codex(1, 2);  // indent one level, debug set to 2
 
 
 describe('Bali Nebula™ Component Framework - Binary', function() {
@@ -39,7 +40,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
             expect(binary.getValue().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.toString()).to.equal("'" + codex.base32Encode(expected, '    ') + "'");
+            expect(binary.toString()).to.equal("'" + codex.base32Encode(expected) + "'");
         });
 
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {

@@ -14,6 +14,7 @@
  * This library provides functions that do various byte level manipulations and
  * conversions.
  */
+const validate = require('./Validation').validate;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -23,26 +24,47 @@ const LINE_WIDTH = 60;
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
 
+// The symbol lookup tables
+const base2LookupTable = "01";
+const base16LookupTable = "0123456789ABCDEF";
+const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', 'I', 'O', and 'U'
+
 
 // PUBLIC FUNCTIONS
 
-/*
- * This private string acts as a lookup table for mapping one bit values to base 2
- * characters.
+/**
+ * This class implements encoding and decoding methods for the following bases:
+ * <pre>
+ *   * base 2
+ *   * base 16
+ *   * base 32
+ *   * base 64
+ * </pre>
+ * 
+ * @param {Number} indentation The number of levels of indentation that should be inserted
+ * to each formatted line. The default is zero.
+ * @param {Number} debug A number in the range [0..3].
+ * @returns {Codex} The new codex.
  */
-const base2LookupTable = "01";
+function Codex(indentation, debug) {
+    this.debug = debug || 0;
+    this.indentation = indentation || 0;
+    if (this.debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
+        '/javascript/Number'
+    ], this.debug);
+    return this;
+}
+Codex.prototype.constructor = Codex;
+exports.Codex = Codex;
+
 
 /**
  * This function encodes the bytes in a data buffer into a base 2 string.
  *
  * @param {Buffer} buffer A data buffer containing the integer.
- * @param {String} indentation The string to be prepended to each line of the result.
  * @return {String} The base 2 encoded string.
  */
-exports.base2Encode = function(buffer, indentation) {
-    // validate the parameters
-    indentation = indentation ? indentation : '';
-
+Codex.prototype.base2Encode = function(buffer) {
     // encode each byte
     var string = '';
     buffer.forEach(function(byte) {
@@ -55,7 +77,7 @@ exports.base2Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    const base2 = formatLines(string, indentation);
+    const base2 = formatLines(string, this.indentation);
     return base2;
 };
 
@@ -67,7 +89,7 @@ exports.base2Encode = function(buffer, indentation) {
  * @param {String} base2 The base 2 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-exports.base2Decode = function(base2) {
+Codex.prototype.base2Decode = function(base2) {
     // validate the base 2 encoded string
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
@@ -116,24 +138,13 @@ exports.base2Decode = function(base2) {
 };
 
 
-/*
- * This private string acts as a lookup table for mapping four bit values to base 16
- * characters. Only uppercase letters are allowed.
- */
-const base16LookupTable = "0123456789ABCDEF";
-
-
 /**
  * This function encodes the bytes in a data buffer into a base 16 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
- * @param {String} indentation The string to be prepended to each line of the result.
  * @return {String} The base 16 encoded string.
  */
-exports.base16Encode = function(buffer, indentation) {
-    // validate the parameters
-    indentation = indentation ? indentation : '';
-
+Codex.prototype.base16Encode = function(buffer) {
     // encode the bytes
     var string = '';
     buffer.forEach(function(byte) {
@@ -144,7 +155,7 @@ exports.base16Encode = function(buffer, indentation) {
     });
 
     // break the string into formatted lines
-    const base16 = formatLines(string, indentation);
+    const base16 = formatLines(string, this.indentation);
     return base16;
 };
 
@@ -156,7 +167,7 @@ exports.base16Encode = function(buffer, indentation) {
  * @param {String} base16 The base 16 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-exports.base16Decode = function(base16) {
+Codex.prototype.base16Decode = function(base16) {
     // validate the base 16 encoded string
     base16 = base16.replace(/\s/g, '');  // strip out whitespace
     base16 = base16.toUpperCase();
@@ -218,26 +229,13 @@ exports.base16Decode = function(base16) {
 };
 
 
-/*
- * This private string acts as a lookup table for mapping five bit values to base 32
- * characters. It eliminate 4 vowels ("E", "I", "O", "U") to reduce any confusion with
- * 0 and O, 1 and I; and reduce the likelihood of *actual* (potentially offensive)
- * words from being included in a base 32 string. Only uppercase letters are allowed.
- */
-const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";
-
-
 /**
  * This function encodes the bytes in a data buffer into a base 32 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
- * @param {String} indentation The string to be prepended to each line of the result.
  * @return {String} The base 32 encoded string.
  */
-exports.base32Encode = function(buffer, indentation) {
-    // validate the parameters
-    indentation = indentation ? indentation : '';
-
+Codex.prototype.base32Encode = function(buffer) {
     // encode each byte
     var string = '';
     const length = buffer.length;
@@ -254,7 +252,7 @@ exports.base32Encode = function(buffer, indentation) {
     string = base32EncodeLast(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    const base32 = formatLines(string, indentation);
+    const base32 = formatLines(string, this.indentation);
     return base32;
 };
 
@@ -266,7 +264,7 @@ exports.base32Encode = function(buffer, indentation) {
  * @param {String} base32 The base 32 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-exports.base32Decode = function(base32) {
+Codex.prototype.base32Decode = function(base32) {
     // validate the base 32 encoded string
     base32 = base32.replace(/\s/g, '');  // strip out whitespace
     base32 = base32.toUpperCase();
@@ -305,18 +303,14 @@ exports.base32Decode = function(base32) {
  * This function encodes the bytes in a data buffer into a base 64 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
- * @param {String} indentation The string to be prepended to each line of the result.
  * @return {String} The base 64 encoded string.
  */
-exports.base64Encode = function(buffer, indentation) {
-    // validate the parameters
-    indentation = indentation ? indentation : '';
-
+Codex.prototype.base64Encode = function(buffer) {
     // format as indented 80 character blocks
     const string = buffer.toString('base64');
 
     // break the string into formatted lines
-    const base64 = formatLines(string, indentation);
+    const base64 = formatLines(string, this.indentation);
     return base64;
 };
 
@@ -328,7 +322,7 @@ exports.base64Encode = function(buffer, indentation) {
  * @param {String} base64 The base 64 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-exports.base64Decode = function(base64) {
+Codex.prototype.base64Decode = function(base64) {
     return Buffer.from(base64, 'base64');
 };
 
@@ -340,7 +334,7 @@ exports.base64Decode = function(base64) {
  * @param {Number} short The short to be converted.
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
-exports.shortToBytes = function(short) {
+Codex.prototype.shortToBytes = function(short) {
     const buffer = Buffer.alloc(2);
     for (var i = 0; i < 2; i++) {
         const byte = short >> (i * 8) & 0xFF;
@@ -357,7 +351,7 @@ exports.shortToBytes = function(short) {
  * @param {Buffer} buffer A data buffer containing the bytes for the short.
  * @return {Number} The corresponding short value.
  */
-exports.bytesToShort = function(buffer) {
+Codex.prototype.bytesToShort = function(buffer) {
     var short = 0;
     for (var i = 0; i < 2; i++) {
         const byte = buffer[1 - i];
@@ -374,7 +368,7 @@ exports.bytesToShort = function(buffer) {
  * @param {Number} integer The integer to be converted.
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
-exports.integerToBytes = function(integer) {
+Codex.prototype.integerToBytes = function(integer) {
     const buffer = Buffer.alloc(4);
     for (var i = 0; i < 4; i++) {
         const byte = integer >> (i * 8) & 0xFF;
@@ -391,7 +385,7 @@ exports.integerToBytes = function(integer) {
  * @param {Buffer} buffer The buffer containing the bytes for the integer.
  * @return {Number} The corresponding integer value.
  */
-exports.bytesToInteger = function(buffer) {
+Codex.prototype.bytesToInteger = function(buffer) {
     var integer = 0;
     for (var i = 0; i < 4; i++) {
         const byte = buffer[3 - i];
@@ -551,16 +545,17 @@ function base32DecodeLast(chunk, characterIndex, buffer) {
  * This function returns a formatted version of a string with LINE_WIDTH characters per line.
  * 
  * @param {String} string The string to be formatted.
- * @param {String} indentation The string to be prepended to each line of the result.
+ * @param {Number} indentation The number of spaces to be prepended to each line of the result.
  * @returns {String} The formatted string.
  */
 function formatLines(string, indentation) {
-    indentation = indentation ? indentation : '';
+    var prefix = '';
+    for (var i = 0; i < indentation; i++) prefix += '    ';
     var formatted = '';
     const length = string.length;
     if (length > LINE_WIDTH) {
         for (var index = 0; index < length; index += LINE_WIDTH) {
-            formatted += EOL + indentation;
+            formatted += EOL + prefix;
             formatted += string.substring(index, index + LINE_WIDTH);
         }
         formatted += EOL;

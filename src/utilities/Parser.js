@@ -223,18 +223,19 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
         encoding = parameters.getValue('$encoding');
         if (encoding) encoding = encoding.toString();
     }
+    const codex = new utilities.Codex();
     switch (encoding) {
         case '$base2':
-            value = utilities.codex.base2Decode(value);
+            value = codex.base2Decode(value);
             break;
         case '$base16':
-            value = utilities.codex.base16Decode(value);
+            value = codex.base16Decode(value);
             break;
         case '$base32':
-            value = utilities.codex.base32Decode(value);
+            value = codex.base32Decode(value);
             break;
         case '$base64':
-            value = utilities.codex.base64Decode(value);
+            value = codex.base64Decode(value);
             break;
         default:
             const exception = new composites.Exception({

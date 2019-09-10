@@ -227,6 +227,12 @@ exports.api = function(debug) {
         return collections.Catalog.extraction(catalog, keys, debug);
     };
     
+    // CODEX
+    const codex = function(indentation, debug) {
+        debug = debug || defaultLevel;
+        return new utilities.Codex(indentation, debug);
+    };
+    
     // COMPONENT
     const component = function(document, debug) {
         debug = debug || defaultLevel;
@@ -567,6 +573,7 @@ exports.api = function(debug) {
         automaton: automaton,
         binary: binary,
         catalog: catalog,
+        codex: codex,
         component: component,
         duration: duration,
         exception: exception,

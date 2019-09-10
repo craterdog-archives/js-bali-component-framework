@@ -11,17 +11,17 @@
 
 const grammar = require('../grammar');
 
-exports.codex = require('./Codex');
-exports.precision = require('./Precision');
-exports.random = require('./Random');  // depends on codex
-exports.validation = require('./Validation');
-
 exports.Automaton = require('./Automaton').Automaton;
+exports.Codex = require('./Codex').Codex;
 exports.Comparator = require('./Comparator').Comparator;
 exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
 exports.Iterator = require('./Iterator').Iterator;
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
+
+exports.precision = require('./Precision');
+exports.random = require('./Random');  // depends on codex
+exports.validation = require('./Validation');
 
 // NOTE: Can't include the Parser module since it depends on all components and that
 //       would result in serious circular dependencies!

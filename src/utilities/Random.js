@@ -14,7 +14,7 @@
  * secure random number generator.
  */
 const crypto = require('crypto');
-const codex = require('./Codex');
+const Codex = require('./Codex').Codex;
 
 
 // PRIVATE CONSTANTS
@@ -43,6 +43,7 @@ exports.bytes = function(numberOfBytes) {
  * @return {Number} The random integer.
  */
 exports.integer = function() {
+    const codex = new Codex();
     const integer = codex.bytesToInteger(exports.bytes(4));
     return integer;
 };

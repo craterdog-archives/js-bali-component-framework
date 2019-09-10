@@ -10,7 +10,8 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const codex = require('../src/utilities/Codex');
+const Codex = new require('../src/utilities/Codex').Codex;
+const codex = new Codex(1, 2);  // indent one level, debug set to 2
 const random = require('../src/utilities/Random');
 
 
@@ -32,10 +33,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
                 const expectedBuffer = random.bytes(i);
-                const expectedBase2 = codex.base2Encode(expectedBuffer, '    ');
+                const expectedBase2 = codex.base2Encode(expectedBuffer, 1);
                 const buffer = codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base2 = codex.base2Encode(buffer, '    ');
+                const base2 = codex.base2Encode(buffer, 1);
                 expect(base2).to.equal(expectedBase2);
             }
         });
@@ -43,10 +44,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
                 const expectedBuffer = random.bytes(i);
-                const expectedBase16 = codex.base16Encode(expectedBuffer, '    ');
+                const expectedBase16 = codex.base16Encode(expectedBuffer, 1);
                 const buffer = codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base16 = codex.base16Encode(buffer, '    ');
+                const base16 = codex.base16Encode(buffer, 1);
                 expect(base16).to.equal(expectedBase16);
             }
         });
@@ -54,10 +55,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
                 const expectedBuffer = random.bytes(i);
-                const expectedBase32 = codex.base32Encode(expectedBuffer, '    ');
+                const expectedBase32 = codex.base32Encode(expectedBuffer);
                 const buffer = codex.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base32 = codex.base32Encode(buffer, '    ');
+                const base32 = codex.base32Encode(buffer);
                 expect(base32).to.equal(expectedBase32);
             }
         });
@@ -65,10 +66,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
                 const expectedBuffer = random.bytes(i);
-                const expectedBase64 = codex.base64Encode(expectedBuffer, '    ');
+                const expectedBase64 = codex.base64Encode(expectedBuffer, 1);
                 const buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base64 = codex.base64Encode(buffer, '    ');
+                const base64 = codex.base64Encode(buffer, 1);
                 expect(base64).to.equal(expectedBase64);
             }
         });

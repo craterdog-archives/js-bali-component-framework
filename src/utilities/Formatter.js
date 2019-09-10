@@ -15,7 +15,7 @@
  * by the <code>Parser</code> class and generates a canonical version of
  * the corresponding Bali Document Notation™ formatted code string.
  */
-const codex = require('./Codex');
+const Codex = require('./Codex').Codex;
 const validate = require('./Validation').validate;
 const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../composites/Exception').Exception;
@@ -167,6 +167,7 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.getValue();
     const format = this.getFormat(binary, '$encoding', '$base32');
+    const codex = new Codex();
     switch (format) {
         case '$base2':
             value = codex.base2Encode(value);
