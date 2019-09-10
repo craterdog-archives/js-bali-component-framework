@@ -28,6 +28,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
  * @param {Comparator} comparator An optional comparator.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */
 function Set(parameters, comparator, debug) {
@@ -212,6 +213,7 @@ Set.prototype.isLogical = function() {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second, debug) {
@@ -221,7 +223,7 @@ Set.and = function(first, second, debug) {
     if (debug > 1) validate('/bali/collections/Set', '$and', '$second', second, [
         '/bali/collections/Set'
     ], debug);
-    const result = new Set(first.getParameters(), first.comparator);
+    const result = new Set(first.getParameters(), first.comparator, debug);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
@@ -239,6 +241,7 @@ Set.and = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second, debug) {
@@ -248,7 +251,7 @@ Set.sans = function(first, second, debug) {
     if (debug > 1) validate('/bali/collections/Set', '$sans', '$second', second, [
         '/bali/collections/Set'
     ], debug);
-    const result = new Set(first.getParameters(), first.comparator);
+    const result = new Set(first.getParameters(), first.comparator, debug);
     result.addItems(first);
     result.removeItems(second);
     return result;
@@ -261,6 +264,7 @@ Set.sans = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The resulting set.
  */
 Set.or = function(first, second, debug) {
@@ -270,7 +274,7 @@ Set.or = function(first, second, debug) {
     if (debug > 1) validate('/bali/collections/Set', '$or', '$second', second, [
         '/bali/collections/Set'
     ], debug);
-    const result = new Set(first.getParameters(), first.comparator);
+    const result = new Set(first.getParameters(), first.comparator, debug);
     result.addItems(first);
     result.addItems(second);
     return result;
@@ -283,6 +287,7 @@ Set.or = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second, debug) {
@@ -292,7 +297,7 @@ Set.xor = function(first, second, debug) {
     if (debug > 1) validate('/bali/collections/Set', '$xor', '$second', second, [
         '/bali/collections/Set'
     ], debug);
-    const result = new Set(first.getParameters(), first.comparator);
+    const result = new Set(first.getParameters(), first.comparator, debug);
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();

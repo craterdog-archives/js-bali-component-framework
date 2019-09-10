@@ -11,6 +11,8 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(2);
+const random = require('../src/utilities/Random');
+const codex = require('../src/utilities/Codex');
 
 
 describe('Bali Nebula™ Component Framework - Binary', function() {
@@ -37,7 +39,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
             expect(binary.getValue().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.toString()).to.equal("'" + bali.codex.base32Encode(expected, '    ') + "'");
+            expect(binary.toString()).to.equal("'" + codex.base32Encode(expected, '    ') + "'");
         });
 
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {
@@ -55,8 +57,8 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
     describe('Test binary functions', function() {
 
         it('should perform concatenation of two binary strings', function() {
-            const binary1 = bali.binary(bali.random.bytes(40));
-            const binary2 = bali.binary(bali.random.bytes(40));
+            const binary1 = bali.binary(random.bytes(40));
+            const binary2 = bali.binary(random.bytes(40));
             const binary3 = bali.binary.concatenation(binary1, binary2);
             const string1 = binary1.toString().slice(1, -1).replace(/\s/g, '');
             const string2 = binary2.toString().slice(1, -1).replace(/\s/g, '');
@@ -66,15 +68,15 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
         it('should perform the bitwise NOT function correctly', function() {
             for (var i = 0; i < 256; i++) {
-                const expected = bali.binary(bali.random.bytes(i));
+                const expected = bali.binary(random.bytes(i));
                 expect(bali.binary.not(bali.binary.not(expected)).isEqualTo(expected)).to.equal(true);
             }
         });
 
         it('should perform the bitwise SANS function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(bali.random.bytes(i));
-                const B = bali.binary(bali.random.bytes(i));
+                const A = bali.binary(random.bytes(i));
+                const B = bali.binary(random.bytes(i));
                 const C = bali.binary.sans(A, B);
                 const D = bali.binary.sans(B, A);
                 expect(bali.binary.or(C, D).isEqualTo(bali.binary.xor(A, B))).to.equal(true);
@@ -83,8 +85,8 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
         it('should perform the bitwise XOR function correctly', function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(bali.random.bytes(i));
-                const B = bali.binary(bali.random.bytes(i));
+                const A = bali.binary(random.bytes(i));
+                const B = bali.binary(random.bytes(i));
                 const C = bali.binary.xor(A, B);
                 expect(bali.binary.xor(B, C).isEqualTo(A)).to.equal(true);
                 expect(bali.binary.xor(C, A).isEqualTo(B)).to.equal(true);
@@ -93,8 +95,8 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
         it("should perform the De Morgan's Laws correctly", function() {
             for (var i = 0; i < 10; i++) {
-                const A = bali.binary(bali.random.bytes(i));
-                const B = bali.binary(bali.random.bytes(i));
+                const A = bali.binary(random.bytes(i));
+                const B = bali.binary(random.bytes(i));
                 expect(bali.binary.not(bali.binary.and(A, B)).isEqualTo(bali.binary.or(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
                 expect(bali.binary.not(bali.binary.or(A, B)).isEqualTo(bali.binary.and(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
             }
@@ -105,7 +107,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
     describe('Test the binary iterators', function() {
 
         it('should iterate over a binary string forwards and backwards', function() {
-            const binary = bali.binary(bali.random.bytes(4));
+            const binary = bali.binary(random.bytes(4));
             const iterator = binary.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             iterator.toEnd();

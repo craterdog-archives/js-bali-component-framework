@@ -10,7 +10,7 @@
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const bali = require('../').api(2);
+const random = require('../src/utilities/Random');
 
 
 describe('Bali Nebula™ Component Framework - Random', function() {
@@ -19,8 +19,8 @@ describe('Bali Nebula™ Component Framework - Random', function() {
 
         it('should test extreme coin tosses', function() {
             for (var i = 0; i < 100; i++) {
-                expect(bali.random.coinToss(0)).is.false;  // jshint ignore:line
-                expect(bali.random.coinToss(1)).is.true;  // jshint ignore:line
+                expect(random.coinToss(0)).is.false;  // jshint ignore:line
+                expect(random.coinToss(1)).is.true;  // jshint ignore:line
             }
         });
 
@@ -29,7 +29,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
             var heads = 0;
             const tosses = 10000;
             for (var i = 1; i < tosses; i++) {
-                if (bali.random.coinToss(even)) heads++;
+                if (random.coinToss(even)) heads++;
             }
             expect(tosses * 0.485 < heads && heads < tosses * 0.515).to.be.true;  // jshint ignore:line
         });
@@ -38,7 +38,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
             var gotOne = false;
             var gotThree = false;
             for (var i = 0; i < 100; i++) {
-                const index = bali.random.index(3);
+                const index = random.index(3);
                 expect(index >= 1).is.true;  // jshint ignore:line
                 expect(index <= 3).is.true;  // jshint ignore:line
                 if (index === 1) gotOne = true;
@@ -50,7 +50,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
 
         it('should test endpoints of random probabilities', function() {
             for (var i = 0; i < 100; i++) {
-                const probability = bali.random.probability();
+                const probability = random.probability();
                 expect(probability >= 0).is.true;  // jshint ignore:line
                 expect(probability <= 1).is.true;  // jshint ignore:line
             }

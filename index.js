@@ -475,10 +475,22 @@ exports.api = function(debug) {
         collection.addItems(items);
         return collection;
     };
-    set.and = collections.Set.and;
-    set.sans = collections.Set.sans;
-    set.or = collections.Set.or;
-    set.xor = collections.Set.xor;
+    set.and = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.Set.and(first, second, debug);
+    };
+    set.sans = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.Set.sans(first, second, debug);
+    };
+    set.or = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.Set.or(first, second, debug);
+    };
+    set.xor = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return collections.Set.xor(first, second, debug);
+    };
     
     // STACK
     const stack = function(items, parameters, debug) {
@@ -516,7 +528,10 @@ exports.api = function(debug) {
     // VALIDATE
     const validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug) {
         debug = debug || defaultLevel;
-        return utilities.validation.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug);
+        // in case the caller forgets to check, less efficient this way but better than not checking
+        if (debug > 1) {
+            return utilities.validation.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug);
+        }
     };
     
     // VERSION
@@ -564,7 +579,6 @@ exports.api = function(debug) {
         binary: binary,
         catalog: catalog,
         component: component,
-        codex: utilities.codex,
         duration: duration,
         exception: exception,
         iterator: iterator,
@@ -575,11 +589,9 @@ exports.api = function(debug) {
         parameters: parameters,
         pattern: pattern,
         percent: percent,
-        precision: utilities.precision,
         probability: probability,
         procedure: procedure,
         queue: queue,
-        random: utilities.random,
         range: range,
         reference: reference,
         reserved: reserved,
@@ -591,6 +603,5 @@ exports.api = function(debug) {
         type: type,
         validate: validate,
         version: version,
-        visitor: abstractions.Visitor
     };
 };
