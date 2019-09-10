@@ -26,6 +26,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {Tree} statements The statements that are contained within the procedure.
  * @param {Parameters} parameters Optional parameters used to parameterize the procedure. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Procedure} A new procedure component.
  */
 function Procedure(statements, parameters, debug) {

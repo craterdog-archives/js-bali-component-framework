@@ -43,6 +43,7 @@ const MAXIMUM_LENGTH = 25;
  * @returns {Formatter} The new component formatter.
  */
 function Formatter(indentation, debug) {
+    debug = debug || 0;
     if (debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
         '/javascript/Undefined',
         '/javascript/Number'
@@ -88,7 +89,7 @@ function FormattingVisitor(indentation, debug) {
     this.getFormat = function(element, key, defaultValue) {
         var format;
         if (element.isParameterized()) {
-            format = element.getParameters().getValue(key);
+            format = element.getParameter(key);
             if (format) format = format.toString();
         }
         format = format || defaultValue;
@@ -367,13 +368,13 @@ FormattingVisitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function parameters
+// functionExpression: function arguments
 FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
     this.inline++;
     const functionName = tree.getChild(1);
     functionName.acceptVisitor(this);
-    const parameters = tree.getChild(2);
-    parameters.acceptVisitor(this);
+    const args = tree.getChild(2);
+    args.acceptVisitor(this);
     this.inline--;
 };
 
@@ -471,7 +472,7 @@ FormattingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message parameters
+// messageExpression: expression '.' message arguments
 FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     this.inline++;
     const target = tree.getChild(1);
@@ -479,8 +480,8 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     this.result += '.';
     const messageName = tree.getChild(2);
     messageName.acceptVisitor(this);
-    const parameters = tree.getChild(3);
-    parameters.acceptVisitor(this);
+    const args = tree.getChild(3);
+    args.acceptVisitor(this);
     this.inline--;
 };
 

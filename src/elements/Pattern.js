@@ -24,6 +24,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Pattern} The new pattern element.
  */
 function Pattern(value, parameters, debug) {

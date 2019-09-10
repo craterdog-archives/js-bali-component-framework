@@ -41,6 +41,7 @@ const validate = require('./Validation').validate;
  * @returns {Iterator} The new array iterator.
  */
 function Iterator(array, debug) {
+    debug = debug || 0;
     if (debug > 1) validate('/bali/utilities/Iterator', '$iterator', '$array', array, [
         '/javascript/Array'
     ], debug);

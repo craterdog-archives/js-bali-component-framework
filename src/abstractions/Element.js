@@ -25,6 +25,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String} type The type of component.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Element} The new element.
  */
 function Element(type, parameters, debug) {

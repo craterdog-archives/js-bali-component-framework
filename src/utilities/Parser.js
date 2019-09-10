@@ -51,7 +51,7 @@ const EOL = '\n';
 function Parser(debug) {
 
     // the debug flag is a private attribute so methods that use it are defined in the constructor
-    debug = debug || false;
+    debug = debug || 0;
 
     this.parseDocument = function(document) {
         if (debug > 1) validate('/bali/utilities/Parser', '$parse', '$document', document, [
@@ -125,8 +125,9 @@ function literalToNumber(literal) {
 
 function ParsingVisitor(debug) {
     grammar.DocumentVisitor.call(this);
-    this.debug = debug;
     this.depth = 0;
+    this.parameters = undefined;
+    this.debug = debug || 0;
     return this;
 }
 ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
@@ -705,8 +706,8 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
         const exception = new composites.Exception({
             $module: '/bali/utilities/Parser',
             $procedure: '$visitParameters',
-            $exception: '$emptyCatalog',
-            $text: 'A parameter catalog must contain at least one association.'
+            $exception: '$noParameters',
+            $text: 'A parameter list must contain at least one association.'
         });
         if (this.debug) console.error(exception.toString());
         throw exception;

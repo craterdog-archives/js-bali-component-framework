@@ -16,7 +16,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Parameters = require('../composites/Parameters').Parameters;
 const Exception = require('../composites/Exception').Exception;
 const validate = utilities.validation.validate;
 

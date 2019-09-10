@@ -24,6 +24,7 @@ const validate = utilities.validation.validate;
  * This function creates a new parameter component.
  * 
  * @param {Object|Catalog} parameters An object containing the parameter symbol-value pairs.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Parameters} The new parameter component.
  */
 function Parameters(parameters, debug) {

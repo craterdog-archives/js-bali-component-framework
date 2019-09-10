@@ -97,6 +97,7 @@ exports.type = function(value, debug) {
  * @param {Number} debug A number in the range [0..3].
  */
 exports.validate = function(moduleName, procedureName, argumentName, argumentValue, allowedTypes, debug) {
+    debug = debug || 0;
 
     // we can't use validate to validate its own arguments so do it manually
     if (typeof moduleName !== 'string' || typeof procedureName !== 'string' ||

@@ -43,8 +43,19 @@ function Component(type, parameters, debug) {
     ], this.debug);
 
     this.isComponent = true;
-    this.getType = function() { return type; };
-    this.getParameters = function() { return parameters; };
+
+    this.getType = function() {
+        return type;
+    };
+
+    this.getParameters = function() {
+        return parameters;
+    };
+
+    this.getParameter = function(key) {
+        if (parameters) return parameters.getValue(key);
+    };
+
     return this;
 }
 Component.prototype.constructor = Component;

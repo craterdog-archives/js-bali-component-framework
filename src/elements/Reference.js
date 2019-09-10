@@ -28,6 +28,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {URL} value The URL value of the reference.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Reference} The new reference element.
  */
 function Reference(value, parameters, debug) {

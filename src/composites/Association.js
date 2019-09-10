@@ -25,6 +25,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String|Number|Boolean|Component} key The key of the association.
  * @param {String|Number|Boolean|Component} value The value associated with the key.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Association} A new association.
  */
 function Association(key, value, debug) {

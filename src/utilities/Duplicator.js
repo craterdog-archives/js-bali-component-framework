@@ -31,6 +31,7 @@ const EOL = '\n';
  * @returns {Duplicator} The new component duplicator.
  */
 function Duplicator(debug) {
+    debug = debug || 0;
 
     this.duplicateComponent = function(component, parameters) {
         if (debug > 1) validate('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
@@ -437,6 +438,7 @@ DuplicatingVisitor.prototype.visitNumber = function(number) {
 
 // parameters: '(' catalog ')'
 DuplicatingVisitor.prototype.visitParameters = function(parameters) {
+    // a parameters object does not give direct access to its catalog so iterate of the keys
     const object = {};
     const keys = parameters.getKeys();
     const iterator = keys.getIterator();

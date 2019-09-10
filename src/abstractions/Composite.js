@@ -26,6 +26,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String} type The type of component.
  * @param {Parameters} parameters Optional parameters used to parameterize the composite component. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Composite} The new composite component.
  */
 function Composite(type, parameters, debug) {

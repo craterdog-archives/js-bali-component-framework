@@ -27,6 +27,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String} value The value of the reserved identifier.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Reserved} The new reserved identifier.
  */
 function Reserved(value, parameters, debug) {

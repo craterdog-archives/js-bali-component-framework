@@ -23,9 +23,11 @@
  * natural comparison will be performed.
  *  
  * @param {Function} algorithm An optional function implementing a comparison algorithm. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Comparator} The new comparator.
  */
-function Comparator(algorithm) {
+function Comparator(algorithm, debug) {
+    debug = debug || 0;
 
     // PUBLIC METHODS
     

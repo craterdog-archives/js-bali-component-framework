@@ -29,6 +29,7 @@ const validate = utilities.validation.validate;
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
  * @param {Parameters} parameters Optional parameters used to parameterize this range. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new range.
  */
 function Range(first, last, parameters, debug) {
