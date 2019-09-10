@@ -20,8 +20,8 @@ describe('Bali Nebula™ Component Framework - Random', function() {
 
         it('should test extreme coin tosses', function() {
             for (var i = 0; i < 100; i++) {
-                expect(generator.coinToss(0)).is.false;  // jshint ignore:line
-                expect(generator.coinToss(1)).is.true;  // jshint ignore:line
+                expect(generator.flipCoin(0)).is.false;  // jshint ignore:line
+                expect(generator.flipCoin(1)).is.true;  // jshint ignore:line
             }
         });
 
@@ -30,7 +30,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
             var heads = 0;
             const tosses = 10000;
             for (var i = 1; i < tosses; i++) {
-                if (generator.coinToss(even)) heads++;
+                if (generator.flipCoin(even)) heads++;
             }
             expect(tosses * 0.485 < heads && heads < tosses * 0.515).to.be.true;  // jshint ignore:line
         });
@@ -39,7 +39,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
             var gotOne = false;
             var gotThree = false;
             for (var i = 0; i < 100; i++) {
-                const index = generator.index(3);
+                const index = generator.generateIndex(3);
                 expect(index >= 1).is.true;  // jshint ignore:line
                 expect(index <= 3).is.true;  // jshint ignore:line
                 if (index === 1) gotOne = true;
@@ -51,7 +51,7 @@ describe('Bali Nebula™ Component Framework - Random', function() {
 
         it('should test endpoints of random probabilities', function() {
             for (var i = 0; i < 100; i++) {
-                const probability = generator.probability();
+                const probability = generator.generateProbability();
                 expect(probability >= 0).is.true;  // jshint ignore:line
                 expect(probability <= 1).is.true;  // jshint ignore:line
             }

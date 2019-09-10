@@ -11,7 +11,6 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(2);
-const generator = bali.generator(2);
 
 
 describe('Bali Nebula™ Component Framework - Tag', function() {
@@ -25,9 +24,9 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
 
         it('should generate default random tags with 20 bytes', function() {
             for (var i = 0; i < 10; i++) {
-                const generator = bali.tag();
-                expect(generator.getSize()).to.equal(20);
-                const expected = generator.toString();
+                const random = bali.tag();
+                expect(random.getSize()).to.equal(20);
+                const expected = random.toString();
                 const tag = bali.component(expected);
                 const result = tag.toString();
                 console.log('        ' + result);
@@ -36,9 +35,9 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
         });
 
         it('should generate a random tag with 15 bytes', function() {
-            const generator = bali.tag(15);
-            expect(generator.getSize()).to.equal(15);
-            const expected = generator.toString();
+            const random = bali.tag(15);
+            expect(random.getSize()).to.equal(15);
+            const expected = random.toString();
             const tag = bali.component(expected);
             const result = tag.toString();
             expect(result).to.equal(expected);

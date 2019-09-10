@@ -21,7 +21,7 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {
-                const expectedBuffer = generator.bytes(4);
+                const expectedBuffer = generator.generateBytes(4);
                 const expectedInteger = codex.bytesToInteger(expectedBuffer);
                 const buffer = codex.integerToBytes(expectedInteger);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -32,7 +32,7 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
 
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
-                const expectedBuffer = generator.bytes(i);
+                const expectedBuffer = generator.generateBytes(i);
                 const expectedBase2 = codex.base2Encode(expectedBuffer, 1);
                 const buffer = codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -43,7 +43,7 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
 
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
-                const expectedBuffer = generator.bytes(i);
+                const expectedBuffer = generator.generateBytes(i);
                 const expectedBase16 = codex.base16Encode(expectedBuffer, 1);
                 const buffer = codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -54,7 +54,7 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
 
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
-                const expectedBuffer = generator.bytes(i);
+                const expectedBuffer = generator.generateBytes(i);
                 const expectedBase32 = codex.base32Encode(expectedBuffer);
                 const buffer = codex.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
@@ -65,7 +65,7 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
 
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
-                const expectedBuffer = generator.bytes(i);
+                const expectedBuffer = generator.generateBytes(i);
                 const expectedBase64 = codex.base64Encode(expectedBuffer, 1);
                 const buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());

@@ -47,7 +47,7 @@ exports.Generator = Generator;
  * @param {Number} numberOfBytes The number of bytes in the desired binary string.
  * @return {Buffer} A data buffer containing random bytes.
  */
-Generator.prototype.bytes = function(numberOfBytes) {
+Generator.prototype.generateBytes = function(numberOfBytes) {
     try {
         const buffer = crypto.randomBytes(numberOfBytes);
         return buffer;
@@ -69,9 +69,9 @@ Generator.prototype.bytes = function(numberOfBytes) {
  *
  * @return {Number} The random integer.
  */
-Generator.prototype.integer = function() {
+Generator.prototype.generateInteger = function() {
     const codex = new Codex(0, this.debug);
-    const integer = codex.bytesToInteger(this.bytes(4));
+    const integer = codex.bytesToInteger(this.generateBytes(4));
     return integer;
 };
 
@@ -82,8 +82,8 @@ Generator.prototype.integer = function() {
  * @param {Number} length The length of the collection being indexed.
  * @return {Number} The random ordinal index.
  */
-Generator.prototype.index = function(length) {
-    const randomInteger = (this.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+Generator.prototype.generateIndex = function(length) {
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
     const index = (randomInteger % length) + 1;  // in range [1..length] for ordinal based indexing
     return index;
 };
@@ -94,8 +94,8 @@ Generator.prototype.index = function(length) {
  *
  * @return {Number} The random probability.
  */
-Generator.prototype.probability = function() {
-    const randomInteger = (this.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+Generator.prototype.generateProbability = function() {
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
     const probability = randomInteger / MAXIMUM_INTEGER;  // in range [0..1]
     return probability;
 };
@@ -108,8 +108,8 @@ Generator.prototype.probability = function() {
  * @param {Number} weight The probability that the toss will return true [0.0..1.0].
  * @return {Boolean} The result of the coin toss.
  */
-Generator.prototype.coinToss = function(weight) {
-    const randomInteger = (this.integer() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+Generator.prototype.flipCoin = function(weight) {
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
     const toss = randomInteger / (MAXIMUM_INTEGER - 1);  // convert to range [0.0..1.0)
     return toss < weight;  // true: [0.0..probability) and false: [probability..1.0]
 };

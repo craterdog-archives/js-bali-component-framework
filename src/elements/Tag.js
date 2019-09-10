@@ -45,7 +45,7 @@ function Tag(value, parameters, debug) {
     switch (typeof value) {
         case 'number':
             numberOfBytes = value;
-            bytes = generator.bytes(value);
+            bytes = generator.generateBytes(value);
             value = codex.base32Encode(bytes);
             break;
         case 'string':

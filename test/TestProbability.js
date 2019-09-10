@@ -67,7 +67,7 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
         it('should perform the random function correctly', function() {
             const generator = bali.generator();
             for (var i = 0; i < 100; i++) {
-                const probability = bali.probability(generator.probability());
+                const probability = bali.probability(generator.generateProbability());
                 expect(probability.getValue() >= 0 && probability.getValue() <= 1).to.equal(true);
             }
         });

@@ -212,7 +212,7 @@ function List(parameters, debug) {
         const generator = new utilities.Generator(this.debug);
         const size = this.getSize();
         for (var index = size; index > 1; index--) {
-            const random = generator.index(index);  // in range [1..index] ordinal indexing
+            const random = generator.generateIndex(index);  // in range [1..index] ordinal indexing
             const item = this.getItem(index);
             this.setItem(index, this.getItem(random));
             this.setItem(random, item);
