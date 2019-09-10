@@ -25,6 +25,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {String} value The value of the text string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Text} The new text string.
  */
 function Text(value, parameters, debug) {
@@ -134,6 +135,7 @@ Text.prototype.getIterator = function() {
  *
  * @param {Text} first The first text string to be operated on.
  * @param {Text} second The second text string to be operated on.
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Text} The resulting text string.
  */
 Text.concatenation = function(first, second, debug) {
@@ -146,7 +148,7 @@ Text.concatenation = function(first, second, debug) {
     const string1 = first.getValue();
     const string2 = second.getValue();
     const string = string1 + string2;
-    return new Text(string);
+    return new Text(string, first.getParameters(), debug);
 };
 
 

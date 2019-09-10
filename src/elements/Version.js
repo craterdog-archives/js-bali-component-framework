@@ -27,6 +27,7 @@ const validate = utilities.validation.validate;
  * 
  * @param {Array} value An array containing the version levels for the version string.
  * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new version string element.
  */
 function Version(value, parameters, debug) {
@@ -161,11 +162,8 @@ Version.prototype.getIterator = function() {
 };
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function increments the specified version string at the specified version
- * level, for example:
+ * This method increments this version string at the specified version level, for example:
  * <pre>
  *            current             next          what likely changed
  * level 1:    v5.7              v6         (interface/symantic changes)
@@ -177,20 +175,16 @@ Version.prototype.getIterator = function() {
  * level that is greater than the current number of levels is specified, a new level
  * with the value '1' is appended to the version string.
  * 
- * @param {Version} currentVersion The current version string.
  * @param {Number} level The version level to be incremented. If no level is specified
  * the last level in the version string is incremented.
  * @returns {Version} The next version string.
  */
-Version.nextVersion = function(currentVersion, level, debug) {
-    if (debug > 1) validate('/bali/elements/Version', '$nextVersion', '$currentVersion', currentVersion, [
-        '/bali/elements/Version'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Version', '$nextVersion', '$level', level, [
+Version.prototype.nextVersion = function(level) {
+    if (this.debug > 1) validate('/bali/elements/Version', '$nextVersion', '$level', level, [
         '/javascript/Undefined',
         '/javascript/Number'
-    ], debug);
-    const levels = currentVersion.getValue().slice();  // copy the array since we are going to splice it!
+    ], this.debug);
+    const levels = this.getValue().slice();  // copy the array since we are going to splice it!
     const index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
     if (index < levels.length) {
         levels[index]++;
@@ -204,11 +198,11 @@ Version.nextVersion = function(currentVersion, level, debug) {
 
 
 /**
- * This function determines whether or not a proposed next version string is valid. In order
- * for the next version to be valid the last level in the next version string must be one
- * more than the corresponding level in the current version string; or it must be '1' and
- * the next version string must have one more level of versions than the current version
- * string, for example:
+ * This method determines whether or not a proposed next version of this version string is
+ * valid. In order for the next version to be valid the last level in the next version string
+ * must be one more than the corresponding level in this version string; or it must be '1' and
+ * the next version string must have one more level of versions than this version string,
+ * for example:
  * <pre>
  *    current             next
  *     v5.7              v6         (interface/symantic changes)
@@ -216,20 +210,16 @@ Version.nextVersion = function(currentVersion, level, debug) {
  *     v5.7              v5.7.1     (changes being tested)
  * </pre>
  * 
- * @param {Version} currentVersion The current version string.
  * @param {Version} nextVersion The proposed next version string.
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
-Version.validNextVersion = function(currentVersion, nextVersion, debug) {
-    if (debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$currentVersion', currentVersion, [
+Version.prototype.validNextVersion = function(nextVersion) {
+    if (this.debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
         '/bali/elements/Version'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
-        '/bali/elements/Version'
-    ], debug);
+    ], this.debug);
 
     // extract the version levels
-    const currentLevels = currentVersion.getValue();
+    const currentLevels = this.getValue();
     const nextLevels = nextVersion.getValue();
 
     // walk the lists looking for the first different version levels

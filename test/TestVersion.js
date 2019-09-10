@@ -80,33 +80,33 @@ describe('Bali Nebula™ Component Framework - Version', function() {
 
         it('should calculate and validate next versions', function() {
             const currentVersion = bali.version([6, 2, 7]);
-            var nextVersion = bali.version.nextVersion(currentVersion, 1);
+            var nextVersion = currentVersion.nextVersion(1);
             expect(nextVersion.toString()).to.equal('v7');
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
-            nextVersion = bali.version.nextVersion(currentVersion, 2);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
+            nextVersion = currentVersion.nextVersion(2);
             expect(nextVersion.toString()).to.equal('v6.3');
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
-            nextVersion = bali.version.nextVersion(currentVersion, 3);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
+            nextVersion = currentVersion.nextVersion(3);
             expect(nextVersion.toString()).to.equal('v6.2.8');
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
-            nextVersion = bali.version.nextVersion(currentVersion, 4);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
+            nextVersion = currentVersion.nextVersion(4);
             expect(nextVersion.toString()).to.equal('v6.2.7.1');
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
-            nextVersion = bali.version.nextVersion(currentVersion);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
+            nextVersion = currentVersion.nextVersion();
             expect(nextVersion.toString()).to.equal('v6.2.8');
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(true);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
 
-            expect(bali.version.validNextVersion(currentVersion, currentVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(currentVersion)).to.equal(false);
             nextVersion = bali.version([7, 2, 7]);
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
             nextVersion = bali.version([6, 3, 7]);
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
             nextVersion = bali.version([6, 2, 8, 1]);
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
             nextVersion = bali.version([6, 2, 7, 2]);
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
             nextVersion = bali.version([6, 2, 7, 1, 1]);
-            expect(bali.version.validNextVersion(currentVersion, nextVersion)).to.equal(false);
+            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
         });
 
     });

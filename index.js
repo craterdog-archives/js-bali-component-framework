@@ -517,7 +517,10 @@ exports.api = function(debug) {
         debug = debug || defaultLevel;
         return new elements.Text(value, parameters, debug);
     };
-    text.concatenation = elements.Text.concatenation;
+    text.concatenation = function(first, second, debug) {
+        debug = debug || defaultLevel;
+        return elements.Text.concatenation(first, second, debug);
+    };
     
     // TYPE
     const type = function(value, debug) {
@@ -539,8 +542,6 @@ exports.api = function(debug) {
         debug = debug || defaultLevel;
         return new elements.Version(value, parameters, debug);
     };
-    version.nextVersion = elements.Version.nextVersion;
-    version.validNextVersion = elements.Version.validNextVersion;
     
     /*
      * This section defines constants for common components
