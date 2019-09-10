@@ -436,12 +436,6 @@ exports.api = function(debug) {
         return elements.Probability.xor(first, second, debug);
     };
     
-    // PROCEDURE
-    const procedure = function(statements, parameters, debug) {
-        debug = debug || defaultLevel;
-        return new composites.Procedure(statements, parameters, debug);
-    };
-    
     // QUEUE
     const queue = function(items, parameters, debug) {
         debug = debug || defaultLevel;
@@ -462,16 +456,10 @@ exports.api = function(debug) {
         return new elements.Reference(value, parameters, debug);
     };
     
-    // RESERVED
-    const reserved = function(value, parameters, debug) {
-        debug = debug || defaultLevel;
-        return new elements.Reserved(value, parameters, debug);
-    };
-    
     // SET
-    const set = function(items, comparator, parameters, debug) {
+    const set = function(items, algorithm, parameters, debug) {
         debug = debug || defaultLevel;
-        const collection = new collections.Set(parameters, comparator, debug);
+        const collection = new collections.Set(parameters, algorithm, debug);
         collection.addItems(items);
         return collection;
     };
@@ -591,11 +579,9 @@ exports.api = function(debug) {
         pattern: pattern,
         percent: percent,
         probability: probability,
-        procedure: procedure,
         queue: queue,
         range: range,
         reference: reference,
-        reserved: reserved,
         set: set,
         stack: stack,
         symbol: symbol,
@@ -603,6 +589,6 @@ exports.api = function(debug) {
         text: text,
         type: type,
         validate: validate,
-        version: version,
+        version: version
     };
 };

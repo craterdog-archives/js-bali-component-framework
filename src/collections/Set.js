@@ -11,8 +11,8 @@
 
 /**
  * This collection class implements an ordered set of components that does not allow
- * duplicate items. A set automatically orders its items based on the natural order
- * defined by the <code>Comparator</code> class.
+ * duplicate items. By default a set orders its items based on the natural ordering
+ * of its items.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -27,19 +27,24 @@ const validate = utilities.validation.validate;
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
- * @param {Comparator} comparator An optional comparator.
+ * @param {Function} algorithm An optional function to be used when comparing items.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */
-function Set(parameters, comparator, debug) {
+function Set(parameters, algorithm, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Set/v1'
     }, debug);
     abstractions.Collection.call(this, '$Set', parameters, debug);
+    algorithm = algorithm || undefined;
+    if (this.debug > 1) validate('/bali/collections/Set', '$Set', '$algorithm', algorithm, [
+        '/javascript/Undefined',
+        '/javascript/Function'
+    ], this.debug);
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
-    comparator = comparator || new utilities.Comparator();
+    const comparator = new utilities.Comparator(algorithm);
     const tree = new RandomizedTree(comparator);
 
     this.toArray = function() {
