@@ -278,6 +278,12 @@ exports.api = function(debug) {
         return error;
     };
     
+    // GENERATOR
+    const generator = function(debug) {
+        debug = debug || defaultLevel;
+        return new utilities.Generator(debug);
+    };
+    
     // ITERATOR
     const iterator = function(array, debug) {
         debug = debug || defaultLevel;
@@ -577,6 +583,7 @@ exports.api = function(debug) {
         component: component,
         duration: duration,
         exception: exception,
+        generator: generator,
         iterator: iterator,
         list: list,
         moment: moment,

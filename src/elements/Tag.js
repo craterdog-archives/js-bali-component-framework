@@ -40,11 +40,12 @@ function Tag(value, parameters, debug) {
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
-    const codex = new utilities.Codex();
+    const codex = new utilities.Codex(0, debug);
+    const generator = new utilities.Generator(debug);
     switch (typeof value) {
         case 'number':
             numberOfBytes = value;
-            bytes = utilities.random.bytes(value);
+            bytes = generator.bytes(value);
             value = codex.base32Encode(bytes);
             break;
         case 'string':

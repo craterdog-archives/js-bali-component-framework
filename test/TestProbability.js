@@ -11,7 +11,6 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(2);
-const random = require('../src/utilities/Random');
 
 
 describe('Bali Nebula™ Component Framework - Probability', function() {
@@ -66,8 +65,9 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
     describe('Test probability functions', function() {
 
         it('should perform the random function correctly', function() {
+            const generator = bali.generator();
             for (var i = 0; i < 100; i++) {
-                const probability = bali.probability(random.probability());
+                const probability = bali.probability(generator.probability());
                 expect(probability.getValue() >= 0 && probability.getValue() <= 1).to.equal(true);
             }
         });

@@ -122,8 +122,9 @@ Probability.prototype.acceptVisitor = function(visitor) {
  * @returns {Probability} The resulting random probability.
  */
 Probability.random = function(debug) {
-    const p = utilities.random.probability();
-    const result = new Probability(p, undefined, debug);
+    const generator = utilities.Generator(debug);
+    const random = generator.probability();
+    const result = new Probability(random, undefined, debug);
     return result;
 };
 

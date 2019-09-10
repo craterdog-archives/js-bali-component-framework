@@ -16,11 +16,11 @@ exports.Codex = require('./Codex').Codex;
 exports.Comparator = require('./Comparator').Comparator;
 exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
+exports.Generator = require('./Generator').Generator;  // depends on Codex
 exports.Iterator = require('./Iterator').Iterator;
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
 
 exports.precision = require('./Precision');
-exports.random = require('./Random');  // depends on codex
 exports.validation = require('./Validation');
 
 // NOTE: Can't include the Parser module since it depends on all components and that
