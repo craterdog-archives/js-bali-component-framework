@@ -47,8 +47,9 @@ function Complex(real, imaginary, parameters, debug) {
     }
 
     // normalize the values
+    this.savant = new utilities.Savant(this.debug);
     if (real === real) real = real || 0;  // default value if not NaN and not defined
-    real = utilities.precision.lockOnExtreme(real);
+    real = this.savant.lockOnExtreme(real);
     if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined
     if (imaginary.isComponent && imaginary.isType('$Angle')) {
         // convert polar to rectangular
@@ -62,7 +63,7 @@ function Complex(real, imaginary, parameters, debug) {
         real = magnitude * Angle.cosine(phase);
         imaginary = magnitude * Angle.sine(phase);
     }
-    imaginary = utilities.precision.lockOnExtreme(imaginary);
+    imaginary = this.savant.lockOnExtreme(imaginary);
     if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
         real = NaN;
         imaginary = NaN;
@@ -77,8 +78,8 @@ function Complex(real, imaginary, parameters, debug) {
 
     this.getMagnitude = function() {
         // need to preserve full precision on this except for the sum part
-        var magnitude = Math.sqrt(utilities.precision.sum(Math.pow(real, 2), Math.pow(imaginary, 2)));
-        magnitude = utilities.precision.lockOnExtreme(magnitude);
+        var magnitude = Math.sqrt(this.savant.sum(Math.pow(real, 2), Math.pow(imaginary, 2)));
+        magnitude = this.savant.lockOnExtreme(magnitude);
         return magnitude;
     };
 
@@ -287,9 +288,10 @@ Complex.reciprocal = function(complex, debug) {
     if (complex.isInfinite()) return new Complex(0, undefined, complex.getParameters(), debug);
     if (complex.isZero()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
 
-    const squared = utilities.precision.sum(utilities.precision.product(complex.getReal(), complex.getReal()), utilities.precision.product(complex.getImaginary(), complex.getImaginary()));
-    const real = utilities.precision.quotient(complex.getReal(), squared);
-    const imaginary = -utilities.precision.quotient(complex.getImaginary(), squared);
+    const savant = new utilities.Savant(debug);
+    const squared = savant.sum(savant.product(complex.getReal(), complex.getReal()), savant.product(complex.getImaginary(), complex.getImaginary()));
+    const real = savant.quotient(complex.getReal(), squared);
+    const imaginary = -savant.quotient(complex.getImaginary(), squared);
     const result = new Complex(real, imaginary, complex.getParameters(), debug);
     return result;
 };
@@ -380,8 +382,9 @@ Complex.sum = function(first, second, debug) {
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity, undefined, first.getParameters(), debug);
     if (first.isEqualTo(Complex.inverse(second))) return new Complex(0, undefined, first.getParameters(), debug);
 
-    const real = utilities.precision.sum(first.getReal(), second.getReal());
-    const imaginary = utilities.precision.sum(first.getImaginary(), second.getImaginary());
+    const savant = new utilities.Savant(debug);
+    const real = savant.sum(first.getReal(), second.getReal());
+    const imaginary = savant.sum(first.getImaginary(), second.getImaginary());
     const result = new Complex(real, imaginary, first.getParameters(), debug);
     return result;
 };
@@ -443,8 +446,9 @@ Complex.scaled = function(complex, factor, debug) {
     if (complex.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity, undefined, complex.getParameters(), debug);
     if (complex.isZero() || factor === 0) return new Complex(0, undefined, complex.getParameters(), debug);
 
-    const real = utilities.precision.product(complex.getReal(), factor);
-    const imaginary = utilities.precision.product(complex.getImaginary(), factor);
+    const savant = new utilities.Savant(debug);
+    const real = savant.product(complex.getReal(), factor);
+    const imaginary = savant.product(complex.getImaginary(), factor);
     const result = new Complex(real, imaginary, complex.getParameters(), debug);
     return result;
 };
@@ -479,8 +483,9 @@ Complex.product = function(first, second, debug) {
     if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity, undefined, first.getParameters(), debug);
     if (first.isZero() || second.isZero()) return new Complex(0, undefined, first.getParameters(), debug);
 
-    const real = utilities.precision.difference(utilities.precision.product(first.getReal(), second.getReal()), utilities.precision.product(first.getImaginary(), second.getImaginary()));
-    const imaginary = utilities.precision.sum(utilities.precision.product(first.getReal(), second.getImaginary()), utilities.precision.product(first.getImaginary() * second.getReal()));
+    const savant = new utilities.Savant(debug);
+    const real = savant.difference(savant.product(first.getReal(), second.getReal()), savant.product(first.getImaginary(), second.getImaginary()));
+    const imaginary = savant.sum(savant.product(first.getReal(), second.getImaginary()), savant.product(first.getImaginary() * second.getReal()));
     const result = new Complex(real, imaginary, first.getParameters(), debug);
     return result;
 };
@@ -541,7 +546,8 @@ Complex.remainder = function(first, second, debug) {
     // TODO: what does remainder mean for complex numbers?
     const firstInteger = Math.round(first.getReal());
     const secondInteger = Math.round(second.getReal());
-    return new Complex(utilities.precision.remainder(firstInteger, secondInteger), undefined, first.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Complex(savant.remainder(firstInteger, secondInteger), undefined, first.getParameters(), debug);
 };
 
 
@@ -643,9 +649,10 @@ function exp(complex, debug) {
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
     if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
     if (complex.isZero()) return new Complex(1, undefined, complex.getParameters(), debug);
-    const scale = utilities.precision.exponential(complex.getReal());
-    const real = utilities.precision.product(scale, utilities.precision.cosine(complex.getImaginary()));
-    const imaginary = utilities.precision.product(scale, utilities.precision.sine(complex.getImaginary()));
+    const savant = new utilities.Savant(debug);
+    const scale = savant.exponential(complex.getReal());
+    const real = savant.product(scale, savant.cosine(complex.getImaginary()));
+    const imaginary = savant.product(scale, savant.sine(complex.getImaginary()));
     const result = new Complex(real, imaginary, complex.getParameters(), debug);
     return result;
 }
@@ -655,7 +662,8 @@ function ln(complex, debug) {
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
     if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
     if (complex.isZero()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    const real = utilities.precision.logarithm(complex.getMagnitude());
+    const savant = new utilities.Savant(debug);
+    const real = savant.logarithm(complex.getMagnitude());
     const imaginary = complex.getPhase().getValue();
     const result = new Complex(real, imaginary, complex.getParameters(), debug);
     return result;

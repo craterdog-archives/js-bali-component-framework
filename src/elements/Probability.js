@@ -150,7 +150,8 @@ Probability.not = function(probability, debug) {
             '/bali/elements/Probability'
         ]);
     }
-    const p = utilities.precision.difference(1, probability.getValue());
+    const savant = new utilities.Savant(this.debug);
+    const p = savant.difference(1, probability.getValue());
     const result = new Probability(p, probability.getParameters(), debug);
     return result;
 };
@@ -181,7 +182,8 @@ Probability.and = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const p = utilities.precision.product(p1, p2);
+    const savant = new utilities.Savant(this.debug);
+    const p = savant.product(p1, p2);
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -213,7 +215,8 @@ Probability.sans = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
+    const savant = new utilities.Savant(this.debug);
+    const p = savant.product(p1, savant.difference(1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -246,7 +249,8 @@ Probability.or = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
+    const savant = new utilities.Savant(this.debug);
+    const p = savant.sum(p1, p2, savant.product(-p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -279,7 +283,8 @@ Probability.xor = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));
+    const savant = new utilities.Savant(this.debug);
+    const p = savant.sum(p1, p2, savant.product(-2, p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };

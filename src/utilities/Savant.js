@@ -25,12 +25,28 @@
  */
 
 
+// PUBLIC FUNCTIONS
+
+/**
+ * This class implements numeric calculations and limits the results to the correct
+ * number of significant figures. It also handles operations involving zero and infinity
+ * correctly. It's just a really smart class!
+ * 
+ * @param {Number} debug A number in the range [0..3].
+ * @returns {Savant} The new generator.
+ */
+function Savant(debug) {
+    this.debug = debug || 0;
+    return this;
+}
+Savant.prototype.constructor = Savant;
+exports.Savant = Savant;
+
+
 // PUBLIC CONSTANTS
 
-exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
+Savant.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
 
-
-// PUBLIC FUNCTIONS
 
 /**
  * This function checks to see if the specified number is close enough to zero or infinity to
@@ -40,7 +56,7 @@ exports.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
  * @param {Number} number The number to be checked.
  * @returns {Number} The potentially converted number.
  */
-exports.lockOnExtreme = function(number) {
+Savant.prototype.lockOnExtreme = function(number) {
     // use single precision comparisons to lock on
     const extreme = Math.fround(Math.abs(number));
     if (extreme === 0 || extreme === Infinity) return extreme;
@@ -56,7 +72,7 @@ exports.lockOnExtreme = function(number) {
  * @param {Number} number The number to be checked.
  * @returns {Number} The potentially converted number.
  */
-exports.lockOnPole = function(number) {
+Savant.prototype.lockOnPole = function(number) {
     // NOTE: it would be great if the single precision comparision worked here as well, or
     // better yet, the Math trigonometric functions returned Infinity and 0 when they should,
     // but alas... https://github.com/nodejs/node-v0.x-archive/issues/7852
@@ -116,7 +132,7 @@ exports.lockOnPole = function(number) {
  * @param {Number} angle The angle to be checked.
  * @returns {Number} The potentially converted angle.
  */
-exports.lockOnAngle = function(angle) {
+Savant.prototype.lockOnAngle = function(angle) {
     // use single precision comparisons to lock on
     if (Math.fround(Math.PI) === Math.fround(Math.abs(angle))) angle = Math.PI;
     return angle;
@@ -131,8 +147,8 @@ exports.lockOnAngle = function(angle) {
  * @params {Numbers} arguments The values to be evaluated.
  * @returns {Number} The number of significant digits for the list of values.
  */
-exports.valueDigits = function() {
-    var significantDigits = exports.MAXIMUM_PRECISION;
+Savant.prototype.valueDigits = function() {
+    var significantDigits = Savant.MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
         const value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {
@@ -155,7 +171,7 @@ exports.valueDigits = function() {
  * @param {Number} error The error factor to use to adjust the significant digits.
  * @returns {Number} The normalized value.
  */
-exports.normalizeValue = function(value, significantDigits, error) {
+Savant.prototype.normalizeValue = function(value, significantDigits, error) {
     var errorDigits;
     if (isFinite(error) && error !== 0) {
         errorDigits = Math.round(Math.abs(Math.log10(Math.abs(error))));
@@ -174,8 +190,8 @@ exports.normalizeValue = function(value, significantDigits, error) {
  * @returns {Number} The number of significant digits to the right of the decimal for the
  * list of values.
  */
-exports.decimalDigits = function() {
-    var significantDigits = exports.MAXIMUM_PRECISION;
+Savant.prototype.decimalDigits = function() {
+    var significantDigits = Savant.MAXIMUM_PRECISION;
     for (var i = 0; i < arguments.length; i++) {
         const value = arguments[i];
         if (Number.isFinite(value) && !Number.isInteger(value)) {
@@ -197,7 +213,7 @@ exports.decimalDigits = function() {
  * decimal for the value.
  * @returns {Number} The normalized value.
  */
-exports.normalizeDecimal = function(value, significantDigits) {
+Savant.prototype.normalizeDecimal = function(value, significantDigits) {
     return Number(value.toFixed(significantDigits));
 };
 
@@ -216,14 +232,14 @@ exports.normalizeDecimal = function(value, significantDigits) {
  * @params {Numbers} arguments The values to be added.
  * @return {Number} The resulting sum of the numbers.
  */
-exports.sum = function() {
+Savant.prototype.sum = function() {
     var result = 0;
-    const digits = exports.decimalDigits.apply(this, arguments);
+    const digits = this.decimalDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        const value = exports.lockOnExtreme(arguments[i]);
-        result = exports.lockOnExtreme(result + value);
+        const value = this.lockOnExtreme(arguments[i]);
+        result = this.lockOnExtreme(result + value);
     }
-    result = exports.normalizeDecimal(result, digits);
+    result = this.normalizeDecimal(result, digits);
     return result;
 };
 
@@ -243,12 +259,12 @@ exports.sum = function() {
  * @param {Number} subtrahend The number to be subtracted from the first number.
  * @return {Number} The resulting difference of the two numbers.
  */
-exports.difference = function(minuend, subtrahend) {
-    minuend = exports.lockOnExtreme(minuend);
-    subtrahend = exports.lockOnExtreme(subtrahend);
-    var result = exports.lockOnExtreme(minuend - subtrahend);
-    const digits = exports.decimalDigits(minuend, subtrahend);
-    result = exports.normalizeDecimal(result, digits);
+Savant.prototype.difference = function(minuend, subtrahend) {
+    minuend = this.lockOnExtreme(minuend);
+    subtrahend = this.lockOnExtreme(subtrahend);
+    var result = this.lockOnExtreme(minuend - subtrahend);
+    const digits = this.decimalDigits(minuend, subtrahend);
+    result = this.normalizeDecimal(result, digits);
     return result;
 };
 
@@ -267,14 +283,14 @@ exports.difference = function(minuend, subtrahend) {
  * @params {Numbers} arguments The values to be multiplied.
  * @return {Number} The resulting product of the numbers.
  */
-exports.product = function() {
+Savant.prototype.product = function() {
     var result = 1;
-    const digits = exports.valueDigits.apply(this, arguments);
+    const digits = this.valueDigits.apply(this, arguments);
     for (var i = 0; i < arguments.length; i++) {
-        const value = exports.lockOnExtreme(arguments[i]);
-        result = exports.lockOnExtreme(result * value);
+        const value = this.lockOnExtreme(arguments[i]);
+        result = this.lockOnExtreme(result * value);
     }
-    result = exports.normalizeValue(result, digits);
+    result = this.normalizeValue(result, digits);
     return result;
 };
 
@@ -294,12 +310,12 @@ exports.product = function() {
  * @param {Number} divisor The number to be divided by.
  * @return {Number} The resulting quotient of the two numbers.
  */
-exports.quotient = function(dividend, divisor) {
-    dividend = exports.lockOnExtreme(dividend);
-    divisor = exports.lockOnExtreme(divisor);
-    var result = exports.lockOnExtreme(dividend / divisor);
-    const digits = exports.valueDigits(dividend, divisor);
-    result = exports.normalizeValue(result, digits);
+Savant.prototype.quotient = function(dividend, divisor) {
+    dividend = this.lockOnExtreme(dividend);
+    divisor = this.lockOnExtreme(divisor);
+    var result = this.lockOnExtreme(dividend / divisor);
+    const digits = this.valueDigits(dividend, divisor);
+    result = this.normalizeValue(result, digits);
     return result;
 };
 
@@ -319,12 +335,12 @@ exports.quotient = function(dividend, divisor) {
  * @param {Number} divisor The number to be divided by.
  * @return {Number} The resulting remainder of the quotient of the two numbers.
  */
-exports.remainder = function(dividend, divisor) {
-    dividend = exports.lockOnExtreme(dividend);
-    divisor = exports.lockOnExtreme(divisor);
-    var result = exports.lockOnExtreme(dividend % divisor);
-    const digits = exports.valueDigits(dividend, divisor);
-    result = exports.normalizeValue(result, digits);
+Savant.prototype.remainder = function(dividend, divisor) {
+    dividend = this.lockOnExtreme(dividend);
+    divisor = this.lockOnExtreme(divisor);
+    var result = this.lockOnExtreme(dividend % divisor);
+    const digits = this.valueDigits(dividend, divisor);
+    result = this.normalizeValue(result, digits);
     return result;
 };
 
@@ -343,12 +359,12 @@ exports.remainder = function(dividend, divisor) {
  * @param {Number} exponent The exponent value.
  * @returns {Number} The value of the base raised to the exponent.
  */
-exports.exponential = function(exponent) {
-    exponent = exports.lockOnExtreme(exponent);
-    var result = exports.lockOnExtreme(Math.exp(exponent));
-    const digits = exports.valueDigits(exponent);
+Savant.prototype.exponential = function(exponent) {
+    exponent = this.lockOnExtreme(exponent);
+    var result = this.lockOnExtreme(Math.exp(exponent));
+    const digits = this.valueDigits(exponent);
     const error = exponent;
-    result = exports.normalizeValue(result, digits, error);
+    result = this.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -368,12 +384,12 @@ exports.exponential = function(exponent) {
  * @param {Number} exponential The value that is equal to base^exponent.
  * @returns {Number} The value of the base logarith of the exponential.
  */
-exports.logarithm = function(exponential) {
-    exponential = exports.lockOnExtreme(exponential);
-    var result = exports.lockOnExtreme(Math.log(exponential));
-    const digits = exports.valueDigits(exponential);
-    const error = exports.lockOnExtreme(1 / Math.log(exponential));
-    result = exports.normalizeValue(result, digits, error);
+Savant.prototype.logarithm = function(exponential) {
+    exponential = this.lockOnExtreme(exponential);
+    var result = this.lockOnExtreme(Math.log(exponential));
+    const digits = this.valueDigits(exponential);
+    const error = this.lockOnExtreme(1 / Math.log(exponential));
+    result = this.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -392,11 +408,11 @@ exports.logarithm = function(exponential) {
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the opposite to the hypotenuse.
  */
-exports.sine = function(angle) {
-    var result = exports.lockOnPole(Math.sin(angle));
-    const digits = exports.valueDigits(angle);
-    const error = exports.lockOnExtreme(angle / exports.lockOnPole(Math.tan(angle)));
-    result = exports.normalizeValue(result, digits, error);
+Savant.prototype.sine = function(angle) {
+    var result = this.lockOnPole(Math.sin(angle));
+    const digits = this.valueDigits(angle);
+    const error = this.lockOnExtreme(angle / this.lockOnPole(Math.tan(angle)));
+    result = this.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -415,11 +431,11 @@ exports.sine = function(angle) {
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the adjacent to the hypotenuse.
  */
-exports.cosine = function(angle) {
-    var result = exports.lockOnPole(Math.cos(angle));
-    const digits = exports.valueDigits(angle);
-    const error = exports.lockOnExtreme(angle * exports.lockOnPole(Math.tan(angle)));
-    result = exports.normalizeValue(result, digits, error);
+Savant.prototype.cosine = function(angle) {
+    var result = this.lockOnPole(Math.cos(angle));
+    const digits = this.valueDigits(angle);
+    const error = this.lockOnExtreme(angle * this.lockOnPole(Math.tan(angle)));
+    result = this.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -438,11 +454,11 @@ exports.cosine = function(angle) {
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the opposite to the adjacent.
  */
-exports.tangent = function(angle) {
-    var result = exports.lockOnPole(Math.tan(angle));
-    const digits = exports.valueDigits(angle);
-    const error = exports.lockOnExtreme(angle * (result + 1 / result));
-    result = exports.normalizeValue(result, digits, error);
+Savant.prototype.tangent = function(angle) {
+    var result = this.lockOnPole(Math.tan(angle));
+    const digits = this.valueDigits(angle);
+    const error = this.lockOnExtreme(angle * (result + 1 / result));
+    result = this.normalizeValue(result, digits, error);
     return result;
 };
 
@@ -462,11 +478,11 @@ exports.tangent = function(angle) {
  * @param {Number} ratio The ratio of the opposite to the hypotenuse within the right triangle.
  * @returns {Number} The corresponding angle.
  */
-exports.arcsine = function(ratio) {
-    var angle = exports.lockOnAngle(Math.asin(ratio));
-    const digits = exports.valueDigits(ratio);
-    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
-    angle = exports.normalizeValue(angle, digits, error);
+Savant.prototype.arcsine = function(ratio) {
+    var angle = this.lockOnAngle(Math.asin(ratio));
+    const digits = this.valueDigits(ratio);
+    const error = this.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
+    angle = this.normalizeValue(angle, digits, error);
     return angle;
 };
 
@@ -486,11 +502,11 @@ exports.arcsine = function(ratio) {
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse within the right triangle.
  * @returns {Number} The corresponding angle.
  */
-exports.arccosine = function(ratio) {
-    var angle = exports.lockOnAngle(Math.acos(ratio));
-    const digits = exports.valueDigits(ratio);
-    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
-    angle = exports.normalizeValue(angle, digits, error);
+Savant.prototype.arccosine = function(ratio) {
+    var angle = this.lockOnAngle(Math.acos(ratio));
+    const digits = this.valueDigits(ratio);
+    const error = this.lockOnExtreme(ratio / (Math.sqrt(1 - ratio * ratio) * angle));
+    angle = this.normalizeValue(angle, digits, error);
     return angle;
 };
 
@@ -512,12 +528,12 @@ exports.arccosine = function(ratio) {
  * @param {Number} adjacent The length of the side adjacent to the angle in the right triangle.
  * @returns {Number} The corresponding angle.
  */
-exports.arctangent = function(opposite, adjacent) {
-    const ratio = exports.quotient(opposite, adjacent);
-    var angle = exports.lockOnAngle(Math.atan2(opposite, adjacent));
-    const digits = exports.valueDigits(ratio);
-    const error = exports.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
-    angle = exports.normalizeValue(angle, digits, error);
+Savant.prototype.arctangent = function(opposite, adjacent) {
+    const ratio = this.quotient(opposite, adjacent);
+    var angle = this.lockOnAngle(Math.atan2(opposite, adjacent));
+    const digits = this.valueDigits(ratio);
+    const error = this.lockOnExtreme(ratio / (Math.sqrt(1 + ratio * ratio) * angle));
+    angle = this.normalizeValue(angle, digits, error);
     return angle;
 };
 

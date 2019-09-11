@@ -18,10 +18,9 @@ exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
 exports.Generator = require('./Generator').Generator;  // depends on Codex
 exports.Iterator = require('./Iterator').Iterator;
+exports.Savant = require('./Savant').Savant;
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
 exports.Validator = require('./Validator').Validator;
-
-exports.precision = require('./Precision');
 
 // NOTE: Can't include the Parser module since it depends on all components and that
 //       would result in serious circular dependencies!

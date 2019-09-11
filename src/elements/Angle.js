@@ -53,26 +53,27 @@ function Angle(value, parameters, debug) {
     }
 
     // convert the value if necessary
+    this.savant = new utilities.Savant(this.debug);
     if (parameters) {
         const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
             // convert degrees to radians
-            value = utilities.precision.quotient(utilities.precision.product(value, Math.PI), 180);
+            value = this.savant.quotient(this.savant.product(value, Math.PI), 180);
         }
     }
 
     // lock onto pi if appropriate
-    value = utilities.precision.lockOnAngle(value);
+    value = this.savant.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
-    const twoPi = utilities.precision.product(Math.PI, 2);
+    const twoPi = this.savant.product(Math.PI, 2);
     if (value < -twoPi || value > twoPi) {
-        value = utilities.precision.remainder(value, twoPi);  // make in the range (-2pi..2pi)
+        value = this.savant.remainder(value, twoPi);  // make in the range (-2pi..2pi)
     }
     if (value > Math.PI) {
-        value = utilities.precision.difference(value, twoPi);  // make in the range (-pi..pi]
+        value = this.savant.difference(value, twoPi);  // make in the range (-pi..pi]
     } else if (value <= -Math.PI) {
-        value = utilities.precision.sum(value, twoPi);  // make in the range (-pi..pi]
+        value = this.savant.sum(value, twoPi);  // make in the range (-pi..pi]
     }
     if (value === -0) value = 0;  // normalize to positive zero
 
@@ -141,7 +142,7 @@ Angle.prototype.getRadians = function() {
  * @returns {Number} The value of the angle in degrees.
  */
 Angle.prototype.getDegrees = function() {
-    const value = utilities.precision.quotient(utilities.precision.product(this.getValue(), 180), Math.PI);
+    const value = this.savant.quotient(this.savant.product(this.getValue(), 180), Math.PI);
     return value;
 };
 
@@ -191,7 +192,8 @@ Angle.prototype.acceptVisitor = function(visitor) {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle, debug) {
-    return new Angle(utilities.precision.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
 };
 
 
@@ -204,7 +206,8 @@ Angle.inverse = function(angle, debug) {
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle, debug) {
-    return new Angle(utilities.precision.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -217,7 +220,8 @@ Angle.complement = function(angle, debug) {
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle, debug) {
-    return new Angle(utilities.precision.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -244,7 +248,8 @@ Angle.conjugate = function(angle, debug) {
  * @returns {Angle} The normalized sum of the two angles.
  */
 Angle.sum = function(first, second, debug) {
-    return new Angle(utilities.precision.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -258,7 +263,8 @@ Angle.sum = function(first, second, debug) {
  * @returns {Angle} The normalized difference of the two angles.
  */
 Angle.difference = function(first, second, debug) {
-    return new Angle(utilities.precision.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -272,7 +278,8 @@ Angle.difference = function(first, second, debug) {
  * @returns {Angle} The normalized scaled angle.
  */
 Angle.scaled = function(angle, factor, debug) {
-    return new Angle(utilities.precision.product(angle.getValue(), factor), angle.getParameters(), debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.product(angle.getValue(), factor), angle.getParameters(), debug);
 };
 
 
@@ -285,7 +292,8 @@ Angle.scaled = function(angle, factor, debug) {
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle, debug) {
-    return utilities.precision.sine(angle.getValue(), angle.getParameters());
+    const savant = new utilities.Savant(debug);
+    return savant.sine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -297,7 +305,8 @@ Angle.sine = function(angle, debug) {
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle, debug) {
-    return utilities.precision.cosine(angle.getValue(), angle.getParameters());
+    const savant = new utilities.Savant(debug);
+    return savant.cosine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -309,7 +318,8 @@ Angle.cosine = function(angle, debug) {
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle, debug) {
-    return utilities.precision.tangent(angle.getValue(), angle.getParameters());
+    const savant = new utilities.Savant(debug);
+    return savant.tangent(angle.getValue(), angle.getParameters());
 };
 
 
@@ -322,7 +332,8 @@ Angle.tangent = function(angle, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio, debug) {
-    return new Angle(utilities.precision.arcsine(ratio), undefined, debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.arcsine(ratio), undefined, debug);
 };
 
 
@@ -335,7 +346,8 @@ Angle.arcsine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio, debug) {
-    return new Angle(utilities.precision.arccosine(ratio), undefined, debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.arccosine(ratio), undefined, debug);
 };
 
 
@@ -349,5 +361,6 @@ Angle.arccosine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, debug) {
-    return new Angle(utilities.precision.arctangent(opposite, adjacent), undefined, debug);
+    const savant = new utilities.Savant(debug);
+    return new Angle(savant.arctangent(opposite, adjacent), undefined, debug);
 };
