@@ -108,7 +108,7 @@ Percent.prototype.acceptVisitor = function(visitor) {
  */
 Percent.inverse = function(percent, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percent', '$inverse', '$percent', percent, [
             '/bali/elements/Percent'
         ]);
@@ -127,7 +127,7 @@ Percent.inverse = function(percent, debug) {
  */
 Percent.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percent', '$sum', '$first', first, [
             '/bali/elements/Percent'
         ]);
@@ -149,7 +149,7 @@ Percent.sum = function(first, second, debug) {
  */
 Percent.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percent', '$difference', '$first', first, [
             '/bali/elements/Percent'
         ]);
@@ -171,7 +171,7 @@ Percent.difference = function(first, second, debug) {
  */
 Percent.scaled = function(percent, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percent', '$scaled', '$percent', percent, [
             '/bali/elements/Percent'
         ]);

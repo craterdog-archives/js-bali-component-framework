@@ -135,7 +135,7 @@ Moment.prototype.acceptVisitor = function(visitor) {
 Moment.duration = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$duration', '$first', first, [
             '/bali/elements/Moment'
         ]);
@@ -159,7 +159,7 @@ Moment.duration = function(first, second, debug) {
  */
 Moment.earlier = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$earlier', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
@@ -183,7 +183,7 @@ Moment.earlier = function(moment, duration, debug) {
  */
 Moment.later = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$later', '$moment', moment, [
             '/bali/elements/Moment'
         ]);

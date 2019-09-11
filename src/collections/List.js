@@ -281,7 +281,7 @@ List.prototype.isChainable = function() {
  */
 List.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/List', '$concatenation', '$first', first, [
             '/bali/collections/List'
         ]);

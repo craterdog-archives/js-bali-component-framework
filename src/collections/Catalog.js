@@ -366,7 +366,7 @@ Catalog.prototype.toObject = function() {
  */
 Catalog.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$concatenation', '$first', first, [
             '/bali/collections/Catalog'
         ]);
@@ -392,7 +392,7 @@ Catalog.concatenation = function(first, second, debug) {
  */
 Catalog.extraction = function(catalog, keys, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
             '/bali/collections/Catalog'
         ]);

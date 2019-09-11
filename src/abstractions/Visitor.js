@@ -21,9 +21,11 @@
 /**
  * This function creates a new visitor component.
  * 
+ * @param {Number} debug A number in the range [0..3].
  * @returns {Visitor} The new visitor.
  */
-function Visitor() {
+function Visitor(debug) {
+    this.debug = debug || 0;
     this.depth = 0;
     return this;
 }

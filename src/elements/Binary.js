@@ -183,7 +183,7 @@ Binary.prototype.getIterator = function() {
  */
 Binary.not = function(binary, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$not', '$binary', binary, [
             '/bali/elements/Binary'
         ]);
@@ -208,7 +208,7 @@ Binary.not = function(binary, debug) {
  */
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$and', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -237,7 +237,7 @@ Binary.and = function(first, second, debug) {
  */
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$sans', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -266,7 +266,7 @@ Binary.sans = function(first, second, debug) {
  */
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$or', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -295,7 +295,7 @@ Binary.or = function(first, second, debug) {
  */
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$xor', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -324,7 +324,7 @@ Binary.xor = function(first, second, debug) {
  */
 Binary.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$concatenation', '$first', first, [
             '/bali/elements/Binary'
         ]);

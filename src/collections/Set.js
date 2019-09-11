@@ -243,7 +243,7 @@ Set.prototype.isLogical = function() {
  */
 Set.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$and', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -274,7 +274,7 @@ Set.and = function(first, second, debug) {
  */
 Set.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$sans', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -300,7 +300,7 @@ Set.sans = function(first, second, debug) {
  */
 Set.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$or', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -326,7 +326,7 @@ Set.or = function(first, second, debug) {
  */
 Set.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$xor', '$first', first, [
             '/bali/collections/Set'
         ]);

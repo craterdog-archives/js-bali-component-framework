@@ -58,7 +58,7 @@ exports.Duplicator = Duplicator;
 // PRIVATE CLASSES
 
 function DuplicatingVisitor(parameters, debug) {
-    Visitor.call(this);
+    Visitor.call(this, debug);
     this.depth = 0;
     this.parameters = parameters;
     this.debug = debug || 0;

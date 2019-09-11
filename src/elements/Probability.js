@@ -145,7 +145,7 @@ Probability.random = function(debug) {
  */
 Probability.not = function(probability, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$not', '$probability', probability, [
             '/bali/elements/Probability'
         ]);
@@ -171,7 +171,7 @@ Probability.not = function(probability, debug) {
  */
 Probability.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$and', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -203,7 +203,7 @@ Probability.and = function(first, second, debug) {
  */
 Probability.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$sans', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -236,7 +236,7 @@ Probability.sans = function(first, second, debug) {
  */
 Probability.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$or', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -269,7 +269,7 @@ Probability.or = function(first, second, debug) {
  */
 Probability.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$xor', '$first', first, [
             '/bali/elements/Probability'
         ]);

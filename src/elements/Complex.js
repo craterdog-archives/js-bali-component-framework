@@ -244,7 +244,7 @@ Complex.prototype.acceptVisitor = function(visitor) {
  */
 Complex.inverse = function(complex, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$inverse', '$complex', complex, [
             '/bali/elements/Number'
         ]);
@@ -276,7 +276,7 @@ Complex.inverse = function(complex, debug) {
  */
 Complex.reciprocal = function(complex, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$reciprocal', '$complex', complex, [
             '/bali/elements/Number'
         ]);
@@ -307,7 +307,7 @@ Complex.reciprocal = function(complex, debug) {
  */
 Complex.conjugate = function(complex, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$conjugate', '$complex', complex, [
             '/bali/elements/Number'
         ]);
@@ -334,7 +334,7 @@ Complex.conjugate = function(complex, debug) {
  */
 Complex.factorial = function(complex, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$factorial', '$complex', complex, [
             '/bali/elements/Number'
         ]);
@@ -366,7 +366,7 @@ Complex.factorial = function(complex, debug) {
  */
 Complex.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$sum', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -400,7 +400,7 @@ Complex.sum = function(first, second, debug) {
  */
 Complex.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$difference', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -427,7 +427,7 @@ Complex.difference = function(first, second, debug) {
  */
 Complex.scaled = function(complex, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$scaled', '$complex', complex, [
             '/bali/elements/Number'
         ]);
@@ -463,7 +463,7 @@ Complex.scaled = function(complex, factor, debug) {
  */
 Complex.product = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$product', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -499,7 +499,7 @@ Complex.product = function(first, second, debug) {
  */
 Complex.quotient = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$quotient', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -521,7 +521,7 @@ Complex.quotient = function(first, second, debug) {
  */
 Complex.remainder = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$remainder', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -558,7 +558,7 @@ Complex.remainder = function(first, second, debug) {
  */
 Complex.exponential = function(base, exponent, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$exponential', '$base', base, [
             '/bali/elements/Number'
         ]);
@@ -593,7 +593,7 @@ Complex.exponential = function(base, exponent, debug) {
  */
 Complex.logarithm = function(base, value, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Number', '$logarithm', '$base', base, [
             '/bali/elements/Number'
         ]);

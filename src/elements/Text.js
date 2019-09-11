@@ -142,7 +142,7 @@ Text.prototype.getIterator = function() {
  */
 Text.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Text', '$concatenation', '$first', first, [
             '/bali/elements/Text'
         ]);

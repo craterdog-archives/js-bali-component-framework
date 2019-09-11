@@ -153,7 +153,7 @@ Name.prototype.getIterator = function() {
  */
 Name.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Name', '$concatenation', '$first', first, [
             '/bali/elements/Name'
         ]);

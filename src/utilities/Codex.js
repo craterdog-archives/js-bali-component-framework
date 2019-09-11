@@ -49,8 +49,8 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
 function Codex(indentation, debug) {
     this.debug = debug || 0;
     this.indentation = indentation || 0;
-    const validator = new Validator(debug);
     if (this.debug > 1) {
+        const validator = new Validator(debug);
         validator.validateType('/bali/utilities/Codex', '$Codex', '$indentation', indentation, [
             '/javascript/Number'
         ]);

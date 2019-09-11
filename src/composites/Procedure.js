@@ -31,7 +31,7 @@ const abstractions = require('../abstractions');
 function Procedure(statements, parameters, debug) {
     abstractions.Composite.call(this, '$Procedure', parameters, debug);
     if (this.debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
             '/bali/composites/Tree'
         ]);

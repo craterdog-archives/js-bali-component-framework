@@ -76,7 +76,7 @@ exports.Formatter = Formatter;
 // PRIVATE CLASSES
 
 function FormattingVisitor(indentation, debug) {
-    Visitor.call(this);
+    Visitor.call(this, debug);
     this.indentation = indentation || 0;
     this.debug = debug || 0;
     this.depth = 0;
