@@ -541,6 +541,12 @@ exports.api = function(debug) {
         return new elements.Version(value, parameters, debug);
     };
     
+    // VISITOR
+    const visitor = function() {
+        return abstractions.Visitor;
+    };
+    
+
     /*
      * This section defines constants for common components
      */
@@ -601,6 +607,7 @@ exports.api = function(debug) {
         text: text,
         type: type,
         validator: validator,
-        version: version
+        version: version,
+        visitor: visitor
     };
 };

@@ -192,6 +192,12 @@ Angle.prototype.acceptVisitor = function(visitor) {
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$inverse', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
 };
@@ -206,6 +212,12 @@ Angle.inverse = function(angle, debug) {
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$complement', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
 };
@@ -220,6 +232,12 @@ Angle.complement = function(angle, debug) {
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$supplement', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
 };
@@ -234,6 +252,12 @@ Angle.supplement = function(angle, debug) {
  * @returns {Angle} The conjugated angle.
  */
 Angle.conjugate = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$conjugate', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     return new Angle(-angle.getValue(), angle.getParameters(), debug);
 };
 
@@ -248,6 +272,15 @@ Angle.conjugate = function(angle, debug) {
  * @returns {Angle} The normalized sum of the two angles.
  */
 Angle.sum = function(first, second, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$sum', '$first', first, [
+            '/bali/elements/Angle'
+        ]);
+        validator.validateType('/bali/elements/Angle', '$sum', '$second', second, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
@@ -263,6 +296,15 @@ Angle.sum = function(first, second, debug) {
  * @returns {Angle} The normalized difference of the two angles.
  */
 Angle.difference = function(first, second, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$difference', '$first', first, [
+            '/bali/elements/Angle'
+        ]);
+        validator.validateType('/bali/elements/Angle', '$difference', '$second', second, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
@@ -278,6 +320,15 @@ Angle.difference = function(first, second, debug) {
  * @returns {Angle} The normalized scaled angle.
  */
 Angle.scaled = function(angle, factor, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$scaled', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+        validator.validateType('/bali/elements/Angle', '$scaled', '$factor', factor, [
+            '/javascript/Number'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.product(angle.getValue(), factor), angle.getParameters(), debug);
 };
@@ -292,6 +343,12 @@ Angle.scaled = function(angle, factor, debug) {
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$sine', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return savant.sine(angle.getValue(), angle.getParameters());
 };
@@ -305,6 +362,12 @@ Angle.sine = function(angle, debug) {
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$cosine', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return savant.cosine(angle.getValue(), angle.getParameters());
 };
@@ -318,6 +381,12 @@ Angle.cosine = function(angle, debug) {
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$tangent', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return savant.tangent(angle.getValue(), angle.getParameters());
 };
@@ -332,6 +401,12 @@ Angle.tangent = function(angle, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$arcsine', '$ratio', ratio, [
+            '/javascript/Number'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.arcsine(ratio), undefined, debug);
 };
@@ -346,6 +421,12 @@ Angle.arcsine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$arccosine', '$ratio', ratio, [
+            '/javascript/Number'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.arccosine(ratio), undefined, debug);
 };
@@ -361,6 +442,15 @@ Angle.arccosine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$arctangent', '$opposite', opposite, [
+            '/javascript/Number'
+        ]);
+        validator.validateType('/bali/elements/Angle', '$arctangent', '$adjacent', adjacent, [
+            '/javascript/Number'
+        ]);
+    }
     const savant = new utilities.Savant(debug);
     return new Angle(savant.arctangent(opposite, adjacent), undefined, debug);
 };
