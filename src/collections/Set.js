@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -37,10 +36,13 @@ function Set(parameters, algorithm, debug) {
     }, debug);
     abstractions.Collection.call(this, '$Set', parameters, debug);
     algorithm = algorithm || undefined;
-    if (this.debug > 1) validate('/bali/collections/Set', '$Set', '$algorithm', algorithm, [
-        '/javascript/Undefined',
-        '/javascript/Function'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Set', '$Set', '$algorithm', algorithm, [
+            '/javascript/Undefined',
+            '/javascript/Function'
+        ]);
+    }
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
@@ -67,15 +69,18 @@ function Set(parameters, algorithm, debug) {
     };
     
     this.getIndex = function(item) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$getIndex', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         var index = 0;
         item = this.convert(item);
         index = tree.index(item) + 1;  // convert to ordinal based indexing
@@ -83,33 +88,42 @@ function Set(parameters, algorithm, debug) {
     };
     
     this.getItem = function(index) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$getItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
         index = this.normalizeIndex(index, tree.size) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
     
     this.addItem = function(item) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$addItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         item = this.convert(item);
         return tree.insert(item);
     };
     
     this.addItems = function(items) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$addItems', '$items', items, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$addItems', '$items', items, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         var count = 0;
         items = items || undefined;  // normalize nulls to undefined
         if (items) {
@@ -145,25 +159,31 @@ function Set(parameters, algorithm, debug) {
     },
 
     this.removeItem = function(item) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$addItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         item = this.convert(item);
         return tree.remove(item);
     };
     
     this.removeItems = function(items) {
-        if (this.debug > 1) validate('/bali/collections/Set', '$removeItems', '$items', items, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         var count = 0;
         if (items && items.getIterator) {
             const iterator = items.getIterator();
@@ -222,12 +242,15 @@ Set.prototype.isLogical = function() {
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/Set', '$and', '$first', first, [
-        '/bali/collections/Set'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Set', '$and', '$second', second, [
-        '/bali/collections/Set'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Set', '$and', '$first', first, [
+            '/bali/collections/Set'
+        ]);
+        validator.validateType('/bali/collections/Set', '$and', '$second', second, [
+            '/bali/collections/Set'
+        ]);
+    }
     const result = new Set(first.getParameters(), first.comparator, debug);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
@@ -250,12 +273,15 @@ Set.and = function(first, second, debug) {
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/Set', '$sans', '$first', first, [
-        '/bali/collections/Set'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Set', '$sans', '$second', second, [
-        '/bali/collections/Set'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Set', '$sans', '$first', first, [
+            '/bali/collections/Set'
+        ]);
+        validator.validateType('/bali/collections/Set', '$sans', '$second', second, [
+            '/bali/collections/Set'
+        ]);
+    }
     const result = new Set(first.getParameters(), first.comparator, debug);
     result.addItems(first);
     result.removeItems(second);
@@ -273,12 +299,15 @@ Set.sans = function(first, second, debug) {
  * @returns {Set} The resulting set.
  */
 Set.or = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/Set', '$or', '$first', first, [
-        '/bali/collections/Set'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Set', '$or', '$second', second, [
-        '/bali/collections/Set'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Set', '$or', '$first', first, [
+            '/bali/collections/Set'
+        ]);
+        validator.validateType('/bali/collections/Set', '$or', '$second', second, [
+            '/bali/collections/Set'
+        ]);
+    }
     const result = new Set(first.getParameters(), first.comparator, debug);
     result.addItems(first);
     result.addItems(second);
@@ -296,12 +325,15 @@ Set.or = function(first, second, debug) {
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/Set', '$xor', '$first', first, [
-        '/bali/collections/Set'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Set', '$xor', '$second', second, [
-        '/bali/collections/Set'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Set', '$xor', '$first', first, [
+            '/bali/collections/Set'
+        ]);
+        validator.validateType('/bali/collections/Set', '$xor', '$second', second, [
+            '/bali/collections/Set'
+        ]);
+    }
     const result = new Set(first.getParameters(), first.comparator, debug);
     const iterator1 = first.getIterator();
     var item1;

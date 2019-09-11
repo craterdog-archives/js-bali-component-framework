@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,11 +31,14 @@ const validate = utilities.validation.validate;
  */
 function Probability(value, parameters, debug) {
     abstractions.Element.call(this, '$Probability', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Probability', '$Probability', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Boolean',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number'
+        ]);
+    }
 
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value) || value < 0 || value > 1) {
@@ -142,9 +144,12 @@ Probability.random = function(debug) {
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability, debug) {
-    if (debug > 1) validate('/bali/elements/Probability', '$not', '$probability', probability, [
-        '/bali/elements/Probability'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$not', '$probability', probability, [
+            '/bali/elements/Probability'
+        ]);
+    }
     const p = utilities.precision.difference(1, probability.getValue());
     const result = new Probability(p, probability.getParameters(), debug);
     return result;
@@ -165,12 +170,15 @@ Probability.not = function(probability, debug) {
  * @returns {Probability} The resulting probability.
  */
 Probability.and = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Probability', '$and', '$first', first, [
-        '/bali/elements/Probability'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Probability', '$and', '$second', second, [
-        '/bali/elements/Probability'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$and', '$first', first, [
+            '/bali/elements/Probability'
+        ]);
+        validator.validateType('/bali/elements/Probability', '$and', '$second', second, [
+            '/bali/elements/Probability'
+        ]);
+    }
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.product(p1, p2);
@@ -194,12 +202,15 @@ Probability.and = function(first, second, debug) {
  * @returns {Probability} The resulting probability.
  */
 Probability.sans = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Probability', '$sans', '$first', first, [
-        '/bali/elements/Probability'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Probability', '$sans', '$second', second, [
-        '/bali/elements/Probability'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$sans', '$first', first, [
+            '/bali/elements/Probability'
+        ]);
+        validator.validateType('/bali/elements/Probability', '$sans', '$second', second, [
+            '/bali/elements/Probability'
+        ]);
+    }
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.product(p1, utilities.precision.difference(1, p2));
@@ -224,12 +235,15 @@ Probability.sans = function(first, second, debug) {
  * @returns {Probability} The resulting probability.
  */
 Probability.or = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Probability', '$or', '$first', first, [
-        '/bali/elements/Probability'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Probability', '$or', '$second', second, [
-        '/bali/elements/Probability'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$or', '$first', first, [
+            '/bali/elements/Probability'
+        ]);
+        validator.validateType('/bali/elements/Probability', '$or', '$second', second, [
+            '/bali/elements/Probability'
+        ]);
+    }
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-p1, p2));
@@ -254,12 +268,15 @@ Probability.or = function(first, second, debug) {
  * @returns {Probability} The resulting probability.
  */
 Probability.xor = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Probability', '$xor', '$first', first, [
-        '/bali/elements/Probability'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Probability', '$xor', '$second', second, [
-        '/bali/elements/Probability'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Probability', '$xor', '$first', first, [
+            '/bali/elements/Probability'
+        ]);
+        validator.validateType('/bali/elements/Probability', '$xor', '$second', second, [
+            '/bali/elements/Probability'
+        ]);
+    }
     const p1 = first.getValue();
     const p2 = second.getValue();
     const p = utilities.precision.sum(p1, p2, utilities.precision.product(-2, p1, p2));

@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -31,10 +30,12 @@ const validate = utilities.validation.validate;
  */
 function Procedure(statements, parameters, debug) {
     abstractions.Composite.call(this, '$Procedure', parameters, debug);
-    if (this.debug > 1) validate('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
-        '/bali/composites/Tree'
-    ], this.debug);
-
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
+            '/bali/composites/Tree'
+        ]);
+    }
     this.getStatements = function() { return statements; };
     return this;
 }

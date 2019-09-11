@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -30,10 +29,13 @@ const validate = utilities.validation.validate;
  */
 function Text(value, parameters, debug) {
     abstractions.Element.call(this, '$Text', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Text', '$Text', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Text', '$Text', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String'
+        ]);
+    }
 
     value = value || '';  // default value
 
@@ -139,12 +141,15 @@ Text.prototype.getIterator = function() {
  * @returns {Text} The resulting text string.
  */
 Text.concatenation = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Text', '$concatenation', '$first', first, [
-        '/bali/elements/Text'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Text', '$concatenation', '$second', second, [
-        '/bali/elements/Text'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Text', '$concatenation', '$first', first, [
+            '/bali/elements/Text'
+        ]);
+        validator.validateType('/bali/elements/Text', '$concatenation', '$second', second, [
+            '/bali/elements/Text'
+        ]);
+    }
     const string1 = first.getValue();
     const string2 = second.getValue();
     const string = string1 + string2;

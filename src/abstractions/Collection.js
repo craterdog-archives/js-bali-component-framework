@@ -16,7 +16,6 @@
 const utilities = require('../utilities');
 const Composite = require('./Composite').Composite;
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -145,15 +144,18 @@ Collection.prototype.getIterator = function() {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    if (this.debug > 1) validate('/bali/abstractions/Collection', '$getIndex', '$item', item, [
-        '/javascript/Undefined',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/String',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ]);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+    }
     var index = 0;
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
@@ -191,10 +193,13 @@ Collection.prototype.getItem = function(index) {
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
-    if (this.debug > 1) validate('/bali/abstractions/Collection', '$getItems', '$range', range, [
-        '/javascript/Undefined',
-        '/bali/collections/Range'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
+            '/javascript/Undefined',
+            '/bali/collections/Range'
+        ]);
+    }
     const items = new this.constructor(this.getParameters());
     if (range && range.getIterator) {
         const iterator = range.getIterator();
@@ -215,15 +220,18 @@ Collection.prototype.getItems = function(range) {
  * @returns {Boolean} Whether or not the specified item is contained in this collection.
  */
 Collection.prototype.containsItem = function(item) {
-    validate('/bali/abstractions/Collection', '$containsItem', '$item', item, [
-        '/javascript/Undefined',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/String',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ]);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+    }
     const index = this.getIndex(item);
     const result = index > 0;
     return result;
@@ -238,11 +246,14 @@ Collection.prototype.containsItem = function(item) {
  * @returns {Boolean} Whether or not any of the specified items are contained in this collection.
  */
 Collection.prototype.containsAny = function(items) {
-    validate('/bali/abstractions/Collection', '$containsAny', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/bali/interfaces/Sequential'
-    ]);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
     var result = false;
     if (Array.isArray(items)) {
         items.forEach(function(item) {
@@ -269,11 +280,14 @@ Collection.prototype.containsAny = function(items) {
  * @returns {Boolean} Whether or not all of the specified items are contained in this collection.
  */
 Collection.prototype.containsAll = function(items) {
-    validate('/bali/abstractions/Collection', '$containsAll', '$items', items, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/bali/interfaces/Sequential'
-    ]);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
     var result = false;
     if (Array.isArray(items)) {
         items.forEach(function(item) {

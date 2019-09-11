@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -38,10 +37,13 @@ function Parameters(parameters, debug) {
     };
 
     this.getValue = function(key) {
-        if (this.debug > 1) validate('/bali/composites/Parameters', '$getParameter', '$key', key, [
-            '/javascript/String',
-            '/bali/elements/Symbol'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/composites/Parameters', '$getParameter', '$key', key, [
+                '/javascript/String',
+                '/bali/elements/Symbol'
+            ]);
+        }
         return catalog.getValue(key);
     };
 

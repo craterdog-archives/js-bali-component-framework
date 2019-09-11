@@ -17,7 +17,6 @@
 const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,11 +31,14 @@ const validate = utilities.validation.validate;
  */
 function Duration(value, parameters, debug) {
     abstractions.Element.call(this, '$Duration', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Duration', '$Duration', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Number'
+        ]);
+    }
     value = value || 0;  // default value
     value = moment.duration(value);
 
@@ -111,9 +113,12 @@ Duration.prototype.acceptVisitor = function(visitor) {
  */
 Duration.inverse = function(duration, debug) {
     debug = debug || 0;  // default value
-    if (debug > 1) validate('/bali/elements/Duration', '$inverse', '$duration', duration, [
-        '/bali/elements/Duration'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Duration', '$inverse', '$duration', duration, [
+            '/bali/elements/Duration'
+        ]);
+    }
     return new Duration(moment.duration().subtract(duration.getValue()).toISOString(), duration.getParameters(), debug);
 };
 
@@ -128,12 +133,15 @@ Duration.inverse = function(duration, debug) {
  */
 Duration.sum = function(first, second, debug) {
     debug = debug || 0;  // default value
-    if (debug > 1) validate('/bali/elements/Duration', '$sum', '$first', first, [
-        '/bali/elements/Duration'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Duration', '$sum', '$second', second, [
-        '/bali/elements/Duration'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Duration', '$sum', '$first', first, [
+            '/bali/elements/Duration'
+        ]);
+        validator.validateType('/bali/elements/Duration', '$sum', '$second', second, [
+            '/bali/elements/Duration'
+        ]);
+    }
     return new Duration(first.getValue().clone().add(second.getValue()).toISOString(), first.getParameters(), debug);
 };
 
@@ -148,12 +156,15 @@ Duration.sum = function(first, second, debug) {
  */
 Duration.difference = function(first, second, debug) {
     debug = debug || 0;  // default value
-    if (debug > 1) validate('/bali/elements/Duration', '$difference', '$first', first, [
-        '/bali/elements/Duration'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Duration', '$difference', '$second', second, [
-        '/bali/elements/Duration'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Duration', '$difference', '$first', first, [
+            '/bali/elements/Duration'
+        ]);
+        validator.validateType('/bali/elements/Duration', '$difference', '$second', second, [
+            '/bali/elements/Duration'
+        ]);
+    }
     return new Duration(first.getValue().clone().subtract(second.getValue()).toISOString(), first.getParameters(), debug);
 };
 
@@ -167,11 +178,14 @@ Duration.difference = function(first, second, debug) {
  * @returns {Duration} The normalized scaled duration.
  */
 Duration.scaled = function(duration, factor, debug) {
-    if (debug > 1) validate('/bali/elements/Duration', '$scaled', '$duration', duration, [
-        '/bali/elements/Duration'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Duration', '$scaled', '$factor', factor, [
-        '/javascript/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Duration', '$scaled', '$duration', duration, [
+            '/bali/elements/Duration'
+        ]);
+        validator.validateType('/bali/elements/Duration', '$scaled', '$factor', factor, [
+            '/javascript/Number'
+        ]);
+    }
     return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString(), duration.getParameters(), debug);
 };

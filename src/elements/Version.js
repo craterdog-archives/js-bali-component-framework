@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,10 +31,13 @@ const validate = utilities.validation.validate;
  */
 function Version(value, parameters, debug) {
     abstractions.Element.call(this, '$Version', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Version', '$Version', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Array'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Version', '$Version', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Array'
+        ]);
+    }
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
@@ -180,10 +182,13 @@ Version.prototype.getIterator = function() {
  * @returns {Version} The next version string.
  */
 Version.prototype.nextVersion = function(level) {
-    if (this.debug > 1) validate('/bali/elements/Version', '$nextVersion', '$level', level, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Version', '$nextVersion', '$level', level, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
     const levels = this.getValue().slice();  // copy the array since we are going to splice it!
     const index = level ? level - 1 : levels.length - 1;  // convert to JS zero based indexing
     if (index < levels.length) {
@@ -214,9 +219,12 @@ Version.prototype.nextVersion = function(level) {
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
 Version.prototype.validNextVersion = function(nextVersion) {
-    if (this.debug > 1) validate('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
-        '/bali/elements/Version'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
+            '/bali/elements/Version'
+        ]);
+    }
 
     // extract the version levels
     const currentLevels = this.getValue();

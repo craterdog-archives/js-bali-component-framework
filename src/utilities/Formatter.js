@@ -16,7 +16,7 @@
  * the corresponding Bali Document Notation™ formatted code string.
  */
 const Codex = require('./Codex').Codex;
-const validate = require('./Validation').validate;
+const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../composites/Exception').Exception;
 
@@ -44,18 +44,24 @@ const MAXIMUM_LENGTH = 25;
  */
 function Formatter(indentation, debug) {
     debug = debug || 0;
-    if (debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new Validator(debug);
+        validator.validateType('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
 
     // the indentation is a private attribute so methods that use it are defined in the constructor
     indentation = indentation || 0;
 
     this.formatComponent = function(component) {
-        if (debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
-            '/bali/abstractions/Component'
-        ], debug);
+        if (debug > 1) {
+            const validator = new Validator(debug);
+            validator.validateType('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
+                '/bali/abstractions/Component'
+            ]);
+        }
         const visitor = new FormattingVisitor(indentation, debug);
         component.acceptVisitor(visitor);
         return visitor.result;

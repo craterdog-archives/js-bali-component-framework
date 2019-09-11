@@ -525,16 +525,14 @@ exports.api = function(debug) {
     // TYPE
     const type = function(value, debug) {
         debug = debug || defaultLevel;
-        return utilities.validation.type(value, debug);
+        const type = new utilities.Validator(debug).getType(value);
+        return new elements.Name(type, undefined, debug);
     };
     
-    // VALIDATE
-    const validate = function(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug) {
+    // VALIDATOR
+    const validator = function(debug) {
         debug = debug || defaultLevel;
-        // in case the caller forgets to check, less efficient this way but better than not checking
-        if (debug > 1) {
-            return utilities.validation.validate(moduleName, procedureName, parameterName, parameterValue, allowedTypes, debug);
-        }
+        return new utilities.Validator(debug);
     };
     
     // VERSION
@@ -602,7 +600,7 @@ exports.api = function(debug) {
         tag: tag,
         text: text,
         type: type,
-        validate: validate,
+        validator: validator,
         version: version
     };
 };

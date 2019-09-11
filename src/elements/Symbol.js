@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,9 +31,12 @@ const validate = utilities.validation.validate;
  */
 function Symbol(value, parameters, debug) {
     abstractions.Element.call(this, '$Symbol', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Symbol', '$Symbol', '$value', value, [
-        '/javascript/String'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
+            '/javascript/String'
+        ]);
+    }
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*$/g.test(value)) {
         const exception = new Exception({

@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -30,10 +29,13 @@ const validate = utilities.validation.validate;
  */
 function Percent(value, parameters, debug) {
     abstractions.Element.call(this, '$Percent', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Percent', '$Percent', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Percent', '$Percent', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
     value = value || 0;  // default value
 
     // since this element is immutable the value must be read-only
@@ -105,9 +107,12 @@ Percent.prototype.acceptVisitor = function(visitor) {
  * @returns {Percent} The inverse of the percent.
  */
 Percent.inverse = function(percent, debug) {
-    if (debug > 1) validate('/bali/elements/Percent', '$inverse', '$percent', percent, [
-        '/bali/elements/Percent'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Percent', '$inverse', '$percent', percent, [
+            '/bali/elements/Percent'
+        ]);
+    }
     return new Percent(-percent.getValue(), percent.getParameters(), debug);
 };
 
@@ -121,12 +126,15 @@ Percent.inverse = function(percent, debug) {
  * @returns {Percent} The normalized sum of the two percents.
  */
 Percent.sum = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Percent', '$sum', '$first', first, [
-        '/bali/elements/Percent'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Percent', '$sum', '$second', second, [
-        '/bali/elements/Percent'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Percent', '$sum', '$first', first, [
+            '/bali/elements/Percent'
+        ]);
+        validator.validateType('/bali/elements/Percent', '$sum', '$second', second, [
+            '/bali/elements/Percent'
+        ]);
+    }
     return new Percent(utilities.precision.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -140,12 +148,15 @@ Percent.sum = function(first, second, debug) {
  * @returns {Percent} The normalized difference of the two percents.
  */
 Percent.difference = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Percent', '$difference', '$first', first, [
-        '/bali/elements/Percent'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Percent', '$difference', '$second', second, [
-        '/bali/elements/Percent'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Percent', '$difference', '$first', first, [
+            '/bali/elements/Percent'
+        ]);
+        validator.validateType('/bali/elements/Percent', '$difference', '$second', second, [
+            '/bali/elements/Percent'
+        ]);
+    }
     return new Percent(utilities.precision.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -159,12 +170,15 @@ Percent.difference = function(first, second, debug) {
  * @returns {Percent} The normalized scaled percent.
  */
 Percent.scaled = function(percent, factor, debug) {
-    if (debug > 1) validate('/bali/elements/Percent', '$scaled', '$percent', percent, [
-        '/bali/elements/Percent'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Percent', '$scaled', '$factor', factor, [
-        '/javascript/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Percent', '$scaled', '$percent', percent, [
+            '/bali/elements/Percent'
+        ]);
+        validator.validateType('/bali/elements/Percent', '$scaled', '$factor', factor, [
+            '/javascript/Number'
+        ]);
+    }
     return new Percent(utilities.precision.product(percent.getValue(), factor), percent.getParameters(), debug);
 };
 

@@ -14,7 +14,7 @@
  * This library provides functions that do various byte level manipulations and
  * conversions.
  */
-const validate = require('./Validation').validate;
+const Validator = require('./Validator').Validator;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -49,9 +49,12 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
 function Codex(indentation, debug) {
     this.debug = debug || 0;
     this.indentation = indentation || 0;
-    if (this.debug > 1) validate('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
-        '/javascript/Number'
-    ], this.debug);
+    const validator = new Validator(debug);
+    if (this.debug > 1) {
+        validator.validateType('/bali/utilities/Codex', '$Codex', '$indentation', indentation, [
+            '/javascript/Number'
+        ]);
+    }
     return this;
 }
 Codex.prototype.constructor = Codex;

@@ -18,7 +18,6 @@ const URL = require('url').URL;
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -33,10 +32,13 @@ const validate = utilities.validation.validate;
  */
 function Reference(value, parameters, debug) {
     abstractions.Element.call(this, '$Reference', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Reference', '$Reference', '$value', value, [
-        '/javascript/String',
-        '/nodejs/URL'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Reference', '$Reference', '$value', value, [
+            '/javascript/String',
+            '/nodejs/URL'
+        ]);
+    }
 
     try {
         if (value.constructor.name !== 'URL') {

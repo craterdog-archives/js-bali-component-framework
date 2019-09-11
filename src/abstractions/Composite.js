@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -77,12 +76,15 @@ Composite.prototype.toBoolean = function() {
  * @returns {Number} The normalized [1..N] index.
  */
 Composite.prototype.normalizeIndex = function(index, size) {
-    if (this.debug > 1) validate('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
-        '/javascript/Number'
-    ], this.debug);
-    if (this.debug > 1) validate('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
+            '/javascript/Number'
+        ]);
+        validator.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
+            '/javascript/Number'
+        ]);
+    }
     if (index > size) index = size;
     if (index < -size) index = -size;
     if (index < 0) index = index + size + 1;

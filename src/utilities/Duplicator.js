@@ -13,7 +13,7 @@
  * This library provides functions that duplicate a parse tree structure produced
  * by the <code>Parser</code> class.
  */
-const validate = require('./Validation').validate;
+const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
 
 
@@ -34,13 +34,16 @@ function Duplicator(debug) {
     debug = debug || 0;
 
     this.duplicateComponent = function(component, parameters) {
-        if (debug > 1) validate('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
-            '/bali/abstractions/Component'
-        ], debug);
-        if (debug > 1) validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
-            '/javascript/Undefined',
-            '/bali/composites/Parameters'
-        ], debug);
+        if (debug > 1) {
+            const validator = new Validator(debug);
+            validator.validateType('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
+                '/bali/abstractions/Component'
+            ]);
+            validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+                '/javascript/Undefined',
+                '/bali/composites/Parameters'
+            ]);
+        }
         const visitor = new DuplicatingVisitor(parameters, debug);
         component.acceptVisitor(visitor);
         return visitor.result;

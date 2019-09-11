@@ -15,7 +15,7 @@
  * machine and allowed transitions between states given a finite set of possible event
  * types.
  */
-const validate = require('./Validation').validate;
+const Validator = require('./Validator').Validator;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -42,12 +42,16 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Automaton} A new finite state automaton.
  */
 function Automaton(eventTypes, nextStates, debug) {
-    if (debug > 1) validate('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
-        '/javascript/Array'
-    ], debug);
-    if (debug > 1) validate('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
-        '/javascript/Object'
-    ], debug);
+    debug = debug || 0;
+    if (debug > 1) {
+        const validator = new Validator(debug);
+        validator.validateType('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
+            '/javascript/Array'
+        ]);
+        validator.validateType('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
+            '/javascript/Object'
+        ]);
+    }
     var currentState;
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
         const exception = new Exception({

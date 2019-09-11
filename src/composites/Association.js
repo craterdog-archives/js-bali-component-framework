@@ -15,7 +15,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -30,23 +29,26 @@ const validate = utilities.validation.validate;
  */
 function Association(key, value, debug) {
     abstractions.Composite.call(this, '$Association', debug);
-    if (this.debug > 1) validate('/bali/composites/Association', '$Association', '$key', key, [
-        '/javascript/String',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ], this.debug);
-    if (this.debug > 1) validate('/bali/composites/Association', '$Association', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
+            '/javascript/String',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+        validator.validateType('/bali/composites/Association', '$Association', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+    }
 
     // convert the arguments to components
     key = this.convert(key);
@@ -62,15 +64,18 @@ function Association(key, value, debug) {
     };
 
     this.setValue = function(newValue) {
-        if (this.debug > 1) validate('/bali/composites/Association', '$setValue', '$value', value, [
-            '/javascript/Undefined',
-            '/javascript/String',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
+                '/javascript/Undefined',
+                '/javascript/String',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         newValue = this.convert(newValue);
         const oldValue = value;
         value = newValue;

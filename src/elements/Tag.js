@@ -16,7 +16,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,11 +31,14 @@ const validate = utilities.validation.validate;
  */
 function Tag(value, parameters, debug) {
     abstractions.Element.call(this, '$Tag', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Tag', '$Tag', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Number'
+        ]);
+    }
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;

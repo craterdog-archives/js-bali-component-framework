@@ -16,7 +16,6 @@
 const URL = require('url').URL;
 const utilities = require('../utilities');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -34,13 +33,16 @@ function Component(type, parameters, debug) {
     // analyze the arguments
     parameters = parameters || undefined;  // normalize nulls to undefined
     this.debug = debug || 0;  // default value
-    if (this.debug > 1) validate('/bali/abstractions/Component', '$Component', '$type', type, [
-        '/javascript/String'
-    ], this.debug);
-    if (this.debug > 1) validate('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
-        '/javascript/Undefined',
-        '/bali/composites/Parameters'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Component', '$Component', '$type', type, [
+            '/javascript/String'
+        ]);
+        validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+            '/javascript/Undefined',
+            '/bali/composites/Parameters'
+        ]);
+    }
 
     this.isComponent = true;
 

@@ -21,13 +21,26 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
+ * This class implements random value generation.
+ * 
+ * @param {Number} debug A number in the range [0..3].
+ * @returns {Generator} The new generator.
+ */
+function Validator(debug) {
+    this.debug = debug || 0;
+    return this;
+}
+Validator.prototype.constructor = Validator;
+exports.Validator = Validator;
+
+
+/**
  * This function returns a string containing the Bali name for the type of the specified value.
  * 
  * @param {Any} value The value to be evaluated. 
- * @param {Number} debug A number in the range [0..3].
  * @returns {String} A string containing the Bali name for the type of the specified value.
  */
-exports.type = function(value, debug) {
+Validator.prototype.getType = function(value) {
     // handle null legacy
     if (value === null) value = undefined;  // null is of type 'object' so undefine it!
 
@@ -94,11 +107,8 @@ exports.type = function(value, debug) {
  * @param {Any} argumentValue The value of the argument being validated.
  * @param {Array} allowedTypes An array of strings representing the allowed types for the argument
  * value.
- * @param {Number} debug A number in the range [0..3].
  */
-exports.validate = function(moduleName, procedureName, argumentName, argumentValue, allowedTypes, debug) {
-    debug = debug || 0;
-
+Validator.prototype.validateType = function(moduleName, procedureName, argumentName, argumentValue, allowedTypes) {
     // we can't use validate to validate its own arguments so do it manually
     if (typeof moduleName !== 'string' || typeof procedureName !== 'string' ||
         typeof argumentName !== 'string' || !Array.isArray(allowedTypes)) {
@@ -113,12 +123,12 @@ exports.validate = function(moduleName, procedureName, argumentName, argumentVal
             $allowedTypes: allowedTypes,
             $text: 'An invalid argument was passed as part of the validation attempt.'
         });
-        if (debug > 0) console.error(exception.toString());
+        if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
 
     // validate the argument
-    const actualType = exports.type(argumentValue);
+    const actualType = this.getType(argumentValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
     if (argumentValue && argumentValue.isComponent) {
         if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
@@ -145,6 +155,6 @@ exports.validate = function(moduleName, procedureName, argumentName, argumentVal
         $value: argumentValue,
         $text: 'An invalid argument type was passed to the procedure.'
     });
-    if (debug > 0) console.error(exception.toString());
+    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };

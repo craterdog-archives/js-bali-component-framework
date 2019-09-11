@@ -33,7 +33,6 @@ const abstractions = require('../abstractions/');
 const elements = require('../elements');
 const composites = require('../composites');
 const collections = require('../collections');
-const validate = utilities.validation.validate;
 
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
@@ -54,9 +53,12 @@ function Parser(debug) {
     debug = debug || 0;
 
     this.parseDocument = function(document) {
-        if (debug > 1) validate('/bali/utilities/Parser', '$parse', '$document', document, [
-            '/javascript/String'
-        ], debug);
+        if (debug > 1) {
+            const validator = new utilities.Validator(debug);
+            validator.validateType('/bali/utilities/Parser', '$parse', '$document', document, [
+                '/javascript/String'
+            ]);
+        }
         const parser = initializeParser(document, debug);
         const antlrTree = parser.document();
         const component = convertParseTree(antlrTree, debug);

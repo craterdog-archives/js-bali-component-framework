@@ -16,7 +16,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -31,10 +30,13 @@ const validate = utilities.validation.validate;
  */
 function Angle(value, parameters, debug) {
     abstractions.Element.call(this, '$Angle', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Angle', '$Angle', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
 
     // check the value
     if (value === value) value = value || 0;  // default value if not NaN and not defined

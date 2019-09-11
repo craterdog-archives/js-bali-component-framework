@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = utilities.validation.validate;
 
 /*
  * This function defines a missing stack function for the standard Array class.
@@ -62,15 +61,18 @@ function Queue(parameters, debug) {
     };
 
     this.addItem = function(item) {
-        if (this.debug > 1) validate('/bali/collections/Queue', '$addItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         if (array.length === capacity) {
             const exception = new composites.Exception({
                 $module: '/bali/collections/Queue',
@@ -89,11 +91,14 @@ function Queue(parameters, debug) {
     };
 
     this.addItems = function(items) {
-        if (this.debug > 1) validate('/bali/collections/Queue', '$addItems', '$items', items, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Queue', '$addItems', '$items', items, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         var count = 0;
         items = items || undefined;  // normalize nulls to undefined
         if (items) {

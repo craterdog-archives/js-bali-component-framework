@@ -16,7 +16,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Angle = require('./Angle').Angle;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -34,15 +33,18 @@ const validate = utilities.validation.validate;
  */
 function Complex(real, imaginary, parameters, debug) {
     abstractions.Element.call(this, '$Number', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Number', '$Number', '$real', real, [
-        '/javascript/Undefined',
-        '/javascript/Number'
-    ], this.debug);
-    if (this.debug > 1) validate('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
-        '/javascript/Undefined',
-        '/javascript/Number',
-        '/bali/elements/Angle'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$Number', '$real', real, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
+            '/javascript/Undefined',
+            '/javascript/Number',
+            '/bali/elements/Angle'
+        ]);
+    }
 
     // normalize the values
     if (real === real) real = real || 0;  // default value if not NaN and not defined
@@ -241,9 +243,12 @@ Complex.prototype.acceptVisitor = function(visitor) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.inverse = function(complex, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$inverse', '$complex', complex, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$inverse', '$complex', complex, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
@@ -270,9 +275,12 @@ Complex.inverse = function(complex, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.reciprocal = function(complex, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$reciprocal', '$complex', complex, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$reciprocal', '$complex', complex, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
@@ -298,9 +306,12 @@ Complex.reciprocal = function(complex, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.conjugate = function(complex, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$conjugate', '$complex', complex, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$conjugate', '$complex', complex, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
@@ -322,9 +333,12 @@ Complex.conjugate = function(complex, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.factorial = function(complex, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$factorial', '$complex', complex, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$factorial', '$complex', complex, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
@@ -351,12 +365,15 @@ Complex.factorial = function(complex, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.sum = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$sum', '$first', first, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$sum', '$second', second, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$sum', '$first', first, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$sum', '$second', second, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
@@ -382,12 +399,15 @@ Complex.sum = function(first, second, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.difference = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$difference', '$first', first, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$difference', '$second', second, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$difference', '$first', first, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$difference', '$second', second, [
+            '/bali/elements/Number'
+        ]);
+    }
     return Complex.sum(first, Complex.inverse(second, debug), debug);
 };
 
@@ -406,12 +426,15 @@ Complex.difference = function(first, second, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.scaled = function(complex, factor, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$scaled', '$complex', complex, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$scaled', '$factor', factor, [
-        '/javascript/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$scaled', '$complex', complex, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$scaled', '$factor', factor, [
+            '/javascript/Number'
+        ]);
+    }
 
     // handle the special cases
     if (complex.isUndefined() || Number.isNaN(factor)) return new Complex(NaN, undefined, complex.getParameters(), debug);
@@ -439,12 +462,15 @@ Complex.scaled = function(complex, factor, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.product = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$product', '$first', first, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$product', '$second', second, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$product', '$first', first, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$product', '$second', second, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
@@ -472,12 +498,15 @@ Complex.product = function(first, second, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.quotient = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$quotient', '$first', first, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$quotient', '$second', second, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$quotient', '$first', first, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$quotient', '$second', second, [
+            '/bali/elements/Number'
+        ]);
+    }
     return Complex.product(first, Complex.reciprocal(second, debug), debug);
 };
 
@@ -491,12 +520,15 @@ Complex.quotient = function(first, second, debug) {
  * @returns {Complex} The resulting real number.
  */
 Complex.remainder = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$remainder', '$first', first, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$remainder', '$second', second, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$remainder', '$first', first, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$remainder', '$second', second, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
@@ -525,12 +557,15 @@ Complex.remainder = function(first, second, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.exponential = function(base, exponent, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$exponential', '$base', base, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$exponential', '$exponent', exponent, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$exponential', '$base', base, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$exponential', '$exponent', exponent, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (base.isUndefined() || exponent.isUndefined()) return new Complex(NaN, undefined, base.getParameters(), debug);
@@ -557,12 +592,15 @@ Complex.exponential = function(base, exponent, debug) {
  * @returns {Complex} The resulting complex number.
  */
 Complex.logarithm = function(base, value, debug) {
-    if (debug > 1) validate('/bali/elements/Number', '$logarithm', '$base', base, [
-        '/bali/elements/Number'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Number', '$logarithm', '$value', value, [
-        '/bali/elements/Number'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Number', '$logarithm', '$base', base, [
+            '/bali/elements/Number'
+        ]);
+        validator.validateType('/bali/elements/Number', '$logarithm', '$value', value, [
+            '/bali/elements/Number'
+        ]);
+    }
 
     // handle the special cases
     if (base.isUndefined() || value.isUndefined()) return new Complex(NaN, undefined, base.getParameters(), debug);

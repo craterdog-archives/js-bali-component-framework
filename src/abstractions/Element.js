@@ -14,7 +14,6 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -30,9 +29,12 @@ const validate = utilities.validation.validate;
  */
 function Element(type, parameters, debug) {
     Component.call(this, type, parameters, debug);
-    if (this.debug > 1) validate('/bali/abstractions/Element', '$Element', '$type', type, [
-        '/javascript/String'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Element', '$Element', '$type', type, [
+            '/javascript/String'
+        ]);
+    }
 
     return this;
 }

@@ -19,7 +19,6 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
 const List = require('./List').List;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -49,18 +48,24 @@ function Catalog(parameters, debug) {
     };
 
     this.getItem = function(index) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.addItem = function(association) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$addItem', '$association', association, [
-            '/javascript/Undefined',
-            '/bali/composites/Association'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
+                '/javascript/Undefined',
+                '/bali/composites/Association'
+            ]);
+        }
         if (association) {
             const key = association.getKey().toString();
             if (map[key]) return false;
@@ -72,12 +77,15 @@ function Catalog(parameters, debug) {
     };
 
     this.addItems = function(associations) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$addItems', '$associations', associations, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         var count = 0;
         var index = 1;
         associations = associations || undefined;  // normalize nulls to undefined
@@ -117,10 +125,13 @@ function Catalog(parameters, debug) {
     };
 
     this.containsItem = function(association) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$containsItem', '$association', association, [
-            '/javascript/Undefined',
-            '/bali/composites/Association'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
+                '/javascript/Undefined',
+                '/bali/composites/Association'
+            ]);
+        }
         if (association) {
             const key = association.getKey().toString();
             const candidate = map[key];
@@ -130,26 +141,32 @@ function Catalog(parameters, debug) {
     };
 
     this.getValue = function(key) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$getValue', '$key', key, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$getValue', '$key', key, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         key = this.convert(key);
         const association = map[key.toString()];
         if (association) return association.getValue();
     };
 
     this.getValues = function(keys) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$getValues', '$keys', keys, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$getValues', '$keys', keys, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         const values = new List();
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
@@ -168,24 +185,27 @@ function Catalog(parameters, debug) {
     };
     
     this.setValue = function(key, value) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValue', '$key', key, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValue', '$value', value, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$setValue', '$key', key, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+            validator.validateType('/bali/collections/Catalog', '$setValue', '$value', value, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         key = this.convert(key);
         value = this.convert(value);
         var association = map[key.toString()];
@@ -201,11 +221,14 @@ function Catalog(parameters, debug) {
     };
 
     this.setValues = function(associations) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$setValues', '$associations', associations, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$setValues', '$associations', associations, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         if (associations && associations.getIterator) {
             const iterator = associations.getIterator();
             while (iterator.hasNext()) {
@@ -216,15 +239,18 @@ function Catalog(parameters, debug) {
     };
     
     this.removeValue = function(key) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$removeValue', '$key', key, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$removeValue', '$key', key, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         key = this.convert(key);
         const association = map[key.toString()];
         if (association) {
@@ -238,11 +264,14 @@ function Catalog(parameters, debug) {
     };
 
     this.removeValues = function(keys) {
-        if (this.debug > 1) validate('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         const values = new List();
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
@@ -336,12 +365,15 @@ Catalog.prototype.toObject = function() {
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/Catalog', '$concatenation', '$first', first, [
-        '/bali/collections/Catalog'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Catalog', '$concatenation', '$second', second, [
-        '/bali/collections/Catalog'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Catalog', '$concatenation', '$first', first, [
+            '/bali/collections/Catalog'
+        ]);
+        validator.validateType('/bali/collections/Catalog', '$concatenation', '$second', second, [
+            '/bali/collections/Catalog'
+        ]);
+    }
     const result = new Catalog(first.getParameters());
     result.addItems(first);
     result.addItems(second);
@@ -359,14 +391,17 @@ Catalog.concatenation = function(first, second, debug) {
  * @returns The resulting catalog.
  */
 Catalog.extraction = function(catalog, keys, debug) {
-    if (debug > 1) validate('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
-        '/bali/collections/Catalog'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/Catalog', '$extraction', '$keys', keys, [
-        '/javascript/Undefined',
-        '/javascript/Array',
-        '/bali/interfaces/Sequential'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
+            '/bali/collections/Catalog'
+        ]);
+        validator.validateType('/bali/collections/Catalog', '$extraction', '$keys', keys, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
     const result = new Catalog(catalog.getParameters());
     if (Array.isArray(keys)) {
         keys.forEach(function(key) {

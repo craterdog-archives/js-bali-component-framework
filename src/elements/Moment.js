@@ -18,7 +18,6 @@ const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
-const validate = utilities.validation.validate;
 
 
 const FORMATS = [
@@ -47,11 +46,14 @@ const FORMATS = [
  */
 function Moment(value, parameters, debug) {
     abstractions.Element.call(this, '$Moment', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Moment', '$Moment', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/Number'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Number'
+        ]);
+    }
     value = value || undefined;
     var format;
     if (!value) {
@@ -132,12 +134,15 @@ Moment.prototype.acceptVisitor = function(visitor) {
  */
 Moment.duration = function(first, second, debug) {
     debug = debug || 0;  // default value
-    if (debug > 1) validate('/bali/elements/Moment', '$duration', '$first', first, [
-        '/bali/elements/Moment'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Moment', '$duration', '$second', second, [
-        '/bali/elements/Moment'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Moment', '$duration', '$first', first, [
+            '/bali/elements/Moment'
+        ]);
+        validator.validateType('/bali/elements/Moment', '$duration', '$second', second, [
+            '/bali/elements/Moment'
+        ]);
+    }
     const duration = moment.duration(second.getValue().diff(first.getValue()));
     return new Duration(duration.toISOString(), undefined, debug);
 };
@@ -153,12 +158,15 @@ Moment.duration = function(first, second, debug) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.earlier = function(moment, duration, debug) {
-    if (debug > 1) validate('/bali/elements/Moment', '$earlier', '$moment', moment, [
-        '/bali/elements/Moment'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Duration', '$earlier', '$duration', duration, [
-        '/bali/elements/Duration'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Moment', '$earlier', '$moment', moment, [
+            '/bali/elements/Moment'
+        ]);
+        validator.validateType('/bali/elements/Duration', '$earlier', '$duration', duration, [
+            '/bali/elements/Duration'
+        ]);
+    }
     const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
     return new Moment(earlier.format(FORMATS[7]), moment.getParameters(), debug);
 };
@@ -174,12 +182,16 @@ Moment.earlier = function(moment, duration, debug) {
  * @returns {Moment} The resulting moment in time.
  */
 Moment.later = function(moment, duration, debug) {
-    if (debug > 1) validate('/bali/elements/Moment', '$later', '$moment', moment, [
-        '/bali/elements/Moment'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Duration', '$later', '$duration', duration, [
-        '/bali/elements/Duration'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Moment', '$later', '$moment', moment, [
+            '/bali/elements/Moment'
+        ]);
+        validator.validateType('/bali/elements/Duration', '$later', '$duration', duration, [
+            '/bali/elements/Duration'
+        ]);
+    }
     const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
     return new Moment(later.format(FORMATS[7]), moment.getParameters(), debug);
 };
+

@@ -26,7 +26,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -54,26 +53,32 @@ function List(parameters, debug) {
     };
     
     this.getItem = function(index) {
-        if (this.debug > 1) validate('/bali/collections/List', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$getItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
     
     this.setItem = function(index, item) {
-        if (this.debug > 1) validate('/bali/collections/List', '$setItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
-        if (this.debug > 1) validate('/bali/collections/List', '$setItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$setItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+            validator.validateType('/bali/collections/List', '$setItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         item = this.convert(item);
         const oldItem = array[index];
@@ -82,26 +87,32 @@ function List(parameters, debug) {
     };
     
     this.addItem = function(item) {
-        if (this.debug > 1) validate('/bali/collections/List', '$addItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$addItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         item = this.convert(item);
         array.push(item);
         return true;
     };
     
     this.addItems = function(items) {
-        if (this.debug > 1) validate('/bali/collections/List', '$addItems', '$items', items, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$addItems', '$items', items, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         var count = 0;
         items = items || undefined;  // normalize nulls to undefined
         if (items) {
@@ -137,32 +148,38 @@ function List(parameters, debug) {
     },
 
     this.insertItem = function(index, item) {
-        if (this.debug > 1) validate('/bali/collections/List', '$insertItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
-        if (this.debug > 1) validate('/bali/collections/List', '$insertItem', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$insertItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+            validator.validateType('/bali/collections/List', '$insertItem', '$item', item, [
+                '/javascript/Undefined',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/javascript/String',
+                '/javascript/Array',
+                '/javascript/Object',
+                '/bali/abstractions/Component'
+            ]);
+        }
         item = this.convert(item);
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
     
     this.insertItems = function(index, items) {
-        if (this.debug > 1) validate('/bali/collections/List', '$insertItems', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
-        if (this.debug > 1) validate('/bali/collections/List', '$insertItems', '$items', items, [
-            '/javascript/Undefined',
-            '/javascript/Array',
-            '/bali/interfaces/Sequential'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$insertItems', '$index', index, [
+                '/javascript/Number'
+            ]);
+            validator.validateType('/bali/collections/List', '$insertItems', '$items', items, [
+                '/javascript/Undefined',
+                '/javascript/Array',
+                '/bali/interfaces/Sequential'
+            ]);
+        }
         if (items && items.getIterator) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
@@ -173,9 +190,12 @@ function List(parameters, debug) {
     };
     
     this.removeItem = function(index) {
-        if (this.debug > 1) validate('/bali/collections/List', '$removeItem', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$removeItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         const oldItem = array[index];
         if (oldItem) array.splice(index, 1);
@@ -183,10 +203,13 @@ function List(parameters, debug) {
     };
     
     this.removeItems = function(range) {
-        if (this.debug > 1) validate('/bali/collections/List', '$removeItems', '$range', range, [
-            '/javascript/Undefined',
-            '/bali/collections/Range'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
+                '/javascript/Undefined',
+                '/bali/collections/Range'
+            ]);
+        }
         const items = new List(this.getParameters());
         if (range && range.getIterator) {
             const iterator = range.getIterator();
@@ -257,12 +280,15 @@ List.prototype.isChainable = function() {
  * @returns {List} The resulting list.
  */
 List.concatenation = function(first, second, debug) {
-    if (debug > 1) validate('/bali/collections/List', '$concatenation', '$first', first, [
-        '/bali/collections/List'
-    ], debug);
-    if (debug > 1) validate('/bali/collections/List', '$concatenation', '$second', second, [
-        '/bali/collections/List'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/List', '$concatenation', '$first', first, [
+            '/bali/collections/List'
+        ]);
+        validator.validateType('/bali/collections/List', '$concatenation', '$second', second, [
+            '/bali/collections/List'
+        ]);
+    }
     const result = new List(first.getParameters(), debug);
     result.addItems(first);
     result.addItems(second);

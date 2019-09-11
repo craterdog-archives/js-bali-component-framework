@@ -20,7 +20,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('./Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -59,18 +58,24 @@ function Tree(type, debug) {
     };
 
     this.addChild = function(child) {
-        if (this.debug > 1) validate('/bali/composites/Tree', '$addChild', '$child', child, [
-            '/bali/abstractions/Component'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/composites/Tree', '$addChild', '$child', child, [
+                '/bali/abstractions/Component'
+            ]);
+        }
         child = this.convert(child);
         array.push(child);
         child.getParent = function() { return this; };
     };
 
     this.getChild = function(index) {
-        if (this.debug > 1) validate('/bali/composites/Tree', '$getChild', '$index', index, [
-            '/javascript/Number'
-        ], this.debug);
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/composites/Tree', '$getChild', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };

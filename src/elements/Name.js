@@ -17,7 +17,6 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -32,9 +31,12 @@ const validate = utilities.validation.validate;
  */
 function Name(value, parameters, debug) {
     abstractions.Element.call(this, '$Name', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Name', '$Name', '$value', value, [
-        '/javascript/Array'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Name', '$Name', '$value', value, [
+            '/javascript/Array'
+        ]);
+    }
 
     if (!Array.isArray(value) || value.length === 0) {
         const exception = new Exception({
@@ -150,12 +152,15 @@ Name.prototype.getIterator = function() {
  * @returns {Name} The resulting name string.
  */
 Name.concatenation = function(first, second, debug) {
-    if (debug > 1) validate('/bali/elements/Name', '$concatenation', '$first', first, [
-        '/bali/elements/Name'
-    ], debug);
-    if (debug > 1) validate('/bali/elements/Name', '$concatenation', '$second', second, [
-        '/bali/elements/Name'
-    ], debug);
+    if (debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Name', '$concatenation', '$first', first, [
+            '/bali/elements/Name'
+        ]);
+        validator.validateType('/bali/elements/Name', '$concatenation', '$second', second, [
+            '/bali/elements/Name'
+        ]);
+    }
     const parts1 = first.getValue();
     const parts2 = second.getValue();
     const parts = parts1.concat(parts2);

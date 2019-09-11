@@ -27,7 +27,7 @@
  *     slot 0     slot 1     slot 2                  slot N
  * </pre>
  */
-const validate = require('./Validation').validate;
+const Validator = require('./Validator').Validator;
 
 
 // PUBLIC FUNCTIONS
@@ -42,9 +42,12 @@ const validate = require('./Validation').validate;
  */
 function Iterator(array, debug) {
     debug = debug || 0;
-    if (debug > 1) validate('/bali/utilities/Iterator', '$iterator', '$array', array, [
-        '/javascript/Array'
-    ], debug);
+    if (debug > 1) {
+        const validator = new Validator(debug);
+        validator.validateType('/bali/utilities/Iterator', '$iterator', '$array', array, [
+            '/javascript/Array'
+        ]);
+    }
 
     // the array and current slot index are private attributes so methods that use them
     // are defined in the constructor

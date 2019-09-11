@@ -14,7 +14,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const validate = utilities.validation.validate;
 
 
 // PUBLIC FUNCTIONS
@@ -29,11 +28,14 @@ const validate = utilities.validation.validate;
  */
 function Pattern(value, parameters, debug) {
     abstractions.Element.call(this, '$Pattern', parameters, debug);
-    if (this.debug > 1) validate('/bali/elements/Pattern', '$Pattern', '$value', value, [
-        '/javascript/Undefined',
-        '/javascript/String',
-        '/javascript/RegExp'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/RegExp'
+        ]);
+    }
     value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 
@@ -68,15 +70,18 @@ Pattern.prototype.toBoolean = function() {
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
 Pattern.prototype.matches = function(component) {
-    if (this.debug > 1) validate('/bali/elements/Pattern', '$matches', '$component', component, [
-        '/javascript/Undefined',
-        '/javascript/Boolean',
-        '/javascript/Number',
-        '/javascript/String',
-        '/javascript/Array',
-        '/javascript/Object',
-        '/bali/abstractions/Component'
-    ], this.debug);
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Pattern', '$matches', '$component', component, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+    }
     component = this.convert(component);
     return this.getValue().test(component.toString());
 };
