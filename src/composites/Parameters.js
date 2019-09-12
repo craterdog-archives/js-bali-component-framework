@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Parameters} The new parameter component.
  */
 function Parameters(parameters, debug) {
-    abstractions.Composite.call(this, '$Parameters', debug);
+    abstractions.Composite.call(this, '$Parameters', undefined, debug);
 
     // the parameters are immutable so the methods are included in the constructor
     const catalog = this.convert(parameters, this.debug);

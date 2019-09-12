@@ -11,9 +11,9 @@
 
 const utilities = require('../utilities');
 
-exports.Visitor = require('./Visitor').Visitor;
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component
 exports.Composite = require('./Composite').Composite;  // depends on Component
-exports.Collection = require('./Collection').Collection;  // depends on Component and Composite
+exports.Collection = require('./Collection').Collection;  // depends on Composite
+exports.Visitor = require('./Visitor').Visitor;
 
