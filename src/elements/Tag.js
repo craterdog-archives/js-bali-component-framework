@@ -42,8 +42,8 @@ function Tag(value, parameters, debug) {
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
-    const codex = new utilities.Codex(0, debug);
-    const generator = new utilities.Generator(debug);
+    const codex = new utilities.Codex(0, this.debug);
+    const generator = new utilities.Generator(this.debug);
     switch (typeof value) {
         case 'number':
             numberOfBytes = value;
@@ -99,6 +99,6 @@ Tag.prototype.acceptVisitor = function(visitor) {
  */
 Tag.prototype.getBytes = function() {
     // not called very often so save space by doing it on demand
-    const codex = new utilities.Codex();
+    const codex = new utilities.Codex(0, this.debug);
     return codex.base32Decode(this.getValue());
 };

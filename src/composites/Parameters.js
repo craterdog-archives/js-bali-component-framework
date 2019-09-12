@@ -30,7 +30,7 @@ function Parameters(parameters, debug) {
     abstractions.Composite.call(this, '$Parameters', debug);
 
     // the parameters are immutable so the methods are included in the constructor
-    const catalog = this.convert(parameters);
+    const catalog = this.convert(parameters, this.debug);
 
     this.getKeys = function() {
         return catalog.getKeys();

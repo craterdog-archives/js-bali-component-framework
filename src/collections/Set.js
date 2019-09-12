@@ -26,27 +26,18 @@ const composites = require('../composites');
  * used to parameterize its type.
  * 
  * @param {Parameters} parameters Optional parameters used to parameterize this set. 
- * @param {Function} algorithm An optional function to be used when comparing items.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */
-function Set(parameters, algorithm, debug) {
+function Set(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Set/v1'
     }, debug);
     abstractions.Collection.call(this, '$Set', parameters, debug);
-    algorithm = algorithm || undefined;
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/collections/Set', '$Set', '$algorithm', algorithm, [
-            '/javascript/Undefined',
-            '/javascript/Function'
-        ]);
-    }
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
-    const comparator = new utilities.Comparator(algorithm);
+    const comparator = new utilities.Comparator(undefined, this.debug);
     const tree = new RandomizedTree(comparator);
 
     this.toArray = function() {
@@ -82,7 +73,7 @@ function Set(parameters, algorithm, debug) {
             ]);
         }
         var index = 0;
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         index = tree.index(item) + 1;  // convert to ordinal based indexing
         return index;
     };
@@ -111,7 +102,7 @@ function Set(parameters, algorithm, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         return tree.insert(item);
     };
     
@@ -129,7 +120,7 @@ function Set(parameters, algorithm, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }
@@ -140,7 +131,7 @@ function Set(parameters, algorithm, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }
@@ -171,7 +162,7 @@ function Set(parameters, algorithm, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         return tree.remove(item);
     };
     

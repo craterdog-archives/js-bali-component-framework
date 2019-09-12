@@ -317,7 +317,7 @@ Component.prototype.isEqualTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
-    const comparator = new utilities.Comparator();
+    const comparator = new utilities.Comparator(undefined, this.debug);
     return comparator.compareComponents(this, that);
 };
 

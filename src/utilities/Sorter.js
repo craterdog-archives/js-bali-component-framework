@@ -23,15 +23,15 @@ const Comparator = require('./Comparator').Comparator;
  * is recursively split into two collections each of which are then sorted and then the two
  * collections are merged back into a sorted collection.
  * 
- * @param {Comparator} comparator An optional comparator to be used when comparing items during
+ * @param {Function} algorithm An optional function implementing the desired comparison algorithm. 
  * @param {Number} debug A number in the range [0..3].
  * sorting. If none is specified, the natural comparator will be used.
  */
-function Sorter(comparator, debug) {
+function Sorter(algorithm, debug) {
     this.debug = debug || 0;
 
     // the comparator is a private attribute so methods that use it are defined in the constructor
-    comparator = comparator || new Comparator();
+    const comparator = new Comparator(algorithm, debug);
 
     this.sortCollection = function(collection) {
         if (collection && collection.getSize() > 1) {

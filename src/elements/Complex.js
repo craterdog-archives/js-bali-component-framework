@@ -239,26 +239,26 @@ Complex.prototype.acceptVisitor = function(visitor) {
  *     inverse(z): (-z.real, -z.imaginary i)
  * </pre>
  * 
- * @param {Complex} complex The complex number to be inverted.
+ * @param {Complex} number The complex number to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
  */
-Complex.inverse = function(complex, debug) {
+Complex.inverse = function(number, debug) {
     if (debug > 1) {
         const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$inverse', '$complex', complex, [
+        validator.validateType('/bali/elements/Number', '$inverse', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
 
     // handle the special cases
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(0, undefined, complex.getParameters(), debug);
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(0, undefined, number.getParameters(), debug);
 
-    const real = -complex.getReal();
-    const imaginary = -complex.getImaginary();
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const real = -number.getReal();
+    const imaginary = -number.getImaginary();
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 };
 
@@ -271,28 +271,28 @@ Complex.inverse = function(complex, debug) {
  *     reciprocal(z): (1/z.magnitude e^~-z.phase i)
  * </pre>
  * 
- * @param {Complex} complex The complex number to be inverted.
+ * @param {Complex} number The complex number to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
  */
-Complex.reciprocal = function(complex, debug) {
+Complex.reciprocal = function(number, debug) {
     if (debug > 1) {
         const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$reciprocal', '$complex', complex, [
+        validator.validateType('/bali/elements/Number', '$reciprocal', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
 
     // handle the special cases
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(0, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(0, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(Infinity, undefined, number.getParameters(), debug);
 
     const savant = new utilities.Savant(debug);
-    const squared = savant.sum(savant.product(complex.getReal(), complex.getReal()), savant.product(complex.getImaginary(), complex.getImaginary()));
-    const real = savant.quotient(complex.getReal(), squared);
-    const imaginary = -savant.quotient(complex.getImaginary(), squared);
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const squared = savant.sum(savant.product(number.getReal(), number.getReal()), savant.product(number.getImaginary(), number.getImaginary()));
+    const real = savant.quotient(number.getReal(), squared);
+    const imaginary = -savant.quotient(number.getImaginary(), squared);
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 };
 
@@ -303,26 +303,26 @@ Complex.reciprocal = function(complex, debug) {
  *     conjugate(z): (z.real, -z.imaginary i)
  * </pre>
  * 
- * @param {Complex} complex The complex number to be conjugated.
+ * @param {Complex} number The complex number to be conjugated.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
  */
-Complex.conjugate = function(complex, debug) {
+Complex.conjugate = function(number, debug) {
     if (debug > 1) {
         const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$conjugate', '$complex', complex, [
+        validator.validateType('/bali/elements/Number', '$conjugate', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
 
     // handle the special cases
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(0, undefined, complex.getParameters(), debug);
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(0, undefined, number.getParameters(), debug);
 
-    const real = complex.getReal();
-    const imaginary = -complex.getImaginary();
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const real = number.getReal();
+    const imaginary = -number.getImaginary();
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 };
 
@@ -330,27 +330,27 @@ Complex.conjugate = function(complex, debug) {
 /**
  * This function returns the complex factorial of the specified complex number.
  * 
- * @param {Complex} complex The complex number.
+ * @param {Complex} number The complex number.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
  */
-Complex.factorial = function(complex, debug) {
+Complex.factorial = function(number, debug) {
     if (debug > 1) {
         const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$factorial', '$complex', complex, [
+        validator.validateType('/bali/elements/Number', '$factorial', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
 
     // handle the special cases
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(1, undefined, complex.getParameters(), debug);
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(1, undefined, number.getParameters(), debug);
 
     // just implement real factorials for now...
     // TODO: what should a complex factorial be?
-    const factorial = gamma(complex.getReal() + 1);
-    const result = new Complex(factorial, undefined, complex.getParameters(), debug);
+    const factorial = gamma(number.getReal() + 1);
+    const result = new Complex(factorial, undefined, number.getParameters(), debug);
     return result;
 };
 
@@ -423,15 +423,15 @@ Complex.difference = function(first, second, debug) {
  *     scaled(z, factor): (factor * z.magnitude, z.phase i)
  * </pre>
  * 
- * @param {Complex} complex The complex number to be scaled.
+ * @param {Complex} number The complex number to be scaled.
  * @param {Number} factor The numeric scale factor.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
  */
-Complex.scaled = function(complex, factor, debug) {
+Complex.scaled = function(number, factor, debug) {
     if (debug > 1) {
         const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$scaled', '$complex', complex, [
+        validator.validateType('/bali/elements/Number', '$scaled', '$number', number, [
             '/bali/elements/Number'
         ]);
         validator.validateType('/bali/elements/Number', '$scaled', '$factor', factor, [
@@ -440,16 +440,16 @@ Complex.scaled = function(complex, factor, debug) {
     }
 
     // handle the special cases
-    if (complex.isUndefined() || Number.isNaN(factor)) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isZero() && !Number.isFinite(factor)) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite() && factor === 0) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero() || factor === 0) return new Complex(0, undefined, complex.getParameters(), debug);
+    if (number.isUndefined() || Number.isNaN(factor)) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isZero() && !Number.isFinite(factor)) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite() && factor === 0) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero() || factor === 0) return new Complex(0, undefined, number.getParameters(), debug);
 
     const savant = new utilities.Savant(debug);
-    const real = savant.product(complex.getReal(), factor);
-    const imaginary = savant.product(complex.getImaginary(), factor);
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const real = savant.product(number.getReal(), factor);
+    const imaginary = savant.product(number.getImaginary(), factor);
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 };
 
@@ -645,70 +645,26 @@ function gamma(number) {
 }
 
 
-function exp(complex, debug) {
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(1, undefined, complex.getParameters(), debug);
+function exp(number, debug) {
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(1, undefined, number.getParameters(), debug);
     const savant = new utilities.Savant(debug);
-    const scale = savant.exponential(complex.getReal());
-    const real = savant.product(scale, savant.cosine(complex.getImaginary()));
-    const imaginary = savant.product(scale, savant.sine(complex.getImaginary()));
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const scale = savant.exponential(number.getReal());
+    const real = savant.product(scale, savant.cosine(number.getImaginary()));
+    const imaginary = savant.product(scale, savant.sine(number.getImaginary()));
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 }
 
 
-function ln(complex, debug) {
-    if (complex.isUndefined()) return new Complex(NaN, undefined, complex.getParameters(), debug);
-    if (complex.isInfinite()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
-    if (complex.isZero()) return new Complex(Infinity, undefined, complex.getParameters(), debug);
+function ln(number, debug) {
+    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isZero()) return new Complex(Infinity, undefined, number.getParameters(), debug);
     const savant = new utilities.Savant(debug);
-    const real = savant.logarithm(complex.getMagnitude());
-    const imaginary = complex.getPhase().getValue();
-    const result = new Complex(real, imaginary, complex.getParameters(), debug);
+    const real = savant.logarithm(number.getMagnitude());
+    const imaginary = number.getPhase().getValue();
+    const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
-}
-
-
-function formatReal(value) {
-    var string = Number(value.toPrecision(14)).toString();
-    switch (string) {
-        case '-2.718281828459':
-            return '-e';
-        case '2.718281828459':
-            return 'e';
-        case '-3.1415926535898':
-            return '-pi';
-        case '3.1415926535898':
-            return 'pi';
-        case '-1.6180339887499':
-            return '-phi';
-        case '1.6180339887499':
-            return 'phi';
-        case 'Infinity':
-        case '-Infinity':
-            return 'infinity';
-        case '-0':
-            return '0';
-        case 'NaN':
-            return 'undefined';
-        default:
-            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
-    }
-}
-
-
-function formatImaginary(value) {
-    var literal = formatReal(value);
-    switch (literal) {
-        case 'undefined':
-        case 'infinity':
-            return literal;
-        case 'e':
-        case 'pi':
-        case 'phi':
-            return literal + ' i';
-        default:
-            return literal + 'i';
-    }
 }

@@ -51,8 +51,8 @@ function Association(key, value, debug) {
     }
 
     // convert the arguments to components
-    key = this.convert(key);
-    value = this.convert(value);
+    key = this.convert(key, this.debug);
+    value = this.convert(value, this.debug);
 
     // access to this component's attributes is tightly controlled
     this.getKey = function() {
@@ -76,7 +76,7 @@ function Association(key, value, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        newValue = this.convert(newValue);
+        newValue = this.convert(newValue, this.debug);
         const oldValue = value;
         value = newValue;
         return oldValue;

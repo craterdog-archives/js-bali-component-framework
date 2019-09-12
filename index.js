@@ -34,34 +34,36 @@ utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on ever
  * since the Exception class calls the convert function on its attributes and again we
  * want to avoid circular dependencies.
  */
-const convert = function(value) {
+const convert = function(value, debug) {
     if (value === null) value = undefined;
+    debug = debug || 0;
     var component;
     switch (typeof value) {
         case 'undefined':
-            component = new elements.Pattern();  // none
+            component = new elements.Pattern(undefined, undefined, debug);  // none
             break;
         case 'boolean':
             value = value ? 1 : 0;  // convert to probability
-            component = new elements.Probability(value);
+            const parameters = new composites.Parameters({$granularity: '$boolean'}, debug);
+            component = new elements.Probability(value, parameters, debug);
             break;
         case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
-            component = new elements.Number(value);
+            component = new elements.Number(value, undefined, undefined, debug);
             break;
         case 'string':
             try {
                 // first try to parse it as a Bali Document Notation™ string
-                const parser = new utilities.Parser();
+                const parser = new utilities.Parser(debug);
                 component = parser.parseDocument(value);
             } catch (cause) {
                 // otherwise convert it to a text element
-                component = new elements.Text(value);
+                component = new elements.Text(value, undefined, debug);
             }
             break;
         case 'object':
             if (Array.isArray(value)) {
                 // convert the array to a list
-                component = new collections.List();
+                component = new collections.List(undefined, debug);
                 value.forEach(function(item) {
                     component.addItem(item);  // item converted in addItem()
                 });
@@ -70,7 +72,7 @@ const convert = function(value) {
                 component = value;
             } else {
                 // convert the object to a catalog
-                component = new collections.Catalog();
+                component = new collections.Catalog(undefined, debug);
                 const keys = Object.keys(value);
                 keys.forEach(function(key) {
                     component.setValue(key, value[key]);  // key and value are converted in setValue()
@@ -79,7 +81,7 @@ const convert = function(value) {
             break;
         default:
             // punt, convert whatever it is to a multi-line text element
-            component = new elements.Text('"' + EOL + value + EOL + '"');
+            component = new elements.Text('"' + EOL + value + EOL + '"', undefined, debug);
     }
     return component;
 };

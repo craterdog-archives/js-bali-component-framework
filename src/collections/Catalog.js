@@ -92,7 +92,7 @@ function Catalog(parameters, debug) {
         if (associations) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         this.addItem(item);
                     } else {
@@ -104,7 +104,7 @@ function Catalog(parameters, debug) {
                 const iterator = associations.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         this.addItem(item);
                     } else {
@@ -153,7 +153,7 @@ function Catalog(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        key = this.convert(key);
+        key = this.convert(key, this.debug);
         const association = map[key.toString()];
         if (association) return association.getValue();
     };
@@ -167,7 +167,7 @@ function Catalog(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        const values = new List();
+        const values = new List(undefined, this.debug);
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
                 const value = this.getValue(key);
@@ -206,8 +206,8 @@ function Catalog(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        key = this.convert(key);
-        value = this.convert(value);
+        key = this.convert(key, this.debug);
+        value = this.convert(value, this.debug);
         var association = map[key.toString()];
         if (association) {
             const oldValue = association.getValue();
@@ -251,7 +251,7 @@ function Catalog(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        key = this.convert(key);
+        key = this.convert(key, this.debug);
         const association = map[key.toString()];
         if (association) {
             delete map[key.toString()];
@@ -272,7 +272,7 @@ function Catalog(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        const values = new List();
+        const values = new List(undefined, this.debug);
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
                 const value = this.removeValue(key);
@@ -290,7 +290,7 @@ function Catalog(parameters, debug) {
     };
     
     this.getKeys = function() {
-        const keys = new List();
+        const keys = new List(undefined, this.debug);
         array.forEach(function(association) {
             const key = association.getKey();
             keys.addItem(key);
@@ -298,15 +298,15 @@ function Catalog(parameters, debug) {
         return keys;
     };
 
+    this.sortItems = function(algorithm) {
+        const sorter = utilities.Sorter(algorithm, this.debug);
+        sorter.sortCollection(this);
+    };
+    
     this.reverseItems = function() {
         array.reverse();
     };
 
-    this.sortItems = function(sorter) {
-        sorter = sorter || new utilities.Sorter();
-        sorter.sortCollection(this);
-    };
-    
     this.deleteAll = function() {
         Object.keys(map).forEach(function(key) {
             delete map[key];
@@ -374,7 +374,7 @@ Catalog.concatenation = function(first, second, debug) {
             '/bali/collections/Catalog'
         ]);
     }
-    const result = new Catalog(first.getParameters());
+    const result = new Catalog(first.getParameters(), debug);
     result.addItems(first);
     result.addItems(second);
     return result;
@@ -402,7 +402,7 @@ Catalog.extraction = function(catalog, keys, debug) {
             '/bali/interfaces/Sequential'
         ]);
     }
-    const result = new Catalog(catalog.getParameters());
+    const result = new Catalog(catalog.getParameters(), debug);
     if (Array.isArray(keys)) {
         keys.forEach(function(key) {
             const value = catalog.getValue(key);

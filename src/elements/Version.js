@@ -197,7 +197,7 @@ Version.prototype.nextVersion = function(level) {
     } else {
         levels.push(1);
     }
-    const nextVersion = new Version(levels);
+    const nextVersion = new Version(levels, this.getParameters(), this.debug);
     return nextVersion;
 };
 

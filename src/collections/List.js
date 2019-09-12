@@ -80,7 +80,7 @@ function List(parameters, debug) {
             ]);
         }
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
         return oldItem;
@@ -99,7 +99,7 @@ function List(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         array.push(item);
         return true;
     };
@@ -118,7 +118,7 @@ function List(parameters, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }
@@ -129,7 +129,7 @@ function List(parameters, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }
@@ -163,7 +163,7 @@ function List(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
@@ -210,7 +210,7 @@ function List(parameters, debug) {
                 '/bali/collections/Range'
             ]);
         }
-        const items = new List(this.getParameters());
+        const items = new List(this.getParameters(), this.debug);
         if (range && range.getIterator) {
             const iterator = range.getIterator();
             while (iterator.hasNext()) {
@@ -222,8 +222,8 @@ function List(parameters, debug) {
         return items;
     };
     
-    this.sortItems = function(sorter) {
-        sorter = sorter || new utilities.Sorter();
+    this.sortItems = function(algorithm) {
+        const sorter = utilities.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
     

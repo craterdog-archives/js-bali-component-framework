@@ -200,7 +200,7 @@ Collection.prototype.getItems = function(range) {
             '/bali/collections/Range'
         ]);
     }
-    const items = new this.constructor(this.getParameters());
+    const items = new this.constructor(this.getParameters(), this.debug);
     if (range && range.getIterator) {
         const iterator = range.getIterator();
         while (iterator.hasNext()) {

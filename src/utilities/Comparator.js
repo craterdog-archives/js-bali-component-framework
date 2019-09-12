@@ -45,90 +45,101 @@ function Comparator(algorithm, debug) {
     
     
     /**
-     * This method compares two components for their natural ordering.
+     * This method compares two components for their ordering.
      * 
      * @param {Component} first The first component to be compared.
      * @param {Component} second The second component to be compared.
      * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
      * 
      */
-    this.compareComponents = algorithm || function(first, second) {
-        // handle undefined components
-        if (first && !second) {
-            return 1;  // anything is greater than nothing
-        }
-        if (!first && second) {
-            return -1;  // nothing is less than anything
-        }
-        if (!first && !second) {
-            return 0;  // nothing is equal to nothing
-        }
-    
-        // handle boolean components
-        if (typeof first === 'boolean' && typeof second === 'boolean') {
-            return Math.sign(first - second);
-        }
-        if (first.toBoolean && typeof second === 'boolean') {
-            return Math.sign(first.toBoolean() - second);
-        }
-        if (typeof first === 'boolean' && second.toBoolean) {
-            return Math.sign(first - second.toBoolean());
-        }
-    
-        // handle numeric components
-        if (typeof first === 'number' && typeof second === 'number') {
-            if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-            return Math.sign(first - second);
-        }
-        if (first.toNumber && typeof second === 'number') {
-            if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-            return Math.sign(first.toNumber() - second);
-        }
-        if (typeof first === 'number' && second.toNumber) {
-            if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-            return Math.sign(first - second.toNumber());
-        }
-        if (first.toNumber && second.toNumber) {
-            if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-            return Math.sign(first.toNumber() - second.toNumber());
-        }
-    
-        // handle string components
-        if (typeof first === 'string' && typeof second === 'string') {
-            return Math.sign(first.localeCompare(second));
-        }
-        if (first.isLiteral && first.isLiteral() && typeof second === 'string') {
-            return Math.sign(first.toString().localeCompare(second));
-        }
-        if (typeof first === 'string' && second.isLiteral && second.isLiteral()) {
-            return Math.sign(first.localeCompare(second.toString()));
-        }
-    
-        // handle composite components
-        if (first.getIterator && second.getIterator) {
-            const firstIterator = first.getIterator();
-            const secondIterator = second.getIterator();
-            var result = 0;
-            while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
-                result = this.compareComponents(firstIterator.getNext(), secondIterator.getNext());
-            }
-            if (result !== 0) {
-                return result;
-            }  // found a difference
-            if (firstIterator.hasNext()) {
-                return 1;
-            }  // the first is longer than the second
-            if (secondIterator.hasNext()) {
-                return -1;
-            }  // the second is longer than the first
-            return 0;  // they are the same length and all items are equal
-        }
-    
-        // must be two elemental objects of the same type, compare their string values
-        return Math.sign(first.toString().localeCompare(second.toString()));
-    };
+    this.compareComponents = algorithm || natural;
     
     return this;
 }
 Comparator.prototype.constructor = Comparator;
 exports.Comparator = Comparator;
+
+
+/**
+ * This method compares two components for their natural ordering.
+ * 
+ * @param {Component} first The first component to be compared.
+ * @param {Component} second The second component to be compared.
+ * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
+ * 
+ */
+function natural(first, second) {
+    // handle undefined components
+    if (first && !second) {
+        return 1;  // anything is greater than nothing
+    }
+    if (!first && second) {
+        return -1;  // nothing is less than anything
+    }
+    if (!first && !second) {
+        return 0;  // nothing is equal to nothing
+    }
+
+    // handle boolean components
+    if (typeof first === 'boolean' && typeof second === 'boolean') {
+        return Math.sign(first - second);
+    }
+    if (first.toBoolean && typeof second === 'boolean') {
+        return Math.sign(first.toBoolean() - second);
+    }
+    if (typeof first === 'boolean' && second.toBoolean) {
+        return Math.sign(first - second.toBoolean());
+    }
+
+    // handle numeric components
+    if (typeof first === 'number' && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first - second);
+    }
+    if (first.toNumber && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first.toNumber() - second);
+    }
+    if (typeof first === 'number' && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first - second.toNumber());
+    }
+    if (first.toNumber && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first.toNumber() - second.toNumber());
+    }
+
+    // handle string components
+    if (typeof first === 'string' && typeof second === 'string') {
+        return Math.sign(first.localeCompare(second));
+    }
+    if (first.isLiteral && first.isLiteral() && typeof second === 'string') {
+        return Math.sign(first.toString().localeCompare(second));
+    }
+    if (typeof first === 'string' && second.isLiteral && second.isLiteral()) {
+        return Math.sign(first.localeCompare(second.toString()));
+    }
+
+    // handle composite components
+    if (first.getIterator && second.getIterator) {
+        const firstIterator = first.getIterator();
+        const secondIterator = second.getIterator();
+        var result = 0;
+        while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
+            result = natural(firstIterator.getNext(), secondIterator.getNext());
+        }
+        if (result !== 0) {
+            return result;
+        }  // found a difference
+        if (firstIterator.hasNext()) {
+            return 1;
+        }  // the first is longer than the second
+        if (secondIterator.hasNext()) {
+            return -1;
+        }  // the second is longer than the first
+        return 0;  // they are the same length and all items are equal
+    }
+
+    // must be two elemental objects of the same type, compare their string values
+    return Math.sign(first.toString().localeCompare(second.toString()));
+}

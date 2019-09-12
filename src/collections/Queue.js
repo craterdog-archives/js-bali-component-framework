@@ -84,7 +84,7 @@ function Queue(parameters, debug) {
             if (this.debug > 0) console.error(exception.toString());
             throw exception;
         }
-        item = this.convert(item);
+        item = this.convert(item, this.debug);
         array.push(item);
         return true;
         return false;
@@ -104,7 +104,7 @@ function Queue(parameters, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }
@@ -115,7 +115,7 @@ function Queue(parameters, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item);
+                    item = this.convert(item, this.debug);
                     if (item.isType('$Association')) {
                         item = item.getValue();
                     }

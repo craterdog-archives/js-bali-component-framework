@@ -1130,7 +1130,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: new elements.Text(EOL + message + EOL)  // must be converted to text explicitly to avoid infinite loop!
+        $text: new elements.Text(EOL + message + EOL, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
     });
 
     // stop the processing

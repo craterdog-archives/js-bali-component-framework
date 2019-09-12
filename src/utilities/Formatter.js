@@ -173,7 +173,7 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.getValue();
     const format = this.getFormat(binary, '$encoding', '$base32');
-    const codex = new Codex();
+    const codex = new Codex(0, this.debug);
     switch (format) {
         case '$base2':
             value = codex.base2Encode(value);

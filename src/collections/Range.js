@@ -46,8 +46,8 @@ function Range(first, last, parameters, debug) {
             '/bali/abstractions/Component'
         ]);
     }
-    first = this.convert(first);
-    last = this.convert(last);
+    first = this.convert(first, this.debug);
+    last = this.convert(last, this.debug);
 
     // the range is immutable so the collection is private and the indices must be read-only
     var firstIndex;
@@ -90,7 +90,7 @@ function Range(first, last, parameters, debug) {
             if (collection) {
                 array.push(collection.getItem(index++));  // retrieve the next item
             } else {
-                array.push(new elements.Number(index++));  // the index is the next item
+                array.push(new elements.Number(index++, undefined, undefined, this.debug));  // the index is the next item
             }
         }
         return array;
@@ -109,7 +109,7 @@ function Range(first, last, parameters, debug) {
         if (collection) {
             item = collection.getItem(firstIndex);  // retrieve the item
         } else if (typeof firstIndex === 'number') {
-            item = new elements.Number(firstIndex);  // the index is the item
+            item = new elements.Number(firstIndex, undefined, undefined, this.debug);  // the index is the item
         } else {
             item = firstIndex;
         }
@@ -127,7 +127,7 @@ function Range(first, last, parameters, debug) {
         if (collection) {
             item = collection.getItem(firstIndex + index - 1);
         } else if (typeof firstIndex === 'number') {
-            item = new elements.Number(firstIndex + index - 1);
+            item = new elements.Number(firstIndex + index - 1, undefined, undefined, this.debug);
         }
         return item;
     };
@@ -137,7 +137,7 @@ function Range(first, last, parameters, debug) {
         if (collection) {
             item = collection.getItem(lastIndex);  // retrieve the item
         } else if (typeof lastIndex === 'number') {
-            item = new elements.Number(lastIndex);  // the index is the item
+            item = new elements.Number(lastIndex, undefined, undefined, this.debug);  // the index is the item
         } else {
             item = lastIndex;
         }
