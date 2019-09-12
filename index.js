@@ -36,7 +36,7 @@ utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on ever
  */
 const convert = function(value, debug) {
     if (value === null) value = undefined;
-    debug = debug || 0;
+    if (debug === null || debug === undefined) debug = 0;  // default is off
     var component;
     switch (typeof value) {
         case 'undefined':
@@ -53,7 +53,7 @@ const convert = function(value, debug) {
         case 'string':
             try {
                 // first try to parse it as a Bali Document Notation™ string
-                const parser = new utilities.Parser(debug);
+                const parser = new utilities.Parser(0);  // don't log parsing exceptions here
                 component = parser.parseDocument(value);
             } catch (cause) {
                 // otherwise convert it to a text element
@@ -107,11 +107,18 @@ composites.Exception.prototype.convert = convert;
  * Each function exposed by the interface also supports an optional debug argument as its last
  * argument. If specified, it will override the value specified for the entire interface.
  * 
- * @param {Number} debug A number in the range [0..3].
+ * @param {Boolean|Number} defaultLevel An optional number in the range [0..3] that controls
+ * the level of debugging that occurs:
+ * <pre>
+ *   0 (or false): debugging turned off
+ *   1 (or true): log exceptions to console.error
+ *   2: perform argument validation and log exceptions to console.error
+ *   3: perform argument validation and log exceptions to console.error and debug info to console.log
+ * </pre>
  * @returns {Object} An object that implements the component framework interface.
  */
-exports.api = function(debug) {
-    const defaultLevel = debug || 0;  // default value
+exports.api = function(defaultLevel) {
+    if (defaultLevel === null || defaultLevel === undefined) defaultLevel = 0;  // default is off
 
     // ANGLE
     const angle = function(value, parameters, debug) {
