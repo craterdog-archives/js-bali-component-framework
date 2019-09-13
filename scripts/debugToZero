@@ -1,0 +1,4 @@
+for f in `ls -1 test/*.js`; do
+    sed 's/debug = 2/debug = 0/' $f >$f.tmp
+    mv $f.tmp $f
+done

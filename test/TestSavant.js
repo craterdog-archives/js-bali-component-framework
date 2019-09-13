@@ -8,7 +8,7 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
-const debug = 2;
+const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const Savant = require('../src/utilities/Savant').Savant;
