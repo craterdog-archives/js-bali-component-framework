@@ -8,9 +8,10 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+const debug = 2;
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const bali = require('../').api(2);
+const bali = require('../').api(debug);
 
 
 describe('Bali Nebula™ Component Framework - Range', function() {

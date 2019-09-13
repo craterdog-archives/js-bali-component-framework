@@ -8,11 +8,12 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+const debug = 2;
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const bali = require('../').api(2);
-const codex = bali.codex(1, 2);  // indent one level, debug set to 2
-const generator = bali.generator(2);  // debug set to 2
+const bali = require('../').api();
+const generator = bali.generator();
+const codex = bali.codex(1, debug);  // indent one level
 
 
 describe('Bali Nebula™ Component Framework - Codex', function() {
@@ -33,10 +34,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase2 = codex.base2Encode(expectedBuffer, 1);
+                const expectedBase2 = codex.base2Encode(expectedBuffer);
                 const buffer = codex.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base2 = codex.base2Encode(buffer, 1);
+                const base2 = codex.base2Encode(buffer);
                 expect(base2).to.equal(expectedBase2);
             }
         });
@@ -44,10 +45,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase16 = codex.base16Encode(expectedBuffer, 1);
+                const expectedBase16 = codex.base16Encode(expectedBuffer);
                 const buffer = codex.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base16 = codex.base16Encode(buffer, 1);
+                const base16 = codex.base16Encode(buffer);
                 expect(base16).to.equal(expectedBase16);
             }
         });
@@ -66,10 +67,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase64 = codex.base64Encode(expectedBuffer, 1);
+                const expectedBase64 = codex.base64Encode(expectedBuffer);
                 const buffer = codex.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base64 = codex.base64Encode(buffer, 1);
+                const base64 = codex.base64Encode(buffer);
                 expect(base64).to.equal(expectedBase64);
             }
         });

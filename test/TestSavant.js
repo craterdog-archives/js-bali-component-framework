@@ -8,13 +8,14 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+const debug = 2;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const Savant = require('../src/utilities/Savant').Savant;
-const savant = new Savant(2);
+const savant = new Savant(debug);
 
 
-describe('Bali Nebula™ Component Framework - Precision', function() {
+describe('Bali Nebula™ Component Framework - Savant', function() {
 
     describe('Test arithmetic operations', function() {
 

@@ -8,13 +8,14 @@
  * Source Initiative. (See http://opensource.org/licenses/MIT)          *
  ************************************************************************/
 
+const debug = 2;
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const bali = require('../').api(2);
-const generator = bali.generator(2);
+const bali = require('../').api();
+const generator = bali.generator(debug);
 
 
-describe('Bali Nebula™ Component Framework - Random', function() {
+describe('Bali Nebula™ Component Framework - Generator', function() {
 
     describe('Test random number utilities', function() {
 

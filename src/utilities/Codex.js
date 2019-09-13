@@ -11,8 +11,15 @@
 
 
 /**
- * This library provides functions that do various byte level manipulations and
- * conversions.
+ * This class implements byte encoding and decoding methods for the following formats:
+ * <pre>
+ *   * short
+ *   * integer
+ *   * base 2
+ *   * base 16
+ *   * base 32
+ *   * base 64
+ * </pre>
  */
 const Validator = require('./Validator').Validator;
 const Exception = require('../composites/Exception').Exception;
@@ -33,13 +40,7 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements encoding and decoding methods for the following bases:
- * <pre>
- *   * base 2
- *   * base 16
- *   * base 32
- *   * base 64
- * </pre>
+ * This function returns a codex object that can perform byte encoding and decoding.
  * 
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line. The default is zero.
@@ -50,7 +51,7 @@ function Codex(indentation, debug) {
     this.debug = debug || 0;
     this.indentation = indentation || 0;
     if (this.debug > 1) {
-        const validator = new Validator(debug);
+        const validator = new Validator(this.debug);
         validator.validateType('/bali/utilities/Codex', '$Codex', '$indentation', indentation, [
             '/javascript/Number'
         ]);

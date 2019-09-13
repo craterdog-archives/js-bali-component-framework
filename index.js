@@ -249,6 +249,12 @@ exports.api = function(defaultLevel) {
         return parser.parseDocument(document);
     };
     
+    // CONFIGURATION
+    const configuration = function(filename, directory, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Configuration(filename, directory, debug);
+    };
+    
     // DURATION
     const duration = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -594,6 +600,7 @@ exports.api = function(defaultLevel) {
         catalog: catalog,
         codex: codex,
         component: component,
+        configuration: configuration,
         duration: duration,
         exception: exception,
         generator: generator,
