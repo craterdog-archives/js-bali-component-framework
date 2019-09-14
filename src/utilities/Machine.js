@@ -11,7 +11,7 @@
 
 
 /**
- * This class implements a finite state automaton. It defines the possible states of the
+ * This class implements a finite state machine. It defines the possible states of the
  * machine and allowed transitions between states given a finite set of possible event
  * types.
  */
@@ -22,7 +22,7 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new finite state automaton using the specified event type
+ * This function creates a new finite state machine using the specified event type
  * array and state transition object.
  * <pre>
  * eventTypes:  ['$event1', '$event2', ... '$eventM']
@@ -33,30 +33,34 @@ const Exception = require('../composites/Exception').Exception;
  *     $stateN: ['$state1', undefined, ... '$state3']
  * }
  * </pre>
- * The first state in the nextStates object is the initial state of the finite state automaton.
+ * The first state in the nextStates object is the initial state of the finite state machine.
  * 
  * @param {Array} eventTypes An array of the possible event types as strings.
  * @param {Object} nextStates An object defining the possible states as strings and allowed
  * transitions between them given specific event types.
+ * @param {String} currentState The optional current state of the machine.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Automaton} A new finite state automaton.
+ * @returns {Machine} A new finite state machine.
  */
-function Automaton(eventTypes, nextStates, debug) {
+function Machine(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
-        validator.validateType('/bali/utilities/Automaton', '$automaton', '$eventTypes', eventTypes, [
+        validator.validateType('/bali/utilities/Machine', '$Machine', '$eventTypes', eventTypes, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/utilities/Automaton', '$automaton', '$nextStates', nextStates, [
+        validator.validateType('/bali/utilities/Machine', '$Machine', '$nextStates', nextStates, [
             '/javascript/Object'
         ]);
+        validator.validateType('/bali/utilities/Machine', '$Machine', '$currentState', currentState, [
+            '/javascript/Undefined',
+            '/javascript/String'
+        ]);
     }
-    var currentState;
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
         const exception = new Exception({
-            $module: '/bali/utilities/Automaton',
-            $procedure: '$Automaton',
+            $module: '/bali/utilities/Machine',
+            $procedure: '$Machine',
             $exception: '$invalidType',
             $text: 'One of the parameters to the constructor is not the right type.'
         });
@@ -65,8 +69,8 @@ function Automaton(eventTypes, nextStates, debug) {
     }
     if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Automaton',
-            $procedure: '$Automaton',
+            $module: '/bali/utilities/Machine',
+            $procedure: '$Machine',
             $exception: '$noStates',
             $text: 'The state machine must have at least one state and event.'
         });
@@ -77,8 +81,8 @@ function Automaton(eventTypes, nextStates, debug) {
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Automaton',
-                $procedure: '$Automaton',
+                $module: '/bali/utilities/Machine',
+                $procedure: '$Machine',
                 $exception: '$invalidType',
                 $event: event,
                 $text: 'Each event must be of type string.'
@@ -91,8 +95,8 @@ function Automaton(eventTypes, nextStates, debug) {
     for (const state in nextStates) {
         if (typeof state !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Automaton',
-                $procedure: '$Automaton',
+                $module: '/bali/utilities/Machine',
+                $procedure: '$Machine',
                 $exception: '$invalidType',
                 $state: state,
                 $text: 'Each state must be of type string.'
@@ -103,8 +107,8 @@ function Automaton(eventTypes, nextStates, debug) {
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
             const exception = new Exception({
-                $module: '/bali/utilities/Automaton',
-                $procedure: '$Automaton',
+                $module: '/bali/utilities/Machine',
+                $procedure: '$Machine',
                 $exception: '$invalidParameter',
                 $expected: numberOfEventTypes,
                 $actual: nextStates[state].length,
@@ -116,8 +120,8 @@ function Automaton(eventTypes, nextStates, debug) {
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
                 const exception = new Exception({
-                    $module: '/bali/utilities/Automaton',
-                    $procedure: '$Automaton',
+                    $module: '/bali/utilities/Machine',
+                    $procedure: '$Machine',
                     $exception: '$invalidParameter',
                     $expected: Object.keys(nextStates),
                     $actual: transition,
@@ -138,7 +142,7 @@ function Automaton(eventTypes, nextStates, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Automaton',
+                $module: '/bali/utilities/Machine',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
                 $event: event,
@@ -154,7 +158,7 @@ function Automaton(eventTypes, nextStates, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Automaton',
+                $module: '/bali/utilities/Machine',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',
                 $event: event,
@@ -169,5 +173,5 @@ function Automaton(eventTypes, nextStates, debug) {
 
     return this;
 }
-Automaton.prototype.constructor = Automaton;
-exports.Automaton = Automaton;
+Machine.prototype.constructor = Machine;
+exports.Machine = Machine;

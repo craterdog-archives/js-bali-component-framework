@@ -184,12 +184,6 @@ exports.api = function(defaultLevel) {
         return new composites.Association(key, value, debug);
     };
     
-    // AUTOMATON
-    const automaton = function(eventTypes, nextStates, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new utilities.Automaton(eventTypes, nextStates, debug);
-    };
-    
     // BINARY
     const binary = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -315,6 +309,12 @@ exports.api = function(defaultLevel) {
     list.concatenation = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return collections.List.concatenation(first, second, debug);
+    };
+    
+    // MACHINE
+    const machine = function(eventTypes, nextStates, currentState, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Machine(eventTypes, nextStates, currentState, debug);
     };
     
     // MOMENT
@@ -595,7 +595,6 @@ exports.api = function(defaultLevel) {
     return {
         angle: angle,
         association: association,
-        automaton: automaton,
         binary: binary,
         catalog: catalog,
         codex: codex,
@@ -606,6 +605,7 @@ exports.api = function(defaultLevel) {
         generator: generator,
         iterator: iterator,
         list: list,
+        machine: machine,
         moment: moment,
         name: name,
         number: number,

@@ -14,14 +14,14 @@ const expect = require('chai').expect;
 const bali = require('../').api(debug);
 
 
-describe('Bali Nebula™ Component Framework - Automaton', function() {
+describe('Bali Nebula™ Component Framework - Machine', function() {
 
-    describe('Test the automaton with invalid parameters', function() {
+    describe('Test the state machine with invalid parameters', function() {
 
         it('should detect an empty event types array', function() {
             expect(
                 function() {
-                    bali.automaton([]);
+                    bali.machine([]);
                 }
             ).to.throw();
         });
@@ -29,7 +29,7 @@ describe('Bali Nebula™ Component Framework - Automaton', function() {
         it('should detect an empty state transitions array', function() {
             expect(
                 function() {
-                    bali.automaton(['$event1', '$event2'], {
+                    bali.machine(['$event1', '$event2'], {
                         $state1: [],
                         $state2: []
                     });
@@ -40,7 +40,7 @@ describe('Bali Nebula™ Component Framework - Automaton', function() {
         it('should detect an invalid state in the transitions array', function() {
             expect(
                 function() {
-                    bali.automaton([ '$event1', '$event2' ], {
+                    bali.machine([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state3']
                     });
@@ -50,10 +50,10 @@ describe('Bali Nebula™ Component Framework - Automaton', function() {
 
     });
 
-    describe('Test the automaton with valid parameters', function() {
+    describe('Test the state machine with valid parameters', function() {
 
-        it('should run a new automaton correctly', function() {
-            const fsa = bali.automaton([ '$event1', '$event2' ], {
+        it('should run a new state machine correctly', function() {
+            const fsa = bali.machine([ '$event1', '$event2' ], {
                 $state1: ['$state2', undefined],
                 $state2: [undefined, '$state1']
             });
@@ -69,7 +69,7 @@ describe('Bali Nebula™ Component Framework - Automaton', function() {
         it('should detect invalid state transitions', function() {
             expect(
                 function() {
-                    bali.automaton([ '$event1', '$event2' ], {
+                    bali.machine([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state1']
                     });
@@ -78,7 +78,7 @@ describe('Bali Nebula™ Component Framework - Automaton', function() {
             ).to.throw();
             expect(
                 function() {
-                    bali.automaton([ '$event1', '$event2' ], {
+                    bali.machine([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state1']
                     });
