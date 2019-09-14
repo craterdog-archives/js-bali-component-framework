@@ -256,7 +256,7 @@ exports.List = List;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component supports concatenation operations:
+ * This method determines whether or not this component supports concatenation operations:
  * <pre>
  *  * concatenation
  * </pre>

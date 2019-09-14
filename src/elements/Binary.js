@@ -73,7 +73,7 @@ Binary.prototype.isLogical = function() {
 
 
 /**
- * This function determines whether or not this component supports iteration:
+ * This method determines whether or not this component supports iteration:
  * <pre>
  *  * iterator
  * </pre>
@@ -86,7 +86,7 @@ Binary.prototype.isSequential = function() {
 
 
 /**
- * This function determines whether or not this component supports concatenation operations:
+ * This method determines whether or not this component supports concatenation operations:
  * <pre>
  *  * concatenation
  * </pre>

@@ -63,7 +63,7 @@ exports.Codex = Codex;
 
 
 /**
- * This function encodes the bytes in a data buffer into a base 2 string.
+ * This method encodes the bytes in a data buffer into a base 2 string.
  *
  * @param {Buffer} buffer A data buffer containing the integer.
  * @return {String} The base 2 encoded string.
@@ -87,7 +87,7 @@ Codex.prototype.base2Encode = function(buffer) {
 
 
 /**
- * This function decodes a base 2 encoded string into a data buffer containing the
+ * This method decodes a base 2 encoded string into a data buffer containing the
  * decoded bytes.
  *
  * @param {String} base2 The base 2 encoded string.
@@ -143,7 +143,7 @@ Codex.prototype.base2Decode = function(base2) {
 
 
 /**
- * This function encodes the bytes in a data buffer into a base 16 string.
+ * This method encodes the bytes in a data buffer into a base 16 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 16 encoded string.
@@ -165,7 +165,7 @@ Codex.prototype.base16Encode = function(buffer) {
 
 
 /**
- * This function decodes a base 16 encoded string into a data buffer containing the
+ * This method decodes a base 16 encoded string into a data buffer containing the
  * decoded bytes.
  *
  * @param {String} base16 The base 16 encoded string.
@@ -234,7 +234,7 @@ Codex.prototype.base16Decode = function(base16) {
 
 
 /**
- * This function encodes the bytes in a data buffer into a base 32 string.
+ * This method encodes the bytes in a data buffer into a base 32 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 32 encoded string.
@@ -262,7 +262,7 @@ Codex.prototype.base32Encode = function(buffer) {
 
 
 /**
- * This function decodes a base 32 encoded string into a data buffer containing the
+ * This method decodes a base 32 encoded string into a data buffer containing the
  * decoded bytes.
  *
  * @param {String} base32 The base 32 encoded string.
@@ -304,7 +304,7 @@ Codex.prototype.base32Decode = function(base32) {
 
 
 /**
- * This function encodes the bytes in a data buffer into a base 64 string.
+ * This method encodes the bytes in a data buffer into a base 64 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 64 encoded string.
@@ -320,7 +320,7 @@ Codex.prototype.base64Encode = function(buffer) {
 
 
 /**
- * This function decodes a base 64 encoded string into a data buffer containing the
+ * This method decodes a base 64 encoded string into a data buffer containing the
  * decoded bytes.
  *
  * @param {String} base64 The base 64 encoded string.
@@ -332,7 +332,7 @@ Codex.prototype.base64Decode = function(base64) {
 
 
 /**
- * This function converts a short into a data buffer containing its corresponding bytes
+ * This method converts a short into a data buffer containing its corresponding bytes
  * in 'big endian' order.
  *
  * @param {Number} short The short to be converted.
@@ -349,7 +349,7 @@ Codex.prototype.shortToBytes = function(short) {
 
 
 /**
- * This function converts the bytes in a data buffer in 'big endian' order to its
+ * This method converts the bytes in a data buffer in 'big endian' order to its
  * corresponding short value.
  *
  * @param {Buffer} buffer A data buffer containing the bytes for the short.
@@ -366,7 +366,7 @@ Codex.prototype.bytesToShort = function(buffer) {
 
 
 /**
- * This function converts an integer into a data buffer containing its corresponding bytes
+ * This method converts an integer into a data buffer containing its corresponding bytes
  * in 'big endian' order.
  *
  * @param {Number} integer The integer to be converted.
@@ -383,7 +383,7 @@ Codex.prototype.integerToBytes = function(integer) {
 
 
 /**
- * This function converts the bytes in a data buffer in 'big endian' order to its
+ * This method converts the bytes in a data buffer in 'big endian' order to its
  * corresponding integer value.
  *
  * @param {Buffer} buffer The buffer containing the bytes for the integer.

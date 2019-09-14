@@ -10,8 +10,9 @@
 'use strict';
 
 /**
- * This library provides functions that perform arithmetic and trigonometric operations
- * that preserve only the significant digits of the results. It uses the algorithms for
+ * This class implements numeric calculations and limits the results to the correct
+ * number of significant figures. It also handles operations involving zero and
+ * infinity correctly. It's just a really smart class!  It uses the algorithms for
  * calculating the significant digits defined here:
  * https://en.wikipedia.org/wiki/Significance_arithmetic
  * 
@@ -28,9 +29,7 @@
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements numeric calculations and limits the results to the correct
- * number of significant figures. It also handles operations involving zero and infinity
- * correctly. It's just a really smart class!
+ * This function creates a new savant object.
  * 
  * @param {Number} debug A number in the range [0..3].
  * @returns {Savant} The new generator.
@@ -49,7 +48,7 @@ Savant.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
 
 
 /**
- * This function checks to see if the specified number is close enough to zero or infinity to
+ * This method checks to see if the specified number is close enough to zero or infinity to
  * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
  * doing round trip conversions using arithmetic functions.
  * 
@@ -65,7 +64,7 @@ Savant.prototype.lockOnExtreme = function(number) {
 
 
 /**
- * This function checks to see if the specified number is close enough to one of the four poles
+ * This method checks to see if the specified number is close enough to one of the four poles
  * on a Riemann circle (-1, 0, 1, and Infinity) to cause it to lock onto one of those values.
  * This helps with the hysteresis that occurs when doing round trip conversions with trigonometry.
  * 
@@ -125,7 +124,7 @@ Savant.prototype.lockOnPole = function(number) {
 
 
 /**
- * This function checks to see if the specified angle is close enough to pi or -pi to
+ * This method checks to see if the specified angle is close enough to pi or -pi to
  * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
  * doing round trip conversions using trigonometric functions.
  * 
@@ -140,7 +139,7 @@ Savant.prototype.lockOnAngle = function(angle) {
 
 
 /**
- * This function calculates the smallest number of significant digits for a list of values
+ * This method calculates the smallest number of significant digits for a list of values
  * that are passed as arguments to this function. All integers including zero have the
  * maximum number of significant digits.
  * 
@@ -162,7 +161,7 @@ Savant.prototype.valueDigits = function() {
 
 
 /**
- * This function normalizes a raw numeric value to the specified number of significant
+ * This method normalizes a raw numeric value to the specified number of significant
  * digits minus the error digits associated with the specified error factor. The number
  * of error digits is equal to the base 10 logarithm of the error factor.
  * 
@@ -182,7 +181,7 @@ Savant.prototype.normalizeValue = function(value, significantDigits, error) {
 
 
 /**
- * This function calculates the smallest number of significant digits to the right of the
+ * This method calculates the smallest number of significant digits to the right of the
  * decimal place for a list of values that are passed as arguments to this function.  All
  * integers have unlimited significant digits to the right of the decimal.
  * 
@@ -205,7 +204,7 @@ Savant.prototype.decimalDigits = function() {
 
 
 /**
- * This function normalizes a raw numeric value to the specified number of significant
+ * This method normalizes a raw numeric value to the specified number of significant
  * digits to the right of the decimal place.
  * 
  * @param {Number} value The raw value to be normalized.
@@ -219,7 +218,7 @@ Savant.prototype.normalizeDecimal = function(value, significantDigits) {
 
 
 /**
- * This function returns the sum of a list of numbers. The number of significant digits in the decimal
+ * This method returns the sum of a list of numbers. The number of significant digits in the decimal
  * of the result is equal to the number of significant digits in the decimal of the operand with
  * the least number of digits in its decimal. For example:
  * <pre>
@@ -245,7 +244,7 @@ Savant.prototype.sum = function() {
 
 
 /**
- * This function returns the difference of two numbers. The number of significant digits in the decimal
+ * This method returns the difference of two numbers. The number of significant digits in the decimal
  * of the result is equal to the number of significant digits in the decimal of the operand with
  * the least number of digits in its decimal. For example:
  * <pre>
@@ -270,7 +269,7 @@ Savant.prototype.difference = function(minuend, subtrahend) {
 
 
 /**
- * This function returns the product of a list of numbers. The number of significant digits in the
+ * This method returns the product of a list of numbers. The number of significant digits in the
  * result is equal to the number of significant digits in the operand with the least number
  * of significant digits. For example:
  * <pre>
@@ -296,7 +295,7 @@ Savant.prototype.product = function() {
 
 
 /**
- * This function returns the quotient of two numbers. The number of significant digits in the
+ * This method returns the quotient of two numbers. The number of significant digits in the
  * result is equal to the number of significant digits in the operand with the least number
  * of significant digits. For example:
  * <pre>
@@ -321,7 +320,7 @@ Savant.prototype.quotient = function(dividend, divisor) {
 
 
 /**
- * This function returns the remainder that is left from the quotient of two numbers. The
+ * This method returns the remainder that is left from the quotient of two numbers. The
  * number of significant digits in the result is equal to the number of significant digits
  * in the operand with the least number of significant digits. For example:
  * <pre>
@@ -346,7 +345,7 @@ Savant.prototype.remainder = function(dividend, divisor) {
 
 
 /**
- * This function returns the value of e raised to an exponential power. The
+ * This method returns the value of e raised to an exponential power. The
  * number of significant digits in the result is equal to the number of significant digits
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
@@ -370,7 +369,7 @@ Savant.prototype.exponential = function(exponent) {
 
 
 /**
- * This function returns the value of the natural logarithm of an exponential value.
+ * This method returns the value of the natural logarithm of an exponential value.
  * The number of significant digits in the result is equal to the number of significant digits
  * in the operand with the least number of significant digits minus the order of magnitude
  * of the error for the function which is calculated as follows:
@@ -395,7 +394,7 @@ Savant.prototype.logarithm = function(exponential) {
 
 
 /**
- * This function returns the ratio of the length of the side opposite of an angle to the length
+ * This method returns the ratio of the length of the side opposite of an angle to the length
  * of the hypotenuse of a right triangle. The number of significant digits in the result is
  * equal to the number of significant digits in the operand minus the order of magnitude of the
  * error for the function which is calculated as follows:
@@ -418,7 +417,7 @@ Savant.prototype.sine = function(angle) {
 
 
 /**
- * This function returns the ratio of the length of the side adjacent to an angle to the length
+ * This method returns the ratio of the length of the side adjacent to an angle to the length
  * of the hypotenuse of a right triangle. The number of significant digits in the result is
  * equal to the number of significant digits in the operand minus the order of magnitude of the
  * error for the function which is calculated as follows:
@@ -441,7 +440,7 @@ Savant.prototype.cosine = function(angle) {
 
 
 /**
- * This function returns the ratio of the length of the side opposite of an angle to the length
+ * This method returns the ratio of the length of the side opposite of an angle to the length
  * of the side adjacent to the angle of a right triangle. The number of significant digits in
  * the result is equal to the number of significant digits in the operand minus the order of
  * magnitude of the error for the function which is calculated as follows:
@@ -464,7 +463,7 @@ Savant.prototype.tangent = function(angle) {
 
 
 /**
- * This function returns the angle defined by the ratio of the length of the side opposite of
+ * This method returns the angle defined by the ratio of the length of the side opposite of
  * the angle to the length of the hypotenuse of a right triangle. The number of significant
  * digits in the result is equal to the number of significant digits in the operand minus the
  * order of magnitude of the error for the function which is calculated as follows:
@@ -488,7 +487,7 @@ Savant.prototype.arcsine = function(ratio) {
 
 
 /**
- * This function returns the angle defined by the ratio of the length of the side adjacent to
+ * This method returns the angle defined by the ratio of the length of the side adjacent to
  * the angle to the length of the hypotenuse of a right triangle. The number of significant
  * digits in the result is equal to the number of significant digits in the operand minus the
  * order of magnitude of the error for the function which is calculated as follows:
@@ -512,7 +511,7 @@ Savant.prototype.arccosine = function(ratio) {
 
 
 /**
- * This function returns the angle defined by the ratio of the length of the side opposite of
+ * This method returns the angle defined by the ratio of the length of the side opposite of
  * the angle to the length of the side adjacent to the angle in a right triangle. The number
  * of significant digits in the result is equal to the number of significant digits in the
  * operand with the least number of significant digits minus the order of magnitude of the

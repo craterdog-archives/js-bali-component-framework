@@ -40,7 +40,7 @@ exports.Composite = Composite;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component is a composite.
+ * This method determines whether or not this component is a composite.
  * 
  * @returns {Boolean} Whether or not this component is a composite.
  */
@@ -61,7 +61,7 @@ Composite.prototype.toBoolean = function() {
 
 
 /**
- * This function converts negative subcomponent indexes into their corresponding positive
+ * This method converts negative subcomponent indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
  * composite component is empty then the resulting index will be zero.
  *

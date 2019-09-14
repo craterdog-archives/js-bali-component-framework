@@ -10,8 +10,10 @@
 'use strict';
 
 /*
- * This component class implements a sorter that can be used on any collection to sort its
- * items into their natural order.
+ * This class implements a sorter that can be used on any collection to sort its
+ * items into their natural order.  The class implements a standard merge sort algorithm.
+ * The collection to be sorted is recursively split into two collections each of which are
+ * then sorted and then the two collections are merged back into a sorted collection.
  */
 const Comparator = require('./Comparator').Comparator;
 
@@ -19,9 +21,7 @@ const Comparator = require('./Comparator').Comparator;
 // PUBLIC FUNCTIONS
 
 /**
- * This sorter class implements a standard merge sort algorithm.  The collection to be sorted
- * is recursively split into two collections each of which are then sorted and then the two
- * collections are merged back into a sorted collection.
+ * This function creates a new sorter object.
  * 
  * @param {Function} algorithm An optional function implementing the desired comparison algorithm. 
  * @param {Number} debug A number in the range [0..3].

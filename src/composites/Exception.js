@@ -144,7 +144,7 @@ Exception.prototype.isNumerical = function() {
 
 
 /**
- * This function determines whether or not this component can be displayed as a literal
+ * This method determines whether or not this component can be displayed as a literal
  * value.
  * 
  * @returns {Boolean} Whether or not this component can be displayed as a literal value.
@@ -155,7 +155,7 @@ Exception.prototype.isLiteral = function() {
 
 
 /**
- * This function determines whether or not this component supports iteration:
+ * This method determines whether or not this component supports iteration:
  * <pre>
  *  * iterator
  * </pre>
@@ -168,7 +168,7 @@ Exception.prototype.isSequential = function() {
 
 
 /**
- * This function determines whether or not this component supports concatenation operations:
+ * This method determines whether or not this component supports concatenation operations:
  * <pre>
  *  * concatenation
  * </pre>
@@ -181,7 +181,7 @@ Exception.prototype.isChainable = function() {
 
 
 /**
- * This function determines whether or not this component is procedural.
+ * This method determines whether or not this component is procedural.
  * 
  * @returns {Boolean} Whether or not this component is procedural.
  */
@@ -191,7 +191,7 @@ Exception.prototype.isProcedural = function() {
 
 
 /**
- * This function determines whether or not this component is an element.
+ * This method determines whether or not this component is an element.
  * 
  * @returns {Boolean} Whether or not this component is an element.
  */
@@ -201,7 +201,7 @@ Exception.prototype.isElement = function() {
 
 
 /**
- * This function determines whether or not this component is a composite.
+ * This method determines whether or not this component is a composite.
  * 
  * @returns {Boolean} Whether or not this component is a composite.
  */
@@ -211,7 +211,7 @@ Exception.prototype.isComposite = function() {
 
 
 /**
- * This function determines whether or not this component is a collection.
+ * This method determines whether or not this component is a collection.
  * 
  * @returns {Boolean} Whether or not this component is a collection.
  */

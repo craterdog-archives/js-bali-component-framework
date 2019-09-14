@@ -10,8 +10,8 @@
 'use strict';
 
 /**
- * This module provides a class that parses a document containing
- * Bali Document Notation™ and produce the corresponding parse tree structure.
+ * This class implements a parser that parses strings containing Bali Document
+ * Notation™ and generates the corresponding component structures.
  * 
  * NOTE: The implementation of this parser uses a raw parser that was
  * generated using ANTLR v4. The raw parse tree structure that comes
@@ -41,8 +41,7 @@ const EOL = '\n';
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements a parser that parses strings containing Bali Document Notation™ and
- * generates the corresponding component structures.
+ * This function creates a new parser object.
  * 
  * @param {Number} debug A number in the range [0..3].
  * @returns {Parser} The new string parser.

@@ -65,7 +65,7 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component supports iteration:
+ * This method determines whether or not this component supports iteration:
  * <pre>
  *  * iterator
  * </pre>

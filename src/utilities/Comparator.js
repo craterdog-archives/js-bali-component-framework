@@ -18,9 +18,9 @@
 // PUBLIC FUNCTIONS
 
 /**
- * This utility class implements an object that can be used to compare two components. If a
- * compare function is specified, that function is used to do the comparison, otherwise, a
- * natural comparison will be performed.
+ * This function creates a new comparator object that can be used to compare two objects.
+ * if an algorithm function is specified, that function is used to do the comparison, otherwise,
+ * a natural comparison will be performed.
  *  
  * @param {Function} algorithm An optional function implementing a comparison algorithm. 
  * @param {Number} debug A number in the range [0..3].

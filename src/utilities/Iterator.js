@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This composite class implements an iterator for arrays.  The indexing
+ * This utility class implements an iterator for arrays.  The indexing
  * is ordinal based and allows positive indexes starting at the beginning
  * of the list or negative indexes starting at the end of the list as
  * follows:

@@ -11,8 +11,7 @@
 
 
 /**
- * This library defines a set of functions that can be used to do various types of
- * validation.
+ * This class performs various validation functions on object types and values.
  */
 const URL = require('url').URL;
 const Exception = require('../composites/Exception').Exception;
@@ -21,10 +20,10 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements random value generation.
+ * This function creates a new validator object.
  * 
  * @param {Number} debug A number in the range [0..3].
- * @returns {Generator} The new generator.
+ * @returns {Validator} The new validator.
  */
 function Validator(debug) {
     this.debug = debug || 0;
@@ -35,7 +34,7 @@ exports.Validator = Validator;
 
 
 /**
- * This function returns a string containing the Bali name for the type of the specified value.
+ * This method returns a string containing the Bali name for the type of the specified value.
  * 
  * @param {Any} value The value to be evaluated. 
  * @returns {String} A string containing the Bali name for the type of the specified value.
@@ -98,7 +97,7 @@ Validator.prototype.getType = function(value) {
 
 
 /**
- * This function compares the type of an argument value with the allowed types for that
+ * This method compares the type of an argument value with the allowed types for that
  * argument and throws an exception if it does not match.
  * 
  * @param {String} moduleName The name of the module being called.

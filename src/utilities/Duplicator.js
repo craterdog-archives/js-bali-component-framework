@@ -10,8 +10,8 @@
 'use strict';
 
 /**
- * This library provides functions that duplicate a parse tree structure produced
- * by the <code>Parser</code> class.
+ * This class implements a duplicator that can be used to perform a deep copy of a
+ * component.  Since elements are immutable, they are not copied, only referenced.
  */
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
@@ -24,8 +24,7 @@ const EOL = '\n';
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements a duplicator that uses a visitor to create a deep copy of a
- * component. Since elements are immutable, they are not copied, only referenced.
+ * This function creates a new duplicator object.
  * 
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duplicator} The new component duplicator.

@@ -11,9 +11,8 @@
 
 
 /**
- * This library provides functions that format a parse tree structure produced
- * by the <code>Parser</code> class and generates a canonical version of
- * the corresponding Bali Document Notation™ formatted code string.
+ * This class implements a formatter object that uses a visitor to format, in
+ * a canonical way, components as strings containing Bali Document Notation™.
  */
 const Codex = require('./Codex').Codex;
 const Validator = require('./Validator').Validator;
@@ -34,8 +33,7 @@ const MAXIMUM_LENGTH = 25;
 // PUBLIC FUNCTIONS
 
 /**
- * This class implements a formatter that uses a visitor to format component structures
- * as strings containing Bali Document Notation™ in a canonical way.
+ * This function creates a new formatter object that can be used to format components.
  * 
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero.

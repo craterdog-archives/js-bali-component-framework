@@ -127,7 +127,7 @@ Angle.prototype.toNumber = function() {
 
 
 /**
- * This function returns the value of the angle in radians.
+ * This method returns the value of the angle in radians.
  * 
  * @returns {Number} The value of the angle in radians.
  */
@@ -137,7 +137,7 @@ Angle.prototype.getRadians = function() {
 
 
 /**
- * This function returns the value of the angle in degrees.
+ * This method returns the value of the angle in degrees.
  * 
  * @returns {Number} The value of the angle in degrees.
  */

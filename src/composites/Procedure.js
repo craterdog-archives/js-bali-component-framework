@@ -47,7 +47,7 @@ exports.Procedure = Procedure;
 // PUBLIC METHODS
 
 /**
- * This function determines whether or not this component can be displayed as a literal
+ * This method determines whether or not this component can be displayed as a literal
  * value.
  * 
  * @returns {Boolean} Whether or not this component can be displayed as a literal value.

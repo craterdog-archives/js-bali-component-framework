@@ -19,7 +19,7 @@ const composites = require('../composites');
 
 
 /*
- * This function defines a missing stack function for the standard Array class.
+ * This method defines a missing stack function for the standard Array class.
  * The push(item) and pop() methods are already defined.
  */
 Array.prototype.peek = function() {
