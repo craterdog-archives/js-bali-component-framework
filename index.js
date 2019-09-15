@@ -243,10 +243,10 @@ exports.api = function(defaultLevel) {
         return parser.parseDocument(document);
     };
     
-    // CONFIGURATION
-    const configuration = function(filename, directory, debug) {
+    // CONFIGURATOR
+    const configurator = function(filename, directory, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Configuration(filename, directory, debug);
+        return new utilities.Configurator(filename, directory, debug);
     };
     
     // DURATION
@@ -599,7 +599,7 @@ exports.api = function(defaultLevel) {
         catalog: catalog,
         codex: codex,
         component: component,
-        configuration: configuration,
+        configurator: configurator,
         duration: duration,
         exception: exception,
         generator: generator,
