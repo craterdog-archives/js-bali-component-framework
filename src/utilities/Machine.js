@@ -169,6 +169,7 @@ function Machine(eventTypes, nextStates, currentState, debug) {
             throw exception;
         }
         currentState = nextStates[currentState][index];
+        return currentState;
     };
 
     return this;
