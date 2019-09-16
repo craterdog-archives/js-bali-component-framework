@@ -40,7 +40,7 @@ const MAXIMUM_LENGTH = 25;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Formatter} The new component formatter.
  */
-function Formatter(indentation, debug) {
+const Formatter = function(indentation, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
@@ -66,14 +66,14 @@ function Formatter(indentation, debug) {
     };
 
     return this;
-}
+};
 Formatter.prototype.constructor = Formatter;
 exports.Formatter = Formatter;
 
 
 // PRIVATE CLASSES
 
-function FormattingVisitor(indentation, debug) {
+const FormattingVisitor = function(indentation, debug) {
     Visitor.call(this, debug);
     this.indentation = indentation || 0;
     this.debug = debug || 0;
@@ -101,7 +101,7 @@ function FormattingVisitor(indentation, debug) {
     };
 
     return this;
-}
+};
 FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
@@ -900,7 +900,7 @@ FormattingVisitor.prototype.visitWithClause = function(tree) {
 };
 
 
-function formatReal(value) {
+const formatReal = function(value) {
     var string = Number(value.toPrecision(14)).toString();
     switch (string) {
         case '-2.718281828459':
@@ -925,10 +925,10 @@ function formatReal(value) {
         default:
             return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
     }
-}
+};
 
 
-function formatImaginary(value) {
+const formatImaginary = function(value) {
     var literal = formatReal(value);
     switch (literal) {
         case 'undefined':
@@ -941,4 +941,5 @@ function formatImaginary(value) {
         default:
             return literal + 'i';
     }
-}
+};
+

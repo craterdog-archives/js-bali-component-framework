@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Text} The new text string.
  */
-function Text(value, parameters, debug) {
+const Text = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Text', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -43,7 +43,7 @@ function Text(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Text.prototype = Object.create(abstractions.Element.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
@@ -159,12 +159,12 @@ Text.concatenation = function(first, second, debug) {
 
 // PRIVATE CLASSES
 
-function TextIterator(text) {
+const TextIterator = function(text) {
     this.slot = 0;  // the slot before the first number
     this.size = text.length;  // static so we can cache it here
     this.text = text;
     return this;
-}
+};
 TextIterator.prototype.constructor = TextIterator;
 
 

@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Association} A new association.
  */
-function Association(key, value, debug) {
+const Association = function(key, value, debug) {
     abstractions.Composite.call(this, '$Association', debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -83,7 +83,7 @@ function Association(key, value, debug) {
     };
 
     return this;
-}
+};
 Association.prototype = Object.create(abstractions.Composite.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;

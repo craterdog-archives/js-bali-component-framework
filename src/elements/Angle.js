@@ -28,7 +28,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The new angle element.
  */
-function Angle(value, parameters, debug) {
+const Angle = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Angle', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -81,7 +81,7 @@ function Angle(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Angle.prototype = Object.create(abstractions.Element.prototype);
 Angle.prototype.constructor = Angle;
 exports.Angle = Angle;

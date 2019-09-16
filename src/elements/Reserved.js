@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reserved} The new reserved identifier.
  */
-function Reserved(value, parameters, debug) {
+const Reserved = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Reserved', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -54,7 +54,7 @@ function Reserved(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Reserved.prototype = Object.create(abstractions.Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;

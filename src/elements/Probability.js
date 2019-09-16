@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The new probability element.
  */
-function Probability(value, parameters, debug) {
+const Probability = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Probability', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -58,7 +58,7 @@ function Probability(value, parameters, debug) {
 
     return this;
 
-}
+};
 Probability.prototype = Object.create(abstractions.Element.prototype);
 Probability.prototype.constructor = Probability;
 exports.Probability = Probability;

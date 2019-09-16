@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The new binary string.
  */
-function Binary(value, parameters, debug) {
+const Binary = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Binary', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -45,7 +45,7 @@ function Binary(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Binary.prototype = Object.create(abstractions.Element.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
@@ -343,12 +343,12 @@ Binary.concatenation = function(first, second, debug) {
 
 // PRIVATE CLASSES
 
-function BufferIterator(buffer) {
+const BufferIterator = function(buffer) {
     this.slot = 0;  // the slot before the first number
     this.size = buffer.length;  // static so we can cache it here
     this.buffer = buffer;
     return this;
-}
+};
 BufferIterator.prototype.constructor = BufferIterator;
 
 

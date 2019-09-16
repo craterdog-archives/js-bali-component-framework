@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new symbol element.
  */
-function Symbol(value, parameters, debug) {
+const Symbol = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Symbol', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -54,7 +54,7 @@ function Symbol(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Symbol.prototype = Object.create(abstractions.Element.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;

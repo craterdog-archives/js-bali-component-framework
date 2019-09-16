@@ -29,7 +29,7 @@ const EOL = '\n';
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duplicator} The new component duplicator.
  */
-function Duplicator(debug) {
+const Duplicator = function(debug) {
     debug = debug || 0;
 
     this.duplicateComponent = function(component, parameters) {
@@ -49,19 +49,19 @@ function Duplicator(debug) {
     };
 
     return this;
-}
+};
 Duplicator.prototype.constructor = Duplicator;
 exports.Duplicator = Duplicator;
 
 
 // PRIVATE CLASSES
 
-function DuplicatingVisitor(parameters, debug) {
+const DuplicatingVisitor = function(parameters, debug) {
     Visitor.call(this, debug);
     this.depth = 0;
     this.parameters = parameters;
     return this;
-}
+};
 DuplicatingVisitor.prototype = Object.create(Visitor.prototype);
 DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 

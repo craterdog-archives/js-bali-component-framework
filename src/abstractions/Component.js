@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Component} The new component.
  */
-function Component(type, parameters, debug) {
+const Component = function(type, parameters, debug) {
     // analyze the arguments
     parameters = parameters || undefined;  // normalize nulls to undefined
     this.debug = debug || 0;  // default value
@@ -59,7 +59,7 @@ function Component(type, parameters, debug) {
     };
 
     return this;
-}
+};
 Component.prototype.constructor = Component;
 exports.Component = Component;
 

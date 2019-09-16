@@ -31,7 +31,7 @@ const Exception = require('./Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Tree} The new tree node component.
  */
-function Tree(type, debug) {
+const Tree = function(type, debug) {
     abstractions.Composite.call(this, type, debug);
 
     if (!this.isProcedural()) {
@@ -88,7 +88,7 @@ function Tree(type, debug) {
     };
 
     return this;
-}
+};
 Tree.prototype = Object.create(abstractions.Composite.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;

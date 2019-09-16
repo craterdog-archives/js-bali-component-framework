@@ -40,7 +40,7 @@ const Validator = require('./Validator').Validator;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Iterator} The new array iterator.
  */
-function Iterator(array, debug) {
+const Iterator = function(array, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
@@ -88,6 +88,6 @@ function Iterator(array, debug) {
     };
 
     return this;
-}
+};
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;

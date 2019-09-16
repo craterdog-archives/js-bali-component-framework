@@ -26,7 +26,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Parameters} The new parameter component.
  */
-function Parameters(parameters, debug) {
+const Parameters = function(parameters, debug) {
     abstractions.Composite.call(this, '$Parameters', undefined, debug);
 
     // the parameters are immutable so the methods are included in the constructor
@@ -52,7 +52,7 @@ function Parameters(parameters, debug) {
     };
     
     return this;
-}
+};
 Parameters.prototype = Object.create(abstractions.Composite.prototype);
 Parameters.prototype.constructor = Parameters;
 exports.Parameters = Parameters;

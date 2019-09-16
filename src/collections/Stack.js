@@ -37,7 +37,7 @@ Array.prototype.peek = function() {
  * @param {Number} debug A number in the range [0..3].
  * @returns {Stack} The new stack.
  */
-function Stack(parameters, debug) {
+const Stack = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Stack/v1'
     }, debug);
@@ -165,7 +165,7 @@ function Stack(parameters, debug) {
     };
     
     return this;
-}
+};
 Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;

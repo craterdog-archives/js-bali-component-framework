@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Procedure} A new procedure component.
  */
-function Procedure(statements, parameters, debug) {
+const Procedure = function(statements, parameters, debug) {
     abstractions.Composite.call(this, '$Procedure', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -38,7 +38,7 @@ function Procedure(statements, parameters, debug) {
     }
     this.getStatements = function() { return statements; };
     return this;
-}
+};
 Procedure.prototype = Object.create(abstractions.Composite.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;

@@ -36,7 +36,7 @@ const Exception = require('../composites/Exception').Exception;
  * </pre>
  * @returns {Configurator} A new association.
  */
-function Configurator(filename, directory, debug) {
+const Configurator = function(filename, directory, debug) {
     if (debug === null || debug === undefined) debug = 0;  // default is off
     this.debug = debug;
 
@@ -55,7 +55,7 @@ function Configurator(filename, directory, debug) {
     this.file = directory + filename;
 
     return this;
-}
+};
 Configurator.prototype.constructor = Configurator;
 exports.Configurator = Configurator;
 

@@ -29,10 +29,10 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
  */
-function Collection(type, parameters, debug) {
+const Collection = function(type, parameters, debug) {
     Composite.call(this, type, parameters, debug);
     return this;
-}
+};
 Collection.prototype = Object.create(Composite.prototype);
 Collection.prototype.constructor = Collection;
 exports.Collection = Collection;

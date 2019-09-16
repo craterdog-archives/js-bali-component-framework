@@ -26,7 +26,7 @@
  * @param {Number} debug A number in the range [0..3].
  * @returns {Comparator} The new comparator.
  */
-function Comparator(algorithm, debug) {
+const Comparator = function(algorithm, debug) {
     debug = debug || 0;
 
     // PUBLIC METHODS
@@ -55,7 +55,7 @@ function Comparator(algorithm, debug) {
     this.compareComponents = algorithm || natural;
     
     return this;
-}
+};
 Comparator.prototype.constructor = Comparator;
 exports.Comparator = Comparator;
 
@@ -68,7 +68,7 @@ exports.Comparator = Comparator;
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  * 
  */
-function natural(first, second) {
+const natural = function(first, second) {
     // handle undefined components
     if (first && !second) {
         return 1;  // anything is greater than nothing
@@ -142,4 +142,5 @@ function natural(first, second) {
 
     // must be two elemental objects of the same type, compare their string values
     return Math.sign(first.toString().localeCompare(second.toString()));
-}
+};
+

@@ -31,7 +31,7 @@
  * @param {Object} cause An optional exception that caused this one.
  * @returns {Exception} The new exception.
  */
-function Exception(attributes, cause) {
+const Exception = function(attributes, cause) {
 
     // mark this as a component
     this.isComponent = true;
@@ -54,7 +54,7 @@ function Exception(attributes, cause) {
     this.getType = function() { return '$Exception'; };
 
     return this;
-}
+};
 Exception.prototype = Object.create(Error.prototype);
 Exception.prototype.constructor = Exception;
 Exception.prototype.name = 'Exception';

@@ -30,10 +30,10 @@ const MAXIMUM_INTEGER = 4294967296;  // unsigned
  * @param {Number} debug A number in the range [0..3].
  * @returns {Generator} The new generator.
  */
-function Generator(debug) {
+const Generator = function(debug) {
     this.debug = debug || 0;
     return this;
-}
+};
 Generator.prototype.constructor = Generator;
 exports.Generator = Generator;
 

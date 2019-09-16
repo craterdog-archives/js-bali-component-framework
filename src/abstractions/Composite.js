@@ -28,10 +28,10 @@ const Component = require('./Component').Component;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Composite} The new composite component.
  */
-function Composite(type, parameters, debug) {
+const Composite = function(type, parameters, debug) {
     Component.call(this, type, parameters, debug);
     return this;
-}
+};
 Composite.prototype = Object.create(Component.prototype);
 Composite.prototype.constructor = Composite;
 exports.Composite = Composite;

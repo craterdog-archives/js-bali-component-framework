@@ -27,7 +27,7 @@ const Comparator = require('./Comparator').Comparator;
  * @param {Number} debug A number in the range [0..3].
  * sorting. If none is specified, the natural comparator will be used.
  */
-function Sorter(algorithm, debug) {
+const Sorter = function(algorithm, debug) {
     this.debug = debug || 0;
 
     // the comparator is a private attribute so methods that use it are defined in the constructor
@@ -43,12 +43,12 @@ function Sorter(algorithm, debug) {
     };
 
     return this;
-}
+};
 Sorter.prototype.constructor = Sorter;
 exports.Sorter = Sorter;
 
 
-function sortArray(comparator, array) {
+const sortArray = function(comparator, array) {
     // check to see if the array is already sorted
     const length = array.length;
     if (length < 2) return array;
@@ -65,10 +65,10 @@ function sortArray(comparator, array) {
     // merge the sorted halves back together
     const result = mergeArrays(comparator, left, right);
     return result;
-}
+};
 
 
-function mergeArrays(comparator, left, right) {
+const mergeArrays = function(comparator, left, right) {
     var leftIndex = 0;
     var rightIndex = 0;
     var result = [];
@@ -95,4 +95,5 @@ function mergeArrays(comparator, left, right) {
         result = result.concat(right.slice(rightIndex));
     }
     return result;
-}
+};
+

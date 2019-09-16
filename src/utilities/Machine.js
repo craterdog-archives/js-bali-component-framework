@@ -42,7 +42,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Machine} A new finite state machine.
  */
-function Machine(eventTypes, nextStates, currentState, debug) {
+const Machine = function(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
@@ -173,6 +173,6 @@ function Machine(eventTypes, nextStates, currentState, debug) {
     };
 
     return this;
-}
+};
 Machine.prototype.constructor = Machine;
 exports.Machine = Machine;

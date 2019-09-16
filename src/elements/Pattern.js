@@ -26,7 +26,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Pattern} The new pattern element.
  */
-function Pattern(value, parameters, debug) {
+const Pattern = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Pattern', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -43,7 +43,7 @@ function Pattern(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Pattern.prototype = Object.create(abstractions.Element.prototype);
 Pattern.prototype.constructor = Pattern;
 exports.Pattern = Pattern;

@@ -47,7 +47,7 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
  * @param {Number} debug A number in the range [0..3].
  * @returns {Codex} The new codex.
  */
-function Codex(indentation, debug) {
+const Codex = function(indentation, debug) {
     this.debug = debug || 0;
     this.indentation = indentation || 0;
     if (this.debug > 1) {
@@ -57,7 +57,7 @@ function Codex(indentation, debug) {
         ]);
     }
     return this;
-}
+};
 Codex.prototype.constructor = Codex;
 exports.Codex = Codex;
 
@@ -406,7 +406,7 @@ Codex.prototype.bytesToInteger = function(buffer) {
  * byte:  00000111|11222223|33334444|45555566|66677777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
-function base32EncodeBytes(previous, current, byteIndex, base32) {
+const base32EncodeBytes = function(previous, current, byteIndex, base32) {
     var chunk;
     const offset = byteIndex % 5;
     switch (offset) {
@@ -438,7 +438,7 @@ function base32EncodeBytes(previous, current, byteIndex, base32) {
             break;
     }
     return base32;
-}
+};
 
 
 /*
@@ -447,7 +447,7 @@ function base32EncodeBytes(previous, current, byteIndex, base32) {
  * byte:  xxxxx111|00xxxxx3|00004444|0xxxxx66|000xxxxx|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
-function base32EncodeLast(last, byteIndex, base32) {
+const base32EncodeLast = function(last, byteIndex, base32) {
     var chunk;
     const offset = byteIndex % 5;
     switch (offset) {
@@ -472,7 +472,7 @@ function base32EncodeLast(last, byteIndex, base32) {
             break;
     }
     return base32;
-}
+};
 
 
 /*
@@ -480,7 +480,7 @@ function base32EncodeLast(last, byteIndex, base32) {
  * byte:  00000111|11222223|33334444|45555566|66677777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F   F8  07
  */
-function base32DecodeBytes(chunk, characterIndex, buffer) {
+const base32DecodeBytes = function(chunk, characterIndex, buffer) {
     const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
@@ -513,7 +513,7 @@ function base32DecodeBytes(chunk, characterIndex, buffer) {
             buffer[byteIndex] |= chunk;
             break;
     }
-}
+};
 
 
 /*
@@ -522,7 +522,7 @@ function base32DecodeBytes(chunk, characterIndex, buffer) {
  * byte:  xxxxx111|00xxxxx3|00004444|0xxxxx66|00077777|...
  * mask:   F8  07  C0 3E  01 F0  0F 80  7C 03  E0  1F
  */
-function base32DecodeLast(chunk, characterIndex, buffer) {
+const base32DecodeLast = function(chunk, characterIndex, buffer) {
     const byteIndex = Math.floor(characterIndex * 5 / 8);
     const offset = characterIndex % 8;
     switch (offset) {
@@ -542,7 +542,7 @@ function base32DecodeLast(chunk, characterIndex, buffer) {
             buffer[byteIndex] |= chunk;
             break;
     }
-}
+};
 
 
 /**
@@ -552,7 +552,7 @@ function base32DecodeLast(chunk, characterIndex, buffer) {
  * @param {Number} indentation The number of spaces to be prepended to each line of the result.
  * @returns {String} The formatted string.
  */
-function formatLines(string, indentation) {
+const formatLines = function(string, indentation) {
     var prefix = '';
     for (var i = 0; i < indentation; i++) prefix += '    ';
     var formatted = '';
@@ -568,3 +568,4 @@ function formatLines(string, indentation) {
     }
     return formatted;
 };
+

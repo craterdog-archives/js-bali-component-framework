@@ -27,7 +27,7 @@ const Component = require('./Component').Component;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Element} The new element.
  */
-function Element(type, parameters, debug) {
+const Element = function(type, parameters, debug) {
     Component.call(this, type, parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -37,7 +37,7 @@ function Element(type, parameters, debug) {
     }
 
     return this;
-}
+};
 Element.prototype = Object.create(Component.prototype);
 Element.prototype.constructor = Element;
 exports.Element = Element;

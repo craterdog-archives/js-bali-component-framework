@@ -44,7 +44,7 @@ const FORMATS = [
  * @param {Number} debug A number in the range [0..3].
  * @returns {Moment} The new moment in time.
  */
-function Moment(value, parameters, debug) {
+const Moment = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Moment', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -83,7 +83,7 @@ function Moment(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Moment.prototype = Object.create(abstractions.Element.prototype);
 Moment.prototype.constructor = Moment;
 exports.Moment = Moment;

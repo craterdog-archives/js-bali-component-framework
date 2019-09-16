@@ -24,11 +24,11 @@
  * @param {Number} debug A number in the range [0..3].
  * @returns {Visitor} The new visitor.
  */
-function Visitor(debug) {
+const Visitor = function(debug) {
     this.debug = debug || 0;
     this.depth = 0;
     return this;
-}
+};
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
 

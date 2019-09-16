@@ -31,7 +31,7 @@ const Angle = require('./Angle').Angle;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The new complex number.
  */
-function Complex(real, imaginary, parameters, debug) {
+const Complex = function(real, imaginary, parameters, debug) {
     abstractions.Element.call(this, '$Number', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -91,7 +91,7 @@ function Complex(real, imaginary, parameters, debug) {
     };
 
     return this;
-}
+};
 Complex.prototype = Object.create(abstractions.Element.prototype);
 Complex.prototype.constructor = Complex;
 exports.Complex = Complex;
@@ -623,7 +623,7 @@ Complex.logarithm = function(base, value, debug) {
 // PRIVATE FUNCTIONS
 
 // TODO: should the math in the gamma function use the precision module?
-function gamma(number) {
+const gamma = function(number) {
     const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
         771.32342877765313, -176.61502916214059, 12.507343278686905,
         -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
@@ -642,10 +642,10 @@ function gamma(number) {
     }
  
     return Math.sqrt(2 * Math.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
-}
+};
 
 
-function exp(number, debug) {
+const exp = function(number, debug) {
     if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
     if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
     if (number.isZero()) return new Complex(1, undefined, number.getParameters(), debug);
@@ -655,10 +655,10 @@ function exp(number, debug) {
     const imaginary = savant.product(scale, savant.sine(number.getImaginary()));
     const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
-}
+};
 
 
-function ln(number, debug) {
+const ln = function(number, debug) {
     if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
     if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
     if (number.isZero()) return new Complex(Infinity, undefined, number.getParameters(), debug);
@@ -667,4 +667,5 @@ function ln(number, debug) {
     const imaginary = number.getPhase().getValue();
     const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
-}
+};
+

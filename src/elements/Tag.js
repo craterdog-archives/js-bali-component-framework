@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Tag} The new tag element.
  */
-function Tag(value, parameters, debug) {
+const Tag = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Tag', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -63,7 +63,7 @@ function Tag(value, parameters, debug) {
     this.getHash = function() { return hash; };
 
     return this;
-}
+};
 Tag.prototype = Object.create(abstractions.Element.prototype);
 Tag.prototype.constructor = Tag;
 exports.Tag = Tag;

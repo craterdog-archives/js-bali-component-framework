@@ -25,10 +25,10 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Validator} The new validator.
  */
-function Validator(debug) {
+const Validator = function(debug) {
     this.debug = debug || 0;
     return this;
-}
+};
 Validator.prototype.constructor = Validator;
 exports.Validator = Validator;
 

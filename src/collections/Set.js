@@ -29,7 +29,7 @@ const composites = require('../composites');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */
-function Set(parameters, debug) {
+const Set = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Set/v1'
     }, debug);
@@ -194,7 +194,7 @@ function Set(parameters, debug) {
     
 
     return this;
-}
+};
 Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
@@ -368,7 +368,7 @@ Set.xor = function(first, second, debug) {
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
-function TreeIterator(tree) {
+const TreeIterator = function(tree) {
 
     // the tree, current slot index, and previous and next pointers are private attributes
     // so methods that use them are defined in the constructor
@@ -421,7 +421,7 @@ function TreeIterator(tree) {
     };
 
     return this;
-}
+};
 TreeIterator.prototype.constructor = TreeIterator;
 
 
@@ -431,13 +431,13 @@ TreeIterator.prototype.constructor = TreeIterator;
  * update performance.
  */
 
-function RandomizedTree(comparator) {
+const RandomizedTree = function(comparator) {
     // NOTE: we don't want to make these attributes private because of the performance
     // issues with having each node in the tree have its own local methods.
     this.size = 0;
     this.comparator = comparator;
     return this;
-}
+};
 RandomizedTree.prototype.constructor = RandomizedTree;
 
 
@@ -670,23 +670,23 @@ RandomizedTree.prototype.rotateDown = function(node) {
 
 // PRIVATE FUNCTIONS
 
-function minimum(node) {
+const minimum = function(node) {
     while (node && node.left) {
         node = node.left;
     }
     return node;
-}
+};
 
 
-function maximum(node) {
+const maximum = function(node) {
     while (node && node.right) {
         node = node.right;
     }
     return node;
-}
+};
 
 
-function predecessor(node) {
+const predecessor = function(node) {
     if (node.left) {
         // there is a left branch, so the predecessor is the rightmost node of that subtree
         return maximum(node.left);
@@ -700,10 +700,10 @@ function predecessor(node) {
         }
         return parent;
     }
-}
+};
 
 
-function successor(node) {
+const successor = function(node) {
     if (node.right) {
         // there is a right branch, so the successor is the leftmost node of that subtree
         return minimum(node.right);
@@ -717,5 +717,5 @@ function successor(node) {
         }
         return parent;
     }
-}
+};
 

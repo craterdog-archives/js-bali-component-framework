@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new version string element.
  */
-function Version(value, parameters, debug) {
+const Version = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Version', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -56,7 +56,7 @@ function Version(value, parameters, debug) {
     this.getValue = function() { return value.slice(0); };  // return a copy
 
     return this;
-}
+};
 Version.prototype = Object.create(abstractions.Element.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
@@ -249,12 +249,12 @@ Version.prototype.validNextVersion = function(nextVersion) {
 
 // PRIVATE CLASSES
 
-function VersionIterator(levels) {
+const VersionIterator = function(levels) {
     this.slot = 0;  // the slot before the first level
     this.size = levels.length;  // static so we can cache it here
     this.levels = levels;
     return this;
-}
+};
 VersionIterator.prototype.constructor = VersionIterator;
 
 

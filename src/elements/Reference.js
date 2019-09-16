@@ -30,7 +30,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reference} The new reference element.
  */
-function Reference(value, parameters, debug) {
+const Reference =function(value, parameters, debug) {
     abstractions.Element.call(this, '$Reference', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -60,7 +60,7 @@ function Reference(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Reference.prototype = Object.create(abstractions.Element.prototype);
 Reference.prototype.constructor = Reference;
 exports.Reference = Reference;

@@ -31,7 +31,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new range.
  */
-function Range(first, last, parameters, debug) {
+const Range = function(first, last, parameters, debug) {
     abstractions.Collection.call(this, '$Range', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -179,7 +179,7 @@ function Range(first, last, parameters, debug) {
     };
 
     return this;
-}
+};
 Range.prototype = Object.create(abstractions.Collection.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
@@ -187,7 +187,7 @@ exports.Range = Range;
 
 // PRIVATE CLASSES
 
-function RangeIterator(range, collection) {
+const RangeIterator = function(range, collection) {
 
     // the range, size, collection, and current slot index are private attributes
     // so methods that use them are defined in the constructor
@@ -241,5 +241,5 @@ function RangeIterator(range, collection) {
     };
     
     return this;
-}
+};
 RangeIterator.prototype.constructor = RangeIterator;

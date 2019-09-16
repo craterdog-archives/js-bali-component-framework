@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new name string element.
  */
-function Name(value, parameters, debug) {
+const Name = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Name', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -54,7 +54,7 @@ function Name(value, parameters, debug) {
     this.getValue = function() { return value.slice(0); };  // return a copy
 
     return this;
-}
+};
 Name.prototype = Object.create(abstractions.Element.prototype);
 Name.prototype.constructor = Name;
 exports.Name = Name;
@@ -170,12 +170,12 @@ Name.concatenation = function(first, second, debug) {
 
 // PRIVATE CLASSES
 
-function NameIterator(parts) {
+const NameIterator = function(parts) {
     this.slot = 0;  // the slot before the first part
     this.size = parts.length;  // static so we can cache it here
     this.parts = parts;
     return this;
-}
+};
 NameIterator.prototype.constructor = NameIterator;
 
 

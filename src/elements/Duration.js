@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duration} The new duration element.
  */
-function Duration(value, parameters, debug) {
+const Duration = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Duration', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -46,7 +46,7 @@ function Duration(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Duration.prototype = Object.create(abstractions.Element.prototype);
 Duration.prototype.constructor = Duration;
 exports.Duration = Duration;

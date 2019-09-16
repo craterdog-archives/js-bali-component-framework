@@ -37,7 +37,7 @@ Array.prototype.peek = function() {
  * @param {Number} debug A number in the range [0..3].
  * @returns {Queue} The new queue.
  */
-function Queue(parameters, debug) {
+const Queue = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Queue/v1'
     }, debug);
@@ -146,7 +146,7 @@ function Queue(parameters, debug) {
     };
 
     return this;
-}
+};
 Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;

@@ -34,10 +34,10 @@
  * @param {Number} debug A number in the range [0..3].
  * @returns {Savant} The new generator.
  */
-function Savant(debug) {
+const Savant = function(debug) {
     this.debug = debug || 0;
     return this;
-}
+};
 Savant.prototype.constructor = Savant;
 exports.Savant = Savant;
 
@@ -542,7 +542,7 @@ Savant.prototype.arctangent = function(opposite, adjacent) {
 /*
  * This function parses a floating point number into its three parts.
  */
-function parse(number) {
+const parse = function(number) {
     const pattern = /([0-9]+)\.([0-9]*[1-9])(e[+-][1-9][0-9]*)?/;
     const matches = number.toString().match(pattern);
     var coefficient = matches[1];
@@ -554,4 +554,5 @@ function parse(number) {
         decimal: decimal,
         exponent: exponent
     };
-}
+};
+

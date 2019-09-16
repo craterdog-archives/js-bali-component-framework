@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range [0..3].
  * @returns {Percent} The new percent element.
  */
-function Percent(value, parameters, debug) {
+const Percent = function(value, parameters, debug) {
     abstractions.Element.call(this, '$Percent', parameters, debug);
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
@@ -43,7 +43,7 @@ function Percent(value, parameters, debug) {
     this.getValue = function() { return value; };
 
     return this;
-}
+};
 Percent.prototype = Object.create(abstractions.Element.prototype);
 Percent.prototype.constructor = Percent;
 exports.Percent = Percent;

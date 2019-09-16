@@ -31,7 +31,7 @@ const List = require('./List').List;
  * @param {Number} debug A number in the range [0..3].
  * @returns {Catalog} The new catalog.
  */
-function Catalog(parameters, debug) {
+const Catalog = function(parameters, debug) {
     abstractions.Collection.call(this, '$Catalog', parameters, debug);
 
     // the map and array are private attributes so methods that use them are defined
@@ -315,7 +315,7 @@ function Catalog(parameters, debug) {
     };
 
     return this;
-}
+};
 Catalog.prototype = Object.create(abstractions.Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;

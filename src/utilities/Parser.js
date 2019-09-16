@@ -46,7 +46,7 @@ const EOL = '\n';
  * @param {Number} debug A number in the range [0..3].
  * @returns {Parser} The new string parser.
  */
-function Parser(debug) {
+const Parser = function(debug) {
 
     // the debug flag is a private attribute so methods that use it are defined in the constructor
     debug = debug || 0;
@@ -65,14 +65,14 @@ function Parser(debug) {
     };
 
     return this;
-}
+};
 Parser.prototype.constructor = Parser;
 exports.Parser = Parser;
 
 
 // PRIVATE FUNCTIONS
 
-function initializeParser(document, debug) {
+const initializeParser = function(document, debug) {
     const chars = new antlr.InputStream(document);
     const lexer = new grammar.DocumentLexer(chars);
     const listener = new CustomErrorListener(debug);
@@ -85,18 +85,18 @@ function initializeParser(document, debug) {
     parser.addErrorListener(listener);
     parser._errHandler = new CustomErrorStrategy(debug);
     return parser;
-}
+};
 
-function convertParseTree(antlrTree, debug) {
+const convertParseTree = function(antlrTree, debug) {
     const visitor = new ParsingVisitor(debug);
     antlrTree.accept(visitor);
     const baliTree = visitor.result;
     return baliTree;
-}
+};
 
 Math.PHI = (Math.sqrt(5) + 1) / 2;
 
-function literalToNumber(literal) {
+const literalToNumber = function(literal) {
     switch (literal) {
         case '-e':
             return -Math.E;
@@ -113,7 +113,7 @@ function literalToNumber(literal) {
         default:
             return Number(literal);
     }
-}
+};
 
 
 // PRIVATE CLASSES
@@ -124,13 +124,13 @@ function literalToNumber(literal) {
  * tree into a clean parse tree.
  */
 
-function ParsingVisitor(debug) {
+const ParsingVisitor = function(debug) {
     grammar.DocumentVisitor.call(this);
     this.depth = 0;
     this.parameters = undefined;
     this.debug = debug || 0;
     return this;
-}
+};
 ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
 ParsingVisitor.prototype.constructor = ParsingVisitor;
 
@@ -1058,11 +1058,11 @@ grammar.DocumentLexer.prototype.recover = function(e) {
 };
 
 
-function CustomErrorStrategy(debug) {
+const CustomErrorStrategy = function(debug) {
     ErrorStrategy.DefaultErrorStrategy.call(this);
     this.debug = debug || 0;
     return this;
-}
+};
 CustomErrorStrategy.prototype = Object.create(ErrorStrategy.DefaultErrorStrategy.prototype);
 CustomErrorStrategy.prototype.constructor = CustomErrorStrategy;
 
@@ -1101,12 +1101,12 @@ CustomErrorStrategy.prototype.sync = function(recognizer) {
 };
 
 
-function CustomErrorListener(debug) {
+const CustomErrorListener = function(debug) {
     antlr.error.ErrorListener.call(this);
     this.debug = debug || 0;
     this.exactOnly = false;  // 'true' results in uninteresting ambiguities so leave 'false'
     return this;
-}
+};
 CustomErrorListener.prototype = Object.create(antlr.error.ErrorListener.prototype);
 CustomErrorListener.prototype.constructor = CustomErrorListener;
 
@@ -1165,7 +1165,7 @@ CustomErrorListener.prototype.reportContextSensitivity = function(recognizer, df
 
 // PRIVATE FUNCTIONS
 
-function getRule(recognizer, dfa) {
+const getRule = function(recognizer, dfa) {
     const description = dfa.decision.toString();
     const ruleIndex = dfa.atnStartState.ruleIndex;
 
@@ -1175,10 +1175,10 @@ function getRule(recognizer, dfa) {
     }
     const ruleName = ruleNames[ruleIndex] || '<unknown>';
     return description + " (" + ruleName + ")";
-}
+};
 
 
-function addContext(recognizer, message) {
+const addContext = function(recognizer, message) {
     // truncate the main message as needed
     message = EOL + '    ' + message.slice(0, 160) + EOL;
 
@@ -1207,4 +1207,5 @@ function addContext(recognizer, message) {
         message += '    [' + (lineNumber + 1) + ']: ' + lines[lineNumber] + EOL;
     }
     return message;
-}
+};
+

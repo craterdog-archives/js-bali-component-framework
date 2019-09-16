@@ -38,7 +38,7 @@ const composites = require('../composites');
  * @param {Number} debug A number in the range [0..3].
  * @returns {List} The new list.
  */
-function List(parameters, debug) {
+const List = function(parameters, debug) {
     abstractions.Collection.call(this, '$List', parameters, debug);
 
     // the array is a private attribute so methods that use it are defined in the constructor
@@ -247,7 +247,7 @@ function List(parameters, debug) {
     };
 
     return this;
-}
+};
 List.prototype = Object.create(abstractions.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
