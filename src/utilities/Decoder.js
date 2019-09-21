@@ -40,26 +40,26 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a codex object that can perform byte encoding and decoding.
+ * This function returns a decoder object that can perform byte encoding and decoding.
  * 
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line. The default is zero.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Codex} The new codex.
+ * @returns {Decoder} The new decoder.
  */
-const Codex = function(indentation, debug) {
+const Decoder = function(indentation, debug) {
     this.debug = debug || 0;
     this.indentation = indentation || 0;
     if (this.debug > 1) {
         const validator = new Validator(this.debug);
-        validator.validateType('/bali/utilities/Codex', '$Codex', '$indentation', indentation, [
+        validator.validateType('/bali/utilities/Decoder', '$Decoder', '$indentation', indentation, [
             '/javascript/Number'
         ]);
     }
     return this;
 };
-Codex.prototype.constructor = Codex;
-exports.Codex = Codex;
+Decoder.prototype.constructor = Decoder;
+exports.Decoder = Decoder;
 
 
 /**
@@ -68,7 +68,7 @@ exports.Codex = Codex;
  * @param {Buffer} buffer A data buffer containing the integer.
  * @return {String} The base 2 encoded string.
  */
-Codex.prototype.base2Encode = function(buffer) {
+Decoder.prototype.base2Encode = function(buffer) {
     // encode each byte
     var string = '';
     buffer.forEach(function(byte) {
@@ -93,13 +93,13 @@ Codex.prototype.base2Encode = function(buffer) {
  * @param {String} base2 The base 2 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-Codex.prototype.base2Decode = function(base2) {
+Decoder.prototype.base2Decode = function(base2) {
     // validate the base 2 encoded string
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
     if (length % 8 !== 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Codex',
+            $module: '/bali/utilities/Decoder',
             $procedure: '$base2Decode',
             $exception: '$invalidParameter',
             $parameter: base2,
@@ -121,7 +121,7 @@ Codex.prototype.base2Decode = function(base2) {
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
                 const exception = new Exception({
-                    $module: '/bali/utilities/Codex',
+                    $module: '/bali/utilities/Decoder',
                     $procedure: '$base2Decode',
                     $exception: '$invalidParameter',
                     $parameter: base2,
@@ -148,7 +148,7 @@ Codex.prototype.base2Decode = function(base2) {
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 16 encoded string.
  */
-Codex.prototype.base16Encode = function(buffer) {
+Decoder.prototype.base16Encode = function(buffer) {
     // encode the bytes
     var string = '';
     buffer.forEach(function(byte) {
@@ -171,14 +171,14 @@ Codex.prototype.base16Encode = function(buffer) {
  * @param {String} base16 The base 16 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-Codex.prototype.base16Decode = function(base16) {
+Decoder.prototype.base16Decode = function(base16) {
     // validate the base 16 encoded string
     base16 = base16.replace(/\s/g, '');  // strip out whitespace
     base16 = base16.toUpperCase();
     const length = base16.length;
     if (length % 2 !== 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Codex',
+            $module: '/bali/utilities/Decoder',
             $procedure: '$base16Decode',
             $exception: '$invalidParameter',
             $parameter: base16,
@@ -198,7 +198,7 @@ Codex.prototype.base16Decode = function(base16) {
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Codex',
+                $module: '/bali/utilities/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
@@ -213,7 +213,7 @@ Codex.prototype.base16Decode = function(base16) {
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Codex',
+                $module: '/bali/utilities/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
@@ -239,7 +239,7 @@ Codex.prototype.base16Decode = function(base16) {
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 32 encoded string.
  */
-Codex.prototype.base32Encode = function(buffer) {
+Decoder.prototype.base32Encode = function(buffer) {
     // encode each byte
     var string = '';
     const length = buffer.length;
@@ -268,7 +268,7 @@ Codex.prototype.base32Encode = function(buffer) {
  * @param {String} base32 The base 32 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-Codex.prototype.base32Decode = function(base32) {
+Decoder.prototype.base32Decode = function(base32) {
     // validate the base 32 encoded string
     base32 = base32.replace(/\s/g, '');  // strip out whitespace
     base32 = base32.toUpperCase();
@@ -284,7 +284,7 @@ Codex.prototype.base32Decode = function(base32) {
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Codex',
+                $module: '/bali/utilities/Decoder',
                 $procedure: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,
@@ -309,7 +309,7 @@ Codex.prototype.base32Decode = function(base32) {
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
  * @return {String} The base 64 encoded string.
  */
-Codex.prototype.base64Encode = function(buffer) {
+Decoder.prototype.base64Encode = function(buffer) {
     // format as indented 80 character blocks
     const string = buffer.toString('base64');
 
@@ -326,7 +326,7 @@ Codex.prototype.base64Encode = function(buffer) {
  * @param {String} base64 The base 64 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-Codex.prototype.base64Decode = function(base64) {
+Decoder.prototype.base64Decode = function(base64) {
     return Buffer.from(base64, 'base64');
 };
 
@@ -338,7 +338,7 @@ Codex.prototype.base64Decode = function(base64) {
  * @param {Number} short The short to be converted.
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
-Codex.prototype.shortToBytes = function(short) {
+Decoder.prototype.shortToBytes = function(short) {
     const buffer = Buffer.alloc(2);
     for (var i = 0; i < 2; i++) {
         const byte = short >> (i * 8) & 0xFF;
@@ -355,7 +355,7 @@ Codex.prototype.shortToBytes = function(short) {
  * @param {Buffer} buffer A data buffer containing the bytes for the short.
  * @return {Number} The corresponding short value.
  */
-Codex.prototype.bytesToShort = function(buffer) {
+Decoder.prototype.bytesToShort = function(buffer) {
     var short = 0;
     for (var i = 0; i < 2; i++) {
         const byte = buffer[1 - i];
@@ -372,7 +372,7 @@ Codex.prototype.bytesToShort = function(buffer) {
  * @param {Number} integer The integer to be converted.
  * @return {Buffer} A data buffer containing the corresponding bytes.
  */
-Codex.prototype.integerToBytes = function(integer) {
+Decoder.prototype.integerToBytes = function(integer) {
     const buffer = Buffer.alloc(4);
     for (var i = 0; i < 4; i++) {
         const byte = integer >> (i * 8) & 0xFF;
@@ -389,7 +389,7 @@ Codex.prototype.integerToBytes = function(integer) {
  * @param {Buffer} buffer The buffer containing the bytes for the integer.
  * @return {Number} The corresponding integer value.
  */
-Codex.prototype.bytesToInteger = function(buffer) {
+Decoder.prototype.bytesToInteger = function(buffer) {
     var integer = 0;
     for (var i = 0; i < 4; i++) {
         const byte = buffer[3 - i];

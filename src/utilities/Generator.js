@@ -13,7 +13,7 @@
  * This class provides cryptographically secure random value generation.
  */
 const crypto = require('crypto');
-const Codex = require('./Codex').Codex;
+const Decoder = require('./Decoder').Decoder;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -68,8 +68,8 @@ Generator.prototype.generateBytes = function(numberOfBytes) {
  * @return {Number} The random integer.
  */
 Generator.prototype.generateInteger = function() {
-    const codex = new Codex(0, this.debug);
-    const integer = codex.bytesToInteger(this.generateBytes(4));
+    const decoder = new Decoder(0, this.debug);
+    const integer = decoder.bytesToInteger(this.generateBytes(4));
     return integer;
 };
 

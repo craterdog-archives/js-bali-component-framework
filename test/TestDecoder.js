@@ -13,20 +13,20 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api();
 const generator = bali.generator();
-const codex = bali.codex(1, debug);  // indent one level
+const decoder = bali.decoder(1, debug);  // indent one level
 
 
-describe('Bali Nebula™ Component Framework - Codex', function() {
+describe('Bali Nebula™ Component Framework - Decoder', function() {
 
     describe('Test encoding utilities with round-trip conversions', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {
                 const expectedBuffer = generator.generateBytes(4);
-                const expectedInteger = codex.bytesToInteger(expectedBuffer);
-                const buffer = codex.integerToBytes(expectedInteger);
+                const expectedInteger = decoder.bytesToInteger(expectedBuffer);
+                const buffer = decoder.integerToBytes(expectedInteger);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const integer = codex.bytesToInteger(buffer);
+                const integer = decoder.bytesToInteger(buffer);
                 expect(integer).to.equal(expectedInteger);
             }
         });
@@ -34,10 +34,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase2 = codex.base2Encode(expectedBuffer);
-                const buffer = codex.base2Decode(expectedBase2);
+                const expectedBase2 = decoder.base2Encode(expectedBuffer);
+                const buffer = decoder.base2Decode(expectedBase2);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base2 = codex.base2Encode(buffer);
+                const base2 = decoder.base2Encode(buffer);
                 expect(base2).to.equal(expectedBase2);
             }
         });
@@ -45,10 +45,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 16 and back again', function() {
             for (var i = 0; i < 81; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase16 = codex.base16Encode(expectedBuffer);
-                const buffer = codex.base16Decode(expectedBase16);
+                const expectedBase16 = decoder.base16Encode(expectedBuffer);
+                const buffer = decoder.base16Decode(expectedBase16);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base16 = codex.base16Encode(buffer);
+                const base16 = decoder.base16Encode(buffer);
                 expect(base16).to.equal(expectedBase16);
             }
         });
@@ -56,10 +56,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 32 and back again', function() {
             for (var i = 0; i < 101; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase32 = codex.base32Encode(expectedBuffer);
-                const buffer = codex.base32Decode(expectedBase32);
+                const expectedBase32 = decoder.base32Encode(expectedBuffer);
+                const buffer = decoder.base32Decode(expectedBase32);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base32 = codex.base32Encode(buffer);
+                const base32 = decoder.base32Encode(buffer);
                 expect(base32).to.equal(expectedBase32);
             }
         });
@@ -67,10 +67,10 @@ describe('Bali Nebula™ Component Framework - Codex', function() {
         it('should convert bytes to base 64 and back again', function() {
             for (var i = 0; i < 121; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase64 = codex.base64Encode(expectedBuffer);
-                const buffer = codex.base64Decode(expectedBase64);
+                const expectedBase64 = decoder.base64Encode(expectedBuffer);
+                const buffer = decoder.base64Decode(expectedBase64);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base64 = codex.base64Encode(buffer);
+                const base64 = decoder.base64Encode(buffer);
                 expect(base64).to.equal(expectedBase64);
             }
         });

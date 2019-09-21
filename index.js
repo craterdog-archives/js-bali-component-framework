@@ -230,12 +230,6 @@ exports.api = function(defaultLevel) {
         return collections.Catalog.extraction(catalog, keys, debug);
     };
     
-    // CODEX
-    const codex = function(indentation, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new utilities.Codex(indentation, debug);
-    };
-    
     // COMPONENT
     const component = function(document, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -247,6 +241,18 @@ exports.api = function(defaultLevel) {
     const configurator = function(filename, directory, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Configurator(filename, directory, debug);
+    };
+    
+    // CONTROLLER
+    const controller = function(eventTypes, nextStates, currentState, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Controller(eventTypes, nextStates, currentState, debug);
+    };
+    
+    // DECODER
+    const decoder = function(indentation, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Decoder(indentation, debug);
     };
     
     // DURATION
@@ -309,12 +315,6 @@ exports.api = function(defaultLevel) {
     list.concatenation = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return collections.List.concatenation(first, second, debug);
-    };
-    
-    // MACHINE
-    const machine = function(eventTypes, nextStates, currentState, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new utilities.Machine(eventTypes, nextStates, currentState, debug);
     };
     
     // MOMENT
@@ -597,15 +597,15 @@ exports.api = function(defaultLevel) {
         association: association,
         binary: binary,
         catalog: catalog,
-        codex: codex,
         component: component,
+        controller: controller,
         configurator: configurator,
+        decoder: decoder,
         duration: duration,
         exception: exception,
         generator: generator,
         iterator: iterator,
         list: list,
-        machine: machine,
         moment: moment,
         name: name,
         number: number,

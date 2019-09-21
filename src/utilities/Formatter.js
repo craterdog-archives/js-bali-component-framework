@@ -14,7 +14,7 @@
  * This class implements a formatter object that uses a visitor to format, in
  * a canonical way, components as strings containing Bali Document Notation™.
  */
-const Codex = require('./Codex').Codex;
+const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../composites/Exception').Exception;
@@ -171,19 +171,19 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.getValue();
     const format = this.getFormat(binary, '$encoding', '$base32');
-    const codex = new Codex(0, this.debug);
+    const decoder = new Decoder(0, this.debug);
     switch (format) {
         case '$base2':
-            value = codex.base2Encode(value);
+            value = decoder.base2Encode(value);
             break;
         case '$base16':
-            value = codex.base16Encode(value);
+            value = decoder.base16Encode(value);
             break;
         case '$base32':
-            value = codex.base32Encode(value);
+            value = decoder.base32Encode(value);
             break;
         case '$base64':
-            value = codex.base64Encode(value);
+            value = decoder.base64Encode(value);
             break;
         default:
             const exception = new Exception({

@@ -12,15 +12,15 @@
 const grammar = require('../grammar');
 
 exports.Validator = require('./Validator').Validator;
-exports.Codex = require('./Codex').Codex;  // depends on Validator
+exports.Calculator = require('./Calculator').Calculator;
 exports.Comparator = require('./Comparator').Comparator;
 exports.Configurator = require('./Configurator').Configurator;  // depends on Validator
+exports.Controller = require('./Controller').Controller;  // depends on Validator
+exports.Decoder = require('./Decoder').Decoder;  // depends on Validator
 exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
-exports.Generator = require('./Generator').Generator;  // depends on Codex
+exports.Generator = require('./Generator').Generator;  // depends on Decoder
 exports.Iterator = require('./Iterator').Iterator;  // depends on Validator
-exports.Machine = require('./Machine').Machine;  // depends on Validator
-exports.Savant = require('./Savant').Savant;
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
 
 // NOTE: Can't include the Parser module since it depends on all components and that

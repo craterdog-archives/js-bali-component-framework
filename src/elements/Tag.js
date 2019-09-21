@@ -42,20 +42,20 @@ const Tag = function(value, parameters, debug) {
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
-    const codex = new utilities.Codex(0, this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
     const generator = new utilities.Generator(this.debug);
     switch (typeof value) {
         case 'number':
             numberOfBytes = value;
             bytes = generator.generateBytes(value);
-            value = codex.base32Encode(bytes);
+            value = decoder.base32Encode(bytes);
             break;
         case 'string':
-            bytes = codex.base32Decode(value);
+            bytes = decoder.base32Decode(value);
             numberOfBytes = bytes.length;
             break;
     }
-    hash = codex.bytesToInteger(bytes);  // the first four bytes work perfectly
+    hash = decoder.bytesToInteger(bytes);  // the first four bytes work perfectly
 
     // since this element is immutable the attributes must be read-only
     this.getSize = function() { return numberOfBytes; };
@@ -99,6 +99,6 @@ Tag.prototype.acceptVisitor = function(visitor) {
  */
 Tag.prototype.getBytes = function() {
     // not called very often so save space by doing it on demand
-    const codex = new utilities.Codex(0, this.debug);
-    return codex.base32Decode(this.getValue());
+    const decoder = new utilities.Decoder(0, this.debug);
+    return decoder.base32Decode(this.getValue());
 };

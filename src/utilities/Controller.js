@@ -40,27 +40,27 @@ const Exception = require('../composites/Exception').Exception;
  * transitions between them given specific event types.
  * @param {String} currentState The optional current state of the machine.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Machine} A new finite state machine.
+ * @returns {Controller} A new finite state machine.
  */
-const Machine = function(eventTypes, nextStates, currentState, debug) {
+const Controller = function(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
-        validator.validateType('/bali/utilities/Machine', '$Machine', '$eventTypes', eventTypes, [
+        validator.validateType('/bali/utilities/Controller', '$Controller', '$eventTypes', eventTypes, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/utilities/Machine', '$Machine', '$nextStates', nextStates, [
+        validator.validateType('/bali/utilities/Controller', '$Controller', '$nextStates', nextStates, [
             '/javascript/Object'
         ]);
-        validator.validateType('/bali/utilities/Machine', '$Machine', '$currentState', currentState, [
+        validator.validateType('/bali/utilities/Controller', '$Controller', '$currentState', currentState, [
             '/javascript/Undefined',
             '/javascript/String'
         ]);
     }
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
         const exception = new Exception({
-            $module: '/bali/utilities/Machine',
-            $procedure: '$Machine',
+            $module: '/bali/utilities/Controller',
+            $procedure: '$Controller',
             $exception: '$invalidType',
             $text: 'One of the parameters to the constructor is not the right type.'
         });
@@ -69,8 +69,8 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
     }
     if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Machine',
-            $procedure: '$Machine',
+            $module: '/bali/utilities/Controller',
+            $procedure: '$Controller',
             $exception: '$noStates',
             $text: 'The state machine must have at least one state and event.'
         });
@@ -81,8 +81,8 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Machine',
-                $procedure: '$Machine',
+                $module: '/bali/utilities/Controller',
+                $procedure: '$Controller',
                 $exception: '$invalidType',
                 $event: event,
                 $text: 'Each event must be of type string.'
@@ -95,8 +95,8 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
     for (const state in nextStates) {
         if (typeof state !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Machine',
-                $procedure: '$Machine',
+                $module: '/bali/utilities/Controller',
+                $procedure: '$Controller',
                 $exception: '$invalidType',
                 $state: state,
                 $text: 'Each state must be of type string.'
@@ -107,8 +107,8 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
             const exception = new Exception({
-                $module: '/bali/utilities/Machine',
-                $procedure: '$Machine',
+                $module: '/bali/utilities/Controller',
+                $procedure: '$Controller',
                 $exception: '$invalidParameter',
                 $expected: numberOfEventTypes,
                 $actual: nextStates[state].length,
@@ -120,8 +120,8 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
                 const exception = new Exception({
-                    $module: '/bali/utilities/Machine',
-                    $procedure: '$Machine',
+                    $module: '/bali/utilities/Controller',
+                    $procedure: '$Controller',
                     $exception: '$invalidParameter',
                     $expected: Object.keys(nextStates),
                     $actual: transition,
@@ -142,7 +142,7 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Machine',
+                $module: '/bali/utilities/Controller',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
                 $event: event,
@@ -158,7 +158,7 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Machine',
+                $module: '/bali/utilities/Controller',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',
                 $event: event,
@@ -174,5 +174,5 @@ const Machine = function(eventTypes, nextStates, currentState, debug) {
 
     return this;
 };
-Machine.prototype.constructor = Machine;
-exports.Machine = Machine;
+Controller.prototype.constructor = Controller;
+exports.Controller = Controller;

@@ -150,8 +150,8 @@ Probability.not = function(probability, debug) {
             '/bali/elements/Probability'
         ]);
     }
-    const savant = new utilities.Savant(this.debug);
-    const p = savant.difference(1, probability.getValue());
+    const calculator = new utilities.Calculator(this.debug);
+    const p = calculator.difference(1, probability.getValue());
     const result = new Probability(p, probability.getParameters(), debug);
     return result;
 };
@@ -182,8 +182,8 @@ Probability.and = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const savant = new utilities.Savant(this.debug);
-    const p = savant.product(p1, p2);
+    const calculator = new utilities.Calculator(this.debug);
+    const p = calculator.product(p1, p2);
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -215,8 +215,8 @@ Probability.sans = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const savant = new utilities.Savant(this.debug);
-    const p = savant.product(p1, savant.difference(1, p2));
+    const calculator = new utilities.Calculator(this.debug);
+    const p = calculator.product(p1, calculator.difference(1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -249,8 +249,8 @@ Probability.or = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const savant = new utilities.Savant(this.debug);
-    const p = savant.sum(p1, p2, savant.product(-p1, p2));
+    const calculator = new utilities.Calculator(this.debug);
+    const p = calculator.sum(p1, p2, calculator.product(-p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };
@@ -283,8 +283,8 @@ Probability.xor = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const savant = new utilities.Savant(this.debug);
-    const p = savant.sum(p1, p2, savant.product(-2, p1, p2));
+    const calculator = new utilities.Calculator(this.debug);
+    const p = calculator.sum(p1, p2, calculator.product(-2, p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
 };

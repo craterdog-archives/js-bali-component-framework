@@ -53,27 +53,27 @@ const Angle = function(value, parameters, debug) {
     }
 
     // convert the value if necessary
-    this.savant = new utilities.Savant(this.debug);
+    this.calculator = new utilities.Calculator(this.debug);
     if (parameters) {
         const units = parameters.getValue('$units');
         if (units && units.toString() === '$degrees') {
             // convert degrees to radians
-            value = this.savant.quotient(this.savant.product(value, Math.PI), 180);
+            value = this.calculator.quotient(this.calculator.product(value, Math.PI), 180);
         }
     }
 
     // lock onto pi if appropriate
-    value = this.savant.lockOnAngle(value);
+    value = this.calculator.lockOnAngle(value);
 
     // normalize the value to the range (-pi..pi]
-    const twoPi = this.savant.product(Math.PI, 2);
+    const twoPi = this.calculator.product(Math.PI, 2);
     if (value < -twoPi || value > twoPi) {
-        value = this.savant.remainder(value, twoPi);  // make in the range (-2pi..2pi)
+        value = this.calculator.remainder(value, twoPi);  // make in the range (-2pi..2pi)
     }
     if (value > Math.PI) {
-        value = this.savant.difference(value, twoPi);  // make in the range (-pi..pi]
+        value = this.calculator.difference(value, twoPi);  // make in the range (-pi..pi]
     } else if (value <= -Math.PI) {
-        value = this.savant.sum(value, twoPi);  // make in the range (-pi..pi]
+        value = this.calculator.sum(value, twoPi);  // make in the range (-pi..pi]
     }
     if (value === -0) value = 0;  // normalize to positive zero
 
@@ -142,7 +142,7 @@ Angle.prototype.getRadians = function() {
  * @returns {Number} The value of the angle in degrees.
  */
 Angle.prototype.getDegrees = function() {
-    const value = this.savant.quotient(this.savant.product(this.getValue(), 180), Math.PI);
+    const value = this.calculator.quotient(this.calculator.product(this.getValue(), 180), Math.PI);
     return value;
 };
 
@@ -198,8 +198,8 @@ Angle.inverse = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
 };
 
 
@@ -218,8 +218,8 @@ Angle.complement = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -238,8 +238,8 @@ Angle.supplement = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
 };
 
 
@@ -281,8 +281,8 @@ Angle.sum = function(first, second, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -305,8 +305,8 @@ Angle.difference = function(first, second, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -329,8 +329,8 @@ Angle.scaled = function(angle, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.product(angle.getValue(), factor), angle.getParameters(), debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.product(angle.getValue(), factor), angle.getParameters(), debug);
 };
 
 
@@ -349,8 +349,8 @@ Angle.sine = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return savant.sine(angle.getValue(), angle.getParameters());
+    const calculator = new utilities.Calculator(debug);
+    return calculator.sine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -368,8 +368,8 @@ Angle.cosine = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return savant.cosine(angle.getValue(), angle.getParameters());
+    const calculator = new utilities.Calculator(debug);
+    return calculator.cosine(angle.getValue(), angle.getParameters());
 };
 
 
@@ -387,8 +387,8 @@ Angle.tangent = function(angle, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return savant.tangent(angle.getValue(), angle.getParameters());
+    const calculator = new utilities.Calculator(debug);
+    return calculator.tangent(angle.getValue(), angle.getParameters());
 };
 
 
@@ -407,8 +407,8 @@ Angle.arcsine = function(ratio, debug) {
             '/javascript/Number'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.arcsine(ratio), undefined, debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.arcsine(ratio), undefined, debug);
 };
 
 
@@ -427,8 +427,8 @@ Angle.arccosine = function(ratio, debug) {
             '/javascript/Number'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.arccosine(ratio), undefined, debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.arccosine(ratio), undefined, debug);
 };
 
 
@@ -451,6 +451,6 @@ Angle.arctangent = function(opposite, adjacent, debug) {
             '/javascript/Number'
         ]);
     }
-    const savant = new utilities.Savant(debug);
-    return new Angle(savant.arctangent(opposite, adjacent), undefined, debug);
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.arctangent(opposite, adjacent), undefined, debug);
 };

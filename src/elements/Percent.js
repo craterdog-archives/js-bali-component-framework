@@ -37,7 +37,7 @@ const Percent = function(value, parameters, debug) {
         ]);
     }
     value = value || 0;  // default value
-    this.savant = new utilities.Savant(this.debug);
+    this.calculator = new utilities.Calculator(this.debug);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
@@ -84,7 +84,7 @@ Percent.prototype.toBoolean = function() {
  * @returns {number} The numeric value of the percent element.
  */
 Percent.prototype.toNumber = function() {
-    return this.savant.quotient(this.getValue(), 100);
+    return this.calculator.quotient(this.getValue(), 100);
 };
 
 
@@ -136,8 +136,8 @@ Percent.sum = function(first, second, debug) {
             '/bali/elements/Percent'
         ]);
     }
-    const savant = new utilities.Savant(this.debug);
-    return new Percent(savant.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const calculator = new utilities.Calculator(this.debug);
+    return new Percent(calculator.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -159,8 +159,8 @@ Percent.difference = function(first, second, debug) {
             '/bali/elements/Percent'
         ]);
     }
-    const savant = new utilities.Savant(this.debug);
-    return new Percent(savant.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
+    const calculator = new utilities.Calculator(this.debug);
+    return new Percent(calculator.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
 
@@ -182,7 +182,7 @@ Percent.scaled = function(percent, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    const savant = new utilities.Savant(this.debug);
-    return new Percent(savant.product(percent.getValue(), factor), percent.getParameters(), debug);
+    const calculator = new utilities.Calculator(this.debug);
+    return new Percent(calculator.product(percent.getValue(), factor), percent.getParameters(), debug);
 };
 
