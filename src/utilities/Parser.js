@@ -461,7 +461,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 // functionExpression: function arguments
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     const tree = new composites.Tree('$FunctionExpression', this.debug);
-    ctx.funxion().accept(this);
+    ctx.funcxion().accept(this);
     tree.addChild(this.result);
     ctx.arguments().accept(this);
     tree.addChild(this.result);
@@ -469,12 +469,12 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 };
 
 
-// funxion: IDENTIFIER
-ParsingVisitor.prototype.visitFunxion = function(ctx) {
+// funcxion: IDENTIFIER
+ParsingVisitor.prototype.visitFuncxion = function(ctx) {
     const identifier = ctx.getText();
-    const funxion = new composites.Tree('$Function', this.debug);
-    funxion.identifier = identifier;
-    this.result = funxion;
+    const funcxion = new composites.Tree('$Function', this.debug);
+    funcxion.identifier = identifier;
+    this.result = funcxion;
 };
 
 
