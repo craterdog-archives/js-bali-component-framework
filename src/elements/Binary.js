@@ -22,9 +22,9 @@ const abstractions = require('../abstractions');
 /**
  * This function creates an immutable instance of a binary string using the specified
  * value.
- * 
+ *
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The new binary string.
  */
@@ -54,54 +54,28 @@ exports.Binary = Binary;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports logical operations.
- * <pre>
- *  * false
- *  * true
- *  * not
- *  * and
- *  * sans
- *  * or
- *  * xor
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports logical operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Binary.prototype.isLogical = function() {
-    return true;
-};
-
-
-/**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
- */
-Binary.prototype.isSequential = function() {
-    return true;
-};
-
-
-/**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
- */
-Binary.prototype.isChainable = function() {
-    return true;
+Binary.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Logical':
+        case '$Sequential':
+        case '$Chainable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this binary string has a meaningful value. If the binary
  * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this binary string has a meaningful value.
  */
 Binary.prototype.toBoolean = function() {
@@ -111,8 +85,8 @@ Binary.prototype.toBoolean = function() {
 
 /**
  * This method compares this binary string to another for ordering.
- * 
- * @param {Object} that The other binary string to be compared with. 
+ *
+ * @param {Object} that The other binary string to be compared with.
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Binary.prototype.comparedTo = function(that) {
@@ -132,7 +106,7 @@ Binary.prototype.comparedTo = function(that) {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Binary.prototype.acceptVisitor = function(visitor) {
@@ -142,7 +116,7 @@ Binary.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This method returns whether or not this binary string has any bytes.
- * 
+ *
  * @returns {Boolean} Whether or not this binary string has any bytes.
  */
 Binary.prototype.isEmpty = function() {
@@ -152,7 +126,7 @@ Binary.prototype.isEmpty = function() {
 
 /**
  * This method returns the number of bytes that this binary string has.
- * 
+ *
  * @returns {Number} The number of bytes that this binary string has.
  */
 Binary.prototype.getSize = function() {

@@ -21,9 +21,9 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new text string element using the specified value.
- * 
+ *
  * @param {String} value The value of the text string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Text} The new text string.
  */
@@ -52,35 +52,27 @@ exports.Text = Text;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Text.prototype.isSequential = function() {
-    return true;
-};
-
-
-/**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
- */
-Text.prototype.isChainable = function() {
-    return true;
+Text.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Sequential':
+        case '$Chainable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this text string has a meaningful value. If the text
  * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this text string has a meaningful value.
  */
 Text.prototype.toBoolean = function() {
@@ -90,7 +82,7 @@ Text.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Text.prototype.acceptVisitor = function(visitor) {
@@ -100,7 +92,7 @@ Text.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This method returns whether or not this text string has any characters.
- * 
+ *
  * @returns {Boolean} Whether or not this text string has any characters.
  */
 Text.prototype.isEmpty = function() {
@@ -110,7 +102,7 @@ Text.prototype.isEmpty = function() {
 
 /**
  * This method returns the number of characters that this text string has.
- * 
+ *
  * @returns {Number} The number of characters that this text string has.
  */
 Text.prototype.getSize = function() {

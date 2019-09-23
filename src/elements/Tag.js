@@ -22,10 +22,10 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new tag element using the specified value.
- * 
+ *
  * @param {Number|String} value An optional parameter defining the size of a new random
  * tag or the value it should represent.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Tag} The new tag element.
  */
@@ -72,9 +72,20 @@ exports.Tag = Tag;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Tag.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this tag has a meaningful value. Tags always have
  * a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this tag has a meaningful value.
  */
 Tag.prototype.toBoolean = function() {
@@ -84,7 +95,7 @@ Tag.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Tag.prototype.acceptVisitor = function(visitor) {
@@ -94,7 +105,7 @@ Tag.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This method returns the raw byte string for the tag element.
- * 
+ *
  * @returns {Buffer} A buffer containing the bytes for this tag element.
  */
 Tag.prototype.getBytes = function() {

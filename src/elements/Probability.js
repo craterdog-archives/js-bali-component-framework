@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new probability element using the specified value.
- * 
+ *
  * @param {Number} value The value of the probability.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The new probability element.
  */
@@ -67,27 +67,25 @@ exports.Probability = Probability;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports logical operations.
- * <pre>
- *  * false
- *  * true
- *  * not
- *  * and
- *  * sans
- *  * or
- *  * xor
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports logical operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Probability.prototype.isLogical = function() {
-    return true;
+Probability.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Logical':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this probability is greater or equal to 0.5.
- * 
+ *
  * @returns {Boolean} Whether or not this probability is greater or equal to 0.5.
  */
 Probability.prototype.toBoolean = function() {
@@ -97,7 +95,7 @@ Probability.prototype.toBoolean = function() {
 
 /**
  * This method returns a numeric representation of the probability element.
- * 
+ *
  * @returns {number} The numeric representation of the probability element.
  */
 Probability.prototype.toNumber = function() {
@@ -107,7 +105,7 @@ Probability.prototype.toNumber = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Probability.prototype.acceptVisitor = function(visitor) {

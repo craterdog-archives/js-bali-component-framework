@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 /**
  * This function creates a new component of the specified type with the optional
  * parameters that are used to parameterize its type.
- * 
+ *
  * @param {String} type The type string for the component.
- * @param {Parameters} parameters Optional parameters used to parameterize this component. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this component.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Component} The new component.
  */
@@ -68,8 +68,8 @@ exports.Component = Component;
 
 /**
  * This method returns whether or not this component has the specified type.
- * 
- * @param {String} type The symbol for the type in question. 
+ *
+ * @param {String} type The symbol for the type in question.
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Component.prototype.isType = function(type) {
@@ -79,7 +79,7 @@ Component.prototype.isType = function(type) {
 
 /**
  * This method returns whether or not this component is parameterized.
- * 
+ *
  * @returns {Boolean} Whether or not this component is parameterized.
  */
 Component.prototype.isParameterized = function() {
@@ -88,159 +88,19 @@ Component.prototype.isParameterized = function() {
 
 
 /**
- * This method returns whether or not this component supports logical operations.
- * <pre>
- *  * false
- *  * true
- *  * not
- *  * and
- *  * sans
- *  * or
- *  * xor
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports logical operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Component.prototype.isLogical = function() {
+Component.prototype.supportsInterface = function(iface) {
     return false;  // default
-};
-
-
-/**
- * This method returns whether or not this component supports scaling operations.
- * <pre>
- *  * inverse
- *  * sum
- *  * difference
- *  * scaled
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports scaling operations.
- */
-Component.prototype.isScalable = function() {
-    return false;  // default
-};
-
-
-/**
- * This method returns whether or not this component supports numeric operations.
- * <pre>
- *  * inverse
- *  * reciprocal
- *  * conjugate
- *  * factorial
- *  * sum
- *  * difference
- *  * scaled
- *  * product
- *  * quotient
- *  * remainder
- *  * exponential
- *  * logarithm
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports numeric operations.
- */
-Component.prototype.isNumerical = function() {
-    return false;  // default
-};
-
-
-/**
- * This method determines whether or not this component can be displayed as a literal
- * value.
- * 
- * @returns {Boolean} Whether or not this component can be displayed as a literal value.
- */
-Component.prototype.isLiteral = function() {
-    return false;  // default
-};
-
-
-/**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
- */
-Component.prototype.isSequential = function() {
-    return false;  // default
-};
-
-
-/**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
- */
-Component.prototype.isChainable = function() {
-    return false;  // default
-};
-
-
-/**
- * This method determines whether or not this component is procedural.
- * 
- * @returns {Boolean} Whether or not this component is procedural.
- */
-Component.prototype.isProcedural = function() {
-    switch (this.getType()) {
-        case '$Arguments':
-        case '$ArithmeticExpression':
-        case '$Block':
-        case '$BreakClause':
-        case '$CheckoutClause':
-        case '$CommitClause':
-        case '$ComparisonExpression':
-        case '$ComplementExpression':
-        case '$ConcatenationExpression':
-        case '$ContinueClause':
-        case '$DefaultExpression':
-        case '$DereferenceExpression':
-        case '$DiscardClause':
-        case '$EvaluateClause':
-        case '$ExponentialExpression':
-        case '$FactorialExpression':
-        case '$Function':
-        case '$FunctionExpression':
-        case '$HandleClause':
-        case '$IfClause':
-        case '$Indices':
-        case '$InversionExpression':
-        case '$LogicalExpression':
-        case '$MagnitudeExpression':
-        case '$Message':
-        case '$MessageExpression':
-        case '$PrecedenceExpression':
-        case '$PublishClause':
-        case '$QueueClause':
-        case '$ReturnClause':
-        case '$SaveClause':
-        case '$SelectClause':
-        case '$Statement':
-        case '$Statements':
-        case '$Subcomponent':
-        case '$SubcomponentExpression':
-        case '$ThrowClause':
-        case '$Variable':
-        case '$WaitClause':
-        case '$WhileClause':
-        case '$WithClause':
-            return true;
-        default:
-            return false;
-    }
 };
 
 
 /**
  * This method determines whether or not this component is an element.
- * 
+ *
  * @returns {Boolean} Whether or not this component is an element.
  */
 Component.prototype.isElement = function() {
@@ -250,7 +110,7 @@ Component.prototype.isElement = function() {
 
 /**
  * This method determines whether or not this component is a composite.
- * 
+ *
  * @returns {Boolean} Whether or not this component is a composite.
  */
 Component.prototype.isComposite = function() {
@@ -260,7 +120,7 @@ Component.prototype.isComposite = function() {
 
 /**
  * This method determines whether or not this component is a collection.
- * 
+ *
  * @returns {Boolean} Whether or not this component is a collection.
  */
 Component.prototype.isCollection = function() {
@@ -272,7 +132,7 @@ Component.prototype.isCollection = function() {
  * This abstract method returns a boolean value for this component. It allows each component to be
  * used as a boolean in a condition that determines whether of not the component has a meaningful
  * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
- * 
+ *
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Component.prototype.toBoolean = function() {
@@ -289,7 +149,7 @@ Component.prototype.toBoolean = function() {
 
 /**
  * This method returns a string representation of the component.
- * 
+ *
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
@@ -300,7 +160,7 @@ Component.prototype.toString = function() {
 
 /**
  * This method determines whether or not this component is equal to another component.
- * 
+ *
  * @param {Object} that The object that is being compared.
  * @returns {Boolean} Whether or not this component is equal to another component.
  */
@@ -312,7 +172,7 @@ Component.prototype.isEqualTo = function(that) {
 /**
  * This method compares this component with another object for natural order. It may be
  * overridden with a more efficient implementation by a subclass.
- * 
+ *
  * @param {Object} that The object that is being compared.
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
@@ -331,7 +191,7 @@ Component.prototype.comparedTo = function(that) {
  * attributes listed in the pattern is used for matching. Note, this means that the
  * component may contain additional attributes not found in the pattern component and
  * it still matches.
- * 
+ *
  * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
@@ -354,7 +214,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component and this component are both elements then if they are
      * equal they match.
      */
-    if (pattern.isLiteral()) {
+    if (pattern.supportsInterface('$Literal')) {
         return this.isEqualTo(pattern);
     }
     /* Case 4
@@ -382,7 +242,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * that key and a non-'none' value. If the pattern item is an association with a
      * value of 'any' then this component may or may not have an item with that key.
      */
-    if (pattern.isSequential()) {
+    if (pattern.supportsInterface('$Sequential')) {
         // iterate through a pattern's items
         const patternIterator = pattern.getIterator();
         outer: while (patternIterator.hasNext()) {
@@ -422,7 +282,7 @@ Component.prototype.isMatchedBy = function(pattern) {
 
 /**
  * This method returns the unique hash value for this component.
- * 
+ *
  * @returns {Number} The unique hash value for this component.
  */
 Component.prototype.getHash = function() {
@@ -453,7 +313,7 @@ Component.prototype.format = function(indentation) {
 /**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
  * implemented by a subclass.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {

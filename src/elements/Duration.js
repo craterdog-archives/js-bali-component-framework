@@ -23,9 +23,9 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new duration element using the specified value.
- * 
+ *
  * @param {String|Number} value The source string the duration.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duration} The new duration element.
  */
@@ -55,25 +55,26 @@ exports.Duration = Duration;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports scaling operations.
- * <pre>
- *  * inverse
- *  * sum
- *  * difference
- *  * scaled
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports scaling operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Duration.prototype.isScalable = function() {
-    return true;
+Duration.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Scalable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this duration has a meaningful value. If the value is zero
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this duration has a meaningful value.
  */
 Duration.prototype.toBoolean = function() {
@@ -83,7 +84,7 @@ Duration.prototype.toBoolean = function() {
 
 /**
  * This method returns the number of milliseconds of the duration.
- * 
+ *
  * @returns {number} The number of milliseconds of the duration.
  */
 Duration.prototype.toNumber = function() {
@@ -93,7 +94,7 @@ Duration.prototype.toNumber = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Duration.prototype.acceptVisitor = function(visitor) {
@@ -106,7 +107,7 @@ Duration.prototype.acceptVisitor = function(visitor) {
 /**
  * This function returns the inverse of a duration. If the specified duration is
  * positive, its inverse is negative and vice versa.
- * 
+ *
  * @param {Duration} duration The duration to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duration} The inverse of the specified duration.
@@ -125,7 +126,7 @@ Duration.inverse = function(duration, debug) {
 
 /**
  * This function returns the sum of two durations.
- * 
+ *
  * @param {Duration} first The first duration to be summed.
  * @param {Duration} second The second duration to be summed.
  * @param {Number} debug A number in the range [0..3].
@@ -148,7 +149,7 @@ Duration.sum = function(first, second, debug) {
 
 /**
  * This function returns the difference of two durations.
- * 
+ *
  * @param {Duration} first The duration to be subtracted from.
  * @param {Duration} second The duration to subtract from the first duration.
  * @param {Number} debug A number in the range [0..3].
@@ -171,7 +172,7 @@ Duration.difference = function(first, second, debug) {
 
 /**
  * This function returns the specified duration scaled to the specified factor.
- * 
+ *
  * @param {Duration} duration The duration to be scaled.
  * @param {Number} factor The scale factor.
  * @param {Number} debug A number in the range [0..3].

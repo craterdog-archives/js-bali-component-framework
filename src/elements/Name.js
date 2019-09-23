@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new name element using the specified value.
- * 
+ *
  * @param {Array} value An array containing the parts of the name string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new name string element.
  */
@@ -63,35 +63,27 @@ exports.Name = Name;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Name.prototype.isSequential = function() {
-    return true;
-};
-
-
-/**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
- */
-Name.prototype.isChainable = function() {
-    return true;
+Name.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Sequential':
+        case '$Chainable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this name string has a meaningful value. Name
  * strings always have a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this name string has a meaningful value.
  */
 Name.prototype.toBoolean = function() {
@@ -101,7 +93,7 @@ Name.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Name.prototype.acceptVisitor = function(visitor) {
@@ -111,7 +103,7 @@ Name.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This method returns whether or not this name string has any parts.
- * 
+ *
  * @returns {Boolean} Whether or not this name string has any parts.
  */
 Name.prototype.isEmpty = function() {
@@ -121,7 +113,7 @@ Name.prototype.isEmpty = function() {
 
 /**
  * This method returns the number of parts that this name string has.
- * 
+ *
  * @returns {Number} The number of parts that this name string has.
  */
 Name.prototype.getSize = function() {

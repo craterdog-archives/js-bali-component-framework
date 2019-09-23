@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 /**
  * This function creates a new collection component of the specified type with the optional
  * parameters that are used to parameterize its type.
- * 
+ *
  * @param {String} type The type of collection.
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
  */
@@ -41,21 +41,19 @@ exports.Collection = Collection;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Collection.prototype.isSequential = function() {
-    return true;
+Collection.prototype.supportsInterface = function(iface) {
+    return iface === '$Sequential';
 };
 
 
 /**
  * This method determines whether or not this component is a collection.
- * 
+ *
  * @returns {Boolean} Whether or not this component is a collection.
  */
 Collection.prototype.isCollection = function() {
@@ -65,7 +63,7 @@ Collection.prototype.isCollection = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this collection.
  */
 Collection.prototype.acceptVisitor = function(visitor) {
@@ -77,7 +75,7 @@ Collection.prototype.acceptVisitor = function(visitor) {
 /**
  * This abstract method returns an array containing the subcomponents in this collection
  * component. It must be implemented by a subclass.
- * 
+ *
  * @returns {Array} An array containing the subcomponents in this collection component.
  */
 Collection.prototype.toArray = function() {
@@ -94,7 +92,7 @@ Collection.prototype.toArray = function() {
 
 /**
  * This method returns whether or not this collection component has any subcomponents.
- * 
+ *
  * @returns {Boolean} Whether or not this collection component has any subcomponents.
  */
 Collection.prototype.isEmpty = function() {
@@ -105,7 +103,7 @@ Collection.prototype.isEmpty = function() {
 /**
  * This abstract method returns the number of subcomponents that this collection component has.
  * It must be implemented by a subclass.
- * 
+ *
  * @returns {Number} The number of subcomponents that this collection component has.
  */
 Collection.prototype.getSize = function() {
@@ -139,7 +137,7 @@ Collection.prototype.getIterator = function() {
  * method uses strict equality checks which for items that are objects
  * returns false even when all attributes on each item are the same. Therefore
  * it is better not to override this method in that case.
- * 
+ *
  * @param {Object} item The item to be looked up.
  * @returns {Number} The index of the item in this collection.
  */
@@ -170,7 +168,7 @@ Collection.prototype.getIndex = function(item) {
 /**
  * This abstract method retrieves the item that is associated with the specified index
  * from this collection. It must be implemented by a subclass.
- * 
+ *
  * @param {Number} index The index of the desired item.
  * @returns {Component} The item at the position in this collection.
  */
@@ -188,7 +186,7 @@ Collection.prototype.getItem = function(index) {
 
 /**
  * This method returns a new collection containing the items in the specified range.
- * 
+ *
  * @param {Range} range A range depicting the first and last items to be retrieved.
  * @returns {Collection} The new collection containing the requested items.
  */

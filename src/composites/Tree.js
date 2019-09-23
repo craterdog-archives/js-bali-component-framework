@@ -26,7 +26,7 @@ const Exception = require('./Exception').Exception;
 
 /**
  * This function creates a new tree node component.
- * 
+ *
  * @param {String} type The type of the tree node component.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Tree} The new tree node component.
@@ -34,7 +34,7 @@ const Exception = require('./Exception').Exception;
 const Tree = function(type, debug) {
     abstractions.Composite.call(this, type, debug);
 
-    if (!this.isProcedural()) {
+    if (!this.supportsInterface('$Procedural')) {
         const exception = new Exception({
             $module: '/bali/composites/Tree',
             $procedure: '$Tree',
@@ -97,21 +97,26 @@ exports.Tree = Tree;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Tree.prototype.isSequential = function() {
-    return true;
+Tree.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Procedural':
+        case '$Sequential':
+            return true;
+        default:
+            return false;
+    }
+    return false;
 };
 
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {

@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new version element using the specified value.
- * 
+ *
  * @param {Array} value An array containing the version levels for the version string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new version string element.
  */
@@ -65,22 +65,26 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Version.prototype.isSequential = function() {
-    return true;
+Version.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Sequential':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this version string has a meaningful value. Version
  * strings always have a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this version string has a meaningful value.
  */
 Version.prototype.toBoolean = function() {
@@ -90,7 +94,7 @@ Version.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Version.prototype.acceptVisitor = function(visitor) {
@@ -100,8 +104,8 @@ Version.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This method compares two versions for ordering.
- * 
- * @param {Version} that The other version to be compared with. 
+ *
+ * @param {Version} that The other version to be compared with.
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Version.prototype.comparedTo = function(that) {
@@ -135,7 +139,7 @@ Version.prototype.comparedTo = function(that) {
 
 /**
  * This method returns whether or not this version string has any levels.
- * 
+ *
  * @returns {Boolean} Whether or not this version string has any levels.
  */
 Version.prototype.isEmpty = function() {
@@ -145,7 +149,7 @@ Version.prototype.isEmpty = function() {
 
 /**
  * This method returns the number of levels that this version string has.
- * 
+ *
  * @returns {Number} The number of levels that this version string has.
  */
 Version.prototype.getSize = function() {
@@ -172,11 +176,11 @@ Version.prototype.getIterator = function() {
  * level 2:    v5.7              v5.8       (optimization/bug fixes)
  * level 3:    v5.7              v5.7.1     (changes being tested)
  * </pre>
- * 
+ *
  * If no level is specified the last level in the version string is incremented. If a
  * level that is greater than the current number of levels is specified, a new level
  * with the value '1' is appended to the version string.
- * 
+ *
  * @param {Number} level The version level to be incremented. If no level is specified
  * the last level in the version string is incremented.
  * @returns {Version} The next version string.
@@ -214,7 +218,7 @@ Version.prototype.nextVersion = function(level) {
  *     v5.7              v5.8       (optimization/bug fixes)
  *     v5.7              v5.7.1     (changes being tested)
  * </pre>
- * 
+ *
  * @param {Version} nextVersion The proposed next version string.
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */

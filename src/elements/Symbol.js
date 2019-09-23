@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new symbol element using the specified value.
- * 
+ *
  * @param {String} value The value of the symbol.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new symbol element.
  */
@@ -63,9 +63,20 @@ exports.Symbol = Symbol;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Symbol.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this symbol has a meaningful value. Symbols
  * always have a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this symbol has a meaningful value.
  */
 Symbol.prototype.toBoolean = function() {
@@ -75,7 +86,7 @@ Symbol.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Symbol.prototype.acceptVisitor = function(visitor) {

@@ -21,9 +21,9 @@ const Component = require('./Component').Component;
 /**
  * This function creates a new elemental component of the specified type with the optional
  * parameters that are used to parameterize its type.
- * 
+ *
  * @param {String} type The type of component.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Element} The new element.
  */
@@ -46,19 +46,19 @@ exports.Element = Element;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component can be displayed as a literal
- * value.
- * 
- * @returns {Boolean} Whether or not this component can be displayed as a literal value.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Element.prototype.isLiteral = function() {
-    return true;
+Element.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
 };
 
 
 /**
  * This method determines whether or not this component is an element.
- * 
+ *
  * @returns {Boolean} Whether or not this component is an element.
  */
 Element.prototype.isElement = function() {
@@ -68,10 +68,9 @@ Element.prototype.isElement = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Element.prototype.acceptVisitor = function(visitor) {
     visitor.visitElement(this);
 };
-

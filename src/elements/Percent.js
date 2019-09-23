@@ -21,9 +21,9 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new percent element using the specified value.
- * 
+ *
  * @param {Number} value The value of the percent.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Percent} The new percent element.
  */
@@ -52,25 +52,26 @@ exports.Percent = Percent;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports scaling operations.
- * <pre>
- *  * inverse
- *  * sum
- *  * difference
- *  * scaled
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports scaling operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Percent.prototype.isScalable = function() {
-    return true;
+Percent.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Scalable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this percent has a meaningful value. If the value is zero
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this percent has a meaningful value.
  */
 Percent.prototype.toBoolean = function() {
@@ -80,7 +81,7 @@ Percent.prototype.toBoolean = function() {
 
 /**
  * This method returns the numeric value of the percent element, e.g. 25% => 0.25
- * 
+ *
  * @returns {number} The numeric value of the percent element.
  */
 Percent.prototype.toNumber = function() {
@@ -90,7 +91,7 @@ Percent.prototype.toNumber = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Percent.prototype.acceptVisitor = function(visitor) {
@@ -102,7 +103,7 @@ Percent.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This function returns the inverse of a percent.
- * 
+ *
  * @param {Percent} percent The percent to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Percent} The inverse of the percent.
@@ -120,7 +121,7 @@ Percent.inverse = function(percent, debug) {
 
 /**
  * This function returns the sum of two percents.
- * 
+ *
  * @param {Percent} first The first percent to be summed.
  * @param {Percent} second The second percent to be summed.
  * @param {Number} debug A number in the range [0..3].
@@ -143,7 +144,7 @@ Percent.sum = function(first, second, debug) {
 
 /**
  * This function returns the difference of two percents.
- * 
+ *
  * @param {Percent} first The percent to be subtracted from.
  * @param {Percent} second The percent to subtract from the first percent.
  * @param {Number} debug A number in the range [0..3].
@@ -166,7 +167,7 @@ Percent.difference = function(first, second, debug) {
 
 /**
  * This function returns the specified percent scaled to the specified factor.
- * 
+ *
  * @param {Percent} percent The percent to be scaled.
  * @param {Number} factor The scale factor.
  * @param {Number} debug A number in the range [0..3].
@@ -185,4 +186,3 @@ Percent.scaled = function(percent, factor, debug) {
     const calculator = new utilities.Calculator(this.debug);
     return new Percent(calculator.product(percent.getValue(), factor), percent.getParameters(), debug);
 };
-

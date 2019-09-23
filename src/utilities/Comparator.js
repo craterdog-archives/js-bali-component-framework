@@ -21,8 +21,8 @@
  * This function creates a new comparator object that can be used to compare two objects.
  * if an algorithm function is specified, that function is used to do the comparison, otherwise,
  * a natural comparison will be performed.
- *  
- * @param {Function} algorithm An optional function implementing a comparison algorithm. 
+ *
+ * @param {Function} algorithm An optional function implementing a comparison algorithm.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Comparator} The new comparator.
  */
@@ -30,30 +30,30 @@ const Comparator = function(algorithm, debug) {
     debug = debug || 0;
 
     // PUBLIC METHODS
-    
+
     /**
      * This method determines whether or not two components are equal.
-     * 
+     *
      * @param {Component} firstComponent The first component to be compared.
      * @param {Component} secondComponent The second component to be compared.
      * @returns {Boolean} Whether or not the two components are equal.
-     * 
+     *
      */
     this.componentsAreEqual = function(firstComponent, secondComponent) {
         return this.compareComponents(firstComponent, secondComponent) === 0;
     };
-    
-    
+
+
     /**
      * This method compares two components for their ordering.
-     * 
+     *
      * @param {Component} first The first component to be compared.
      * @param {Component} second The second component to be compared.
      * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
-     * 
+     *
      */
     this.compareComponents = algorithm || natural;
-    
+
     return this;
 };
 Comparator.prototype.constructor = Comparator;
@@ -62,11 +62,11 @@ exports.Comparator = Comparator;
 
 /**
  * This method compares two components for their natural ordering.
- * 
+ *
  * @param {Component} first The first component to be compared.
  * @param {Component} second The second component to be compared.
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
- * 
+ *
  */
 const natural = function(first, second) {
     // handle undefined components
@@ -113,10 +113,10 @@ const natural = function(first, second) {
     if (typeof first === 'string' && typeof second === 'string') {
         return Math.sign(first.localeCompare(second));
     }
-    if (first.isLiteral && first.isLiteral() && typeof second === 'string') {
+    if (first.isComponent && first.supportsInterface('$Literal') && typeof second === 'string') {
         return Math.sign(first.toString().localeCompare(second));
     }
-    if (typeof first === 'string' && second.isLiteral && second.isLiteral()) {
+    if (typeof first === 'string' && second.isComponent && second.supportsInterface('$Literal')) {
         return Math.sign(first.localeCompare(second.toString()));
     }
 
@@ -143,4 +143,3 @@ const natural = function(first, second) {
     // must be two elemental objects of the same type, compare their string values
     return Math.sign(first.toString().localeCompare(second.toString()));
 };
-

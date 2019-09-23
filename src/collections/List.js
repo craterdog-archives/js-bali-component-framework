@@ -19,7 +19,7 @@
  *    [item 1] . [item 2] . [item 3] ... [item N]
  *       -N        -(N-1)     -(N-2)        -1
  * </pre>
- * 
+ *
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
@@ -33,8 +33,8 @@ const composites = require('../composites');
 /**
  * This function creates a new list component with optional parameters that are
  * used to parameterize its type.
- * 
- * @param {Parameters} parameters Optional parameters used to parameterize this list. 
+ *
+ * @param {Parameters} parameters Optional parameters used to parameterize this list.
  * @param {Number} debug A number in the range [0..3].
  * @returns {List} The new list.
  */
@@ -51,7 +51,7 @@ const List = function(parameters, debug) {
     this.getSize = function() {
         return array.length;
     };
-    
+
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -62,7 +62,7 @@ const List = function(parameters, debug) {
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         return array[index];
     };
-    
+
     this.setItem = function(index, item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -85,7 +85,7 @@ const List = function(parameters, debug) {
         array[index] = item;
         return oldItem;
     };
-    
+
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -103,7 +103,7 @@ const List = function(parameters, debug) {
         array.push(item);
         return true;
     };
-    
+
     this.addItems = function(items) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -125,7 +125,7 @@ const List = function(parameters, debug) {
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.isSequential()) {
+            } else if (items.supportsInterface('$Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
@@ -167,7 +167,7 @@ const List = function(parameters, debug) {
         index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
-    
+
     this.insertItems = function(index, items) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -188,7 +188,7 @@ const List = function(parameters, debug) {
             }
         }
     };
-    
+
     this.removeItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -201,7 +201,7 @@ const List = function(parameters, debug) {
         if (oldItem) array.splice(index, 1);
         return oldItem;
     };
-    
+
     this.removeItems = function(range) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -221,12 +221,12 @@ const List = function(parameters, debug) {
         }
         return items;
     };
-    
+
     this.sortItems = function(algorithm) {
         const sorter = utilities.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
-    
+
     this.reverseItems = function() {
         array.reverse();
     };
@@ -241,7 +241,7 @@ const List = function(parameters, debug) {
             this.setItem(random, item);
         }
     };
-    
+
     this.deleteAll = function() {
         array.splice(0);
     };
@@ -256,15 +256,19 @@ exports.List = List;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-List.prototype.isChainable = function() {
-    return true;
+List.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Sequential':
+        case '$Chainable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 

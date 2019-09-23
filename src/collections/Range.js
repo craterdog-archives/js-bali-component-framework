@@ -63,8 +63,8 @@ const Range = function(first, last, parameters, debug) {
         }
     } else {
         // the first and last items are indices into the range of integers
-        firstIndex = (first.isComponent && first.isNumerical()) ? first.toNumber() : first;
-        lastIndex = (last.isComponent && last.isNumerical()) ? last.toNumber() : last;
+        firstIndex = (first.isComponent && first.supportsInterface('$Numerical')) ? first.toNumber() : first;
+        lastIndex = (last.isComponent && last.supportsInterface('$Numerical')) ? last.toNumber() : last;
     }
 
     // to protect the attributes the methods are defined in the constructor

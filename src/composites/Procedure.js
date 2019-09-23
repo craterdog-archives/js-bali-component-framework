@@ -22,9 +22,9 @@ const abstractions = require('../abstractions');
 /**
  * This function creates a new procedure component with optional parameters that are
  * used to parameterize its behavior.
- * 
+ *
  * @param {Tree} statements The statements that are contained within the procedure.
- * @param {Parameters} parameters Optional parameters used to parameterize the procedure. 
+ * @param {Parameters} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Procedure} A new procedure component.
  */
@@ -47,19 +47,19 @@ exports.Procedure = Procedure;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component can be displayed as a literal
- * value.
- * 
- * @returns {Boolean} Whether or not this component can be displayed as a literal value.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Procedure.prototype.isLiteral = function() {
-    return true;
+Procedure.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
 };
 
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this procedure.
  */
 Procedure.prototype.acceptVisitor = function(visitor) {

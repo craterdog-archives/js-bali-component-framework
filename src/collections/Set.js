@@ -24,8 +24,8 @@ const composites = require('../composites');
 /**
  * This function creates a new set component with optional parameters that are
  * used to parameterize its type.
- * 
- * @param {Parameters} parameters Optional parameters used to parameterize this set. 
+ *
+ * @param {Parameters} parameters Optional parameters used to parameterize this set.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */
@@ -50,15 +50,15 @@ const Set = function(parameters, debug) {
     this.getComparator = function() {
         return comparator;
     };
-    
+
     this.getSize = function() {
         return tree.size;
     };
-    
+
     this.getIterator = function() {
         return new TreeIterator(tree);
     };
-    
+
     this.getIndex = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -77,7 +77,7 @@ const Set = function(parameters, debug) {
         index = tree.index(item) + 1;  // convert to ordinal based indexing
         return index;
     };
-    
+
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -88,7 +88,7 @@ const Set = function(parameters, debug) {
         index = this.normalizeIndex(index, tree.size) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
-    
+
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -105,7 +105,7 @@ const Set = function(parameters, debug) {
         item = this.convert(item, this.debug);
         return tree.insert(item);
     };
-    
+
     this.addItems = function(items) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -127,7 +127,7 @@ const Set = function(parameters, debug) {
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.isSequential()) {
+            } else if (items.supportsInterface('$Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
@@ -165,7 +165,7 @@ const Set = function(parameters, debug) {
         item = this.convert(item, this.debug);
         return tree.remove(item);
     };
-    
+
     this.removeItems = function(items) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -191,7 +191,7 @@ const Set = function(parameters, debug) {
     this.deleteAll = function() {
         tree.clear();
     };
-    
+
 
     return this;
 };
@@ -203,21 +203,19 @@ exports.Set = Set;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports logical operations.
- * <pre>
- *  * false
- *  * true
- *  * not
- *  * and
- *  * sans
- *  * or
- *  * xor
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports logical operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Set.prototype.isLogical = function() {
-    return true;
+Set.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Sequential':
+        case '$Logical':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
@@ -718,4 +716,3 @@ const successor = function(node) {
         return parent;
     }
 };
-

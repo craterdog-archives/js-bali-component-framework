@@ -26,8 +26,8 @@ const List = require('./List').List;
 /**
  * This function creates a new catalog component with optional parameters that are
  * used to parameterize its type.
- * 
- * @param {Parameters} parameters Optional parameters used to parameterize this catalog. 
+ *
+ * @param {Parameters} parameters Optional parameters used to parameterize this catalog.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Catalog} The new catalog.
  */
@@ -100,7 +100,7 @@ const Catalog = function(parameters, debug) {
                     }
                     count++;
                 }, this);
-            } else if (associations.isSequential && associations.isSequential()) {
+            } else if (associations.isComponent && associations.supportsInterface('$Sequential')) {
                 const iterator = associations.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
@@ -183,7 +183,7 @@ const Catalog = function(parameters, debug) {
         }
         return values;
     };
-    
+
     this.setValue = function(key, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -237,7 +237,7 @@ const Catalog = function(parameters, debug) {
             }
         }
     };
-    
+
     this.removeValue = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -288,7 +288,7 @@ const Catalog = function(parameters, debug) {
         }
         return values;
     };
-    
+
     this.getKeys = function() {
         const keys = new List(undefined, this.debug);
         array.forEach(function(association) {
@@ -302,7 +302,7 @@ const Catalog = function(parameters, debug) {
         const sorter = utilities.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
-    
+
     this.reverseItems = function() {
         array.reverse();
     };
@@ -324,21 +324,25 @@ exports.Catalog = Catalog;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Catalog.prototype.isChainable = function() {
-    return true;
+Catalog.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Sequential':
+        case '$Chainable':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns a JavaScript object containing the attributes of this catalog.
- * 
+ *
  * @returns {Object} The resulting object.
  */
 Catalog.prototype.toObject = function() {
@@ -350,7 +354,7 @@ Catalog.prototype.toObject = function() {
     }
     return object;
 };
-    
+
 
 // PUBLIC FUNCTIONS
 

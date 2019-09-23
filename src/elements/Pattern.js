@@ -20,9 +20,9 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new pattern element using the specified value.
- * 
+ *
  * @param {String|RegExp} value A regular expression for the pattern element.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Pattern} The new pattern element.
  */
@@ -52,9 +52,20 @@ exports.Pattern = Pattern;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Pattern.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this pattern has a meaningful value. If the value is '^none$'
  * it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
 Pattern.prototype.toBoolean = function() {
@@ -65,7 +76,7 @@ Pattern.prototype.toBoolean = function() {
 /**
  * This method determines whether or not this pattern is matched by the source string of the
  * specified component.
- * 
+ *
  * @param {Component} component The component to be tested.
  * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
  */
@@ -89,7 +100,7 @@ Pattern.prototype.matches = function(component) {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Pattern.prototype.acceptVisitor = function(visitor) {

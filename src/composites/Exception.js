@@ -26,7 +26,7 @@
  * This function creates a new Bali exception with the specified attributes.  It must
  * be very careful not to cause additional exceptions to be thrown or an infinite loop
  * may result.
- * 
+ *
  * @param {Object} attributes An object containing the exception attributes.
  * @param {Object} cause An optional exception that caused this one.
  * @returns {Exception} The new exception.
@@ -65,8 +65,8 @@ exports.Exception = Exception;
 
 /**
  * This method returns whether or not this component has the specified type.
- * 
- * @param {String} type The symbol for the type in question. 
+ *
+ * @param {String} type The symbol for the type in question.
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Exception.prototype.isType = function(type) {
@@ -76,7 +76,7 @@ Exception.prototype.isType = function(type) {
 
 /**
  * This method returns whether or not this component is parameterized.
- * 
+ *
  * @returns {Boolean} Whether or not this component is parameterized.
  */
 Exception.prototype.isParameterized = function() {
@@ -85,114 +85,19 @@ Exception.prototype.isParameterized = function() {
 
 
 /**
- * This method returns whether or not this component supports logical operations.
- * <pre>
- *  * false
- *  * true
- *  * not
- *  * and
- *  * sans
- *  * or
- *  * xor
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports logical operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Exception.prototype.isLogical = function() {
-    return false;
-};
-
-
-/**
- * This method returns whether or not this component supports scaling operations.
- * <pre>
- *  * inverse
- *  * sum
- *  * difference
- *  * scaled
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports scaling operations.
- */
-Exception.prototype.isScalable = function() {
-    return false;
-};
-
-
-/**
- * This method returns whether or not this component supports numeric operations.
- * <pre>
- *  * inverse
- *  * reciprocal
- *  * conjugate
- *  * factorial
- *  * sum
- *  * difference
- *  * scaled
- *  * product
- *  * quotient
- *  * remainder
- *  * exponential
- *  * logarithm
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports numeric operations.
- */
-Exception.prototype.isNumerical = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component can be displayed as a literal
- * value.
- * 
- * @returns {Boolean} Whether or not this component can be displayed as a literal value.
- */
-Exception.prototype.isLiteral = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component supports iteration:
- * <pre>
- *  * iterator
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports iteration.
- */
-Exception.prototype.isSequential = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component supports concatenation operations:
- * <pre>
- *  * concatenation
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports concatenation operations.
- */
-Exception.prototype.isChainable = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component is procedural.
- * 
- * @returns {Boolean} Whether or not this component is procedural.
- */
-Exception.prototype.isProcedural = function() {
+Exception.prototype.supportsInterface = function(iface) {
     return false;
 };
 
 
 /**
  * This method determines whether or not this component is an element.
- * 
+ *
  * @returns {Boolean} Whether or not this component is an element.
  */
 Exception.prototype.isElement = function() {
@@ -202,7 +107,7 @@ Exception.prototype.isElement = function() {
 
 /**
  * This method determines whether or not this component is a composite.
- * 
+ *
  * @returns {Boolean} Whether or not this component is a composite.
  */
 Exception.prototype.isComposite = function() {
@@ -212,7 +117,7 @@ Exception.prototype.isComposite = function() {
 
 /**
  * This method determines whether or not this component is a collection.
- * 
+ *
  * @returns {Boolean} Whether or not this component is a collection.
  */
 Exception.prototype.isCollection = function() {
@@ -224,7 +129,7 @@ Exception.prototype.isCollection = function() {
  * This abstract method returns a boolean value for this component. It allows each component to be
  * used as a boolean in a condition that determines whether of not the component has a meaningful
  * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
- * 
+ *
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Exception.prototype.toBoolean = function() {
@@ -234,7 +139,7 @@ Exception.prototype.toBoolean = function() {
 
 /**
  * This method returns a string representation of the component.
- * 
+ *
  * @returns {String} The corresponding string representation.
  */
 Exception.prototype.toString = function() {
@@ -250,7 +155,7 @@ Exception.prototype.toString = function() {
 
 /**
  * This method determines whether or not this component is equal to another component.
- * 
+ *
  * @param {Object} that The object that is being compared.
  * @returns {Boolean} Whether or not this component is equal to another component.
  */
@@ -262,7 +167,7 @@ Exception.prototype.isEqualTo = function(that) {
 /**
  * This method compares this component with another object for natural order. It may be
  * overridden with a more efficient implementation by a subclass.
- * 
+ *
  * @param {Object} that The object that is being compared.
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
@@ -283,7 +188,7 @@ Exception.prototype.comparedTo = function(that) {
  * attributes listed in the pattern is used for matching. Note, this means that the
  * component may contain additional attributes not found in the pattern component and
  * it still matches.
- * 
+ *
  * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
@@ -294,7 +199,7 @@ Exception.prototype.isMatchedBy = function(pattern) {
 
 /**
  * This method returns the unique hash value for the attributes of this component.
- * 
+ *
  * @returns {Number} The unique hash value for the attributes of this component.
  */
 Exception.prototype.getHash = function() {
@@ -313,7 +218,7 @@ Exception.prototype.getHash = function() {
 /**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
  * implemented by a subclass.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit the attributes of this component.
  */
 Exception.prototype.acceptVisitor = function(visitor) {

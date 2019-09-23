@@ -88,7 +88,7 @@ Validator.prototype.getType = function(value) {
     if (value.isType('$Symbol')) return '/bali/elements/Symbol';
     if (value.isType('$Tag')) return '/bali/elements/Tag';
     if (value.isType('$Text')) return '/bali/elements/Text';
-    if (value.isProcedural()) return '/bali/composites/Tree';
+    if (value.supportsInterface('$Procedural')) return '/bali/composites/Tree';
     if (value.isType('$Version')) return '/bali/elements/Version';
 
     // handle anything else
@@ -134,13 +134,13 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
         if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && argumentValue.isElement()) return;
         if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && argumentValue.isComposite()) return;
         if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && argumentValue.isCollection()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && argumentValue.isLogicial()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && argumentValue.isScalable()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Numerical') > -1 && argumentValue.isNumerical()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && argumentValue.isLiteral()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && argumentValue.isSequential()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && argumentValue.isChainable()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && argumentValue.isProcedural()) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && argumentValue.supportsInterface('$Logical')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && argumentValue.supportsInterface('$Scalable')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Numerical') > -1 && argumentValue.supportsInterface('$Numerical')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && argumentValue.supportsInterface('$Literal')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && argumentValue.supportsInterface('$Sequential')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && argumentValue.supportsInterface('$Chainable')) return;
+        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && argumentValue.supportsInterface('$Procedural')) return;
     }
 
     // the argument type is invalid

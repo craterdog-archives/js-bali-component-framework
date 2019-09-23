@@ -111,7 +111,7 @@ const Queue = function(parameters, debug) {
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.isSequential()) {
+            } else if (items.supportsInterface('$Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();

@@ -37,10 +37,10 @@ const FORMATS = [
 
 /**
  * This function creates a new moment in time using the specified value and parameters.
- * 
+ *
  * @param {String|Number} value The optional source string value or millisecond value of
  * the moment in time.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Moment} The new moment in time.
  */
@@ -72,7 +72,7 @@ const Moment = function(value, parameters, debug) {
                         format = candidate;
                         value = attempt;
                         return true;
-                    } 
+                    }
                     return false;
                 });
         }
@@ -92,9 +92,20 @@ exports.Moment = Moment;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Moment.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this moment has a meaningful value. A moment always has
  * a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this moment has a meaningful value.
  */
 Moment.prototype.toBoolean = function() {
@@ -104,7 +115,7 @@ Moment.prototype.toBoolean = function() {
 
 /**
  * This method returns the number of milliseconds for the moment.
- * 
+ *
  * @returns {number} The number of milliseconds for the moment.
  */
 Moment.prototype.toNumber = function() {
@@ -114,7 +125,7 @@ Moment.prototype.toNumber = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Moment.prototype.acceptVisitor = function(visitor) {
@@ -126,7 +137,7 @@ Moment.prototype.acceptVisitor = function(visitor) {
 
 /**
  * This function returns the duration between two moments in time.
- * 
+ *
  * @param {Moment} first The first moment in time.
  * @param {Moment} second The second moment in time.
  * @param {Number} debug A number in the range [0..3].
@@ -151,7 +162,7 @@ Moment.duration = function(first, second, debug) {
 /**
  * This function returns a moment in time that is earlier than the specified moment
  * by the specified duration of time.
- * 
+ *
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be subtracted.
  * @param {Number} debug A number in the range [0..3].
@@ -175,7 +186,7 @@ Moment.earlier = function(moment, duration, debug) {
 /**
  * This function returns a moment in time that is later than the specified moment
  * by the specified duration of time.
- * 
+ *
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be added.
  * @param {Number} debug A number in the range [0..3].
@@ -194,4 +205,3 @@ Moment.later = function(moment, duration, debug) {
     const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
     return new Moment(later.format(FORMATS[7]), moment.getParameters(), debug);
 };
-

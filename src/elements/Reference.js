@@ -24,9 +24,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new reference element using the specified value.
- * 
+ *
  * @param {URL} value The URL value of the reference.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reference} The new reference element.
  */
@@ -69,9 +69,20 @@ exports.Reference = Reference;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Reference.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this reference has a meaningful value. A reference always
  * has a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this reference has a meaningful value.
  */
 Reference.prototype.toBoolean = function() {
@@ -88,7 +99,7 @@ Reference.prototype.toBoolean = function() {
  *     ----- ------------ -------- -------------------- -----
  *   *scheme*  authority    path          query        fragment
  * </pre>
- * 
+ *
  * @returns {String} The scheme part of the reference URI.
  */
 Reference.prototype.getScheme = function() {
@@ -105,7 +116,7 @@ Reference.prototype.getScheme = function() {
  *     ----- ------------ -------- -------------------- -----
  *    scheme  *authority*   path          query        fragment
  * </pre>
- * 
+ *
  * @returns {String} The authority part of the reference URI.
  */
 Reference.prototype.getAuthority = function() {
@@ -127,7 +138,7 @@ Reference.prototype.getAuthority = function() {
  *     ----- ------------ -------- -------------------- -----
  *    scheme   authority   *path*         query        fragment
  * </pre>
- * 
+ *
  * @returns {String} The path part of the reference URI.
  */
 Reference.prototype.getPath = function() {
@@ -143,7 +154,7 @@ Reference.prototype.getPath = function() {
  *     ----- ------------ -------- -------------------- -----
  *    scheme   authority    path         *query*       fragment
  * </pre>
- * 
+ *
  * @returns {String} The query part of the reference URI.  The query does NOT
  * include the leading '?'.
  */
@@ -161,7 +172,7 @@ Reference.prototype.getQuery = function() {
  *     ----- ------------ -------- -------------------- -----
  *    scheme   authority    path          query       *fragment*
  * </pre>
- * 
+ *
  * @returns {String} The fragment part of the reference URI.
  */
 Reference.prototype.getFragment = function() {
@@ -171,7 +182,7 @@ Reference.prototype.getFragment = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Reference.prototype.acceptVisitor = function(visitor) {

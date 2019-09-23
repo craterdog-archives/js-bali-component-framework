@@ -23,9 +23,9 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new reserved identifier using the specified value.
- * 
+ *
  * @param {String} value The value of the reserved identifier.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reserved} The new reserved identifier.
  */
@@ -63,9 +63,20 @@ exports.Reserved = Reserved;
 // PUBLIC METHODS
 
 /**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Reserved.prototype.supportsInterface = function(iface) {
+    return iface === '$Literal';
+};
+
+
+/**
  * This method returns whether or not this reserved symbol has a meaningful value. Reserved
  * symbols always have a meaningful value.
- * 
+ *
  * @returns {Boolean} Whether or not this reserved symbol has a meaningful value.
  */
 Reserved.prototype.toBoolean = function() {
@@ -75,7 +86,7 @@ Reserved.prototype.toBoolean = function() {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Reserved.prototype.acceptVisitor = function(visitor) {

@@ -24,10 +24,10 @@ const Angle = require('./Angle').Angle;
  * This function creates an immutable instance of a complex number using the specified
  * real and imaginary values.  If the imaginary value is an angle then the complex number
  * is in polar form, otherwise it is in rectangular form.
- * 
+ *
  * @param {Number} real The real value of the complex number.
  * @param {Number|Angle} imaginary The imaginary value of the complex number.
- * @param {Parameters} parameters Optional parameters used to parameterize this element. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The new complex number.
  */
@@ -100,49 +100,27 @@ exports.Complex = Complex;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports scaling operations.
- * <pre>
- *  * inverse
- *  * sum
- *  * difference
- *  * scaled
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports scaling operations.
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} iface The symbol for the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
  */
-Complex.prototype.isScalable = function() {
-    return true;
-};
-
-
-/**
- * This method returns whether or not this component supports numeric operations.
- * <pre>
- *  * inverse
- *  * reciprocal
- *  * conjugate
- *  * factorial
- *  * sum
- *  * difference
- *  * scaled
- *  * product
- *  * quotient
- *  * remainder
- *  * exponential
- *  * logarithm
- * </pre>
- * 
- * @returns {Boolean} Whether or not this component supports numeric operations.
- */
-Complex.prototype.isNumerical = function() {
-    return true;
+Complex.prototype.supportsInterface = function(iface) {
+    switch (iface) {
+        case '$Literal':
+        case '$Scalable':
+        case '$Numerical':
+            return true;
+        default:
+            return false;
+    }
 };
 
 
 /**
  * This method returns whether or not this complex number has a meaningful value. If the magnitude
  * is undefined, zero or infinity it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
+ *
  * @returns {Boolean} Whether or not this complex number has a meaningful value.
  */
 Complex.prototype.toBoolean = function() {
@@ -152,7 +130,7 @@ Complex.prototype.toBoolean = function() {
 
 /**
  * This method returns the real part of this complex number.
- * 
+ *
  * @returns {Number} The real part of this complex number.
  */
 Complex.prototype.toNumber = function() {
@@ -162,7 +140,7 @@ Complex.prototype.toNumber = function() {
 
 /**
  * This method determines whether this complex number is undefined.
- * 
+ *
  * @returns {boolean} Whether or not this complex number is undefined.
  */
 Complex.prototype.isUndefined = function() {
@@ -172,7 +150,7 @@ Complex.prototype.isUndefined = function() {
 
 /**
  * This method determines whether this complex number is zero.
- * 
+ *
  * @returns {boolean} Whether or not this complex number is zero.
  */
 Complex.prototype.isZero = function() {
@@ -182,7 +160,7 @@ Complex.prototype.isZero = function() {
 
 /**
  * This method determines whether this complex number is infinite.
- * 
+ *
  * @returns {boolean} Whether or not this complex number is infinite.
  */
 Complex.prototype.isInfinite = function() {
@@ -192,8 +170,8 @@ Complex.prototype.isInfinite = function() {
 
 /**
  * This method compares this complex number to another for ordering.
- * 
- * @param {Object} that The other complex number to be compared with. 
+ *
+ * @param {Object} that The other complex number to be compared with.
  * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
  */
 Complex.prototype.comparedTo = function(that) {
@@ -223,7 +201,7 @@ Complex.prototype.comparedTo = function(that) {
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this element.
  */
 Complex.prototype.acceptVisitor = function(visitor) {
@@ -238,7 +216,7 @@ Complex.prototype.acceptVisitor = function(visitor) {
  * <pre>
  *     inverse(z): (-z.real, -z.imaginary i)
  * </pre>
- * 
+ *
  * @param {Complex} number The complex number to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
@@ -270,7 +248,7 @@ Complex.inverse = function(number, debug) {
  *                    or
  *     reciprocal(z): (1/z.magnitude e^~-z.phase i)
  * </pre>
- * 
+ *
  * @param {Complex} number The complex number to be inverted.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
@@ -302,7 +280,7 @@ Complex.reciprocal = function(number, debug) {
  * <pre>
  *     conjugate(z): (z.real, -z.imaginary i)
  * </pre>
- * 
+ *
  * @param {Complex} number The complex number to be conjugated.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
@@ -329,7 +307,7 @@ Complex.conjugate = function(number, debug) {
 
 /**
  * This function returns the complex factorial of the specified complex number.
- * 
+ *
  * @param {Complex} number The complex number.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The resulting complex number.
@@ -360,7 +338,7 @@ Complex.factorial = function(number, debug) {
  * <pre>
  *     sum(x, y): (x.real + y.real, (x.imaginary + y.imaginary) i)
  * </pre>
- * 
+ *
  * @param {Complex} first The first complex number to be added.
  * @param {Complex} second The second complex number to be added.
  * @param {Number} debug A number in the range [0..3].
@@ -395,7 +373,7 @@ Complex.sum = function(first, second, debug) {
  * <pre>
  *     difference(x, y): (x.real - y.real, (x.imaginary - y.imaginary) i)
  * </pre>
- * 
+ *
  * @param {Complex} first The first complex number to be subtracted from.
  * @param {Complex} second The second complex number to be subtracted.
  * @param {Number} debug A number in the range [0..3].
@@ -422,7 +400,7 @@ Complex.difference = function(first, second, debug) {
  *                              or
  *     scaled(z, factor): (factor * z.magnitude, z.phase i)
  * </pre>
- * 
+ *
  * @param {Complex} number The complex number to be scaled.
  * @param {Number} factor The numeric scale factor.
  * @param {Number} debug A number in the range [0..3].
@@ -459,7 +437,7 @@ Complex.scaled = function(number, factor, debug) {
  * <pre>
  *     product(x, y): (x.magnitude * y.magnitude e^~(x.phase + y.phase) i)
  * </pre>
- * 
+ *
  * @param {Complex} first The first complex number to be multiplied.
  * @param {Complex} second The second complex number to be multiplied.
  * @param {Number} debug A number in the range [0..3].
@@ -496,7 +474,7 @@ Complex.product = function(first, second, debug) {
  * <pre>
  *     quotient(x, y): (x.magnitude / y.magnitude e^~(x.phase - y.phase) i)
  * </pre>
- * 
+ *
  * @param {Complex} first The first complex number to be divided.
  * @param {Complex} second The second complex number to be divided by.
  * @param {Number} debug A number in the range [0..3].
@@ -518,7 +496,7 @@ Complex.quotient = function(first, second, debug) {
 
 /**
  * This function returns the remainder of the quotient of two real numbers.
- * 
+ *
  * @param {Complex} first The first real number to be divided.
  * @param {Complex} second The second real number to be divided by.
  * @param {Number} debug A number in the range [0..3].
@@ -556,7 +534,7 @@ Complex.remainder = function(first, second, debug) {
  * <pre>
  *     exponential(base, exponent): exp(exponent * ln(base))
  * </pre>
- * 
+ *
  * @param {Complex} base The complex base.
  * @param {Complex} exponent The complex exponent.
  * @param {Number} debug A number in the range [0..3].
@@ -591,7 +569,7 @@ Complex.exponential = function(base, exponent, debug) {
  * <pre>
  *     logarithm(base, value): ln(value)/ln(base)
  * </pre>
- * 
+ *
  * @param {Complex} base The base of the resulting exponent.
  * @param {Complex} value The complex number.
  * @param {Number} debug A number in the range [0..3].
@@ -628,19 +606,19 @@ const gamma = function(number) {
         771.32342877765313, -176.61502916214059, 12.507343278686905,
         -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
     ];
- 
+
     const g = 7;
     if (number < 0.5) {
         return Math.PI / (Math.sin(Math.PI * number) * gamma(1 - number));
     }
- 
+
     number -= 1;
     var a = p[0];
     const t = number + g + 0.5;
     for (var i = 1; i < p.length; i++) {
         a += p[i] / (number + i);
     }
- 
+
     return Math.sqrt(2 * Math.PI) * Math.pow(t, number + 0.5) * Math.exp(-t) * a;
 };
 
@@ -668,4 +646,3 @@ const ln = function(number, debug) {
     const result = new Complex(real, imaginary, number.getParameters(), debug);
     return result;
 };
-
