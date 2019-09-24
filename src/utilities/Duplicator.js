@@ -153,7 +153,7 @@ DuplicatingVisitor.prototype.visitCollection = function(sequence) {
     this.visitComponent(sequence);
     const parameters = this.getParameters();
     var copy;
-    if (sequence.isType('$Range')) {
+    if (sequence.isType('/bali/collections/Range')) {
         sequence.getFirst().acceptVisitor(this);
         const first = this.result;
         sequence.getLast().acceptVisitor(this);

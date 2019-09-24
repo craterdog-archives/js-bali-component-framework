@@ -19,23 +19,23 @@ const Component = require('./Component').Component;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new elemental component of the specified type with the optional
- * parameters that are used to parameterize its type.
+ * This function creates a new elemental component with the specified ancestry and interfaces
+ * candidate with any optional parameters that are used to parameterize its type.
  *
- * @param {String} type The type of component.
+ * @param {Array} ancestry An array of type names that make up the ancestry for the component.
+ * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Parameters} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Element} The new element.
  */
-const Element = function(type, parameters, debug) {
-    Component.call(this, type, parameters, debug);
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Element', '$Element', '$type', type, [
-            '/javascript/String'
-        ]);
-    }
-
+const Element = function(ancestry, interfaces, parameters, debug) {
+    Component.call(
+        this,
+        ancestry.concat('/bali/abstractions/Element'),
+        interfaces.concat('/bali/interfaces/Literal'),
+        parameters,
+        debug
+    );
     return this;
 };
 Element.prototype = Object.create(Component.prototype);
@@ -44,27 +44,6 @@ exports.Element = Element;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Element.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
-
-/**
- * This method determines whether or not this component is an element.
- *
- * @returns {Boolean} Whether or not this component is an element.
- */
-Element.prototype.isElement = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

@@ -31,7 +31,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Reference} The new reference element.
  */
 const Reference =function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Reference', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Reference'],
+        [],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Reference', '$Reference', '$value', value, [
@@ -67,17 +73,6 @@ exports.Reference = Reference;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Reference.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
 
 /**
  * This method returns whether or not this reference has a meaningful value. A reference always

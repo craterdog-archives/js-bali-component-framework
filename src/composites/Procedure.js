@@ -29,11 +29,17 @@ const abstractions = require('../abstractions');
  * @returns {Procedure} A new procedure component.
  */
 const Procedure = function(statements, parameters, debug) {
-    abstractions.Composite.call(this, '$Procedure', parameters, debug);
+    abstractions.Composite.call(
+        this,
+        ['/bali/composites/Procedure'],
+        ['/bali/interfaces/Literal'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
-            '/bali/composites/Tree'
+            '/bali/composites/Statements'
         ]);
     }
     this.getStatements = function() { return statements; };
@@ -45,17 +51,6 @@ exports.Procedure = Procedure;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Procedure.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

@@ -45,7 +45,13 @@ const FORMATS = [
  * @returns {Moment} The new moment in time.
  */
 const Moment = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Moment', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Moment'],
+        [],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
@@ -90,17 +96,6 @@ exports.Moment = Moment;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Moment.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
 
 /**
  * This method returns whether or not this moment has a meaningful value. A moment always has

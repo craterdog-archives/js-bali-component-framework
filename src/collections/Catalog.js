@@ -32,7 +32,13 @@ const List = require('./List').List;
  * @returns {Catalog} The new catalog.
  */
 const Catalog = function(parameters, debug) {
-    abstractions.Collection.call(this, '$Catalog', parameters, debug);
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/Catalog'],
+        ['/bali/interfaces/Chainable'],
+        parameters,
+        debug
+    );
 
     // the map and array are private attributes so methods that use them are defined
     // in the constructor
@@ -54,7 +60,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
@@ -93,19 +99,19 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         this.addItem(item);
                     } else {
                         this.setValue(index++, item);
                     }
                     count++;
                 }, this);
-            } else if (associations.isComponent && associations.supportsInterface('$Sequential')) {
+            } else if (associations.isComponent && associations.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = associations.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         this.addItem(item);
                     } else {
                         this.setValue(index++, item);
@@ -322,23 +328,6 @@ exports.Catalog = Catalog;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Catalog.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Sequential':
-        case '$Chainable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns a JavaScript object containing the attributes of this catalog.

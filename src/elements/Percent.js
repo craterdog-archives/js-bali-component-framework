@@ -28,7 +28,13 @@ const abstractions = require('../abstractions');
  * @returns {Percent} The new percent element.
  */
 const Percent = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Percent', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Percent'],
+        ['/bali/interfaces/Scalable'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Percent', '$Percent', '$value', value, [
@@ -50,23 +56,6 @@ exports.Percent = Percent;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Percent.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Scalable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this percent has a meaningful value. If the value is zero

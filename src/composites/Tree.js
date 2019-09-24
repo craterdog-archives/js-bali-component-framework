@@ -32,19 +32,16 @@ const Exception = require('./Exception').Exception;
  * @returns {Tree} The new tree node component.
  */
 const Tree = function(type, debug) {
-    abstractions.Composite.call(this, type, debug);
-
-    if (!this.supportsInterface('$Procedural')) {
-        const exception = new Exception({
-            $module: '/bali/composites/Tree',
-            $procedure: '$Tree',
-            $exception: '$invalidParameter',
-            $parameter: type,
-            $text: 'An invalid tree type was passed to the constructor.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
+    abstractions.Composite.call(
+        this,
+        [type, '/bali/composites/Tree'],
+        [
+            '/bali/interfaces/Sequential',
+            '/bali/interfaces/Procedural'
+        ],
+        undefined,
+        debug
+    );
 
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
@@ -76,7 +73,7 @@ const Tree = function(type, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
@@ -97,30 +94,12 @@ exports.Tree = Tree;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Tree.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Procedural':
-        case '$Sequential':
-            return true;
-        default:
-            return false;
-    }
-    return false;
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
  */
 Tree.prototype.acceptVisitor = function(visitor) {
     // call the visitor method for the specific type of tree node
-    const functionName = 'visit' + this.getType().slice(1);  // remove the leading '$'
+    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/composites/<Type>'
     visitor[functionName](this);
 };

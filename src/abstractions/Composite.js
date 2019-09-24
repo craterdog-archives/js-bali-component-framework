@@ -20,16 +20,23 @@ const Component = require('./Component').Component;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new composite component of the specified type with the optional
- * parameters that are used to parameterize its type.
- * 
- * @param {String} type The type of component.
- * @param {Parameters} parameters Optional parameters used to parameterize the composite component. 
+ * This function creates a new composite component with the specified ancestry and interfaces
+ * candidate with any optional parameters that are used to parameterize its type.
+ *
+ * @param {Array} ancestry An array of type names that make up the ancestry for the component.
+ * @param {Array} interfaces An array of interface names that are supported by the component.
+ * @param {Parameters} parameters Optional parameters used to parameterize the composite component.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Composite} The new composite component.
  */
-const Composite = function(type, parameters, debug) {
-    Component.call(this, type, parameters, debug);
+const Composite = function(ancestry, interfaces, parameters, debug) {
+    Component.call(
+        this,
+        ancestry.concat('/bali/abstractions/Composite'),
+        interfaces,
+        parameters,
+        debug
+    );
     return this;
 };
 Composite.prototype = Object.create(Component.prototype);
@@ -40,23 +47,31 @@ exports.Composite = Composite;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this component is a composite.
- * 
- * @returns {Boolean} Whether or not this component is a composite.
+ * This method returns whether or not this composite has a meaningful value. If the composite
+ * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
+ *
+ * @returns {Boolean} Whether or not this composite has a meaningful value.
  */
-Composite.prototype.isComposite = function() {
-    return true;
+Composite.prototype.toBoolean = function() {
+    return this.getSize() > 0;
 };
 
 
 /**
- * This method returns whether or not this composite has a meaningful value. If the composite
- * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- * 
- * @returns {Boolean} Whether or not this composite has a meaningful value.
+ * This abstract method returns the number of subcomponents that this composite component has.
+ * It must be implemented by a subclass.
+ *
+ * @returns {Number} The number of subcomponents that this composite component has.
  */
-Composite.prototype.toBoolean = function() {
-    return true;
+Composite.prototype.getSize = function() {
+    const exception = new Exception({
+        $module: '/bali/abstractions/Composite',
+        $procedure: '$getSize',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -72,19 +87,16 @@ Composite.prototype.toBoolean = function() {
  * </pre>
  *
  * @param {Number} index The index to be normalized [-N..N].
- * @param {Number} size The size of the composite (N).
  * @returns {Number} The normalized [1..N] index.
  */
-Composite.prototype.normalizeIndex = function(index, size) {
+Composite.prototype.normalizeIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$index', index, [
             '/javascript/Number'
         ]);
-        validator.validateType('/bali/abstractions/Composite', '$normalizeIndex', '$size', size, [
-            '/javascript/Number'
-        ]);
     }
+    const size = this.getSize();
     if (index > size) index = size;
     if (index < -size) index = -size;
     if (index < 0) index = index + size + 1;

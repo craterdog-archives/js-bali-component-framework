@@ -33,7 +33,14 @@ const Set = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Set/v1'
     }, debug);
-    abstractions.Collection.call(this, '$Set', parameters, debug);
+
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/Set'],
+        ['/bali/interfaces/Logical'],
+        parameters,
+        debug
+    );
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
@@ -85,7 +92,7 @@ const Set = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index, tree.size) - 1;  // convert to javascript zero based indexing
+        index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
 
@@ -121,18 +128,18 @@ const Set = function(parameters, debug) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.supportsInterface('$Sequential')) {
+            } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
@@ -198,25 +205,6 @@ const Set = function(parameters, debug) {
 Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
-
-
-// PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Set.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Sequential':
-        case '$Logical':
-            return true;
-        default:
-            return false;
-    }
-};
 
 
 // PUBLIC FUNCTIONS

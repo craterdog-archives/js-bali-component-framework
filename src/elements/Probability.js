@@ -30,7 +30,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Probability} The new probability element.
  */
 const Probability = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Probability', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Probability'],
+        ['/bali/interfaces/Logical'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
@@ -65,23 +71,6 @@ exports.Probability = Probability;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Probability.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Logical':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this probability is greater or equal to 0.5.

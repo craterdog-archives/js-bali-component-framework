@@ -733,12 +733,12 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 // sequence: range | list | catalog
 FormattingVisitor.prototype.visitSequence = function(sequence) {
     // note: a range must be handled differently
-    if (sequence.isType('$Range')) {
+    if (sequence.isType('/bali/collections/Range')) {
         sequence.getFirst().acceptVisitor(this);
         this.result += '..';
         sequence.getLast().acceptVisitor(this);
     } else if (sequence.isEmpty()) {
-        if (sequence.isType('$Catalog')) {
+        if (sequence.isType('/bali/collections/Catalog')) {
             this.result += ':';  // empty catalog
         }
     } else {

@@ -29,7 +29,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Angle} The new angle element.
  */
 const Angle = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Angle', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Angle'],
+        ['/bali/interfaces/Scalable'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
@@ -88,23 +94,6 @@ exports.Angle = Angle;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Angle.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Scalable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this angle has a meaningful value. If the value is zero

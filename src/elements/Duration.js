@@ -30,7 +30,13 @@ const abstractions = require('../abstractions');
  * @returns {Duration} The new duration element.
  */
 const Duration = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Duration', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Duration'],
+        ['/bali/interfaces/Scalable'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
@@ -53,23 +59,6 @@ exports.Duration = Duration;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Duration.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Scalable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this duration has a meaningful value. If the value is zero

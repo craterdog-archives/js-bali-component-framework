@@ -28,7 +28,16 @@ const abstractions = require('../abstractions');
  * @returns {Text} The new text string.
  */
 const Text = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Text', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Text'],
+        [
+            '/bali/interfaces/Sequential',
+            '/bali/interfaces/Chainable'
+        ],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Text', '$Text', '$value', value, [
@@ -50,24 +59,6 @@ exports.Text = Text;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Text.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Sequential':
-        case '$Chainable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this text string has a meaningful value. If the text

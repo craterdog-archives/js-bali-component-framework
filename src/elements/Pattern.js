@@ -27,7 +27,13 @@ const abstractions = require('../abstractions');
  * @returns {Pattern} The new pattern element.
  */
 const Pattern = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Pattern', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Pattern'],
+        [],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
@@ -50,17 +56,6 @@ exports.Pattern = Pattern;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Pattern.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
 
 /**
  * This method returns whether or not this pattern has a meaningful value. If the value is '^none$'

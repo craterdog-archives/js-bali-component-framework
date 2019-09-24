@@ -29,7 +29,17 @@ const abstractions = require('../abstractions');
  * @returns {Binary} The new binary string.
  */
 const Binary = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Binary', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Binary'],
+        [
+            '/bali/interfaces/Logical',
+            '/bali/interfaces/Sequential',
+            '/bali/interfaces/Chainable'
+        ],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
@@ -52,25 +62,6 @@ exports.Binary = Binary;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Binary.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Logical':
-        case '$Sequential':
-        case '$Chainable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this binary string has a meaningful value. If the binary

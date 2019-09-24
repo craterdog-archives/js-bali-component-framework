@@ -21,14 +21,20 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new key-value association.
- * 
+ *
  * @param {String|Number|Boolean|Component} key The key of the association.
  * @param {String|Number|Boolean|Component} value The value associated with the key.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    abstractions.Composite.call(this, '$Association', debug);
+    abstractions.Composite.call(
+        this,
+        ['/bali/composites/Association'],
+        [],
+        undefined,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
@@ -93,7 +99,7 @@ exports.Association = Association;
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
- * 
+ *
  * @param {Visitor} visitor The visitor that wants to visit this association.
  */
 Association.prototype.acceptVisitor = function(visitor) {

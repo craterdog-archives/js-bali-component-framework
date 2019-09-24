@@ -32,7 +32,16 @@ const Angle = require('./Angle').Angle;
  * @returns {Complex} The new complex number.
  */
 const Complex = function(real, imaginary, parameters, debug) {
-    abstractions.Element.call(this, '$Number', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Number'],
+        [
+            '/bali/interfaces/Scalable',
+            '/bali/interfaces/Numerical'
+        ],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Number', '$Number', '$real', real, [
@@ -51,7 +60,7 @@ const Complex = function(real, imaginary, parameters, debug) {
     if (real === real) real = real || 0;  // default value if not NaN and not defined
     real = this.calculator.lockOnExtreme(real);
     if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined
-    if (imaginary.isComponent && imaginary.isType('$Angle')) {
+    if (imaginary.isComponent && imaginary.isType('/bali/elements/Angle')) {
         // convert polar to rectangular
         var magnitude = real;
         var phase = imaginary;
@@ -98,24 +107,6 @@ exports.Complex = Complex;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Complex.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Scalable':
-        case '$Numerical':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this complex number has a meaningful value. If the magnitude

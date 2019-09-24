@@ -30,7 +30,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Symbol', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Symbol'],
+        ['/bali/interfaces/Sequential'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
@@ -63,17 +69,6 @@ exports.Symbol = Symbol;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Symbol.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
-
-/**
  * This method returns whether or not this symbol has a meaningful value. Symbols
  * always have a meaningful value.
  *
@@ -91,4 +86,83 @@ Symbol.prototype.toBoolean = function() {
  */
 Symbol.prototype.acceptVisitor = function(visitor) {
     visitor.visitSymbol(this);
+};
+
+
+/**
+ * This method returns whether or not this version string has any levels.
+ *
+ * @returns {Boolean} Whether or not this version string has any levels.
+ */
+Symbol.prototype.isEmpty = function() {
+    return false;  // a version string requires at least one level
+};
+
+
+/**
+ * This method returns the number of levels that this version string has.
+ *
+ * @returns {Number} The number of levels that this version string has.
+ */
+Symbol.prototype.getSize = function() {
+    return this.getValue().length;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the levels in
+ * this version string.
+ * @returns {Iterator} An iterator for this version string.
+ */
+Symbol.prototype.getIterator = function() {
+    const iterator = new SymbolIterator(this.getValue());
+    return iterator;
+};
+
+
+// PRIVATE CLASSES
+
+const SymbolIterator = function(symbol) {
+    this.slot = 0;  // the slot before the first number
+    this.size = symbol.length;  // static so we can cache it here
+    this.symbol = symbol;
+    return this;
+};
+SymbolIterator.prototype.constructor = SymbolIterator;
+
+
+SymbolIterator.prototype.toStart = function() {
+    this.slot = 0;  // the slot before the first number
+};
+
+
+SymbolIterator.prototype.toSlot = function(slot) {
+    this.slot = slot;
+};
+
+
+SymbolIterator.prototype.toEnd = function() {
+    this.slot = this.size;  // the slot after the last number
+};
+
+
+SymbolIterator.prototype.hasPrevious = function() {
+    return this.slot > 0;
+};
+
+
+SymbolIterator.prototype.hasNext = function() {
+    return this.slot < this.size;
+};
+
+
+SymbolIterator.prototype.getPrevious = function() {
+    if (!this.hasPrevious()) return;
+    return this.symbol[--this.slot];
+};
+
+
+SymbolIterator.prototype.getNext = function() {
+    if (!this.hasNext()) return;
+    return this.symbol[this.slot++];
 };

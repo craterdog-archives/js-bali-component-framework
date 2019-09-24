@@ -21,7 +21,7 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a new validator object.
- * 
+ *
  * @param {Number} debug A number in the range [0..3].
  * @returns {Validator} The new validator.
  */
@@ -35,8 +35,8 @@ exports.Validator = Validator;
 
 /**
  * This method returns a string containing the Bali name for the type of the specified value.
- * 
- * @param {Any} value The value to be evaluated. 
+ *
+ * @param {Any} value The value to be evaluated.
  * @returns {String} A string containing the Bali name for the type of the specified value.
  */
 Validator.prototype.getType = function(value) {
@@ -63,43 +63,14 @@ Validator.prototype.getType = function(value) {
     if (!value.isComponent) return '/javascript/Object';
 
     // handle Bali component types
-    if (value.isType('$Angle')) return '/bali/elements/Angle';
-    if (value.isType('$Association')) return '/bali/composites/Association';
-    if (value.isType('$Binary')) return '/bali/elements/Binary';
-    if (value.isType('$Catalog')) return '/bali/collections/Catalog';
-    if (value.isType('$Duration')) return '/bali/elements/Duration';
-    if (value.isType('$Exception')) return '/bali/composites/Exception';
-    if (value.isType('$Iterator')) return '/bali/utilities/Iterator';
-    if (value.isType('$List')) return '/bali/collections/List';
-    if (value.isType('$Moment')) return '/bali/elements/Moment';
-    if (value.isType('$Name')) return '/bali/elements/Name';
-    if (value.isType('$Number')) return '/bali/elements/Number';
-    if (value.isType('$Parameters')) return '/bali/composites/Parameters';
-    if (value.isType('$Pattern')) return '/bali/elements/Pattern';
-    if (value.isType('$Percent')) return '/bali/elements/Percent';
-    if (value.isType('$Probability')) return '/bali/elements/Probability';
-    if (value.isType('$Procedure')) return '/bali/composites/Procedure';
-    if (value.isType('$Queue')) return '/bali/collections/Queue';
-    if (value.isType('$Range')) return '/bali/collections/Range';
-    if (value.isType('$Reference')) return '/bali/elements/Reference';
-    if (value.isType('$Reserved')) return '/bali/elements/Reserved';
-    if (value.isType('$Set')) return '/bali/collections/Set';
-    if (value.isType('$Stack')) return '/bali/collections/Stack';
-    if (value.isType('$Symbol')) return '/bali/elements/Symbol';
-    if (value.isType('$Tag')) return '/bali/elements/Tag';
-    if (value.isType('$Text')) return '/bali/elements/Text';
-    if (value.supportsInterface('$Procedural')) return '/bali/composites/Tree';
-    if (value.isType('$Version')) return '/bali/elements/Version';
-
-    // handle anything else
-    return '/javascript/' + (value.constructor ? value.constructor.name : 'Unknown');
+    return value.getType();
 };
 
 
 /**
  * This method compares the type of an argument value with the allowed types for that
  * argument and throws an exception if it does not match.
- * 
+ *
  * @param {String} moduleName The name of the module being called.
  * @param {String} procedureName The name of the procedure being called.
  * @param {String} argumentName The name of the argument being validated.
@@ -130,17 +101,14 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     const actualType = this.getType(argumentValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
     if (argumentValue && argumentValue.isComponent) {
-        if (allowedTypes.indexOf('/bali/abstractions/Component') > -1) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Element') > -1 && argumentValue.isElement()) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Composite') > -1 && argumentValue.isComposite()) return;
-        if (allowedTypes.indexOf('/bali/abstractions/Collection') > -1 && argumentValue.isCollection()) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Logical') > -1 && argumentValue.supportsInterface('$Logical')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Scalable') > -1 && argumentValue.supportsInterface('$Scalable')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Numerical') > -1 && argumentValue.supportsInterface('$Numerical')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Literal') > -1 && argumentValue.supportsInterface('$Literal')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Sequential') > -1 && argumentValue.supportsInterface('$Sequential')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Chainable') > -1 && argumentValue.supportsInterface('$Chainable')) return;
-        if (allowedTypes.indexOf('/bali/interfaces/Procedural') > -1 && argumentValue.supportsInterface('$Procedural')) return;
+        var foundIt = false;
+        argumentValue.getAncestry().forEach(function(ancestor) {
+            if (allowedTypes.indexOf(ancestor) > -1) foundIt = true;
+        });
+        argumentValue.getInterfaces().forEach(function(iface) {
+            if (allowedTypes.indexOf(iface) > -1) foundIt = true;
+        });
+        if (foundIt) return;
     }
 
     // the argument type is invalid

@@ -32,8 +32,8 @@ Array.prototype.peek = function() {
 /**
  * This function creates a new queue component with optional parameters that are
  * used to parameterize its type.
- * 
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ *
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Queue} The new queue.
  */
@@ -41,7 +41,14 @@ const Queue = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Queue/v1'
     }, debug);
-    abstractions.Collection.call(this, '$Queue', parameters, debug);
+
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/Queue'],
+        [],
+        parameters,
+        debug
+    );
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor
@@ -105,18 +112,18 @@ const Queue = function(parameters, debug) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.supportsInterface('$Sequential')) {
+            } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);

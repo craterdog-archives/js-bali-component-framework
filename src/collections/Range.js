@@ -24,15 +24,21 @@ const Exception = require('../composites/Exception').Exception;
 /**
  * This function creates a new range of items with optional parameters that are used
  * to parameterize its type.
- * 
+ *
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
- * @param {Parameters} parameters Optional parameters used to parameterize this range. 
+ * @param {Parameters} parameters Optional parameters used to parameterize this range.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new range.
  */
 const Range = function(first, last, parameters, debug) {
-    abstractions.Collection.call(this, '$Range', parameters, debug);
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/Range'],
+        [],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/collections/Range', '$Range', '$first', first, [
@@ -63,8 +69,8 @@ const Range = function(first, last, parameters, debug) {
         }
     } else {
         // the first and last items are indices into the range of integers
-        firstIndex = (first.isComponent && first.supportsInterface('$Numerical')) ? first.toNumber() : first;
-        lastIndex = (last.isComponent && last.supportsInterface('$Numerical')) ? last.toNumber() : last;
+        firstIndex = (first.isComponent && first.supportsInterface('/bali/interfaces/Numerical')) ? first.toNumber() : first;
+        lastIndex = (last.isComponent && last.supportsInterface('/bali/interfaces/Numerical')) ? last.toNumber() : last;
     }
 
     // to protect the attributes the methods are defined in the constructor
@@ -103,7 +109,7 @@ const Range = function(first, last, parameters, debug) {
     this.getSize = function() {
         return lastIndex - firstIndex + 1;
     };
-    
+
     this.getFirst = function() {
         var item;
         if (collection) {
@@ -115,7 +121,7 @@ const Range = function(first, last, parameters, debug) {
         }
         return item;
     };
-    
+
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -131,7 +137,7 @@ const Range = function(first, last, parameters, debug) {
         }
         return item;
     };
-    
+
     this.getLast = function() {
         var item;
         if (collection) {
@@ -143,7 +149,7 @@ const Range = function(first, last, parameters, debug) {
         }
         return item;
     };
-    
+
     this.isInRange = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -197,23 +203,23 @@ const RangeIterator = function(range, collection) {
     this.toStart = function() {
         currentSlot = 0;  // the slot before the first number
     };
-    
+
     this.toSlot = function(slot) {
         currentSlot = slot;
     };
-    
+
     this.toEnd = function() {
         currentSlot = size;  // the slot after the last number
     };
-    
+
     this.hasPrevious = function() {
         return currentSlot > 0;
     };
-    
+
     this.hasNext = function() {
         return currentSlot < size;
     };
-    
+
     this.getPrevious = function() {
         if (!this.hasPrevious()) return;
         currentSlot--;
@@ -226,7 +232,7 @@ const RangeIterator = function(range, collection) {
         }
         return item;
     };
-    
+
     this.getNext = function() {
         if (!this.hasNext()) return;
         const index = range.getFirstIndex() + currentSlot;
@@ -239,7 +245,7 @@ const RangeIterator = function(range, collection) {
         currentSlot++;
         return item;
     };
-    
+
     return this;
 };
 RangeIterator.prototype.constructor = RangeIterator;

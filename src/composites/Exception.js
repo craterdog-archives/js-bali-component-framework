@@ -33,8 +33,28 @@
  */
 const Exception = function(attributes, cause) {
 
-    // mark this as a component
+    const ancestry = [
+        '/bali/composites/Exception',
+        '/bali/abstractions/Composite',
+        '/bali/abstractions/Component'
+    ];
+    const type = ancestry[0];  // first type in the ancestry tree
+
+    const interfaces = ['/bali/interfaces/Comparable'];
+
     this.isComponent = true;
+
+    this.getType = function() {
+        return type;
+    };
+
+    this.getAncestry = function() {
+        return ancestry;
+    };
+
+    this.getInterfaces = function() {
+        return interfaces;
+    };
 
     // convert the attributes into a catalog
     if (attributes === null || typeof attributes !== 'object') attributes = {};
@@ -51,8 +71,6 @@ const Exception = function(attributes, cause) {
         // a stack trace is not supported on this platform
     }
 
-    this.getType = function() { return '$Exception'; };
-
     return this;
 };
 Exception.prototype = Object.create(Error.prototype);
@@ -64,13 +82,30 @@ exports.Exception = Exception;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component has the specified type.
+ * This method returns whether or not this component has the specified type in its ancestor chain.
  *
- * @param {String} type The symbol for the type in question.
+ * @param {String} type The name of the type in question.
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Exception.prototype.isType = function(type) {
-    return this.getType() === type;
+    this.getAncestry().forEach(function(ancestor) {
+        if (ancestor === type) return true;
+    });
+    return false;
+};
+
+
+/**
+ * This method returns whether or not this component supports the specified interface.
+ *
+ * @param {String} type The name of the interface in question.
+ * @returns {Boolean} Whether or not this component supports the specified interface.
+ */
+Exception.prototype.supportsInterface = function(iface) {
+    this.getInterfaces().forEach(function(candidate) {
+        if (candidate === iface) return true;
+    });
+    return false;
 };
 
 
@@ -80,47 +115,6 @@ Exception.prototype.isType = function(type) {
  * @returns {Boolean} Whether or not this component is parameterized.
  */
 Exception.prototype.isParameterized = function() {
-    return false;
-};
-
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Exception.prototype.supportsInterface = function(iface) {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component is an element.
- *
- * @returns {Boolean} Whether or not this component is an element.
- */
-Exception.prototype.isElement = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this component is a composite.
- *
- * @returns {Boolean} Whether or not this component is a composite.
- */
-Exception.prototype.isComposite = function() {
-    return true;
-};
-
-
-/**
- * This method determines whether or not this component is a collection.
- *
- * @returns {Boolean} Whether or not this component is a collection.
- */
-Exception.prototype.isCollection = function() {
     return false;
 };
 

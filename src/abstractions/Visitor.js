@@ -461,7 +461,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 // sequence: range | list | catalog
 Visitor.prototype.visitSequence = function(sequence) {
     // note: range is handled differently
-    if (sequence.isType('$Range')) {
+    if (sequence.isType('/bali/collections/Range')) {
         sequence.getFirst().acceptVisitor(this);
         sequence.getLast().acceptVisitor(this);
     } else if (sequence.getSize() > 0) {

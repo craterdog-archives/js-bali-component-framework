@@ -39,7 +39,13 @@ const composites = require('../composites');
  * @returns {List} The new list.
  */
 const List = function(parameters, debug) {
-    abstractions.Collection.call(this, '$List', parameters, debug);
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/List'],
+        ['/bali/interfaces/Chainable'],
+        parameters,
+        debug
+    );
 
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
@@ -59,7 +65,7 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
@@ -79,7 +85,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         item = this.convert(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -119,18 +125,18 @@ const List = function(parameters, debug) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.supportsInterface('$Sequential')) {
+            } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
@@ -164,7 +170,7 @@ const List = function(parameters, debug) {
             ]);
         }
         item = this.convert(item, this.debug);
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
 
@@ -196,7 +202,7 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index, array.length) - 1;  // JS uses zero based indexing
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         const oldItem = array[index];
         if (oldItem) array.splice(index, 1);
         return oldItem;
@@ -251,25 +257,6 @@ const List = function(parameters, debug) {
 List.prototype = Object.create(abstractions.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
-
-
-// PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-List.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Sequential':
-        case '$Chainable':
-            return true;
-        default:
-            return false;
-    }
-};
 
 
 // PUBLIC FUNCTIONS

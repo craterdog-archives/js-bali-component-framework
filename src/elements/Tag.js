@@ -30,7 +30,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Tag} The new tag element.
  */
 const Tag = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Tag', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Tag'],
+        [],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
@@ -70,17 +76,6 @@ exports.Tag = Tag;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Tag.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
 
 /**
  * This method returns whether or not this tag has a meaningful value. Tags always have

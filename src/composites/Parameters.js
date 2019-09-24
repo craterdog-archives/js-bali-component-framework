@@ -21,13 +21,19 @@ const abstractions = require('../abstractions');
 
 /**
  * This function creates a new parameter component.
- * 
+ *
  * @param {Object|Catalog} parameters An object containing the parameter symbol-value pairs.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Parameters} The new parameter component.
  */
 const Parameters = function(parameters, debug) {
-    abstractions.Composite.call(this, '$Parameters', undefined, debug);
+    abstractions.Composite.call(
+        this,
+        ['/bali/composites/Parameters'],
+        [],
+        undefined,
+        debug
+    );
 
     // the parameters are immutable so the methods are included in the constructor
     const catalog = this.convert(parameters, this.debug);
@@ -50,7 +56,7 @@ const Parameters = function(parameters, debug) {
     this.acceptVisitor = function(visitor) {
         visitor.visitParameters(this);
     };
-    
+
     return this;
 };
 Parameters.prototype = Object.create(abstractions.Composite.prototype);

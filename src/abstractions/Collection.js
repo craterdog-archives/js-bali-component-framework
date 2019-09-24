@@ -21,16 +21,23 @@ const Exception = require('../composites/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new collection component of the specified type with the optional
- * parameters that are used to parameterize its type.
+ * This function creates a new collection component with the specified ancestry and interfaces
+ * candidate with any optional parameters that are used to parameterize its type.
  *
- * @param {String} type The type of collection.
+ * @param {Array} ancestry An array of type names that make up the ancestry for the component.
+ * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Parameters} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
  */
-const Collection = function(type, parameters, debug) {
-    Composite.call(this, type, parameters, debug);
+const Collection = function(ancestry, interfaces, parameters, debug) {
+    Composite.call(
+        this,
+        ancestry.concat('/bali/abstractions/Collection'),
+        interfaces.concat('/bali/interfaces/Sequential'),
+        parameters,
+        debug
+    );
     return this;
 };
 Collection.prototype = Object.create(Composite.prototype);
@@ -39,27 +46,6 @@ exports.Collection = Collection;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Collection.prototype.supportsInterface = function(iface) {
-    return iface === '$Sequential';
-};
-
-
-/**
- * This method determines whether or not this component is a collection.
- *
- * @returns {Boolean} Whether or not this component is a collection.
- */
-Collection.prototype.isCollection = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -97,24 +83,6 @@ Collection.prototype.toArray = function() {
  */
 Collection.prototype.isEmpty = function() {
     return this.getSize() === 0;
-};
-
-
-/**
- * This abstract method returns the number of subcomponents that this collection component has.
- * It must be implemented by a subclass.
- *
- * @returns {Number} The number of subcomponents that this collection component has.
- */
-Collection.prototype.getSize = function() {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
-        $procedure: '$getSize',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
 };
 
 

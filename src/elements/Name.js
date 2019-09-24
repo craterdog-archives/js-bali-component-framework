@@ -30,7 +30,16 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Symbol} The new name string element.
  */
 const Name = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Name', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Name'],
+        [
+            '/bali/interfaces/Sequential',
+            '/bali/interfaces/Chainable'
+        ],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$Name', '$value', value, [
@@ -51,7 +60,7 @@ const Name = function(value, parameters, debug) {
     }
 
     // since this element is immutable the value must be read-only
-    this.getValue = function() { return value.slice(0); };  // return a copy
+    this.getValue = function() { return value.slice(); };  // return a copy
 
     return this;
 };
@@ -61,24 +70,6 @@ exports.Name = Name;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Name.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Sequential':
-        case '$Chainable':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this name string has a meaningful value. Name

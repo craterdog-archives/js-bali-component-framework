@@ -32,8 +32,8 @@ Array.prototype.peek = function() {
 /**
  * This function creates a new stack component with optional parameters that are
  * used to parameterize its type.
- * 
- * @param {Parameters} parameters Optional parameters used to parameterize this collection. 
+ *
+ * @param {Parameters} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Stack} The new stack.
  */
@@ -41,7 +41,14 @@ const Stack = function(parameters, debug) {
     parameters = parameters || new composites.Parameters({
         $type: '/bali/collections/Stack/v1'
     }, debug);
-    abstractions.Collection.call(this, '$Stack', parameters, debug);
+
+    abstractions.Collection.call(
+        this,
+        ['/bali/collections/Stack'],
+        [],
+        parameters,
+        debug
+    );
 
     // the capacity and array are private attributes so methods that use it are
     // defined in the constructor
@@ -55,11 +62,11 @@ const Stack = function(parameters, debug) {
     this.toArray = function() {
         return array.slice();  // copy the array
     };
-    
+
     this.getSize = function() {
         return array.length;
     };
-    
+
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -88,7 +95,7 @@ const Stack = function(parameters, debug) {
         array.push(item);
         return true;
     };
-    
+
     this.addItems = function(items) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -104,18 +111,18 @@ const Stack = function(parameters, debug) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
                     count++;
                 }, this);
-            } else if (items.supportsInterface('$Sequential')) {
+            } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.convert(item, this.debug);
-                    if (item.isType('$Association')) {
+                    if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
                     this.addItem(item);
@@ -145,7 +152,7 @@ const Stack = function(parameters, debug) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     };
-    
+
     this.getTop = function() {
         if (array.length > 0) {
             return array.peek();
@@ -159,11 +166,11 @@ const Stack = function(parameters, debug) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     };
-    
+
     this.deleteAll = function() {
         array.splice(0);
     };
-    
+
     return this;
 };
 Stack.prototype = Object.create(abstractions.Collection.prototype);

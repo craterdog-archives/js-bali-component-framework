@@ -30,7 +30,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Symbol} The new version string element.
  */
 const Version = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Version', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Version'],
+        ['/bali/interfaces/Sequential'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$Version', '$value', value, [
@@ -53,7 +59,7 @@ const Version = function(value, parameters, debug) {
     }
 
     // since this element is immutable the value must be read-only
-    this.getValue = function() { return value.slice(0); };  // return a copy
+    this.getValue = function() { return value.slice(); };  // return a copy
 
     return this;
 };
@@ -63,23 +69,6 @@ exports.Version = Version;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Version.prototype.supportsInterface = function(iface) {
-    switch (iface) {
-        case '$Literal':
-        case '$Sequential':
-            return true;
-        default:
-            return false;
-    }
-};
-
 
 /**
  * This method returns whether or not this version string has a meaningful value. Version

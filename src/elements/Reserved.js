@@ -30,7 +30,13 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Reserved} The new reserved identifier.
  */
 const Reserved = function(value, parameters, debug) {
-    abstractions.Element.call(this, '$Reserved', parameters, debug);
+    abstractions.Element.call(
+        this,
+        ['/bali/elements/Reserved'],
+        ['/bali/interfaces/Sequential'],
+        parameters,
+        debug
+    );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Reserved', '$Reserved', '$value', value, [
@@ -63,17 +69,6 @@ exports.Reserved = Reserved;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The symbol for the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Reserved.prototype.supportsInterface = function(iface) {
-    return iface === '$Literal';
-};
-
-
-/**
  * This method returns whether or not this reserved symbol has a meaningful value. Reserved
  * symbols always have a meaningful value.
  *
@@ -91,4 +86,83 @@ Reserved.prototype.toBoolean = function() {
  */
 Reserved.prototype.acceptVisitor = function(visitor) {
     visitor.visitReserved(this);
+};
+
+
+/**
+ * This method returns whether or not this version string has any levels.
+ *
+ * @returns {Boolean} Whether or not this version string has any levels.
+ */
+Reserved.prototype.isEmpty = function() {
+    return false;  // a version string requires at least one level
+};
+
+
+/**
+ * This method returns the number of levels that this version string has.
+ *
+ * @returns {Number} The number of levels that this version string has.
+ */
+Reserved.prototype.getSize = function() {
+    return this.getValue().length;
+};
+
+
+/**
+ * This method returns an object that can be used to iterate over the levels in
+ * this version string.
+ * @returns {Iterator} An iterator for this version string.
+ */
+Reserved.prototype.getIterator = function() {
+    const iterator = new ReservedIterator(this.getValue());
+    return iterator;
+};
+
+
+// PRIVATE CLASSES
+
+const ReservedIterator = function(symbol) {
+    this.slot = 0;  // the slot before the first number
+    this.size = symbol.length;  // static so we can cache it here
+    this.symbol = symbol;
+    return this;
+};
+ReservedIterator.prototype.constructor = ReservedIterator;
+
+
+ReservedIterator.prototype.toStart = function() {
+    this.slot = 0;  // the slot before the first number
+};
+
+
+ReservedIterator.prototype.toSlot = function(slot) {
+    this.slot = slot;
+};
+
+
+ReservedIterator.prototype.toEnd = function() {
+    this.slot = this.size;  // the slot after the last number
+};
+
+
+ReservedIterator.prototype.hasPrevious = function() {
+    return this.slot > 0;
+};
+
+
+ReservedIterator.prototype.hasNext = function() {
+    return this.slot < this.size;
+};
+
+
+ReservedIterator.prototype.getPrevious = function() {
+    if (!this.hasPrevious()) return;
+    return this.symbol[--this.slot];
+};
+
+
+ReservedIterator.prototype.getNext = function() {
+    if (!this.hasNext()) return;
+    return this.symbol[this.slot++];
 };

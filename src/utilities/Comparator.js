@@ -113,10 +113,10 @@ const natural = function(first, second) {
     if (typeof first === 'string' && typeof second === 'string') {
         return Math.sign(first.localeCompare(second));
     }
-    if (first.isComponent && first.supportsInterface('$Literal') && typeof second === 'string') {
+    if (first.isComponent && first.supportsInterface('/bali/interfaces/Literal') && typeof second === 'string') {
         return Math.sign(first.toString().localeCompare(second));
     }
-    if (typeof first === 'string' && second.isComponent && second.supportsInterface('$Literal')) {
+    if (typeof first === 'string' && second.isComponent && second.supportsInterface('/bali/interfaces/Literal')) {
         return Math.sign(first.localeCompare(second.toString()));
     }
 
