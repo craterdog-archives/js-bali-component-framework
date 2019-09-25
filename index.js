@@ -103,10 +103,10 @@ composites.Exception.prototype.convert = convert;
  * </pre>
  * Note: Each level also includes the actions of each lower level so the performance hit is
  * cumulative.
- * 
+ *
  * Each function exposed by the interface also supports an optional debug argument as its last
  * argument. If specified, it will override the value specified for the entire interface.
- * 
+ *
  * @param {Boolean|Number} defaultLevel An optional number in the range [0..3] that controls
  * the level of debugging that occurs:
  * <pre>
@@ -177,13 +177,13 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Angle.arctangent(opposite, adjacent, debug);
     };
-    
+
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new composites.Association(key, value, debug);
     };
-    
+
     // BINARY
     const binary = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -213,7 +213,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Binary.concatenation(first, second, debug);
     };
-    
+
     // CATALOG
     const catalog = function(associations, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -229,32 +229,32 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return collections.Catalog.extraction(catalog, keys, debug);
     };
-    
+
     // COMPONENT
     const component = function(document, debug) {
         if (debug === undefined) debug = defaultLevel;
         const parser = new utilities.Parser(debug);
         return parser.parseDocument(document);
     };
-    
+
     // CONFIGURATOR
     const configurator = function(filename, directory, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Configurator(filename, directory, debug);
     };
-    
+
     // CONTROLLER
     const controller = function(eventTypes, nextStates, currentState, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Controller(eventTypes, nextStates, currentState, debug);
     };
-    
+
     // DECODER
     const decoder = function(indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Decoder(indentation, debug);
     };
-    
+
     // DURATION
     const duration = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -276,7 +276,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Duration.scaled(duration, factor, debug);
     };
-    
+
     // EXCEPTION
     const exception = function(attributes, cause, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -292,19 +292,19 @@ exports.api = function(defaultLevel) {
         }
         return error;
     };
-    
+
     // GENERATOR
     const generator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Generator(debug);
     };
-    
+
     // ITERATOR
     const iterator = function(array, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Iterator(array, debug);
     };
-    
+
     // LIST
     const list = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -316,7 +316,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return collections.List.concatenation(first, second, debug);
     };
-    
+
     // MOMENT
     const moment = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -334,7 +334,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Moment.later(moment, duration, debug);
     };
-    
+
     // NAME
     const name = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -344,7 +344,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Name.concatenation(first, second, debug);
     };
-    
+
     // NUMBER
     const number = function(real, imaginary, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -398,19 +398,19 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Number.sum(first, second, debug);
     };
-    
+
     // PARAMETERS
     const parameters = function(object, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new composites.Parameters(object, debug);
     };
-    
+
     // PATTERN
     const pattern = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Pattern(value, parameters, debug);
     };
-    
+
     // PERCENT
     const percent = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -432,7 +432,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Percent.scaled(percent, factor, debug);
     };
-    
+
     // PROBABILITY
     const probability = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -462,7 +462,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Probability.xor(first, second, debug);
     };
-    
+
     // QUEUE
     const queue = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -470,23 +470,23 @@ exports.api = function(defaultLevel) {
         collection.addItems(items);
         return collection;
     };
-    
+
     // RANGE
     const range = function(first, last, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new collections.Range(first, last, parameters, debug);
     };
-    
+
     // REFERENCE
     const reference = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Reference(value, parameters, debug);
     };
-    
+
     // SET
-    const set = function(items, algorithm, parameters, debug) {
+    const set = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const collection = new collections.Set(parameters, algorithm, debug);
+        const collection = new collections.Set(parameters, debug);
         collection.addItems(items);
         return collection;
     };
@@ -506,7 +506,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return collections.Set.xor(first, second, debug);
     };
-    
+
     // STACK
     const stack = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -514,19 +514,19 @@ exports.api = function(defaultLevel) {
         collection.addItems(items);
         return collection;
     };
-    
+
     // SYMBOL
     const symbol = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Symbol(value, parameters, debug);
     };
-    
+
     // TAG
     const tag = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Tag(value, parameters, debug);
     };
-    
+
     // TEXT
     const text = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -536,45 +536,45 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Text.concatenation(first, second, debug);
     };
-    
+
     // TYPE
     const type = function(value, debug) {
         if (debug === undefined) debug = defaultLevel;
         const type = new utilities.Validator(debug).getType(value);
         return new elements.Name(type, undefined, debug);
     };
-    
+
     // VALIDATOR
     const validator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Validator(debug);
     };
-    
+
     // VERSION
     const version = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Version(value, parameters, debug);
     };
-    
+
     // VISITOR
     const visitor = function() {
         return abstractions.Visitor;
     };
-    
+
 
     /*
      * This section defines constants for common components
      */
     angle.PI = component('~pi', defaultLevel);
-    
+
     angle.DEGREES = parameters({$units: '$degrees'}, defaultLevel);
     angle.RADIANS = parameters({$units: '$radians'}, defaultLevel);
-    
+
     binary.BASE2 = parameters({$encoding: '$base2'}, defaultLevel);
     binary.BASE16 = parameters({$encoding: '$base16'}, defaultLevel);
     binary.BASE32 = parameters({$encoding: '$base32'}, defaultLevel);
     binary.BASE64 = parameters({$encoding: '$base64'}, defaultLevel);
-    
+
     number.UNDEFINED = component('undefined', defaultLevel);
     number.ZERO = component('0', defaultLevel);
     number.ONE = component('1', defaultLevel);
@@ -582,13 +582,13 @@ exports.api = function(defaultLevel) {
     number.E = component('e', defaultLevel);
     number.INFINITY = component('infinity', defaultLevel);
     number.I = component('1i', defaultLevel);
-    
+
     number.POLAR = parameters({$format: '$polar'}, defaultLevel);
     number.RECTANGULAR = parameters({$format: '$rectangular'}, defaultLevel);
-    
+
     pattern.ANY = component('any', defaultLevel);
     pattern.NONE = component('none', defaultLevel);
-    
+
     probability.FALSE = component('false', defaultLevel);
     probability.TRUE = component('true', defaultLevel);
 

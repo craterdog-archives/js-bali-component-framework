@@ -90,19 +90,19 @@ Reserved.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this version string has any levels.
+ * This method returns whether or not this reserved symbol is empty.
  *
- * @returns {Boolean} Whether or not this version string has any levels.
+ * @returns {Boolean} Whether or not this reserved symbol is empty.
  */
 Reserved.prototype.isEmpty = function() {
-    return false;  // a version string requires at least one level
+    return false;  // a reserved symbol may never be empty
 };
 
 
 /**
- * This method returns the number of levels that this version string has.
+ * This method returns the number of characters in this reserved symbol.
  *
- * @returns {Number} The number of levels that this version string has.
+ * @returns {Number} The number of characters in this reserved symbol.
  */
 Reserved.prototype.getSize = function() {
     return this.getValue().length;
@@ -110,9 +110,9 @@ Reserved.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the levels in
- * this version string.
- * @returns {Iterator} An iterator for this version string.
+ * This method returns an object that can be used to iterate over the characters in
+ * this reserved symbol.
+ * @returns {Iterator} An iterator for this reserved symbol.
  */
 Reserved.prototype.getIterator = function() {
     const iterator = new ReservedIterator(this.getValue());
