@@ -85,7 +85,7 @@ const Stack = function(parameters, debug) {
             if (this.debug > 0) console.error(exception.toString());
             throw exception;
         }
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         array.push(item);
         return true;
     };
@@ -104,7 +104,7 @@ const Stack = function(parameters, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
@@ -115,7 +115,7 @@ const Stack = function(parameters, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }

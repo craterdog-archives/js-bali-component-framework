@@ -58,7 +58,7 @@ const Exception = function(attributes, cause) {
 
     // convert the attributes into a catalog
     if (attributes === null || typeof attributes !== 'object') attributes = {};
-    this.attributes = this.convert(attributes);
+    this.attributes = this.componentize(attributes);
 
     // set the error message and cause
     this.message = attributes['$text'] || 'An undefined exception occurred.';

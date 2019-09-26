@@ -52,8 +52,8 @@ const Range = function(first, last, parameters, debug) {
             '/bali/abstractions/Component'
         ]);
     }
-    first = this.convert(first, this.debug);
-    last = this.convert(last, this.debug);
+    first = this.componentize(first, this.debug);
+    last = this.componentize(last, this.debug);
 
     // the range is immutable so the collection is private and the indices must be read-only
     var firstIndex;

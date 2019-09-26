@@ -54,7 +54,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
 
     interfaces = interfaces.concat('/bali/interfaces/Comparable');
 
-    if (parameters) parameters = this.convert(parameters, this.debug);
+    if (parameters) parameters = this.componentize(parameters, this.debug);
 
     this.isComponent = true;
 
@@ -297,7 +297,7 @@ Component.prototype.getHash = function() {
 
 
 Component.prototype.duplicate = function(parameters) {
-    if (parameters) parameters = this.convert(parameters);
+    if (parameters) parameters = this.componentize(parameters);
     const duplicator = new utilities.Duplicator(this.debug);
     return duplicator.duplicateComponent(this, parameters);
 };

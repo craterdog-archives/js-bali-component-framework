@@ -86,7 +86,7 @@ const List = function(parameters, debug) {
             ]);
         }
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
         return oldItem;
@@ -105,7 +105,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         array.push(item);
         return true;
     };
@@ -124,7 +124,7 @@ const List = function(parameters, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
@@ -135,7 +135,7 @@ const List = function(parameters, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
@@ -169,7 +169,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };

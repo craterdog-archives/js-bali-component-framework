@@ -31,10 +31,10 @@ utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on ever
  * imported. Just to be safe, this function does not depend on any functions defined later
  * in this file, even though that should not matter. When possible circular dependencies
  * are involved we can't be too careful!  Also, no exceptions are thrown by this function
- * since the Exception class calls the convert function on its attributes and again we
+ * since the Exception class calls the componentize function on its attributes and again we
  * want to avoid circular dependencies.
  */
-const convert = function(value, debug) {
+const componentize = function(value, debug) {
     if (value === null) value = undefined;
     if (debug === null || debug === undefined) debug = 0;  // default is off
     var component;
@@ -84,8 +84,8 @@ const convert = function(value, debug) {
     }
     return component;
 };
-abstractions.Component.prototype.convert = convert;
-composites.Exception.prototype.convert = convert;
+abstractions.Component.prototype.componentize = componentize;
+composites.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE

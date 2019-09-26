@@ -61,7 +61,7 @@ const Tree = function(type, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        child = this.convert(child, this.debug);
+        child = this.componentize(child, this.debug);
         array.push(child);
         child.getParent = function() { return this; };
     };

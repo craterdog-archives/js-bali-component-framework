@@ -77,7 +77,7 @@ const Set = function(parameters, debug) {
             ]);
         }
         var index = 0;
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         index = tree.index(item) + 1;  // convert to ordinal based indexing
         return index;
     };
@@ -106,7 +106,7 @@ const Set = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         return tree.insert(item);
     };
 
@@ -124,7 +124,7 @@ const Set = function(parameters, debug) {
         if (items) {
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
@@ -135,7 +135,7 @@ const Set = function(parameters, debug) {
                 const iterator = items.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.convert(item, this.debug);
+                    item = this.componentize(item, this.debug);
                     if (item.isType('/bali/composites/Association')) {
                         item = item.getValue();
                     }
@@ -166,7 +166,7 @@ const Set = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.convert(item, this.debug);
+        item = this.componentize(item, this.debug);
         return tree.remove(item);
     };
 
