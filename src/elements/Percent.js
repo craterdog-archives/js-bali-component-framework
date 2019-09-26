@@ -23,7 +23,7 @@ const abstractions = require('../abstractions');
  * This function creates a new percent element using the specified value.
  *
  * @param {Number} value The value of the percent.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Percent} The new percent element.
  */

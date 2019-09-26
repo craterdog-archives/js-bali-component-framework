@@ -46,8 +46,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {
             expect(
                 function() {
-                    const parameters = bali.parameters({$encoding: '$base25'});
-                    const bad = bali.binary(expected, parameters);
+                    const bad = bali.binary(expected, {$encoding: '$base25'});
                     bad.toString();
                 }
             ).to.throw();

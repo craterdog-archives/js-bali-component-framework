@@ -34,7 +34,7 @@ const composites = require('../composites');
  * This function creates a new list component with optional parameters that are
  * used to parameterize its type.
  *
- * @param {Parameters} parameters Optional parameters used to parameterize this list.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this list.
  * @param {Number} debug A number in the range [0..3].
  * @returns {List} The new list.
  */

@@ -34,7 +34,7 @@ const MAXIMUM_LENGTH = 25;
 
 /**
  * This function creates a new formatter object that can be used to format components.
- * 
+ *
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero.
  * @param {Number} debug A number in the range [0..3].
@@ -276,6 +276,19 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 };
 
 
+// component: value parameters?
+FormattingVisitor.prototype.visitComponent = function(component) {
+    const parameters = component.getParameters();
+    if (parameters) {
+        this.inline++;
+        this.result += '(';
+        this.visitSequence(parameters);
+        this.result += ')';
+        this.inline--;
+    }
+};
+
+
 // concatenationExpression: expression '&' expression
 FormattingVisitor.prototype.visitConcatenationExpression = function(tree) {
     this.inline++;
@@ -512,7 +525,7 @@ FormattingVisitor.prototype.visitName = function(name) {
 //    'infinity' |
 //    real |
 //    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')' 
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 FormattingVisitor.prototype.visitNumber = function(number) {
     const format = this.getFormat(number, '$format', '$rectangular');
     if (number.isUndefined()) {
@@ -546,37 +559,6 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         this.result += ')';
     }
     this.visitComponent(number);  // format any parameterization
-};
-
-
-// parameters: '(' catalog ')'
-FormattingVisitor.prototype.visitParameters = function(parameters) {
-    // parameters don't allow access to the catalog so interate through manually assuming
-    // one parameter per line
-    this.result += '(';
-    const keys = parameters.getKeys();
-    const iterator = keys.getIterator();
-    if (keys.getSize() > 1) {
-        this.depth++;
-        while (iterator.hasNext()) {
-            this.result += this.getNewline();
-            const key = iterator.getNext();
-            const value = parameters.getValue(key);
-            key.acceptVisitor(this);
-            this.result += ': ';
-            value.acceptVisitor(this);
-        }
-        this.depth--;
-        this.result += this.getNewline();
-    } else {
-        // for just one parameter, inline it
-        const key = iterator.getNext();
-        const value = parameters.getValue(key);
-        key.acceptVisitor(this);
-        this.result += ': ';
-        value.acceptVisitor(this);
-    }
-    this.result += ')';
 };
 
 
@@ -942,4 +924,3 @@ const formatImaginary = function(value) {
             return literal + 'i';
     }
 };
-

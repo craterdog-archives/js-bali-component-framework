@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new name element using the specified value.
  *
  * @param {Array} value An array containing the parts of the name string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new name string element.
  */

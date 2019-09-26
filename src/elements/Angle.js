@@ -24,7 +24,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates an immutable instance of an angle using the specified value.
  *
  * @param {Number} value The value of the angle.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The new angle element.
  */
@@ -60,12 +60,10 @@ const Angle = function(value, parameters, debug) {
 
     // convert the value if necessary
     this.calculator = new utilities.Calculator(this.debug);
-    if (parameters) {
-        const units = parameters.getValue('$units');
-        if (units && units.toString() === '$degrees') {
-            // convert degrees to radians
-            value = this.calculator.quotient(this.calculator.product(value, Math.PI), 180);
-        }
+    const units = this.getParameter('$units');
+    if (units && units.toString() === '$degrees') {
+        // convert degrees to radians
+        value = this.calculator.quotient(this.calculator.product(value, Math.PI), 180);
     }
 
     // lock onto pi if appropriate

@@ -27,7 +27,7 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
- * @param {Parameters} parameters Optional parameters used to parameterize this range.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this range.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new range.
  */
@@ -59,14 +59,12 @@ const Range = function(first, last, parameters, debug) {
     var firstIndex;
     var lastIndex;
     var collection;
-    if (parameters) {
-        // parameters are immutable so we don't need to copy the collection
-        collection = parameters.getValue('$collection');
-        if (collection) {
-            // determine the indices of the items in the collection
-            firstIndex = collection.getIndex(first);
-            lastIndex = collection.getIndex(last);
-        }
+    // parameters are immutable so we don't need to copy the collection
+    collection = this.getParameter('$collection');
+    if (collection) {
+        // determine the indices of the items in the collection
+        firstIndex = collection.getIndex(first);
+        lastIndex = collection.getIndex(last);
     } else {
         // the first and last items are indices into the range of integers
         firstIndex = (first.isComponent && first.supportsInterface('/bali/interfaces/Numerical')) ? first.toNumber() : first;

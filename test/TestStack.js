@@ -39,8 +39,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
         });
 
         it('should create an empty stack with small capacity', function() {
-            const parameters = bali.parameters({$capacity: 1});
-            const stack = bali.stack([], parameters);
+            const stack = bali.stack([], {$capacity: 1});
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

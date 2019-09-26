@@ -25,7 +25,7 @@ const EOL = '\n';
 
 /**
  * This function creates a new duplicator object.
- * 
+ *
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duplicator} The new component duplicator.
  */
@@ -40,7 +40,8 @@ const Duplicator = function(debug) {
             ]);
             validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
                 '/javascript/Undefined',
-                '/bali/composites/Parameters'
+                '/javascript/Object',
+                '/bali/collections/Catalog'
             ]);
         }
         const visitor = new DuplicatingVisitor(parameters, debug);
@@ -429,7 +430,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 //    'infinity' |
 //    real |
 //    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')' 
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitComponent(number);
     const parameters = this.getParameters();

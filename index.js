@@ -44,8 +44,7 @@ const convert = function(value, debug) {
             break;
         case 'boolean':
             value = value ? 1 : 0;  // convert to probability
-            const parameters = new composites.Parameters({$granularity: '$boolean'}, debug);
-            component = new elements.Probability(value, parameters, debug);
+            component = new elements.Probability(value, {$granularity: '$boolean'}, debug);
             break;
         case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
             component = new elements.Number(value, undefined, undefined, debug);
@@ -399,12 +398,6 @@ exports.api = function(defaultLevel) {
         return elements.Number.sum(first, second, debug);
     };
 
-    // PARAMETERS
-    const parameters = function(object, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new composites.Parameters(object, debug);
-    };
-
     // PATTERN
     const pattern = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -567,13 +560,13 @@ exports.api = function(defaultLevel) {
      */
     angle.PI = component('~pi', defaultLevel);
 
-    angle.DEGREES = parameters({$units: '$degrees'}, defaultLevel);
-    angle.RADIANS = parameters({$units: '$radians'}, defaultLevel);
+    angle.DEGREES = {$units: '$degrees'};
+    angle.RADIANS = {$units: '$radians'};
 
-    binary.BASE2 = parameters({$encoding: '$base2'}, defaultLevel);
-    binary.BASE16 = parameters({$encoding: '$base16'}, defaultLevel);
-    binary.BASE32 = parameters({$encoding: '$base32'}, defaultLevel);
-    binary.BASE64 = parameters({$encoding: '$base64'}, defaultLevel);
+    binary.BASE2 = {$encoding: '$base2'};
+    binary.BASE16 = {$encoding: '$base16'};
+    binary.BASE32 = {$encoding: '$base32'};
+    binary.BASE64 = {$encoding: '$base64'};
 
     number.UNDEFINED = component('undefined', defaultLevel);
     number.ZERO = component('0', defaultLevel);
@@ -583,8 +576,8 @@ exports.api = function(defaultLevel) {
     number.INFINITY = component('infinity', defaultLevel);
     number.I = component('1i', defaultLevel);
 
-    number.POLAR = parameters({$format: '$polar'}, defaultLevel);
-    number.RECTANGULAR = parameters({$format: '$rectangular'}, defaultLevel);
+    number.POLAR = {$format: '$polar'};
+    number.RECTANGULAR = {$format: '$rectangular'};
 
     pattern.ANY = component('any', defaultLevel);
     pattern.NONE = component('none', defaultLevel);
@@ -609,7 +602,6 @@ exports.api = function(defaultLevel) {
         moment: moment,
         name: name,
         number: number,
-        parameters: parameters,
         pattern: pattern,
         percent: percent,
         probability: probability,

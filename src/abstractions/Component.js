@@ -26,7 +26,7 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Parameters} parameters Optional parameters used to parameterize this component.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this component.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Component} The new component.
  */
@@ -44,7 +44,8 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         ]);
         validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
             '/javascript/Undefined',
-            '/bali/composites/Parameters'
+            '/javascript/Object',
+            '/bali/collections/Catalog'
         ]);
     }
 
@@ -52,6 +53,8 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     const type = ancestry[0];  // first type in the ancestry tree
 
     interfaces = interfaces.concat('/bali/interfaces/Comparable');
+
+    if (parameters) parameters = this.convert(parameters, this.debug);
 
     this.isComponent = true;
 
@@ -294,6 +297,7 @@ Component.prototype.getHash = function() {
 
 
 Component.prototype.duplicate = function(parameters) {
+    if (parameters) parameters = this.convert(parameters);
     const duplicator = new utilities.Duplicator(this.debug);
     return duplicator.duplicateComponent(this, parameters);
 };

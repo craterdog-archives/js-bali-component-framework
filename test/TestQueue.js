@@ -39,8 +39,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
         });
 
         it('should create an empty queue with small capacity', function() {
-            const parameters = bali.parameters({$capacity: 3});
-            const queue = bali.queue([], parameters);
+            const queue = bali.queue([], {$capacity: 3});
             var size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

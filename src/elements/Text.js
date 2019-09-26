@@ -23,7 +23,7 @@ const abstractions = require('../abstractions');
  * This function creates a new text string element using the specified value.
  *
  * @param {String} value The value of the text string.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Text} The new text string.
  */

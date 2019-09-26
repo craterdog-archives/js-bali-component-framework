@@ -24,7 +24,7 @@ const Component = require('./Component').Component;
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Element} The new element.
  */

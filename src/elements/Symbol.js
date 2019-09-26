@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new symbol element using the specified value.
  *
  * @param {String} value The value of the symbol.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new symbol element.
  */
@@ -90,19 +90,19 @@ Symbol.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this version string has any levels.
+ * This method returns whether or not this symbol is empty.
  *
- * @returns {Boolean} Whether or not this version string has any levels.
+ * @returns {Boolean} Whether or not this symbol is empty.
  */
 Symbol.prototype.isEmpty = function() {
-    return false;  // a version string requires at least one level
+    return false;  // a symbol may never be empty
 };
 
 
 /**
- * This method returns the number of levels that this version string has.
+ * This method returns the number of characters in this symbol.
  *
- * @returns {Number} The number of levels that this version string has.
+ * @returns {Number} The number of characters in this symbol.
  */
 Symbol.prototype.getSize = function() {
     return this.getValue().length;
@@ -110,9 +110,9 @@ Symbol.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the levels in
- * this version string.
- * @returns {Iterator} An iterator for this version string.
+ * This method returns an object that can be used to iterate over the characters in
+ * this symbol.
+ * @returns {Iterator} An iterator for this symbol.
  */
 Symbol.prototype.getIterator = function() {
     const iterator = new SymbolIterator(this.getValue());
@@ -123,7 +123,7 @@ Symbol.prototype.getIterator = function() {
 // PRIVATE CLASSES
 
 const SymbolIterator = function(symbol) {
-    this.slot = 0;  // the slot before the first number
+    this.slot = 0;  // the slot before the first character
     this.size = symbol.length;  // static so we can cache it here
     this.symbol = symbol;
     return this;
@@ -132,7 +132,7 @@ SymbolIterator.prototype.constructor = SymbolIterator;
 
 
 SymbolIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
+    this.slot = 0;  // the slot before the first character
 };
 
 
@@ -142,7 +142,7 @@ SymbolIterator.prototype.toSlot = function(slot) {
 
 
 SymbolIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
+    this.slot = this.size;  // the slot after the last character
 };
 
 

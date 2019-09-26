@@ -713,8 +713,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-    const parameters = new composites.Parameters(catalog, this.debug);
-    this.result = parameters;
+    this.result = catalog;
 };
 
 

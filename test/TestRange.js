@@ -48,8 +48,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
                 '$eighth',
                 '$nineth'
             ]);
-            const parameters = bali.parameters({$collection: list});
-            const range = bali.range('$third', '$seventh', parameters);
+            const range = bali.range('$third', '$seventh', {$collection: list});
             expect(range).to.exist;  // jshint ignore:line
             const size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line

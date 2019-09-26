@@ -33,15 +33,12 @@ Array.prototype.peek = function() {
  * This function creates a new stack component with optional parameters that are
  * used to parameterize its type.
  *
- * @param {Parameters} parameters Optional parameters used to parameterize this collection.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Stack} The new stack.
  */
 const Stack = function(parameters, debug) {
-    parameters = parameters || new composites.Parameters({
-        $type: '/bali/collections/Stack/v1'
-    }, debug);
-
+    parameters = parameters || {$type: '/bali/collections/Stack/v1'};
     abstractions.Collection.call(
         this,
         ['/bali/collections/Stack'],
@@ -50,13 +47,10 @@ const Stack = function(parameters, debug) {
         debug
     );
 
-    // the capacity and array are private attributes so methods that use it are
+    // the capacity and array are private attributes so methods that use them are
     // defined in the constructor
-    var capacity = 1024;  // default capacity
-    if (parameters) {
-        const value = parameters.getValue('$capacity');
-        if (value) capacity = value.toNumber();
-    }
+    var capacity = this.getParameter('$capacity') || 1024;  // default capacity
+    if (capacity.isComponent) capacity = capacity.toNumber();
     const array = [];
 
     this.toArray = function() {

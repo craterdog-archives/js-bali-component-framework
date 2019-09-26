@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new reserved identifier using the specified value.
  *
  * @param {String} value The value of the reserved identifier.
- * @param {Parameters} parameters Optional parameters used to parameterize this element.
+ * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reserved} The new reserved identifier.
  */
@@ -123,7 +123,7 @@ Reserved.prototype.getIterator = function() {
 // PRIVATE CLASSES
 
 const ReservedIterator = function(symbol) {
-    this.slot = 0;  // the slot before the first number
+    this.slot = 0;  // the slot before the first character
     this.size = symbol.length;  // static so we can cache it here
     this.symbol = symbol;
     return this;
@@ -132,7 +132,7 @@ ReservedIterator.prototype.constructor = ReservedIterator;
 
 
 ReservedIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
+    this.slot = 0;  // the slot before the first character
 };
 
 
@@ -142,7 +142,7 @@ ReservedIterator.prototype.toSlot = function(slot) {
 
 
 ReservedIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
+    this.slot = this.size;  // the slot after the last character
 };
 
 

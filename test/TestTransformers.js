@@ -110,14 +110,11 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
         it('should duplicate with different parameters', function() {
             const document = bali.catalog({
                 $foo: 'bar'
-            }, bali.parameters({
+            }, {
                 $bar: 'baz'
-            }));
-            expect(document).to.exist;
-            const parameters = bali.parameters({
-                $bar: 'bif'
             });
-            const copy = document.duplicate(parameters);
+            expect(document).to.exist;
+            const copy = document.duplicate({$bar: 'bif'});
             expect(copy).to.exist;
             expect(copy.getValue('$foo').toString()).to.equal('"bar"');
             expect(copy.getParameters().getValue('$bar').toString()).to.equal('"bif"');

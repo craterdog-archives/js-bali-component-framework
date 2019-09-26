@@ -20,7 +20,7 @@
 
 /**
  * This function creates a new visitor component.
- * 
+ *
  * @param {Number} debug A number in the range [0..3].
  * @returns {Visitor} The new visitor.
  */
@@ -132,7 +132,7 @@ Visitor.prototype.visitComponent = function(component) {
     // process any parameters first since the value may depend on them
     const parameters = component.getParameters();
     if (parameters) {
-        parameters.acceptVisitor(this);
+        this.visitSequence(parameters);
     }
 };
 
@@ -214,12 +214,12 @@ Visitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function parameters
+// functionExpression: function arguments
 Visitor.prototype.visitFunctionExpression = function(tree) {
     const functionName = tree.getChild(1);
     functionName.acceptVisitor(this);
-    const parameters = tree.getChild(2);
-    parameters.acceptVisitor(this);
+    const args = tree.getChild(2);
+    args.acceptVisitor(this);
 };
 
 
@@ -297,14 +297,14 @@ Visitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message parameters
+// messageExpression: expression '.' message arguments
 Visitor.prototype.visitMessageExpression = function(tree) {
     const target = tree.getChild(1);
     target.acceptVisitor(this);
     const messageName = tree.getChild(2);
     messageName.acceptVisitor(this);
-    const parameters = tree.getChild(3);
-    parameters.acceptVisitor(this);
+    const args = tree.getChild(3);
+    args.acceptVisitor(this);
 };
 
 
@@ -327,25 +327,10 @@ Visitor.prototype.visitName = function(name) {
 //    'infinity' |
 //    real |
 //    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')' 
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
     this.visitComponent(number);  // process any parameters first
     // then process the component itself
-};
-
-
-// parameters: '(' catalog ')'
-Visitor.prototype.visitParameters = function(parameters) {
-    this.depth++;
-    const keys = parameters.getKeys();
-    const iterator = keys.getIterator();
-    while (iterator.hasNext()) {
-        const key = iterator.getNext();
-        const value = parameters.getValue(key);
-        key.acceptVisitor(this);
-        value.acceptVisitor(this);
-    }
-    this.depth--;
 };
 
 
