@@ -280,11 +280,12 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 FormattingVisitor.prototype.visitComponent = function(component) {
     const parameters = component.getParameters();
     if (parameters) {
-        this.inline++;
+        // inline if only one parameter
+        if (parameters.getSize() < 2) this.inline++;
         this.result += '(';
         this.visitSequence(parameters);
         this.result += ')';
-        this.inline--;
+        if (parameters.getSize() < 2) this.inline--;
     }
 };
 
@@ -729,7 +730,7 @@ FormattingVisitor.prototype.visitSequence = function(sequence) {
         const iterator = sequence.getIterator();
         while (iterator.hasNext()) {
             if (this.inline) {
-                if (count++) this.result += ', ';
+                if (count++) this.result += ', ';  // only after the first item has been formatted
             } else {
                 this.result += this.getNewline();
             }

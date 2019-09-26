@@ -62,7 +62,11 @@
             #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN
             $foo: $bar
             $name: /name
-            <2017-04-01>($city: "Hong Kong", $region: "Guangdong", $country: "China"): $date
+            <2017-04-01>(
+                $city: "Hong Kong"
+                $region: "Guangdong"
+                $country: "China"
+            ): $date
             <https://craterdog.com/>: <bali:/FooBar?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
             v1: v2.3
             "key": "value"
@@ -95,7 +99,11 @@
             } else {
                 return x
             }
-        }($y: 5, $baz: none, $condition: true)
+        }(
+            $y: 5
+            $baz: none
+            $condition: true
+        )
     ]
     $binaries: [
         ''($encoding: $base2)
@@ -122,6 +130,10 @@
         <-10000-01-01T00:00:00>($country: "Atlantis")
         <1962-04-01>($city: "New York City")
         <1962-04-01T06:31>($city: "San Francisco")
-        <1962-04-01T06:31:60.726>($city: "Denver", $region: "Colorado", $country: "USA")
+        <1962-04-01T06:31:60.726>(
+            $city: "Denver"
+            $region: "Colorado"
+            $country: "USA"
+        )
     ]
 ]
