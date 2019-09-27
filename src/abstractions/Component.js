@@ -300,9 +300,9 @@ Component.prototype.getHash = function() {
 };
 
 
-Component.prototype.duplicate = function(parameters) {
+Component.prototype.duplicate = function() {
     const duplicator = new utilities.Duplicator(this.debug);
-    return duplicator.duplicateComponent(this, parameters);
+    return duplicator.duplicateComponent(this);
 };
 
 

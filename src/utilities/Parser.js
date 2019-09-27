@@ -701,8 +701,11 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
 
 // parameters: '(' catalog ')'
 ParsingVisitor.prototype.visitParameters = function(ctx) {
+    // process the catalog
     ctx.catalog().accept(this);
     const catalog = this.result;
+
+    // there must be at least one parameter
     if (catalog.isEmpty()) {
         const exception = new composites.Exception({
             $module: '/bali/utilities/Parser',
@@ -713,7 +716,28 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-    this.result = catalog.toObject();
+
+    // convert the catalog to an object
+    const object = {};
+    const iterator = catalog.getIterator();
+    while (iterator.hasNext()) {
+        const association = iterator.getNext();
+        const key = association.getKey();
+        const value = association.getValue();
+        // all keys must symbols
+        if (!key.isType('/bali/elements/Symbol')) {
+            const exception = new composites.Exception({
+                $module: '/bali/utilities/Parser',
+                $procedure: '$visitParameters',
+                $exception: '$invalidType',
+                $text: 'Each parameter key must be of type symbol.'
+            });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
+        }
+        object[key.toString()] = value;
+    }
+    this.result = object;
 };
 
 
