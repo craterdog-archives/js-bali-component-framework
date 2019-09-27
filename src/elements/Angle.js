@@ -338,7 +338,7 @@ Angle.sine = function(angle, debug) {
         ]);
     }
     const calculator = new utilities.Calculator(debug);
-    return calculator.sine(angle.getValue(), angle.getParameters());
+    return calculator.sine(angle.getValue());
 };
 
 
@@ -357,7 +357,7 @@ Angle.cosine = function(angle, debug) {
         ]);
     }
     const calculator = new utilities.Calculator(debug);
-    return calculator.cosine(angle.getValue(), angle.getParameters());
+    return calculator.cosine(angle.getValue());
 };
 
 
@@ -376,7 +376,7 @@ Angle.tangent = function(angle, debug) {
         ]);
     }
     const calculator = new utilities.Calculator(debug);
-    return calculator.tangent(angle.getValue(), angle.getParameters());
+    return calculator.tangent(angle.getValue());
 };
 
 

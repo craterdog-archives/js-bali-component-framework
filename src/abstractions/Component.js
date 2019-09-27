@@ -78,6 +78,11 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         if (parameters) return parameters[key];
     };
 
+    this.setParameter = function(key, value) {
+        parameters = parameters || {};
+        parameters[key] = this.componentize(value);
+    };
+
     this.getParameters = function() {
         return parameters;
     };
