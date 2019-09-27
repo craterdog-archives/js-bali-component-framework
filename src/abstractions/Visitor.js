@@ -37,7 +37,8 @@ exports.Visitor = Visitor;
 
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
-    this.visitComponent(angle);  // process any parameters first
+    const parameters = angle.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -68,7 +69,8 @@ Visitor.prototype.visitAssociation = function(association) {
 
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
-    this.visitComponent(binary);  // process any parameters first
+    const parameters = binary.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -95,9 +97,10 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 
 
 // collection: '[' sequence ']'
-Visitor.prototype.visitCollection = function(sequence) {
-    this.visitComponent(sequence);  // process any parameters first
-    this.visitSequence(sequence);  // then process the items in the sequence
+Visitor.prototype.visitCollection = function(collection) {
+    const parameters = collection.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
+    this.visitSequence(collection);  // then process the items in the sequence
 };
 
 
@@ -124,16 +127,6 @@ Visitor.prototype.visitComparisonExpression = function(tree) {
 Visitor.prototype.visitComplementExpression = function(tree) {
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
-};
-
-
-// component: value parameters?
-Visitor.prototype.visitComponent = function(component) {
-    // process any parameters first since the value may depend on them
-    const parameters = component.getParameters();
-    if (parameters) {
-        this.visitSequence(parameters);
-    }
 };
 
 
@@ -176,7 +169,8 @@ Visitor.prototype.visitDiscardClause = function(tree) {
 
 // duration: DURATION
 Visitor.prototype.visitDuration = function(duration) {
-    this.visitComponent(duration);  // process any parameters first
+    const parameters = duration.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -310,14 +304,16 @@ Visitor.prototype.visitMessageExpression = function(tree) {
 
 // moment: MOMENT
 Visitor.prototype.visitMoment = function(moment) {
-    this.visitComponent(moment);  // process any parameters first
+    const parameters = moment.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // name: NAME
 Visitor.prototype.visitName = function(name) {
-    this.visitComponent(name);  // process any parameters first
+    const parameters = name.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -329,21 +325,37 @@ Visitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
-    this.visitComponent(number);  // process any parameters first
+    const parameters = number.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
+};
+
+
+// parameters: '(' object ')'
+Visitor.prototype.visitParameters = function(parameters) {
+    if (parameters) {
+        const keys = Object.keys(parameters);
+        keys.forEach(function(key) {
+            // process key and value
+            const value = parameters[key];
+            value.acceptVisitor(this);
+        }, this);
+    }
 };
 
 
 // pattern: 'none' | REGEX | 'any'
 Visitor.prototype.visitPattern = function(pattern) {
-    this.visitComponent(pattern);  // process any parameters first
+    const parameters = pattern.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // percent: PERCENT
 Visitor.prototype.visitPercent = function(percent) {
-    this.visitComponent(percent);  // process any parameters first
+    const parameters = percent.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -357,14 +369,16 @@ Visitor.prototype.visitPrecedenceExpression = function(tree) {
 
 // probability: 'false' | FRACTION | 'true'
 Visitor.prototype.visitProbability = function(probability) {
-    this.visitComponent(probability);  // process any parameters first
+    const parameters = probability.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // procedure: '{' statements '}'
 Visitor.prototype.visitProcedure = function(procedure) {
-    this.visitComponent(procedure);  // process any parameters first
+    const parameters = procedure.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     const statements = procedure.getStatements();
     statements.acceptVisitor(this);  // then process the statements in the procedure
 };
@@ -388,14 +402,16 @@ Visitor.prototype.visitQueueClause = function(tree) {
 
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
-    this.visitComponent(reference);  // process any parameters first
+    const parameters = reference.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // reserved: RESERVED
 Visitor.prototype.visitReserved = function(reserved) {
-    this.visitComponent(reserved);  // process any parameters first
+    const parameters = reserved.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -508,21 +524,24 @@ Visitor.prototype.visitSubcomponentExpression = function(tree) {
 
 // symbol: SYMBOL
 Visitor.prototype.visitSymbol = function(symbol) {
-    this.visitComponent(symbol);  // process any parameters first
+    const parameters = symbol.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // tag: TAG
 Visitor.prototype.visitTag = function(tag) {
-    this.visitComponent(tag);  // process any parameters first
+    const parameters = tag.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
 
 // text: TEXT | TEXT_BLOCK
 Visitor.prototype.visitText = function(text) {
-    this.visitComponent(text);  // process any parameters first
+    const parameters = text.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 
@@ -541,7 +560,8 @@ Visitor.prototype.visitVariable = function(tree) {
 
 // version: VERSION
 Visitor.prototype.visitVersion = function(version) {
-    this.visitComponent(version);  // process any parameters first
+    const parameters = version.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
 

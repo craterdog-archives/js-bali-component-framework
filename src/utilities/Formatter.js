@@ -130,7 +130,8 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             throw exception;
     }
     this.result += '~' + formatReal(value);
-    this.visitComponent(angle);  // format any parameterization
+    const parameters = angle.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -203,7 +204,8 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     value = value.replace(/    '/, "'");  // unindent last line
     this.depth--;
     this.result += value;
-    this.visitComponent(binary);  // format any parameterization
+    const parameters = binary.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -235,11 +237,12 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 
 
 // collection: '[' sequence ']'
-FormattingVisitor.prototype.visitCollection = function(sequence) {
+FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    this.visitSequence(sequence);  // first format the sequence of items
+    this.visitSequence(collection);  // first format the sequence of items
     this.result += ']';
-    this.visitComponent(sequence);  // then format any parameterization
+    const parameters = collection.getParameters();
+    this.visitParameters(parameters);  // then format any parameterization
 };
 
 
@@ -273,34 +276,6 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
     const operand = tree.getChild(1);
     operand.acceptVisitor(this);
     this.inline--;
-};
-
-
-// component: value parameters?
-FormattingVisitor.prototype.visitComponent = function(component) {
-    const parameters = component.getParameters();
-    if (parameters) {
-        const keys = Object.keys(parameters);
-        // inline if only one parameter
-        if (keys.length < 2) this.inline++;
-        this.result += '(';
-        this.depth++;
-        var count = 0;
-        keys.forEach(function(key) {
-            if (this.inline) {
-                if (count++) this.result += ', ';  // only after the first item has been formatted
-            } else {
-                this.result += this.getNewline();
-            }
-            this.result += key + ': ';
-            const value = parameters[key];
-            value.acceptVisitor(this);
-        }, this);
-        this.depth--;
-        if (!this.inline) this.result += this.getNewline();
-        this.result += ')';
-        if (keys.length < 2) this.inline--;
-    }
 };
 
 
@@ -356,7 +331,8 @@ FormattingVisitor.prototype.visitDiscardClause = function(tree) {
 FormattingVisitor.prototype.visitDuration = function(duration) {
     const value = duration.getValue().toISOString();
     this.result += '~' + value;
-    this.visitComponent(duration);  // format any parameterization
+    const parameters = duration.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -523,7 +499,8 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
 FormattingVisitor.prototype.visitMoment = function(moment) {
     const value = moment.getValue().format(moment.getFormat());
     this.result += '<' + value + '>';
-    this.visitComponent(moment);  // format any parameterization
+    const parameters = moment.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -531,7 +508,8 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 FormattingVisitor.prototype.visitName = function(name) {
     const value = name.getValue();
     this.result += '/' + value.join('/');  // concatentat the parts of the name
-    this.visitComponent(name);  // format any parameterization
+    const parameters = name.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -573,7 +551,35 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         }
         this.result += ')';
     }
-    this.visitComponent(number);  // format any parameterization
+    const parameters = number.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
+};
+
+
+// parameters: '(' object ')'
+FormattingVisitor.prototype.visitParameters = function(parameters) {
+    if (parameters) {
+        const keys = Object.keys(parameters);
+        // inline if only one parameter
+        if (keys.length < 2) this.inline++;
+        this.result += '(';
+        this.depth++;
+        var count = 0;
+        keys.forEach(function(key) {
+            if (this.inline) {
+                if (count++) this.result += ', ';  // only after the first item has been formatted
+            } else {
+                this.result += this.getNewline();
+            }
+            this.result += key + ': ';
+            const value = parameters[key];
+            value.acceptVisitor(this);
+        }, this);
+        this.depth--;
+        if (!this.inline) this.result += this.getNewline();
+        this.result += ')';
+        if (keys.length < 2) this.inline--;
+    }
 };
 
 
@@ -590,7 +596,8 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
         default:
             this.result += '"' + value + '"?';
     }
-    this.visitComponent(pattern);  // format any parameterization
+    const parameters = pattern.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -598,7 +605,8 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 FormattingVisitor.prototype.visitPercent = function(percent) {
     const value = percent.getValue();
     this.result += formatReal(value) + '%';
-    this.visitComponent(percent);  // format any parameterization
+    const parameters = percent.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -627,7 +635,8 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
             // must remove the leading '0' for probabilities
             this.result += value.toString().substring(1);
     }
-    this.visitComponent(probability);  // format any parameterization
+    const parameters = probability.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -638,7 +647,8 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     const statements = procedure.getStatements();
     statements.acceptVisitor(this);
     this.result += '}';
-    this.visitComponent(procedure);  // format any parameterization
+    const parameters = procedure.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -665,7 +675,8 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
     this.result += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
-    this.visitComponent(reference);  // format any parameterization
+    const parameters = reference.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -673,7 +684,8 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     const value = reserved.getValue();
     this.result += '$$' + value;
-    this.visitComponent(reserved);  // format any parameterization
+    const parameters = reserved.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -808,7 +820,8 @@ FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     const value = symbol.getValue();
     this.result += '$' + value;
-    this.visitComponent(symbol);  // format any parameterization
+    const parameters = symbol.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -816,7 +829,8 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 FormattingVisitor.prototype.visitTag = function(tag) {
     const value = tag.getValue();
     this.result += '#' + value;
-    this.visitComponent(tag);  // format any parameterization
+    const parameters = tag.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -831,7 +845,8 @@ FormattingVisitor.prototype.visitText = function(text) {
     value = value.replace(regex, '');  // unindent last line
     this.result += '"' + value + '"';
     this.depth--;
-    this.visitComponent(text);  // format any parameterization
+    const parameters = text.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 
@@ -853,7 +868,8 @@ FormattingVisitor.prototype.visitVariable = function(tree) {
 FormattingVisitor.prototype.visitVersion = function(version) {
     const value = version.getValue();
     this.result += 'v' + value.join('.');  // concatentat the version levels
-    this.visitComponent(version);  // format any parameterization
+    const parameters = version.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 

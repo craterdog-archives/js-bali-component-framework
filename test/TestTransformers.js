@@ -28,7 +28,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate(component.getParameters());
+            var copy = component.duplicate();
             expect(copy).to.exist;
             var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
@@ -55,7 +55,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate(component.getParameters());
+            var copy = component.duplicate();
             expect(copy).to.exist;
             var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
@@ -71,7 +71,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate(component.getParameters());
+            var copy = component.duplicate();
             expect(copy).to.exist;
             var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
@@ -87,7 +87,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate(component.getParameters());
+            var copy = component.duplicate();
             expect(copy).to.exist;
             var formatted = copy.format() + '\n';  // add POSIX <EOL>
             //fs.writeFileSync(file, formatted, 'utf8');
@@ -105,19 +105,6 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }
-        });
-
-        it('should duplicate with different parameters', function() {
-            const document = bali.catalog({
-                $foo: 'bar'
-            }, {
-                $bar: 'baz'
-            });
-            expect(document).to.exist;
-            const copy = document.duplicate({$bar: 'bif'});
-            expect(copy).to.exist;
-            expect(copy.getValue('$foo').toString()).to.equal('"bar"');
-            expect(copy.getParameter('$bar').toString()).to.equal('"bif"');
         });
 
     });
