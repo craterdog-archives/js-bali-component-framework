@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new probability element using the specified value.
  *
  * @param {Number} value The value of the probability.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Probability} The new probability element.
  */

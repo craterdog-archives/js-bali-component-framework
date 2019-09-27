@@ -98,6 +98,17 @@ exports.Association = Association;
 // PUBLIC METHODS
 
 /**
+ * This method returns the number of subcomponents that this composite component has.  An
+ * association always has two subcomponents, a key and a value.
+ *
+ * @returns {Number} The number of subcomponents that this composite component has.
+ */
+Association.prototype.getSize = function() {
+    return 2;
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this association.

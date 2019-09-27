@@ -24,7 +24,7 @@ const abstractions = require('../abstractions');
  * used to parameterize its behavior.
  *
  * @param {Tree} statements The statements that are contained within the procedure.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize the procedure.
+ * @param {Object} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Procedure} A new procedure component.
  */
@@ -51,6 +51,17 @@ exports.Procedure = Procedure;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method returns the number of subcomponents that this composite component has.  The
+ * number of subcomponents for a procedure is the number of statements it contains.
+ *
+ * @returns {Number} The number of subcomponents that this composite component has.
+ */
+Procedure.prototype.getSize = function() {
+    return this.getStatements().getSize();
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

@@ -27,7 +27,7 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Number|Component} first The first item in the range.
  * @param {Number|Component} last The last item in the range.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this range.
+ * @param {Object} parameters Optional parameters used to parameterize this range.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new range.
  */

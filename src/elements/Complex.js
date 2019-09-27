@@ -27,7 +27,7 @@ const Angle = require('./Angle').Angle;
  *
  * @param {Number} real The real value of the complex number.
  * @param {Number|Angle} imaginary The imaginary value of the complex number.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The new complex number.
  */

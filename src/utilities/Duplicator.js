@@ -40,8 +40,7 @@ const Duplicator = function(debug) {
             ]);
             validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
                 '/javascript/Undefined',
-                '/javascript/Object',
-                '/bali/collections/Catalog'
+                '/javascript/Object'
             ]);
         }
         const visitor = new DuplicatingVisitor(parameters, debug);
@@ -59,7 +58,6 @@ exports.Duplicator = Duplicator;
 
 const DuplicatingVisitor = function(parameters, debug) {
     Visitor.call(this, debug);
-    this.depth = 0;
     this.parameters = parameters;
     return this;
 };
@@ -209,9 +207,16 @@ DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
 DuplicatingVisitor.prototype.visitComponent = function(component) {
     if (this.parameters === undefined) {
         // no parameters were passed in
-        if (component.isParameterized()) {
-            component.getParameters().acceptVisitor(this);
-            this.parameters = this.result;  // save off the parameters for the value object
+        const copy = {};
+        const parameters = component.getParameters();
+        if (parameters) {
+            const keys = Object.keys(parameters);
+            keys.forEach(function(key) {
+                const value = parameters[key];
+                value.acceptVisitor(this);
+                copy[key] = this.result;
+            }, this);
+            this.parameters = copy;
         }
     }
 };

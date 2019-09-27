@@ -32,7 +32,6 @@
  * @returns {Exception} The new exception.
  */
 const Exception = function(attributes, cause) {
-
     const ancestry = [
         '/bali/composites/Exception',
         '/bali/abstractions/Composite',
@@ -41,6 +40,8 @@ const Exception = function(attributes, cause) {
     const type = ancestry[0];  // first type in the ancestry tree
 
     const interfaces = ['/bali/interfaces/Comparable'];
+
+    if (attributes === null || typeof attributes !== 'object') attributes = {};
 
     this.isComponent = true;
 
@@ -56,13 +57,16 @@ const Exception = function(attributes, cause) {
         return interfaces;
     };
 
-    // convert the attributes into a catalog
-    if (attributes === null || typeof attributes !== 'object') attributes = {};
-    this.attributes = this.componentize(attributes);
+    this.getAttributes = function() {
+        return attributes;
+    };
 
     // set the error message and cause
     this.message = attributes['$text'] || 'An undefined exception occurred.';
     this.cause = cause || undefined;
+
+    // convert the attributes into a catalog
+    attributes = this.componentize(attributes);
 
     // save the current error stack if possible
     try {
@@ -140,7 +144,7 @@ Exception.prototype.toString = function() {
     var string = 'Exception: The following Bali Nebula™ exception was thrown:\n';
     var exception = this;
     while (exception) {
-        string += (exception.attributes || exception) + '\n';
+        string += (exception.isComponent ? exception.getAttributes() : exception) + '\n';
         exception = exception.cause;
     }
     return string;
@@ -167,9 +171,9 @@ Exception.prototype.isEqualTo = function(that) {
  */
 Exception.prototype.comparedTo = function(that) {
     if (that.isComponent && that.getType() === this.getType()) {
-        return this.attributes.comparedTo(that.attributes);  // both exceptions
+        return this.getAttributes().comparedTo(that.getAttributes());  // both exceptions
     }
-    return this.attributes.comparedTo(that);
+    return this.getAttributes().comparedTo(that);
 };
 
 
@@ -187,7 +191,7 @@ Exception.prototype.comparedTo = function(that) {
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Exception.prototype.isMatchedBy = function(pattern) {
-    return this.attributes.isMatchedBy(pattern);
+    return this.getAttributes().isMatchedBy(pattern);
 };
 
 
@@ -208,6 +212,16 @@ Exception.prototype.getHash = function() {
     return hash;
 };
 
+/**
+ * This method returns the number of subcomponents that this composite component has.  The
+ * number of subcomponents for an exception is the number of attributes it contains.
+ *
+ * @returns {Number} The number of subcomponents that this composite component has.
+ */
+Exception.prototype.getSize = function() {
+    return this.getAttributes().getSize();
+};
+
 
 /**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
@@ -216,5 +230,5 @@ Exception.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit the attributes of this component.
  */
 Exception.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCatalog(this.attributes);
+    visitor.visitCatalog(this.getAttributes());
 };

@@ -26,7 +26,7 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this collection.
+ * @param {Object} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
  */
@@ -57,6 +57,15 @@ Collection.prototype.acceptVisitor = function(visitor) {
 };
 
 
+/**
+ * This method returns whether or not this collection component has any subcomponents.
+ *
+ * @returns {Boolean} Whether or not this collection component has any subcomponents.
+ */
+Collection.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
 
 /**
  * This abstract method returns an array containing the subcomponents in this collection
@@ -73,16 +82,6 @@ Collection.prototype.toArray = function() {
     });
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
-};
-
-
-/**
- * This method returns whether or not this collection component has any subcomponents.
- *
- * @returns {Boolean} Whether or not this collection component has any subcomponents.
- */
-Collection.prototype.isEmpty = function() {
-    return this.getSize() === 0;
 };
 
 

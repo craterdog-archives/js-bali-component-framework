@@ -280,12 +280,26 @@ FormattingVisitor.prototype.visitComplementExpression = function(tree) {
 FormattingVisitor.prototype.visitComponent = function(component) {
     const parameters = component.getParameters();
     if (parameters) {
+        const keys = Object.keys(parameters);
         // inline if only one parameter
-        if (parameters.getSize() < 2) this.inline++;
+        if (keys.length < 2) this.inline++;
         this.result += '(';
-        this.visitSequence(parameters);
+        this.depth++;
+        var count = 0;
+        keys.forEach(function(key) {
+            if (this.inline) {
+                if (count++) this.result += ', ';  // only after the first item has been formatted
+            } else {
+                this.result += this.getNewline();
+            }
+            this.result += key + ': ';
+            const value = parameters[key];
+            value.acceptVisitor(this);
+        }, this);
+        this.depth--;
+        if (!this.inline) this.result += this.getNewline();
         this.result += ')';
-        if (parameters.getSize() < 2) this.inline--;
+        if (keys.length < 2) this.inline--;
     }
 };
 

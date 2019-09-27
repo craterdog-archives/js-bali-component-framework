@@ -24,7 +24,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates an immutable instance of an angle using the specified value.
  *
  * @param {Number} value The value of the angle.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Angle} The new angle element.
  */

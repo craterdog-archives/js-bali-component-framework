@@ -46,10 +46,6 @@ const Tree = function(type, debug) {
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
 
-    this.toArray = function() {
-        return array.slice();  // return a copy of the array
-    };
-
     this.getSize = function() {
         return array.length;
     };

@@ -24,7 +24,7 @@ const abstractions = require('../abstractions');
  * value.
  *
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Binary} The new binary string.
  */

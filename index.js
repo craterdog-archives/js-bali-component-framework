@@ -280,8 +280,8 @@ exports.api = function(defaultLevel) {
     const exception = function(attributes, cause, debug) {
         if (debug === undefined) debug = defaultLevel;
         var error;
-        if (cause && cause.constructor.name === 'Exception' &&
-            cause.attributes.getValue('$module').toString() === attributes['$module']) {
+        if (cause && cause.isComponent &&
+            cause.getAttributes().getValue('$module').toString() === attributes['$module']) {
             // same module so no need to wrap it
             error = cause;
         } else {

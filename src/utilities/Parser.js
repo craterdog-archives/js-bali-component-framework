@@ -156,7 +156,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
     var units = '$radians';  // default value
     if (parameters) {
-        units = parameters.getValue('$units');
+        units = parameters['$units'];
         if (units) units = units.toString();
     }
     switch (units) {
@@ -220,7 +220,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     value = value.replace(/\s/g, '');  // strip out any whitespace
     var encoding = '$base32';  // default value
     if (parameters) {
-        encoding = parameters.getValue('$encoding');
+        encoding = parameters['$encoding'];
         if (encoding) encoding = encoding.toString();
     }
     const decoder = new utilities.Decoder(0, this.debug);
@@ -556,7 +556,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     const parameters = this.getParameters();
     var name;
     if (parameters) {
-        name = parameters.getValue('$type');
+        name = parameters['$type'];
         if (name && name.isComponent && name.isType('/bali/elements/Name')) {
             type = name.getValue()[2];  // /bali/<metatype>/<type>/v1
         } else {
@@ -713,7 +713,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-    this.result = catalog;
+    this.result = catalog.toObject();
 };
 
 

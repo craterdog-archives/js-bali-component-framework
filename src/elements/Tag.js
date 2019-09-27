@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Number|String} value An optional parameter defining the size of a new random
  * tag or the value it should represent.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Tag} The new tag element.
  */

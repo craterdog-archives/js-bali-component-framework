@@ -27,7 +27,7 @@ const List = require('./List').List;
  * This function creates a new catalog component with optional parameters that are
  * used to parameterize its type.
  *
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this catalog.
+ * @param {Object} parameters Optional parameters used to parameterize this catalog.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Catalog} The new catalog.
  */

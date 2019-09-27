@@ -25,7 +25,7 @@ const composites = require('../composites');
  * This function creates a new set component with optional parameters that are
  * used to parameterize its type.
  *
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this set.
+ * @param {Object} parameters Optional parameters used to parameterize this set.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Set} The new set.
  */

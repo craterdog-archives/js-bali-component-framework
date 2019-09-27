@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new version element using the specified value.
  *
  * @param {Array} value An array containing the version levels for the version string.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new version string element.
  */

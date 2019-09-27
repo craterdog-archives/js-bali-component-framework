@@ -117,7 +117,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             const copy = document.duplicate({$bar: 'bif'});
             expect(copy).to.exist;
             expect(copy.getValue('$foo').toString()).to.equal('"bar"');
-            expect(copy.getParameters().getValue('$bar').toString()).to.equal('"bif"');
+            expect(copy.getParameter('$bar').toString()).to.equal('"bif"');
         });
 
     });

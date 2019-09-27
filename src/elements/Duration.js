@@ -25,7 +25,7 @@ const abstractions = require('../abstractions');
  * This function creates a new duration element using the specified value.
  *
  * @param {String|Number} value The source string the duration.
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Duration} The new duration element.
  */

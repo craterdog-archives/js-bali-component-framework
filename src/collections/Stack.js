@@ -33,7 +33,7 @@ Array.prototype.peek = function() {
  * This function creates a new stack component with optional parameters that are
  * used to parameterize its type.
  *
- * @param {Catalog|Object} parameters Optional parameters used to parameterize this collection.
+ * @param {Object} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Stack} The new stack.
  */
