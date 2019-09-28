@@ -530,6 +530,12 @@ exports.api = function(defaultLevel) {
         return elements.Text.concatenation(first, second, debug);
     };
 
+    // TREE
+    const tree = function(type, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new collections.Tree(type, debug);
+    };
+
     // TYPE
     const type = function(value, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -613,6 +619,7 @@ exports.api = function(defaultLevel) {
         symbol: symbol,
         tag: tag,
         text: text,
+        tree: tree,
         type: type,
         validator: validator,
         version: version,

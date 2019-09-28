@@ -53,17 +53,6 @@ exports.Procedure = Procedure;
 // PUBLIC METHODS
 
 /**
- * This method returns the number of subcomponents that this composite component has.  The
- * number of subcomponents for a procedure is the number of statements it contains.
- *
- * @returns {Number} The number of subcomponents that this composite component has.
- */
-Procedure.prototype.getSize = function() {
-    return this.getStatements().getSize();
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this procedure.

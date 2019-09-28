@@ -14,4 +14,3 @@ const elements = require('../elements/');
 exports.Association = require('./Association').Association;
 exports.Exception = require('./Exception').Exception;
 exports.Procedure = require('./Procedure').Procedure;
-exports.Tree = require('./Tree').Tree;

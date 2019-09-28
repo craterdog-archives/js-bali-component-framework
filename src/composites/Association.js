@@ -22,8 +22,8 @@ const abstractions = require('../abstractions');
 /**
  * This function creates a new key-value association.
  *
- * @param {String|Number|Boolean|Component} key The key of the association.
- * @param {String|Number|Boolean|Component} value The value associated with the key.
+ * @param {Any} key The key of the association.
+ * @param {Any} value The value associated with the key.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Association} A new association.
  */
@@ -96,17 +96,6 @@ exports.Association = Association;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns the number of subcomponents that this composite component has.  An
- * association always has two subcomponents, a key and a value.
- *
- * @returns {Number} The number of subcomponents that this composite component has.
- */
-Association.prototype.getSize = function() {
-    return 2;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.

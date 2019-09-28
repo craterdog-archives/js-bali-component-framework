@@ -212,16 +212,6 @@ Exception.prototype.getHash = function() {
     return hash;
 };
 
-/**
- * This method returns the number of subcomponents that this composite component has.  The
- * number of subcomponents for an exception is the number of attributes it contains.
- *
- * @returns {Number} The number of subcomponents that this composite component has.
- */
-Exception.prototype.getSize = function() {
-    return this.getAttributes().getSize();
-};
-
 
 /**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be

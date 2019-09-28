@@ -19,7 +19,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('./Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -32,13 +32,10 @@ const Exception = require('./Exception').Exception;
  * @returns {Tree} The new tree node component.
  */
 const Tree = function(type, debug) {
-    abstractions.Composite.call(
+    abstractions.Collection.call(
         this,
-        [type, '/bali/composites/Tree'],
-        [
-            '/bali/interfaces/Sequential',
-            '/bali/interfaces/Procedural'
-        ],
+        [type, '/bali/collections/Tree'],
+        ['/bali/interfaces/Procedural'],
         undefined,
         debug
     );
@@ -46,14 +43,31 @@ const Tree = function(type, debug) {
     // the array is a private attribute so methods that use it are defined in the constructor
     const array = [];
 
+    this.toArray = function() {
+        return array.slice();  // a copy of the array
+    };
+
     this.getSize = function() {
         return array.length;
     };
 
-    this.addChild = function(child) {
+    this.getParent = function() { };  // will be reset by parent when added as a child
+
+    this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/composites/Tree', '$addChild', '$child', child, [
+            validator.validateType('/bali/collections/Tree', '$getItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
+        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        return array[index];
+    };
+
+    this.addItem = function(child) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Tree', '$addItem', '$child', child, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -62,31 +76,9 @@ const Tree = function(type, debug) {
         child.getParent = function() { return this; };
     };
 
-    this.getChild = function(index) {
-        if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/composites/Tree', '$getChild', '$index', index, [
-                '/javascript/Number'
-            ]);
-        }
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        return array[index];
-    };
-
-    this.getParent = function() { };  // will be reset by parent when added as a child
-
-    this.toArray = function() {
-        return array.slice();  // a copy of the array
-    };
-
-    this.getIterator = function() {
-        const iterator = new utilities.Iterator(array);
-        return iterator;
-    };
-
     return this;
 };
-Tree.prototype = Object.create(abstractions.Composite.prototype);
+Tree.prototype = Object.create(abstractions.Collection.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
 
@@ -100,6 +92,6 @@ exports.Tree = Tree;
  */
 Tree.prototype.acceptVisitor = function(visitor) {
     // call the visitor method for the specific type of tree node
-    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/composites/<Type>'
+    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/collections/<Type>'
     visitor[functionName](this);
 };

@@ -14,7 +14,7 @@
  * This abstract class defines the invariant methods that all collections must inherit.
  */
 const utilities = require('../utilities');
-const Composite = require('./Composite').Composite;
+const Component = require('./Component').Component;
 const Exception = require('../composites/Exception').Exception;
 
 
@@ -31,7 +31,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Collection} The new collection.
  */
 const Collection = function(ancestry, interfaces, parameters, debug) {
-    Composite.call(
+    Component.call(
         this,
         ancestry.concat('/bali/abstractions/Collection'),
         interfaces.concat('/bali/interfaces/Sequential'),
@@ -40,7 +40,7 @@ const Collection = function(ancestry, interfaces, parameters, debug) {
     );
     return this;
 };
-Collection.prototype = Object.create(Composite.prototype);
+Collection.prototype = Object.create(Component.prototype);
 Collection.prototype.constructor = Collection;
 exports.Collection = Collection;
 
@@ -58,12 +58,13 @@ Collection.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this collection component has any subcomponents.
+ * This method returns whether or not this collection has a meaningful value. If the collection
+ * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  *
- * @returns {Boolean} Whether or not this collection component has any subcomponents.
+ * @returns {Boolean} Whether or not this collection has a meaningful value.
  */
-Collection.prototype.isEmpty = function() {
-    return this.getSize() === 0;
+Collection.prototype.toBoolean = function() {
+    return this.getSize() > 0;
 };
 
 
@@ -86,6 +87,34 @@ Collection.prototype.toArray = function() {
 
 
 /**
+ * This method returns whether or not this collection component has any subcomponents.
+ *
+ * @returns {Boolean} Whether or not this collection component has any subcomponents.
+ */
+Collection.prototype.isEmpty = function() {
+    return this.getSize() === 0;
+};
+
+
+/**
+ * This abstract method returns the number of subcomponents that this collection component has.
+ * It must be implemented by a subclass.
+ *
+ * @returns {Number} The number of subcomponents that this collection component has.
+ */
+Collection.prototype.getSize = function() {
+    const exception = new Exception({
+        $module: '/bali/abstractions/Collection',
+        $procedure: '$getSize',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
+
+/**
  * This method returns an object that can be used to iterate over the subcomponents in
  * this collection component.
  * @returns {Iterator} An iterator for this collection component.
@@ -93,6 +122,35 @@ Collection.prototype.toArray = function() {
 Collection.prototype.getIterator = function() {
     const iterator = new utilities.Iterator(this.toArray());
     return iterator;
+};
+
+
+/**
+ * This method converts negative subcomponent indexes into their corresponding positive
+ * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
+ * collection component is empty then the resulting index will be zero.
+ *
+ * The mapping between indexes is as follows:
+ * <pre>
+ * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
+ * Positive Indexes:    1         2          3          4     ...    N
+ * </pre>
+ *
+ * @param {Number} index The index to be normalized [-N..N].
+ * @returns {Number} The normalized [1..N] index.
+ */
+Collection.prototype.normalizeIndex = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$normalizeIndex', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    const size = this.getSize();
+    if (index > size) index = size;
+    if (index < -size) index = -size;
+    if (index < 0) index = index + size + 1;
+    return index;
 };
 
 
