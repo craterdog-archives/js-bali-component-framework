@@ -75,6 +75,10 @@ const Tree = function(type, debug) {
 
     this.getParent = function() { };  // will be reset by parent when added as a child
 
+    this.toArray = function() {
+        return array.slice();  // a copy of the array
+    };
+
     this.getIterator = function() {
         const iterator = new utilities.Iterator(array);
         return iterator;
