@@ -51,10 +51,6 @@ const Set = function(parameters, debug) {
         return array;
     };
 
-    this.getComparator = function() {
-        return comparator;
-    };
-
     this.getSize = function() {
         return tree.size;
     };

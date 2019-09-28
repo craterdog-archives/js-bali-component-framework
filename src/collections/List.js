@@ -228,6 +228,10 @@ const List = function(parameters, debug) {
         return items;
     };
 
+    this.removeAll = function() {
+        array.splice(0);
+    };
+
     this.sortItems = function(algorithm) {
         const sorter = utilities.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
@@ -246,10 +250,6 @@ const List = function(parameters, debug) {
             this.setItem(index, this.getItem(random));
             this.setItem(random, item);
         }
-    };
-
-    this.removeAll = function() {
-        array.splice(0);
     };
 
     return this;

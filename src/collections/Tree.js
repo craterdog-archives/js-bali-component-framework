@@ -64,16 +64,16 @@ const Tree = function(type, debug) {
         return array[index];
     };
 
-    this.addItem = function(child) {
+    this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Tree', '$addItem', '$child', child, [
+            validator.validateType('/bali/collections/Tree', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
         }
-        child = this.componentize(child, this.debug);
-        array.push(child);
-        child.getParent = function() { return this; };
+        item = this.componentize(item, this.debug);
+        array.push(item);
+        item.getParent = function() { return this; };
     };
 
     return this;

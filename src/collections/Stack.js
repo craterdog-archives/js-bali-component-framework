@@ -61,6 +61,20 @@ const Stack = function(parameters, debug) {
         return array.length;
     };
 
+    this.topItem = function() {
+        if (array.length > 0) {
+            return array.peek();
+        }
+        const exception = new composites.Exception({
+            $module: '/bali/collections/Stack',
+            $procedure: '$getTop',
+            $exception: '$emptyStack',
+            $text: 'Attempted to access an item on an empty stack.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
+
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -142,20 +156,6 @@ const Stack = function(parameters, debug) {
             $procedure: '$removeItem',
             $exception: '$emptyStack',
             $text: 'Attempted to remove an item from an empty stack.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    };
-
-    this.topItem = function() {
-        if (array.length > 0) {
-            return array.peek();
-        }
-        const exception = new composites.Exception({
-            $module: '/bali/collections/Stack',
-            $procedure: '$getTop',
-            $exception: '$emptyStack',
-            $text: 'Attempted to access an item on an empty stack.'
         });
         if (this.debug > 0) console.error(exception.toString());
         throw exception;

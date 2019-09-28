@@ -61,6 +61,12 @@ const Queue = function(parameters, debug) {
         return array.length;
     };
 
+    this.headItem = function() {
+        if (array.length > 0) {
+            return array[0];
+        }
+    };
+
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -136,10 +142,6 @@ const Queue = function(parameters, debug) {
 
     this.removeItem = function() {
         if (array.length > 0) return array.splice(0, 1)[0];  // remove the first item in the array
-    };
-
-    this.headItem = function() {
-        return array[0];
     };
 
     this.removeAll = function() {

@@ -53,6 +53,15 @@ const Catalog = function(parameters, debug) {
         return array.length;
     };
 
+    this.getKeys = function() {
+        const keys = new List(undefined, this.debug);
+        array.forEach(function(association) {
+            const key = association.getKey();
+            keys.addItem(key);
+        });
+        return keys;
+    };
+
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -295,13 +304,11 @@ const Catalog = function(parameters, debug) {
         return values;
     };
 
-    this.getKeys = function() {
-        const keys = new List(undefined, this.debug);
-        array.forEach(function(association) {
-            const key = association.getKey();
-            keys.addItem(key);
+    this.removeAll = function() {
+        Object.keys(map).forEach(function(key) {
+            delete map[key];
         });
-        return keys;
+        array.splice(0);
     };
 
     this.sortItems = function(algorithm) {
@@ -311,13 +318,6 @@ const Catalog = function(parameters, debug) {
 
     this.reverseItems = function() {
         array.reverse();
-    };
-
-    this.removeAll = function() {
-        Object.keys(map).forEach(function(key) {
-            delete map[key];
-        });
-        array.splice(0);
     };
 
     return this;
