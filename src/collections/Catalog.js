@@ -313,7 +313,7 @@ const Catalog = function(parameters, debug) {
         array.reverse();
     };
 
-    this.deleteAll = function() {
+    this.removeAll = function() {
         Object.keys(map).forEach(function(key) {
             delete map[key];
         });

@@ -248,7 +248,7 @@ const List = function(parameters, debug) {
         }
     };
 
-    this.deleteAll = function() {
+    this.removeAll = function() {
         array.splice(0);
     };
 

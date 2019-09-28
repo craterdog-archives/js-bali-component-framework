@@ -30,7 +30,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            list.deleteAll();
+            list.removeAll();
             const copy = list.constructor(list.getParameters());
             expect(copy).to.exist;  // jshint ignore:line
             expect(list.isEqualTo(copy)).to.equal(true);
@@ -50,7 +50,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.deleteAll();
+            list.removeAll();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -69,7 +69,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.deleteAll();
+            list.removeAll();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -88,7 +88,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.deleteAll();
+            list.removeAll();
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

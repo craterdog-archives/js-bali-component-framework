@@ -53,9 +53,9 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const size = range.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(5);
-            expect(range.getFirst().toString()).to.equal('$third');
+            expect(range.getFirstItem().toString()).to.equal('$third');
             expect(range.getItem(3).toString()).to.equal('$fifth');
-            expect(range.getLast().toString()).to.equal('$seventh');
+            expect(range.getLastItem().toString()).to.equal('$seventh');
             const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
@@ -80,11 +80,11 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const range2 = bali.range(4, 6);
             size = range2.getSize();
             expect(size).to.equal(3);
-            expect(range2.getFirst().toNumber()).to.equal(4);
+            expect(range2.getFirstItem().toNumber()).to.equal(4);
             expect(range2.getItem(2).toNumber()).to.equal(5);
-            expect(range2.getLast().toNumber()).to.equal(6);
-            expect(range1.isInRange(2)).to.equal(true);
-            expect(range2.isInRange(7)).to.equal(false);
+            expect(range2.getLastItem().toNumber()).to.equal(6);
+            expect(range1.containsItem(2)).to.equal(true);
+            expect(range2.containsItem(7)).to.equal(false);
         });
 
     });

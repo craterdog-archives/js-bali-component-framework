@@ -743,9 +743,9 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 FormattingVisitor.prototype.visitSequence = function(sequence) {
     // note: a range must be handled differently
     if (sequence.isType('/bali/collections/Range')) {
-        sequence.getFirst().acceptVisitor(this);
+        sequence.getFirstItem().acceptVisitor(this);
         this.result += '..';
-        sequence.getLast().acceptVisitor(this);
+        sequence.getLastItem().acceptVisitor(this);
     } else if (sequence.isEmpty()) {
         if (sequence.isType('/bali/collections/Catalog')) {
             this.result += ':';  // empty catalog

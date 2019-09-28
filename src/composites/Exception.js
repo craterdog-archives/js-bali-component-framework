@@ -15,8 +15,7 @@
  * as a Bali Document Notation™ string. It provides a consistent way to do exception
  * handling within the Bali Nebula™. This class must look like it is a Composite component
  * but also inherit from the JavaScript Error class. So it implements all of the methods
- * defined in the Component and Composite classes by delegating to the same methods in its
- * 'attributes' attribute.
+ * defined in the Component and Composite classes.
  */
 
 
@@ -39,7 +38,10 @@ const Exception = function(attributes, cause) {
     ];
     const type = ancestry[0];  // first type in the ancestry tree
 
-    const interfaces = ['/bali/interfaces/Comparable'];
+    const interfaces = [
+        '/bali/interfaces/Comparable',
+        '/bali/interfaces/Exportable'
+    ];
 
     if (attributes === null || typeof attributes !== 'object') attributes = {};
 

@@ -30,7 +30,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            queue.deleteAll();
+            queue.removeAll();
             const copy = bali.queue();
             expect(copy).to.exist;  // jshint ignore:line
             expect(queue.isEqualTo(copy)).to.equal(true);
@@ -47,17 +47,17 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(1);
-            expect(queue.getHead().toString()).to.equal('"alpha"');
+            expect(queue.headItem().toString()).to.equal('"alpha"');
             queue.addItem('"beta"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(2);
-            expect(queue.getHead().toString()).to.equal('"alpha"');
+            expect(queue.headItem().toString()).to.equal('"alpha"');
             queue.addItem('"gamma"');
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
-            expect(queue.getHead().toString()).to.equal('"alpha"');
+            expect(queue.headItem().toString()).to.equal('"alpha"');
             expect(function() {queue.addItem('"delta"');}).to.throw(bali.Exception);
             var item = queue.removeItem();
             expect(item).to.exist;  // jshint ignore:line
@@ -91,7 +91,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.deleteAll();
+            queue.removeAll();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -110,7 +110,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.deleteAll();
+            queue.removeAll();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -130,7 +130,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            queue.deleteAll();
+            queue.removeAll();
             size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -145,33 +145,33 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             const size = queue.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var first = queue.getHead();
+            var first = queue.headItem();
             expect(first.toString()).to.equal('"alpha"');
             var item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 1);
-            first = queue.getHead();
+            first = queue.headItem();
             expect(first.toString()).to.equal('"beta"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 2);
-            first = queue.getHead();
+            first = queue.headItem();
             expect(first.toString()).to.equal('"delta"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 3);
             expect(queue.toString()).to.equal('[\n    "epsilon"\n    "gamma"\n]($type: /bali/collections/Queue/v1)');
-            first = queue.getHead();
+            first = queue.headItem();
             expect(first.toString()).to.equal('"epsilon"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 4);
-            first = queue.getHead();
+            first = queue.headItem();
             expect(first.toString()).to.equal('"gamma"');
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(0);
-            first = queue.getHead();
+            first = queue.headItem();
             expect(first).to.equal(undefined);
             item = queue.removeItem();
             expect(item).to.equal(undefined);

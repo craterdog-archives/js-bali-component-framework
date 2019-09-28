@@ -51,7 +51,10 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     ancestry = ancestry.concat('/bali/abstractions/Component');
     const type = ancestry[0];  // first type in the ancestry tree
 
-    interfaces = interfaces.concat('/bali/interfaces/Comparable');
+    interfaces = interfaces.concat(
+        '/bali/interfaces/Comparable',
+        '/bali/interfaces/Exportable'
+    );
 
     if (parameters) {
         const keys = Object.keys(parameters);
@@ -229,8 +232,8 @@ Component.prototype.isMatchedBy = function(pattern) {
      * endpoints of this component.
      */
     if (pattern.isType('/bali/collections/Range')) {
-        if (!this.getFirst().isMatchedBy(pattern.getFirst())) return false;
-        if (!this.getLast().isMatchedBy(pattern.getLast())) return false;
+        if (!this.getFirstItem().isMatchedBy(pattern.getFirstItem())) return false;
+        if (!this.getLastItem().isMatchedBy(pattern.getLastItem())) return false;
         return true;
     }
     /* Case 5

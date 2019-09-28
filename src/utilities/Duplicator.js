@@ -141,9 +141,9 @@ DuplicatingVisitor.prototype.visitCollection = function(collection) {
     const parameters = this.result;
     var copy;
     if (collection.isType('/bali/collections/Range')) {
-        collection.getFirst().acceptVisitor(this);
+        collection.getFirstItem().acceptVisitor(this);
         const first = this.result;
-        collection.getLast().acceptVisitor(this);
+        collection.getLastItem().acceptVisitor(this);
         const last = this.result;
         copy = new collection.constructor(first, last, parameters, this.debug);
     } else {

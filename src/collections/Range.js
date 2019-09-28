@@ -100,15 +100,15 @@ const Range = function(first, last, parameters, debug) {
         return array;
     };
 
-    this.getIterator = function() {
-        return new RangeIterator(this, collection);
-    };
-
     this.getSize = function() {
         return lastIndex - firstIndex + 1;
     };
 
-    this.getFirst = function() {
+    this.getIterator = function() {
+        return new RangeIterator(this, collection);
+    };
+
+    this.getFirstItem = function() {
         var item;
         if (collection) {
             item = collection.getItem(firstIndex);  // retrieve the item
@@ -136,7 +136,7 @@ const Range = function(first, last, parameters, debug) {
         return item;
     };
 
-    this.getLast = function() {
+    this.getLastItem = function() {
         var item;
         if (collection) {
             item = collection.getItem(lastIndex);  // retrieve the item
@@ -148,10 +148,10 @@ const Range = function(first, last, parameters, debug) {
         return item;
     };
 
-    this.isInRange = function(item) {
+    this.containsItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Range', '$isInRange', '$item', item, [
+            validator.validateType('/bali/collections/Range', '$containsItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -168,7 +168,7 @@ const Range = function(first, last, parameters, debug) {
             if (typeof item !== 'number') {
                 const exception = new Exception({
                     $module: '/bali/collections/Range',
-                    $procedure: '$isInRange',
+                    $procedure: '$containsItem',
                     $exception: '$invalidParameter',
                     $range: this,
                     $parameter: item,

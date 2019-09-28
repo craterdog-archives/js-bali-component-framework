@@ -147,7 +147,7 @@ const Stack = function(parameters, debug) {
         throw exception;
     };
 
-    this.getTop = function() {
+    this.topItem = function() {
         if (array.length > 0) {
             return array.peek();
         }
@@ -161,7 +161,7 @@ const Stack = function(parameters, debug) {
         throw exception;
     };
 
-    this.deleteAll = function() {
+    this.removeAll = function() {
         array.splice(0);
     };
 

@@ -463,8 +463,8 @@ Visitor.prototype.visitSelectClause = function(tree) {
 Visitor.prototype.visitSequence = function(sequence) {
     // note: range is handled differently
     if (sequence.isType('/bali/collections/Range')) {
-        sequence.getFirst().acceptVisitor(this);
-        sequence.getLast().acceptVisitor(this);
+        sequence.getFirstItem().acceptVisitor(this);
+        sequence.getLastItem().acceptVisitor(this);
     } else if (sequence.getSize() > 0) {
         this.depth++;
         const iterator = sequence.getIterator();

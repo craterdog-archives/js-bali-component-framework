@@ -192,7 +192,7 @@ const Set = function(parameters, debug) {
         return count;
     };
 
-    this.deleteAll = function() {
+    this.removeAll = function() {
         tree.clear();
     };
 

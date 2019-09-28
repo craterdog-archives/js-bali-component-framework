@@ -37,7 +37,7 @@ const Sorter = function(algorithm, debug) {
         if (collection && collection.getSize() > 1) {
             var array = collection.toArray();
             array = sortArray(comparator, array);
-            collection.deleteAll();
+            collection.removeAll();
             collection.addItems(array);
         }
     };

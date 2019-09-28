@@ -138,11 +138,11 @@ const Queue = function(parameters, debug) {
         if (array.length > 0) return array.splice(0, 1)[0];  // remove the first item in the array
     };
 
-    this.getHead = function() {
+    this.headItem = function() {
         return array[0];
     };
 
-    this.deleteAll = function() {
+    this.removeAll = function() {
         array.splice(0);
     };
 

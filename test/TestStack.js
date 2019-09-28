@@ -30,7 +30,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
-            stack.deleteAll();
+            stack.removeAll();
             const copy = bali.stack();
             expect(copy).to.exist;  // jshint ignore:line
             expect(stack.isEqualTo(copy)).to.equal(true);
@@ -68,7 +68,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            stack.deleteAll();
+            stack.removeAll();
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -87,7 +87,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            stack.deleteAll();
+            stack.removeAll();
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -107,7 +107,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            stack.deleteAll();
+            stack.removeAll();
             size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);
@@ -122,33 +122,33 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             var size = stack.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
-            var top = stack.getTop();
+            var top = stack.topItem();
             expect(top.toString()).to.equal('"gamma"');
             var pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 1);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('"epsilon"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 2);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('"delta"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
             expect(stack.toString()).to.equal('[\n    "alpha"\n    "beta"\n]($type: /bali/collections/Stack/v1)');
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('"beta"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 4);
-            top = stack.getTop();
+            top = stack.topItem();
             expect(top.toString()).to.equal('"alpha"');
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
-            expect(function() {stack.getTop();}).to.throw(bali.Exception);
+            expect(function() {stack.topItem();}).to.throw(bali.Exception);
             expect(function() {stack.removeItem();}).to.throw(bali.Exception);
         });
 
