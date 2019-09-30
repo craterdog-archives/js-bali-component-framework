@@ -107,6 +107,22 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             }
         });
 
+        it('should parse and format the wiki examples', function() {
+            const file = 'test/source/examples.bali';
+            console.error('        ' + file);
+            const document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;
+            var component = bali.component(document);
+            expect(component).to.exist;
+            var copy = component.duplicate();
+            expect(copy).to.exist;
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(document);
+            component = bali.component(formatted);
+            expect(component).to.exist;
+        });
+
     });
 
 });
