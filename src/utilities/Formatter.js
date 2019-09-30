@@ -212,7 +212,6 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 // block: '{' statements '}'
 FormattingVisitor.prototype.visitBlock = function(tree) {
     this.result += '{';
-    this.allowInline = false;
     const statements = tree.getItem(1);
     statements.acceptVisitor(this);
     this.result += '}';
@@ -643,7 +642,6 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 // procedure: '{' statements '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '{';
-    this.allowInline = true;
     const statements = procedure.getStatements();
     statements.acceptVisitor(this);
     this.result += '}';
