@@ -1,4 +1,4 @@
-## The Bali Component Framework
+## The Bali Component Framework™ (v2)
 
 ### Quick Links
 For more information on this project click on the following links:
