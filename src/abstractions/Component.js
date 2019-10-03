@@ -13,7 +13,6 @@
 /**
  * This abstract class defines the methods that all components must support.
  */
-const URL = require('url').URL;
 const utilities = require('../utilities');
 const Exception = require('../composites/Exception').Exception;
 

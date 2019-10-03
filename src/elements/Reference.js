@@ -25,7 +25,7 @@ const Exception = require('../composites/Exception').Exception;
 /**
  * This function creates a new reference element using the specified value.
  *
- * @param {URL} value The URL value of the reference.
+ * @param {URL} value The URI value of the reference.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Reference} The new reference element.
