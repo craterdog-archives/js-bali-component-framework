@@ -515,6 +515,7 @@ FormattingVisitor.prototype.visitName = function(name) {
 // number:
 //    'undefined' |
 //    'infinity' |
+//    '∞' |
 //    real |
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
@@ -523,7 +524,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
     if (number.isUndefined()) {
         this.result += 'undefined';
     } else if (number.isInfinite()) {
-        this.result += 'infinity';
+        this.result += '∞';
     } else if (number.isZero()) {
         this.result += '0';
     } else if ((format !== '$polar' || number.getReal() > 0) && number.getImaginary() === 0) {
@@ -914,21 +915,26 @@ FormattingVisitor.prototype.visitWithClause = function(tree) {
 const formatReal = function(value) {
     var string = Number(value.toPrecision(14)).toString();
     switch (string) {
-        case '-2.718281828459':
-            return '-e';
         case '2.718281828459':
             return 'e';
-        case '-3.1415926535898':
-            return '-pi';
+        case '-2.718281828459':
+            return '-e';
         case '3.1415926535898':
-            return 'pi';
-        case '-1.6180339887499':
-            return '-phi';
+            return 'π';
+        case '-3.1415926535898':
+            return '-π';
         case '1.6180339887499':
-            return 'phi';
+            return 'φ';
+        case '-1.6180339887499':
+            return '-φ';
+        case '6.2831853071796':
+            return 'τ';
+        case '-6.2831853071796':
+            return '-τ';
         case 'Infinity':
         case '-Infinity':
-            return 'infinity';
+            return '∞';
+        case '0':
         case '-0':
             return '0';
         case 'NaN':
@@ -943,11 +949,12 @@ const formatImaginary = function(value) {
     var literal = formatReal(value);
     switch (literal) {
         case 'undefined':
-        case 'infinity':
+        case '∞':
             return literal;
         case 'e':
-        case 'pi':
-        case 'phi':
+        case 'π':
+        case 'φ':
+        case 'τ':
             return literal + ' i';
         default:
             return literal + 'i';

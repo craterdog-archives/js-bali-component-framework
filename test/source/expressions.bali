@@ -1,12 +1,12 @@
 [
     $components: [
         3E23($units: "m/s")
-        ~pi($units: $radians)
+        ~π($units: $radians)
         [
             1
             2
             3
-        ]($type: /bali/collections/Stack/v1($itemType: /bali/elements/Number/v1($range: [1..infinity])))
+        ]($type: /bali/collections/Stack/v1($itemType: /bali/elements/Number/v1($range: [1..∞])))
     ]
     $variables: [
         x

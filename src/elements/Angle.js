@@ -66,18 +66,18 @@ const Angle = function(value, parameters, debug) {
         value = this.calculator.quotient(this.calculator.product(value, Math.PI), 180);
     }
 
-    // lock onto pi if appropriate
+    // lock onto π if appropriate
     value = this.calculator.lockOnAngle(value);
 
-    // normalize the value to the range (-pi..pi]
+    // normalize the value to the range (-π..π]
     const twoPi = this.calculator.product(Math.PI, 2);
     if (value < -twoPi || value > twoPi) {
-        value = this.calculator.remainder(value, twoPi);  // make in the range (-2pi..2pi)
+        value = this.calculator.remainder(value, twoPi);  // make in the range (-2π..2π)
     }
     if (value > Math.PI) {
-        value = this.calculator.difference(value, twoPi);  // make in the range (-pi..pi]
+        value = this.calculator.difference(value, twoPi);  // make in the range (-π..π]
     } else if (value <= -Math.PI) {
-        value = this.calculator.sum(value, twoPi);  // make in the range (-pi..pi]
+        value = this.calculator.sum(value, twoPi);  // make in the range (-π..π]
     }
     if (value === -0) value = 0;  // normalize to positive zero
 
@@ -193,7 +193,7 @@ Angle.inverse = function(angle, debug) {
 
 /**
  * This function returns the complement of an angle. The complementary angle
- * adds to the specified angle to equal pi/2.
+ * adds to the specified angle to equal π/2.
  *
  * @param {Angle} angle The angle to be complemented.
  * @param {Number} debug A number in the range [0..3].
@@ -213,7 +213,7 @@ Angle.complement = function(angle, debug) {
 
 /**
  * This function returns the supplement of an angle. The supplementary angle
- * adds to the specified angle to equal pi.
+ * adds to the specified angle to equal π.
  *
  * @param {Angle} angle The angle to be supplemented.
  * @param {Number} debug A number in the range [0..3].
@@ -233,7 +233,7 @@ Angle.supplement = function(angle, debug) {
 
 /**
  * This function returns the conjugate of an angle. The conjugated angle
- * adds to the specified angle to equal 2pi.
+ * adds to the specified angle to equal 2π.
  *
  * @param {Angle} angle The angle to be conjugated angle.
  * @param {Number} debug A number in the range [0..3].
@@ -252,7 +252,7 @@ Angle.conjugate = function(angle, debug) {
 
 /**
  * This function returns the sum of two angles. The result will be normalized to be in
- * the range (-pi..pi].
+ * the range (-π..π].
  *
  * @param {Angle} first The first angle to be summed.
  * @param {Angle} second The second angle to be summed.
@@ -276,7 +276,7 @@ Angle.sum = function(first, second, debug) {
 
 /**
  * This function returns the difference of two angles. The result will be normalized to be in
- * the range (-pi..pi].
+ * the range (-π..π].
  *
  * @param {Angle} first The angle to be subtracted from.
  * @param {Angle} second The angle to subtract from the first angle.
@@ -300,7 +300,7 @@ Angle.difference = function(first, second, debug) {
 
 /**
  * This function returns the specified angle scaled to the specified factor. The result
- * will be normalized to be in the range (-pi..pi].
+ * will be normalized to be in the range (-π..π].
  *
  * @param {Angle} angle The angle to be scaled.
  * @param {Number} factor The scale factor.

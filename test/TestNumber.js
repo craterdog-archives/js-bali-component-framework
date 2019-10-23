@@ -21,10 +21,10 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         it('should construct numbers using literals', function() {
             expect(bali.component('0').toString()).to.equal('0');
             expect(bali.component('e').toString()).to.equal('e');
-            expect(bali.component('phi i').toString()).to.equal('phi i');
+            expect(bali.component('φ i').toString()).to.equal('φ i');
             expect(bali.component('(3, 4i)').toString()).to.equal('(3, 4i)');
-            expect(bali.component('(5 e^~pi i)').toString()).to.equal('-5');
-            expect(bali.component('(-5 e^~pi i)').toString()).to.equal('5');
+            expect(bali.component('(5 e^~π i)').toString()).to.equal('-5');
+            expect(bali.component('(-5 e^~π i)').toString()).to.equal('5');
         });
 
         it('should construct numbers that equal zero', function() {
@@ -66,10 +66,10 @@ describe('Bali Nebula™ Component Framework - Number', function() {
 
         it('should construct infinite numbers', function() {
             expect(bali.number.INFINITY.toBoolean()).to.equal(true);
-            expect(bali.number.INFINITY.toString()).to.equal('infinity');
+            expect(bali.number.INFINITY.toString()).to.equal('∞');
             expect(bali.number.INFINITY.toNumber()).to.equal(Infinity);
             expect(bali.number(Infinity).toBoolean()).to.equal(true);
-            expect(bali.number(Infinity).toString()).to.equal('infinity');
+            expect(bali.number(Infinity).toString()).to.equal('∞');
             expect(bali.number(Infinity).toNumber()).to.equal(Infinity);
             expect(bali.number(-Infinity).toNumber()).to.equal(Infinity);
             expect(bali.number(-Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
@@ -321,7 +321,7 @@ const angleValues = [
 const stringValues = [
     'undefined',
     '0',
-    'infinity',
+    '∞',
     '0',
     '-5',
     '5',
@@ -329,13 +329,13 @@ const stringValues = [
     '-1',
     '1i',
     '-1i',
-    'infinity',
+    '∞',
     '-5'
 ];
 const rectangularValues = [
     'undefined',
     '0',
-    'infinity',
+    '∞',
     '0',
     '-5',
     '5',
@@ -343,20 +343,20 @@ const rectangularValues = [
     '-1',
     '1i',
     '-1i',
-    'infinity',
+    '∞',
     '-5'
 ];
 const polarValues = [
     'undefined',
     '0',
-    'infinity',
+    '∞',
     '0',
-    '(5 e^~pi i)',
+    '(5 e^~π i)',
     '5',
     '1',
-    '(1 e^~pi i)',
+    '(1 e^~π i)',
     '(1 e^~1.570796326794897i)',
     '(1 e^~-1.570796326794897i)',
-    'infinity',
-    '(5 e^~pi i)'
+    '∞',
+    '(5 e^~π i)'
 ];

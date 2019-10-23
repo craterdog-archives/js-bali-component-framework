@@ -95,6 +95,7 @@ const convertParseTree = function(antlrTree, debug) {
 };
 
 Math.PHI = (Math.sqrt(5) + 1) / 2;
+Math.TAU = Math.PI * 2;
 
 const literalToNumber = function(literal) {
     switch (literal) {
@@ -103,13 +104,23 @@ const literalToNumber = function(literal) {
         case 'e':
             return Math.E;
         case '-pi':
+        case '-π':
             return -Math.PI;
         case 'pi':
+        case 'π':
             return Math.PI;
         case '-phi':
+        case '-φ':
             return -Math.PHI;
         case 'phi':
+        case 'φ':
             return Math.PHI;
+        case '-tau':
+        case '-τ':
+            return -Math.TAU;
+        case 'tau':
+        case 'τ':
+            return Math.TAU;
         default:
             return Number(literal);
     }
@@ -666,6 +677,7 @@ ParsingVisitor.prototype.visitName = function(ctx) {
 // number:
 //    'undefined' |
 //    'infinity' |
+//    '∞' |
 //    real |
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
@@ -692,6 +704,7 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
             real = NaN;
             break;
         case 'infinity':
+        case '∞':
             real = Infinity;
             break;
     }

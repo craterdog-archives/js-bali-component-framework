@@ -36,6 +36,7 @@ name: NAME;
 number:
     'undefined' |
     'infinity' |
+    '∞' |
     real |
     imaginary |
     '(' real (',' imaginary | 'e^' angle 'i') ')'

@@ -22,7 +22,7 @@ DURATION:
 FRACTION: '.' ('0'..'9')+;
 
 
-IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'phi i';
+IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | 'τ i';
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
@@ -37,7 +37,7 @@ RESOURCE: '<' SCHEME ':' CONTEXT '>';
 // NOTE: We cannot define negative constants here because the scanner would scan
 //       a negative variable like '-exponent' as a single '-e' token rather than
 //       two tokens '-' and 'exponent'.
-REAL: '0' | FLOAT | 'e' | 'pi' | 'phi';
+REAL: '0' | FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
 REGEX: TEXT '?';
 

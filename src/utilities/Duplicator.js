@@ -402,6 +402,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 // number:
 //    'undefined' |
 //    'infinity' |
+//    '∞' |
 //    real |
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'

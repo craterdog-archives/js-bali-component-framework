@@ -20,8 +20,8 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
 
         it('should construct angles using literals', function() {
             expect(bali.component('~0').toString()).to.equal('~0');
-            expect(bali.component('~pi').toString()).to.equal('~pi');
-            expect(bali.component('~pi($units: $radians)').toString()).to.equal('~pi($units: $radians)');
+            expect(bali.component('~π').toString()).to.equal('~π');
+            expect(bali.component('~π($units: $radians)').toString()).to.equal('~π($units: $radians)');
             expect(bali.component('~90($units: $degrees)').toString()).to.equal('~90($units: $degrees)');
         });
 
@@ -46,7 +46,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
             expect(bali.angle(Math.PI/4, bali.angle.RADIANS).toString()).to.equal('~0.7853981633974483($units: $radians)');
         });
 
-        it('should construct angles that equal pi', function() {
+        it('should construct angles that equal π', function() {
             expect(bali.angle.PI.toNumber()).to.equal(Math.PI);
             expect(bali.angle(-Math.PI).toNumber()).to.equal(Math.PI);
             expect(bali.angle(180, bali.angle.DEGREES).toNumber()).to.equal(Math.PI);
@@ -283,8 +283,8 @@ const stringValues = [
     '~0',
     '~0',
     '~0',
-    '~pi',
-    '~pi',
+    '~π',
+    '~π',
     '~0.7853981633974483',
     '~-0.7853981633974483',
     '~1.5707963267948966',

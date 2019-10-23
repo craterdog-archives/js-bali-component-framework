@@ -564,7 +564,8 @@ exports.api = function(defaultLevel) {
     /*
      * This section defines constants for common components
      */
-    angle.PI = component('~pi', defaultLevel);
+    angle.PI = component('~π', defaultLevel);
+    angle.TAU = component('~τ', defaultLevel);
 
     angle.DEGREES = {$units: '$degrees'};
     angle.RADIANS = {$units: '$radians'};
@@ -577,9 +578,9 @@ exports.api = function(defaultLevel) {
     number.UNDEFINED = component('undefined', defaultLevel);
     number.ZERO = component('0', defaultLevel);
     number.ONE = component('1', defaultLevel);
-    number.PHI = component('phi', defaultLevel);
+    number.PHI = component('φ', defaultLevel);
     number.E = component('e', defaultLevel);
-    number.INFINITY = component('infinity', defaultLevel);
+    number.INFINITY = component('∞', defaultLevel);
     number.I = component('1i', defaultLevel);
 
     number.POLAR = {$format: '$polar'};

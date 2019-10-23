@@ -32,7 +32,9 @@
             true
             index
             example
-            -pi
+            -π
+            -φ
+            -τ
             (3, 4i)
             [
                 "one"
@@ -72,17 +74,19 @@
             "key": "value"
             'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($encoding: $base16)
             true: false
-            pi: -3.14159265
+            π: -3.14159265
+            τ: -6.28318531
             (1, 2i): -1.4142135623730951
             $sequence: [
                 "short"
                 "sequence"
             ]
             $table: [
-                $a: pi
-                $b: -e
-                $c: phi
-                $d: infinity
+                $a: -e
+                $b: π
+                $c: -φ
+                $d: τ
+                $e: ∞
             ]
         ]($type: /acme/types/Foo/v1.2.3)
     ]
