@@ -1,4 +1,5 @@
 ## The Bali Component Framework™ (v2)
+![Logo](CraterDogLogo.png)
 
 ### Quick Links
 For more information on this project click on the following links:
