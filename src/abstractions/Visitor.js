@@ -322,9 +322,9 @@ Visitor.prototype.visitName = function(name) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    real |
-//    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')'
+//    REAL |
+//    IMAGINARY |
+//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
     const parameters = number.getParameters();
     this.visitParameters(parameters);  // process any parameters first

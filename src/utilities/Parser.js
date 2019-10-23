@@ -522,12 +522,6 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 };
 
 
-// imaginary: IMAGINARY
-ParsingVisitor.prototype.visitImaginary = function(ctx) {
-    this.result = literalToNumber(ctx.getText().slice(0, -1).trim());  // remove the trailing 'i'
-};
-
-
 // indices: '[' keys ']'
 ParsingVisitor.prototype.visitIndices = function(ctx) {
     const tree = new collections.Tree('/bali/composites/Indices', this.debug);
@@ -678,25 +672,23 @@ ParsingVisitor.prototype.visitName = function(ctx) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    real |
-//    imaginary |
-//    '(' real (',' imaginary | 'e^' angle 'i') ')'
+//    REAL |
+//    IMAGINARY |
+//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
-    var real = ctx.real();
+    var real = ctx.REAL();
     if (real) {
-        real.accept(this);
-        real = this.result;
+        real = literalToNumber(real.getText());
     }
-    var imaginary = ctx.imaginary();
+    var imaginary = ctx.IMAGINARY();
     if (imaginary) {
-        imaginary.accept(this);
-        imaginary = this.result;
+        imaginary = literalToNumber(imaginary.getText().slice(0, -1).trim());  // remove the trailing 'i'
     }
-    const angle = ctx.angle();
+    var angle = ctx.ANGLE();
     if (angle) {
-        angle.accept(this);
-        imaginary = this.result;
+        angle = literalToNumber(angle.getText().slice(1));  // remove the leading '~'
+        imaginary = new elements.Angle(angle, parameters, this.debug);
     }
     const literal = ctx.getText();
     switch (literal) {
@@ -842,12 +834,6 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     const last = this.result;
     const range = new collections.Range(first, last, parameters, this.debug);
     this.result = range;
-};
-
-
-// real: REAL
-ParsingVisitor.prototype.visitReal = function(ctx) {
-    this.result = literalToNumber(ctx.getText());
 };
 
 

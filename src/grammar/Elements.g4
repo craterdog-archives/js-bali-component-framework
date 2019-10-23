@@ -27,8 +27,6 @@ duration: DURATION;
 
 pattern: 'none' | REGEX | 'any';
 
-imaginary: IMAGINARY;
-
 moment: MOMENT;
 
 name: NAME;
@@ -37,16 +35,14 @@ number:
     'undefined' |
     'infinity' |
     '∞' |
-    real |
-    imaginary |
-    '(' real (',' imaginary | 'e^' angle 'i') ')'
+    REAL |
+    IMAGINARY |
+    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 ;
 
 percent: PERCENT;
 
 probability: 'false' | FRACTION | 'true';
-
-real: REAL;
 
 reference: RESOURCE;
 

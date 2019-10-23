@@ -384,12 +384,6 @@ DocumentVisitor.prototype.visitPattern = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#imaginary.
-DocumentVisitor.prototype.visitImaginary = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by DocumentParser#moment.
 DocumentVisitor.prototype.visitMoment = function(ctx) {
   return this.visitChildren(ctx);
@@ -416,12 +410,6 @@ DocumentVisitor.prototype.visitPercent = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#probability.
 DocumentVisitor.prototype.visitProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#real.
-DocumentVisitor.prototype.visitReal = function(ctx) {
   return this.visitChildren(ctx);
 };
 
