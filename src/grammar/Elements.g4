@@ -33,8 +33,9 @@ name: NAME;
 
 number:
     'undefined' |
-    'infinity' |
+    '0' |
     '∞' |
+    'infinity' |
     REAL |
     IMAGINARY |
     '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'

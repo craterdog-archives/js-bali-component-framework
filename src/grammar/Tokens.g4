@@ -8,16 +8,11 @@ grammar Tokens;
  "fragment" keyword.
 */
 
-ANGLE: '~' REAL;
+ANGLE: '~' ('0' | REAL);
 
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
-DURATION:
-    '~-P' SPAN 'W' |
-    '~-P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)? |
-    '~P' SPAN 'W' |
-    '~P' (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)?
-; 
+DURATION: '~' '-'? 'P' (SPAN 'W' | (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPAN 'H')? (SPAN 'M')? (SPAN 'S')?)?);
 
 FRACTION: '.' ('0'..'9')+;
 
@@ -28,7 +23,7 @@ MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRA
 
 NAME: ('/' IDENTIFIER)+ ('/' VERSION)?;
 
-PERCENT: REAL '%';
+PERCENT: ('0' | REAL) '%';
 
 RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
 
@@ -37,7 +32,7 @@ RESOURCE: '<' SCHEME ':' CONTEXT '>';
 // NOTE: We cannot define negative constants here because the scanner would scan
 //       a negative variable like '-exponent' as a single '-e' token rather than
 //       two tokens '-' and 'exponent'.
-REAL: '0' | FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
+REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
 REGEX: TEXT '?';
 
