@@ -135,13 +135,27 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
 };
 
 
-// arguments: '(' list ')'
+// arguments:
+//     expression (',' expression)* |
+//     /* no arguments */
 FormattingVisitor.prototype.visitArguments = function(tree) {
     this.inline++;
-    this.result += '(';
-    const list = tree.getItem(1);
-    this.visitSequence(list);  // it is a sequence not a collection
-    this.result += ')';
+    if (!tree.isEmpty()) {
+        this.depth++;
+        var count = 0;
+        const iterator = tree.getIterator();
+        while (iterator.hasNext()) {
+            if (this.inline) {
+                if (count++) this.result += ', ';  // only after the first item has been formatted
+            } else {
+                this.result += this.getNewline();
+            }
+            const item = iterator.getNext();
+            item.acceptVisitor(this);
+        }
+        this.depth--;
+        if (!this.inline) this.result += this.getNewline();
+    }
     this.inline--;
 };
 
@@ -160,7 +174,7 @@ FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
 };
 
 
-// association: component ':' expression
+// association: element ':' component
 FormattingVisitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     this.result += ': ';
@@ -235,10 +249,34 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: '[' sequence ']'
+// collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    this.visitSequence(collection);  // first format the sequence of items
+    // note: a range must be handled differently
+    if (collection.isType('/bali/collections/Range')) {
+        collection.getFirstItem().acceptVisitor(this);
+        this.result += '..';
+        collection.getLastItem().acceptVisitor(this);
+    } else if (collection.isEmpty()) {
+        if (collection.isType('/bali/collections/Catalog')) {
+            this.result += ':';  // empty catalog
+        }
+    } else {
+        this.depth++;
+        var count = 0;
+        const iterator = collection.getIterator();
+        while (iterator.hasNext()) {
+            if (this.inline) {
+                if (count++) this.result += ', ';  // only after the first item has been formatted
+            } else {
+                this.result += this.getNewline();
+            }
+            const item = iterator.getNext();
+            item.acceptVisitor(this);
+        }
+        this.depth--;
+        if (!this.inline) this.result += this.getNewline();
+    }
     this.result += ']';
     const parameters = collection.getParameters();
     this.visitParameters(parameters);  // then format any parameterization
@@ -376,13 +414,15 @@ FormattingVisitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function arguments
+// functionExpression: function '(' arguments ')'
 FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
     this.inline++;
     const functionName = tree.getItem(1);
     functionName.acceptVisitor(this);
+    this.result += '(';
     const args = tree.getItem(2);
     args.acceptVisitor(this);
+    this.result += ')';
     this.inline--;
 };
 
@@ -440,13 +480,23 @@ FormattingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// indices: '[' keys ']'
+// indices: expression (',' expression)*
 FormattingVisitor.prototype.visitIndices = function(tree) {
     this.inline++;
-    this.result += '[';
-    const keys = tree.getItem(1);
-    this.visitSequence(keys);  // the keys are a sequence not a collection
-    this.result += ']';
+    this.depth++;
+    var count = 0;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        if (this.inline) {
+            if (count++) this.result += ', ';  // only after the first item has been formatted
+        } else {
+            this.result += this.getNewline();
+        }
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
+    }
+    this.depth--;
+    if (!this.inline) this.result += this.getNewline();
     this.inline--;
 };
 
@@ -480,7 +530,7 @@ FormattingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message arguments
+// messageExpression: expression '.' message '(' arguments ')'
 FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     this.inline++;
     const target = tree.getItem(1);
@@ -488,8 +538,10 @@ FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     this.result += '.';
     const messageName = tree.getItem(2);
     messageName.acceptVisitor(this);
+    this.result += '(';
     const args = tree.getItem(3);
     args.acceptVisitor(this);
+    this.result += ')';
     this.inline--;
 };
 
@@ -556,7 +608,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
 };
 
 
-// parameters: '(' object ')'
+// parameters: '(' catalog ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     if (parameters) {
         const keys = Object.keys(parameters);
@@ -738,36 +790,6 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// sequence: range | list | catalog
-FormattingVisitor.prototype.visitSequence = function(sequence) {
-    // note: a range must be handled differently
-    if (sequence.isType('/bali/collections/Range')) {
-        sequence.getFirstItem().acceptVisitor(this);
-        this.result += '..';
-        sequence.getLastItem().acceptVisitor(this);
-    } else if (sequence.isEmpty()) {
-        if (sequence.isType('/bali/collections/Catalog')) {
-            this.result += ':';  // empty catalog
-        }
-    } else {
-        this.depth++;
-        var count = 0;
-        const iterator = sequence.getIterator();
-        while (iterator.hasNext()) {
-            if (this.inline) {
-                if (count++) this.result += ', ';  // only after the first item has been formatted
-            } else {
-                this.result += this.getNewline();
-            }
-            const item = iterator.getNext();
-            item.acceptVisitor(this);
-        }
-        this.depth--;
-        if (!this.inline) this.result += this.getNewline();
-    }
-};
-
-
 // statement: mainClause handleClause*
 FormattingVisitor.prototype.visitStatement = function(tree) {
     const iterator = tree.getIterator();
@@ -795,22 +817,26 @@ FormattingVisitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable indices
+// subcomponent: variable '[' indices ']'
 FormattingVisitor.prototype.visitSubcomponent = function(tree) {
     const variable = tree.getItem(1);
     variable.acceptVisitor(this);
+    this.result += '[';
     const indices = tree.getItem(2);
     indices.acceptVisitor(this);
+    this.result += ']';
 };
 
 
-// subcomponentExpression: expression indices
+// subcomponentExpression: expression '[' indices ']'
 FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
     this.inline++;
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
+    const expression = tree.getItem(1);
+    expression.acceptVisitor(this);
+    this.result += '[';
     const indices = tree.getItem(2);
     indices.acceptVisitor(this);
+    this.result += ']';
     this.inline--;
 };
 

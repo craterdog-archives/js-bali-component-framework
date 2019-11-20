@@ -3,19 +3,19 @@ import Statements;
 
 component: value parameters?;
 
-value: element | collection | procedure;
+value: element | sequence | procedure;
 
-collection: '[' sequence ']';
+sequence: '[' collection ']';
 
-sequence: range | list | catalog;
+collection: range | list | catalog;
 
 parameters: '(' catalog ')';
 
-range: expression '..' expression;
+range: component '..' component;
 
 list:
-    expression (',' expression)* |
-    EOL (expression EOL)* |
+    component (',' component)* |
+    EOL (component EOL)* |
     /* empty list */
 ;
 
@@ -25,7 +25,7 @@ catalog:
     ':' /* empty catalog */
 ;
 
-association: component ':' expression;
+association: element ':' component;
 
 procedure: '{' statements '}';
 

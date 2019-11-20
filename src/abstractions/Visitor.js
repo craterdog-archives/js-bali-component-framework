@@ -43,10 +43,17 @@ Visitor.prototype.visitAngle = function(angle) {
 };
 
 
-// arguments: '(' list ')'
+// arguments:
+//     expression (',' expression)* |
+//     /* no arguments */
 Visitor.prototype.visitArguments = function(tree) {
-    const list = tree.getItem(1);
-    this.visitSequence(list);  // it is a sequence not a collection
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
+    }
+    this.depth--;
 };
 
 
@@ -60,7 +67,7 @@ Visitor.prototype.visitArithmeticExpression = function(tree) {
 };
 
 
-// association: component ':' expression
+// association: element ':' component
 Visitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     association.getValue().acceptVisitor(this);
@@ -96,11 +103,21 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: '[' sequence ']'
+// collection: range | list | catalog
 Visitor.prototype.visitCollection = function(collection) {
-    const parameters = collection.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    this.visitSequence(collection);  // then process the items in the sequence
+    // note: range is handled differently
+    if (collection.isType('/bali/collections/Range')) {
+        collection.getFirstItem().acceptVisitor(this);
+        collection.getLastItem().acceptVisitor(this);
+    } else if (collection.getSize() > 0) {
+        this.depth++;
+        const iterator = collection.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            item.acceptVisitor(this);
+        }
+        this.depth--;
+    }
 };
 
 
@@ -208,7 +225,7 @@ Visitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function arguments
+// functionExpression: function '(' arguments ')'
 Visitor.prototype.visitFunctionExpression = function(tree) {
     const functionName = tree.getItem(1);
     functionName.acceptVisitor(this);
@@ -254,10 +271,15 @@ Visitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// indices: '[' keys ']'
+// indices: expression (',' expression)*
 Visitor.prototype.visitIndices = function(tree) {
-    const keys = tree.getItem(1);
-    this.visitSequence(keys);  // must explicitly call it
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
+    }
+    this.depth--;
 };
 
 
@@ -291,7 +313,7 @@ Visitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message arguments
+// messageExpression: expression '.' message '(' arguments ')'
 Visitor.prototype.visitMessageExpression = function(tree) {
     const target = tree.getItem(1);
     target.acceptVisitor(this);
@@ -332,7 +354,7 @@ Visitor.prototype.visitNumber = function(number) {
 };
 
 
-// parameters: '(' object ')'
+// parameters: '(' catalog ')'
 Visitor.prototype.visitParameters = function(parameters) {
     if (parameters) {
         const keys = Object.keys(parameters);
@@ -460,24 +482,6 @@ Visitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// sequence: range | list | catalog
-Visitor.prototype.visitSequence = function(sequence) {
-    // note: range is handled differently
-    if (sequence.isType('/bali/collections/Range')) {
-        sequence.getFirstItem().acceptVisitor(this);
-        sequence.getLastItem().acceptVisitor(this);
-    } else if (sequence.getSize() > 0) {
-        this.depth++;
-        const iterator = sequence.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            item.acceptVisitor(this);
-        }
-        this.depth--;
-    }
-};
-
-
 // statement: mainClause handleClause*
 Visitor.prototype.visitStatement = function(tree) {
     this.depth++;
@@ -505,7 +509,7 @@ Visitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable indices
+// subcomponent: variable '[' indices ']'
 Visitor.prototype.visitSubcomponent = function(tree) {
     const variable = tree.getItem(1);
     variable.acceptVisitor(this);
@@ -514,10 +518,10 @@ Visitor.prototype.visitSubcomponent = function(tree) {
 };
 
 
-// subcomponentExpression: expression indices
+// subcomponentExpression: expression '[' indices ']'
 Visitor.prototype.visitSubcomponentExpression = function(tree) {
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
+    const expression = tree.getItem(1);
+    expression.acceptVisitor(this);
     const indices = tree.getItem(2);
     indices.acceptVisitor(this);
 };

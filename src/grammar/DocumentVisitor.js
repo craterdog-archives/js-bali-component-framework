@@ -30,14 +30,14 @@ DocumentVisitor.prototype.visitValue = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#collection.
-DocumentVisitor.prototype.visitCollection = function(ctx) {
+// Visit a parse tree produced by DocumentParser#sequence.
+DocumentVisitor.prototype.visitSequence = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by DocumentParser#sequence.
-DocumentVisitor.prototype.visitSequence = function(ctx) {
+// Visit a parse tree produced by DocumentParser#collection.
+DocumentVisitor.prototype.visitCollection = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -344,12 +344,6 @@ DocumentVisitor.prototype.visitArguments = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#indices.
 DocumentVisitor.prototype.visitIndices = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#keys.
-DocumentVisitor.prototype.visitKeys = function(ctx) {
   return this.visitChildren(ctx);
 };
 

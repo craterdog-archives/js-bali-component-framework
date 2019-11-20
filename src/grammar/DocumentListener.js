@@ -38,21 +38,21 @@ DocumentListener.prototype.exitValue = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.enterCollection = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.exitCollection = function(ctx) {
-};
-
-
 // Enter a parse tree produced by DocumentParser#sequence.
 DocumentListener.prototype.enterSequence = function(ctx) {
 };
 
 // Exit a parse tree produced by DocumentParser#sequence.
 DocumentListener.prototype.exitSequence = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.enterCollection = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.exitCollection = function(ctx) {
 };
 
 
@@ -512,15 +512,6 @@ DocumentListener.prototype.enterIndices = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#indices.
 DocumentListener.prototype.exitIndices = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#keys.
-DocumentListener.prototype.enterKeys = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#keys.
-DocumentListener.prototype.exitKeys = function(ctx) {
 };
 
 

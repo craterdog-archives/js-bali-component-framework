@@ -1,116 +1,115 @@
 [
-    $components: [
-        3E23($units: "m/s")
-        ~π($units: $radians)
-        [
+    $components: {
+        $variable := 3E23($units: "m/s")
+        $variable := ~π($units: $radians)
+        $variable := [
             1
             2
             3
         ]($type: /bali/collections/Stack/v1($itemType: /bali/elements/Number/v1($range: [1..∞])))
-    ]
-    $variables: [
-        x
-        foo
-        item5
-        index
-        example
-        verylongvariablename
-    ]
-    $functions: [
-        random(count)
-        random(count)[1]
-        random(16)
-        random(16).sort(increasing)
-        random(16).sort()[-x]
-    ]
-    $groupings: [
-        (x + y) * z
-        ((x + y) * z) - (a or (b and c))
-        ([1, 2] + [2, 3])[1]
-        ([1, 2] + [2, 3]).reverse()
-        ([1, 2] + [2, 3]).reverse(foo, bar)[index]
-    ]
-    $dereferences: [
-        @result
-        @foo.bar()
-        @(foo[x])
-    ]
-    $messages: [
-        foo.bar()
-        foo.bar(baz)
-        foo.bar(5).random()
-        foo.bar()[-index]
-        [1, 2, 3].reverse()
-        products[$yoyo, "Duncan"].calculateUPC()
-    ]
-    $indices: [
-        values[$symbol]
-        array[-1]
-        symbols[$beta..$delta]
-        x[1, 2, 3][2]
-        [[$a, $b], 2, 3][1, 2]
-    ]
-    $factorials: [
-        5!
-        big!
-        foo()!
-        base[index]!
-        [1, 2, 3].reverse()!
-    ]
-    $exponentials: [
-        2 ^ 8
-        e ^ power
-        x ^ y
-        random() ^ exponent
-        base ^ power(x)
-    ]
-    $inversions: [
-        -x
-        *-exponential
-        *complex
-        -*(3, 4i)
-    ]
-    $geometrics: [
-        -x * scaler
-        6 / dividend
-        -7 // modulo
-    ]
-    $arithmetics: [
-        7 + 2
-        5 + addend
-        z - subtractend
-    ]
-    $magnitudes: [
-        |-3|
-        |-y|
-        |foo()|
-        |foo.bar(8)|
-    ]
-    $concatenations: [
-        text & "more text"
-        [1, 2, 3] & list
-        [$a: "a", $b: "b"] & catalog
-    ]
-    $comparisons: [
-        scaler < 8
-        x = y
-        big > 2
-        value is [$foo]
-        component matches any
-    ]
-    $complements: [
-        not true
-        not c
-        not list.isEmpty()
-    ]
-    $logicals: [
-        set and [1, 2, 3]
-        set sans [$a, $b, $c]
-        a or foo.bar()
-        ["one", "two"] xor ["one"]
-    ]
-    $defaults: [
-        optional ? true
-        optional ? default
-    ]
+    }
+    $variables: {
+        $variable := x
+        $variable := foo
+        $variable := item5
+        $variable := index
+        $variable := example
+        $variable := verylongvariablename
+    }
+    $functions: {
+        $variable := random(count)
+        $variable := random(count)[1]
+        $variable := random(16)
+        $variable := random(16).sort(increasing)
+        $variable := random(16).sort()[-x]
+    }
+    $groupings: {
+        $variable := (x + y) * z
+        $variable := ((x + y) * z) - (a or (b and c))
+        $variable := ([1, 2] + [2, 3])[1]
+        $variable := ([1, 2] + [2, 3]).reverse()
+        $variable := ([1, 2] + [2, 3]).reverse(foo, bar)[index]
+    }
+    $dereferences: {
+        $variable := @result
+        $variable := @foo.bar()
+        $variable := @(foo[x])
+    }
+    $messages: {
+        $variable := foo.bar()
+        $variable := foo.bar(baz)
+        $variable := foo.bar(5).random()
+        $variable := foo.bar()[-index]
+        $variable := [1, 2, 3].reverse()
+        $variable := products[$yoyo, "Duncan"].calculateUPC()
+    }
+    $indices: {
+        $variable := values[$symbol]
+        $variable := array[-1]
+        $variable := x[1, 2, 3][2]
+        $variable := [[$a, $b], 2, 3][1, 2]
+    }
+    $factorials: {
+        $variable := 5!
+        $variable := big!
+        $variable := foo()!
+        $variable := base[index]!
+        $variable := [1, 2, 3].reverse()!
+    }
+    $exponentials: {
+        $variable := 2 ^ 8
+        $variable := e ^ power
+        $variable := x ^ y
+        $variable := random() ^ exponent
+        $variable := base ^ power(x)
+    }
+    $inversions: {
+        $variable := -x
+        $variable := *-exponential
+        $variable := *complex
+        $variable := -*(3, 4i)
+    }
+    $geometrics: {
+        $variable := -x * scaler
+        $variable := 6 / dividend
+        $variable := -7 // modulo
+    }
+    $arithmetics: {
+        $variable := 7 + 2
+        $variable := 5 + addend
+        $variable := z - subtractend
+    }
+    $magnitudes: {
+        $variable := |-3|
+        $variable := |-y|
+        $variable := |foo()|
+        $variable := |foo.bar(8)|
+    }
+    $concatenations: {
+        $variable := text & "more text"
+        $variable := [1, 2, 3] & list
+        $variable := [$a: "a", $b: "b"] & catalog
+    }
+    $comparisons: {
+        $variable := scaler < 8
+        $variable := x = y
+        $variable := big > 2
+        $variable := value is [$foo]
+        $variable := component matches any
+    }
+    $complements: {
+        $variable := not true
+        $variable := not c
+        $variable := not list.isEmpty()
+    }
+    $logicals: {
+        $variable := set and [1, 2, 3]
+        $variable := set sans [$a, $b, $c]
+        $variable := a or foo.bar()
+        $variable := ["one", "two"] xor ["one"]
+    }
+    $defaults: {
+        $variable := optional ? true
+        $variable := optional ? default
+    }
 ]

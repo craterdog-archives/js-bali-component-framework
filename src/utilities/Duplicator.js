@@ -68,12 +68,17 @@ DuplicatingVisitor.prototype.visitAngle = function(angle) {
 };
 
 
-// arguments: '(' list ')'
+// arguments:
+//     expression (',' expression)* |
+//     /* no arguments */
 DuplicatingVisitor.prototype.visitArguments = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    const list = tree.getItem(1);
-    list.acceptVisitor(this);
-    copy.addItem(this.result);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        item.acceptVisitor(this);
+        copy.addItem(this.result);
+    }
     this.result = copy;
 };
 
@@ -90,7 +95,7 @@ DuplicatingVisitor.prototype.visitArithmeticExpression = function(tree) {
 };
 
 
-// association: component ':' expression
+// association: element ':' component
 DuplicatingVisitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     const key = this.result;
@@ -135,7 +140,7 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: '[' sequence ']'
+// collection: range | list | catalog
 DuplicatingVisitor.prototype.visitCollection = function(collection) {
     this.visitParameters(collection.getParameters());
     const parameters = this.result;
@@ -286,7 +291,7 @@ DuplicatingVisitor.prototype.visitFunction = function(tree) {
 };
 
 
-// functionExpression: function arguments
+// functionExpression: function '(' arguments ')'
 DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
@@ -331,12 +336,15 @@ DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// indices: '[' keys ']'
+// indices: expression (',' expression)*
 DuplicatingVisitor.prototype.visitIndices = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    const keys = tree.getItem(1);
-    keys.acceptVisitor(this);
-    copy.addItem(this.result);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        item.acceptVisitor(this);
+        copy.addItem(this.result);
+    }
     this.result = copy;
 };
 
@@ -370,7 +378,7 @@ DuplicatingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message arguments
+// messageExpression: expression '.' message '(' arguments ')'
 DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
@@ -413,7 +421,7 @@ DuplicatingVisitor.prototype.visitNumber = function(number) {
 };
 
 
-// parameters: '(' object ')'
+// parameters: '(' catalog ')'
 DuplicatingVisitor.prototype.visitParameters = function(parameters) {
      if (parameters) {
          const copy = {};
@@ -571,7 +579,7 @@ DuplicatingVisitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable indices
+// subcomponent: variable '[' indices ']'
 DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
@@ -582,7 +590,7 @@ DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
 };
 
 
-// subcomponentExpression: expression indices
+// subcomponentExpression: expression '[' indices ']'
 DuplicatingVisitor.prototype.visitSubcomponentExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);

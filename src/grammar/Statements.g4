@@ -60,4 +60,4 @@ throwClause: 'throw' expression;
 
 recipient: symbol | subcomponent;
 
-subcomponent: variable indices;
+subcomponent: variable '[' indices ']';
