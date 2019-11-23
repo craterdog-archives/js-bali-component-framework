@@ -11,7 +11,7 @@ collection: range | list | catalog;
 
 parameters: '(' catalog ')';
 
-range: component '..' component;
+range: element '..' element;
 
 list:
     component (',' component)* |

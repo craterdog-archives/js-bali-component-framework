@@ -821,13 +821,13 @@ ParsingVisitor.prototype.visitQueueClause = function(ctx) {
 };
 
 
-// range: component '..' component
+// range: element '..' element
 ParsingVisitor.prototype.visitRange = function(ctx) {
     const parameters = this.getParameters();
-    const components = ctx.component();
-    components[0].accept(this);
+    const elements = ctx.element();
+    elements[0].accept(this);
     const first = this.result;
-    components[1].accept(this);
+    elements[1].accept(this);
     const last = this.result;
     const range = new collections.Range(first, last, parameters, this.debug);
     this.result = range;
