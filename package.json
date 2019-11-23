@@ -1,6 +1,6 @@
 {
   "name": "bali-component-framework",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "This library provides a JavaScript based implementation of the Bali Nebula™ Component Framework.",
   "main": "index.js",
   "repository": {
