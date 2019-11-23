@@ -291,7 +291,7 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 // catalog:
 //     association (',' association)* |
 //     EOL (association EOL)* |
-//     ':' /*empty catalog*/
+//     ':' /* no associations */
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
     const parameters = this.getParameters();
     const component = new collections.Catalog(parameters, this.debug);
@@ -552,7 +552,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 // list:
 //     component (',' component)* |
 //     EOL (component EOL)* |
-//     /*empty list*/
+//     /* no items */
 ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
@@ -560,7 +560,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     if (parameters) {
         name = parameters['$type'];
         if (name && name.isComponent && name.isType('/bali/elements/Name')) {
-            type = name.getValue()[2];  // /bali/<metatype>/<type>/v1
+            type = name.getValue()[2];  // /bali/collections/<type>/<version>
         } else {
             type = 'Invalid';
         }

@@ -47,22 +47,24 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         ]);
     }
 
+    // extract the actual type
     ancestry = ancestry.concat('/bali/abstractions/Component');
     const type = ancestry[0];  // first type in the ancestry tree
+    this.isComponent = true;
 
+    // add in the component interfaces
     interfaces = interfaces.concat(
         '/bali/interfaces/Comparable',
         '/bali/interfaces/Exportable'
     );
 
+    // componentize any parameters but leave them in an Object
     if (parameters) {
         const keys = Object.keys(parameters);
         keys.forEach(function(key) {
             parameters[key] = this.componentize(parameters[key]);
         }, this);
     }
-
-    this.isComponent = true;
 
     this.getType = function() {
         return type;
@@ -115,7 +117,7 @@ Component.prototype.isType = function(type) {
 /**
  * This method returns whether or not this component supports the specified interface.
  *
- * @param {String} type The name of the interface in question.
+ * @param {String} iface The name of the interface in question.
  * @returns {Boolean} Whether or not this component supports the specified interface.
  */
 Component.prototype.supportsInterface = function(iface) {
@@ -307,14 +309,40 @@ Component.prototype.getHash = function() {
 };
 
 
+/**
+ * This method returns a duplicate of this component.  A deep copy is made of all mutable
+ * (non-elemental) attributes.
+ * 
+ * @returns {Component} A duplicate component.
+ */
 Component.prototype.duplicate = function() {
     const duplicator = new utilities.Duplicator(this.debug);
     return duplicator.duplicateComponent(this);
 };
 
 
+/**
+ * This method returns a canonical string representation of this component.
+ * 
+ * @param {Number} indentation The number of levels of indentation that should be prepended to
+ * each line of the string output.
+ * @returns {String} A canonical string representation of the component.
+ */
 Component.prototype.format = function(indentation) {
     const formatter = new utilities.Formatter(indentation, this.debug);
+    return formatter.formatComponent(this);
+};
+
+
+/**
+ * This method returns an HTML document representing this component.
+ * 
+ * @param {String} style A reference to the CSS style sheet that should be used for the look
+ * and feel of the generated web page.
+ * @returns {String} An HTML document representing the component.
+ */
+Component.prototype.html = function(style) {
+    const formatter = new utilities.HTML(style, this.debug);
     return formatter.formatComponent(this);
 };
 

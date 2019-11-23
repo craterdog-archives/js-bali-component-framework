@@ -99,6 +99,12 @@ const Complex = function(real, imaginary, parameters, debug) {
         return phase;
     };
 
+    this.getValue = function() {
+        var value = this.toString();
+        if (this.isParameterized()) value = value.slice(0, value.indexOf(')(') + 1);  // remove the parameters
+        return value;
+    };
+
     return this;
 };
 Complex.prototype = Object.create(abstractions.Element.prototype);

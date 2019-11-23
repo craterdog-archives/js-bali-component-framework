@@ -20,6 +20,7 @@ exports.Decoder = require('./Decoder').Decoder;  // depends on Validator
 exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
 exports.Generator = require('./Generator').Generator;  // depends on Decoder
+exports.HTML = require('./HTML').HTML;  // depends on Formatter
 exports.Iterator = require('./Iterator').Iterator;  // depends on Validator
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
 

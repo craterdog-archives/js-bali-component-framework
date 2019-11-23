@@ -14,18 +14,18 @@
     ]
     $items: [
         [
-            $name: "Hover Board"
-            $version: v2.65
-            $quantity: 1
-            $price: 142($currency: $USD)
-        ]
-        [
             $name: "Hover Battery Packs"
             $version: v15.3.7
             $quantity: 2
             $price: 16($currency: $USD)
         ]
-    ]
+        [
+            $name: "Hover Board"
+            $version: v2.65
+            $quantity: 1
+            $price: 142($currency: $USD)
+        ]
+    ]($type: /bali/collections/Set/v1)
     $tax: 10.77($currency: $EUR)
     $total: 184.77($currency: $EUR)
 ]($type: /acme/accounting/Transaction/v3.4)

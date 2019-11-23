@@ -1,5 +1,5 @@
 grammar Components;
-import Statements;
+import Elements;
 
 component: value parameters?;
 
@@ -16,13 +16,13 @@ range: component '..' component;
 list:
     component (',' component)* |
     EOL (component EOL)* |
-    /* empty list */
+    /* no items */
 ;
 
 catalog:
     association (',' association)* |
     EOL (association EOL)* |
-    ':' /* empty catalog */
+    ':' /* no associations */
 ;
 
 association: element ':' component;

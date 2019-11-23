@@ -94,6 +94,8 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
+            const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
+            fs.writeFileSync('test/html/components.html', html, 'utf8');
             const iterator = component.getIterator();
             while (iterator.hasNext()) {
                 const association = iterator.getNext();
@@ -105,6 +107,24 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     expect(component.isEqualTo(item)).to.equal(true);
                 }
             }
+        });
+
+        it('should parse and format the test document', function() {
+            const file = 'test/source/test.bali';
+            console.error('        ' + file);
+            const document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;
+            var component = bali.component(document);
+            expect(component).to.exist;
+            var copy = component.duplicate();
+            expect(copy).to.exist;
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(document);
+            component = bali.component(formatted);
+            expect(component).to.exist;
+            const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
+            fs.writeFileSync('test/html/test.html', html, 'utf8');
         });
 
         it('should parse and format the wiki examples', function() {
@@ -121,6 +141,44 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
+            const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
+            fs.writeFileSync('test/html/examples.html', html, 'utf8');
+        });
+
+        it('should parse and format the citation', function() {
+            const file = 'test/source/citation.bali';
+            console.error('        ' + file);
+            const document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;
+            var component = bali.component(document);
+            expect(component).to.exist;
+            var copy = component.duplicate();
+            expect(copy).to.exist;
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(document);
+            component = bali.component(formatted);
+            expect(component).to.exist;
+            const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
+            fs.writeFileSync('test/html/citation.html', html, 'utf8');
+        });
+
+        it('should parse and format the certificate', function() {
+            const file = 'test/source/certificate.bali';
+            console.error('        ' + file);
+            const document = fs.readFileSync(file, 'utf8');
+            expect(document).to.exist;
+            var component = bali.component(document);
+            expect(component).to.exist;
+            var copy = component.duplicate();
+            expect(copy).to.exist;
+            var formatted = copy.format() + '\n';  // add POSIX <EOL>
+            //fs.writeFileSync(file, formatted, 'utf8');
+            expect(formatted).to.equal(document);
+            component = bali.component(formatted);
+            expect(component).to.exist;
+            const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
+            fs.writeFileSync('test/html/certificate.html', html, 'utf8');
         });
 
     });

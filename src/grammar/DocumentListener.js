@@ -20,105 +20,6 @@ DocumentListener.prototype.exitDocument = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#component.
-DocumentListener.prototype.enterComponent = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#component.
-DocumentListener.prototype.exitComponent = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#value.
-DocumentListener.prototype.enterValue = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#value.
-DocumentListener.prototype.exitValue = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#sequence.
-DocumentListener.prototype.enterSequence = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#sequence.
-DocumentListener.prototype.exitSequence = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.enterCollection = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#collection.
-DocumentListener.prototype.exitCollection = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#parameters.
-DocumentListener.prototype.enterParameters = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#parameters.
-DocumentListener.prototype.exitParameters = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.enterRange = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.exitRange = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#list.
-DocumentListener.prototype.enterList = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#list.
-DocumentListener.prototype.exitList = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#catalog.
-DocumentListener.prototype.enterCatalog = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#catalog.
-DocumentListener.prototype.exitCatalog = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#association.
-DocumentListener.prototype.enterAssociation = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#association.
-DocumentListener.prototype.exitAssociation = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#procedure.
-DocumentListener.prototype.enterProcedure = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#procedure.
-DocumentListener.prototype.exitProcedure = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#statements.
-DocumentListener.prototype.enterStatements = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#statements.
-DocumentListener.prototype.exitStatements = function(ctx) {
-};
-
-
 // Enter a parse tree produced by DocumentParser#statement.
 DocumentListener.prototype.enterStatement = function(ctx) {
 };
@@ -512,6 +413,105 @@ DocumentListener.prototype.enterIndices = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#indices.
 DocumentListener.prototype.exitIndices = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#component.
+DocumentListener.prototype.enterComponent = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#component.
+DocumentListener.prototype.exitComponent = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#value.
+DocumentListener.prototype.enterValue = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#value.
+DocumentListener.prototype.exitValue = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#sequence.
+DocumentListener.prototype.enterSequence = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#sequence.
+DocumentListener.prototype.exitSequence = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.enterCollection = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#collection.
+DocumentListener.prototype.exitCollection = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#parameters.
+DocumentListener.prototype.enterParameters = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#parameters.
+DocumentListener.prototype.exitParameters = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.enterRange = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.exitRange = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#list.
+DocumentListener.prototype.enterList = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#list.
+DocumentListener.prototype.exitList = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#catalog.
+DocumentListener.prototype.enterCatalog = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#catalog.
+DocumentListener.prototype.exitCatalog = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#association.
+DocumentListener.prototype.enterAssociation = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#association.
+DocumentListener.prototype.exitAssociation = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#procedure.
+DocumentListener.prototype.enterProcedure = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#procedure.
+DocumentListener.prototype.exitProcedure = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#statements.
+DocumentListener.prototype.enterStatements = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#statements.
+DocumentListener.prototype.exitStatements = function(ctx) {
 };
 
 

@@ -1,4 +1,4 @@
 grammar Document;
-import Components;
+import Statements;
 
 document: EOL* component EOL* EOF;

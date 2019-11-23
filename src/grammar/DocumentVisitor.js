@@ -18,72 +18,6 @@ DocumentVisitor.prototype.visitDocument = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#component.
-DocumentVisitor.prototype.visitComponent = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#value.
-DocumentVisitor.prototype.visitValue = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#sequence.
-DocumentVisitor.prototype.visitSequence = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#collection.
-DocumentVisitor.prototype.visitCollection = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#parameters.
-DocumentVisitor.prototype.visitParameters = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#range.
-DocumentVisitor.prototype.visitRange = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#list.
-DocumentVisitor.prototype.visitList = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#catalog.
-DocumentVisitor.prototype.visitCatalog = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#association.
-DocumentVisitor.prototype.visitAssociation = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#procedure.
-DocumentVisitor.prototype.visitProcedure = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#statements.
-DocumentVisitor.prototype.visitStatements = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by DocumentParser#statement.
 DocumentVisitor.prototype.visitStatement = function(ctx) {
   return this.visitChildren(ctx);
@@ -344,6 +278,72 @@ DocumentVisitor.prototype.visitArguments = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#indices.
 DocumentVisitor.prototype.visitIndices = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#component.
+DocumentVisitor.prototype.visitComponent = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#value.
+DocumentVisitor.prototype.visitValue = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#sequence.
+DocumentVisitor.prototype.visitSequence = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#collection.
+DocumentVisitor.prototype.visitCollection = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#parameters.
+DocumentVisitor.prototype.visitParameters = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#range.
+DocumentVisitor.prototype.visitRange = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#list.
+DocumentVisitor.prototype.visitList = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#catalog.
+DocumentVisitor.prototype.visitCatalog = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#association.
+DocumentVisitor.prototype.visitAssociation = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#procedure.
+DocumentVisitor.prototype.visitProcedure = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#statements.
+DocumentVisitor.prototype.visitStatements = function(ctx) {
   return this.visitChildren(ctx);
 };
 

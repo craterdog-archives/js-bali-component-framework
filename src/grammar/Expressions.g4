@@ -1,5 +1,5 @@
 grammar Expressions;
-import Elements;
+import Components;
 
 expression:                  // Precedence (highest to lowest)
     component                                                      #componentExpression     |

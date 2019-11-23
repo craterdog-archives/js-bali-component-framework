@@ -1,0 +1,15 @@
+[
+    $Author: "Jane Austen"
+    $Females: [
+        "Elizabeth Bennet"
+        "Emma Woodhouse"
+        "Elinor Dashwood"
+    ]
+    $Interested: {
+        if suitor is "Mr. Darcy" then {
+            return true
+        } else {
+            return false
+        }
+    }
+]
