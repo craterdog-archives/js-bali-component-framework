@@ -170,6 +170,32 @@ Component.prototype.toString = function() {
 
 
 /**
+ * This method returns a canonical Bali Document Notation™ representation of this component.
+ * 
+ * @param {Number} indentation The number of levels of indentation that should be prepended to
+ * each line of the string output.
+ * @returns {String} A canonical Bali Document Notation™ representation of the component.
+ */
+Component.prototype.toBDN = function(indentation) {
+    const formatter = new utilities.Formatter(indentation, this.debug);
+    return formatter.formatComponent(this);
+};
+
+
+/**
+ * This method returns an HTML document representing this component.
+ * 
+ * @param {String} style A reference to the CSS style sheet that should be used for the look
+ * and feel of the generated web page.
+ * @returns {String} An HTML document representing the component.
+ */
+Component.prototype.toHTML = function(style) {
+    const formatter = new utilities.HTML(style, this.debug);
+    return formatter.formatComponent(this);
+};
+
+
+/**
  * This method determines whether or not this component is equal to another component.
  *
  * @param {Object} that The object that is being compared.
@@ -329,8 +355,8 @@ Component.prototype.duplicate = function() {
  * @returns {String} A canonical string representation of the component.
  */
 Component.prototype.format = function(indentation) {
-    const formatter = new utilities.Formatter(indentation, this.debug);
-    return formatter.formatComponent(this);
+    console.error('Warning: the Component.format() method has been deprecated and replaced by Component.toBDN().');
+    return this.toBDN(indentation);
 };
 
 
@@ -342,8 +368,8 @@ Component.prototype.format = function(indentation) {
  * @returns {String} An HTML document representing the component.
  */
 Component.prototype.html = function(style) {
-    const formatter = new utilities.HTML(style, this.debug);
-    return formatter.formatComponent(this);
+    console.error('Warning: the Component.html() method has been deprecated and replaced by Component.toHTML().');
+    return this.toHTML(style);
 };
 
 
