@@ -41,7 +41,6 @@ hr {
 
 .key {
     float: left;
-    min-width: 5ch;
     vertical-align: top;
     padding: 0px;
 }
@@ -50,6 +49,7 @@ hr {
 .key div {
     font-style: italic;
     text-align: right;
+    padding-right: 0px;
     border: 0px;
     background-color: transparent;
 }
@@ -58,6 +58,7 @@ hr {
 .key a {
     font-style: italic;
     text-align: right;
+    padding-right: 0px;
     border: 0px;
     background-color: transparent;
 }
@@ -66,13 +67,20 @@ hr {
 .key pre {
     font-style: italic;
     text-align: right;
+    padding-right: 0px;
     border: 0px;
     background-color: transparent;
 }
 
+.colon {
+    float: left;
+    padding-left: 0px;
+    font-style: italic;
+}
+
 .value {
     float: left;
-    min-width: 10ch;
+    min-width: 8ch;
     vertical-align: top;
     padding: 0px;
 }

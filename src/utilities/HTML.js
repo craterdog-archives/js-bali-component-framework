@@ -145,7 +145,10 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
     this.result += this.getNewline();
     association.getKey().acceptVisitor(this);
     this.depth--;
+    this.result += this.getNewline();
     this.result += '</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="colon">:</div>';
     this.result += this.getNewline();
     this.result += '<div class="value">';
     this.depth++;
@@ -281,7 +284,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     this.result += '<div class="element moment">';
-    this.result += moment.getValue().format('Y-MM-DD HH:mm:ss');
+    this.result += moment.getValue().format(moment.getFormat());
     this.result += formatParameters(moment.getParameters());
     this.result += '</div>';
 };
@@ -290,7 +293,7 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 // name: NAME
 FormattingVisitor.prototype.visitName = function(name) {
     this.result += '<div class="element name">';
-    this.result += name.toString();
+    this.result += '/' + name.getValue().join('/');
     this.result += formatParameters(name.getParameters());
     this.result += '</div>';
 };
@@ -379,6 +382,8 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
                 this.depth--;
                 this.result += '</div>';
                 this.result += this.getNewline();
+                this.result += '<div class="colon">:</div>';
+                this.result += this.getNewline();
                 this.result += '<div class="value">';
                 this.depth++;
                 this.result += this.getNewline();
@@ -403,7 +408,18 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
 // pattern: 'none' | REGEX | 'any'
 FormattingVisitor.prototype.visitPattern = function(pattern) {
     this.result += '<div class="element pattern">';
-    this.result += pattern.toString();
+    const value = pattern.getValue().source;
+    switch (value) {
+        case '^none$':
+            this.result += 'none';
+            break;
+        case '.*':
+            this.result += 'any';
+            break;
+        default:
+            this.result += '"' + value + '"?';
+    }
+    this.result += formatParameters(pattern.getParameters());
     this.result += '</div>';
 };
 
@@ -411,7 +427,9 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 // percent: PERCENT
 FormattingVisitor.prototype.visitPercent = function(percent) {
     this.result += '<div class="element percent">';
-    this.result += percent.toString();
+    const value = percent.getValue();
+    this.result += formatReal(value) + '%';
+    this.result += formatParameters(percent.getParameters());
     this.result += '</div>';
 };
 
@@ -419,7 +437,19 @@ FormattingVisitor.prototype.visitPercent = function(percent) {
 // probability: 'false' | FRACTION | 'true'
 FormattingVisitor.prototype.visitProbability = function(probability) {
     this.result += '<div class="element probability">';
-    this.result += probability.toString().replace(/\$/g, '');  // remove the '$'s
+    const value = probability.getValue();
+    switch (value) {
+        case 0:
+            this.result += 'false';
+            break;
+        case 1:
+            this.result += 'true';
+            break;
+        default:
+            // must remove the leading '0' for probabilities
+            this.result += value.toString().substring(1);
+    }
+    this.result += formatParameters(probability.getParameters());
     this.result += '</div>';
 };
 
@@ -427,7 +457,10 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 // procedure: '{' statements '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '<pre class="element procedure">';
-    this.result += procedure.toString();
+    this.result += '{';
+    this.result += procedure.getStatements().toString();
+    this.result += '}';
+    this.result += formatParameters(procedure.getParameters());
     this.result += '</pre>';
 };
 
@@ -436,6 +469,8 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
 FormattingVisitor.prototype.visitReference = function(reference) {
     this.result += '<a class="element reference" href="' + reference.getValue() + '">';
     this.result += reference.getValue().toString().replace(/^https?:\/\/|^mailto:/g, '');
+    const query = formatParameters(reference.getParameters()).replace(/ \(/, '').replace(/\)/, '').replace(/: /g, '=').replace(/, /g, '&');
+    if (query) this.result += '?' + query;
     this.result += '</a>';
 };
 
@@ -443,7 +478,8 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     this.result += '<div class="element reserved">';
-    this.result += reserved.toString().replace(/\$/g, '');  // remove the leading '$'s
+    this.result += reserved.getValue();
+    this.result += formatParameters(reserved.getParameters());
     this.result += '</div>';
 };
 
@@ -451,7 +487,8 @@ FormattingVisitor.prototype.visitReserved = function(reserved) {
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     this.result += '<div class="element symbol">';
-    this.result += symbol.toString().replace(/\$/g, '');  // remove the leading '$'
+    this.result += symbol.getValue();
+    this.result += formatParameters(symbol.getParameters());
     this.result += '</div>';
 };
 
@@ -459,7 +496,8 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
     this.result += '<div class="element tag">';
-    this.result += tag.toString().replace(/#/g, '');  // remove the leading '#'
+    this.result += tag.getValue();
+    this.result += formatParameters(tag.getParameters());
     this.result += '</div>';
 };
 
@@ -467,7 +505,8 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 // text: TEXT | TEXT_BLOCK
 FormattingVisitor.prototype.visitText = function(text) {
     this.result += '<div class="element text">';
-    this.result += text.toString();
+    this.result += '"' + text.getValue() + '"';
+    this.result += formatParameters(text.getParameters());
     this.result += '</div>';
 };
 
@@ -475,7 +514,8 @@ FormattingVisitor.prototype.visitText = function(text) {
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
     this.result += '<div class="element version">';
-    this.result += version.toString().replace(/^v/g, '');  // remove the leading 'v'
+    this.result += version.getValue().join('.');
+    this.result += formatParameters(version.getParameters());
     this.result += '</div>';
 };
 

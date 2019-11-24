@@ -725,7 +725,7 @@ FormattingVisitor.prototype.visitQueueClause = function(tree) {
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
-    this.result += '<' + value.replace(/\$tag:%23/, '$tag:#') + '>';
+    this.result += '<' + value + '>';
     const parameters = reference.getParameters();
     this.visitParameters(parameters);  // format any parameterization
 };

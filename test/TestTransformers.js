@@ -96,17 +96,6 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const html = copy.html('style.css') + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/components.html', html, 'utf8');
-            const iterator = component.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                const array = association.getValue().toArray();
-                for (var i = 0; i < array.length; i++) {
-                    const item = array[i];
-                    const string = item.format();
-                    component = bali.component(string);
-                    expect(component.isEqualTo(item)).to.equal(true);
-                }
-            }
         });
 
         it('should parse and format the test document', function() {

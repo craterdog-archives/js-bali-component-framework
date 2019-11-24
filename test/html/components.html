@@ -9,16 +9,13 @@
                 <div class="catalog">
                     <div class="type">Catalog</div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">structure</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">empty</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
                             <div class="list">
                                 <div class="type">List</div>
-                                <div class="item">
-                                    <div class="range">
-                                        <div class="element number">2</div>..<div class="element number">5</div>
-                                    </div>
-                                </div>
                                 <div class="item">
                                     <div class="list">
                                         <div class="type">List</div>
@@ -33,22 +30,21 @@
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">range</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">range</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
-                            <div class="list">
-                                <div class="type">List</div>
-                                <div class="item">
-                                    <div class="range">
-                                        <div class="element number">-3</div>..<div class="element number">5</div>
-                                    </div>
-                                </div>
+                            <div class="range">
+                                <div class="element number">-3</div>..<div class="element number">5</div>
                             </div>
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">list</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">list</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
                             <div class="list">
                                 <div class="type">List</div>
@@ -84,6 +80,7 @@
                                     </div><div class="parameters"><div class="association">
                                             <div class="key" style="width:5ch">
                                                 <div class="element symbol">type</div></div>
+                                            <div class="colon">:</div>
                                             <div class="value">
                                                 <div class="element name">/bali/collections/Set/v1</div>
                                             </div>
@@ -93,6 +90,12 @@
                                 <div class="item">
                                     <div class="list">
                                         <div class="type">List</div>
+                                        <div class="item">
+                                            <div class="element pattern">any</div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="element pattern">"foo[Bb]ar"?</div>
+                                        </div>
                                         <div class="item">
                                             <div class="element pattern">none</div>
                                         </div>
@@ -106,7 +109,7 @@
                                             <div class="element reserved">reserved-5</div>
                                         </div>
                                         <div class="item">
-                                            <div class="element moment">2017-07-04 00:00:00</div>
+                                            <div class="element moment">2017-07-04</div>
                                         </div>
                                         <div class="item">
                                             <a class="element reference" href="https://google.com/">google.com/</a>
@@ -121,7 +124,7 @@
                                             <pre class="element binary">0110101101010001 (encoding: base2)</pre>
                                         </div>
                                         <div class="item">
-                                            <div class="element probability">true</div>
+                                            <div class="element probability">.5</div>
                                         </div>
                                         <div class="item">
                                             <div class="element number">π</div>
@@ -154,21 +157,27 @@
                                                 <div class="type">Catalog</div>
                                                 <div class="association">
                                                     <div class="key" style="width:4ch">
-                                                        <div class="element symbol">foo</div></div>
+                                                        <div class="element symbol">foo</div>
+                                                    </div>
+                                                    <div class="colon">:</div>
                                                     <div class="value">
                                                         <div class="element symbol">bar</div>
                                                     </div>
                                                 </div>
                                                 <div class="association">
                                                     <div class="key" style="width:4ch">
-                                                        <div class="element symbol">bar</div></div>
+                                                        <div class="element symbol">bar</div>
+                                                    </div>
+                                                    <div class="colon">:</div>
                                                     <div class="value">
                                                         <div class="element number">25 (range: [1..100])</div>
                                                     </div>
                                                 </div>
                                                 <div class="association">
                                                     <div class="key" style="width:4ch">
-                                                        <div class="element symbol">baz</div></div>
+                                                        <div class="element symbol">baz</div>
+                                                    </div>
+                                                    <div class="colon">:</div>
                                                     <div class="value">
                                                         <div class="element pattern">none</div>
                                                     </div>
@@ -181,231 +190,296 @@
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">catalog</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">catalog</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
-                            <div class="list">
-                                <div class="type">List</div>
-                                <div class="item">
-                                    <div class="catalog">
-                                        <div class="type">Catalog</div>
-                                        <div class="association">
-                                            <div class="key" style="width:3ch">
-                                                <div class="element reserved">a</div></div>
-                                            <div class="value">
-                                                <div class="element text">"a"</div>
+                            <div class="catalog">
+                                <div class="type">Catalog</div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element reserved">a</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element text">"a"</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element reserved">b</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element text">"b"</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element reserved">c</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element text">"c"</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element text">"certain"</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element probability">true</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element text">"iffy"</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element probability">.5</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element text">"impossible"</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element probability">false</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element pattern">"^.*$"?</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element pattern">none (strict: true)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element tag">665VRFNFZMQX09TSKHJSD1HL567F4FF7</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element tag">CT41AC8K5AZBMJF88W60F40SZQCMA0XN (size: 20)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element symbol">foo</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element symbol">bar (baz: baz)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element name">/name</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element name">/name (relative: false)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element moment">2017-04-01</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element moment">2017-04-01 (country: "USA")</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <a class="element reference" href="https://craterdog.com/">craterdog.com/</a>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <a class="element reference" href="https://bali-nebula.net/bali/types">bali-nebula.net/bali/types?foo=5&bar=false</a>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element version">1</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element version">2.3 (patch: true)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element text">"key"</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element text">"value" (mediatype: "text")</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <pre class="element binary">MMNBXR9TC237PK269GLFZ4J4XA4R9LF1</pre>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <pre class="element binary">0111010110101100100011 (encoding: base16)</pre>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element probability">true</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element probability">false (binary: true)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element angle">π</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element angle">π (units: radians)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element number">τ</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element number">-6.28318531</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element number">()</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element number">(5 e^~π i) (format: polar)</div>
+                                    </div>
+                                </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element symbol">sequence</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="list">
+                                            <div class="type">Queue</div>
+                                            <div class="item">
+                                                <div class="element text">"short"</div>
                                             </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:3ch">
-                                                <div class="element reserved">b</div></div>
-                                            <div class="value">
-                                                <div class="element text">"b"</div>
+                                            <div class="item">
+                                                <div class="element text">"sequence"</div>
                                             </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:3ch">
-                                                <div class="element reserved">c</div></div>
-                                            <div class="value">
-                                                <div class="element text">"c"</div>
+                                        </div><div class="parameters"><div class="association">
+                                                <div class="key" style="width:5ch">
+                                                    <div class="element symbol">type</div></div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element name">/bali/collections/Queue/v1</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <div class="catalog">
-                                        <div class="type">Catalog</div>
-                                        <div class="association">
-                                            <div class="key" style="width:12ch">
-                                                <div class="element text">"certain"</div></div>
-                                            <div class="value">
-                                                <div class="element probability">true</div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element symbol">table</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="catalog">
+                                            <div class="type">Foo</div>
+                                            <div class="association">
+                                                <div class="key" style="width:2ch">
+                                                    <div class="element symbol">a</div>
+                                                </div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element number">e</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:12ch">
-                                                <div class="element text">"iffy"</div></div>
-                                            <div class="value">
-                                                <div class="element probability">.5</div>
+                                            <div class="association">
+                                                <div class="key" style="width:2ch">
+                                                    <div class="element symbol">b</div>
+                                                </div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element number">π</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:12ch">
-                                                <div class="element text">"impossible"</div></div>
-                                            <div class="value">
-                                                <div class="element probability">false</div>
+                                            <div class="association">
+                                                <div class="key" style="width:2ch">
+                                                    <div class="element symbol">c</div>
+                                                </div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element number">φ</div>
+                                                </div>
+                                            </div>
+                                            <div class="association">
+                                                <div class="key" style="width:2ch">
+                                                    <div class="element symbol">d</div>
+                                                </div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element number">τ</div>
+                                                </div>
+                                            </div>
+                                            <div class="association">
+                                                <div class="key" style="width:2ch">
+                                                    <div class="element symbol">e</div>
+                                                </div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element number">∞</div>
+                                                </div>
+                                            </div>
+                                        </div><div class="parameters"><div class="association">
+                                                <div class="key" style="width:5ch">
+                                                    <div class="element symbol">type</div></div>
+                                                <div class="colon">:</div>
+                                                <div class="value">
+                                                    <div class="element name">/acme/types/Foo/v1.2.3</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <div class="catalog">
-                                        <div class="type">Foo</div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element pattern">none</div></div>
-                                            <div class="value">
-                                                <div class="element pattern">none</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element tag">665VRFNFZMQX09TSKHJSD1HL567F4FF7</div></div>
-                                            <div class="value">
-                                                <div class="element tag">CT41AC8K5AZBMJF88W60F40SZQCMA0XN</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element symbol">foo</div></div>
-                                            <div class="value">
-                                                <div class="element symbol">bar</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element symbol">name</div></div>
-                                            <div class="value">
-                                                <div class="element name">/name</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element moment">2017-04-01 00:00:00</div></div>
-                                            <div class="value">
-                                                <div class="element symbol">date</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <a class="element reference" href="https://craterdog.com/">craterdog.com/</a></div>
-                                            <div class="value">
-                                                <a class="element reference" href="https://bali-nebula.net/">bali-nebula.net/</a>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element version">1</div></div>
-                                            <div class="value">
-                                                <div class="element version">2.3</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element text">"key"</div></div>
-                                            <div class="value">
-                                                <div class="element text">"value"</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <pre class="element binary">MMNBXR9TC237PK269GLFZ4J4XA4R9LF1</pre></div>
-                                            <div class="value">
-                                                <pre class="element binary">0111010110101100100011 (encoding: base16)</pre>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element probability">true</div></div>
-                                            <div class="value">
-                                                <div class="element probability">false</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element number">π</div></div>
-                                            <div class="value">
-                                                <div class="element number">-3.14159265</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element number">τ</div></div>
-                                            <div class="value">
-                                                <div class="element number">-6.28318531</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element number">()</div></div>
-                                            <div class="value">
-                                                <div class="element number">-1.4142135623730951</div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element symbol">sequence</div></div>
-                                            <div class="value">
-                                                <div class="list">
-                                                    <div class="type">List</div>
-                                                    <div class="item">
-                                                        <div class="element text">"short"</div>
-                                                    </div>
-                                                    <div class="item">
-                                                        <div class="element text">"sequence"</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="association">
-                                            <div class="key" style="width:34ch">
-                                                <div class="element symbol">table</div></div>
-                                            <div class="value">
-                                                <div class="catalog">
-                                                    <div class="type">Catalog</div>
-                                                    <div class="association">
-                                                        <div class="key" style="width:2ch">
-                                                            <div class="element symbol">a</div></div>
-                                                        <div class="value">
-                                                            <div class="element number">e</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="association">
-                                                        <div class="key" style="width:2ch">
-                                                            <div class="element symbol">b</div></div>
-                                                        <div class="value">
-                                                            <div class="element number">π</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="association">
-                                                        <div class="key" style="width:2ch">
-                                                            <div class="element symbol">c</div></div>
-                                                        <div class="value">
-                                                            <div class="element number">φ</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="association">
-                                                        <div class="key" style="width:2ch">
-                                                            <div class="element symbol">d</div></div>
-                                                        <div class="value">
-                                                            <div class="element number">τ</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="association">
-                                                        <div class="key" style="width:2ch">
-                                                            <div class="element symbol">e</div></div>
-                                                        <div class="value">
-                                                            <div class="element number">∞</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><div class="parameters"><div class="association">
-                                            <div class="key" style="width:5ch">
-                                                <div class="element symbol">type</div></div>
-                                            <div class="value">
-                                                <div class="element name">/acme/types/Foo/v1.2.3</div>
-                                            </div>
-                                        </div>
+                                <div class="association">
+                                    <div class="key" style="width:34ch">
+                                        <div class="element symbol">procedure</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <pre class="element procedure">{
+    if condition then {
+        return true
+    } else {
+        throw exception
+    }
+} (condition: /bali/elements/Probability/v1)</pre>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">code</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">procedures</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
                             <div class="list">
                                 <div class="type">List</div>
@@ -417,7 +491,7 @@
                                     <pre class="element procedure">{
     $foo := bar
     $bar := baz
-}($bar: $baz)</pre>
+} (bar: baz)</pre>
                                 </div>
                                 <div class="item">
                                     <pre class="element procedure">{
@@ -426,18 +500,16 @@
     } else {
         return x
     }
-}(
-    $y: 5
-    $baz: none
-    $condition: true
-)</pre>
+} (y: 5, baz: none, condition: true)</pre>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">binaries</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">binaries</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
                             <div class="list">
                                 <div class="type">List</div>
@@ -474,22 +546,24 @@ DW411WRC0YS71NWKA93S
                         </div>
                     </div>
                     <div class="association">
-                        <div class="key" style="width:10ch">
-                            <div class="element symbol">moments</div></div>
+                        <div class="key" style="width:11ch">
+                            <div class="element symbol">moments</div>
+                        </div>
+                        <div class="colon">:</div>
                         <div class="value">
                             <div class="list">
                                 <div class="type">List</div>
                                 <div class="item">
-                                    <div class="element moment">-10000-01-01 00:00:00 (country: "Atlantis")</div>
+                                    <div class="element moment">-10000-01-01T00:00:00 (country: "Atlantis")</div>
                                 </div>
                                 <div class="item">
-                                    <div class="element moment">1962-04-01 00:00:00 (city: "New York City")</div>
+                                    <div class="element moment">1962-04-01 (city: "New York City")</div>
                                 </div>
                                 <div class="item">
-                                    <div class="element moment">1962-04-01 06:31:00 (city: "San Francisco")</div>
+                                    <div class="element moment">1962-04-01T06:31 (city: "San Francisco")</div>
                                 </div>
                                 <div class="item">
-                                    <div class="element moment">1962-04-01 06:31:00 (city: "Denver", region: "Colorado", country: "USA")</div>
+                                    <div class="element moment">1962-04-01T06:31:60.726 (city: "Denver", region: "Colorado", country: "USA")</div>
                                 </div>
                             </div>
                         </div>
