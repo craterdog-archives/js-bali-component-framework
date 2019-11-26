@@ -255,7 +255,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
                 const length = key.toString().length;
                 if (width < length) width = length;
             }
-            this.width.push(width);  // save off the widest one
+            this.width.push(width + 1);  // save off the widest one
             // iterate through the associations
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
@@ -495,10 +495,10 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
-    this.result += '<div class="element tag">';
+    this.result += '<pre class="element tag">';
     this.result += tag.getValue();
     this.result += formatParameters(tag.getParameters());
-    this.result += '</div>';
+    this.result += '</pre>';
 };
 
 
