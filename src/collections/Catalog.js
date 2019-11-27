@@ -58,7 +58,7 @@ const Catalog = function(parameters, debug) {
         array.forEach(function(association) {
             const key = association.getKey();
             keys.addItem(key);
-        });
+        }, this);
         return keys;
     };
 
@@ -307,7 +307,7 @@ const Catalog = function(parameters, debug) {
     this.removeAll = function() {
         Object.keys(map).forEach(function(key) {
             delete map[key];
-        });
+        }, this);
         array.splice(0);
     };
 

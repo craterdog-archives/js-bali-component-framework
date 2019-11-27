@@ -109,7 +109,7 @@ Component.prototype.isType = function(type) {
     var foundIt = false;
     this.getAncestry().forEach(function(ancestor) {
         if (ancestor === type) foundIt = true;
-    });
+    }, this);
     return foundIt;
 };
 
@@ -124,7 +124,7 @@ Component.prototype.supportsInterface = function(iface) {
     var foundIt = false;
     this.getInterfaces().forEach(function(candidate) {
         if (candidate === iface) foundIt = true;
-    });
+    }, this);
     return foundIt;
 };
 

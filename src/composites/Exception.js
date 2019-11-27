@@ -96,7 +96,7 @@ exports.Exception = Exception;
 Exception.prototype.isType = function(type) {
     this.getAncestry().forEach(function(ancestor) {
         if (ancestor === type) return true;
-    });
+    }, this);
     return false;
 };
 
@@ -110,7 +110,7 @@ Exception.prototype.isType = function(type) {
 Exception.prototype.supportsInterface = function(iface) {
     this.getInterfaces().forEach(function(candidate) {
         if (candidate === iface) return true;
-    });
+    }, this);
     return false;
 };
 

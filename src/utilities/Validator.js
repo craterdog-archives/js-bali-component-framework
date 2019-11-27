@@ -104,10 +104,10 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
         var foundIt = false;
         argumentValue.getAncestry().forEach(function(ancestor) {
             if (allowedTypes.indexOf(ancestor) > -1) foundIt = true;
-        });
+        }, this);
         argumentValue.getInterfaces().forEach(function(iface) {
             if (allowedTypes.indexOf(iface) > -1) foundIt = true;
-        });
+        }, this);
         if (foundIt) return;
     }
 

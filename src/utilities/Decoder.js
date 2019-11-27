@@ -78,7 +78,7 @@ Decoder.prototype.base2Encode = function(buffer) {
             const bit = (byte & mask) >>> b;
             string += base2LookupTable[bit];
         }
-    });
+    }, this);
 
     // break the string into formatted lines
     const base2 = formatLines(string, this.indentation);
@@ -156,7 +156,7 @@ Decoder.prototype.base16Encode = function(buffer) {
         string += base16LookupTable[highOrderNybble];
         const lowOrderNybble = byte & 0x0F;
         string += base16LookupTable[lowOrderNybble];
-    });
+    }, this);
 
     // break the string into formatted lines
     const base16 = formatLines(string, this.indentation);

@@ -1025,7 +1025,7 @@ ParsingVisitor.prototype.visitVersion = function(ctx) {
     const value = [];
     levels.forEach(function(level) {
         value.push(Number(level));
-    });
+    }, this);
     const version = new elements.Version(value, parameters, this.debug);
     this.result = version;
 };
@@ -1163,7 +1163,7 @@ CustomErrorListener.prototype.reportAmbiguity = function(recognizer, dfa, startI
         alternatives = [];
         configs.items.forEach(function(item) {
             alternatives.push(item.alt);
-        });
+        }, this);
         alternatives = "{" + alternatives.join(", ") + "}";
         var message = 'The parser encountered ambiguous input for rule: ' + rule + ', alternatives: ' + alternatives;
         message = addContext(recognizer, message);

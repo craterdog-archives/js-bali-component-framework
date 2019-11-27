@@ -90,7 +90,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
             if (this.debug > 0) console.error(exception.toString());
             throw exception;
         }
-    });
+    }, this);
     var numberOfStates = 0;
     for (const state in nextStates) {
         if (typeof state !== 'string') {
@@ -130,7 +130,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
                 if (this.debug > 0) console.error(exception.toString());
                 throw exception;
             }
-        });
+        }, this);
         numberOfStates++;
     }
 
