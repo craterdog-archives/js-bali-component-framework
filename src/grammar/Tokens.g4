@@ -16,18 +16,17 @@ DURATION: '~' '-'? 'P' (SPAN 'W' | (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPA
 
 FRACTION: '.' ('0'..'9')+;
 
-
 IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | 'τ i';
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
-NAME: ('/' IDENTIFIER)+ ('/' VERSION)?;
+NAME: ('/' TYPE)+;
 
 PERCENT: ('0' | REAL) '%';
 
 RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
 
-RESOURCE: '<' SCHEME ':' CONTEXT '>';
+RESOURCE: '<' TYPE ':' CONTEXT '>';
 
 // NOTE: We cannot define negative constants here because the scanner would scan
 //       a negative variable like '-exponent' as a single '-e' token rather than
@@ -71,7 +70,7 @@ fragment
 SPAN: ('0' | '-'? NUMBER) FRACTION?;
 
 fragment
-SCHEME: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')*;
+TYPE: ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')+;
 
 fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;
