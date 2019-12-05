@@ -348,32 +348,6 @@ Component.prototype.duplicate = function() {
 
 
 /**
- * This method returns a canonical string representation of this component.
- * 
- * @param {Number} indentation The number of levels of indentation that should be prepended to
- * each line of the string output.
- * @returns {String} A canonical string representation of the component.
- */
-Component.prototype.format = function(indentation) {
-    console.error('Warning: the Component.format() method has been deprecated and replaced by Component.toBDN().');
-    return this.toBDN(indentation);
-};
-
-
-/**
- * This method returns an HTML document representing this component.
- * 
- * @param {String} style A reference to the CSS style sheet that should be used for the look
- * and feel of the generated web page.
- * @returns {String} An HTML document representing the component.
- */
-Component.prototype.html = function(style) {
-    console.error('Warning: the Component.html() method has been deprecated and replaced by Component.toHTML().');
-    return this.toHTML(style);
-};
-
-
-/**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
  * implemented by a subclass.
  *
