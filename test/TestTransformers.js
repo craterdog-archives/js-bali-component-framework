@@ -13,6 +13,7 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const fs = require('fs');
 const bali = require('../').api(debug);
+const style = 'https://bali-nebula.net/web/style/BDN.css';
 
 
 describe('Bali Nebula™ Component Framework - Transformers', function() {
@@ -94,7 +95,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML('style.css') + '\n';  // add POSIX <EOL>
+            const html = copy.toHTML(style) + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/components.html', html, 'utf8');
         });
 
@@ -112,7 +113,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML('style.css') + '\n';  // add POSIX <EOL>
+            const html = copy.toHTML(style) + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/test.html', html, 'utf8');
         });
 
@@ -130,7 +131,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML('style.css') + '\n';  // add POSIX <EOL>
+            const html = copy.toHTML(style) + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/examples.html', html, 'utf8');
         });
 
@@ -148,7 +149,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML('style.css') + '\n';  // add POSIX <EOL>
+            const html = copy.toHTML(style) + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/citation.html', html, 'utf8');
         });
 
@@ -166,7 +167,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML('style.css') + '\n';  // add POSIX <EOL>
+            const html = copy.toHTML(style) + '\n';  // add POSIX <EOL>
             fs.writeFileSync('test/html/certificate.html', html, 'utf8');
         });
 
