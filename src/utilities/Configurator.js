@@ -51,8 +51,9 @@ const Configurator = function(filename, directory, debug) {
         ]);
     }
 
+    if (directory && !directory.endsWith('/')) directory += '/';
     this.directory = directory || os.homedir() + '/.bali/';
-    this.file = directory + filename;
+    this.file = this.directory + filename;
 
     return this;
 };
