@@ -13,7 +13,7 @@ const mocha = require('mocha');
 const expect = require('chai').expect;
 const fs = require('fs');
 const bali = require('../').api(debug);
-const style = 'https://bali-nebula.net/statics/styles/BDN.css';
+const style = 'https://bali-nebula.net/repository/statics/styles/BDN.css';
 
 
 describe('Bali Nebula™ Component Framework - Transformers', function() {
