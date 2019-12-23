@@ -91,7 +91,7 @@ const footer =
 '            </div>\n' +
 '        </div>\n' +
 '        <div class="poweredBy">\n' +
-'            <img class="logo" src="https://bali-nebula.net/repository/statics/images/PoweredByLogo.png" alt="Powered By">\n' +
+'            <img class="logo" src="https://bali-nebula.net/static/images/PoweredByLogo.png">\n' +
 '            <div class="company">Powered by Crater Dog Technologies™</div>\n' +
 '        </div>\n' +
 '    </body>\n' +
