@@ -79,6 +79,8 @@ const header =
 '<!DOCTYPE html>\n' +
 '<html>\n' +
 '    <head>\n' +
+'        <link rel="shortcut icon" type="image/x-icon" href="static/images/favicon.ico"/>\n' +
+'        <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"/>\n' +
 '        <link rel="stylesheet" href="${style}">\n' +
 '    </head>\n' +
 '    <body>\n' +
