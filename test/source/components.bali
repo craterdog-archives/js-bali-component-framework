@@ -23,15 +23,22 @@
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
             $symbol
             $$reserved-5
+            ~P3Y2M1D
             <2017-07-04>
             <https://google.com/>
-            v123
-            "text"
+            v1.2.3
+            "
+                multiline
+                text
+            "
             '0110101101010001'($encoding: $base2)
             .5
-            π
-            φ
+            75%
+            undefined
+            ∞
+            ~π
             τ
+            φ
             (3, 4i)
             [
                 "one"
@@ -52,10 +59,15 @@
         "certain": true
         "iffy": .5
         "impossible": false
+        true: false
+        .5: true
+        50%: 20%
+        ∞: undefined
         "^.*$"?: none($strict: true)
         #665VRFNFZMQX09TSKHJSD1HL567F4FF7: #CT41AC8K5AZBMJF88W60F40SZQCMA0XN($size: 20)
         $foo: $bar($baz: $baz)
         /name: /name($relative: false)
+        ~P0D: ~P1Y3M24DT7H32M15S
         <2017-04-01>: <2017-04-01>($country: "USA")
         <https://craterdog.com/>: <https://bali-nebula.net/bali/types>(
             $foo: 5
@@ -64,7 +76,6 @@
         v1: v2.3($patch: true)
         "key": "value"($mediatype: "text")
         'MMNBXR9TC237PK269GLFZ4J4XA4R9LF1': '0111010110101100100011'($encoding: $base16)
-        true: false($binary: true)
         ~π: ~π($units: $radians)
         τ: -6.28318531
         (1, 2i): (5 e^~π i)($format: $polar)

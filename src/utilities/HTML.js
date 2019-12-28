@@ -132,7 +132,7 @@ FormattingVisitor.prototype.constructor = FormattingVisitor;
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
     this.result += '<div class="element angle">';
-    this.result += formatReal(angle.getValue());
+    this.result += '~' + formatReal(angle.getValue());
     this.result += formatParameters(angle.getParameters());
     this.result += '</div>';
 };
@@ -278,7 +278,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
     this.result += '<div class="element duration">';
-    this.result += duration.getValue().toISOString();
+    this.result += duration.getValue().toISOString().slice(1).replace(/T/, '');
     this.result += formatParameters(duration.getParameters());
     this.result += '</div>';
 };
@@ -287,7 +287,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     this.result += '<div class="element moment">';
-    this.result += moment.getValue().format(moment.getFormat());
+    this.result += moment.getValue().format(moment.getFormat()).replace(/T/, ' ');
     this.result += formatParameters(moment.getParameters());
     this.result += '</div>';
 };
@@ -295,10 +295,10 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 
 // name: NAME
 FormattingVisitor.prototype.visitName = function(name) {
-    const uri = 'https://bali-nebula.net/repository/names' + name.toString();
+    const path = '/' + name.getValue().join('/');  // can't use toString() because it appends parameters
     this.result += '<div class="element name">';
-    this.result += '<a href="' + uri + '">';
-    this.result += name;
+    this.result += '<a href="https://bali-nebula.net/repository/names' + path + '">';
+    this.result += path;
     this.result += '</a>';
     this.result += formatParameters(name.getParameters());
     this.result += '</div>';
@@ -318,6 +318,8 @@ FormattingVisitor.prototype.visitNumber = function(number) {
     if (parameters) {
         format = parameters['$format'];
         if (format) format = format.toString();
+    } else {
+        format = '$rectangular';
     }
     var formatted = '';
     if (number.isUndefined()) {
@@ -486,7 +488,7 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 // reserved: RESERVED
 FormattingVisitor.prototype.visitReserved = function(reserved) {
     this.result += '<div class="element reserved">';
-    this.result += reserved.getValue();
+    this.result += '$' + reserved.getValue();
     this.result += formatParameters(reserved.getParameters());
     this.result += '</div>';
 };
@@ -504,7 +506,7 @@ FormattingVisitor.prototype.visitSymbol = function(symbol) {
 // tag: TAG
 FormattingVisitor.prototype.visitTag = function(tag) {
     this.result += '<pre class="element tag">';
-    this.result += tag.getValue();
+    this.result += '#' + tag.getValue();
     this.result += formatParameters(tag.getParameters());
     this.result += '</pre>';
 };
@@ -512,17 +514,23 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 
 // text: TEXT | TEXT_BLOCK
 FormattingVisitor.prototype.visitText = function(text) {
-    this.result += '<div class="element text">';
-    this.result += '"' + text.getValue() + '"';
+    var value = text.getValue();
+    const regex = new RegExp('\\n', 'g');
+    value = value.replace(regex, '\n    ');  // indent each line
+    value = '"' + value + '"';
+    value = value.replace(/    "/, '"');  // unindent last line
+    this.result += '<pre class="element text">';
+    this.result += EOL;
+    this.result += value;
     this.result += formatParameters(text.getParameters());
-    this.result += '</div>';
+    this.result += '</pre>';
 };
 
 
 // version: VERSION
 FormattingVisitor.prototype.visitVersion = function(version) {
     this.result += '<div class="element version">';
-    this.result += version.getValue().join('.');
+    this.result += 'v' + version.getValue().join('.');
     this.result += formatParameters(version.getParameters());
     this.result += '</div>';
 };
