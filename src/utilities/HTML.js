@@ -295,8 +295,11 @@ FormattingVisitor.prototype.visitMoment = function(moment) {
 
 // name: NAME
 FormattingVisitor.prototype.visitName = function(name) {
+    const uri = 'https://bali-nebula.net/repository/names' + name.toString();
     this.result += '<div class="element name">';
-    this.result += '/' + name.getValue().join('/');
+    this.result += '<a href="' + uri + '">';
+    this.result += name;
+    this.result += '</a>';
     this.result += formatParameters(name.getParameters());
     this.result += '</div>';
 };
@@ -360,6 +363,8 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
 
             // begin the div element
             this.result += '<div class="parameters">';
+            this.result += this.getNewline();
+            this.result += '<div class="type">Parameters</div>';
             this.depth++;
             const keys = Object.keys(parameters);
 
