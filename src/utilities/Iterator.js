@@ -19,11 +19,11 @@
  *         [item 1] . [item 2] . [item 3] ... [item N]
  *            -N       -(N-1)     -(N-2)         -1
  * </pre>
- * 
+ *
  * The iterator sits in slots that reside between each item:
  * <pre>
  *         [item 1] . [item 2] . [item 3] ... [item N]
- *       ^          ^          ^                       ^  
+ *       ^          ^          ^                       ^
  *     slot 0     slot 1     slot 2                  slot N
  * </pre>
  */
@@ -35,7 +35,7 @@ const Validator = require('./Validator').Validator;
 /**
  * This function creates a new array iterator that allows the items in the array
  * to be iterated over in either direction.
- * 
+ *
  * @param {Array} array The array to be iterated over.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Iterator} The new array iterator.

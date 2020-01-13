@@ -34,7 +34,7 @@ const Exception = require('../composites/Exception').Exception;
  * }
  * </pre>
  * The first state in the nextStates object is the initial state of the finite state machine.
- * 
+ *
  * @param {Array} eventTypes An array of the possible event types as strings.
  * @param {Object} nextStates An object defining the possible states as strings and allowed
  * transitions between them given specific event types.

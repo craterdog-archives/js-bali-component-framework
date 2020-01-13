@@ -171,7 +171,7 @@ Component.prototype.toString = function() {
 
 /**
  * This method returns a canonical Bali Document Notation™ representation of this component.
- * 
+ *
  * @param {Number} indentation The number of levels of indentation that should be prepended to
  * each line of the string output.
  * @returns {String} A canonical Bali Document Notation™ representation of the component.
@@ -184,7 +184,7 @@ Component.prototype.toBDN = function(indentation) {
 
 /**
  * This method returns an HTML document representing this component.
- * 
+ *
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
  * @returns {String} An HTML document representing the component.
@@ -338,7 +338,7 @@ Component.prototype.getHash = function() {
 /**
  * This method returns a duplicate of this component.  A deep copy is made of all mutable
  * (non-elemental) attributes.
- * 
+ *
  * @returns {Component} A duplicate component.
  */
 Component.prototype.duplicate = function() {

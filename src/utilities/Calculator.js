@@ -15,12 +15,12 @@
  * infinity correctly. It's just a really smart class!  It uses the algorithms for
  * calculating the significant digits defined here:
  * https://en.wikipedia.org/wiki/Significance_arithmetic
- * 
+ *
  * It also corrects the Math library with respect to indeterminate forms:
  * <pre>
  *    0/0, ∞/∞, 0*∞, 1^∞, ∞-∞, 0^0, and ∞^0
  * </pre>
- * 
+ *
  * See the following link for derivations:
  * https://en.wikipedia.org/wiki/Indeterminate_form
  */
@@ -30,7 +30,7 @@
 
 /**
  * This function creates a new calculator object.
- * 
+ *
  * @param {Number} debug A number in the range [0..3].
  * @returns {Calculator} The new generator.
  */
@@ -51,7 +51,7 @@ Calculator.MAXIMUM_PRECISION = Number.MAX_SAFE_INTEGER.toString().length;
  * This method checks to see if the specified number is close enough to zero or infinity to
  * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
  * doing round trip conversions using arithmetic functions.
- * 
+ *
  * @param {Number} number The number to be checked.
  * @returns {Number} The potentially converted number.
  */
@@ -67,7 +67,7 @@ Calculator.prototype.lockOnExtreme = function(number) {
  * This method checks to see if the specified number is close enough to one of the four poles
  * on a Riemann circle (-1, 0, 1, and Infinity) to cause it to lock onto one of those values.
  * This helps with the hysteresis that occurs when doing round trip conversions with trigonometry.
- * 
+ *
  * @param {Number} number The number to be checked.
  * @returns {Number} The potentially converted number.
  */
@@ -75,40 +75,40 @@ Calculator.prototype.lockOnPole = function(number) {
     // NOTE: it would be great if the single precision comparision worked here as well, or
     // better yet, the Math trigonometric functions returned Infinity and 0 when they should,
     // but alas... https://github.com/nodejs/node-v0.x-archive/issues/7852
-    // 
+    //
     // So, we must check each special case explicitly:
     // Math.sin(0) => 0
     // Math.cos(0) => 1
     // Math.tan(0) => 0
-    // 
+    //
     // Math.sin(Math.PI/2) => 1
     // Math.cos(Math.PI/2) => 6.123233995736766e-17 (not zero)
     // Math.tan(Math.PI/2) => 16331239353195370 (not Infinity)
-    // 
+    //
     // Math.sin(Math.PI) => 1.2246467991473532e-16 (not zero)
     // Math.cos(Math.PI) => -1
     // Math.tan(Math.PI) => -1.2246467991473532e-16 (not zero)
-    // 
+    //
     // Math.sin(Math.PI * 3/2) => -1
     // Math.cos(Math.PI * 3/2) => -1.8369701987210297e-16 (not zero)
     // Math.tan(Math.PI * 3/2) => 5443746451065123 (not -Infinity)
-    // 
+    //
     // Math.sin(Math.PI * 2) => -2.4492935982947064e-16 (not zero)
     // Math.cos(Math.PI * 2) => 1
     // Math.tan(Math.PI * 2) => -2.4492935982947064e-16 (not zero)
-    // 
+    //
     // Math.sin(-Math.PI/2) => -1
     // Math.cos(-Math.PI/2) => 6.123233995736766e-17 (not zero)
     // Math.tan(-Math.PI/2) => -16331239353195370 (not -Infinity)
-    // 
+    //
     // Math.sin(-Math.PI) => -1.2246467991473532e-16 (not zero)
     // Math.cos(-Math.PI) => -1
     // Math.tan(-Math.PI) => 1.2246467991473532e-16 (not zero)
-    // 
+    //
     // Math.sin(-Math.PI * 3/2) => 1
     // Math.cos(-Math.PI * 3/2) => -1.8369701987210297e-16 (not zero)
     // Math.tan(-Math.PI * 3/2) => -5443746451065123 (not -Infinity)
-    // 
+    //
     // Math.sin(-Math.PI * 2) => 2.4492935982947064e-16 (not zero)
     // Math.cos(-Math.PI * 2) => 1
     // Math.tan(-Math.PI * 2) => 2.4492935982947064e-16 (not zero)
@@ -127,7 +127,7 @@ Calculator.prototype.lockOnPole = function(number) {
  * This method checks to see if the specified angle is close enough to pi or -pi to
  * cause it to lock onto one of those values. This helps with the hysteresis that occurs when
  * doing round trip conversions using trigonometric functions.
- * 
+ *
  * @param {Number} angle The angle to be checked.
  * @returns {Number} The potentially converted angle.
  */
@@ -142,7 +142,7 @@ Calculator.prototype.lockOnAngle = function(angle) {
  * This method calculates the smallest number of significant digits for a list of values
  * that are passed as arguments to this function. All integers including zero have the
  * maximum number of significant digits.
- * 
+ *
  * @params {Numbers} arguments The values to be evaluated.
  * @returns {Number} The number of significant digits for the list of values.
  */
@@ -164,7 +164,7 @@ Calculator.prototype.valueDigits = function() {
  * This method normalizes a raw numeric value to the specified number of significant
  * digits minus the error digits associated with the specified error factor. The number
  * of error digits is equal to the base 10 logarithm of the error factor.
- * 
+ *
  * @param {Number} value The raw value to be normalized.
  * @param {Number} significantDigits The number of significant digits for the value.
  * @param {Number} error The error factor to use to adjust the significant digits.
@@ -184,7 +184,7 @@ Calculator.prototype.normalizeValue = function(value, significantDigits, error) 
  * This method calculates the smallest number of significant digits to the right of the
  * decimal place for a list of values that are passed as arguments to this function.  All
  * integers have unlimited significant digits to the right of the decimal.
- * 
+ *
  * @params {Numbers} arguments The values to be evaluated.
  * @returns {Number} The number of significant digits to the right of the decimal for the
  * list of values.
@@ -206,7 +206,7 @@ Calculator.prototype.decimalDigits = function() {
 /**
  * This method normalizes a raw numeric value to the specified number of significant
  * digits to the right of the decimal place.
- * 
+ *
  * @param {Number} value The raw value to be normalized.
  * @param {Number} significantDigits The number of significant digits to the right of the
  * decimal for the value.
@@ -354,7 +354,7 @@ Calculator.prototype.remainder = function(dividend, divisor) {
  *   error digits: log  | exponent |
  *                    10|          |
  * </pre>
- * 
+ *
  * @param {Number} exponent The exponent value.
  * @returns {Number} The value of the base raised to the exponent.
  */
@@ -379,7 +379,7 @@ Calculator.prototype.exponential = function(exponent) {
  *                    10| log (exponential) |
  *                      |    e              |
  * </pre>
- * 
+ *
  * @param {Number} exponential The value that is equal to base^exponent.
  * @returns {Number} The value of the base logarith of the exponential.
  */
@@ -403,7 +403,7 @@ Calculator.prototype.logarithm = function(exponential) {
  *   error digits: log  | -------------- |
  *                    10| tangent(angle) |
  * </pre>
- * 
+ *
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the opposite to the hypotenuse.
  */
@@ -423,10 +423,10 @@ Calculator.prototype.sine = function(angle) {
  * error for the function which is calculated as follows:
  * <pre>
  *                      |                        |
- *   error digits: log  | angle * tangent(angle) | 
+ *   error digits: log  | angle * tangent(angle) |
  *                    10|                        |
  * </pre>
- * 
+ *
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the adjacent to the hypotenuse.
  */
@@ -449,7 +449,7 @@ Calculator.prototype.cosine = function(angle) {
  *   error digits: log  | angle * | tangent(angle) + -------------- | |
  *                    10|          \                 tangent(angle) / |
  * </pre>
- * 
+ *
  * @param {Number} angle The angle within the right triangle.
  * @returns {Number} The ratio of the opposite to the adjacent.
  */
@@ -473,7 +473,7 @@ Calculator.prototype.tangent = function(angle) {
  *                    10|                            2  1/2 |
  *                      | arcsine(ratio) * (1 - ratio  )    |
  * </pre>
- * 
+ *
  * @param {Number} ratio The ratio of the opposite to the hypotenuse within the right triangle.
  * @returns {Number} The corresponding angle.
  */
@@ -497,7 +497,7 @@ Calculator.prototype.arcsine = function(ratio) {
  *                    10|                              2  1/2 |
  *                      | arccosine(ratio) * (1 - ratio  )    |
  * </pre>
- * 
+ *
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse within the right triangle.
  * @returns {Number} The corresponding angle.
  */
@@ -522,7 +522,7 @@ Calculator.prototype.arccosine = function(ratio) {
  *                    10|                               2  1/2 |
  *                      | arctangent(ratio) * (1 + ratio  )    |
  * </pre>
- * 
+ *
  * @param {Number} opposite The length of the side opposite the angle in the right triangle.
  * @param {Number} adjacent The length of the side adjacent to the angle in the right triangle.
  * @returns {Number} The corresponding angle.

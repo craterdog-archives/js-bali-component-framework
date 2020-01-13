@@ -23,7 +23,7 @@ const Exception = require('../composites/Exception').Exception;
 
 /**
  * This function creates a configurator object.
- * 
+ *
  * @param {String} filename The filename for the configuration.
  * @param {String} directory The configuration directory.
  * @param {Boolean|Number} debug An optional number in the range [0..3] that controls

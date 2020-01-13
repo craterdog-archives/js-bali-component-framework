@@ -26,7 +26,7 @@ const MAXIMUM_INTEGER = 4294967296;  // unsigned
 
 /**
  * This function returns a new random number generator.
- * 
+ *
  * @param {Number} debug A number in the range [0..3].
  * @returns {Generator} The new generator.
  */
