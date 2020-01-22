@@ -46,6 +46,8 @@ const Probability = function(value, parameters, debug) {
         ]);
     }
 
+    if (value === false) value = 0;           // change false to zero
+    if (value === true) value = 1;            // chane true to one
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value) || value < 0 || value > 1) {
         const exception = new Exception({

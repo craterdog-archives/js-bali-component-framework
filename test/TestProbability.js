@@ -28,6 +28,9 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
             expect(bali.probability().toBoolean()).to.equal(false);
             expect(bali.probability().toNumber()).to.equal(0);
             expect(bali.probability().toString()).to.equal('false');
+            expect(bali.probability(false).toBoolean()).to.equal(false);
+            expect(bali.probability(false).toNumber()).to.equal(0);
+            expect(bali.probability(false).toString()).to.equal('false');
             expect(bali.probability(0).toBoolean()).to.equal(false);
             expect(bali.probability(0).toNumber()).to.equal(0);
             expect(bali.probability(0).toString()).to.equal('false');
@@ -40,6 +43,9 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
         });
 
         it('should construct probabilities that equal one', function() {
+            expect(bali.probability(true).toBoolean()).to.equal(true);
+            expect(bali.probability(true).toNumber()).to.equal(1);
+            expect(bali.probability(true).toString()).to.equal('true');
             expect(bali.probability(1).toBoolean()).to.equal(true);
             expect(bali.probability(1).toNumber()).to.equal(1);
             expect(bali.probability(1).toString()).to.equal('true');
