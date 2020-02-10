@@ -15,7 +15,8 @@ npm install bali-component-framework
 ```
 Then add the following line to your NodeJS modules:
 ```
-const bali = require('bali-component-framework');
+const debug = 1;  // debugging level: [0..3]
+const bali = require('bali-component-framework').api(debug);
 ```
 
 ### Contributing
