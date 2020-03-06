@@ -80,8 +80,8 @@ const header =
 '<html>\n' +
 '    <head>\n' +
 '        <meta charset="UTF-8">\n' +
-'        <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico">\n' +
-'        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">\n' +
+'        <link rel="shortcut icon" type="image/x-icon" href="/static/images/Icon.ico">\n' +
+'        <link rel="icon" type="image/x-icon" href="/static/images/Icon.ico">\n' +
 '        <link rel="stylesheet" href="${style}">\n' +
 '    </head>\n' +
 '    <body>\n' +
