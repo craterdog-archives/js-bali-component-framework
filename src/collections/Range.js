@@ -105,7 +105,7 @@ const Range = function(first, last, parameters, debug) {
     };
 
     this.getIterator = function() {
-        return new RangeIterator(this, collection);
+        return new RangeIterator(this, collection, this.getParameters(), this.debug);
     };
 
     this.getFirstItem = function() {
@@ -191,37 +191,44 @@ exports.Range = Range;
 
 // PRIVATE CLASSES
 
-const RangeIterator = function(range, collection) {
+const RangeIterator = function(range, collection, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/collections/RangeIterator'],
+        [],
+        parameters,
+        debug
+    );
 
     // the range, size, collection, and current slot index are private attributes
     // so methods that use them are defined in the constructor
-    var currentSlot = 0;  // the slot before the first number
+    var slot = 0;  // the slot before the first number
     const size = range.getSize();  // static so we can cache it here
 
     this.toStart = function() {
-        currentSlot = 0;  // the slot before the first number
+        slot = 0;  // the slot before the first number
     };
 
-    this.toSlot = function(slot) {
-        currentSlot = slot;
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
     };
 
     this.toEnd = function() {
-        currentSlot = size;  // the slot after the last number
+        slot = size;  // the slot after the last number
     };
 
     this.hasPrevious = function() {
-        return currentSlot > 0;
+        return slot > 0;
     };
 
     this.hasNext = function() {
-        return currentSlot < size;
+        return slot < size;
     };
 
     this.getPrevious = function() {
         if (!this.hasPrevious()) return;
-        currentSlot--;
-        const index = range.getFirstIndex() + currentSlot;
+        slot--;
+        const index = range.getFirstIndex() + slot;
         var item;
         if (collection) {
             item = collection.getItem(index);  // retrieve the item
@@ -233,17 +240,18 @@ const RangeIterator = function(range, collection) {
 
     this.getNext = function() {
         if (!this.hasNext()) return;
-        const index = range.getFirstIndex() + currentSlot;
+        const index = range.getFirstIndex() + slot;
         var item;
         if (collection) {
             item = collection.getItem(index);  // retrieve the item
         } else {
             item = new elements.Number(index);  // the index is the item
         }
-        currentSlot++;
+        slot++;
         return item;
     };
 
     return this;
 };
+RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;

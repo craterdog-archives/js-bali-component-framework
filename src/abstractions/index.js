@@ -15,5 +15,6 @@ exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component
 exports.Composite = require('./Composite').Composite;  // depends on Component
 exports.Collection = require('./Collection').Collection;  // depends on Composite
+exports.Iterator = require('./Iterator').Iterator;
 exports.Visitor = require('./Visitor').Visitor;
 

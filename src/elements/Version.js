@@ -147,17 +147,6 @@ Version.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the levels in
- * this version string.
- * @returns {Iterator} An iterator for this version string.
- */
-Version.prototype.getIterator = function() {
-    const iterator = new VersionIterator(this.getValue());
-    return iterator;
-};
-
-
-/**
  * This method increments this version string at the specified version level, for example:
  * <pre>
  *            current             next          what likely changed
@@ -240,49 +229,61 @@ Version.prototype.validNextVersion = function(nextVersion) {
 };
 
 
+/**
+ * This method returns an object that can be used to iterate over the levels in
+ * this version string.
+ * @returns {Iterator} An iterator for this version string.
+ */
+Version.prototype.getIterator = function() {
+    const iterator = new VersionIterator(this.getValue(), this.getParameters(), this.debug);
+    return iterator;
+};
+
+
 // PRIVATE CLASSES
 
-const VersionIterator = function(levels) {
-    this.slot = 0;  // the slot before the first level
-    this.size = levels.length;  // static so we can cache it here
-    this.levels = levels;
+const VersionIterator = function(levels, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/elements/VersionIterator'],
+        [],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first number
+    const size = levels.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first level
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last level
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return levels[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return levels[slot++];
+    };
+
     return this;
 };
+VersionIterator.prototype = Object.create(abstractions.Iterator.prototype);
 VersionIterator.prototype.constructor = VersionIterator;
-
-
-VersionIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first level
-};
-
-
-VersionIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-VersionIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last level
-};
-
-
-VersionIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-VersionIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-VersionIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) return;
-    return this.levels[--this.slot];
-};
-
-
-VersionIterator.prototype.getNext = function() {
-    if (!this.hasNext()) return;
-    return this.levels[this.slot++];
-};

@@ -12,15 +12,15 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
-const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
 
 /**
  * This function creates a new elemental component with the specified ancestry and interfaces
- * candidate with any optional parameters that are used to parameterize its type.
+ * with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.

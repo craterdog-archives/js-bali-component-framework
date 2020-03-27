@@ -107,7 +107,7 @@ Text.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this text string.
  */
 Text.prototype.getIterator = function() {
-    const iterator = new TextIterator(this.getValue());
+    const iterator = new TextIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
 
@@ -142,47 +142,48 @@ Text.concatenation = function(first, second, debug) {
 
 // PRIVATE CLASSES
 
-const TextIterator = function(text) {
-    this.slot = 0;  // the slot before the first number
-    this.size = text.length;  // static so we can cache it here
-    this.text = text;
+const TextIterator = function(text, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/elements/TextIterator'],
+        [],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first number
+    const size = text.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first number
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last number
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return text[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return text[slot++];
+    };
+
     return this;
 };
+TextIterator.prototype = Object.create(abstractions.Iterator.prototype);
 TextIterator.prototype.constructor = TextIterator;
-
-
-TextIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
-};
-
-
-TextIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-TextIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
-};
-
-
-TextIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-TextIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-TextIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) return;
-    return this.text[--this.slot];
-};
-
-
-TextIterator.prototype.getNext = function() {
-    if (!this.hasNext()) return;
-    return this.text[this.slot++];
-};

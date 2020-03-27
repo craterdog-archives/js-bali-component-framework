@@ -115,54 +115,55 @@ Symbol.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this symbol.
  */
 Symbol.prototype.getIterator = function() {
-    const iterator = new SymbolIterator(this.getValue());
+    const iterator = new SymbolIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
 
 
 // PRIVATE CLASSES
 
-const SymbolIterator = function(symbol) {
-    this.slot = 0;  // the slot before the first character
-    this.size = symbol.length;  // static so we can cache it here
-    this.symbol = symbol;
+const SymbolIterator = function(symbol, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/elements/SymbolIterator'],
+        [],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first character
+    const size = symbol.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first character
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last character
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return symbol[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return symbol[slot++];
+    };
+
     return this;
 };
+SymbolIterator.prototype = Object.create(abstractions.Iterator.prototype);
 SymbolIterator.prototype.constructor = SymbolIterator;
-
-
-SymbolIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first character
-};
-
-
-SymbolIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-SymbolIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last character
-};
-
-
-SymbolIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-SymbolIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-SymbolIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) return;
-    return this.symbol[--this.slot];
-};
-
-
-SymbolIterator.prototype.getNext = function() {
-    if (!this.hasNext()) return;
-    return this.symbol[this.slot++];
-};

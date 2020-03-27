@@ -46,7 +46,7 @@ const Set = function(parameters, debug) {
 
     this.toArray = function() {
         const array = [];
-        const iterator = new TreeIterator(tree);
+        const iterator = new SetIterator(tree);
         while (iterator.hasNext()) array.push(iterator.getNext());
         return array;
     };
@@ -56,7 +56,7 @@ const Set = function(parameters, debug) {
     };
 
     this.getIterator = function() {
-        return new TreeIterator(tree);
+        return new SetIterator(tree, this.getParameters(), this.debug);
     };
 
     this.getIndex = function(item) {
@@ -347,38 +347,45 @@ Set.xor = function(first, second, debug) {
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
-const TreeIterator = function(tree) {
+const SetIterator = function(tree, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/collections/SetIterator'],
+        [],
+        parameters,
+        debug
+    );
 
     // the tree, current slot index, and previous and next pointers are private attributes
     // so methods that use them are defined in the constructor
-    var currentSlot = 0;  // the slot before the first item
+    var slot = 0;  // the slot before the first item
     var previous = undefined;
     var next = minimum(tree.root);
 
     this.toStart = function() {
-        currentSlot = 0;  // the slot before the first item
+        slot = 0;  // the slot before the first item
         previous = undefined;
         next = minimum(tree.root);
     };
 
-    this.toSlot = function(slot) {
-        currentSlot = slot;
-        previous = tree.node(slot - 1);  // javascript index of item before the slot
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+        previous = tree.node(newSlot - 1);  // javascript index of item before the slot
         next = successor(previous);
     };
 
     this.toEnd = function() {
-        currentSlot = tree.size;  // the slot after the last item
+        slot = tree.size;  // the slot after the last item
         previous = maximum(tree.root);
         next = undefined;
     };
 
     this.hasPrevious = function() {
-        return currentSlot > 0;
+        return slot > 0;
     };
 
     this.hasNext = function() {
-        return currentSlot < tree.size;
+        return slot < tree.size;
     };
 
     this.getPrevious = function() {
@@ -386,7 +393,7 @@ const TreeIterator = function(tree) {
         const value = previous.value;
         next = previous;
         previous = predecessor(next);
-        currentSlot--;
+        slot--;
         return value;
     };
 
@@ -395,13 +402,14 @@ const TreeIterator = function(tree) {
         const value = next.value;
         previous = next;
         next = successor(previous);
-        currentSlot++;
+        slot++;
         return value;
     };
 
     return this;
 };
-TreeIterator.prototype.constructor = TreeIterator;
+SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
+SetIterator.prototype.constructor = SetIterator;
 
 
 /*

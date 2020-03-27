@@ -115,54 +115,55 @@ Reserved.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this reserved symbol.
  */
 Reserved.prototype.getIterator = function() {
-    const iterator = new ReservedIterator(this.getValue());
+    const iterator = new ReservedIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
 
 
 // PRIVATE CLASSES
 
-const ReservedIterator = function(symbol) {
-    this.slot = 0;  // the slot before the first character
-    this.size = symbol.length;  // static so we can cache it here
-    this.symbol = symbol;
+const ReservedIterator = function(symbol, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/elements/ReservedIterator'],
+        [],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first character
+    const size = symbol.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first character
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last character
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return symbol[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return symbol[slot++];
+    };
+
     return this;
 };
+ReservedIterator.prototype = Object.create(abstractions.Iterator.prototype);
 ReservedIterator.prototype.constructor = ReservedIterator;
-
-
-ReservedIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first character
-};
-
-
-ReservedIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-ReservedIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last character
-};
-
-
-ReservedIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-ReservedIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-ReservedIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) return;
-    return this.symbol[--this.slot];
-};
-
-
-ReservedIterator.prototype.getNext = function() {
-    if (!this.hasNext()) return;
-    return this.symbol[this.slot++];
-};

@@ -298,12 +298,6 @@ exports.api = function(defaultLevel) {
         return new utilities.Generator(debug);
     };
 
-    // ITERATOR
-    const iterator = function(array, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new utilities.Iterator(array, debug);
-    };
-
     // LIST
     const list = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -604,7 +598,6 @@ exports.api = function(defaultLevel) {
         duration: duration,
         exception: exception,
         generator: generator,
-        iterator: iterator,
         list: list,
         moment: moment,
         name: name,

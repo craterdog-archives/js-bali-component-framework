@@ -131,7 +131,7 @@ Binary.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this binary string.
  */
 Binary.prototype.getIterator = function() {
-    const iterator = new BufferIterator(this.getValue());
+    const iterator = new BinaryIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
 
@@ -308,47 +308,48 @@ Binary.concatenation = function(first, second, debug) {
 
 // PRIVATE CLASSES
 
-const BufferIterator = function(buffer) {
-    this.slot = 0;  // the slot before the first number
-    this.size = buffer.length;  // static so we can cache it here
-    this.buffer = buffer;
+const BinaryIterator = function(buffer, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/elements/BinaryIterator'],
+        [],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first number
+    const size = buffer.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first number
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last number
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return buffer[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return buffer[slot++];
+    };
+
     return this;
 };
-BufferIterator.prototype.constructor = BufferIterator;
-
-
-BufferIterator.prototype.toStart = function() {
-    this.slot = 0;  // the slot before the first number
-};
-
-
-BufferIterator.prototype.toSlot = function(slot) {
-    this.slot = slot;
-};
-
-
-BufferIterator.prototype.toEnd = function() {
-    this.slot = this.size;  // the slot after the last number
-};
-
-
-BufferIterator.prototype.hasPrevious = function() {
-    return this.slot > 0;
-};
-
-
-BufferIterator.prototype.hasNext = function() {
-    return this.slot < this.size;
-};
-
-
-BufferIterator.prototype.getPrevious = function() {
-    if (!this.hasPrevious()) return;
-    return this.buffer[--this.slot];
-};
-
-
-BufferIterator.prototype.getNext = function() {
-    if (!this.hasNext()) return;
-    return this.buffer[this.slot++];
-};
+BinaryIterator.prototype = Object.create(abstractions.Iterator.prototype);
+BinaryIterator.prototype.constructor = BinaryIterator;
