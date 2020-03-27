@@ -29,7 +29,7 @@ module.exports = function(grunt) {
       }
     },
 
-    // grunt--eslint plugin configuration (lint for JS)
+    // grunt-eslint plugin configuration (lint for JS)
     eslint: {
       options: {
       },
