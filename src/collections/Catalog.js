@@ -379,7 +379,7 @@ Catalog.concatenation = function(first, second, debug) {
  * specified keys. The parameters for the catalog are maintained in the resulting catalog.
  *
  * @param {Catalog} catalog The catalog whose items are to be reduced.
- * @param {Set} keys The set of keys for the associations to be extracted.
+ * @param {List} keys The list of keys for the associations to be extracted.
  * @param {Number} debug A number in the range [0..3].
  * @returns The resulting catalog.
  */
