@@ -42,7 +42,10 @@ const List = function(parameters, debug) {
     abstractions.Collection.call(
         this,
         ['/bali/collections/List'],
-        ['/bali/interfaces/Chainable'],
+        [
+            '/bali/interfaces/Chainable',
+            '/bali/interfaces/Sortable'
+        ],
         parameters,
         debug
     );

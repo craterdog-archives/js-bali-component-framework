@@ -31,7 +31,10 @@ const Percent = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
         ['/bali/elements/Percent'],
-        ['/bali/interfaces/Scalable'],
+        [
+            '/bali/interfaces/Scalable',
+            '/bali/interfaces/Numerical'
+        ],
         parameters,
         debug
     );

@@ -33,7 +33,10 @@ const Duration = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
         ['/bali/elements/Duration'],
-        ['/bali/interfaces/Scalable'],
+        [
+            '/bali/interfaces/Scalable',
+            '/bali/interfaces/Numerical'
+        ],
         parameters,
         debug
     );

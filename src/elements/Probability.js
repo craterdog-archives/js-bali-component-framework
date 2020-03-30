@@ -33,7 +33,10 @@ const Probability = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
         ['/bali/elements/Probability'],
-        ['/bali/interfaces/Logical'],
+        [
+            '/bali/interfaces/Logical',
+            '/bali/interfaces/Numerical'
+        ],
         parameters,
         debug
     );

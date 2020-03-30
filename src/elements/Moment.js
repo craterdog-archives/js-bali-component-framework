@@ -48,7 +48,7 @@ const Moment = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
         ['/bali/elements/Moment'],
-        [],
+        ['/bali/interfaces/Numerical'],
         parameters,
         debug
     );

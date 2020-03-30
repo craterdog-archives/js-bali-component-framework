@@ -35,7 +35,10 @@ const Catalog = function(parameters, debug) {
     abstractions.Collection.call(
         this,
         ['/bali/collections/Catalog'],
-        ['/bali/interfaces/Chainable'],
+        [
+            '/bali/interfaces/Chainable',
+            '/bali/interfaces/Sortable'
+        ],
         parameters,
         debug
     );
