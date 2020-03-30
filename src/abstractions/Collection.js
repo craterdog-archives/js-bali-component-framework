@@ -127,6 +127,73 @@ Collection.prototype.getIterator = function() {
 
 
 /**
+ * This abstract method adds the specified item to the collection.  It must be implemented by
+ * a subclass.
+ *
+ * @param {Component} item The item to be added.
+ * @returns {Boolean} Whether or not the item was successfully added.
+ */
+Collection.prototype.addItem = function(item) {
+    const exception = new Exception({
+        $module: '/bali/abstractions/Collection',
+        $procedure: '$addItem',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+};
+
+
+/**
+ * This method adds the specified sequence of items to the collection.
+ *
+ * @param {Array|Sequential} items The items to be added to this collection.
+ * @returns {Number} The number of items that were successfully added to the collection.
+ */
+Collection.prototype.addItems = function(items) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
+            '/javascript/Undefined',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
+    var count = 0;
+    items = items || undefined;  // normalize nulls to undefined
+    if (items) {
+        if (Array.isArray(items)) {
+            items.forEach(function(item) {
+                item = this.componentize(item, this.debug);
+                if (item.isType('/bali/composites/Association')) {
+                    item = item.getValue();
+                }
+                this.addItem(item);
+                count++;
+            }, this);
+        } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
+            const iterator = items.getIterator();
+            while (iterator.hasNext()) {
+                var item = iterator.getNext();
+                item = this.componentize(item, this.debug);
+                if (item.isType('/bali/composites/Association')) {
+                    item = item.getValue();
+                }
+                this.addItem(item);
+                count++;
+            }
+        } else if (typeof items === 'object') {
+            const keys = Object.keys(items);
+            keys.forEach(function(key) {
+                this.addItem(items[key]);
+                count++;
+            }, this);
+        }
+    }
+    return count;
+};
+
+
+/**
  * This method converts negative subcomponent indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
  * collection component is empty then the resulting index will be zero.

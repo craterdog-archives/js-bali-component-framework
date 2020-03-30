@@ -58,9 +58,8 @@ const Range = function(first, last, parameters, debug) {
     // the range is immutable so the collection is private and the indices must be read-only
     var firstIndex;
     var lastIndex;
-    var collection;
     // parameters are immutable so we don't need to copy the collection
-    collection = this.getParameter('$collection');
+    var collection = this.getParameter('$collection');
     if (collection) {
         // determine the indices of the items in the collection
         firstIndex = collection.getIndex(first);

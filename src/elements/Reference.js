@@ -48,7 +48,7 @@ const Reference =function(value, parameters, debug) {
 
     try {
         if (value.constructor.name !== 'URL') {
-            value = new URL(value.replace(/\$tag:#/, '$tag:%23'));  // escape the '#'
+            value = new URL(value);
         }
     } catch (cause) {
         const exception = new Exception({

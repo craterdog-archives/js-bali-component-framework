@@ -450,6 +450,12 @@ exports.api = function(defaultLevel) {
         return elements.Probability.xor(first, second, debug);
     };
 
+    // PROCEDURE
+    const procedure = function(statements, parameters, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new composites.Procedure(statements, parameters, debug);
+    };
+
     // QUEUE
     const queue = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -605,6 +611,7 @@ exports.api = function(defaultLevel) {
         pattern: pattern,
         percent: percent,
         probability: probability,
+        procedure: procedure,
         queue: queue,
         range: range,
         reference: reference,

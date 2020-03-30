@@ -235,24 +235,6 @@ const Catalog = function(parameters, debug) {
         }
     };
 
-    this.setValues = function(associations) {
-        if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$setValues', '$associations', associations, [
-                '/javascript/Undefined',
-                '/javascript/Array',
-                '/bali/interfaces/Sequential'
-            ]);
-        }
-        if (associations && associations.getIterator) {
-            const iterator = associations.getIterator();
-            while (iterator.hasNext()) {
-                const association = iterator.getNext();
-                this.setValue(association.getKey(), association.getValue());
-            }
-        }
-    };
-
     this.removeValue = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);

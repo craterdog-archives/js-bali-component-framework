@@ -106,49 +106,6 @@ const Set = function(parameters, debug) {
         return tree.insert(item);
     };
 
-    this.addItems = function(items) {
-        if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Set', '$addItems', '$items', items, [
-                '/javascript/Undefined',
-                '/javascript/Array',
-                '/bali/interfaces/Sequential'
-            ]);
-        }
-        var count = 0;
-        items = items || undefined;  // normalize nulls to undefined
-        if (items) {
-            if (Array.isArray(items)) {
-                items.forEach(function(item) {
-                    item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
-                        item = item.getValue();
-                    }
-                    this.addItem(item);
-                    count++;
-                }, this);
-            } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
-                const iterator = items.getIterator();
-                while (iterator.hasNext()) {
-                    var item = iterator.getNext();
-                    item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
-                        item = item.getValue();
-                    }
-                    this.addItem(item);
-                    count++;
-                }
-            } else if (typeof items === 'object') {
-                const keys = Object.keys(items);
-                keys.forEach(function(key) {
-                    this.addItem(items[key]);
-                    count++;
-                }, this);
-            }
-        }
-        return count;
-    },
-
     this.removeItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
