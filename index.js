@@ -531,9 +531,11 @@ exports.api = function(defaultLevel) {
     };
 
     // TREE
-    const tree = function(type, debug) {
+    const tree = function(type, children, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new collections.Tree(type, debug);
+        const collection = new collections.Tree(type, debug);
+        collection.addItems(children);
+        return collection;
     };
 
     // TYPE
