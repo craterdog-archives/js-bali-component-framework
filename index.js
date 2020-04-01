@@ -539,10 +539,11 @@ exports.api = function(defaultLevel) {
     };
 
     // TYPE
-    const type = function(value, debug) {
+    const type = function(component, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const type = new utilities.Validator(debug).getType(value);
-        return new elements.Name(type, undefined, debug);
+        const type = new utilities.Validator(debug).getType(component);
+        const value = type.split('/').slice(1);
+        return new elements.Name(value, undefined, debug);
     };
 
     // VALIDATOR
