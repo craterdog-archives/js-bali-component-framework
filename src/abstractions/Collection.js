@@ -140,6 +140,8 @@ Collection.prototype.addItem = function(item) {
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 

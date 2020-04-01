@@ -147,6 +147,17 @@ const Range = function(first, last, parameters, debug) {
         return item;
     };
 
+    this.addItem = function(item) {
+        const exception = new Exception({
+            $module: '/bali/collections/Range',
+            $procedure: '$addItem',
+            $exception: '$invalidMethod',
+            $text: 'New items cannot be added to a range.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
+
     this.containsItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
