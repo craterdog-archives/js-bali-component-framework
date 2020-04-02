@@ -175,6 +175,7 @@ Calculator.prototype.normalizeValue = function(value, significantDigits, error) 
     if (isFinite(error) && error !== 0) {
         errorDigits = Math.round(Math.abs(Math.log10(Math.abs(error))));
         significantDigits -= errorDigits;
+        significantDigits = Math.max(significantDigits, 1);
     }
     return Number(value.toPrecision(significantDigits));
 };

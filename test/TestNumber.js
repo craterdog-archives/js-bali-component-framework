@@ -202,6 +202,22 @@ describe('Bali Nebula™ Component Framework - Number', function() {
             expect(bali.number.remainder(bali.number(23), bali.number(7)).isEqualTo(bali.number(2))).to.equal(true);
         });
 
+        it('should perform the exponential function correctly', function() {
+            expect(bali.number.exponential(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.exponential(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.exponential(bali.number(5), bali.number.ZERO).isEqualTo(bali.number(1))).to.equal(true);
+            expect(bali.number.exponential(bali.number(2), bali.number(7)).isEqualTo(bali.number(128))).to.equal(true);
+            expect(bali.number.exponential(bali.number(0.5), bali.number(0.5)).isEqualTo(bali.number(0.7))).to.equal(true);
+        });
+
+        it('should perform the logarithm function correctly', function() {
+            expect(bali.number.logarithm(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
+            expect(bali.number.logarithm(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            expect(bali.number.logarithm(bali.number(5), bali.number(1)).isEqualTo(bali.number.ZERO)).to.equal(true);
+            expect(bali.number.logarithm(bali.number(2), bali.number(128)).isEqualTo(bali.number(7))).to.equal(true);
+            expect(bali.number.logarithm(bali.number(0.5), bali.number(0.7)).isEqualTo(bali.number(0.4))).to.equal(true);
+        });
+
     });
 
 });
