@@ -193,7 +193,7 @@ const List = function(parameters, debug) {
     };
 
     this.sortItems = function(algorithm) {
-        const sorter = utilities.Sorter(algorithm, this.debug);
+        const sorter = new utilities.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
 

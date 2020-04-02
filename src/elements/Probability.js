@@ -116,7 +116,7 @@ Probability.prototype.acceptVisitor = function(visitor) {
  * @returns {Probability} The resulting random probability.
  */
 Probability.random = function(debug) {
-    const generator = utilities.Generator(debug);
+    const generator = new utilities.Generator(debug);
     const random = generator.generateProbability();
     const result = new Probability(random, undefined, debug);
     return result;
