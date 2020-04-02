@@ -77,41 +77,6 @@ describe('Bali Nebula™ Component Framework - Version', function() {
 
     });
 
-    describe('Test version methods', function() {
-
-        it('should calculate and validate next versions', function() {
-            const currentVersion = bali.version([6, 2, 7]);
-            var nextVersion = currentVersion.nextVersion(1);
-            expect(nextVersion.toString()).to.equal('v7');
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
-            nextVersion = currentVersion.nextVersion(2);
-            expect(nextVersion.toString()).to.equal('v6.3');
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
-            nextVersion = currentVersion.nextVersion(3);
-            expect(nextVersion.toString()).to.equal('v6.2.8');
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
-            nextVersion = currentVersion.nextVersion(4);
-            expect(nextVersion.toString()).to.equal('v6.2.7.1');
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
-            nextVersion = currentVersion.nextVersion();
-            expect(nextVersion.toString()).to.equal('v6.2.8');
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(true);
-
-            expect(currentVersion.validNextVersion(currentVersion)).to.equal(false);
-            nextVersion = bali.version([7, 2, 7]);
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
-            nextVersion = bali.version([6, 3, 7]);
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
-            nextVersion = bali.version([6, 2, 8, 1]);
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
-            nextVersion = bali.version([6, 2, 7, 2]);
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
-            nextVersion = bali.version([6, 2, 7, 1, 1]);
-            expect(currentVersion.validNextVersion(nextVersion)).to.equal(false);
-        });
-
-    });
-
     describe('Test the version iterators', function() {
 
         it('should iterate over a version string forwards and backwards', function() {
@@ -141,6 +106,28 @@ describe('Bali Nebula™ Component Framework - Version', function() {
             iterator.toStart();
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
+        });
+
+    });
+
+    describe('Test version functions', function() {
+
+        it('should perform the nextVersion function correctly', function() {
+            expect(bali.version.nextVersion(bali.version([1])).isEqualTo(bali.version([2]))).to.equal(true);
+            expect(bali.version.nextVersion(bali.version([1]), 2).isEqualTo(bali.version([1, 1]))).to.equal(true);
+            expect(bali.version.nextVersion(bali.version([1, 2])).isEqualTo(bali.version([1, 3]))).to.equal(true);
+            expect(bali.version.nextVersion(bali.version([1, 2]), 2).isEqualTo(bali.version([1, 3]))).to.equal(true);
+            expect(bali.version.nextVersion(bali.version([1, 2]), 1).isEqualTo(bali.version([2]))).to.equal(true);
+            expect(bali.version.nextVersion(bali.version([1, 2]), 3).isEqualTo(bali.version([1, 2, 1]))).to.equal(true);
+        });
+
+        it('should perform the validNextVersion function correctly', function() {
+            expect(bali.version.validNextVersion(bali.version([1]), bali.version([2]))).to.equal(true);
+            expect(bali.version.validNextVersion(bali.version([1]), bali.version([1, 1]))).to.equal(true);
+            expect(bali.version.validNextVersion(bali.version([1, 2]), bali.version([1, 3]))).to.equal(true);
+            expect(bali.version.validNextVersion(bali.version([1, 2]), bali.version([1, 3]))).to.equal(true);
+            expect(bali.version.validNextVersion(bali.version([1, 2]), bali.version([2]))).to.equal(true);
+            expect(bali.version.validNextVersion(bali.version([1, 2]), bali.version([1, 2, 1]))).to.equal(true);
         });
 
     });

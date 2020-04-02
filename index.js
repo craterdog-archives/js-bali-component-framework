@@ -557,6 +557,14 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Version(value, parameters, debug);
     };
+    version.nextVersion = function(current, level, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Version.nextVersion(current, level, debug);
+    };
+    version.validNextVersion = function(current, next, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Version.validNextVersion(current, next, debug);
+    };
 
     // VISITOR
     const visitor = function() {
