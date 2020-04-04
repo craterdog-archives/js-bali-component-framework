@@ -378,7 +378,7 @@ DuplicatingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message '(' arguments ')'
+// messageExpression: expression ('.' | '<-') message '(' arguments ')'
 DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
@@ -386,6 +386,7 @@ DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
+    copy.operator = tree.operator;
     this.result = copy;
 };
 

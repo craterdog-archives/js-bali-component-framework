@@ -37,11 +37,11 @@
     }
     $messages: {
         $variable := foo.bar()
-        $variable := foo.bar(baz)
+        $variable := foo<-bar(baz)
         $variable := foo.bar(5).random()
-        $variable := foo.bar()[-index]
+        $variable := foo<-bar()[-index]
         $variable := [1, 2, 3].reverse()
-        $variable := products[$yoyo, "Duncan"].calculateUPC()
+        $variable := products[$yoyo, "Duncan"]<-calculateUPC()
     }
     $indices: {
         $variable := values[$symbol]

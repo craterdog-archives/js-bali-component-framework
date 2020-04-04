@@ -7,7 +7,7 @@ expression:                  // Precedence (highest to lowest)
     funcxion '(' arguments ')'                                     #functionExpression      |
     '(' expression ')'                                             #precedenceExpression    |
     '@' expression                                                 #dereferenceExpression   |
-    expression '.' message '(' arguments ')'                       #messageExpression       |
+    expression op=('.' | '<-') message '(' arguments ')'           #messageExpression       |
     expression '[' indices ']'                                     #subcomponentExpression  |
     expression '&' expression                                      #concatenationExpression |
     expression '!'                                                 #factorialExpression     |

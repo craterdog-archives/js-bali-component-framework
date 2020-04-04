@@ -313,10 +313,11 @@ Visitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message '(' arguments ')'
+// messageExpression: expression ('.' | '<-') message '(' arguments ')'
 Visitor.prototype.visitMessageExpression = function(tree) {
     const target = tree.getItem(1);
     target.acceptVisitor(this);
+    const operator = tree.operator;
     const messageName = tree.getItem(2);
     messageName.acceptVisitor(this);
     const args = tree.getItem(3);

@@ -634,11 +634,12 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// messageExpression: expression '.' message '(' arguments ')'
+// messageExpression: expression ('.' | '<-') message '(' arguments ')'
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     const tree = new collections.Tree('/bali/composites/MessageExpression', this.debug);
     ctx.expression().accept(this);
     tree.addItem(this.result);
+    tree.operator = ctx.op.text;
     ctx.message().accept(this);
     tree.addItem(this.result);
     ctx.arguments().accept(this);

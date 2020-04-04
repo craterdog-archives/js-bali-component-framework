@@ -530,12 +530,12 @@ FormattingVisitor.prototype.visitMessage = function(tree) {
 };
 
 
-// messageExpression: expression '.' message '(' arguments ')'
+// messageExpression: expression ('.' | '<-') message '(' arguments ')'
 FormattingVisitor.prototype.visitMessageExpression = function(tree) {
     this.inline++;
     const target = tree.getItem(1);
     target.acceptVisitor(this);
-    this.result += '.';
+    this.result += tree.operator;
     const messageName = tree.getItem(2);
     messageName.acceptVisitor(this);
     this.result += '(';
