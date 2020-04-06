@@ -110,12 +110,12 @@ DocumentListener.prototype.exitPublishClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#queueClause.
-DocumentListener.prototype.enterQueueClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#postClause.
+DocumentListener.prototype.enterPostClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#queueClause.
-DocumentListener.prototype.exitQueueClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#postClause.
+DocumentListener.prototype.exitPostClause = function(ctx) {
 };
 
 

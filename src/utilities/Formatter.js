@@ -711,9 +711,9 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// queueClause: 'queue' expression 'on' expression
-FormattingVisitor.prototype.visitQueueClause = function(tree) {
-    this.result += 'queue ';
+// postClause: 'post' expression 'on' expression
+FormattingVisitor.prototype.visitPostClause = function(tree) {
+    this.result += 'post ';
     const message = tree.getItem(1);
     message.acceptVisitor(this);
     this.result += ' on ';

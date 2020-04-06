@@ -351,7 +351,7 @@ var sharedContextCache = new antlr4.PredictionContextCache();
 
 var literalNames = [ null, "'handle'", "'matching'", "'with'", "'{'", "'}'", 
                      "':='", "'checkout'", "'from'", "'save'", "'to'", "'discard'", 
-                     "'commit'", "'publish'", "'queue'", "'on'", "'wait'", 
+                     "'commit'", "'publish'", "'post'", "'on'", "'wait'", 
                      "'for'", "'if'", "'then'", "'else'", "'select'", "'do'", 
                      "'each'", "'in'", "'while'", "'continue'", "'loop'", 
                      "'break'", "'return'", "'throw'", "'['", "']'", "'('", 
@@ -378,7 +378,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
 
 var ruleNames =  [ "document", "statement", "mainClause", "handleClause", 
                    "block", "evaluateClause", "checkoutClause", "saveClause", 
-                   "discardClause", "commitClause", "publishClause", "queueClause", 
+                   "discardClause", "commitClause", "publishClause", "postClause", 
                    "waitClause", "ifClause", "selectClause", "withClause", 
                    "whileClause", "continueClause", "breakClause", "returnClause", 
                    "throwClause", "recipient", "subcomponent", "expression", 
@@ -513,7 +513,7 @@ DocumentParser.RULE_saveClause = 7;
 DocumentParser.RULE_discardClause = 8;
 DocumentParser.RULE_commitClause = 9;
 DocumentParser.RULE_publishClause = 10;
-DocumentParser.RULE_queueClause = 11;
+DocumentParser.RULE_postClause = 11;
 DocumentParser.RULE_waitClause = 12;
 DocumentParser.RULE_ifClause = 13;
 DocumentParser.RULE_selectClause = 14;
@@ -794,8 +794,8 @@ MainClauseContext.prototype.publishClause = function() {
     return this.getTypedRuleContext(PublishClauseContext,0);
 };
 
-MainClauseContext.prototype.queueClause = function() {
-    return this.getTypedRuleContext(QueueClauseContext,0);
+MainClauseContext.prototype.postClause = function() {
+    return this.getTypedRuleContext(PostClauseContext,0);
 };
 
 MainClauseContext.prototype.waitClause = function() {
@@ -933,7 +933,7 @@ DocumentParser.prototype.mainClause = function() {
         case DocumentParser.T__13:
             this.enterOuterAlt(localctx, 7);
             this.state = 140;
-            this.queueClause();
+            this.postClause();
             break;
         case DocumentParser.T__15:
             this.enterOuterAlt(localctx, 8);
@@ -1609,7 +1609,7 @@ DocumentParser.prototype.publishClause = function() {
     return localctx;
 };
 
-function QueueClauseContext(parser, parent, invokingState) {
+function PostClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1618,14 +1618,14 @@ function QueueClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_queueClause;
+    this.ruleIndex = DocumentParser.RULE_postClause;
     return this;
 }
 
-QueueClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-QueueClauseContext.prototype.constructor = QueueClauseContext;
+PostClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+PostClauseContext.prototype.constructor = PostClauseContext;
 
-QueueClauseContext.prototype.expression = function(i) {
+PostClauseContext.prototype.expression = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -1636,21 +1636,21 @@ QueueClauseContext.prototype.expression = function(i) {
     }
 };
 
-QueueClauseContext.prototype.enterRule = function(listener) {
+PostClauseContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterQueueClause(this);
+        listener.enterPostClause(this);
 	}
 };
 
-QueueClauseContext.prototype.exitRule = function(listener) {
+PostClauseContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitQueueClause(this);
+        listener.exitPostClause(this);
 	}
 };
 
-QueueClauseContext.prototype.accept = function(visitor) {
+PostClauseContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitQueueClause(this);
+        return visitor.visitPostClause(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1659,12 +1659,12 @@ QueueClauseContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.QueueClauseContext = QueueClauseContext;
+DocumentParser.PostClauseContext = PostClauseContext;
 
-DocumentParser.prototype.queueClause = function() {
+DocumentParser.prototype.postClause = function() {
 
-    var localctx = new QueueClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 22, DocumentParser.RULE_queueClause);
+    var localctx = new PostClauseContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 22, DocumentParser.RULE_postClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 191;

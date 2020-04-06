@@ -810,9 +810,9 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 };
 
 
-// queueClause: 'queue' expression 'on' expression
-ParsingVisitor.prototype.visitQueueClause = function(ctx) {
-    const tree = new collections.Tree('/bali/composites/QueueClause', this.debug);
+// postClause: 'post' expression 'on' expression
+ParsingVisitor.prototype.visitPostClause = function(ctx) {
+    const tree = new collections.Tree('/bali/composites/PostClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     tree.addItem(this.result);

@@ -78,8 +78,8 @@ DocumentVisitor.prototype.visitPublishClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#queueClause.
-DocumentVisitor.prototype.visitQueueClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#postClause.
+DocumentVisitor.prototype.visitPostClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

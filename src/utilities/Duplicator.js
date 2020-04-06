@@ -492,8 +492,8 @@ DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// queueClause: 'queue' expression 'on' expression
-DuplicatingVisitor.prototype.visitQueueClause = function(tree) {
+// postClause: 'post' expression 'on' expression
+DuplicatingVisitor.prototype.visitPostClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);

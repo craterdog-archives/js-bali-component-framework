@@ -10,7 +10,7 @@ mainClause:
     discardClause |
     commitClause |
     publishClause |
-    queueClause |
+    postClause |
     waitClause |
     ifClause |
     selectClause |
@@ -38,7 +38,7 @@ commitClause: 'commit' expression 'to' expression;
 
 publishClause: 'publish' expression;
 
-queueClause: 'queue' expression 'on' expression;
+postClause: 'post' expression 'on' expression;
 
 waitClause: 'wait' 'for' recipient 'from' expression;
 

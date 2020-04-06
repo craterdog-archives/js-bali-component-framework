@@ -12,7 +12,7 @@
         ] with {
             continue loop
         }
-        queue message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        post message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         if false then {
             $component := 0
         } else if component < 5 then {
@@ -49,10 +49,10 @@
         wait for $message from <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         wait for messages[$foo, 5] from <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
-    $queueMessage: {
-        queue message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
-        queue message(1) on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
-        queue message(1, second, "3rd") on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+    $postMessage: {
+        post message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        post message(1) on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
+        post message(1, second, "3rd") on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
     }
     $returnResult: {
         return

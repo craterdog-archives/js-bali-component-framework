@@ -415,8 +415,8 @@ Visitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// queueClause: 'queue' expression 'on' expression
-Visitor.prototype.visitQueueClause = function(tree) {
+// postClause: 'post' expression 'on' expression
+Visitor.prototype.visitPostClause = function(tree) {
     const message = tree.getItem(1);
     message.acceptVisitor(this);
     const queue = tree.getItem(2);
