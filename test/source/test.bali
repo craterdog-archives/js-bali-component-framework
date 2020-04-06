@@ -6,7 +6,7 @@
         "Elinor Dashwood"
     ]
     $Interested: {
-        if suitor is "Mr. Darcy" then {
+        if suitor IS "Mr. Darcy" then {
             return true
         } else {
             return false

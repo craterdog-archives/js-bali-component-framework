@@ -294,7 +294,7 @@ FormattingVisitor.prototype.visitCommitClause = function(tree) {
 };
 
 
-// comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
+// comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
     this.inline++;
     var operand = tree.getItem(1);
@@ -306,10 +306,10 @@ FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
 };
 
 
-// complementExpression: 'not' expression
+// complementExpression: 'NOT' expression
 FormattingVisitor.prototype.visitComplementExpression = function(tree) {
     this.inline++;
-    this.result += 'not ';
+    this.result += 'NOT ';
     const operand = tree.getItem(1);
     operand.acceptVisitor(this);
     this.inline--;
@@ -501,7 +501,7 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 };
 
 
-// logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
+// logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 FormattingVisitor.prototype.visitLogicalExpression = function(tree) {
     this.inline++;
     var operand = tree.getItem(1);

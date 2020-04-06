@@ -130,7 +130,7 @@ Visitor.prototype.visitCommitClause = function(tree) {
 };
 
 
-// comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
+// comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 Visitor.prototype.visitComparisonExpression = function(tree) {
     var operand = tree.getItem(1);
     operand.acceptVisitor(this);
@@ -140,7 +140,7 @@ Visitor.prototype.visitComparisonExpression = function(tree) {
 };
 
 
-// complementExpression: 'not' expression
+// complementExpression: 'NOT' expression
 Visitor.prototype.visitComplementExpression = function(tree) {
     const operand = tree.getItem(1);
     operand.acceptVisitor(this);
@@ -291,7 +291,7 @@ Visitor.prototype.visitInversionExpression = function(tree) {
 };
 
 
-// logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
+// logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 Visitor.prototype.visitLogicalExpression = function(tree) {
     var operand = tree.getItem(1);
     operand.acceptVisitor(this);

@@ -331,7 +331,7 @@ ParsingVisitor.prototype.visitCommitClause = function(ctx) {
 };
 
 
-// comparisonExpression: expression op=('<' | '=' | '>' | 'is' | 'matches') expression
+// comparisonExpression: expression op=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     const tree = new collections.Tree('/bali/composites/ComparisonExpression', this.debug);
     const expressions = ctx.expression();
@@ -344,7 +344,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 };
 
 
-// complementExpression: 'not' expression
+// complementExpression: 'NOT' expression
 ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
     const tree = new collections.Tree('/bali/composites/ComplementExpression', this.debug);
     ctx.expression().accept(this);
@@ -603,7 +603,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 };
 
 
-// logicalExpression: expression op=('and' | 'sans' | 'xor' | 'or') expression
+// logicalExpression: expression op=('AND' | 'SANS' | 'XOR' | 'OR') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     const tree = new collections.Tree('/bali/composites/LogicalExpression', this.debug);
     const expressions = ctx.expression();

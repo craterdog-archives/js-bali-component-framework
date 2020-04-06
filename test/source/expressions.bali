@@ -25,7 +25,7 @@
     }
     $groupings: {
         $variable := (x + y) * z
-        $variable := ((x + y) * z) - (a or (b and c))
+        $variable := ((x + y) * z) - (a OR (b AND c))
         $variable := ([1, 2] + [2, 3])[1]
         $variable := ([1, 2] + [2, 3]).reverse()
         $variable := ([1, 2] + [2, 3]).reverse(foo, bar)[index]
@@ -94,19 +94,19 @@
         $variable := scaler < 8
         $variable := x = y
         $variable := big > 2
-        $variable := value is [$foo]
-        $variable := component matches any
+        $variable := value IS [$foo]
+        $variable := component MATCHES any
     }
     $complements: {
-        $variable := not true
-        $variable := not c
-        $variable := not list.isEmpty()
+        $variable := NOT true
+        $variable := NOT c
+        $variable := NOT list.isEmpty()
     }
     $logicals: {
-        $variable := set and [1, 2, 3]
-        $variable := set sans [$a, $b, $c]
-        $variable := a or foo.bar()
-        $variable := ["one", "two"] xor ["one"]
+        $variable := set AND [1, 2, 3]
+        $variable := set SANS [$a, $b, $c]
+        $variable := a OR foo.bar()
+        $variable := ["one", "two"] XOR ["one"]
     }
     $defaults: {
         $variable := optional ? true

@@ -15,9 +15,9 @@ expression:                  // Precedence (highest to lowest)
     op=('-' | '*') expression                                      #inversionExpression     |
     expression op=('*' | '/' | '//' | '+' | '-') expression        #arithmeticExpression    |
     '|' expression '|'                                             #magnitudeExpression     |
-    expression op=('<' | '=' | '>' | 'is' | 'matches') expression  #comparisonExpression    |
-    'not' expression                                               #complementExpression    |
-    expression op=('and' | 'sans' | 'xor' | 'or') expression       #logicalExpression       |
+    expression op=('<' | '=' | '>' | 'IS' | 'MATCHES') expression  #comparisonExpression    |
+    'NOT' expression                                               #complementExpression    |
+    expression op=('AND' | 'SANS' | 'XOR' | 'OR') expression       #logicalExpression       |
     expression '?' expression                                      #defaultExpression
 ;
 

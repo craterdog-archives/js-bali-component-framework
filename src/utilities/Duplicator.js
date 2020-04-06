@@ -175,7 +175,7 @@ DuplicatingVisitor.prototype.visitCommitClause = function(tree) {
 };
 
 
-// comparisonExpression: expression ('<' | '=' | '>' | 'is' | 'matches') expression
+// comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
@@ -187,7 +187,7 @@ DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
 };
 
 
-// complementExpression: 'not' expression
+// complementExpression: 'NOT' expression
 DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
@@ -349,7 +349,7 @@ DuplicatingVisitor.prototype.visitIndices = function(tree) {
 };
 
 
-// logicalExpression: expression ('and' | 'sans' | 'xor' | 'or') expression
+// logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 DuplicatingVisitor.prototype.visitLogicalExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
