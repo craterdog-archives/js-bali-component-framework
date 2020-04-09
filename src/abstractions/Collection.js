@@ -268,14 +268,15 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
-        $procedure: '$getItem',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/abstractions/Collection', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    const iterator = this.getIterator();
+    iterator.toSlot(index);
+    return iterator.getPrevious();
 };
 
 
