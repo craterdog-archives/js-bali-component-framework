@@ -44,6 +44,7 @@ const List = function(parameters, debug) {
         ['/bali/collections/List'],
         [
             '/bali/interfaces/Chainable',
+            '/bali/interfaces/Composite',
             '/bali/interfaces/Sortable'
         ],
         parameters,
@@ -210,6 +211,14 @@ const List = function(parameters, debug) {
             this.setItem(index, this.getItem(random));
             this.setItem(random, item);
         }
+    };
+
+    this.getSubcomponent = function(index) {
+        return this.getItem(index);
+    };
+
+    this.setSubcomponent = function(index, subcomponent) {
+        return this.setItem(index, subcomponent);
     };
 
     return this;

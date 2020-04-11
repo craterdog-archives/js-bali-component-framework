@@ -88,6 +88,14 @@ const Association = function(key, value, debug) {
         return oldValue;
     };
 
+    this.getSubcomponent = function(index) {
+        if (index === key) return this.getValue();
+    };
+
+    this.setSubcomponent = function(index, subcomponent) {
+        if (index === key) return this.setValue(subcomponent);
+    };
+
     return this;
 };
 Association.prototype = Object.create(types.Structure.prototype);

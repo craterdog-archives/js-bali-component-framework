@@ -37,6 +37,7 @@ const Catalog = function(parameters, debug) {
         ['/bali/collections/Catalog'],
         [
             '/bali/interfaces/Chainable',
+            '/bali/interfaces/Composite',
             '/bali/interfaces/Sortable'
         ],
         parameters,
@@ -303,6 +304,14 @@ const Catalog = function(parameters, debug) {
 
     this.reverseItems = function() {
         array.reverse();
+    };
+
+    this.getSubcomponent = function(index) {
+        return this.getValue(index);
+    };
+
+    this.setSubcomponent = function(index, subcomponent) {
+        return this.setValue(index, subcomponent);
     };
 
     return this;

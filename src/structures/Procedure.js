@@ -42,7 +42,24 @@ const Procedure = function(statements, parameters, debug) {
             '/bali/structures/Statements'
         ]);
     }
+
     this.getStatements = function() { return statements; };
+
+    this.getSubcomponent = function(index) {
+        if (index === '$statements') return this.getStatements();
+    };
+
+    this.setSubcomponent = function(index, subcomponent) {
+        const exception = new Exception({
+            $module: '/bali/structures/Procedure',
+            $procedure: '$setSubcomponent',
+            $exception: '$readOnly',
+            $text: 'The statements in a procedure cannot be updated.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
+
     return this;
 };
 Procedure.prototype = Object.create(types.Structure.prototype);

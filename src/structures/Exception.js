@@ -63,6 +63,16 @@ const Exception = function(attributes, cause) {
         return attributes;
     };
 
+    this.getSubcomponent = function(index) {
+        return attributes[index];
+    };
+
+    this.setSubcomponent = function(index, subcomponent) {
+        const old = attributes[index];
+        attributes[index] = subcomponent;
+        return old;
+    };
+
     // set the error message and cause
     this.message = attributes['$text'] || 'An undefined exception occurred.';
     this.cause = cause || undefined;

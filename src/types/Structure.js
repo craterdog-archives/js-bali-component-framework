@@ -33,7 +33,7 @@ const Structure = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
         ancestry.concat('/bali/types/Structure'),
-        interfaces,
+        interfaces.concat('/bali/interfaces/Composite'),
         parameters,
         debug
     );
@@ -54,4 +54,41 @@ exports.Structure = Structure;
  */
 Structure.prototype.toBoolean = function() {
     return true;
+};
+
+
+/**
+ * This method returns the value of the specified subcomponent for this structure component.
+ *
+ * @param {Number|Element} index The index of the subcomponent to be retrieved.
+ * @returns {Component} The subcomponent corresponding to the specified index, or undefined if
+ * it does not exist.
+ */
+Structure.prototype.getSubcomponent = function(index) {
+    const exception = new Exception({
+        $module: '/bali/types/Structure',
+        $procedure: '$getSubcomponent',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
+
+/**
+ * This method sets the value of the specified subcomponent for this structure component.
+ *
+ * @param {Number|Element} index The index of the subcomponent to be retrieved.
+ * @param {Component} subcomponent The value of the subcomponent.
+ */
+Structure.prototype.setSubcomponent = function(index, subcomponent) {
+    const exception = new Exception({
+        $module: '/bali/types/Structure',
+        $procedure: '$setSubcomponent',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
