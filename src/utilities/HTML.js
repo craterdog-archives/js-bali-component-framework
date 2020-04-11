@@ -17,8 +17,8 @@
 const Formatter = require('./Formatter').Formatter;
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
-const Visitor = require('../abstractions/Visitor').Visitor;
-const Exception = require('../composites/Exception').Exception;
+const Visitor = require('../types/Visitor').Visitor;
+const Exception = require('../structures/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character
@@ -59,7 +59,7 @@ const HTML = function(style, debug) {
         if (debug > 1) {
             const validator = new Validator(debug);
             validator.validateType('/bali/utilities/HTML', '$formatComponent', '$component', component, [
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         const visitor = new FormattingVisitor(style, debug);

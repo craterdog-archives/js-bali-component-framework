@@ -11,11 +11,11 @@
 
 
 /**
- * This composite class implements a smart exception class that knows how to format itself
+ * This structure class implements a smart exception class that knows how to format itself
  * as a Bali Document Notation™ string. It provides a consistent way to do exception
- * handling within the Bali Nebula™. This class must look like it is a Composite component
+ * handling within the Bali Nebula™. This class must look like it is a Structure component
  * but also inherit from the JavaScript Error class. So it implements all of the methods
- * defined in the Component and Composite classes.
+ * defined in the Component and Structure classes.
  */
 
 
@@ -32,9 +32,9 @@
  */
 const Exception = function(attributes, cause) {
     const ancestry = [
-        '/bali/composites/Exception',
-        '/bali/abstractions/Composite',
-        '/bali/abstractions/Component'
+        '/bali/structures/Exception',
+        '/bali/types/Structure',
+        '/bali/types/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
 
@@ -181,7 +181,7 @@ Exception.prototype.comparedTo = function(that) {
 
 /**
  * This method determines whether or not the specified pattern matches this component.
- * The pattern may be a bali.pattern element or an composite component containing
+ * The pattern may be a bali.pattern element or an structure component containing
  * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
  * string version of the component or its corresponding attribute. If the pattern does
  * not consist of any bali.pattern elements then a strict equality comparison of the

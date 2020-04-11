@@ -14,7 +14,7 @@
  * complex number element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 const Angle = require('./Angle').Angle;
 
 
@@ -32,7 +32,7 @@ const Angle = require('./Angle').Angle;
  * @returns {Complex} The new complex number.
  */
 const Complex = function(real, imaginary, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Number'],
         [
@@ -107,7 +107,7 @@ const Complex = function(real, imaginary, parameters, debug) {
 
     return this;
 };
-Complex.prototype = Object.create(abstractions.Element.prototype);
+Complex.prototype = Object.create(types.Element.prototype);
 Complex.prototype.constructor = Complex;
 exports.Complex = Complex;
 

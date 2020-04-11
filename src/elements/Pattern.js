@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a pattern element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 
 
 // PUBLIC FUNCTIONS
@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * @returns {Pattern} The new pattern element.
  */
 const Pattern = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Pattern'],
         [],
@@ -50,7 +50,7 @@ const Pattern = function(value, parameters, debug) {
 
     return this;
 };
-Pattern.prototype = Object.create(abstractions.Element.prototype);
+Pattern.prototype = Object.create(types.Element.prototype);
 Pattern.prototype.constructor = Pattern;
 exports.Pattern = Pattern;
 
@@ -85,7 +85,7 @@ Pattern.prototype.matches = function(component) {
             '/javascript/String',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
     }
     component = this.componentize(component, this.debug);

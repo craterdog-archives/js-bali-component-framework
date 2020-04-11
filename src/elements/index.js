@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const abstractions = require('../abstractions/');
+const types = require('../types/');
 
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;

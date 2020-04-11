@@ -15,8 +15,8 @@
  * probability element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const types = require('../types');
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +30,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Probability} The new probability element.
  */
 const Probability = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Probability'],
         [
@@ -70,7 +70,7 @@ const Probability = function(value, parameters, debug) {
     return this;
 
 };
-Probability.prototype = Object.create(abstractions.Element.prototype);
+Probability.prototype = Object.create(types.Element.prototype);
 Probability.prototype.constructor = Probability;
 exports.Probability = Probability;
 

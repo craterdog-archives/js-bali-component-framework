@@ -14,7 +14,7 @@
  * This abstract class defines the methods that all components must support.
  */
 const utilities = require('../utilities');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -35,20 +35,20 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     this.debug = debug || 0;  // default value
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Component', '$Component', '$ancestry', ancestry, [
+        validator.validateType('/bali/types/Component', '$Component', '$ancestry', ancestry, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/abstractions/Component', '$Component', '$interfaces', interfaces, [
+        validator.validateType('/bali/types/Component', '$Component', '$interfaces', interfaces, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
+        validator.validateType('/bali/types/Component', '$Component', '$parameters', parameters, [
             '/javascript/Undefined',
             '/javascript/Object'
         ]);
     }
 
     // extract the actual type
-    ancestry = ancestry.concat('/bali/abstractions/Component');
+    ancestry = ancestry.concat('/bali/types/Component');
     const type = ancestry[0];  // first type in the ancestry tree
     this.isComponent = true;
 
@@ -148,7 +148,7 @@ Component.prototype.isParameterized = function() {
  */
 Component.prototype.toBoolean = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Component',
+        $module: '/bali/types/Component',
         $procedure: '$toBoolean',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -221,7 +221,7 @@ Component.prototype.comparedTo = function(that) {
 
 /**
  * This method determines whether or not the specified pattern matches this component.
- * The pattern may be a bali.pattern element or an composite component containing
+ * The pattern may be a bali.pattern element or an structure component containing
  * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
  * string version of the component or its corresponding attribute. If the pattern does
  * not consist of any bali.pattern elements then a strict equality comparison of the
@@ -267,7 +267,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
-    if (pattern.isType('/bali/composites/Association')) {
+    if (pattern.isType('/bali/structures/Association')) {
         if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -291,7 +291,7 @@ Component.prototype.isMatchedBy = function(pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.isType('/bali/composites/Association')) {
+            if (patternItem.isType('/bali/structures/Association')) {
                 var patternValue = patternItem.getValue();
                 if (patternValue.isType('/bali/elements/Pattern') && (
                     patternValue.toString() === 'any' ||
@@ -305,7 +305,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         return true;  // all pattern items matched successfully
     }
     const exception = new Exception({
-        $module: '/bali/abstractions/Component',
+        $module: '/bali/types/Component',
         $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
         $component: this,
@@ -355,7 +355,7 @@ Component.prototype.duplicate = function() {
  */
 Component.prototype.acceptVisitor = function(visitor) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Component',
+        $module: '/bali/types/Component',
         $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

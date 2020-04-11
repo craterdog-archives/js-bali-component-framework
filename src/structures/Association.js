@@ -10,11 +10,11 @@
 'use strict';
 
 /**
- * This composite class implements an association between a key and a value. It is used by the
+ * This structure class implements an association between a key and a value. It is used by the
  * catalog class.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 
 
 // PUBLIC FUNCTIONS
@@ -28,31 +28,31 @@ const abstractions = require('../abstractions');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    abstractions.Composite.call(
+    types.Structure.call(
         this,
-        ['/bali/composites/Association'],
+        ['/bali/structures/Association'],
         [],
         undefined,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
+        validator.validateType('/bali/structures/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
-        validator.validateType('/bali/composites/Association', '$Association', '$value', value, [
+        validator.validateType('/bali/structures/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
     }
 
@@ -72,14 +72,14 @@ const Association = function(key, value, debug) {
     this.setValue = function(newValue) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
+            validator.validateType('/bali/structures/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         newValue = this.componentize(newValue, this.debug);
@@ -90,7 +90,7 @@ const Association = function(key, value, debug) {
 
     return this;
 };
-Association.prototype = Object.create(abstractions.Composite.prototype);
+Association.prototype = Object.create(types.Structure.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 

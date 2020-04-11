@@ -15,8 +15,8 @@
  * is thrown.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const composites = require('../composites');
+const types = require('../types');
+const structures = require('../structures');
 
 /*
  * This method defines a missing stack function for the standard Array class.
@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 const Queue = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Queue/v1'};
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/Queue'],
         [],
@@ -77,11 +77,11 @@ const Queue = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         if (array.length === capacity) {
-            const exception = new composites.Exception({
+            const exception = new structures.Exception({
                 $module: '/bali/collections/Queue',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
@@ -107,6 +107,6 @@ const Queue = function(parameters, debug) {
 
     return this;
 };
-Queue.prototype = Object.create(abstractions.Collection.prototype);
+Queue.prototype = Object.create(types.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;

@@ -14,8 +14,8 @@
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const composites = require('../composites');
+const types = require('../types');
+const structures = require('../structures');
 
 
 /*
@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 const Stack = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Stack/v1'};
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/Stack'],
         [],
@@ -65,7 +65,7 @@ const Stack = function(parameters, debug) {
         if (array.length > 0) {
             return array.peek();
         }
-        const exception = new composites.Exception({
+        const exception = new structures.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$getTop',
             $exception: '$emptyStack',
@@ -85,11 +85,11 @@ const Stack = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         if (array.length === capacity) {
-            const exception = new composites.Exception({
+            const exception = new structures.Exception({
                 $module: '/bali/collections/Stack',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
@@ -108,7 +108,7 @@ const Stack = function(parameters, debug) {
         if (array.length > 0) {
             return array.pop();
         }
-        const exception = new composites.Exception({
+        const exception = new structures.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$removeItem',
             $exception: '$emptyStack',
@@ -124,6 +124,6 @@ const Stack = function(parameters, debug) {
 
     return this;
 };
-Stack.prototype = Object.create(abstractions.Collection.prototype);
+Stack.prototype = Object.create(types.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;

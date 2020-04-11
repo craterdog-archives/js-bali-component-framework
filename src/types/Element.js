@@ -13,7 +13,7 @@
  * This abstract class defines the methods that all elemental components must support.
  */
 const Component = require('./Component').Component;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -31,7 +31,7 @@ const Exception = require('../composites/Exception').Exception;
 const Element = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Element'),
+        ancestry.concat('/bali/types/Element'),
         interfaces.concat('/bali/interfaces/Literal'),
         parameters,
         debug
@@ -53,7 +53,7 @@ exports.Element = Element;
  */
 Element.prototype.getValue = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Element',
+        $module: '/bali/types/Element',
         $procedure: '$getValue',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

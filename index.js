@@ -15,10 +15,10 @@
  */
 const EOL = '\n';
 const utilities = require('./src/utilities');
-const abstractions = require('./src/abstractions');  // depends on utilities
-const elements = require('./src/elements');  // depends on abstractions
-const composites = require('./src/composites');  // depends on elements
-const collections = require('./src/collections');  // depends on composites
+const types = require('./src/types');  // depends on utilities
+const elements = require('./src/elements');  // depends on types
+const structures = require('./src/structures');  // depends on elements
+const collections = require('./src/collections');  // depends on structures
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
@@ -84,8 +84,8 @@ const componentize = function(value, debug) {
     }
     return component;
 };
-abstractions.Component.prototype.componentize = componentize;
-composites.Exception.prototype.componentize = componentize;
+types.Component.prototype.componentize = componentize;
+structures.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -180,7 +180,7 @@ exports.api = function(defaultLevel) {
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new composites.Association(key, value, debug);
+        return new structures.Association(key, value, debug);
     };
 
     // BINARY
@@ -286,7 +286,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new composites.Exception(attributes, cause);
+            error = new structures.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;
@@ -453,7 +453,7 @@ exports.api = function(defaultLevel) {
     // PROCEDURE
     const procedure = function(statements, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new composites.Procedure(statements, parameters, debug);
+        return new structures.Procedure(statements, parameters, debug);
     };
 
     // QUEUE
@@ -568,7 +568,7 @@ exports.api = function(defaultLevel) {
 
     // VISITOR
     const visitor = function() {
-        return abstractions.Visitor;
+        return types.Visitor;
     };
 
 

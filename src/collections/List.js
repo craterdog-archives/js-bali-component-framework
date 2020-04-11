@@ -24,8 +24,8 @@
  * But they may be reordered by sorting the list.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const composites = require('../composites');
+const types = require('../types');
+const structures = require('../structures');
 
 
 // PUBLIC FUNCTIONS
@@ -39,7 +39,7 @@ const composites = require('../composites');
  * @returns {List} The new list.
  */
 const List = function(parameters, debug) {
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/List'],
         [
@@ -85,7 +85,7 @@ const List = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
@@ -105,7 +105,7 @@ const List = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -126,7 +126,7 @@ const List = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -214,7 +214,7 @@ const List = function(parameters, debug) {
 
     return this;
 };
-List.prototype = Object.create(abstractions.Collection.prototype);
+List.prototype = Object.create(types.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
 

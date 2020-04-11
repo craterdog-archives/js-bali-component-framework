@@ -13,8 +13,8 @@ const utilities = require('../utilities');
 
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component
-exports.Composite = require('./Composite').Composite;  // depends on Component
-exports.Collection = require('./Collection').Collection;  // depends on Composite
+exports.Structure = require('./Structure').Structure;  // depends on Component
+exports.Collection = require('./Collection').Collection;  // depends on Structure
 exports.Iterator = require('./Iterator').Iterator;
 exports.Visitor = require('./Visitor').Visitor;
 

@@ -14,8 +14,8 @@
  * This class captures the state, methods, and functions associated with an angle element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const types = require('../types');
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -29,7 +29,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Angle} The new angle element.
  */
 const Angle = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Angle'],
         [
@@ -89,7 +89,7 @@ const Angle = function(value, parameters, debug) {
 
     return this;
 };
-Angle.prototype = Object.create(abstractions.Element.prototype);
+Angle.prototype = Object.create(types.Element.prototype);
 Angle.prototype.constructor = Angle;
 exports.Angle = Angle;
 

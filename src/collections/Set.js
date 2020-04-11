@@ -15,8 +15,8 @@
  * of its items.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const composites = require('../composites');
+const types = require('../types');
+const structures = require('../structures');
 
 
 // PUBLIC FUNCTIONS
@@ -31,7 +31,7 @@ const composites = require('../composites');
  */
 const Set = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Set/v1'};
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/Set'],
         ['/bali/interfaces/Logical'],
@@ -69,7 +69,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         var index = 0;
@@ -99,7 +99,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -116,7 +116,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -152,7 +152,7 @@ const Set = function(parameters, debug) {
 
     return this;
 };
-Set.prototype = Object.create(abstractions.Collection.prototype);
+Set.prototype = Object.create(types.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
 
@@ -305,7 +305,7 @@ Set.xor = function(first, second, debug) {
  */
 
 const SetIterator = function(tree, parameters, debug) {
-    abstractions.Iterator.call(
+    types.Iterator.call(
         this,
         ['/bali/collections/SetIterator'],
         [],
@@ -365,7 +365,7 @@ const SetIterator = function(tree, parameters, debug) {
 
     return this;
 };
-SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
+SetIterator.prototype = Object.create(types.Iterator.prototype);
 SetIterator.prototype.constructor = SetIterator;
 
 

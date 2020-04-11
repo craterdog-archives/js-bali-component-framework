@@ -14,9 +14,9 @@
  * structure is static once the first and last items in the range have been defined.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 const elements = require('../elements');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -32,7 +32,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Range} The new range.
  */
 const Range = function(first, last, parameters, debug) {
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/Range'],
         [],
@@ -44,12 +44,12 @@ const Range = function(first, last, parameters, debug) {
         validator.validateType('/bali/collections/Range', '$Range', '$first', first, [
             '/javascript/Number',
             '/javascript/String',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
         validator.validateType('/bali/collections/Range', '$Range', '$last', last, [
             '/javascript/Number',
             '/javascript/String',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
     }
     first = this.componentize(first, this.debug);
@@ -168,7 +168,7 @@ const Range = function(first, last, parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         var index;
@@ -194,7 +194,7 @@ const Range = function(first, last, parameters, debug) {
 
     return this;
 };
-Range.prototype = Object.create(abstractions.Collection.prototype);
+Range.prototype = Object.create(types.Collection.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -202,7 +202,7 @@ exports.Range = Range;
 // PRIVATE CLASSES
 
 const RangeIterator = function(range, collection, parameters, debug) {
-    abstractions.Iterator.call(
+    types.Iterator.call(
         this,
         ['/bali/collections/RangeIterator'],
         [],
@@ -263,5 +263,5 @@ const RangeIterator = function(range, collection, parameters, debug) {
 
     return this;
 };
-RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
+RangeIterator.prototype = Object.create(types.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;

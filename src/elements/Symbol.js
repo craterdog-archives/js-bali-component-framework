@@ -15,8 +15,8 @@
  * symbol element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const types = require('../types');
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +30,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Symbol'],
         ['/bali/interfaces/Sequential'],
@@ -61,7 +61,7 @@ const Symbol = function(value, parameters, debug) {
 
     return this;
 };
-Symbol.prototype = Object.create(abstractions.Element.prototype);
+Symbol.prototype = Object.create(types.Element.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
@@ -123,7 +123,7 @@ Symbol.prototype.getIterator = function() {
 // PRIVATE CLASSES
 
 const SymbolIterator = function(symbol, parameters, debug) {
-    abstractions.Iterator.call(
+    types.Iterator.call(
         this,
         ['/bali/elements/SymbolIterator'],
         [],
@@ -165,5 +165,5 @@ const SymbolIterator = function(symbol, parameters, debug) {
 
     return this;
 };
-SymbolIterator.prototype = Object.create(abstractions.Iterator.prototype);
+SymbolIterator.prototype = Object.create(types.Iterator.prototype);
 SymbolIterator.prototype.constructor = SymbolIterator;

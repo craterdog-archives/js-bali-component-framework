@@ -16,7 +16,7 @@
  */
 const moment = require('moment');
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +30,7 @@ const abstractions = require('../abstractions');
  * @returns {Duration} The new duration element.
  */
 const Duration = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Duration'],
         [
@@ -56,7 +56,7 @@ const Duration = function(value, parameters, debug) {
 
     return this;
 };
-Duration.prototype = Object.create(abstractions.Element.prototype);
+Duration.prototype = Object.create(types.Element.prototype);
 Duration.prototype.constructor = Duration;
 exports.Duration = Duration;
 

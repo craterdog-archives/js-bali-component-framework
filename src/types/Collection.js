@@ -16,7 +16,7 @@
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Iterator = require('./Iterator').Iterator;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -34,7 +34,7 @@ const Exception = require('../composites/Exception').Exception;
 const Collection = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Collection'),
+        ancestry.concat('/bali/types/Collection'),
         interfaces.concat('/bali/interfaces/Sequential'),
         parameters,
         debug
@@ -77,7 +77,7 @@ Collection.prototype.toBoolean = function() {
  */
 Collection.prototype.toArray = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: '/bali/types/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -105,7 +105,7 @@ Collection.prototype.isEmpty = function() {
  */
 Collection.prototype.getSize = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: '/bali/types/Collection',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -135,7 +135,7 @@ Collection.prototype.getIterator = function() {
  */
 Collection.prototype.addItem = function(item) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: '/bali/types/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -154,7 +154,7 @@ Collection.prototype.addItem = function(item) {
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
+        validator.validateType('/bali/types/Collection', '$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
@@ -166,7 +166,7 @@ Collection.prototype.addItems = function(items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/composites/Association')) {
+                if (item.isType('/bali/structures/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -177,7 +177,7 @@ Collection.prototype.addItems = function(items) {
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/composites/Association')) {
+                if (item.isType('/bali/structures/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -212,7 +212,7 @@ Collection.prototype.addItems = function(items) {
 Collection.prototype.normalizeIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$normalizeIndex', '$index', index, [
+        validator.validateType('/bali/types/Collection', '$normalizeIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
@@ -239,14 +239,14 @@ Collection.prototype.normalizeIndex = function(index) {
 Collection.prototype.getIndex = function(item) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
+        validator.validateType('/bali/types/Collection', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
     }
     var index = 0;
@@ -270,7 +270,7 @@ Collection.prototype.getIndex = function(item) {
 Collection.prototype.getItem = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getItem', '$index', index, [
+        validator.validateType('/bali/types/Collection', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
@@ -289,7 +289,7 @@ Collection.prototype.getItem = function(index) {
 Collection.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
+        validator.validateType('/bali/types/Collection', '$getItems', '$range', range, [
             '/javascript/Undefined',
             '/bali/collections/Range'
         ]);
@@ -316,14 +316,14 @@ Collection.prototype.getItems = function(range) {
 Collection.prototype.containsItem = function(item) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+        validator.validateType('/bali/types/Collection', '$containsItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/types/Component'
         ]);
     }
     const index = this.getIndex(item);
@@ -342,7 +342,7 @@ Collection.prototype.containsItem = function(item) {
 Collection.prototype.containsAny = function(items) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
+        validator.validateType('/bali/types/Collection', '$containsAny', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
@@ -376,7 +376,7 @@ Collection.prototype.containsAny = function(items) {
 Collection.prototype.containsAll = function(items) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
+        validator.validateType('/bali/types/Collection', '$containsAll', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'

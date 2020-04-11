@@ -15,8 +15,8 @@
  * reserved identifier.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const types = require('../types');
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +30,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Reserved} The new reserved identifier.
  */
 const Reserved = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Reserved'],
         ['/bali/interfaces/Sequential'],
@@ -61,7 +61,7 @@ const Reserved = function(value, parameters, debug) {
 
     return this;
 };
-Reserved.prototype = Object.create(abstractions.Element.prototype);
+Reserved.prototype = Object.create(types.Element.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
 
@@ -123,7 +123,7 @@ Reserved.prototype.getIterator = function() {
 // PRIVATE CLASSES
 
 const ReservedIterator = function(symbol, parameters, debug) {
-    abstractions.Iterator.call(
+    types.Iterator.call(
         this,
         ['/bali/elements/ReservedIterator'],
         [],
@@ -165,5 +165,5 @@ const ReservedIterator = function(symbol, parameters, debug) {
 
     return this;
 };
-ReservedIterator.prototype = Object.create(abstractions.Iterator.prototype);
+ReservedIterator.prototype = Object.create(types.Iterator.prototype);
 ReservedIterator.prototype.constructor = ReservedIterator;

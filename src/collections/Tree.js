@@ -18,8 +18,8 @@
  * Bali Document Notation™.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const types = require('../types');
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -32,7 +32,7 @@ const Exception = require('../composites/Exception').Exception;
  * @returns {Tree} The new tree node component.
  */
 const Tree = function(type, debug) {
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         [type, '/bali/collections/Tree'],
         ['/bali/interfaces/Procedural'],
@@ -68,7 +68,7 @@ const Tree = function(type, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Tree', '$addItem', '$item', item, [
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -78,7 +78,7 @@ const Tree = function(type, debug) {
 
     return this;
 };
-Tree.prototype = Object.create(abstractions.Collection.prototype);
+Tree.prototype = Object.create(types.Collection.prototype);
 Tree.prototype.constructor = Tree;
 exports.Tree = Tree;
 

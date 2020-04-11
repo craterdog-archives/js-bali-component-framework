@@ -14,7 +14,7 @@
  * percent element.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 
 
 // PUBLIC FUNCTIONS
@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @returns {Percent} The new percent element.
  */
 const Percent = function(value, parameters, debug) {
-    abstractions.Element.call(
+    types.Element.call(
         this,
         ['/bali/elements/Percent'],
         [
@@ -53,7 +53,7 @@ const Percent = function(value, parameters, debug) {
 
     return this;
 };
-Percent.prototype = Object.create(abstractions.Element.prototype);
+Percent.prototype = Object.create(types.Element.prototype);
 Percent.prototype.constructor = Percent;
 exports.Percent = Percent;
 

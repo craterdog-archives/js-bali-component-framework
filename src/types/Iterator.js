@@ -28,7 +28,7 @@
  * </pre>
  */
 const Component = require('./Component').Component;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -48,7 +48,7 @@ const Exception = require('../composites/Exception').Exception;
 const Iterator = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Iterator'),
+        ancestry.concat('/bali/types/Iterator'),
         interfaces,
         parameters,
         debug
@@ -61,7 +61,7 @@ exports.Iterator = Iterator;
 
 Iterator.prototype.toStart = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -72,7 +72,7 @@ Iterator.prototype.toStart = function() {
 
 Iterator.prototype.toSlot = function(slot) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -83,7 +83,7 @@ Iterator.prototype.toSlot = function(slot) {
 
 Iterator.prototype.toEnd = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -94,7 +94,7 @@ Iterator.prototype.toEnd = function() {
 
 Iterator.prototype.hasPrevious = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -105,7 +105,7 @@ Iterator.prototype.hasPrevious = function() {
 
 Iterator.prototype.hasNext = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -116,7 +116,7 @@ Iterator.prototype.hasNext = function() {
 
 Iterator.prototype.getPrevious = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -127,7 +127,7 @@ Iterator.prototype.getPrevious = function() {
 
 Iterator.prototype.getNext = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/types/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

@@ -120,7 +120,7 @@ const natural = function(first, second) {
         return Math.sign(first.localeCompare(second.toString()));
     }
 
-    // handle composite components
+    // handle structure components
     if (first.getIterator && second.getIterator) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();

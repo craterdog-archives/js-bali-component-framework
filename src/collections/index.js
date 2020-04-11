@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const composites = require('../composites/');
+const structures = require('../structures/');
 
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List

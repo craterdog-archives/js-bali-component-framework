@@ -10,11 +10,11 @@
 'use strict';
 
 /**
- * This composite class implements a procedure component that can be assigned as
+ * This structure class implements a procedure component that can be assigned as
  * the value of an association.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
+const types = require('../types');
 
 
 // PUBLIC FUNCTIONS
@@ -29,23 +29,23 @@ const abstractions = require('../abstractions');
  * @returns {Procedure} A new procedure component.
  */
 const Procedure = function(statements, parameters, debug) {
-    abstractions.Composite.call(
+    types.Structure.call(
         this,
-        ['/bali/composites/Procedure'],
+        ['/bali/structures/Procedure'],
         ['/bali/interfaces/Literal'],
         parameters,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
-            '/bali/composites/Statements'
+        validator.validateType('/bali/structures/Procedure', '$Procedure', '$statements', statements, [
+            '/bali/structures/Statements'
         ]);
     }
     this.getStatements = function() { return statements; };
     return this;
 };
-Procedure.prototype = Object.create(abstractions.Composite.prototype);
+Procedure.prototype = Object.create(types.Structure.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 

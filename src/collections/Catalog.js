@@ -16,8 +16,8 @@
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
 const utilities = require('../utilities');
-const abstractions = require('../abstractions');
-const composites = require('../composites');
+const types = require('../types');
+const structures = require('../structures');
 const List = require('./List').List;
 
 
@@ -32,7 +32,7 @@ const List = require('./List').List;
  * @returns {Catalog} The new catalog.
  */
 const Catalog = function(parameters, debug) {
-    abstractions.Collection.call(
+    types.Collection.call(
         this,
         ['/bali/collections/Catalog'],
         [
@@ -81,7 +81,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/composites/Association'
+                '/bali/structures/Association'
             ]);
         }
         if (association) {
@@ -111,7 +111,7 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/structures/Association')) {
                         this.addItem(item);
                     } else {
                         this.setValue(index++, item);
@@ -123,7 +123,7 @@ const Catalog = function(parameters, debug) {
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/structures/Association')) {
                         this.addItem(item);
                     } else {
                         this.setValue(index++, item);
@@ -147,7 +147,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/composites/Association'
+                '/bali/structures/Association'
             ]);
         }
         if (association) {
@@ -168,7 +168,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -212,7 +212,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
             validator.validateType('/bali/collections/Catalog', '$setValue', '$value', value, [
                 '/javascript/Undefined',
@@ -221,7 +221,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -232,7 +232,7 @@ const Catalog = function(parameters, debug) {
             association.setValue(value);
             return oldValue;
         } else {
-            association = new composites.Association(key, value);
+            association = new structures.Association(key, value);
             map[key.toString()] = association;
             array.push(association);
         }
@@ -248,7 +248,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/types/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -307,7 +307,7 @@ const Catalog = function(parameters, debug) {
 
     return this;
 };
-Catalog.prototype = Object.create(abstractions.Collection.prototype);
+Catalog.prototype = Object.create(types.Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 
