@@ -400,6 +400,21 @@ Collection.prototype.containsAll = function(items) {
 };
 
 
+/**
+ * This method removes all items that are currently contained in this collection.
+ */
+Collection.prototype.removeAll = function() {
+    const exception = new Exception({
+        $module: '/bali/types/Collection',
+        $procedure: '$removeAll',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
+
 // PRIVATE CLASSES
 
 const CollectionIterator = function(array, parameters, debug) {
