@@ -181,8 +181,9 @@ const List = function(parameters, debug) {
         }
         if (range && range.getIterator) {
             const iterator = range.getIterator();
-            while (iterator.hasNext()) {
-                const index = iterator.getNext();
+            iterator.toEnd();  // must work backwards to preserve indexing in the list
+            while (iterator.hasPrevious()) {
+                const index = iterator.getPrevious();
                 this.removeItem(index);
             }
         }
