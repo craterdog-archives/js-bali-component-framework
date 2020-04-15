@@ -45,11 +45,17 @@ const Procedure = function(statements, parameters, debug) {
 
     this.getStatements = function() { return statements; };
 
-    this.getSubcomponent = function(index) {
-        if (index === '$statements') return this.getStatements();
+    this.getSubcomponent = function(element) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/structures/Procedures', '$getSubcomponent', '$element', element, [
+                '/bali/types/Element'
+            ]);
+        }
+        if (element.getValue() === '$statements') return this.getStatements();
     };
 
-    this.setSubcomponent = function(index, subcomponent) {
+    this.setSubcomponent = function(element, subcomponent) {
         const exception = new Exception({
             $module: '/bali/structures/Procedure',
             $procedure: '$setSubcomponent',

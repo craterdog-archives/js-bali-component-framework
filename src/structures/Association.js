@@ -88,12 +88,27 @@ const Association = function(key, value, debug) {
         return oldValue;
     };
 
-    this.getSubcomponent = function(index) {
-        if (index === key) return this.getValue();
+    this.getSubcomponent = function(element) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/structures/Associations', '$getSubcomponent', '$element', element, [
+                '/bali/types/Element'
+            ]);
+        }
+        if (key.isEqualTo(element)) return this.getValue();
     };
 
-    this.setSubcomponent = function(index, subcomponent) {
-        if (index === key) return this.setValue(subcomponent);
+    this.setSubcomponent = function(element, subcomponent) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/structures/Associations', '$setSubcomponent', '$element', element, [
+                '/bali/types/Element'
+            ]);
+            validator.validateType('/bali/structures/Associations', '$setSubcomponent', '$subcomponent', subcomponent, [
+                '/bali/types/Component'
+            ]);
+        }
+        if (key.isEqualTo(element)) return this.setValue(subcomponent);
     };
 
     return this;

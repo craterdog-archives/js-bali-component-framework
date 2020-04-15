@@ -60,11 +60,12 @@ Structure.prototype.toBoolean = function() {
 /**
  * This method returns the value of the specified subcomponent for this structure component.
  *
- * @param {Number|Element} index The index of the subcomponent to be retrieved.
- * @returns {Component} The subcomponent corresponding to the specified index, or undefined if
- * it does not exist.
+ * @param {Element} element The element that acts as an index or key to the subcomponent
+ * to be retrieved.
+ * @returns {Component} The subcomponent corresponding to the specified index or key, or
+ * undefined if it does not exist.
  */
-Structure.prototype.getSubcomponent = function(index) {
+Structure.prototype.getSubcomponent = function(element) {
     const exception = new Exception({
         $module: '/bali/types/Structure',
         $procedure: '$getSubcomponent',
@@ -79,7 +80,8 @@ Structure.prototype.getSubcomponent = function(index) {
 /**
  * This method sets the value of the specified subcomponent for this structure component.
  *
- * @param {Number|Element} index The index of the subcomponent to be retrieved.
+ * @param {Element} element The element that acts as an index or key to the subcomponent
+ * to be retrieved.
  * @param {Component} subcomponent The value of the subcomponent.
  */
 Structure.prototype.setSubcomponent = function(index, subcomponent) {

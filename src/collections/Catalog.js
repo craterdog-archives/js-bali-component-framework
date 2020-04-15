@@ -301,12 +301,27 @@ const Catalog = function(parameters, debug) {
         array.reverse();
     };
 
-    this.getSubcomponent = function(index) {
-        return this.getValue(index);
+    this.getSubcomponent = function(element) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$getSubcomponent', '$element', element, [
+                '/bali/types/Element'
+            ]);
+        }
+        return this.getValue(element);
     };
 
-    this.setSubcomponent = function(index, subcomponent) {
-        return this.setValue(index, subcomponent);
+    this.setSubcomponent = function(element, subcomponent) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/collections/Catalog', '$setSubcomponent', '$element', element, [
+                '/bali/types/Element'
+            ]);
+            validator.validateType('/bali/collections/Catalog', '$setSubcomponent', '$subcomponent', subcomponent, [
+                '/bali/types/Component'
+            ]);
+        }
+        return this.setValue(element, subcomponent);
     };
 
     return this;

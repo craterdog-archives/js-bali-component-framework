@@ -63,11 +63,13 @@ const Exception = function(attributes, cause) {
         return attributes;
     };
 
-    this.getSubcomponent = function(index) {
+    this.getSubcomponent = function(element) {
+        const index = element.toNumber();
         return attributes[index];
     };
 
-    this.setSubcomponent = function(index, subcomponent) {
+    this.setSubcomponent = function(element, subcomponent) {
+        const index = element.toNumber();
         const old = attributes[index];
         attributes[index] = subcomponent;
         return old;
