@@ -49,13 +49,14 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
  */
 const Decoder = function(indentation, debug) {
     this.debug = debug || 0;
-    this.indentation = indentation || 0;
     if (this.debug > 1) {
         const validator = new Validator(this.debug);
         validator.validateType('/bali/utilities/Decoder', '$Decoder', '$indentation', indentation, [
+            '/javascript/Undefined',
             '/javascript/Number'
         ]);
     }
+    this.indentation = indentation || 0;
     return this;
 };
 Decoder.prototype.constructor = Decoder;
