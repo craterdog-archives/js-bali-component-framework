@@ -140,25 +140,17 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: range | list | catalog
+// collection: list | catalog
 DuplicatingVisitor.prototype.visitCollection = function(collection) {
     this.visitParameters(collection.getParameters());
     const parameters = this.result;
     var copy;
-    if (collection.isType('/bali/collections/Range')) {
-        collection.getFirstItem().acceptVisitor(this);
-        const first = this.result;
-        collection.getLastItem().acceptVisitor(this);
-        const last = this.result;
-        copy = new collection.constructor(first, last, parameters, this.debug);
-    } else {
-        copy = new collection.constructor(parameters, this.debug);
-        const iterator = collection.getIterator();
-        while (iterator.hasNext()) {
-            var item = iterator.getNext();
-            item.acceptVisitor(this);
-            copy.addItem(this.result);
-        }
+    copy = new collection.constructor(parameters, this.debug);
+    const iterator = collection.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        item.acceptVisitor(this);
+        copy.addItem(this.result);
     }
     this.result = copy;
 };
@@ -500,6 +492,14 @@ DuplicatingVisitor.prototype.visitPostClause = function(tree) {
     tree.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
+};
+
+
+// range: ('0' | REAL)? '..' ('0' | REAL)?
+DuplicatingVisitor.prototype.visitRange = function(range) {
+    this.visitParameters(range.getParameters());
+    const parameters = this.result;
+    this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
 };
 
 

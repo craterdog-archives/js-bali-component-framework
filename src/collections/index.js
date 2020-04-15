@@ -14,7 +14,6 @@ const structures = require('../structures/');
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List
 exports.Queue = require('./Queue').Queue;  // depends on Catalog
-exports.Range = require('./Range').Range;
 exports.Set = require('./Set').Set;
 exports.Stack = require('./Stack').Stack;  // depends on Catalog
 exports.Tree = require('./Tree').Tree;

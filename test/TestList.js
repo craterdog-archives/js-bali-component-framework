@@ -147,6 +147,11 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(list.getIndex('"alpha"')).to.equal(1);
             expect(list.getItem(5).toString()).to.equal('"gamma"');
             expect(list.getIndex('"delta"')).to.equal(3);
+            expect(
+                function() {
+                    list.getItem(-100);
+                }
+            ).to.throw();
             const iterator = list.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             array.forEach(function(item) {

@@ -103,13 +103,9 @@ Visitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: range | list | catalog
+// collection: list | catalog
 Visitor.prototype.visitCollection = function(collection) {
-    // note: range is handled differently
-    if (collection.isType('/bali/collections/Range')) {
-        collection.getFirstItem().acceptVisitor(this);
-        collection.getLastItem().acceptVisitor(this);
-    } else if (collection.getSize() > 0) {
+    if (collection.getSize() > 0) {
         this.depth++;
         const iterator = collection.getIterator();
         while (iterator.hasNext()) {
@@ -421,6 +417,14 @@ Visitor.prototype.visitPostClause = function(tree) {
     message.acceptVisitor(this);
     const queue = tree.getItem(2);
     queue.acceptVisitor(this);
+};
+
+
+// range: ('0' | REAL)? '..' ('0' | REAL)?
+Visitor.prototype.visitRange = function(range) {
+    const parameters = range.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
+    // then process the component itself
 };
 
 

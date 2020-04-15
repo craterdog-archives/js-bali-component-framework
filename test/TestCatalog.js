@@ -48,6 +48,10 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             var size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(array.length);
+            catalog.addItems(array);
+            size = catalog.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(2 * array.length);
             const iterator = catalog.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             expect(iterator.hasNext() === true);
@@ -66,6 +70,21 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getValue().toString()).to.equal('"epsilon"');
             association = iterator.getNext();
             expect(association.getKey().toString()).to.equal('5');
+            expect(association.getValue().toString()).to.equal('"gamma"');
+            association = iterator.getNext();
+            expect(association.getKey().toString()).to.equal('6');
+            expect(association.getValue().toString()).to.equal('"alpha"');
+            association = iterator.getNext();
+            expect(association.getKey().toString()).to.equal('7');
+            expect(association.getValue().toString()).to.equal('"beta"');
+            association = iterator.getNext();
+            expect(association.getKey().toString()).to.equal('8');
+            expect(association.getValue().toString()).to.equal('"delta"');
+            association = iterator.getNext();
+            expect(association.getKey().toString()).to.equal('9');
+            expect(association.getValue().toString()).to.equal('"epsilon"');
+            association = iterator.getNext();
+            expect(association.getKey().toString()).to.equal('10');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
             catalog.removeAll();

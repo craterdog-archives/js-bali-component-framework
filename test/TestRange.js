@@ -18,6 +18,43 @@ describe('Bali Nebula™ Component Framework - Range', function() {
 
     describe('Test the range constructors', function() {
 
+        it('should create an integer range with zero endpoints', function() {
+            const range = bali.range();
+            expect(range).to.exist;  // jshint ignore:line
+            const size = range.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(Infinity);
+            expect(
+                function() {
+                    range.getIterator(range);
+                }
+            ).to.throw();
+        });
+
+        it('should create an integer range with one endpoint', function() {
+            var range = bali.range(0);
+            expect(range).to.exist;  // jshint ignore:line
+            var size = range.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(Infinity);
+            expect(
+                function() {
+                    range.getIterator(range);
+                }
+            ).to.throw();
+
+            range = bali.range(undefined, 5);
+            expect(range).to.exist;  // jshint ignore:line
+            size = range.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(Infinity);
+            expect(
+                function() {
+                    range.getIterator(range);
+                }
+            ).to.throw();
+        });
+
         it('should create an integer range with two endpoints', function() {
             const range = bali.range(2, 5);
             expect(range).to.exist;  // jshint ignore:line
@@ -26,47 +63,6 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(size).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext().toNumber()).to.equal(2);
-            expect(iterator.getNext().toNumber()).to.equal(3);
-            expect(iterator.getNext().toNumber()).to.equal(4);
-            expect(iterator.getNext().toNumber()).to.equal(5);
-            expect(iterator.hasNext() === false);
-            expect(iterator.hasPrevious() === true);
-        });
-
-        it('should create a symbol range for a list of symbols', function() {
-            const list = bali.list([
-                '$first',
-                '$second',
-                '$third',
-                '$fourth',
-                '$fifth',
-                '$sixth',
-                '$seventh',
-                '$eighth',
-                '$nineth'
-            ]);
-            const range = bali.range('$third', '$seventh', {$collection: list});
-            expect(range).to.exist;  // jshint ignore:line
-            const size = range.getSize();
-            expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(5);
-            expect(range.getFirstItem().toString()).to.equal('$third');
-            expect(range.getItem(3).toString()).to.equal('$fifth');
-            expect(range.getLastItem().toString()).to.equal('$seventh');
-            const iterator = range.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
-            expect(iterator.hasNext() === true);
-            expect(iterator.hasPrevious() === false);
-            expect(iterator.getNext().toString()).to.equal('$third');
-            expect(iterator.getNext().toString()).to.equal('$fourth');
-            expect(iterator.getNext().toString()).to.equal('$fifth');
-            expect(iterator.getNext().toString()).to.equal('$sixth');
-            expect(iterator.getNext().toString()).to.equal('$seventh');
-            expect(iterator.hasNext() === false);
-            expect(iterator.hasPrevious() === true);
         });
 
     });
@@ -74,17 +70,21 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range methods', function() {
 
         it('should be able to call the methods on the range', function() {
-            const range1 = bali.range(1, 8);
-            var size = range1.getSize();
+            var range = bali.range(1, 8);
+            var size = range.getSize();
             expect(size).to.equal(8);
-            const range2 = bali.range(4, 6);
-            size = range2.getSize();
-            expect(size).to.equal(3);
-            expect(range2.getFirstItem().toNumber()).to.equal(4);
-            expect(range2.getItem(2).toNumber()).to.equal(5);
-            expect(range2.getLastItem().toNumber()).to.equal(6);
-            expect(range1.containsItem(2)).to.equal(true);
-            expect(range2.containsItem(7)).to.equal(false);
+            var first = range.getFirst();
+            expect(first).to.equal(1);
+            var last = range.getLast();
+            expect(last).to.equal(8);
+
+            range = bali.range(-4, 6);
+            size = range.getSize();
+            expect(size).to.equal(11);
+            first = range.getFirst();
+            expect(first).to.equal(-4);
+            last = range.getLast();
+            expect(last).to.equal(6);
         });
 
     });
@@ -93,9 +93,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
 
         it('should iterate over a range forwards and backwards', function() {
             const range = bali.range(1, 3);
-            var index = range.getSize();
-            const items = range.toArray();
-            var item;
+            var slot = range.getSize();
             const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
             // the iterator is at the first slot
@@ -106,17 +104,18 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(iterator.hasPrevious() === true);
             expect(iterator.hasNext() === false);
             // iterate through the items in reverse order
-            while (index > 0) {
-                item = iterator.getPrevious();
-                expect(items[--index].isEqualTo(item)).to.equal(true);
+            while (slot > 0) {
+                const value = iterator.getPrevious();
+                expect(slot--).to.equal(value);
             }
             // should be at the first slot in the iterator
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);
             // iterator through the items in order
-            while (index < items.length) {
-                item = iterator.getNext();
-                expect(items[index++].isEqualTo(item)).to.equal(true);
+            const size = range.getSize();
+            while (slot < size) {
+                const value = iterator.getNext();
+                expect(++slot).to.equal(value);
             }
             // should be at the last slot in the iterator
             expect(iterator.hasPrevious() === true);

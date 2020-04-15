@@ -160,7 +160,6 @@ Collection.prototype.addItems = function(items) {
             '/bali/interfaces/Sequential'
         ]);
     }
-    var count = 0;
     items = items || undefined;  // normalize nulls to undefined
     if (items) {
         if (Array.isArray(items)) {
@@ -170,7 +169,6 @@ Collection.prototype.addItems = function(items) {
                     item = item.getValue();
                 }
                 this.addItem(item);
-                count++;
             }, this);
         } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
             const iterator = items.getIterator();
@@ -181,17 +179,14 @@ Collection.prototype.addItems = function(items) {
                     item = item.getValue();
                 }
                 this.addItem(item);
-                count++;
             }
         } else if (typeof items === 'object') {
             const keys = Object.keys(items);
             keys.forEach(function(key) {
                 this.addItem(items[key]);
-                count++;
             }, this);
         }
     }
-    return count;
 };
 
 
@@ -217,8 +212,18 @@ Collection.prototype.normalizeIndex = function(index) {
         ]);
     }
     const size = this.getSize();
-    if (index > size) index = size;
-    if (index < -size) index = -size;
+    if (index > size || index < -size) {
+        const exception = new Exception({
+            $module: '/bali/types/Collection',
+            $procedure: '$normalizeIndex',
+            $exception: '$invalidIndex',
+            $index: index,
+            $range: '' + -size + '..' + size,
+            $text: 'The index is out of range.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    }
     if (index < 0) index = index + size + 1;
     return index;
 };
@@ -291,14 +296,14 @@ Collection.prototype.getItems = function(range) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/types/Collection', '$getItems', '$range', range, [
             '/javascript/Undefined',
-            '/bali/collections/Range'
+            '/bali/elements/Range'
         ]);
     }
     const items = new this.constructor(this.getParameters(), this.debug);
     if (range && range.getIterator) {
         const iterator = range.getIterator();
         while (iterator.hasNext()) {
-            const index = iterator.getNext().getMagnitude();
+            const index = iterator.getNext();
             const item = this.getItem(index);
             items.addItem(item);
         }

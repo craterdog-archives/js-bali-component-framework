@@ -248,22 +248,13 @@ Component.prototype.isMatchedBy = function(pattern) {
         return false;
     }
     /* Case 3
-     * If the pattern component and this component are both elements then if they are
+     * If the pattern component and this component are both literals then if they are
      * equal they match.
      */
     if (pattern.supportsInterface('/bali/interfaces/Literal')) {
         return this.isEqualTo(pattern);
     }
     /* Case 4
-     * If the pattern component is a bali.Range then its endpoint patterns must match the
-     * endpoints of this component.
-     */
-    if (pattern.isType('/bali/collections/Range')) {
-        if (!this.getFirstItem().isMatchedBy(pattern.getFirstItem())) return false;
-        if (!this.getLastItem().isMatchedBy(pattern.getLastItem())) return false;
-        return true;
-    }
-    /* Case 5
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
@@ -272,7 +263,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
     }
-    /* Case 6
+    /* Case 5
      * If the pattern component is sequential then each of its items must match an
      * item in this component. Note: if the pattern item is an association with a
      * value of 'none' then this component should not contain an association with

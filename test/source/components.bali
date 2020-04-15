@@ -1,9 +1,8 @@
 [
     $empty: [
-        []
+        [ ]
         [:]
     ]
-    $range: [-3..5]
     $list: [
         [
             1
@@ -47,7 +46,7 @@
             ]
             [
                 $foo: $bar
-                $bar: 25($range: [1..100])
+                $bar: 25($range: 1..100)
                 $baz: none
             ]
         ]
@@ -147,5 +146,12 @@
             $region: "Colorado"
             $country: "USA"
         )
+    ]
+    $ranges: [
+        -3..5
+        π..τ($delta: 0.1)
+        0..
+        ..-1
+        ..
     ]
 ]

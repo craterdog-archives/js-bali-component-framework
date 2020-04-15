@@ -105,19 +105,17 @@ const Catalog = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        var count = 0;
-        var index = 1;
+        var index = array.length + 1;
         associations = associations || undefined;  // normalize nulls to undefined
         if (associations) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
                     if (item.isType('/bali/structures/Association')) {
-                        this.addItem(item);
+                        if (this.addItem(item)) index++;
                     } else {
                         this.setValue(index++, item);
                     }
-                    count++;
                 }, this);
             } else if (associations.isComponent && associations.supportsInterface('/bali/interfaces/Sequential')) {
                 const iterator = associations.getIterator();
@@ -125,22 +123,19 @@ const Catalog = function(parameters, debug) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
                     if (item.isType('/bali/structures/Association')) {
-                        this.addItem(item);
+                        if (this.addItem(item)) index++;
                     } else {
                         this.setValue(index++, item);
                     }
-                    count++;
                 }
             } else if (typeof associations === 'object') {
                 const keys = Object.keys(associations);
                 keys.forEach(function(key) {
                     const symbol = (key[0] === '$') ? key : '$' + key;
                     this.setValue(symbol, associations[key]);
-                    count++;
                 }, this);
             }
         }
-        return count;
     };
 
     this.containsItem = function(association) {
@@ -260,8 +255,9 @@ const Catalog = function(parameters, debug) {
                 return item.isEqualTo(association);
             });
             array.splice(index, 1);
-            return association.getValue();
+            return true;
         }
+        return false;
     };
 
     this.removeValues = function(keys) {
@@ -287,7 +283,6 @@ const Catalog = function(parameters, debug) {
                 if (value) values.addItem(value);
             }
         }
-        return values;
     };
 
     this.removeAll = function() {

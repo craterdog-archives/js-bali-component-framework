@@ -132,17 +132,17 @@ const Set = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        var count = 0;
-        if (items && items.getIterator) {
+        if (Array.isArray(items)) {
+            items.forEach(function(item) {
+                this.removeItem(item);
+            }, this);
+        } else if (items && items.getIterator) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 const item = iterator.getNext();
-                if (this.removeItem(item)) {
-                    count++;
-                }
+                this.removeItem(item);
             }
         }
-        return count;
     };
 
     this.removeAll = function() {

@@ -7,11 +7,9 @@ value: element | sequence | procedure;
 
 sequence: '[' collection ']';
 
-collection: range | list | catalog;
+collection: list | catalog;
 
 parameters: '(' catalog ')';
-
-range: element '..' element;
 
 list:
     component (',' component)* |

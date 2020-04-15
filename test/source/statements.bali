@@ -93,9 +93,9 @@
         }
     }
     $withLoop: {
-        with [1..10] do {
+        with 1..10 do {
         }
-        with [1..10] do {
+        with 1..10 do {
         }
         with each $item in list do {
         }

@@ -11,6 +11,7 @@ element:
     pattern |
     percent |
     probability |
+    range |
     reference |
     reserved |
     symbol |
@@ -24,8 +25,6 @@ angle: ANGLE;
 binary: BINARY;
 
 duration: DURATION;
-
-pattern: 'none' | REGEX | 'any';
 
 moment: MOMENT;
 
@@ -41,9 +40,13 @@ number:
     '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 ;
 
+pattern: 'none' | REGEX | 'any';
+
 percent: PERCENT;
 
 probability: 'false' | FRACTION | 'true';
+
+range: ('0' | REAL)? '..' ('0' | REAL)?;
 
 reference: RESOURCE;
 

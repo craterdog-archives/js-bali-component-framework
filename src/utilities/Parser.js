@@ -634,7 +634,7 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// messageExpression: expression ('.' | '<-') message '(' arguments ')'
+// messageExpression: expression op=('.' | '<-') message '(' arguments ')'
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     const tree = new collections.Tree('/bali/structures/MessageExpression', this.debug);
     ctx.expression().accept(this);
@@ -822,15 +822,13 @@ ParsingVisitor.prototype.visitPostClause = function(ctx) {
 };
 
 
-// range: element '..' element
+// range: ('0' | REAL)? '..' ('0' | REAL)?
 ParsingVisitor.prototype.visitRange = function(ctx) {
     const parameters = this.getParameters();
-    const elements = ctx.element();
-    elements[0].accept(this);
-    const first = this.result;
-    elements[1].accept(this);
-    const last = this.result;
-    const range = new collections.Range(first, last, parameters, this.debug);
+    const tokens = ctx.getText().split('..');
+    const first = tokens[0] ? literalToNumber(tokens[0]) : undefined;
+    const last = tokens[1] ? literalToNumber(tokens[1]) : undefined;
+    const range = new elements.Range(first, last, parameters, this.debug);
     this.result = range;
 };
 

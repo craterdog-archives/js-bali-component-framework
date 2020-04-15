@@ -20,6 +20,7 @@ exports.Number = require('./Complex').Complex;  // depends on Angle
 exports.Pattern = require('./Pattern').Pattern;
 exports.Percent = require('./Percent').Percent;
 exports.Probability = require('./Probability').Probability;
+exports.Range = require('./Range').Range;
 exports.Reference = require('./Reference').Reference;
 exports.Reserved = require('./Reserved').Reserved;
 exports.Symbol = require('./Symbol').Symbol;

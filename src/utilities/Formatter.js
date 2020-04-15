@@ -249,18 +249,11 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 };
 
 
-// collection: range | list | catalog
+// collection: list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    // note: a range must be handled differently
-    if (collection.isType('/bali/collections/Range')) {
-        collection.getFirstItem().acceptVisitor(this);
-        this.result += '..';
-        collection.getLastItem().acceptVisitor(this);
-    } else if (collection.isEmpty()) {
-        if (collection.isType('/bali/collections/Catalog')) {
-            this.result += ':';  // empty catalog
-        }
+    if (collection.isEmpty()) {
+        this.result += collection.isType('/bali/collections/Catalog') ? ':' : ' ';
     } else {
         this.depth++;
         var count = 0;
@@ -719,6 +712,22 @@ FormattingVisitor.prototype.visitPostClause = function(tree) {
     this.result += ' on ';
     const queue = tree.getItem(2);
     queue.acceptVisitor(this);
+};
+
+
+// range: ('0' | REAL)? '..' ('0' | REAL)?
+FormattingVisitor.prototype.visitRange = function(range) {
+    const first = range.getFirst();
+    if (first !== undefined) {
+        this.result += formatReal(first);
+    }
+    this.result += '..';
+    const last = range.getLast();
+    if (last !== undefined) {
+        this.result += formatReal(last);
+    }
+    const parameters = range.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
 };
 
 

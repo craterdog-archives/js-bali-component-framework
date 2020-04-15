@@ -74,7 +74,7 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
 
         it('should match matching patterns', function() {
             expect(bali.text('foobar').isMatchedBy(bali.text('foobar'))).to.equal(true);
-            expect(bali.range(1, 5).isMatchedBy(bali.range(bali.pattern.ANY, 5))).to.equal(true);
+            expect(bali.range(1, 5).isMatchedBy(bali.range(1, 5))).to.equal(true);
             expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('^"fo+"')]))).to.equal(true);
             expect(bali.catalog({
                 $foo: '"bar"',
@@ -108,7 +108,7 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
 
         it('should not match mismatched patterns', function() {
             expect(bali.text('foobar').isMatchedBy(bali.text('foobaz'))).to.equal(false);
-            expect(bali.range(1, 5).isMatchedBy(bali.range(bali.pattern.NONE, 5))).to.equal(false);
+            expect(bali.range(1, 5).isMatchedBy(bali.range(0, 5))).to.equal(false);
             expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('bo+')]))).to.equal(false);
             expect(bali.catalog({
                 $foo: '"bar"',

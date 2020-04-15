@@ -147,7 +147,11 @@ const List = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        if (items && items.getIterator) {
+        if (Array.isArray(items)) {
+            items.forEach(function(item) {
+                this.insertItem(index++, item);
+            }, this);
+        } else if (items && items.getIterator) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 const item = iterator.getNext();
@@ -164,9 +168,7 @@ const List = function(parameters, debug) {
             ]);
         }
         index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
-        const oldItem = array[index];
-        if (oldItem) array.splice(index, 1);
-        return oldItem;
+        array.splice(index, 1);
     };
 
     this.removeItems = function(range) {
@@ -174,19 +176,16 @@ const List = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
                 '/javascript/Undefined',
-                '/bali/collections/Range'
+                '/bali/elements/Range'
             ]);
         }
-        const items = new List(this.getParameters(), this.debug);
         if (range && range.getIterator) {
             const iterator = range.getIterator();
             while (iterator.hasNext()) {
                 const index = iterator.getNext();
-                const item = this.removeItem(index);
-                items.addItem(item);
+                this.removeItem(index);
             }
         }
-        return items;
     };
 
     this.removeAll = function() {

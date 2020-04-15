@@ -94,7 +94,6 @@ const Queue = function(parameters, debug) {
         item = this.componentize(item, this.debug);
         array.push(item);
         return true;
-        return false;
     };
 
     this.removeItem = function() {

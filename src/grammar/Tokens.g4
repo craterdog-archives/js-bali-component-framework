@@ -67,7 +67,10 @@ fragment
 FLOAT: '-'? (NUMBER FRACTION? | '0' FRACTION) ('E' '-'? NUMBER)?;
 
 fragment
-SPAN: ('0' | '-'? NUMBER) FRACTION?;
+INTEGER: '0' | '-'? NUMBER;
+
+fragment
+SPAN: INTEGER FRACTION?;
 
 fragment
 TYPE: ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')+;
@@ -76,7 +79,7 @@ fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;
 
 fragment
-YEARS: '0' | '-'? NUMBER;
+YEARS: INTEGER;
 
 fragment
 MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));
