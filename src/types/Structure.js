@@ -84,7 +84,7 @@ Structure.prototype.getSubcomponent = function(element) {
  * to be retrieved.
  * @param {Component} subcomponent The value of the subcomponent.
  */
-Structure.prototype.setSubcomponent = function(index, subcomponent) {
+Structure.prototype.setSubcomponent = function(element, subcomponent) {
     const exception = new Exception({
         $module: '/bali/types/Structure',
         $procedure: '$setSubcomponent',
