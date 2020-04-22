@@ -51,7 +51,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
     describe('Test text methods', function() {
 
-        it('should perform the getItem() and getItems() methods correctly', function() {
+        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const text = bali.text('This is text.');
             const range = bali.range(3, 9);
             const first = text.getItem(3);
@@ -59,6 +59,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
             const items = text.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
+            expect(5).to.equal(text.getIndex(' '));
         });
 
     });

@@ -102,11 +102,11 @@ Name.prototype.getIterator = function() {
 
 
 /**
- * This method returns the identifier from this name string at the specified index.
+ * This method returns the identifier at the specified index from this name string.
  *
  * @param {Number} index The index of the identifier to be retrieved from this name
  * string.
- * @returns {String} The identifier string at the specified index.
+ * @returns {String} The identifier at the specified index.
  */
 Name.prototype.getItem = function(index) {
     if (this.debug > 1) {
@@ -124,7 +124,7 @@ Name.prototype.getItem = function(index) {
  * This method returns a new name string containing the identifiers in the specified range.
  *
  * @param {Range} range A range depicting the first and last identifiers to be retrieved.
- * @returns {Name} The new name string containing the requested identifiers.
+ * @returns {Name} A new name string containing the requested identifiers.
  */
 Name.prototype.getItems = function(range) {
     if (this.debug > 1) {

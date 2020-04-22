@@ -91,7 +91,7 @@ Text.prototype.getIterator = function() {
 
 
 /**
- * This method returns the character from this text string at the specified index.
+ * This method returns the character at the specified index from this text string.
  *
  * @param {Number} index The index of the character to be retrieved from this text string.
  * @returns {String} The character at the specified index.
@@ -112,7 +112,7 @@ Text.prototype.getItem = function(index) {
  * This method returns a new text string containing the characters in the specified range.
  *
  * @param {Range} range A range depicting the first and last characters to be retrieved.
- * @returns {Text} The new text string containing the requested characters.
+ * @returns {Text} A new text string containing the requested characters.
  */
 Text.prototype.getItems = function(range) {
     if (this.debug > 1) {

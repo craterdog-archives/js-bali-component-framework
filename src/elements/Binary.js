@@ -115,7 +115,7 @@ Binary.prototype.getIterator = function() {
 
 
 /**
- * This method returns the byte from this binary string at the specified index.
+ * This method returns the byte at the specified index from this binary string.
  *
  * @param {Number} index The index of the byte to be retrieved from this binary string.
  * @returns {Number} The byte value (0..255) at the specified index.
@@ -136,7 +136,7 @@ Binary.prototype.getItem = function(index) {
  * This method returns a new binary string containing the bytes in the specified range.
  *
  * @param {Range} range A range depicting the first and last bytes to be retrieved.
- * @returns {Binary} The new binary string containing the requested bytes.
+ * @returns {Binary} A new binary string containing the requested bytes.
  */
 Binary.prototype.getItems = function(range) {
     if (this.debug > 1) {

@@ -96,10 +96,27 @@ Range.prototype.getIterator = function() {
 
 
 /**
+ * This method returns the number at the specified index from this number range.
+ *
+ * @param {Number} index The index of the number to be retrieved from this number range.
+ * @returns {String} The number at the specified index.
+ */
+Range.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    return this.getFirst() + this.normalizedIndex(index) - 1;
+};
+
+
+/**
  * This method returns a new number range containing the numbers in the specified range.
  *
  * @param {Range} range A range depicting the first and last numbers to be retrieved.
- * @returns {Range} The new number range containing the requested numbers.
+ * @returns {Range} A new number range containing the requested numbers.
  */
 Range.prototype.getItems = function(range) {
     if (this.debug > 1) {

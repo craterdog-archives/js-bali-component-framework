@@ -137,7 +137,7 @@ Version.prototype.getIterator = function() {
 
 
 /**
- * This method returns the version number from this version string at the specified index.
+ * This method returns the version number at the specified index from this version string.
  *
  * @param {Number} index The index of the version number to be retrieved from this version string.
  * @returns {Number} The version number at the specified index.
@@ -158,7 +158,7 @@ Version.prototype.getItem = function(index) {
  * This method returns a new version string containing the version numbers in the specified range.
  *
  * @param {Range} range A range depicting the first and last version numbers to be retrieved.
- * @returns {Version} The new version string containing the requested version numbers.
+ * @returns {Version} A new version string containing the requested version numbers.
  */
 Version.prototype.getItems = function(range) {
     if (this.debug > 1) {

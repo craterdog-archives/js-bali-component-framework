@@ -30,10 +30,10 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Reserved} The new reserved identifier.
  */
 const Reserved = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Reserved'],
-        ['/bali/interfaces/Sequential'],
+        [ ],
         parameters,
         debug
     );
@@ -61,23 +61,12 @@ const Reserved = function(value, parameters, debug) {
 
     return this;
 };
-Reserved.prototype = Object.create(types.Element.prototype);
+Reserved.prototype = Object.create(types.Sequence.prototype);
 Reserved.prototype.constructor = Reserved;
 exports.Reserved = Reserved;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this reserved symbol has a meaningful value. Reserved
- * symbols always have a meaningful value.
- *
- * @returns {Boolean} Whether or not this reserved symbol has a meaningful value.
- */
-Reserved.prototype.toBoolean = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -86,16 +75,6 @@ Reserved.prototype.toBoolean = function() {
  */
 Reserved.prototype.acceptVisitor = function(visitor) {
     visitor.visitReserved(this);
-};
-
-
-/**
- * This method returns whether or not this reserved symbol is empty.
- *
- * @returns {Boolean} Whether or not this reserved symbol is empty.
- */
-Reserved.prototype.isEmpty = function() {
-    return false;  // a reserved symbol may never be empty
 };
 
 
@@ -117,6 +96,44 @@ Reserved.prototype.getSize = function() {
 Reserved.prototype.getIterator = function() {
     const iterator = new ReservedIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns the character at the specified index from this reserved symbol.
+ *
+ * @param {Number} index The index of the character to be retrieved from this reserved symbol.
+ * @returns {String} The character at the specified index.
+ */
+Reserved.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Reserved', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new reserved symbol containing the characters in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last characters to be retrieved.
+ * @returns {Reserved} A new reserved symbol containing the requested characters.
+ */
+Reserved.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Reserved', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const string = this.getValue().slice(first, last);
+    return new Reserved(string, this.getParameters(), this.debug);
 };
 
 

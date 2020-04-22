@@ -112,7 +112,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
 
     describe('Test version methods', function() {
 
-        it('should perform the getItem() and getItems() methods correctly', function() {
+        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const version = bali.version([1, 23, 456, 7890]);
             const range = bali.range(2, 4);
             const first = version.getItem(2);
@@ -120,6 +120,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
             const items = version.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
+            expect(2).to.equal(version.getIndex(23));
         });
 
     });

@@ -30,10 +30,10 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Symbol'],
-        ['/bali/interfaces/Sequential'],
+        [ ],
         parameters,
         debug
     );
@@ -61,23 +61,12 @@ const Symbol = function(value, parameters, debug) {
 
     return this;
 };
-Symbol.prototype = Object.create(types.Element.prototype);
+Symbol.prototype = Object.create(types.Sequence.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this symbol has a meaningful value. Symbols
- * always have a meaningful value.
- *
- * @returns {Boolean} Whether or not this symbol has a meaningful value.
- */
-Symbol.prototype.toBoolean = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -86,16 +75,6 @@ Symbol.prototype.toBoolean = function() {
  */
 Symbol.prototype.acceptVisitor = function(visitor) {
     visitor.visitSymbol(this);
-};
-
-
-/**
- * This method returns whether or not this symbol is empty.
- *
- * @returns {Boolean} Whether or not this symbol is empty.
- */
-Symbol.prototype.isEmpty = function() {
-    return false;  // a symbol may never be empty
 };
 
 
@@ -117,6 +96,44 @@ Symbol.prototype.getSize = function() {
 Symbol.prototype.getIterator = function() {
     const iterator = new SymbolIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns the character at the specified index from this symbol.
+ *
+ * @param {Number} index The index of the character to be retrieved from this symbol.
+ * @returns {String} The character at the specified index.
+ */
+Symbol.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Symbol', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new symbol containing the characters in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last characters to be retrieved.
+ * @returns {Symbol} A new symbol containing the requested characters.
+ */
+Symbol.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Symbol', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const string = this.getValue().slice(first, last);
+    return new Symbol(string, this.getParameters(), this.debug);
 };
 
 

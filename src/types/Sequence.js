@@ -88,7 +88,7 @@ Sequence.prototype.getSize = function() {
 
 /**
  * This method returns an object that can be used to iterate over the subcomponents in
- * this sequence component.
+ * this sequence component.  It must be implemented by a subclass.
  * @returns {Iterator} An iterator for this sequence component.
  */
 Sequence.prototype.getIterator = function() {
@@ -128,42 +128,43 @@ Sequence.prototype.getIndex = function(item) {
             '/bali/types/Component'
         ]);
     }
+    const comparator = new utilities.Comparator(undefined, this.debug);
     var index = 0;
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
-        const candidate = iterator.getNext();
+        const candidate = iterator.getNext();  // the candidate may be a javascript primitive type
         index++;
-        if (candidate.isEqualTo(item)) return index;
+        if (comparator.compareComponents(candidate, item) === 0) return index;
     }
     return 0;  // not found
 };
 
 
 /**
- * This abstract method retrieves the item that is associated with the specified index
- * from this sequence. It must be implemented by a subclass.
+ * This abstract method retrieves from this sequence the item that is associated with the
+ * specified index.  It must be implemented by a subclass.
  *
  * @param {Number} index The index of the desired item.
- * @returns {Component} The item at the position in this sequence.
+ * @returns {Object} The item at the position in this sequence.
  */
 Sequence.prototype.getItem = function(index) {
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/types/Sequence', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    const iterator = this.getIterator();
-    iterator.toSlot(index);
-    return iterator.getPrevious();
+    const exception = new Exception({
+        $module: '/bali/types/Sequence',
+        $procedure: '$getItem',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
 /**
- * This method returns a new sequence containing the items in the specified range.
+ * This method returns a new sequence containing the items in the specified range.  It
+ * must be implemented by a subclass.
  *
  * @param {Range} range A range depicting the first and last items to be retrieved.
- * @returns {Sequence} The new sequence containing the requested items.
+ * @returns {Sequence} A new sequence containing the requested items.
  */
 Sequence.prototype.getItems = function(range) {
     const exception = new Exception({
