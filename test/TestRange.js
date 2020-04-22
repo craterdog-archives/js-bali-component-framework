@@ -69,7 +69,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
 
     describe('Test the range methods', function() {
 
-        it('should be able to call the methods on the range', function() {
+        it('should be able to call the getFirst() and getLast() methods on the range', function() {
             var range = bali.range(1, 8);
             var size = range.getSize();
             expect(size).to.equal(8);
@@ -85,6 +85,16 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(first).to.equal(-4);
             last = range.getLast();
             expect(last).to.equal(6);
+        });
+
+        it('should perform the getItem() and getItems() methods correctly', function() {
+            const target = bali.range(4, 13);
+            const range = bali.range(2, 5);
+            const first = target.getItem(2);
+            const last = target.getItem(5);
+            const items = target.getItems(range);
+            expect(first).to.equal(items.getItem(1));
+            expect(last).to.equal(items.getItem(items.getSize()));
         });
 
     });

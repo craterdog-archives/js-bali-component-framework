@@ -24,17 +24,16 @@ const Exception = require('../structures/Exception').Exception;
 /**
  * This function creates a new name element using the specified value.
  *
- * @param {Array} value An array containing the parts of the name string.
+ * @param {Array} value An array containing the identifiers of the name string.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Symbol} The new name string element.
  */
 const Name = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Name'],
         [
-            '/bali/interfaces/Sequential',
             '/bali/interfaces/Chainable'
         ],
         parameters,
@@ -64,23 +63,12 @@ const Name = function(value, parameters, debug) {
 
     return this;
 };
-Name.prototype = Object.create(types.Element.prototype);
+Name.prototype = Object.create(types.Sequence.prototype);
 Name.prototype.constructor = Name;
 exports.Name = Name;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this name string has a meaningful value. Name
- * strings always have a meaningful value.
- *
- * @returns {Boolean} Whether or not this name string has a meaningful value.
- */
-Name.prototype.toBoolean = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -93,19 +81,9 @@ Name.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this name string has any parts.
+ * This method returns the number of identifiers that this name string has.
  *
- * @returns {Boolean} Whether or not this name string has any parts.
- */
-Name.prototype.isEmpty = function() {
-    return false;  // a name string requires at least one part
-};
-
-
-/**
- * This method returns the number of parts that this name string has.
- *
- * @returns {Number} The number of parts that this name string has.
+ * @returns {Number} The number of identifiers that this name string has.
  */
 Name.prototype.getSize = function() {
     return this.getValue().length;
@@ -113,13 +91,52 @@ Name.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the parts in
+ * This method returns an object that can be used to iterate over the identifiers in
  * this name string.
  * @returns {Iterator} An iterator for this name string.
  */
 Name.prototype.getIterator = function() {
     const iterator = new NameIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns the identifier from this name string at the specified index.
+ *
+ * @param {Number} index The index of the identifier to be retrieved from this name
+ * string.
+ * @returns {String} The identifier string at the specified index.
+ */
+Name.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new name string containing the identifiers in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last identifiers to be retrieved.
+ * @returns {Name} The new name string containing the requested identifiers.
+ */
+Name.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Name', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const identifiers = this.getValue().slice(first, last);
+    return new Name(identifiers, this.getParameters(), this.debug);
 };
 
 
@@ -144,16 +161,16 @@ Name.concatenation = function(first, second, debug) {
             '/bali/elements/Name'
         ]);
     }
-    const parts1 = first.getValue();
-    const parts2 = second.getValue();
-    const parts = parts1.concat(parts2);
-    return new Name(parts, first.getParameters(), debug);
+    const identifiers1 = first.getValue();
+    const identifiers2 = second.getValue();
+    const identifiers = identifiers1.concat(identifiers2);
+    return new Name(identifiers, first.getParameters(), debug);
 };
 
 
 // PRIVATE CLASSES
 
-const NameIterator = function(parts, parameters, debug) {
+const NameIterator = function(identifiers, parameters, debug) {
     types.Iterator.call(
         this,
         ['/bali/elements/NameIterator'],
@@ -161,11 +178,11 @@ const NameIterator = function(parts, parameters, debug) {
         parameters,
         debug
     );
-    var slot = 0;  // the slot before the first part
-    const size = parts.length;  // static so we can cache it here
+    var slot = 0;  // the slot before the first identifier
+    const size = identifiers.length;  // static so we can cache it here
 
     this.toStart = function() {
-        slot = 0;  // the slot before the first part
+        slot = 0;  // the slot before the first identifier
     };
 
     this.toSlot = function(newSlot) {
@@ -173,7 +190,7 @@ const NameIterator = function(parts, parameters, debug) {
     };
 
     this.toEnd = function() {
-        slot = size;  // the slot after the last part
+        slot = size;  // the slot after the last identifier
     };
 
     this.hasPrevious = function() {
@@ -186,12 +203,12 @@ const NameIterator = function(parts, parameters, debug) {
 
     this.getPrevious = function() {
         if (!this.hasPrevious()) return;
-        return parts[--slot];
+        return identifiers[--slot];
     };
 
     this.getNext = function() {
         if (!this.hasNext()) return;
-        return parts[slot++];
+        return identifiers[slot++];
     };
 
     return this;

@@ -204,10 +204,10 @@ Collection.prototype.addItems = function(items) {
  * @param {Number} index The index to be normalized [-N..N].
  * @returns {Number} The normalized [1..N] index.
  */
-Collection.prototype.normalizeIndex = function(index) {
+Collection.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/types/Collection', '$normalizeIndex', '$index', index, [
+        validator.validateType('/bali/types/Collection', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
@@ -215,7 +215,7 @@ Collection.prototype.normalizeIndex = function(index) {
     if (index > size || index < -size) {
         const exception = new Exception({
             $module: '/bali/types/Collection',
-            $procedure: '$normalizeIndex',
+            $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,
             $range: '' + -size + '..' + size,

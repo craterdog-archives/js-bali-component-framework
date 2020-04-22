@@ -69,7 +69,7 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
@@ -89,7 +89,7 @@ const List = function(parameters, debug) {
                 '/bali/types/Component'
             ]);
         }
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -131,7 +131,7 @@ const List = function(parameters, debug) {
             ]);
         }
         item = this.componentize(item, this.debug);
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
 
@@ -167,7 +167,7 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         array.splice(index, 1);
     };
 

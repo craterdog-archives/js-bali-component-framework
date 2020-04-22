@@ -54,6 +54,20 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
     });
 
+    describe('Test binary methods', function() {
+
+        it('should perform the getItem() and getItems() methods correctly', function() {
+            const binary = bali.binary(generator.generateBytes(10));
+            const range = bali.range(3, 5);
+            const first = binary.getItem(3);
+            const last = binary.getItem(5);
+            const items = binary.getItems(range);
+            expect(first).to.equal(items.getItem(1));
+            expect(last).to.equal(items.getItem(items.getSize()));
+        });
+
+    });
+
     describe('Test binary functions', function() {
 
         it('should perform concatenation of two binary strings', function() {

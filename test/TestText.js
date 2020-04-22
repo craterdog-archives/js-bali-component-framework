@@ -49,6 +49,20 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
     });
 
+    describe('Test text methods', function() {
+
+        it('should perform the getItem() and getItems() methods correctly', function() {
+            const text = bali.text('This is text.');
+            const range = bali.range(3, 9);
+            const first = text.getItem(3);
+            const last = text.getItem(9);
+            const items = text.getItems(range);
+            expect(first).to.equal(items.getItem(1));
+            expect(last).to.equal(items.getItem(items.getSize()));
+        });
+
+    });
+
     describe('Test text functions', function() {
 
         it('should perform concatenation of two text strings', function() {

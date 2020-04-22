@@ -29,12 +29,10 @@ const types = require('../types');
  * @returns {Range} The new number range.
  */
 const Range = function(first, last, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Range'],
-        [
-            '/bali/interfaces/Sequential'
-        ],
+        [ ],
         parameters,
         debug
     );
@@ -56,23 +54,12 @@ const Range = function(first, last, parameters, debug) {
 
     return this;
 };
-Range.prototype = Object.create(types.Element.prototype);
+Range.prototype = Object.create(types.Sequence.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this number range has a meaningful value. If the number
- * range is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- *
- * @returns {Boolean} Whether or not this number range has a meaningful value.
- */
-Range.prototype.toBoolean = function() {
-    return true;  // ranges always contain values
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -81,16 +68,6 @@ Range.prototype.toBoolean = function() {
  */
 Range.prototype.acceptVisitor = function(visitor) {
     visitor.visitRange(this);
-};
-
-
-/**
- * This method returns whether or not this number range has any values.
- *
- * @returns {Boolean} Whether or not this number range contains any values.
- */
-Range.prototype.isEmpty = function() {
-    return false;  // ranges cannot be empty
 };
 
 
@@ -115,6 +92,25 @@ Range.prototype.getSize = function() {
 Range.prototype.getIterator = function() {
     const iterator = new RangeIterator(this, this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns a new number range containing the numbers in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last numbers to be retrieved.
+ * @returns {Range} The new number range containing the requested numbers.
+ */
+Range.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Range', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.getFirst() + this.normalizedIndex(range.getFirst()) - 1;
+    const last = this.getFirst() + this.normalizedIndex(range.getLast()) - 1;
+    return new Range(first, last, this.getParameters(), this.debug);
 };
 
 

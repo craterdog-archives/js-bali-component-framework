@@ -60,7 +60,7 @@ const Tree = function(type, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index) - 1;  // JS uses zero based indexing
+        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 

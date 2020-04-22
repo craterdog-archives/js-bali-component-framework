@@ -28,11 +28,10 @@ const types = require('../types');
  * @returns {Text} The new text string.
  */
 const Text = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Text'],
         [
-            '/bali/interfaces/Sequential',
             '/bali/interfaces/Chainable'
         ],
         parameters,
@@ -53,23 +52,12 @@ const Text = function(value, parameters, debug) {
 
     return this;
 };
-Text.prototype = Object.create(types.Element.prototype);
+Text.prototype = Object.create(types.Sequence.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this text string has a meaningful value. If the text
- * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- *
- * @returns {Boolean} Whether or not this text string has a meaningful value.
- */
-Text.prototype.toBoolean = function() {
-    return !this.isEmpty();
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -78,16 +66,6 @@ Text.prototype.toBoolean = function() {
  */
 Text.prototype.acceptVisitor = function(visitor) {
     visitor.visitText(this);
-};
-
-
-/**
- * This method returns whether or not this text string has any characters.
- *
- * @returns {Boolean} Whether or not this text string has any characters.
- */
-Text.prototype.isEmpty = function() {
-    return this.getSize() === 0;
 };
 
 
@@ -112,10 +90,48 @@ Text.prototype.getIterator = function() {
 };
 
 
+/**
+ * This method returns the character from this text string at the specified index.
+ *
+ * @param {Number} index The index of the character to be retrieved from this text string.
+ * @returns {String} The character at the specified index.
+ */
+Text.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Text', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new text string containing the characters in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last characters to be retrieved.
+ * @returns {Text} The new text string containing the requested characters.
+ */
+Text.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Text', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const string = this.getValue().slice(first, last);
+    return new Text(string, this.getParameters(), this.debug);
+};
+
+
 // PUBLIC FUNCTIONS
 
 /**
- * This function returns a new text string that contains the bytes from the second text
+ * This function returns a new text string that contains the characters from the second text
  * concatenated onto the end of the first text string.
  *
  * @param {Text} first The first text string to be operated on.

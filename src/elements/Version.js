@@ -30,10 +30,10 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new version string element.
  */
 const Version = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Version'],
-        ['/bali/interfaces/Sequential'],
+        [ ],
         parameters,
         debug
     );
@@ -63,23 +63,12 @@ const Version = function(value, parameters, debug) {
 
     return this;
 };
-Version.prototype = Object.create(types.Element.prototype);
+Version.prototype = Object.create(types.Sequence.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this version string has a meaningful value. Version
- * strings always have a meaningful value.
- *
- * @returns {Boolean} Whether or not this version string has a meaningful value.
- */
-Version.prototype.toBoolean = function() {
-    return true;
-};
-
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -127,16 +116,6 @@ Version.prototype.comparedTo = function(that) {
 
 
 /**
- * This method returns whether or not this version string has any levels.
- *
- * @returns {Boolean} Whether or not this version string has any levels.
- */
-Version.prototype.isEmpty = function() {
-    return false;  // a version string requires at least one level
-};
-
-
-/**
  * This method returns the number of levels that this version string has.
  *
  * @returns {Number} The number of levels that this version string has.
@@ -154,6 +133,44 @@ Version.prototype.getSize = function() {
 Version.prototype.getIterator = function() {
     const iterator = new VersionIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns the version number from this version string at the specified index.
+ *
+ * @param {Number} index The index of the version number to be retrieved from this version string.
+ * @returns {Number} The version number at the specified index.
+ */
+Version.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new version string containing the version numbers in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last version numbers to be retrieved.
+ * @returns {Version} The new version string containing the requested version numbers.
+ */
+Version.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const array = this.getValue().slice(first, last);
+    return new Version(array, this.getParameters(), this.debug);
 };
 
 

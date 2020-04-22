@@ -29,12 +29,11 @@ const types = require('../types');
  * @returns {Binary} The new binary string.
  */
 const Binary = function(value, parameters, debug) {
-    types.Element.call(
+    types.Sequence.call(
         this,
         ['/bali/elements/Binary'],
         [
             '/bali/interfaces/Logical',
-            '/bali/interfaces/Sequential',
             '/bali/interfaces/Chainable'
         ],
         parameters,
@@ -56,23 +55,12 @@ const Binary = function(value, parameters, debug) {
 
     return this;
 };
-Binary.prototype = Object.create(types.Element.prototype);
+Binary.prototype = Object.create(types.Sequence.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns whether or not this binary string has a meaningful value. If the binary
- * string is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
- *
- * @returns {Boolean} Whether or not this binary string has a meaningful value.
- */
-Binary.prototype.toBoolean = function() {
-    return !this.isEmpty();
-};
-
 
 /**
  * This method compares this binary string to another for ordering.
@@ -106,16 +94,6 @@ Binary.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this binary string has any bytes.
- *
- * @returns {Boolean} Whether or not this binary string has any bytes.
- */
-Binary.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
  * This method returns the number of bytes that this binary string has.
  *
  * @returns {Number} The number of bytes that this binary string has.
@@ -133,6 +111,44 @@ Binary.prototype.getSize = function() {
 Binary.prototype.getIterator = function() {
     const iterator = new BinaryIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
+};
+
+
+/**
+ * This method returns the byte from this binary string at the specified index.
+ *
+ * @param {Number} index The index of the byte to be retrieved from this binary string.
+ * @returns {Number} The byte value (0..255) at the specified index.
+ */
+Binary.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Binary', '$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    return this.getValue()[index];
+};
+
+
+/**
+ * This method returns a new binary string containing the bytes in the specified range.
+ *
+ * @param {Range} range A range depicting the first and last bytes to be retrieved.
+ * @returns {Binary} The new binary string containing the requested bytes.
+ */
+Binary.prototype.getItems = function(range) {
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
+            '/bali/elements/Range'
+        ]);
+    }
+    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
+    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    const buffer = this.getValue().slice(first, last);
+    return new Binary(buffer, this.getParameters(), this.debug);
 };
 
 

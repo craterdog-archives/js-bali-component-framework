@@ -85,7 +85,7 @@ const Set = function(parameters, debug) {
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizeIndex(index) - 1;  // convert to javascript zero based indexing
+        index = this.normalizedIndex(index) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
 

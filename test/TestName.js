@@ -55,6 +55,20 @@ describe('Bali Nebula™ Component Framework - Name', function() {
 
     });
 
+    describe('Test name methods', function() {
+
+        it('should perform the getItem() and getItems() methods correctly', function() {
+            const name = bali.name(['bali', 'collections', 'Set', 'v1']);
+            const range = bali.range(2, 3);
+            const first = name.getItem(2);
+            const last = name.getItem(3);
+            const items = name.getItems(range);
+            expect(first).to.equal(items.getItem(1));
+            expect(last).to.equal(items.getItem(items.getSize()));
+        });
+
+    });
+
     describe('Test name functions', function() {
 
         it('should perform concatenation of two name strings', function() {
