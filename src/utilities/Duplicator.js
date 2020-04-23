@@ -511,14 +511,6 @@ DuplicatingVisitor.prototype.visitReference = function(reference) {
 };
 
 
-// reserved: RESERVED
-DuplicatingVisitor.prototype.visitReserved = function(reserved) {
-    this.visitParameters(reserved.getParameters());
-    const parameters = this.result;
-    this.result = new reserved.constructor(reserved.getValue(), parameters, this.debug);
-};
-
-
 // returnClause: 'return' expression?
 DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);

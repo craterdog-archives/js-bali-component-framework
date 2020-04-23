@@ -436,14 +436,6 @@ Visitor.prototype.visitReference = function(reference) {
 };
 
 
-// reserved: RESERVED
-Visitor.prototype.visitReserved = function(reserved) {
-    const parameters = reserved.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
-};
-
-
 // returnClause: 'return' expression?
 Visitor.prototype.visitReturnClause = function(tree) {
     if (tree.getSize() > 0) {

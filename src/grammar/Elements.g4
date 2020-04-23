@@ -13,7 +13,6 @@ element:
     probability |
     range |
     reference |
-    reserved |
     symbol |
     tag |
     text |
@@ -49,8 +48,6 @@ probability: 'false' | FRACTION | 'true';
 range: ('0' | REAL)? '..' ('0' | REAL)?;
 
 reference: RESOURCE;
-
-reserved: RESERVED;
 
 symbol: SYMBOL;
 

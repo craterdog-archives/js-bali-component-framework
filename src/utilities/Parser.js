@@ -842,15 +842,6 @@ ParsingVisitor.prototype.visitReference = function(ctx) {
 };
 
 
-// reserved: RESERVED
-ParsingVisitor.prototype.visitReserved = function(ctx) {
-    const parameters = this.getParameters();
-    const value = ctx.getText().slice(2);  // remove the leading '$$'
-    const reserved = new elements.Reserved(value, parameters, this.debug);
-    this.result = reserved;
-};
-
-
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     const tree = new collections.Tree('/bali/structures/ReturnClause', this.debug);

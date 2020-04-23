@@ -414,12 +414,6 @@ DocumentVisitor.prototype.visitReference = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#reserved.
-DocumentVisitor.prototype.visitReserved = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by DocumentParser#symbol.
 DocumentVisitor.prototype.visitSymbol = function(ctx) {
   return this.visitChildren(ctx);

@@ -21,7 +21,7 @@
             none
             #L7JJGPAYAH7T55J5Q9Q75RRL0SVW8F1X76HWW90CHJJQAH6270DH
             $symbol
-            $$reserved-5
+            $reserved-5
             ~P3Y2M1D
             <2017-07-04>
             <https://google.com/>
@@ -52,9 +52,9 @@
         ]
     ]
     $catalog: [
-        $$a: "a"
-        $$b: "b"
-        $$c: "c"
+        $a-1: "a"
+        $b-2: "b"
+        $c-3: "c"
         "certain": true
         "iffy": .5
         "impossible": false

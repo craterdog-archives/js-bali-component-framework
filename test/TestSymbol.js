@@ -56,10 +56,66 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
 
     });
 
+    describe('Test reserved symbol constructors', function() {
+
+        it('should construct reserved symbols using literals', function() {
+            expect(bali.component('$foo-1').toString()).to.equal('$foo-1');
+            expect(bali.component('$bar-2').toString()).to.equal('$bar-2');
+        });
+
+        it('should throw an exception for an empty reserved symbol', function() {
+            expect(
+                function() {
+                    const empty = bali.reserved();
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const empty = bali.reserved('');
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const empty = bali.component('$-1');
+                }
+            ).to.throw();
+        });
+
+        it('should throw an exception for a reserved symbol containing white space', function() {
+            expect(
+                function() {
+                    const bad = bali.reserved(' ');
+                }
+            ).to.throw();
+            expect(
+                function() {
+                    const bad = bali.reserved('White Space');
+                }
+            ).to.throw();
+        });
+
+    });
+
     describe('Test symbol methods', function() {
 
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const symbol = bali.symbol('foobar');
+            const range = bali.range(3, 5);
+            const first = symbol.getItem(3);
+            const last = symbol.getItem(5);
+            const items = symbol.getItems(range);
+            expect(first).to.equal(items.getItem(1));
+            expect(last).to.equal(items.getItem(items.getSize()));
+            expect(2).to.equal(symbol.getIndex('o'));
+        });
+
+    });
+
+    describe('Test reserved symbol methods', function() {
+
+        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
+            const symbol = bali.component('$foobar-1');
+            expect(symbol.isReserved()).to.equal(true);
             const range = bali.range(3, 5);
             const first = symbol.getItem(3);
             const last = symbol.getItem(5);

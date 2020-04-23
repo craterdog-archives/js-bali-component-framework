@@ -507,15 +507,6 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 };
 
 
-// reserved: RESERVED
-FormattingVisitor.prototype.visitReserved = function(reserved) {
-    this.result += '<div class="element reserved">';
-    this.result += '$' + reserved.getValue();
-    this.result += formatParameters(reserved.getParameters());
-    this.result += '</div>';
-};
-
-
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
     this.result += '<div class="element symbol">';

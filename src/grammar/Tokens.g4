@@ -24,8 +24,6 @@ NAME: ('/' TYPE)+;
 
 PERCENT: ('0' | REAL) '%';
 
-RESERVED: '$$' IDENTIFIER ('-' NUMBER)?;
-
 RESOURCE: '<' TYPE ':' CONTEXT '>';
 
 // NOTE: We cannot define negative constants here because the scanner would scan
@@ -35,7 +33,7 @@ REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
 REGEX: TEXT '?';
 
-SYMBOL: '$' IDENTIFIER;
+SYMBOL: '$' IDENTIFIER ('-' NUMBER)?;
 
 TAG: '#' BASE32*;
 

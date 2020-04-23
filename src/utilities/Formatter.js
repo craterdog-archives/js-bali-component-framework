@@ -740,15 +740,6 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 };
 
 
-// reserved: RESERVED
-FormattingVisitor.prototype.visitReserved = function(reserved) {
-    const value = reserved.getValue();
-    this.result += '$$' + value;
-    const parameters = reserved.getParameters();
-    this.visitParameters(parameters);  // format any parameterization
-};
-
-
 // returnClause: 'return' expression?
 FormattingVisitor.prototype.visitReturnClause = function(tree) {
     this.result += 'return';
