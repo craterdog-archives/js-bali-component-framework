@@ -87,6 +87,13 @@ const Moment = function(value, parameters, debug) {
     // since this element is immutable the attributes must be read-only
     this.getFormat = function() { return format; };
     this.getValue = function() { return value; };
+    this.getMillisecond = function() { return value.millisecond(); };
+    this.getSecond = function() { return value.second(); };
+    this.getMinute = function() { return value.minute(); };
+    this.getHour = function() { return value.hour(); };
+    this.getDay = function() { return value.date(); };
+    this.getMonth = function() { return value.month() + 1; };
+    this.getYear = function() { return value.year(); };
 
     return this;
 };

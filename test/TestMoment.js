@@ -50,6 +50,41 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
             expect(second.comparedTo(first)).to.equal(1);
         });
 
+        it('should retrieve millisecond correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getMillisecond()).to.equal(76);
+        });
+
+        it('should retrieve second correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getSecond()).to.equal(8);
+        });
+
+        it('should retrieve minute correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getMinute()).to.equal(9);
+        });
+
+        it('should retrieve hour correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getHour()).to.equal(10);
+        });
+
+        it('should retrieve day correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getDay()).to.equal(11);
+        });
+
+        it('should retrieve month correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getMonth()).to.equal(12);
+        });
+
+        it('should retrieve year correctly', function() {
+            const moment = bali.component('<2020-12-11T10:09:08.076>');
+            expect(moment.getYear()).to.equal(2020);
+        });
+
     });
 
     describe('Test moment functions', function() {
