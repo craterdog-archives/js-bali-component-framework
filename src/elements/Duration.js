@@ -53,6 +53,14 @@ const Duration = function(value, parameters, debug) {
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
+    this.getMilliseconds = function() { return value.milliseconds(); };
+    this.getSeconds = function() { return value.seconds(); };
+    this.getMinutes = function() { return value.minutes(); };
+    this.getHours = function() { return value.hours(); };
+    this.getDays = function() { return value.days(); };
+    this.getWeeks = function() { return value.weeks(); };
+    this.getMonths = function() { return value.months(); };
+    this.getYears = function() { return value.years(); };
 
     return this;
 };

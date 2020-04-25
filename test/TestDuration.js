@@ -63,6 +63,46 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
             expect(month.comparedTo(days)).to.equal(1);
         });
 
+        it('should retrieve milliseconds correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getMilliseconds()).to.equal(432);
+        });
+
+        it('should retrieve seconds correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getSeconds()).to.equal(5);
+        });
+
+        it('should retrieve minutes correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getMinutes()).to.equal(6);
+        });
+
+        it('should retrieve hours correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getHours()).to.equal(7);
+        });
+
+        it('should retrieve days correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getDays()).to.equal(8);
+        });
+
+        it('should retrieve weeks correctly', function() {
+            const moment = bali.component('~P3W');
+            expect(moment.getWeeks()).to.equal(3);
+        });
+
+        it('should retrieve months correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getMonths()).to.equal(9);
+        });
+
+        it('should retrieve years correctly', function() {
+            const moment = bali.component('~P10Y9M8DT7H6M5.432S');
+            expect(moment.getYears()).to.equal(10);
+        });
+
     });
 
     describe('Test time duration functions', function() {
