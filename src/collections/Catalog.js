@@ -131,8 +131,7 @@ const Catalog = function(parameters, debug) {
             } else if (typeof associations === 'object') {
                 const keys = Object.keys(associations);
                 keys.forEach(function(key) {
-                    const symbol = (key[0] === '$') ? key : '$' + key;
-                    this.setValue(symbol, associations[key]);
+                    this.setValue(key, associations[key]);
                 }, this);
             }
         }
