@@ -726,12 +726,12 @@ FormattingVisitor.prototype.visitPostClause = function(tree) {
 // range: ('0' | REAL)? '..' ('0' | REAL)?
 FormattingVisitor.prototype.visitRange = function(range) {
     const first = range.getFirst();
-    if (first !== undefined) {
+    if (first !== -Infinity) {
         this.result += formatReal(first);
     }
     this.result += '..';
     const last = range.getLast();
-    if (last !== undefined) {
+    if (last !== Infinity) {
         this.result += formatReal(last);
     }
     const parameters = range.getParameters();

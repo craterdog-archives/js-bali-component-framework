@@ -70,13 +70,15 @@ exports.Comparator = Comparator;
  */
 const natural = function(first, second) {
     // handle undefined components
-    if (first && !second) {
+    if (first === null) first = undefined;  // normalize nulls
+    if (second === null) second = undefined;  // normalize nulls
+    if (first !== undefined && second === undefined) {
         return 1;  // anything is greater than nothing
     }
-    if (!first && second) {
+    if (first === undefined && second !== undefined) {
         return -1;  // nothing is less than anything
     }
-    if (!first && !second) {
+    if (first === undefined && second === undefined) {
         return 0;  // nothing is equal to nothing
     }
 
@@ -120,8 +122,17 @@ const natural = function(first, second) {
         return Math.sign(first.localeCompare(second.toString()));
     }
 
+    // handle range components
+    if (first.getFirst && second.getFirst) {
+        var result = natural(first.getFirst(), second.getFirst());
+        if (result === 0) {
+            result = natural(first.getLast(), second.getLast());
+        }
+        return result;
+    }
+
     // handle structure components
-    if (first.getIterator && second.getIterator) {
+    if (first.getIterator && first.getSize() < Infinity && second.getIterator && second.getSize() < Infinity) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();
         var result = 0;

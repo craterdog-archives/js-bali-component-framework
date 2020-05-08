@@ -46,8 +46,8 @@ const Range = function(value, parameters, debug) {
     // since this element is immutable the values must be read-only
     const first = value[0];
     const last = value[1];
-    this.getFirst = function() { return first; };
-    this.getLast = function() { return last; };
+    this.getFirst = function() { return (first === undefined) ? -Infinity : first; };
+    this.getLast = function() { return (last === undefined) ? Infinity : last; };
 
     return this;
 };
