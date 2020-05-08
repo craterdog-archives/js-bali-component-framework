@@ -144,8 +144,7 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 DuplicatingVisitor.prototype.visitCollection = function(collection) {
     this.visitParameters(collection.getParameters());
     const parameters = this.result;
-    var copy;
-    copy = new collection.constructor(parameters, this.debug);
+    const copy = new collection.constructor(parameters, this.debug);
     const iterator = collection.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
@@ -239,7 +238,7 @@ DuplicatingVisitor.prototype.visitDiscardClause = function(tree) {
 DuplicatingVisitor.prototype.visitDuration = function(duration) {
     this.visitParameters(duration.getParameters());
     const parameters = this.result;
-    this.result = new duration.constructor(duration.getValue().toISOString(), parameters, this.debug);
+    this.result = new duration.constructor(duration.getTime().toISOString(), parameters, this.debug);
 };
 
 
@@ -385,7 +384,7 @@ DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
 
 // moment: MOMENT
 DuplicatingVisitor.prototype.visitMoment = function(moment) {
-    const value = moment.getValue().format(moment.getFormat());
+    const value = moment.getTimestamp().format(moment.getFormat());
     this.visitParameters(moment.getParameters());
     const parameters = this.result;
     this.result = new moment.constructor(value, parameters, this.debug);
@@ -410,7 +409,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitParameters(number.getParameters());
     const parameters = this.result;
-    this.result = new number.constructor(number.getReal(), number.getImaginary(), parameters, this.debug);
+    this.result = new number.constructor([number.getReal(), number.getImaginary()], parameters, this.debug);
 };
 
 
@@ -499,7 +498,7 @@ DuplicatingVisitor.prototype.visitPostClause = function(tree) {
 DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;
-    this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
+    this.result = new range.constructor([range.getFirst(), range.getLast()], parameters, this.debug);
 };
 
 

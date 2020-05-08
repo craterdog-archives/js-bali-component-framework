@@ -282,7 +282,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
     this.result += '<div class="element duration">';
-    this.result += duration.getValue().toISOString().slice(1).replace(/T/, '');
+    this.result += duration.getTime().toISOString().slice(1).replace(/T/, '');
     this.result += formatParameters(duration.getParameters());
     this.result += '</div>';
 };
@@ -291,7 +291,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     this.result += '<div class="element moment">';
-    this.result += moment.getValue().format(moment.getFormat()).replace(/T/, ' ');
+    this.result += moment.getTimestamp().format(moment.getFormat()).replace(/T/, ' ');
     this.result += formatParameters(moment.getParameters());
     this.result += '</div>';
 };

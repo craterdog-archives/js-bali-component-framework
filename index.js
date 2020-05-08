@@ -47,7 +47,7 @@ const componentize = function(value, debug) {
             component = new elements.Probability(value, {$granularity: '$boolean'}, debug);
             break;
         case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
-            component = new elements.Number(value, undefined, undefined, debug);
+            component = new elements.Number([value, undefined], undefined, debug);
             break;
         case 'string':
             try {
@@ -341,7 +341,7 @@ exports.api = function(defaultLevel) {
     // NUMBER
     const number = function(real, imaginary, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Number(real, imaginary, parameters, debug);
+        return new elements.Number([real, imaginary], parameters, debug);
     };
     number.conjugate = function(number, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -467,7 +467,7 @@ exports.api = function(defaultLevel) {
     // RANGE
     const range = function(first, last, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Range(first, last, parameters, debug);
+        return new elements.Range([first, last], parameters, debug);
     };
 
     // REFERENCE

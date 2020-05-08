@@ -698,7 +698,7 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
             real = Infinity;
             break;
     }
-    this.result = new elements.Number(real, imaginary, parameters, this.debug);
+    this.result = new elements.Number([real, imaginary], parameters, this.debug);
 };
 
 
@@ -828,7 +828,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
     const tokens = ctx.getText().split('..');
     const first = tokens[0] ? literalToNumber(tokens[0]) : undefined;
     const last = tokens[1] ? literalToNumber(tokens[1]) : undefined;
-    const range = new elements.Range(first, last, parameters, this.debug);
+    const range = new elements.Range([first, last], parameters, this.debug);
     this.result = range;
 };
 

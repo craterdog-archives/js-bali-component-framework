@@ -22,13 +22,12 @@ const types = require('../types');
 /**
  * This function creates a new number range element using the specified value.
  *
- * @param {Number} first The first value in the number range.
- * @param {Number} last The last value in the number range.
+ * @param {Array} value An array containing the first and last values in the number range.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Range} The new number range.
  */
-const Range = function(first, last, parameters, debug) {
+const Range = function(value, parameters, debug) {
     types.Sequence.call(
         this,
         ['/bali/elements/Range'],
@@ -38,17 +37,14 @@ const Range = function(first, last, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Range', '$Range', '$first', first, [
-            '/javascript/Undefined',
-            '/javascript/Number'
-        ]);
-        validator.validateType('/bali/elements/Range', '$Range', '$last', last, [
-            '/javascript/Undefined',
-            '/javascript/Number'
+        validator.validateType('/bali/elements/Range', '$Range', '$value', value, [
+            '/javascript/Array'
         ]);
     }
 
     // since this element is immutable the values must be read-only
+    const first = value[0];
+    const last = value[1];
     this.getFirst = function() { return first; };
     this.getLast = function() { return last; };
 
@@ -60,6 +56,17 @@ exports.Range = Range;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method returns the raw value of the range as an array containing the first and last
+ * indices.
+ *
+ * @returns {Array} An array containing the first and last indices of the range.
+ */
+Range.prototype.getValue = function() {
+    return [this.getFirst(), this.getLast()];
+};
+
 
 /**
  * This method accepts a visitor as part of the visitor pattern.
@@ -127,7 +134,7 @@ Range.prototype.getItems = function(range) {
     }
     const first = this.getFirst() + this.normalizedIndex(range.getFirst()) - 1;
     const last = this.getFirst() + this.normalizedIndex(range.getLast()) - 1;
-    return new Range(first, last, this.getParameters(), this.debug);
+    return new Range([first, last], this.getParameters(), this.debug);
 };
 
 

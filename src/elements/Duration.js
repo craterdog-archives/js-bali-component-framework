@@ -49,18 +49,20 @@ const Duration = function(value, parameters, debug) {
         ]);
     }
     value = value || 0;  // default value
-    value = moment.duration(value);
+    const time = moment.duration(value);
+    value = time.asMilliseconds();  // set canonical value
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
-    this.getMilliseconds = function() { return value.milliseconds(); };
-    this.getSeconds = function() { return value.seconds(); };
-    this.getMinutes = function() { return value.minutes(); };
-    this.getHours = function() { return value.hours(); };
-    this.getDays = function() { return value.days(); };
-    this.getWeeks = function() { return value.weeks(); };
-    this.getMonths = function() { return value.months(); };
-    this.getYears = function() { return value.years(); };
+    this.getTime = function() { return time; };
+    this.getMilliseconds = function() { return time.milliseconds(); };
+    this.getSeconds = function() { return time.seconds(); };
+    this.getMinutes = function() { return time.minutes(); };
+    this.getHours = function() { return time.hours(); };
+    this.getDays = function() { return time.days(); };
+    this.getWeeks = function() { return time.weeks(); };
+    this.getMonths = function() { return time.months(); };
+    this.getYears = function() { return time.years(); };
 
     return this;
 };
@@ -88,7 +90,7 @@ Duration.prototype.toBoolean = function() {
  * @returns {number} The number of milliseconds of the duration.
  */
 Duration.prototype.toNumber = function() {
-    return this.getValue().asMilliseconds();
+    return this.getValue();
 };
 
 
@@ -120,7 +122,7 @@ Duration.inverse = function(duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(moment.duration().subtract(duration.getValue()).toISOString(), duration.getParameters(), debug);
+    return new Duration(moment.duration().subtract(duration.getTime()).toISOString(), duration.getParameters(), debug);
 };
 
 
@@ -143,7 +145,7 @@ Duration.sum = function(first, second, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(first.getValue().clone().add(second.getValue()).toISOString(), first.getParameters(), debug);
+    return new Duration(first.getTime().clone().add(second.getTime()).toISOString(), first.getParameters(), debug);
 };
 
 
@@ -166,7 +168,7 @@ Duration.difference = function(first, second, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(first.getValue().clone().subtract(second.getValue()).toISOString(), first.getParameters(), debug);
+    return new Duration(first.getTime().clone().subtract(second.getTime()).toISOString(), first.getParameters(), debug);
 };
 
 
@@ -188,5 +190,5 @@ Duration.scaled = function(duration, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    return new Duration(moment.duration(Math.round(duration.getValue().asMilliseconds() * factor)).toISOString(), duration.getParameters(), debug);
+    return new Duration(moment.duration(Math.round(duration.getValue() * factor)).toISOString(), duration.getParameters(), debug);
 };

@@ -25,13 +25,12 @@ const Angle = require('./Angle').Angle;
  * real and imaginary values.  If the imaginary value is an angle then the complex number
  * is in polar form, otherwise it is in rectangular form.
  *
- * @param {Number} real The real value of the complex number.
- * @param {Number|Angle} imaginary The imaginary value of the complex number.
+ * @param {Array} value The real and imaginary values of the complex number.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Complex} The new complex number.
  */
-const Complex = function(real, imaginary, parameters, debug) {
+const Complex = function(value, parameters, debug) {
     types.Element.call(
         this,
         ['/bali/elements/Number'],
@@ -44,18 +43,15 @@ const Complex = function(real, imaginary, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Number', '$Number', '$real', real, [
+        validator.validateType('/bali/elements/Number', '$Number', '$value', value, [
             '/javascript/Undefined',
-            '/javascript/Number'
-        ]);
-        validator.validateType('/bali/elements/Number', '$Number', '$imaginary', imaginary, [
-            '/javascript/Undefined',
-            '/javascript/Number',
-            '/bali/elements/Angle'
+            '/javascript/Array'
         ]);
     }
 
     // normalize the values
+    var real = value[0];
+    var imaginary = value[1];
     this.calculator = new utilities.Calculator(this.debug);
     if (real === real) real = real || 0;  // default value if not NaN and not defined
     real = this.calculator.lockOnExtreme(real);
@@ -100,9 +96,7 @@ const Complex = function(real, imaginary, parameters, debug) {
     };
 
     this.getValue = function() {
-        var value = this.toString();
-        if (this.isParameterized()) value = value.slice(0, value.indexOf(')(') + 1);  // remove the parameters
-        return value;
+        return [this.getReal(), this.getImaginary()];
     };
 
     return this;
@@ -227,13 +221,13 @@ Complex.inverse = function(number, debug) {
     }
 
     // handle the special cases
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(0, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([0, undefined], number.getParameters(), debug);
 
     const real = -number.getReal();
     const imaginary = -number.getImaginary();
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };
 
@@ -259,15 +253,15 @@ Complex.reciprocal = function(number, debug) {
     }
 
     // handle the special cases
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(0, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([0, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
 
     const calculator = new utilities.Calculator(debug);
     const squared = calculator.sum(calculator.product(number.getReal(), number.getReal()), calculator.product(number.getImaginary(), number.getImaginary()));
     const real = calculator.quotient(number.getReal(), squared);
     const imaginary = -calculator.quotient(number.getImaginary(), squared);
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };
 
@@ -291,13 +285,13 @@ Complex.conjugate = function(number, debug) {
     }
 
     // handle the special cases
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(0, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([0, undefined], number.getParameters(), debug);
 
     const real = number.getReal();
     const imaginary = -number.getImaginary();
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };
 
@@ -318,14 +312,14 @@ Complex.factorial = function(number, debug) {
     }
 
     // handle the special cases
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(1, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([1, undefined], number.getParameters(), debug);
 
     // just implement real factorials for now...
     // TODO: what should a complex factorial be?
     const factorial = gamma(number.getReal() + 1);
-    const result = new Complex(factorial, undefined, number.getParameters(), debug);
+    const result = new Complex([factorial, undefined], number.getParameters(), debug);
     return result;
 };
 
@@ -353,14 +347,14 @@ Complex.sum = function(first, second, debug) {
     }
 
     // handle the special cases
-    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity, undefined, first.getParameters(), debug);
-    if (first.isEqualTo(Complex.inverse(second))) return new Complex(0, undefined, first.getParameters(), debug);
+    if (first.isUndefined() || second.isUndefined()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isInfinite() || second.isInfinite()) return new Complex([Infinity, undefined], first.getParameters(), debug);
+    if (first.isEqualTo(Complex.inverse(second))) return new Complex([0, undefined], first.getParameters(), debug);
 
     const calculator = new utilities.Calculator(debug);
     const real = calculator.sum(first.getReal(), second.getReal());
     const imaginary = calculator.sum(first.getImaginary(), second.getImaginary());
-    const result = new Complex(real, imaginary, first.getParameters(), debug);
+    const result = new Complex([real, imaginary], first.getParameters(), debug);
     return result;
 };
 
@@ -415,16 +409,16 @@ Complex.scaled = function(number, factor, debug) {
     }
 
     // handle the special cases
-    if (number.isUndefined() || Number.isNaN(factor)) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isZero() && !Number.isFinite(factor)) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite() && factor === 0) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite() || !Number.isFinite(factor)) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero() || factor === 0) return new Complex(0, undefined, number.getParameters(), debug);
+    if (number.isUndefined() || Number.isNaN(factor)) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isZero() && !Number.isFinite(factor)) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite() && factor === 0) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite() || !Number.isFinite(factor)) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero() || factor === 0) return new Complex([0, undefined], number.getParameters(), debug);
 
     const calculator = new utilities.Calculator(debug);
     const real = calculator.product(number.getReal(), factor);
     const imaginary = calculator.product(number.getImaginary(), factor);
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };
 
@@ -452,16 +446,16 @@ Complex.product = function(first, second, debug) {
     }
 
     // handle the special cases
-    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isZero() && second.isInfinite()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isInfinite() && second.isZero()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isInfinite() || second.isInfinite()) return new Complex(Infinity, undefined, first.getParameters(), debug);
-    if (first.isZero() || second.isZero()) return new Complex(0, undefined, first.getParameters(), debug);
+    if (first.isUndefined() || second.isUndefined()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isZero() && second.isInfinite()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isInfinite() && second.isZero()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isInfinite() || second.isInfinite()) return new Complex([Infinity, undefined], first.getParameters(), debug);
+    if (first.isZero() || second.isZero()) return new Complex([0, undefined], first.getParameters(), debug);
 
     const calculator = new utilities.Calculator(debug);
     const real = calculator.difference(calculator.product(first.getReal(), second.getReal()), calculator.product(first.getImaginary(), second.getImaginary()));
     const imaginary = calculator.sum(calculator.product(first.getReal(), second.getImaginary()), calculator.product(first.getImaginary() * second.getReal()));
-    const result = new Complex(real, imaginary, first.getParameters(), debug);
+    const result = new Complex([real, imaginary], first.getParameters(), debug);
     return result;
 };
 
@@ -511,18 +505,18 @@ Complex.remainder = function(first, second, debug) {
     }
 
     // handle the special cases
-    if (first.isUndefined() || second.isUndefined()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isInfinite() && second.isInfinite()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (first.isZero() && second.isZero()) return new Complex(NaN, undefined, first.getParameters(), debug);
-    if (second.isInfinite()) return new Complex(0, undefined, first.getParameters(), debug);
-    if (second.isZero()) return new Complex(Infinity, undefined, first.getParameters(), debug);
+    if (first.isUndefined() || second.isUndefined()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isInfinite() && second.isInfinite()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (first.isZero() && second.isZero()) return new Complex([NaN, undefined], first.getParameters(), debug);
+    if (second.isInfinite()) return new Complex([0, undefined], first.getParameters(), debug);
+    if (second.isZero()) return new Complex([Infinity, undefined], first.getParameters(), debug);
 
     // just implement for integer values
     // TODO: what does remainder mean for complex numbers?
     const firstInteger = Math.round(first.getReal());
     const secondInteger = Math.round(second.getReal());
     const calculator = new utilities.Calculator(debug);
-    return new Complex(calculator.remainder(firstInteger, secondInteger), undefined, first.getParameters(), debug);
+    return new Complex([calculator.remainder(firstInteger, secondInteger), undefined], first.getParameters(), debug);
 };
 
 
@@ -549,11 +543,11 @@ Complex.exponential = function(base, exponent, debug) {
     }
 
     // handle the special cases
-    if (base.isUndefined() || exponent.isUndefined()) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (base.isZero() && (exponent.isZero() || exponent.isInfinite())) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (base.isInfinite() && exponent.isZero()) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (exponent.isInfinite()) return new Complex(Infinity, undefined, base.getParameters(), debug);
-    if (exponent.isZero()) return new Complex(1, undefined, base.getParameters(), debug);
+    if (base.isUndefined() || exponent.isUndefined()) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (base.isZero() && (exponent.isZero() || exponent.isInfinite())) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (base.isInfinite() && exponent.isZero()) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (exponent.isInfinite()) return new Complex([Infinity, undefined], base.getParameters(), debug);
+    if (exponent.isZero()) return new Complex([1, undefined], base.getParameters(), debug);
 
     const result = exp(Complex.product(exponent, ln(base, debug), debug), debug);
     return result;
@@ -584,11 +578,11 @@ Complex.logarithm = function(base, value, debug) {
     }
 
     // handle the special cases
-    if (base.isUndefined() || value.isUndefined()) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (base.isZero() && (value.isZero() || value.isInfinite())) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (base.isInfinite() && (value.isZero() || value.isInfinite())) return new Complex(NaN, undefined, base.getParameters(), debug);
-    if (value.isInfinite()) return new Complex(Infinity, undefined, base.getParameters(), debug);
-    if (value.isZero()) return new Complex(Infinity, undefined, base.getParameters(), debug);
+    if (base.isUndefined() || value.isUndefined()) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (base.isZero() && (value.isZero() || value.isInfinite())) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (base.isInfinite() && (value.isZero() || value.isInfinite())) return new Complex([NaN, undefined], base.getParameters(), debug);
+    if (value.isInfinite()) return new Complex([Infinity, undefined], base.getParameters(), debug);
+    if (value.isZero()) return new Complex([Infinity, undefined], base.getParameters(), debug);
 
     const result = Complex.quotient(ln(value, debug), ln(base, debug), debug);
     return result;
@@ -621,25 +615,25 @@ const gamma = function(number) {
 
 
 const exp = function(number, debug) {
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(1, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([1, undefined], number.getParameters(), debug);
     const calculator = new utilities.Calculator(debug);
     const scale = calculator.exponential(number.getReal());
     const real = calculator.product(scale, calculator.cosine(number.getImaginary()));
     const imaginary = calculator.product(scale, calculator.sine(number.getImaginary()));
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };
 
 
 const ln = function(number, debug) {
-    if (number.isUndefined()) return new Complex(NaN, undefined, number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex(Infinity, undefined, number.getParameters(), debug);
-    if (number.isZero()) return new Complex(Infinity, undefined, number.getParameters(), debug);
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
     const calculator = new utilities.Calculator(debug);
     const real = calculator.logarithm(number.getMagnitude());
     const imaginary = number.getPhase().getValue();
-    const result = new Complex(real, imaginary, number.getParameters(), debug);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
     return result;
 };

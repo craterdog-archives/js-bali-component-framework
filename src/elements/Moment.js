@@ -61,39 +61,40 @@ const Moment = function(value, parameters, debug) {
         ]);
     }
     value = value || undefined;
-    var format;
+    var timestamp, format;
     if (!value) {
         format = FORMATS[7];
-        value = moment.utc();  // the current moment
+        timestamp = moment.utc();  // the current moment
     } else {
         switch (typeof value) {
             case 'number':
                 format = FORMATS[7];
-                value = moment.utc(value);  // in milliseconds since EPOC
+                timestamp = moment.utc(value);  // in milliseconds since EPOC
                 break;
             case 'string':
                 FORMATS.find(function(candidate) {
-                    const attempt = moment.utc(value, candidate, true);  // true means strict mode
-                    if (attempt.isValid()) {
+                    timestamp = moment.utc(value, candidate, true);  // true means strict mode
+                    if (timestamp.isValid()) {
                         format = candidate;
-                        value = attempt;
                         return true;
                     }
                     return false;
                 });
         }
     }
+    value = timestamp.valueOf();  // set canonical value
 
     // since this element is immutable the attributes must be read-only
     this.getFormat = function() { return format; };
     this.getValue = function() { return value; };
-    this.getMillisecond = function() { return value.millisecond(); };
-    this.getSecond = function() { return value.second(); };
-    this.getMinute = function() { return value.minute(); };
-    this.getHour = function() { return value.hour(); };
-    this.getDay = function() { return value.date(); };
-    this.getMonth = function() { return value.month() + 1; };
-    this.getYear = function() { return value.year(); };
+    this.getTimestamp = function() { return timestamp; };
+    this.getMillisecond = function() { return timestamp.millisecond(); };
+    this.getSecond = function() { return timestamp.second(); };
+    this.getMinute = function() { return timestamp.minute(); };
+    this.getHour = function() { return timestamp.hour(); };
+    this.getDay = function() { return timestamp.date(); };
+    this.getMonth = function() { return timestamp.month() + 1; };
+    this.getYear = function() { return timestamp.year(); };
 
     return this;
 };
@@ -121,7 +122,7 @@ Moment.prototype.toBoolean = function() {
  * @returns {number} The number of milliseconds for the moment.
  */
 Moment.prototype.toNumber = function() {
-    return this.getValue().valueOf();
+    return this.getValue();
 };
 
 
@@ -156,7 +157,7 @@ Moment.duration = function(first, second, debug) {
             '/bali/elements/Moment'
         ]);
     }
-    const duration = moment.duration(second.getValue().diff(first.getValue()));
+    const duration = moment.duration(second.getTimestamp().diff(first.getTimestamp()));
     return new Duration(duration.toISOString(), undefined, debug);
 };
 
@@ -180,7 +181,7 @@ Moment.earlier = function(moment, duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    const earlier = moment.getValue().clone().subtract(duration.getValue());  // must clone first!
+    const earlier = moment.getTimestamp().clone().subtract(duration.getTime());  // must clone first!
     return new Moment(earlier.format(FORMATS[7]), moment.getParameters(), debug);
 };
 
@@ -204,6 +205,6 @@ Moment.later = function(moment, duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    const later = moment.getValue().clone().add(duration.getValue());  // must clone first!
+    const later = moment.getTimestamp().clone().add(duration.getTime());  // must clone first!
     return new Moment(later.format(FORMATS[7]), moment.getParameters(), debug);
 };
