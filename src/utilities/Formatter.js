@@ -610,26 +610,28 @@ FormattingVisitor.prototype.visitNumber = function(number) {
 // parameters: '(' catalog ')'
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     if (parameters) {
-        const keys = Object.keys(parameters);
+        const keys = parameters.getKeys();
         // inline if only one parameter
-        if (keys.length < 2) this.inline++;
+        if (keys.getSize() < 2) this.inline++;
         this.result += '(';
         this.depth++;
         var count = 0;
-        keys.forEach(function(key) {
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
             if (this.inline) {
                 if (count++) this.result += ', ';  // only after the first item has been formatted
             } else {
                 this.result += this.getNewline();
             }
             this.result += key + ': ';
-            const value = parameters[key];
+            const value = parameters.getValue(key);
             value.acceptVisitor(this);
-        }, this);
+        }
         this.depth--;
         if (!this.inline) this.result += this.getNewline();
         this.result += ')';
-        if (keys.length < 2) this.inline--;
+        if (keys.getSize() < 2) this.inline--;
     }
 };
 

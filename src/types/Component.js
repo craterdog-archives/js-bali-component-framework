@@ -47,25 +47,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         ]);
     }
 
-    // extract the actual type
-    ancestry = ancestry.concat('/bali/types/Component');
-    const type = ancestry[0];  // first type in the ancestry tree
-    this.isComponent = true;
-
-    // add in the component interfaces
-    interfaces = interfaces.concat(
-        '/bali/interfaces/Comparable',
-        '/bali/interfaces/Exportable'
-    );
-
-    // componentize any parameters but leave them in an Object
-    if (parameters) {
-        const keys = Object.keys(parameters);
-        keys.forEach(function(key) {
-            parameters[key] = this.componentize(parameters[key]);
-        }, this);
-    }
-
     this.getType = function() {
         return type;
     };
@@ -79,17 +60,35 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.getParameter = function(key) {
-        if (parameters) return parameters[key];
+        if (parameters) return parameters.getValue(key);
     };
 
     this.setParameter = function(key, value) {
-        parameters = parameters || {};
-        parameters[key] = this.componentize(value);
+        parameters = parameters || this.componentize({});
+        parameters.setValue(key, value);
     };
 
     this.getParameters = function() {
         return parameters;
     };
+
+    this.setParameters = function(object) {
+        if (object) parameters = this.componentize(object);
+    };
+
+    // extract the actual type
+    ancestry = ancestry.concat('/bali/types/Component');
+    const type = ancestry[0];  // first type in the ancestry tree
+    this.isComponent = true;
+
+    // add in the component interfaces
+    interfaces = interfaces.concat(
+        '/bali/interfaces/Comparable',
+        '/bali/interfaces/Exportable'
+    );
+
+    // parameterize the component as needed
+    this.setParameters(parameters);
 
     return this;
 };

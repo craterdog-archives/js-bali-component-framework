@@ -359,13 +359,14 @@ Visitor.prototype.visitNumber = function(number) {
 
 // parameters: '(' catalog ')'
 Visitor.prototype.visitParameters = function(parameters) {
-    if (parameters) {
-        const keys = Object.keys(parameters);
-        keys.forEach(function(key) {
-            // process key and value
-            const value = parameters[key];
-            value.acceptVisitor(this);
-        }, this);
+    if (parameters && parameters.getSize() > 0) {
+        this.depth++;
+        const iterator = parameters.getIterator();
+        while (iterator.hasNext()) {
+            const association = iterator.getNext();
+            association.acceptVisitor(this);
+        }
+        this.depth--;
     }
 };
 

@@ -167,7 +167,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
     var units = '$radians';  // default value
     if (parameters) {
-        units = parameters['$units'];
+        units = parameters.getValue('$units');
         if (units) units = units.toString();
     }
     switch (units) {
@@ -238,7 +238,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
     value = value.replace(/\s/g, '');  // strip out any whitespace
     var encoding = '$base32';  // default value
     if (parameters) {
-        encoding = parameters['$encoding'];
+        encoding = parameters.getValue('$encoding');
         if (encoding) encoding = encoding.toString();
     }
     const decoder = new utilities.Decoder(0, this.debug);
@@ -562,7 +562,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     const parameters = this.getParameters();
     var name;
     if (parameters) {
-        name = parameters['$type'];
+        name = parameters.getValue('$type');
         if (name && name.isComponent && name.isType('/bali/elements/Name')) {
             type = name.getValue()[2];  // /bali/collections/<type>/<version>
         } else {
@@ -710,10 +710,9 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
 ParsingVisitor.prototype.visitParameters = function(ctx) {
     // process the catalog
     ctx.catalog().accept(this);
-    const catalog = this.result;
 
     // there must be at least one parameter
-    if (catalog.isEmpty()) {
+    if (this.result.isEmpty()) {
         const exception = new structures.Exception({
             $module: '/bali/utilities/Parser',
             $procedure: '$visitParameters',
@@ -723,28 +722,6 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-
-    // convert the catalog to an object to avoid circular dependencies in component
-    const object = {};
-    const iterator = catalog.getIterator();
-    while (iterator.hasNext()) {
-        const association = iterator.getNext();
-        const key = association.getKey();
-        const value = association.getValue();
-        // all keys must symbols
-        if (!key.isType('/bali/elements/Symbol')) {
-            const exception = new structures.Exception({
-                $module: '/bali/utilities/Parser',
-                $procedure: '$visitParameters',
-                $exception: '$invalidType',
-                $text: 'Each parameter key must be of type symbol.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
-            throw exception;
-        }
-        object[key.toString()] = value;
-    }
-    this.result = object;
 };
 
 

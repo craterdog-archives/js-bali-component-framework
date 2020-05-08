@@ -187,7 +187,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     var parameters = binary.getParameters();
     var format;
     if (parameters) {
-        format = parameters['$encoding'];
+        format = parameters.getValue('$encoding');
         if (format) format = format.toString();
     }
     const decoder = new Decoder(0, this.debug);
@@ -320,7 +320,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
     var parameters = number.getParameters();
     var format;
     if (parameters) {
-        format = parameters['$format'];
+        format = parameters.getValue('$format');
         if (format) format = format.toString();
     } else {
         format = '$rectangular';
@@ -367,54 +367,57 @@ FormattingVisitor.prototype.visitNumber = function(number) {
 FormattingVisitor.prototype.visitParameters = function(parameters) {
     if (parameters) {
 
-            // begin the div element
-            this.result += '<div class="parameters">';
-            this.result += this.getNewline();
-            this.result += '<div class="type">Parameters</div>';
+        // begin the div element
+        this.result += '<div class="parameters">';
+        this.result += this.getNewline();
+        this.result += '<div class="type">Parameters</div>';
+        this.depth++;
+        const keys = parameters.getKeys();
+        const iterator = keys.getIterator();
+
+        // find the widest key
+        var width = 0;
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const length = key.toString().length;
+            if (width < length) width = length;
+        }
+        this.width.push(width);  // save off the widest one
+
+        // iterate through the parameters
+        iterator.toStart();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = parameters.getValue(key);
+            this.result += '<div class="association">';
             this.depth++;
-            const keys = Object.keys(parameters);
-
-            // find the widest key
-            var width = 0;
-            keys.forEach(function(key) {
-                const length = key.length;
-                if (width < length) width = length;
-            }, this);
-            this.width.push(width);  // save off the widest one
-
-            // iterate through the parameters
-            keys.forEach(function(key) {
-                const value = parameters[key];
-                key = value.componentize(key);
-                this.result += '<div class="association">';
-                this.depth++;
-                this.result += this.getNewline();
-                this.result += '<div class="key" style="width:' + this.width.peek() + 'ch">';
-                this.depth++;
-                this.result += this.getNewline();
-                key.acceptVisitor(this);
-                this.depth--;
-                this.result += '</div>';
-                this.result += this.getNewline();
-                this.result += '<div class="colon">:</div>';
-                this.result += this.getNewline();
-                this.result += '<div class="value">';
-                this.depth++;
-                this.result += this.getNewline();
-                value.acceptVisitor(this);
-                this.depth--;
-                this.result += this.getNewline();
-                this.result += '</div>';
-                this.depth--;
-                this.result += this.getNewline();
-                this.result += '</div>';
-            }, this);
-            this.width.pop();  // we are done with it
-
-            // terminate the div element
+            this.result += this.getNewline();
+            this.result += '<div class="key" style="width:' + this.width.peek() + 'ch">';
+            this.depth++;
+            this.result += this.getNewline();
+            key.acceptVisitor(this);
+            this.depth--;
+            this.result += '</div>';
+            this.result += this.getNewline();
+            this.result += '<div class="colon">:</div>';
+            this.result += this.getNewline();
+            this.result += '<div class="value">';
+            this.depth++;
+            this.result += this.getNewline();
+            value.acceptVisitor(this);
             this.depth--;
             this.result += this.getNewline();
             this.result += '</div>';
+            this.depth--;
+            this.result += this.getNewline();
+            this.result += '</div>';
+        }
+        this.width.pop();  // we are done with it
+
+        // terminate the div element
+        this.depth--;
+        this.result += this.getNewline();
+        this.result += '</div>';
     }
 };
 
@@ -602,14 +605,16 @@ const formatImaginary = function(value) {
 const formatParameters = function(parameters) {
     var formatted = '';
     if (parameters) {
-        const keys = Object.keys(parameters);
+        const keys = parameters.getKeys();
+        const iterator = keys.getIterator();
         formatted += ' (';
         var count = 0;
-        keys.forEach(function(key) {
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
             if (count++) formatted += ', ';  // only after the first parameter has been formatted
-            formatted += key.slice(1) + ': ';  // strip off the leading '$'
-            formatted += parameters[key].toString().replace(/\$/g, '');  // strip of any leading '$'s
-        }, this);
+            formatted += key.getValue() + ': ';  // strip off the leading '$'
+            formatted += parameters.getValue(key).toString().replace(/\$/g, '');  // strip of any leading '$'s
+        }
         formatted += ')';
     }
     return formatted;

@@ -415,18 +415,18 @@ DuplicatingVisitor.prototype.visitNumber = function(number) {
 
 // parameters: '(' catalog ')'
 DuplicatingVisitor.prototype.visitParameters = function(parameters) {
-     if (parameters) {
-         const copy = {};
-         const keys = Object.keys(parameters);
-         keys.forEach(function(key) {
-             const value = parameters[key];
-             value.acceptVisitor(this);
-             copy[key] = this.result;
-         }, this);
-         this.result = copy;
-     } else {
-         this.result = undefined;  // must remove the previous value
-     }
+    if (parameters) {
+        const copy = new parameters.constructor(undefined, this.debug);
+        const iterator = parameters.getIterator();
+        while (iterator.hasNext()) {
+            var association = iterator.getNext();
+            association.acceptVisitor(this);
+            copy.addItem(this.result);
+        }
+        this.result = copy;
+    } else {
+        this.result = undefined;  // must remove the previous value
+    }
 };
 
 

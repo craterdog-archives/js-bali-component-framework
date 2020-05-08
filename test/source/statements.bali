@@ -11,6 +11,8 @@
             $type: "BadException"
         ] with {
             continue loop
+        } matching any with {
+            break loop
         }
         post message() on <bali:/MessageQueue?[$protocol:v1,$tag:#G25C4SVPHLQY6LQSYMKMCWC5BRQKTA4K,$version:v1,$digest:none]>
         if false then {
