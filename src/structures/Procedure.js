@@ -76,6 +76,18 @@ exports.Procedure = Procedure;
 // PUBLIC METHODS
 
 /**
+ * This method returns the literal string value for this procedure.  The literal does not
+ * include any parameterization of the procedure.
+ *
+ * @returns {String} The literal string value for this procedure.
+ */
+Procedure.prototype.toLiteral = function() {
+    const copy = new this.constructor(this.getStatements(), undefined, this.debug);
+    return copy.toString();
+};
+
+
+/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this procedure.

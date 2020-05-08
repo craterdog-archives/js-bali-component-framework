@@ -99,6 +99,10 @@ describe('Bali Nebula™ Component Framework - Number', function() {
             }
         });
 
+        it('should perform the toLiteral method correctly', function() {
+            expect(bali.number(3, 4).toString()).to.equal(bali.number(3, 4, {$units: '$radians'}).toLiteral());
+        });
+
         it('should perform the getReal method correctly', function() {
             expect(bali.number.UNDEFINED.getReal().toString()).to.equal('NaN');
             expect(bali.number.INFINITY.getReal()).to.equal(Infinity);
