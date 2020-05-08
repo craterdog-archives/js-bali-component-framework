@@ -293,7 +293,7 @@ DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
 };
 
 
-// handleClause: 'handle' symbol 'matching' expression 'with' block
+// handleClause: 'handle' symbol ('matching' expression 'with' block)+
 DuplicatingVisitor.prototype.visitHandleClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
@@ -544,7 +544,7 @@ DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: mainClause handleClause*
+// statement: mainClause handleClause?
 DuplicatingVisitor.prototype.visitStatement = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();

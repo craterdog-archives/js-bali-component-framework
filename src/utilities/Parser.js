@@ -492,15 +492,19 @@ ParsingVisitor.prototype.visitFuncxion = function(ctx) {
 };
 
 
-// handleClause: 'handle' symbol 'matching' expression 'with' block
+// handleClause: 'handle' symbol ('matching' expression 'with' block)+
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
     const tree = new collections.Tree('/bali/structures/HandleClause', this.debug);
     ctx.symbol().accept(this);
     tree.addItem(this.result);
-    ctx.expression().accept(this);
-    tree.addItem(this.result);
-    ctx.block().accept(this);
-    tree.addItem(this.result);
+    const expressions = ctx.expression();
+    const blocks = ctx.block();
+    for (var i = 0; i < expressions.length; i++) {
+        expressions[i].accept(this);
+        tree.addItem(this.result);
+        blocks[i].accept(this);
+        tree.addItem(this.result);
+    }
     this.result = tree;
 };
 
@@ -900,16 +904,16 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
 };
 
 
-// statement: mainClause handleClause*
+// statement: mainClause handleClause?
 ParsingVisitor.prototype.visitStatement = function(ctx) {
     const tree = new collections.Tree('/bali/structures/Statement', this.debug);
     ctx.mainClause().accept(this);
     tree.addItem(this.result);
-    const handleClauses = ctx.handleClause();
-    handleClauses.forEach(function(clause) {
-        clause.accept(this);
+    const handleClause = ctx.handleClause();
+    if (handleClause) {
+        handleClause.accept(this);
         tree.addItem(this.result);
-    }, this);
+    }
     this.result = tree;
 };
 

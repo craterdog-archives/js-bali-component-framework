@@ -1,7 +1,7 @@
 grammar Statements;
 import Expressions;
 
-statement: mainClause handleClause*;
+statement: mainClause handleClause?;
 
 mainClause:
     evaluateClause |
@@ -22,7 +22,7 @@ mainClause:
     throwClause
 ;
 
-handleClause: 'handle' symbol 'matching' expression 'with' block;
+handleClause: 'handle' symbol ('matching' expression 'with' block)+;
 
 block: '{' statements '}';
 

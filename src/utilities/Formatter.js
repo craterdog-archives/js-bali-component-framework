@@ -420,17 +420,23 @@ FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
 };
 
 
-// handleClause: 'handle' symbol 'matching' expression 'with' block
+// handleClause: 'handle' symbol ('matching' expression 'with' block)+
 FormattingVisitor.prototype.visitHandleClause = function(tree) {
+    // handle 'symbol'
     this.result += ' handle ';
-    const exception = tree.getItem(1);
-    exception.acceptVisitor(this);
-    this.result += ' matching ';
-    const pattern = tree.getItem(2);
-    pattern.acceptVisitor(this);
-    this.result += ' with ';
-    const block = tree.getItem(3);
-    block.acceptVisitor(this);
+    var symbol = tree.getItem(1);
+    symbol.acceptVisitor(this);
+
+    // handle matching pattern blocks
+    const size = tree.getSize();
+    for (var i = 2; i <= size; i += 2) {
+        this.result += ' matching ';
+        const pattern = tree.getItem(i);
+        pattern.acceptVisitor(this);
+        this.result += ' with ';
+        const block = tree.getItem(i + 1);
+        block.acceptVisitor(this);
+    }
 };
 
 
@@ -790,7 +796,7 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: mainClause handleClause*
+// statement: mainClause handleClause?
 FormattingVisitor.prototype.visitStatement = function(tree) {
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
