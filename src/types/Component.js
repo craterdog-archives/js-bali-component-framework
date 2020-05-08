@@ -43,7 +43,8 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         ]);
         validator.validateType('/bali/types/Component', '$Component', '$parameters', parameters, [
             '/javascript/Undefined',
-            '/javascript/Object'
+            '/javascript/Object',
+            '/bali/collections/Catalog'
         ]);
     }
 

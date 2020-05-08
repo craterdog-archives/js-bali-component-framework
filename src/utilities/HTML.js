@@ -494,8 +494,7 @@ FormattingVisitor.prototype.visitRange = function(range) {
     if (last !== undefined) {
         this.result += formatReal(last);
     }
-    const parameters = range.getParameters();
-    this.visitParameters(parameters);  // format any parameterization
+    this.result += formatParameters(range.getParameters());
     this.result += '</div>';
 };
 
