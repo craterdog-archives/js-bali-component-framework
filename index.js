@@ -229,6 +229,12 @@ exports.api = function(defaultLevel) {
         return collections.Catalog.extraction(catalog, keys, debug);
     };
 
+    // COMPARATOR
+    const comparator = function(algorithm, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Comparator(algorithm, debug);
+    };
+
     // COMPONENT
     const component = function(document, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -609,6 +615,7 @@ exports.api = function(defaultLevel) {
         binary: binary,
         catalog: catalog,
         component: component,
+        comparator: comparator,
         controller: controller,
         configurator: configurator,
         decoder: decoder,

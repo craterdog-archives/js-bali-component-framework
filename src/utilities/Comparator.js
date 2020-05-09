@@ -61,15 +61,15 @@ exports.Comparator = Comparator;
 
 
 /**
- * This method compares two components for their natural ordering.
+ * This method compares two objects for their natural ordering.
  *
- * @param {Component} first The first component to be compared.
- * @param {Component} second The second component to be compared.
+ * @param {Object} first The first component to be compared.
+ * @param {Object} second The second component to be compared.
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  *
  */
 const natural = function(first, second) {
-    // handle undefined components
+    // handle undefined objects
     if (first === null) first = undefined;  // normalize nulls
     if (second === null) second = undefined;  // normalize nulls
     if (first !== undefined && second === undefined) {
@@ -82,7 +82,25 @@ const natural = function(first, second) {
         return 0;  // nothing is equal to nothing
     }
 
-    // handle boolean components
+    // handle numeric values
+    if (typeof first === 'number' && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first - second);
+    }
+    if (first.toNumber && (typeof second === 'number' || typeof second === 'boolean')) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first.toNumber() - second);
+    }
+    if ((typeof first === 'number' || typeof first === 'boolean') && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first - second.toNumber());
+    }
+    if (first.toNumber && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        return Math.sign(first.toNumber() - second.toNumber());
+    }
+
+    // handle logical values
     if (typeof first === 'boolean' && typeof second === 'boolean') {
         return Math.sign(first - second);
     }
@@ -93,25 +111,7 @@ const natural = function(first, second) {
         return Math.sign(first - second.toBoolean());
     }
 
-    // handle numeric components
-    if (typeof first === 'number' && typeof second === 'number') {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-        return Math.sign(first - second);
-    }
-    if (first.toNumber && typeof second === 'number') {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-        return Math.sign(first.toNumber() - second);
-    }
-    if (typeof first === 'number' && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-        return Math.sign(first - second.toNumber());
-    }
-    if (first.toNumber && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
-        return Math.sign(first.toNumber() - second.toNumber());
-    }
-
-    // handle string components
+    // handle string values
     if (typeof first === 'string' && typeof second === 'string') {
         return Math.sign(first.localeCompare(second));
     }
@@ -120,6 +120,40 @@ const natural = function(first, second) {
     }
     if (typeof first === 'string' && second.isComponent && second.supportsInterface('/bali/interfaces/Literal')) {
         return Math.sign(first.localeCompare(second.toString()));
+    }
+
+    // handle arrays
+    if (Array.isArray(first) && Array.isArray(second)) {
+        var firstIndex = 0;
+        var secondIndex = 0;
+        var result = 0;
+        while (result === 0 && firstIndex < first.length && secondIndex < second.length) {
+            result = natural(first[firstIndex], second[secondIndex]);
+        }
+        if (result !== 0) {
+            return result;
+        }  // found a difference
+        if (firstIndex < first.length) {
+            return 1;
+        }  // the first is longer than the second
+        if (secondIndex < second.length) {
+            return -1;
+        }  // the second is longer than the first
+        return 0;  // they are the same length and all values are equal
+    }
+
+    // handle buffers
+    if (first.constructor.name === 'Buffer' && second.constructor.name === 'Buffer') {
+        return Buffer.compare(first, second);
+    }
+
+    // handle associations
+    if (first.isType && first.isType('/bali/structures/Association') && second.isType && second.isType('/bali/structures/Association')) {
+        var result = natural(first.getKey(), second.getKey());
+        if (result === 0) {
+            result = natural(first.getValue(), second.getValue());
+        }
+        return result;
     }
 
     // handle range components
@@ -151,6 +185,11 @@ const natural = function(first, second) {
         return 0;  // they are the same length and all items are equal
     }
 
-    // must be two elemental objects of the same type, compare their string values
+    // handle elements
+    if (first.getValue && second.getValue) {
+        return natural(first.getValue(), second.getValue());
+    }
+
+    // anything else, compare their string values
     return Math.sign(first.toString().localeCompare(second.toString()));
 };
