@@ -100,7 +100,7 @@ const natural = function(first, second) {
         return Math.sign(first.toNumber() - second.toNumber());
     }
 
-    // handle logical values
+    // handle boolean values
     if (typeof first === 'boolean' && typeof second === 'boolean') {
         return Math.sign(first - second);
     }
@@ -116,10 +116,10 @@ const natural = function(first, second) {
         return Math.sign(first.localeCompare(second));
     }
     if (first.isComponent && first.supportsInterface('/bali/interfaces/Literal') && typeof second === 'string') {
-        return Math.sign(first.toString().localeCompare(second));
+        return Math.sign(first.toLiteral().localeCompare(second));
     }
     if (typeof first === 'string' && second.isComponent && second.supportsInterface('/bali/interfaces/Literal')) {
-        return Math.sign(first.localeCompare(second.toString()));
+        return Math.sign(first.localeCompare(second.toLiteral()));
     }
 
     // handle arrays
@@ -128,7 +128,7 @@ const natural = function(first, second) {
         var secondIndex = 0;
         var result = 0;
         while (result === 0 && firstIndex < first.length && secondIndex < second.length) {
-            result = natural(first[firstIndex], second[secondIndex]);
+            result = natural(first[firstIndex++], second[secondIndex++]);
         }
         if (result !== 0) {
             return result;
@@ -165,8 +165,8 @@ const natural = function(first, second) {
         return result;
     }
 
-    // handle structure components
-    if (first.getIterator && first.getSize() < Infinity && second.getIterator && second.getSize() < Infinity) {
+    // handle collection components
+    if (first.isType && first.isType('/bali/types/Collection') && second.isType && second.isType('/bali/types/Collection')) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();
         var result = 0;

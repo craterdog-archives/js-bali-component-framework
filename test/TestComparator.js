@@ -29,19 +29,6 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
     });
 
-    describe('Test logical comparisons', function() {
-
-        it('should handle probabilities', function() {
-            const probability = bali.probability(0.5);
-            expect(comparator.compareComponents(probability, true)).to.equal(-1);
-            expect(comparator.compareComponents(true, probability)).to.equal(1);
-            expect(comparator.compareComponents(probability, false)).to.equal(1);
-            expect(comparator.compareComponents(false, probability)).to.equal(-1);
-            expect(comparator.compareComponents(probability, probability)).to.equal(0);
-        });
-
-    });
-
     describe('Test numeric comparisons', function() {
         const angle = bali.angle.PI;
         const number = bali.number(3, 4);
@@ -73,6 +60,32 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents(probability, angle)).to.equal(-1);
             expect(comparator.compareComponents(probability, number)).to.equal(-1);
             expect(comparator.compareComponents(probability, percent)).to.equal(1);
+            expect(comparator.compareComponents(probability, probability)).to.equal(0);
+        });
+
+    });
+
+    describe('Test logical comparisons', function() {
+
+        it('should handle probabilities', function() {
+            const probability = bali.probability(0.5);
+            expect(comparator.compareComponents(probability, true)).to.equal(-1);
+            expect(comparator.compareComponents(true, probability)).to.equal(1);
+            expect(comparator.compareComponents(probability, false)).to.equal(1);
+            expect(comparator.compareComponents(false, probability)).to.equal(-1);
+            expect(comparator.compareComponents(probability, probability)).to.equal(0);
+        });
+
+    });
+
+    describe('Test string comparisons', function() {
+
+        it('should handle probabilities', function() {
+            const probability = bali.probability(0.5);
+            expect(comparator.compareComponents(probability, true)).to.equal(-1);
+            expect(comparator.compareComponents(true, probability)).to.equal(1);
+            expect(comparator.compareComponents(probability, false)).to.equal(1);
+            expect(comparator.compareComponents(false, probability)).to.equal(-1);
             expect(comparator.compareComponents(probability, probability)).to.equal(0);
         });
 
