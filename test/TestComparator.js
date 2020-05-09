@@ -80,13 +80,25 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
     describe('Test string comparisons', function() {
 
-        it('should handle probabilities', function() {
-            const probability = bali.probability(0.5);
-            expect(comparator.compareComponents(probability, true)).to.equal(-1);
-            expect(comparator.compareComponents(true, probability)).to.equal(1);
-            expect(comparator.compareComponents(probability, false)).to.equal(1);
-            expect(comparator.compareComponents(false, probability)).to.equal(-1);
-            expect(comparator.compareComponents(probability, probability)).to.equal(0);
+        it('should handle angles', function() {
+            const angle = bali.angle.PI;
+            expect(comparator.compareComponents('~π', '~τ')).to.equal(-1);
+            expect(comparator.compareComponents(angle, '~π')).to.equal(0);
+            expect(comparator.compareComponents('~τ', angle)).to.equal(1);
+        });
+
+        it('should handle binaries', function() {
+            const binary = bali.binary([1, 2, 3, 4]);
+            expect(comparator.compareComponents("'0410610'", "'0410614'")).to.equal(-1);
+            expect(comparator.compareComponents(binary, "'0410610'")).to.equal(0);
+            expect(comparator.compareComponents("'0410614'", binary)).to.equal(1);
+        });
+
+        it('should handle numbers', function() {
+            const number = bali.number(3, 4);
+            expect(comparator.compareComponents('5', '4')).to.equal(1);
+            expect(comparator.compareComponents(number, '(3, 4i)')).to.equal(0);
+            expect(comparator.compareComponents('(3, 5i)', number)).to.equal(1);
         });
 
     });
