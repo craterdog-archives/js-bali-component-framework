@@ -103,10 +103,46 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents('<2020-04-01T13:24:56.790>', moment)).to.equal(1);
         });
 
+        it('should handle names', function() {
+            const name = bali.name(['bali', 'collections', 'Set', 'v1']);
+            expect(comparator.compareComponents(name, '/bali/collections/Set/v2')).to.equal(-1);
+            expect(comparator.compareComponents('/bali/collections/Stack/v1', name)).to.equal(1);
+        });
+
         it('should handle numbers', function() {
             const number = bali.number(3, 4);
             expect(comparator.compareComponents(number, '(3, 4i)')).to.equal(0);
             expect(comparator.compareComponents('(3, 5i)', number)).to.equal(1);
+        });
+
+        it('should handle patterns', function() {
+            const pattern = bali.pattern();
+            expect(comparator.compareComponents(pattern, '"^none$"?')).to.equal(0);
+            expect(comparator.compareComponents('any', pattern)).to.equal(-1);
+        });
+
+        it('should handle percents', function() {
+            const percent = bali.percent(25);
+            expect(comparator.compareComponents(percent, '25%')).to.equal(0);
+            expect(comparator.compareComponents('5%', percent)).to.equal(-1);
+        });
+
+        it('should handle probabilities', function() {
+            const probability = bali.probability(0.5);
+            expect(comparator.compareComponents(probability, 'false')).to.equal(1);
+            expect(comparator.compareComponents('true', probability)).to.equal(1);
+        });
+
+        it('should handle ranges', function() {
+            const range = bali.range();
+            expect(comparator.compareComponents(range, '..0')).to.equal(1);
+            expect(comparator.compareComponents('0..', range)).to.equal(1);
+        });
+
+        it('should handle references', function() {
+            const reference = bali.reference('https://google.com');
+            expect(comparator.compareComponents(reference, 'https://amazon.com')).to.equal(1);
+            expect(comparator.compareComponents('https://apple.com', reference)).to.equal(-1);
         });
 
     });

@@ -158,6 +158,11 @@ const natural = function(first, second) {
         return 0;  // they are the same length and all values are equal
     }
 
+    // handle RegExp
+    if (first.constructor.name === 'RegExp' && second.constructor.name === 'RegExp') {
+        return Math.sign(first.source.localeCompare(second.source));
+    }
+
     // handle buffers
     if (first.constructor.name === 'Buffer' && second.constructor.name === 'Buffer') {
         return Buffer.compare(first, second);
