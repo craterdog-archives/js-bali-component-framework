@@ -98,6 +98,8 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         it('should perform the inverse function correctly', function() {
             expect(bali.angle.inverse(bali.angle(0)).isEqualTo(bali.angle.PI)).to.equal(true);
             expect(bali.angle.inverse(bali.angle(Math.PI / 4)).isEqualTo(bali.angle(-Math.PI * 3 / 4))).to.equal(true);
+            console.log('angle: ' + bali.angle.inverse(bali.angle(Math.PI / 2)).toNumber());
+            console.log('angle: ' + bali.angle(-Math.PI / 2).toNumber());
             expect(bali.angle.inverse(bali.angle(Math.PI / 2)).isEqualTo(bali.angle(-Math.PI / 2))).to.equal(true);
             expect(bali.angle.inverse(bali.angle(Math.PI * 3 / 4)).isEqualTo(bali.angle(-Math.PI / 4))).to.equal(true);
             expect(bali.angle.inverse(bali.angle.PI).isEqualTo(bali.angle(0))).to.equal(true);

@@ -84,23 +84,39 @@ const natural = function(first, second) {
 
     // handle numeric values
     if (typeof first === 'number' && typeof second === 'number') {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(first - second);
     }
     if (first.toNumber && (typeof second === 'number' || typeof second === 'boolean')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(first.toNumber() - second);
     }
     if ((typeof first === 'number' || typeof first === 'boolean') && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+        if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(first - second.toNumber());
     }
-    if (first.toNumber && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN and Infinity
+    if (first.isComponent && first.isType('/bali/elements/Number') && second.isComponent && second.isType('/bali/elements/Number')) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN
+        var result = Math.sign(Math.fround(first.getMagnitude()) - Math.fround(second.getMagnitude()));
+        if (result === 0) {
+            result = natural(first.getPhase(), second.getPhase());
+        }
+        return result;
+    }
+    if (first.isComponent && first.isType('/bali/elements/Duration') && second.isComponent && second.isType('/bali/elements/Duration')) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(first.toNumber() - second.toNumber());
     }
+    if (first.isComponent && first.isType('/bali/elements/Moment') && second.isComponent && second.isType('/bali/elements/Moment')) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN
+        return Math.sign(first.toNumber() - second.toNumber());
+    }
+    if (first.toNumber && second.toNumber) {
+        if (first.toString() === second.toString()) return 0;  // handle NaN
+        return Math.sign(Math.fround(first.toNumber()) - Math.fround(second.toNumber()));
+    }
 
-    // handle boolean values
+    // handle boolean values (must come after numeric values since all components support toBoolean)
     if (typeof first === 'boolean' && typeof second === 'boolean') {
         return Math.sign(first - second);
     }
@@ -115,11 +131,11 @@ const natural = function(first, second) {
     if (typeof first === 'string' && typeof second === 'string') {
         return Math.sign(first.localeCompare(second));
     }
-    if (first.isComponent && first.supportsInterface('/bali/interfaces/Literal') && typeof second === 'string') {
-        return Math.sign(first.toLiteral().localeCompare(second));
+    if (first.isComponent && typeof second === 'string') {
+        return natural(first, first.componentize(second));
     }
-    if (typeof first === 'string' && second.isComponent && second.supportsInterface('/bali/interfaces/Literal')) {
-        return Math.sign(first.localeCompare(second.toLiteral()));
+    if (typeof first === 'string' && second.isComponent) {
+        return natural(second.componentize(first), second);
     }
 
     // handle arrays
@@ -147,8 +163,13 @@ const natural = function(first, second) {
         return Buffer.compare(first, second);
     }
 
+    // handle exceptions
+    if (first.isComponent && first.isType('/bali/structures/Exception') && second.isComponent && second.isType('/bali/structures/Exception')) {
+        return natural(first.getAttributes(), second.getAttributes());
+    }
+
     // handle associations
-    if (first.isType && first.isType('/bali/structures/Association') && second.isType && second.isType('/bali/structures/Association')) {
+    if (first.isComponent && first.isType('/bali/structures/Association') && second.isComponent && second.isType('/bali/structures/Association')) {
         var result = natural(first.getKey(), second.getKey());
         if (result === 0) {
             result = natural(first.getValue(), second.getValue());
@@ -166,7 +187,7 @@ const natural = function(first, second) {
     }
 
     // handle collection components
-    if (first.isType && first.isType('/bali/types/Collection') && second.isType && second.isType('/bali/types/Collection')) {
+    if (first.isComponent && first.isType('/bali/types/Collection') && second.isComponent && second.isType('/bali/types/Collection')) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();
         var result = 0;

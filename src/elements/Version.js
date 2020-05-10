@@ -81,41 +81,6 @@ Version.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method compares two versions for ordering.
- *
- * @param {Version} that The other version to be compared with.
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Version.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-
-    // compare types
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return this.toString().localeCompare(that.toString());
-    }
-
-    // compare levels
-    const thisLevels = this.getValue();
-    const thatLevels = that.getValue();
-    var index = 0;
-    while (index < thisLevels.length && index < thatLevels.length) {
-        if (thisLevels[index] < thatLevels[index]) return -1;
-        if (thisLevels[index] > thatLevels[index]) return 1;
-        index++;
-    }
-
-    // so far they are the same...
-    if (thisLevels.length < thatLevels.length) return -1;
-    if (thisLevels.length > thatLevels.length) return 1;
-
-    // they are exactly the same version levels
-    return 0;
-};
-
-
-/**
  * This method returns the number of levels that this version string has.
  *
  * @returns {Number} The number of levels that this version string has.

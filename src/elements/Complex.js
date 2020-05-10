@@ -160,37 +160,6 @@ Complex.prototype.isInfinite = function() {
 
 
 /**
- * This method compares this complex number to another for ordering.
- *
- * @param {Object} that The other complex number to be compared with.
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Complex.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-
-    // check the types
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return this.toString().localeCompare(that.toString());
-    }
-
-    // the types are the same, check the magnitudes
-    const thisMagnitude = this.getMagnitude();
-    const thatMagnitude = that.getMagnitude();
-    if (Math.fround(thisMagnitude) < Math.fround(thatMagnitude)) return -1;
-    if (Math.fround(thisMagnitude) > Math.fround(thatMagnitude)) return 1;
-
-    // the magnitudes are equal, check the phases
-    const thisPhase = this.getPhase();
-    const thatPhase = that.getPhase();
-    if (thisPhase) return thisPhase.comparedTo(thatPhase);
-
-    return 0;  // both must be undefined
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this element.

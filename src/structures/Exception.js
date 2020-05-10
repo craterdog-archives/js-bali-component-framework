@@ -116,7 +116,7 @@ Exception.prototype.isType = function(type) {
 /**
  * This method returns whether or not this component supports the specified interface.
  *
- * @param {String} type The name of the interface in question.
+ * @param {String} iface The name of the interface in question.
  * @returns {Boolean} Whether or not this component supports the specified interface.
  */
 Exception.prototype.supportsInterface = function(iface) {
@@ -177,8 +177,9 @@ Exception.prototype.isEqualTo = function(that) {
 
 
 /**
- * This method compares this component with another object for natural order. It may be
- * overridden with a more efficient implementation by a subclass.
+ * This method compares this exception with another object for natural order. Since an
+ * exception is a hybrid of a component and the JS exception class the attributes of
+ * the exceptions are compared.
  *
  * @param {Object} that The object that is being compared.
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.

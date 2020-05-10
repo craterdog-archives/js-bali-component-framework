@@ -49,6 +49,7 @@ const Probability = function(value, parameters, debug) {
         ]);
     }
 
+    this.calculator = new utilities.Calculator(this.debug);
     if (value === false) value = 0;           // change false to zero
     if (value === true) value = 1;            // chane true to one
     if (value === value) value = value || 0;  // default value if not NaN and not defined

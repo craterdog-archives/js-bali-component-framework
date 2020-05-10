@@ -139,31 +139,6 @@ Angle.prototype.getDegrees = function() {
 
 
 /**
- * This method compares this angle to another for ordering.
- *
- * @param {Object} that The other angle to be compared with.
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Angle.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-
-    // check the types
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return this.toString().localeCompare(that.toString());
-    }
-
-    // the types are the same, check the values
-    if (Math.fround(this.getValue()) < Math.fround(that.getValue())) return -1;
-    if (Math.fround(this.getValue()) > Math.fround(that.getValue())) return 1;
-
-    // they are also equal
-    return 0;
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this element.

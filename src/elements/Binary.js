@@ -63,27 +63,6 @@ exports.Binary = Binary;
 // PUBLIC METHODS
 
 /**
- * This method compares this binary string to another for ordering.
- *
- * @param {Object} that The other binary string to be compared with.
- * @returns {Number} 1 if greater, 0 if equal, and -1 if less.
- */
-Binary.prototype.comparedTo = function(that) {
-    if (!that) return 1;  // anything is greater than nothing
-
-    // check the types
-    const thisType = this.constructor.name;
-    const thatType = that.constructor.name;
-    if (thisType !== thatType) {
-        return this.toString().localeCompare(that.toString());
-    }
-
-    // the types are the same, check the values
-    return Buffer.compare(this.getValue(), that.getValue());
-};
-
-
-/**
  * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this element.
