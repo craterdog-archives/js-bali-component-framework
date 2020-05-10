@@ -145,6 +145,68 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents('https://apple.com', reference)).to.equal(-1);
         });
 
+        it('should handle symbols', function() {
+            const symbol = bali.symbol('foobar');
+            expect(comparator.compareComponents(symbol, '$foobar')).to.equal(0);
+            expect(comparator.compareComponents('$foobaz', symbol)).to.equal(1);
+        });
+
+        it('should handle tags', function() {
+            const tag = bali.tag('34VWNHPBAC8MH89L727W3VGYYVGC7CRK');
+            expect(comparator.compareComponents(tag, 'YF79WQV7NTWH4FGA2JW12GVGHYBJWAYG')).to.equal(-1);
+            expect(comparator.compareComponents('GC95LWMGL87XQMVG5NNZ4NL31CWYVTXH', tag)).to.equal(1);
+        });
+
+        it('should handle text', function() {
+            const text = bali.text('foobar');
+            expect(comparator.compareComponents(text, 'foobar')).to.equal(0);
+            expect(comparator.compareComponents('foobaz', text)).to.equal(1);
+        });
+
+        it('should handle versions', function() {
+            const version = bali.version([1, 2, 3]);
+            expect(comparator.compareComponents(version, 'v1.2')).to.equal(1);
+            expect(comparator.compareComponents('v1.2.3.4', version)).to.equal(1);
+        });
+
+    });
+
+    describe('Test array comparisons', function() {
+
+        it('should handle numbers', function() {
+            const array = [1, 2, 3];
+            expect(comparator.compareComponents(array, [1, 3])).to.equal(-1);
+            expect(comparator.compareComponents([1, 2, 3, 4], array)).to.equal(1);
+        });
+
+        it('should handle strings', function() {
+            const array = ['alpha', 'beta', 'gamma'];
+            expect(comparator.compareComponents(array, ['alpha', 'delta'])).to.equal(-1);
+            expect(comparator.compareComponents(['alpha', 'beta', 'delta', 'gamma'], array)).to.equal(-1);
+        });
+
+    });
+
+    describe('Test structure comparisons', function() {
+
+        it('should handle Bali exceptions', function() {
+            const bad = bali.exception(bali.catalog({
+                $text: 'Something bad happened.'
+            }));
+            const worse = bali.exception(bali.catalog({
+                $text: 'Something worse happened.'
+            }));
+            expect(comparator.compareComponents(bad, worse)).to.equal(-1);
+            expect(comparator.compareComponents(bad, bad)).to.equal(0);
+            expect(comparator.compareComponents(worse, bad)).to.equal(1);
+        });
+
+        it('should handle procedures', function() {
+            const procedure = bali.component('{ $foo := "bar" }');
+            expect(comparator.compareComponents(procedure, '{ }')).to.equal(-1);
+            expect(comparator.compareComponents('{ break loop }', procedure)).to.equal(1);
+        });
+
     });
 
 });
