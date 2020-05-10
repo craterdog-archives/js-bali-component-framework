@@ -97,6 +97,12 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents('~PT1H', duration)).to.equal(-1);
         });
 
+        it('should handle moments', function() {
+            const moment = bali.moment('2020-04-01T13:24:56.789');
+            expect(comparator.compareComponents(moment, '<2020-04-01T13:24:56.789>')).to.equal(0);
+            expect(comparator.compareComponents('<2020-04-01T13:24:56.790>', moment)).to.equal(1);
+        });
+
         it('should handle numbers', function() {
             const number = bali.number(3, 4);
             expect(comparator.compareComponents(number, '(3, 4i)')).to.equal(0);
