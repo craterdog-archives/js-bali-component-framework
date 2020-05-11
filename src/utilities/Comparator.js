@@ -168,11 +168,6 @@ const natural = function(first, second) {
         return Buffer.compare(first, second);
     }
 
-    // handle exceptions
-    if (first.isComponent && first.isType('/bali/structures/Exception') && second.isComponent && second.isType('/bali/structures/Exception')) {
-        return natural(first.getAttributes(), second.getAttributes());
-    }
-
     // handle associations
     if (first.isComponent && first.isType('/bali/structures/Association') && second.isComponent && second.isType('/bali/structures/Association')) {
         var result = natural(first.getKey(), second.getKey());
@@ -180,6 +175,16 @@ const natural = function(first, second) {
             result = natural(first.getValue(), second.getValue());
         }
         return result;
+    }
+
+    // handle exceptions
+    if (first.isComponent && first.isType('/bali/structures/Exception') && second.isComponent && second.isType('/bali/structures/Exception')) {
+        return natural(first.getAttributes(), second.getAttributes());
+    }
+
+    // handle procedures
+    if (first.isComponent && first.isType('/bali/structures/Procedure') && second.isComponent && second.isType('/bali/structures/Procedure')) {
+        return natural(first.getStatements(), second.getStatements());
     }
 
     // handle range components
@@ -191,7 +196,7 @@ const natural = function(first, second) {
         return result;
     }
 
-    // handle collection components
+    // handle collection components (note: tree leaf nodes are treated as empty collections)
     if (first.isComponent && first.isType('/bali/types/Collection') && second.isComponent && second.isType('/bali/types/Collection')) {
         const firstIterator = first.getIterator();
         const secondIterator = second.getIterator();
@@ -216,6 +221,6 @@ const natural = function(first, second) {
         return natural(first.getValue(), second.getValue());
     }
 
-    // anything else, compare their string values
+    // anything else, compare their string values (handles JS and Bali types)
     return Math.sign(first.toString().localeCompare(second.toString()));
 };

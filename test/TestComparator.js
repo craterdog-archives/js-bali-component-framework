@@ -145,6 +145,12 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents('https://apple.com', reference)).to.equal(-1);
         });
 
+        it('should handle procedures', function() {
+            const procedure = bali.component('{ $foo := "bar" }');
+            expect(comparator.compareComponents(procedure, '{ }')).to.equal(1);
+            expect(comparator.compareComponents('{ break loop }', procedure)).to.equal(-1);
+        });
+
         it('should handle symbols', function() {
             const symbol = bali.symbol('foobar');
             expect(comparator.compareComponents(symbol, '$foobar')).to.equal(0);
@@ -202,9 +208,19 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle procedures', function() {
-            const procedure = bali.component('{ $foo := "bar" }');
-            expect(comparator.compareComponents(procedure, '{ }')).to.equal(-1);
-            expect(comparator.compareComponents('{ break loop }', procedure)).to.equal(1);
+            const bar = bali.component('{ $foo := "bar" }');
+            const baz = bali.component('{ $foo := "baz" }');
+            expect(comparator.compareComponents(bar, baz)).to.equal(-1);
+            expect(comparator.compareComponents(bar, bar)).to.equal(0);
+            expect(comparator.compareComponents(baz, bar)).to.equal(1);
+        });
+
+        it('should handle associations', function() {
+            const foo = bali.association('$foo', "baz");
+            const foot = bali.association('$foot', "bar");
+            expect(comparator.compareComponents(foo, foot)).to.equal(-1);
+            expect(comparator.compareComponents(foo, foo)).to.equal(0);
+            expect(comparator.compareComponents(foot, foo)).to.equal(1);
         });
 
     });
