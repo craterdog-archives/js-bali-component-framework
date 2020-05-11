@@ -187,7 +187,13 @@ const natural = function(first, second) {
         return natural(first.getStatements(), second.getStatements());
     }
 
-    // handle range components
+    // handle collections (note: tree leaf nodes are treated as empty collections)
+    if (first.isComponent && first.isType('/bali/types/Collection')) {
+        var result = natural(second, first.toArray());  // note: reversed order of arguments
+        return result || -result;  // must also reverse the sign if not zero
+    }
+
+    // handle ranges
     if (first.getFirst && second.getFirst) {
         var result = natural(first.getFirst(), second.getFirst());
         if (result === 0) {
@@ -196,31 +202,11 @@ const natural = function(first, second) {
         return result;
     }
 
-    // handle collection components (note: tree leaf nodes are treated as empty collections)
-    if (first.isComponent && first.isType('/bali/types/Collection') && second.isComponent && second.isType('/bali/types/Collection')) {
-        const firstIterator = first.getIterator();
-        const secondIterator = second.getIterator();
-        var result = 0;
-        while (result === 0 && firstIterator.hasNext() && secondIterator.hasNext()) {
-            result = natural(firstIterator.getNext(), secondIterator.getNext());
-        }
-        if (result !== 0) {
-            return result;
-        }  // found a difference
-        if (firstIterator.hasNext()) {
-            return 1;
-        }  // the first is longer than the second
-        if (secondIterator.hasNext()) {
-            return -1;
-        }  // the second is longer than the first
-        return 0;  // they are the same length and all items are equal
-    }
-
     // handle elements
     if (first.getValue && second.getValue) {
         return natural(first.getValue(), second.getValue());
     }
 
-    // anything else, compare their string values (handles JS and Bali types)
+    // anything else, compare their string values (handles both JS and Bali types)
     return Math.sign(first.toString().localeCompare(second.toString()));
 };
