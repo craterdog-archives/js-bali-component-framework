@@ -216,11 +216,23 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle associations', function() {
-            const foo = bali.association('$foo', "baz");
-            const foot = bali.association('$foot', "bar");
-            expect(comparator.compareComponents(foo, foot)).to.equal(-1);
-            expect(comparator.compareComponents(foo, foo)).to.equal(0);
-            expect(comparator.compareComponents(foot, foo)).to.equal(1);
+            const foobar = bali.association('$foo', "bar");
+            const foobaz = bali.association('$foo', "baz");
+            const footbar = bali.association('$foot', "bar");
+            const footbaz = bali.association('$foot', "baz");
+            expect(comparator.compareComponents(foobar, foobar)).to.equal(0);
+            expect(comparator.compareComponents(foobar, foobaz)).to.equal(-1);
+            expect(comparator.compareComponents(foobar, footbar)).to.equal(-1);
+            expect(comparator.compareComponents(foobar, footbaz)).to.equal(-1);
+            expect(comparator.compareComponents(foobaz, foobar)).to.equal(1);
+            expect(comparator.compareComponents(foobaz, footbar)).to.equal(-1);
+            expect(comparator.compareComponents(foobaz, footbaz)).to.equal(-1);
+            expect(comparator.compareComponents(footbar, foobar)).to.equal(1);
+            expect(comparator.compareComponents(footbar, foobaz)).to.equal(1);
+            expect(comparator.compareComponents(footbar, footbaz)).to.equal(-1);
+            expect(comparator.compareComponents(footbaz, foobar)).to.equal(1);
+            expect(comparator.compareComponents(footbaz, foobaz)).to.equal(1);
+            expect(comparator.compareComponents(footbaz, footbar)).to.equal(1);
         });
 
     });

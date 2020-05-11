@@ -169,27 +169,29 @@ const natural = function(first, second) {
     }
 
     // handle associations
-    if (first.isComponent && first.isType('/bali/structures/Association') && second.isComponent && second.isType('/bali/structures/Association')) {
-        var result = natural(first.getKey(), second.getKey());
-        if (result === 0) {
+    if (first.isComponent && first.isType('/bali/structures/Association')) {
+        var result = natural(second, first.getKey());  // note: reversed the order of the arguments
+        if (result === 0 && second.isComponent && second.isType('/bali/structures/Association')) {
             result = natural(first.getValue(), second.getValue());
         }
-        return result;
+        return result || -result;  // must also reverse the sign if not zero
     }
 
     // handle exceptions
-    if (first.isComponent && first.isType('/bali/structures/Exception') && second.isComponent && second.isType('/bali/structures/Exception')) {
-        return natural(first.getAttributes(), second.getAttributes());
+    if (first.isComponent && first.isType('/bali/structures/Exception')) {
+        var result = natural(second, first.getAttributes());  // note: reversed the order of the arguments
+        return result || -result;  // must also reverse the sign if not zero
     }
 
     // handle procedures
-    if (first.isComponent && first.isType('/bali/structures/Procedure') && second.isComponent && second.isType('/bali/structures/Procedure')) {
-        return natural(first.getStatements(), second.getStatements());
+    if (first.isComponent && first.isType('/bali/structures/Procedure')) {
+        var result = natural(second, first.getStatements());  // note: reversed the order of the arguments
+        return result || -result;  // must also reverse the sign if not zero
     }
 
     // handle collections (note: tree leaf nodes are treated as empty collections)
     if (first.isComponent && first.isType('/bali/types/Collection')) {
-        var result = natural(second, first.toArray());  // note: reversed order of arguments
+        var result = natural(second, first.toArray());  // note: reversed the order of the arguments
         return result || -result;  // must also reverse the sign if not zero
     }
 
