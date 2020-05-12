@@ -182,12 +182,14 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         it('should handle numbers', function() {
             const array = [1, 2, 3];
             expect(comparator.compareComponents(array, [1, 3])).to.equal(-1);
+            expect(comparator.compareComponents(array, array)).to.equal(0);
             expect(comparator.compareComponents([1, 2, 3, 4], array)).to.equal(1);
         });
 
         it('should handle strings', function() {
             const array = ['alpha', 'beta', 'gamma'];
             expect(comparator.compareComponents(array, ['alpha', 'delta'])).to.equal(-1);
+            expect(comparator.compareComponents(array, array)).to.equal(0);
             expect(comparator.compareComponents(['alpha', 'beta', 'delta', 'gamma'], array)).to.equal(-1);
         });
 
@@ -233,6 +235,50 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents(footbaz, foobar)).to.equal(1);
             expect(comparator.compareComponents(footbaz, foobaz)).to.equal(1);
             expect(comparator.compareComponents(footbaz, footbar)).to.equal(1);
+        });
+
+    });
+
+    describe('Test collection comparisons', function() {
+
+        it('should handle lists', function() {
+            const short = bali.list([1, 2]);
+            const medium = bali.list([1, 2, 3]);
+            const next = bali.list([1, 2, 4]);
+            const long = bali.list([1, 2, 3, 4]);
+            expect(comparator.compareComponents(short, short)).to.equal(0);
+            expect(comparator.compareComponents(short, medium)).to.equal(-1);
+            expect(comparator.compareComponents(short, next)).to.equal(-1);
+            expect(comparator.compareComponents(short, long)).to.equal(-1);
+            expect(comparator.compareComponents(medium, short)).to.equal(1);
+            expect(comparator.compareComponents(medium, next)).to.equal(-1);
+            expect(comparator.compareComponents(medium, long)).to.equal(-1);
+            expect(comparator.compareComponents(next, short)).to.equal(1);
+            expect(comparator.compareComponents(next, medium)).to.equal(1);
+            expect(comparator.compareComponents(next, long)).to.equal(1);
+            expect(comparator.compareComponents(long, short)).to.equal(1);
+            expect(comparator.compareComponents(long, medium)).to.equal(1);
+            expect(comparator.compareComponents(long, next)).to.equal(-1);
+        });
+
+        it('should handle catalogs', function() {
+            const short = bali.catalog({$alpha: 1, $beta: 2});
+            const medium = bali.catalog({$alpha: 1, $beta: 2, $delta: 3});
+            const next = bali.catalog({$alpha: 1, $beta: 2, $gamma: 4});
+            const long = bali.catalog({$alpha: 1, $beta: 2, $delta: 3, $gamma: 4});
+            expect(comparator.compareComponents(short, short)).to.equal(0);
+            expect(comparator.compareComponents(short, medium)).to.equal(-1);
+            expect(comparator.compareComponents(short, next)).to.equal(-1);
+            expect(comparator.compareComponents(short, long)).to.equal(-1);
+            expect(comparator.compareComponents(medium, short)).to.equal(1);
+            expect(comparator.compareComponents(medium, next)).to.equal(-1);
+            expect(comparator.compareComponents(medium, long)).to.equal(-1);
+            expect(comparator.compareComponents(next, short)).to.equal(1);
+            expect(comparator.compareComponents(next, medium)).to.equal(1);
+            expect(comparator.compareComponents(next, long)).to.equal(1);
+            expect(comparator.compareComponents(long, short)).to.equal(1);
+            expect(comparator.compareComponents(long, medium)).to.equal(1);
+            expect(comparator.compareComponents(long, next)).to.equal(-1);
         });
 
     });

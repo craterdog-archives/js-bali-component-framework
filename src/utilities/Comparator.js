@@ -69,6 +69,7 @@ exports.Comparator = Comparator;
  *
  */
 const natural = function(first, second) {
+
     // handle undefined objects
     if (first === null) first = undefined;  // normalize nulls
     if (second === null) second = undefined;  // normalize nulls
@@ -186,6 +187,7 @@ const natural = function(first, second) {
         return result;
     }
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
+        // note: can't use Math.fround() on the integer values used to store temporal elements
         return Math.sign(first.toNumber() - second.toNumber());
     }
     if (first.getValue) {
