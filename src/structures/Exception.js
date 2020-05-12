@@ -40,7 +40,8 @@ const Exception = function(attributes, cause) {
 
     const interfaces = [
         '/bali/interfaces/Comparable',
-        '/bali/interfaces/Exportable'
+        '/bali/interfaces/Exportable',
+        '/bali/interfaces/Composite'
     ];
 
     if (attributes === null || typeof attributes !== 'object') attributes = {};
@@ -64,15 +65,11 @@ const Exception = function(attributes, cause) {
     };
 
     this.getSubcomponent = function(element) {
-        const index = element.toNumber();
-        return attributes[index];
+        return attributes.getValue(element);
     };
 
     this.setSubcomponent = function(element, subcomponent) {
-        const index = element.toNumber();
-        const old = attributes[index];
-        attributes[index] = subcomponent;
-        return old;
+        return attributes.setValue(element, subcomponent);
     };
 
     // set the error message and cause
@@ -106,10 +103,11 @@ exports.Exception = Exception;
  * @returns {Boolean} Whether or not this component has the specified type.
  */
 Exception.prototype.isType = function(type) {
+    var foundIt = false;
     this.getAncestry().forEach(function(ancestor) {
-        if (ancestor === type) return true;
+        if (ancestor === type) foundIt = true;
     }, this);
-    return false;
+    return foundIt;
 };
 
 
@@ -120,10 +118,11 @@ Exception.prototype.isType = function(type) {
  * @returns {Boolean} Whether or not this component supports the specified interface.
  */
 Exception.prototype.supportsInterface = function(iface) {
+    var foundIt = false;
     this.getInterfaces().forEach(function(candidate) {
-        if (candidate === iface) return true;
+        if (candidate === iface) foundIt = true;
     }, this);
-    return false;
+    return foundIt;
 };
 
 
@@ -162,6 +161,30 @@ Exception.prototype.toString = function() {
         exception = exception.cause;
     }
     return string;
+};
+
+
+/**
+ * This method returns a canonical Bali Document Notation™ representation of this component.
+ *
+ * @param {Number} indentation The number of levels of indentation that should be prepended to
+ * each line of the string output.
+ * @returns {String} A canonical Bali Document Notation™ representation of the component.
+ */
+Exception.prototype.toBDN = function(indentation) {
+    return this.getAttributes().toBDN(indentation);
+};
+
+
+/**
+ * This method returns an HTML document representing this component.
+ *
+ * @param {String} style A reference to the CSS style sheet that should be used for the look
+ * and feel of the generated web page.
+ * @returns {String} An HTML document representing the component.
+ */
+Exception.prototype.toHTML = function(style) {
+    return this.getAttributes().toHTML(style);
 };
 
 

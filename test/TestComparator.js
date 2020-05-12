@@ -141,8 +141,8 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle references', function() {
             const reference = bali.reference('https://google.com');
-            expect(comparator.compareComponents(reference, 'https://amazon.com')).to.equal(1);
-            expect(comparator.compareComponents('https://apple.com', reference)).to.equal(-1);
+            expect(comparator.compareComponents(reference, '<https://amazon.com>')).to.equal(1);
+            expect(comparator.compareComponents('<https://apple.com>', reference)).to.equal(-1);
         });
 
         it('should handle procedures', function() {
@@ -196,12 +196,12 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
     describe('Test structure comparisons', function() {
 
         it('should handle Bali exceptions', function() {
-            const bad = bali.exception(bali.catalog({
+            const bad = bali.exception({
                 $text: 'Something bad happened.'
-            }));
-            const worse = bali.exception(bali.catalog({
+            });
+            const worse = bali.exception({
                 $text: 'Something worse happened.'
-            }));
+            });
             expect(comparator.compareComponents(bad, worse)).to.equal(-1);
             expect(comparator.compareComponents(bad, bad)).to.equal(0);
             expect(comparator.compareComponents(worse, bad)).to.equal(1);

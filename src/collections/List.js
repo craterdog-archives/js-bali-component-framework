@@ -217,7 +217,7 @@ const List = function(parameters, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$getSubcomponent', '$element', element, [
-                '/bali/types/Element'
+                '/bali/elements/Number'
             ]);
         }
         const index = element.toNumber();
@@ -228,7 +228,7 @@ const List = function(parameters, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$setSubcomponent', '$element', element, [
-                '/bali/types/Element'
+                '/bali/elements/Number'
             ]);
             validator.validateType('/bali/collections/List', '$setSubcomponent', '$subcomponent', subcomponent, [
                 '/bali/types/Component'

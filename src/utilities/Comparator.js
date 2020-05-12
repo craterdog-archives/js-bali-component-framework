@@ -82,52 +82,29 @@ const natural = function(first, second) {
         return 0;  // nothing is equal to nothing
     }
 
-    // handle numeric values
-    if (typeof first === 'number' && typeof second === 'number') {
+    // handle numeric types
+    if ((typeof first === 'boolean' || typeof first === 'number') &&
+            (typeof second === 'boolean' || typeof second === 'number')) {
         if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(first - second);
+        return Math.sign(Math.fround(first) - Math.fround(second));
     }
     if (first.toNumber && (typeof second === 'number' || typeof second === 'boolean')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(first.toNumber() - second);
+        return natural(first.toNumber(), second);
     }
     if ((typeof first === 'number' || typeof first === 'boolean') && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(first - second.toNumber());
-    }
-    if (first.isComponent && first.isType('/bali/elements/Number') && second.isComponent && second.isType('/bali/elements/Number')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        var result = Math.sign(Math.fround(first.getMagnitude()) - Math.fround(second.getMagnitude()));
-        if (result === 0) {
-            result = natural(first.getPhase(), second.getPhase());
-        }
-        return result;
-    }
-    if (first.isComponent && first.isType('/bali/elements/Duration') && second.isComponent && second.isType('/bali/elements/Duration')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(first.toNumber() - second.toNumber());
-    }
-    if (first.isComponent && first.isType('/bali/elements/Moment') && second.isComponent && second.isType('/bali/elements/Moment')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(first.toNumber() - second.toNumber());
-    }
-    if (first.toNumber && second.toNumber) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
-        return Math.sign(Math.fround(first.toNumber()) - Math.fround(second.toNumber()));
-    }
-
-    // handle boolean values (must come after numeric values since all components support toBoolean)
-    if (typeof first === 'boolean' && typeof second === 'boolean') {
-        return Math.sign(first - second);
+        return natural(first, second.toNumber());
     }
     if (first.toBoolean && typeof second === 'boolean') {
-        return Math.sign(first.toBoolean() - second);
+        return natural(first.toBoolean(), second);
     }
     if (typeof first === 'boolean' && second.toBoolean) {
-        return Math.sign(first - second.toBoolean());
+        return natural(first, second.toBoolean());
+    }
+    if (first.toNumber && second.toNumber && first.getType() !== second.getType()) {
+        return natural(first.toNumber(), second.toNumber());
     }
 
-    // handle string values
+    // handle string types
     if (typeof first === 'string' && typeof second === 'string') {
         return Math.sign(first.localeCompare(second));
     }
@@ -138,8 +115,21 @@ const natural = function(first, second) {
         return natural(second.componentize(first), second);
     }
 
+    // handle heterogeneous types
+    if (first.isComponent && second.isComponent && first.getType() !== second.getType()) {
+        return natural(first.getType(), second.getType());
+    }
+    if (first.constructor.name !== second.constructor.name) {
+        return natural(first.constructor.name, second.constructor.name);
+    }
+
+    // handle buffers
+    if (first.constructor.name === 'Buffer') {
+        return Math.sign(Buffer.compare(first, second));
+    }
+
     // handle arrays
-    if (Array.isArray(first) && Array.isArray(second)) {
+    if (Array.isArray(first)) {
         var firstIndex = 0;
         var secondIndex = 0;
         var result = 0;
@@ -158,45 +148,28 @@ const natural = function(first, second) {
         return 0;  // they are the same length and all values are equal
     }
 
-    // handle RegExp
-    if (first.constructor.name === 'RegExp' && second.constructor.name === 'RegExp') {
-        return Math.sign(first.source.localeCompare(second.source));
-    }
-
-    // handle buffers
-    if (first.constructor.name === 'Buffer' && second.constructor.name === 'Buffer') {
-        return Buffer.compare(first, second);
-    }
-
-    // handle associations
+    // handle structures
     if (first.isComponent && first.isType('/bali/structures/Association')) {
-        var result = natural(second, first.getKey());  // note: reversed the order of the arguments
-        if (result === 0 && second.isComponent && second.isType('/bali/structures/Association')) {
+        var result = natural(first.getKey(), second.getKey());
+        if (result === 0) {
             result = natural(first.getValue(), second.getValue());
         }
-        return result || -result;  // must also reverse the sign if not zero
+        return result;
     }
-
-    // handle exceptions
     if (first.isComponent && first.isType('/bali/structures/Exception')) {
-        var result = natural(second, first.getAttributes());  // note: reversed the order of the arguments
-        return result || -result;  // must also reverse the sign if not zero
+        return natural(first.getAttributes(), second.getAttributes());
     }
-
-    // handle procedures
     if (first.isComponent && first.isType('/bali/structures/Procedure')) {
-        var result = natural(second, first.getStatements());  // note: reversed the order of the arguments
-        return result || -result;  // must also reverse the sign if not zero
+        return natural(first.getStatements(), second.getStatements());
     }
 
     // handle collections (note: tree leaf nodes are treated as empty collections)
     if (first.isComponent && first.isType('/bali/types/Collection')) {
-        var result = natural(second, first.toArray());  // note: reversed the order of the arguments
-        return result || -result;  // must also reverse the sign if not zero
+        return natural(first.toArray(), second.toArray());
     }
 
     // handle ranges
-    if (first.getFirst && second.getFirst) {
+    if (first.getFirst) {
         var result = natural(first.getFirst(), second.getFirst());
         if (result === 0) {
             result = natural(first.getLast(), second.getLast());
@@ -205,10 +178,20 @@ const natural = function(first, second) {
     }
 
     // handle elements
-    if (first.getValue && second.getValue) {
+    if (first.isComponent && first.isType('/bali/elements/Number')) {
+        var result = natural(first.getMagnitude(), second.getMagnitude());
+        if (result === 0) {
+            result = natural(first.getPhase(), second.getPhase());
+        }
+        return result;
+    }
+    if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
+        return Math.sign(first.toNumber() - second.toNumber());
+    }
+    if (first.getValue) {
         return natural(first.getValue(), second.getValue());
     }
 
     // anything else, compare their string values (handles both JS and Bali types)
-    return Math.sign(first.toString().localeCompare(second.toString()));
+    return natural(first.toString(), second.toString());
 };
