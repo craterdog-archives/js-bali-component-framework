@@ -263,9 +263,9 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle catalogs', function() {
             const short = bali.catalog({$alpha: 1, $beta: 2});
-            const medium = bali.catalog({$alpha: 1, $beta: 2, $delta: 3});
+            const medium = bali.catalog({$alpha: 1, $beta: 2, $gamma: 3});
             const next = bali.catalog({$alpha: 1, $beta: 2, $gamma: 4});
-            const long = bali.catalog({$alpha: 1, $beta: 2, $delta: 3, $gamma: 4});
+            const long = bali.catalog({$alpha: 1, $beta: 2, $gamma: 3, $delta: 4});
             expect(comparator.compareComponents(short, short)).to.equal(0);
             expect(comparator.compareComponents(short, medium)).to.equal(-1);
             expect(comparator.compareComponents(short, next)).to.equal(-1);
@@ -279,6 +279,159 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents(long, short)).to.equal(1);
             expect(comparator.compareComponents(long, medium)).to.equal(1);
             expect(comparator.compareComponents(long, next)).to.equal(-1);
+        });
+
+    });
+
+    describe('Test element comparisons', function() {
+
+        it('should handle angles', function() {
+            const first = bali.angle();
+            const second = bali.angle.PI;
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle binaries', function() {
+            const first = bali.binary(Buffer.from([1, 2, 3, 4]));
+            const second = bali.binary(Buffer.from([1, 2, 4]));
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle durations', function() {
+            const first = bali.duration('P1W');
+            const second = bali.duration('P1M');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle moments', function() {
+            const first = bali.moment('2020-04-01T13:24:56.789');
+            const second = bali.moment('2020-04-01T13:24:56.790');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle names', function() {
+            const first = bali.name(['bali', 'collections', 'Set', 'v2']);
+            const second = bali.name(['bali', 'collections', 'Stack', 'v1']);
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle numbers', function() {
+            const first = bali.number(3, 4);
+            const second = bali.number(3, 5);
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle patterns', function() {
+            const first = bali.pattern.ANY;
+            const second = bali.pattern.NONE;
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle percents', function() {
+            const first = bali.percent(25);
+            const second = bali.percent(75);
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle probabilities', function() {
+            const first = bali.probability.FALSE;
+            const second = bali.probability(0.5);
+            const third = bali.probability.TRUE;
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+            expect(comparator.compareComponents(second, second)).to.equal(0);
+            expect(comparator.compareComponents(second, third)).to.equal(-1);
+            expect(comparator.compareComponents(third, second)).to.equal(1);
+            expect(comparator.compareComponents(third, third)).to.equal(0);
+            expect(comparator.compareComponents(third, first)).to.equal(1);
+            expect(comparator.compareComponents(first, third)).to.equal(-1);
+        });
+
+        it('should handle ranges', function() {
+            const first = bali.range(undefined, 0);
+            const second = bali.range();
+            const third = bali.range(0);
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+            expect(comparator.compareComponents(second, second)).to.equal(0);
+            expect(comparator.compareComponents(second, third)).to.equal(-1);
+            expect(comparator.compareComponents(third, second)).to.equal(1);
+            expect(comparator.compareComponents(third, third)).to.equal(0);
+            expect(comparator.compareComponents(third, first)).to.equal(1);
+            expect(comparator.compareComponents(first, third)).to.equal(-1);
+        });
+
+        it('should handle references', function() {
+            const first = bali.reference('https://apple.com');
+            const second = bali.reference('https://google.com');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle procedures', function() {
+            const first = bali.component('{ $foo := "bar" }');
+            const second = bali.component('{ $foo := "baz" }');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle symbols', function() {
+            const first = bali.symbol('foobar');
+            const second = bali.symbol('foobaz');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle tags', function() {
+            const first = bali.tag('34VWNHPBAC8MH89L727W3VGYYVGC7CRK');
+            const second = bali.tag('LSK9A6TQYW0X5RZTY7TCAWT9R9KFNNTP');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle text', function() {
+            const first = bali.text('foobar');
+            const second = bali.text('foobaz');
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+        });
+
+        it('should handle versions', function() {
+            const first = bali.version([1, 2]);
+            const second = bali.version([1, 3]);
+            const third = bali.version([1, 3, 1]);
+            expect(comparator.compareComponents(first, first)).to.equal(0);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
+            expect(comparator.compareComponents(second, second)).to.equal(0);
+            expect(comparator.compareComponents(second, third)).to.equal(-1);
+            expect(comparator.compareComponents(third, second)).to.equal(1);
+            expect(comparator.compareComponents(third, third)).to.equal(0);
+            expect(comparator.compareComponents(third, first)).to.equal(1);
+            expect(comparator.compareComponents(first, third)).to.equal(-1);
         });
 
     });

@@ -73,15 +73,9 @@ const natural = function(first, second) {
     // handle undefined objects
     if (first === null) first = undefined;  // normalize nulls
     if (second === null) second = undefined;  // normalize nulls
-    if (first !== undefined && second === undefined) {
-        return 1;  // anything is greater than nothing
-    }
-    if (first === undefined && second !== undefined) {
-        return -1;  // nothing is less than anything
-    }
-    if (first === undefined && second === undefined) {
-        return 0;  // nothing is equal to nothing
-    }
+    if (first !== undefined && second === undefined) return 1;  // anything is greater than nothing
+    if (first === undefined && second !== undefined) return -1;  // nothing is less than anything
+    if (first === undefined && second === undefined) return 0;  // nothing is equal to nothing
 
     // handle numeric types
     if ((typeof first === 'boolean' || typeof first === 'number') &&
@@ -137,24 +131,16 @@ const natural = function(first, second) {
         while (result === 0 && firstIndex < first.length && secondIndex < second.length) {
             result = natural(first[firstIndex++], second[secondIndex++]);
         }
-        if (result !== 0) {
-            return result;
-        }  // found a difference
-        if (firstIndex < first.length) {
-            return 1;
-        }  // the first is longer than the second
-        if (secondIndex < second.length) {
-            return -1;
-        }  // the second is longer than the first
+        if (result !== 0) return result;  // found a difference
+        if (firstIndex < first.length) return 1;  // the first is longer than the second
+        if (secondIndex < second.length) return -1;  // the second is longer than the first
         return 0;  // they are the same length and all values are equal
     }
 
     // handle structures
     if (first.isComponent && first.isType('/bali/structures/Association')) {
         var result = natural(first.getKey(), second.getKey());
-        if (result === 0) {
-            result = natural(first.getValue(), second.getValue());
-        }
+        if (result === 0) result = natural(first.getValue(), second.getValue());
         return result;
     }
     if (first.isComponent && first.isType('/bali/structures/Exception')) {
@@ -172,18 +158,14 @@ const natural = function(first, second) {
     // handle ranges
     if (first.getFirst) {
         var result = natural(first.getFirst(), second.getFirst());
-        if (result === 0) {
-            result = natural(first.getLast(), second.getLast());
-        }
+        if (result === 0) result = natural(first.getLast(), second.getLast());
         return result;
     }
 
     // handle elements
     if (first.isComponent && first.isType('/bali/elements/Number')) {
         var result = natural(first.getMagnitude(), second.getMagnitude());
-        if (result === 0) {
-            result = natural(first.getPhase(), second.getPhase());
-        }
+        if (result === 0) result = natural(first.getPhase(), second.getPhase());
         return result;
     }
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
