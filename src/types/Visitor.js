@@ -232,16 +232,17 @@ Visitor.prototype.visitFunctionExpression = function(tree) {
 
 // handleClause: 'handle' symbol ('matching' expression 'with' block)+
 Visitor.prototype.visitHandleClause = function(tree) {
+    const iterator = tree.getIterator();
+
     // handle 'symbol'
-    var symbol = tree.getItem(1);
+    var symbol = iterator.getNext();
     symbol.acceptVisitor(this);
 
     // handle matching pattern blocks
-    const size = tree.getSize();
-    for (var i = 2; i <= size; i += 2) {
-        const pattern = tree.getItem(i);
+    while (iterator.hasNext()) {
+        const pattern = iterator.getNext();
         pattern.acceptVisitor(this);
-        const block = tree.getItem(i + 1);
+        const block = iterator.getNext();
         block.acceptVisitor(this);
     }
 };
