@@ -128,6 +128,15 @@ DocumentListener.prototype.exitWaitClause = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#acknowledgeClause.
+DocumentListener.prototype.enterAcknowledgeClause = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#acknowledgeClause.
+DocumentListener.prototype.exitAcknowledgeClause = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#ifClause.
 DocumentListener.prototype.enterIfClause = function(ctx) {
 };

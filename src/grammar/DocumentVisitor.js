@@ -90,6 +90,12 @@ DocumentVisitor.prototype.visitWaitClause = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#acknowledgeClause.
+DocumentVisitor.prototype.visitAcknowledgeClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#ifClause.
 DocumentVisitor.prototype.visitIfClause = function(ctx) {
   return this.visitChildren(ctx);

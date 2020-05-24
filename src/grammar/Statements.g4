@@ -12,6 +12,7 @@ mainClause:
     publishClause |
     postClause |
     waitClause |
+    acknowledgeClause |
     ifClause |
     selectClause |
     withClause |
@@ -28,7 +29,7 @@ block: '{' statements '}';
 
 evaluateClause: (recipient ':=')? expression;
 
-checkoutClause: 'checkout' recipient 'from' expression;
+checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression;
 
 saveClause: 'save' expression 'to' expression;
 
@@ -38,9 +39,11 @@ commitClause: 'commit' expression 'to' expression;
 
 publishClause: 'publish' expression;
 
-postClause: 'post' expression 'on' expression;
+postClause: 'post' expression 'to' expression;
 
 waitClause: 'wait' 'for' recipient 'from' expression;
+
+acknowledgeClause: 'acknowledge' expression 'from' expression;
 
 ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?;
 

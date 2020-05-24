@@ -15,7 +15,7 @@
  */
 const utilities = require('../utilities');
 const types = require('../types');
-const structures = require('../structures');
+const composites = require('../composites');
 
 
 /*
@@ -65,7 +65,7 @@ const Stack = function(parameters, debug) {
         if (array.length > 0) {
             return array.peek();
         }
-        const exception = new structures.Exception({
+        const exception = new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$getTop',
             $exception: '$emptyStack',
@@ -89,7 +89,7 @@ const Stack = function(parameters, debug) {
             ]);
         }
         if (array.length === capacity) {
-            const exception = new structures.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/collections/Stack',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
@@ -108,7 +108,7 @@ const Stack = function(parameters, debug) {
         if (array.length > 0) {
             return array.pop();
         }
-        const exception = new structures.Exception({
+        const exception = new composites.Exception({
             $module: '/bali/collections/Stack',
             $procedure: '$removeItem',
             $exception: '$emptyStack',

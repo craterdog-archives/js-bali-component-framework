@@ -28,16 +28,16 @@ const types = require('../types');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    types.Structure.call(
+    types.Component.call(
         this,
-        ['/bali/structures/Association'],
-        [],
+        ['/bali/composites/Association'],
+        ['/bali/interfaces/Composite'],
         undefined,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Association', '$Association', '$key', key, [
+        validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -45,7 +45,7 @@ const Association = function(key, value, debug) {
             '/javascript/Object',
             '/bali/types/Component'
         ]);
-        validator.validateType('/bali/structures/Association', '$Association', '$value', value, [
+        validator.validateType('/bali/composites/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -72,7 +72,7 @@ const Association = function(key, value, debug) {
     this.setValue = function(newValue) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Association', '$setValue', '$value', value, [
+            validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
@@ -91,7 +91,7 @@ const Association = function(key, value, debug) {
     this.getSubcomponent = function(element) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Associations', '$getSubcomponent', '$element', element, [
+            validator.validateType('/bali/composites/Associations', '$getSubcomponent', '$element', element, [
                 '/bali/types/Element'
             ]);
         }
@@ -101,10 +101,10 @@ const Association = function(key, value, debug) {
     this.setSubcomponent = function(element, subcomponent) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Associations', '$setSubcomponent', '$element', element, [
+            validator.validateType('/bali/composites/Associations', '$setSubcomponent', '$element', element, [
                 '/bali/types/Element'
             ]);
-            validator.validateType('/bali/structures/Associations', '$setSubcomponent', '$subcomponent', subcomponent, [
+            validator.validateType('/bali/composites/Associations', '$setSubcomponent', '$subcomponent', subcomponent, [
                 '/bali/types/Component'
             ]);
         }
@@ -113,7 +113,7 @@ const Association = function(key, value, debug) {
 
     return this;
 };
-Association.prototype = Object.create(types.Structure.prototype);
+Association.prototype = Object.create(types.Component.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 

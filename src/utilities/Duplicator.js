@@ -60,6 +60,17 @@ DuplicatingVisitor.prototype = Object.create(Visitor.prototype);
 DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 
+// acknowledgeClause: 'acknowledge' expression 'from' expression
+DuplicatingVisitor.prototype.visitAcknowledgeClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
+};
+
+
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
     this.visitParameters(angle.getParameters());
@@ -129,13 +140,15 @@ DuplicatingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression
 DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
+        copy.addItem(this.result);
+    }
     this.result = copy;
 };
 
@@ -483,7 +496,7 @@ DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// postClause: 'post' expression 'on' expression
+// postClause: 'post' expression 'to' expression
 DuplicatingVisitor.prototype.visitPostClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);

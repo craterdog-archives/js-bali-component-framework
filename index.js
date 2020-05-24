@@ -17,8 +17,8 @@ const EOL = '\n';
 const utilities = require('./src/utilities');
 const types = require('./src/types');  // depends on utilities
 const elements = require('./src/elements');  // depends on types
-const structures = require('./src/structures');  // depends on elements
-const collections = require('./src/collections');  // depends on structures
+const composites = require('./src/composites');  // depends on elements
+const collections = require('./src/collections');  // depends on composites
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
@@ -85,7 +85,7 @@ const componentize = function(value, debug) {
     return component;
 };
 types.Component.prototype.componentize = componentize;
-structures.Exception.prototype.componentize = componentize;
+composites.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -180,7 +180,7 @@ exports.api = function(defaultLevel) {
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new structures.Association(key, value, debug);
+        return new composites.Association(key, value, debug);
     };
 
     // BINARY
@@ -292,7 +292,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new structures.Exception(attributes, cause);
+            error = new composites.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;
@@ -302,6 +302,19 @@ exports.api = function(defaultLevel) {
     const generator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Generator(debug);
+    };
+
+    // INSTANCE
+    const instance = function(type, attributes, debug) {
+        const catalog = new collections.Catalog({
+            $type: type,
+            $tag: new elements.Tag(),
+            $version: 'v1',
+            $permissions: '/bali/permissions/public/v1',
+            $previous: 'none'
+        }, debug);
+        catalog.addItems(attributes);
+        return catalog;
     };
 
     // LIST
@@ -459,7 +472,7 @@ exports.api = function(defaultLevel) {
     // PROCEDURE
     const procedure = function(statements, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new structures.Procedure(statements, parameters, debug);
+        return new composites.Procedure(statements, parameters, debug);
     };
 
     // QUEUE
@@ -622,6 +635,7 @@ exports.api = function(defaultLevel) {
         duration: duration,
         exception: exception,
         generator: generator,
+        instance: instance,
         list: list,
         moment: moment,
         name: name,

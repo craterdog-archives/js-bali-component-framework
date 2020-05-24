@@ -14,7 +14,7 @@
  * This abstract class defines the methods that all components must support.
  */
 const utilities = require('../utilities');
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -258,7 +258,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
-    if (pattern.isType('/bali/structures/Association')) {
+    if (pattern.isType('/bali/composites/Association')) {
         if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -282,7 +282,7 @@ Component.prototype.isMatchedBy = function(pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.isType('/bali/structures/Association')) {
+            if (patternItem.isType('/bali/composites/Association')) {
                 var patternValue = patternItem.getValue();
                 if (patternValue.isType('/bali/elements/Pattern') && (
                     patternValue.toString() === 'any' ||

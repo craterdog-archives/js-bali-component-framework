@@ -14,7 +14,7 @@
  * This abstract class defines the invariant methods that all sequences must inherit.
  */
 const utilities = require('../utilities');
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 const Element = require('./Element').Element;
 
 

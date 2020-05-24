@@ -28,7 +28,7 @@
  * </pre>
  */
 const Component = require('./Component').Component;
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

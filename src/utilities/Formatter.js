@@ -17,7 +17,7 @@
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../types/Visitor').Visitor;
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character
@@ -104,6 +104,17 @@ const FormattingVisitor = function(indentation, debug) {
 };
 FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
+
+
+// acknowledgeClause: 'acknowledge' expression 'from' expression
+FormattingVisitor.prototype.visitAcknowledgeClause = function(tree) {
+    this.result += 'acknowledge ';
+    const component = tree.getItem(1);
+    component.acceptVisitor(this);
+    this.result += ' from ';
+    const reference = tree.getItem(2);
+    reference.acceptVisitor(this);
+};
 
 
 // angle: ANGLE
@@ -238,13 +249,19 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.result += 'checkout ';
-    const component = tree.getItem(1);
+    var index = 1;
+    const component = tree.getItem(index++);
     component.acceptVisitor(this);
+    if (tree.getSize() === 3) {
+        this.result += ' at level ';
+        const reference = tree.getItem(index++);
+        reference.acceptVisitor(this);
+    }
     this.result += ' from ';
-    const reference = tree.getItem(2);
+    const reference = tree.getItem(index);
     reference.acceptVisitor(this);
 };
 
@@ -713,12 +730,12 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// postClause: 'post' expression 'on' expression
+// postClause: 'post' expression 'to' expression
 FormattingVisitor.prototype.visitPostClause = function(tree) {
     this.result += 'post ';
     const message = tree.getItem(1);
     message.acceptVisitor(this);
-    this.result += ' on ';
+    this.result += ' to ';
     const queue = tree.getItem(2);
     queue.acceptVisitor(this);
 };

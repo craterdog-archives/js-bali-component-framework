@@ -16,7 +16,7 @@
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Iterator = require('./Iterator').Iterator;
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -165,7 +165,7 @@ Collection.prototype.addItems = function(items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/structures/Association')) {
+                if (item.isType('/bali/composites/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -175,7 +175,7 @@ Collection.prototype.addItems = function(items) {
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/structures/Association')) {
+                if (item.isType('/bali/composites/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
