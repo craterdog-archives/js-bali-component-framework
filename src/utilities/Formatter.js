@@ -777,7 +777,6 @@ FormattingVisitor.prototype.visitReference = function(reference) {
 
 // rejectClause: 'reject' expression
 FormattingVisitor.prototype.visitRejectClause = function(tree) {
-    console.log('GOT HERE');
     this.result += 'reject ';
     const message = tree.getItem(1);
     message.acceptVisitor(this);

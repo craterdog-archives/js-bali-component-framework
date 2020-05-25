@@ -156,7 +156,7 @@ Exception.prototype.toString = function() {
     var string = 'Exception: The following Bali Nebula™ exception was thrown:\n';
     var exception = this;
     while (exception) {
-        string += (exception.isComponent ? exception.getAttributes() : exception) + '\n';
+        string += (exception.isComponent ? exception.getAttributes() : exception.stack) + '\n';
         exception = exception.cause;
     }
     return string;
