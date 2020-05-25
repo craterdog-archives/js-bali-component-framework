@@ -37,10 +37,10 @@
     }
     $lifecycle: {
         checkout $component from /bali/examples/document/v1
-        save component to citation
+        save component
         commit component to /bali/examples/document/v2
-        checkout components[index] at level 2 from /bali/examples/document/v2
-        save components[index] to citation
+        checkout level 2 of components[index] from /bali/examples/document/v2
+        save components[index]
         commit components[index] to /bali/examples/document/v2.1
         discard citation
     }
@@ -52,13 +52,17 @@
         post message(1) to /bali/examples/bag/v1
         post message(1, second, "3rd") to /bali/examples/bag/v1
     }
-    $waitForMessage: {
-        wait for $message from /bali/examples/bag/v1
-        wait for messages[$foo, 5] from /bali/examples/bag/v1
+    $receiveMessage: {
+        receive $message from /bali/examples/bag/v1
+        receive messages[$foo, 5] from /bali/examples/bag/v1
     }
-    $acknowledgeMessage: {
-        acknowledge citation from /bali/examples/bag/v1
-        acknowledge citations[$foo, 5] from /bali/examples/bag/v1
+    $rejectMessage: {
+        reject citation
+        reject citations[$foo, 5]
+    }
+    $acceptMessage: {
+        accept citation
+        accept citations[$foo, 5]
     }
     $returnResult: {
         return

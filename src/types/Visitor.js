@@ -35,6 +35,13 @@ exports.Visitor = Visitor;
 
 // PUBLIC METHODS
 
+// acceptClause: 'accept' expression
+Visitor.prototype.visitAcceptClause = function(tree) {
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+};
+
+
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
     const parameters = angle.getParameters();
@@ -94,12 +101,13 @@ Visitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' recipient 'from' expression
+// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 Visitor.prototype.visitCheckoutClause = function(tree) {
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
+    }
 };
 
 
@@ -436,11 +444,27 @@ Visitor.prototype.visitRange = function(range) {
 };
 
 
+// receiveClause: 'receive' recipient 'from' expression
+Visitor.prototype.visitReceiveClause = function(tree) {
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
+};
+
+
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
     const parameters = reference.getParameters();
     this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
+};
+
+
+// rejectClause: 'reject' expression
+Visitor.prototype.visitRejectClause = function(tree) {
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
 };
 
 
@@ -453,12 +477,10 @@ Visitor.prototype.visitReturnClause = function(tree) {
 };
 
 
-// saveClause: 'save' expression 'to' expression
+// saveClause: 'save' expression
 Visitor.prototype.visitSaveClause = function(tree) {
     const draft = tree.getItem(1);
     draft.acceptVisitor(this);
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
 };
 
 
@@ -573,15 +595,6 @@ Visitor.prototype.visitVersion = function(version) {
     const parameters = version.getParameters();
     this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
-};
-
-
-// waitClause: 'wait' 'for' recipient 'from' expression
-Visitor.prototype.visitWaitClause = function(tree) {
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
 };
 
 

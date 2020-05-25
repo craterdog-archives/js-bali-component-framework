@@ -84,14 +84,20 @@ DocumentVisitor.prototype.visitPostClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#waitClause.
-DocumentVisitor.prototype.visitWaitClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#receiveClause.
+DocumentVisitor.prototype.visitReceiveClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by DocumentParser#acknowledgeClause.
-DocumentVisitor.prototype.visitAcknowledgeClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#rejectClause.
+DocumentVisitor.prototype.visitRejectClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#acceptClause.
+DocumentVisitor.prototype.visitAcceptClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

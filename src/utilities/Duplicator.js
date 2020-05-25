@@ -60,12 +60,11 @@ DuplicatingVisitor.prototype = Object.create(Visitor.prototype);
 DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 
-// acknowledgeClause: 'acknowledge' expression 'from' expression
-DuplicatingVisitor.prototype.visitAcknowledgeClause = function(tree) {
+// acceptClause: 'accept' expression
+DuplicatingVisitor.prototype.visitAcceptClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -140,7 +139,7 @@ DuplicatingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression
+// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
@@ -515,11 +514,32 @@ DuplicatingVisitor.prototype.visitRange = function(range) {
 };
 
 
+// receiveClause: 'receive' recipient 'from' expression
+DuplicatingVisitor.prototype.visitReceiveClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
+};
+
+
 // reference: RESOURCE
 DuplicatingVisitor.prototype.visitReference = function(reference) {
     this.visitParameters(reference.getParameters());
     const parameters = this.result;
     this.result = new reference.constructor(reference.getValue(), parameters, this.debug);
+};
+
+
+// rejectClause: 'reject' expression
+DuplicatingVisitor.prototype.visitRejectClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
 };
 
 
@@ -534,12 +554,10 @@ DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
 };
 
 
-// saveClause: 'save' expression 'to' expression
+// saveClause: 'save' expression
 DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -652,17 +670,6 @@ DuplicatingVisitor.prototype.visitVersion = function(version) {
     this.visitParameters(version.getParameters());
     const parameters = this.result;
     this.result = new version.constructor(version.getValue(), parameters, this.debug);
-};
-
-
-// waitClause: 'wait' 'for' recipient 'from' expression
-DuplicatingVisitor.prototype.visitWaitClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
 };
 
 

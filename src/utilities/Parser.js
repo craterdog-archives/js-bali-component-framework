@@ -162,13 +162,11 @@ ParsingVisitor.prototype.getIndentation = function() {
 };
 
 
-// acknowledgeClause: 'acknowledge' expression 'from' expression
-ParsingVisitor.prototype.visitAcknowledgeClause = function(ctx) {
-    const tree = new collections.Tree('/bali/composites/AcknowledgeClause', this.debug);
-    const expressions = ctx.expression();
-    expressions[0].accept(this);
-    tree.addItem(this.result);
-    expressions[1].accept(this);
+// acceptClause: 'accept' expression
+ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
+    const tree = new collections.Tree('/bali/composites/AcceptClause', this.debug);
+    const message = ctx.expression();
+    message.accept(this);
     tree.addItem(this.result);
     this.result = tree;
 };
@@ -320,16 +318,19 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression
+// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     const tree = new collections.Tree('/bali/composites/CheckoutClause', this.debug);
-    ctx.recipient().accept(this);
-    tree.addItem(this.result);
     const expressions = ctx.expression();
-    for (var i = 0; i < expressions.length; i++) {
-        expressions[i].accept(this);
+    var index = 0;
+    if (expressions.length ===2) {
+        expressions[index++].accept(this);
         tree.addItem(this.result);
     }
+    ctx.recipient().accept(this);
+    tree.addItem(this.result);
+    expressions[index].accept(this);
+    tree.addItem(this.result);
     this.result = tree;
 };
 
@@ -829,12 +830,33 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
+// receiveClause: 'receive' recipient 'from' expression
+ParsingVisitor.prototype.visitReceiveClause = function(ctx) {
+    const tree = new collections.Tree('/bali/composites/ReceiveClause', this.debug);
+    ctx.recipient().accept(this);
+    tree.addItem(this.result);
+    ctx.expression().accept(this);
+    tree.addItem(this.result);
+    this.result = tree;
+};
+
+
 // reference: RESOURCE
 ParsingVisitor.prototype.visitReference = function(ctx) {
     const parameters = this.getParameters();
     const value = new URL(ctx.getText().slice(1, -1));  // remove the '<' and '>' delimiters
     const reference = new elements.Reference(value, parameters, this.debug);
     this.result = reference;
+};
+
+
+// rejectClause: 'reject' expression
+ParsingVisitor.prototype.visitRejectClause = function(ctx) {
+    const tree = new collections.Tree('/bali/composites/RejectClause', this.debug);
+    const message = ctx.expression();
+    message.accept(this);
+    tree.addItem(this.result);
+    this.result = tree;
 };
 
 
@@ -850,13 +872,11 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 };
 
 
-// saveClause: 'save' expression 'to' expression
+// saveClause: 'save' expression
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     const tree = new collections.Tree('/bali/composites/SaveClause', this.debug);
-    const expressions = ctx.expression();
-    expressions[0].accept(this);
-    tree.addItem(this.result);
-    expressions[1].accept(this);
+    const draft = ctx.expression();
+    draft.accept(this);
     tree.addItem(this.result);
     this.result = tree;
 };
@@ -1014,17 +1034,6 @@ ParsingVisitor.prototype.visitVersion = function(ctx) {
     }, this);
     const version = new elements.Version(value, parameters, this.debug);
     this.result = version;
-};
-
-
-// waitClause: 'wait' 'for' recipient 'from' expression
-ParsingVisitor.prototype.visitWaitClause = function(ctx) {
-    const tree = new collections.Tree('/bali/composites/WaitClause', this.debug);
-    ctx.recipient().accept(this);
-    tree.addItem(this.result);
-    ctx.expression().accept(this);
-    tree.addItem(this.result);
-    this.result = tree;
 };
 
 

@@ -106,14 +106,11 @@ FormattingVisitor.prototype = Object.create(Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
-// acknowledgeClause: 'acknowledge' expression 'from' expression
-FormattingVisitor.prototype.visitAcknowledgeClause = function(tree) {
-    this.result += 'acknowledge ';
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
-    this.result += ' from ';
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
+// acceptClause: 'accept' expression
+FormattingVisitor.prototype.visitAcceptClause = function(tree) {
+    this.result += 'accept ';
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
 };
 
 
@@ -249,20 +246,21 @@ FormattingVisitor.prototype.visitBreakClause = function(tree) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' 'level' expression)? 'from' expression
+// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.result += 'checkout ';
     var index = 1;
-    const component = tree.getItem(index++);
-    component.acceptVisitor(this);
     if (tree.getSize() === 3) {
-        this.result += ' at level ';
-        const reference = tree.getItem(index++);
-        reference.acceptVisitor(this);
+        this.result += 'level ';
+        const level = tree.getItem(index++);
+        level.acceptVisitor(this);
+        this.result += ' of ';
     }
+    const recipient = tree.getItem(index++);
+    recipient.acceptVisitor(this);
     this.result += ' from ';
-    const reference = tree.getItem(index);
-    reference.acceptVisitor(this);
+    const name = tree.getItem(index);
+    name.acceptVisitor(this);
 };
 
 
@@ -757,12 +755,32 @@ FormattingVisitor.prototype.visitRange = function(range) {
 };
 
 
+// receiveClause: 'receive' recipient 'from' expression
+FormattingVisitor.prototype.visitReceiveClause = function(tree) {
+    this.result += 'receive ';
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    this.result += ' from ';
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
+};
+
+
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
     this.result += '<' + value + '>';
     const parameters = reference.getParameters();
     this.visitParameters(parameters);  // format any parameterization
+};
+
+
+// rejectClause: 'reject' expression
+FormattingVisitor.prototype.visitRejectClause = function(tree) {
+    console.log('GOT HERE');
+    this.result += 'reject ';
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
 };
 
 
@@ -777,14 +795,11 @@ FormattingVisitor.prototype.visitReturnClause = function(tree) {
 };
 
 
-// saveClause: 'save' expression 'to' expression
+// saveClause: 'save' expression
 FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.result += 'save ';
     const draft = tree.getItem(1);
     draft.acceptVisitor(this);
-    this.result += ' to ';
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
 };
 
 
@@ -921,17 +936,6 @@ FormattingVisitor.prototype.visitVersion = function(version) {
     this.result += 'v' + value.join('.');  // concatentat the version levels
     const parameters = version.getParameters();
     this.visitParameters(parameters);  // format any parameterization
-};
-
-
-// waitClause: 'wait' 'for' recipient 'from' expression
-FormattingVisitor.prototype.visitWaitClause = function(tree) {
-    this.result += 'wait for ';
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    this.result += ' from ';
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
 };
 
 

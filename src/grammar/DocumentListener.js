@@ -119,21 +119,30 @@ DocumentListener.prototype.exitPostClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#waitClause.
-DocumentListener.prototype.enterWaitClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#receiveClause.
+DocumentListener.prototype.enterReceiveClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#waitClause.
-DocumentListener.prototype.exitWaitClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#receiveClause.
+DocumentListener.prototype.exitReceiveClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#acknowledgeClause.
-DocumentListener.prototype.enterAcknowledgeClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#rejectClause.
+DocumentListener.prototype.enterRejectClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#acknowledgeClause.
-DocumentListener.prototype.exitAcknowledgeClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#rejectClause.
+DocumentListener.prototype.exitRejectClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#acceptClause.
+DocumentListener.prototype.enterAcceptClause = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#acceptClause.
+DocumentListener.prototype.exitAcceptClause = function(ctx) {
 };
 
 
