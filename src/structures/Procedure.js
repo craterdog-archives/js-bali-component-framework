@@ -29,20 +29,17 @@ const types = require('../types');
  * @returns {Procedure} A new procedure component.
  */
 const Procedure = function(statements, parameters, debug) {
-    types.Component.call(
+    types.Structure.call(
         this,
-        ['/bali/composites/Procedure'],
-        [
-            '/bali/interfaces/Literal',
-            '/bali/interfaces/Composite'
-        ],
+        ['/bali/structures/Procedure'],
+        ['/bali/interfaces/Literal'],
         parameters,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/composites/Procedure', '$Procedure', '$statements', statements, [
-            '/bali/composites/Statements'
+        validator.validateType('/bali/structures/Procedure', '$Procedure', '$statements', statements, [
+            '/bali/structures/Statements'
         ]);
     }
 
@@ -51,7 +48,7 @@ const Procedure = function(statements, parameters, debug) {
     this.getSubcomponent = function(element) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/composites/Procedures', '$getSubcomponent', '$element', element, [
+            validator.validateType('/bali/structures/Procedures', '$getSubcomponent', '$element', element, [
                 '/bali/types/Element'
             ]);
         }
@@ -60,7 +57,7 @@ const Procedure = function(statements, parameters, debug) {
 
     this.setSubcomponent = function(element, subcomponent) {
         const exception = new Exception({
-            $module: '/bali/composites/Procedure',
+            $module: '/bali/structures/Procedure',
             $procedure: '$setSubcomponent',
             $exception: '$readOnly',
             $text: 'The statements in a procedure cannot be updated.'
@@ -71,12 +68,22 @@ const Procedure = function(statements, parameters, debug) {
 
     return this;
 };
-Procedure.prototype = Object.create(types.Component.prototype);
+Procedure.prototype = Object.create(types.Structure.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method determines whether or not this structure is meaningful.
+ *
+ * @returns {Boolean} Whether or not this component is meaningful.
+ */
+Procedure.prototype.toBoolean = function() {
+    return this.getStatements().getSize() > 0;
+};
+
 
 /**
  * This method returns the literal string value for this procedure.  The literal does not

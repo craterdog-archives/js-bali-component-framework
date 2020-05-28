@@ -17,7 +17,7 @@
  */
 const utilities = require('../utilities');
 const types = require('../types');
-const composites = require('../composites');
+const structures = require('../structures');
 const List = require('./List').List;
 
 
@@ -82,7 +82,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/composites/Association'
+                '/bali/structures/Association'
             ]);
         }
         if (association) {
@@ -111,7 +111,7 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/structures/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setValue(index++, item);
@@ -122,7 +122,7 @@ const Catalog = function(parameters, debug) {
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/structures/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setValue(index++, item);
@@ -142,7 +142,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/composites/Association'
+                '/bali/structures/Association'
             ]);
         }
         if (association) {
@@ -227,7 +227,7 @@ const Catalog = function(parameters, debug) {
             association.setValue(value);
             return oldValue;
         } else {
-            association = new composites.Association(key, value);
+            association = new structures.Association(key, value);
             map[key.toString()] = association;
             array.push(association);
         }

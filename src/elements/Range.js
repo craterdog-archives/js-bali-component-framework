@@ -15,7 +15,7 @@
  */
 const utilities = require('../utilities');
 const types = require('../types');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../structures/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

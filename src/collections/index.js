@@ -9,8 +9,6 @@
  ************************************************************************/
 'use strict';
 
-const composites = require('../composites/');
-
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List
 exports.Queue = require('./Queue').Queue;  // depends on Catalog

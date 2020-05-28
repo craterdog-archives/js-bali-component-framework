@@ -13,7 +13,7 @@
 /**
  * This structure class implements a smart exception class that knows how to format itself
  * as a Bali Document Notation™ string. It provides a consistent way to do exception
- * handling within the Bali Nebula™. This class must look like it is a component
+ * handling within the Bali Nebula™. This class must look like it is a Structure component
  * but also inherit from the JavaScript Error class. So it implements all of the methods
  * defined in the Component class.
  */
@@ -32,7 +32,8 @@
  */
 const Exception = function(attributes, cause) {
     const ancestry = [
-        '/bali/composites/Exception',
+        '/bali/structures/Exception',
+        '/bali/types/Structure',
         '/bali/types/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
@@ -136,11 +137,9 @@ Exception.prototype.isParameterized = function() {
 
 
 /**
- * This abstract method returns a boolean value for this component. It allows each component to be
- * used as a boolean in a condition that determines whether of not the component has a meaningful
- * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
+ * This method determines whether or not this structure is meaningful.
  *
- * @returns {Boolean} Whether or not this component has a meaningful value.
+ * @returns {Boolean} Whether or not this component is meaningful.
  */
 Exception.prototype.toBoolean = function() {
     return true;

@@ -14,6 +14,7 @@ const utilities = require('../utilities');
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component
 exports.Sequence = require('./Sequence').Sequence;  // depends on Element
+exports.Structure = require('./Structure').Structure;  // depends on Component
 exports.Iterator = require('./Iterator').Iterator;
 exports.Collection = require('./Collection').Collection;  // depends on Iterator
 exports.Visitor = require('./Visitor').Visitor;

@@ -16,7 +16,6 @@
  */
 const utilities = require('../utilities');
 const types = require('../types');
-const composites = require('../composites');
 
 
 // PUBLIC FUNCTIONS
