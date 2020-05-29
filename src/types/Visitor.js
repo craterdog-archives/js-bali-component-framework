@@ -198,13 +198,11 @@ Visitor.prototype.visitDuration = function(duration) {
 
 // evaluateClause: (recipient ':=')? expression
 Visitor.prototype.visitEvaluateClause = function(tree) {
-    const size = tree.getSize();
-    if (size > 1) {
-        const recipient = tree.getItem(1);
-        recipient.acceptVisitor(this);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        item.acceptVisitor(this);
     }
-    const expression = tree.getItem(size);
-    expression.acceptVisitor(this);
 };
 
 
@@ -470,17 +468,19 @@ Visitor.prototype.visitRejectClause = function(tree) {
 
 // returnClause: 'return' expression?
 Visitor.prototype.visitReturnClause = function(tree) {
-    if (tree.getSize() > 0) {
-        const result = tree.getItem(1);
-        result.acceptVisitor(this);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
     }
 };
 
 
-// saveClause: 'save' expression
+// saveClause: 'save' expression ('as' recipient)?
 Visitor.prototype.visitSaveClause = function(tree) {
-    const draft = tree.getItem(1);
-    draft.acceptVisitor(this);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
+    }
 };
 
 
@@ -511,13 +511,10 @@ Visitor.prototype.visitSelectClause = function(tree) {
 
 // statement: mainClause handleClause?
 Visitor.prototype.visitStatement = function(tree) {
-    this.depth++;
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
-        const child = iterator.getNext();
-        child.acceptVisitor(this);
+        iterator.getNext().acceptVisitor(this);
     }
-    this.depth--;
 };
 
 

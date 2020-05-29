@@ -40,7 +40,7 @@
         save component
         commit component to /bali/examples/document/v2
         checkout level 2 of components[index] from /bali/examples/document/v2
-        save components[index]
+        save components[index] as $citation
         commit components[index] to /bali/examples/document/v2.1
         discard citation
     }

@@ -33,8 +33,8 @@ evaluateClause: (recipient ':=')? expression;
 // checkout level 2 of $draft from /acme/reports/Q3/v1.3.6
 checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression;
 
-// save draft
-saveClause: 'save' expression;
+// save draft as $citation
+saveClause: 'save' expression ('as' recipient)?;
 
 // discard draft
 discardClause: 'discard' expression;

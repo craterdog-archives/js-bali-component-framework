@@ -794,11 +794,16 @@ FormattingVisitor.prototype.visitReturnClause = function(tree) {
 };
 
 
-// saveClause: 'save' expression
+// saveClause: 'save' expression ('as' recipient)?
 FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.result += 'save ';
     const draft = tree.getItem(1);
     draft.acceptVisitor(this);
+    if (tree.getSize() > 1) {
+        this.result += ' as ';
+        const recipient = tree.getItem(2);
+        recipient.acceptVisitor(this);
+    }
 };
 
 
@@ -826,16 +831,6 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
             block = tree.getItem(i + 1);
             block.acceptVisitor(this);
         }
-    }
-};
-
-
-// statement: mainClause handleClause?
-FormattingVisitor.prototype.visitStatement = function(tree) {
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        const child = iterator.getNext();
-        child.acceptVisitor(this);
     }
 };
 

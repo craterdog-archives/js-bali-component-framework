@@ -546,19 +546,23 @@ DuplicatingVisitor.prototype.visitRejectClause = function(tree) {
 // returnClause: 'return' expression?
 DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    if (tree.getSize() > 0) {
-        tree.getItem(1).acceptVisitor(this);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
     this.result = copy;
 };
 
 
-// saveClause: 'save' expression
+// saveClause: 'save' expression ('as' recipient)?
 DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
+        copy.addItem(this.result);
+    }
     this.result = copy;
 };
 
