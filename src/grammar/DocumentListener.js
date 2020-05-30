@@ -119,12 +119,12 @@ DocumentListener.prototype.exitPostClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#receiveClause.
-DocumentListener.prototype.enterReceiveClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#retrieveClause.
+DocumentListener.prototype.enterRetrieveClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#receiveClause.
-DocumentListener.prototype.exitReceiveClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#retrieveClause.
+DocumentListener.prototype.exitRetrieveClause = function(ctx) {
 };
 
 

@@ -365,7 +365,7 @@ var sharedContextCache = new antlr4.PredictionContextCache();
 var literalNames = [ null, "'handle'", "'matching'", "'with'", "'{'", "'}'", 
                      "':='", "'checkout'", "'level'", "'of'", "'from'", 
                      "'save'", "'as'", "'discard'", "'commit'", "'to'", 
-                     "'publish'", "'post'", "'receive'", "'reject'", "'accept'", 
+                     "'publish'", "'post'", "'retrieve'", "'reject'", "'accept'", 
                      "'if'", "'then'", "'else'", "'select'", "'do'", "'each'", 
                      "'in'", "'while'", "'continue'", "'loop'", "'break'", 
                      "'return'", "'throw'", "'['", "']'", "'('", "')'", 
@@ -393,7 +393,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
 var ruleNames =  [ "document", "statement", "mainClause", "handleClause", 
                    "block", "evaluateClause", "checkoutClause", "saveClause", 
                    "discardClause", "commitClause", "publishClause", "postClause", 
-                   "receiveClause", "rejectClause", "acceptClause", "ifClause", 
+                   "retrieveClause", "rejectClause", "acceptClause", "ifClause", 
                    "selectClause", "withClause", "whileClause", "continueClause", 
                    "breakClause", "returnClause", "throwClause", "recipient", 
                    "subcomponent", "expression", "variable", "funcxion", 
@@ -531,7 +531,7 @@ DocumentParser.RULE_discardClause = 8;
 DocumentParser.RULE_commitClause = 9;
 DocumentParser.RULE_publishClause = 10;
 DocumentParser.RULE_postClause = 11;
-DocumentParser.RULE_receiveClause = 12;
+DocumentParser.RULE_retrieveClause = 12;
 DocumentParser.RULE_rejectClause = 13;
 DocumentParser.RULE_acceptClause = 14;
 DocumentParser.RULE_ifClause = 15;
@@ -807,8 +807,8 @@ MainClauseContext.prototype.postClause = function() {
     return this.getTypedRuleContext(PostClauseContext,0);
 };
 
-MainClauseContext.prototype.receiveClause = function() {
-    return this.getTypedRuleContext(ReceiveClauseContext,0);
+MainClauseContext.prototype.retrieveClause = function() {
+    return this.getTypedRuleContext(RetrieveClauseContext,0);
 };
 
 MainClauseContext.prototype.rejectClause = function() {
@@ -955,7 +955,7 @@ DocumentParser.prototype.mainClause = function() {
         case DocumentParser.T__17:
             this.enterOuterAlt(localctx, 8);
             this.state = 140;
-            this.receiveClause();
+            this.retrieveClause();
             break;
         case DocumentParser.T__18:
             this.enterOuterAlt(localctx, 9);
@@ -1763,7 +1763,7 @@ DocumentParser.prototype.postClause = function() {
     return localctx;
 };
 
-function ReceiveClauseContext(parser, parent, invokingState) {
+function RetrieveClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1772,36 +1772,36 @@ function ReceiveClauseContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_receiveClause;
+    this.ruleIndex = DocumentParser.RULE_retrieveClause;
     return this;
 }
 
-ReceiveClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-ReceiveClauseContext.prototype.constructor = ReceiveClauseContext;
+RetrieveClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+RetrieveClauseContext.prototype.constructor = RetrieveClauseContext;
 
-ReceiveClauseContext.prototype.recipient = function() {
+RetrieveClauseContext.prototype.recipient = function() {
     return this.getTypedRuleContext(RecipientContext,0);
 };
 
-ReceiveClauseContext.prototype.expression = function() {
+RetrieveClauseContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 
-ReceiveClauseContext.prototype.enterRule = function(listener) {
+RetrieveClauseContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterReceiveClause(this);
+        listener.enterRetrieveClause(this);
 	}
 };
 
-ReceiveClauseContext.prototype.exitRule = function(listener) {
+RetrieveClauseContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitReceiveClause(this);
+        listener.exitRetrieveClause(this);
 	}
 };
 
-ReceiveClauseContext.prototype.accept = function(visitor) {
+RetrieveClauseContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitReceiveClause(this);
+        return visitor.visitRetrieveClause(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1810,12 +1810,12 @@ ReceiveClauseContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.ReceiveClauseContext = ReceiveClauseContext;
+DocumentParser.RetrieveClauseContext = RetrieveClauseContext;
 
-DocumentParser.prototype.receiveClause = function() {
+DocumentParser.prototype.retrieveClause = function() {
 
-    var localctx = new ReceiveClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 24, DocumentParser.RULE_receiveClause);
+    var localctx = new RetrieveClauseContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 24, DocumentParser.RULE_retrieveClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 208;

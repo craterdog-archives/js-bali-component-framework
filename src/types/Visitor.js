@@ -442,8 +442,8 @@ Visitor.prototype.visitRange = function(range) {
 };
 
 
-// receiveClause: 'receive' recipient 'from' expression
-Visitor.prototype.visitReceiveClause = function(tree) {
+// retrieveClause: 'retrieve' recipient 'from' expression
+Visitor.prototype.visitRetrieveClause = function(tree) {
     const message = tree.getItem(1);
     message.acceptVisitor(this);
     const queue = tree.getItem(2);

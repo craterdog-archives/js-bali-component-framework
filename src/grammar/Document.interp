@@ -17,7 +17,7 @@ null
 'to'
 'publish'
 'post'
-'receive'
+'retrieve'
 'reject'
 'accept'
 'if'
@@ -207,7 +207,7 @@ discardClause
 commitClause
 publishClause
 postClause
-receiveClause
+retrieveClause
 rejectClause
 acceptClause
 ifClause

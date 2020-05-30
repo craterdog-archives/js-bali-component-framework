@@ -830,9 +830,9 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// receiveClause: 'receive' recipient 'from' expression
-ParsingVisitor.prototype.visitReceiveClause = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/ReceiveClause', this.debug);
+// retrieveClause: 'retrieve' recipient 'from' expression
+ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/RetrieveClause', this.debug);
     ctx.recipient().accept(this);
     tree.addItem(this.result);
     ctx.expression().accept(this);

@@ -52,9 +52,9 @@
         post message(1) to /bali/examples/bag/v1
         post message(1, second, "3rd") to /bali/examples/bag/v1
     }
-    $receiveMessage: {
-        receive $message from /bali/examples/bag/v1
-        receive messages[$foo, 5] from /bali/examples/bag/v1
+    $retrieveMessage: {
+        retrieve $message from /bali/examples/bag/v1
+        retrieve messages[$foo, 5] from /bali/examples/bag/v1
     }
     $rejectMessage: {
         reject citation

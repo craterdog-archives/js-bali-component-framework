@@ -84,8 +84,8 @@ DocumentVisitor.prototype.visitPostClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#receiveClause.
-DocumentVisitor.prototype.visitReceiveClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#retrieveClause.
+DocumentVisitor.prototype.visitRetrieveClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

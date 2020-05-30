@@ -755,9 +755,9 @@ FormattingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// receiveClause: 'receive' recipient 'from' expression
-FormattingVisitor.prototype.visitReceiveClause = function(tree) {
-    this.result += 'receive ';
+// receiveClause: 'retrieve' recipient 'from' expression
+FormattingVisitor.prototype.visitRetrieveClause = function(tree) {
+    this.result += 'retrieve ';
     const message = tree.getItem(1);
     message.acceptVisitor(this);
     this.result += ' from ';

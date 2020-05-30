@@ -514,8 +514,8 @@ DuplicatingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// receiveClause: 'receive' recipient 'from' expression
-DuplicatingVisitor.prototype.visitReceiveClause = function(tree) {
+// retrieveClause: 'retrieve' recipient 'from' expression
+DuplicatingVisitor.prototype.visitRetrieveClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);

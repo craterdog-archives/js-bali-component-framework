@@ -11,7 +11,7 @@ mainClause:
     commitClause |
     publishClause |
     postClause |
-    receiveClause |
+    retrieveClause |
     rejectClause |
     acceptClause |
     ifClause |
@@ -48,8 +48,8 @@ publishClause: 'publish' expression;
 // post message to /acme/blogs/v3.2
 postClause: 'post' expression 'to' expression;
 
-// receive $message from /acme/blogs/v3.2
-receiveClause: 'receive' recipient 'from' expression;
+// retrieve $message from /acme/blogs/v3.2
+retrieveClause: 'retrieve' recipient 'from' expression;
 
 // reject message
 rejectClause: 'reject' expression;
