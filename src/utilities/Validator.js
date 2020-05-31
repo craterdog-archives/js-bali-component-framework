@@ -98,10 +98,15 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     }
 
     // validate the argument
+    const actualType = this.getType(argumentValue);
+    if (allowedTypes.indexOf(actualType) > -1) return;
     if (argumentValue && argumentValue.isComponent) {
         var foundIt = false;
         allowedTypes.forEach(function(allowedType) {
             if (argumentValue.isType(allowedType)) foundIt = true;
+        }, this);
+        argumentValue.getInterfaces().forEach(function(iface) {
+            if (allowedTypes.indexOf(iface) > -1) foundIt = true;
         }, this);
         if (foundIt) return;
     }
@@ -112,9 +117,9 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
         $procedure: procedureName,
         $argument: argumentName,
         $exception: '$argumentType',
-        $expected: allowedTypes,
-        $actual: actualType,
-        $value: argumentValue,
+        $allowedTypes: allowedTypes,
+        $actualType: actualType,
+        $argumentValue: argumentValue,
         $text: 'An invalid argument type was passed to the procedure.'
     });
     if (this.debug > 0) console.error(exception.toString());
