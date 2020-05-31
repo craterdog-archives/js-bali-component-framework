@@ -49,7 +49,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     }
 
     this.getType = function() {
-        return type;
+        return ancestry[0];
     };
 
     this.getAncestry = function() {
@@ -79,7 +79,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
 
     // extract the actual type
     ancestry = ancestry.concat('/bali/types/Component');
-    const type = ancestry[0];  // first type in the ancestry tree
     this.isComponent = true;
 
     // add in the component interfaces

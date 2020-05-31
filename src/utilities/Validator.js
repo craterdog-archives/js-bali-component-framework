@@ -98,15 +98,10 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     }
 
     // validate the argument
-    const actualType = this.getType(argumentValue);
-    if (allowedTypes.indexOf(actualType) > -1) return;
     if (argumentValue && argumentValue.isComponent) {
         var foundIt = false;
-        argumentValue.getAncestry().forEach(function(ancestor) {
-            if (allowedTypes.indexOf(ancestor) > -1) foundIt = true;
-        }, this);
-        argumentValue.getInterfaces().forEach(function(iface) {
-            if (allowedTypes.indexOf(iface) > -1) foundIt = true;
+        allowedTypes.forEach(function(allowedType) {
+            if (argumentValue.isType(allowedType)) foundIt = true;
         }, this);
         if (foundIt) return;
     }

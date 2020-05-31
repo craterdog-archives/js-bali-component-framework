@@ -91,6 +91,6 @@ exports.Tree = Tree;
  */
 Tree.prototype.acceptVisitor = function(visitor) {
     // call the visitor method for the specific type of tree node
-    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/collections/<Type>'
+    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/structures/<Type>'
     visitor[functionName](this);
 };

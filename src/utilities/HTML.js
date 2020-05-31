@@ -216,13 +216,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 FormattingVisitor.prototype.visitCollection = function(collection) {
     // check for an explicit type, otherwise use the implicit type
     var iterator;
-    var type = collection.getParameter('$type');
-    if (type) {
-        const names = type.getValue().slice(0, -1);  // remove the version number
-        type = '/' + names.join('/');
-    } else {
-        type = collection.getType();
-    }
+    const type = collection.getType();
     const name = type.slice(type.lastIndexOf('/') + 1);  // extract the type name
     switch (type) {
         case '/bali/collections/List':
