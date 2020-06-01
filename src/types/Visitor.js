@@ -183,8 +183,8 @@ Visitor.prototype.visitDereferenceExpression = function(tree) {
 
 // discardClause: 'discard' expression
 Visitor.prototype.visitDiscardClause = function(tree) {
-    const draft = tree.getItem(1);
-    draft.acceptVisitor(this);
+    const document = tree.getItem(1);
+    document.acceptVisitor(this);
 };
 
 

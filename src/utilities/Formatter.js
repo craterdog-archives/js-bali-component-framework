@@ -367,8 +367,8 @@ FormattingVisitor.prototype.visitDereferenceExpression = function(tree) {
 // discardClause: 'discard' expression
 FormattingVisitor.prototype.visitDiscardClause = function(tree) {
     this.result += 'discard ';
-    const draft = tree.getItem(1);
-    draft.acceptVisitor(this);
+    const document = tree.getItem(1);
+    document.acceptVisitor(this);
 };
 
 
@@ -797,8 +797,8 @@ FormattingVisitor.prototype.visitReturnClause = function(tree) {
 // saveClause: 'save' expression ('as' recipient)?
 FormattingVisitor.prototype.visitSaveClause = function(tree) {
     this.result += 'save ';
-    const draft = tree.getItem(1);
-    draft.acceptVisitor(this);
+    const document = tree.getItem(1);
+    document.acceptVisitor(this);
     if (tree.getSize() > 1) {
         this.result += ' as ';
         const recipient = tree.getItem(2);

@@ -875,8 +875,8 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 // saveClause: 'save' expression ('as' recipient)?
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     const tree = new collections.Tree('/bali/structures/SaveClause', this.debug);
-    const draft = ctx.expression();
-    draft.accept(this);
+    const document = ctx.expression();
+    document.accept(this);
     tree.addItem(this.result);
     const recipient = ctx.recipient();
     if (recipient) {
