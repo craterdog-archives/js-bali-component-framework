@@ -36,11 +36,11 @@ const Catalog = function(parameters, debug) {
     if (parameters) {
         var type;
         if (parameters.isComponent && parameters.isType('/bali/collections/Catalog')) {
-            type = parameters.getValue('$type').toString();
+            type = parameters.getValue('$type');
         } else {
             type = parameters['$type'];
         }
-        if (type) ancestry.push(type.split('/').slice(0, -1).join('/'));  // remove the version string
+        if (type) ancestry.push(type.toString().split('/').slice(0, -1).join('/'));  // remove the version string
     }
     ancestry.push('/bali/collections/Catalog');
     types.Collection.call(
