@@ -1,4 +1,4 @@
-// Generated from src/grammar/Document.g4 by ANTLR 4.9
+// Generated from src/grammar/Document.g4 by ANTLR 4.9.2
 // jshint ignore: start
 import antlr4 from 'antlr4';
 import DocumentListener from './DocumentListener.js';
@@ -1068,7 +1068,7 @@ export default class DocumentParser extends antlr4.Parser {
 	        this.block();
 	        this.state = 231;
 	        this._errHandler.sync(this);
-	        let _alt = this._interp.adaptivePredict(this._input,8,this._ctx)
+	        var _alt = this._interp.adaptivePredict(this._input,8,this._ctx)
 	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
 	            if(_alt===1) {
 	                this.state = 223;
@@ -1521,7 +1521,7 @@ export default class DocumentParser extends antlr4.Parser {
 	        this._ctx.stop = this._input.LT(-1);
 	        this.state = 349;
 	        this._errHandler.sync(this);
-	        let _alt = this._interp.adaptivePredict(this._input,17,this._ctx)
+	        var _alt = this._interp.adaptivePredict(this._input,17,this._ctx)
 	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
 	            if(_alt===1) {
 	                if(this._parseListeners!==null) {

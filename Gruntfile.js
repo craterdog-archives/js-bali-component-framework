@@ -112,7 +112,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'Default targets.', ['generate', 'build']);
 
   grunt.registerMultiTask('antlr4', 'Task for antlr4 parser/lexer generation in JS', function () {
-    var commandLine = ['-jar', 'lib/antlr-4.9-complete.jar'];
+    var commandLine = ['-jar', 'lib/antlr-4.9.2-complete.jar'];
     var options = this.options();
     if (options.flags) options.flags.forEach(function (flag) {
       commandLine.push('-' + flag);
