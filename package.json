@@ -37,7 +37,7 @@
     "webpack": "^5.41.0"
   },
   "dependencies": {
-    "antlr4": "^4.9.2",
+    "antlr4": "4.8.0",
     "moment": "^2.29.1"
   }
 }

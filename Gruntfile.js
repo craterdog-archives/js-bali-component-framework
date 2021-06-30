@@ -77,8 +77,13 @@ module.exports = function(grunt) {
       clientConfig: {
         target: 'web',
         mode: 'development',
-        node: {
-          fs: "empty"  // required work-around for webpack bug
+        resolve: {
+            fallback: {
+                "os": false,
+                "fs": false,
+                "url": false,
+                "crypto": false
+            }
         },
         entry: './index.js',
         output: {
@@ -112,7 +117,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'Default targets.', ['generate', 'build']);
 
   grunt.registerMultiTask('antlr4', 'Task for antlr4 parser/lexer generation in JS', function () {
-    var commandLine = ['-jar', 'lib/antlr-4.9.2-complete.jar'];
+    var commandLine = ['-jar', 'lib/antlr-4.8-complete.jar'];
     var options = this.options();
     if (options.flags) options.flags.forEach(function (flag) {
       commandLine.push('-' + flag);

@@ -1,13 +1,13 @@
-// Generated from src/grammar/Document.g4 by ANTLR 4.9.2
+// Generated from src/grammar/Document.g4 by ANTLR 4.8
 // jshint ignore: start
-import antlr4 from 'antlr4';
+var antlr4 = require('antlr4/index');
 
 
 
-const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
-    "\u5964\u0002a\u0383\b\u0001\u0004\u0002\t\u0002\u0004\u0003\t\u0003",
-    "\u0004\u0004\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007",
-    "\t\u0007\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004",
+var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
+    "\u0002a\u0383\b\u0001\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004",
+    "\u0004\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t",
+    "\u0007\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004",
     "\f\t\f\u0004\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010",
     "\t\u0010\u0004\u0011\t\u0011\u0004\u0012\t\u0012\u0004\u0013\t\u0013",
     "\u0004\u0014\t\u0014\u0004\u0015\t\u0015\u0004\u0016\t\u0016\u0004\u0017",
@@ -578,73 +578,24 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u0002"].join("");
 
 
-const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
+var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
 
-const decisionsToDFA = atn.decisionToState.map( (ds, index) => new antlr4.dfa.DFA(ds, index) );
+var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new antlr4.dfa.DFA(ds, index); });
 
-export default class DocumentLexer extends antlr4.Lexer {
-
-    static grammarFileName = "Document.g4";
-    static channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
-	static modeNames = [ "DEFAULT_MODE" ];
-	static literalNames = [ null, "'handle'", "'matching'", "'with'", "'{'", 
-                         "'}'", "':='", "'checkout'", "'level'", "'of'", 
-                         "'from'", "'save'", "'as'", "'discard'", "'commit'", 
-                         "'to'", "'publish'", "'post'", "'retrieve'", "'reject'", 
-                         "'accept'", "'if'", "'then'", "'else'", "'select'", 
-                         "'do'", "'each'", "'in'", "'while'", "'continue'", 
-                         "'loop'", "'break'", "'return'", "'throw'", "'['", 
-                         "']'", "'('", "')'", "'@'", "'.'", "'<-'", "'&'", 
-                         "'!'", "'^'", "'-'", "'*'", "'/'", "'//'", "'+'", 
-                         "'|'", "'<'", "'='", "'>'", "'IS'", "'MATCHES'", 
-                         "'NOT'", "'AND'", "'SANS'", "'XOR'", "'OR'", "'?'", 
-                         "','", "':'", "';'", "'undefined'", "'0'", "'\u221E'", 
-                         "'infinity'", "'e^'", "'i'", "'none'", "'any'", 
-                         "'false'", "'true'", "'..'" ];
-	static symbolicNames = [ null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, "ANGLE", "BINARY", "DURATION", 
-                          "FRACTION", "IMAGINARY", "MOMENT", "NAME", "PERCENT", 
-                          "RESOURCE", "REAL", "REGEX", "SYMBOL", "TAG", 
-                          "TEXT_BLOCK", "TEXT", "VERSION", "IDENTIFIER", 
-                          "EOL", "SPACE", "COMMENT_BLOCK", "COMMENT" ];
-	static ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", 
-                      "T__7", "T__8", "T__9", "T__10", "T__11", "T__12", 
-                      "T__13", "T__14", "T__15", "T__16", "T__17", "T__18", 
-                      "T__19", "T__20", "T__21", "T__22", "T__23", "T__24", 
-                      "T__25", "T__26", "T__27", "T__28", "T__29", "T__30", 
-                      "T__31", "T__32", "T__33", "T__34", "T__35", "T__36", 
-                      "T__37", "T__38", "T__39", "T__40", "T__41", "T__42", 
-                      "T__43", "T__44", "T__45", "T__46", "T__47", "T__48", 
-                      "T__49", "T__50", "T__51", "T__52", "T__53", "T__54", 
-                      "T__55", "T__56", "T__57", "T__58", "T__59", "T__60", 
-                      "T__61", "T__62", "T__63", "T__64", "T__65", "T__66", 
-                      "T__67", "T__68", "T__69", "T__70", "T__71", "T__72", 
-                      "T__73", "ANGLE", "BINARY", "DURATION", "FRACTION", 
-                      "IMAGINARY", "MOMENT", "NAME", "PERCENT", "RESOURCE", 
-                      "REAL", "REGEX", "SYMBOL", "TAG", "TEXT_BLOCK", "TEXT", 
-                      "VERSION", "IDENTIFIER", "EOL", "SPACE", "COMMENT_BLOCK", 
-                      "COMMENT", "CHARACTER", "NUMBER", "FLOAT", "INTEGER", 
-                      "SPAN", "TYPE", "CONTEXT", "YEARS", "MONTHS", "DAYS", 
-                      "HOURS", "MINUTES", "SECONDS", "BASE16", "BASE32", 
-                      "BASE64", "ESCAPE" ];
-
-    constructor(input) {
-        super(input)
-        this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
-    }
-
-    get atn() {
-        return atn;
-    }
+function DocumentLexer(input) {
+	antlr4.Lexer.call(this, input);
+    this._interp = new antlr4.atn.LexerATNSimulator(this, atn, decisionsToDFA, new antlr4.PredictionContextCache());
+    return this;
 }
+
+DocumentLexer.prototype = Object.create(antlr4.Lexer.prototype);
+DocumentLexer.prototype.constructor = DocumentLexer;
+
+Object.defineProperty(DocumentLexer.prototype, "atn", {
+        get : function() {
+                return atn;
+        }
+});
 
 DocumentLexer.EOF = antlr4.Token.EOF;
 DocumentLexer.T__0 = 1;
@@ -743,5 +694,85 @@ DocumentLexer.SPACE = 93;
 DocumentLexer.COMMENT_BLOCK = 94;
 DocumentLexer.COMMENT = 95;
 
+DocumentLexer.prototype.channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 
+DocumentLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
+
+DocumentLexer.prototype.literalNames = [ null, "'handle'", "'matching'", 
+                                         "'with'", "'{'", "'}'", "':='", 
+                                         "'checkout'", "'level'", "'of'", 
+                                         "'from'", "'save'", "'as'", "'discard'", 
+                                         "'commit'", "'to'", "'publish'", 
+                                         "'post'", "'retrieve'", "'reject'", 
+                                         "'accept'", "'if'", "'then'", "'else'", 
+                                         "'select'", "'do'", "'each'", "'in'", 
+                                         "'while'", "'continue'", "'loop'", 
+                                         "'break'", "'return'", "'throw'", 
+                                         "'['", "']'", "'('", "')'", "'@'", 
+                                         "'.'", "'<-'", "'&'", "'!'", "'^'", 
+                                         "'-'", "'*'", "'/'", "'//'", "'+'", 
+                                         "'|'", "'<'", "'='", "'>'", "'IS'", 
+                                         "'MATCHES'", "'NOT'", "'AND'", 
+                                         "'SANS'", "'XOR'", "'OR'", "'?'", 
+                                         "','", "':'", "';'", "'undefined'", 
+                                         "'0'", "'\u221E'", "'infinity'", 
+                                         "'e^'", "'i'", "'none'", "'any'", 
+                                         "'false'", "'true'", "'..'" ];
+
+DocumentLexer.prototype.symbolicNames = [ null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          null, null, null, null, null, 
+                                          "ANGLE", "BINARY", "DURATION", 
+                                          "FRACTION", "IMAGINARY", "MOMENT", 
+                                          "NAME", "PERCENT", "RESOURCE", 
+                                          "REAL", "REGEX", "SYMBOL", "TAG", 
+                                          "TEXT_BLOCK", "TEXT", "VERSION", 
+                                          "IDENTIFIER", "EOL", "SPACE", 
+                                          "COMMENT_BLOCK", "COMMENT" ];
+
+DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", 
+                                      "T__5", "T__6", "T__7", "T__8", "T__9", 
+                                      "T__10", "T__11", "T__12", "T__13", 
+                                      "T__14", "T__15", "T__16", "T__17", 
+                                      "T__18", "T__19", "T__20", "T__21", 
+                                      "T__22", "T__23", "T__24", "T__25", 
+                                      "T__26", "T__27", "T__28", "T__29", 
+                                      "T__30", "T__31", "T__32", "T__33", 
+                                      "T__34", "T__35", "T__36", "T__37", 
+                                      "T__38", "T__39", "T__40", "T__41", 
+                                      "T__42", "T__43", "T__44", "T__45", 
+                                      "T__46", "T__47", "T__48", "T__49", 
+                                      "T__50", "T__51", "T__52", "T__53", 
+                                      "T__54", "T__55", "T__56", "T__57", 
+                                      "T__58", "T__59", "T__60", "T__61", 
+                                      "T__62", "T__63", "T__64", "T__65", 
+                                      "T__66", "T__67", "T__68", "T__69", 
+                                      "T__70", "T__71", "T__72", "T__73", 
+                                      "ANGLE", "BINARY", "DURATION", "FRACTION", 
+                                      "IMAGINARY", "MOMENT", "NAME", "PERCENT", 
+                                      "RESOURCE", "REAL", "REGEX", "SYMBOL", 
+                                      "TAG", "TEXT_BLOCK", "TEXT", "VERSION", 
+                                      "IDENTIFIER", "EOL", "SPACE", "COMMENT_BLOCK", 
+                                      "COMMENT", "CHARACTER", "NUMBER", 
+                                      "FLOAT", "INTEGER", "SPAN", "TYPE", 
+                                      "CONTEXT", "YEARS", "MONTHS", "DAYS", 
+                                      "HOURS", "MINUTES", "SECONDS", "BASE16", 
+                                      "BASE32", "BASE64", "ESCAPE" ];
+
+DocumentLexer.prototype.grammarFileName = "Document.g4";
+
+
+exports.DocumentLexer = DocumentLexer;
 
