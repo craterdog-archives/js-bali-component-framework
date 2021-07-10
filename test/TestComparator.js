@@ -37,13 +37,13 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle angles', function() {
             expect(comparator.compareComponents(angle, angle)).to.equal(0);
-            expect(comparator.compareComponents(angle, number)).to.equal(1);
+            expect(comparator.compareComponents(angle, number)).to.equal(-1);
             expect(comparator.compareComponents(angle, percent)).to.equal(1);
             expect(comparator.compareComponents(angle, probability)).to.equal(1);
         });
 
         it('should handle numbers', function() {
-            expect(comparator.compareComponents(number, angle)).to.equal(-1);
+            expect(comparator.compareComponents(number, angle)).to.equal(1);
             expect(comparator.compareComponents(number, number)).to.equal(0);
             expect(comparator.compareComponents(number, percent)).to.equal(1);
             expect(comparator.compareComponents(number, probability)).to.equal(1);

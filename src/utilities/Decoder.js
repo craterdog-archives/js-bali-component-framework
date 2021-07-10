@@ -42,7 +42,7 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
 /**
  * This function returns a decoder object that can perform byte encoding and decoding.
  *
- * @param {Number} indentation The number of levels of indentation that should be inserted
+ * @param {Number} indentation The number of levels of indentation that should be prepended
  * to each formatted line. The default is zero.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Decoder} The new decoder.
@@ -550,7 +550,7 @@ const base32DecodeLast = function(chunk, characterIndex, buffer) {
  * This function returns a formatted version of a string with LINE_WIDTH characters per line.
  *
  * @param {String} string The string to be formatted.
- * @param {Number} indentation The number of spaces to be prepended to each line of the result.
+ * @param {Number} indentation The number of levels of indentation to be prepended to each line of the result.
  * @returns {String} The formatted string.
  */
 const formatLines = function(string, indentation) {

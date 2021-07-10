@@ -43,14 +43,14 @@ describe('Bali Nebula™ Component Framework - Number', function() {
             expect(bali.number(42).toBoolean()).to.equal(true);
             expect(bali.number(42).toString()).to.equal('42');
             expect(bali.number(42).toNumber()).to.equal(42);
-            expect(bali.number(-1.234).toNumber()).to.equal(-1.234);
+            expect(bali.number(-1.234).toNumber()).to.equal(1.234);
             expect(bali.number(1.234E-5).toNumber()).to.equal(1.234E-5);
         });
 
         it('should construct imaginary numbers', function() {
             expect(bali.number(0, 42).toBoolean()).to.equal(true);
             expect(bali.number(0, 42).toString()).to.equal('42i');
-            expect(bali.number(0, 42).toNumber()).to.equal(0);
+            expect(bali.number(0, 42).toNumber()).to.equal(42);
             expect(bali.number(0, 42).getImaginary()).to.equal(42);
             expect(bali.number(0, -1.234).getImaginary()).to.equal(-1.234);
             expect(bali.number(0, 1.234E-5).getImaginary()).to.equal(1.234E-5);
@@ -59,7 +59,7 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         it('should construct complex numbers', function() {
             expect(bali.number(3, 4).toBoolean()).to.equal(true);
             expect(bali.number(3, 4).toString()).to.equal('(3, 4i)');
-            expect(bali.number(3, 4).toNumber()).to.equal(3);
+            expect(bali.number(3, 4).toNumber()).to.equal(5);
             expect(bali.number(3, 4, bali.number.POLAR).toString()).to.equal('(5 e^~0.9272952180016122i)($format: $polar)');
             expect(bali.number(1, bali.angle(Math.PI/2)).toString()).to.equal('1i');
         });
