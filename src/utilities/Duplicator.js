@@ -329,7 +329,7 @@ DuplicatingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '*') expression
+// inversionExpression: ('-' | '/' | '*') expression
 DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     copy.operator = tree.operator;

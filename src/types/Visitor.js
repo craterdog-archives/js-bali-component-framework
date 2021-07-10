@@ -292,7 +292,7 @@ Visitor.prototype.visitIndices = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '*') expression
+// inversionExpression: ('-' | '/' | '*') expression
 Visitor.prototype.visitInversionExpression = function(tree) {
     const operator = tree.operator;
     const operand = tree.getItem(1);

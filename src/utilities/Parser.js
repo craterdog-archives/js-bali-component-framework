@@ -559,7 +559,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
-// inversionExpression: op=('-' | '*') expression
+// inversionExpression: op=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     const tree = new collections.Tree('/bali/structures/InversionExpression', this.debug);
     tree.operator = ctx.op.text;

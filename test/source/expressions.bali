@@ -65,8 +65,10 @@
     }
     $inversions: {
         $variable := -x
+        $variable := /x
         $variable := *-exponential
         $variable := *complex
+        $variable := */complex
         $variable := -*(3, 4i)
     }
     $geometrics: {

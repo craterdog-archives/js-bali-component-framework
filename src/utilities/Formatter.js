@@ -485,7 +485,7 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '*') expression
+// inversionExpression: ('-' | '/' | '*') expression
 FormattingVisitor.prototype.visitInversionExpression = function(tree) {
     this.inline++;
     this.result += tree.operator;
