@@ -120,12 +120,12 @@ Complex.prototype.toBoolean = function() {
 
 
 /**
- * This method returns the magnitude of this complex number.
+ * This method returns the real part of this complex number.
  *
- * @returns {Number} The magnitude of this complex number.
+ * @returns {Number} The real part of this complex number.
  */
 Complex.prototype.toNumber = function() {
-    return this.getMagnitude();
+    return this.getReal();
 };
 
 
