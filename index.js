@@ -74,7 +74,7 @@ const componentize = function(value, debug) {
                 component = new collections.Catalog(undefined, debug);
                 const keys = Object.keys(value);
                 keys.forEach(function(key) {
-                    component.setValue(key, value[key]);  // key and value are converted in setValue()
+                    component.setAttribute(key, value[key]);  // key and value are converted in setAttribute()
                 });
             }
             break;
@@ -287,7 +287,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         var error;
         if (cause && cause.isComponent &&
-            cause.getAttributes().getValue('$module').toString() === attributes['$module']) {
+            cause.getAttributes().getAttribute('$module').toString() === attributes['$module']) {
             // same module so no need to wrap it
             error = cause;
         } else {

@@ -47,23 +47,6 @@ exports.Structure = Structure;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this structure is meaningful.
- *
- * @returns {Boolean} Whether or not this component is meaningful.
- */
-Structure.prototype.toBoolean = function() {
-    const exception = new Exception({
-        $module: '/bali/types/Structure',
-        $procedure: '$toBoolean',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
-};
-
-
-/**
  * This method returns the value of the specified subcomponent for this structure component.
  *
  * @param {Element} element The element that acts as an index or key to the subcomponent

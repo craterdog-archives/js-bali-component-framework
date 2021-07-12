@@ -61,12 +61,12 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.getParameter = function(key) {
-        if (parameters) return parameters.getValue(key);
+        if (parameters) return parameters.getAttribute(key);
     };
 
     this.setParameter = function(key, value) {
         parameters = parameters || this.componentize({});
-        parameters.setValue(key, value);
+        parameters.setAttribute(key, value);
     };
 
     this.getParameters = function() {

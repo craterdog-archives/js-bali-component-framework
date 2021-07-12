@@ -187,7 +187,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     var parameters = binary.getParameters();
     var format;
     if (parameters) {
-        format = parameters.getValue('$encoding');
+        format = parameters.getAttribute('$encoding');
         if (format) format = format.toString();
     }
     const decoder = new Decoder(0, this.debug);
@@ -314,7 +314,7 @@ FormattingVisitor.prototype.visitNumber = function(number) {
     var parameters = number.getParameters();
     var format;
     if (parameters) {
-        format = parameters.getValue('$format');
+        format = parameters.getAttribute('$format');
         if (format) format = format.toString();
     } else {
         format = '$rectangular';
@@ -382,7 +382,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
         iterator.toStart();
         while (iterator.hasNext()) {
             const key = iterator.getNext();
-            const value = parameters.getValue(key);
+            const value = parameters.getAttribute(key);
             this.result += '<div class="association">';
             this.depth++;
             this.result += this.getNewline();
@@ -606,7 +606,7 @@ const formatParameters = function(parameters) {
             const key = iterator.getNext();
             if (count++) formatted += ', ';  // only after the first parameter has been formatted
             formatted += key.getValue() + ': ';  // strip off the leading '$'
-            formatted += parameters.getValue(key).toString().replace(/\$/g, '');  // strip of any leading '$'s
+            formatted += parameters.getAttribute(key).toString().replace(/\$/g, '');  // strip of any leading '$'s
         }
         formatted += ')';
     }

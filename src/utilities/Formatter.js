@@ -641,7 +641,7 @@ FormattingVisitor.prototype.visitParameters = function(parameters) {
                 this.result += this.getNewline();
             }
             this.result += key + ': ';
-            const value = parameters.getValue(key);
+            const value = parameters.getAttribute(key);
             value.acceptVisitor(this);
         }
         this.depth--;

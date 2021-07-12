@@ -65,11 +65,11 @@ const Exception = function(attributes, cause) {
     };
 
     this.getSubcomponent = function(element) {
-        return attributes.getValue(element);
+        return attributes.getAttribute(element);
     };
 
     this.setSubcomponent = function(element, subcomponent) {
-        return attributes.setValue(element, subcomponent);
+        return attributes.setAttribute(element, subcomponent);
     };
 
     // set the error message and cause

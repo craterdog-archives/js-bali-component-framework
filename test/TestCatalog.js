@@ -271,7 +271,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(catalog.getIndex(association1)).to.equal(1);
             expect(catalog.getItem(5).getValue().toString()).to.equal(association5.getValue().toString());
             expect(catalog.getIndex(association3)).to.equal(3);
-            const actual = catalog.getValue(3);
+            const actual = catalog.getAttribute(3);
             expect(actual.toString()).to.equal('"delta"');
             const keys = catalog.getKeys();
             size = keys.getSize();
@@ -306,12 +306,12 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
                 association = associationIterator.getNext();
                 expect(association.getValue().toString()).to.equal(array[index++]);
             }
-            catalog.setValue(1, '"gamma"');
-            expect(catalog.getValue(1).toString()).to.equal('"gamma"');
-            catalog.setValue(6, '"kappa"');
-            expect(catalog.getValue(6).toString()).to.equal('"kappa"');
+            catalog.setAttribute(1, '"gamma"');
+            expect(catalog.getAttribute(1).toString()).to.equal('"gamma"');
+            catalog.setAttribute(6, '"kappa"');
+            expect(catalog.getAttribute(6).toString()).to.equal('"kappa"');
             catalog.removeAll();
-            expect(catalog.getValue(6)).to.equal(undefined);
+            expect(catalog.getAttribute(6)).to.equal(undefined);
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(0);

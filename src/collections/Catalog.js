@@ -36,7 +36,7 @@ const Catalog = function(parameters, debug) {
     if (parameters) {
         var type;
         if (parameters.isComponent && parameters.isType('/bali/collections/Catalog')) {
-            type = parameters.getValue('$type');
+            type = parameters.getAttribute('$type');
         } else {
             type = parameters['$type'];
         }
@@ -125,7 +125,7 @@ const Catalog = function(parameters, debug) {
                     if (item.isType('/bali/structures/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
-                        this.setValue(index++, item);
+                        this.setAttribute(index++, item);
                     }
                 }, this);
             } else if (associations.isComponent && associations.supportsInterface('/bali/interfaces/Sequential')) {
@@ -136,13 +136,13 @@ const Catalog = function(parameters, debug) {
                     if (item.isType('/bali/structures/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
-                        this.setValue(index++, item);
+                        this.setAttribute(index++, item);
                     }
                 }
             } else if (typeof associations === 'object') {
                 const keys = Object.keys(associations);
                 keys.forEach(function(key) {
-                    this.setValue(key, associations[key]);
+                    this.setAttribute(key, associations[key]);
                 }, this);
             }
         }
@@ -164,7 +164,7 @@ const Catalog = function(parameters, debug) {
         return false;
     };
 
-    this.getValue = function(key) {
+    this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getValue', '$key', key, [
@@ -194,24 +194,24 @@ const Catalog = function(parameters, debug) {
         const values = new List(undefined, this.debug);
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
-                const value = this.getValue(key);
+                const value = this.getAttribute(key);
                 if (value) values.addItem(value);
             }, this);
         } else if (keys && keys.getIterator) {
             const iterator = keys.getIterator();
             while (iterator.hasNext()) {
                 const key = iterator.getNext();
-                const value = this.getValue(key);
+                const value = this.getAttribute(key);
                 if (value) values.addItem(value);
             }
         }
         return values;
     };
 
-    this.setValue = function(key, value) {
+    this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$setValue', '$key', key, [
+            validator.validateType('/bali/collections/Catalog', '$setAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -220,7 +220,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/Object',
                 '/bali/types/Component'
             ]);
-            validator.validateType('/bali/collections/Catalog', '$setValue', '$value', value, [
+            validator.validateType('/bali/collections/Catalog', '$setAttribute', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -318,7 +318,7 @@ const Catalog = function(parameters, debug) {
                 '/bali/types/Element'
             ]);
         }
-        return this.getValue(element);
+        return this.getAttribute(element);
     };
 
     this.setSubcomponent = function(element, subcomponent) {
@@ -331,7 +331,7 @@ const Catalog = function(parameters, debug) {
                 '/bali/types/Component'
             ]);
         }
-        return this.setValue(element, subcomponent);
+        return this.setAttribute(element, subcomponent);
     };
 
     return this;
@@ -412,15 +412,15 @@ Catalog.extraction = function(catalog, keys, debug) {
     const result = new Catalog(catalog.getParameters(), debug);
     if (Array.isArray(keys)) {
         keys.forEach(function(key) {
-            const value = catalog.getValue(key);
-            if (value) result.setValue(key, value);
+            const value = catalog.getAttribute(key);
+            if (value) result.setAttribute(key, value);
         }, this);
     } else if (keys && keys.getIterator) {
         const iterator = keys.getIterator();
         while (iterator.hasNext()) {
             const key = iterator.getNext();
-            const value = catalog.getValue(key);
-            if (value) result.setValue(key, value);
+            const value = catalog.getAttribute(key);
+            if (value) result.setAttribute(key, value);
         }
     }
     return result;
