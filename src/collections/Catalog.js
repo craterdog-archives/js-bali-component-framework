@@ -182,10 +182,10 @@ const Catalog = function(parameters, debug) {
         if (association) return association.getValue();
     };
 
-    this.getValues = function(keys) {
+    this.getAttributes = function(keys) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$getValues', '$keys', keys, [
+            validator.validateType('/bali/collections/Catalog', '$getAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
@@ -244,10 +244,10 @@ const Catalog = function(parameters, debug) {
         }
     };
 
-    this.removeValue = function(key) {
+    this.removeAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$removeValue', '$key', key, [
+            validator.validateType('/bali/collections/Catalog', '$removeAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -270,10 +270,10 @@ const Catalog = function(parameters, debug) {
         return false;
     };
 
-    this.removeValues = function(keys) {
+    this.removeAttributes = function(keys) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$removeValues', '$keys', keys, [
+            validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
@@ -282,14 +282,14 @@ const Catalog = function(parameters, debug) {
         const values = new List(undefined, this.debug);
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
-                const value = this.removeValue(key);
+                const value = this.removeAttribute(key);
                 if (value) values.addItem(value);
             }, this);
         } else if (keys && keys.getIterator) {
             const iterator = keys.getIterator();
             while (iterator.hasNext()) {
                 const key = iterator.getNext();
-                const value = this.removeValue(key);
+                const value = this.removeAttribute(key);
                 if (value) values.addItem(value);
             }
         }

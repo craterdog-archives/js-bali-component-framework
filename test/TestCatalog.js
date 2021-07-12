@@ -255,7 +255,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog2.getSize();
             expect(size).to.equal(array.length);
             expect(catalog2.containsAll(catalog1)).to.equal(true);
-            catalog2.removeValues(bali.range(2, 3));
+            catalog2.removeAttributes(bali.range(2, 3));
             size = catalog2.getSize();
             expect(size).to.equal(3);
             expect(catalog2.containsItem(association3)).to.equal(false);
@@ -294,8 +294,8 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
                 expect(association.getKey().toNumber()).to.equal(index);
                 expect(association.getValue().toString()).to.equal(array[index - 1]);
             }
-            catalog.removeValue(2);
-            catalog.removeValue(1);
+            catalog.removeAttribute(2);
+            catalog.removeAttribute(1);
             size = catalog.getSize();
             expect(size).to.exist;  // jshint ignore:line
             expect(size).to.equal(3);
