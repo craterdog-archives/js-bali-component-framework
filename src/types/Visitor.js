@@ -533,8 +533,8 @@ Visitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable '[' indices ']'
-Visitor.prototype.visitSubcomponent = function(tree) {
+// attribute: variable '[' indices ']'
+Visitor.prototype.visitAttribute = function(tree) {
     const variable = tree.getItem(1);
     variable.acceptVisitor(this);
     const indices = tree.getItem(2);
@@ -542,8 +542,8 @@ Visitor.prototype.visitSubcomponent = function(tree) {
 };
 
 
-// subcomponentExpression: expression '[' indices ']'
-Visitor.prototype.visitSubcomponentExpression = function(tree) {
+// attributeExpression: expression '[' indices ']'
+Visitor.prototype.visitAttributeExpression = function(tree) {
     const expression = tree.getItem(1);
     expression.acceptVisitor(this);
     const indices = tree.getItem(2);

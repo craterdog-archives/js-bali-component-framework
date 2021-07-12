@@ -397,13 +397,13 @@ var ruleNames =  [ "document", "statement", "mainClause", "handleClause",
                    "retrieveClause", "rejectClause", "acceptClause", "ifClause", 
                    "selectClause", "withClause", "whileClause", "continueClause", 
                    "breakClause", "returnClause", "throwClause", "recipient", 
-                   "subcomponent", "expression", "variable", "funcxion", 
-                   "message", "arguments", "indices", "component", "value", 
-                   "sequence", "collection", "parameters", "list", "catalog", 
-                   "association", "procedure", "statements", "element", 
-                   "angle", "binary", "duration", "moment", "name", "number", 
-                   "pattern", "percent", "probability", "range", "reference", 
-                   "symbol", "tag", "text", "version" ];
+                   "attribute", "expression", "variable", "funcxion", "message", 
+                   "arguments", "indices", "component", "value", "sequence", 
+                   "collection", "parameters", "list", "catalog", "association", 
+                   "procedure", "statements", "element", "angle", "binary", 
+                   "duration", "moment", "name", "number", "pattern", "percent", 
+                   "probability", "range", "reference", "symbol", "tag", 
+                   "text", "version" ];
 
 function DocumentParser (input) {
 	antlr4.Parser.call(this, input);
@@ -544,7 +544,7 @@ DocumentParser.RULE_breakClause = 20;
 DocumentParser.RULE_returnClause = 21;
 DocumentParser.RULE_throwClause = 22;
 DocumentParser.RULE_recipient = 23;
-DocumentParser.RULE_subcomponent = 24;
+DocumentParser.RULE_attribute = 24;
 DocumentParser.RULE_expression = 25;
 DocumentParser.RULE_variable = 26;
 DocumentParser.RULE_funcxion = 27;
@@ -2709,8 +2709,8 @@ RecipientContext.prototype.symbol = function() {
     return this.getTypedRuleContext(SymbolContext,0);
 };
 
-RecipientContext.prototype.subcomponent = function() {
-    return this.getTypedRuleContext(SubcomponentContext,0);
+RecipientContext.prototype.attribute = function() {
+    return this.getTypedRuleContext(AttributeContext,0);
 };
 
 RecipientContext.prototype.enterRule = function(listener) {
@@ -2754,7 +2754,7 @@ DocumentParser.prototype.recipient = function() {
         case DocumentParser.IDENTIFIER:
             this.enterOuterAlt(localctx, 2);
             this.state = 283;
-            this.subcomponent();
+            this.attribute();
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
@@ -2774,7 +2774,7 @@ DocumentParser.prototype.recipient = function() {
 };
 
 
-function SubcomponentContext(parser, parent, invokingState) {
+function AttributeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -2783,36 +2783,36 @@ function SubcomponentContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_subcomponent;
+    this.ruleIndex = DocumentParser.RULE_attribute;
     return this;
 }
 
-SubcomponentContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-SubcomponentContext.prototype.constructor = SubcomponentContext;
+AttributeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+AttributeContext.prototype.constructor = AttributeContext;
 
-SubcomponentContext.prototype.variable = function() {
+AttributeContext.prototype.variable = function() {
     return this.getTypedRuleContext(VariableContext,0);
 };
 
-SubcomponentContext.prototype.indices = function() {
+AttributeContext.prototype.indices = function() {
     return this.getTypedRuleContext(IndicesContext,0);
 };
 
-SubcomponentContext.prototype.enterRule = function(listener) {
+AttributeContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterSubcomponent(this);
+        listener.enterAttribute(this);
 	}
 };
 
-SubcomponentContext.prototype.exitRule = function(listener) {
+AttributeContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitSubcomponent(this);
+        listener.exitAttribute(this);
 	}
 };
 
-SubcomponentContext.prototype.accept = function(visitor) {
+AttributeContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitSubcomponent(this);
+        return visitor.visitAttribute(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -2821,12 +2821,12 @@ SubcomponentContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.SubcomponentContext = SubcomponentContext;
+DocumentParser.AttributeContext = AttributeContext;
 
-DocumentParser.prototype.subcomponent = function() {
+DocumentParser.prototype.attribute = function() {
 
-    var localctx = new SubcomponentContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 48, DocumentParser.RULE_subcomponent);
+    var localctx = new AttributeContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 48, DocumentParser.RULE_attribute);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 286;
@@ -2954,45 +2954,6 @@ MessageExpressionContext.prototype.exitRule = function(listener) {
 MessageExpressionContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitMessageExpression(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-function SubcomponentExpressionContext(parser, ctx) {
-	ExpressionContext.call(this, parser);
-    ExpressionContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-SubcomponentExpressionContext.prototype = Object.create(ExpressionContext.prototype);
-SubcomponentExpressionContext.prototype.constructor = SubcomponentExpressionContext;
-
-DocumentParser.SubcomponentExpressionContext = SubcomponentExpressionContext;
-
-SubcomponentExpressionContext.prototype.expression = function() {
-    return this.getTypedRuleContext(ExpressionContext,0);
-};
-
-SubcomponentExpressionContext.prototype.indices = function() {
-    return this.getTypedRuleContext(IndicesContext,0);
-};
-SubcomponentExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterSubcomponentExpression(this);
-	}
-};
-
-SubcomponentExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitSubcomponentExpression(this);
-	}
-};
-
-SubcomponentExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitSubcomponentExpression(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -3266,6 +3227,45 @@ FunctionExpressionContext.prototype.exitRule = function(listener) {
 FunctionExpressionContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
         return visitor.visitFunctionExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+function AttributeExpressionContext(parser, ctx) {
+	ExpressionContext.call(this, parser);
+    ExpressionContext.prototype.copyFrom.call(this, ctx);
+    return this;
+}
+
+AttributeExpressionContext.prototype = Object.create(ExpressionContext.prototype);
+AttributeExpressionContext.prototype.constructor = AttributeExpressionContext;
+
+DocumentParser.AttributeExpressionContext = AttributeExpressionContext;
+
+AttributeExpressionContext.prototype.expression = function() {
+    return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+AttributeExpressionContext.prototype.indices = function() {
+    return this.getTypedRuleContext(IndicesContext,0);
+};
+AttributeExpressionContext.prototype.enterRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.enterAttributeExpression(this);
+	}
+};
+
+AttributeExpressionContext.prototype.exitRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.exitAttributeExpression(this);
+	}
+};
+
+AttributeExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DocumentVisitor ) {
+        return visitor.visitAttributeExpression(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -3788,7 +3788,7 @@ DocumentParser.prototype.expression = function(_p) {
                     break;
 
                 case 8:
-                    localctx = new SubcomponentExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                    localctx = new AttributeExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 340;
                     if (!( this.precpred(this._ctx, 11))) {

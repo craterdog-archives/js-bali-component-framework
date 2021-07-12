@@ -22,11 +22,11 @@ const Exception = require('../structures/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new collection component with the specified ancestry and interfaces
- * candidate with any optional parameters that are used to parameterize its type.
+ * This function creates a new collection with the specified ancestry and interfaces
+ * with any optional parameters that are used to parameterize its type.
  *
- * @param {Array} ancestry An array of type names that make up the ancestry for the component.
- * @param {Array} interfaces An array of interface names that are supported by the component.
+ * @param {Array} ancestry An array of type names that make up the ancestry for the collection.
+ * @param {Array} interfaces An array of interface names that are supported by the collection.
  * @param {Object} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range [0..3].
  * @returns {Collection} The new collection.
@@ -59,10 +59,10 @@ Collection.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns whether or not this collection has a meaningful value. If the collection
+ * This method returns whether or not this collection contains a meaningful value. If the collection
  * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  *
- * @returns {Boolean} Whether or not this collection has a meaningful value.
+ * @returns {Boolean} Whether or not this collection contains a meaningful value.
  */
 Collection.prototype.toBoolean = function() {
     return this.getSize() > 0;
@@ -70,10 +70,10 @@ Collection.prototype.toBoolean = function() {
 
 
 /**
- * This abstract method returns an array containing the subcomponents in this collection
- * component. It must be implemented by a subclass.
+ * This abstract method returns an array containing the items in this collection.
+ * It must be implemented by a subclass.
  *
- * @returns {Array} An array containing the subcomponents in this collection component.
+ * @returns {Array} An array containing the items in this collection.
  */
 Collection.prototype.toArray = function() {
     const exception = new Exception({
@@ -88,9 +88,9 @@ Collection.prototype.toArray = function() {
 
 
 /**
- * This method returns whether or not this collection component has any subcomponents.
+ * This method returns whether or not this collection contains any items.
  *
- * @returns {Boolean} Whether or not this collection component has any subcomponents.
+ * @returns {Boolean} Whether or not this collection contains any items.
  */
 Collection.prototype.isEmpty = function() {
     return this.getSize() === 0;
@@ -98,10 +98,10 @@ Collection.prototype.isEmpty = function() {
 
 
 /**
- * This abstract method returns the number of subcomponents that this collection component has.
+ * This abstract method returns the number of items that this collection contains.
  * It must be implemented by a subclass.
  *
- * @returns {Number} The number of subcomponents that this collection component has.
+ * @returns {Number} The number of items that this collection contains.
  */
 Collection.prototype.getSize = function() {
     const exception = new Exception({
@@ -116,9 +116,9 @@ Collection.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the subcomponents in
- * this collection component.
- * @returns {Iterator} An iterator for this collection component.
+ * This method returns an object that can be used to iterate over the items in
+ * this collection.
+ * @returns {Iterator} An iterator for this collection.
  */
 Collection.prototype.getIterator = function() {
     const iterator = new CollectionIterator(this.toArray(), this.getParameters(), this.debug);
@@ -191,9 +191,9 @@ Collection.prototype.addItems = function(items) {
 
 
 /**
- * This method converts negative subcomponent indexes into their corresponding positive
+ * This method converts negative item indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
- * collection component is empty then the resulting index will be zero.
+ * collection is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:
  * <pre>

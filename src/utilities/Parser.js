@@ -954,9 +954,9 @@ ParsingVisitor.prototype.visitStatements = function(ctx) {
 };
 
 
-// subcomponent: variable '[' indices ']'
-ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/Subcomponent', this.debug);
+// attribute: variable '[' indices ']'
+ParsingVisitor.prototype.visitAttribute = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/Attribute', this.debug);
     ctx.variable().accept(this);
     tree.addItem(this.result);
     ctx.indices().accept(this);
@@ -965,9 +965,9 @@ ParsingVisitor.prototype.visitSubcomponent = function(ctx) {
 };
 
 
-// subcomponentExpression: expression '[' indices ']'
-ParsingVisitor.prototype.visitSubcomponentExpression = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/SubcomponentExpression', this.debug);
+// attributeExpression: expression '[' indices ']'
+ParsingVisitor.prototype.visitAttributeExpression = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/AttributeExpression', this.debug);
     ctx.expression().accept(this);
     tree.addItem(this.result);
     ctx.indices().accept(this);

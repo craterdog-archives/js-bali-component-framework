@@ -311,29 +311,6 @@ const Catalog = function(parameters, debug) {
         array.reverse();
     };
 
-    this.getSubcomponent = function(element) {
-        if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$getSubcomponent', '$element', element, [
-                '/bali/types/Element'
-            ]);
-        }
-        return this.getAttribute(element);
-    };
-
-    this.setSubcomponent = function(element, subcomponent) {
-        if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$setSubcomponent', '$element', element, [
-                '/bali/types/Element'
-            ]);
-            validator.validateType('/bali/collections/Catalog', '$setSubcomponent', '$subcomponent', subcomponent, [
-                '/bali/types/Component'
-            ]);
-        }
-        return this.setAttribute(element, subcomponent);
-    };
-
     return this;
 };
 Catalog.prototype = Object.create(types.Collection.prototype);

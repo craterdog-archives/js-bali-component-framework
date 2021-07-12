@@ -227,12 +227,12 @@ DocumentListener.prototype.exitRecipient = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#subcomponent.
-DocumentListener.prototype.enterSubcomponent = function(ctx) {
+// Enter a parse tree produced by DocumentParser#attribute.
+DocumentListener.prototype.enterAttribute = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#subcomponent.
-DocumentListener.prototype.exitSubcomponent = function(ctx) {
+// Exit a parse tree produced by DocumentParser#attribute.
+DocumentListener.prototype.exitAttribute = function(ctx) {
 };
 
 
@@ -251,15 +251,6 @@ DocumentListener.prototype.enterMessageExpression = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#messageExpression.
 DocumentListener.prototype.exitMessageExpression = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#subcomponentExpression.
-DocumentListener.prototype.enterSubcomponentExpression = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#subcomponentExpression.
-DocumentListener.prototype.exitSubcomponentExpression = function(ctx) {
 };
 
 
@@ -323,6 +314,15 @@ DocumentListener.prototype.enterFunctionExpression = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#functionExpression.
 DocumentListener.prototype.exitFunctionExpression = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#attributeExpression.
+DocumentListener.prototype.enterAttributeExpression = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#attributeExpression.
+DocumentListener.prototype.exitAttributeExpression = function(ctx) {
 };
 
 

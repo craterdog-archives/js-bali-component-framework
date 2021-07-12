@@ -212,29 +212,29 @@ const List = function(parameters, debug) {
         }
     };
 
-    this.getSubcomponent = function(element) {
+    this.getAttribute = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$getSubcomponent', '$element', element, [
+            validator.validateType('/bali/collections/List', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
-        const index = element.toNumber();
+        index = index.toNumber();
         return this.getItem(index);
     };
 
-    this.setSubcomponent = function(element, subcomponent) {
+    this.setAttribute = function(index, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$setSubcomponent', '$element', element, [
+            validator.validateType('/bali/collections/List', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/collections/List', '$setSubcomponent', '$subcomponent', subcomponent, [
+            validator.validateType('/bali/collections/List', '$setAttribute', '$value', value, [
                 '/bali/types/Component'
             ]);
         }
-        const index = element.toNumber();
-        return this.setItem(index, subcomponent);
+        index = index.toNumber();
+        return this.setItem(index, value);
     };
 
     return this;

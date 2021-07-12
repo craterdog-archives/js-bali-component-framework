@@ -13,7 +13,7 @@
 /**
  * This structure class implements a smart exception class that knows how to format itself
  * as a Bali Document Notation™ string. It provides a consistent way to do exception
- * handling within the Bali Nebula™. This class must look like it is a Structure component
+ * handling within the Bali Nebula™. This class must look like it is a Structure class
  * but also inherit from the JavaScript Error class. So it implements all of the methods
  * defined in the Component class.
  */
@@ -64,12 +64,12 @@ const Exception = function(attributes, cause) {
         return attributes;
     };
 
-    this.getSubcomponent = function(element) {
-        return attributes.getAttribute(element);
+    this.getAttribute = function(key) {
+        return attributes.getAttribute(key);
     };
 
-    this.setSubcomponent = function(element, subcomponent) {
-        return attributes.setAttribute(element, subcomponent);
+    this.setAttribute = function(key, value) {
+        return attributes.setAttribute(key, value);
     };
 
     // set the error message and cause
@@ -97,10 +97,10 @@ exports.Exception = Exception;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this component has the specified type in its ancestor chain.
+ * This method returns whether or not this exception has the specified type in its ancestor chain.
  *
  * @param {String} type The name of the type in question.
- * @returns {Boolean} Whether or not this component has the specified type.
+ * @returns {Boolean} Whether or not this exception has the specified type.
  */
 Exception.prototype.isType = function(type) {
     var foundIt = false;
@@ -112,10 +112,10 @@ Exception.prototype.isType = function(type) {
 
 
 /**
- * This method returns whether or not this component supports the specified interface.
+ * This method returns whether or not this exception supports the specified interface.
  *
  * @param {String} iface The name of the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
+ * @returns {Boolean} Whether or not this exception supports the specified interface.
  */
 Exception.prototype.supportsInterface = function(iface) {
     var foundIt = false;
@@ -127,9 +127,9 @@ Exception.prototype.supportsInterface = function(iface) {
 
 
 /**
- * This method returns whether or not this component is parameterized.
+ * This method returns whether or not this exception is parameterized.
  *
- * @returns {Boolean} Whether or not this component is parameterized.
+ * @returns {Boolean} Whether or not this exception is parameterized.
  */
 Exception.prototype.isParameterized = function() {
     return false;
@@ -139,7 +139,7 @@ Exception.prototype.isParameterized = function() {
 /**
  * This method determines whether or not this structure is meaningful.
  *
- * @returns {Boolean} Whether or not this component is meaningful.
+ * @returns {Boolean} Whether or not this exception is meaningful.
  */
 Exception.prototype.toBoolean = function() {
     return true;
@@ -147,7 +147,7 @@ Exception.prototype.toBoolean = function() {
 
 
 /**
- * This method returns a string representation of the component.
+ * This method returns a string representation of the exception.
  *
  * @returns {String} The corresponding string representation.
  */
@@ -163,11 +163,11 @@ Exception.prototype.toString = function() {
 
 
 /**
- * This method returns a canonical Bali Document Notation™ representation of this component.
+ * This method returns a canonical Bali Document Notation™ representation of this exception.
  *
  * @param {Number} indentation The number of levels of indentation that should be prepended to
  * each line of the string output.
- * @returns {String} A canonical Bali Document Notation™ representation of the component.
+ * @returns {String} A canonical Bali Document Notation™ representation of the exception.
  */
 Exception.prototype.toBDN = function(indentation) {
     return this.getAttributes().toBDN(indentation);
@@ -175,11 +175,11 @@ Exception.prototype.toBDN = function(indentation) {
 
 
 /**
- * This method returns an HTML document representing this component.
+ * This method returns an HTML document representing this exception.
  *
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
- * @returns {String} An HTML document representing the component.
+ * @returns {String} An HTML document representing the exception.
  */
 Exception.prototype.toHTML = function(style) {
     return this.getAttributes().toHTML(style);
@@ -187,10 +187,10 @@ Exception.prototype.toHTML = function(style) {
 
 
 /**
- * This method determines whether or not this component is equal to another component.
+ * This method determines whether or not this exception is equal to another exception.
  *
  * @param {Object} that The object that is being compared.
- * @returns {Boolean} Whether or not this component is equal to another component.
+ * @returns {Boolean} Whether or not this exception is equal to another exception.
  */
 Exception.prototype.isEqualTo = function(that) {
     return this.comparedTo(that) === 0;
@@ -214,17 +214,17 @@ Exception.prototype.comparedTo = function(that) {
 
 
 /**
- * This method determines whether or not the specified pattern matches this component.
- * The pattern may be a bali.pattern element or an structure component containing
+ * This method determines whether or not the specified pattern matches this exception.
+ * The pattern may be a bali.pattern element or an structure containing
  * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
- * string version of the component or its corresponding attribute. If the pattern does
+ * string version of the exception or its corresponding attribute. If the pattern does
  * not consist of any bali.pattern elements then a strict equality comparison of the
  * attributes listed in the pattern is used for matching. Note, this means that the
- * component may contain additional attributes not found in the pattern component and
+ * exception may contain additional attributes not found in the pattern and
  * it still matches.
  *
  * @param {Component} pattern The pattern to be used for matching.
- * @returns {Boolean} Whether or not this component matches the pattern.
+ * @returns {Boolean} Whether or not this exception matches the pattern.
  */
 Exception.prototype.isMatchedBy = function(pattern) {
     return this.getAttributes().isMatchedBy(pattern);
@@ -232,9 +232,9 @@ Exception.prototype.isMatchedBy = function(pattern) {
 
 
 /**
- * This method returns the unique hash value for the attributes of this component.
+ * This method returns the unique hash value for the attributes of this exception.
  *
- * @returns {Number} The unique hash value for the attributes of this component.
+ * @returns {Number} The unique hash value for the attributes of this exception.
  */
 Exception.prototype.getHash = function() {
     var hash = 0;
@@ -253,7 +253,7 @@ Exception.prototype.getHash = function() {
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
  * implemented by a subclass.
  *
- * @param {Visitor} visitor The visitor that wants to visit the attributes of this component.
+ * @param {Visitor} visitor The visitor that wants to visit the attributes of this exception.
  */
 Exception.prototype.acceptVisitor = function(visitor) {
     visitor.visitCatalog(this.getAttributes());

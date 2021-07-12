@@ -852,8 +852,8 @@ FormattingVisitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable '[' indices ']'
-FormattingVisitor.prototype.visitSubcomponent = function(tree) {
+// attribute: variable '[' indices ']'
+FormattingVisitor.prototype.visitAttribute = function(tree) {
     const variable = tree.getItem(1);
     variable.acceptVisitor(this);
     this.result += '[';
@@ -863,8 +863,8 @@ FormattingVisitor.prototype.visitSubcomponent = function(tree) {
 };
 
 
-// subcomponentExpression: expression '[' indices ']'
-FormattingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+// attributeExpression: expression '[' indices ']'
+FormattingVisitor.prototype.visitAttributeExpression = function(tree) {
     this.inline++;
     const expression = tree.getItem(1);
     expression.acceptVisitor(this);

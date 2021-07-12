@@ -73,6 +73,6 @@ returnClause: 'return' expression?;
 
 throwClause: 'throw' expression;
 
-recipient: symbol | subcomponent;
+recipient: symbol | attribute;
 
-subcomponent: variable '[' indices ']';
+attribute: variable '[' indices ']';

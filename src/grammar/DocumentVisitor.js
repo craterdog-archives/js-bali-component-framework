@@ -156,8 +156,8 @@ DocumentVisitor.prototype.visitRecipient = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#subcomponent.
-DocumentVisitor.prototype.visitSubcomponent = function(ctx) {
+// Visit a parse tree produced by DocumentParser#attribute.
+DocumentVisitor.prototype.visitAttribute = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -170,12 +170,6 @@ DocumentVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#messageExpression.
 DocumentVisitor.prototype.visitMessageExpression = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#subcomponentExpression.
-DocumentVisitor.prototype.visitSubcomponentExpression = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -218,6 +212,12 @@ DocumentVisitor.prototype.visitVariableExpression = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#functionExpression.
 DocumentVisitor.prototype.visitFunctionExpression = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#attributeExpression.
+DocumentVisitor.prototype.visitAttributeExpression = function(ctx) {
   return this.visitChildren(ctx);
 };
 

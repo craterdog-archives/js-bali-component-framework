@@ -21,7 +21,7 @@ const Element = require('./Element').Element;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new sequence component with the specified ancestry and interfaces
+ * This function creates a new sequence with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
@@ -59,9 +59,9 @@ Sequence.prototype.toBoolean = function() {
 
 
 /**
- * This method returns whether or not this sequence component has any subcomponents.
+ * This method returns whether or not this sequence contains any items.
  *
- * @returns {Boolean} Whether or not this sequence component has any subcomponents.
+ * @returns {Boolean} Whether or not this sequence contains any items.
  */
 Sequence.prototype.isEmpty = function() {
     return this.getSize() === 0;
@@ -69,10 +69,10 @@ Sequence.prototype.isEmpty = function() {
 
 
 /**
- * This abstract method returns the number of subcomponents that this sequence component has.
+ * This abstract method returns the number of items that this sequence has.
  * It must be implemented by a subclass.
  *
- * @returns {Number} The number of subcomponents that this sequence component has.
+ * @returns {Number} The number of items that this sequence has.
  */
 Sequence.prototype.getSize = function() {
     const exception = new Exception({
@@ -87,9 +87,9 @@ Sequence.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the subcomponents in
- * this sequence component.  It must be implemented by a subclass.
- * @returns {Iterator} An iterator for this sequence component.
+ * This method returns an object that can be used to iterate over the items in
+ * this sequence.  It must be implemented by a subclass.
+ * @returns {Iterator} An iterator for this sequence.
  */
 Sequence.prototype.getIterator = function() {
     const exception = new Exception({
@@ -179,9 +179,9 @@ Sequence.prototype.getItems = function(range) {
 
 
 /**
- * This method converts negative subcomponent indexes into their corresponding positive
+ * This method converts negative item indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
- * sequence component is empty then the resulting index will be zero.
+ * sequence is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:
  * <pre>

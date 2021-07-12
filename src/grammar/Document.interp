@@ -219,7 +219,7 @@ breakClause
 returnClause
 throwClause
 recipient
-subcomponent
+attribute
 expression
 variable
 funcxion

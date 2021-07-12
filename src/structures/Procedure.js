@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This structure class implements a procedure component that can be assigned as
+ * This structure class implements a procedure that can be assigned as
  * the value of an association.
  */
 const utilities = require('../utilities');
@@ -20,13 +20,13 @@ const types = require('../types');
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new procedure component with optional parameters that are
+ * This function creates a new procedure with optional parameters that are
  * used to parameterize its behavior.
  *
  * @param {Tree} statements The statements that are contained within the procedure.
  * @param {Object} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Procedure} A new procedure component.
+ * @returns {Procedure} A new procedure.
  */
 const Procedure = function(statements, parameters, debug) {
     types.Structure.call(
@@ -45,20 +45,20 @@ const Procedure = function(statements, parameters, debug) {
 
     this.getStatements = function() { return statements; };
 
-    this.getSubcomponent = function(element) {
+    this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Procedures', '$getSubcomponent', '$element', element, [
+            validator.validateType('/bali/structures/Procedures', '$getAttribute', '$key', key, [
                 '/bali/types/Element'
             ]);
         }
-        if (element.getValue() === '$statements') return this.getStatements();
+        if (key.getValue() === '$statements') return this.getStatements();
     };
 
-    this.setSubcomponent = function(element, subcomponent) {
+    this.setAttribute = function(key, value) {
         const exception = new Exception({
             $module: '/bali/structures/Procedure',
-            $procedure: '$setSubcomponent',
+            $procedure: '$setAttribute',
             $exception: '$readOnly',
             $text: 'The statements in a procedure cannot be updated.'
         });
@@ -76,9 +76,9 @@ exports.Procedure = Procedure;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this structure is meaningful.
+ * This method determines whether or not this procedure is meaningful.
  *
- * @returns {Boolean} Whether or not this component is meaningful.
+ * @returns {Boolean} Whether or not this procedure is meaningful.
  */
 Procedure.prototype.toBoolean = function() {
     return this.getStatements().getSize() > 0;

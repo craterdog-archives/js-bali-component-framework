@@ -606,8 +606,8 @@ DuplicatingVisitor.prototype.visitStatements = function(tree) {
 };
 
 
-// subcomponent: variable '[' indices ']'
-DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
+// attribute: variable '[' indices ']'
+DuplicatingVisitor.prototype.visitAttribute = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
@@ -617,8 +617,8 @@ DuplicatingVisitor.prototype.visitSubcomponent = function(tree) {
 };
 
 
-// subcomponentExpression: expression '[' indices ']'
-DuplicatingVisitor.prototype.visitSubcomponentExpression = function(tree) {
+// attributeExpression: expression '[' indices ']'
+DuplicatingVisitor.prototype.visitAttributeExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     tree.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);

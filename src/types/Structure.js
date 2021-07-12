@@ -11,7 +11,7 @@
 
 
 /**
- * This abstract class defines the methods that all structure components must support.
+ * This abstract class defines the methods that all structures must support.
  */
 const Component = require('./Component').Component;
 const Exception = require('../structures/Exception').Exception;
@@ -20,14 +20,14 @@ const Exception = require('../structures/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new structure component with the specified ancestry and interfaces
+ * This function creates a new structure with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Object} parameters Optional parameters used to parameterize the structure component.
+ * @param {Object} parameters Optional parameters used to parameterize the structure.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Structure} The new structure component.
+ * @returns {Structure} The new structure.
  */
 const Structure = function(ancestry, interfaces, parameters, debug) {
     Component.call(
@@ -47,17 +47,16 @@ exports.Structure = Structure;
 // PUBLIC METHODS
 
 /**
- * This method returns the value of the specified subcomponent for this structure component.
+ * This method returns the value of the specified attribute for this structure.
  *
- * @param {Element} element The element that acts as an index or key to the subcomponent
- * to be retrieved.
- * @returns {Component} The subcomponent corresponding to the specified index or key, or
- * undefined if it does not exist.
+ * @param {Element} key The key for the attribute to be retrieved.
+ * @returns {Component} The value of the attribute corresponding to the specified
+ * key, or undefined if it does not exist.
  */
-Structure.prototype.getSubcomponent = function(element) {
+Structure.prototype.getAttribute = function(key) {
     const exception = new Exception({
         $module: '/bali/types/Structure',
-        $procedure: '$getSubcomponent',
+        $procedure: '$getAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
@@ -67,16 +66,15 @@ Structure.prototype.getSubcomponent = function(element) {
 
 
 /**
- * This method sets the value of the specified subcomponent for this structure component.
+ * This method sets the value of the specified attribute for this structure.
  *
- * @param {Element} element The element that acts as an index or key to the subcomponent
- * to be retrieved.
- * @param {Component} subcomponent The value of the subcomponent.
+ * @param {Element} key The key of the attribute to be set.
+ * @param {Component} value The value of the attribute.
  */
-Structure.prototype.setSubcomponent = function(element, subcomponent) {
+Structure.prototype.setAttribute = function(key, value) {
     const exception = new Exception({
         $module: '/bali/types/Structure',
-        $procedure: '$setSubcomponent',
+        $procedure: '$setAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });

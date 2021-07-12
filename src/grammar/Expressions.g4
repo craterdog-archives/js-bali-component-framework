@@ -8,7 +8,7 @@ expression:                  // Precedence (highest to lowest)
     '(' expression ')'                                             #precedenceExpression    |
     '@' expression                                                 #dereferenceExpression   |
     expression op=('.' | '<-') message '(' arguments ')'           #messageExpression       |
-    expression '[' indices ']'                                     #subcomponentExpression  |
+    expression '[' indices ']'                                     #attributeExpression     |
     expression '&' expression                                      #concatenationExpression |
     expression '!'                                                 #factorialExpression     |
     <assoc=right> expression '^' expression                        #exponentialExpression   |
