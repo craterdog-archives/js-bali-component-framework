@@ -16,7 +16,7 @@
  */
 const URL = require('url').URL;
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -31,7 +31,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Reference} The new reference element.
  */
 const Reference =function(value, parameters, debug) {
-    types.Element.call(
+    abstractions.Element.call(
         this,
         ['/bali/elements/Reference'],
         [],
@@ -67,7 +67,7 @@ const Reference =function(value, parameters, debug) {
 
     return this;
 };
-Reference.prototype = Object.create(types.Element.prototype);
+Reference.prototype = Object.create(abstractions.Element.prototype);
 Reference.prototype.constructor = Reference;
 exports.Reference = Reference;
 

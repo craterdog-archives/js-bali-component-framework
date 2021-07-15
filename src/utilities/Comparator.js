@@ -151,7 +151,7 @@ const natural = function(first, second) {
     }
 
     // handle collections (note: tree leaf nodes are treated as empty collections)
-    if (first.isComponent && first.isType('/bali/types/Collection')) {
+    if (first.isComponent && first.isType('/bali/abstractions/Collection')) {
         return natural(first.toArray(), second.toArray());
     }
 

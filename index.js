@@ -15,8 +15,8 @@
  */
 const EOL = '\n';
 const utilities = require('./src/utilities');
-const types = require('./src/types');  // depends on utilities
-const elements = require('./src/elements');  // depends on types
+const abstractions = require('./src/abstractions');  // depends on utilities
+const elements = require('./src/elements');  // depends on abstractions
 const structures = require('./src/structures');  // depends on elements
 const collections = require('./src/collections');  // depends on structures
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
@@ -84,7 +84,7 @@ const componentize = function(value, debug) {
     }
     return component;
 };
-types.Component.prototype.componentize = componentize;
+abstractions.Component.prototype.componentize = componentize;
 structures.Exception.prototype.componentize = componentize;
 
 
@@ -587,7 +587,7 @@ exports.api = function(defaultLevel) {
 
     // VISITOR
     const visitor = function() {
-        return types.Visitor;
+        return abstractions.Visitor;
     };
 
 

@@ -14,7 +14,7 @@
  * number range element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -29,7 +29,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Range} The new number range.
  */
 const Range = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Range'],
         [ ],
@@ -51,7 +51,7 @@ const Range = function(value, parameters, debug) {
 
     return this;
 };
-Range.prototype = Object.create(types.Sequence.prototype);
+Range.prototype = Object.create(abstractions.Sequence.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -142,7 +142,7 @@ Range.prototype.getItems = function(range) {
 // PRIVATE CLASSES
 
 const RangeIterator = function(range, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/RangeIterator'],
         [],
@@ -198,5 +198,5 @@ const RangeIterator = function(range, parameters, debug) {
 
     return this;
 };
-RangeIterator.prototype = Object.create(types.Iterator.prototype);
+RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;

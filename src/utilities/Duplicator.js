@@ -14,7 +14,7 @@
  * component.  Since elements are immutable, they are not copied, only referenced.
  */
 const Validator = require('./Validator').Validator;
-const Visitor = require('../types/Visitor').Visitor;
+const Visitor = require('../abstractions/Visitor').Visitor;
 
 
 // This private constant sets the POSIX end of line character
@@ -36,7 +36,7 @@ const Duplicator = function(debug) {
         if (debug > 1) {
             const validator = new Validator(debug);
             validator.validateType('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         const visitor = new DuplicatingVisitor(debug);

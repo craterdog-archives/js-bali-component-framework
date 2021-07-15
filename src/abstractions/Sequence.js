@@ -33,7 +33,7 @@ const Element = require('./Element').Element;
 const Sequence = function(ancestry, interfaces, parameters, debug) {
     Element.call(
         this,
-        ancestry.concat('/bali/types/Sequence'),
+        ancestry.concat('/bali/abstractions/Sequence'),
         interfaces.concat('/bali/interfaces/Sequential'),
         parameters,
         debug
@@ -76,7 +76,7 @@ Sequence.prototype.isEmpty = function() {
  */
 Sequence.prototype.getSize = function() {
     const exception = new Exception({
-        $module: '/bali/types/Sequence',
+        $module: '/bali/abstractions/Sequence',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -93,7 +93,7 @@ Sequence.prototype.getSize = function() {
  */
 Sequence.prototype.getIterator = function() {
     const exception = new Exception({
-        $module: '/bali/types/Sequence',
+        $module: '/bali/abstractions/Sequence',
         $procedure: '$getIterator',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -118,14 +118,14 @@ Sequence.prototype.getIterator = function() {
 Sequence.prototype.getIndex = function(item) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/types/Sequence', '$getIndex', '$item', item, [
+        validator.validateType('/bali/abstractions/Sequence', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
             '/javascript/String',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/types/Component'
+            '/bali/abstractions/Component'
         ]);
     }
     const comparator = new utilities.Comparator(undefined, this.debug);
@@ -149,7 +149,7 @@ Sequence.prototype.getIndex = function(item) {
  */
 Sequence.prototype.getItem = function(index) {
     const exception = new Exception({
-        $module: '/bali/types/Sequence',
+        $module: '/bali/abstractions/Sequence',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -168,7 +168,7 @@ Sequence.prototype.getItem = function(index) {
  */
 Sequence.prototype.getItems = function(range) {
     const exception = new Exception({
-        $module: '/bali/types/Sequence',
+        $module: '/bali/abstractions/Sequence',
         $procedure: '$getItems',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -195,14 +195,14 @@ Sequence.prototype.getItems = function(range) {
 Sequence.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/types/Sequence', '$normalizedIndex', '$index', index, [
+        validator.validateType('/bali/abstractions/Sequence', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
     const size = this.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/types/Sequence',
+            $module: '/bali/abstractions/Sequence',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,

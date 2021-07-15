@@ -35,13 +35,13 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     this.debug = debug || 0;  // default value
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/types/Component', '$Component', '$ancestry', ancestry, [
+        validator.validateType('/bali/abstractions/Component', '$Component', '$ancestry', ancestry, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/types/Component', '$Component', '$interfaces', interfaces, [
+        validator.validateType('/bali/abstractions/Component', '$Component', '$interfaces', interfaces, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/types/Component', '$Component', '$parameters', parameters, [
+        validator.validateType('/bali/abstractions/Component', '$Component', '$parameters', parameters, [
             '/javascript/Undefined',
             '/javascript/Object',
             '/bali/collections/Catalog'
@@ -78,7 +78,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     // extract the actual type
-    ancestry = ancestry.concat('/bali/types/Component');
+    ancestry = ancestry.concat('/bali/abstractions/Component');
     this.isComponent = true;
 
     // add in the component interfaces
@@ -147,7 +147,7 @@ Component.prototype.isParameterized = function() {
  */
 Component.prototype.toBoolean = function() {
     const exception = new Exception({
-        $module: '/bali/types/Component',
+        $module: '/bali/abstractions/Component',
         $procedure: '$toBoolean',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -295,7 +295,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         return true;  // all pattern items matched successfully
     }
     const exception = new Exception({
-        $module: '/bali/types/Component',
+        $module: '/bali/abstractions/Component',
         $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
         $component: this,
@@ -345,7 +345,7 @@ Component.prototype.duplicate = function() {
  */
 Component.prototype.acceptVisitor = function(visitor) {
     const exception = new Exception({
-        $module: '/bali/types/Component',
+        $module: '/bali/abstractions/Component',
         $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

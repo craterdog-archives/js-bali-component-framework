@@ -32,7 +32,7 @@ const Exception = require('../structures/Exception').Exception;
 const Structure = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/types/Structure'),
+        ancestry.concat('/bali/abstractions/Structure'),
         interfaces.concat('/bali/interfaces/Composite'),
         parameters,
         debug
@@ -55,7 +55,7 @@ exports.Structure = Structure;
  */
 Structure.prototype.getAttribute = function(key) {
     const exception = new Exception({
-        $module: '/bali/types/Structure',
+        $module: '/bali/abstractions/Structure',
         $procedure: '$getAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -73,7 +73,7 @@ Structure.prototype.getAttribute = function(key) {
  */
 Structure.prototype.setAttribute = function(key, value) {
     const exception = new Exception({
-        $module: '/bali/types/Structure',
+        $module: '/bali/abstractions/Structure',
         $procedure: '$setAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

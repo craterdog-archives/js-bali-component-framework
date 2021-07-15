@@ -14,7 +14,7 @@
  * catalog class.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -28,7 +28,7 @@ const types = require('../types');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    types.Structure.call(
+    abstractions.Structure.call(
         this,
         ['/bali/structures/Association'],
         [],
@@ -43,7 +43,7 @@ const Association = function(key, value, debug) {
             '/javascript/Number',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/types/Component'
+            '/bali/abstractions/Component'
         ]);
         validator.validateType('/bali/structures/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
@@ -52,7 +52,7 @@ const Association = function(key, value, debug) {
             '/javascript/Number',
             '/javascript/Array',
             '/javascript/Object',
-            '/bali/types/Component'
+            '/bali/abstractions/Component'
         ]);
     }
 
@@ -79,7 +79,7 @@ const Association = function(key, value, debug) {
                 '/javascript/Number',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         newValue = this.componentize(newValue, this.debug);
@@ -92,7 +92,7 @@ const Association = function(key, value, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/structures/Associations', '$getAttribute', '$key', key, [
-                '/bali/types/Element'
+                '/bali/abstractions/Element'
             ]);
         }
         if (key.isEqualTo(key)) return this.getValue();
@@ -102,10 +102,10 @@ const Association = function(key, value, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/structures/Associations', '$setAttribute', '$key', key, [
-                '/bali/types/Element'
+                '/bali/abstractions/Element'
             ]);
             validator.validateType('/bali/structures/Associations', '$setAttribute', '$value', value, [
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         if (key.isEqualTo(key)) return this.setValue(value);
@@ -113,7 +113,7 @@ const Association = function(key, value, debug) {
 
     return this;
 };
-Association.prototype = Object.create(types.Structure.prototype);
+Association.prototype = Object.create(abstractions.Structure.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 

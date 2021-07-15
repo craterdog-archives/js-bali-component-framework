@@ -33,8 +33,8 @@
 const Exception = function(attributes, cause) {
     const ancestry = [
         '/bali/structures/Exception',
-        '/bali/types/Structure',
-        '/bali/types/Component'
+        '/bali/abstractions/Structure',
+        '/bali/abstractions/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
 

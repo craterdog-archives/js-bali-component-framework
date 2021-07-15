@@ -14,7 +14,7 @@
  * binary string element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -29,7 +29,7 @@ const types = require('../types');
  * @returns {Binary} The new binary string.
  */
 const Binary = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Binary'],
         [
@@ -55,7 +55,7 @@ const Binary = function(value, parameters, debug) {
 
     return this;
 };
-Binary.prototype = Object.create(types.Sequence.prototype);
+Binary.prototype = Object.create(abstractions.Sequence.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 
@@ -304,7 +304,7 @@ Binary.concatenation = function(first, second, debug) {
 // PRIVATE CLASSES
 
 const BinaryIterator = function(buffer, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/BinaryIterator'],
         [],
@@ -346,5 +346,5 @@ const BinaryIterator = function(buffer, parameters, debug) {
 
     return this;
 };
-BinaryIterator.prototype = Object.create(types.Iterator.prototype);
+BinaryIterator.prototype = Object.create(abstractions.Iterator.prototype);
 BinaryIterator.prototype.constructor = BinaryIterator;

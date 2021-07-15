@@ -16,7 +16,7 @@
  */
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
-const Visitor = require('../types/Visitor').Visitor;
+const Visitor = require('../abstractions/Visitor').Visitor;
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -57,7 +57,7 @@ const Formatter = function(indentation, debug) {
         if (debug > 1) {
             const validator = new Validator(debug);
             validator.validateType('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         const visitor = new FormattingVisitor(indentation, debug);

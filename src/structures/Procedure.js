@@ -14,7 +14,7 @@
  * the value of an association.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -29,7 +29,7 @@ const types = require('../types');
  * @returns {Procedure} A new procedure.
  */
 const Procedure = function(statements, parameters, debug) {
-    types.Structure.call(
+    abstractions.Structure.call(
         this,
         ['/bali/structures/Procedure'],
         ['/bali/interfaces/Literal'],
@@ -49,7 +49,7 @@ const Procedure = function(statements, parameters, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/structures/Procedures', '$getAttribute', '$key', key, [
-                '/bali/types/Element'
+                '/bali/abstractions/Element'
             ]);
         }
         if (key.getValue() === '$statements') return this.getStatements();
@@ -68,7 +68,7 @@ const Procedure = function(statements, parameters, debug) {
 
     return this;
 };
-Procedure.prototype = Object.create(types.Structure.prototype);
+Procedure.prototype = Object.create(abstractions.Structure.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 

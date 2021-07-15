@@ -31,7 +31,7 @@ const Exception = require('../structures/Exception').Exception;
 const Element = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/types/Element'),
+        ancestry.concat('/bali/abstractions/Element'),
         interfaces.concat('/bali/interfaces/Literal'),
         parameters,
         debug
@@ -53,7 +53,7 @@ exports.Element = Element;
  */
 Element.prototype.getValue = function() {
     const exception = new Exception({
-        $module: '/bali/types/Element',
+        $module: '/bali/abstractions/Element',
         $procedure: '$getValue',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

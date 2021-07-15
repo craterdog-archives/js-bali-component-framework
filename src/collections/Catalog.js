@@ -16,7 +16,7 @@
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const structures = require('../structures');
 const List = require('./List').List;
 
@@ -43,7 +43,7 @@ const Catalog = function(parameters, debug) {
         if (type) ancestry.push(type.toString().split('/').slice(0, -1).join('/'));  // remove the version string
     }
     ancestry.push('/bali/collections/Catalog');
-    types.Collection.call(
+    abstractions.Collection.call(
         this,
         ancestry,
         [
@@ -174,7 +174,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -218,7 +218,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
             validator.validateType('/bali/collections/Catalog', '$setAttribute', '$value', value, [
                 '/javascript/Undefined',
@@ -227,7 +227,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -254,7 +254,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -313,7 +313,7 @@ const Catalog = function(parameters, debug) {
 
     return this;
 };
-Catalog.prototype = Object.create(types.Collection.prototype);
+Catalog.prototype = Object.create(abstractions.Collection.prototype);
 Catalog.prototype.constructor = Catalog;
 exports.Catalog = Catalog;
 

@@ -68,7 +68,7 @@
         /name: /name($relative: false)
         ~P0D: ~P1Y3M24DT7H32M15S
         <2017-04-01>: <2017-04-01>($country: "USA")
-        <https://craterdog.com/>: <https://bali-nebula.net/bali/types>(
+        <https://craterdog.com/>: <https://bali-nebula.net/bali/examples>(
             $foo: 5
             $bar: false
         )
@@ -88,7 +88,7 @@
             $c: φ
             $d: τ
             $e: ∞
-        ]($type: /acme/types/Foo/v1.2.3)
+        ]($type: /acme/examples/Foo/v1.2.3)
         $procedure: {
             if condition then {
                 return true

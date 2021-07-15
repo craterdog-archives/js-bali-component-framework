@@ -15,7 +15,7 @@
  * symbol element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Symbol'],
         [ ],
@@ -62,7 +62,7 @@ const Symbol = function(value, parameters, debug) {
 
     return this;
 };
-Symbol.prototype = Object.create(types.Sequence.prototype);
+Symbol.prototype = Object.create(abstractions.Sequence.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 
@@ -141,7 +141,7 @@ Symbol.prototype.getItems = function(range) {
 // PRIVATE CLASSES
 
 const SymbolIterator = function(symbol, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/SymbolIterator'],
         [],
@@ -183,5 +183,5 @@ const SymbolIterator = function(symbol, parameters, debug) {
 
     return this;
 };
-SymbolIterator.prototype = Object.create(types.Iterator.prototype);
+SymbolIterator.prototype = Object.create(abstractions.Iterator.prototype);
 SymbolIterator.prototype.constructor = SymbolIterator;

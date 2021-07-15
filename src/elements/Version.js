@@ -15,7 +15,7 @@
  * version string element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new version string element.
  */
 const Version = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Version'],
         [ ],
@@ -63,7 +63,7 @@ const Version = function(value, parameters, debug) {
 
     return this;
 };
-Version.prototype = Object.create(types.Sequence.prototype);
+Version.prototype = Object.create(abstractions.Sequence.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
 
@@ -229,7 +229,7 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
 // PRIVATE CLASSES
 
 const VersionIterator = function(levels, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/VersionIterator'],
         [],
@@ -271,5 +271,5 @@ const VersionIterator = function(levels, parameters, debug) {
 
     return this;
 };
-VersionIterator.prototype = Object.create(types.Iterator.prototype);
+VersionIterator.prototype = Object.create(abstractions.Iterator.prototype);
 VersionIterator.prototype.constructor = VersionIterator;

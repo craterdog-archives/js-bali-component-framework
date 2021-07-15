@@ -16,7 +16,7 @@
  */
 const moment = require('moment');
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
 
 
@@ -45,7 +45,7 @@ const FORMATS = [
  * @returns {Moment} The new moment in time.
  */
 const Moment = function(value, parameters, debug) {
-    types.Element.call(
+    abstractions.Element.call(
         this,
         ['/bali/elements/Moment'],
         ['/bali/interfaces/Numerical'],
@@ -98,7 +98,7 @@ const Moment = function(value, parameters, debug) {
 
     return this;
 };
-Moment.prototype = Object.create(types.Element.prototype);
+Moment.prototype = Object.create(abstractions.Element.prototype);
 Moment.prototype.constructor = Moment;
 exports.Moment = Moment;
 

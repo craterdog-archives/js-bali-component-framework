@@ -15,7 +15,7 @@
  * name string element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new name string element.
  */
 const Name = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Name'],
         [
@@ -63,7 +63,7 @@ const Name = function(value, parameters, debug) {
 
     return this;
 };
-Name.prototype = Object.create(types.Sequence.prototype);
+Name.prototype = Object.create(abstractions.Sequence.prototype);
 Name.prototype.constructor = Name;
 exports.Name = Name;
 
@@ -171,7 +171,7 @@ Name.concatenation = function(first, second, debug) {
 // PRIVATE CLASSES
 
 const NameIterator = function(identifiers, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/NameIterator'],
         [],
@@ -213,5 +213,5 @@ const NameIterator = function(identifiers, parameters, debug) {
 
     return this;
 };
-NameIterator.prototype = Object.create(types.Iterator.prototype);
+NameIterator.prototype = Object.create(abstractions.Iterator.prototype);
 NameIterator.prototype.constructor = NameIterator;

@@ -15,7 +15,7 @@
  * is thrown.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 /*
@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 const Queue = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Queue/v1'};
-    types.Collection.call(
+    abstractions.Collection.call(
         this,
         ['/bali/collections/Queue'],
         [],
@@ -77,7 +77,7 @@ const Queue = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         if (array.length === capacity) {
@@ -106,6 +106,6 @@ const Queue = function(parameters, debug) {
 
     return this;
 };
-Queue.prototype = Object.create(types.Collection.prototype);
+Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;

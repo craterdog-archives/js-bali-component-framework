@@ -15,7 +15,7 @@
  * of its items.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -30,7 +30,7 @@ const types = require('../types');
  */
 const Set = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Set/v1'};
-    types.Collection.call(
+    abstractions.Collection.call(
         this,
         ['/bali/collections/Set'],
         ['/bali/interfaces/Logical'],
@@ -68,7 +68,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         var index = 0;
@@ -98,7 +98,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -115,7 +115,7 @@ const Set = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         item = this.componentize(item, this.debug);
@@ -151,7 +151,7 @@ const Set = function(parameters, debug) {
 
     return this;
 };
-Set.prototype = Object.create(types.Collection.prototype);
+Set.prototype = Object.create(abstractions.Collection.prototype);
 Set.prototype.constructor = Set;
 exports.Set = Set;
 
@@ -304,7 +304,7 @@ Set.xor = function(first, second, debug) {
  */
 
 const SetIterator = function(tree, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/collections/SetIterator'],
         [],
@@ -364,7 +364,7 @@ const SetIterator = function(tree, parameters, debug) {
 
     return this;
 };
-SetIterator.prototype = Object.create(types.Iterator.prototype);
+SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
 SetIterator.prototype.constructor = SetIterator;
 
 

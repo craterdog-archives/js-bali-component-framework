@@ -14,7 +14,7 @@
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -39,7 +39,7 @@ Array.prototype.peek = function() {
  */
 const Stack = function(parameters, debug) {
     parameters = parameters || {$type: '/bali/collections/Stack/v1'};
-    types.Collection.call(
+    abstractions.Collection.call(
         this,
         ['/bali/collections/Stack'],
         [],
@@ -85,7 +85,7 @@ const Stack = function(parameters, debug) {
                 '/javascript/String',
                 '/javascript/Array',
                 '/javascript/Object',
-                '/bali/types/Component'
+                '/bali/abstractions/Component'
             ]);
         }
         if (array.length === capacity) {
@@ -124,6 +124,6 @@ const Stack = function(parameters, debug) {
 
     return this;
 };
-Stack.prototype = Object.create(types.Collection.prototype);
+Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;

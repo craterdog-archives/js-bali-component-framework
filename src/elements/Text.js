@@ -14,7 +14,7 @@
  * text string element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 
 
 // PUBLIC FUNCTIONS
@@ -28,7 +28,7 @@ const types = require('../types');
  * @returns {Text} The new text string.
  */
 const Text = function(value, parameters, debug) {
-    types.Sequence.call(
+    abstractions.Sequence.call(
         this,
         ['/bali/elements/Text'],
         [
@@ -52,7 +52,7 @@ const Text = function(value, parameters, debug) {
 
     return this;
 };
-Text.prototype = Object.create(types.Sequence.prototype);
+Text.prototype = Object.create(abstractions.Sequence.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
 
@@ -159,7 +159,7 @@ Text.concatenation = function(first, second, debug) {
 // PRIVATE CLASSES
 
 const TextIterator = function(text, parameters, debug) {
-    types.Iterator.call(
+    abstractions.Iterator.call(
         this,
         ['/bali/elements/TextIterator'],
         [],
@@ -201,5 +201,5 @@ const TextIterator = function(text, parameters, debug) {
 
     return this;
 };
-TextIterator.prototype = Object.create(types.Iterator.prototype);
+TextIterator.prototype = Object.create(abstractions.Iterator.prototype);
 TextIterator.prototype.constructor = TextIterator;

@@ -14,7 +14,7 @@
  * tag element.
  */
 const utilities = require('../utilities');
-const types = require('../types');
+const abstractions = require('../abstractions');
 const Exception = require('../structures/Exception').Exception;
 
 
@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Tag} The new tag element.
  */
 const Tag = function(value, parameters, debug) {
-    types.Element.call(
+    abstractions.Element.call(
         this,
         ['/bali/elements/Tag'],
         [],
@@ -70,7 +70,7 @@ const Tag = function(value, parameters, debug) {
 
     return this;
 };
-Tag.prototype = Object.create(types.Element.prototype);
+Tag.prototype = Object.create(abstractions.Element.prototype);
 Tag.prototype.constructor = Tag;
 exports.Tag = Tag;
 
