@@ -34,8 +34,7 @@ const Duration = function(value, parameters, debug) {
         this,
         ['/bali/elements/Duration'],
         [
-            '/bali/interfaces/Scalable',
-            '/bali/interfaces/Numerical'
+            '/bali/interfaces/Scalable'
         ],
         parameters,
         debug
@@ -80,17 +79,7 @@ exports.Duration = Duration;
  * @returns {Boolean} Whether or not this duration has a meaningful value.
  */
 Duration.prototype.toBoolean = function() {
-    return this.toNumber() !== 0;
-};
-
-
-/**
- * This method returns the number of milliseconds of the duration.
- *
- * @returns {number} The number of milliseconds of the duration.
- */
-Duration.prototype.toNumber = function() {
-    return this.getValue();
+    return this.getValue() !== 0;
 };
 
 

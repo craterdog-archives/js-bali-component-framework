@@ -36,6 +36,7 @@ const Complex = function(value, parameters, debug) {
         ['/bali/elements/Number'],
         [
             '/bali/interfaces/Scalable',
+            '/bali/interfaces/Discrete',
             '/bali/interfaces/Numerical'
         ],
         parameters,
@@ -116,6 +117,16 @@ exports.Complex = Complex;
  */
 Complex.prototype.toBoolean = function() {
     return !(this.isZero() || this.isUndefined());
+};
+
+
+/**
+ * This method returns the real part of this complex number rounded to an integer.
+ *
+ * @returns {Number} The real part of this complex number rounded to an integer.
+ */
+Complex.prototype.toInteger = function() {
+    return Math.round(this.getReal());
 };
 
 

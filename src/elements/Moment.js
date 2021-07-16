@@ -48,7 +48,7 @@ const Moment = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
         ['/bali/elements/Moment'],
-        ['/bali/interfaces/Numerical'],
+        [ ],
         parameters,
         debug
     );
@@ -112,17 +112,7 @@ exports.Moment = Moment;
  * @returns {Boolean} Whether or not this moment has a meaningful value.
  */
 Moment.prototype.toBoolean = function() {
-    return true;
-};
-
-
-/**
- * This method returns the number of milliseconds for the moment.
- *
- * @returns {number} The number of milliseconds for the moment.
- */
-Moment.prototype.toNumber = function() {
-    return this.getValue();
+    return this.getValue() !== 0;
 };
 
 

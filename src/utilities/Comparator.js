@@ -170,7 +170,7 @@ const natural = function(first, second) {
     }
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
         // note: can't use Math.fround() on the integer values used to store temporal elements
-        return Math.sign(first.toNumber() - second.toNumber());
+        return Math.sign(first.getValue() - second.getValue());
     }
     if (first.getValue) {
         return natural(first.getValue(), second.getValue());
