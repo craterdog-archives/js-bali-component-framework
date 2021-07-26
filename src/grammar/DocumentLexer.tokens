@@ -94,8 +94,8 @@ SPACE=93
 COMMENT_BLOCK=94
 COMMENT=95
 'handle'=1
-'matching'=2
-'with'=3
+'with'=2
+'matching'=3
 '{'=4
 '}'=5
 ':='=6

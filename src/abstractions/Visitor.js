@@ -236,7 +236,7 @@ Visitor.prototype.visitFunctionExpression = function(tree) {
 };
 
 
-// handleClause: 'handle' symbol ('matching' expression 'with' block)+
+// handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 Visitor.prototype.visitHandleClause = function(tree) {
     const iterator = tree.getIterator();
 
@@ -244,12 +244,18 @@ Visitor.prototype.visitHandleClause = function(tree) {
     var symbol = iterator.getNext();
     symbol.acceptVisitor(this);
 
-    // handle matching pattern blocks
-    while (iterator.hasNext()) {
-        const pattern = iterator.getNext();
-        pattern.acceptVisitor(this);
+    if (tree.getSize() === 2) {
+        // handle default ('matching any') with block
         const block = iterator.getNext();
         block.acceptVisitor(this);
+    } else {
+        // handle matching pattern with blocks
+        while (iterator.hasNext()) {
+            const pattern = iterator.getNext();
+            pattern.acceptVisitor(this);
+            const block = iterator.getNext();
+            block.acceptVisitor(this);
+        }
     }
 };
 

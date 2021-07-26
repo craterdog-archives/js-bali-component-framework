@@ -10,8 +10,7 @@
 'use strict';
 
 /*
- * This element class captures the state and methods associated with a
- * number range element.
+ * This element class captures the state and methods associated with a range element.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -21,15 +20,15 @@ const Exception = require('../structures/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new number range element using the specified value.
+ * This function creates a new range element using the specified first and last values.
  *
- * @param {Array} value An array containing the first and last values in the number range.
+ * @param {Array} value An array containing the first and last values in the range.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range [0..3].
- * @returns {Range} The new number range.
+ * @returns {Range} The new range.
  */
 const Range = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.Element.call(
         this,
         ['/bali/elements/Range'],
         [ ],
@@ -51,7 +50,7 @@ const Range = function(value, parameters, debug) {
 
     return this;
 };
-Range.prototype = Object.create(abstractions.Sequence.prototype);
+Range.prototype = Object.create(abstractions.Element.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -80,62 +79,23 @@ Range.prototype.acceptVisitor = function(visitor) {
 
 
 /**
- * This method returns the number of characters that this number range has.
- *
- * @returns {Number} The number of characters that this number range has.
- */
-Range.prototype.getSize = function() {
-    var first = this.getFirst();
-    var last = this.getLast();
-    if (first === undefined || last === undefined) return Infinity;
-    return Math.abs(last - first + 1);
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the characters in
- * this number range.
- * @returns {Iterator} An iterator for this number range.
+ * This method returns an object that can be used to iterate over the integers in
+ * this range.  If the range does not contain integers, an exception is thrown.
+ * @returns {Iterator} An iterator for this range.
  */
 Range.prototype.getIterator = function() {
+    if (!Number.isInteger(this.getFirst()) || !Number.isInteger(this.getLast())) {
+        const exception = new Exception({
+            $module: '/bali/elements/Range',
+            $procedure: '$getIterator',
+            $exception: '$nonInteger',
+            $text: 'A non-integer range cannot be iterated over.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    }
     const iterator = new RangeIterator(this, this.getParameters(), this.debug);
     return iterator;
-};
-
-
-/**
- * This method returns the number at the specified index from this number range.
- *
- * @param {Number} index The index of the number to be retrieved from this number range.
- * @returns {String} The number at the specified index.
- */
-Range.prototype.getItem = function(index) {
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    return this.getFirst() + this.normalizedIndex(index) - 1;
-};
-
-
-/**
- * This method returns a new number range containing the numbers in the specified range.
- *
- * @param {Range} range A range depicting the first and last numbers to be retrieved.
- * @returns {Range} A new number range containing the requested numbers.
- */
-Range.prototype.getItems = function(range) {
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Range', '$getItems', '$range', range, [
-            '/bali/elements/Range'
-        ]);
-    }
-    const first = this.getFirst() + this.normalizedIndex(range.getFirst()) - 1;
-    const last = this.getFirst() + this.normalizedIndex(range.getLast()) - 1;
-    return new Range([first, last], this.getParameters(), this.debug);
 };
 
 
@@ -152,22 +112,13 @@ const RangeIterator = function(range, parameters, debug) {
 
     // the range, size, collection, and current slot index are private attributes
     // so methods that use them are defined in the constructor
-    var first = range.getFirst();
-    const size = range.getSize();  // static so we can cache it here
-    var slot = 0;  // the slot before the first number
-    if (size === Infinity) {
-        const exception = new Exception({
-            $module: '/bali/elements/IteratorRange',
-            $procedure: '$RangeIterator',
-            $exception: '$infiniteSize',
-            $text: 'A range iterator cannot iterate over an infinite range of numbers.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
+    const first = range.getFirst();
+    const last = range.getLast();
+    const size = last - first + 1;  // static so we can cache it here
+    var slot = 0;  // the slot before the first integer
 
     this.toStart = function() {
-        slot = 0;  // the slot before the first number
+        slot = 0;  // the slot before the first integer
     };
 
     this.toSlot = function(newSlot) {
@@ -175,7 +126,7 @@ const RangeIterator = function(range, parameters, debug) {
     };
 
     this.toEnd = function() {
-        slot = size;  // the slot after the last number
+        slot = size;  // the slot after the last integer
     };
 
     this.hasPrevious = function() {

@@ -24,7 +24,7 @@ mainClause:
     throwClause
 ;
 
-handleClause: 'handle' symbol ('matching' expression 'with' block)+;
+handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 
 block: '{' statements '}';
 

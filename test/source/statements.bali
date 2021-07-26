@@ -14,7 +14,9 @@
         } matching any with {
             break loop
         }
-        post message() to /bali/examples/bag/v1
+        post message() to /bali/examples/bag/v1 handle $exception with {
+            publish exception
+        }
         if false then {
             $component := 0
         } else if component < 5 then {

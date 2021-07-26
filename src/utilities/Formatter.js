@@ -435,23 +435,30 @@ FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
 };
 
 
-// handleClause: 'handle' symbol ('matching' expression 'with' block)+
+// handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 FormattingVisitor.prototype.visitHandleClause = function(tree) {
     const iterator = tree.getIterator();
 
-    // handle 'symbol'
+    // handle symbol
     this.result += ' handle ';
     var symbol = iterator.getNext();
     symbol.acceptVisitor(this);
 
-    // handle matching pattern blocks
-    while (iterator.hasNext()) {
-        this.result += ' matching ';
-        const pattern = iterator.getNext();
-        pattern.acceptVisitor(this);
+    if (tree.getSize() === 2) {
+        // handle default ('matching any') with block
         this.result += ' with ';
         const block = iterator.getNext();
         block.acceptVisitor(this);
+    } else {
+        // handle matching pattern with blocks
+        while (iterator.hasNext()) {
+            this.result += ' matching ';
+            const pattern = iterator.getNext();
+            pattern.acceptVisitor(this);
+            this.result += ' with ';
+            const block = iterator.getNext();
+            block.acceptVisitor(this);
+        }
     }
 };
 

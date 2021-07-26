@@ -508,17 +508,22 @@ ParsingVisitor.prototype.visitFuncxion = function(ctx) {
 };
 
 
-// handleClause: 'handle' symbol ('matching' expression 'with' block)+
+// handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
     const tree = new collections.Tree('/bali/structures/HandleClause', this.debug);
     ctx.symbol().accept(this);
     tree.addItem(this.result);
-    const expressions = ctx.expression();
     const blocks = ctx.block();
-    for (var i = 0; i < expressions.length; i++) {
-        expressions[i].accept(this);
-        tree.addItem(this.result);
-        blocks[i].accept(this);
+    const expressions = ctx.expression();
+    if (expressions && expressions.length) {
+        for (var i = 0; i < expressions.length; i++) {
+            expressions[i].accept(this);
+            tree.addItem(this.result);
+            blocks[i].accept(this);
+            tree.addItem(this.result);
+        }
+    } else {
+        blocks[0].accept(this);
         tree.addItem(this.result);
     }
     this.result = tree;
