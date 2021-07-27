@@ -43,7 +43,7 @@ const EOL = '\n';
 /**
  * This function creates a new parser object.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Parser} The new string parser.
  */
 const Parser = function(debug) {
@@ -824,12 +824,30 @@ ParsingVisitor.prototype.visitPostClause = function(ctx) {
 };
 
 
-// range: ('0' | REAL)? '..' ('0' | REAL)?
+// range: element? '..' element?
 ParsingVisitor.prototype.visitRange = function(ctx) {
+    var first, last;
     const parameters = this.getParameters();
-    const tokens = ctx.getText().split('..');
-    const first = tokens[0] ? literalToNumber(tokens[0]) : undefined;
-    const last = tokens[1] ? literalToNumber(tokens[1]) : undefined;
+    const children = ctx.children;
+    switch (children.length) {
+        case 1:
+            break;
+        case 2:
+            if (children[0].getText() === '..') {
+                children[1].accept(this);
+                last = this.result;
+            } else {
+                children[0].accept(this);
+                first = this.result;
+            }
+            break;
+        case 3:
+            children[0].accept(this);
+            first = this.result;
+            children[2].accept(this);
+            last = this.result;
+            break;
+    }
     const range = new elements.Range([first, last], parameters, this.debug);
     this.result = range;
 };

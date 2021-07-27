@@ -34,7 +34,7 @@ const abstractions = require('../abstractions');
  * used to parameterize its type.
  *
  * @param {Object} parameters Optional parameters used to parameterize this list.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {List} The new list.
  */
 const List = function(parameters, debug) {
@@ -174,18 +174,26 @@ const List = function(parameters, debug) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
-                '/javascript/Undefined',
+                '/javascript/String',
                 '/bali/elements/Range'
             ]);
         }
-        if (range && range.getIterator) {
-            const iterator = range.getIterator();
-            iterator.toEnd();  // must work backwards to preserve indexing in the list
-            while (iterator.hasPrevious()) {
-                const index = iterator.getPrevious();
-                this.removeItem(index);
-            }
+        range = this.componentize(range);
+        var first = range.getFirst();
+        if (first === undefined) {
+            first = 1;  // first character
+        } else {
+            first = first.toNumber();
         }
+        var last = range.getLast();
+        if (last === undefined) {
+            last = -1;  // last character
+        } else {
+            last = last.toNumber();
+        }
+        first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+        last = this.normalizedIndex(last) - 1;  // zero-based indexing for JS
+        array.splice(first, last - first + 1);  // include the last item
     };
 
     this.removeAll = function() {
@@ -205,7 +213,7 @@ const List = function(parameters, debug) {
         const generator = new utilities.Generator(this.debug);
         const size = this.getSize();
         for (var index = size; index > 1; index--) {
-            const random = generator.generateIndex(index);  // in range [1..index] ordinal indexing
+            const random = generator.generateIndex(index);  // in range 1..index ordinal indexing
             const item = this.getItem(index);
             this.setItem(index, this.getItem(random));
             this.setItem(random, item);
@@ -252,7 +260,7 @@ exports.List = List;
  *
  * @param {List} first The first list to be operated on.
  * @param {List} second The second list to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {List} The resulting list.
  */
 List.concatenation = function(first, second, debug) {

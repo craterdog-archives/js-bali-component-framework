@@ -22,11 +22,9 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const range = bali.range();
             expect(range).to.exist;  // jshint ignore:line
             const first = range.getFirst();
-            expect(first).to.exist;  // jshint ignore:line
-            expect(first).to.equal(-Infinity);
+            expect(first).to.not.exist;  // jshint ignore:line
             const last = range.getLast();
-            expect(last).to.exist;  // jshint ignore:line
-            expect(last).to.equal(Infinity);
+            expect(last).to.not.exist;  // jshint ignore:line
             expect(
                 function() {
                     range.getIterator(range);
@@ -39,10 +37,9 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range).to.exist;  // jshint ignore:line
             var first = range.getFirst();
             expect(first).to.exist;  // jshint ignore:line
-            expect(first).to.equal(0);
+            expect(first.toNumber()).to.equal(0);
             var last = range.getLast();
-            expect(last).to.exist;  // jshint ignore:line
-            expect(last).to.equal(Infinity);
+            expect(last).to.not.exist;  // jshint ignore:line
             expect(
                 function() {
                     range.getIterator(range);
@@ -52,11 +49,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             range = bali.range(undefined, 5);
             expect(range).to.exist;  // jshint ignore:line
             first = range.getFirst();
-            expect(first).to.exist;  // jshint ignore:line
-            expect(first).to.equal(-Infinity);
+            expect(first).to.not.exist;  // jshint ignore:line
             last = range.getLast();
             expect(last).to.exist;  // jshint ignore:line
-            expect(last).to.equal(5);
+            expect(last.toNumber()).to.equal(5);
             expect(
                 function() {
                     range.getIterator(range);
@@ -69,10 +65,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range).to.exist;  // jshint ignore:line
             const first = range.getFirst();
             expect(first).to.exist;  // jshint ignore:line
-            expect(first).to.equal(2);
+            expect(first.toNumber()).to.equal(2);
             const last = range.getLast();
             expect(last).to.exist;  // jshint ignore:line
-            expect(last).to.equal(5);
+            expect(last.toNumber()).to.equal(5);
             const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
         });
@@ -85,28 +81,28 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         const infinite = bali.range();
         const finite = bali.range(-2, 2);
 
-        it('should be able to a negative range against the others', function() {
+        it('should be able to compare a negative range against the others', function() {
             expect(negative.comparedTo(negative)).to.equal(0);
             expect(negative.comparedTo(positive)).to.equal(-1);
             expect(negative.comparedTo(infinite)).to.equal(-1);
             expect(negative.comparedTo(finite)).to.equal(-1);
         });
 
-        it('should be able to a positive range against the others', function() {
+        it('should be able to compare a positive range against the others', function() {
             expect(positive.comparedTo(negative)).to.equal(1);
             expect(positive.comparedTo(positive)).to.equal(0);
             expect(positive.comparedTo(infinite)).to.equal(1);
             expect(positive.comparedTo(finite)).to.equal(1);
         });
 
-        it('should be able to an infinite range against the others', function() {
+        it('should be able to compare an infinite range against the others', function() {
             expect(infinite.comparedTo(negative)).to.equal(1);
             expect(infinite.comparedTo(positive)).to.equal(-1);
             expect(infinite.comparedTo(infinite)).to.equal(0);
             expect(infinite.comparedTo(finite)).to.equal(-1);
         });
 
-        it('should be able to a finite range against the others', function() {
+        it('should be able to compare a finite range against the others', function() {
             expect(finite.comparedTo(negative)).to.equal(1);
             expect(finite.comparedTo(positive)).to.equal(-1);
             expect(finite.comparedTo(infinite)).to.equal(1);
@@ -120,15 +116,15 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         it('should be able to call the getFirst() and getLast() methods on the range', function() {
             var range = bali.range(1, 8);
             var first = range.getFirst();
-            expect(first).to.equal(1);
+            expect(first.toNumber()).to.equal(1);
             var last = range.getLast();
-            expect(last).to.equal(8);
+            expect(last.toNumber()).to.equal(8);
 
             range = bali.range(-4, 6);
             first = range.getFirst();
-            expect(first).to.equal(-4);
+            expect(first.toNumber()).to.equal(-4);
             last = range.getLast();
-            expect(last).to.equal(6);
+            expect(last.toNumber()).to.equal(6);
         });
 
     });

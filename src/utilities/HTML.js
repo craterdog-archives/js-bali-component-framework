@@ -41,7 +41,7 @@ Array.prototype.peek = function() {
  *
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {HTML} The new component formatter.
  */
 const HTML = function(style, debug) {
@@ -476,17 +476,17 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
 };
 
 
-// range: ('0' | REAL)? '..' ('0' | REAL)?
+// range: element? '..' element?
 FormattingVisitor.prototype.visitRange = function(range) {
-    this.result += '<div class="element range">';
+    this.result += '<div class="range">';
     const first = range.getFirst();
     if (first !== undefined) {
-        this.result += formatReal(first);
+        first.acceptVisitor(this);
     }
     this.result += '..';
     const last = range.getLast();
     if (last !== undefined) {
-        this.result += formatReal(last);
+        last.acceptVisitor(this);
     }
     this.result += formatParameters(range.getParameters());
     this.result += '</div>';

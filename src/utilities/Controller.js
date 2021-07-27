@@ -39,7 +39,7 @@ const Exception = require('../structures/Exception').Exception;
  * @param {Object} nextStates An object defining the possible states as strings and allowed
  * transitions between them given specific event types.
  * @param {String} currentState The optional current state of the machine.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Controller} A new finite state machine.
  */
 const Controller = function(eventTypes, nextStates, currentState, debug) {

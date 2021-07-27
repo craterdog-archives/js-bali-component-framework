@@ -25,7 +25,7 @@ const abstractions = require('../abstractions');
  *
  * @param {Buffer} value An optional buffer containing the bytes for the binary string.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The new binary string.
  */
 const Binary = function(value, parameters, debug) {
@@ -114,18 +114,32 @@ Binary.prototype.getItem = function(index) {
 /**
  * This method returns a new binary string containing the bytes in the specified range.
  *
- * @param {Range} range A range depicting the first and last bytes to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last bytes to be retrieved.
  * @returns {Binary} A new binary string containing the requested bytes.
  */
 Binary.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }
-    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
-    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    range = this.componentize(range);
+    var first = range.getFirst();
+    if (first === undefined) {
+        first = 1;  // first byte
+    } else {
+        first = first.toNumber();
+    }
+    var last = range.getLast();
+    if (last === undefined) {
+        last = -1;  // last byte
+    } else {
+        last = last.toNumber();
+    }
+    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+    last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const buffer = this.getValue().slice(first, last);
     return new Binary(buffer, this.getParameters(), this.debug);
 };
@@ -138,7 +152,7 @@ Binary.prototype.getItems = function(range) {
  * of the specified binary string.
  *
  * @param {Binary} binary The binary value.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The resulting binary.
  */
 Binary.not = function(binary, debug) {
@@ -163,7 +177,7 @@ Binary.not = function(binary, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The resulting binary string.
  */
 Binary.and = function(first, second, debug) {
@@ -192,7 +206,7 @@ Binary.and = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The resulting binary string.
  */
 Binary.sans = function(first, second, debug) {
@@ -221,7 +235,7 @@ Binary.sans = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The resulting binary string.
  */
 Binary.or = function(first, second, debug) {
@@ -250,7 +264,7 @@ Binary.or = function(first, second, debug) {
  *
  * @param {Binary} first The first binary string.
  * @param {Binary} second The second binary string.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Binary} The resulting binary string.
  */
 Binary.xor = function(first, second, debug) {
@@ -279,7 +293,7 @@ Binary.xor = function(first, second, debug) {
  *
  * @param {List} first The first binary string to be operated on.
  * @param {List} second The second binary string to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {List} The resulting binary string.
  */
 Binary.concatenation = function(first, second, debug) {

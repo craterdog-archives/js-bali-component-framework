@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Object} parameters Optional parameters used to parameterize the structure.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Structure} The new structure.
  */
 const Structure = function(ancestry, interfaces, parameters, debug) {

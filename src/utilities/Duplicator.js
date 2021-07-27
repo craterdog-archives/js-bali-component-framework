@@ -26,7 +26,7 @@ const EOL = '\n';
 /**
  * This function creates a new duplicator object.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duplicator} The new component duplicator.
  */
 const Duplicator = function(debug) {
@@ -506,7 +506,7 @@ DuplicatingVisitor.prototype.visitPostClause = function(tree) {
 };
 
 
-// range: ('0' | REAL)? '..' ('0' | REAL)?
+// range: element? '..' element?
 DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;

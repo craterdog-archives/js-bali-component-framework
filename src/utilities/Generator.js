@@ -27,7 +27,7 @@ const MAXIMUM_INTEGER = 4294967296;  // unsigned
 /**
  * This function returns a new random number generator.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Generator} The new generator.
  */
 const Generator = function(debug) {
@@ -63,7 +63,7 @@ Generator.prototype.generateBytes = function(numberOfBytes) {
 
 
 /**
- * This method returns a random integer in the range [-2,147,483,648..2,147,483,647].
+ * This method returns a random integer in the range -2147483648..2147483647.
  *
  * @return {Number} The random integer.
  */
@@ -75,26 +75,26 @@ Generator.prototype.generateInteger = function() {
 
 
 /**
- * This method returns a random index in the range in the range [1..length].
+ * This method returns a random index in the range in the range 1..length.
  *
  * @param {Number} length The length of the collection being indexed.
  * @return {Number} The random ordinal index.
  */
 Generator.prototype.generateIndex = function(length) {
-    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
-    const index = (randomInteger % length) + 1;  // in range [1..length] for ordinal based indexing
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range 0..MAX
+    const index = (randomInteger % length) + 1;  // in range 1..length for ordinal based indexing
     return index;
 };
 
 
 /**
- * This method returns a random probability in the range in the range [0..1].
+ * This method returns a random probability in the range in the range 0..1.
  *
  * @return {Number} The random probability.
  */
 Generator.prototype.generateProbability = function() {
-    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
-    const probability = randomInteger / MAXIMUM_INTEGER;  // in range [0..1]
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range 0..MAX
+    const probability = randomInteger / MAXIMUM_INTEGER;  // in range 0..1
     return probability;
 };
 
@@ -107,7 +107,7 @@ Generator.prototype.generateProbability = function() {
  * @return {Boolean} The result of the coin toss.
  */
 Generator.prototype.flipCoin = function(weight) {
-    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range [0..MAX]
+    const randomInteger = (this.generateInteger() + MAXIMUM_INTEGER) % MAXIMUM_INTEGER;  // in range 0..MAX
     const toss = randomInteger / (MAXIMUM_INTEGER - 1);  // convert to range [0.0..1.0)
     return toss < weight;  // true: [0.0..probability) and false: [probability..1.0]
 };

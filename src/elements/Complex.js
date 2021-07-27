@@ -27,7 +27,7 @@ const Angle = require('./Angle').Angle;
  *
  * @param {Array} value The real and imaginary values of the complex number.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The new complex number.
  */
 const Complex = function(value, parameters, debug) {
@@ -77,6 +77,8 @@ const Complex = function(value, parameters, debug) {
         real = Infinity;
         imaginary = Infinity;
     }
+
+    this.isInteger = Number.isInteger(real) && imaginary === 0;
 
     this.getReal = function() { return real; };
 
@@ -189,7 +191,7 @@ Complex.prototype.acceptVisitor = function(visitor) {
  * </pre>
  *
  * @param {Complex} number The complex number to be inverted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.inverse = function(number, debug) {
@@ -221,7 +223,7 @@ Complex.inverse = function(number, debug) {
  * </pre>
  *
  * @param {Complex} number The complex number to be inverted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.reciprocal = function(number, debug) {
@@ -253,7 +255,7 @@ Complex.reciprocal = function(number, debug) {
  * </pre>
  *
  * @param {Complex} number The complex number to be conjugated.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.conjugate = function(number, debug) {
@@ -280,7 +282,7 @@ Complex.conjugate = function(number, debug) {
  * This function returns the complex factorial of the specified complex number.
  *
  * @param {Complex} number The complex number.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.factorial = function(number, debug) {
@@ -312,7 +314,7 @@ Complex.factorial = function(number, debug) {
  *
  * @param {Complex} first The first complex number to be added.
  * @param {Complex} second The second complex number to be added.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.sum = function(first, second, debug) {
@@ -347,7 +349,7 @@ Complex.sum = function(first, second, debug) {
  *
  * @param {Complex} first The first complex number to be subtracted from.
  * @param {Complex} second The second complex number to be subtracted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.difference = function(first, second, debug) {
@@ -374,7 +376,7 @@ Complex.difference = function(first, second, debug) {
  *
  * @param {Complex} number The complex number to be scaled.
  * @param {Number} factor The numeric scale factor.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.scaled = function(number, factor, debug) {
@@ -411,7 +413,7 @@ Complex.scaled = function(number, factor, debug) {
  *
  * @param {Complex} first The first complex number to be multiplied.
  * @param {Complex} second The second complex number to be multiplied.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.product = function(first, second, debug) {
@@ -448,7 +450,7 @@ Complex.product = function(first, second, debug) {
  *
  * @param {Complex} first The first complex number to be divided.
  * @param {Complex} second The second complex number to be divided by.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.quotient = function(first, second, debug) {
@@ -470,7 +472,7 @@ Complex.quotient = function(first, second, debug) {
  *
  * @param {Complex} first The first real number to be divided.
  * @param {Complex} second The second real number to be divided by.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting real number.
  */
 Complex.remainder = function(first, second, debug) {
@@ -508,7 +510,7 @@ Complex.remainder = function(first, second, debug) {
  *
  * @param {Complex} base The complex base.
  * @param {Complex} exponent The complex exponent.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.exponential = function(base, exponent, debug) {
@@ -543,7 +545,7 @@ Complex.exponential = function(base, exponent, debug) {
  *
  * @param {Complex} base The base of the resulting exponent.
  * @param {Complex} value The complex number.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Complex} The resulting complex number.
  */
 Complex.logarithm = function(base, value, debug) {

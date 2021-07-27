@@ -22,9 +22,9 @@ const Exception = require('../structures/Exception').Exception;
 /**
  * This function creates a new range element using the specified first and last values.
  *
- * @param {Array} value An array containing the first and last values in the range.
+ * @param {Array} value An array containing the first and last elememnts in the range.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
 const Range = function(value, parameters, debug) {
@@ -43,10 +43,10 @@ const Range = function(value, parameters, debug) {
     }
 
     // since this element is immutable the values must be read-only
-    const first = value[0];
-    const last = value[1];
-    this.getFirst = function() { return (first === undefined) ? -Infinity : first; };
-    this.getLast = function() { return (last === undefined) ? Infinity : last; };
+    const first = (value[0] || value[0] === 0) ? this.componentize(value[0]) : undefined;
+    const last = (value[1] || value[1] === 0) ? this.componentize(value[1]) : undefined;
+    this.getFirst = function() { return first; };
+    this.getLast = function() { return last; };
 
     return this;
 };
@@ -59,9 +59,9 @@ exports.Range = Range;
 
 /**
  * This method returns the raw value of the range as an array containing the first and last
- * indices.
+ * elements.
  *
- * @returns {Array} An array containing the first and last indices of the range.
+ * @returns {Array} An array containing the first and last elements of the range.
  */
 Range.prototype.getValue = function() {
     return [this.getFirst(), this.getLast()];
@@ -84,18 +84,18 @@ Range.prototype.acceptVisitor = function(visitor) {
  * @returns {Iterator} An iterator for this range.
  */
 Range.prototype.getIterator = function() {
-    if (!Number.isInteger(this.getFirst()) || !Number.isInteger(this.getLast())) {
-        const exception = new Exception({
-            $module: '/bali/elements/Range',
-            $procedure: '$getIterator',
-            $exception: '$nonInteger',
-            $text: 'A non-integer range cannot be iterated over.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
+    if (this.getFirst().isInteger && this.getLast().isInteger) {
+        const iterator = new RangeIterator(this, this.getParameters(), this.debug);
+        return iterator;
     }
-    const iterator = new RangeIterator(this, this.getParameters(), this.debug);
-    return iterator;
+    const exception = new Exception({
+        $module: '/bali/elements/Range',
+        $procedure: '$getIterator',
+        $exception: '$nonInteger',
+        $text: 'Only a finite integer range may be iterated over.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -110,11 +110,11 @@ const RangeIterator = function(range, parameters, debug) {
         debug
     );
 
-    // the range, size, collection, and current slot index are private attributes
-    // so methods that use them are defined in the constructor
-    const first = range.getFirst();
-    const last = range.getLast();
-    const size = last - first + 1;  // static so we can cache it here
+    // the first index in the range, size of the range, and the current slot pointer
+    // are private attributes so methods that use them are defined in the constructor
+    const first = range.getFirst().toNumber();
+    const last = range.getLast().toNumber();
+    const size = last - first + 1;  // ranges are static so we can cache the size
     var slot = 0;  // the slot before the first integer
 
     this.toStart = function() {

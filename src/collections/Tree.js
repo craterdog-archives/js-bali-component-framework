@@ -27,7 +27,7 @@ const abstractions = require('../abstractions');
  * This function creates a new tree node component.
  *
  * @param {String} type The type of the tree node component.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Tree} The new tree node component.
  */
 const Tree = function(type, debug) {

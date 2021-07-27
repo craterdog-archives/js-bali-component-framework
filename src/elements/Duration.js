@@ -26,7 +26,7 @@ const abstractions = require('../abstractions');
  *
  * @param {String|Number} value The source string the duration.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The new duration element.
  */
 const Duration = function(value, parameters, debug) {
@@ -100,7 +100,7 @@ Duration.prototype.acceptVisitor = function(visitor) {
  * positive, its inverse is negative and vice versa.
  *
  * @param {Duration} duration The duration to be inverted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The inverse of the specified duration.
  */
 Duration.inverse = function(duration, debug) {
@@ -120,7 +120,7 @@ Duration.inverse = function(duration, debug) {
  *
  * @param {Duration} first The first duration to be summed.
  * @param {Duration} second The second duration to be summed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The normalized sum of the two durations.
  */
 Duration.sum = function(first, second, debug) {
@@ -143,7 +143,7 @@ Duration.sum = function(first, second, debug) {
  *
  * @param {Duration} first The duration to be subtracted from.
  * @param {Duration} second The duration to subtract from the first duration.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The normalized difference of the two durations.
  */
 Duration.difference = function(first, second, debug) {
@@ -166,7 +166,7 @@ Duration.difference = function(first, second, debug) {
  *
  * @param {Duration} duration The duration to be scaled.
  * @param {Number} factor The scale factor.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The normalized scaled duration.
  */
 Duration.scaled = function(duration, factor, debug) {

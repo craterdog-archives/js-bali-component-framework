@@ -28,7 +28,7 @@ const Exception = require('../structures/Exception').Exception;
  * @param {Array} ancestry An array of type names that make up the ancestry for the collection.
  * @param {Array} interfaces An array of interface names that are supported by the collection.
  * @param {Object} parameters Optional parameters used to parameterize this collection.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Collection} The new collection.
  */
 const Collection = function(ancestry, interfaces, parameters, debug) {
@@ -192,7 +192,7 @@ Collection.prototype.addItems = function(items) {
 
 /**
  * This method converts negative item indexes into their corresponding positive
- * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
+ * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
  * collection is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:
@@ -201,8 +201,8 @@ Collection.prototype.addItems = function(items) {
  * Positive Indexes:    1         2          3          4     ...    N
  * </pre>
  *
- * @param {Number} index The index to be normalized [-N..N].
- * @returns {Number} The normalized [1..N] index.
+ * @param {Number} index The index to be normalized -N..N.
+ * @returns {Number} The normalized 1..N index.
  */
 Collection.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
@@ -288,14 +288,14 @@ Collection.prototype.getItem = function(index) {
 /**
  * This method returns a new collection containing the items in the specified range.
  *
- * @param {Range} range A range depicting the first and last items to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
-            '/javascript/Undefined',
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }

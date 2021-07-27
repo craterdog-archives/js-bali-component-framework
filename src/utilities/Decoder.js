@@ -44,7 +44,7 @@ const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', '
  *
  * @param {Number} indentation The number of levels of indentation that should be prepended
  * to each formatted line. The default is zero.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Decoder} The new decoder.
  */
 const Decoder = function(indentation, debug) {

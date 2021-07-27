@@ -24,7 +24,7 @@ const Comparator = require('./Comparator').Comparator;
  * This function creates a new sorter object.
  *
  * @param {Function} algorithm An optional function implementing the desired comparison algorithm.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * sorting. If none is specified, the natural comparator will be used.
  */
 const Sorter = function(algorithm, debug) {

@@ -23,7 +23,7 @@
  * a natural comparison will be performed.
  *
  * @param {Function} algorithm An optional function implementing a comparison algorithm.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Comparator} The new comparator.
  */
 const Comparator = function(algorithm, debug) {
@@ -158,14 +158,20 @@ const natural = function(first, second) {
     // handle ranges
     if (first.getFirst) {
         var result = natural(first.getFirst(), second.getFirst());
-        if (result === 0) result = natural(first.getLast(), second.getLast());
+        if (result === 0) {
+            // special case when last element is undefined it means GREATEST possible value
+            if (first.getLast() !== undefined && second.getLast() === undefined) return -1;
+            if (first.getLast() === undefined && second.getLast() !== undefined) return 1;
+            // otherwise, compare the two last elements
+            result = natural(first.getLast(), second.getLast());
+        }
         return result;
     }
 
-    // handle elements
+    // handle specific element types
     if (first.isComponent && first.isType('/bali/elements/Number')) {
-        var result = natural(first.getMagnitude(), second.getMagnitude());
-        if (result === 0) result = natural(first.getPhase(), second.getPhase());
+        var result = natural(first.getReal(), second.getReal());
+        if (result === 0) result = natural(first.getImaginary(), second.getImaginary());
         return result;
     }
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {

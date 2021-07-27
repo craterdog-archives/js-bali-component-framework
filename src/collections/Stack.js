@@ -34,7 +34,7 @@ Array.prototype.peek = function() {
  * used to parameterize its type.
  *
  * @param {Object} parameters Optional parameters used to parameterize this collection.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Stack} The new stack.
  */
 const Stack = function(parameters, debug) {

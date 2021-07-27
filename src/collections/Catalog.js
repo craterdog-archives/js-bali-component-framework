@@ -28,7 +28,7 @@ const List = require('./List').List;
  * used to parameterize its type.
  *
  * @param {Object} parameters Optional parameters used to parameterize this catalog.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Catalog} The new catalog.
  */
 const Catalog = function(parameters, debug) {
@@ -346,7 +346,7 @@ Catalog.prototype.toObject = function() {
  *
  * @param {Collection} first The first catalog to be operated on.
  * @param {Collection} second The second catalog to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Collection} The resulting catalog.
  */
 Catalog.concatenation = function(first, second, debug) {
@@ -372,7 +372,7 @@ Catalog.concatenation = function(first, second, debug) {
  *
  * @param {Catalog} catalog The catalog whose items are to be reduced.
  * @param {List} keys The list of keys for the associations to be extracted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns The resulting catalog.
  */
 Catalog.extraction = function(catalog, keys, debug) {

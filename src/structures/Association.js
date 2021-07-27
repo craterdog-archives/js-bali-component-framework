@@ -24,7 +24,7 @@ const abstractions = require('../abstractions');
  *
  * @param {Any} key The key of the association.
  * @param {Any} value The value associated with the key.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {

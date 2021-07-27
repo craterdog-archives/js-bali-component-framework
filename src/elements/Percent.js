@@ -24,7 +24,7 @@ const abstractions = require('../abstractions');
  *
  * @param {Number} value The value of the percent.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Percent} The new percent element.
  */
 const Percent = function(value, parameters, debug) {
@@ -97,7 +97,7 @@ Percent.prototype.acceptVisitor = function(visitor) {
  * This function returns the inverse of a percent.
  *
  * @param {Percent} percent The percent to be inverted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Percent} The inverse of the percent.
  */
 Percent.inverse = function(percent, debug) {
@@ -116,7 +116,7 @@ Percent.inverse = function(percent, debug) {
  *
  * @param {Percent} first The first percent to be summed.
  * @param {Percent} second The second percent to be summed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Percent} The normalized sum of the two percents.
  */
 Percent.sum = function(first, second, debug) {
@@ -139,7 +139,7 @@ Percent.sum = function(first, second, debug) {
  *
  * @param {Percent} first The percent to be subtracted from.
  * @param {Percent} second The percent to subtract from the first percent.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Percent} The normalized difference of the two percents.
  */
 Percent.difference = function(first, second, debug) {
@@ -162,7 +162,7 @@ Percent.difference = function(first, second, debug) {
  *
  * @param {Percent} percent The percent to be scaled.
  * @param {Number} factor The scale factor.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Percent} The normalized scaled percent.
  */
 Percent.scaled = function(percent, factor, debug) {

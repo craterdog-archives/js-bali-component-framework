@@ -106,7 +106,7 @@ structures.Exception.prototype.componentize = componentize;
  * Each function exposed by the interface also supports an optional debug argument as its last
  * argument. If specified, it will override the value specified for the entire interface.
  *
- * @param {Boolean|Number} defaultLevel An optional number in the range [0..3] that controls
+ * @param {Boolean|Number} defaultLevel An optional number in the range 0..3 that controls
  * the level of debugging that occurs:
  * <pre>
  *   0 (or false): debugging turned off

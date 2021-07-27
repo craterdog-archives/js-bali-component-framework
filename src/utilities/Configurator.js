@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {String} filename The filename for the configuration.
  * @param {String} directory The configuration directory.
- * @param {Boolean|Number} debug An optional number in the range [0..3] that controls
+ * @param {Boolean|Number} debug An optional number in the range 0..3 that controls
  * the level of debugging that occurs:
  * <pre>
  *   0 (or false): debugging turned off

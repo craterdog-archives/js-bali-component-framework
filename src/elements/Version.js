@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {Array} value An array containing the version levels for the version string.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Symbol} The new version string element.
  */
 const Version = function(value, parameters, debug) {
@@ -122,18 +122,32 @@ Version.prototype.getItem = function(index) {
 /**
  * This method returns a new version string containing the version numbers in the specified range.
  *
- * @param {Range} range A range depicting the first and last version numbers to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last version numbers to be retrieved.
  * @returns {Version} A new version string containing the requested version numbers.
  */
 Version.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }
-    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
-    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    range = this.componentize(range);
+    var first = range.getFirst();
+    if (first === undefined) {
+        first = 1;  // first level
+    } else {
+        first = first.toNumber();
+    }
+    var last = range.getLast();
+    if (last === undefined) {
+        last = -1;  // last level
+    } else {
+        last = last.toNumber();
+    }
+    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+    last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const array = this.getValue().slice(first, last);
     return new Version(array, this.getParameters(), this.debug);
 };
@@ -155,7 +169,7 @@ Version.prototype.getItems = function(range) {
  * @param {Version} currentVersion The current version string.
  * @param {Number} level The version level to be incremented. If no level is specified
  * the last level in the version string is incremented.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Version} The next version string.
  */
 Version.nextVersion = function(currentVersion, level, debug) {
@@ -194,7 +208,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
  *
  * @param {Version} currentVersion The current version string.
  * @param {Version} nextVersion The proposed next version string.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {

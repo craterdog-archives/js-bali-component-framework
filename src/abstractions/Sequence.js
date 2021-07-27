@@ -27,7 +27,7 @@ const Element = require('./Element').Element;
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Object} parameters Optional parameters used to parameterize this sequence.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Sequence} The new sequence.
  */
 const Sequence = function(ancestry, interfaces, parameters, debug) {
@@ -163,7 +163,7 @@ Sequence.prototype.getItem = function(index) {
  * This method returns a new sequence containing the items in the specified range.  It
  * must be implemented by a subclass.
  *
- * @param {Range} range A range depicting the first and last items to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
  * @returns {Sequence} A new sequence containing the requested items.
  */
 Sequence.prototype.getItems = function(range) {
@@ -180,7 +180,7 @@ Sequence.prototype.getItems = function(range) {
 
 /**
  * This method converts negative item indexes into their corresponding positive
- * indexes and then checks to make sure the index is in the range [1..size]. NOTE: if the
+ * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
  * sequence is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:

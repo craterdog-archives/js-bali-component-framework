@@ -23,7 +23,7 @@ const abstractions = require('../abstractions');
  *
  * @param {String|RegExp} value A regular expression for the pattern element.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Pattern} The new pattern element.
  */
 const Pattern = function(value, parameters, debug) {

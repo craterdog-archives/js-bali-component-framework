@@ -11,7 +11,6 @@ element:
     pattern |
     percent |
     probability |
-    range |
     reference |
     symbol |
     tag |
@@ -44,8 +43,6 @@ pattern: 'none' | REGEX | 'any';
 percent: PERCENT;
 
 probability: 'false' | FRACTION | 'true';
-
-range: ('0' | REAL)? '..' ('0' | REAL)?;
 
 reference: RESOURCE;
 

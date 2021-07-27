@@ -27,7 +27,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {URL} value The URI value of the reference.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Reference} The new reference element.
  */
 const Reference =function(value, parameters, debug) {

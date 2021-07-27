@@ -158,10 +158,13 @@ describe('Bali Nebula™ Component Framework - List', function() {
                 expect(item).to.equal(iterator.getNext().toString());
             });
             list.removeItem(2);
-            list.removeItem(1);
             size = list.getSize();
             expect(size).to.exist;  // jshint ignore:line
-            expect(size).to.equal(3);
+            expect(size).to.equal(4);
+            list.removeItems('2..3');
+            size = list.getSize();
+            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.equal(2);
             // the iterator should be pointing at a copy of the array so unaffected
             iterator.toStart();
             var index = 0;

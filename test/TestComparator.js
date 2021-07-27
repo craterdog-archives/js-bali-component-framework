@@ -136,6 +136,8 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         it('should handle ranges', function() {
             const range = bali.range();
             expect(comparator.compareComponents(range, '..0')).to.equal(1);
+            expect(comparator.compareComponents('..0', range)).to.equal(-1);
+            expect(comparator.compareComponents(range, '0..')).to.equal(-1);
             expect(comparator.compareComponents('0..', range)).to.equal(1);
         });
 

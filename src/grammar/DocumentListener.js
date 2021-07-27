@@ -452,6 +452,15 @@ DocumentListener.prototype.exitValue = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.enterRange = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.exitRange = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#sequence.
 DocumentListener.prototype.enterSequence = function(ctx) {
 };
@@ -611,15 +620,6 @@ DocumentListener.prototype.enterProbability = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#probability.
 DocumentListener.prototype.exitProbability = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.enterRange = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.exitRange = function(ctx) {
 };
 
 

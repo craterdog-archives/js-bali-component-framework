@@ -3,7 +3,9 @@ import Elements;
 
 component: value parameters?;
 
-value: element | sequence | procedure;
+value: element | range | sequence | procedure;
+
+range: element? '..' element?;
 
 sequence: '[' collection ']';
 

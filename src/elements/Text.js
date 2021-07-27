@@ -24,7 +24,7 @@ const abstractions = require('../abstractions');
  *
  * @param {String} value The value of the text string.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Text} The new text string.
  */
 const Text = function(value, parameters, debug) {
@@ -111,18 +111,32 @@ Text.prototype.getItem = function(index) {
 /**
  * This method returns a new text string containing the characters in the specified range.
  *
- * @param {Range} range A range depicting the first and last characters to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last characters to be retrieved.
  * @returns {Text} A new text string containing the requested characters.
  */
 Text.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Text', '$getItems', '$range', range, [
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }
-    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
-    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    range = this.componentize(range);
+    var first = range.getFirst();
+    if (first === undefined) {
+        first = 1;  // first character
+    } else {
+        first = first.toNumber();
+    }
+    var last = range.getLast();
+    if (last === undefined) {
+        last = -1;  // last character
+    } else {
+        last = last.toNumber();
+    }
+    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+    last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Text(string, this.getParameters(), this.debug);
 };
@@ -136,7 +150,7 @@ Text.prototype.getItems = function(range) {
  *
  * @param {Text} first The first text string to be operated on.
  * @param {Text} second The second text string to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Text} The resulting text string.
  */
 Text.concatenation = function(first, second, debug) {

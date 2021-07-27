@@ -25,7 +25,7 @@ const abstractions = require('../abstractions');
  * used to parameterize its type.
  *
  * @param {Object} parameters Optional parameters used to parameterize this set.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Set} The new set.
  */
 const Set = function(parameters, debug) {
@@ -164,7 +164,7 @@ exports.Set = Set;
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Set} The resulting set.
  */
 Set.and = function(first, second, debug) {
@@ -195,7 +195,7 @@ Set.and = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Set} The resulting set.
  */
 Set.sans = function(first, second, debug) {
@@ -221,7 +221,7 @@ Set.sans = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Set} The resulting set.
  */
 Set.or = function(first, second, debug) {
@@ -247,7 +247,7 @@ Set.or = function(first, second, debug) {
  *
  * @param {Set} first The first set to be operated on.
  * @param {Set} second The second set to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Set} The resulting set.
  */
 Set.xor = function(first, second, debug) {

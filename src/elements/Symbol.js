@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {String} value The value of the symbol.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
@@ -121,18 +121,32 @@ Symbol.prototype.getItem = function(index) {
 /**
  * This method returns a new symbol containing the characters in the specified range.
  *
- * @param {Range} range A range depicting the first and last characters to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last characters to be retrieved.
  * @returns {Symbol} A new symbol containing the requested characters.
  */
 Symbol.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$getItems', '$range', range, [
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }
-    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
-    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    range = this.componentize(range);
+    var first = range.getFirst();
+    if (first === undefined) {
+        first = 1;  // first character
+    } else {
+        first = first.toNumber();
+    }
+    var last = range.getLast();
+    if (last === undefined) {
+        last = -1;  // last character
+    } else {
+        last = last.toNumber();
+    }
+    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+    last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Symbol(string, this.getParameters(), this.debug);
 };

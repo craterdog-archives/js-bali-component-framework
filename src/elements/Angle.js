@@ -25,7 +25,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {Number} value The value of the angle.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The new angle element.
  */
 const Angle = function(value, parameters, debug) {
@@ -154,7 +154,7 @@ Angle.prototype.acceptVisitor = function(visitor) {
  * This function returns the inverse of an angle.
  *
  * @param {Angle} angle The angle to be inverted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The inverted angle.
  */
 Angle.inverse = function(angle, debug) {
@@ -174,7 +174,7 @@ Angle.inverse = function(angle, debug) {
  * adds to the specified angle to equal π/2.
  *
  * @param {Angle} angle The angle to be complemented.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The complementary angle.
  */
 Angle.complement = function(angle, debug) {
@@ -194,7 +194,7 @@ Angle.complement = function(angle, debug) {
  * adds to the specified angle to equal π.
  *
  * @param {Angle} angle The angle to be supplemented.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The supplemental angle.
  */
 Angle.supplement = function(angle, debug) {
@@ -214,7 +214,7 @@ Angle.supplement = function(angle, debug) {
  * adds to the specified angle to equal 2π.
  *
  * @param {Angle} angle The angle to be conjugated angle.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The conjugated angle.
  */
 Angle.conjugate = function(angle, debug) {
@@ -234,7 +234,7 @@ Angle.conjugate = function(angle, debug) {
  *
  * @param {Angle} first The first angle to be summed.
  * @param {Angle} second The second angle to be summed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The normalized sum of the two angles.
  */
 Angle.sum = function(first, second, debug) {
@@ -258,7 +258,7 @@ Angle.sum = function(first, second, debug) {
  *
  * @param {Angle} first The angle to be subtracted from.
  * @param {Angle} second The angle to subtract from the first angle.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The normalized difference of the two angles.
  */
 Angle.difference = function(first, second, debug) {
@@ -282,7 +282,7 @@ Angle.difference = function(first, second, debug) {
  *
  * @param {Angle} angle The angle to be scaled.
  * @param {Number} factor The scale factor.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The normalized scaled angle.
  */
 Angle.scaled = function(angle, factor, debug) {
@@ -305,7 +305,7 @@ Angle.scaled = function(angle, factor, debug) {
  * This function returns the sine (opposite/hypotenuse) of an angle.
  *
  * @param {Angle} angle The angle to be analyzed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Number} The ratio of the opposite to the hypotenuse for the angle.
  */
 Angle.sine = function(angle, debug) {
@@ -324,7 +324,7 @@ Angle.sine = function(angle, debug) {
  * This function returns the cosine (adjacent/hypotenuse) of an angle.
  *
  * @param {Angle} angle The angle to be analyzed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Number} The ratio of the adjacent to the hypotenuse for the angle.
  */
 Angle.cosine = function(angle, debug) {
@@ -343,7 +343,7 @@ Angle.cosine = function(angle, debug) {
  * This function returns the tangent (opposite/adjacent) of an angle.
  *
  * @param {Angle} angle The angle to be analyzed.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Number} The ratio of the opposite to the adjacent for the angle.
  */
 Angle.tangent = function(angle, debug) {
@@ -363,7 +363,7 @@ Angle.tangent = function(angle, debug) {
  * a right triangle.
  *
  * @param {Number} ratio The ratio of the opposite to the hypotenuse for the triangle.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio, debug) {
@@ -383,7 +383,7 @@ Angle.arcsine = function(ratio, debug) {
  * a right triangle.
  *
  * @param {Number} ratio The ratio of the adjacent to the hypotenuse for the triangle.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio, debug) {
@@ -404,7 +404,7 @@ Angle.arccosine = function(ratio, debug) {
  *
  * @param {Number} opposite The length of the side opposite the angle.
  * @param {Number} adjacent The length of the side adjacent to the angle.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, debug) {

@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {Array} value An array containing the identifiers of the name string.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Symbol} The new name string element.
  */
 const Name = function(value, parameters, debug) {
@@ -123,18 +123,32 @@ Name.prototype.getItem = function(index) {
 /**
  * This method returns a new name string containing the identifiers in the specified range.
  *
- * @param {Range} range A range depicting the first and last identifiers to be retrieved.
+ * @param {Range} range A range depicting the indices of the first and last identifiers to be retrieved.
  * @returns {Name} A new name string containing the requested identifiers.
  */
 Name.prototype.getItems = function(range) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$getItems', '$range', range, [
+            '/javascript/String',
             '/bali/elements/Range'
         ]);
     }
-    const first = this.normalizedIndex(range.getFirst()) - 1;  // zero-based indexing for JS
-    const last = this.normalizedIndex(range.getLast());  // slice() is exclusive of last index
+    range = this.componentize(range);
+    var first = range.getFirst();
+    if (first === undefined) {
+        first = 1;  // first identifier
+    } else {
+        first = first.toNumber();
+    }
+    var last = range.getLast();
+    if (last === undefined) {
+        last = -1;  // last identifier
+    } else {
+        last = last.toNumber();
+    }
+    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
+    last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const identifiers = this.getValue().slice(first, last);
     return new Name(identifiers, this.getParameters(), this.debug);
 };
@@ -148,7 +162,7 @@ Name.prototype.getItems = function(range) {
  *
  * @param {Name} first The first name string to be operated on.
  * @param {Name} second The second name string to be operated on.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Name} The resulting name string.
  */
 Name.concatenation = function(first, second, debug) {

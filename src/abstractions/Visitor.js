@@ -21,7 +21,7 @@
 /**
  * This function creates a new visitor component.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Visitor} The new visitor.
  */
 const Visitor = function(debug) {
@@ -440,11 +440,18 @@ Visitor.prototype.visitPostClause = function(tree) {
 };
 
 
-// range: ('0' | REAL)? '..' ('0' | REAL)?
+// range: element? '..' element?
 Visitor.prototype.visitRange = function(range) {
     const parameters = range.getParameters();
     this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    const first = range.getFirst();
+    if (first !== undefined) {
+        first.acceptVisitor(this);
+    }
+    const last = range.getLast();
+    if (last !== undefined) {
+        last.acceptVisitor(this);
+    }
 };
 
 

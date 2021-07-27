@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  *
  * @param {Number} value The value of the probability.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The new probability element.
  */
 const Probability = function(value, parameters, debug) {
@@ -113,7 +113,7 @@ Probability.prototype.acceptVisitor = function(visitor) {
 /**
  * This function returns a new random probability.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting random probability.
  */
 Probability.random = function(debug) {
@@ -133,7 +133,7 @@ Probability.random = function(debug) {
  * </pre>
  *
  * @param {Probability} probability The probability.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting probability.
  */
 Probability.not = function(probability, debug) {
@@ -160,7 +160,7 @@ Probability.not = function(probability, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting probability.
  */
 Probability.and = function(first, second, debug) {
@@ -193,7 +193,7 @@ Probability.and = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting probability.
  */
 Probability.sans = function(first, second, debug) {
@@ -227,7 +227,7 @@ Probability.sans = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting probability.
  */
 Probability.or = function(first, second, debug) {
@@ -261,7 +261,7 @@ Probability.or = function(first, second, debug) {
  *
  * @param {Probability} first The first probability.
  * @param {Probability} second The second probability.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Probability} The resulting probability.
  */
 Probability.xor = function(first, second, debug) {

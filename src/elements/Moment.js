@@ -41,7 +41,7 @@ const FORMATS = [
  * @param {String|Number} value The optional source string value or millisecond value of
  * the moment in time.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Moment} The new moment in time.
  */
 const Moment = function(value, parameters, debug) {
@@ -133,7 +133,7 @@ Moment.prototype.acceptVisitor = function(visitor) {
  *
  * @param {Moment} first The first moment in time.
  * @param {Moment} second The second moment in time.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Duration} The duration between the two moments in time.
  */
 Moment.duration = function(first, second, debug) {
@@ -158,7 +158,7 @@ Moment.duration = function(first, second, debug) {
  *
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be subtracted.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Moment} The resulting moment in time.
  */
 Moment.earlier = function(moment, duration, debug) {
@@ -182,7 +182,7 @@ Moment.earlier = function(moment, duration, debug) {
  *
  * @param {Moment} moment The initial moment in time.
  * @param {Duration} duration The duration of time to be added.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Moment} The resulting moment in time.
  */
 Moment.later = function(moment, duration, debug) {

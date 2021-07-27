@@ -26,7 +26,7 @@ const Exception = require('../structures/Exception').Exception;
  * @param {Number|String} value An optional parameter defining the size of a new random
  * tag or the value it should represent.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Tag} The new tag element.
  */
 const Tag = function(value, parameters, debug) {

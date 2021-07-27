@@ -22,7 +22,7 @@ const Exception = require('../structures/Exception').Exception;
 /**
  * This function creates a new validator object.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Validator} The new validator.
  */
 const Validator = function(debug) {

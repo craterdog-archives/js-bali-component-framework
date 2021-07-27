@@ -306,6 +306,12 @@ DocumentVisitor.prototype.visitValue = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#range.
+DocumentVisitor.prototype.visitRange = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#sequence.
 DocumentVisitor.prototype.visitSequence = function(ctx) {
   return this.visitChildren(ctx);
@@ -410,12 +416,6 @@ DocumentVisitor.prototype.visitPercent = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#probability.
 DocumentVisitor.prototype.visitProbability = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#range.
-DocumentVisitor.prototype.visitRange = function(ctx) {
   return this.visitChildren(ctx);
 };
 

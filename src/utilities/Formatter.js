@@ -37,7 +37,7 @@ const MAXIMUM_LENGTH = 25;
  *
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero.
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Formatter} The new component formatter.
  */
 const Formatter = function(indentation, debug) {
@@ -746,16 +746,16 @@ FormattingVisitor.prototype.visitPostClause = function(tree) {
 };
 
 
-// range: ('0' | REAL)? '..' ('0' | REAL)?
+// range: element? '..' element?
 FormattingVisitor.prototype.visitRange = function(range) {
     const first = range.getFirst();
-    if (first !== -Infinity) {
-        this.result += formatReal(first);
+    if (first !== undefined) {
+        first.acceptVisitor(this);
     }
     this.result += '..';
     const last = range.getLast();
-    if (last !== Infinity) {
-        this.result += formatReal(last);
+    if (last !== undefined) {
+        last.acceptVisitor(this);
     }
     const parameters = range.getParameters();
     this.visitParameters(parameters);  // format any parameterization

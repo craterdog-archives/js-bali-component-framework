@@ -31,7 +31,7 @@
 /**
  * This function creates a new calculator object.
  *
- * @param {Number} debug A number in the range [0..3].
+ * @param {Number} debug A number in the range 0..3.
  * @returns {Calculator} The new generator.
  */
 const Calculator = function(debug) {
