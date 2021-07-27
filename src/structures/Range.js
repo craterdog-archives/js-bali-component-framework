@@ -22,35 +22,82 @@ const Exception = require('../structures/Exception').Exception;
 /**
  * This function creates a new range element using the specified first and last values.
  *
- * @param {Array} value An array containing the first and last elememnts in the range.
+ * @param {Element} first The first element in the range.
+ * @param {Element} last The last element in the range.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
-const Range = function(value, parameters, debug) {
-    abstractions.Element.call(
+const Range = function(first, last, parameters, debug) {
+    abstractions.Structure.call(
         this,
         ['/bali/structures/Range'],
-        [ ],
+        ['/bali/interfaces/Literal'],
         parameters,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Range', '$Range', '$value', value, [
-            '/javascript/Array'
+        validator.validateType('/bali/structures/Range', '$Range', '$first', first, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/bali/abstractions/Element'
+        ]);
+        validator.validateType('/bali/structures/Range', '$Range', '$last', last, [
+            '/javascript/Undefined',
+            '/javascript/String',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/bali/abstractions/Element'
         ]);
     }
 
+    // convert the arguments to components
+    if (first === null) {
+        first = undefined;
+    } else if (first !== undefined) {
+        first = this.componentize(first, this.debug);
+    }
+    if (last === null) {
+        last = undefined;
+    } else if (last !== undefined) {
+        last = this.componentize(last, this.debug);
+    }
+
     // since this element is immutable the values must be read-only
-    const first = (value[0] || value[0] === 0) ? this.componentize(value[0]) : undefined;
-    const last = (value[1] || value[1] === 0) ? this.componentize(value[1]) : undefined;
     this.getFirst = function() { return first; };
+
     this.getLast = function() { return last; };
+
+    this.getAttribute = function(key) {
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/structures/Range', '$getAttribute', '$key', key, [
+                '/javascript/String',
+                '/bali/elements/Symbol'
+            ]);
+        }
+        const symbol = key.toString();
+        if (symbol === '$first') return this.getFirst();
+        if (symbol === '$last') return this.getLast();
+    };
+
+    this.setAttribute = function(key, value) {
+        const exception = new Exception({
+            $module: '/bali/structures/Range',
+            $procedure: '$setAttribute',
+            $exception: '$immutable',
+            $text: 'Ranges are immutable.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
 
     return this;
 };
-Range.prototype = Object.create(abstractions.Element.prototype);
+Range.prototype = Object.create(abstractions.Structure.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -58,13 +105,12 @@ exports.Range = Range;
 // PUBLIC METHODS
 
 /**
- * This method returns the raw value of the range as an array containing the first and last
- * elements.
+ * This method determines whether or not this structure is meaningful.
  *
- * @returns {Array} An array containing the first and last elements of the range.
+ * @returns {Boolean} Whether or not this component is meaningful.
  */
-Range.prototype.getValue = function() {
-    return [this.getFirst(), this.getLast()];
+Range.prototype.toBoolean = function() {
+    return this.getFirst() !== undefined && this.getLast() !== undefined;
 };
 
 
@@ -151,3 +197,4 @@ const RangeIterator = function(range, parameters, debug) {
 };
 RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;
+

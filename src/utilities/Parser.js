@@ -848,7 +848,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             last = this.result;
             break;
     }
-    const range = new structures.Range([first, last], parameters, this.debug);
+    const range = new structures.Range(first, last, parameters, this.debug);
     this.result = range;
 };
 

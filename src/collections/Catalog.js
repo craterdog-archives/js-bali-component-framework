@@ -172,9 +172,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
-                '/javascript/Array',
-                '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/abstractions/Element'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -216,9 +214,7 @@ const Catalog = function(parameters, debug) {
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
-                '/javascript/Array',
-                '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/abstractions/Element'
             ]);
             validator.validateType('/bali/collections/Catalog', '$setAttribute', '$value', value, [
                 '/javascript/Undefined',

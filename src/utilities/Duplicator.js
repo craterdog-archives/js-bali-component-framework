@@ -510,7 +510,7 @@ DuplicatingVisitor.prototype.visitPostClause = function(tree) {
 DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;
-    this.result = new range.constructor([range.getFirst(), range.getLast()], parameters, this.debug);
+    this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
 };
 
 

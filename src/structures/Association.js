@@ -41,9 +41,7 @@ const Association = function(key, value, debug) {
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
+            '/bali/abstractions/Element'
         ]);
         validator.validateType('/bali/structures/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
@@ -91,7 +89,7 @@ const Association = function(key, value, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Associations', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/structures/Association', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
@@ -101,10 +99,10 @@ const Association = function(key, value, debug) {
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Associations', '$setAttribute', '$key', key, [
+            validator.validateType('/bali/structures/Association', '$setAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
-            validator.validateType('/bali/structures/Associations', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/structures/Association', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
