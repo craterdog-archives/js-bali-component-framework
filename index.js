@@ -486,7 +486,7 @@ exports.api = function(defaultLevel) {
     // RANGE
     const range = function(first, last, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Range([first, last], parameters, debug);
+        return new structures.Range([first, last], parameters, debug);
     };
 
     // REFERENCE

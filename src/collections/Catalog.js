@@ -276,7 +276,7 @@ const Catalog = function(parameters, debug) {
             validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
-                '/bali/elements/Range',
+                '/bali/structures/Range',
                 '/bali/interfaces/Sequential'
             ]);
         }

@@ -119,7 +119,7 @@ Text.prototype.getItems = function(range) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Text', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/elements/Range'
+            '/bali/structures/Range'
         ]);
     }
     range = this.componentize(range);

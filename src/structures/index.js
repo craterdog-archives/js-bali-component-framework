@@ -14,3 +14,4 @@ const elements = require('../elements/');
 exports.Association = require('./Association').Association;
 exports.Exception = require('./Exception').Exception;
 exports.Procedure = require('./Procedure').Procedure;
+exports.Range = require('./Range').Range;

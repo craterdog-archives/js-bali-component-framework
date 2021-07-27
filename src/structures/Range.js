@@ -30,14 +30,14 @@ const Exception = require('../structures/Exception').Exception;
 const Range = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Range'],
+        ['/bali/structures/Range'],
         [ ],
         parameters,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Range', '$Range', '$value', value, [
+        validator.validateType('/bali/structures/Range', '$Range', '$value', value, [
             '/javascript/Array'
         ]);
     }
@@ -89,7 +89,7 @@ Range.prototype.getIterator = function() {
         return iterator;
     }
     const exception = new Exception({
-        $module: '/bali/elements/Range',
+        $module: '/bali/structures/Range',
         $procedure: '$getIterator',
         $exception: '$nonInteger',
         $text: 'Only a finite integer range may be iterated over.'
@@ -104,7 +104,7 @@ Range.prototype.getIterator = function() {
 const RangeIterator = function(range, parameters, debug) {
     abstractions.Iterator.call(
         this,
-        ['/bali/elements/RangeIterator'],
+        ['/bali/structures/RangeIterator'],
         [],
         parameters,
         debug
