@@ -354,8 +354,8 @@ DocumentVisitor.prototype.visitProcedure = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#statements.
-DocumentVisitor.prototype.visitStatements = function(ctx) {
+// Visit a parse tree produced by DocumentParser#action.
+DocumentVisitor.prototype.visitAction = function(ctx) {
   return this.visitChildren(ctx);
 };
 

@@ -470,9 +470,9 @@ exports.api = function(defaultLevel) {
     };
 
     // PROCEDURE
-    const procedure = function(statements, parameters, debug) {
+    const procedure = function(action, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new structures.Procedure(statements, parameters, debug);
+        return new structures.Procedure(action, parameters, debug);
     };
 
     // QUEUE

@@ -42,6 +42,21 @@ Visitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
+// action:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     /* no statements */
+Visitor.prototype.visitAction = function(tree) {
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        const statement = iterator.getNext();
+        statement.acceptVisitor(this);
+    }
+    this.depth--;
+};
+
+
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
     const parameters = angle.getParameters();
@@ -52,7 +67,7 @@ Visitor.prototype.visitAngle = function(angle) {
 
 // arguments:
 //     expression (',' expression)* |
-//     /* no arguments */
+//     /* no expressions */
 Visitor.prototype.visitArguments = function(tree) {
     this.depth++;
     const iterator = tree.getIterator();
@@ -81,6 +96,24 @@ Visitor.prototype.visitAssociation = function(association) {
 };
 
 
+// attribute: variable '[' indices ']'
+Visitor.prototype.visitAttribute = function(tree) {
+    const variable = tree.getItem(1);
+    variable.acceptVisitor(this);
+    const indices = tree.getItem(2);
+    indices.acceptVisitor(this);
+};
+
+
+// attributeExpression: expression '[' indices ']'
+Visitor.prototype.visitAttributeExpression = function(tree) {
+    const expression = tree.getItem(1);
+    expression.acceptVisitor(this);
+    const indices = tree.getItem(2);
+    indices.acceptVisitor(this);
+};
+
+
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
     const parameters = binary.getParameters();
@@ -89,10 +122,10 @@ Visitor.prototype.visitBinary = function(binary) {
 };
 
 
-// block: '{' statements '}'
+// block: '{' action '}'
 Visitor.prototype.visitBlock = function(tree) {
-    const statements = tree.getItem(1);
-    statements.acceptVisitor(this);
+    const action = tree.getItem(1);
+    action.acceptVisitor(this);
 };
 
 
@@ -400,6 +433,15 @@ Visitor.prototype.visitPercent = function(percent) {
 };
 
 
+// postClause: 'post' expression 'on' expression
+Visitor.prototype.visitPostClause = function(tree) {
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
+};
+
+
 // precedenceExpression: '(' expression ')'
 Visitor.prototype.visitPrecedenceExpression = function(tree) {
     const expression = tree.getItem(1);
@@ -415,12 +457,12 @@ Visitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' statements '}'
+// procedure: '{' action '}'
 Visitor.prototype.visitProcedure = function(procedure) {
     const parameters = procedure.getParameters();
     this.visitParameters(parameters);  // process any parameters first
-    const statements = procedure.getStatements();
-    statements.acceptVisitor(this);  // then process the statements in the procedure
+    const action = procedure.getAction();
+    action.acceptVisitor(this);  // then process the action in the procedure
 };
 
 
@@ -428,15 +470,6 @@ Visitor.prototype.visitProcedure = function(procedure) {
 Visitor.prototype.visitPublishClause = function(tree) {
     const event = tree.getItem(1);
     event.acceptVisitor(this);
-};
-
-
-// postClause: 'post' expression 'on' expression
-Visitor.prototype.visitPostClause = function(tree) {
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
 };
 
 
@@ -455,15 +488,6 @@ Visitor.prototype.visitRange = function(range) {
 };
 
 
-// retrieveClause: 'retrieve' recipient 'from' expression
-Visitor.prototype.visitRetrieveClause = function(tree) {
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
-};
-
-
 // reference: RESOURCE
 Visitor.prototype.visitReference = function(reference) {
     const parameters = reference.getParameters();
@@ -476,6 +500,15 @@ Visitor.prototype.visitReference = function(reference) {
 Visitor.prototype.visitRejectClause = function(tree) {
     const message = tree.getItem(1);
     message.acceptVisitor(this);
+};
+
+
+// retrieveClause: 'retrieve' recipient 'from' expression
+Visitor.prototype.visitRetrieveClause = function(tree) {
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
 };
 
 
@@ -528,39 +561,6 @@ Visitor.prototype.visitStatement = function(tree) {
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
     }
-};
-
-
-// statements:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-Visitor.prototype.visitStatements = function(tree) {
-    this.depth++;
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        const statement = iterator.getNext();
-        statement.acceptVisitor(this);
-    }
-    this.depth--;
-};
-
-
-// attribute: variable '[' indices ']'
-Visitor.prototype.visitAttribute = function(tree) {
-    const variable = tree.getItem(1);
-    variable.acceptVisitor(this);
-    const indices = tree.getItem(2);
-    indices.acceptVisitor(this);
-};
-
-
-// attributeExpression: expression '[' indices ']'
-Visitor.prototype.visitAttributeExpression = function(tree) {
-    const expression = tree.getItem(1);
-    expression.acceptVisitor(this);
-    const indices = tree.getItem(2);
-    indices.acceptVisitor(this);
 };
 
 

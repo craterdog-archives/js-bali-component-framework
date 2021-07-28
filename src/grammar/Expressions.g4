@@ -29,7 +29,7 @@ message: IDENTIFIER;
 
 arguments:
     expression (',' expression)* |
-    /* no arguments */
+    /* no expressions */
 ;
 
 

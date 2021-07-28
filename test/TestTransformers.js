@@ -65,8 +65,8 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
         });
 
-        it('should parse and format the same statements', function() {
-            const file = 'test/source/statements.bali';
+        it('should parse and format the same action', function() {
+            const file = 'test/source/action.bali';
             console.error('        ' + file);
             const document = fs.readFileSync(file, 'utf8');
             expect(document).to.exist;

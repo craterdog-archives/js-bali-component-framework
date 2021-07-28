@@ -23,12 +23,12 @@ const abstractions = require('../abstractions');
  * This function creates a new procedure with optional parameters that are
  * used to parameterize its behavior.
  *
- * @param {Tree} statements The statements that are contained within the procedure.
+ * @param {Tree} action The action that is defined by the procedure.
  * @param {Object} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Procedure} A new procedure.
  */
-const Procedure = function(statements, parameters, debug) {
+const Procedure = function(action, parameters, debug) {
     abstractions.Structure.call(
         this,
         ['/bali/structures/Procedure'],
@@ -38,12 +38,12 @@ const Procedure = function(statements, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Procedure', '$Procedure', '$statements', statements, [
-            '/bali/structures/Statements'
+        validator.validateType('/bali/structures/Procedure', '$Procedure', '$action', action, [
+            '/bali/structures/Action'
         ]);
     }
 
-    this.getStatements = function() { return statements; };
+    this.getAction = function() { return action; };
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
@@ -52,7 +52,7 @@ const Procedure = function(statements, parameters, debug) {
                 '/bali/abstractions/Element'
             ]);
         }
-        if (key.getValue() === '$statements') return this.getStatements();
+        if (key.getValue() === '$action') return this.getAction();
     };
 
     this.setAttribute = function(key, value) {
@@ -60,7 +60,7 @@ const Procedure = function(statements, parameters, debug) {
             $module: '/bali/structures/Procedure',
             $procedure: '$setAttribute',
             $exception: '$readOnly',
-            $text: 'The statements in a procedure cannot be updated.'
+            $text: 'The action in a procedure cannot be updated.'
         });
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
@@ -81,7 +81,7 @@ exports.Procedure = Procedure;
  * @returns {Boolean} Whether or not this procedure is meaningful.
  */
 Procedure.prototype.toBoolean = function() {
-    return this.getStatements().getSize() > 0;
+    return this.getAction().getSize() > 0;
 };
 
 
@@ -92,7 +92,7 @@ Procedure.prototype.toBoolean = function() {
  * @returns {String} The literal string value for this procedure.
  */
 Procedure.prototype.toLiteral = function() {
-    const copy = new this.constructor(this.getStatements(), undefined, this.debug);
+    const copy = new this.constructor(this.getAction(), undefined, this.debug);
     return copy.toString();
 };
 

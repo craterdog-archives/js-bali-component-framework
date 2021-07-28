@@ -26,7 +26,7 @@ mainClause:
 
 handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 
-block: '{' statements '}';
+block: '{' action '}';
 
 evaluateClause: (recipient ':=')? expression;
 

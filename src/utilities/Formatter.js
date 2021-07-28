@@ -114,6 +114,23 @@ FormattingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
+// action:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     /* no statements */
+FormattingVisitor.prototype.visitAction = function(tree) {
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        this.result += this.getNewline();
+        const statement = iterator.getNext();
+        statement.acceptVisitor(this);
+    }
+    this.depth--;
+    this.result += this.getNewline();
+};
+
+
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
     var value;
@@ -145,7 +162,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
 
 // arguments:
 //     expression (',' expression)* |
-//     /* no arguments */
+//     /* no expressions */
 FormattingVisitor.prototype.visitArguments = function(tree) {
     this.inline++;
     if (!tree.isEmpty()) {
@@ -190,6 +207,30 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 };
 
 
+// attribute: variable '[' indices ']'
+FormattingVisitor.prototype.visitAttribute = function(tree) {
+    const variable = tree.getItem(1);
+    variable.acceptVisitor(this);
+    this.result += '[';
+    const indices = tree.getItem(2);
+    indices.acceptVisitor(this);
+    this.result += ']';
+};
+
+
+// attributeExpression: expression '[' indices ']'
+FormattingVisitor.prototype.visitAttributeExpression = function(tree) {
+    this.inline++;
+    const expression = tree.getItem(1);
+    expression.acceptVisitor(this);
+    this.result += '[';
+    const indices = tree.getItem(2);
+    indices.acceptVisitor(this);
+    this.result += ']';
+    this.inline--;
+};
+
+
 // binary: BINARY
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.getValue();
@@ -231,11 +272,11 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 };
 
 
-// block: '{' statements '}'
+// block: '{' action '}'
 FormattingVisitor.prototype.visitBlock = function(tree) {
     this.result += '{';
-    const statements = tree.getItem(1);
-    statements.acceptVisitor(this);
+    const action = tree.getItem(1);
+    action.acceptVisitor(this);
     this.result += '}';
 };
 
@@ -492,16 +533,6 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '/' | '*') expression
-FormattingVisitor.prototype.visitInversionExpression = function(tree) {
-    this.inline++;
-    this.result += tree.operator;
-    const operand = tree.getItem(1);
-    operand.acceptVisitor(this);
-    this.inline--;
-};
-
-
 // indices: expression (',' expression)*
 FormattingVisitor.prototype.visitIndices = function(tree) {
     this.inline++;
@@ -519,6 +550,16 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
     }
     this.depth--;
     if (!this.inline) this.result += this.getNewline();
+    this.inline--;
+};
+
+
+// inversionExpression: ('-' | '/' | '*') expression
+FormattingVisitor.prototype.visitInversionExpression = function(tree) {
+    this.inline++;
+    this.result += tree.operator;
+    const operand = tree.getItem(1);
+    operand.acceptVisitor(this);
     this.inline--;
 };
 
@@ -686,6 +727,17 @@ FormattingVisitor.prototype.visitPercent = function(percent) {
 };
 
 
+// postClause: 'post' expression 'to' expression
+FormattingVisitor.prototype.visitPostClause = function(tree) {
+    this.result += 'post ';
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    this.result += ' to ';
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
+};
+
+
 // precedenceExpression: '(' expression ')'
 FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
     this.inline++;
@@ -716,11 +768,11 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' statements '}'
+// procedure: '{' action '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '{';
-    const statements = procedure.getStatements();
-    statements.acceptVisitor(this);
+    const action = procedure.getAction();
+    action.acceptVisitor(this);
     this.result += '}';
     const parameters = procedure.getParameters();
     this.visitParameters(parameters);  // format any parameterization
@@ -732,17 +784,6 @@ FormattingVisitor.prototype.visitPublishClause = function(tree) {
     this.result += 'publish ';
     const event = tree.getItem(1);
     event.acceptVisitor(this);
-};
-
-
-// postClause: 'post' expression 'to' expression
-FormattingVisitor.prototype.visitPostClause = function(tree) {
-    this.result += 'post ';
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    this.result += ' to ';
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
 };
 
 
@@ -762,17 +803,6 @@ FormattingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// receiveClause: 'retrieve' recipient 'from' expression
-FormattingVisitor.prototype.visitRetrieveClause = function(tree) {
-    this.result += 'retrieve ';
-    const message = tree.getItem(1);
-    message.acceptVisitor(this);
-    this.result += ' from ';
-    const queue = tree.getItem(2);
-    queue.acceptVisitor(this);
-};
-
-
 // reference: RESOURCE
 FormattingVisitor.prototype.visitReference = function(reference) {
     const value = reference.getValue().toString();
@@ -787,6 +817,17 @@ FormattingVisitor.prototype.visitRejectClause = function(tree) {
     this.result += 'reject ';
     const message = tree.getItem(1);
     message.acceptVisitor(this);
+};
+
+
+// retrieveClause: 'retrieve' recipient 'from' expression
+FormattingVisitor.prototype.visitRetrieveClause = function(tree) {
+    this.result += 'retrieve ';
+    const message = tree.getItem(1);
+    message.acceptVisitor(this);
+    this.result += ' from ';
+    const queue = tree.getItem(2);
+    queue.acceptVisitor(this);
 };
 
 
@@ -839,47 +880,6 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
             block.acceptVisitor(this);
         }
     }
-};
-
-
-// statements:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-FormattingVisitor.prototype.visitStatements = function(tree) {
-    this.depth++;
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        this.result += this.getNewline();
-        const statement = iterator.getNext();
-        statement.acceptVisitor(this);
-    }
-    this.depth--;
-    this.result += this.getNewline();
-};
-
-
-// attribute: variable '[' indices ']'
-FormattingVisitor.prototype.visitAttribute = function(tree) {
-    const variable = tree.getItem(1);
-    variable.acceptVisitor(this);
-    this.result += '[';
-    const indices = tree.getItem(2);
-    indices.acceptVisitor(this);
-    this.result += ']';
-};
-
-
-// attributeExpression: expression '[' indices ']'
-FormattingVisitor.prototype.visitAttributeExpression = function(tree) {
-    this.inline++;
-    const expression = tree.getItem(1);
-    expression.acceptVisitor(this);
-    this.result += '[';
-    const indices = tree.getItem(2);
-    indices.acceptVisitor(this);
-    this.result += ']';
-    this.inline--;
 };
 
 

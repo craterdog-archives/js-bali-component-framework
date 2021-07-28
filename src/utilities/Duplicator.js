@@ -70,6 +70,21 @@ DuplicatingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
+// action:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     /* no statements */
+DuplicatingVisitor.prototype.visitAction = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
+        copy.addItem(this.result);
+    }
+    this.result = copy;
+};
+
+
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
     this.visitParameters(angle.getParameters());
@@ -80,7 +95,7 @@ DuplicatingVisitor.prototype.visitAngle = function(angle) {
 
 // arguments:
 //     expression (',' expression)* |
-//     /* no arguments */
+//     /* no expressions */
 DuplicatingVisitor.prototype.visitArguments = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
@@ -112,6 +127,28 @@ DuplicatingVisitor.prototype.visitAssociation = function(association) {
     association.getValue().acceptVisitor(this);
     const value = this.result;
     this.result = new association.constructor(key, value, this.debug);
+};
+
+
+// attribute: variable '[' indices ']'
+DuplicatingVisitor.prototype.visitAttribute = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
+};
+
+
+// attributeExpression: expression '[' indices ']'
+DuplicatingVisitor.prototype.visitAttributeExpression = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
 };
 
 
@@ -329,16 +366,6 @@ DuplicatingVisitor.prototype.visitIfClause = function(tree) {
 };
 
 
-// inversionExpression: ('-' | '/' | '*') expression
-DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.operator = tree.operator;
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
-};
-
-
 // indices: expression (',' expression)*
 DuplicatingVisitor.prototype.visitIndices = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
@@ -348,6 +375,16 @@ DuplicatingVisitor.prototype.visitIndices = function(tree) {
         item.acceptVisitor(this);
         copy.addItem(this.result);
     }
+    this.result = copy;
+};
+
+
+// inversionExpression: ('-' | '/' | '*') expression
+DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    copy.operator = tree.operator;
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
     this.result = copy;
 };
 
@@ -458,6 +495,17 @@ DuplicatingVisitor.prototype.visitPercent = function(percent) {
 };
 
 
+// postClause: 'post' expression 'to' expression
+DuplicatingVisitor.prototype.visitPostClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
+};
+
+
 // precedenceExpression: '(' expression ')'
 DuplicatingVisitor.prototype.visitPrecedenceExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
@@ -475,13 +523,13 @@ DuplicatingVisitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' statements '}'
+// procedure: '{' action '}'
 DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
-    procedure.getStatements().acceptVisitor(this);
-    const statements = this.result;
+    procedure.getAction().acceptVisitor(this);
+    const action = this.result;
     this.visitParameters(procedure.getParameters());
     const parameters = this.result;
-    const copy = new procedure.constructor(statements, parameters, this.debug);
+    const copy = new procedure.constructor(action, parameters, this.debug);
     this.result = copy;
 };
 
@@ -495,33 +543,11 @@ DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
 };
 
 
-// postClause: 'post' expression 'to' expression
-DuplicatingVisitor.prototype.visitPostClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
-};
-
-
 // range: element? '..' element?
 DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;
     this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
-};
-
-
-// retrieveClause: 'retrieve' recipient 'from' expression
-DuplicatingVisitor.prototype.visitRetrieveClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
 };
 
 
@@ -538,6 +564,17 @@ DuplicatingVisitor.prototype.visitRejectClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const message = tree.getItem(1);
     message.acceptVisitor(this);
+    copy.addItem(this.result);
+    this.result = copy;
+};
+
+
+// retrieveClause: 'retrieve' recipient 'from' expression
+DuplicatingVisitor.prototype.visitRetrieveClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -587,43 +624,6 @@ DuplicatingVisitor.prototype.visitStatement = function(tree) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
-    this.result = copy;
-};
-
-
-// statements:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     {empty procedure}
-DuplicatingVisitor.prototype.visitStatements = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        iterator.getNext().acceptVisitor(this);
-        copy.addItem(this.result);
-    }
-    this.result = copy;
-};
-
-
-// attribute: variable '[' indices ']'
-DuplicatingVisitor.prototype.visitAttribute = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
-};
-
-
-// attributeExpression: expression '[' indices ']'
-DuplicatingVisitor.prototype.visitAttributeExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
     this.result = copy;
 };
 

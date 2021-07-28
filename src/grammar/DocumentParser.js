@@ -403,10 +403,10 @@ var ruleNames =  [ "document", "statement", "mainClause", "handleClause",
                    "attribute", "expression", "variable", "funcxion", "message", 
                    "arguments", "indices", "component", "value", "range", 
                    "sequence", "collection", "parameters", "list", "catalog", 
-                   "association", "procedure", "statements", "element", 
-                   "angle", "binary", "duration", "moment", "name", "number", 
-                   "pattern", "percent", "probability", "reference", "symbol", 
-                   "tag", "text", "version" ];
+                   "association", "procedure", "action", "element", "angle", 
+                   "binary", "duration", "moment", "name", "number", "pattern", 
+                   "percent", "probability", "reference", "symbol", "tag", 
+                   "text", "version" ];
 
 function DocumentParser (input) {
 	antlr4.Parser.call(this, input);
@@ -564,7 +564,7 @@ DocumentParser.RULE_list = 37;
 DocumentParser.RULE_catalog = 38;
 DocumentParser.RULE_association = 39;
 DocumentParser.RULE_procedure = 40;
-DocumentParser.RULE_statements = 41;
+DocumentParser.RULE_action = 41;
 DocumentParser.RULE_element = 42;
 DocumentParser.RULE_angle = 43;
 DocumentParser.RULE_binary = 44;
@@ -1172,8 +1172,8 @@ function BlockContext(parser, parent, invokingState) {
 BlockContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 BlockContext.prototype.constructor = BlockContext;
 
-BlockContext.prototype.statements = function() {
-    return this.getTypedRuleContext(StatementsContext,0);
+BlockContext.prototype.action = function() {
+    return this.getTypedRuleContext(ActionContext,0);
 };
 
 BlockContext.prototype.enterRule = function(listener) {
@@ -1210,7 +1210,7 @@ DocumentParser.prototype.block = function() {
         this.state = 168;
         this.match(DocumentParser.T__3);
         this.state = 169;
-        this.statements();
+        this.action();
         this.state = 170;
         this.match(DocumentParser.T__4);
     } catch (re) {
@@ -5188,8 +5188,8 @@ function ProcedureContext(parser, parent, invokingState) {
 ProcedureContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ProcedureContext.prototype.constructor = ProcedureContext;
 
-ProcedureContext.prototype.statements = function() {
-    return this.getTypedRuleContext(StatementsContext,0);
+ProcedureContext.prototype.action = function() {
+    return this.getTypedRuleContext(ActionContext,0);
 };
 
 ProcedureContext.prototype.enterRule = function(listener) {
@@ -5226,7 +5226,7 @@ DocumentParser.prototype.procedure = function() {
         this.state = 454;
         this.match(DocumentParser.T__3);
         this.state = 455;
-        this.statements();
+        this.action();
         this.state = 456;
         this.match(DocumentParser.T__4);
     } catch (re) {
@@ -5244,7 +5244,7 @@ DocumentParser.prototype.procedure = function() {
 };
 
 
-function StatementsContext(parser, parent, invokingState) {
+function ActionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -5253,14 +5253,14 @@ function StatementsContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_statements;
+    this.ruleIndex = DocumentParser.RULE_action;
     return this;
 }
 
-StatementsContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-StatementsContext.prototype.constructor = StatementsContext;
+ActionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ActionContext.prototype.constructor = ActionContext;
 
-StatementsContext.prototype.statement = function(i) {
+ActionContext.prototype.statement = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -5271,7 +5271,7 @@ StatementsContext.prototype.statement = function(i) {
     }
 };
 
-StatementsContext.prototype.EOL = function(i) {
+ActionContext.prototype.EOL = function(i) {
 	if(i===undefined) {
 		i = null;
 	}
@@ -5283,21 +5283,21 @@ StatementsContext.prototype.EOL = function(i) {
 };
 
 
-StatementsContext.prototype.enterRule = function(listener) {
+ActionContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterStatements(this);
+        listener.enterAction(this);
 	}
 };
 
-StatementsContext.prototype.exitRule = function(listener) {
+ActionContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitStatements(this);
+        listener.exitAction(this);
 	}
 };
 
-StatementsContext.prototype.accept = function(visitor) {
+ActionContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitStatements(this);
+        return visitor.visitAction(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -5306,12 +5306,12 @@ StatementsContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.StatementsContext = StatementsContext;
+DocumentParser.ActionContext = ActionContext;
 
-DocumentParser.prototype.statements = function() {
+DocumentParser.prototype.action = function() {
 
-    var localctx = new StatementsContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 82, DocumentParser.RULE_statements);
+    var localctx = new ActionContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 82, DocumentParser.RULE_action);
     var _la = 0; // Token type
     try {
         this.state = 476;
