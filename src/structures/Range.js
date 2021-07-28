@@ -32,7 +32,10 @@ const Range = function(first, last, parameters, debug) {
     abstractions.Structure.call(
         this,
         ['/bali/structures/Range'],
-        ['/bali/interfaces/Literal'],
+        [
+            '/bali/interfaces/Literal',
+            '/bali/interfaces/Sequential'
+        ],
         parameters,
         debug
     );
@@ -111,6 +114,18 @@ exports.Range = Range;
  */
 Range.prototype.toBoolean = function() {
     return this.getFirst() !== undefined && this.getLast() !== undefined;
+};
+
+
+/**
+ * This method returns the literal string value for this range.  The literal does not
+ * include any parameterization of the range.
+ *
+ * @returns {String} The literal string value for this range.
+ */
+Range.prototype.toLiteral = function() {
+    const copy = new this.constructor(this.getFirst(), this.getLast(), undefined, this.debug);
+    return copy.toString();
 };
 
 

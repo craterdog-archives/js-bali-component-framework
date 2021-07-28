@@ -375,7 +375,7 @@ Collection.prototype.containsAny = function(items) {
  * This method determines whether all of the specified items are contained in
  * this collection.
  *
- * @param {Array|Sequence} items The items to be checked for in this collection.
+ * @param {Array|Sequential} items The items to be checked for in this collection.
  * @returns {Boolean} Whether or not all of the specified items are contained in this collection.
  */
 Collection.prototype.containsAll = function(items) {
