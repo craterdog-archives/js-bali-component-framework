@@ -687,7 +687,7 @@ DocumentLexer.REAL = 84;
 DocumentLexer.REGEX = 85;
 DocumentLexer.SYMBOL = 86;
 DocumentLexer.TAG = 87;
-DocumentLexer.TEXT_BLOCK = 88;
+DocumentLexer.NARRATIVE = 88;
 DocumentLexer.TEXT = 89;
 DocumentLexer.VERSION = 90;
 DocumentLexer.IDENTIFIER = 91;
@@ -739,7 +739,7 @@ DocumentLexer.prototype.symbolicNames = [ null, null, null, null, null,
                                           "FRACTION", "IMAGINARY", "MOMENT", 
                                           "NAME", "PERCENT", "RESOURCE", 
                                           "REAL", "REGEX", "SYMBOL", "TAG", 
-                                          "TEXT_BLOCK", "TEXT", "VERSION", 
+                                          "NARRATIVE", "TEXT", "VERSION", 
                                           "IDENTIFIER", "NOTE", "COMMENT", 
                                           "EOL", "SPACE" ];
 
@@ -764,7 +764,7 @@ DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                       "ANGLE", "BINARY", "DURATION", "FRACTION", 
                                       "IMAGINARY", "MOMENT", "NAME", "PERCENT", 
                                       "RESOURCE", "REAL", "REGEX", "SYMBOL", 
-                                      "TAG", "TEXT_BLOCK", "TEXT", "VERSION", 
+                                      "TAG", "NARRATIVE", "TEXT", "VERSION", 
                                       "IDENTIFIER", "NOTE", "COMMENT", "EOL", 
                                       "SPACE", "CHARACTER", "NUMBER", "FLOAT", 
                                       "INTEGER", "SPAN", "TYPE", "CONTEXT", 

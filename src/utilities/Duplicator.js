@@ -667,7 +667,7 @@ DuplicatingVisitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | TEXT_BLOCK
+// text: TEXT | NARRATIVE
 DuplicatingVisitor.prototype.visitText = function(text) {
     this.visitParameters(text.getParameters());
     const parameters = this.result;

@@ -521,7 +521,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | TEXT_BLOCK
+// text: TEXT | NARRATIVE
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
     const regex = new RegExp('\\n', 'g');

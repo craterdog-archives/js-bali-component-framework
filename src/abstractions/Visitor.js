@@ -585,7 +585,7 @@ Visitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | TEXT_BLOCK
+// text: TEXT | NARRATIVE
 Visitor.prototype.visitText = function(text) {
     const parameters = text.getParameters();
     this.visitParameters(parameters);  // process any parameters first

@@ -1034,7 +1034,7 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// text: TEXT | BLOCK_TEXT
+// text: TEXT | NARRATIVE
 ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters

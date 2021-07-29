@@ -50,6 +50,6 @@ symbol: SYMBOL;
 
 tag: TAG;
 
-text: TEXT | TEXT_BLOCK;
+text: TEXT | NARRATIVE;
 
 version: VERSION;
