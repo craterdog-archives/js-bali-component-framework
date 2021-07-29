@@ -419,7 +419,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 };
 
 
-// component: value parameters?
+// component: value parameters? note?
 // NOTE: the parameters really belong to the value and are maintained by the value objects.
 //       There is no component object per se, this method is really only necessary to
 //       process the parameters if they do exist and save them off for the value to find
@@ -436,6 +436,8 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
     }
     const value = ctx.value();
     value.accept(this);
+    const note = ctx.note();
+    if (note) this.result.note = note.getText();
 };
 
 

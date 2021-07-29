@@ -20,21 +20,21 @@ DocumentListener.prototype.exitDocument = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#comment.
-DocumentListener.prototype.enterComment = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#comment.
-DocumentListener.prototype.exitComment = function(ctx) {
-};
-
-
 // Enter a parse tree produced by DocumentParser#statement.
 DocumentListener.prototype.enterStatement = function(ctx) {
 };
 
 // Exit a parse tree produced by DocumentParser#statement.
 DocumentListener.prototype.exitStatement = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#comment.
+DocumentListener.prototype.enterComment = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#comment.
+DocumentListener.prototype.exitComment = function(ctx) {
 };
 
 
@@ -539,6 +539,15 @@ DocumentListener.prototype.enterAction = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#action.
 DocumentListener.prototype.exitAction = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#note.
+DocumentListener.prototype.enterNote = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#note.
+DocumentListener.prototype.exitNote = function(ctx) {
 };
 
 

@@ -1,7 +1,7 @@
 grammar Components;
 import Elements;
 
-component: value parameters?;
+component: value parameters? note?;
 
 value: element | range | sequence | procedure;
 
@@ -34,3 +34,6 @@ action:
     EOL (statement EOL)* |
     /* no statements */
 ;
+
+note: NOTE;
+

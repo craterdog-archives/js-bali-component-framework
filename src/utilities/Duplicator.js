@@ -90,6 +90,7 @@ DuplicatingVisitor.prototype.visitAngle = function(angle) {
     this.visitParameters(angle.getParameters());
     const parameters = this.result;
     this.result = new angle.constructor(angle.getValue(), parameters, this.debug);
+    this.result.note = angle.note;
 };
 
 
@@ -157,6 +158,7 @@ DuplicatingVisitor.prototype.visitBinary = function(binary) {
     this.visitParameters(binary.getParameters());
     const parameters = this.result;
     this.result = new binary.constructor(binary.getValue(), parameters, this.debug);
+    this.result.note = binary.note;
 };
 
 
@@ -201,6 +203,7 @@ DuplicatingVisitor.prototype.visitCollection = function(collection) {
         copy.addItem(this.result);
     }
     this.result = copy;
+    this.result.note = collection.note;
 };
 
 
@@ -296,6 +299,7 @@ DuplicatingVisitor.prototype.visitDuration = function(duration) {
     this.visitParameters(duration.getParameters());
     const parameters = this.result;
     this.result = new duration.constructor(duration.getTime().toISOString(), parameters, this.debug);
+    this.result.note = duration.note;
 };
 
 
@@ -445,6 +449,7 @@ DuplicatingVisitor.prototype.visitMoment = function(moment) {
     this.visitParameters(moment.getParameters());
     const parameters = this.result;
     this.result = new moment.constructor(value, parameters, this.debug);
+    this.result.note = moment.note;
 };
 
 
@@ -453,6 +458,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
     this.visitParameters(name.getParameters());
     const parameters = this.result;
     this.result = new name.constructor(name.getValue(), parameters, this.debug);
+    this.result.note = name.note;
 };
 
 
@@ -467,6 +473,7 @@ DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitParameters(number.getParameters());
     const parameters = this.result;
     this.result = new number.constructor([number.getReal(), number.getImaginary()], parameters, this.debug);
+    this.result.note = number.note;
 };
 
 
@@ -492,6 +499,7 @@ DuplicatingVisitor.prototype.visitPattern = function(pattern) {
     this.visitParameters(pattern.getParameters());
     const parameters = this.result;
     this.result = new pattern.constructor(pattern.getValue(), parameters, this.debug);
+    this.result.note = pattern.note;
 };
 
 
@@ -500,6 +508,7 @@ DuplicatingVisitor.prototype.visitPercent = function(percent) {
     this.visitParameters(percent.getParameters());
     const parameters = this.result;
     this.result = new percent.constructor(percent.getValue(), parameters, this.debug);
+    this.result.note = percent.note;
 };
 
 
@@ -528,6 +537,7 @@ DuplicatingVisitor.prototype.visitProbability = function(probability) {
     this.visitParameters(probability.getParameters());
     const parameters = this.result;
     this.result = new probability.constructor(probability.getValue(), parameters, this.debug);
+    this.result.note = probability.note;
 };
 
 
@@ -539,6 +549,7 @@ DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
     const parameters = this.result;
     const copy = new procedure.constructor(action, parameters, this.debug);
     this.result = copy;
+    this.result.note = procedure.note;
 };
 
 
@@ -556,6 +567,7 @@ DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;
     this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
+    this.result.note = range.note;
 };
 
 
@@ -564,6 +576,7 @@ DuplicatingVisitor.prototype.visitReference = function(reference) {
     this.visitParameters(reference.getParameters());
     const parameters = this.result;
     this.result = new reference.constructor(reference.getValue(), parameters, this.debug);
+    this.result.note = reference.note;
 };
 
 
@@ -641,6 +654,7 @@ DuplicatingVisitor.prototype.visitSymbol = function(symbol) {
     this.visitParameters(symbol.getParameters());
     const parameters = this.result;
     this.result = new symbol.constructor(symbol.getValue(), parameters, this.debug);
+    this.result.note = symbol.note;
 };
 
 
@@ -649,6 +663,7 @@ DuplicatingVisitor.prototype.visitTag = function(tag) {
     this.visitParameters(tag.getParameters());
     const parameters = this.result;
     this.result = new tag.constructor(tag.getValue(), parameters, this.debug);
+    this.result.note = tag.note;
 };
 
 
@@ -657,6 +672,7 @@ DuplicatingVisitor.prototype.visitText = function(text) {
     this.visitParameters(text.getParameters());
     const parameters = this.result;
     this.result = new text.constructor(text.getValue(), parameters, this.debug);
+    this.result.note = text.note;
 };
 
 
@@ -682,6 +698,7 @@ DuplicatingVisitor.prototype.visitVersion = function(version) {
     this.visitParameters(version.getParameters());
     const parameters = this.result;
     this.result = new version.constructor(version.getValue(), parameters, this.debug);
+    this.result.note = version.note;
 };
 
 

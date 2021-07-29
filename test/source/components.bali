@@ -1,13 +1,13 @@
 [
     $empty: [
         [ ]
-        [:]
+        [:]  -- colon means empty catalog
     ]
     $list: [
         [
             1
             2
-            3
+            3  -- last
         ]
         [
             $alpha
@@ -47,7 +47,7 @@
             [
                 $foo: $bar
                 $bar: 25($range: 1..100)
-                $baz: none
+                $baz: none  -- no value
             ]
         ]
     ]
@@ -88,7 +88,7 @@
             $c: φ
             $d: τ
             $e: ∞
-        ]($type: /acme/examples/Foo/v1.2.3)
+        ]($type: /acme/examples/Foo/v1.2.3)  -- example type
         $procedure: {
             if condition then {
                 return true
