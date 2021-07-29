@@ -37,7 +37,7 @@ SYMBOL: '$' IDENTIFIER ('-' NUMBER)?;
 
 TAG: '#' BASE32*;
 
-// a text block takes precedence over a regular text string
+// a narrative takes precedence over a regular text string
 NARRATIVE: '"' EOL CHARACTER*? EOL SPACE* '"';
 
 TEXT: '"' (ESCAPE | '\\"' | ~["\r\n])*? '"';
