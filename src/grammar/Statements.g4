@@ -1,7 +1,9 @@
 grammar Statements;
 import Expressions;
 
-statement: mainClause handleClause?;
+comment: NOTE | COMMENT;
+
+statement: comment | mainClause handleClause?;
 
 mainClause:
     evaluateClause |

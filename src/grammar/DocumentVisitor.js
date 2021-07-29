@@ -18,6 +18,12 @@ DocumentVisitor.prototype.visitDocument = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#comment.
+DocumentVisitor.prototype.visitComment = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#statement.
 DocumentVisitor.prototype.visitStatement = function(ctx) {
   return this.visitChildren(ctx);

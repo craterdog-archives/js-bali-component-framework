@@ -376,6 +376,15 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 };
 
 
+// comment: NOTE | COMMENT
+ParsingVisitor.prototype.visitComment = function(ctx) {
+    const text = ctx.getText();
+    const comment = new collections.Tree('/bali/structures/Comment', this.debug);
+    comment.text = text;
+    this.result = comment;
+};
+
+
 // commitClause: 'commit' expression 'to' expression
 ParsingVisitor.prototype.visitCommitClause = function(ctx) {
     const tree = new collections.Tree('/bali/structures/CommitClause', this.debug);
@@ -985,15 +994,21 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// statement: mainClause handleClause?
+// statement: comment | mainClause handleClause?
 ParsingVisitor.prototype.visitStatement = function(ctx) {
     const tree = new collections.Tree('/bali/structures/Statement', this.debug);
-    ctx.mainClause().accept(this);
-    tree.addItem(this.result);
-    const handleClause = ctx.handleClause();
-    if (handleClause) {
-        handleClause.accept(this);
+    const comment = ctx.comment();
+    if (comment) {
+        comment.accept(this);
         tree.addItem(this.result);
+    } else {
+        ctx.mainClause().accept(this);
+        tree.addItem(this.result);
+        const handleClause = ctx.handleClause();
+        if (handleClause) {
+            handleClause.accept(this);
+            tree.addItem(this.result);
+        }
     }
     this.result = tree;
 };
@@ -1171,7 +1186,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $module: '/bali/utilities/Parser',
         $procedure: '$parseDocument',
         $exception: '$syntaxError',
-        $text: new elements.Text(EOL + message + EOL, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
+        $text: new elements.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
     });
 
     // stop the processing
@@ -1235,8 +1250,8 @@ const addContext = function(recognizer, message) {
         message += '    [' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2] + EOL;
     }
     message += '    [' + lineNumber + ']: ' + lines[lineNumber - 1] + EOL;
-    var line = '    [' + lineNumber + ']: ';
-    for (var i = 0; i < columnNumber; i++) {
+    var line = '         ';
+    for (var i = 0; i < lineNumber.toString.length + columnNumber; i++) {
         line += ' ';
     }
     var start = token ? offendingToken.start : columnNumber;

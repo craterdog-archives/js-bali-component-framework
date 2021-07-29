@@ -332,6 +332,12 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
 };
 
 
+// comment: NOTE | COMMENT
+FormattingVisitor.prototype.visitComment = function(tree) {
+    this.result += tree.text;
+}
+
+
 // commitClause: 'commit' expression 'to' expression
 FormattingVisitor.prototype.visitCommitClause = function(tree) {
     this.result += 'commit ';

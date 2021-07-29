@@ -47,13 +47,13 @@ VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
 
+NOTE: '--' ~[\r\n]*;
+
+COMMENT: '/*' EOL (COMMENT | CHARACTER)*? EOL SPACE* '*/';
+
 EOL: '\r'? '\n';
 
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
-
-COMMENT_BLOCK: '/*' (COMMENT_BLOCK | CHARACTER)*? '*/' -> channel(HIDDEN);
-
-COMMENT: '--' CHARACTER*? '\n' -> channel(HIDDEN);
 
 fragment
 CHARACTER: .;

@@ -204,6 +204,14 @@ DuplicatingVisitor.prototype.visitCollection = function(collection) {
 };
 
 
+// comment: NOTE | COMMENT
+DuplicatingVisitor.prototype.visitComment = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    copy.text = tree.text;
+    this.result = copy;
+};
+
+
 // commitClause: 'commit' expression 'to' expression
 DuplicatingVisitor.prototype.visitCommitClause = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
@@ -616,7 +624,7 @@ DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: mainClause handleClause?
+// statement: comment | mainClause handleClause?
 DuplicatingVisitor.prototype.visitStatement = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();

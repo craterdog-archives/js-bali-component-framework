@@ -158,6 +158,11 @@ Visitor.prototype.visitCollection = function(collection) {
 };
 
 
+// comment: NOTE | COMMENT
+Visitor.prototype.visitComment = function(tree) {
+}
+
+
 // commitClause: 'commit' expression 'to' expression
 Visitor.prototype.visitCommitClause = function(tree) {
     const component = tree.getItem(1);
@@ -555,7 +560,7 @@ Visitor.prototype.visitSelectClause = function(tree) {
 };
 
 
-// statement: mainClause handleClause?
+// statement: comment | mainClause handleClause?
 Visitor.prototype.visitStatement = function(tree) {
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {

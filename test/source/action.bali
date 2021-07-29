@@ -1,6 +1,22 @@
 [
     $empty: {
     }
+    $comment: {
+        /*
+        This is a comment block
+        */
+        if condition then {
+            -- note to do nothing
+        }
+        /*
+        if condition then {
+            /*
+            This is a nested comment block
+            */
+            this is a syntax error
+        }
+        */
+    }
     $single: {
         $x := value
     }

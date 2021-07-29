@@ -20,6 +20,15 @@ DocumentListener.prototype.exitDocument = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#comment.
+DocumentListener.prototype.enterComment = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#comment.
+DocumentListener.prototype.exitComment = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#statement.
 DocumentListener.prototype.enterStatement = function(ctx) {
 };
