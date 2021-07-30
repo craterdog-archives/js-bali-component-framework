@@ -70,11 +70,11 @@ DuplicatingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
-// action:
+// activity:
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
 //     /* no statements */
-DuplicatingVisitor.prototype.visitAction = function(tree) {
+DuplicatingVisitor.prototype.visitActivity = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
@@ -541,13 +541,13 @@ DuplicatingVisitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' action '}'
+// procedure: '{' activity '}'
 DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
-    procedure.getAction().acceptVisitor(this);
-    const action = this.result;
+    procedure.getActivity().acceptVisitor(this);
+    const activity = this.result;
     this.visitParameters(procedure.getParameters());
     const parameters = this.result;
-    const copy = new procedure.constructor(action, parameters, this.debug);
+    const copy = new procedure.constructor(activity, parameters, this.debug);
     this.result = copy;
     this.result.note = procedure.note;
 };

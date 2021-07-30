@@ -100,7 +100,7 @@ structures.Exception.prototype.componentize = componentize;
  *   2: perform argument validation checks on each call (poor performance)
  *   3: log interesting arguments, states and results to console.log
  * </pre>
- * Note: Each level also includes the actions of each lower level so the performance hit is
+ * Note: Each level also includes the processing of each lower level so the performance hit is
  * cumulative.
  *
  * Each function exposed by the interface also supports an optional debug argument as its last
@@ -470,9 +470,9 @@ exports.api = function(defaultLevel) {
     };
 
     // PROCEDURE
-    const procedure = function(action, parameters, debug) {
+    const procedure = function(activity, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new structures.Procedure(action, parameters, debug);
+        return new structures.Procedure(activity, parameters, debug);
     };
 
     // QUEUE

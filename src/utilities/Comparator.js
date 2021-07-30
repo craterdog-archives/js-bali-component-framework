@@ -147,7 +147,7 @@ const natural = function(first, second) {
         return natural(first.getAttributes(), second.getAttributes());
     }
     if (first.isComponent && first.isType('/bali/structures/Procedure')) {
-        return natural(first.getAction(), second.getAction());
+        return natural(first.getActivity(), second.getActivity());
     }
 
     // handle collections (note: tree leaf nodes are treated as empty collections)

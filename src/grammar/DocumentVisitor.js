@@ -360,8 +360,8 @@ DocumentVisitor.prototype.visitProcedure = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#action.
-DocumentVisitor.prototype.visitAction = function(ctx) {
+// Visit a parse tree produced by DocumentParser#activity.
+DocumentVisitor.prototype.visitActivity = function(ctx) {
   return this.visitChildren(ctx);
 };
 
