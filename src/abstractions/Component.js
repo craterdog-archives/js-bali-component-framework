@@ -16,6 +16,9 @@
 const utilities = require('../utilities');
 const Exception = require('../structures/Exception').Exception;
 
+// This private constant sets the POSIX end of line character
+const EOL = '\n';
+
 
 // PUBLIC FUNCTIONS
 
@@ -163,8 +166,7 @@ Component.prototype.toBoolean = function() {
  * @returns {String} The corresponding string representation.
  */
 Component.prototype.toString = function() {
-    const formatter = new utilities.Formatter(0, this.debug);
-    return formatter.formatComponent(this);
+    return this.toBDN(0);
 };
 
 
@@ -182,6 +184,17 @@ Component.prototype.toBDN = function(indentation) {
 
 
 /**
+ * This method returns a POSIX compliant document representation of the component.  To be
+ * POSIX compliant the last line of the document must be terminated with an EOL character.
+ *
+ * @returns {String} The corresponding document representation of the component.
+ */
+Component.prototype.toDocument = function() {
+    return this.toBDN(0) + EOL;  // POSIX compliant documents must end with EOL
+};
+
+
+/**
  * This method returns an HTML document representing this component.
  *
  * @param {String} style A reference to the CSS style sheet that should be used for the look
@@ -190,7 +203,7 @@ Component.prototype.toBDN = function(indentation) {
  */
 Component.prototype.toHTML = function(style) {
     const formatter = new utilities.HTML(style, this.debug);
-    return formatter.formatComponent(this);
+    return formatter.formatComponent(this) + EOL;  // POSIX compliant documents must end with EOL
 };
 
 

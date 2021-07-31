@@ -53,7 +53,7 @@ const componentize = function(value, debug) {
             try {
                 // first try to parse it as a Bali Document Notation™ string
                 const parser = new utilities.Parser(0);  // don't log parsing exceptions here
-                component = parser.parseDocument(value);
+                component = parser.parseComponent(value);
             } catch (cause) {
                 // otherwise convert it to a text element
                 component = new elements.Text(value, undefined, debug);
@@ -236,10 +236,13 @@ exports.api = function(defaultLevel) {
     };
 
     // COMPONENT
-    const component = function(document, debug) {
+    const component = function(source, debug) {
         if (debug === undefined) debug = defaultLevel;
         const parser = new utilities.Parser(debug);
-        return parser.parseDocument(document);
+        if (source.slice(-1) === EOL) {
+            return parser.parseDocument(source);
+        }
+        return parser.parseComponent(source);
     };
 
     // CONFIGURATOR

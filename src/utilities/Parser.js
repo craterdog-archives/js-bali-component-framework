@@ -51,17 +51,30 @@ const Parser = function(debug) {
     // the debug flag is a private attribute so methods that use it are defined in the constructor
     debug = debug || 0;
 
-    this.parseDocument = function(document) {
+    this.parseComponent = function(string) {
         if (debug > 1) {
             const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/utilities/Parser', '$parse', '$document', document, [
+            validator.validateType('/bali/utilities/Parser', '$parseString', '$string', string, [
                 '/javascript/String'
             ]);
         }
-        const parser = initializeParser(document, debug);
-        const antlrTree = parser.document();
+        const parser = initializeParser(string, debug);
+        const antlrTree = parser.component();
         const component = convertParseTree(antlrTree, debug);
         return component;
+    };
+
+    this.parseDocument = function(string) {
+        if (debug > 1) {
+            const validator = new utilities.Validator(debug);
+            validator.validateType('/bali/utilities/Parser', '$parseString', '$string', string, [
+                '/javascript/String'
+            ]);
+        }
+        const parser = initializeParser(string, debug);
+        const antlrTree = parser.document();
+        const document = convertParseTree(antlrTree, debug);
+        return document;
     };
 
     return this;
@@ -490,7 +503,7 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// document: EOL* component EOL* EOF
+// document: component EOF
 ParsingVisitor.prototype.visitDocument = function(ctx) {
     ctx.component().accept(this);
 };
@@ -1139,7 +1152,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
     }
     const exception = new structures.Exception({
         $module: '/bali/utilities/Parser',
-        $procedure: '$parseDocument',
+        $procedure: '$parseString',
         $exception: '$syntaxError',
         $text: cause.toString()
     }, cause);
@@ -1186,7 +1199,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     // capture the exception
     const exception = new structures.Exception({
         $module: '/bali/utilities/Parser',
-        $procedure: '$parseDocument',
+        $procedure: '$parseString',
         $exception: '$syntaxError',
         $text: new elements.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
     });

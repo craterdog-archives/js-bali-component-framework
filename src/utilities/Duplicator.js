@@ -17,10 +17,6 @@ const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
 
 
-// This private constant sets the POSIX end of line character
-const EOL = '\n';
-
-
 // PUBLIC FUNCTIONS
 
 /**
