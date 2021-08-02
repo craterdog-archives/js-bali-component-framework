@@ -119,23 +119,6 @@ FormattingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
-// code:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     /* no statements */
-FormattingVisitor.prototype.visitCode = function(tree) {
-    this.depth++;
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        this.result += this.getNewline();
-        const statement = iterator.getNext();
-        statement.acceptVisitor(this);
-    }
-    this.depth--;
-    this.result += this.getNewline();
-};
-
-
 // angle: ANGLE
 FormattingVisitor.prototype.visitAngle = function(angle) {
     var value;
@@ -309,6 +292,23 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
     this.result += ' from ';
     const name = tree.getItem(index);
     name.acceptVisitor(this);
+};
+
+
+// code:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     /* no statements */
+FormattingVisitor.prototype.visitCode = function(tree) {
+    this.depth++;
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        this.result += this.getNewline();
+        const statement = iterator.getNext();
+        statement.acceptVisitor(this);
+    }
+    this.depth--;
+    this.result += this.getNewline();
 };
 
 

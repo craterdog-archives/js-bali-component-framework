@@ -185,25 +185,6 @@ ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
 };
 
 
-// code:
-//     statement (';' statement)*   |
-//     EOL (statement EOL)* |
-//     /* no statements */
-ParsingVisitor.prototype.visitCode = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/Code', this.debug);
-    if (ctx.statement) {
-        const code = ctx.statement();
-        this.depth++;
-        code.forEach(function(statement) {
-            statement.accept(this);
-            tree.addItem(this.result);
-        }, this);
-        this.depth--;
-    }
-    this.result = tree;
-};
-
-
 // angle: ANGLE
 ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
@@ -385,6 +366,25 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     tree.addItem(this.result);
     expressions[index].accept(this);
     tree.addItem(this.result);
+    this.result = tree;
+};
+
+
+// code:
+//     statement (';' statement)*   |
+//     EOL (statement EOL)* |
+//     /* no statements */
+ParsingVisitor.prototype.visitCode = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/Code', this.debug);
+    if (ctx.statement) {
+        const code = ctx.statement();
+        this.depth++;
+        code.forEach(function(statement) {
+            statement.accept(this);
+            tree.addItem(this.result);
+        }, this);
+        this.depth--;
+    }
     this.result = tree;
 };
 

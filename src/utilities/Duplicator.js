@@ -66,21 +66,6 @@ DuplicatingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
-// code:
-//     statement (';' statement)* |
-//     EOL (statement EOL)* |
-//     /* no statements */
-DuplicatingVisitor.prototype.visitCode = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
-    while (iterator.hasNext()) {
-        iterator.getNext().acceptVisitor(this);
-        copy.addItem(this.result);
-    }
-    this.result = copy;
-};
-
-
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
     this.visitParameters(angle.getParameters());
@@ -181,6 +166,21 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
     while (iterator.hasNext()) {
         const item = iterator.getNext();
         item.acceptVisitor(this);
+        copy.addItem(this.result);
+    }
+    this.result = copy;
+};
+
+
+// code:
+//     statement (';' statement)* |
+//     EOL (statement EOL)* |
+//     /* no statements */
+DuplicatingVisitor.prototype.visitCode = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    const iterator = tree.getIterator();
+    while (iterator.hasNext()) {
+        iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
     this.result = copy;
