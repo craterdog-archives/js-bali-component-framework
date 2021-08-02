@@ -102,14 +102,14 @@ DocumentVisitor.prototype.visitRetrieveClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#rejectClause.
-DocumentVisitor.prototype.visitRejectClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#acceptClause.
+DocumentVisitor.prototype.visitAcceptClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 
 
-// Visit a parse tree produced by DocumentParser#acceptClause.
-DocumentVisitor.prototype.visitAcceptClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#rejectClause.
+DocumentVisitor.prototype.visitRejectClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

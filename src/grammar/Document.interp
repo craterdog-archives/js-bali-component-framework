@@ -18,8 +18,8 @@ null
 'post'
 'to'
 'retrieve'
-'reject'
 'accept'
+'reject'
 'if'
 'then'
 'else'
@@ -210,8 +210,8 @@ checkoutClause
 publishClause
 postClause
 retrieveClause
-rejectClause
 acceptClause
+rejectClause
 ifClause
 selectClause
 withClause

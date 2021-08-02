@@ -371,7 +371,7 @@ var sharedContextCache = new antlr4.PredictionContextCache();
 var literalNames = [ null, "'handle'", "'with'", "'matching'", "'{'", "'}'", 
                      "':='", "'save'", "'as'", "'discard'", "'sign'", "'checkout'", 
                      "'level'", "'of'", "'from'", "'publish'", "'post'", 
-                     "'to'", "'retrieve'", "'reject'", "'accept'", "'if'", 
+                     "'to'", "'retrieve'", "'accept'", "'reject'", "'if'", 
                      "'then'", "'else'", "'select'", "'do'", "'each'", "'in'", 
                      "'while'", "'continue'", "'loop'", "'break'", "'return'", 
                      "'throw'", "'['", "']'", "'('", "')'", "'@'", "'.'", 
@@ -399,7 +399,7 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
 var ruleNames =  [ "source", "document", "statement", "comment", "mainClause", 
                    "handleClause", "block", "evaluateClause", "saveClause", 
                    "discardClause", "signClause", "checkoutClause", "publishClause", 
-                   "postClause", "retrieveClause", "rejectClause", "acceptClause", 
+                   "postClause", "retrieveClause", "acceptClause", "rejectClause", 
                    "ifClause", "selectClause", "withClause", "whileClause", 
                    "continueClause", "breakClause", "returnClause", "throwClause", 
                    "recipient", "attribute", "expression", "variable", "funcxion", 
@@ -540,8 +540,8 @@ DocumentParser.RULE_checkoutClause = 11;
 DocumentParser.RULE_publishClause = 12;
 DocumentParser.RULE_postClause = 13;
 DocumentParser.RULE_retrieveClause = 14;
-DocumentParser.RULE_rejectClause = 15;
-DocumentParser.RULE_acceptClause = 16;
+DocumentParser.RULE_acceptClause = 15;
+DocumentParser.RULE_rejectClause = 16;
 DocumentParser.RULE_ifClause = 17;
 DocumentParser.RULE_selectClause = 18;
 DocumentParser.RULE_withClause = 19;
@@ -1019,12 +1019,12 @@ MainClauseContext.prototype.retrieveClause = function() {
     return this.getTypedRuleContext(RetrieveClauseContext,0);
 };
 
-MainClauseContext.prototype.rejectClause = function() {
-    return this.getTypedRuleContext(RejectClauseContext,0);
-};
-
 MainClauseContext.prototype.acceptClause = function() {
     return this.getTypedRuleContext(AcceptClauseContext,0);
+};
+
+MainClauseContext.prototype.rejectClause = function() {
+    return this.getTypedRuleContext(RejectClauseContext,0);
 };
 
 MainClauseContext.prototype.ifClause = function() {
@@ -1169,12 +1169,12 @@ DocumentParser.prototype.mainClause = function() {
         case DocumentParser.T__18:
             this.enterOuterAlt(localctx, 9);
             this.state = 144;
-            this.rejectClause();
+            this.acceptClause();
             break;
         case DocumentParser.T__19:
             this.enterOuterAlt(localctx, 10);
             this.state = 145;
-            this.acceptClause();
+            this.rejectClause();
             break;
         case DocumentParser.T__20:
             this.enterOuterAlt(localctx, 11);
@@ -2074,76 +2074,6 @@ DocumentParser.prototype.retrieveClause = function() {
 };
 
 
-function RejectClauseContext(parser, parent, invokingState) {
-	if(parent===undefined) {
-	    parent = null;
-	}
-	if(invokingState===undefined || invokingState===null) {
-		invokingState = -1;
-	}
-	antlr4.ParserRuleContext.call(this, parent, invokingState);
-    this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_rejectClause;
-    return this;
-}
-
-RejectClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-RejectClauseContext.prototype.constructor = RejectClauseContext;
-
-RejectClauseContext.prototype.expression = function() {
-    return this.getTypedRuleContext(ExpressionContext,0);
-};
-
-RejectClauseContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterRejectClause(this);
-	}
-};
-
-RejectClauseContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitRejectClause(this);
-	}
-};
-
-RejectClauseContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitRejectClause(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
-
-
-DocumentParser.RejectClauseContext = RejectClauseContext;
-
-DocumentParser.prototype.rejectClause = function() {
-
-    var localctx = new RejectClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 30, DocumentParser.RULE_rejectClause);
-    try {
-        this.enterOuterAlt(localctx, 1);
-        this.state = 220;
-        this.match(DocumentParser.T__18);
-        this.state = 221;
-        this.expression(0);
-    } catch (re) {
-    	if(re instanceof antlr4.error.RecognitionException) {
-	        localctx.exception = re;
-	        this._errHandler.reportError(this, re);
-	        this._errHandler.recover(this, re);
-	    } else {
-	    	throw re;
-	    }
-    } finally {
-        this.exitRule();
-    }
-    return localctx;
-};
-
-
 function AcceptClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2192,7 +2122,77 @@ DocumentParser.AcceptClauseContext = AcceptClauseContext;
 DocumentParser.prototype.acceptClause = function() {
 
     var localctx = new AcceptClauseContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 32, DocumentParser.RULE_acceptClause);
+    this.enterRule(localctx, 30, DocumentParser.RULE_acceptClause);
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 220;
+        this.match(DocumentParser.T__18);
+        this.state = 221;
+        this.expression(0);
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+
+function RejectClauseContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = DocumentParser.RULE_rejectClause;
+    return this;
+}
+
+RejectClauseContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+RejectClauseContext.prototype.constructor = RejectClauseContext;
+
+RejectClauseContext.prototype.expression = function() {
+    return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+RejectClauseContext.prototype.enterRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.enterRejectClause(this);
+	}
+};
+
+RejectClauseContext.prototype.exitRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.exitRejectClause(this);
+	}
+};
+
+RejectClauseContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DocumentVisitor ) {
+        return visitor.visitRejectClause(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+
+
+DocumentParser.RejectClauseContext = RejectClauseContext;
+
+DocumentParser.prototype.rejectClause = function() {
+
+    var localctx = new RejectClauseContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 32, DocumentParser.RULE_rejectClause);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 223;

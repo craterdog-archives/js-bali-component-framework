@@ -14,8 +14,8 @@ mainClause:
     publishClause |
     postClause |
     retrieveClause |
-    rejectClause |
     acceptClause |
+    rejectClause |
     ifClause |
     selectClause |
     withClause |
@@ -53,11 +53,11 @@ postClause: 'post' expression 'to' expression;
 // retrieve $message from /acme/blogs/v3.2
 retrieveClause: 'retrieve' recipient 'from' expression;
 
-// reject message
-rejectClause: 'reject' expression;
-
 // accept message
 acceptClause: 'accept' expression;
+
+// reject message
+rejectClause: 'reject' expression;
 
 ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?;
 

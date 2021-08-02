@@ -146,21 +146,21 @@ DocumentListener.prototype.exitRetrieveClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#rejectClause.
-DocumentListener.prototype.enterRejectClause = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#rejectClause.
-DocumentListener.prototype.exitRejectClause = function(ctx) {
-};
-
-
 // Enter a parse tree produced by DocumentParser#acceptClause.
 DocumentListener.prototype.enterAcceptClause = function(ctx) {
 };
 
 // Exit a parse tree produced by DocumentParser#acceptClause.
 DocumentListener.prototype.exitAcceptClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#rejectClause.
+DocumentListener.prototype.enterRejectClause = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#rejectClause.
+DocumentListener.prototype.exitRejectClause = function(ctx) {
 };
 
 
