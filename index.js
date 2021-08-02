@@ -473,9 +473,9 @@ exports.api = function(defaultLevel) {
     };
 
     // PROCEDURE
-    const procedure = function(activity, parameters, debug) {
+    const procedure = function(code, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new structures.Procedure(activity, parameters, debug);
+        return new structures.Procedure(code, parameters, debug);
     };
 
     // QUEUE

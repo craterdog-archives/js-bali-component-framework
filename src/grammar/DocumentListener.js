@@ -533,12 +533,12 @@ DocumentListener.prototype.exitProcedure = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#activity.
-DocumentListener.prototype.enterActivity = function(ctx) {
+// Enter a parse tree produced by DocumentParser#code.
+DocumentListener.prototype.enterCode = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#activity.
-DocumentListener.prototype.exitActivity = function(ctx) {
+// Exit a parse tree produced by DocumentParser#code.
+DocumentListener.prototype.exitCode = function(ctx) {
 };
 
 

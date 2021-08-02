@@ -465,11 +465,11 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' activity '}'
+// procedure: '{' code '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '<pre class="element procedure">';
     this.result += '{';
-    this.result += procedure.getActivity().toString();
+    this.result += procedure.getCode().toString();
     this.result += '}';
     this.result += formatParameters(procedure.getParameters());
     this.result += '</pre>';

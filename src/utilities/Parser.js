@@ -185,16 +185,16 @@ ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
 };
 
 
-// activity:
+// code:
 //     statement (';' statement)*   |
 //     EOL (statement EOL)* |
 //     /* no statements */
-ParsingVisitor.prototype.visitActivity = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/Activity', this.debug);
+ParsingVisitor.prototype.visitCode = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/Code', this.debug);
     if (ctx.statement) {
-        const activity = ctx.statement();
+        const code = ctx.statement();
         this.depth++;
-        activity.forEach(function(statement) {
+        code.forEach(function(statement) {
             statement.accept(this);
             tree.addItem(this.result);
         }, this);
@@ -335,12 +335,12 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
-// block: '{' activity '}'
+// block: '{' code '}'
 ParsingVisitor.prototype.visitBlock = function(ctx) {
-    ctx.activity().accept(this);
-    const activity = this.result;
+    ctx.code().accept(this);
+    const code = this.result;
     const tree = new collections.Tree('/bali/structures/Block', this.debug);
-    tree.addItem(activity);
+    tree.addItem(code);
     this.result = tree;
 };
 
@@ -880,12 +880,12 @@ ParsingVisitor.prototype.visitProbability = function(ctx) {
 };
 
 
-// procedure: '{' activity '}'
+// procedure: '{' code '}'
 ParsingVisitor.prototype.visitProcedure = function(ctx) {
     const parameters = this.getParameters();
-    ctx.activity().accept(this);
-    const activity = this.result;
-    const procedure = new structures.Procedure(activity, parameters, this.debug);
+    ctx.code().accept(this);
+    const code = this.result;
+    const procedure = new structures.Procedure(code, parameters, this.debug);
     this.result = procedure;
 };
 

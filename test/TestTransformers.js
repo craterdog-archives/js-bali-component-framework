@@ -65,7 +65,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
         });
 
-        it('should parse and format the same activity', async function() {
+        it('should parse and format the same code', async function() {
             const file = 'test/source/statements.bali';
             console.error('        ' + file);
             const document = await pfs.readFile(file, 'utf8');

@@ -27,9 +27,9 @@ catalog:
 
 association: element ':' component;
 
-procedure: '{' activity '}';
+procedure: '{' code '}';
 
-activity:
+code:
     statement (';' statement)* |
     EOL (statement EOL)* |
     /* no statements */

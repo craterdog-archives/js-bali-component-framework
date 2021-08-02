@@ -23,12 +23,12 @@ const abstractions = require('../abstractions');
  * This function creates a new procedure with optional parameters that are
  * used to parameterize its behavior.
  *
- * @param {Tree} activity The activity that is defined by the procedure.
+ * @param {Tree} code The code that is defined by the procedure.
  * @param {Object} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Procedure} A new procedure.
  */
-const Procedure = function(activity, parameters, debug) {
+const Procedure = function(code, parameters, debug) {
     abstractions.Structure.call(
         this,
         ['/bali/structures/Procedure'],
@@ -38,12 +38,12 @@ const Procedure = function(activity, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Procedure', '$Procedure', '$activity', activity, [
-            '/bali/structures/Activity'
+        validator.validateType('/bali/structures/Procedure', '$Procedure', '$code', code, [
+            '/bali/structures/Code'
         ]);
     }
 
-    this.getActivity = function() { return activity; };
+    this.getCode = function() { return code; };
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
@@ -52,7 +52,7 @@ const Procedure = function(activity, parameters, debug) {
                 '/bali/abstractions/Element'
             ]);
         }
-        if (key.getValue() === '$activity') return this.getActivity();
+        if (key.getValue() === '$code') return this.getCode();
     };
 
     this.setAttribute = function(key, value) {
@@ -60,7 +60,7 @@ const Procedure = function(activity, parameters, debug) {
             $module: '/bali/structures/Procedure',
             $procedure: '$setAttribute',
             $exception: '$readOnly',
-            $text: 'The activity in a procedure cannot be updated.'
+            $text: 'The code in a procedure cannot be updated.'
         });
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
@@ -81,7 +81,7 @@ exports.Procedure = Procedure;
  * @returns {Boolean} Whether or not this procedure is meaningful.
  */
 Procedure.prototype.toBoolean = function() {
-    return this.getActivity().getSize() > 0;
+    return this.getCode().getSize() > 0;
 };
 
 
@@ -92,7 +92,7 @@ Procedure.prototype.toBoolean = function() {
  * @returns {String} The literal string value for this procedure.
  */
 Procedure.prototype.toLiteral = function() {
-    const copy = new this.constructor(this.getActivity(), undefined, this.debug);
+    const copy = new this.constructor(this.getCode(), undefined, this.debug);
     return copy.toString();
 };
 

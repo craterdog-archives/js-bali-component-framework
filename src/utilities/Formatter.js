@@ -119,11 +119,11 @@ FormattingVisitor.prototype.visitAcceptClause = function(tree) {
 };
 
 
-// activity:
+// code:
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
 //     /* no statements */
-FormattingVisitor.prototype.visitActivity = function(tree) {
+FormattingVisitor.prototype.visitCode = function(tree) {
     this.depth++;
     const iterator = tree.getIterator();
     while (iterator.hasNext()) {
@@ -279,11 +279,11 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 };
 
 
-// block: '{' activity '}'
+// block: '{' code '}'
 FormattingVisitor.prototype.visitBlock = function(tree) {
     this.result += '{';
-    const activity = tree.getItem(1);
-    activity.acceptVisitor(this);
+    const code = tree.getItem(1);
+    code.acceptVisitor(this);
     this.result += '}';
 };
 
@@ -789,11 +789,11 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 };
 
 
-// procedure: '{' activity '}'
+// procedure: '{' code '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '{';
-    const activity = procedure.getActivity();
-    activity.acceptVisitor(this);
+    const code = procedure.getCode();
+    code.acceptVisitor(this);
     this.result += '}';
     const parameters = procedure.getParameters();
     this.visitParameters(parameters);  // format any parameterization
