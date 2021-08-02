@@ -7,10 +7,10 @@ comment: NOTE | COMMENT;
 
 mainClause:
     evaluateClause |
-    checkoutClause |
     saveClause |
     discardClause |
-    commitClause |
+    signClause |
+    checkoutClause |
     publishClause |
     postClause |
     retrieveClause |
@@ -32,17 +32,17 @@ block: '{' code '}';
 
 evaluateClause: (recipient ':=')? expression;
 
-// checkout level 2 of $document from /acme/reports/Q3/v1.3.6
-checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression;
-
 // save document as $citation
 saveClause: 'save' expression ('as' recipient)?;
 
 // discard document
 discardClause: 'discard' expression;
 
-// commit document to /acme/reports/Q3/v1.4
-commitClause: 'commit' expression 'to' expression;
+// sign contract as /acme/reports/Q3/v1.4
+signClause: 'sign' expression 'as' expression;
+
+// checkout level 2 of $contract from /acme/reports/Q3/v1.3.6
+checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression;
 
 // publish event
 publishClause: 'publish' expression;

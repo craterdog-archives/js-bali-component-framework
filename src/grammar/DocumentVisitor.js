@@ -60,12 +60,6 @@ DocumentVisitor.prototype.visitEvaluateClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#checkoutClause.
-DocumentVisitor.prototype.visitCheckoutClause = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
 // Visit a parse tree produced by DocumentParser#saveClause.
 DocumentVisitor.prototype.visitSaveClause = function(ctx) {
   return this.visitChildren(ctx);
@@ -78,8 +72,14 @@ DocumentVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#commitClause.
-DocumentVisitor.prototype.visitCommitClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#signClause.
+DocumentVisitor.prototype.visitSignClause = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#checkoutClause.
+DocumentVisitor.prototype.visitCheckoutClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

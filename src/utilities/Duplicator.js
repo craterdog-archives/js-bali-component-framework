@@ -211,17 +211,6 @@ DuplicatingVisitor.prototype.visitComment = function(tree) {
 };
 
 
-// commitClause: 'commit' expression 'to' expression
-DuplicatingVisitor.prototype.visitCommitClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
-    copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
-    copy.addItem(this.result);
-    this.result = copy;
-};
-
-
 // comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
     const copy = new tree.constructor(tree.getType(), this.debug);
@@ -629,6 +618,17 @@ DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
+    this.result = copy;
+};
+
+
+// signClause: 'sign' expression 'as' expression
+DuplicatingVisitor.prototype.visitSignClause = function(tree) {
+    const copy = new tree.constructor(tree.getType(), this.debug);
+    tree.getItem(1).acceptVisitor(this);
+    copy.addItem(this.result);
+    tree.getItem(2).acceptVisitor(this);
+    copy.addItem(this.result);
     this.result = copy;
 };
 

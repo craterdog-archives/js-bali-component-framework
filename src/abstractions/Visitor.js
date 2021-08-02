@@ -163,15 +163,6 @@ Visitor.prototype.visitComment = function(tree) {
 }
 
 
-// commitClause: 'commit' expression 'to' expression
-Visitor.prototype.visitCommitClause = function(tree) {
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
-};
-
-
 // comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 Visitor.prototype.visitComparisonExpression = function(tree) {
     var operand = tree.getItem(1);
@@ -557,6 +548,15 @@ Visitor.prototype.visitSelectClause = function(tree) {
             block.acceptVisitor(this);
         }
     }
+};
+
+
+// signClause: 'sign' expression 'as' expression
+Visitor.prototype.visitSignClause = function(tree) {
+    const component = tree.getItem(1);
+    component.acceptVisitor(this);
+    const reference = tree.getItem(2);
+    reference.acceptVisitor(this);
 };
 
 

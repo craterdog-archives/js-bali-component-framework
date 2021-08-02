@@ -346,17 +346,6 @@ FormattingVisitor.prototype.visitComment = function(tree) {
 }
 
 
-// commitClause: 'commit' expression 'to' expression
-FormattingVisitor.prototype.visitCommitClause = function(tree) {
-    this.result += 'commit ';
-    const component = tree.getItem(1);
-    component.acceptVisitor(this);
-    this.result += ' to ';
-    const reference = tree.getItem(2);
-    reference.acceptVisitor(this);
-};
-
-
 // comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
     this.inline++;
@@ -904,6 +893,17 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
             block.acceptVisitor(this);
         }
     }
+};
+
+
+// signClause: 'sign' expression 'as' expression
+FormattingVisitor.prototype.visitSignClause = function(tree) {
+    this.result += 'sign ';
+    const component = tree.getItem(1);
+    component.acceptVisitor(this);
+    this.result += ' as ';
+    const reference = tree.getItem(2);
+    reference.acceptVisitor(this);
 };
 
 

@@ -83,15 +83,6 @@ DocumentListener.prototype.exitEvaluateClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#checkoutClause.
-DocumentListener.prototype.enterCheckoutClause = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#checkoutClause.
-DocumentListener.prototype.exitCheckoutClause = function(ctx) {
-};
-
-
 // Enter a parse tree produced by DocumentParser#saveClause.
 DocumentListener.prototype.enterSaveClause = function(ctx) {
 };
@@ -110,12 +101,21 @@ DocumentListener.prototype.exitDiscardClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#commitClause.
-DocumentListener.prototype.enterCommitClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#signClause.
+DocumentListener.prototype.enterSignClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#commitClause.
-DocumentListener.prototype.exitCommitClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#signClause.
+DocumentListener.prototype.exitSignClause = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#checkoutClause.
+DocumentListener.prototype.enterCheckoutClause = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#checkoutClause.
+DocumentListener.prototype.exitCheckoutClause = function(ctx) {
 };
 
 

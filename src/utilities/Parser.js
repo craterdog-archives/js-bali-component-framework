@@ -398,18 +398,6 @@ ParsingVisitor.prototype.visitComment = function(ctx) {
 };
 
 
-// commitClause: 'commit' expression 'to' expression
-ParsingVisitor.prototype.visitCommitClause = function(ctx) {
-    const tree = new collections.Tree('/bali/structures/CommitClause', this.debug);
-    const expressions = ctx.expression();
-    expressions[0].accept(this);
-    tree.addItem(this.result);
-    expressions[1].accept(this);
-    tree.addItem(this.result);
-    this.result = tree;
-};
-
-
 // comparisonExpression: expression op=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     const tree = new collections.Tree('/bali/structures/ComparisonExpression', this.debug);
@@ -1005,6 +993,18 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
         blocks[blocks.length - 1].accept(this);
         tree.addItem(this.result);
     }
+    this.result = tree;
+};
+
+
+// signClause: 'sign' expression 'as' expression
+ParsingVisitor.prototype.visitSignClause = function(ctx) {
+    const tree = new collections.Tree('/bali/structures/SignClause', this.debug);
+    const expressions = ctx.expression();
+    expressions[0].accept(this);
+    tree.addItem(this.result);
+    expressions[1].accept(this);
+    tree.addItem(this.result);
     this.result = tree;
 };
 
