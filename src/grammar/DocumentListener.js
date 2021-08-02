@@ -11,6 +11,15 @@ function DocumentListener() {
 DocumentListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 DocumentListener.prototype.constructor = DocumentListener;
 
+// Enter a parse tree produced by DocumentParser#source.
+DocumentListener.prototype.enterSource = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#source.
+DocumentListener.prototype.exitSource = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#document.
 DocumentListener.prototype.enterDocument = function(ctx) {
 };

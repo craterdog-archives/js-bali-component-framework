@@ -12,6 +12,12 @@ function DocumentVisitor() {
 DocumentVisitor.prototype = Object.create(antlr4.tree.ParseTreeVisitor.prototype);
 DocumentVisitor.prototype.constructor = DocumentVisitor;
 
+// Visit a parse tree produced by DocumentParser#source.
+DocumentVisitor.prototype.visitSource = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#document.
 DocumentVisitor.prototype.visitDocument = function(ctx) {
   return this.visitChildren(ctx);

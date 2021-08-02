@@ -51,9 +51,9 @@ const componentize = function(value, debug) {
             break;
         case 'string':
             try {
-                // first try to parse it as a Bali Document Notation™ string
+                // first try to parse it as a Bali Document Notation™ source string
                 const parser = new utilities.Parser(0);  // don't log parsing exceptions here
-                component = parser.parseComponent(value);
+                component = parser.parseSource(value);
             } catch (cause) {
                 // otherwise convert it to a text element
                 component = new elements.Text(value, undefined, debug);
@@ -236,13 +236,13 @@ exports.api = function(defaultLevel) {
     };
 
     // COMPONENT
-    const component = function(source, debug) {
+    const component = function(bdn, debug) {
         if (debug === undefined) debug = defaultLevel;
         const parser = new utilities.Parser(debug);
-        if (source.slice(-1) === EOL) {
-            return parser.parseDocument(source);
+        if (bdn.slice(-1) === EOL) {
+            return parser.parseDocument(bdn);
         }
-        return parser.parseComponent(source);
+        return parser.parseSource(bdn);
     };
 
     // CONFIGURATOR

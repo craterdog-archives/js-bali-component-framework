@@ -51,15 +51,15 @@ const Parser = function(debug) {
     // the debug flag is a private attribute so methods that use it are defined in the constructor
     debug = debug || 0;
 
-    this.parseComponent = function(string) {
+    this.parseSource = function(string) {
         if (debug > 1) {
             const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/utilities/Parser', '$parseString', '$string', string, [
+            validator.validateType('/bali/utilities/Parser', '$parseBDN', '$string', string, [
                 '/javascript/String'
             ]);
         }
         const parser = initializeParser(string, debug);
-        const antlrTree = parser.component();
+        const antlrTree = parser.source();
         const component = convertParseTree(antlrTree, debug);
         return component;
     };
@@ -67,7 +67,7 @@ const Parser = function(debug) {
     this.parseDocument = function(string) {
         if (debug > 1) {
             const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/utilities/Parser', '$parseString', '$string', string, [
+            validator.validateType('/bali/utilities/Parser', '$parseBDN', '$string', string, [
                 '/javascript/String'
             ]);
         }
@@ -1152,7 +1152,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
     }
     const exception = new structures.Exception({
         $module: '/bali/utilities/Parser',
-        $procedure: '$parseString',
+        $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: cause.toString()
     }, cause);
@@ -1199,7 +1199,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     // capture the exception
     const exception = new structures.Exception({
         $module: '/bali/utilities/Parser',
-        $procedure: '$parseString',
+        $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: new elements.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
     });
