@@ -83,7 +83,7 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     if (typeof moduleName !== 'string' || typeof procedureName !== 'string' ||
         typeof argumentName !== 'string' || !Array.isArray(allowedTypes)) {
         const exception = Exception({
-            $module: '/bali/utilities/Validation',
+            $module: '/bali/utilities/Validator',
             $procedure: '$validate',
             $exception: '$invalidParameter',
             $moduleName: moduleName,
