@@ -35,6 +35,7 @@ const Probability = function(value, parameters, debug) {
         ['/bali/elements/Probability'],
         [
             '/bali/interfaces/Logical',
+            '/bali/interfaces/Discrete',
             '/bali/interfaces/Numerical'
         ],
         parameters,
@@ -85,6 +86,16 @@ exports.Probability = Probability;
  */
 Probability.prototype.toBoolean = function() {
     return this.getValue() >= 0.5;
+};
+
+
+/**
+ * This method returns the probability as an integer equal to zero or one.
+ *
+ * @returns {Number} The probability as an integer equal to zero or one.
+ */
+Probability.prototype.toInteger = function() {
+    return Math.round(this.getValue());
 };
 
 
