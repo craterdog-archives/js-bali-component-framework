@@ -250,6 +250,19 @@ Exception.prototype.getHash = function() {
 
 
 /**
+ * This method returns a duplicate of this exception.  A deep copy is made of all mutable
+ * (non-elemental) attributes.
+ *
+ * @returns {Exception} A duplicate exception.
+ */
+Exception.prototype.duplicate = function() {
+    const attributes = this.getAttributes().duplicate();
+    const copy = new Exception(attributes, this.cause);
+    return copy;
+};
+
+
+/**
  * This abstract method accepts a visitor as part of the visitor pattern. It must be
  * implemented by a subclass.
  *
