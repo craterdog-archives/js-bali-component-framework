@@ -51,16 +51,13 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         ]);
     }
 
-    this.getType = function() {
-        return ancestry[0];
-    };
 
-    this.getAncestry = function() {
-        return ancestry;
-    };
+    // Reflective Interface
 
-    this.getInterfaces = function() {
-        return interfaces;
+    this.isComponent = true;
+
+    this.isParameterized = function() {
+        return !!this.getParameters();
     };
 
     this.getParameter = function(key) {
@@ -80,18 +77,46 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         if (object) parameters = this.componentize(object);
     };
 
-    // extract the actual type
-    ancestry = ancestry.concat('/bali/abstractions/Component');
-    this.isComponent = true;
-
-    // add in the component interfaces
-    interfaces = interfaces.concat(
-        '/bali/interfaces/Comparable',
-        '/bali/interfaces/Exportable'
-    );
-
     // parameterize the component as needed
     this.setParameters(parameters);
+
+    // extract the actual type
+    ancestry = ancestry.concat('/bali/abstractions/Component');
+
+    this.isType = function(type) {
+        var foundIt = false;
+        ancestry.forEach(function(ancestor) {
+            if (ancestor === type) foundIt = true;
+        }, this);
+        return foundIt;
+    };
+
+    this.getType = function() {
+        return ancestry[0];
+    };
+
+    this.getAncestry = function() {
+        return ancestry;
+    };
+
+    // add in the component interfaces
+    interfaces = interfaces.concat([
+        '/bali/interfaces/Reflective',
+        '/bali/interfaces/Exportable',
+        '/bali/interfaces/Comparable'
+    ]);
+
+    this.supportsInterface = function(iface) {
+        var foundIt = false;
+        interfaces.forEach(function(candidate) {
+            if (candidate === iface) foundIt = true;
+        }, this);
+        return foundIt;
+    };
+
+    this.getInterfaces = function() {
+        return interfaces;
+    };
 
     return this;
 };
@@ -99,76 +124,7 @@ Component.prototype.constructor = Component;
 exports.Component = Component;
 
 
-// PUBLIC METHODS
-
-/**
- * This method returns whether or not this component has the specified type in its ancestor chain.
- *
- * @param {String} type The name of the type in question.
- * @returns {Boolean} Whether or not this component has the specified type.
- */
-Component.prototype.isType = function(type) {
-    var foundIt = false;
-    this.getAncestry().forEach(function(ancestor) {
-        if (ancestor === type) foundIt = true;
-    }, this);
-    return foundIt;
-};
-
-
-/**
- * This method returns whether or not this component supports the specified interface.
- *
- * @param {String} iface The name of the interface in question.
- * @returns {Boolean} Whether or not this component supports the specified interface.
- */
-Component.prototype.supportsInterface = function(iface) {
-    var foundIt = false;
-    this.getInterfaces().forEach(function(candidate) {
-        if (candidate === iface) foundIt = true;
-    }, this);
-    return foundIt;
-};
-
-
-/**
- * This method returns whether or not this component is parameterized.
- *
- * @returns {Boolean} Whether or not this component is parameterized.
- */
-Component.prototype.isParameterized = function() {
-    return !!this.getParameters();
-};
-
-
-/**
- * This abstract method returns a boolean value for this component. It allows each component to be
- * used as a boolean in a condition that determines whether of not the component has a meaningful
- * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
- *
- * @returns {Boolean} Whether or not this component has a meaningful value.
- */
-Component.prototype.toBoolean = function() {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Component',
-        $procedure: '$toBoolean',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
-};
-
-
-/**
- * This method returns a string representation of the component.
- *
- * @returns {String} The corresponding string representation.
- */
-Component.prototype.toString = function() {
-    return this.toBDN(0);
-};
-
+// Exportable Interface
 
 /**
  * This method returns a canonical Bali Document Notation™ representation of this component.
@@ -206,6 +162,8 @@ Component.prototype.toHTML = function(style) {
     return formatter.formatComponent(this) + EOL;  // POSIX compliant documents must end with EOL
 };
 
+
+// Comparable Interface
 
 /**
  * This method determines whether or not this component is equal to another component.
@@ -317,6 +275,37 @@ Component.prototype.isMatchedBy = function(pattern) {
     });
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
+};
+
+
+// Standard Methods
+
+/**
+ * This abstract method returns a boolean value for this component. It allows each component to be
+ * used as a boolean in a condition that determines whether of not the component has a meaningful
+ * value. Each component decides what is meaningful.  This method must be implemented by a subclass.
+ *
+ * @returns {Boolean} Whether or not this component has a meaningful value.
+ */
+Component.prototype.toBoolean = function() {
+    const exception = new Exception({
+        $module: '/bali/abstractions/Component',
+        $procedure: '$toBoolean',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
+
+/**
+ * This method returns a string representation of the component.
+ *
+ * @returns {String} The corresponding string representation.
+ */
+Component.prototype.toString = function() {
+    return this.toBDN(0);
 };
 
 

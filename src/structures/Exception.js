@@ -39,38 +39,14 @@ const Exception = function(attributes, cause) {
     const type = ancestry[0];  // first type in the ancestry tree
 
     const interfaces = [
-        '/bali/interfaces/Comparable',
+        '/bali/interfaces/Reflective',
         '/bali/interfaces/Exportable',
+        '/bali/interfaces/Comparable',
         '/bali/interfaces/Composite'
     ];
 
+    // set the attributes
     if (attributes === null || typeof attributes !== 'object') attributes = {};
-
-    this.isComponent = true;
-
-    this.getType = function() {
-        return type;
-    };
-
-    this.getAncestry = function() {
-        return ancestry;
-    };
-
-    this.getInterfaces = function() {
-        return interfaces;
-    };
-
-    this.getAttributes = function() {
-        return attributes;
-    };
-
-    this.getAttribute = function(key) {
-        return attributes.getAttribute(key);
-    };
-
-    this.setAttribute = function(key, value) {
-        return attributes.setAttribute(key, value);
-    };
 
     // set the error message and cause
     this.message = attributes['$text'] || 'An undefined exception occurred.';
@@ -86,6 +62,58 @@ const Exception = function(attributes, cause) {
         // a stack trace is not supported on this platform
     }
 
+
+    // Reflective Interface
+
+    this.isComponent = true;
+
+    this.isParameterized = function() {
+        return false;
+    };
+
+    this.isType = function(candidate) {
+        var foundIt = false;
+        ancestry.forEach(function(ancestor) {
+            if (ancestor === candidate) foundIt = true;
+        }, this);
+        return foundIt;
+    };
+
+    this.getType = function() {
+        return type;
+    };
+
+    this.getAncestry = function() {
+        return ancestry;
+    };
+
+    this.supportsInterface = function(iface) {
+        var foundIt = false;
+        interfaces.forEach(function(candidate) {
+            if (candidate === iface) foundIt = true;
+        }, this);
+        return foundIt;
+    };
+
+    this.getInterfaces = function() {
+        return interfaces;
+    };
+
+
+    // Composite Interface
+
+    this.getAttributes = function() {
+        return attributes;
+    };
+
+    this.getAttribute = function(key) {
+        return attributes.getAttribute(key);
+    };
+
+    this.setAttribute = function(key, value) {
+        return attributes.setAttribute(key, value);
+    };
+
     return this;
 };
 Exception.prototype = Object.create(Error.prototype);
@@ -94,73 +122,7 @@ Exception.prototype.name = 'Exception';
 exports.Exception = Exception;
 
 
-// PUBLIC METHODS
-
-/**
- * This method returns whether or not this exception has the specified type in its ancestor chain.
- *
- * @param {String} type The name of the type in question.
- * @returns {Boolean} Whether or not this exception has the specified type.
- */
-Exception.prototype.isType = function(type) {
-    var foundIt = false;
-    this.getAncestry().forEach(function(ancestor) {
-        if (ancestor === type) foundIt = true;
-    }, this);
-    return foundIt;
-};
-
-
-/**
- * This method returns whether or not this exception supports the specified interface.
- *
- * @param {String} iface The name of the interface in question.
- * @returns {Boolean} Whether or not this exception supports the specified interface.
- */
-Exception.prototype.supportsInterface = function(iface) {
-    var foundIt = false;
-    this.getInterfaces().forEach(function(candidate) {
-        if (candidate === iface) foundIt = true;
-    }, this);
-    return foundIt;
-};
-
-
-/**
- * This method returns whether or not this exception is parameterized.
- *
- * @returns {Boolean} Whether or not this exception is parameterized.
- */
-Exception.prototype.isParameterized = function() {
-    return false;
-};
-
-
-/**
- * This method determines whether or not this structure is meaningful.
- *
- * @returns {Boolean} Whether or not this exception is meaningful.
- */
-Exception.prototype.toBoolean = function() {
-    return true;
-};
-
-
-/**
- * This method returns a string representation of the exception.
- *
- * @returns {String} The corresponding string representation.
- */
-Exception.prototype.toString = function() {
-    var string = 'Exception: The following Bali Nebula™ exception was thrown:\n';
-    var exception = this;
-    while (exception) {
-        string += (exception.isComponent ? exception.getAttributes() : exception.stack) + '\n';
-        exception = exception.cause;
-    }
-    return string;
-};
-
+// Exportable Interface
 
 /**
  * This method returns a canonical Bali Document Notation™ representation of this exception.
@@ -185,6 +147,8 @@ Exception.prototype.toHTML = function(style) {
     return this.getAttributes().toHTML(style);
 };
 
+
+// Comparable Interface
 
 /**
  * This method determines whether or not this exception is equal to another exception.
@@ -228,6 +192,34 @@ Exception.prototype.comparedTo = function(that) {
  */
 Exception.prototype.isMatchedBy = function(pattern) {
     return this.getAttributes().isMatchedBy(pattern);
+};
+
+
+// Standard Methods
+
+/**
+ * This method determines whether or not this structure is meaningful.
+ *
+ * @returns {Boolean} Whether or not this exception is meaningful.
+ */
+Exception.prototype.toBoolean = function() {
+    return true;
+};
+
+
+/**
+ * This method returns a string representation of the exception.
+ *
+ * @returns {String} The corresponding string representation.
+ */
+Exception.prototype.toString = function() {
+    var string = 'Exception: The following Bali Nebula™ exception was thrown:\n';
+    var exception = this;
+    while (exception) {
+        string += (exception.isComponent ? exception.getAttributes() : exception.stack) + '\n';
+        exception = exception.cause;
+    }
+    return string;
 };
 
 
