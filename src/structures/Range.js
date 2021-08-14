@@ -173,8 +173,8 @@ const RangeIterator = function(range, parameters, debug) {
 
     // the first index in the range, size of the range, and the current slot pointer
     // are private attributes so methods that use them are defined in the constructor
-    const first = range.getFirst().toNumber();
-    const last = range.getLast().toNumber();
+    const first = range.getFirst().toInteger();
+    const last = range.getLast().toInteger();
     const size = last - first + 1;  // ranges are static so we can cache the size
     var slot = 0;  // the slot before the first integer
 

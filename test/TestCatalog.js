@@ -289,9 +289,9 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
                 key = keyIterator.getNext();
                 association = associationIterator.getNext();
                 value = association.getValue();
-                expect(key.toNumber()).to.equal(index);
+                expect(key.toReal()).to.equal(index);
                 expect(value.toString()).to.equal(array[index - 1]);
-                expect(association.getKey().toNumber()).to.equal(index);
+                expect(association.getKey().toReal()).to.equal(index);
                 expect(association.getValue().toString()).to.equal(array[index - 1]);
             }
             catalog.removeAttribute(2);

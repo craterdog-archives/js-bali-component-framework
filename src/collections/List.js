@@ -183,13 +183,13 @@ const List = function(parameters, debug) {
         if (first === undefined) {
             first = 1;  // first character
         } else {
-            first = first.toNumber();
+            first = first.toInteger();
         }
         var last = range.getLast();
         if (last === undefined) {
             last = -1;  // last character
         } else {
-            last = last.toNumber();
+            last = last.toInteger();
         }
         first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
         last = this.normalizedIndex(last) - 1;  // zero-based indexing for JS
@@ -227,7 +227,7 @@ const List = function(parameters, debug) {
                 '/bali/elements/Number'
             ]);
         }
-        index = index.toNumber();
+        index = index.toInteger();
         return this.getItem(index);
     };
 
@@ -241,7 +241,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = index.toNumber();
+        index = index.toInteger();
         return this.setItem(index, value);
     };
 

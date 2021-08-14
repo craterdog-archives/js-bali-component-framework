@@ -36,7 +36,7 @@ const Probability = function(value, parameters, debug) {
         [
             '/bali/interfaces/Logical',
             '/bali/interfaces/Discrete',
-            '/bali/interfaces/Numerical'
+            '/bali/interfaces/Continuous'
         ],
         parameters,
         debug
@@ -100,11 +100,11 @@ Probability.prototype.toInteger = function() {
 
 
 /**
- * This method returns a numeric representation of the probability element.
+ * This method returns a real number representation of the probability element.
  *
- * @returns {number} The numeric representation of the probability element.
+ * @returns {number} The real number representation of the probability element.
  */
-Probability.prototype.toNumber = function() {
+Probability.prototype.toReal = function() {
     return this.getValue();
 };
 

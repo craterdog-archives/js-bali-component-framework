@@ -28,29 +28,29 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         it('should construct angles that equal zero', function() {
             expect(bali.angle().toBoolean()).to.equal(false);
             expect(bali.angle().toString()).to.equal('~0');
-            expect(bali.angle().toNumber()).to.equal(0);
+            expect(bali.angle().toReal()).to.equal(0);
             expect(bali.angle(0).toBoolean()).to.equal(false);
             expect(bali.angle(0).toString()).to.equal('~0');
-            expect(bali.angle(0).toNumber()).to.equal(0);
+            expect(bali.angle(0).toReal()).to.equal(0);
             expect(bali.angle(2 * Math.PI).toBoolean()).to.equal(false);
             expect(bali.angle(2 * Math.PI).toString()).to.equal('~0');
-            expect(bali.angle(2 * Math.PI).toNumber()).to.equal(0);
+            expect(bali.angle(2 * Math.PI).toReal()).to.equal(0);
         });
 
         it('should construct angles that equal 45 degrees', function() {
             expect(bali.angle(45, bali.angle.DEGREES).toBoolean()).to.equal(true);
             expect(bali.angle(45, bali.angle.DEGREES).toString()).to.equal('~45($units: $degrees)');
-            expect(bali.angle(45, bali.angle.DEGREES).toNumber()).to.equal(Math.PI/4);
-            expect(bali.angle(Math.PI/4).toNumber()).to.equal(Math.PI/4);
+            expect(bali.angle(45, bali.angle.DEGREES).toReal()).to.equal(Math.PI/4);
+            expect(bali.angle(Math.PI/4).toReal()).to.equal(Math.PI/4);
             expect(bali.angle(Math.PI/4).toString()).to.equal('~0.7853981633974483');
             expect(bali.angle(Math.PI/4, bali.angle.RADIANS).toString()).to.equal('~0.7853981633974483($units: $radians)');
         });
 
         it('should construct angles that equal π', function() {
-            expect(bali.angle.PI.toNumber()).to.equal(Math.PI);
-            expect(bali.angle(-Math.PI).toNumber()).to.equal(Math.PI);
-            expect(bali.angle(180, bali.angle.DEGREES).toNumber()).to.equal(Math.PI);
-            expect(bali.angle(-180, bali.angle.DEGREES).toNumber()).to.equal(Math.PI);
+            expect(bali.angle.PI.toReal()).to.equal(Math.PI);
+            expect(bali.angle(-Math.PI).toReal()).to.equal(Math.PI);
+            expect(bali.angle(180, bali.angle.DEGREES).toReal()).to.equal(Math.PI);
+            expect(bali.angle(-180, bali.angle.DEGREES).toReal()).to.equal(Math.PI);
             expect(bali.angle(-180, bali.angle.DEGREES).toString()).to.equal('~180($units: $degrees)');
             expect(bali.angle.PI.isEqualTo(bali.angle(180, bali.angle.DEGREES))).to.equal(true);
         });
@@ -87,7 +87,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
             for (var i = 0; i < tests; i++) {
                 const angle = testValues[i];
                 expect(angle.toString()).to.equal(stringValues[i]);
-                expect(angle.toNumber()).to.equal(numericValues[i]);
+                expect(angle.toReal()).to.equal(numericValues[i]);
             }
         });
 

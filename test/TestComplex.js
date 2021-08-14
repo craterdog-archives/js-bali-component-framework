@@ -31,33 +31,33 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.number.ZERO.toBoolean()).to.equal(false);
             expect(bali.number.ZERO.toString()).to.equal('0');
             expect(bali.number.ZERO.toInteger()).to.equal(0);
-            expect(bali.number.ZERO.toNumber()).to.equal(0);
+            expect(bali.number.ZERO.toReal()).to.equal(0);
             expect(bali.number().toBoolean()).to.equal(false);
             expect(bali.number().toString()).to.equal('0');
             expect(bali.number().toInteger()).to.equal(0);
-            expect(bali.number().toNumber()).to.equal(0);
+            expect(bali.number().toReal()).to.equal(0);
             expect(bali.number(0).toBoolean()).to.equal(false);
             expect(bali.number(0).toString()).to.equal('0');
             expect(bali.number(0).toInteger()).to.equal(0);
-            expect(bali.number(0).toNumber()).to.equal(0);
+            expect(bali.number(0).toReal()).to.equal(0);
         });
 
         it('should construct real numbers', function() {
             expect(bali.number(42).toBoolean()).to.equal(true);
             expect(bali.number(42).toString()).to.equal('42');
             expect(bali.number(42).toInteger()).to.equal(42);
-            expect(bali.number(42).toNumber()).to.equal(42);
+            expect(bali.number(42).toReal()).to.equal(42);
             expect(bali.number(-1.234).toInteger()).to.equal(-1);
-            expect(bali.number(-1.234).toNumber()).to.equal(-1.234);
+            expect(bali.number(-1.234).toReal()).to.equal(-1.234);
             expect(bali.number(1.234E-5).toInteger()).to.equal(0);
-            expect(bali.number(1.234E-5).toNumber()).to.equal(1.234E-5);
+            expect(bali.number(1.234E-5).toReal()).to.equal(1.234E-5);
         });
 
         it('should construct imaginary numbers', function() {
             expect(bali.number(0, 42).toBoolean()).to.equal(true);
             expect(bali.number(0, 42).toString()).to.equal('42i');
             expect(bali.number(0, 42).toInteger()).to.equal(0);
-            expect(bali.number(0, 42).toNumber()).to.equal(0);
+            expect(bali.number(0, 42).toReal()).to.equal(0);
             expect(bali.number(0, 42).getImaginary()).to.equal(42);
             expect(bali.number(0, -1.234).getImaginary()).to.equal(-1.234);
             expect(bali.number(0, 1.234E-5).getImaginary()).to.equal(1.234E-5);
@@ -67,7 +67,7 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.number(3, 4).toBoolean()).to.equal(true);
             expect(bali.number(3, 4).toString()).to.equal('(3, 4i)');
             expect(bali.number(3, 4).toInteger()).to.equal(3);
-            expect(bali.number(3, 4).toNumber()).to.equal(3);
+            expect(bali.number(3, 4).toReal()).to.equal(3);
             expect(bali.number(3, 4, bali.number.POLAR).toString()).to.equal('(5 e^~0.9272952180016122i)($format: $polar)');
             expect(bali.number(1, bali.angle(Math.PI/2)).toString()).to.equal('1i');
         });
@@ -76,13 +76,13 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.number.INFINITY.toBoolean()).to.equal(true);
             expect(bali.number.INFINITY.toString()).to.equal('∞');
             expect(bali.number.INFINITY.toInteger()).to.equal(Infinity);
-            expect(bali.number.INFINITY.toNumber()).to.equal(Infinity);
+            expect(bali.number.INFINITY.toReal()).to.equal(Infinity);
             expect(bali.number(Infinity).toBoolean()).to.equal(true);
             expect(bali.number(Infinity).toString()).to.equal('∞');
             expect(bali.number(Infinity).toInteger()).to.equal(Infinity);
-            expect(bali.number(Infinity).toNumber()).to.equal(Infinity);
+            expect(bali.number(Infinity).toReal()).to.equal(Infinity);
             expect(bali.number(-Infinity).toInteger()).to.equal(Infinity);
-            expect(bali.number(-Infinity).toNumber()).to.equal(Infinity);
+            expect(bali.number(-Infinity).toReal()).to.equal(Infinity);
             expect(bali.number(-Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
         });
 
@@ -90,11 +90,11 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.number.UNDEFINED.toBoolean()).to.equal(false);
             expect(bali.number.UNDEFINED.toString()).to.equal('undefined');
             expect(bali.number.UNDEFINED.toInteger().toString()).to.equal('NaN');  // NaN !== NaN
-            expect(bali.number.UNDEFINED.toNumber().toString()).to.equal('NaN');  // NaN !== NaN
+            expect(bali.number.UNDEFINED.toReal().toString()).to.equal('NaN');  // NaN !== NaN
             expect(bali.number(NaN).toBoolean()).to.equal(false);
             expect(bali.number(NaN).toString()).to.equal('undefined');
             expect(bali.number(NaN).toInteger().toString()).to.equal('NaN');  // NaN !== NaN
-            expect(bali.number(NaN).toNumber().toString()).to.equal('NaN');  // NaN !== NaN
+            expect(bali.number(NaN).toReal().toString()).to.equal('NaN');  // NaN !== NaN
         });
 
     });

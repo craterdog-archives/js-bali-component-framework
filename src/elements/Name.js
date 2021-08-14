@@ -139,13 +139,13 @@ Name.prototype.getItems = function(range) {
     if (first === undefined) {
         first = 1;  // first identifier
     } else {
-        first = first.toNumber();
+        first = first.toInteger();
     }
     var last = range.getLast();
     if (last === undefined) {
         last = -1;  // last identifier
     } else {
-        last = last.toNumber();
+        last = last.toInteger();
     }
     first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
     last = this.normalizedIndex(last);  // slice() is exclusive of last index

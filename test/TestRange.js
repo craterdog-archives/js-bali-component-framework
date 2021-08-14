@@ -37,7 +37,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range).to.exist;  // jshint ignore:line
             var first = range.getFirst();
             expect(first).to.exist;  // jshint ignore:line
-            expect(first.toNumber()).to.equal(0);
+            expect(first.toInteger()).to.equal(0);
             var last = range.getLast();
             expect(last).to.not.exist;  // jshint ignore:line
             expect(
@@ -52,7 +52,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(first).to.not.exist;  // jshint ignore:line
             last = range.getLast();
             expect(last).to.exist;  // jshint ignore:line
-            expect(last.toNumber()).to.equal(5);
+            expect(last.toInteger()).to.equal(5);
             expect(
                 function() {
                     range.getIterator(range);
@@ -65,10 +65,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range).to.exist;  // jshint ignore:line
             const first = range.getFirst();
             expect(first).to.exist;  // jshint ignore:line
-            expect(first.toNumber()).to.equal(2);
+            expect(first.toInteger()).to.equal(2);
             const last = range.getLast();
             expect(last).to.exist;  // jshint ignore:line
-            expect(last.toNumber()).to.equal(5);
+            expect(last.toInteger()).to.equal(5);
             const iterator = range.getIterator();
             expect(iterator).to.exist;  // jshint ignore:line
         });
@@ -116,15 +116,15 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         it('should be able to call the getFirst() and getLast() methods on the range', function() {
             var range = bali.range(1, 8);
             var first = range.getFirst();
-            expect(first.toNumber()).to.equal(1);
+            expect(first.toInteger()).to.equal(1);
             var last = range.getLast();
-            expect(last.toNumber()).to.equal(8);
+            expect(last.toInteger()).to.equal(8);
 
             range = bali.range(-4, 6);
             first = range.getFirst();
-            expect(first.toNumber()).to.equal(-4);
+            expect(first.toInteger()).to.equal(-4);
             last = range.getLast();
-            expect(last.toNumber()).to.equal(6);
+            expect(last.toInteger()).to.equal(6);
         });
 
     });

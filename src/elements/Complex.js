@@ -37,7 +37,7 @@ const Complex = function(value, parameters, debug) {
         [
             '/bali/interfaces/Scalable',
             '/bali/interfaces/Discrete',
-            '/bali/interfaces/Numerical'
+            '/bali/interfaces/Continuous'
         ],
         parameters,
         debug
@@ -137,7 +137,7 @@ Complex.prototype.toInteger = function() {
  *
  * @returns {Number} The real part of this complex number.
  */
-Complex.prototype.toNumber = function() {
+Complex.prototype.toReal = function() {
     return this.getReal();
 };
 

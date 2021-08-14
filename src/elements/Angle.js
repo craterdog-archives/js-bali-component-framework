@@ -34,7 +34,7 @@ const Angle = function(value, parameters, debug) {
         ['/bali/elements/Angle'],
         [
             '/bali/interfaces/Scalable',
-            '/bali/interfaces/Numerical'
+            '/bali/interfaces/Continuous'
         ],
         parameters,
         debug
@@ -108,11 +108,11 @@ Angle.prototype.toBoolean = function() {
 
 
 /**
- * This method returns the numeric value of the angle.
+ * This method returns the real number value of the angle.
  *
- * @returns {Number} The numeric value of the angle.
+ * @returns {Number} The real number value of the angle.
  */
-Angle.prototype.toNumber = function() {
+Angle.prototype.toReal = function() {
     return this.getValue();
 };
 

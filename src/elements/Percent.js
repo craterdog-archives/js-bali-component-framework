@@ -33,7 +33,7 @@ const Percent = function(value, parameters, debug) {
         ['/bali/elements/Percent'],
         [
             '/bali/interfaces/Scalable',
-            '/bali/interfaces/Numerical'
+            '/bali/interfaces/Continuous'
         ],
         parameters,
         debug
@@ -72,11 +72,11 @@ Percent.prototype.toBoolean = function() {
 
 
 /**
- * This method returns the numeric value of the percent element, e.g. 25% => 0.25
+ * This method returns the real number value of the percent element, e.g. 25% => 0.25
  *
- * @returns {number} The numeric value of the percent element.
+ * @returns {number} The real number value of the percent element.
  */
-Percent.prototype.toNumber = function() {
+Percent.prototype.toReal = function() {
     return this.calculator.quotient(this.getValue(), 100);
 };
 

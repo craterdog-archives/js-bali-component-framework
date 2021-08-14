@@ -50,7 +50,7 @@ const Stack = function(parameters, debug) {
     // the capacity and array are private attributes so methods that use them are
     // defined in the constructor
     var capacity = this.getParameter('$capacity') || 1024;  // default capacity
-    if (capacity.isComponent) capacity = capacity.toNumber();
+    if (capacity.isComponent) capacity = capacity.toInteger();
     const array = [];
 
     this.toArray = function() {

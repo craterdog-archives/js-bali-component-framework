@@ -83,11 +83,11 @@ const natural = function(first, second) {
         if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
-    if (first.toNumber && (typeof second === 'number' || typeof second === 'boolean')) {
-        return natural(first.toNumber(), second);
+    if (first.toReal && (typeof second === 'number' || typeof second === 'boolean')) {
+        return natural(first.toReal(), second);
     }
-    if ((typeof first === 'number' || typeof first === 'boolean') && second.toNumber) {
-        return natural(first, second.toNumber());
+    if ((typeof first === 'number' || typeof first === 'boolean') && second.toReal) {
+        return natural(first, second.toReal());
     }
     if (first.toBoolean && typeof second === 'boolean') {
         return natural(first.toBoolean(), second);
@@ -95,8 +95,8 @@ const natural = function(first, second) {
     if (typeof first === 'boolean' && second.toBoolean) {
         return natural(first, second.toBoolean());
     }
-    if (first.toNumber && second.toNumber && first.getType() !== second.getType()) {
-        return natural(first.toNumber(), second.toNumber());
+    if (first.toReal && second.toReal && first.getType() !== second.getType()) {
+        return natural(first.toReal(), second.toReal());
     }
 
     // handle string types
