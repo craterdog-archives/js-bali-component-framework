@@ -23,6 +23,7 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.component('e').toString()).to.equal('e');
             expect(bali.component('φ i').toString()).to.equal('φ i');
             expect(bali.component('(3, 4i)').toString()).to.equal('(3, 4i)');
+            expect(bali.component('(1 e^~2.3i)').toString()).to.equal('(1 e^~2.3i)');
             expect(bali.component('(5 e^~π i)').toString()).to.equal('-5');
             expect(bali.component('(-5 e^~π i)').toString()).to.equal('5');
         });
@@ -68,7 +69,6 @@ describe('Bali Nebula™ Component Framework - Complex', function() {
             expect(bali.number(3, 4).toString()).to.equal('(3, 4i)');
             expect(bali.number(3, 4).toInteger()).to.equal(3);
             expect(bali.number(3, 4).toReal()).to.equal(3);
-            expect(bali.number(3, 4, bali.number.POLAR).toString()).to.equal('(5 e^~0.9272952180016122i)($format: $polar)');
             expect(bali.number(1, bali.angle(Math.PI/2)).toString()).to.equal('1i');
         });
 

@@ -51,16 +51,17 @@ const Complex = function(value, parameters, debug) {
     }
 
     // normalize the values
-    var real = value[0];
-    var imaginary = value[1];
+    var real = value[0];  // real part or magnitude
+    var imaginary = value[1];  // imaginary part or phase (angle)
+    var magnitude, phase;
     this.calculator = new utilities.Calculator(this.debug);
-    if (real === real) real = real || 0;  // default value if not NaN and not defined
+    if (real === real) real = real || 0;  // default value if not NaN and not defined or null
     real = this.calculator.lockOnExtreme(real);
-    if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined
+    if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined or null
     if (imaginary.isComponent && imaginary.isType('/bali/elements/Angle')) {
         // convert polar to rectangular
-        var magnitude = real;
-        var phase = imaginary;
+        magnitude = real;
+        phase = imaginary;
         if (magnitude < 0) {
             // normalize the magnitude
             magnitude = -magnitude;
@@ -68,6 +69,10 @@ const Complex = function(value, parameters, debug) {
         }
         real = magnitude * Angle.cosine(phase);
         imaginary = magnitude * Angle.sine(phase);
+        if (real && imaginary) {
+            // it is a true complex number in polar form
+            this.isPolar = true;
+        }
     }
     imaginary = this.calculator.lockOnExtreme(imaginary);
     if (real.toString() === 'NaN' || imaginary.toString() === 'NaN') {
@@ -85,20 +90,27 @@ const Complex = function(value, parameters, debug) {
     this.getImaginary = function() { return imaginary; };
 
     this.getMagnitude = function() {
-        // need to preserve full precision on this except for the sum part
-        var magnitude = Math.sqrt(this.calculator.sum(Math.pow(real, 2), Math.pow(imaginary, 2)));
-        magnitude = this.calculator.lockOnExtreme(magnitude);
+        if (magnitude === undefined) {
+            // need to preserve full precision on this except for the sum part
+            magnitude = Math.sqrt(this.calculator.sum(Math.pow(real, 2), Math.pow(imaginary, 2)));
+            magnitude = this.calculator.lockOnExtreme(magnitude);
+        }
         return magnitude;
     };
 
     this.getPhase = function() {
         if (this.isInfinite()) return new Angle(0);
         if (this.isUndefined()) return undefined;
-        const phase = Angle.arctangent(imaginary, real);
+        if (phase === undefined) {
+            phase = Angle.arctangent(imaginary, real);
+        }
         return phase;
     };
 
     this.getValue = function() {
+        if (this.isPolar) {
+            return [this.getMagnitude(), this.getPhase()];
+        }
         return [this.getReal(), this.getImaginary()];
     };
 

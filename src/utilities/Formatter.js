@@ -641,34 +641,30 @@ FormattingVisitor.prototype.visitName = function(name) {
 //    IMAGINARY |
 //    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 FormattingVisitor.prototype.visitNumber = function(number) {
-    const format = this.getFormat(number, '$format', '$rectangular');
+    const isPolar = number.isPolar;
     if (number.isUndefined()) {
         this.result += 'undefined';
     } else if (number.isInfinite()) {
         this.result += '∞';
     } else if (number.isZero()) {
         this.result += '0';
-    } else if ((format !== '$polar' || number.getReal() > 0) && number.getImaginary() === 0) {
-        // we know the real part isn't zero
+    } else if (number.getReal() !== 0 && number.getImaginary() === 0) {
+        // it is a pure real number
         this.result += formatReal(number.getReal());
-    } else if (format !== '$polar' && number.getReal() === 0) {
-        // we know the imaginary part isn't zero
+    } else if (number.getReal() === 0 && number.getImaginary() !== 0) {
+        // it is a pure imaginary number
         this.result += formatImaginary(number.getImaginary());
     } else {
         // must be a complex number
         this.result += '(';
-        switch (format) {
-            case '$rectangular':
-                this.result += formatReal(number.getReal());
-                this.result += ', ';
-                this.result += formatImaginary(number.getImaginary());
-                break;
-            case '$polar':
-                this.result += formatReal(number.getMagnitude());
-                this.result += ' e^~';
-                this.result += formatImaginary(number.getPhase().getValue());
-                break;
-            default:
+        if (isPolar) {
+            this.result += formatReal(number.getMagnitude());
+            this.result += ' e^~';
+            this.result += formatImaginary(number.getPhase().getValue());
+        } else {
+            this.result += formatReal(number.getReal());
+            this.result += ', ';
+            this.result += formatImaginary(number.getImaginary());
         }
         this.result += ')';
     }

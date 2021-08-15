@@ -312,13 +312,7 @@ FormattingVisitor.prototype.visitName = function(name) {
 //    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
 FormattingVisitor.prototype.visitNumber = function(number) {
     var parameters = number.getParameters();
-    var format;
-    if (parameters) {
-        format = parameters.getAttribute('$format');
-        if (format) format = format.toString();
-    } else {
-        format = '$rectangular';
-    }
+    var isPolar = number.isPolar;
     var formatted = '';
     if (number.isUndefined()) {
         formatted += 'undefined';
@@ -326,27 +320,23 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         formatted += '∞';
     } else if (number.isZero()) {
         formatted += '0';
-    } else if ((format !== '$polar' || number.getReal() > 0) && number.getImaginary() === 0) {
-        // we know the real part isn't zero
+    } else if (number.getReal() !== 0 && number.getImaginary() === 0) {
+        // it is a pure real number
         formatted += formatReal(number.getReal());
-    } else if (format !== '$polar' && number.getReal() === 0) {
-        // we know the imaginary part isn't zero
+    } else if (number.getReal() === 0 && number.getImaginary() !== 0) {
+        // it is a pure imaginary number
         formatted += formatImaginary(number.getImaginary());
     } else {
         // must be a complex number
         formatted += '(';
-        switch (format) {
-            case '$rectangular':
-                formatted += formatReal(number.getReal());
-                formatted += ', ';
-                formatted += formatImaginary(number.getImaginary());
-                break;
-            case '$polar':
-                formatted += formatReal(number.getMagnitude());
-                formatted += ' e^~';
-                formatted += formatImaginary(number.getPhase().getValue());
-                break;
-            default:
+        if (isPolar) {
+            formatted += formatReal(number.getMagnitude());
+            formatted += ' e^~';
+            formatted += formatImaginary(number.getPhase().getValue());
+        } else {
+            formatted += formatReal(number.getReal());
+            formatted += ', ';
+            formatted += formatImaginary(number.getImaginary());
         }
         formatted += ')';
     }

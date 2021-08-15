@@ -457,7 +457,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitParameters(number.getParameters());
     const parameters = this.result;
-    this.result = new number.constructor([number.getReal(), number.getImaginary()], parameters, this.debug);
+    this.result = new number.constructor(number.getValue(), parameters, this.debug);
     this.result.note = number.note;
 };
 

@@ -616,9 +616,6 @@ exports.api = function(defaultLevel) {
     number.INFINITY = component('∞', defaultLevel);
     number.I = component('1i', defaultLevel);
 
-    number.POLAR = {$format: '$polar'};
-    number.RECTANGULAR = {$format: '$rectangular'};
-
     pattern.ANY = component('any', defaultLevel);
     pattern.NONE = component('none', defaultLevel);
 

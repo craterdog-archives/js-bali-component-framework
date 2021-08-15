@@ -756,15 +756,21 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
     var real = ctx.REAL();
     if (real) {
         real = literalToNumber(real.getText());
+    } else {
+        real = undefined;
     }
     var imaginary = ctx.IMAGINARY();
     if (imaginary) {
         imaginary = literalToNumber(imaginary.getText().slice(0, -1).trim());  // remove the trailing 'i'
+    } else {
+        imaginary = undefined;
     }
     var angle = ctx.ANGLE();
     if (angle) {
         angle = literalToNumber(angle.getText().slice(1));  // remove the leading '~'
         imaginary = new elements.Angle(angle, parameters, this.debug);
+    } else {
+        angle = undefined;
     }
     const literal = ctx.getText();
     switch (literal) {
