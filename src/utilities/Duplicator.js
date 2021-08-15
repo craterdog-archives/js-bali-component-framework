@@ -488,12 +488,12 @@ DuplicatingVisitor.prototype.visitPattern = function(pattern) {
 };
 
 
-// percent: PERCENT
-DuplicatingVisitor.prototype.visitPercent = function(percent) {
-    this.visitParameters(percent.getParameters());
+// percentage: PERCENTAGE
+DuplicatingVisitor.prototype.visitPercentage = function(percentage) {
+    this.visitParameters(percentage.getParameters());
     const parameters = this.result;
-    this.result = new percent.constructor(percent.getValue(), parameters, this.debug);
-    this.result.note = percent.note;
+    this.result = new percentage.constructor(percentage.getValue(), parameters, this.debug);
+    this.result.note = percentage.note;
 };
 
 

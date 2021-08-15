@@ -420,26 +420,26 @@ exports.api = function(defaultLevel) {
         return new elements.Pattern(value, parameters, debug);
     };
 
-    // PERCENT
-    const percent = function(value, parameters, debug) {
+    // PERCENTAGE
+    const percentage = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Percent(value, parameters, debug);
+        return new elements.Percentage(value, parameters, debug);
     };
-    percent.inverse = function(percent, debug) {
+    percentage.inverse = function(percentage, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Percent.inverse(percent, debug);
+        return elements.Percentage.inverse(percentage, debug);
     };
-    percent.sum = function(first, second, debug) {
+    percentage.sum = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Percent.sum(first, second, debug);
+        return elements.Percentage.sum(first, second, debug);
     };
-    percent.difference = function(first, second, debug) {
+    percentage.difference = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Percent.difference(first, second, debug);
+        return elements.Percentage.difference(first, second, debug);
     };
-    percent.scaled = function(percent, factor, debug) {
+    percentage.scaled = function(percentage, factor, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Percent.scaled(percent, factor, debug);
+        return elements.Percentage.scaled(percentage, factor, debug);
     };
 
     // PROBABILITY
@@ -641,7 +641,7 @@ exports.api = function(defaultLevel) {
         name: name,
         number: number,
         pattern: pattern,
-        percent: percent,
+        percentage: percentage,
         probability: probability,
         procedure: procedure,
         queue: queue,

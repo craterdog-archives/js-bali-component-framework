@@ -680,7 +680,7 @@ DocumentLexer.FRACTION = 78;
 DocumentLexer.IMAGINARY = 79;
 DocumentLexer.MOMENT = 80;
 DocumentLexer.NAME = 81;
-DocumentLexer.PERCENT = 82;
+DocumentLexer.PERCENTAGE = 82;
 DocumentLexer.RESOURCE = 83;
 DocumentLexer.REAL = 84;
 DocumentLexer.REGEX = 85;
@@ -737,7 +737,7 @@ DocumentLexer.prototype.symbolicNames = [ null, null, null, null, null,
                                           null, null, null, null, null, 
                                           "ANGLE", "BINARY", "DURATION", 
                                           "FRACTION", "IMAGINARY", "MOMENT", 
-                                          "NAME", "PERCENT", "RESOURCE", 
+                                          "NAME", "PERCENTAGE", "RESOURCE", 
                                           "REAL", "REGEX", "SYMBOL", "TAG", 
                                           "NARRATIVE", "TEXT", "VERSION", 
                                           "IDENTIFIER", "NOTE", "COMMENT", 
@@ -762,7 +762,7 @@ DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                       "T__66", "T__67", "T__68", "T__69", 
                                       "T__70", "T__71", "T__72", "T__73", 
                                       "ANGLE", "BINARY", "DURATION", "FRACTION", 
-                                      "IMAGINARY", "MOMENT", "NAME", "PERCENT", 
+                                      "IMAGINARY", "MOMENT", "NAME", "PERCENTAGE", 
                                       "RESOURCE", "REAL", "REGEX", "SYMBOL", 
                                       "TAG", "NARRATIVE", "TEXT", "VERSION", 
                                       "IDENTIFIER", "NOTE", "COMMENT", "EOL", 

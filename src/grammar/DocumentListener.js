@@ -632,12 +632,12 @@ DocumentListener.prototype.exitPattern = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#percent.
-DocumentListener.prototype.enterPercent = function(ctx) {
+// Enter a parse tree produced by DocumentParser#percentage.
+DocumentListener.prototype.enterPercentage = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#percent.
-DocumentListener.prototype.exitPercent = function(ctx) {
+// Exit a parse tree produced by DocumentParser#percentage.
+DocumentListener.prototype.exitPercentage = function(ctx) {
 };
 
 

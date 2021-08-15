@@ -722,13 +722,13 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 };
 
 
-// percent: PERCENT
-FormattingVisitor.prototype.visitPercent = function(percent) {
-    const value = percent.getValue();
+// percentage: PERCENTAGE
+FormattingVisitor.prototype.visitPercentage = function(percentage) {
+    const value = percentage.getValue();
     this.result += formatReal(value) + '%';
-    const parameters = percent.getParameters();
+    const parameters = percentage.getParameters();
     this.visitParameters(parameters);  // format any parameterization
-    this.formatNote(percent);
+    this.formatNote(percentage);
 };
 
 

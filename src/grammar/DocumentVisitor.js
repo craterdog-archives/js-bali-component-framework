@@ -426,8 +426,8 @@ DocumentVisitor.prototype.visitPattern = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#percent.
-DocumentVisitor.prototype.visitPercent = function(ctx) {
+// Visit a parse tree produced by DocumentParser#percentage.
+DocumentVisitor.prototype.visitPercentage = function(ctx) {
   return this.visitChildren(ctx);
 };
 

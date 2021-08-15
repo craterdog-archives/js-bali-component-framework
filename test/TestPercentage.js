@@ -14,9 +14,9 @@ const expect = require('chai').expect;
 const bali = require('../').api(debug);
 
 
-describe('Bali Nebula™ Component Framework - Percent', function() {
+describe('Bali Nebula™ Component Framework - Percentage', function() {
 
-    describe('Test percent constructors', function() {
+    describe('Test percentage constructors', function() {
 
         it('should construct percentages using literals', function() {
             expect(bali.component('0%').toString()).to.equal('0%');
@@ -25,30 +25,30 @@ describe('Bali Nebula™ Component Framework - Percent', function() {
         });
 
         it('should construct percentages that equal zero', function() {
-            expect(bali.percent().toBoolean()).to.equal(false);
-            expect(bali.percent().toReal()).to.equal(0);
-            expect(bali.percent().toString()).to.equal('0%');
-            expect(bali.percent(0).toBoolean()).to.equal(false);
-            expect(bali.percent(0).toReal()).to.equal(0);
-            expect(bali.percent(0).toString()).to.equal('0%');
+            expect(bali.percentage().toBoolean()).to.equal(false);
+            expect(bali.percentage().toReal()).to.equal(0);
+            expect(bali.percentage().toString()).to.equal('0%');
+            expect(bali.percentage(0).toBoolean()).to.equal(false);
+            expect(bali.percentage(0).toReal()).to.equal(0);
+            expect(bali.percentage(0).toString()).to.equal('0%');
         });
 
         it('should construct percentages that equal 13.25%', function() {
-            expect(bali.percent(13.25).toBoolean()).to.equal(true);
-            expect(bali.percent(13.25).toReal()).to.equal(0.1325);
-            expect(bali.percent(13.25).toString()).to.equal('13.25%');
+            expect(bali.percentage(13.25).toBoolean()).to.equal(true);
+            expect(bali.percentage(13.25).toReal()).to.equal(0.1325);
+            expect(bali.percentage(13.25).toString()).to.equal('13.25%');
         });
 
         it('should construct percentages that equal -2%', function() {
-            expect(bali.percent(-2).toBoolean()).to.equal(true);
-            expect(bali.percent(-2).toReal()).to.equal(-0.02);
-            expect(bali.percent(-2).toString()).to.equal('-2%');
+            expect(bali.percentage(-2).toBoolean()).to.equal(true);
+            expect(bali.percentage(-2).toReal()).to.equal(-0.02);
+            expect(bali.percentage(-2).toString()).to.equal('-2%');
         });
 
         it('should construct percentages that equal 150%', function() {
-            expect(bali.percent(150).toBoolean()).to.equal(true);
-            expect(bali.percent(150).toReal()).to.equal(1.5);
-            expect(bali.percent(150).toString()).to.equal('150%');
+            expect(bali.percentage(150).toBoolean()).to.equal(true);
+            expect(bali.percentage(150).toReal()).to.equal(1.5);
+            expect(bali.percentage(150).toString()).to.equal('150%');
         });
 
     });
@@ -56,19 +56,19 @@ describe('Bali Nebula™ Component Framework - Percent', function() {
     describe('Test percentage functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.percent.inverse(bali.percent(25)).isEqualTo(bali.percent(-25))).to.equal(true);
+            expect(bali.percentage.inverse(bali.percentage(25)).isEqualTo(bali.percentage(-25))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.percent.sum(bali.percent(35), bali.percent(25)).isEqualTo(bali.percent(60))).to.equal(true);
+            expect(bali.percentage.sum(bali.percentage(35), bali.percentage(25)).isEqualTo(bali.percentage(60))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.percent.difference(bali.percent(35), bali.percent(25)).isEqualTo(bali.percent(10))).to.equal(true);
+            expect(bali.percentage.difference(bali.percentage(35), bali.percentage(25)).isEqualTo(bali.percentage(10))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.percent.scaled(bali.percent(10), 5).isEqualTo(bali.percent(50))).to.equal(true);
+            expect(bali.percentage.scaled(bali.percentage(10), 5).isEqualTo(bali.percentage(50))).to.equal(true);
         });
 
     });

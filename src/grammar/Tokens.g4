@@ -22,7 +22,7 @@ MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRA
 
 NAME: ('/' TYPE)+;
 
-PERCENT: ('0' | REAL) '%';
+PERCENTAGE: ('0' | REAL) '%';
 
 RESOURCE: '<' TYPE ':' CONTEXT '>';
 

@@ -425,12 +425,12 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 };
 
 
-// percent: PERCENT
-FormattingVisitor.prototype.visitPercent = function(percent) {
-    this.result += '<div class="element percent">';
-    const value = percent.getValue();
+// percentage: PERCENTAGE
+FormattingVisitor.prototype.visitPercentage = function(percentage) {
+    this.result += '<div class="element percentage">';
+    const value = percentage.getValue();
     this.result += formatReal(value) + '%';
-    this.result += formatParameters(percent.getParameters());
+    this.result += formatParameters(percentage.getParameters());
     this.result += '</div>';
 };
 

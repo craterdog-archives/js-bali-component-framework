@@ -179,7 +179,7 @@ FRACTION
 IMAGINARY
 MOMENT
 NAME
-PERCENT
+PERCENTAGE
 RESOURCE
 REAL
 REGEX
@@ -248,7 +248,7 @@ moment
 name
 number
 pattern
-percent
+percentage
 probability
 reference
 symbol

@@ -421,9 +421,9 @@ Visitor.prototype.visitPattern = function(pattern) {
 };
 
 
-// percent: PERCENT
-Visitor.prototype.visitPercent = function(percent) {
-    const parameters = percent.getParameters();
+// percentage: PERCENTAGE
+Visitor.prototype.visitPercentage = function(percentage) {
+    const parameters = percentage.getParameters();
     this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };

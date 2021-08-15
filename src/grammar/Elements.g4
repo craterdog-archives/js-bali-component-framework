@@ -9,7 +9,7 @@ element:
     name |
     number |
     pattern |
-    percent |
+    percentage |
     probability |
     reference |
     symbol |
@@ -40,7 +40,7 @@ number:
 
 pattern: 'none' | REGEX | 'any';
 
-percent: PERCENT;
+percentage: PERCENTAGE;
 
 probability: 'false' | FRACTION | 'true';
 

@@ -825,12 +825,12 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 };
 
 
-// percent: PERCENT
-ParsingVisitor.prototype.visitPercent = function(ctx) {
+// percentage: PERCENTAGE
+ParsingVisitor.prototype.visitPercentage = function(ctx) {
     const parameters = this.getParameters();
     const value = literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
-    const percent = new elements.Percent(value, parameters, this.debug);
-    this.result = percent;
+    const percentage = new elements.Percentage(value, parameters, this.debug);
+    this.result = percentage;
 };
 
 
