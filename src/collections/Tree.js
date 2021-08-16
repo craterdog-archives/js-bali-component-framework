@@ -34,7 +34,7 @@ const Tree = function(type, debug) {
     abstractions.Collection.call(
         this,
         [type, '/bali/collections/Tree'],
-        ['/bali/interfaces/Procedural'],
+        [],
         undefined,
         debug
     );
