@@ -492,10 +492,10 @@ exports.api = function(defaultLevel) {
         return new structures.Range(first, last, parameters, debug);
     };
 
-    // REFERENCE
-    const reference = function(value, parameters, debug) {
+    // RESOURCE
+    const resource = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Reference(value, parameters, debug);
+        return new elements.Resource(value, parameters, debug);
     };
 
     // SET
@@ -646,7 +646,7 @@ exports.api = function(defaultLevel) {
         procedure: procedure,
         queue: queue,
         range: range,
-        reference: reference,
+        resource: resource,
         set: set,
         stack: stack,
         symbol: symbol,

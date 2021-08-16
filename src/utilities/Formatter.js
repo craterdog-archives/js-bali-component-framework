@@ -811,13 +811,13 @@ FormattingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// reference: RESOURCE
-FormattingVisitor.prototype.visitReference = function(reference) {
-    const value = reference.getValue().toString();
+// resource: RESOURCE
+FormattingVisitor.prototype.visitResource = function(resource) {
+    const value = resource.getValue().toString();
     this.result += '<' + value + '>';
-    const parameters = reference.getParameters();
+    const parameters = resource.getParameters();
     this.visitParameters(parameters);  // format any parameterization
-    this.formatNote(reference);
+    this.formatNote(resource);
 };
 
 

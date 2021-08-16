@@ -20,11 +20,11 @@ IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | '�
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
-NAME: ('/' TYPE)+;
+NAME: ('/' LABEL)+;
 
 PERCENTAGE: ('0' | REAL) '%';
 
-RESOURCE: '<' TYPE ':' CONTEXT '>';
+RESOURCE: '<' LABEL ':' CONTEXT '>';
 
 // NOTE: We cannot define negative constants here because the scanner would scan
 //       a negative variable like '-exponent' as a single '-e' token rather than
@@ -71,10 +71,10 @@ fragment
 SPAN: INTEGER FRACTION?;
 
 fragment
-TYPE: ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')+;
+LABEL: ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')+;
 
 fragment
-CONTEXT: ('!'..'=' | '?'..'~')*;
+CONTEXT: ('!'..'=' | '?'..'~')*;  // skip the space and '>' characters
 
 fragment
 YEARS: INTEGER;

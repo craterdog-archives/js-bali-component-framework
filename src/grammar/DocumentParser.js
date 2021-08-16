@@ -407,7 +407,7 @@ var ruleNames =  [ "source", "document", "statement", "comment", "mainClause",
                    "range", "sequence", "collection", "parameters", "list", 
                    "catalog", "association", "procedure", "code", "note", 
                    "element", "angle", "binary", "duration", "moment", "name", 
-                   "number", "pattern", "percentage", "probability", "reference", 
+                   "number", "pattern", "percentage", "probability", "resource", 
                    "symbol", "tag", "text", "version" ];
 
 function DocumentParser (input) {
@@ -580,7 +580,7 @@ DocumentParser.RULE_number = 51;
 DocumentParser.RULE_pattern = 52;
 DocumentParser.RULE_percentage = 53;
 DocumentParser.RULE_probability = 54;
-DocumentParser.RULE_reference = 55;
+DocumentParser.RULE_resource = 55;
 DocumentParser.RULE_symbol = 56;
 DocumentParser.RULE_tag = 57;
 DocumentParser.RULE_text = 58;
@@ -5759,8 +5759,8 @@ ElementContext.prototype.probability = function() {
     return this.getTypedRuleContext(ProbabilityContext,0);
 };
 
-ElementContext.prototype.reference = function() {
-    return this.getTypedRuleContext(ReferenceContext,0);
+ElementContext.prototype.resource = function() {
+    return this.getTypedRuleContext(ResourceContext,0);
 };
 
 ElementContext.prototype.symbol = function() {
@@ -5870,7 +5870,7 @@ DocumentParser.prototype.element = function() {
         case DocumentParser.RESOURCE:
             this.enterOuterAlt(localctx, 10);
             this.state = 495;
-            this.reference();
+            this.resource();
             break;
         case DocumentParser.SYMBOL:
             this.enterOuterAlt(localctx, 11);
@@ -6609,7 +6609,7 @@ DocumentParser.prototype.probability = function() {
 };
 
 
-function ReferenceContext(parser, parent, invokingState) {
+function ResourceContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -6618,32 +6618,32 @@ function ReferenceContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DocumentParser.RULE_reference;
+    this.ruleIndex = DocumentParser.RULE_resource;
     return this;
 }
 
-ReferenceContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-ReferenceContext.prototype.constructor = ReferenceContext;
+ResourceContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+ResourceContext.prototype.constructor = ResourceContext;
 
-ReferenceContext.prototype.RESOURCE = function() {
+ResourceContext.prototype.RESOURCE = function() {
     return this.getToken(DocumentParser.RESOURCE, 0);
 };
 
-ReferenceContext.prototype.enterRule = function(listener) {
+ResourceContext.prototype.enterRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.enterReference(this);
+        listener.enterResource(this);
 	}
 };
 
-ReferenceContext.prototype.exitRule = function(listener) {
+ResourceContext.prototype.exitRule = function(listener) {
     if(listener instanceof DocumentListener ) {
-        listener.exitReference(this);
+        listener.exitResource(this);
 	}
 };
 
-ReferenceContext.prototype.accept = function(visitor) {
+ResourceContext.prototype.accept = function(visitor) {
     if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitReference(this);
+        return visitor.visitResource(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -6652,12 +6652,12 @@ ReferenceContext.prototype.accept = function(visitor) {
 
 
 
-DocumentParser.ReferenceContext = ReferenceContext;
+DocumentParser.ResourceContext = ResourceContext;
 
-DocumentParser.prototype.reference = function() {
+DocumentParser.prototype.resource = function() {
 
-    var localctx = new ReferenceContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 110, DocumentParser.RULE_reference);
+    var localctx = new ResourceContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 110, DocumentParser.RULE_resource);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 536;

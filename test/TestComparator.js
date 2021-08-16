@@ -141,10 +141,10 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents('0..', range)).to.equal(1);
         });
 
-        it('should handle references', function() {
-            const reference = bali.reference('https://google.com');
-            expect(comparator.compareComponents(reference, '<https://amazon.com>')).to.equal(1);
-            expect(comparator.compareComponents('<https://apple.com>', reference)).to.equal(-1);
+        it('should handle resources', function() {
+            const resource = bali.resource('https://google.com');
+            expect(comparator.compareComponents(resource, '<https://amazon.com>')).to.equal(1);
+            expect(comparator.compareComponents('<https://apple.com>', resource)).to.equal(-1);
         });
 
         it('should handle procedures', function() {
@@ -381,9 +381,9 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
             expect(comparator.compareComponents(first, third)).to.equal(-1);
         });
 
-        it('should handle references', function() {
-            const first = bali.reference('https://apple.com');
-            const second = bali.reference('https://google.com');
+        it('should handle resources', function() {
+            const first = bali.resource('https://apple.com');
+            const second = bali.resource('https://google.com');
             expect(comparator.compareComponents(first, first)).to.equal(0);
             expect(comparator.compareComponents(first, second)).to.equal(-1);
             expect(comparator.compareComponents(second, first)).to.equal(1);

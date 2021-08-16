@@ -484,9 +484,9 @@ Visitor.prototype.visitRange = function(range) {
 };
 
 
-// reference: RESOURCE
-Visitor.prototype.visitReference = function(reference) {
-    const parameters = reference.getParameters();
+// resource: RESOURCE
+Visitor.prototype.visitResource = function(resource) {
+    const parameters = resource.getParameters();
     this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };

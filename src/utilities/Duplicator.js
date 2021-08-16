@@ -556,12 +556,12 @@ DuplicatingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// reference: RESOURCE
-DuplicatingVisitor.prototype.visitReference = function(reference) {
-    this.visitParameters(reference.getParameters());
+// resource: RESOURCE
+DuplicatingVisitor.prototype.visitResource = function(resource) {
+    this.visitParameters(resource.getParameters());
     const parameters = this.result;
-    this.result = new reference.constructor(reference.getValue(), parameters, this.debug);
-    this.result.note = reference.note;
+    this.result = new resource.constructor(resource.getValue(), parameters, this.debug);
+    this.result.note = resource.note;
 };
 
 

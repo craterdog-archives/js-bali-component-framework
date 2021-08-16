@@ -11,7 +11,7 @@ element:
     pattern |
     percentage |
     probability |
-    reference |
+    resource |
     symbol |
     tag |
     text |
@@ -44,7 +44,7 @@ percentage: PERCENTAGE;
 
 probability: 'false' | FRACTION | 'true';
 
-reference: RESOURCE;
+resource: RESOURCE;
 
 symbol: SYMBOL;
 

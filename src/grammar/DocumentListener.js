@@ -650,12 +650,12 @@ DocumentListener.prototype.exitProbability = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#reference.
-DocumentListener.prototype.enterReference = function(ctx) {
+// Enter a parse tree produced by DocumentParser#resource.
+DocumentListener.prototype.enterResource = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#reference.
-DocumentListener.prototype.exitReference = function(ctx) {
+// Exit a parse tree produced by DocumentParser#resource.
+DocumentListener.prototype.exitResource = function(ctx) {
 };
 
 

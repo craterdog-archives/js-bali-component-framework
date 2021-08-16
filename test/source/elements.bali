@@ -88,7 +88,7 @@
         .5
         true
     ]
-    $references: [
+    $resources: [
         <http://www.google.com/>
         <bali:?[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:none]>
         <bali:?[$protocol:v1,$tag:#1LT98RKMN4388P59CSQR7BPB2HJH27FW,$version:v2,$digest:'7TPZN6A5939DDGQJK072SW8LQ8P22Y1ZZG1YZ55C6Q31FMSVTQHVCRNRPJMQA1YCZ2YD454C7A284ZM229F0X9XVDSGS9VTHJ8NWSMH']>

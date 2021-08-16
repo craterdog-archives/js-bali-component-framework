@@ -483,11 +483,11 @@ FormattingVisitor.prototype.visitRange = function(range) {
 };
 
 
-// reference: RESOURCE
-FormattingVisitor.prototype.visitReference = function(reference) {
-    this.result += '<a class="element reference" href="' + reference.getValue() + '">';
-    this.result += reference.getValue().toString().replace(/^https?:\/\/|^mailto:/g, '');
-    const query = formatParameters(reference.getParameters()).replace(/ \(/, '').replace(/\)/, '').replace(/: /g, '=').replace(/, /g, '&');
+// resource: RESOURCE
+FormattingVisitor.prototype.visitResource = function(resource) {
+    this.result += '<a class="element resource" href="' + resource.getValue() + '">';
+    this.result += resource.getValue().toString().replace(/^https?:\/\/|^mailto:/g, '');
+    const query = formatParameters(resource.getParameters()).replace(/ \(/, '').replace(/\)/, '').replace(/: /g, '=').replace(/, /g, '&');
     if (query) this.result += '?' + query;
     this.result += '</a>';
 };

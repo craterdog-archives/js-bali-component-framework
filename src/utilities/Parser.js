@@ -922,12 +922,12 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 };
 
 
-// reference: RESOURCE
-ParsingVisitor.prototype.visitReference = function(ctx) {
+// resource: RESOURCE
+ParsingVisitor.prototype.visitResource = function(ctx) {
     const parameters = this.getParameters();
     const value = new URL(ctx.getText().slice(1, -1));  // remove the '<' and '>' delimiters
-    const reference = new elements.Reference(value, parameters, this.debug);
-    this.result = reference;
+    const resource = new elements.Resource(value, parameters, this.debug);
+    this.result = resource;
 };
 
 

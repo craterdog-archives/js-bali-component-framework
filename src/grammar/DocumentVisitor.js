@@ -438,8 +438,8 @@ DocumentVisitor.prototype.visitProbability = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#reference.
-DocumentVisitor.prototype.visitReference = function(ctx) {
+// Visit a parse tree produced by DocumentParser#resource.
+DocumentVisitor.prototype.visitResource = function(ctx) {
   return this.visitChildren(ctx);
 };
 

@@ -767,7 +767,7 @@ DocumentLexer.prototype.ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4",
                                       "TAG", "NARRATIVE", "TEXT", "VERSION", 
                                       "IDENTIFIER", "NOTE", "COMMENT", "EOL", 
                                       "SPACE", "CHARACTER", "NUMBER", "FLOAT", 
-                                      "INTEGER", "SPAN", "TYPE", "CONTEXT", 
+                                      "INTEGER", "SPAN", "LABEL", "CONTEXT", 
                                       "YEARS", "MONTHS", "DAYS", "HOURS", 
                                       "MINUTES", "SECONDS", "BASE16", "BASE32", 
                                       "BASE64", "ESCAPE" ];

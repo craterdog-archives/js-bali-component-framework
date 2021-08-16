@@ -14,24 +14,24 @@ const expect = require('chai').expect;
 const bali = require('../').api(debug);
 
 
-describe('Bali Nebula™ Component Framework - Reference', function() {
+describe('Bali Nebula™ Component Framework - Resource', function() {
 
-    describe('Test reference constructors', function() {
+    describe('Test resource constructors', function() {
 
-        it('should construct references using literals', function() {
+        it('should construct resources using literals', function() {
             expect(bali.component('<https://google.com/>').toString()).to.equal('<https://google.com/>');
             expect(bali.component('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>').toString()).to.equal('<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>');
         });
 
-        it('should throw an exception for an empty reference', function() {
+        it('should throw an exception for an empty resource', function() {
             expect(
                 function() {
-                    const empty = bali.reference();
+                    const empty = bali.resource();
                 }
             ).to.throw();
             expect(
                 function() {
-                    const empty = bali.reference('');
+                    const empty = bali.resource('');
                 }
             ).to.throw();
             expect(
@@ -41,16 +41,16 @@ describe('Bali Nebula™ Component Framework - Reference', function() {
             ).to.throw();
         });
 
-        it('should construct references and format matching references', function() {
+        it('should construct resources and format matching resources', function() {
             tests.forEach(function(expected) {
-                const reference = bali.component(expected);
-                const string = reference.toString();
+                const resource = bali.component(expected);
+                const string = resource.toString();
                 expect(string).to.equal(expected);
-                const scheme = reference.getScheme();
-                const authority = reference.getAuthority();
-                const path = reference.getPath();
-                const query = reference.getQuery();
-                const fragment = reference.getFragment();
+                const scheme = resource.getScheme();
+                const authority = resource.getAuthority();
+                const path = resource.getPath();
+                const query = resource.getQuery();
+                const fragment = resource.getFragment();
                 var url = '<' + scheme + ':';
                 if (authority) url += '//' + authority;
                 if (path) url += path;
