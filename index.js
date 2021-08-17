@@ -555,9 +555,9 @@ exports.api = function(defaultLevel) {
     // TREE
     const tree = function(type, children, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const collection = new collections.Tree(type, debug);
-        collection.addItems(children);
-        return collection;
+        const tree = new structures.Tree(type, debug);
+        tree.addItems(children);
+        return tree;
     };
 
     // TYPE

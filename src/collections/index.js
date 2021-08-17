@@ -14,4 +14,3 @@ exports.Catalog = require('./Catalog').Catalog;  // depends on List
 exports.Queue = require('./Queue').Queue;
 exports.Set = require('./Set').Set;
 exports.Stack = require('./Stack').Stack;
-exports.Tree = require('./Tree').Tree;

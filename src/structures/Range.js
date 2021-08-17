@@ -10,7 +10,7 @@
 'use strict';
 
 /*
- * This element class captures the state and methods associated with a range element.
+ * This structure class captures the state and methods associated with a range component.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -20,11 +20,11 @@ const Exception = require('../structures/Exception').Exception;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new range element using the specified first and last values.
+ * This function creates a new range structure using the specified first and last values.
  *
  * @param {Element} first The first element in the range.
  * @param {Element} last The last element in the range.
- * @param {Object} parameters Optional parameters used to parameterize this element.
+ * @param {Object} parameters Optional parameters used to parameterize this structure.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
@@ -69,7 +69,7 @@ const Range = function(first, last, parameters, debug) {
         last = this.componentize(last, this.debug);
     }
 
-    // since this element is immutable the values must be read-only
+    // since this structure is immutable the values must be read-only
     this.getFirst = function() { return first; };
 
     this.getLast = function() { return last; };
@@ -132,7 +132,7 @@ Range.prototype.toLiteral = function() {
 /**
  * This method accepts a visitor as part of the visitor pattern.
  *
- * @param {Visitor} visitor The visitor that wants to visit this element.
+ * @param {Visitor} visitor The visitor that wants to visit this structure.
  */
 Range.prototype.acceptVisitor = function(visitor) {
     visitor.visitRange(this);
