@@ -71,6 +71,10 @@ const Tree = function(type, debug) {
         item.getParent = function() { return this; };
     };
 
+    this.removeAll = function() {
+        array.splice(0);
+    };
+
     return this;
 };
 Tree.prototype = Object.create(abstractions.Collection.prototype);
