@@ -57,10 +57,6 @@ const Queue = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
-    this.getSize = function() {
-        return array.length;
-    };
-
     this.headItem = function() {
         if (array.length > 0) {
             return array[0];

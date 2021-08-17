@@ -98,20 +98,13 @@ Collection.prototype.isEmpty = function() {
 
 
 /**
- * This abstract method returns the number of items that this collection contains.
+ * This method returns the number of items that this collection contains.
  * It must be implemented by a subclass.
  *
  * @returns {Number} The number of items that this collection contains.
  */
 Collection.prototype.getSize = function() {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
-        $procedure: '$getSize',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
+    return this.toArray().length;
 };
 
 

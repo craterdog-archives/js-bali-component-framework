@@ -46,10 +46,6 @@ const Tree = function(type, debug) {
         return array.slice();  // a copy of the array
     };
 
-    this.getSize = function() {
-        return array.length;
-    };
-
     this.getParent = function() { };  // will be reset by parent when added as a child
 
     this.getItem = function(index) {

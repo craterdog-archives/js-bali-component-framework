@@ -57,10 +57,6 @@ const Stack = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
-    this.getSize = function() {
-        return array.length;
-    };
-
     this.topItem = function() {
         if (array.length > 0) {
             return array.peek();

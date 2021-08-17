@@ -57,10 +57,6 @@ const List = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
-    this.getSize = function() {
-        return array.length;
-    };
-
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
