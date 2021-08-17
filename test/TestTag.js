@@ -35,13 +35,16 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
             }
         });
 
-        it('should generate a random tag with 15 bytes', function() {
-            const random = bali.tag(15);
-            expect(random.getSize()).to.equal(15);
-            const expected = random.toString();
-            const tag = bali.component(expected);
-            const result = tag.toString();
-            expect(result).to.equal(expected);
+        it('should generate random tags with variable length bytes', function() {
+            for (var i = 5; i < 25; i++) {
+                const random = bali.tag(i);
+                expect(random.getSize()).to.equal(i);
+                const expected = random.toString();
+                const tag = bali.component(expected);
+                const result = tag.toString();
+                console.log('        ' + result);
+                expect(result).to.equal(expected);
+            }
         });
 
         it('should generate a predefined tag', function() {
