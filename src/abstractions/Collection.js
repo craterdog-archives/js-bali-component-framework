@@ -419,7 +419,6 @@ const CollectionIterator = function(array, parameters, debug) {
     Iterator.call(
         this,
         ['/bali/collections/CollectionIterator'],
-        [],
         parameters,
         debug
     );

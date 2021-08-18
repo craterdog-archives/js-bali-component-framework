@@ -176,7 +176,6 @@ const TextIterator = function(text, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/elements/TextIterator'],
-        [],
         parameters,
         debug
     );

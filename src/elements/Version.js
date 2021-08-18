@@ -246,7 +246,6 @@ const VersionIterator = function(levels, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/elements/VersionIterator'],
-        [],
         parameters,
         debug
     );

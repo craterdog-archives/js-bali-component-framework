@@ -307,7 +307,6 @@ const SetIterator = function(tree, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/collections/SetIterator'],
-        [],
         parameters,
         debug
     );

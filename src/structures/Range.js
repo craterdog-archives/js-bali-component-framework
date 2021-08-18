@@ -166,7 +166,6 @@ const RangeIterator = function(range, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/structures/RangeIterator'],
-        [],
         parameters,
         debug
     );

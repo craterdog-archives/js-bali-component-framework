@@ -188,7 +188,6 @@ const NameIterator = function(identifiers, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/elements/NameIterator'],
-        [],
         parameters,
         debug
     );

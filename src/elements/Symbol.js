@@ -158,7 +158,6 @@ const SymbolIterator = function(symbol, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/elements/SymbolIterator'],
-        [],
         parameters,
         debug
     );

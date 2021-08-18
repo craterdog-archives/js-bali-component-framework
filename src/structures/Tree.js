@@ -252,7 +252,6 @@ const TreeIterator = function(array, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/structures/TreeIterator'],
-        [],
         parameters,
         debug
     );

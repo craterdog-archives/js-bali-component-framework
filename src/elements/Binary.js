@@ -321,7 +321,6 @@ const BinaryIterator = function(buffer, parameters, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/elements/BinaryIterator'],
-        [],
         parameters,
         debug
     );

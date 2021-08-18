@@ -40,16 +40,15 @@ const Exception = require('../structures/Exception').Exception;
  * with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
- * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Iterator} The new iterator.
  */
-const Iterator = function(ancestry, interfaces, parameters, debug) {
+const Iterator = function(ancestry, parameters, debug) {
     Component.call(
         this,
         ancestry.concat('/bali/abstractions/Iterator'),
-        interfaces,
+        [],
         parameters,
         debug
     );
