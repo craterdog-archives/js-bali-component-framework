@@ -465,3 +465,4 @@ const CollectionIterator = function(array, parameters, debug) {
 };
 CollectionIterator.prototype = Object.create(Iterator.prototype);
 CollectionIterator.prototype.constructor = CollectionIterator;
+Collection.Iterator = CollectionIterator;

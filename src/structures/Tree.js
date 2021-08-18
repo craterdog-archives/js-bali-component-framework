@@ -190,7 +190,7 @@ Tree.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this structure.
  */
 Tree.prototype.getIterator = function() {
-    const iterator = new TreeIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new abstractions.Collection.Iterator(this.toArray(), this.getParameters(), this.debug);
     return iterator;
 };
 
@@ -245,56 +245,3 @@ Tree.prototype.normalizedIndex = function(index) {
     return index;
 };
 
-
-// PRIVATE CLASSES
-
-const TreeIterator = function(array, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/structures/TreeIterator'],
-        parameters,
-        debug
-    );
-
-    // the array and current slot index are private attributes so methods that use them
-    // are defined in the constructor
-    var slot = 0;  // the slot before the first item
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first item
-    };
-
-    this.toSlot = function(newSlot) {
-        const size = array.length;
-        if (newSlot > size) newSlot = size;
-        if (newSlot < -size) newSlot = -size;
-        if (newSlot < 0) newSlot = newSlot + size + 1;
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = array.length;  // the slot after the last item
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < array.length;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return array[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return array[slot++];
-    };
-
-    return this;
-};
-TreeIterator.prototype = Object.create(abstractions.Iterator.prototype);
-TreeIterator.prototype.constructor = TreeIterator;
