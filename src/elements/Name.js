@@ -91,17 +91,6 @@ Name.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the identifiers in
- * this name string.
- * @returns {Iterator} An iterator for this name string.
- */
-Name.prototype.getIterator = function() {
-    const iterator = new NameIterator(this.getValue(), this.getParameters(), this.debug);
-    return iterator;
-};
-
-
-/**
  * This method returns the identifier at the specified index from this name string.
  *
  * @param {Number} index The index of the identifier to be retrieved from this name
@@ -181,50 +170,3 @@ Name.concatenation = function(first, second, debug) {
     return new Name(identifiers, first.getParameters(), debug);
 };
 
-
-// PRIVATE CLASSES
-
-const NameIterator = function(identifiers, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/elements/NameIterator'],
-        parameters,
-        debug
-    );
-    var slot = 0;  // the slot before the first identifier
-    const size = identifiers.length;  // static so we can cache it here
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first identifier
-    };
-
-    this.toSlot = function(newSlot) {
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = size;  // the slot after the last identifier
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < size;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return identifiers[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return identifiers[slot++];
-    };
-
-    return this;
-};
-NameIterator.prototype = Object.create(abstractions.Iterator.prototype);
-NameIterator.prototype.constructor = NameIterator;

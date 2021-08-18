@@ -83,17 +83,6 @@ Binary.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the bytes in
- * this binary string.
- * @returns {Iterator} An iterator for this binary string.
- */
-Binary.prototype.getIterator = function() {
-    const iterator = new BinaryIterator(this.getValue(), this.getParameters(), this.debug);
-    return iterator;
-};
-
-
-/**
  * This method returns the byte at the specified index from this binary string.
  *
  * @param {Number} index The index of the byte to be retrieved from this binary string.
@@ -314,50 +303,3 @@ Binary.concatenation = function(first, second, debug) {
     return new Binary(buffer, first.getParameters(), debug);
 };
 
-
-// PRIVATE CLASSES
-
-const BinaryIterator = function(buffer, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/elements/BinaryIterator'],
-        parameters,
-        debug
-    );
-    var slot = 0;  // the slot before the first number
-    const size = buffer.length;  // static so we can cache it here
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first number
-    };
-
-    this.toSlot = function(newSlot) {
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = size;  // the slot after the last number
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < size;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return buffer[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return buffer[slot++];
-    };
-
-    return this;
-};
-BinaryIterator.prototype = Object.create(abstractions.Iterator.prototype);
-BinaryIterator.prototype.constructor = BinaryIterator;

@@ -16,6 +16,7 @@
 const utilities = require('../utilities');
 const Exception = require('../structures/Exception').Exception;
 const Element = require('./Element').Element;
+const Iterator = require('./Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
@@ -92,14 +93,8 @@ Sequence.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this sequence.
  */
 Sequence.prototype.getIterator = function() {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Sequence',
-        $procedure: '$getIterator',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
+    const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
+    return iterator;
 };
 
 
@@ -215,3 +210,51 @@ Sequence.prototype.normalizedIndex = function(index) {
     if (index < 0) index = index + size + 1;
     return index;
 };
+
+
+// PRIVATE CLASSES
+
+const StringIterator = function(string, parameters, debug) {
+    Iterator.call(
+        this,
+        ['/bali/elements/StringIterator'],
+        parameters,
+        debug
+    );
+    var slot = 0;  // the slot before the first number
+    const size = string.length;  // static so we can cache it here
+
+    this.toStart = function() {
+        slot = 0;  // the slot before the first number
+    };
+
+    this.toSlot = function(newSlot) {
+        slot = newSlot;
+    };
+
+    this.toEnd = function() {
+        slot = size;  // the slot after the last number
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < size;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return string[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return string[slot++];
+    };
+
+    return this;
+};
+StringIterator.prototype = Object.create(Iterator.prototype);
+StringIterator.prototype.constructor = StringIterator;

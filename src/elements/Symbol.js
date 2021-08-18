@@ -90,17 +90,6 @@ Symbol.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the characters in
- * this symbol.
- * @returns {Iterator} An iterator for this symbol.
- */
-Symbol.prototype.getIterator = function() {
-    const iterator = new SymbolIterator(this.getValue(), this.getParameters(), this.debug);
-    return iterator;
-};
-
-
-/**
  * This method returns the character at the specified index from this symbol.
  *
  * @param {Number} index The index of the character to be retrieved from this symbol.
@@ -151,50 +140,3 @@ Symbol.prototype.getItems = function(range) {
     return new Symbol(string, this.getParameters(), this.debug);
 };
 
-
-// PRIVATE CLASSES
-
-const SymbolIterator = function(symbol, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/elements/SymbolIterator'],
-        parameters,
-        debug
-    );
-    var slot = 0;  // the slot before the first character
-    const size = symbol.length;  // static so we can cache it here
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first character
-    };
-
-    this.toSlot = function(newSlot) {
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = size;  // the slot after the last character
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < size;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return symbol[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return symbol[slot++];
-    };
-
-    return this;
-};
-SymbolIterator.prototype = Object.create(abstractions.Iterator.prototype);
-SymbolIterator.prototype.constructor = SymbolIterator;

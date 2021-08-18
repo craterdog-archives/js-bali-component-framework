@@ -80,17 +80,6 @@ Text.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the characters in
- * this text string.
- * @returns {Iterator} An iterator for this text string.
- */
-Text.prototype.getIterator = function() {
-    const iterator = new TextIterator(this.getValue(), this.getParameters(), this.debug);
-    return iterator;
-};
-
-
-/**
  * This method returns the character at the specified index from this text string.
  *
  * @param {Number} index The index of the character to be retrieved from this text string.
@@ -169,50 +158,3 @@ Text.concatenation = function(first, second, debug) {
     return new Text(string, first.getParameters(), debug);
 };
 
-
-// PRIVATE CLASSES
-
-const TextIterator = function(text, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/elements/TextIterator'],
-        parameters,
-        debug
-    );
-    var slot = 0;  // the slot before the first number
-    const size = text.length;  // static so we can cache it here
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first number
-    };
-
-    this.toSlot = function(newSlot) {
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = size;  // the slot after the last number
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < size;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return text[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return text[slot++];
-    };
-
-    return this;
-};
-TextIterator.prototype = Object.create(abstractions.Iterator.prototype);
-TextIterator.prototype.constructor = TextIterator;
