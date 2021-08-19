@@ -112,9 +112,9 @@ FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
 // acceptClause: 'accept' expression
-FormattingVisitor.prototype.visitAcceptClause = function(tree) {
+FormattingVisitor.prototype.visitAcceptClause = function(node) {
     this.result += 'accept ';
-    const message = tree.getItem(1);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
 };
 
@@ -152,12 +152,12 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
 // arguments:
 //     expression (',' expression)* |
 //     /* no expressions */
-FormattingVisitor.prototype.visitArguments = function(tree) {
+FormattingVisitor.prototype.visitArguments = function(node) {
     this.inline++;
-    if (!tree.isEmpty()) {
+    if (!node.isEmpty()) {
         this.depth++;
         var count = 0;
-        const iterator = tree.getIterator();
+        const iterator = node.getIterator();
         while (iterator.hasNext()) {
             if (this.inline) {
                 if (count++) this.result += ', ';  // only after the first item has been formatted
@@ -175,14 +175,14 @@ FormattingVisitor.prototype.visitArguments = function(tree) {
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
-FormattingVisitor.prototype.visitArithmeticExpression = function(tree) {
+FormattingVisitor.prototype.visitArithmeticExpression = function(node) {
     this.inline++;
-    var operand = tree.getItem(1);
+    var operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.result += ' ';
-    this.result += tree.operator;
+    this.result += node.operator;
     this.result += ' ';
-    operand = tree.getItem(2);
+    operand = node.getItem(2);
     operand.acceptVisitor(this);
     this.inline--;
 };
@@ -197,23 +197,23 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
 
 
 // attribute: variable '[' indices ']'
-FormattingVisitor.prototype.visitAttribute = function(tree) {
-    const variable = tree.getItem(1);
+FormattingVisitor.prototype.visitAttribute = function(node) {
+    const variable = node.getItem(1);
     variable.acceptVisitor(this);
     this.result += '[';
-    const indices = tree.getItem(2);
+    const indices = node.getItem(2);
     indices.acceptVisitor(this);
     this.result += ']';
 };
 
 
 // attributeExpression: expression '[' indices ']'
-FormattingVisitor.prototype.visitAttributeExpression = function(tree) {
+FormattingVisitor.prototype.visitAttributeExpression = function(node) {
     this.inline++;
-    const expression = tree.getItem(1);
+    const expression = node.getItem(1);
     expression.acceptVisitor(this);
     this.result += '[';
-    const indices = tree.getItem(2);
+    const indices = node.getItem(2);
     indices.acceptVisitor(this);
     this.result += ']';
     this.inline--;
@@ -263,34 +263,34 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 
 
 // block: '{' code '}'
-FormattingVisitor.prototype.visitBlock = function(tree) {
+FormattingVisitor.prototype.visitBlock = function(node) {
     this.result += '{';
-    const code = tree.getItem(1);
+    const code = node.getItem(1);
     code.acceptVisitor(this);
     this.result += '}';
 };
 
 
 // breakClause: 'break' 'loop'
-FormattingVisitor.prototype.visitBreakClause = function(tree) {
+FormattingVisitor.prototype.visitBreakClause = function(node) {
     this.result += 'break loop';
 };
 
 
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
-FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
+FormattingVisitor.prototype.visitCheckoutClause = function(node) {
     this.result += 'checkout ';
     var index = 1;
-    if (tree.getSize() === 3) {
+    if (node.getSize() === 3) {
         this.result += 'level ';
-        const level = tree.getItem(index++);
+        const level = node.getItem(index++);
         level.acceptVisitor(this);
         this.result += ' of ';
     }
-    const recipient = tree.getItem(index++);
+    const recipient = node.getItem(index++);
     recipient.acceptVisitor(this);
     this.result += ' from ';
-    const name = tree.getItem(index);
+    const name = node.getItem(index);
     name.acceptVisitor(this);
 };
 
@@ -299,9 +299,9 @@ FormattingVisitor.prototype.visitCheckoutClause = function(tree) {
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
 //     /* no statements */
-FormattingVisitor.prototype.visitCode = function(tree) {
+FormattingVisitor.prototype.visitCode = function(node) {
     this.depth++;
-    const iterator = tree.getIterator();
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         this.result += this.getNewline();
         const statement = iterator.getNext();
@@ -341,77 +341,77 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
 
 
 // comment: NOTE | COMMENT
-FormattingVisitor.prototype.visitComment = function(tree) {
-    this.result += tree.text;
+FormattingVisitor.prototype.visitComment = function(node) {
+    this.result += node.text;
 }
 
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
-FormattingVisitor.prototype.visitComparisonExpression = function(tree) {
+FormattingVisitor.prototype.visitComparisonExpression = function(node) {
     this.inline++;
-    var operand = tree.getItem(1);
+    var operand = node.getItem(1);
     operand.acceptVisitor(this);
-    this.result += ' ' + tree.operator + ' ';
-    operand = tree.getItem(2);
+    this.result += ' ' + node.operator + ' ';
+    operand = node.getItem(2);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // complementExpression: 'NOT' expression
-FormattingVisitor.prototype.visitComplementExpression = function(tree) {
+FormattingVisitor.prototype.visitComplementExpression = function(node) {
     this.inline++;
     this.result += 'NOT ';
-    const operand = tree.getItem(1);
+    const operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // concatenationExpression: expression '&' expression
-FormattingVisitor.prototype.visitConcatenationExpression = function(tree) {
+FormattingVisitor.prototype.visitConcatenationExpression = function(node) {
     this.inline++;
-    var operand = tree.getItem(1);
+    var operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.result += ' & ';
-    operand = tree.getItem(2);
+    operand = node.getItem(2);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // continueClause: 'continue' 'loop'
-FormattingVisitor.prototype.visitContinueClause = function(tree) {
+FormattingVisitor.prototype.visitContinueClause = function(node) {
     this.result += 'continue loop';
 };
 
 
 // defaultExpression: expression '?' expression
-FormattingVisitor.prototype.visitDefaultExpression = function(tree) {
+FormattingVisitor.prototype.visitDefaultExpression = function(node) {
     this.inline++;
-    const value = tree.getItem(1);
+    const value = node.getItem(1);
     value.acceptVisitor(this);
     this.result += ' ? ';
-    const defaultValue = tree.getItem(2);
+    const defaultValue = node.getItem(2);
     defaultValue.acceptVisitor(this);
     this.inline--;
 };
 
 
 // dereferenceExpression: '@' expression
-FormattingVisitor.prototype.visitDereferenceExpression = function(tree) {
+FormattingVisitor.prototype.visitDereferenceExpression = function(node) {
     this.inline++;
     this.result += '@';
-    const reference = tree.getItem(1);
+    const reference = node.getItem(1);
     reference.acceptVisitor(this);
     this.inline--;
 };
 
 
 // discardClause: 'discard' expression
-FormattingVisitor.prototype.visitDiscardClause = function(tree) {
+FormattingVisitor.prototype.visitDiscardClause = function(node) {
     this.result += 'discard ';
-    const document = tree.getItem(1);
+    const document = node.getItem(1);
     document.acceptVisitor(this);
 };
 
@@ -427,34 +427,34 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 
 
 // evaluateClause: (recipient ':=')? expression
-FormattingVisitor.prototype.visitEvaluateClause = function(tree) {
-    const size = tree.getSize();
+FormattingVisitor.prototype.visitEvaluateClause = function(node) {
+    const size = node.getSize();
     if (size > 1) {
-        const recipient = tree.getItem(1);
+        const recipient = node.getItem(1);
         recipient.acceptVisitor(this);
         this.result += ' := ';
     }
-    const expression = tree.getItem(size);
+    const expression = node.getItem(size);
     expression.acceptVisitor(this);
 };
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-FormattingVisitor.prototype.visitExponentialExpression = function(tree) {
+FormattingVisitor.prototype.visitExponentialExpression = function(node) {
     this.inline++;
-    var operand = tree.getItem(1);
+    var operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.result += ' ^ ';
-    operand = tree.getItem(2);
+    operand = node.getItem(2);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // factorialExpression: expression '!'
-FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
+FormattingVisitor.prototype.visitFactorialExpression = function(node) {
     this.inline++;
-    const operand = tree.getItem(1);
+    const operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.result += '!';
     this.inline--;
@@ -462,18 +462,18 @@ FormattingVisitor.prototype.visitFactorialExpression = function(tree) {
 
 
 // function: IDENTIFIER
-FormattingVisitor.prototype.visitFunction = function(tree) {
-    this.result += tree.identifier;
+FormattingVisitor.prototype.visitFunction = function(node) {
+    this.result += node.identifier;
 };
 
 
 // functionExpression: function '(' arguments ')'
-FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
+FormattingVisitor.prototype.visitFunctionExpression = function(node) {
     this.inline++;
-    const functionName = tree.getItem(1);
+    const functionName = node.getItem(1);
     functionName.acceptVisitor(this);
     this.result += '(';
-    const args = tree.getItem(2);
+    const args = node.getItem(2);
     args.acceptVisitor(this);
     this.result += ')';
     this.inline--;
@@ -481,15 +481,15 @@ FormattingVisitor.prototype.visitFunctionExpression = function(tree) {
 
 
 // handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
-FormattingVisitor.prototype.visitHandleClause = function(tree) {
-    const iterator = tree.getIterator();
+FormattingVisitor.prototype.visitHandleClause = function(node) {
+    const iterator = node.getIterator();
 
     // handle symbol
     this.result += ' handle ';
     var symbol = iterator.getNext();
     symbol.acceptVisitor(this);
 
-    if (tree.getSize() === 2) {
+    if (node.getSize() === 2) {
         // handle default ('matching any') with block
         this.result += ' with ';
         const block = iterator.getNext();
@@ -509,28 +509,28 @@ FormattingVisitor.prototype.visitHandleClause = function(tree) {
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-FormattingVisitor.prototype.visitIfClause = function(tree) {
+FormattingVisitor.prototype.visitIfClause = function(node) {
     // handle first condition
     this.result += 'if ';
-    var condition = tree.getItem(1);
+    var condition = node.getItem(1);
     condition.acceptVisitor(this);
     this.result += ' then ';
-    var block = tree.getItem(2);
+    var block = node.getItem(2);
     block.acceptVisitor(this);
 
     // handle optional additional conditions
-    const size = tree.getSize();
+    const size = node.getSize();
     for (var i = 3; i <= size; i += 2) {
         if (i === size) {
             this.result += ' else ';
-            block = tree.getItem(i);
+            block = node.getItem(i);
             block.acceptVisitor(this);
         } else {
             this.result += ' else if ';
-            condition = tree.getItem(i);
+            condition = node.getItem(i);
             condition.acceptVisitor(this);
             this.result += ' then ';
-            block = tree.getItem(i + 1);
+            block = node.getItem(i + 1);
             block.acceptVisitor(this);
         }
     }
@@ -538,11 +538,11 @@ FormattingVisitor.prototype.visitIfClause = function(tree) {
 
 
 // indices: expression (',' expression)*
-FormattingVisitor.prototype.visitIndices = function(tree) {
+FormattingVisitor.prototype.visitIndices = function(node) {
     this.inline++;
     this.depth++;
     var count = 0;
-    const iterator = tree.getIterator();
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         if (this.inline) {
             if (count++) this.result += ', ';  // only after the first item has been formatted
@@ -559,32 +559,32 @@ FormattingVisitor.prototype.visitIndices = function(tree) {
 
 
 // inversionExpression: ('-' | '/' | '*') expression
-FormattingVisitor.prototype.visitInversionExpression = function(tree) {
+FormattingVisitor.prototype.visitInversionExpression = function(node) {
     this.inline++;
-    this.result += tree.operator;
-    const operand = tree.getItem(1);
+    this.result += node.operator;
+    const operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
-FormattingVisitor.prototype.visitLogicalExpression = function(tree) {
+FormattingVisitor.prototype.visitLogicalExpression = function(node) {
     this.inline++;
-    var operand = tree.getItem(1);
+    var operand = node.getItem(1);
     operand.acceptVisitor(this);
-    this.result += ' ' + tree.operator + ' ';
-    operand = tree.getItem(2);
+    this.result += ' ' + node.operator + ' ';
+    operand = node.getItem(2);
     operand.acceptVisitor(this);
     this.inline--;
 };
 
 
 // magnitudeExpression: '|' expression '|'
-FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
+FormattingVisitor.prototype.visitMagnitudeExpression = function(node) {
     this.inline++;
     this.result += '|';
-    const operand = tree.getItem(1);
+    const operand = node.getItem(1);
     operand.acceptVisitor(this);
     this.result += '|';
     this.inline--;
@@ -592,21 +592,21 @@ FormattingVisitor.prototype.visitMagnitudeExpression = function(tree) {
 
 
 // message: IDENTIFIER
-FormattingVisitor.prototype.visitMessage = function(tree) {
-    this.result += tree.identifier;
+FormattingVisitor.prototype.visitMessage = function(node) {
+    this.result += node.identifier;
 };
 
 
 // messageExpression: expression ('.' | '<-') message '(' arguments ')'
-FormattingVisitor.prototype.visitMessageExpression = function(tree) {
+FormattingVisitor.prototype.visitMessageExpression = function(node) {
     this.inline++;
-    const target = tree.getItem(1);
+    const target = node.getItem(1);
     target.acceptVisitor(this);
-    this.result += tree.operator;
-    const messageName = tree.getItem(2);
+    this.result += node.operator;
+    const messageName = node.getItem(2);
     messageName.acceptVisitor(this);
     this.result += '(';
-    const args = tree.getItem(3);
+    const args = node.getItem(3);
     args.acceptVisitor(this);
     this.result += ')';
     this.inline--;
@@ -733,21 +733,21 @@ FormattingVisitor.prototype.visitPercentage = function(percentage) {
 
 
 // postClause: 'post' expression 'to' expression
-FormattingVisitor.prototype.visitPostClause = function(tree) {
+FormattingVisitor.prototype.visitPostClause = function(node) {
     this.result += 'post ';
-    const message = tree.getItem(1);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
     this.result += ' to ';
-    const queue = tree.getItem(2);
+    const queue = node.getItem(2);
     queue.acceptVisitor(this);
 };
 
 
 // precedenceExpression: '(' expression ')'
-FormattingVisitor.prototype.visitPrecedenceExpression = function(tree) {
+FormattingVisitor.prototype.visitPrecedenceExpression = function(node) {
     this.inline++;
     this.result += '(';
-    const expression = tree.getItem(1);
+    const expression = node.getItem(1);
     expression.acceptVisitor(this);
     this.result += ')';
     this.inline--;
@@ -787,9 +787,9 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
 
 
 // publishClause: 'publish' expression
-FormattingVisitor.prototype.visitPublishClause = function(tree) {
+FormattingVisitor.prototype.visitPublishClause = function(node) {
     this.result += 'publish ';
-    const event = tree.getItem(1);
+    const event = node.getItem(1);
     event.acceptVisitor(this);
 };
 
@@ -822,70 +822,70 @@ FormattingVisitor.prototype.visitResource = function(resource) {
 
 
 // rejectClause: 'reject' expression
-FormattingVisitor.prototype.visitRejectClause = function(tree) {
+FormattingVisitor.prototype.visitRejectClause = function(node) {
     this.result += 'reject ';
-    const message = tree.getItem(1);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
 };
 
 
 // retrieveClause: 'retrieve' recipient 'from' expression
-FormattingVisitor.prototype.visitRetrieveClause = function(tree) {
+FormattingVisitor.prototype.visitRetrieveClause = function(node) {
     this.result += 'retrieve ';
-    const message = tree.getItem(1);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
     this.result += ' from ';
-    const queue = tree.getItem(2);
+    const queue = node.getItem(2);
     queue.acceptVisitor(this);
 };
 
 
 // returnClause: 'return' expression?
-FormattingVisitor.prototype.visitReturnClause = function(tree) {
+FormattingVisitor.prototype.visitReturnClause = function(node) {
     this.result += 'return';
-    if (tree.getSize() > 0) {
+    if (node.getSize() > 0) {
         this.result += ' ';
-        const result = tree.getItem(1);
+        const result = node.getItem(1);
         result.acceptVisitor(this);
     }
 };
 
 
 // saveClause: 'save' expression ('as' recipient)?
-FormattingVisitor.prototype.visitSaveClause = function(tree) {
+FormattingVisitor.prototype.visitSaveClause = function(node) {
     this.result += 'save ';
-    const document = tree.getItem(1);
+    const document = node.getItem(1);
     document.acceptVisitor(this);
-    if (tree.getSize() > 1) {
+    if (node.getSize() > 1) {
         this.result += ' as ';
-        const recipient = tree.getItem(2);
+        const recipient = node.getItem(2);
         recipient.acceptVisitor(this);
     }
 };
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-FormattingVisitor.prototype.visitSelectClause = function(tree) {
+FormattingVisitor.prototype.visitSelectClause = function(node) {
     // handle the selection
     this.result += 'select ';
-    const value = tree.getItem(1);
+    const value = node.getItem(1);
     value.acceptVisitor(this);
     this.result += ' from';
 
     // handle option blocks
     var block;
-    const size = tree.getSize();
+    const size = node.getSize();
     for (var i = 2; i <= size; i += 2) {
         if (i === size) {
             this.result += ' else ';
-            block = tree.getItem(i);
+            block = node.getItem(i);
             block.acceptVisitor(this);
         } else {
             this.result += ' ';
-            const option = tree.getItem(i);
+            const option = node.getItem(i);
             option.acceptVisitor(this);
             this.result += ' do ';
-            block = tree.getItem(i + 1);
+            block = node.getItem(i + 1);
             block.acceptVisitor(this);
         }
     }
@@ -893,12 +893,12 @@ FormattingVisitor.prototype.visitSelectClause = function(tree) {
 
 
 // signClause: 'sign' expression 'as' expression
-FormattingVisitor.prototype.visitSignClause = function(tree) {
+FormattingVisitor.prototype.visitSignClause = function(node) {
     this.result += 'sign ';
-    const component = tree.getItem(1);
+    const component = node.getItem(1);
     component.acceptVisitor(this);
     this.result += ' as ';
-    const reference = tree.getItem(2);
+    const reference = node.getItem(2);
     reference.acceptVisitor(this);
 };
 
@@ -941,16 +941,16 @@ FormattingVisitor.prototype.visitText = function(text) {
 
 
 // throwClause: 'throw' expression
-FormattingVisitor.prototype.visitThrowClause = function(tree) {
+FormattingVisitor.prototype.visitThrowClause = function(node) {
     this.result += 'throw ';
-    const exception = tree.getItem(1);
+    const exception = node.getItem(1);
     exception.acceptVisitor(this);
 };
 
 
 // variable: IDENTIFIER
-FormattingVisitor.prototype.visitVariable = function(tree) {
-    this.result += tree.identifier;
+FormattingVisitor.prototype.visitVariable = function(node) {
+    this.result += node.identifier;
 };
 
 
@@ -965,30 +965,30 @@ FormattingVisitor.prototype.visitVersion = function(version) {
 
 
 // whileClause: 'while' expression 'do' block
-FormattingVisitor.prototype.visitWhileClause = function(tree) {
+FormattingVisitor.prototype.visitWhileClause = function(node) {
     this.result += 'while ';
-    const condition = tree.getItem(1);
+    const condition = node.getItem(1);
     condition.acceptVisitor(this);
     this.result += ' do ';
-    const block = tree.getItem(2);
+    const block = node.getItem(2);
     block.acceptVisitor(this);
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-FormattingVisitor.prototype.visitWithClause = function(tree) {
+FormattingVisitor.prototype.visitWithClause = function(node) {
     this.result += 'with ';
-    const size = tree.getSize();
+    const size = node.getSize();
     if (size > 2) {
         this.result += 'each ';
-        const item = tree.getItem(1);
+        const item = node.getItem(1);
         item.acceptVisitor(this);
         this.result += ' in ';
     }
-    const collection = tree.getItem(size - 1);
+    const collection = node.getItem(size - 1);
     collection.acceptVisitor(this);
     this.result += ' do ';
-    const block = tree.getItem(size);
+    const block = node.getItem(size);
     block.acceptVisitor(this);
 };
 

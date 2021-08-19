@@ -12,9 +12,9 @@
 /**
  * This structure class implements a hierarchical structure. Each node in the tree may
  * contain zero or more children. A node with no children is an elemental component.
- * Tree nodes may also be any other type of component including catalogs, lists, sets,
- * stacks, and ranges. Collectively, all of the components including the tree nodes
- * are used to build up the parse trees that result from parsing strings containing
+ * Nodes may also be any other type of component including catalogs, lists, sets,
+ * stacks, and ranges. Collectively, all of the components including the nodes are
+ * used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
 const utilities = require('../utilities');
@@ -24,16 +24,16 @@ const abstractions = require('../abstractions');
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new tree node component.
+ * This function creates a new node component.
  *
- * @param {String} type The type of the tree node component.
+ * @param {String} type The type of the node component.
  * @param {Number} debug A number in the range 0..3.
- * @returns {Tree} The new tree node component.
+ * @returns {Node} The new node component.
  */
-const Tree = function(type, debug) {
+const Node = function(type, debug) {
     abstractions.Structure.call(
         this,
-        [type, '/bali/structures/Tree'],
+        [type, '/bali/structures/Node'],
         [
             '/bali/interfaces/Sequential',
             '/bali/interfaces/Composite'
@@ -52,7 +52,7 @@ const Tree = function(type, debug) {
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$getItem', '$index', index, [
+            validator.validateType('/bali/structures/Node', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
@@ -63,13 +63,13 @@ const Tree = function(type, debug) {
     this.getItems = function(range) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$getItems', '$range', range, [
+            validator.validateType('/bali/structures/Node', '$getItems', '$range', range, [
                 '/javascript/String',
                 '/bali/structures/Range'
             ]);
         }
         range = this.componentize(range);
-        const items = new Tree(this.getType(), this.debug);
+        const items = new Node(this.getType(), this.debug);
         if (range && range.getIterator) {
             const iterator = range.getIterator();
             while (iterator.hasNext()) {
@@ -84,7 +84,7 @@ const Tree = function(type, debug) {
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$addItem', '$item', item, [
+            validator.validateType('/bali/structures/Node', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -95,10 +95,10 @@ const Tree = function(type, debug) {
     this.setItem = function(index, item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$setItem', '$index', index, [
+            validator.validateType('/bali/structures/Node', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/structures/Tree', '$setItem', '$item', item, [
+            validator.validateType('/bali/structures/Node', '$setItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -118,7 +118,7 @@ const Tree = function(type, debug) {
     this.getAttribute = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$getAttribute', '$index', index, [
+            validator.validateType('/bali/structures/Node', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
@@ -129,10 +129,10 @@ const Tree = function(type, debug) {
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Tree', '$setAttribute', '$index', index, [
+            validator.validateType('/bali/structures/Node', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/structures/Tree', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/structures/Node', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -142,9 +142,9 @@ const Tree = function(type, debug) {
 
     return this;
 };
-Tree.prototype = Object.create(abstractions.Structure.prototype);
-Tree.prototype.constructor = Tree;
-exports.Tree = Tree;
+Node.prototype = Object.create(abstractions.Structure.prototype);
+Node.prototype.constructor = Node;
+exports.Node = Node;
 
 
 // PUBLIC METHODS
@@ -155,7 +155,7 @@ exports.Tree = Tree;
  *
  * @returns {Boolean} Whether or not this structure contains a meaningful value.
  */
-Tree.prototype.toBoolean = function() {
+Node.prototype.toBoolean = function() {
     return this.getSize() > 0;
 };
 
@@ -165,7 +165,7 @@ Tree.prototype.toBoolean = function() {
  *
  * @returns {Boolean} Whether or not this structure contains any items.
  */
-Tree.prototype.isEmpty = function() {
+Node.prototype.isEmpty = function() {
     return this.getSize() === 0;
 };
 
@@ -176,7 +176,7 @@ Tree.prototype.isEmpty = function() {
  *
  * @returns {Number} The number of items that this structure contains.
  */
-Tree.prototype.getSize = function() {
+Node.prototype.getSize = function() {
     return this.toArray().length;
 };
 
@@ -186,7 +186,7 @@ Tree.prototype.getSize = function() {
  * this structure.
  * @returns {Iterator} An iterator for this structure.
  */
-Tree.prototype.getIterator = function() {
+Node.prototype.getIterator = function() {
     const iterator = new abstractions.Collection.Iterator(this.toArray(), this.getParameters(), this.debug);
     return iterator;
 };
@@ -195,10 +195,10 @@ Tree.prototype.getIterator = function() {
 /**
  * This method accepts a visitor as part of the visitor pattern.
  *
- * @param {NodeVisitor} visitor The visitor that wants to visit this tree node.
+ * @param {NodeVisitor} visitor The visitor that wants to visit this node.
  */
-Tree.prototype.acceptVisitor = function(visitor) {
-    // call the visitor method for the specific type of tree node
+Node.prototype.acceptVisitor = function(visitor) {
+    // call the visitor method for the specific type of node
     const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/structures/<Type>'
     visitor[functionName](this);
 };
@@ -218,17 +218,17 @@ Tree.prototype.acceptVisitor = function(visitor) {
  * @param {Number} index The index to be normalized -N..N.
  * @returns {Number} The normalized 1..N index.
  */
-Tree.prototype.normalizedIndex = function(index) {
+Node.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Tree', '$normalizedIndex', '$index', index, [
+        validator.validateType('/bali/structures/Node', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
     const size = this.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/structures/Tree',
+            $module: '/bali/structures/Node',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,

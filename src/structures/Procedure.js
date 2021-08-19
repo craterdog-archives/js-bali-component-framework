@@ -23,7 +23,7 @@ const abstractions = require('../abstractions');
  * This function creates a new procedure with optional parameters that are
  * used to parameterize its behavior.
  *
- * @param {Tree} code The code that is defined by the procedure.
+ * @param {Node} code The code that is defined by the procedure.
  * @param {Object} parameters Optional parameters used to parameterize the procedure.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Procedure} A new procedure.

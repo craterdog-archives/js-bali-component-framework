@@ -149,8 +149,8 @@ const natural = function(first, second) {
     if (first.isComponent && first.isType('/bali/structures/Procedure')) {
         return natural(first.getCode(), second.getCode());
     }
-    if (first.isComponent && first.isType('/bali/structures/Tree')) {
-        // tree leaf nodes are treated as empty arrays
+    if (first.isComponent && first.isType('/bali/structures/Node')) {
+        // leaf nodes are treated as empty arrays
         return natural(first.toArray(), second.toArray());
     }
 

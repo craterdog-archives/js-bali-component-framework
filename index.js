@@ -360,6 +360,13 @@ exports.api = function(defaultLevel) {
         return elements.Name.concatenation(first, second, debug);
     };
 
+    // NODE
+    const node = function(type, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const node = new structures.Node(type, debug);
+        return node;
+    };
+
     // NUMBER
     const number = function(real, imaginary, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -552,13 +559,6 @@ exports.api = function(defaultLevel) {
         return elements.Text.concatenation(first, second, debug);
     };
 
-    // TREE
-    const tree = function(type, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        const tree = new structures.Tree(type, debug);
-        return tree;
-    };
-
     // TYPE
     const type = function(component, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -638,6 +638,7 @@ exports.api = function(defaultLevel) {
         list: list,
         moment: moment,
         name: name,
+        node: node,
         number: number,
         pattern: pattern,
         percentage: percentage,
@@ -651,7 +652,6 @@ exports.api = function(defaultLevel) {
         symbol: symbol,
         tag: tag,
         text: text,
-        tree: tree,
         type: type,
         validator: validator,
         version: version,

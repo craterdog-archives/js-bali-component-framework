@@ -14,14 +14,14 @@ const expect = require('chai').expect;
 const bali = require('../').api(debug);
 
 
-describe('Bali Nebula™ Component Framework - Tree', function() {
+describe('Bali Nebula™ Component Framework - Node', function() {
 
-    describe('Test tree constructors and methods', function() {
+    describe('Test node constructors and methods', function() {
 
-        it('should construct trees and access children', function() {
-            const parent = bali.tree('/bali/structures/Block', debug);
-            const child = bali.tree('/bali/structures/Comment', debug);
-            const sibling = bali.tree('/bali/structures/Comment', debug);
+        it('should construct nodes and access children', function() {
+            const parent = bali.node('/bali/structures/Block', debug);
+            const child = bali.node('/bali/structures/Comment', debug);
+            const sibling = bali.node('/bali/structures/Comment', debug);
             expect(parent.isEmpty()).to.equal(true);
             parent.addItem(child);
             expect(parent.getItem(1)).to.equal(child);

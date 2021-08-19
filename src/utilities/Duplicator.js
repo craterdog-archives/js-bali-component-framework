@@ -57,9 +57,9 @@ DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 
 // acceptClause: 'accept' expression
-DuplicatingVisitor.prototype.visitAcceptClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const message = tree.getItem(1);
+DuplicatingVisitor.prototype.visitAcceptClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
@@ -78,9 +78,9 @@ DuplicatingVisitor.prototype.visitAngle = function(angle) {
 // arguments:
 //     expression (',' expression)* |
 //     /* no expressions */
-DuplicatingVisitor.prototype.visitArguments = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitArguments = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
         item.acceptVisitor(this);
@@ -91,12 +91,12 @@ DuplicatingVisitor.prototype.visitArguments = function(tree) {
 
 
 // arithmeticExpression: expression ('*' | '/' | '//' | '+' | '-') expression
-DuplicatingVisitor.prototype.visitArithmeticExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitArithmeticExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    copy.operator = tree.operator;
-    tree.getItem(2).acceptVisitor(this);
+    copy.operator = node.operator;
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -113,22 +113,22 @@ DuplicatingVisitor.prototype.visitAssociation = function(association) {
 
 
 // attribute: variable '[' indices ']'
-DuplicatingVisitor.prototype.visitAttribute = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitAttribute = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // attributeExpression: expression '[' indices ']'
-DuplicatingVisitor.prototype.visitAttributeExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitAttributeExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -144,25 +144,25 @@ DuplicatingVisitor.prototype.visitBinary = function(binary) {
 
 
 // block: '{' procedure '}'
-DuplicatingVisitor.prototype.visitBlock = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitBlock = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // breakClause: 'break' 'loop'
-DuplicatingVisitor.prototype.visitBreakClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
+DuplicatingVisitor.prototype.visitBreakClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
     this.result = copy;
 };
 
 
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
-DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitCheckoutClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
         item.acceptVisitor(this);
@@ -176,9 +176,9 @@ DuplicatingVisitor.prototype.visitCheckoutClause = function(tree) {
 //     statement (';' statement)* |
 //     EOL (statement EOL)* |
 //     /* no statements */
-DuplicatingVisitor.prototype.visitCode = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitCode = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -204,76 +204,76 @@ DuplicatingVisitor.prototype.visitCollection = function(collection) {
 
 
 // comment: NOTE | COMMENT
-DuplicatingVisitor.prototype.visitComment = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.text = tree.text;
+DuplicatingVisitor.prototype.visitComment = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    copy.text = node.text;
     this.result = copy;
 };
 
 
 // comparisonExpression: expression ('<' | '=' | '>' | 'IS' | 'MATCHES') expression
-DuplicatingVisitor.prototype.visitComparisonExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitComparisonExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    copy.operator = tree.operator;
-    tree.getItem(2).acceptVisitor(this);
+    copy.operator = node.operator;
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // complementExpression: 'NOT' expression
-DuplicatingVisitor.prototype.visitComplementExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitComplementExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // concatenationExpression: expression '&' expression
-DuplicatingVisitor.prototype.visitConcatenationExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitConcatenationExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // continueClause: 'continue' 'loop'
-DuplicatingVisitor.prototype.visitContinueClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
+DuplicatingVisitor.prototype.visitContinueClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
     this.result = copy;
 };
 
 
 // defaultExpression: expression '?' expression
-DuplicatingVisitor.prototype.visitDefaultExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitDefaultExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // dereferenceExpression: '@' expression
-DuplicatingVisitor.prototype.visitDereferenceExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitDereferenceExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // discardClause: 'discard' expression
-DuplicatingVisitor.prototype.visitDiscardClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitDiscardClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -289,9 +289,9 @@ DuplicatingVisitor.prototype.visitDuration = function(duration) {
 
 
 // evaluateClause: (recipient ':=')? expression
-DuplicatingVisitor.prototype.visitEvaluateClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitEvaluateClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -301,48 +301,48 @@ DuplicatingVisitor.prototype.visitEvaluateClause = function(tree) {
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-DuplicatingVisitor.prototype.visitExponentialExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitExponentialExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // factorialExpression: expression '!'
-DuplicatingVisitor.prototype.visitFactorialExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitFactorialExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // function: IDENTIFIER
-DuplicatingVisitor.prototype.visitFunction = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.identifier = tree.identifier;
+DuplicatingVisitor.prototype.visitFunction = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    copy.identifier = node.identifier;
     this.result = copy;
 };
 
 
 // functionExpression: function '(' arguments ')'
-DuplicatingVisitor.prototype.visitFunctionExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitFunctionExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
-DuplicatingVisitor.prototype.visitHandleClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitHandleClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -352,9 +352,9 @@ DuplicatingVisitor.prototype.visitHandleClause = function(tree) {
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-DuplicatingVisitor.prototype.visitIfClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitIfClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -364,9 +364,9 @@ DuplicatingVisitor.prototype.visitIfClause = function(tree) {
 
 
 // indices: expression (',' expression)*
-DuplicatingVisitor.prototype.visitIndices = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitIndices = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         var item = iterator.getNext();
         item.acceptVisitor(this);
@@ -377,53 +377,53 @@ DuplicatingVisitor.prototype.visitIndices = function(tree) {
 
 
 // inversionExpression: ('-' | '/' | '*') expression
-DuplicatingVisitor.prototype.visitInversionExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.operator = tree.operator;
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitInversionExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    copy.operator = node.operator;
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
-DuplicatingVisitor.prototype.visitLogicalExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitLogicalExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    copy.operator = tree.operator;
-    tree.getItem(2).acceptVisitor(this);
+    copy.operator = node.operator;
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // magnitudeExpression: '|' expression '|'
-DuplicatingVisitor.prototype.visitMagnitudeExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitMagnitudeExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // message: IDENTIFIER
-DuplicatingVisitor.prototype.visitMessage = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.identifier = tree.identifier;
+DuplicatingVisitor.prototype.visitMessage = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    copy.identifier = node.identifier;
     this.result = copy;
 };
 
 
 // messageExpression: expression ('.' | '<-') message '(' arguments ')'
-DuplicatingVisitor.prototype.visitMessageExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitMessageExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
-    copy.operator = tree.operator;
+    copy.operator = node.operator;
     this.result = copy;
 };
 
@@ -498,20 +498,20 @@ DuplicatingVisitor.prototype.visitPercentage = function(percentage) {
 
 
 // postClause: 'post' expression 'to' expression
-DuplicatingVisitor.prototype.visitPostClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitPostClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // precedenceExpression: '(' expression ')'
-DuplicatingVisitor.prototype.visitPrecedenceExpression = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitPrecedenceExpression = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -539,9 +539,9 @@ DuplicatingVisitor.prototype.visitProcedure = function(procedure) {
 
 
 // publishClause: 'publish' expression
-DuplicatingVisitor.prototype.visitPublishClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitPublishClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
@@ -566,9 +566,9 @@ DuplicatingVisitor.prototype.visitResource = function(resource) {
 
 
 // rejectClause: 'reject' expression
-DuplicatingVisitor.prototype.visitRejectClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const message = tree.getItem(1);
+DuplicatingVisitor.prototype.visitRejectClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const message = node.getItem(1);
     message.acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
@@ -576,20 +576,20 @@ DuplicatingVisitor.prototype.visitRejectClause = function(tree) {
 
 
 // retrieveClause: 'retrieve' recipient 'from' expression
-DuplicatingVisitor.prototype.visitRetrieveClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitRetrieveClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // returnClause: 'return' expression?
-DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitReturnClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -599,9 +599,9 @@ DuplicatingVisitor.prototype.visitReturnClause = function(tree) {
 
 
 // saveClause: 'save' expression ('as' recipient)?
-DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitSaveClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -611,9 +611,9 @@ DuplicatingVisitor.prototype.visitSaveClause = function(tree) {
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitSelectClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -623,20 +623,20 @@ DuplicatingVisitor.prototype.visitSelectClause = function(tree) {
 
 
 // signClause: 'sign' expression 'as' expression
-DuplicatingVisitor.prototype.visitSignClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitSignClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // statement: comment | mainClause handleClause?
-DuplicatingVisitor.prototype.visitStatement = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitStatement = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
@@ -673,18 +673,18 @@ DuplicatingVisitor.prototype.visitText = function(text) {
 
 
 // throwClause: 'throw' expression
-DuplicatingVisitor.prototype.visitThrowClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitThrowClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // variable: IDENTIFIER
-DuplicatingVisitor.prototype.visitVariable = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    copy.identifier = tree.identifier;
+DuplicatingVisitor.prototype.visitVariable = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    copy.identifier = node.identifier;
     this.result = copy;
 };
 
@@ -699,20 +699,20 @@ DuplicatingVisitor.prototype.visitVersion = function(version) {
 
 
 // whileClause: 'while' expression 'do' block
-DuplicatingVisitor.prototype.visitWhileClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    tree.getItem(1).acceptVisitor(this);
+DuplicatingVisitor.prototype.visitWhileClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
-    tree.getItem(2).acceptVisitor(this);
+    node.getItem(2).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
 };
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-DuplicatingVisitor.prototype.visitWithClause = function(tree) {
-    const copy = new tree.constructor(tree.getType(), this.debug);
-    const iterator = tree.getIterator();
+DuplicatingVisitor.prototype.visitWithClause = function(node) {
+    const copy = new node.constructor(node.getType(), this.debug);
+    const iterator = node.getIterator();
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);

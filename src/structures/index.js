@@ -13,6 +13,6 @@ const elements = require('../elements/');
 
 exports.Association = require('./Association').Association;
 exports.Exception = require('./Exception').Exception;
+exports.Node = require('./Node').Node;
 exports.Procedure = require('./Procedure').Procedure;
 exports.Range = require('./Range').Range;
-exports.Tree = require('./Tree').Tree;
