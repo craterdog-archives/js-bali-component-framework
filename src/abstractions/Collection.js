@@ -292,6 +292,7 @@ Collection.prototype.getItems = function(range) {
             '/bali/structures/Range'
         ]);
     }
+    range = this.componentize(range);
     const items = new this.constructor(this.getParameters(), this.debug);
     if (range && range.getIterator) {
         const iterator = range.getIterator();

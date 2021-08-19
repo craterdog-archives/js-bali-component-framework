@@ -553,10 +553,9 @@ exports.api = function(defaultLevel) {
     };
 
     // TREE
-    const tree = function(type, children, debug) {
+    const tree = function(type, debug) {
         if (debug === undefined) debug = defaultLevel;
         const tree = new structures.Tree(type, debug);
-        tree.addItems(children);
         return tree;
     };
 

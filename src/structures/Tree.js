@@ -49,8 +49,6 @@ const Tree = function(type, debug) {
         return array.slice();  // a copy of the array
     };
 
-    this.getParent = function() { };  // will be reset by parent when added as a child
-
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
@@ -70,7 +68,8 @@ const Tree = function(type, debug) {
                 '/bali/structures/Range'
             ]);
         }
-        const items = new Tree(getType(), this.debug);
+        range = this.componentize(range);
+        const items = new Tree(this.getType(), this.debug);
         if (range && range.getIterator) {
             const iterator = range.getIterator();
             while (iterator.hasNext()) {
@@ -91,7 +90,6 @@ const Tree = function(type, debug) {
         }
         item = this.componentize(item, this.debug);
         array.push(item);
-        item.getParent = function() { return this; };
     };
 
     this.setItem = function(index, item) {
@@ -112,7 +110,6 @@ const Tree = function(type, debug) {
         }
         index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
-        item.getParent = function() { return this; };
         const oldItem = array[index];
         array[index] = item;
         return oldItem;
