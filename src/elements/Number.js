@@ -118,7 +118,7 @@ const Complex = function(value, parameters, debug) {
 };
 Complex.prototype = Object.create(abstractions.Element.prototype);
 Complex.prototype.constructor = Complex;
-exports.Complex = Complex;
+exports.Number = Complex;
 
 
 // PUBLIC METHODS
