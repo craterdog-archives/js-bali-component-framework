@@ -26,23 +26,23 @@ PERCENTAGE: ('0' | REAL) '%';
 
 RESOURCE: '<' LABEL ':' CONTEXT '>';
 
-// NOTE: We cannot define negative constants here because the scanner would scan
+// Note: We cannot define negative constants here because the scanner would scan
 //       a negative variable like '-exponent' as a single '-e' token rather than
 //       two tokens '-' and 'exponent'.
 REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
-REGEX: TEXT '?';
+REGEX: '"' TEXT '"?';
 
 SYMBOL: '$' IDENTIFIER ('-' NUMBER)?;
 
 TAG: '#' BASE32*;
 
-// a narrative takes precedence over a regular text string
+// Note: A narrative takes precedence over a quote and may contain any character.
 NARRATIVE: '"' EOL CHARACTER*? EOL SPACE* '"';
 
-TEXT: '"' (ESCAPE | '\\"' | ~["\r\n])*? '"';
+QUOTE: '"' TEXT '"';
 
-// a version like v123 takes precedence over an identifier
+// Note: A version like 'v12' takes precedence over an identifier like 'value'.
 VERSION: 'v' NUMBER ('.' NUMBER)*;
 
 IDENTIFIER: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*;
@@ -54,6 +54,9 @@ COMMENT: '/*' EOL (COMMENT | CHARACTER)*? EOL SPACE* '*/';
 EOL: '\r'? '\n';
 
 SPACE: ('\t'..'\r' | ' ') -> channel(HIDDEN);
+
+fragment
+TEXT: (ESCAPE | '\\"' | ~["\r\n])*?;
 
 fragment
 CHARACTER: .;
@@ -71,7 +74,7 @@ fragment
 SPAN: INTEGER FRACTION?;
 
 fragment
-LABEL: ('a'..'z'|'A'..'Z'|'0'..'9'|'+'|'-'|'.')+;
+LABEL: ('a'..'z' | 'A'..'Z' | '0'..'9' | '+' | '-' | '.')+;
 
 fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;  // skip the space and '>' characters
@@ -91,20 +94,21 @@ HOURS: (('0'..'1' '0'..'9') | ('2' '0'..'3'));
 fragment
 MINUTES: ('0'..'5' '0'..'9');
 
-// must include 60 to handle leap seconds
+// Note: We must include 60 to handle leap seconds.
 fragment
 SECONDS: (('0'..'5' '0'..'9') | '60');
 
 fragment
 BASE16: '0'..'9' | 'A'..'F';
 
-// avoid confusion and offensive strings by eliminating 'E', 'I', 'O', and 'U'
+// Note: This avoids confusion and possible offensive strings by eliminating
+//       the 'E', 'I', 'O', and 'U' characters.
 fragment
 BASE32: '0'..'9' | 'A'..'D' | 'F'..'H' | 'J'..'N' | 'P'..'T' | 'V'..'Z';
 
 fragment
 BASE64: '0'..'9' | 'A'..'Z' | 'a'..'z' | '+' | '/';
 
-// replaced with actual characters when read
+// Note: The escaped sequences are replaced with actual characters when read.
 fragment
 ESCAPE: '\\' ('u' BASE16+ | 'b' | 'f' | 'r' | 'n' | 't' | '\\');

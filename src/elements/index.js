@@ -13,10 +13,11 @@ const abstractions = require('../abstractions/');
 
 exports.Angle = require('./Angle').Angle;
 exports.Binary = require('./Binary').Binary;
+exports.Boolean = require('./Boolean').Boolean;
 exports.Duration = require('./Duration').Duration;
 exports.Moment = require('./Moment').Moment;  // depends on Duration
 exports.Name = require('./Name').Name;
-exports.Number = require('./Complex').Complex;  // depends on Angle
+exports.Number = require('./Number').Number;  // depends on Angle
 exports.Pattern = require('./Pattern').Pattern;
 exports.Percentage = require('./Percentage').Percentage;
 exports.Probability = require('./Probability').Probability;

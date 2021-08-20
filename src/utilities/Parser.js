@@ -326,6 +326,16 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 };
 
 
+// bulean: 'false' | 'true'
+ParsingVisitor.prototype.visitBulean = function(ctx) {
+    const parameters = this.getParameters();
+    var value = ctx.getText();
+    value = (value === 'true') ? 1 : 0;
+    const boolean = new elements.Boolean(value, parameters, this.debug);
+    this.result = boolean;
+};
+
+
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
     const node = new structures.Node('/bali/structures/BreakClause', this.debug);
@@ -855,19 +865,14 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 };
 
 
-// probability: 'false' | FRACTION | 'true'
+// probability: FRACTION | '1.'
 ParsingVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
-    switch (value) {
-        case 'false':
-            value = 0;
-            break;
-        case 'true':
-            value = 1;
-            break;
-        default:
-            value = Number(value);
+    if (value === '1.') {
+        value = 1;
+    } else {
+        value = Number(value);
     }
     const probability = new elements.Probability(value, parameters, this.debug);
     this.result = probability;
@@ -1265,18 +1270,18 @@ const addContext = function(recognizer, message) {
     const token = offendingToken ? recognizer.getTokenErrorDisplay(offendingToken) : '';
     const input = token ? offendingToken.getInputStream() : recognizer._input;
     const lines = input.toString().split(EOL);
-    const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;
-    const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;
+    const lineNumber = token ? offendingToken.line : recognizer._tokenStartLine;  // unit based
+    const columnNumber = token ? offendingToken.column : recognizer._tokenStartColumn;  // zero based
     if (lineNumber > 1) {
         message += '    [' + (lineNumber - 1) + ']: ' + lines[lineNumber - 2] + EOL;
     }
     message += '    [' + lineNumber + ']: ' + lines[lineNumber - 1] + EOL;
-    var line = '         ';
-    for (var i = 0; i < lineNumber.toString.length + columnNumber; i++) {
+    var line = '         ';  // indent 4 spaces plus "[", "]: " for total of nine spaces
+    for (var i = 0; i < lineNumber.toString().length + columnNumber - 1; i++) {
         line += ' ';
     }
-    var start = token ? offendingToken.start : columnNumber;
-    const stop = token ? offendingToken.stop : columnNumber;
+    var start = token ? offendingToken.start : 0;
+    const stop = token ? offendingToken.stop : 0;
     while (start++ <= stop) {
         line += '^';
     }

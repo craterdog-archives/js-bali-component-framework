@@ -352,9 +352,9 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle probabilities', function() {
-            const first = bali.probability.FALSE;
+            const first = bali.probability.IMPOSSIBLE;
             const second = bali.probability(0.5);
-            const third = bali.probability.TRUE;
+            const third = bali.probability.CERTAIN;
             expect(comparator.compareComponents(first, first)).to.equal(0);
             expect(comparator.compareComponents(first, second)).to.equal(-1);
             expect(comparator.compareComponents(second, first)).to.equal(1);

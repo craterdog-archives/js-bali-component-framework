@@ -271,6 +271,16 @@ FormattingVisitor.prototype.visitBlock = function(node) {
 };
 
 
+// boolean: 'false' | 'true'
+FormattingVisitor.prototype.visitBoolean = function(boolean) {
+    const value = boolean.getValue();
+    this.result += value.toString();  // javascript toString()
+    const parameters = boolean.getParameters();
+    this.visitParameters(parameters);  // format any parameterization
+    this.formatNote(boolean);
+};
+
+
 // breakClause: 'break' 'loop'
 FormattingVisitor.prototype.visitBreakClause = function(node) {
     this.result += 'break loop';
@@ -754,15 +764,15 @@ FormattingVisitor.prototype.visitPrecedenceExpression = function(node) {
 };
 
 
-// probability: 'false' | FRACTION | 'true'
+// probability: FRACTION | '1.'
 FormattingVisitor.prototype.visitProbability = function(probability) {
     const value = probability.getValue();
     switch (value) {
         case 0:
-            this.result += 'false';
+            this.result += '.0';
             break;
         case 1:
-            this.result += 'true';
+            this.result += '1.';
             break;
         default:
             // must remove the leading '0' for probabilities

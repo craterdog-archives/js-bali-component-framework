@@ -43,8 +43,7 @@ const componentize = function(value, debug) {
             component = new elements.Pattern(undefined, undefined, debug);  // none
             break;
         case 'boolean':
-            value = value ? 1 : 0;  // convert to probability
-            component = new elements.Probability(value, {$granularity: '$boolean'}, debug);
+            component = new elements.Boolean(value, undefined, debug);
             break;
         case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
             component = new elements.Number([value, undefined], undefined, debug);
@@ -211,6 +210,32 @@ exports.api = function(defaultLevel) {
     binary.concatenation = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Binary.concatenation(first, second, debug);
+    };
+
+    // BOOLEAN
+    const boolean = function(value, parameters, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new elements.Boolean(value, parameters, debug);
+    };
+    boolean.not = function(boolean, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Boolean.not(boolean, debug);
+    };
+    boolean.and = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Boolean.and(first, second, debug);
+    };
+    boolean.sans = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Boolean.sans(first, second, debug);
+    };
+    boolean.or = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Boolean.or(first, second, debug);
+    };
+    boolean.xor = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Boolean.xor(first, second, debug);
     };
 
     // CATALOG
@@ -607,6 +632,9 @@ exports.api = function(defaultLevel) {
     binary.BASE32 = {$encoding: '$base32'};
     binary.BASE64 = {$encoding: '$base64'};
 
+    boolean.FALSE = boolean(false, undefined, defaultLevel);
+    boolean.TRUE = boolean(true, undefined, defaultLevel);
+
     number.UNDEFINED = component('undefined', defaultLevel);
     number.ZERO = component('0', defaultLevel);
     number.ONE = component('1', defaultLevel);
@@ -618,13 +646,14 @@ exports.api = function(defaultLevel) {
     pattern.ANY = component('any', defaultLevel);
     pattern.NONE = component('none', defaultLevel);
 
-    probability.FALSE = component('false', defaultLevel);
-    probability.TRUE = component('true', defaultLevel);
+    probability.IMPOSSIBLE = probability(false, undefined, defaultLevel);
+    probability.CERTAIN = probability(true, undefined, defaultLevel);
 
     return {
         angle: angle,
         association: association,
         binary: binary,
+        boolean: boolean,
         catalog: catalog,
         component: component,
         comparator: comparator,

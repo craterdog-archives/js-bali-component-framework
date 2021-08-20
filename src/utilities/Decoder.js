@@ -32,9 +32,9 @@ const LINE_WIDTH = 60;
 const EOL = '\n';
 
 // The symbol lookup tables
-const base2LookupTable = "01";
-const base16LookupTable = "0123456789ABCDEF";
-const base32LookupTable = "0123456789ABCDFGHJKLMNPQRSTVWXYZ";  // missing 'E', 'I', 'O', and 'U'
+const base2LookupTable = '01';
+const base16LookupTable = '0123456789ABCDEF';
+const base32LookupTable = '0123456789ABCDFGHJKLMNPQRSTVWXYZ';  // missing 'E', 'I', 'O', and 'U'
 
 
 // PUBLIC FUNCTIONS

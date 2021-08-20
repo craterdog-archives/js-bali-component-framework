@@ -46,24 +46,57 @@ const Probability = function(value, parameters, debug) {
         validator.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
-            '/javascript/Number'
+            '/javascript/Number',
+            '/javascript/String'
         ]);
     }
 
-    this.calculator = new utilities.Calculator(this.debug);
-    if (value === false) value = 0;           // change false to zero
-    if (value === true) value = 1;            // chane true to one
-    if (value === value) value = value || 0;  // default value if not NaN and not defined
-    if (!isFinite(value) || value < 0 || value > 1) {
-        const exception = new Exception({
-            $module: '/bali/elements/Probability',
-            $procedure: '$Probability',
-            $exception: '$invalidParameter',
-            $parameter: value,
-            $text: 'An invalid probability value was passed to the constructor.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
+    switch (typeof value) {
+        case 'undefined':
+            value = 0;
+            break;
+        case 'boolean':
+            value = value ? 1 : 0;  // convert boolean to number
+            break;
+        case 'number':
+            if (!isFinite(value) || value < 0 || value > 1) {
+                const exception = new Exception({
+                    $module: '/bali/elements/Probability',
+                    $procedure: '$Probability',
+                    $exception: '$invalidParameter',
+                    $parameter: value,
+                    $text: 'An invalid numeric value was passed to the constructor.'
+                });
+                if (this.debug > 0) console.error(exception.toString());
+                throw exception;
+            }
+            // already a number
+            break;
+        case 'string':
+            if (value === '1.') {
+                value = 1;
+            } else {
+                const exception = new Exception({
+                    $module: '/bali/elements/Probability',
+                    $procedure: '$Probability',
+                    $exception: '$invalidParameter',
+                    $parameter: value,
+                    $text: 'An invalid string value was passed to the constructor.'
+                });
+                if (this.debug > 0) console.error(exception.toString());
+                throw exception;
+            }
+            break;
+        default:
+            const exception = new Exception({
+                $module: '/bali/elements/Probability',
+                $procedure: '$Probability',
+                $exception: '$invalidParameter',
+                $parameter: value,
+                $text: 'An invalid probability value was passed to the constructor.'
+            });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
     }
 
     // since this element is immutable the value must be read-only

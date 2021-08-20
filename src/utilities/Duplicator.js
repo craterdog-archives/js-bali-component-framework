@@ -152,6 +152,15 @@ DuplicatingVisitor.prototype.visitBlock = function(node) {
 };
 
 
+// boolean: 'false' | 'true'
+DuplicatingVisitor.prototype.visitBoolean = function(boolean) {
+    this.visitParameters(boolean.getParameters());
+    const parameters = this.result;
+    this.result = new boolean.constructor(boolean.getValue(), parameters, this.debug);
+    this.result.note = boolean.note;
+};
+
+
 // breakClause: 'break' 'loop'
 DuplicatingVisitor.prototype.visitBreakClause = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
@@ -517,7 +526,7 @@ DuplicatingVisitor.prototype.visitPrecedenceExpression = function(node) {
 };
 
 
-// probability: 'false' | FRACTION | 'true'
+// probability: FRACTION | '1.'
 DuplicatingVisitor.prototype.visitProbability = function(probability) {
     this.visitParameters(probability.getParameters());
     const parameters = this.result;

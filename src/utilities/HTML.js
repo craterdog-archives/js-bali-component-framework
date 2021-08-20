@@ -212,6 +212,16 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
 };
 
 
+// boolean: 'false' | 'true'
+FormattingVisitor.prototype.visitBoolean = function(boolean) {
+    this.result += '<div class="element boolean">';
+    const value = boolean.getValue();
+    this.result += value.toString();  // javascript toString()
+    this.result += formatParameters(boolean.getParameters());
+    this.result += '</div>';
+};
+
+
 // collection: list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     // check for an explicit type, otherwise use the implicit type
@@ -435,16 +445,16 @@ FormattingVisitor.prototype.visitPercentage = function(percentage) {
 };
 
 
-// probability: 'false' | FRACTION | 'true'
+// probability: FRACTION | '1.'
 FormattingVisitor.prototype.visitProbability = function(probability) {
     this.result += '<div class="element probability">';
     const value = probability.getValue();
     switch (value) {
         case 0:
-            this.result += 'false';
+            this.result += '.0';
             break;
         case 1:
-            this.result += 'true';
+            this.result += '1.';
             break;
         default:
             // must remove the leading '0' for probabilities

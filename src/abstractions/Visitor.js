@@ -107,6 +107,14 @@ Visitor.prototype.visitBinary = function(binary) {
 };
 
 
+// boolean: 'false' | 'true'
+Visitor.prototype.visitBoolean = function(boolean) {
+    const parameters = boolean.getParameters();
+    this.visitParameters(parameters);  // process any parameters first
+    // then process the component itself
+};
+
+
 // block: '{' code '}'
 Visitor.prototype.visitBlock = function(node) {
     const code = node.getItem(1);
@@ -445,7 +453,7 @@ Visitor.prototype.visitPrecedenceExpression = function(node) {
 };
 
 
-// probability: 'false' | FRACTION | 'true'
+// probability: FRACTION | '1.'
 Visitor.prototype.visitProbability = function(probability) {
     const parameters = probability.getParameters();
     this.visitParameters(parameters);  // process any parameters first

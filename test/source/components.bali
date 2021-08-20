@@ -55,9 +55,9 @@
         $a-1: "a"
         $b-2: "b"
         $c-3: "c"
-        "certain": true
+        "1.": true
         "iffy": .5
-        "impossible": false
+        ".0": false
         true: false
         .5: true
         50%: 20%
@@ -95,7 +95,7 @@
             } else {
                 throw exception
             }
-        }($condition: /bali/elements/Probability/v1)
+        }($condition: /bali/elements/Boolean/v1)
     ]
     $procedures: [
         {

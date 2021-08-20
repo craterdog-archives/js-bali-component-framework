@@ -587,6 +587,15 @@ DocumentListener.prototype.exitBinary = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#bulean.
+DocumentListener.prototype.enterBulean = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#bulean.
+DocumentListener.prototype.exitBulean = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#duration.
 DocumentListener.prototype.enterDuration = function(ctx) {
 };

@@ -396,6 +396,12 @@ DocumentVisitor.prototype.visitBinary = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#bulean.
+DocumentVisitor.prototype.visitBulean = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#duration.
 DocumentVisitor.prototype.visitDuration = function(ctx) {
   return this.visitChildren(ctx);
