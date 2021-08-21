@@ -42,9 +42,9 @@ const List = function(parameters, debug) {
         this,
         ['/bali/collections/List'],
         [
-            '/bali/interfaces/Chainable',
             '/bali/interfaces/Composite',
-            '/bali/interfaces/Sortable'
+            '/bali/interfaces/Sortable',
+            '/bali/libraries/Chainable'
         ],
         parameters,
         debug
@@ -248,7 +248,7 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
-// PUBLIC FUNCTIONS
+// CHAINABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns a new list that contains the items from the second list concatenated

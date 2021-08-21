@@ -33,7 +33,9 @@ const Version = function(value, parameters, debug) {
     abstractions.Sequence.call(
         this,
         ['/bali/elements/Version'],
-        [ ],
+        [
+            '/bali/libraries/Chainable'
+        ],
         parameters,
         debug
     );
@@ -226,5 +228,33 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     }
     // check for a next subversion level of one
     return (nextLevels.length === index + 1 && nextLevels[index] === 1);
+};
+
+
+// CHAINABLE LIBRARY FUNCTIONS
+
+/**
+ * This function returns a new version string that contains the levels from the second version
+ * string concatenated onto the end of the first version string.
+ *
+ * @param {Version} first The first version string to be operated on.
+ * @param {Version} second The second version string to be operated on.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Version} The resulting version string.
+ */
+Version.concatenation = function(first, second, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Version', '$concatenation', '$first', first, [
+            '/bali/elements/Version'
+        ]);
+        validator.validateType('/bali/elements/Version', '$concatenation', '$second', second, [
+            '/bali/elements/Version'
+        ]);
+    }
+    const levels1 = first.getValue();
+    const levels2 = second.getValue();
+    const levels = levels1.concat(levels2);
+    return new Version(levels, first.getParameters(), debug);
 };
 

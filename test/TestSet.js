@@ -170,6 +170,11 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             const set3 = bali.set();
             set3.addItem('"beta"');
             set3.addItem('"delta"');
+            expect(
+                function() {
+                    bali.set.not(set1);
+                }
+            ).to.throw();
             expect(bali.set.and(set1, set2).isEqualTo(set3)).to.equal(true);
             const set4 = bali.set();
             set4.addItem('"alpha"');

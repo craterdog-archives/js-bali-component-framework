@@ -32,7 +32,7 @@ const Text = function(value, parameters, debug) {
         this,
         ['/bali/elements/Text'],
         [
-            '/bali/interfaces/Chainable'
+            '/bali/libraries/Chainable'
         ],
         parameters,
         debug
@@ -131,7 +131,7 @@ Text.prototype.getItems = function(range) {
 };
 
 
-// PUBLIC FUNCTIONS
+// CHAINABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns a new text string that contains the characters from the second text

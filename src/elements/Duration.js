@@ -34,7 +34,7 @@ const Duration = function(value, parameters, debug) {
         this,
         ['/bali/elements/Duration'],
         [
-            '/bali/interfaces/Scalable'
+            '/bali/libraries/Scalable'
         ],
         parameters,
         debug
@@ -93,7 +93,7 @@ Duration.prototype.acceptVisitor = function(visitor) {
 };
 
 
-// PUBLIC FUNCTIONS
+// SCALABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns the inverse of a duration. If the specified duration is

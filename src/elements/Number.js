@@ -35,7 +35,8 @@ const Complex = function(value, parameters, debug) {
         this,
         ['/bali/elements/Number'],
         [
-            '/bali/interfaces/Scalable',
+            '/bali/libraries/Scalable',
+            '/bali/libraries/Numerical',
             '/bali/interfaces/Discrete',
             '/bali/interfaces/Continuous'
         ],
@@ -194,7 +195,7 @@ Complex.prototype.acceptVisitor = function(visitor) {
 };
 
 
-// PUBLIC FUNCTIONS
+// SCALABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns the arithmetic inverse of the specified complex number.
@@ -222,98 +223,6 @@ Complex.inverse = function(number, debug) {
     const real = -number.getReal();
     const imaginary = -number.getImaginary();
     const result = new Complex([real, imaginary], number.getParameters(), debug);
-    return result;
-};
-
-
-/**
- * This function returns the multiplicative inverse of the specified complex number.
- * <pre>
- *     reciprocal(z): (z.real, -z.imaginary i)/z.magnitude^2
- *                    or
- *     reciprocal(z): (1/z.magnitude e^~-z.phase i)
- * </pre>
- *
- * @param {Complex} number The complex number to be inverted.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Complex} The resulting complex number.
- */
-Complex.reciprocal = function(number, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$reciprocal', '$number', number, [
-            '/bali/elements/Number'
-        ]);
-    }
-
-    // handle the special cases
-    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex([0, undefined], number.getParameters(), debug);
-    if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
-
-    const calculator = new utilities.Calculator(debug);
-    const squared = calculator.sum(calculator.product(number.getReal(), number.getReal()), calculator.product(number.getImaginary(), number.getImaginary()));
-    const real = calculator.quotient(number.getReal(), squared);
-    const imaginary = -calculator.quotient(number.getImaginary(), squared);
-    const result = new Complex([real, imaginary], number.getParameters(), debug);
-    return result;
-};
-
-
-/**
- * This function returns the complex conjugate of the specified complex number.
- * <pre>
- *     conjugate(z): (z.real, -z.imaginary i)
- * </pre>
- *
- * @param {Complex} number The complex number to be conjugated.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Complex} The resulting complex number.
- */
-Complex.conjugate = function(number, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$conjugate', '$number', number, [
-            '/bali/elements/Number'
-        ]);
-    }
-
-    // handle the special cases
-    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
-    if (number.isZero()) return new Complex([0, undefined], number.getParameters(), debug);
-
-    const real = number.getReal();
-    const imaginary = -number.getImaginary();
-    const result = new Complex([real, imaginary], number.getParameters(), debug);
-    return result;
-};
-
-
-/**
- * This function returns the complex factorial of the specified complex number.
- *
- * @param {Complex} number The complex number.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Complex} The resulting complex number.
- */
-Complex.factorial = function(number, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Number', '$factorial', '$number', number, [
-            '/bali/elements/Number'
-        ]);
-    }
-
-    // handle the special cases
-    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
-    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
-    if (number.isZero()) return new Complex([1, undefined], number.getParameters(), debug);
-
-    // just implement real factorials for now...
-    // TODO: what should a complex factorial be?
-    const factorial = gamma(number.getReal() + 1);
-    const result = new Complex([factorial, undefined], number.getParameters(), debug);
     return result;
 };
 
@@ -413,6 +322,100 @@ Complex.scaled = function(number, factor, debug) {
     const real = calculator.product(number.getReal(), factor);
     const imaginary = calculator.product(number.getImaginary(), factor);
     const result = new Complex([real, imaginary], number.getParameters(), debug);
+    return result;
+};
+
+
+// NUMERICAL LIBRARY FUNCTIONS
+
+/**
+ * This function returns the multiplicative inverse of the specified complex number.
+ * <pre>
+ *     reciprocal(z): (z.real, -z.imaginary i)/z.magnitude^2
+ *                    or
+ *     reciprocal(z): (1/z.magnitude e^~-z.phase i)
+ * </pre>
+ *
+ * @param {Complex} number The complex number to be inverted.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Complex} The resulting complex number.
+ */
+Complex.reciprocal = function(number, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Number', '$reciprocal', '$number', number, [
+            '/bali/elements/Number'
+        ]);
+    }
+
+    // handle the special cases
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([0, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+
+    const calculator = new utilities.Calculator(debug);
+    const squared = calculator.sum(calculator.product(number.getReal(), number.getReal()), calculator.product(number.getImaginary(), number.getImaginary()));
+    const real = calculator.quotient(number.getReal(), squared);
+    const imaginary = -calculator.quotient(number.getImaginary(), squared);
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
+    return result;
+};
+
+
+/**
+ * This function returns the complex conjugate of the specified complex number.
+ * <pre>
+ *     conjugate(z): (z.real, -z.imaginary i)
+ * </pre>
+ *
+ * @param {Complex} number The complex number to be conjugated.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Complex} The resulting complex number.
+ */
+Complex.conjugate = function(number, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Number', '$conjugate', '$number', number, [
+            '/bali/elements/Number'
+        ]);
+    }
+
+    // handle the special cases
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([0, undefined], number.getParameters(), debug);
+
+    const real = number.getReal();
+    const imaginary = -number.getImaginary();
+    const result = new Complex([real, imaginary], number.getParameters(), debug);
+    return result;
+};
+
+
+/**
+ * This function returns the complex factorial of the specified complex number.
+ *
+ * @param {Complex} number The complex number.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Complex} The resulting complex number.
+ */
+Complex.factorial = function(number, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Number', '$factorial', '$number', number, [
+            '/bali/elements/Number'
+        ]);
+    }
+
+    // handle the special cases
+    if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
+    if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
+    if (number.isZero()) return new Complex([1, undefined], number.getParameters(), debug);
+
+    // just implement real factorials for now...
+    // TODO: what should a complex factorial be?
+    const factorial = gamma(number.getReal() + 1);
+    const result = new Complex([factorial, undefined], number.getParameters(), debug);
     return result;
 };
 

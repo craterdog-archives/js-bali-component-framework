@@ -33,7 +33,9 @@ const Symbol = function(value, parameters, debug) {
     abstractions.Sequence.call(
         this,
         ['/bali/elements/Symbol'],
-        [ ],
+        [
+            '/bali/libraries/Chainable'
+        ],
         parameters,
         debug
     );
@@ -138,5 +140,33 @@ Symbol.prototype.getItems = function(range) {
     last = this.normalizedIndex(last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Symbol(string, this.getParameters(), this.debug);
+};
+
+
+// CHAINABLE LIBRARY FUNCTIONS
+
+/**
+ * This function returns a new symbol string that contains the characters from the second symbol
+ * string concatenated onto the end of the first symbol string.
+ *
+ * @param {Symbol} first The first symbol string to be operated on.
+ * @param {Symbol} second The second symbol string to be operated on.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Symbol} The resulting symbol string.
+ */
+Symbol.concatenation = function(first, second, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Symbol', '$concatenation', '$first', first, [
+            '/bali/elements/Symbol'
+        ]);
+        validator.validateType('/bali/elements/Symbol', '$concatenation', '$second', second, [
+            '/bali/elements/Symbol'
+        ]);
+    }
+    const string1 = first.getValue();
+    const string2 = second.getValue();
+    const string = string1 + string2;
+    return new Symbol(string, first.getParameters(), debug);
 };
 

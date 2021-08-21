@@ -34,7 +34,7 @@ const Name = function(value, parameters, debug) {
         this,
         ['/bali/elements/Name'],
         [
-            '/bali/interfaces/Chainable'
+            '/bali/libraries/Chainable'
         ],
         parameters,
         debug
@@ -143,7 +143,7 @@ Name.prototype.getItems = function(range) {
 };
 
 
-// PUBLIC FUNCTIONS
+// CHAINABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns a new name string that contains the bytes from the second name

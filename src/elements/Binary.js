@@ -33,8 +33,8 @@ const Binary = function(value, parameters, debug) {
         this,
         ['/bali/elements/Binary'],
         [
-            '/bali/interfaces/Logical',
-            '/bali/interfaces/Chainable'
+            '/bali/libraries/Logical',
+            '/bali/libraries/Chainable'
         ],
         parameters,
         debug
@@ -134,7 +134,7 @@ Binary.prototype.getItems = function(range) {
 };
 
 
-// PUBLIC FUNCTIONS
+// LOGICAL LIBRARY FUNCTIONS
 
 /**
  * This function returns a new binary string that is the logical NOT of the bits
@@ -275,6 +275,8 @@ Binary.xor = function(first, second, debug) {
     return new Binary(buffer, first.getParameters(), debug);
 };
 
+
+// CHAINABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns a new binary string that contains the bytes from the second binary

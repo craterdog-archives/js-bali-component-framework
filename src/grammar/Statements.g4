@@ -30,7 +30,7 @@ handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' bl
 
 block: '{' code '}';
 
-evaluateClause: (recipient ':=')? expression;
+evaluateClause: (recipient op=(':=' | '+=' | '-=' | '*='))? expression;
 
 // save document as $citation
 saveClause: 'save' expression ('as' recipient)?;

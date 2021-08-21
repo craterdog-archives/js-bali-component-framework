@@ -34,7 +34,7 @@ const Probability = function(value, parameters, debug) {
         this,
         ['/bali/elements/Probability'],
         [
-            '/bali/interfaces/Logical',
+            '/bali/libraries/Logical',
             '/bali/interfaces/Discrete',
             '/bali/interfaces/Continuous'
         ],
@@ -167,6 +167,8 @@ Probability.random = function(debug) {
     return result;
 };
 
+
+// LOGICAL LIBRARY FUNCTIONS
 
 /**
  * This function returns a new probability that is the logical NOT of the specified

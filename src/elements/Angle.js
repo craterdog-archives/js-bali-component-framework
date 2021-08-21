@@ -33,8 +33,9 @@ const Angle = function(value, parameters, debug) {
         this,
         ['/bali/elements/Angle'],
         [
-            '/bali/interfaces/Scalable',
-            '/bali/interfaces/Continuous'
+            '/bali/interfaces/Continuous',
+            '/bali/libraries/Scalable',
+            '/bali/libraries/Radial'
         ],
         parameters,
         debug
@@ -148,7 +149,7 @@ Angle.prototype.acceptVisitor = function(visitor) {
 };
 
 
-// PUBLIC FUNCTIONS
+// SCALABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns the inverse of an angle.
@@ -166,65 +167,6 @@ Angle.inverse = function(angle, debug) {
     }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
-};
-
-
-/**
- * This function returns the complement of an angle. The complementary angle
- * adds to the specified angle to equal π/2.
- *
- * @param {Angle} angle The angle to be complemented.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Angle} The complementary angle.
- */
-Angle.complement = function(angle, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$complement', '$angle', angle, [
-            '/bali/elements/Angle'
-        ]);
-    }
-    const calculator = new utilities.Calculator(debug);
-    return new Angle(calculator.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
-};
-
-
-/**
- * This function returns the supplement of an angle. The supplementary angle
- * adds to the specified angle to equal π.
- *
- * @param {Angle} angle The angle to be supplemented.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Angle} The supplemental angle.
- */
-Angle.supplement = function(angle, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$supplement', '$angle', angle, [
-            '/bali/elements/Angle'
-        ]);
-    }
-    const calculator = new utilities.Calculator(debug);
-    return new Angle(calculator.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
-};
-
-
-/**
- * This function returns the conjugate of an angle. The conjugated angle
- * adds to the specified angle to equal 2π.
- *
- * @param {Angle} angle The angle to be conjugated angle.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Angle} The conjugated angle.
- */
-Angle.conjugate = function(angle, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$conjugate', '$angle', angle, [
-            '/bali/elements/Angle'
-        ]);
-    }
-    return new Angle(-angle.getValue(), angle.getParameters(), debug);
 };
 
 
@@ -297,6 +239,67 @@ Angle.scaled = function(angle, factor, debug) {
     }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.product(angle.getValue(), factor), angle.getParameters(), debug);
+};
+
+
+// Radial Library Functions
+
+/**
+ * This function returns the complement of an angle. The complementary angle
+ * adds to the specified angle to equal π/2.
+ *
+ * @param {Angle} angle The angle to be complemented.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Angle} The complementary angle.
+ */
+Angle.complement = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$complement', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
+};
+
+
+/**
+ * This function returns the supplement of an angle. The supplementary angle
+ * adds to the specified angle to equal π.
+ *
+ * @param {Angle} angle The angle to be supplemented.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Angle} The supplemental angle.
+ */
+Angle.supplement = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$supplement', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
+    const calculator = new utilities.Calculator(debug);
+    return new Angle(calculator.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
+};
+
+
+/**
+ * This function returns the conjugate of an angle. The conjugated angle
+ * adds to the specified angle to equal 2π.
+ *
+ * @param {Angle} angle The angle to be conjugated angle.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Angle} The conjugated angle.
+ */
+Angle.conjugate = function(angle, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/elements/Angle', '$conjugate', '$angle', angle, [
+            '/bali/elements/Angle'
+        ]);
+    }
+    return new Angle(-angle.getValue(), angle.getParameters(), debug);
 };
 
 

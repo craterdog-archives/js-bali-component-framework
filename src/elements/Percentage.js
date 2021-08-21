@@ -32,7 +32,7 @@ const Percentage = function(value, parameters, debug) {
         this,
         ['/bali/elements/Percentage'],
         [
-            '/bali/interfaces/Scalable',
+            '/bali/libraries/Scalable',
             '/bali/interfaces/Continuous'
         ],
         parameters,
@@ -91,7 +91,7 @@ Percentage.prototype.acceptVisitor = function(visitor) {
 };
 
 
-// PUBLIC FUNCTIONS
+// SCALABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns the inverse of a percentage.

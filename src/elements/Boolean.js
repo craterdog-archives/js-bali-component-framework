@@ -34,7 +34,7 @@ const Bulean = function(value, parameters, debug) {
         this,
         ['/bali/elements/Bulean'],
         [
-            '/bali/interfaces/Logical',
+            '/bali/libraries/Logical',
             '/bali/interfaces/Discrete'
         ],
         parameters,
@@ -150,7 +150,7 @@ Bulean.prototype.acceptVisitor = function(visitor) {
 };
 
 
-// PUBLIC FUNCTIONS
+// LOGICAL LIBRARY FUNCTIONS
 
 /**
  * This function returns a new boolean that is the logical NOT of the specified

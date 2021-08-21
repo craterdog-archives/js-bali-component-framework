@@ -33,7 +33,7 @@ const Set = function(parameters, debug) {
     abstractions.Collection.call(
         this,
         ['/bali/collections/Set'],
-        ['/bali/interfaces/Logical'],
+        ['/bali/libraries/Logical'],
         parameters,
         debug
     );
@@ -156,7 +156,27 @@ Set.prototype.constructor = Set;
 exports.Set = Set;
 
 
-// PUBLIC FUNCTIONS
+// LOGICAL LIBRARY FUNCTIONS
+
+/**
+ * This function returns a new set that is the logical NOT of the specified
+ * set. Since this is meaningless this function throws an exception.
+ *
+ * @param {Set} set The set.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Set} The resulting set.
+ */
+Set.not = function(set, debug) {
+    const exception = new Exception({
+        $module: '/bali/collections/Set',
+        $procedure: '$not',
+        $exception: '$meaningless',
+        $text: 'The logical NOT of a set is meaningless.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
 
 /**
  * This function returns a new set that contains the items that are in

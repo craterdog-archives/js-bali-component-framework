@@ -47,9 +47,9 @@ const Catalog = function(parameters, debug) {
         this,
         ancestry,
         [
-            '/bali/interfaces/Chainable',
             '/bali/interfaces/Composite',
-            '/bali/interfaces/Sortable'
+            '/bali/interfaces/Sortable',
+            '/bali/libraries/Chainable'
         ],
         parameters,
         debug
@@ -357,6 +357,8 @@ Catalog.concatenation = function(first, second, debug) {
     return result;
 };
 
+
+// CHAINABLE LIBRARY FUNCTIONS
 
 /**
  * This function returns a new catalog that contains only the associations with the

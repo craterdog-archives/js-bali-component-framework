@@ -567,6 +567,10 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Symbol(value, parameters, debug);
     };
+    symbol.concatenation = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Symbol.concatenation(first, second, debug);
+    };
 
     // TAG
     const tag = function(value, parameters, debug) {
@@ -610,6 +614,10 @@ exports.api = function(defaultLevel) {
     version.validNextVersion = function(current, next, debug) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Version.validNextVersion(current, next, debug);
+    };
+    version.concatenation = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return elements.Version.concatenation(first, second, debug);
     };
 
     // VISITOR
