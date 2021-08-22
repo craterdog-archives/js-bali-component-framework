@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new name string element.
  */
 const Name = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.String.call(
         this,
         ['/bali/elements/Name'],
         [
@@ -63,7 +63,7 @@ const Name = function(value, parameters, debug) {
 
     return this;
 };
-Name.prototype = Object.create(abstractions.Sequence.prototype);
+Name.prototype = Object.create(abstractions.String.prototype);
 Name.prototype.constructor = Name;
 exports.Name = Name;
 

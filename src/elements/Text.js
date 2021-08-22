@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
  * @returns {Text} The new text string.
  */
 const Text = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.String.call(
         this,
         ['/bali/elements/Text'],
         [
@@ -52,7 +52,7 @@ const Text = function(value, parameters, debug) {
 
     return this;
 };
-Text.prototype = Object.create(abstractions.Sequence.prototype);
+Text.prototype = Object.create(abstractions.String.prototype);
 Text.prototype.constructor = Text;
 exports.Text = Text;
 

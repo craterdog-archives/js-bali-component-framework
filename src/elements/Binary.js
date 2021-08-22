@@ -29,7 +29,7 @@ const abstractions = require('../abstractions');
  * @returns {Binary} The new binary string.
  */
 const Binary = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.String.call(
         this,
         ['/bali/elements/Binary'],
         [
@@ -55,7 +55,7 @@ const Binary = function(value, parameters, debug) {
 
     return this;
 };
-Binary.prototype = Object.create(abstractions.Sequence.prototype);
+Binary.prototype = Object.create(abstractions.String.prototype);
 Binary.prototype.constructor = Binary;
 exports.Binary = Binary;
 

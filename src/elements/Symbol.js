@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new symbol element.
  */
 const Symbol = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.String.call(
         this,
         ['/bali/elements/Symbol'],
         [
@@ -64,7 +64,7 @@ const Symbol = function(value, parameters, debug) {
 
     return this;
 };
-Symbol.prototype = Object.create(abstractions.Sequence.prototype);
+Symbol.prototype = Object.create(abstractions.String.prototype);
 Symbol.prototype.constructor = Symbol;
 exports.Symbol = Symbol;
 

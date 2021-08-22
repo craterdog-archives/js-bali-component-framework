@@ -29,21 +29,21 @@ const Iterator = require('./Iterator').Iterator;
  * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Object} parameters Optional parameters used to parameterize this sequence.
  * @param {Number} debug A number in the range 0..3.
- * @returns {Sequence} The new sequence.
+ * @returns {Stryng} The new sequence.
  */
-const Sequence = function(ancestry, interfaces, parameters, debug) {
+const Stryng = function(ancestry, interfaces, parameters, debug) {
     Element.call(
         this,
-        ancestry.concat('/bali/abstractions/Sequence'),
+        ancestry.concat('/bali/abstractions/String'),
         interfaces.concat('/bali/interfaces/Sequential'),
         parameters,
         debug
     );
     return this;
 };
-Sequence.prototype = Object.create(Element.prototype);
-Sequence.prototype.constructor = Sequence;
-exports.Sequence = Sequence;
+Stryng.prototype = Object.create(Element.prototype);
+Stryng.prototype.constructor = Stryng;
+exports.String = Stryng;
 
 
 // PUBLIC METHODS
@@ -54,7 +54,7 @@ exports.Sequence = Sequence;
  *
  * @returns {Boolean} Whether or not this sequence has a meaningful value.
  */
-Sequence.prototype.toBoolean = function() {
+Stryng.prototype.toBoolean = function() {
     return this.getSize() > 0;
 };
 
@@ -64,7 +64,7 @@ Sequence.prototype.toBoolean = function() {
  *
  * @returns {Boolean} Whether or not this sequence contains any items.
  */
-Sequence.prototype.isEmpty = function() {
+Stryng.prototype.isEmpty = function() {
     return this.getSize() === 0;
 };
 
@@ -75,9 +75,9 @@ Sequence.prototype.isEmpty = function() {
  *
  * @returns {Number} The number of items that this sequence has.
  */
-Sequence.prototype.getSize = function() {
+Stryng.prototype.getSize = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Sequence',
+        $module: '/bali/abstractions/String',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -92,7 +92,7 @@ Sequence.prototype.getSize = function() {
  * this sequence.  It must be implemented by a subclass.
  * @returns {Iterator} An iterator for this sequence.
  */
-Sequence.prototype.getIterator = function() {
+Stryng.prototype.getIterator = function() {
     const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
@@ -110,10 +110,10 @@ Sequence.prototype.getIterator = function() {
  * @param {Object} item The item to be looked up.
  * @returns {Number} The index of the item in this sequence.
  */
-Sequence.prototype.getIndex = function(item) {
+Stryng.prototype.getIndex = function(item) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Sequence', '$getIndex', '$item', item, [
+        validator.validateType('/bali/abstractions/String', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -142,9 +142,9 @@ Sequence.prototype.getIndex = function(item) {
  * @param {Number} index The index of the desired item.
  * @returns {Object} The item at the position in this sequence.
  */
-Sequence.prototype.getItem = function(index) {
+Stryng.prototype.getItem = function(index) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Sequence',
+        $module: '/bali/abstractions/String',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -159,11 +159,11 @@ Sequence.prototype.getItem = function(index) {
  * must be implemented by a subclass.
  *
  * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
- * @returns {Sequence} A new sequence containing the requested items.
+ * @returns {Stryng} A new sequence containing the requested items.
  */
-Sequence.prototype.getItems = function(range) {
+Stryng.prototype.getItems = function(range) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Sequence',
+        $module: '/bali/abstractions/String',
         $procedure: '$getItems',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -187,17 +187,17 @@ Sequence.prototype.getItems = function(range) {
  * @param {Number} index The index to be normalized [-N..N].
  * @returns {Number} The normalized [1..N] index.
  */
-Sequence.prototype.normalizedIndex = function(index) {
+Stryng.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Sequence', '$normalizedIndex', '$index', index, [
+        validator.validateType('/bali/abstractions/String', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
     const size = this.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/abstractions/Sequence',
+            $module: '/bali/abstractions/String',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,

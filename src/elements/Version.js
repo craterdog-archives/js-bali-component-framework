@@ -30,7 +30,7 @@ const Exception = require('../structures/Exception').Exception;
  * @returns {Symbol} The new version string element.
  */
 const Version = function(value, parameters, debug) {
-    abstractions.Sequence.call(
+    abstractions.String.call(
         this,
         ['/bali/elements/Version'],
         [
@@ -65,7 +65,7 @@ const Version = function(value, parameters, debug) {
 
     return this;
 };
-Version.prototype = Object.create(abstractions.Sequence.prototype);
+Version.prototype = Object.create(abstractions.String.prototype);
 Version.prototype.constructor = Version;
 exports.Version = Version;
 
