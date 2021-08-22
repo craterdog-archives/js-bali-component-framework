@@ -111,7 +111,7 @@ Binary.prototype.getItems = function(range) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/structures/Range'
+            '/bali/compositions/Range'
         ]);
     }
     range = this.componentize(range);

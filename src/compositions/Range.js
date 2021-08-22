@@ -10,28 +10,28 @@
 'use strict';
 
 /*
- * This structure class captures the state and methods associated with a range component.
+ * This composition class captures the state and methods associated with a range component.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../compositions/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new range structure using the specified first and last values.
+ * This function creates a new range composition using the specified first and last values.
  *
  * @param {Element} first The first element in the range.
  * @param {Element} last The last element in the range.
- * @param {Object} parameters Optional parameters used to parameterize this structure.
+ * @param {Object} parameters Optional parameters used to parameterize this composition.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
 const Range = function(first, last, parameters, debug) {
-    abstractions.Structure.call(
+    abstractions.Composition.call(
         this,
-        ['/bali/structures/Range'],
+        ['/bali/compositions/Range'],
         [
             '/bali/interfaces/Literal',
             '/bali/interfaces/Sequential'
@@ -41,14 +41,14 @@ const Range = function(first, last, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Range', '$Range', '$first', first, [
+        validator.validateType('/bali/compositions/Range', '$Range', '$first', first, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/structures/Range', '$Range', '$last', last, [
+        validator.validateType('/bali/compositions/Range', '$Range', '$last', last, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -69,7 +69,7 @@ const Range = function(first, last, parameters, debug) {
         last = this.componentize(last, this.debug);
     }
 
-    // since this structure is immutable the values must be read-only
+    // since this composition is immutable the values must be read-only
     this.getFirst = function() { return first; };
 
     this.getLast = function() { return last; };
@@ -77,7 +77,7 @@ const Range = function(first, last, parameters, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Range', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/compositions/Range', '$getAttribute', '$key', key, [
                 '/javascript/String',
                 '/bali/elements/Symbol'
             ]);
@@ -89,7 +89,7 @@ const Range = function(first, last, parameters, debug) {
 
     this.setAttribute = function(key, value) {
         const exception = new Exception({
-            $module: '/bali/structures/Range',
+            $module: '/bali/compositions/Range',
             $procedure: '$setAttribute',
             $exception: '$immutable',
             $text: 'Ranges are immutable.'
@@ -100,7 +100,7 @@ const Range = function(first, last, parameters, debug) {
 
     return this;
 };
-Range.prototype = Object.create(abstractions.Structure.prototype);
+Range.prototype = Object.create(abstractions.Composition.prototype);
 Range.prototype.constructor = Range;
 exports.Range = Range;
 
@@ -108,7 +108,7 @@ exports.Range = Range;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this structure is meaningful.
+ * This method determines whether or not this composition is meaningful.
  *
  * @returns {Boolean} Whether or not this component is meaningful.
  */
@@ -132,7 +132,7 @@ Range.prototype.toLiteral = function() {
 /**
  * This method accepts a visitor as part of the visitor pattern.
  *
- * @param {Visitor} visitor The visitor that wants to visit this structure.
+ * @param {Visitor} visitor The visitor that wants to visit this composition.
  */
 Range.prototype.acceptVisitor = function(visitor) {
     visitor.visitRange(this);
@@ -150,7 +150,7 @@ Range.prototype.getIterator = function() {
         return iterator;
     }
     const exception = new Exception({
-        $module: '/bali/structures/Range',
+        $module: '/bali/compositions/Range',
         $procedure: '$getIterator',
         $exception: '$nonInteger',
         $text: 'Only a finite integer range may be iterated over.'
@@ -165,7 +165,7 @@ Range.prototype.getIterator = function() {
 const RangeIterator = function(range, parameters, debug) {
     abstractions.Iterator.call(
         this,
-        ['/bali/structures/RangeIterator'],
+        ['/bali/compositions/RangeIterator'],
         parameters,
         debug
     );

@@ -17,7 +17,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const structures = require('../structures');
+const compositions = require('../compositions');
 const List = require('./List').List;
 
 
@@ -89,7 +89,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/structures/Association'
+                '/bali/compositions/Association'
             ]);
         }
         if (association) {
@@ -118,7 +118,7 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/structures/Association')) {
+                    if (item.isType('/bali/compositions/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);
@@ -129,7 +129,7 @@ const Catalog = function(parameters, debug) {
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/structures/Association')) {
+                    if (item.isType('/bali/compositions/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);
@@ -149,7 +149,7 @@ const Catalog = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/structures/Association'
+                '/bali/compositions/Association'
             ]);
         }
         if (association) {
@@ -163,7 +163,7 @@ const Catalog = function(parameters, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$getValue', '$key', key, [
+            validator.validateType('/bali/collections/Catalog', '$getAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -230,7 +230,7 @@ const Catalog = function(parameters, debug) {
             association.setValue(value);
             return oldValue;
         } else {
-            association = new structures.Association(key, value);
+            association = new compositions.Association(key, value);
             map[key.toString()] = association;
             array.push(association);
         }
@@ -268,7 +268,7 @@ const Catalog = function(parameters, debug) {
             validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
-                '/bali/structures/Range',
+                '/bali/compositions/Range',
                 '/bali/interfaces/Sequential'
             ]);
         }

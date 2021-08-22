@@ -11,51 +11,51 @@
 
 
 /**
- * This abstract class defines the methods that all structures must support.
+ * This abstract class defines the methods that all compositions must support.
  */
 const Component = require('./Component').Component;
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../compositions/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new structure with the specified ancestry and interfaces
+ * This function creates a new composition with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Object} parameters Optional parameters used to parameterize the structure.
+ * @param {Object} parameters Optional parameters used to parameterize the composition.
  * @param {Number} debug A number in the range 0..3.
- * @returns {Structure} The new structure.
+ * @returns {Composition} The new composition.
  */
-const Structure = function(ancestry, interfaces, parameters, debug) {
+const Composition = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Structure'),
+        ancestry.concat('/bali/abstractions/Composition'),
         interfaces.concat('/bali/interfaces/Composite'),
         parameters,
         debug
     );
     return this;
 };
-Structure.prototype = Object.create(Component.prototype);
-Structure.prototype.constructor = Structure;
-exports.Structure = Structure;
+Composition.prototype = Object.create(Component.prototype);
+Composition.prototype.constructor = Composition;
+exports.Composition = Composition;
 
 
 // PUBLIC METHODS
 
 /**
- * This method returns the value of the specified attribute for this structure.
+ * This method returns the value of the specified attribute for this composition.
  *
  * @param {Element} key The key for the attribute to be retrieved.
  * @returns {Component} The value of the attribute corresponding to the specified
  * key, or undefined if it does not exist.
  */
-Structure.prototype.getAttribute = function(key) {
+Composition.prototype.getAttribute = function(key) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Structure',
+        $module: '/bali/abstractions/Composition',
         $procedure: '$getAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -66,14 +66,14 @@ Structure.prototype.getAttribute = function(key) {
 
 
 /**
- * This method sets the value of the specified attribute for this structure.
+ * This method sets the value of the specified attribute for this composition.
  *
  * @param {Element} key The key of the attribute to be set.
  * @param {Component} value The value of the attribute.
  */
-Structure.prototype.setAttribute = function(key, value) {
+Composition.prototype.setAttribute = function(key, value) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Structure',
+        $module: '/bali/abstractions/Composition',
         $procedure: '$setAttribute',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

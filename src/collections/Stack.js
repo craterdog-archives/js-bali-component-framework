@@ -10,12 +10,12 @@
 'use strict';
 
 /**
- * This collection class implements a stack (LIFO) data structure.  Attempting to access an
+ * This collection class implements a stack (LIFO) data composition.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../compositions/Exception').Exception;
 
 
 /*

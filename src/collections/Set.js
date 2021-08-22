@@ -319,7 +319,7 @@ Set.xor = function(first, second, debug) {
 // PRIVATE CLASSES
 
 /*
- * The set class is backed by a binary tree (treap) structure. Therefore,
+ * The set class is backed by a binary tree (treap) composition. Therefore,
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
@@ -388,7 +388,7 @@ SetIterator.prototype.constructor = SetIterator;
 
 
 /*
- * This class implements a randomized self balancing binary search tree structure (treap).
+ * This class implements a randomized self balancing binary search tree composition (treap).
  * It maintains an ordering of the values in the tree and provides O(log(n)) search and
  * update performance.
  */

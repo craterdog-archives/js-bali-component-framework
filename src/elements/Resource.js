@@ -17,7 +17,7 @@
 const URL = require('url').URL;
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../compositions/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

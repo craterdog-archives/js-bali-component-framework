@@ -11,9 +11,9 @@
 
 
 /**
- * This structure class implements a smart exception class that knows how to format itself
+ * This composition class implements a smart exception class that knows how to format itself
  * as a Bali Document Notation™ string. It provides a consistent way to do exception
- * handling within the Bali Nebula™. This class must look like it is a Structure class
+ * handling within the Bali Nebula™. This class must look like it is a Component class
  * but also inherit from the JavaScript Error class. So it implements all of the methods
  * defined in the Component class.
  */
@@ -32,8 +32,7 @@
  */
 const Exception = function(attributes, cause) {
     const ancestry = [
-        '/bali/structures/Exception',
-        '/bali/abstractions/Structure',
+        '/bali/compositions/Exception',
         '/bali/abstractions/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
@@ -41,8 +40,7 @@ const Exception = function(attributes, cause) {
     const interfaces = [
         '/bali/interfaces/Reflective',
         '/bali/interfaces/Exportable',
-        '/bali/interfaces/Comparable',
-        '/bali/interfaces/Composite'
+        '/bali/interfaces/Comparable'
     ];
 
     // set the attributes
@@ -179,7 +177,7 @@ Exception.prototype.comparedTo = function(that) {
 
 /**
  * This method determines whether or not the specified pattern matches this exception.
- * The pattern may be a bali.pattern element or an structure containing
+ * The pattern may be a bali.pattern element or an composition containing
  * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
  * string version of the exception or its corresponding attribute. If the pattern does
  * not consist of any bali.pattern elements then a strict equality comparison of the
@@ -198,7 +196,7 @@ Exception.prototype.isMatchedBy = function(pattern) {
 // Standard Methods
 
 /**
- * This method determines whether or not this structure is meaningful.
+ * This method determines whether or not this composition is meaningful.
  *
  * @returns {Boolean} Whether or not this exception is meaningful.
  */

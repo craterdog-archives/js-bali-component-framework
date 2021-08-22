@@ -14,7 +14,7 @@
  * This class performs various validation functions on object types and values.
  */
 const URL = require('url').URL;
-const Exception = require('../structures/Exception').Exception;
+const Exception = require('../compositions/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

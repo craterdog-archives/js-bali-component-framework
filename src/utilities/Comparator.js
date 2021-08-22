@@ -137,19 +137,19 @@ const natural = function(first, second) {
         return 0;  // they are the same length and all values are equal
     }
 
-    // handle structures
-    if (first.isComponent && first.isType('/bali/structures/Association')) {
+    // handle compositions
+    if (first.isComponent && first.isType('/bali/compositions/Association')) {
         var result = natural(first.getKey(), second.getKey());
         if (result === 0) result = natural(first.getValue(), second.getValue());
         return result;
     }
-    if (first.isComponent && first.isType('/bali/structures/Exception')) {
+    if (first.isComponent && first.isType('/bali/compositions/Exception')) {
         return natural(first.getAttributes(), second.getAttributes());
     }
-    if (first.isComponent && first.isType('/bali/structures/Procedure')) {
+    if (first.isComponent && first.isType('/bali/compositions/Procedure')) {
         return natural(first.getCode(), second.getCode());
     }
-    if (first.isComponent && first.isType('/bali/structures/Node')) {
+    if (first.isComponent && first.isType('/bali/compositions/Node')) {
         // leaf nodes are treated as empty arrays
         return natural(first.toArray(), second.toArray());
     }

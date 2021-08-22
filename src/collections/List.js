@@ -171,7 +171,7 @@ const List = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
                 '/javascript/String',
-                '/bali/structures/Range'
+                '/bali/compositions/Range'
             ]);
         }
         range = this.componentize(range);

@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This structure class implements an association between a key and a value. It is used by the
+ * This composition class implements an association between a key and a value. It is used by the
  * catalog class.
  */
 const utilities = require('../utilities');
@@ -28,22 +28,22 @@ const abstractions = require('../abstractions');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    abstractions.Structure.call(
+    abstractions.Composition.call(
         this,
-        ['/bali/structures/Association'],
+        ['/bali/compositions/Association'],
         [],
         undefined,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/structures/Association', '$Association', '$key', key, [
+        validator.validateType('/bali/compositions/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/structures/Association', '$Association', '$value', value, [
+        validator.validateType('/bali/compositions/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -70,7 +70,7 @@ const Association = function(key, value, debug) {
     this.setValue = function(newValue) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Association', '$setValue', '$value', value, [
+            validator.validateType('/bali/compositions/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
@@ -89,29 +89,32 @@ const Association = function(key, value, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Association', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/compositions/Association', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
-        if (key.isEqualTo(key)) return this.getValue();
+        key = key.toString();
+        if (key === '$key') return this.getKey();
+        if (key === '$value') return this.getValue();
     };
 
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/structures/Association', '$setAttribute', '$key', key, [
+            validator.validateType('/bali/compositions/Association', '$setAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
-            validator.validateType('/bali/structures/Association', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/compositions/Association', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
-        if (key.isEqualTo(key)) return this.setValue(value);
+        key = key.toString();
+        if (key === '$value') return this.setValue(value);
     };
 
     return this;
 };
-Association.prototype = Object.create(abstractions.Structure.prototype);
+Association.prototype = Object.create(abstractions.Composition.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 
@@ -119,7 +122,7 @@ exports.Association = Association;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this structure is meaningful.
+ * This method determines whether or not this composition is meaningful.
  *
  * @returns {Boolean} Whether or not this component is meaningful.
  */
