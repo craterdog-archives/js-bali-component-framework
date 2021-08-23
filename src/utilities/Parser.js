@@ -516,13 +516,14 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// evaluateClause: (recipient ':=')? expression
+// evaluateClause: (recipient (':=' | '+=' | '-=' | '*='))? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     const node = new composites.Node('/bali/composites/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
     if (recipient) {
         recipient.accept(this);
         node.addItem(this.result);
+        node.operator = ctx.op.text;
     }
     ctx.expression().accept(this);
     node.addItem(this.result);

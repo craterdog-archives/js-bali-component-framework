@@ -19,6 +19,9 @@
     }
     $single: {
         $x := value
+        $y += 1
+        $z -= bar[x]
+        foo[2] *= 42
     }
     $statement: {
         while condition do {

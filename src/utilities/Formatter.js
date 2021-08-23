@@ -436,13 +436,15 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 };
 
 
-// evaluateClause: (recipient ':=')? expression
+// evaluateClause: (recipient (':=' | '+=' | '-=' | '*='))? expression
 FormattingVisitor.prototype.visitEvaluateClause = function(node) {
     const size = node.getSize();
     if (size > 1) {
         const recipient = node.getItem(1);
         recipient.acceptVisitor(this);
-        this.result += ' := ';
+        this.result += ' ';
+        this.result += node.operator;
+        this.result += ' ';
     }
     const expression = node.getItem(size);
     expression.acceptVisitor(this);

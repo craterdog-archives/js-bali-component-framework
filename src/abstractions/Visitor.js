@@ -233,13 +233,14 @@ Visitor.prototype.visitDuration = function(duration) {
 };
 
 
-// evaluateClause: (recipient ':=')? expression
+// evaluateClause: (recipient (':=' | '+=' | '-=' | '*='))? expression
 Visitor.prototype.visitEvaluateClause = function(node) {
     const iterator = node.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
         item.acceptVisitor(this);
     }
+    const operator = node.operator;
 };
 
 

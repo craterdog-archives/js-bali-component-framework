@@ -297,7 +297,7 @@ DuplicatingVisitor.prototype.visitDuration = function(duration) {
 };
 
 
-// evaluateClause: (recipient ':=')? expression
+// evaluateClause: (recipient (':=' | '+=' | '-=' | '*='))? expression
 DuplicatingVisitor.prototype.visitEvaluateClause = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
     const iterator = node.getIterator();
@@ -305,6 +305,7 @@ DuplicatingVisitor.prototype.visitEvaluateClause = function(node) {
         iterator.getNext().acceptVisitor(this);
         copy.addItem(this.result);
     }
+    copy.operator = node.operator;
     this.result = copy;
 };
 
