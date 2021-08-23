@@ -22,7 +22,7 @@
  * </pre>
  */
 const Validator = require('./Validator').Validator;
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // This private constant sets the line width for formatting encoded byte strings.

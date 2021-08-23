@@ -17,8 +17,8 @@ const EOL = '\n';
 const utilities = require('./src/utilities');
 const abstractions = require('./src/abstractions');  // depends on utilities
 const elements = require('./src/elements');  // depends on abstractions
-const compositions = require('./src/compositions');  // depends on elements
-const collections = require('./src/collections');  // depends on compositions
+const composites = require('./src/composites');  // depends on elements
+const collections = require('./src/collections');  // depends on composites
 utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
 
 
@@ -84,7 +84,7 @@ const componentize = function(value, debug) {
     return component;
 };
 abstractions.Component.prototype.componentize = componentize;
-compositions.Exception.prototype.componentize = componentize;
+composites.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -179,7 +179,7 @@ exports.api = function(defaultLevel) {
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new compositions.Association(key, value, debug);
+        return new composites.Association(key, value, debug);
     };
 
     // BINARY
@@ -320,7 +320,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new compositions.Exception(attributes, cause);
+            error = new composites.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;
@@ -388,7 +388,7 @@ exports.api = function(defaultLevel) {
     // NODE
     const node = function(type, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const node = new compositions.Node(type, debug);
+        const node = new composites.Node(type, debug);
         return node;
     };
 
@@ -507,7 +507,7 @@ exports.api = function(defaultLevel) {
     // PROCEDURE
     const procedure = function(code, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new compositions.Procedure(code, parameters, debug);
+        return new composites.Procedure(code, parameters, debug);
     };
 
     // QUEUE
@@ -521,7 +521,7 @@ exports.api = function(defaultLevel) {
     // RANGE
     const range = function(first, last, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new compositions.Range(first, last, parameters, debug);
+        return new composites.Range(first, last, parameters, debug);
     };
 
     // RESOURCE

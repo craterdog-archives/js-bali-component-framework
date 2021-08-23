@@ -16,7 +16,7 @@
  * types.
  */
 const Validator = require('./Validator').Validator;
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

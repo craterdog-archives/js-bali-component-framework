@@ -16,7 +16,7 @@
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Iterator = require('./Iterator').Iterator;
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -158,7 +158,7 @@ Collection.prototype.addItems = function(items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/compositions/Association')) {
+                if (item.isType('/bali/composites/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -168,7 +168,7 @@ Collection.prototype.addItems = function(items) {
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/compositions/Association')) {
+                if (item.isType('/bali/composites/Association')) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -225,7 +225,7 @@ Collection.prototype.normalizedIndex = function(index) {
 /**
  * This method returns the index of the specified item in this collection.
  * NOTE: It is tempting when dealing with a collection that uses an array
- * as an underlying data composition to use the Array.indexOf() method to
+ * as an underlying data composite to use the Array.indexOf() method to
  * provide a faster implementation of this method. However, the indexOf()
  * method uses strict equality checks which for items that are objects
  * returns false even when all attributes on each item are the same. Therefore
@@ -289,7 +289,7 @@ Collection.prototype.getItems = function(range) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/compositions/Range'
+            '/bali/composites/Range'
         ]);
     }
     range = this.componentize(range);

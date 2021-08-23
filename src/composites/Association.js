@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This composition class implements an association between a key and a value. It is used by the
+ * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
 const utilities = require('../utilities');
@@ -28,22 +28,22 @@ const abstractions = require('../abstractions');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    abstractions.Composition.call(
+    abstractions.Composite.call(
         this,
-        ['/bali/compositions/Association'],
+        ['/bali/composites/Association'],
         [],
         undefined,
         debug
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/compositions/Association', '$Association', '$key', key, [
+        validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/compositions/Association', '$Association', '$value', value, [
+        validator.validateType('/bali/composites/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -70,7 +70,7 @@ const Association = function(key, value, debug) {
     this.setValue = function(newValue) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Association', '$setValue', '$value', value, [
+            validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
@@ -89,7 +89,7 @@ const Association = function(key, value, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Association', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/composites/Association', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
@@ -101,10 +101,10 @@ const Association = function(key, value, debug) {
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Association', '$setAttribute', '$key', key, [
+            validator.validateType('/bali/composites/Association', '$setAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
-            validator.validateType('/bali/compositions/Association', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/composites/Association', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -114,7 +114,7 @@ const Association = function(key, value, debug) {
 
     return this;
 };
-Association.prototype = Object.create(abstractions.Composition.prototype);
+Association.prototype = Object.create(abstractions.Composite.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 
@@ -122,7 +122,7 @@ exports.Association = Association;
 // PUBLIC METHODS
 
 /**
- * This method determines whether or not this composition is meaningful.
+ * This method determines whether or not this composite is meaningful.
  *
  * @returns {Boolean} Whether or not this component is meaningful.
  */

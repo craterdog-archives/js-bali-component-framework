@@ -42,7 +42,7 @@ const List = function(parameters, debug) {
         this,
         ['/bali/collections/List'],
         [
-            '/bali/interfaces/Composite',
+            '/bali/interfaces/Structured',
             '/bali/interfaces/Sortable',
             '/bali/libraries/Chainable'
         ],
@@ -171,7 +171,7 @@ const List = function(parameters, debug) {
             const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
                 '/javascript/String',
-                '/bali/compositions/Range'
+                '/bali/composites/Range'
             ]);
         }
         range = this.componentize(range);

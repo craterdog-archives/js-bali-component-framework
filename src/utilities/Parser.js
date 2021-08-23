@@ -14,7 +14,7 @@
  * Notation™ and generates the corresponding components.
  *
  * NOTE: The implementation of this parser uses a raw parser that was
- * generated using ANTLR v4. The raw parse tree composition that comes
+ * generated using ANTLR v4. The raw parse tree composite that comes
  * out of ANTLR is frankly not very well designed and hard to understand.
  * So, we walk the raw parse tree with a visitor object generating a nice
  * clean parse tree that is constructed exclusively of component
@@ -31,7 +31,7 @@ const grammar = require('../grammar');
 const utilities = require('../utilities/');
 const abstractions = require('../abstractions/');
 const elements = require('../elements');
-const compositions = require('../compositions');
+const composites = require('../composites');
 const collections = require('../collections');
 
 // This private constant sets the POSIX end of line character
@@ -177,7 +177,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 
 // acceptClause: 'accept' expression
 ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/AcceptClause', this.debug);
+    const node = new composites.Node('/bali/composites/AcceptClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
     node.addItem(this.result);
@@ -198,7 +198,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
         case '$degrees':
             break;
         default:
-            const exception = new compositions.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
@@ -218,7 +218,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 //     expression (',' expression)* |
 //     /* no expressions */
 ParsingVisitor.prototype.visitArguments = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/Arguments', this.debug);
+    const node = new composites.Node('/bali/composites/Arguments', this.debug);
     const expressions = ctx.expression();
     this.depth++;
     expressions.forEach(function(expression) {
@@ -232,7 +232,7 @@ ParsingVisitor.prototype.visitArguments = function(ctx) {
 
 // arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ArithmeticExpression', this.debug);
+    const node = new composites.Node('/bali/composites/ArithmeticExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -249,14 +249,14 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
     const key = this.result;
     ctx.component().accept(this);
     const value = this.result;
-    const association = new compositions.Association(key, value, this.debug);
+    const association = new composites.Association(key, value, this.debug);
     this.result = association;
 };
 
 
 // attribute: variable '[' indices ']'
 ParsingVisitor.prototype.visitAttribute = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/Attribute', this.debug);
+    const node = new composites.Node('/bali/composites/Attribute', this.debug);
     ctx.variable().accept(this);
     node.addItem(this.result);
     ctx.indices().accept(this);
@@ -267,7 +267,7 @@ ParsingVisitor.prototype.visitAttribute = function(ctx) {
 
 // attributeExpression: expression '[' indices ']'
 ParsingVisitor.prototype.visitAttributeExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/AttributeExpression', this.debug);
+    const node = new composites.Node('/bali/composites/AttributeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     ctx.indices().accept(this);
@@ -301,7 +301,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = decoder.base64Decode(value);
             break;
         default:
-            const exception = new compositions.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
@@ -320,7 +320,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.code().accept(this);
     const code = this.result;
-    const node = new compositions.Node('/bali/compositions/Block', this.debug);
+    const node = new composites.Node('/bali/composites/Block', this.debug);
     node.addItem(code);
     this.result = node;
 };
@@ -338,7 +338,7 @@ ParsingVisitor.prototype.visitBulean = function(ctx) {
 
 // breakClause: 'break' 'loop'
 ParsingVisitor.prototype.visitBreakClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/BreakClause', this.debug);
+    const node = new composites.Node('/bali/composites/BreakClause', this.debug);
     this.result = node;
 };
 
@@ -365,7 +365,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/CheckoutClause', this.debug);
+    const node = new composites.Node('/bali/composites/CheckoutClause', this.debug);
     const expressions = ctx.expression();
     var index = 0;
     if (expressions.length ===2) {
@@ -385,7 +385,7 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 //     EOL (statement EOL)* |
 //     /* no statements */
 ParsingVisitor.prototype.visitCode = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/Code', this.debug);
+    const node = new composites.Node('/bali/composites/Code', this.debug);
     if (ctx.statement) {
         const code = ctx.statement();
         this.depth++;
@@ -402,7 +402,7 @@ ParsingVisitor.prototype.visitCode = function(ctx) {
 // comment: NOTE | COMMENT
 ParsingVisitor.prototype.visitComment = function(ctx) {
     const text = ctx.getText();
-    const comment = new compositions.Node('/bali/compositions/Comment', this.debug);
+    const comment = new composites.Node('/bali/composites/Comment', this.debug);
     comment.text = text;
     this.result = comment;
 };
@@ -410,7 +410,7 @@ ParsingVisitor.prototype.visitComment = function(ctx) {
 
 // comparisonExpression: expression op=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ComparisonExpression', this.debug);
+    const node = new composites.Node('/bali/composites/ComparisonExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -423,7 +423,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 // complementExpression: 'NOT' expression
 ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ComplementExpression', this.debug);
+    const node = new composites.Node('/bali/composites/ComplementExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -454,7 +454,7 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 
 // concatenationExpression: expression '&' expression
 ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ConcatenationExpression', this.debug);
+    const node = new composites.Node('/bali/composites/ConcatenationExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -466,14 +466,14 @@ ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
 
 // continueClause: 'continue' 'loop'
 ParsingVisitor.prototype.visitContinueClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ContinueClause', this.debug);
+    const node = new composites.Node('/bali/composites/ContinueClause', this.debug);
     this.result = node;
 };
 
 
 // defaultExpression: expression '?' expression
 ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/DefaultExpression', this.debug);
+    const node = new composites.Node('/bali/composites/DefaultExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -485,7 +485,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 // dereferenceExpression: '@' expression
 ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/DereferenceExpression', this.debug);
+    const node = new composites.Node('/bali/composites/DereferenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -494,7 +494,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // discardClause: 'discard' expression
 ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/DiscardClause', this.debug);
+    const node = new composites.Node('/bali/composites/DiscardClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -518,7 +518,7 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 
 // evaluateClause: (recipient ':=')? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/EvaluateClause', this.debug);
+    const node = new composites.Node('/bali/composites/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
     if (recipient) {
         recipient.accept(this);
@@ -532,7 +532,7 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 // exponentialExpression: <assoc=right> expression '^' expression
 ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ExponentialExpression', this.debug);
+    const node = new composites.Node('/bali/composites/ExponentialExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -544,7 +544,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 // factorialExpression: expression '!'
 ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/FactorialExpression', this.debug);
+    const node = new composites.Node('/bali/composites/FactorialExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -554,7 +554,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 // funcxion: IDENTIFIER
 ParsingVisitor.prototype.visitFuncxion = function(ctx) {
     const identifier = ctx.getText();
-    const funcxion = new compositions.Node('/bali/compositions/Function', this.debug);
+    const funcxion = new composites.Node('/bali/composites/Function', this.debug);
     funcxion.identifier = identifier;
     this.result = funcxion;
 };
@@ -562,7 +562,7 @@ ParsingVisitor.prototype.visitFuncxion = function(ctx) {
 
 // functionExpression: function '(' arguments ')'
 ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/FunctionExpression', this.debug);
+    const node = new composites.Node('/bali/composites/FunctionExpression', this.debug);
     ctx.funcxion().accept(this);
     node.addItem(this.result);
     ctx.arguments().accept(this);
@@ -573,7 +573,7 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 // handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
 ParsingVisitor.prototype.visitHandleClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/HandleClause', this.debug);
+    const node = new composites.Node('/bali/composites/HandleClause', this.debug);
     ctx.symbol().accept(this);
     node.addItem(this.result);
     const blocks = ctx.block();
@@ -595,7 +595,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
 ParsingVisitor.prototype.visitIfClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/IfClause', this.debug);
+    const node = new composites.Node('/bali/composites/IfClause', this.debug);
     const expressions = ctx.expression();
     const blocks = ctx.block();
     const hasElseBlock = blocks.length > expressions.length;
@@ -615,7 +615,7 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 
 // indices: expression (',' expression)*
 ParsingVisitor.prototype.visitIndices = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/Indices', this.debug);
+    const node = new composites.Node('/bali/composites/Indices', this.debug);
     const expressions = ctx.expression();
     this.depth++;
     expressions.forEach(function(expression) {
@@ -629,7 +629,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 
 // inversionExpression: op=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/InversionExpression', this.debug);
+    const node = new composites.Node('/bali/composites/InversionExpression', this.debug);
     node.operator = ctx.op.text;
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -668,7 +668,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Stack(parameters, this.debug);
             break;
         default:
-            const exception = new compositions.Exception({
+            const exception = new composites.Exception({
                 $module: '/bali/utilities/Parser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
@@ -693,7 +693,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 // logicalExpression: expression op=('AND' | 'SANS' | 'XOR' | 'OR') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/LogicalExpression', this.debug);
+    const node = new composites.Node('/bali/composites/LogicalExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -706,7 +706,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 // magnitudeExpression: '|' expression '|'
 ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/MagnitudeExpression', this.debug);
+    const node = new composites.Node('/bali/composites/MagnitudeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -716,7 +716,7 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 // message: IDENTIFIER
 ParsingVisitor.prototype.visitMessage = function(ctx) {
     const identifier = ctx.getText();
-    const message = new compositions.Node('/bali/compositions/Message', this.debug);
+    const message = new composites.Node('/bali/composites/Message', this.debug);
     message.identifier = identifier;
     this.result = message;
 };
@@ -724,7 +724,7 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 
 // messageExpression: expression op=('.' | '<-') message '(' arguments ')'
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/MessageExpression', this.debug);
+    const node = new composites.Node('/bali/composites/MessageExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     node.operator = ctx.op.text;
@@ -803,7 +803,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 
     // there must be at least one parameter
     if (this.result.isEmpty()) {
-        const exception = new compositions.Exception({
+        const exception = new composites.Exception({
             $module: '/bali/utilities/Parser',
             $procedure: '$visitParameters',
             $exception: '$noParameters',
@@ -846,7 +846,7 @@ ParsingVisitor.prototype.visitPercentage = function(ctx) {
 
 // postClause: 'post' expression 'to' expression
 ParsingVisitor.prototype.visitPostClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/PostClause', this.debug);
+    const node = new composites.Node('/bali/composites/PostClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -858,7 +858,7 @@ ParsingVisitor.prototype.visitPostClause = function(ctx) {
 
 // precedenceExpression: '(' expression ')'
 ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/PrecedenceExpression', this.debug);
+    const node = new composites.Node('/bali/composites/PrecedenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -884,14 +884,14 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
     const parameters = this.getParameters();
     ctx.code().accept(this);
     const code = this.result;
-    const procedure = new compositions.Procedure(code, parameters, this.debug);
+    const procedure = new composites.Procedure(code, parameters, this.debug);
     this.result = procedure;
 };
 
 
 // publishClause: 'publish' expression
 ParsingVisitor.prototype.visitPublishClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/PublishClause', this.debug);
+    const node = new composites.Node('/bali/composites/PublishClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -922,7 +922,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             last = this.result;
             break;
     }
-    const range = new compositions.Range(first, last, parameters, this.debug);
+    const range = new composites.Range(first, last, parameters, this.debug);
     this.result = range;
 };
 
@@ -938,7 +938,7 @@ ParsingVisitor.prototype.visitResource = function(ctx) {
 
 // rejectClause: 'reject' expression
 ParsingVisitor.prototype.visitRejectClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/RejectClause', this.debug);
+    const node = new composites.Node('/bali/composites/RejectClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
     node.addItem(this.result);
@@ -948,7 +948,7 @@ ParsingVisitor.prototype.visitRejectClause = function(ctx) {
 
 // retrieveClause: 'retrieve' recipient 'from' expression
 ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/RetrieveClause', this.debug);
+    const node = new composites.Node('/bali/composites/RetrieveClause', this.debug);
     ctx.recipient().accept(this);
     node.addItem(this.result);
     ctx.expression().accept(this);
@@ -959,7 +959,7 @@ ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
 
 // returnClause: 'return' expression?
 ParsingVisitor.prototype.visitReturnClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ReturnClause', this.debug);
+    const node = new composites.Node('/bali/composites/ReturnClause', this.debug);
     const expression = ctx.expression();
     if (expression) {
         expression.accept(this);
@@ -971,7 +971,7 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 
 // saveClause: 'save' expression ('as' recipient)?
 ParsingVisitor.prototype.visitSaveClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/SaveClause', this.debug);
+    const node = new composites.Node('/bali/composites/SaveClause', this.debug);
     const document = ctx.expression();
     document.accept(this);
     node.addItem(this.result);
@@ -986,7 +986,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
 ParsingVisitor.prototype.visitSelectClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/SelectClause', this.debug);
+    const node = new composites.Node('/bali/composites/SelectClause', this.debug);
     var expressions = ctx.expression();
     const selector = expressions[0];
     expressions = expressions.slice(1);  // remove the first expression
@@ -1010,7 +1010,7 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 
 // signClause: 'sign' expression 'as' expression
 ParsingVisitor.prototype.visitSignClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/SignClause', this.debug);
+    const node = new composites.Node('/bali/composites/SignClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
@@ -1022,7 +1022,7 @@ ParsingVisitor.prototype.visitSignClause = function(ctx) {
 
 // statement: comment | mainClause handleClause?
 ParsingVisitor.prototype.visitStatement = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/Statement', this.debug);
+    const node = new composites.Node('/bali/composites/Statement', this.debug);
     const comment = ctx.comment();
     if (comment) {
         comment.accept(this);
@@ -1077,7 +1077,7 @@ ParsingVisitor.prototype.visitText = function(ctx) {
 
 // throwClause: 'throw' expression
 ParsingVisitor.prototype.visitThrowClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/ThrowClause', this.debug);
+    const node = new composites.Node('/bali/composites/ThrowClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -1087,7 +1087,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 // variable: IDENTIFIER
 ParsingVisitor.prototype.visitVariable = function(ctx) {
     const identifier = ctx.getText();
-    const variable = new compositions.Node('/bali/compositions/Variable', this.debug);
+    const variable = new composites.Node('/bali/composites/Variable', this.debug);
     variable.identifier = identifier;
     this.result = variable;
 };
@@ -1108,7 +1108,7 @@ ParsingVisitor.prototype.visitVersion = function(ctx) {
 
 // whileClause: 'while' expression 'do' block
 ParsingVisitor.prototype.visitWhileClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/WhileClause', this.debug);
+    const node = new composites.Node('/bali/composites/WhileClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
     ctx.block().accept(this);
@@ -1119,7 +1119,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
 ParsingVisitor.prototype.visitWithClause = function(ctx) {
-    const node = new compositions.Node('/bali/compositions/WithClause', this.debug);
+    const node = new composites.Node('/bali/composites/WithClause', this.debug);
     const symbol = ctx.symbol();
     if (symbol) {
         symbol.accept(this);
@@ -1161,7 +1161,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context.exception = cause;
         context = context.parentCtx;
     }
-    const exception = new compositions.Exception({
+    const exception = new composites.Exception({
         $module: '/bali/utilities/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
@@ -1208,7 +1208,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     message = addContext(recognizer, message);
 
     // capture the exception
-    const exception = new compositions.Exception({
+    const exception = new composites.Exception({
         $module: '/bali/utilities/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',

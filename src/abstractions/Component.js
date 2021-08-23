@@ -14,7 +14,7 @@
  * This abstract class defines the methods that all components must support.
  */
 const utilities = require('../utilities');
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
@@ -191,7 +191,7 @@ Component.prototype.comparedTo = function(that) {
 
 /**
  * This method determines whether or not the specified pattern matches this component.
- * The pattern may be a bali.pattern element or an composition component containing
+ * The pattern may be a bali.pattern element or an composite component containing
  * bali.pattern attributes. In either case, the bali.patterns are evaluated against the
  * string version of the component or its corresponding attribute. If the pattern does
  * not consist of any bali.pattern elements then a strict equality comparison of the
@@ -228,7 +228,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
-    if (pattern.isType('/bali/compositions/Association')) {
+    if (pattern.isType('/bali/composites/Association')) {
         if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -252,7 +252,7 @@ Component.prototype.isMatchedBy = function(pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.isType('/bali/compositions/Association')) {
+            if (patternItem.isType('/bali/composites/Association')) {
                 var patternValue = patternItem.getValue();
                 if (patternValue.isType('/bali/elements/Pattern') && (
                     patternValue.toString() === 'any' ||

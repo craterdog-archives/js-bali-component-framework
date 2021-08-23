@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This composition class implements a procedure that can be assigned as
+ * This composite class implements a procedure that can be assigned as
  * the value of an association.
  */
 const utilities = require('../utilities');
@@ -29,9 +29,9 @@ const abstractions = require('../abstractions');
  * @returns {Procedure} A new procedure.
  */
 const Procedure = function(code, parameters, debug) {
-    abstractions.Composition.call(
+    abstractions.Composite.call(
         this,
-        ['/bali/compositions/Procedure'],
+        ['/bali/composites/Procedure'],
         [
             '/bali/interfaces/Literal'
         ],
@@ -40,8 +40,8 @@ const Procedure = function(code, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/compositions/Procedure', '$Procedure', '$code', code, [
-            '/bali/compositions/Code'
+        validator.validateType('/bali/composites/Procedure', '$Procedure', '$code', code, [
+            '/bali/composites/Code'
         ]);
     }
 
@@ -50,7 +50,7 @@ const Procedure = function(code, parameters, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Procedures', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/composites/Procedures', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
@@ -59,7 +59,7 @@ const Procedure = function(code, parameters, debug) {
 
     this.setAttribute = function(key, value) {
         const exception = new Exception({
-            $module: '/bali/compositions/Procedure',
+            $module: '/bali/composites/Procedure',
             $procedure: '$setAttribute',
             $exception: '$readOnly',
             $text: 'The code in a procedure cannot be updated.'
@@ -70,7 +70,7 @@ const Procedure = function(code, parameters, debug) {
 
     return this;
 };
-Procedure.prototype = Object.create(abstractions.Composition.prototype);
+Procedure.prototype = Object.create(abstractions.Composite.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 

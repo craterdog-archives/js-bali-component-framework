@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * This composition class implements a hierarchical composition. Each node in the tree may
+ * This composite class implements a hierarchical composite. Each node in the tree may
  * contain zero or more children. A node with no children is an elemental component.
  * Nodes may also be any other type of component including catalogs, lists, sets,
  * stacks, and ranges. Collectively, all of the components including the nodes are
@@ -31,9 +31,9 @@ const abstractions = require('../abstractions');
  * @returns {Node} The new node component.
  */
 const Node = function(type, debug) {
-    abstractions.Composition.call(
+    abstractions.Composite.call(
         this,
-        [type, '/bali/compositions/Node'],
+        [type, '/bali/composites/Node'],
         [
             '/bali/interfaces/Sequential'
         ],
@@ -51,7 +51,7 @@ const Node = function(type, debug) {
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$getItem', '$index', index, [
+            validator.validateType('/bali/composites/Node', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
@@ -62,9 +62,9 @@ const Node = function(type, debug) {
     this.getItems = function(range) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$getItems', '$range', range, [
+            validator.validateType('/bali/composites/Node', '$getItems', '$range', range, [
                 '/javascript/String',
-                '/bali/compositions/Range'
+                '/bali/composites/Range'
             ]);
         }
         range = this.componentize(range);
@@ -83,7 +83,7 @@ const Node = function(type, debug) {
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$addItem', '$item', item, [
+            validator.validateType('/bali/composites/Node', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -94,10 +94,10 @@ const Node = function(type, debug) {
     this.setItem = function(index, item) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$setItem', '$index', index, [
+            validator.validateType('/bali/composites/Node', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/compositions/Node', '$setItem', '$item', item, [
+            validator.validateType('/bali/composites/Node', '$setItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -117,7 +117,7 @@ const Node = function(type, debug) {
     this.getAttribute = function(index) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$getAttribute', '$index', index, [
+            validator.validateType('/bali/composites/Node', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
@@ -128,10 +128,10 @@ const Node = function(type, debug) {
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/compositions/Node', '$setAttribute', '$index', index, [
+            validator.validateType('/bali/composites/Node', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/compositions/Node', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/composites/Node', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -141,7 +141,7 @@ const Node = function(type, debug) {
 
     return this;
 };
-Node.prototype = Object.create(abstractions.Composition.prototype);
+Node.prototype = Object.create(abstractions.Composite.prototype);
 Node.prototype.constructor = Node;
 exports.Node = Node;
 
@@ -149,10 +149,10 @@ exports.Node = Node;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this composition contains a meaningful value. If the composition
+ * This method returns whether or not this composite contains a meaningful value. If the composite
  * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  *
- * @returns {Boolean} Whether or not this composition contains a meaningful value.
+ * @returns {Boolean} Whether or not this composite contains a meaningful value.
  */
 Node.prototype.toBoolean = function() {
     return this.getSize() > 0;
@@ -160,9 +160,9 @@ Node.prototype.toBoolean = function() {
 
 
 /**
- * This method returns whether or not this composition contains any items.
+ * This method returns whether or not this composite contains any items.
  *
- * @returns {Boolean} Whether or not this composition contains any items.
+ * @returns {Boolean} Whether or not this composite contains any items.
  */
 Node.prototype.isEmpty = function() {
     return this.getSize() === 0;
@@ -170,10 +170,10 @@ Node.prototype.isEmpty = function() {
 
 
 /**
- * This method returns the number of items that this composition contains.
+ * This method returns the number of items that this composite contains.
  * It must be implemented by a subclass.
  *
- * @returns {Number} The number of items that this composition contains.
+ * @returns {Number} The number of items that this composite contains.
  */
 Node.prototype.getSize = function() {
     return this.toArray().length;
@@ -182,8 +182,8 @@ Node.prototype.getSize = function() {
 
 /**
  * This method returns an object that can be used to iterate over the items in
- * this composition.
- * @returns {Iterator} An iterator for this composition.
+ * this composite.
+ * @returns {Iterator} An iterator for this composite.
  */
 Node.prototype.getIterator = function() {
     const iterator = new abstractions.Collection.Iterator(this.toArray(), this.getParameters(), this.debug);
@@ -198,7 +198,7 @@ Node.prototype.getIterator = function() {
  */
 Node.prototype.acceptVisitor = function(visitor) {
     // call the visitor method for the specific type of node
-    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/compositions/<Type>'
+    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/composites/<Type>'
     visitor[functionName](this);
 };
 
@@ -206,7 +206,7 @@ Node.prototype.acceptVisitor = function(visitor) {
 /**
  * This method converts negative item indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
- * composition is empty then the resulting index will be zero.
+ * composite is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:
  * <pre>
@@ -220,14 +220,14 @@ Node.prototype.acceptVisitor = function(visitor) {
 Node.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/compositions/Node', '$normalizedIndex', '$index', index, [
+        validator.validateType('/bali/composites/Node', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
     const size = this.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/compositions/Node',
+            $module: '/bali/composites/Node',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,

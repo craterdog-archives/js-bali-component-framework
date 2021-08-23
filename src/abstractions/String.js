@@ -14,7 +14,7 @@
  * This abstract class defines the invariant methods that all sequences must inherit.
  */
 const utilities = require('../utilities');
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 const Element = require('./Element').Element;
 const Iterator = require('./Iterator').Iterator;
 
@@ -101,7 +101,7 @@ Stryng.prototype.getIterator = function() {
 /**
  * This method returns the index of the specified item in this sequence.
  * NOTE: It is tempting when dealing with a sequence that uses an array
- * as an underlying data composition to use the Array.indexOf() method to
+ * as an underlying data composite to use the Array.indexOf() method to
  * provide a faster implementation of this method. However, the indexOf()
  * method uses strict equality checks which for items that are objects
  * returns false even when all attributes on each item are the same. Therefore

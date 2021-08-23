@@ -10,13 +10,13 @@
 'use strict';
 
 /**
- * This collection class implements a queue (FIFO) data composition.  Attempting to retrieve
+ * This collection class implements a queue (FIFO) data composite.  Attempting to retrieve
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 /*
  * This method defines a missing stack function for the standard Array class.

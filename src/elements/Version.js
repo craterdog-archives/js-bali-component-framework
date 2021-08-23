@@ -16,7 +16,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const Exception = require('../compositions/Exception').Exception;
+const Exception = require('../composites/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -121,7 +121,7 @@ Version.prototype.getItems = function(range) {
         const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/compositions/Range'
+            '/bali/composites/Range'
         ]);
     }
     range = this.componentize(range);

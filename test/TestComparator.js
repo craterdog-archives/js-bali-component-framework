@@ -197,7 +197,7 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
     });
 
-    describe('Test composition comparisons', function() {
+    describe('Test composite comparisons', function() {
 
         it('should handle Bali exceptions', function() {
             const bad = bali.exception({
