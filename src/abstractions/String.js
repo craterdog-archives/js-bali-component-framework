@@ -11,7 +11,7 @@
 
 
 /*
- * This abstract class defines the invariant methods that all sequences must inherit.
+ * This abstract class defines the invariant methods that all strings must inherit.
  */
 const utilities = require('../utilities');
 const Exception = require('../composites/Exception').Exception;
@@ -22,14 +22,14 @@ const Iterator = require('./Iterator').Iterator;
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new sequence with the specified ancestry and interfaces
+ * This function creates a new string with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Object} parameters Optional parameters used to parameterize this sequence.
+ * @param {Object} parameters Optional parameters used to parameterize this string.
  * @param {Number} debug A number in the range 0..3.
- * @returns {Stryng} The new sequence.
+ * @returns {Stryng} The new string.
  */
 const Stryng = function(ancestry, interfaces, parameters, debug) {
     Element.call(
@@ -49,10 +49,10 @@ exports.String = Stryng;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this sequence has a meaningful value. If the sequence
+ * This method returns whether or not this string has a meaningful value. If the string
  * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  *
- * @returns {Boolean} Whether or not this sequence has a meaningful value.
+ * @returns {Boolean} Whether or not this string has a meaningful value.
  */
 Stryng.prototype.toBoolean = function() {
     return this.getSize() > 0;
@@ -60,9 +60,9 @@ Stryng.prototype.toBoolean = function() {
 
 
 /**
- * This method returns whether or not this sequence contains any items.
+ * This method returns whether or not this string contains any items.
  *
- * @returns {Boolean} Whether or not this sequence contains any items.
+ * @returns {Boolean} Whether or not this string contains any items.
  */
 Stryng.prototype.isEmpty = function() {
     return this.getSize() === 0;
@@ -70,10 +70,10 @@ Stryng.prototype.isEmpty = function() {
 
 
 /**
- * This abstract method returns the number of items that this sequence has.
+ * This abstract method returns the number of items that this string has.
  * It must be implemented by a subclass.
  *
- * @returns {Number} The number of items that this sequence has.
+ * @returns {Number} The number of items that this string has.
  */
 Stryng.prototype.getSize = function() {
     const exception = new Exception({
@@ -89,8 +89,8 @@ Stryng.prototype.getSize = function() {
 
 /**
  * This method returns an object that can be used to iterate over the items in
- * this sequence.  It must be implemented by a subclass.
- * @returns {Iterator} An iterator for this sequence.
+ * this string.  It must be implemented by a subclass.
+ * @returns {Iterator} An iterator for this string.
  */
 Stryng.prototype.getIterator = function() {
     const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
@@ -99,8 +99,8 @@ Stryng.prototype.getIterator = function() {
 
 
 /**
- * This method returns the index of the specified item in this sequence.
- * NOTE: It is tempting when dealing with a sequence that uses an array
+ * This method returns the index of the specified item in this string.
+ * NOTE: It is tempting when dealing with a string that uses an array
  * as an underlying data composite to use the Array.indexOf() method to
  * provide a faster implementation of this method. However, the indexOf()
  * method uses strict equality checks which for items that are objects
@@ -108,7 +108,7 @@ Stryng.prototype.getIterator = function() {
  * it is better not to override this method in that case.
  *
  * @param {Object} item The item to be looked up.
- * @returns {Number} The index of the item in this sequence.
+ * @returns {Number} The index of the item in this string.
  */
 Stryng.prototype.getIndex = function(item) {
     if (this.debug > 1) {
@@ -136,11 +136,11 @@ Stryng.prototype.getIndex = function(item) {
 
 
 /**
- * This abstract method retrieves from this sequence the item that is associated with the
+ * This abstract method retrieves from this string the item that is associated with the
  * specified index.  It must be implemented by a subclass.
  *
  * @param {Number} index The index of the desired item.
- * @returns {Object} The item at the position in this sequence.
+ * @returns {Object} The item at the position in this string.
  */
 Stryng.prototype.getItem = function(index) {
     const exception = new Exception({
@@ -155,11 +155,11 @@ Stryng.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new sequence containing the items in the specified range.  It
+ * This method returns a new string containing the items in the specified range.  It
  * must be implemented by a subclass.
  *
  * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
- * @returns {Stryng} A new sequence containing the requested items.
+ * @returns {Stryng} A new string containing the requested items.
  */
 Stryng.prototype.getItems = function(range) {
     const exception = new Exception({
@@ -176,7 +176,7 @@ Stryng.prototype.getItems = function(range) {
 /**
  * This method converts negative item indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
- * sequence is empty then the resulting index will be zero.
+ * string is empty then the resulting index will be zero.
  *
  * The mapping between indexes is as follows:
  * <pre>
