@@ -33,7 +33,7 @@ const Composite = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
         ancestry.concat('/bali/abstractions/Composite'),
-        interfaces.concat('/bali/interfaces/Structured'),
+        interfaces.concat('/bali/interfaces/Structural'),
         parameters,
         debug
     );

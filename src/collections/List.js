@@ -42,7 +42,7 @@ const List = function(parameters, debug) {
         this,
         ['/bali/collections/List'],
         [
-            '/bali/interfaces/Structured',
+            '/bali/interfaces/Structural',
             '/bali/interfaces/Sortable',
             '/bali/libraries/Chainable'
         ],

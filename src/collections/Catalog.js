@@ -47,7 +47,7 @@ const Catalog = function(parameters, debug) {
         this,
         ancestry,
         [
-            '/bali/interfaces/Structured',
+            '/bali/interfaces/Structural',
             '/bali/interfaces/Sortable',
             '/bali/libraries/Chainable'
         ],

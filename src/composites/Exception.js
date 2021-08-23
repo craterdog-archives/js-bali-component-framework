@@ -98,7 +98,7 @@ const Exception = function(attributes, cause) {
     };
 
 
-    // Structured Interface
+    // Structural Interface
 
     this.getAttributes = function() {
         return attributes;
