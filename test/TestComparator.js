@@ -37,28 +37,28 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle angles', function() {
             expect(comparator.compareComponents(angle, angle)).to.equal(0);
-            expect(comparator.compareComponents(angle, number)).to.equal(1);
-            expect(comparator.compareComponents(angle, percentage)).to.equal(1);
-            expect(comparator.compareComponents(angle, probability)).to.equal(1);
+            expect(comparator.compareComponents(angle, number)).to.equal(-1);
+            expect(comparator.compareComponents(angle, percentage)).to.equal(-1);
+            expect(comparator.compareComponents(angle, probability)).to.equal(-1);
         });
 
         it('should handle numbers', function() {
-            expect(comparator.compareComponents(number, angle)).to.equal(-1);
+            expect(comparator.compareComponents(number, angle)).to.equal(1);
             expect(comparator.compareComponents(number, number)).to.equal(0);
-            expect(comparator.compareComponents(number, percentage)).to.equal(1);
-            expect(comparator.compareComponents(number, probability)).to.equal(1);
+            expect(comparator.compareComponents(number, percentage)).to.equal(-1);
+            expect(comparator.compareComponents(number, probability)).to.equal(-1);
         });
 
         it('should handle percentages', function() {
-            expect(comparator.compareComponents(percentage, angle)).to.equal(-1);
-            expect(comparator.compareComponents(percentage, number)).to.equal(-1);
+            expect(comparator.compareComponents(percentage, angle)).to.equal(1);
+            expect(comparator.compareComponents(percentage, number)).to.equal(1);
             expect(comparator.compareComponents(percentage, percentage)).to.equal(0);
             expect(comparator.compareComponents(percentage, probability)).to.equal(-1);
         });
 
         it('should handle probabilities', function() {
-            expect(comparator.compareComponents(probability, angle)).to.equal(-1);
-            expect(comparator.compareComponents(probability, number)).to.equal(-1);
+            expect(comparator.compareComponents(probability, angle)).to.equal(1);
+            expect(comparator.compareComponents(probability, number)).to.equal(1);
             expect(comparator.compareComponents(probability, percentage)).to.equal(1);
             expect(comparator.compareComponents(probability, probability)).to.equal(0);
         });
@@ -69,8 +69,8 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle probabilities', function() {
             const probability = bali.probability(0.5);
-            expect(comparator.compareComponents(probability, true)).to.equal(-1);
-            expect(comparator.compareComponents(true, probability)).to.equal(1);
+            expect(comparator.compareComponents(probability, true)).to.equal(1);
+            expect(comparator.compareComponents(true, probability)).to.equal(-1);
             expect(comparator.compareComponents(probability, false)).to.equal(1);
             expect(comparator.compareComponents(false, probability)).to.equal(-1);
         });
@@ -130,7 +130,7 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         it('should handle probabilities', function() {
             const probability = bali.probability(0.5);
             expect(comparator.compareComponents(probability, 'false')).to.equal(1);
-            expect(comparator.compareComponents('true', probability)).to.equal(1);
+            expect(comparator.compareComponents('true', probability)).to.equal(-1);
         });
 
         it('should handle ranges', function() {

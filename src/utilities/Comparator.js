@@ -77,27 +77,35 @@ const natural = function(first, second) {
     if (first === undefined && second !== undefined) return -1;  // nothing is less than anything
     if (first === undefined && second === undefined) return 0;  // nothing is equal to nothing
 
-    // handle numeric types
-    if ((typeof first === 'boolean' || typeof first === 'number') &&
-            (typeof second === 'boolean' || typeof second === 'number')) {
-        if (first.toString() === second.toString()) return 0;  // handle NaN
+    // handle boolean types
+    if (typeof first === 'boolean' && typeof second === 'boolean') {
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
-    if (first.toReal && (typeof second === 'number' || typeof second === 'boolean')) {
-        return natural(first.toReal(), second);
-    }
-    if ((typeof first === 'number' || typeof first === 'boolean') && second.toReal) {
-        return natural(first, second.toReal());
-    }
+    /*
     if (first.toBoolean && typeof second === 'boolean') {
         return natural(first.toBoolean(), second);
     }
     if (typeof first === 'boolean' && second.toBoolean) {
         return natural(first, second.toBoolean());
     }
+    */
+
+    // handle numeric types
+    if (typeof first === 'number' && typeof second === 'number') {
+        if (first.toString() === second.toString()) return 0;  // handle NaN
+        return Math.sign(Math.fround(first) - Math.fround(second));
+    }
+    /*
+    if (first.toReal && typeof second === 'number') {
+        return natural(first.toReal(), second);
+    }
+    if (typeof first === 'number' && second.toReal) {
+        return natural(first, second.toReal());
+    }
     if (first.toReal && second.toReal && first.getType() !== second.getType()) {
         return natural(first.toReal(), second.toReal());
     }
+    */
 
     // handle string types
     if (typeof first === 'string' && typeof second === 'string') {
