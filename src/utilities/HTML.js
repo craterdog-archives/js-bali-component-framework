@@ -476,14 +476,14 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
 };
 
 
-// range: element? '..' element?
+// range: element? ('<..<' | '<..' | '..<' | '..') element?
 FormattingVisitor.prototype.visitRange = function(range) {
     this.result += '<div class="range">';
     const first = range.getFirst();
     if (first !== undefined) {
         first.acceptVisitor(this);
     }
-    this.result += '..';
+    this.result += range.operator.replace(/</g, '&lt;');
     const last = range.getLast();
     if (last !== undefined) {
         last.acceptVisitor(this);

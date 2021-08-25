@@ -478,7 +478,7 @@ Visitor.prototype.visitPublishClause = function(node) {
 };
 
 
-// range: element? '..' element?
+// range: element? ('<..<' | '<..' | '..<' | '..') element?
 Visitor.prototype.visitRange = function(range) {
     const parameters = range.getParameters();
     this.visitParameters(parameters);  // process any parameters first
@@ -490,6 +490,7 @@ Visitor.prototype.visitRange = function(range) {
     if (last !== undefined) {
         last.acceptVisitor(this);
     }
+    const operator = range.operator;
 };
 
 

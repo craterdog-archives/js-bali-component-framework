@@ -806,13 +806,13 @@ FormattingVisitor.prototype.visitPublishClause = function(node) {
 };
 
 
-// range: element? '..' element?
+// range: element? ('<..<' | '<..' | '..<' | '..') element?
 FormattingVisitor.prototype.visitRange = function(range) {
     const first = range.getFirst();
     if (first !== undefined) {
         first.acceptVisitor(this);
     }
-    this.result += '..';
+    this.result += range.operator;
     const last = range.getLast();
     if (last !== undefined) {
         last.acceptVisitor(this);

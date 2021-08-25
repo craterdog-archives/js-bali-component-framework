@@ -516,7 +516,7 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// evaluateClause: (recipient (':=' | '+=' | '-=' | '*='))? expression
+// evaluateClause: (recipient op=(':=' | '+=' | '-=' | '*='))? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     const node = new composites.Node('/bali/composites/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
@@ -899,16 +899,17 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 };
 
 
-// range: element? '..' element?
+// range: element? op=('<..<' | '<..' | '..<' | '..') element?
 ParsingVisitor.prototype.visitRange = function(ctx) {
     var first, last;
     const parameters = this.getParameters();
+    const operator = ctx.op.text;
     const children = ctx.children;
     switch (children.length) {
         case 1:
             break;
         case 2:
-            if (children[0].getText() === '..') {
+            if (children[0].getText() === operator) {
                 children[1].accept(this);
                 last = this.result;
             } else {
@@ -924,6 +925,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             break;
     }
     const range = new composites.Range(first, last, parameters, this.debug);
+    range.operator = operator;
     this.result = range;
 };
 

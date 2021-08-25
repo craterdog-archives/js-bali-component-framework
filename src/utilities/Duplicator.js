@@ -557,11 +557,12 @@ DuplicatingVisitor.prototype.visitPublishClause = function(node) {
 };
 
 
-// range: element? '..' element?
+// range: element? ('<..<' | '<..' | '..<' | '..') element?
 DuplicatingVisitor.prototype.visitRange = function(range) {
     this.visitParameters(range.getParameters());
     const parameters = this.result;
     this.result = new range.constructor(range.getFirst(), range.getLast(), parameters, this.debug);
+    this.result.operator = range.operator;
     this.result.note = range.note;
 };
 

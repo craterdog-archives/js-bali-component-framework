@@ -5,7 +5,7 @@ component: value parameters? note?;
 
 value: element | range | sequence | procedure;
 
-range: element? '..' element?;
+range: element? op=('<..<' | '<..' | '..<' | '..') element?;
 
 sequence: '[' collection ']';
 
