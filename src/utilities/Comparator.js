@@ -81,31 +81,24 @@ const natural = function(first, second) {
     if (typeof first === 'boolean' && typeof second === 'boolean') {
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
-    /*
-    if (first.toBoolean && typeof second === 'boolean') {
-        return natural(first.toBoolean(), second);
+    if (first.isComponent && typeof second === 'boolean') {
+        return natural(first, first.componentize(second));
     }
-    if (typeof first === 'boolean' && second.toBoolean) {
-        return natural(first, second.toBoolean());
+    if (typeof first === 'boolean' && second.isComponent) {
+        return natural(second.componentize(first), second);
     }
-    */
 
-    // handle numeric types
+    // handle number types
     if (typeof first === 'number' && typeof second === 'number') {
         if (first.toString() === second.toString()) return 0;  // handle NaN
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
-    /*
-    if (first.toReal && typeof second === 'number') {
-        return natural(first.toReal(), second);
+    if (first.isComponent && typeof second === 'number') {
+        return natural(first, first.componentize(second));
     }
-    if (typeof first === 'number' && second.toReal) {
-        return natural(first, second.toReal());
+    if (typeof first === 'number' && second.isComponent) {
+        return natural(second.componentize(first), second);
     }
-    if (first.toReal && second.toReal && first.getType() !== second.getType()) {
-        return natural(first.toReal(), second.toReal());
-    }
-    */
 
     // handle string types
     if (typeof first === 'string' && typeof second === 'string') {
@@ -189,6 +182,9 @@ const natural = function(first, second) {
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
         // note: can't use Math.fround() on the integer values used to store temporal elements
         return Math.sign(first.getValue() - second.getValue());
+    }
+    if (first.getReal) {
+        return natural(first.getReal(), second.getReal());
     }
     if (first.getValue) {
         return natural(first.getValue(), second.getValue());
