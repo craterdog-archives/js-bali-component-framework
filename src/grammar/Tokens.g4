@@ -16,20 +16,18 @@ DURATION: '~' '-'? 'P' (SPAN 'W' | (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPA
 
 FRACTION: '.' ('0'..'9')+;
 
+PERCENTAGE: ('0' | REAL) '%';
+
+// Note: An imaginary number must be higher precedence than a real number.
 IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | 'τ i';
+
+REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
 MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
 
 NAME: ('/' LABEL)+;
 
-PERCENTAGE: ('0' | REAL) '%';
-
 RESOURCE: '<' LABEL ':' CONTEXT '>';
-
-// Note: We cannot define negative constants here because the scanner would scan
-//       a negative variable like '-exponent' as a single '-e' token rather than
-//       two tokens '-' and 'exponent'.
-REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
 REGEX: '"' TEXT '"?';
 

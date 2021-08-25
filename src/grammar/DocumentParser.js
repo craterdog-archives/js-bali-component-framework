@@ -339,13 +339,13 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u01fc\u0007S\u0002\u0002\u01fc_\u0003\u0002\u0002\u0002\u01fd\u01fe",
     "\u0007T\u0002\u0002\u01fea\u0003\u0002\u0002\u0002\u01ff\u0200\t\n\u0002",
     "\u0002\u0200c\u0003\u0002\u0002\u0002\u0201\u0202\u0007U\u0002\u0002",
-    "\u0202e\u0003\u0002\u0002\u0002\u0203\u0204\u0007X\u0002\u0002\u0204",
-    "g\u0003\u0002\u0002\u0002\u0205\u0206\u0007Y\u0002\u0002\u0206i\u0003",
+    "\u0202e\u0003\u0002\u0002\u0002\u0203\u0204\u0007Z\u0002\u0002\u0204",
+    "g\u0003\u0002\u0002\u0002\u0205\u0206\u0007[\u0002\u0002\u0206i\u0003",
     "\u0002\u0002\u0002\u0207\u0218\u0007K\u0002\u0002\u0208\u0218\u0007",
     "L\u0002\u0002\u0209\u0218\u0007M\u0002\u0002\u020a\u0218\u0007N\u0002",
-    "\u0002\u020b\u0218\u0007\\\u0002\u0002\u020c\u0218\u0007W\u0002\u0002",
-    "\u020d\u020e\u0007)\u0002\u0002\u020e\u0214\u0007\\\u0002\u0002\u020f",
-    "\u0210\u0007B\u0002\u0002\u0210\u0215\u0007W\u0002\u0002\u0211\u0212",
+    "\u0002\u020b\u0218\u0007Y\u0002\u0002\u020c\u0218\u0007X\u0002\u0002",
+    "\u020d\u020e\u0007)\u0002\u0002\u020e\u0214\u0007Y\u0002\u0002\u020f",
+    "\u0210\u0007B\u0002\u0002\u0210\u0215\u0007X\u0002\u0002\u0211\u0212",
     "\u0007O\u0002\u0002\u0212\u0213\u0007S\u0002\u0002\u0213\u0215\u0007",
     "P\u0002\u0002\u0214\u020f\u0003\u0002\u0002\u0002\u0214\u0211\u0003",
     "\u0002\u0002\u0002\u0215\u0216\u0003\u0002\u0002\u0002\u0216\u0218\u0007",
@@ -354,11 +354,11 @@ var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0002\u0002\u0002\u0217\u020b\u0003\u0002\u0002\u0002\u0217\u020c\u0003",
     "\u0002\u0002\u0002\u0217\u020d\u0003\u0002\u0002\u0002\u0218k\u0003",
     "\u0002\u0002\u0002\u0219\u021a\t\u000b\u0002\u0002\u021am\u0003\u0002",
-    "\u0002\u0002\u021b\u021c\u0007Z\u0002\u0002\u021co\u0003\u0002\u0002",
-    "\u0002\u021d\u0221\u0007V\u0002\u0002\u021e\u021f\u0007\\\u0002\u0002",
+    "\u0002\u0002\u021b\u021c\u0007W\u0002\u0002\u021co\u0003\u0002\u0002",
+    "\u0002\u021d\u0221\u0007V\u0002\u0002\u021e\u021f\u0007Y\u0002\u0002",
     "\u021f\u0221\u0007,\u0002\u0002\u0220\u021d\u0003\u0002\u0002\u0002",
     "\u0220\u021e\u0003\u0002\u0002\u0002\u0221q\u0003\u0002\u0002\u0002",
-    "\u0222\u0223\u0007[\u0002\u0002\u0223s\u0003\u0002\u0002\u0002\u0224",
+    "\u0222\u0223\u0007\\\u0002\u0002\u0223s\u0003\u0002\u0002\u0002\u0224",
     "\u0225\u0007^\u0002\u0002\u0225u\u0003\u0002\u0002\u0002\u0226\u0227",
     "\u0007_\u0002\u0002\u0227w\u0003\u0002\u0002\u0002\u0228\u0229\t\f\u0002",
     "\u0002\u0229y\u0003\u0002\u0002\u0002\u022a\u022b\u0007b\u0002\u0002",
@@ -398,8 +398,8 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
                       null, null, null, null, null, null, null, null, null, 
-                      "ANGLE", "BINARY", "DURATION", "FRACTION", "IMAGINARY", 
-                      "MOMENT", "NAME", "PERCENTAGE", "RESOURCE", "REAL", 
+                      "ANGLE", "BINARY", "DURATION", "FRACTION", "PERCENTAGE", 
+                      "IMAGINARY", "REAL", "MOMENT", "NAME", "RESOURCE", 
                       "REGEX", "SYMBOL", "TAG", "NARRATIVE", "QUOTE", "VERSION", 
                       "IDENTIFIER", "NOTE", "COMMENT", "EOL", "SPACE" ];
 
@@ -520,12 +520,12 @@ DocumentParser.ANGLE = 81;
 DocumentParser.BINARY = 82;
 DocumentParser.DURATION = 83;
 DocumentParser.FRACTION = 84;
-DocumentParser.IMAGINARY = 85;
-DocumentParser.MOMENT = 86;
-DocumentParser.NAME = 87;
-DocumentParser.PERCENTAGE = 88;
-DocumentParser.RESOURCE = 89;
-DocumentParser.REAL = 90;
+DocumentParser.PERCENTAGE = 85;
+DocumentParser.IMAGINARY = 86;
+DocumentParser.REAL = 87;
+DocumentParser.MOMENT = 88;
+DocumentParser.NAME = 89;
+DocumentParser.RESOURCE = 90;
 DocumentParser.REGEX = 91;
 DocumentParser.SYMBOL = 92;
 DocumentParser.TAG = 93;
@@ -865,12 +865,12 @@ DocumentParser.prototype.statement = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -1134,12 +1134,12 @@ DocumentParser.prototype.mainClause = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -2457,7 +2457,7 @@ DocumentParser.prototype.selectClause = function() {
             this.state = 256; 
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-        } while(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__40 - 37)) | (1 << (DocumentParser.T__46 - 37)) | (1 << (DocumentParser.T__47 - 37)) | (1 << (DocumentParser.T__48 - 37)) | (1 << (DocumentParser.T__51 - 37)) | (1 << (DocumentParser.T__57 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0));
+        } while(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__40 - 37)) | (1 << (DocumentParser.T__46 - 37)) | (1 << (DocumentParser.T__47 - 37)) | (1 << (DocumentParser.T__48 - 37)) | (1 << (DocumentParser.T__51 - 37)) | (1 << (DocumentParser.T__57 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0));
         this.state = 260;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
@@ -2847,7 +2847,7 @@ DocumentParser.prototype.returnClause = function() {
         this.state = 286;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__40 - 37)) | (1 << (DocumentParser.T__46 - 37)) | (1 << (DocumentParser.T__47 - 37)) | (1 << (DocumentParser.T__48 - 37)) | (1 << (DocumentParser.T__51 - 37)) | (1 << (DocumentParser.T__57 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
+        if(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__40 - 37)) | (1 << (DocumentParser.T__46 - 37)) | (1 << (DocumentParser.T__47 - 37)) | (1 << (DocumentParser.T__48 - 37)) | (1 << (DocumentParser.T__51 - 37)) | (1 << (DocumentParser.T__57 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)) | (1 << (DocumentParser.IDENTIFIER - 71)))) !== 0)) {
             this.state = 285;
             this.expression(0);
         }
@@ -4373,12 +4373,12 @@ DocumentParser.prototype.arguments = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -4773,7 +4773,7 @@ DocumentParser.prototype.range = function() {
         this.state = 400;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
-        if(_la===DocumentParser.T__38 || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
+        if(_la===DocumentParser.T__38 || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
             this.state = 399;
             this.element();
         }
@@ -5133,12 +5133,12 @@ DocumentParser.prototype.list = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -5168,7 +5168,7 @@ DocumentParser.prototype.list = function() {
             this.state = 432;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
+            while(_la===DocumentParser.T__3 || ((((_la - 37)) & ~0x1f) == 0 && ((1 << (_la - 37)) & ((1 << (DocumentParser.T__36 - 37)) | (1 << (DocumentParser.T__38 - 37)) | (1 << (DocumentParser.T__64 - 37)) | (1 << (DocumentParser.T__65 - 37)) | (1 << (DocumentParser.T__66 - 37)) | (1 << (DocumentParser.T__67 - 37)))) !== 0) || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
                 this.state = 427;
                 this.component();
                 this.state = 428;
@@ -5286,12 +5286,12 @@ DocumentParser.prototype.catalog = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -5321,7 +5321,7 @@ DocumentParser.prototype.catalog = function() {
             this.state = 452;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while(_la===DocumentParser.T__38 || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
+            while(_la===DocumentParser.T__38 || ((((_la - 71)) & ~0x1f) == 0 && ((1 << (_la - 71)) & ((1 << (DocumentParser.T__70 - 71)) | (1 << (DocumentParser.T__71 - 71)) | (1 << (DocumentParser.T__72 - 71)) | (1 << (DocumentParser.T__73 - 71)) | (1 << (DocumentParser.T__74 - 71)) | (1 << (DocumentParser.T__75 - 71)) | (1 << (DocumentParser.T__78 - 71)) | (1 << (DocumentParser.T__79 - 71)) | (1 << (DocumentParser.ANGLE - 71)) | (1 << (DocumentParser.BINARY - 71)) | (1 << (DocumentParser.DURATION - 71)) | (1 << (DocumentParser.FRACTION - 71)) | (1 << (DocumentParser.PERCENTAGE - 71)) | (1 << (DocumentParser.IMAGINARY - 71)) | (1 << (DocumentParser.REAL - 71)) | (1 << (DocumentParser.MOMENT - 71)) | (1 << (DocumentParser.NAME - 71)) | (1 << (DocumentParser.RESOURCE - 71)) | (1 << (DocumentParser.REGEX - 71)) | (1 << (DocumentParser.SYMBOL - 71)) | (1 << (DocumentParser.TAG - 71)) | (1 << (DocumentParser.NARRATIVE - 71)) | (1 << (DocumentParser.QUOTE - 71)) | (1 << (DocumentParser.VERSION - 71)))) !== 0)) {
                 this.state = 447;
                 this.association();
                 this.state = 448;
@@ -5617,12 +5617,12 @@ DocumentParser.prototype.code = function() {
         case DocumentParser.BINARY:
         case DocumentParser.DURATION:
         case DocumentParser.FRACTION:
+        case DocumentParser.PERCENTAGE:
         case DocumentParser.IMAGINARY:
+        case DocumentParser.REAL:
         case DocumentParser.MOMENT:
         case DocumentParser.NAME:
-        case DocumentParser.PERCENTAGE:
         case DocumentParser.RESOURCE:
-        case DocumentParser.REAL:
         case DocumentParser.REGEX:
         case DocumentParser.SYMBOL:
         case DocumentParser.TAG:
@@ -5655,7 +5655,7 @@ DocumentParser.prototype.code = function() {
             this.state = 480;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
-            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__1) | (1 << DocumentParser.T__3) | (1 << DocumentParser.T__9) | (1 << DocumentParser.T__11) | (1 << DocumentParser.T__12) | (1 << DocumentParser.T__13) | (1 << DocumentParser.T__17) | (1 << DocumentParser.T__18) | (1 << DocumentParser.T__20) | (1 << DocumentParser.T__21) | (1 << DocumentParser.T__22) | (1 << DocumentParser.T__23) | (1 << DocumentParser.T__26) | (1 << DocumentParser.T__30))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (DocumentParser.T__31 - 32)) | (1 << (DocumentParser.T__33 - 32)) | (1 << (DocumentParser.T__34 - 32)) | (1 << (DocumentParser.T__35 - 32)) | (1 << (DocumentParser.T__36 - 32)) | (1 << (DocumentParser.T__38 - 32)) | (1 << (DocumentParser.T__40 - 32)) | (1 << (DocumentParser.T__46 - 32)) | (1 << (DocumentParser.T__47 - 32)) | (1 << (DocumentParser.T__48 - 32)) | (1 << (DocumentParser.T__51 - 32)) | (1 << (DocumentParser.T__57 - 32)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (DocumentParser.T__64 - 65)) | (1 << (DocumentParser.T__65 - 65)) | (1 << (DocumentParser.T__66 - 65)) | (1 << (DocumentParser.T__67 - 65)) | (1 << (DocumentParser.T__70 - 65)) | (1 << (DocumentParser.T__71 - 65)) | (1 << (DocumentParser.T__72 - 65)) | (1 << (DocumentParser.T__73 - 65)) | (1 << (DocumentParser.T__74 - 65)) | (1 << (DocumentParser.T__75 - 65)) | (1 << (DocumentParser.T__78 - 65)) | (1 << (DocumentParser.T__79 - 65)) | (1 << (DocumentParser.ANGLE - 65)) | (1 << (DocumentParser.BINARY - 65)) | (1 << (DocumentParser.DURATION - 65)) | (1 << (DocumentParser.FRACTION - 65)) | (1 << (DocumentParser.IMAGINARY - 65)) | (1 << (DocumentParser.MOMENT - 65)) | (1 << (DocumentParser.NAME - 65)) | (1 << (DocumentParser.PERCENTAGE - 65)) | (1 << (DocumentParser.RESOURCE - 65)) | (1 << (DocumentParser.REAL - 65)) | (1 << (DocumentParser.REGEX - 65)) | (1 << (DocumentParser.SYMBOL - 65)) | (1 << (DocumentParser.TAG - 65)) | (1 << (DocumentParser.NARRATIVE - 65)) | (1 << (DocumentParser.QUOTE - 65)) | (1 << (DocumentParser.VERSION - 65)))) !== 0) || ((((_la - 97)) & ~0x1f) == 0 && ((1 << (_la - 97)) & ((1 << (DocumentParser.IDENTIFIER - 97)) | (1 << (DocumentParser.NOTE - 97)) | (1 << (DocumentParser.COMMENT - 97)))) !== 0)) {
+            while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__1) | (1 << DocumentParser.T__3) | (1 << DocumentParser.T__9) | (1 << DocumentParser.T__11) | (1 << DocumentParser.T__12) | (1 << DocumentParser.T__13) | (1 << DocumentParser.T__17) | (1 << DocumentParser.T__18) | (1 << DocumentParser.T__20) | (1 << DocumentParser.T__21) | (1 << DocumentParser.T__22) | (1 << DocumentParser.T__23) | (1 << DocumentParser.T__26) | (1 << DocumentParser.T__30))) !== 0) || ((((_la - 32)) & ~0x1f) == 0 && ((1 << (_la - 32)) & ((1 << (DocumentParser.T__31 - 32)) | (1 << (DocumentParser.T__33 - 32)) | (1 << (DocumentParser.T__34 - 32)) | (1 << (DocumentParser.T__35 - 32)) | (1 << (DocumentParser.T__36 - 32)) | (1 << (DocumentParser.T__38 - 32)) | (1 << (DocumentParser.T__40 - 32)) | (1 << (DocumentParser.T__46 - 32)) | (1 << (DocumentParser.T__47 - 32)) | (1 << (DocumentParser.T__48 - 32)) | (1 << (DocumentParser.T__51 - 32)) | (1 << (DocumentParser.T__57 - 32)))) !== 0) || ((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (DocumentParser.T__64 - 65)) | (1 << (DocumentParser.T__65 - 65)) | (1 << (DocumentParser.T__66 - 65)) | (1 << (DocumentParser.T__67 - 65)) | (1 << (DocumentParser.T__70 - 65)) | (1 << (DocumentParser.T__71 - 65)) | (1 << (DocumentParser.T__72 - 65)) | (1 << (DocumentParser.T__73 - 65)) | (1 << (DocumentParser.T__74 - 65)) | (1 << (DocumentParser.T__75 - 65)) | (1 << (DocumentParser.T__78 - 65)) | (1 << (DocumentParser.T__79 - 65)) | (1 << (DocumentParser.ANGLE - 65)) | (1 << (DocumentParser.BINARY - 65)) | (1 << (DocumentParser.DURATION - 65)) | (1 << (DocumentParser.FRACTION - 65)) | (1 << (DocumentParser.PERCENTAGE - 65)) | (1 << (DocumentParser.IMAGINARY - 65)) | (1 << (DocumentParser.REAL - 65)) | (1 << (DocumentParser.MOMENT - 65)) | (1 << (DocumentParser.NAME - 65)) | (1 << (DocumentParser.RESOURCE - 65)) | (1 << (DocumentParser.REGEX - 65)) | (1 << (DocumentParser.SYMBOL - 65)) | (1 << (DocumentParser.TAG - 65)) | (1 << (DocumentParser.NARRATIVE - 65)) | (1 << (DocumentParser.QUOTE - 65)) | (1 << (DocumentParser.VERSION - 65)))) !== 0) || ((((_la - 97)) & ~0x1f) == 0 && ((1 << (_la - 97)) & ((1 << (DocumentParser.IDENTIFIER - 97)) | (1 << (DocumentParser.NOTE - 97)) | (1 << (DocumentParser.COMMENT - 97)))) !== 0)) {
                 this.state = 475;
                 this.statement();
                 this.state = 476;
