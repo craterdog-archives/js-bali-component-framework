@@ -759,27 +759,29 @@ ParsingVisitor.prototype.visitName = function(ctx) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    REAL |
-//    IMAGINARY |
-//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
-    var real = ctx.REAL();
+    var real = ctx.real();
     if (real) {
-        real = literalToNumber(real.getText());
+        real = real.getText();
+        real = literalToNumber(real);
     } else {
         real = undefined;
     }
-    var imaginary = ctx.IMAGINARY();
+    var imaginary = ctx.imaginary();
     if (imaginary) {
-        imaginary = literalToNumber(imaginary.getText().slice(0, -1).trim());  // remove the trailing 'i'
+        imaginary = imaginary.getText().slice(0, -1).trim();  // remove the trailing 'i';
+        imaginary = literalToNumber(imaginary);
     } else {
         imaginary = undefined;
     }
-    var angle = ctx.ANGLE();
+    var angle = ctx.angle();
     if (angle) {
-        angle = literalToNumber(angle.getText().slice(1));  // remove the leading '~'
-        imaginary = new elements.Angle(angle, parameters, this.debug);
+        angle.accept(this);
+        imaginary = this.result;
     } else {
         angle = undefined;
     }

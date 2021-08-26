@@ -420,6 +420,18 @@ DocumentVisitor.prototype.visitName = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#real.
+DocumentVisitor.prototype.visitReal = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#imaginary.
+DocumentVisitor.prototype.visitImaginary = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#number.
 DocumentVisitor.prototype.visitNumber = function(ctx) {
   return this.visitChildren(ctx);

@@ -649,9 +649,9 @@ FormattingVisitor.prototype.visitName = function(name) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    REAL |
-//    IMAGINARY |
-//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 FormattingVisitor.prototype.visitNumber = function(number) {
     const isPolar = number.isPolar;
     if (number.isUndefined()) {
@@ -1045,9 +1045,13 @@ const formatImaginary = function(value) {
         case '∞':
             return literal;
         case 'e':
+        case '-e':
         case 'π':
+        case '-π':
         case 'φ':
+        case '-φ':
         case 'τ':
+        case '-τ':
             return literal + ' i';
         default:
             return literal + 'i';

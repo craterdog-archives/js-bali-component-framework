@@ -31,14 +31,18 @@ moment: MOMENT;
 
 name: NAME;
 
+real: '-'? REAL;
+
+imaginary: '-'? IMAGINARY;
+
 number:
     'undefined' |
     '0' |
     '∞' |
     'infinity' |
-    REAL |
-    IMAGINARY |
-    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
+    real |
+    imaginary |
+    '(' real (',' imaginary | 'e^' angle 'i') ')'
 ;
 
 pattern: 'none' | REGEX | 'any';

@@ -398,9 +398,9 @@ Visitor.prototype.visitName = function(name) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    REAL |
-//    IMAGINARY |
-//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
     const parameters = number.getParameters();
     this.visitParameters(parameters);  // process any parameters first

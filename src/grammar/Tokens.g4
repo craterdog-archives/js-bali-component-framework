@@ -8,7 +8,7 @@ grammar Tokens;
  "fragment" keyword.
 */
 
-ANGLE: '~' ('0' | REAL);
+ANGLE: '~' ('0' | '-'? REAL);
 
 BINARY: '\'' (BASE64 | SPACE)* ('=' ('=')?)? SPACE* '\'';
 
@@ -16,7 +16,7 @@ DURATION: '~' '-'? 'P' (SPAN 'W' | (SPAN 'Y')? (SPAN 'M')? (SPAN 'D')? ('T' (SPA
 
 FRACTION: '.' ('0'..'9')+;
 
-PERCENTAGE: ('0' | REAL) '%';
+PERCENTAGE: ('0' | '-'? REAL) '%';
 
 // Note: An imaginary number must be higher precedence than a real number.
 IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | 'τ i';
@@ -63,7 +63,7 @@ fragment
 NUMBER: '1'..'9' ('0'..'9')*;
 
 fragment
-FLOAT: '-'? (NUMBER FRACTION? | '0' FRACTION) ('E' '-'? NUMBER)?;
+FLOAT: (NUMBER FRACTION? | '0' FRACTION) ('E' '-'? NUMBER)?;
 
 fragment
 INTEGER: '0' | '-'? NUMBER;

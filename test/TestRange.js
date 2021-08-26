@@ -125,6 +125,12 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(first.toInteger()).to.equal(-4);
             last = range.getLast();
             expect(last.toInteger()).to.equal(6);
+
+            range = bali.component('-5..-1');
+            first = range.getFirst();
+            expect(first.toInteger()).to.equal(-5);
+            last = range.getLast();
+            expect(last.toInteger()).to.equal(-1);
         });
 
     });

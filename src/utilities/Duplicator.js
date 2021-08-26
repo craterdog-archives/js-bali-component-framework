@@ -461,9 +461,9 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 //    'undefined' |
 //    'infinity' |
 //    '∞' |
-//    REAL |
-//    IMAGINARY |
-//    '(' REAL (',' IMAGINARY | 'e^' ANGLE 'i') ')'
+//    real |
+//    imaginary |
+//    '(' real (',' imaginary | 'e^' angle 'i') ')'
 DuplicatingVisitor.prototype.visitNumber = function(number) {
     this.visitParameters(number.getParameters());
     const parameters = this.result;
