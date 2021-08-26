@@ -768,22 +768,16 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
     if (real) {
         real = real.getText();
         real = literalToNumber(real);
-    } else {
-        real = undefined;
     }
     var imaginary = ctx.imaginary();
     if (imaginary) {
         imaginary = imaginary.getText().slice(0, -1).trim();  // remove the trailing 'i';
         imaginary = literalToNumber(imaginary);
-    } else {
-        imaginary = undefined;
     }
     var angle = ctx.angle();
     if (angle) {
         angle.accept(this);
         imaginary = this.result;
-    } else {
-        angle = undefined;
     }
     const literal = ctx.getText();
     switch (literal) {
