@@ -24,11 +24,12 @@ const Exception = require('../composites/Exception').Exception;
  *
  * @param {Element} first The first element in the range.
  * @param {Element} last The last element in the range.
+ * @param {String} connector The connector between the first and last values (default: '..').
  * @param {Object} parameters Optional parameters used to parameterize this composite.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
-const Range = function(first, last, parameters, debug) {
+const Range = function(first, last, connector, parameters, debug) {
     abstractions.Composite.call(
         this,
         ['/bali/composites/Range'],
@@ -55,6 +56,10 @@ const Range = function(first, last, parameters, debug) {
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
+        validator.validateType('/bali/composites/Range', '$Range', '$connector', connector, [
+            '/javascript/Undefined',
+            '/javascript/String'
+        ]);
     }
 
     // convert the arguments to components
@@ -68,11 +73,16 @@ const Range = function(first, last, parameters, debug) {
     } else if (last !== undefined) {
         last = this.componentize(last, this.debug);
     }
+    if (connector === null || connector === undefined) {
+        connector = '..';
+    }
 
     // since this composite is immutable the values must be read-only
     this.getFirst = function() { return first; };
 
     this.getLast = function() { return last; };
+
+    this.getConnector = function() { return connector; };
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
@@ -84,6 +94,7 @@ const Range = function(first, last, parameters, debug) {
         }
         const symbol = key.toString();
         if (symbol === '$first') return this.getFirst();
+        if (symbol === '$connector') return this.getConnector();
         if (symbol === '$last') return this.getLast();
     };
 
@@ -113,7 +124,7 @@ exports.Range = Range;
  * @returns {Boolean} Whether or not this component is meaningful.
  */
 Range.prototype.toBoolean = function() {
-    return this.getFirst() !== undefined && this.getLast() !== undefined;
+    return true;
 };
 
 
@@ -124,7 +135,7 @@ Range.prototype.toBoolean = function() {
  * @returns {String} The literal string value for this range.
  */
 Range.prototype.toLiteral = function() {
-    const copy = new this.constructor(this.getFirst(), this.getLast(), undefined, this.debug);
+    const copy = new this.constructor(this.getFirst(), this.getLast(), this.getConnector(), undefined, this.debug);
     return copy.toString();
 };
 
@@ -145,7 +156,9 @@ Range.prototype.acceptVisitor = function(visitor) {
  * @returns {Iterator} An iterator for this range.
  */
 Range.prototype.getIterator = function() {
-    if (this.getFirst().isInteger && this.getLast().isInteger) {
+    const first = this.getFirst();
+    const last = this.getLast();
+    if (first.isInteger && last.isInteger && (last.toInteger() - first.toInteger() > 0)) {
         const iterator = new RangeIterator(this, this.getParameters(), this.debug);
         return iterator;
     }
@@ -153,6 +166,7 @@ Range.prototype.getIterator = function() {
         $module: '/bali/composites/Range',
         $procedure: '$getIterator',
         $exception: '$nonInteger',
+        $range: range,
         $text: 'Only a finite integer range may be iterated over.'
     });
     if (this.debug > 0) console.error(exception.toString());
@@ -172,9 +186,24 @@ const RangeIterator = function(range, parameters, debug) {
 
     // the first index in the range, size of the range, and the current slot pointer
     // are private attributes so methods that use them are defined in the constructor
-    const first = range.getFirst().toInteger();
-    const last = range.getLast().toInteger();
+    const connector = range.getConnector();
+    var first = range.getFirst().toInteger();
+    if (connector.startsWith('<')) first++;
+    var last = range.getLast().toInteger();
+    if (connector.endsWith('<')) last--;
     const size = last - first + 1;  // ranges are static so we can cache the size
+    if (size < 1) {
+        const exception = new Exception({
+            $module: '/bali/composites/Range',
+            $procedure: '$getIterator',
+            $exception: '$negativeSize',
+            $range: range,
+            $size: size,
+            $text: 'A range must have a size > 0 to be iterated over.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    }
     var slot = 0;  // the slot before the first integer
 
     this.toStart = function() {

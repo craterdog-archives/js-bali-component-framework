@@ -812,7 +812,7 @@ FormattingVisitor.prototype.visitRange = function(range) {
     if (first !== undefined) {
         first.acceptVisitor(this);
     }
-    this.result += range.operator;
+    this.result += range.getConnector();
     const last = range.getLast();
     if (last !== undefined) {
         last.acceptVisitor(this);

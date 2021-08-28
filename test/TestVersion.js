@@ -82,7 +82,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
         it('should iterate over a version string forwards and backwards', function() {
             const version = bali.version([1, 2, 3]);
             const iterator = version.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

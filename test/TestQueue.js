@@ -22,17 +22,17 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
 
         it('should create an empty queue', function() {
             const queue = bali.queue();
-            expect(queue).to.exist;  // jshint ignore:line
+            expect(queue).to.exist;
             const size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             const iterator = queue.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             queue.removeAll();
             const copy = bali.queue();
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             expect(queue.isEqualTo(copy)).to.equal(true);
             const signum = queue.comparedTo(copy);
             expect(signum).to.equal(0);
@@ -41,51 +41,51 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
         it('should create an empty queue with small capacity', function() {
             const queue = bali.queue([], {$capacity: 3});
             var size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             queue.addItem('"alpha"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(1);
             expect(queue.headItem().toString()).to.equal('"alpha"');
             queue.addItem('"beta"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(2);
             expect(queue.headItem().toString()).to.equal('"alpha"');
             queue.addItem('"gamma"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(3);
             expect(queue.headItem().toString()).to.equal('"alpha"');
             expect(function() {queue.addItem('"delta"');}).to.throw(bali.Exception);
             var item = queue.removeItem();
-            expect(item).to.exist;  // jshint ignore:line
+            expect(item).to.exist;
             expect(item.toString()).to.equal('"alpha"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(2);
             item = queue.removeItem();
-            expect(item).to.exist;  // jshint ignore:line
+            expect(item).to.exist;
             expect(item.toString()).to.equal('"beta"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(1);
             item = queue.removeItem();
-            expect(item).to.exist;  // jshint ignore:line
+            expect(item).to.exist;
             expect(item.toString()).to.equal('"gamma"');
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
         it('should create a queue from an array', function() {
             const queue = bali.queue(array);
             var size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = queue.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -93,7 +93,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             });
             queue.removeAll();
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -101,10 +101,10 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             const list = bali.list(array);
             queue = bali.queue(list);
             var size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = queue.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -112,7 +112,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             });
             queue.removeAll();
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -120,11 +120,11 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             const expected = bali.queue(array);
             const queue = bali.queue(expected);
             var size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(queue.isEqualTo(expected)).to.equal(true);
             const iterator = queue.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -132,7 +132,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             });
             queue.removeAll();
             size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -143,7 +143,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
         it('should be able to add and remove items from a queue', function() {
             const queue = bali.queue(array);
             const size = queue.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             var first = queue.headItem();
             expect(first.toString()).to.equal('"alpha"');
@@ -184,7 +184,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
         it('should iterate over a queue forwards and backwards', function() {
             const queue = bali.queue(array);
             const iterator = queue.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);
             // iterator through the items from beginning to end

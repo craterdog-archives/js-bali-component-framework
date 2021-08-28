@@ -486,11 +486,11 @@ Visitor.prototype.visitRange = function(range) {
     if (first !== undefined) {
         first.acceptVisitor(this);
     }
+    const connector = range.getConnector();
     const last = range.getLast();
     if (last !== undefined) {
         last.acceptVisitor(this);
     }
-    const operator = range.operator;
 };
 
 

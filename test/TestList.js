@@ -22,17 +22,17 @@ describe('Bali Nebula™ Component Framework - List', function() {
 
         it('should create an empty list', function() {
             const list = bali.list();
-            expect(list).to.exist;  // jshint ignore:line
+            expect(list).to.exist;
             const size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             list.removeAll();
             const copy = list.constructor(list.getParameters());
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             expect(list.isEqualTo(copy)).to.equal(true);
             const signum = list.comparedTo(copy);
             expect(signum).to.equal(0);
@@ -41,10 +41,10 @@ describe('Bali Nebula™ Component Framework - List', function() {
         it('should create a list from an array', function() {
             const list = bali.list(array);
             var size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -52,7 +52,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             });
             list.removeAll();
             size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -60,10 +60,10 @@ describe('Bali Nebula™ Component Framework - List', function() {
             var list = bali.list(array);
             list = bali.list(list);
             var size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -71,7 +71,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             });
             list.removeAll();
             size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -79,10 +79,10 @@ describe('Bali Nebula™ Component Framework - List', function() {
             const set = bali.set(array);
             const list = bali.list(set);
             var size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -90,7 +90,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             });
             list.removeAll();
             size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -141,7 +141,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
         it('should be able to add and remove items from a list', function() {
             const list = bali.list(array);
             var size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(5);
             expect(list.getItem(2).toString()).to.equal('"beta"');
             expect(list.getIndex('"alpha"')).to.equal(1);
@@ -153,17 +153,17 @@ describe('Bali Nebula™ Component Framework - List', function() {
                 }
             ).to.throw();
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
             list.removeItem(2);
             size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(4);
             list.removeItems('2..3');
             size = list.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(2);
             // the iterator should be pointing at a copy of the array so unaffected
             iterator.toStart();
@@ -228,7 +228,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
         it('should iterate over a list forwards and backwards', function() {
             const list = bali.list(array);
             const iterator = list.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

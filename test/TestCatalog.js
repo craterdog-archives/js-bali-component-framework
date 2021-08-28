@@ -27,17 +27,17 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
 
         it('should create an empty catalog', function() {
             const catalog = bali.catalog();
-            expect(catalog).to.exist;  // jshint ignore:line
+            expect(catalog).to.exist;
             const size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             catalog.removeAll();
             const copy = catalog.constructor(catalog.getParameters());
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             expect(catalog.isEqualTo(copy)).to.equal(true);
             const signum = catalog.comparedTo(copy);
             expect(signum).to.equal(0);
@@ -46,14 +46,14 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
         it('should create a catalog from an array', function() {
             const catalog = bali.catalog(array);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             catalog.addItems(array);
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(2 * array.length);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
@@ -89,7 +89,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -97,10 +97,10 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             const list = bali.list(array);
             const catalog = bali.catalog(list);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
@@ -121,7 +121,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -129,10 +129,10 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             const set = bali.set(array);
             const catalog = bali.catalog(set);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
@@ -153,7 +153,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -167,10 +167,10 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             };
             const catalog = bali.catalog(object);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(Object.keys(object).length);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
@@ -191,7 +191,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -199,10 +199,10 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             var catalog = bali.catalog(array);
             catalog = bali.catalog(catalog);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             var association = iterator.getNext();
@@ -223,7 +223,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             catalog.removeAll();
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -265,7 +265,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             const list = bali.list(array);
             const catalog = bali.catalog(list);
             var size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(catalog.getItem(2).getValue().toString()).to.equal(association2.getValue().toString());
             expect(catalog.getIndex(association1)).to.equal(1);
@@ -277,9 +277,9 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = keys.getSize();
             expect(size).to.equal(array.length);
             const keyIterator = keys.getIterator();
-            expect(keyIterator).to.exist;  // jshint ignore:line
+            expect(keyIterator).to.exist;
             const associationIterator = catalog.getIterator();
-            expect(associationIterator).to.exist;  // jshint ignore:line
+            expect(associationIterator).to.exist;
             var key;
             var value;
             var association;
@@ -297,7 +297,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             catalog.removeAttribute(2);
             catalog.removeAttribute(1);
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(3);
             // the iterator should be pointing at a copy of the array so unaffected
             associationIterator.toStart();
@@ -313,7 +313,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             catalog.removeAll();
             expect(catalog.getAttribute(6)).to.equal(undefined);
             size = catalog.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -337,7 +337,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
         it('should iterate over a catalog forwards and backwards', function() {
             const catalog = bali.catalog(array);
             const iterator = catalog.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

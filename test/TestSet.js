@@ -22,17 +22,17 @@ describe('Bali Nebula™ Component Framework - Set', function() {
 
         it('should create an empty set', function() {
             const set = bali.set();
-            expect(set).to.exist;  // jshint ignore:line
+            expect(set).to.exist;
             const size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             set.removeAll();
             const copy = set.constructor(set.getParameters());
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             expect(set.isEqualTo(copy)).to.equal(true);
             const signum = set.comparedTo(copy);
             expect(signum).to.equal(0);
@@ -41,10 +41,10 @@ describe('Bali Nebula™ Component Framework - Set', function() {
         it('should create a set from an array', function() {
             const set = bali.set(array);
             var size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -52,7 +52,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             });
             set.removeAll();
             size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -61,10 +61,10 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             list.shuffleItems();
             const set = bali.set(list);
             var size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -72,7 +72,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             });
             set.removeAll();
             size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -80,10 +80,10 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             var set = bali.set(array);
             set = bali.set(set);
             var size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -91,7 +91,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             });
             set.removeAll();
             size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -133,21 +133,21 @@ describe('Bali Nebula™ Component Framework - Set', function() {
         it('should be able to add and remove items from a set', function() {
             const set = bali.set(array);
             var size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(5);
             expect(set.getItem(2).toString()).to.equal('"beta"');
             expect(set.getIndex('"alpha"')).to.equal(1);
             expect(set.getItem(5).toString()).to.equal('"gamma"');
             expect(set.getIndex('"delta"')).to.equal(3);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
             set.removeItem('"beta"');
             set.removeItem('"alpha"');
             size = set.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(3);
             iterator.toStart();
             var index = 2;
@@ -200,7 +200,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
         it('should iterate over a set forwards and backwards', function() {
             const set = bali.set(array);
             const iterator = set.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

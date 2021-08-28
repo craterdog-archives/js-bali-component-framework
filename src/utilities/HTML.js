@@ -483,7 +483,7 @@ FormattingVisitor.prototype.visitRange = function(range) {
     if (first !== undefined) {
         first.acceptVisitor(this);
     }
-    this.result += range.operator.replace(/</g, '&lt;');
+    this.result += range.getConnector().replace(/</g, '&lt;');
     const last = range.getLast();
     if (last !== undefined) {
         last.acceptVisitor(this);

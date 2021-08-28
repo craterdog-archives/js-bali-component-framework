@@ -230,13 +230,13 @@ ParsingVisitor.prototype.visitArguments = function(ctx) {
 };
 
 
-// arithmeticExpression: expression op=('*' | '/' | '//' | '+' | '-') expression
+// arithmeticExpression: expression operator=('*' | '/' | '//' | '+' | '-') expression
 ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     const node = new composites.Node('/bali/composites/ArithmeticExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
-    node.operator = ctx.op.text;
+    node.operator = ctx.operator.text;
     expressions[1].accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -408,13 +408,13 @@ ParsingVisitor.prototype.visitComment = function(ctx) {
 };
 
 
-// comparisonExpression: expression op=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
+// comparisonExpression: expression operator=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
 ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     const node = new composites.Node('/bali/composites/ComparisonExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
-    node.operator = ctx.op.text;
+    node.operator = ctx.operator.text;
     expressions[1].accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -516,14 +516,14 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 };
 
 
-// evaluateClause: (recipient op=(':=' | '+=' | '-=' | '*='))? expression
+// evaluateClause: (recipient operator=(':=' | '+=' | '-=' | '*='))? expression
 ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     const node = new composites.Node('/bali/composites/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
     if (recipient) {
         recipient.accept(this);
         node.addItem(this.result);
-        node.operator = ctx.op.text;
+        node.operator = ctx.operator.text;
     }
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -628,10 +628,10 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 };
 
 
-// inversionExpression: op=('-' | '/' | '*') expression
+// inversionExpression: operator=('-' | '/' | '*') expression
 ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     const node = new composites.Node('/bali/composites/InversionExpression', this.debug);
-    node.operator = ctx.op.text;
+    node.operator = ctx.operator.text;
     ctx.expression().accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -692,13 +692,13 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 };
 
 
-// logicalExpression: expression op=('AND' | 'SANS' | 'XOR' | 'OR') expression
+// logicalExpression: expression operator=('AND' | 'SANS' | 'XOR' | 'OR') expression
 ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     const node = new composites.Node('/bali/composites/LogicalExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);
-    node.operator = ctx.op.text;
+    node.operator = ctx.operator.text;
     expressions[1].accept(this);
     node.addItem(this.result);
     this.result = node;
@@ -723,12 +723,12 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 };
 
 
-// messageExpression: expression op=('.' | '<-') message '(' arguments ')'
+// messageExpression: expression operator=('.' | '<-') message '(' arguments ')'
 ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     const node = new composites.Node('/bali/composites/MessageExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
-    node.operator = ctx.op.text;
+    node.operator = ctx.operator.text;
     ctx.message().accept(this);
     node.addItem(this.result);
     ctx.arguments().accept(this);
@@ -895,17 +895,17 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 };
 
 
-// range: element? op=('<..<' | '<..' | '..<' | '..') element?
+// range: element? connector=('<..<' | '<..' | '..<' | '..') element?
 ParsingVisitor.prototype.visitRange = function(ctx) {
     var first, last;
     const parameters = this.getParameters();
-    const operator = ctx.op.text;
+    const connector = ctx.connector.text;
     const children = ctx.children;
     switch (children.length) {
         case 1:
             break;
         case 2:
-            if (children[0].getText() === operator) {
+            if (children[0].getText() === connector) {
                 children[1].accept(this);
                 last = this.result;
             } else {
@@ -920,8 +920,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             last = this.result;
             break;
     }
-    const range = new composites.Range(first, last, parameters, this.debug);
-    range.operator = operator;
+    const range = new composites.Range(first, last, connector, parameters, this.debug);
     this.result = range;
 };
 

@@ -22,17 +22,17 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
 
         it('should create an empty stack', function() {
             const stack = bali.stack();
-            expect(stack).to.exist;  // jshint ignore:line
+            expect(stack).to.exist;
             const size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             const iterator = stack.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             stack.removeAll();
             const copy = bali.stack();
-            expect(copy).to.exist;  // jshint ignore:line
+            expect(copy).to.exist;
             expect(stack.isEqualTo(copy)).to.equal(true);
             const signum = stack.comparedTo(copy);
             expect(signum).to.equal(0);
@@ -41,28 +41,28 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
         it('should create an empty stack with small capacity', function() {
             const stack = bali.stack([], {$capacity: 1});
             var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
             stack.addItem('"alpha"');
             size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(1);
             expect(function() {stack.addItem('"beta"');}).to.throw(bali.Exception);
             const top = stack.removeItem();
-            expect(top).to.exist;  // jshint ignore:line
+            expect(top).to.exist;
             expect(top.toString()).to.equal('"alpha"');
             size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
         it('should create a stack from an array', function() {
             const stack = bali.stack(array);
             var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = stack.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -70,7 +70,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             });
             stack.removeAll();
             size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -78,10 +78,10 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             const list = bali.list(array);
             stack = bali.stack(list);
             var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             const iterator = stack.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -89,7 +89,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             });
             stack.removeAll();
             size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -97,11 +97,11 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             const expected = bali.stack(array);
             const stack = bali.stack(expected);
             var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(stack.isEqualTo(expected)).to.equal(true);
             const iterator = stack.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
             array.forEach(function(item) {
@@ -109,7 +109,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             });
             stack.removeAll();
             size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(0);
         });
 
@@ -120,7 +120,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
         it('should be able to push and pop items from a stack', function() {
             const stack = bali.stack(array);
             var size = stack.getSize();
-            expect(size).to.exist;  // jshint ignore:line
+            expect(size).to.exist;
             expect(size).to.equal(array.length);
             var top = stack.topItem();
             expect(top.toString()).to.equal('"gamma"');
@@ -159,7 +159,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
         it('should iterate over a stack forwards and backwards', function() {
             const stack = bali.stack(array);
             const iterator = stack.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             expect(iterator.hasPrevious() === false);
             expect(iterator.hasNext() === true);
             // iterator through the items from bottom to top

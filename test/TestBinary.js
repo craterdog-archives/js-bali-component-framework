@@ -125,7 +125,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should iterate over a binary string forwards and backwards', function() {
             const binary = bali.binary(generator.generateBytes(4));
             const iterator = binary.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

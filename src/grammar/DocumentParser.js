@@ -1470,7 +1470,7 @@ function EvaluateClauseContext(parser, parent, invokingState) {
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
     this.ruleIndex = DocumentParser.RULE_evaluateClause;
-    this.op = null; // Token
+    this.operator = null; // Token
     return this;
 }
 
@@ -1524,10 +1524,10 @@ DocumentParser.prototype.evaluateClause = function() {
             this.state = 181;
             this.recipient();
             this.state = 182;
-            localctx.op = this._input.LT(1);
+            localctx.operator = this._input.LT(1);
             _la = this._input.LA(1);
             if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << DocumentParser.T__5) | (1 << DocumentParser.T__6) | (1 << DocumentParser.T__7) | (1 << DocumentParser.T__8))) !== 0))) {
-                localctx.op = this._errHandler.recoverInline(this);
+                localctx.operator = this._errHandler.recoverInline(this);
             }
             else {
             	this._errHandler.reportMatch(this);
@@ -3177,7 +3177,7 @@ DefaultExpressionContext.prototype.accept = function(visitor) {
 
 function MessageExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
-    this.op = null; // Token;
+    this.operator = null; // Token;
     ExpressionContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
@@ -3221,7 +3221,7 @@ MessageExpressionContext.prototype.accept = function(visitor) {
 
 function ComparisonExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
-    this.op = null; // Token;
+    this.operator = null; // Token;
     ExpressionContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
@@ -3264,7 +3264,7 @@ ComparisonExpressionContext.prototype.accept = function(visitor) {
 
 function ArithmeticExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
-    this.op = null; // Token;
+    this.operator = null; // Token;
     ExpressionContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
@@ -3342,7 +3342,7 @@ MagnitudeExpressionContext.prototype.accept = function(visitor) {
 
 function LogicalExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
-    this.op = null; // Token;
+    this.operator = null; // Token;
     ExpressionContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
@@ -3645,7 +3645,7 @@ ComponentExpressionContext.prototype.accept = function(visitor) {
 
 function InversionExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
-    this.op = null; // Token;
+    this.operator = null; // Token;
     ExpressionContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
@@ -3867,10 +3867,10 @@ DocumentParser.prototype.expression = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
             this.state = 318;
-            localctx.op = this._input.LT(1);
+            localctx.operator = this._input.LT(1);
             _la = this._input.LA(1);
             if(!(((((_la - 47)) & ~0x1f) == 0 && ((1 << (_la - 47)) & ((1 << (DocumentParser.T__46 - 47)) | (1 << (DocumentParser.T__47 - 47)) | (1 << (DocumentParser.T__48 - 47)))) !== 0))) {
-                localctx.op = this._errHandler.recoverInline(this);
+                localctx.operator = this._errHandler.recoverInline(this);
             }
             else {
             	this._errHandler.reportMatch(this);
@@ -3951,10 +3951,10 @@ DocumentParser.prototype.expression = function(_p) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 6)");
                     }
                     this.state = 335;
-                    localctx.op = this._input.LT(1);
+                    localctx.operator = this._input.LT(1);
                     _la = this._input.LA(1);
                     if(!(((((_la - 47)) & ~0x1f) == 0 && ((1 << (_la - 47)) & ((1 << (DocumentParser.T__46 - 47)) | (1 << (DocumentParser.T__47 - 47)) | (1 << (DocumentParser.T__48 - 47)) | (1 << (DocumentParser.T__49 - 47)) | (1 << (DocumentParser.T__50 - 47)))) !== 0))) {
-                        localctx.op = this._errHandler.recoverInline(this);
+                        localctx.operator = this._errHandler.recoverInline(this);
                     }
                     else {
                     	this._errHandler.reportMatch(this);
@@ -3972,10 +3972,10 @@ DocumentParser.prototype.expression = function(_p) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
                     }
                     this.state = 338;
-                    localctx.op = this._input.LT(1);
+                    localctx.operator = this._input.LT(1);
                     _la = this._input.LA(1);
                     if(!(((((_la - 53)) & ~0x1f) == 0 && ((1 << (_la - 53)) & ((1 << (DocumentParser.T__52 - 53)) | (1 << (DocumentParser.T__53 - 53)) | (1 << (DocumentParser.T__54 - 53)) | (1 << (DocumentParser.T__55 - 53)) | (1 << (DocumentParser.T__56 - 53)))) !== 0))) {
-                        localctx.op = this._errHandler.recoverInline(this);
+                        localctx.operator = this._errHandler.recoverInline(this);
                     }
                     else {
                     	this._errHandler.reportMatch(this);
@@ -3993,10 +3993,10 @@ DocumentParser.prototype.expression = function(_p) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 2)");
                     }
                     this.state = 341;
-                    localctx.op = this._input.LT(1);
+                    localctx.operator = this._input.LT(1);
                     _la = this._input.LA(1);
                     if(!(((((_la - 59)) & ~0x1f) == 0 && ((1 << (_la - 59)) & ((1 << (DocumentParser.T__58 - 59)) | (1 << (DocumentParser.T__59 - 59)) | (1 << (DocumentParser.T__60 - 59)) | (1 << (DocumentParser.T__61 - 59)))) !== 0))) {
-                        localctx.op = this._errHandler.recoverInline(this);
+                        localctx.operator = this._errHandler.recoverInline(this);
                     }
                     else {
                     	this._errHandler.reportMatch(this);
@@ -4027,10 +4027,10 @@ DocumentParser.prototype.expression = function(_p) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 12)");
                     }
                     this.state = 347;
-                    localctx.op = this._input.LT(1);
+                    localctx.operator = this._input.LT(1);
                     _la = this._input.LA(1);
                     if(!(_la===DocumentParser.T__41 || _la===DocumentParser.T__42)) {
-                        localctx.op = this._errHandler.recoverInline(this);
+                        localctx.operator = this._errHandler.recoverInline(this);
                     }
                     else {
                     	this._errHandler.reportMatch(this);
@@ -4731,7 +4731,7 @@ function RangeContext(parser, parent, invokingState) {
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
     this.ruleIndex = DocumentParser.RULE_range;
-    this.op = null; // Token
+    this.connector = null; // Token
     return this;
 }
 
@@ -4790,10 +4790,10 @@ DocumentParser.prototype.range = function() {
         }
 
         this.state = 406;
-        localctx.op = this._input.LT(1);
+        localctx.connector = this._input.LT(1);
         _la = this._input.LA(1);
         if(!(((((_la - 65)) & ~0x1f) == 0 && ((1 << (_la - 65)) & ((1 << (DocumentParser.T__64 - 65)) | (1 << (DocumentParser.T__65 - 65)) | (1 << (DocumentParser.T__66 - 65)) | (1 << (DocumentParser.T__67 - 65)))) !== 0))) {
-            localctx.op = this._errHandler.recoverInline(this);
+            localctx.connector = this._errHandler.recoverInline(this);
         }
         else {
         	this._errHandler.reportMatch(this);

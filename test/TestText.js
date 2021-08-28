@@ -80,7 +80,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
         it('should iterate over a text string forwards and backwards', function() {
             const text = bali.text('Hello World!');
             const iterator = text.getIterator();
-            expect(iterator).to.exist;  // jshint ignore:line
+            expect(iterator).to.exist;
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);
