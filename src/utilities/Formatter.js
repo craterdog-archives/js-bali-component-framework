@@ -910,8 +910,8 @@ FormattingVisitor.prototype.visitSignClause = function(node) {
     const component = node.getItem(1);
     component.acceptVisitor(this);
     this.result += ' as ';
-    const reference = node.getItem(2);
-    reference.acceptVisitor(this);
+    const name = node.getItem(2);
+    name.acceptVisitor(this);
 };
 
 

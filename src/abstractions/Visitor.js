@@ -565,8 +565,8 @@ Visitor.prototype.visitSelectClause = function(node) {
 Visitor.prototype.visitSignClause = function(node) {
     const component = node.getItem(1);
     component.acceptVisitor(this);
-    const reference = node.getItem(2);
-    reference.acceptVisitor(this);
+    const name = node.getItem(2);
+    name.acceptVisitor(this);
 };
 
 
