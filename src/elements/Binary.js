@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -40,7 +40,7 @@ const Binary = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
             '/javascript/Undefined',
             '/nodejs/Buffer'
@@ -90,7 +90,7 @@ Binary.prototype.getSize = function() {
  */
 Binary.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -108,7 +108,7 @@ Binary.prototype.getItem = function(index) {
  */
 Binary.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/composites/Range'
@@ -146,7 +146,7 @@ Binary.prototype.getItems = function(range) {
  */
 Binary.not = function(binary, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$not', '$binary', binary, [
             '/bali/elements/Binary'
         ]);
@@ -171,7 +171,7 @@ Binary.not = function(binary, debug) {
  */
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$and', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -200,7 +200,7 @@ Binary.and = function(first, second, debug) {
  */
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$sans', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -229,7 +229,7 @@ Binary.sans = function(first, second, debug) {
  */
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$or', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -258,7 +258,7 @@ Binary.or = function(first, second, debug) {
  */
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$xor', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -289,7 +289,7 @@ Binary.xor = function(first, second, debug) {
  */
 Binary.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$concatenation', '$first', first, [
             '/bali/elements/Binary'
         ]);

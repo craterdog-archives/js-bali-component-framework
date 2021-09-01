@@ -28,7 +28,7 @@ const URL = require('url').URL;
 const antlr = require('antlr4');
 const ErrorStrategy = require('antlr4/error/ErrorStrategy');
 const grammar = require('../grammar');
-const utilities = require('../utilities/');
+const agents = require('../agents/');
 const abstractions = require('../abstractions/');
 const elements = require('../elements');
 const composites = require('../composites');
@@ -53,8 +53,8 @@ const Parser = function(debug) {
 
     this.parseSource = function(string) {
         if (debug > 1) {
-            const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/utilities/Parser', '$parseBDN', '$string', string, [
+            const validator = new agents.Validator(debug);
+            validator.validateType('/bali/agents/Parser', '$parseBDN', '$string', string, [
                 '/javascript/String'
             ]);
         }
@@ -66,8 +66,8 @@ const Parser = function(debug) {
 
     this.parseDocument = function(string) {
         if (debug > 1) {
-            const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/utilities/Parser', '$parseBDN', '$string', string, [
+            const validator = new agents.Validator(debug);
+            validator.validateType('/bali/agents/Parser', '$parseBDN', '$string', string, [
                 '/javascript/String'
             ]);
         }
@@ -199,7 +199,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
             break;
         default:
             const exception = new composites.Exception({
-                $module: '/bali/utilities/Parser',
+                $module: '/bali/agents/Parser',
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
                 $units: units,
@@ -286,7 +286,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
         encoding = parameters.getAttribute('$encoding');
         if (encoding) encoding = encoding.toString();
     }
-    const decoder = new utilities.Decoder(0, this.debug);
+    const decoder = new agents.Decoder(0, this.debug);
     switch (encoding) {
         case '$base2':
             value = decoder.base2Decode(value);
@@ -302,7 +302,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             break;
         default:
             const exception = new composites.Exception({
-                $module: '/bali/utilities/Parser',
+                $module: '/bali/agents/Parser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $encoding: encoding,
@@ -670,7 +670,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             break;
         default:
             const exception = new composites.Exception({
-                $module: '/bali/utilities/Parser',
+                $module: '/bali/agents/Parser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
                 $type: type,
@@ -801,7 +801,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
     // there must be at least one parameter
     if (this.result.isEmpty()) {
         const exception = new composites.Exception({
-            $module: '/bali/utilities/Parser',
+            $module: '/bali/agents/Parser',
             $procedure: '$visitParameters',
             $exception: '$noParameters',
             $text: 'A parameter list must contain at least one association.'
@@ -1160,7 +1160,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context = context.parentCtx;
     }
     const exception = new composites.Exception({
-        $module: '/bali/utilities/Parser',
+        $module: '/bali/agents/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: cause.toString()
@@ -1207,7 +1207,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
 
     // capture the exception
     const exception = new composites.Exception({
-        $module: '/bali/utilities/Parser',
+        $module: '/bali/agents/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: new elements.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!

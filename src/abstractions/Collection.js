@@ -13,7 +13,7 @@
 /*
  * This abstract class defines the invariant methods that all collections must inherit.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const Component = require('./Component').Component;
 const Iterator = require('./Iterator').Iterator;
 const Exception = require('../composites/Exception').Exception;
@@ -146,7 +146,7 @@ Collection.prototype.addItem = function(item) {
  */
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
@@ -199,7 +199,7 @@ Collection.prototype.addItems = function(items) {
  */
 Collection.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
@@ -236,7 +236,7 @@ Collection.prototype.normalizedIndex = function(index) {
  */
 Collection.prototype.getIndex = function(item) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -267,7 +267,7 @@ Collection.prototype.getIndex = function(item) {
  */
 Collection.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -286,7 +286,7 @@ Collection.prototype.getItem = function(index) {
  */
 Collection.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/composites/Range'
@@ -314,7 +314,7 @@ Collection.prototype.getItems = function(range) {
  */
 Collection.prototype.containsItem = function(item) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -340,7 +340,7 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
@@ -374,7 +374,7 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',

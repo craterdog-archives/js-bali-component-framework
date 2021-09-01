@@ -14,7 +14,7 @@
  * duplicate items. By default a set orders its items based on the natural ordering
  * of its items.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -40,7 +40,7 @@ const Set = function(parameters, debug) {
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
-    const comparator = new utilities.Comparator(undefined, this.debug);
+    const comparator = new agents.Comparator(undefined, this.debug);
     const tree = new RandomizedTree(comparator);
 
     this.toArray = function() {
@@ -60,7 +60,7 @@ const Set = function(parameters, debug) {
 
     this.getIndex = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -79,7 +79,7 @@ const Set = function(parameters, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -90,7 +90,7 @@ const Set = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -107,7 +107,7 @@ const Set = function(parameters, debug) {
 
     this.removeItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -124,7 +124,7 @@ const Set = function(parameters, debug) {
 
     this.removeItems = function(items) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -189,7 +189,7 @@ Set.not = function(set, debug) {
  */
 Set.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Set', '$and', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -220,7 +220,7 @@ Set.and = function(first, second, debug) {
  */
 Set.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Set', '$sans', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -246,7 +246,7 @@ Set.sans = function(first, second, debug) {
  */
 Set.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Set', '$or', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -272,7 +272,7 @@ Set.or = function(first, second, debug) {
  */
 Set.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Set', '$xor', '$first', first, [
             '/bali/collections/Set'
         ]);

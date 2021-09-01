@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Angle = require('./Angle').Angle;
 
@@ -44,7 +44,7 @@ const Complex = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Number', '$Number', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Array'
@@ -55,7 +55,7 @@ const Complex = function(value, parameters, debug) {
     var real = value[0];  // real part or magnitude
     var imaginary = value[1];  // imaginary part or phase (angle)
     var magnitude, phase;
-    this.calculator = new utilities.Calculator(this.debug);
+    this.calculator = new agents.Calculator(this.debug);
     if (real === real) real = real || 0;  // default value if not NaN and not defined or null
     real = this.calculator.lockOnExtreme(real);
     if (imaginary === imaginary) imaginary = imaginary || 0;  // default value if not NaN and not defined or null
@@ -209,7 +209,7 @@ Complex.prototype.acceptVisitor = function(visitor) {
  */
 Complex.inverse = function(number, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$inverse', '$number', number, [
             '/bali/elements/Number'
         ]);
@@ -240,7 +240,7 @@ Complex.inverse = function(number, debug) {
  */
 Complex.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$sum', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -254,7 +254,7 @@ Complex.sum = function(first, second, debug) {
     if (first.isInfinite() || second.isInfinite()) return new Complex([Infinity, undefined], first.getParameters(), debug);
     if (first.isEqualTo(Complex.inverse(second))) return new Complex([0, undefined], first.getParameters(), debug);
 
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const real = calculator.sum(first.getReal(), second.getReal());
     const imaginary = calculator.sum(first.getImaginary(), second.getImaginary());
     const result = new Complex([real, imaginary], first.getParameters(), debug);
@@ -275,7 +275,7 @@ Complex.sum = function(first, second, debug) {
  */
 Complex.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$difference', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -302,7 +302,7 @@ Complex.difference = function(first, second, debug) {
  */
 Complex.scaled = function(number, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$scaled', '$number', number, [
             '/bali/elements/Number'
         ]);
@@ -318,7 +318,7 @@ Complex.scaled = function(number, factor, debug) {
     if (number.isInfinite() || !Number.isFinite(factor)) return new Complex([Infinity, undefined], number.getParameters(), debug);
     if (number.isZero() || factor === 0) return new Complex([0, undefined], number.getParameters(), debug);
 
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const real = calculator.product(number.getReal(), factor);
     const imaginary = calculator.product(number.getImaginary(), factor);
     const result = new Complex([real, imaginary], number.getParameters(), debug);
@@ -342,7 +342,7 @@ Complex.scaled = function(number, factor, debug) {
  */
 Complex.reciprocal = function(number, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$reciprocal', '$number', number, [
             '/bali/elements/Number'
         ]);
@@ -353,7 +353,7 @@ Complex.reciprocal = function(number, debug) {
     if (number.isInfinite()) return new Complex([0, undefined], number.getParameters(), debug);
     if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
 
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const squared = calculator.sum(calculator.product(number.getReal(), number.getReal()), calculator.product(number.getImaginary(), number.getImaginary()));
     const real = calculator.quotient(number.getReal(), squared);
     const imaginary = -calculator.quotient(number.getImaginary(), squared);
@@ -374,7 +374,7 @@ Complex.reciprocal = function(number, debug) {
  */
 Complex.conjugate = function(number, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$conjugate', '$number', number, [
             '/bali/elements/Number'
         ]);
@@ -401,7 +401,7 @@ Complex.conjugate = function(number, debug) {
  */
 Complex.factorial = function(number, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$factorial', '$number', number, [
             '/bali/elements/Number'
         ]);
@@ -433,7 +433,7 @@ Complex.factorial = function(number, debug) {
  */
 Complex.product = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$product', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -449,7 +449,7 @@ Complex.product = function(first, second, debug) {
     if (first.isInfinite() || second.isInfinite()) return new Complex([Infinity, undefined], first.getParameters(), debug);
     if (first.isZero() || second.isZero()) return new Complex([0, undefined], first.getParameters(), debug);
 
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const real = calculator.difference(calculator.product(first.getReal(), second.getReal()), calculator.product(first.getImaginary(), second.getImaginary()));
     const imaginary = calculator.sum(calculator.product(first.getReal(), second.getImaginary()), calculator.product(first.getImaginary() * second.getReal()));
     const result = new Complex([real, imaginary], first.getParameters(), debug);
@@ -470,7 +470,7 @@ Complex.product = function(first, second, debug) {
  */
 Complex.quotient = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$quotient', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -492,7 +492,7 @@ Complex.quotient = function(first, second, debug) {
  */
 Complex.remainder = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$remainder', '$first', first, [
             '/bali/elements/Number'
         ]);
@@ -512,7 +512,7 @@ Complex.remainder = function(first, second, debug) {
     // TODO: what does remainder mean for complex numbers?
     const firstInteger = Math.round(first.getReal());
     const secondInteger = Math.round(second.getReal());
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Complex([calculator.remainder(firstInteger, secondInteger), undefined], first.getParameters(), debug);
 };
 
@@ -530,7 +530,7 @@ Complex.remainder = function(first, second, debug) {
  */
 Complex.exponential = function(base, exponent, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$exponential', '$base', base, [
             '/bali/elements/Number'
         ]);
@@ -565,7 +565,7 @@ Complex.exponential = function(base, exponent, debug) {
  */
 Complex.logarithm = function(base, value, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Number', '$logarithm', '$base', base, [
             '/bali/elements/Number'
         ]);
@@ -615,7 +615,7 @@ const exp = function(number, debug) {
     if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
     if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
     if (number.isZero()) return new Complex([1, undefined], number.getParameters(), debug);
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const scale = calculator.exponential(number.getReal());
     const real = calculator.product(scale, calculator.cosine(number.getImaginary()));
     const imaginary = calculator.product(scale, calculator.sine(number.getImaginary()));
@@ -628,7 +628,7 @@ const ln = function(number, debug) {
     if (number.isUndefined()) return new Complex([NaN, undefined], number.getParameters(), debug);
     if (number.isInfinite()) return new Complex([Infinity, undefined], number.getParameters(), debug);
     if (number.isZero()) return new Complex([Infinity, undefined], number.getParameters(), debug);
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     const real = calculator.logarithm(number.getMagnitude());
     const imaginary = number.getPhase().getValue();
     const result = new Complex([real, imaginary], number.getParameters(), debug);

@@ -51,7 +51,7 @@ const Decoder = function(indentation, debug) {
     this.debug = debug || 0;
     if (this.debug > 1) {
         const validator = new Validator(this.debug);
-        validator.validateType('/bali/utilities/Decoder', '$Decoder', '$indentation', indentation, [
+        validator.validateType('/bali/agents/Decoder', '$Decoder', '$indentation', indentation, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -100,7 +100,7 @@ Decoder.prototype.base2Decode = function(base2) {
     const length = base2.length;
     if (length % 8 !== 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Decoder',
+            $module: '/bali/agents/Decoder',
             $procedure: '$base2Decode',
             $exception: '$invalidParameter',
             $parameter: base2,
@@ -122,7 +122,7 @@ Decoder.prototype.base2Decode = function(base2) {
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
                 const exception = new Exception({
-                    $module: '/bali/utilities/Decoder',
+                    $module: '/bali/agents/Decoder',
                     $procedure: '$base2Decode',
                     $exception: '$invalidParameter',
                     $parameter: base2,
@@ -179,7 +179,7 @@ Decoder.prototype.base16Decode = function(base16) {
     const length = base16.length;
     if (length % 2 !== 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Decoder',
+            $module: '/bali/agents/Decoder',
             $procedure: '$base16Decode',
             $exception: '$invalidParameter',
             $parameter: base16,
@@ -199,7 +199,7 @@ Decoder.prototype.base16Decode = function(base16) {
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Decoder',
+                $module: '/bali/agents/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
@@ -214,7 +214,7 @@ Decoder.prototype.base16Decode = function(base16) {
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Decoder',
+                $module: '/bali/agents/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
                 $parameter: base16,
@@ -285,7 +285,7 @@ Decoder.prototype.base32Decode = function(base32) {
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
             const exception = new Exception({
-                $module: '/bali/utilities/Decoder',
+                $module: '/bali/agents/Decoder',
                 $procedure: '$base32Decode',
                 $exception: '$invalidParameter',
                 $parameter: base32,

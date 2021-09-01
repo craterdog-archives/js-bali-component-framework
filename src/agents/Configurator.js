@@ -42,10 +42,10 @@ const Configurator = function(filename, directory, debug) {
 
     if (this.debug > 1) {
         const validator = new Validator(this.debug);
-        validator.validateType('/bali/utilities/Configurator', '$Configurator', '$filename', filename, [
+        validator.validateType('/bali/agents/Configurator', '$Configurator', '$filename', filename, [
             '/javascript/String'
         ]);
-        validator.validateType('/bali/utilities/Configurator', '$Configurator', '$directory', directory, [
+        validator.validateType('/bali/agents/Configurator', '$Configurator', '$directory', directory, [
             '/javascript/Undefined',
             '/javascript/String'
         ]);
@@ -71,7 +71,7 @@ Configurator.prototype.store = async function(configuration) {
     try {
         if (this.debug > 1) {
             const validator = new Validator(this.debug);
-            validator.validateType('/bali/utilities/Configurator', '$store', '$configuration', configuration, [
+            validator.validateType('/bali/agents/Configurator', '$store', '$configuration', configuration, [
                 '/javascript/String'
             ]);
         }
@@ -79,7 +79,7 @@ Configurator.prototype.store = async function(configuration) {
         await pfs.writeFile(this.file, configuration + EOL, {encoding: 'utf8', mode: 0o600});  // add POSIX EOL
     } catch (cause) {
         const exception = new Exception({
-            $module: '/bali/utilities/Configurator',
+            $module: '/bali/agents/Configurator',
             $procedure: '$store',
             $file: this.file,
             $configuration: configuration,
@@ -103,7 +103,7 @@ Configurator.prototype.load = async function() {
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
             const exception = new Exception({
-                $module: '/bali/utilities/Configurator',
+                $module: '/bali/agents/Configurator',
                 $procedure: '$load',
                 $file: this.file,
                 $exception: '$unexpected',
@@ -125,7 +125,7 @@ Configurator.prototype.delete = async function() {
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
             const exception = new Exception({
-                $module: '/bali/utilities/Configurator',
+                $module: '/bali/agents/Configurator',
                 $procedure: '$delete',
                 $file: this.file,
                 $exception: '$unexpected',

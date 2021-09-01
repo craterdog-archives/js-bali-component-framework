@@ -46,20 +46,20 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
-        validator.validateType('/bali/utilities/Controller', '$Controller', '$eventTypes', eventTypes, [
+        validator.validateType('/bali/agents/Controller', '$Controller', '$eventTypes', eventTypes, [
             '/javascript/Array'
         ]);
-        validator.validateType('/bali/utilities/Controller', '$Controller', '$nextStates', nextStates, [
+        validator.validateType('/bali/agents/Controller', '$Controller', '$nextStates', nextStates, [
             '/javascript/Object'
         ]);
-        validator.validateType('/bali/utilities/Controller', '$Controller', '$currentState', currentState, [
+        validator.validateType('/bali/agents/Controller', '$Controller', '$currentState', currentState, [
             '/javascript/Undefined',
             '/javascript/String'
         ]);
     }
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
         const exception = new Exception({
-            $module: '/bali/utilities/Controller',
+            $module: '/bali/agents/Controller',
             $procedure: '$Controller',
             $exception: '$invalidType',
             $text: 'One of the parameters to the constructor is not the right type.'
@@ -69,7 +69,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     }
     if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
         const exception = new Exception({
-            $module: '/bali/utilities/Controller',
+            $module: '/bali/agents/Controller',
             $procedure: '$Controller',
             $exception: '$noStates',
             $text: 'The state machine must have at least one state and event.'
@@ -81,7 +81,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Controller',
+                $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidType',
                 $event: event,
@@ -95,7 +95,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     for (const state in nextStates) {
         if (typeof state !== 'string') {
             const exception = new Exception({
-                $module: '/bali/utilities/Controller',
+                $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidType',
                 $state: state,
@@ -107,7 +107,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
             const exception = new Exception({
-                $module: '/bali/utilities/Controller',
+                $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidParameter',
                 $expected: numberOfEventTypes,
@@ -120,7 +120,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
                 const exception = new Exception({
-                    $module: '/bali/utilities/Controller',
+                    $module: '/bali/agents/Controller',
                     $procedure: '$Controller',
                     $exception: '$invalidParameter',
                     $expected: Object.keys(nextStates),
@@ -142,7 +142,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Controller',
+                $module: '/bali/agents/Controller',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
                 $event: event,
@@ -158,7 +158,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
             const exception = new Exception({
-                $module: '/bali/utilities/Controller',
+                $module: '/bali/agents/Controller',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',
                 $event: event,

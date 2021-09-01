@@ -13,7 +13,7 @@
  * This collection class implements a stack (LIFO) data composite.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -73,7 +73,7 @@ const Stack = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Stack', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',

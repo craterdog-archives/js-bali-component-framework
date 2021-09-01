@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -42,7 +42,7 @@ const Probability = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -161,7 +161,7 @@ Probability.prototype.acceptVisitor = function(visitor) {
  * @returns {Probability} The resulting random probability.
  */
 Probability.random = function(debug) {
-    const generator = new utilities.Generator(debug);
+    const generator = new agents.Generator(debug);
     const random = generator.generateProbability();
     const result = new Probability(random, undefined, debug);
     return result;
@@ -184,12 +184,12 @@ Probability.random = function(debug) {
  */
 Probability.not = function(probability, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$not', '$probability', probability, [
             '/bali/elements/Probability'
         ]);
     }
-    const calculator = new utilities.Calculator(this.debug);
+    const calculator = new agents.Calculator(this.debug);
     const p = calculator.difference(1, probability.getValue());
     const result = new Probability(p, probability.getParameters(), debug);
     return result;
@@ -211,7 +211,7 @@ Probability.not = function(probability, debug) {
  */
 Probability.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$and', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -221,7 +221,7 @@ Probability.and = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const calculator = new utilities.Calculator(this.debug);
+    const calculator = new agents.Calculator(this.debug);
     const p = calculator.product(p1, p2);
     const result = new Probability(p, first.getParameters(), debug);
     return result;
@@ -244,7 +244,7 @@ Probability.and = function(first, second, debug) {
  */
 Probability.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$sans', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -254,7 +254,7 @@ Probability.sans = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const calculator = new utilities.Calculator(this.debug);
+    const calculator = new agents.Calculator(this.debug);
     const p = calculator.product(p1, calculator.difference(1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
@@ -278,7 +278,7 @@ Probability.sans = function(first, second, debug) {
  */
 Probability.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$or', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -288,7 +288,7 @@ Probability.or = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const calculator = new utilities.Calculator(this.debug);
+    const calculator = new agents.Calculator(this.debug);
     const p = calculator.sum(p1, p2, calculator.product(-p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;
@@ -312,7 +312,7 @@ Probability.or = function(first, second, debug) {
  */
 Probability.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Probability', '$xor', '$first', first, [
             '/bali/elements/Probability'
         ]);
@@ -322,7 +322,7 @@ Probability.xor = function(first, second, debug) {
     }
     const p1 = first.getValue();
     const p2 = second.getValue();
-    const calculator = new utilities.Calculator(this.debug);
+    const calculator = new agents.Calculator(this.debug);
     const p = calculator.sum(p1, p2, calculator.product(-2, p1, p2));
     const result = new Probability(p, first.getParameters(), debug);
     return result;

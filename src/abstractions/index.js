@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const utilities = require('../utilities');
+const agents = require('../agents');
 
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component

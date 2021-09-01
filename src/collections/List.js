@@ -23,7 +23,7 @@
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -59,7 +59,7 @@ const List = function(parameters, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -70,7 +70,7 @@ const List = function(parameters, debug) {
 
     this.setItem = function(index, item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -93,7 +93,7 @@ const List = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -111,7 +111,7 @@ const List = function(parameters, debug) {
 
     this.insertItem = function(index, item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$insertItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -132,7 +132,7 @@ const List = function(parameters, debug) {
 
     this.insertItems = function(index, items) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$insertItems', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -157,7 +157,7 @@ const List = function(parameters, debug) {
 
     this.removeItem = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -168,7 +168,7 @@ const List = function(parameters, debug) {
 
     this.removeItems = function(range) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
                 '/javascript/String',
                 '/bali/composites/Range'
@@ -197,7 +197,7 @@ const List = function(parameters, debug) {
     };
 
     this.sortItems = function(algorithm) {
-        const sorter = new utilities.Sorter(algorithm, this.debug);
+        const sorter = new agents.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
 
@@ -206,7 +206,7 @@ const List = function(parameters, debug) {
     };
 
     this.shuffleItems = function() {
-        const generator = new utilities.Generator(this.debug);
+        const generator = new agents.Generator(this.debug);
         const size = this.getSize();
         for (var index = size; index > 1; index--) {
             const random = generator.generateIndex(index);  // in range 1..index ordinal indexing
@@ -218,7 +218,7 @@ const List = function(parameters, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -229,7 +229,7 @@ const List = function(parameters, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -261,7 +261,7 @@ exports.List = List;
  */
 List.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/List', '$concatenation', '$first', first, [
             '/bali/collections/List'
         ]);

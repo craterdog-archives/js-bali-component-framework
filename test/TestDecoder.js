@@ -18,7 +18,7 @@ const decoder = bali.decoder(1, debug);  // indent one level
 
 describe('Bali Nebula™ Component Framework - Decoder', function() {
 
-    describe('Test encoding utilities with round-trip conversions', function() {
+    describe('Test encoding agents with round-trip conversions', function() {
 
         it('should convert bytes to integers back again', function() {
             for (var i = 0; i < 100; i++) {

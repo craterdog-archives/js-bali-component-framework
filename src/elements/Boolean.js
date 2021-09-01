@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * boolean element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -41,7 +41,7 @@ const Bulean = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Bulean', '$Bulean', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -162,7 +162,7 @@ Bulean.prototype.acceptVisitor = function(visitor) {
  */
 Bulean.not = function(value, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Bulean', '$not', '$value', value, [
             '/bali/elements/Bulean'
         ]);
@@ -183,7 +183,7 @@ Bulean.not = function(value, debug) {
  */
 Bulean.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Bulean', '$and', '$first', first, [
             '/bali/elements/Bulean'
         ]);
@@ -208,7 +208,7 @@ Bulean.and = function(first, second, debug) {
  */
 Bulean.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Bulean', '$sans', '$first', first, [
             '/bali/elements/Bulean'
         ]);
@@ -233,7 +233,7 @@ Bulean.sans = function(first, second, debug) {
  */
 Bulean.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Bulean', '$or', '$first', first, [
             '/bali/elements/Bulean'
         ]);
@@ -258,7 +258,7 @@ Bulean.or = function(first, second, debug) {
  */
 Bulean.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Bulean', '$xor', '$first', first, [
             '/bali/elements/Bulean'
         ]);

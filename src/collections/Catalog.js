@@ -15,7 +15,7 @@
  * multiple keys. The key-value associations are maintained in the order in which they were
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const composites = require('../composites');
 const List = require('./List').List;
@@ -75,7 +75,7 @@ const Catalog = function(parameters, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -86,7 +86,7 @@ const Catalog = function(parameters, debug) {
 
     this.addItem = function(association) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
                 '/bali/composites/Association'
@@ -104,7 +104,7 @@ const Catalog = function(parameters, debug) {
 
     this.addItems = function(associations) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -146,7 +146,7 @@ const Catalog = function(parameters, debug) {
 
     this.containsItem = function(association) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
                 '/javascript/Undefined',
                 '/bali/composites/Association'
@@ -162,7 +162,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -178,7 +178,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -204,7 +204,7 @@ const Catalog = function(parameters, debug) {
 
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$setAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -238,7 +238,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$removeAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -264,7 +264,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -296,7 +296,7 @@ const Catalog = function(parameters, debug) {
     };
 
     this.sortItems = function(algorithm) {
-        const sorter = new utilities.Sorter(algorithm, this.debug);
+        const sorter = new agents.Sorter(algorithm, this.debug);
         sorter.sortCollection(this);
     };
 
@@ -343,7 +343,7 @@ Catalog.prototype.toObject = function() {
  */
 Catalog.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$concatenation', '$first', first, [
             '/bali/collections/Catalog'
         ]);
@@ -371,7 +371,7 @@ Catalog.concatenation = function(first, second, debug) {
  */
 Catalog.extraction = function(catalog, keys, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
             '/bali/collections/Catalog'
         ]);

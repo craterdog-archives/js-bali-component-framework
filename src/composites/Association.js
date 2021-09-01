@@ -13,7 +13,7 @@
  * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -36,7 +36,7 @@ const Association = function(key, value, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
@@ -69,7 +69,7 @@ const Association = function(key, value, debug) {
 
     this.setValue = function(newValue) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
@@ -88,7 +88,7 @@ const Association = function(key, value, debug) {
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Association', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
@@ -100,7 +100,7 @@ const Association = function(key, value, debug) {
 
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Association', '$setAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);

@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * symbol element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -40,7 +40,7 @@ const Symbol = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
             '/javascript/String'
         ]);
@@ -99,7 +99,7 @@ Symbol.prototype.getSize = function() {
  */
 Symbol.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -117,7 +117,7 @@ Symbol.prototype.getItem = function(index) {
  */
 Symbol.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/composites/Range'
@@ -156,7 +156,7 @@ Symbol.prototype.getItems = function(range) {
  */
 Symbol.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Symbol', '$concatenation', '$first', first, [
             '/bali/elements/Symbol'
         ]);

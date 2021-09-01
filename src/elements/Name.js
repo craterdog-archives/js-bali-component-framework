@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * name string element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -40,7 +40,7 @@ const Name = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$Name', '$value', value, [
             '/javascript/Array'
         ]);
@@ -99,7 +99,7 @@ Name.prototype.getSize = function() {
  */
 Name.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -117,7 +117,7 @@ Name.prototype.getItem = function(index) {
  */
 Name.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/composites/Range'
@@ -156,7 +156,7 @@ Name.prototype.getItems = function(range) {
  */
 Name.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Name', '$concatenation', '$first', first, [
             '/bali/elements/Name'
         ]);

@@ -13,7 +13,7 @@
 /**
  * This abstract class defines the methods that all components must support.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const Exception = require('../composites/Exception').Exception;
 
 // This private constant sets the POSIX end of line character
@@ -37,7 +37,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     parameters = parameters || undefined;  // normalize nulls to undefined
     this.debug = debug || 0;  // default value
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Component', '$Component', '$ancestry', ancestry, [
             '/javascript/Array'
         ]);
@@ -134,7 +134,7 @@ exports.Component = Component;
  * @returns {String} A canonical Bali Document Notation™ representation of the component.
  */
 Component.prototype.toBDN = function(indentation) {
-    const formatter = new utilities.Formatter(indentation, this.debug);
+    const formatter = new agents.Formatter(indentation, this.debug);
     return formatter.formatComponent(this);
 };
 
@@ -158,7 +158,7 @@ Component.prototype.toDocument = function() {
  * @returns {String} An HTML document representing the component.
  */
 Component.prototype.toHTML = function(style) {
-    const formatter = new utilities.HTML(style, this.debug);
+    const formatter = new agents.HTML(style, this.debug);
     return formatter.formatComponent(this) + EOL;  // POSIX compliant documents must end with EOL
 };
 
@@ -184,7 +184,7 @@ Component.prototype.isEqualTo = function(that) {
  * @returns {Number} -1 if this < that; 0 if this === that; and 1 if this > that.
  */
 Component.prototype.comparedTo = function(that) {
-    const comparator = new utilities.Comparator(undefined, this.debug);
+    const comparator = new agents.Comparator(undefined, this.debug);
     return comparator.compareComponents(this, that);
 };
 
@@ -334,7 +334,7 @@ Component.prototype.getHash = function() {
  * @returns {Component} A duplicate component.
  */
 Component.prototype.duplicate = function() {
-    const duplicator = new utilities.Duplicator(this.debug);
+    const duplicator = new agents.Duplicator(this.debug);
     return duplicator.duplicateComponent(this);
 };
 

@@ -44,7 +44,7 @@ const Formatter = function(indentation, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
-        validator.validateType('/bali/utilities/Formatter', '$formatComponent', '$indentation', indentation, [
+        validator.validateType('/bali/agents/Formatter', '$formatComponent', '$indentation', indentation, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -56,7 +56,7 @@ const Formatter = function(indentation, debug) {
     this.formatComponent = function(component) {
         if (debug > 1) {
             const validator = new Validator(debug);
-            validator.validateType('/bali/utilities/Formatter', '$formatComponent', '$component', component, [
+            validator.validateType('/bali/agents/Formatter', '$formatComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -132,7 +132,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             break;
         default:
             const exception = new Exception({
-                $module: '/bali/utilities/Formatter',
+                $module: '/bali/agents/Formatter',
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
@@ -240,7 +240,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             break;
         default:
             const exception = new Exception({
-                $module: '/bali/utilities/Formatter',
+                $module: '/bali/agents/Formatter',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,

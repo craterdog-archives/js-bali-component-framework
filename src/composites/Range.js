@@ -12,7 +12,7 @@
 /*
  * This composite class captures the state and methods associated with a range component.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -41,7 +41,7 @@ const Range = function(first, last, connector, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/composites/Range', '$Range', '$first', first, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -86,7 +86,7 @@ const Range = function(first, last, connector, parameters, debug) {
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Range', '$getAttribute', '$key', key, [
                 '/javascript/String',
                 '/bali/elements/Symbol'

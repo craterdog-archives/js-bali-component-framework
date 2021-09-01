@@ -48,7 +48,7 @@ const HTML = function(style, debug) {
     debug = debug || 0;
     if (debug > 1) {
         const validator = new Validator(debug);
-        validator.validateType('/bali/utilities/HTML', '$formatComponent', '$style', style, [
+        validator.validateType('/bali/agents/HTML', '$formatComponent', '$style', style, [
             '/javascript/String'
         ]);
     }
@@ -58,7 +58,7 @@ const HTML = function(style, debug) {
     this.formatComponent = function(component) {
         if (debug > 1) {
             const validator = new Validator(debug);
-            validator.validateType('/bali/utilities/HTML', '$formatComponent', '$component', component, [
+            validator.validateType('/bali/agents/HTML', '$formatComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -305,7 +305,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 
 
 FormattingVisitor.prototype.visitExpression = function(expression) {
-    this.result += '<pre class="element procedure">';
+    this.result += '<pre class="element code">';
     this.result += expression.toString();
     this.result += '</pre>';
 };
@@ -486,7 +486,7 @@ FormattingVisitor.prototype.visitProbability = function(probability) {
 
 // procedure: '{' code '}'
 FormattingVisitor.prototype.visitProcedure = function(procedure) {
-    this.result += '<pre class="element procedure">';
+    this.result += '<pre class="element code">';
     this.result += '{';
     this.result += procedure.getCode().toString();
     this.result += '}';

@@ -31,7 +31,7 @@ const Duplicator = function(debug) {
     this.duplicateComponent = function(component) {
         if (debug > 1) {
             const validator = new Validator(debug);
-            validator.validateType('/bali/utilities/Duplicator', '$duplicateComponent', '$component', component, [
+            validator.validateType('/bali/agents/Duplicator', '$duplicateComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }

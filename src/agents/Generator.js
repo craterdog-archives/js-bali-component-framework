@@ -51,7 +51,7 @@ Generator.prototype.generateBytes = function(numberOfBytes) {
         return buffer;
     } catch (cause) {
         const exception = Exception({
-            $module: '/bali/utilities/Generator',
+            $module: '/bali/agents/Generator',
             $procedure: '$bytes',
             $exception: '$insufficientEntropy',
             $text: 'There was not enough system entropy to generate random bytes.'

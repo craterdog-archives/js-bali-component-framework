@@ -15,7 +15,7 @@
  * resource element.
  */
 const URL = require('url').URL;
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -39,7 +39,7 @@ const Resource =function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Resource', '$Resource', '$value', value, [
             '/javascript/String',
             '/nodejs/URL'

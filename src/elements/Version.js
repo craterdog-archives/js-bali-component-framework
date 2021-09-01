@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * version string element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -40,7 +40,7 @@ const Version = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$Version', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Array'
@@ -100,7 +100,7 @@ Version.prototype.getSize = function() {
  */
 Version.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -118,7 +118,7 @@ Version.prototype.getItem = function(index) {
  */
 Version.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/composites/Range'
@@ -165,7 +165,7 @@ Version.prototype.getItems = function(range) {
  */
 Version.nextVersion = function(currentVersion, level, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Version', '$nextVersion', '$level', level, [
             '/javascript/Undefined',
             '/javascript/Number'
@@ -204,7 +204,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
             '/bali/elements/Version'
         ]);
@@ -244,7 +244,7 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
  */
 Version.concatenation = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Version', '$concatenation', '$first', first, [
             '/bali/elements/Version'
         ]);

@@ -14,7 +14,7 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -65,7 +65,7 @@ const Queue = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',

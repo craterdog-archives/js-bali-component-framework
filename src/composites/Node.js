@@ -17,7 +17,7 @@
  * used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -50,7 +50,7 @@ const Node = function(type, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -61,7 +61,7 @@ const Node = function(type, debug) {
 
     this.getItems = function(range) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$getItems', '$range', range, [
                 '/javascript/String',
                 '/bali/composites/Range'
@@ -82,7 +82,7 @@ const Node = function(type, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
@@ -93,7 +93,7 @@ const Node = function(type, debug) {
 
     this.setItem = function(index, item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -116,7 +116,7 @@ const Node = function(type, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -127,7 +127,7 @@ const Node = function(type, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
+            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -219,7 +219,7 @@ Node.prototype.acceptVisitor = function(visitor) {
  */
 Node.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/composites/Node', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);

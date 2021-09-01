@@ -13,7 +13,7 @@
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 const Exception = require('../composites/Exception').Exception;
 
@@ -41,7 +41,7 @@ const Angle = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Number'
@@ -63,7 +63,7 @@ const Angle = function(value, parameters, debug) {
     }
 
     // convert the value if necessary
-    this.calculator = new utilities.Calculator(this.debug);
+    this.calculator = new agents.Calculator(this.debug);
     const units = this.getParameter('$units');
     if (units && units.toString() === '$degrees') {
         // convert degrees to radians
@@ -160,12 +160,12 @@ Angle.prototype.acceptVisitor = function(visitor) {
  */
 Angle.inverse = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$inverse', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.difference(angle.getValue(), Math.PI), angle.getParameters(), debug);
 };
 
@@ -181,7 +181,7 @@ Angle.inverse = function(angle, debug) {
  */
 Angle.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$sum', '$first', first, [
             '/bali/elements/Angle'
         ]);
@@ -189,7 +189,7 @@ Angle.sum = function(first, second, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -205,7 +205,7 @@ Angle.sum = function(first, second, debug) {
  */
 Angle.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$difference', '$first', first, [
             '/bali/elements/Angle'
         ]);
@@ -213,7 +213,7 @@ Angle.difference = function(first, second, debug) {
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -229,7 +229,7 @@ Angle.difference = function(first, second, debug) {
  */
 Angle.scaled = function(angle, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$scaled', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
@@ -237,7 +237,7 @@ Angle.scaled = function(angle, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.product(angle.getValue(), factor), angle.getParameters(), debug);
 };
 
@@ -254,12 +254,12 @@ Angle.scaled = function(angle, factor, debug) {
  */
 Angle.complement = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$complement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.difference(Math.PI / 2, angle.getValue()), angle.getParameters(), debug);
 };
 
@@ -274,12 +274,12 @@ Angle.complement = function(angle, debug) {
  */
 Angle.supplement = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$supplement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.difference(Math.PI, angle.getValue()), angle.getParameters(), debug);
 };
 
@@ -294,7 +294,7 @@ Angle.supplement = function(angle, debug) {
  */
 Angle.conjugate = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$conjugate', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
@@ -313,12 +313,12 @@ Angle.conjugate = function(angle, debug) {
  */
 Angle.sine = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$sine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return calculator.sine(angle.getValue());
 };
 
@@ -332,12 +332,12 @@ Angle.sine = function(angle, debug) {
  */
 Angle.cosine = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$cosine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return calculator.cosine(angle.getValue());
 };
 
@@ -351,12 +351,12 @@ Angle.cosine = function(angle, debug) {
  */
 Angle.tangent = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$tangent', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return calculator.tangent(angle.getValue());
 };
 
@@ -371,12 +371,12 @@ Angle.tangent = function(angle, debug) {
  */
 Angle.arcsine = function(ratio, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$arcsine', '$ratio', ratio, [
             '/javascript/Number'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.arcsine(ratio), undefined, debug);
 };
 
@@ -391,12 +391,12 @@ Angle.arcsine = function(ratio, debug) {
  */
 Angle.arccosine = function(ratio, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$arccosine', '$ratio', ratio, [
             '/javascript/Number'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.arccosine(ratio), undefined, debug);
 };
 
@@ -412,7 +412,7 @@ Angle.arccosine = function(ratio, debug) {
  */
 Angle.arctangent = function(opposite, adjacent, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
+        const validator = new agents.Validator(debug);
         validator.validateType('/bali/elements/Angle', '$arctangent', '$opposite', opposite, [
             '/javascript/Number'
         ]);
@@ -420,6 +420,6 @@ Angle.arctangent = function(opposite, adjacent, debug) {
             '/javascript/Number'
         ]);
     }
-    const calculator = new utilities.Calculator(debug);
+    const calculator = new agents.Calculator(debug);
     return new Angle(calculator.arctangent(opposite, adjacent), undefined, debug);
 };

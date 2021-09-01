@@ -13,7 +13,7 @@
 /*
  * This abstract class defines the invariant methods that all strings must inherit.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const Exception = require('../composites/Exception').Exception;
 const Element = require('./Element').Element;
 const Iterator = require('./Iterator').Iterator;
@@ -112,7 +112,7 @@ Stryng.prototype.getIterator = function() {
  */
 Stryng.prototype.getIndex = function(item) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/String', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -123,7 +123,7 @@ Stryng.prototype.getIndex = function(item) {
             '/bali/abstractions/Component'
         ]);
     }
-    const comparator = new utilities.Comparator(undefined, this.debug);
+    const comparator = new agents.Comparator(undefined, this.debug);
     var index = 0;
     const iterator = this.getIterator();
     while (iterator.hasNext()) {
@@ -189,7 +189,7 @@ Stryng.prototype.getItems = function(range) {
  */
 Stryng.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/String', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);

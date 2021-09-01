@@ -12,7 +12,7 @@
 /*
  * This element class captures the state and methods associated with a pattern element.
  */
-const utilities = require('../utilities');
+const agents = require('../agents');
 const abstractions = require('../abstractions');
 
 
@@ -35,7 +35,7 @@ const Pattern = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -77,7 +77,7 @@ Pattern.prototype.toBoolean = function() {
  */
 Pattern.prototype.matches = function(component) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
+        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Pattern', '$matches', '$component', component, [
             '/javascript/Undefined',
             '/javascript/Boolean',

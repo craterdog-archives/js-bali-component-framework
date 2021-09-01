@@ -17,7 +17,7 @@ const generator = bali.generator(debug);
 
 describe('Bali Nebula™ Component Framework - Generator', function() {
 
-    describe('Test random number utilities', function() {
+    describe('Test random number agents', function() {
 
         it('should test extreme coin tosses', function() {
             for (var i = 0; i < 100; i++) {

@@ -14,12 +14,12 @@
  * component framework.
  */
 const EOL = '\n';
-const utilities = require('./src/utilities');
-const abstractions = require('./src/abstractions');  // depends on utilities
+const agents = require('./src/agents');
+const abstractions = require('./src/abstractions');  // depends on agents
 const elements = require('./src/elements');  // depends on abstractions
 const composites = require('./src/composites');  // depends on elements
 const collections = require('./src/collections');  // depends on composites
-utilities.Parser = require('./src/utilities/Parser').Parser;  // depends on everything (must be last)
+agents.Parser = require('./src/agents/Parser').Parser;  // depends on everything (must be last)
 
 
 // PRIVATE FUNCTIONS
@@ -51,7 +51,7 @@ const componentize = function(value, debug) {
         case 'string':
             try {
                 // first try to parse it as a Bali Document Notation™ source string
-                const parser = new utilities.Parser(0);  // don't log parsing exceptions here
+                const parser = new agents.Parser(0);  // don't log parsing exceptions here
                 component = parser.parseSource(value);
             } catch (cause) {
                 // otherwise convert it to a text element
@@ -257,13 +257,13 @@ exports.api = function(defaultLevel) {
     // COMPARATOR
     const comparator = function(algorithm, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Comparator(algorithm, debug);
+        return new agents.Comparator(algorithm, debug);
     };
 
     // COMPONENT
     const component = function(bdn, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const parser = new utilities.Parser(debug);
+        const parser = new agents.Parser(debug);
         if (bdn.slice(-1) === EOL) {
             return parser.parseDocument(bdn);
         }
@@ -273,19 +273,19 @@ exports.api = function(defaultLevel) {
     // CONFIGURATOR
     const configurator = function(filename, directory, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Configurator(filename, directory, debug);
+        return new agents.Configurator(filename, directory, debug);
     };
 
     // CONTROLLER
     const controller = function(eventTypes, nextStates, currentState, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Controller(eventTypes, nextStates, currentState, debug);
+        return new agents.Controller(eventTypes, nextStates, currentState, debug);
     };
 
     // DECODER
     const decoder = function(indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Decoder(indentation, debug);
+        return new agents.Decoder(indentation, debug);
     };
 
     // DURATION
@@ -329,7 +329,7 @@ exports.api = function(defaultLevel) {
     // GENERATOR
     const generator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Generator(debug);
+        return new agents.Generator(debug);
     };
 
     // INSTANCE
@@ -591,7 +591,7 @@ exports.api = function(defaultLevel) {
     // TYPE
     const type = function(component, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const type = new utilities.Validator(debug).getType(component);
+        const type = new agents.Validator(debug).getType(component);
         const value = type.split('/').slice(1);
         return new elements.Name(value, undefined, debug);
     };
@@ -599,7 +599,7 @@ exports.api = function(defaultLevel) {
     // VALIDATOR
     const validator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Validator(debug);
+        return new agents.Validator(debug);
     };
 
     // VERSION
