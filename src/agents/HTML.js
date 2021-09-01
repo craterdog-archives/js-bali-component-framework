@@ -172,9 +172,7 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
     this.depth++;
     this.result += this.getNewline();
     const value = association.getValue();
-    console.error("TYPE: " + value.getAncestry());
     if (value.isType('/bali/composites/Node')) {
-        console.error("EXPRESSION");
         this.visitExpression(value);  // must handle expressions differently
     } else {
         value.acceptVisitor(this);
