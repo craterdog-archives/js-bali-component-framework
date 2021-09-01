@@ -153,7 +153,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
 };
 
 
-// association: element ':' component
+// association: element ':' expression
 FormattingVisitor.prototype.visitAssociation = function(association) {
     this.result += '<div class="association">';
     this.depth++;
@@ -171,7 +171,14 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
     this.result += '<div class="value">';
     this.depth++;
     this.result += this.getNewline();
-    association.getValue().acceptVisitor(this);
+    const value = association.getValue();
+    console.error("TYPE: " + value.getAncestry());
+    if (value.isType('/bali/composites/Node')) {
+        console.error("EXPRESSION");
+        this.visitExpression(value);  // must handle expressions differently
+    } else {
+        value.acceptVisitor(this);
+    }
     this.depth--;
     this.result += this.getNewline();
     this.result += '</div>';
@@ -271,7 +278,12 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
             iterator = collection.getIterator();
             while (iterator.hasNext()) {
                 this.result += this.getNewline();
-                iterator.getNext().acceptVisitor(this);
+                const value = iterator.getNext();
+                if (value.isType('/bali/composites/Node')) {
+                    this.visitExpression(value);  // must handle expressions differently
+                } else {
+                    value.acceptVisitor(this);
+                }
             }
             this.width.pop();  // we are done with it
             this.depth--;
@@ -289,6 +301,13 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
     this.result += duration.getTime().toISOString().slice(1).replace(/T/, '');
     this.result += formatParameters(duration.getParameters());
     this.result += '</div>';
+};
+
+
+FormattingVisitor.prototype.visitExpression = function(expression) {
+    this.result += '<pre class="element procedure">';
+    this.result += expression.toString();
+    this.result += '</pre>';
 };
 
 
@@ -533,6 +552,12 @@ FormattingVisitor.prototype.visitText = function(text) {
     this.result += value;
     this.result += formatParameters(text.getParameters());
     this.result += '</pre>';
+};
+
+
+// variable: IDENTIFIER
+FormattingVisitor.prototype.visitVariable = function(node) {
+    this.result += node.identifier;
 };
 
 

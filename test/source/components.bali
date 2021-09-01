@@ -16,6 +16,7 @@
             $gamma
         ]($type: /bali/collections/Set/v1)
         [
+            target
             any
             "foo[Bb]ar"?
             none
@@ -57,7 +58,7 @@
         $c-3: "c"
         "1.": true
         "iffy": .5
-        ".0": false
+        ".0": size + 1
         true: false
         .5: true
         50%: 20%
@@ -149,7 +150,7 @@
     ]
     $ranges: [
         -3..5
-        π<..τ($delta: 0.1)
+        π<..τ
         0..<
         ..<-1
         <..<

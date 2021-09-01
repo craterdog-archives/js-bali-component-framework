@@ -102,7 +102,7 @@ DuplicatingVisitor.prototype.visitArithmeticExpression = function(node) {
 };
 
 
-// association: element ':' component
+// association: element ':' expression
 DuplicatingVisitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     const key = this.result;

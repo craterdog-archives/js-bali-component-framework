@@ -14,8 +14,8 @@ collection: list | catalog;
 parameters: '(' catalog ')';
 
 list:
-    component (',' component)* |
-    EOL (component EOL)* |
+    expression (',' expression)* |
+    EOL (expression EOL)* |
     /* no items */
 ;
 
@@ -25,7 +25,7 @@ catalog:
     ':' /* no associations */
 ;
 
-association: element ':' component;
+association: element ':' expression;
 
 procedure: '{' code '}';
 

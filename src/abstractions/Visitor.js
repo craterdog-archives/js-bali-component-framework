@@ -74,7 +74,7 @@ Visitor.prototype.visitArithmeticExpression = function(node) {
 };
 
 
-// association: element ':' component
+// association: element ':' expression
 Visitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     association.getValue().acceptVisitor(this);

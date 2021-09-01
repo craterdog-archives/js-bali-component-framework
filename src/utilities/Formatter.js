@@ -188,7 +188,7 @@ FormattingVisitor.prototype.visitArithmeticExpression = function(node) {
 };
 
 
-// association: element ':' component
+// association: element ':' expression
 FormattingVisitor.prototype.visitAssociation = function(association) {
     association.getKey().acceptVisitor(this);
     this.result += ': ';

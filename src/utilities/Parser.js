@@ -243,11 +243,11 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 };
 
 
-// association: element ':' component
+// association: element ':' expression
 ParsingVisitor.prototype.visitAssociation = function(ctx) {
     ctx.element().accept(this);
     const key = this.result;
-    ctx.component().accept(this);
+    ctx.expression().accept(this);
     const value = this.result;
     const association = new composites.Association(key, value, this.debug);
     this.result = association;
@@ -639,8 +639,8 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 
 
 // list:
-//     component (',' component)* |
-//     EOL (component EOL)* |
+//     expression (',' expression)* |
+//     EOL (expression EOL)* |
 //     /* no items */
 ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
@@ -679,11 +679,11 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             if (this.debug > 0) console.error(exception.toString());
             throw exception;
     }
-    if (ctx.component) {
-        const components = ctx.component();
+    if (ctx.expression) {
+        const expressions = ctx.expression();
         this.depth++;
-        components.forEach(function(component) {
-            component.accept(this);
+        expressions.forEach(function(expression) {
+            expression.accept(this);
             collection.addItem(this.result);
         }, this);
         this.depth--;
