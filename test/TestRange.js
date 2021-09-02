@@ -30,7 +30,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('..');
             expect(
                 function() {
-                    range.getIterator(range);
+                    range.getIterator();
                 }
             ).to.throw();
         });
@@ -45,7 +45,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(last).to.not.exist;
             expect(
                 function() {
-                    range.getIterator(range);
+                    range.getIterator();
                 }
             ).to.throw();
 
@@ -58,7 +58,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(last.toInteger()).to.equal(5);
             expect(
                 function() {
-                    range.getIterator(range);
+                    range.getIterator();
                 }
             ).to.throw();
         });
@@ -140,7 +140,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('<..<');
             expect(
                 function() {
-                    range.getIterator(range);
+                    range.getIterator();
                 }
             ).to.throw();
         });
@@ -230,16 +230,44 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             last = range.getLast();
             expect(last.toInteger()).to.equal(6);
 
-            range = bali.component('-5..-1');
+            range = bali.component('[-5..-1]');
             first = range.getFirst();
             expect(first.toInteger()).to.equal(-5);
             last = range.getLast();
             expect(last.toInteger()).to.equal(-1);
         });
 
+        it('should be able to call the range methods on the range', function() {
+            const range1 = bali.range(1, 5);
+            const range2 = bali.range(3, 5);
+            var size = range1.getSize();
+            expect(size).to.equal(5);
+            expect(range1.containsAll(range2)).to.equal(true);
+            expect(range2.containsAll(range1)).to.equal(false);
+            expect(range2.containsAny(range1)).to.equal(true);
+            const range3 = bali.range(5, 9);
+            size = range3.getSize();
+            expect(size).to.equal(5);
+            expect(range3.containsItem(7)).to.equal(true);
+            expect(range3.containsItem(4)).to.equal(false);
+            expect(range3.getIndex(6)).to.equal(2);
+            expect(range3.getItem(3).toInteger()).to.equal(7);
+        });
+
     });
 
     describe('Test the range iterators', function() {
+
+        it('should attempt to create iterators', function() {
+            var range = bali.range(1, 5);
+            range.getIterator();
+            range = bali.range('$alpha', '$delta');
+            expect(
+                function() {
+                    range.getIterator();
+                }
+            ).to.throw();
+        });
 
         it('should iterate over a range forwards and backwards', function() {
             const range = bali.range(1, 3);
@@ -256,7 +284,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             // iterate through the items in reverse order
             while (slot > 0) {
                 const value = iterator.getPrevious();
-                expect(slot--).to.equal(value);
+                expect(slot--).to.equal(value.toInteger());
             }
             // should be at the first slot in the iterator
             expect(iterator.hasPrevious() === false);
@@ -265,7 +293,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const size = range.getLast() - range.getFirst() + 1;
             while (slot < size) {
                 const value = iterator.getNext();
-                expect(++slot).to.equal(value);
+                expect(++slot).to.equal(value.toInteger());
             }
             // should be at the last slot in the iterator
             expect(iterator.hasPrevious() === true);

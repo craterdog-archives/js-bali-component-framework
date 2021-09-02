@@ -26,7 +26,7 @@ describe('Bali Nebula™ Component Framework - Node', function() {
             parent.addItem(child);
             expect(parent.getItem(1)).to.equal(child);
             parent.addItem(sibling);
-            const children = parent.getItems('1..2');
+            const children = parent.getItems('[1..2]');
             expect(children.isEmpty()).to.equal(false);
             expect(children.getSize()).to.equal(2);
         });

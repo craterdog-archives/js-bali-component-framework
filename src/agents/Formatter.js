@@ -322,10 +322,20 @@ FormattingVisitor.prototype.visitCode = function(node) {
 };
 
 
-// collection: list | catalog
+// collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    if (collection.isEmpty()) {
+    if (collection.getType() === '/bali/collections/Range') {
+        const first = collection.getFirst();
+        if (first !== undefined) {
+            first.acceptVisitor(this);
+        }
+        this.result += collection.getConnector();
+        const last = collection.getLast();
+        if (last !== undefined) {
+            last.acceptVisitor(this);
+        }
+    } else if (collection.isEmpty()) {
         this.result += collection.isType('/bali/collections/Catalog') ? ':' : ' ';
     } else {
         this.depth++;
@@ -803,23 +813,6 @@ FormattingVisitor.prototype.visitPublishClause = function(node) {
     this.result += 'publish ';
     const event = node.getItem(1);
     event.acceptVisitor(this);
-};
-
-
-// range: element? ('<..<' | '<..' | '..<' | '..') element?
-FormattingVisitor.prototype.visitRange = function(range) {
-    const first = range.getFirst();
-    if (first !== undefined) {
-        first.acceptVisitor(this);
-    }
-    this.result += range.getConnector();
-    const last = range.getLast();
-    if (last !== undefined) {
-        last.acceptVisitor(this);
-    }
-    const parameters = range.getParameters();
-    this.visitParameters(parameters);  // format any parameterization
-    this.formatNote(range);
 };
 
 

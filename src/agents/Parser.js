@@ -895,7 +895,7 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 };
 
 
-// range: element? connector=('<..<' | '<..' | '..<' | '..') element?
+// range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?
 ParsingVisitor.prototype.visitRange = function(ctx) {
     var first, last;
     const parameters = this.getParameters();
@@ -920,7 +920,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             last = this.result;
             break;
     }
-    const range = new composites.Range(first, last, connector, parameters, this.debug);
+    const range = new collections.Range(first, last, connector, parameters, this.debug);
     this.result = range;
 };
 

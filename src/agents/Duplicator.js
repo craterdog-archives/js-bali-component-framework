@@ -196,18 +196,22 @@ DuplicatingVisitor.prototype.visitCode = function(node) {
 };
 
 
-// collection: list | catalog
+// collection: range | list | catalog
 DuplicatingVisitor.prototype.visitCollection = function(collection) {
     this.visitParameters(collection.getParameters());
     const parameters = this.result;
-    const copy = new collection.constructor(parameters, this.debug);
-    const iterator = collection.getIterator();
-    while (iterator.hasNext()) {
-        var item = iterator.getNext();
-        item.acceptVisitor(this);
-        copy.addItem(this.result);
+    if (collection.getType() === '/bali/collections/Range') {
+        this.result = new collection.constructor(collection.getFirst(), collection.getLast(), collection.getConnector(), parameters, this.debug);
+    } else {
+        const copy = new collection.constructor(parameters, this.debug);
+        const iterator = collection.getIterator();
+        while (iterator.hasNext()) {
+            var item = iterator.getNext();
+            item.acceptVisitor(this);
+            copy.addItem(this.result);
+        }
+        this.result = copy;
     }
-    this.result = copy;
     this.result.note = collection.note;
 };
 
@@ -554,15 +558,6 @@ DuplicatingVisitor.prototype.visitPublishClause = function(node) {
     node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
     this.result = copy;
-};
-
-
-// range: element? ('<..<' | '<..' | '..<' | '..') element?
-DuplicatingVisitor.prototype.visitRange = function(range) {
-    this.visitParameters(range.getParameters());
-    const parameters = this.result;
-    this.result = new range.constructor(range.getFirst(), range.getLast(), range.getConnector(), parameters, this.debug);
-    this.result.note = range.note;
 };
 
 

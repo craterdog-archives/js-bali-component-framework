@@ -99,7 +99,6 @@ Collection.prototype.isEmpty = function() {
 
 /**
  * This method returns the number of items that this collection contains.
- * It must be implemented by a subclass.
  *
  * @returns {Number} The number of items that this collection contains.
  */
@@ -259,8 +258,8 @@ Collection.prototype.getIndex = function(item) {
 
 
 /**
- * This abstract method retrieves the item that is associated with the specified index
- * from this collection. It must be implemented by a subclass.
+ * This method retrieves the item that is associated with the specified index
+ * from this collection.
  *
  * @param {Number} index The index of the desired item.
  * @returns {Component} The item at the position in this collection.
@@ -289,7 +288,7 @@ Collection.prototype.getItems = function(range) {
         const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/composites/Range'
+            '/bali/collections/Range'
         ]);
     }
     range = this.componentize(range);
@@ -400,7 +399,8 @@ Collection.prototype.containsAll = function(items) {
 
 
 /**
- * This method removes all items that are currently contained in this collection.
+ * This abstract method removes all items that are currently contained in this collection.
+ * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
     const exception = new Exception({

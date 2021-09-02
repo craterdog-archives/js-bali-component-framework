@@ -64,7 +64,7 @@ const Node = function(type, debug) {
             const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/composites/Node', '$getItems', '$range', range, [
                 '/javascript/String',
-                '/bali/composites/Range'
+                '/bali/collections/Range'
             ]);
         }
         range = this.componentize(range);

@@ -152,9 +152,19 @@ Visitor.prototype.visitCode = function(node) {
 };
 
 
-// collection: list | catalog
+// collection: range | list | catalog
 Visitor.prototype.visitCollection = function(collection) {
-    if (collection.getSize() > 0) {
+    if (collection.getType() === '/bali/collections/Range') {
+        const first = collection.getFirst();
+        if (first !== undefined) {
+            first.acceptVisitor(this);
+        }
+        const connector = collection.getConnector();
+        const last = collection.getLast();
+        if (last !== undefined) {
+            last.acceptVisitor(this);
+        }
+    } else if (collection.getSize() > 0) {
         this.depth++;
         const iterator = collection.getIterator();
         while (iterator.hasNext()) {
@@ -475,22 +485,6 @@ Visitor.prototype.visitProcedure = function(procedure) {
 Visitor.prototype.visitPublishClause = function(node) {
     const event = node.getItem(1);
     event.acceptVisitor(this);
-};
-
-
-// range: element? ('<..<' | '<..' | '..<' | '..') element?
-Visitor.prototype.visitRange = function(range) {
-    const parameters = range.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    const first = range.getFirst();
-    if (first !== undefined) {
-        first.acceptVisitor(this);
-    }
-    const connector = range.getConnector();
-    const last = range.getLast();
-    if (last !== undefined) {
-        last.acceptVisitor(this);
-    }
 };
 
 

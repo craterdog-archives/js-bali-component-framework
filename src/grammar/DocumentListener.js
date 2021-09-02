@@ -470,12 +470,21 @@ DocumentListener.prototype.exitValue = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.enterRange = function(ctx) {
+// Enter a parse tree produced by DocumentParser#parameters.
+DocumentListener.prototype.enterParameters = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#range.
-DocumentListener.prototype.exitRange = function(ctx) {
+// Exit a parse tree produced by DocumentParser#parameters.
+DocumentListener.prototype.exitParameters = function(ctx) {
+};
+
+
+// Enter a parse tree produced by DocumentParser#note.
+DocumentListener.prototype.enterNote = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#note.
+DocumentListener.prototype.exitNote = function(ctx) {
 };
 
 
@@ -497,12 +506,12 @@ DocumentListener.prototype.exitCollection = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#parameters.
-DocumentListener.prototype.enterParameters = function(ctx) {
+// Enter a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.enterRange = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#parameters.
-DocumentListener.prototype.exitParameters = function(ctx) {
+// Exit a parse tree produced by DocumentParser#range.
+DocumentListener.prototype.exitRange = function(ctx) {
 };
 
 
@@ -548,15 +557,6 @@ DocumentListener.prototype.enterCode = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#code.
 DocumentListener.prototype.exitCode = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#note.
-DocumentListener.prototype.enterNote = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#note.
-DocumentListener.prototype.exitNote = function(ctx) {
 };
 
 

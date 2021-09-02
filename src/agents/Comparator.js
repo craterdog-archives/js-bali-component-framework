@@ -155,11 +155,6 @@ const natural = function(first, second) {
         return natural(first.toArray(), second.toArray());
     }
 
-    // handle collections
-    if (first.isComponent && first.isType('/bali/abstractions/Collection')) {
-        return natural(first.toArray(), second.toArray());
-    }
-
     // handle ranges
     if (first.getFirst) {
         var result = natural(first.getFirst(), second.getFirst());
@@ -171,6 +166,11 @@ const natural = function(first, second) {
             result = natural(first.getLast(), second.getLast());
         }
         return result;
+    }
+
+    // handle collections
+    if (first.isComponent && first.isType('/bali/abstractions/Collection')) {
+        return natural(first.toArray(), second.toArray());
     }
 
     // handle specific element types

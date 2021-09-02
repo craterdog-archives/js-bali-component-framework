@@ -318,8 +318,14 @@ DocumentVisitor.prototype.visitValue = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#range.
-DocumentVisitor.prototype.visitRange = function(ctx) {
+// Visit a parse tree produced by DocumentParser#parameters.
+DocumentVisitor.prototype.visitParameters = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DocumentParser#note.
+DocumentVisitor.prototype.visitNote = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -336,8 +342,8 @@ DocumentVisitor.prototype.visitCollection = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#parameters.
-DocumentVisitor.prototype.visitParameters = function(ctx) {
+// Visit a parse tree produced by DocumentParser#range.
+DocumentVisitor.prototype.visitRange = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -368,12 +374,6 @@ DocumentVisitor.prototype.visitProcedure = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#code.
 DocumentVisitor.prototype.visitCode = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#note.
-DocumentVisitor.prototype.visitNote = function(ctx) {
   return this.visitChildren(ctx);
 };
 

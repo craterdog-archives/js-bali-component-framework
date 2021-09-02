@@ -3,15 +3,17 @@ import Elements;
 
 component: value parameters? note?;
 
-value: element | range | sequence | procedure;
+value: element | sequence | procedure;
 
-range: element? connector=('<..<' | '<..' | '..<' | '..') element?;
+parameters: '(' catalog ')';
+
+note: NOTE;
 
 sequence: '[' collection ']';
 
-collection: list | catalog;
+collection: range | list | catalog;
 
-parameters: '(' catalog ')';
+range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?;
 
 list:
     expression (',' expression)* |
@@ -34,6 +36,4 @@ code:
     EOL (statement EOL)* |
     /* no statements */
 ;
-
-note: NOTE;
 

@@ -161,7 +161,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(4);
-            list.removeItems('2..3');
+            list.removeItems('[2..3]');
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(2);

@@ -108,7 +108,7 @@ Text.prototype.getItems = function(range) {
         const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Text', '$getItems', '$range', range, [
             '/javascript/String',
-            '/bali/composites/Range'
+            '/bali/collections/Range'
         ]);
     }
     range = this.componentize(range);

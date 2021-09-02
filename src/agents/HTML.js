@@ -227,13 +227,26 @@ FormattingVisitor.prototype.visitBoolean = function(boolean) {
 };
 
 
-// collection: list | catalog
+// collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     // check for an explicit type, otherwise use the implicit type
     var iterator;
     const type = collection.getType();
     const name = type.slice(type.lastIndexOf('/') + 1);  // extract the type name
     switch (type) {
+        case '/bali/collections/Range':
+            this.result += '<div class="range">';
+            const first = collection.getFirst();
+            if (first !== undefined) {
+                first.acceptVisitor(this);
+            }
+            this.result += collection.getConnector().replace(/</g, '&lt;');
+            const last = collection.getLast();
+            if (last !== undefined) {
+                last.acceptVisitor(this);
+            }
+            this.result += '</div>';
+            break;
         case '/bali/collections/List':
         case '/bali/collections/Queue':
         case '/bali/collections/Set':
@@ -490,23 +503,6 @@ FormattingVisitor.prototype.visitProcedure = function(procedure) {
     this.result += '}';
     this.result += formatParameters(procedure.getParameters());
     this.result += '</pre>';
-};
-
-
-// range: element? ('<..<' | '<..' | '..<' | '..') element?
-FormattingVisitor.prototype.visitRange = function(range) {
-    this.result += '<div class="range">';
-    const first = range.getFirst();
-    if (first !== undefined) {
-        first.acceptVisitor(this);
-    }
-    this.result += range.getConnector().replace(/</g, '&lt;');
-    const last = range.getLast();
-    if (last !== undefined) {
-        last.acceptVisitor(this);
-    }
-    this.result += formatParameters(range.getParameters());
-    this.result += '</div>';
 };
 
 
