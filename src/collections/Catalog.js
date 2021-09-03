@@ -144,22 +144,6 @@ const Catalog = function(parameters, debug) {
         }
     };
 
-    this.containsItem = function(association) {
-        if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$containsItem', '$association', association, [
-                '/javascript/Undefined',
-                '/bali/composites/Association'
-            ]);
-        }
-        if (association) {
-            const key = association.getKey().toString();
-            const candidate = map[key];
-            if (candidate) return candidate.isEqualTo(association);
-        }
-        return false;
-    };
-
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);

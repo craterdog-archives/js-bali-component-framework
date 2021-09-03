@@ -201,7 +201,7 @@ DuplicatingVisitor.prototype.visitCollection = function(collection) {
     this.visitParameters(collection.getParameters());
     const parameters = this.result;
     if (collection.getType() === '/bali/collections/Range') {
-        this.result = new collection.constructor(collection.getFirst(), collection.getLast(), collection.getConnector(), parameters, this.debug);
+        this.result = new collection.constructor(collection.getFirst(), collection.getConnector(), collection.getLast(), parameters, this.debug);
     } else {
         const copy = new collection.constructor(parameters, this.debug);
         const iterator = collection.getIterator();

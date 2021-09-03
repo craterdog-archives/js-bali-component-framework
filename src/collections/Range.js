@@ -23,13 +23,13 @@ const Exception = require('../composites/Exception').Exception;
  * This function creates a new range collection using the specified first and last values.
  *
  * @param {Element} first The first element in the range.
- * @param {Element} last The last element in the range.
  * @param {String} connector The connector between the first and last values (default: '..').
+ * @param {Element} last The last element in the range.
  * @param {Object} parameters Optional parameters used to parameterize this collection.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Range} The new range.
  */
-const Range = function(first, last, connector, parameters, debug) {
+const Range = function(first, connector, last, parameters, debug) {
     abstractions.Collection.call(
         this,
         ['/bali/collections/Range'],
@@ -49,16 +49,16 @@ const Range = function(first, last, connector, parameters, debug) {
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
+        validator.validateType('/bali/collections/Range', '$Range', '$connector', connector, [
+            '/javascript/Undefined',
+            '/javascript/String'
+        ]);
         validator.validateType('/bali/collections/Range', '$Range', '$last', last, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
-        ]);
-        validator.validateType('/bali/collections/Range', '$Range', '$connector', connector, [
-            '/javascript/Undefined',
-            '/javascript/String'
         ]);
     }
 

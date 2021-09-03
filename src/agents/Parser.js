@@ -920,7 +920,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
             last = this.result;
             break;
     }
-    const range = new collections.Range(first, last, connector, parameters, this.debug);
+    const range = new collections.Range(first, connector, last, parameters, this.debug);
     this.result = range;
 };
 

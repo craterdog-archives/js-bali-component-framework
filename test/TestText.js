@@ -53,7 +53,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const text = bali.text('This is text.');
-            const range = bali.range(3, 9);
+            const range = bali.range(3, '..', 9);
             const first = text.getItem(3);
             const last = text.getItem(9);
             const items = text.getItems(range);

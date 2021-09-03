@@ -59,7 +59,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const buffer = Buffer.from([0x62, 0x64, 0x66, 0x68, 0x69, 0x72, 0x74, 0x75, 0x78, 0x79]);
             const binary = bali.binary(buffer);
-            const range = bali.range(3, 5);
+            const range = bali.range(3, '..', 5);
             const first = binary.getItem(3);
             const last = binary.getItem(5);
             const items = binary.getItems(range);

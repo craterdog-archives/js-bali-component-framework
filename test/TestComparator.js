@@ -367,7 +367,7 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle ranges', function() {
-            const first = bali.range(undefined, 0);
+            const first = bali.range(undefined, '..', 0);
             const second = bali.range();
             const third = bali.range(0);
             expect(comparator.compareComponents(first, first)).to.equal(0);

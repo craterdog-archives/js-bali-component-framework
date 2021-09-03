@@ -100,7 +100,7 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
 
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const symbol = bali.symbol('foobar');
-            const range = bali.range(3, 5);
+            const range = bali.range(3, '..', 5);
             const first = symbol.getItem(3);
             const last = symbol.getItem(5);
             const items = symbol.getItems(range);
@@ -116,7 +116,7 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const symbol = bali.component('$foobar-1');
             expect(symbol.isReserved()).to.equal(true);
-            const range = bali.range(3, 5);
+            const range = bali.range(3, '..', 5);
             const first = symbol.getItem(3);
             const last = symbol.getItem(5);
             const items = symbol.getItems(range);

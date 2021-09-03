@@ -114,7 +114,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
 
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const version = bali.version([1, 23, 456, 7890]);
-            const range = bali.range(2, 4);
+            const range = bali.range(2, '..', 4);
             const first = version.getItem(2);
             const last = version.getItem(4);
             const items = version.getItems(range);

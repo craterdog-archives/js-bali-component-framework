@@ -519,9 +519,9 @@ exports.api = function(defaultLevel) {
     };
 
     // RANGE
-    const range = function(first, last, connector, parameters, debug) {
+    const range = function(first, connector, last, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new collections.Range(first, last, connector, parameters, debug);
+        return new collections.Range(first, connector, last, parameters, debug);
     };
 
     // RESOURCE

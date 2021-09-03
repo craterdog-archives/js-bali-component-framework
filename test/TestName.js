@@ -59,7 +59,7 @@ describe('Bali Nebula™ Component Framework - Name', function() {
 
         it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
             const name = bali.name(['bali', 'collections', 'Set', 'v1']);
-            const range = bali.range(2, 3);
+            const range = bali.range(2, '..', 3);
             const first = name.getItem(2);
             const last = name.getItem(3);
             const items = name.getItems(range);

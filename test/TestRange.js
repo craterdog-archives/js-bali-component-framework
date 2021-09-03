@@ -49,7 +49,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
                 }
             ).to.throw();
 
-            range = bali.range(undefined, 5);
+            range = bali.range(undefined, '..', 5);
             expect(range).to.exist;
             first = range.getFirst();
             expect(first).to.not.exist;
@@ -64,7 +64,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with two endpoints', function() {
-            const range = bali.range(2, 5);
+            const range = bali.range(2, '..', 5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -77,7 +77,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with "<.." connector type', function() {
-            const range = bali.range(2, 5, '<..');
+            const range = bali.range(2, '<..', 5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -93,7 +93,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with "<..<" connector type', function() {
-            const range = bali.range(2, 5, '<..<');
+            const range = bali.range(2, '<..<', 5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -109,7 +109,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create a zero length integer range with "<..<" connector type', function() {
-            const range = bali.range(2, 4, '<..<');
+            const range = bali.range(2, '<..<', 4);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -127,7 +127,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create a negative length integer range with "<..<" connector type', function() {
-            const range = bali.range(2, 3, '<..<');
+            const range = bali.range(2, '<..<', 3);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -146,7 +146,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with "..<" connector type', function() {
-            const range = bali.range(2, 5, '..<');
+            const range = bali.range(2, '..<', 5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -162,7 +162,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with ".." connector type', function() {
-            const range = bali.range(2, 5, '..');
+            const range = bali.range(2, '..', 5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -180,10 +180,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     });
 
     describe('Test the range comparisons', function() {
-        const negative = bali.range(undefined, 0);
+        const negative = bali.range(undefined, '..', 0);
         const positive = bali.range(0);
         const infinite = bali.range();
-        const finite = bali.range(-2, 2);
+        const finite = bali.range(-2, '..', 2);
 
         it('should be able to compare a negative range against the others', function() {
             expect(negative.comparedTo(negative)).to.equal(0);
@@ -218,13 +218,13 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range methods', function() {
 
         it('should be able to call the getFirst() and getLast() methods on the range', function() {
-            var range = bali.range(1, 8);
+            var range = bali.range(1, '..', 8);
             var first = range.getFirst();
             expect(first.toInteger()).to.equal(1);
             var last = range.getLast();
             expect(last.toInteger()).to.equal(8);
 
-            range = bali.range(-4, 6);
+            range = bali.range(-4, '..', 6);
             first = range.getFirst();
             expect(first.toInteger()).to.equal(-4);
             last = range.getLast();
@@ -238,14 +238,14 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to call the range methods on the range', function() {
-            const range1 = bali.range(1, 5);
-            const range2 = bali.range(3, 5);
+            const range1 = bali.range(1, '..', 5);
+            const range2 = bali.range(3, '..', 5);
             var size = range1.getSize();
             expect(size).to.equal(5);
             expect(range1.containsAll(range2)).to.equal(true);
             expect(range2.containsAll(range1)).to.equal(false);
             expect(range2.containsAny(range1)).to.equal(true);
-            const range3 = bali.range(5, 9);
+            const range3 = bali.range(5, '..', 9);
             size = range3.getSize();
             expect(size).to.equal(5);
             expect(range3.containsItem(7)).to.equal(true);
@@ -259,9 +259,9 @@ describe('Bali Nebula™ Component Framework - Range', function() {
     describe('Test the range iterators', function() {
 
         it('should attempt to create iterators', function() {
-            var range = bali.range(1, 5);
+            var range = bali.range(1, '..', 5);
             range.getIterator();
-            range = bali.range('$alpha', '$delta');
+            range = bali.range('$alpha', '..', '$delta');
             expect(
                 function() {
                     range.getIterator();
@@ -270,7 +270,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should iterate over a range forwards and backwards', function() {
-            const range = bali.range(1, 3);
+            const range = bali.range(1, '..', 3);
             var slot = range.getLast() - range.getFirst() + 1;
             const iterator = range.getIterator();
             expect(iterator).to.exist;

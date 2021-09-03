@@ -296,7 +296,7 @@ Collection.prototype.getItems = function(range) {
     if (range && range.getIterator) {
         const iterator = range.getIterator();
         while (iterator.hasNext()) {
-            const index = iterator.getNext();
+            const index = iterator.getNext().toInteger();
             const item = this.getItem(index);
             items.addItem(item);
         }
