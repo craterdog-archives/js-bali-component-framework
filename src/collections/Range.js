@@ -78,7 +78,12 @@ const Range = function(first, connector, last, parameters, debug) {
     }
 
     // since this collection is immutable the values must be read-only
+
+    this.setFirst = function(value) { first = this.componentize(value); };
+
     this.getFirst = function() { return first; };
+
+    this.setLast = function(value) { last = this.componentize(value); };
 
     this.getLast = function() { return last; };
 

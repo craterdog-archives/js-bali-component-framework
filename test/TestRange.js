@@ -77,7 +77,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with "<.." connector type', function() {
-            const range = bali.range(2, '<..', 5);
+            const range = bali.range(2, '<..');
+            range.setLast(5);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
@@ -93,7 +94,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should create an integer range with "<..<" connector type', function() {
-            const range = bali.range(2, '<..<', 5);
+            const range = bali.range(undefined, '<..<', 5);
+            range.setFirst(2);
             expect(range).to.exist;
             const first = range.getFirst();
             expect(first).to.exist;
