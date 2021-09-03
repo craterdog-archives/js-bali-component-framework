@@ -36,6 +36,7 @@
             75%
             undefined
             ∞
+            -π
             ~π
             τ
             φ
@@ -85,7 +86,7 @@
         ]($type: /bali/collections/Queue/v1)
         $table: [
             $a: e
-            $b: π
+            $b: -π
             $c: φ
             $d: τ
             $e: ∞
