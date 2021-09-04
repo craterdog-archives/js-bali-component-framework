@@ -114,18 +114,6 @@ Range.prototype.toArray = function() {
 
 
 /**
- * This method returns the literal string value for this range.  The literal does not
- * include any parameterization of the range.
- *
- * @returns {String} The literal string value for this range.
- */
-Range.prototype.toLiteral = function() {
-    const copy = new this.constructor(this.getFirst(), this.getLast(), this.getConnector(), undefined, this.debug);
-    return copy.toString();
-};
-
-
-/**
  * This method returns the number of items that this collection contains.
  *
  * @returns {Number} The number of items that this collection contains.
