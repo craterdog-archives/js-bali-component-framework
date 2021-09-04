@@ -452,9 +452,9 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 };
 
 
-// concatenationExpression: expression '&' expression
-ParsingVisitor.prototype.visitConcatenationExpression = function(ctx) {
-    const node = new composites.Node('/bali/composites/ConcatenationExpression', this.debug);
+// chainExpression: expression '&' expression
+ParsingVisitor.prototype.visitChainExpression = function(ctx) {
+    const node = new composites.Node('/bali/composites/ChainExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);

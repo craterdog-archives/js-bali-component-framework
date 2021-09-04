@@ -335,6 +335,15 @@ DocumentListener.prototype.exitFunctionExpression = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DocumentParser#chainExpression.
+DocumentListener.prototype.enterChainExpression = function(ctx) {
+};
+
+// Exit a parse tree produced by DocumentParser#chainExpression.
+DocumentListener.prototype.exitChainExpression = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DocumentParser#attributeExpression.
 DocumentListener.prototype.enterAttributeExpression = function(ctx) {
 };
@@ -395,15 +404,6 @@ DocumentListener.prototype.enterComplementExpression = function(ctx) {
 
 // Exit a parse tree produced by DocumentParser#complementExpression.
 DocumentListener.prototype.exitComplementExpression = function(ctx) {
-};
-
-
-// Enter a parse tree produced by DocumentParser#concatenationExpression.
-DocumentListener.prototype.enterConcatenationExpression = function(ctx) {
-};
-
-// Exit a parse tree produced by DocumentParser#concatenationExpression.
-DocumentListener.prototype.exitConcatenationExpression = function(ctx) {
 };
 
 

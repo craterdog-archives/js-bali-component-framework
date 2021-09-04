@@ -154,13 +154,13 @@ Name.prototype.getItems = function(range) {
  * @param {Number} debug A number in the range 0..3.
  * @returns {Name} The resulting name string.
  */
-Name.concatenation = function(first, second, debug) {
+Name.chain = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Name', '$concatenation', '$first', first, [
+        validator.validateType('/bali/elements/Name', '$chain', '$first', first, [
             '/bali/elements/Name'
         ]);
-        validator.validateType('/bali/elements/Name', '$concatenation', '$second', second, [
+        validator.validateType('/bali/elements/Name', '$chain', '$second', second, [
             '/bali/elements/Name'
         ]);
     }

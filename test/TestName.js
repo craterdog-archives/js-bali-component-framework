@@ -72,10 +72,10 @@ describe('Bali Nebula™ Component Framework - Name', function() {
 
     describe('Test name functions', function() {
 
-        it('should perform concatenation of two name strings', function() {
+        it('should perform chaining of two name strings', function() {
             const name1 = bali.name(['foo']);
             const name2 = bali.name(['bar', 'v1.2.3']);
-            const name3 = bali.name.concatenation(name1, name2);
+            const name3 = bali.name.chain(name1, name2);
             expect(name3.toString()).to.equal('/foo/bar/v1.2.3');
         });
 

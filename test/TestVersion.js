@@ -145,10 +145,10 @@ describe('Bali Nebula™ Component Framework - Version', function() {
             expect(bali.version.validNextVersion(bali.version([1, 2]), bali.version([1, 2, 1]))).to.equal(true);
         });
 
-        it('should perform concatenation of two version strings', function() {
+        it('should perform the chaining of two version strings', function() {
             const version1 = bali.version([1, 2]);
             const version2 = bali.version([3, 4]);
-            const version3 = bali.version.concatenation(version1, version2);
+            const version3 = bali.version.chain(version1, version2);
             expect(version3.toString()).to.equal('v1.2.3.4');
         });
 

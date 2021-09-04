@@ -142,13 +142,13 @@ Text.prototype.getItems = function(range) {
  * @param {Number} debug A number in the range 0..3.
  * @returns {Text} The resulting text string.
  */
-Text.concatenation = function(first, second, debug) {
+Text.chain = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Text', '$concatenation', '$first', first, [
+        validator.validateType('/bali/elements/Text', '$chain', '$first', first, [
             '/bali/elements/Text'
         ]);
-        validator.validateType('/bali/elements/Text', '$concatenation', '$second', second, [
+        validator.validateType('/bali/elements/Text', '$chain', '$second', second, [
             '/bali/elements/Text'
         ]);
     }

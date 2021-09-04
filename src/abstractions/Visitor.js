@@ -198,8 +198,8 @@ Visitor.prototype.visitComplementExpression = function(node) {
 };
 
 
-// concatenationExpression: expression '&' expression
-Visitor.prototype.visitConcatenationExpression = function(node) {
+// chainExpression: expression '&' expression
+Visitor.prototype.visitChainExpression = function(node) {
     var operand = node.getItem(1);
     operand.acceptVisitor(this);
     operand = node.getItem(2);

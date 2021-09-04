@@ -218,7 +218,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             list2.addItem('"epsilon"');
             list2.addItem('"gamma"');
             const list3 = bali.list(array);
-            expect(bali.list.concatenation(list1, list2).isEqualTo(list3)).to.equal(true);
+            expect(bali.list.chain(list1, list2).isEqualTo(list3)).to.equal(true);
         });
 
     });

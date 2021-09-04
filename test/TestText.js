@@ -66,10 +66,10 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
     describe('Test text functions', function() {
 
-        it('should perform concatenation of two text strings', function() {
+        it('should perform the chaining of two text strings', function() {
             const text1 = bali.text('Hello ');
             const text2 = bali.text('World!');
-            const text3 = bali.text.concatenation(text1, text2);
+            const text3 = bali.text.chain(text1, text2);
             expect(text3.toString()).to.equal('"Hello World!"');
         });
 

@@ -326,7 +326,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             catalog2.addItem(association4);
             catalog2.addItem(association5);
             const catalog3 = bali.catalog(array);
-            const catalog4 = bali.catalog.concatenation(catalog1, catalog2);
+            const catalog4 = bali.catalog.chain(catalog1, catalog2);
             expect(catalog4.isEqualTo(catalog3)).to.equal(true);
         });
 

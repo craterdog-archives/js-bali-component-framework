@@ -242,13 +242,13 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
  * @param {Number} debug A number in the range 0..3.
  * @returns {Version} The resulting version string.
  */
-Version.concatenation = function(first, second, debug) {
+Version.chain = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Version', '$concatenation', '$first', first, [
+        validator.validateType('/bali/elements/Version', '$chain', '$first', first, [
             '/bali/elements/Version'
         ]);
-        validator.validateType('/bali/elements/Version', '$concatenation', '$second', second, [
+        validator.validateType('/bali/elements/Version', '$chain', '$second', second, [
             '/bali/elements/Version'
         ]);
     }

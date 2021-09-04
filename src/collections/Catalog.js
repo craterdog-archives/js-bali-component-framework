@@ -325,13 +325,13 @@ Catalog.prototype.toObject = function() {
  * @param {Number} debug A number in the range 0..3.
  * @returns {Collection} The resulting catalog.
  */
-Catalog.concatenation = function(first, second, debug) {
+Catalog.chain = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/collections/Catalog', '$concatenation', '$first', first, [
+        validator.validateType('/bali/collections/Catalog', '$chain', '$first', first, [
             '/bali/collections/Catalog'
         ]);
-        validator.validateType('/bali/collections/Catalog', '$concatenation', '$second', second, [
+        validator.validateType('/bali/collections/Catalog', '$chain', '$second', second, [
             '/bali/collections/Catalog'
         ]);
     }

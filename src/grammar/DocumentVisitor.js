@@ -228,6 +228,12 @@ DocumentVisitor.prototype.visitFunctionExpression = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DocumentParser#chainExpression.
+DocumentVisitor.prototype.visitChainExpression = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DocumentParser#attributeExpression.
 DocumentVisitor.prototype.visitAttributeExpression = function(ctx) {
   return this.visitChildren(ctx);
@@ -266,12 +272,6 @@ DocumentVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 // Visit a parse tree produced by DocumentParser#complementExpression.
 DocumentVisitor.prototype.visitComplementExpression = function(ctx) {
-  return this.visitChildren(ctx);
-};
-
-
-// Visit a parse tree produced by DocumentParser#concatenationExpression.
-DocumentVisitor.prototype.visitConcatenationExpression = function(ctx) {
   return this.visitChildren(ctx);
 };
 

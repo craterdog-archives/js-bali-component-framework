@@ -129,10 +129,10 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
 
     describe('Test symbol functions', function() {
 
-        it('should perform concatenation of two symbol strings', function() {
+        it('should perform the chaining of two symbol strings', function() {
             const symbol1 = bali.symbol('foo');
             const symbol2 = bali.symbol('bar');
-            const symbol3 = bali.symbol.concatenation(symbol1, symbol2);
+            const symbol3 = bali.symbol.chain(symbol1, symbol2);
             expect(symbol3.toString()).to.equal('$foobar');
         });
 

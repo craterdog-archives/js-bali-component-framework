@@ -388,8 +388,8 @@ FormattingVisitor.prototype.visitComplementExpression = function(node) {
 };
 
 
-// concatenationExpression: expression '&' expression
-FormattingVisitor.prototype.visitConcatenationExpression = function(node) {
+// chainExpression: expression '&' expression
+FormattingVisitor.prototype.visitChainExpression = function(node) {
     this.inline++;
     var operand = node.getItem(1);
     operand.acceptVisitor(this);

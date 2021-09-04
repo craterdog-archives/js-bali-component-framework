@@ -245,8 +245,8 @@ DuplicatingVisitor.prototype.visitComplementExpression = function(node) {
 };
 
 
-// concatenationExpression: expression '&' expression
-DuplicatingVisitor.prototype.visitConcatenationExpression = function(node) {
+// chainExpression: expression '&' expression
+DuplicatingVisitor.prototype.visitChainExpression = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
     node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);

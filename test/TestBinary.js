@@ -72,10 +72,10 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
     describe('Test binary functions', function() {
 
-        it('should perform concatenation of two binary strings', function() {
+        it('should perform the chaining of two binary strings', function() {
             const binary1 = bali.binary(generator.generateBytes(40));
             const binary2 = bali.binary(generator.generateBytes(40));
-            const binary3 = bali.binary.concatenation(binary1, binary2);
+            const binary3 = bali.binary.chain(binary1, binary2);
             const string1 = binary1.toString().slice(1, -1).replace(/\s/g, '');
             const string2 = binary2.toString().slice(1, -1).replace(/\s/g, '');
             const string3 = binary3.toString().slice(1, -1).replace(/\s/g, '');

@@ -207,9 +207,9 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Binary.xor(first, second, debug);
     };
-    binary.concatenation = function(first, second, debug) {
+    binary.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.concatenation(first, second, debug);
+        return elements.Binary.chain(first, second, debug);
     };
 
     // BOOLEAN
@@ -245,9 +245,9 @@ exports.api = function(defaultLevel) {
         collection.addItems(associations);
         return collection;
     };
-    catalog.concatenation = function(first, second, debug) {
+    catalog.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return collections.Catalog.concatenation(first, second, debug);
+        return collections.Catalog.chain(first, second, debug);
     };
     catalog.extraction = function(catalog, keys, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -352,9 +352,9 @@ exports.api = function(defaultLevel) {
         collection.addItems(items);
         return collection;
     };
-    list.concatenation = function(first, second, debug) {
+    list.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return collections.List.concatenation(first, second, debug);
+        return collections.List.chain(first, second, debug);
     };
 
     // MOMENT
@@ -380,9 +380,9 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Name(value, parameters, debug);
     };
-    name.concatenation = function(first, second, debug) {
+    name.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Name.concatenation(first, second, debug);
+        return elements.Name.chain(first, second, debug);
     };
 
     // NODE
@@ -567,9 +567,9 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Symbol(value, parameters, debug);
     };
-    symbol.concatenation = function(first, second, debug) {
+    symbol.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Symbol.concatenation(first, second, debug);
+        return elements.Symbol.chain(first, second, debug);
     };
 
     // TAG
@@ -583,9 +583,9 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new elements.Text(value, parameters, debug);
     };
-    text.concatenation = function(first, second, debug) {
+    text.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Text.concatenation(first, second, debug);
+        return elements.Text.chain(first, second, debug);
     };
 
     // TYPE
@@ -615,9 +615,9 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Version.validNextVersion(current, next, debug);
     };
-    version.concatenation = function(first, second, debug) {
+    version.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Version.concatenation(first, second, debug);
+        return elements.Version.chain(first, second, debug);
     };
 
     // VISITOR

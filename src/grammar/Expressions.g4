@@ -9,7 +9,7 @@ expression:                  // Precedence (highest to lowest)
     '@' expression                                                       #dereferenceExpression   |
     expression operator=('.' | '<-') message '(' arguments ')'           #messageExpression       |
     expression '[' indices ']'                                           #attributeExpression     |
-    expression '&' expression                                            #concatenationExpression |
+    expression '&' expression                                            #chainExpression         |
     expression '!'                                                       #factorialExpression     |
     <assoc=right> expression '^' expression                              #exponentialExpression   |
     operator=('-' | '/' | '*') expression                                #inversionExpression     |

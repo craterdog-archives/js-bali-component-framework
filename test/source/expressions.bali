@@ -87,7 +87,7 @@
         $variable := |foo()|
         $variable := |foo.bar(8)|
     }
-    $concatenations: {
+    $chains: {
         $variable := text & "more text"
         $variable := [1, 2, 3] & list
         $variable := [$a: "a", $b: "b"] & catalog

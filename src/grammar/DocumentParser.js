@@ -3485,6 +3485,48 @@ FunctionExpressionContext.prototype.accept = function(visitor) {
 };
 
 
+function ChainExpressionContext(parser, ctx) {
+	ExpressionContext.call(this, parser);
+    ExpressionContext.prototype.copyFrom.call(this, ctx);
+    return this;
+}
+
+ChainExpressionContext.prototype = Object.create(ExpressionContext.prototype);
+ChainExpressionContext.prototype.constructor = ChainExpressionContext;
+
+DocumentParser.ChainExpressionContext = ChainExpressionContext;
+
+ChainExpressionContext.prototype.expression = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(ExpressionContext);
+    } else {
+        return this.getTypedRuleContext(ExpressionContext,i);
+    }
+};
+ChainExpressionContext.prototype.enterRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.enterChainExpression(this);
+	}
+};
+
+ChainExpressionContext.prototype.exitRule = function(listener) {
+    if(listener instanceof DocumentListener ) {
+        listener.exitChainExpression(this);
+	}
+};
+
+ChainExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DocumentVisitor ) {
+        return visitor.visitChainExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
 function AttributeExpressionContext(parser, ctx) {
 	ExpressionContext.call(this, parser);
     ExpressionContext.prototype.copyFrom.call(this, ctx);
@@ -3742,48 +3784,6 @@ ComplementExpressionContext.prototype.accept = function(visitor) {
 };
 
 
-function ConcatenationExpressionContext(parser, ctx) {
-	ExpressionContext.call(this, parser);
-    ExpressionContext.prototype.copyFrom.call(this, ctx);
-    return this;
-}
-
-ConcatenationExpressionContext.prototype = Object.create(ExpressionContext.prototype);
-ConcatenationExpressionContext.prototype.constructor = ConcatenationExpressionContext;
-
-DocumentParser.ConcatenationExpressionContext = ConcatenationExpressionContext;
-
-ConcatenationExpressionContext.prototype.expression = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(ExpressionContext);
-    } else {
-        return this.getTypedRuleContext(ExpressionContext,i);
-    }
-};
-ConcatenationExpressionContext.prototype.enterRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.enterConcatenationExpression(this);
-	}
-};
-
-ConcatenationExpressionContext.prototype.exitRule = function(listener) {
-    if(listener instanceof DocumentListener ) {
-        listener.exitConcatenationExpression(this);
-	}
-};
-
-ConcatenationExpressionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof DocumentVisitor ) {
-        return visitor.visitConcatenationExpression(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
-
 
 DocumentParser.prototype.expression = function(_p) {
 	if(_p===undefined) {
@@ -3911,7 +3911,7 @@ DocumentParser.prototype.expression = function(_p) {
                 var la_ = this._interp.adaptivePredict(this._input,16,this._ctx);
                 switch(la_) {
                 case 1:
-                    localctx = new ConcatenationExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                    localctx = new ChainExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, DocumentParser.RULE_expression);
                     this.state = 328;
                     if (!( this.precpred(this._ctx, 10))) {
