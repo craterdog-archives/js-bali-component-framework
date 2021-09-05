@@ -17,7 +17,7 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const composites = require('../composites');
+const Association = require('./Association').Association;
 const List = require('./List').List;
 
 
@@ -47,7 +47,7 @@ const Catalog = function(parameters, debug) {
         this,
         ancestry,
         [
-            '/bali/interfaces/Structural',
+            '/bali/interfaces/Composite',
             '/bali/interfaces/Sortable',
             '/bali/libraries/Chainable'
         ],
@@ -89,7 +89,7 @@ const Catalog = function(parameters, debug) {
             const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
-                '/bali/composites/Association'
+                '/bali/collections/Association'
             ]);
         }
         if (association) {
@@ -118,7 +118,7 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/collections/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);
@@ -129,7 +129,7 @@ const Catalog = function(parameters, debug) {
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/composites/Association')) {
+                    if (item.isType('/bali/collections/Association')) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);
@@ -214,7 +214,7 @@ const Catalog = function(parameters, debug) {
             association.setValue(value);
             return oldValue;
         } else {
-            association = new composites.Association(key, value);
+            association = new Association(key, value);
             map[key.toString()] = association;
             array.push(association);
         }

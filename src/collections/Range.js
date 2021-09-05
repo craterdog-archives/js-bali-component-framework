@@ -14,7 +14,7 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -34,7 +34,6 @@ const Range = function(first, connector, last, parameters, debug) {
         this,
         ['/bali/collections/Range'],
         [
-            '/bali/interfaces/Literal',
             '/bali/interfaces/Sequential'
         ],
         parameters,

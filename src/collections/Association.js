@@ -28,22 +28,22 @@ const abstractions = require('../abstractions');
  * @returns {Association} A new association.
  */
 const Association = function(key, value, debug) {
-    abstractions.Composite.call(
+    abstractions.Component.call(
         this,
-        ['/bali/composites/Association'],
+        ['/bali/collections/Association'],
         [],
         undefined,
         debug
     );
     if (this.debug > 1) {
         const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/composites/Association', '$Association', '$key', key, [
+        validator.validateType('/bali/collections/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/composites/Association', '$Association', '$value', value, [
+        validator.validateType('/bali/collections/Association', '$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -70,7 +70,7 @@ const Association = function(key, value, debug) {
     this.setValue = function(newValue) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Association', '$setValue', '$value', value, [
+            validator.validateType('/bali/collections/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
@@ -89,7 +89,7 @@ const Association = function(key, value, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Association', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/collections/Association', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
@@ -101,10 +101,10 @@ const Association = function(key, value, debug) {
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Association', '$setAttribute', '$key', key, [
+            validator.validateType('/bali/collections/Association', '$setAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
-            validator.validateType('/bali/composites/Association', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/collections/Association', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -114,7 +114,7 @@ const Association = function(key, value, debug) {
 
     return this;
 };
-Association.prototype = Object.create(abstractions.Composite.prototype);
+Association.prototype = Object.create(abstractions.Component.prototype);
 Association.prototype.constructor = Association;
 exports.Association = Association;
 

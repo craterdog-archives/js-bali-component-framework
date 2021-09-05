@@ -14,7 +14,7 @@
  * This abstract class defines the invariant methods that all strings must inherit.
  */
 const agents = require('../agents');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 const Element = require('./Element').Element;
 const Iterator = require('./Iterator').Iterator;
 

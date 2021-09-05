@@ -17,8 +17,9 @@ const EOL = '\n';
 const agents = require('./src/agents');
 const abstractions = require('./src/abstractions');  // depends on agents
 const elements = require('./src/elements');  // depends on abstractions
-const composites = require('./src/composites');  // depends on elements
-const collections = require('./src/collections');  // depends on composites
+const trees = require('./src/trees');  // depends on elements
+const strings = require('./src/strings');  // depends on abstractions
+const collections = require('./src/collections');
 agents.Parser = require('./src/agents/Parser').Parser;  // depends on everything (must be last)
 
 
@@ -55,7 +56,7 @@ const componentize = function(value, debug) {
                 component = parser.parseSource(value);
             } catch (cause) {
                 // otherwise convert it to a text element
-                component = new elements.Text(value, undefined, debug);
+                component = new strings.Text(value, undefined, debug);
             }
             break;
         case 'object':
@@ -79,12 +80,12 @@ const componentize = function(value, debug) {
             break;
         default:
             // punt, convert whatever it is to a multi-line text element
-            component = new elements.Text('"' + EOL + value + EOL + '"', undefined, debug);
+            component = new strings.Text('"' + EOL + value + EOL + '"', undefined, debug);
     }
     return component;
 };
 abstractions.Component.prototype.componentize = componentize;
-composites.Exception.prototype.componentize = componentize;
+trees.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -179,37 +180,37 @@ exports.api = function(defaultLevel) {
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new composites.Association(key, value, debug);
+        return new collections.Association(key, value, debug);
     };
 
     // BINARY
     const binary = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Binary(value, parameters, debug);
+        return new strings.Binary(value, parameters, debug);
     };
     binary.not = function(binary, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.not(binary, debug);
+        return strings.Binary.not(binary, debug);
     };
     binary.and = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.and(first, second, debug);
+        return strings.Binary.and(first, second, debug);
     };
     binary.sans = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.sans(first, second, debug);
+        return strings.Binary.sans(first, second, debug);
     };
     binary.or = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.or(first, second, debug);
+        return strings.Binary.or(first, second, debug);
     };
     binary.xor = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.xor(first, second, debug);
+        return strings.Binary.xor(first, second, debug);
     };
     binary.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Binary.chain(first, second, debug);
+        return strings.Binary.chain(first, second, debug);
     };
 
     // BOOLEAN
@@ -320,7 +321,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new composites.Exception(attributes, cause);
+            error = new trees.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;
@@ -378,17 +379,17 @@ exports.api = function(defaultLevel) {
     // NAME
     const name = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Name(value, parameters, debug);
+        return new strings.Name(value, parameters, debug);
     };
     name.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Name.chain(first, second, debug);
+        return strings.Name.chain(first, second, debug);
     };
 
     // NODE
     const node = function(type, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const node = new composites.Node(type, debug);
+        const node = new trees.Node(type, debug);
         return node;
     };
 
@@ -507,7 +508,7 @@ exports.api = function(defaultLevel) {
     // PROCEDURE
     const procedure = function(code, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new composites.Procedure(code, parameters, debug);
+        return new trees.Procedure(code, parameters, debug);
     };
 
     // QUEUE
@@ -565,11 +566,11 @@ exports.api = function(defaultLevel) {
     // SYMBOL
     const symbol = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Symbol(value, parameters, debug);
+        return new strings.Symbol(value, parameters, debug);
     };
     symbol.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Symbol.chain(first, second, debug);
+        return strings.Symbol.chain(first, second, debug);
     };
 
     // TAG
@@ -581,11 +582,11 @@ exports.api = function(defaultLevel) {
     // TEXT
     const text = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Text(value, parameters, debug);
+        return new strings.Text(value, parameters, debug);
     };
     text.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Text.chain(first, second, debug);
+        return strings.Text.chain(first, second, debug);
     };
 
     // TYPE
@@ -593,7 +594,7 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         const type = new agents.Validator(debug).getType(component);
         const value = type.split('/').slice(1);
-        return new elements.Name(value, undefined, debug);
+        return new strings.Name(value, undefined, debug);
     };
 
     // VALIDATOR
@@ -605,19 +606,19 @@ exports.api = function(defaultLevel) {
     // VERSION
     const version = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new elements.Version(value, parameters, debug);
+        return new strings.Version(value, parameters, debug);
     };
     version.nextVersion = function(current, level, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Version.nextVersion(current, level, debug);
+        return strings.Version.nextVersion(current, level, debug);
     };
     version.validNextVersion = function(current, next, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Version.validNextVersion(current, next, debug);
+        return strings.Version.validNextVersion(current, next, debug);
     };
     version.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return elements.Version.chain(first, second, debug);
+        return strings.Version.chain(first, second, debug);
     };
 
     // VISITOR

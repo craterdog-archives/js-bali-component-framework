@@ -16,7 +16,7 @@ const os = require('os');
 const pfs = require('fs').promises;
 const EOL = '\n'; // The POSIX end of line character
 const Validator = require('./Validator').Validator;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

@@ -31,8 +31,13 @@
  * @returns {Exception} The new exception.
  */
 const Exception = function(attributes, cause) {
+    if (attributes === null || typeof attributes !== 'object') attributes = {};
+    this.message = attributes['$text'] || 'An undefined exception occurred.';
+    this.cause = cause || undefined;
+    Error.call(this.message, { cause: this.cause });
+
     const ancestry = [
-        '/bali/composites/Exception',
+        '/bali/trees/Exception',
         '/bali/abstractions/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
@@ -42,13 +47,6 @@ const Exception = function(attributes, cause) {
         '/bali/interfaces/Exportable',
         '/bali/interfaces/Comparable'
     ];
-
-    // set the attributes
-    if (attributes === null || typeof attributes !== 'object') attributes = {};
-
-    // set the error message and cause
-    this.message = attributes['$text'] || 'An undefined exception occurred.';
-    this.cause = cause || undefined;
 
     // convert the attributes into a catalog
     attributes = this.componentize(attributes);
@@ -98,7 +96,7 @@ const Exception = function(attributes, cause) {
     };
 
 
-    // Structural Interface
+    // Composite Interface
 
     this.getAttributes = function() {
         return attributes;

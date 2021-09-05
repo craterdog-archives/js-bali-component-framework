@@ -139,18 +139,18 @@ const natural = function(first, second) {
     }
 
     // handle composites
-    if (first.isComponent && first.isType('/bali/composites/Association')) {
+    if (first.isComponent && first.isType('/bali/collections/Association')) {
         var result = natural(first.getKey(), second.getKey());
         if (result === 0) result = natural(first.getValue(), second.getValue());
         return result;
     }
-    if (first.isComponent && first.isType('/bali/composites/Exception')) {
+    if (first.isComponent && first.isType('/bali/trees/Exception')) {
         return natural(first.getAttributes(), second.getAttributes());
     }
-    if (first.isComponent && first.isType('/bali/composites/Procedure')) {
+    if (first.isComponent && first.isType('/bali/trees/Procedure')) {
         return natural(first.getCode(), second.getCode());
     }
-    if (first.isComponent && first.isType('/bali/composites/Node')) {
+    if (first.isComponent && first.isType('/bali/trees/Node')) {
         // leaf nodes are treated as empty arrays
         return natural(first.toArray(), second.toArray());
     }

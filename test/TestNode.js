@@ -19,9 +19,9 @@ describe('Bali Nebula™ Component Framework - Node', function() {
     describe('Test node constructors and methods', function() {
 
         it('should construct nodes and access children', function() {
-            const parent = bali.node('/bali/composites/Block', debug);
-            const child = bali.node('/bali/composites/Comment', debug);
-            const sibling = bali.node('/bali/composites/Comment', debug);
+            const parent = bali.node('/bali/trees/Block', debug);
+            const child = bali.node('/bali/trees/Comment', debug);
+            const sibling = bali.node('/bali/trees/Comment', debug);
             expect(parent.isEmpty()).to.equal(true);
             parent.addItem(child);
             expect(parent.getItem(1)).to.equal(child);

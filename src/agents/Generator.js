@@ -14,7 +14,7 @@
  */
 const crypto = require('crypto');
 const Decoder = require('./Decoder').Decoder;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // PRIVATE CONSTANTS

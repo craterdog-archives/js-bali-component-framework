@@ -9,15 +9,8 @@
  ************************************************************************/
 'use strict';
 
-const abstractions = require('../abstractions/');
+const elements = require('../elements/');
 
-exports.Angle = require('./Angle').Angle;
-exports.Boolean = require('./Boolean').Boolean;
-exports.Duration = require('./Duration').Duration;
-exports.Moment = require('./Moment').Moment;  // depends on Duration
-exports.Number = require('./Number').Number;  // depends on Angle
-exports.Pattern = require('./Pattern').Pattern;
-exports.Percentage = require('./Percentage').Percentage;
-exports.Probability = require('./Probability').Probability;
-exports.Resource = require('./Resource').Resource;
-exports.Tag = require('./Tag').Tag;
+exports.Exception = require('./Exception').Exception;
+exports.Node = require('./Node').Node;
+exports.Procedure = require('./Procedure').Procedure;

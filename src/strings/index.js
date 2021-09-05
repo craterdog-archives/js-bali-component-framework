@@ -9,9 +9,10 @@
  ************************************************************************/
 'use strict';
 
-const elements = require('../elements/');
+const abstractions = require('../abstractions/');
 
-exports.Association = require('./Association').Association;
-exports.Exception = require('./Exception').Exception;
-exports.Node = require('./Node').Node;
-exports.Procedure = require('./Procedure').Procedure;
+exports.Binary = require('./Binary').Binary;
+exports.Name = require('./Name').Name;
+exports.Symbol = require('./Symbol').Symbol;
+exports.Text = require('./Text').Text;
+exports.Version = require('./Version').Version;

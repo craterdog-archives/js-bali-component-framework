@@ -29,9 +29,9 @@ const abstractions = require('../abstractions');
  * @returns {Procedure} A new procedure.
  */
 const Procedure = function(code, parameters, debug) {
-    abstractions.Composite.call(
+    abstractions.Component.call(
         this,
-        ['/bali/composites/Procedure'],
+        ['/bali/trees/Procedure'],
         [
             '/bali/interfaces/Literal'
         ],
@@ -40,8 +40,8 @@ const Procedure = function(code, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/composites/Procedure', '$Procedure', '$code', code, [
-            '/bali/composites/Code'
+        validator.validateType('/bali/trees/Procedure', '$Procedure', '$code', code, [
+            '/bali/trees/Code'
         ]);
     }
 
@@ -50,7 +50,7 @@ const Procedure = function(code, parameters, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Procedures', '$getAttribute', '$key', key, [
+            validator.validateType('/bali/trees/Procedures', '$getAttribute', '$key', key, [
                 '/bali/abstractions/Element'
             ]);
         }
@@ -59,7 +59,7 @@ const Procedure = function(code, parameters, debug) {
 
     this.setAttribute = function(key, value) {
         const exception = new Exception({
-            $module: '/bali/composites/Procedure',
+            $module: '/bali/trees/Procedure',
             $procedure: '$setAttribute',
             $exception: '$readOnly',
             $text: 'The code in a procedure cannot be updated.'
@@ -70,7 +70,7 @@ const Procedure = function(code, parameters, debug) {
 
     return this;
 };
-Procedure.prototype = Object.create(abstractions.Composite.prototype);
+Procedure.prototype = Object.create(abstractions.Component.prototype);
 Procedure.prototype.constructor = Procedure;
 exports.Procedure = Procedure;
 

@@ -13,7 +13,7 @@
  * This abstract class defines the methods that all elemental components must support.
  */
 const Component = require('./Component').Component;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

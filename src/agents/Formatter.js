@@ -17,7 +17,7 @@
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character

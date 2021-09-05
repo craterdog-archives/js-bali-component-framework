@@ -18,7 +18,7 @@ const Formatter = require('./Formatter').Formatter;
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character
@@ -172,7 +172,7 @@ FormattingVisitor.prototype.visitAssociation = function(association) {
     this.depth++;
     this.result += this.getNewline();
     const value = association.getValue();
-    if (value.isType('/bali/composites/Node')) {
+    if (value.isType('/bali/trees/Node')) {
         this.visitExpression(value);  // must handle expressions differently
     } else {
         value.acceptVisitor(this);
@@ -290,7 +290,7 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
             while (iterator.hasNext()) {
                 this.result += this.getNewline();
                 const value = iterator.getNext();
-                if (value.isType('/bali/composites/Node')) {
+                if (value.isType('/bali/trees/Node')) {
                     this.visitExpression(value);  // must handle expressions differently
                 } else {
                     value.acceptVisitor(this);

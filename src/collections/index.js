@@ -9,6 +9,7 @@
  ************************************************************************/
 'use strict';
 
+exports.Association = require('./Association').Association;
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List
 exports.Queue = require('./Queue').Queue;

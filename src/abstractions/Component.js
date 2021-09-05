@@ -14,7 +14,7 @@
  * This abstract class defines the methods that all components must support.
  */
 const agents = require('../agents');
-const Exception = require('../composites/Exception').Exception;
+const Exception = require('../trees/Exception').Exception;
 
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
@@ -228,7 +228,7 @@ Component.prototype.isMatchedBy = function(pattern) {
      * If the pattern component is a bali.Association then the pattern key and this key
      * must be EQUAL and the pattern value must MATCH this value.
      */
-    if (pattern.isType('/bali/composites/Association')) {
+    if (pattern.isType('/bali/collections/Association')) {
         if (!this.getKey().isEqualTo(pattern.getKey())) return false;  // try the next one
         if (!this.getValue().isMatchedBy(pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -252,7 +252,7 @@ Component.prototype.isMatchedBy = function(pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.isType('/bali/composites/Association')) {
+            if (patternItem.isType('/bali/collections/Association')) {
                 var patternValue = patternItem.getValue();
                 if (patternValue.isType('/bali/elements/Pattern') && (
                     patternValue.toString() === 'any' ||

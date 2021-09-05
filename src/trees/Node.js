@@ -31,9 +31,9 @@ const abstractions = require('../abstractions');
  * @returns {Node} The new node component.
  */
 const Node = function(type, debug) {
-    abstractions.Composite.call(
+    abstractions.Component.call(
         this,
-        [type, '/bali/composites/Node'],
+        [type, '/bali/trees/Node'],
         [
             '/bali/interfaces/Sequential'
         ],
@@ -51,7 +51,7 @@ const Node = function(type, debug) {
     this.getItem = function(index) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$getItem', '$index', index, [
+            validator.validateType('/bali/trees/Node', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
@@ -62,7 +62,7 @@ const Node = function(type, debug) {
     this.getItems = function(range) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$getItems', '$range', range, [
+            validator.validateType('/bali/trees/Node', '$getItems', '$range', range, [
                 '/javascript/String',
                 '/bali/collections/Range'
             ]);
@@ -83,7 +83,7 @@ const Node = function(type, debug) {
     this.addItem = function(item) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$addItem', '$item', item, [
+            validator.validateType('/bali/trees/Node', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -94,10 +94,10 @@ const Node = function(type, debug) {
     this.setItem = function(index, item) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$setItem', '$index', index, [
+            validator.validateType('/bali/trees/Node', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/composites/Node', '$setItem', '$item', item, [
+            validator.validateType('/bali/trees/Node', '$setItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -117,7 +117,7 @@ const Node = function(type, debug) {
     this.getAttribute = function(index) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$getAttribute', '$index', index, [
+            validator.validateType('/bali/trees/Node', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
@@ -128,10 +128,10 @@ const Node = function(type, debug) {
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
             const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/composites/Node', '$setAttribute', '$index', index, [
+            validator.validateType('/bali/trees/Node', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/composites/Node', '$setAttribute', '$value', value, [
+            validator.validateType('/bali/trees/Node', '$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -141,7 +141,7 @@ const Node = function(type, debug) {
 
     return this;
 };
-Node.prototype = Object.create(abstractions.Composite.prototype);
+Node.prototype = Object.create(abstractions.Component.prototype);
 Node.prototype.constructor = Node;
 exports.Node = Node;
 
@@ -198,7 +198,7 @@ Node.prototype.getIterator = function() {
  */
 Node.prototype.acceptVisitor = function(visitor) {
     // call the visitor method for the specific type of node
-    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/composites/<Type>'
+    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/trees/<Type>'
     visitor[functionName](this);
 };
 
@@ -220,14 +220,14 @@ Node.prototype.acceptVisitor = function(visitor) {
 Node.prototype.normalizedIndex = function(index) {
     if (this.debug > 1) {
         const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/composites/Node', '$normalizedIndex', '$index', index, [
+        validator.validateType('/bali/trees/Node', '$normalizedIndex', '$index', index, [
             '/javascript/Number'
         ]);
     }
     const size = this.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/composites/Node',
+            $module: '/bali/trees/Node',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
             $index: index,
