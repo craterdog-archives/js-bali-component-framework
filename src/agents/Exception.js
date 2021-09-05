@@ -37,7 +37,7 @@ const Exception = function(attributes, cause) {
     Error.call(this.message, { cause: this.cause });
 
     const ancestry = [
-        '/bali/trees/Exception',
+        '/bali/agents/Exception',
         '/bali/abstractions/Component'
     ];
     const type = ancestry[0];  // first type in the ancestry tree
@@ -246,7 +246,7 @@ Exception.prototype.getHash = function() {
  */
 Exception.prototype.duplicate = function() {
     const attributes = this.getAttributes().duplicate();
-    const copy = new Exception(attributes, this.cause);
+    const copy = new agents.Exception(attributes, this.cause);
     return copy;
 };
 

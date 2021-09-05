@@ -14,7 +14,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -130,7 +129,7 @@ Range.prototype.getSize = function() {
         if (size > 0) {
             return size;
         }
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/collections/Range',
             $procedure: '$getSize',
             $exception: '$invalidSize',
@@ -141,7 +140,7 @@ Range.prototype.getSize = function() {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$getSize',
         $exception: '$notEnumerable',
@@ -173,7 +172,7 @@ Range.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Range.prototype.addItem = function(item) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItem',
         $exception: '$invalidMethod',
@@ -192,7 +191,7 @@ Range.prototype.addItem = function(item) {
  * @returns {Number} The number of items that were successfully added to the collection.
  */
 Range.prototype.addItems = function(items) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItems',
         $exception: '$invalidMethod',

@@ -14,7 +14,6 @@
  * This abstract class defines the invariant methods that all strings must inherit.
  */
 const agents = require('../agents');
-const Exception = require('../trees/Exception').Exception;
 const Element = require('./Element').Element;
 const Iterator = require('./Iterator').Iterator;
 
@@ -76,7 +75,7 @@ Stryng.prototype.isEmpty = function() {
  * @returns {Number} The number of items that this string has.
  */
 Stryng.prototype.getSize = function() {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
@@ -143,7 +142,7 @@ Stryng.prototype.getIndex = function(item) {
  * @returns {Object} The item at the position in this string.
  */
 Stryng.prototype.getItem = function(index) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
@@ -162,7 +161,7 @@ Stryng.prototype.getItem = function(index) {
  * @returns {Stryng} A new string containing the requested items.
  */
 Stryng.prototype.getItems = function(range) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItems',
         $exception: '$abstractMethod',
@@ -196,7 +195,7 @@ Stryng.prototype.normalizedIndex = function(index) {
     }
     const size = this.getSize();
     if (index > size || index < -size) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/abstractions/String',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',

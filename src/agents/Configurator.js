@@ -15,8 +15,8 @@
 const os = require('os');
 const pfs = require('fs').promises;
 const EOL = '\n'; // The POSIX end of line character
+const Exception = require('./Exception').Exception;
 const Validator = require('./Validator').Validator;
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -78,7 +78,7 @@ Configurator.prototype.store = async function(configuration) {
         try { await pfs.mkdir(this.directory, 0o700); } catch (ignore) {};
         await pfs.writeFile(this.file, configuration + EOL, {encoding: 'utf8', mode: 0o600});  // add POSIX EOL
     } catch (cause) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/agents/Configurator',
             $procedure: '$store',
             $file: this.file,
@@ -102,7 +102,7 @@ Configurator.prototype.load = async function() {
         return configuration.slice(0, -1);  // remove the trailing EOL  // remove POSIX EOL
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Configurator',
                 $procedure: '$load',
                 $file: this.file,
@@ -124,7 +124,7 @@ Configurator.prototype.delete = async function() {
         await pfs.unlink(this.file);
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Configurator',
                 $procedure: '$delete',
                 $file: this.file,

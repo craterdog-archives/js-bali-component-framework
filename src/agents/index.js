@@ -11,6 +11,7 @@
 
 const grammar = require('../grammar');
 
+exports.Exception = require('./Exception').Exception;
 exports.Validator = require('./Validator').Validator;
 exports.Calculator = require('./Calculator').Calculator;
 exports.Comparator = require('./Comparator').Comparator;

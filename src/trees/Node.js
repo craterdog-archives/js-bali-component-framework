@@ -227,7 +227,7 @@ Node.prototype.normalizedIndex = function(index) {
     }
     const size = this.getSize();
     if (index > size || index < -size) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/trees/Node',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',

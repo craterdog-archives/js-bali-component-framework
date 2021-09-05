@@ -14,11 +14,11 @@
  * This class implements an HTML formatter object that uses a visitor to format, in
  * a canonical way, components as HTML documents.
  */
+const Exception = require('./Exception').Exception;
 const Formatter = require('./Formatter').Formatter;
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
-const Exception = require('../trees/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character

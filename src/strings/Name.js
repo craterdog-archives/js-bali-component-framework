@@ -16,7 +16,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -47,7 +46,7 @@ const Name = function(value, parameters, debug) {
     }
 
     if (!Array.isArray(value) || value.length === 0) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/elements/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',

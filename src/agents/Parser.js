@@ -199,7 +199,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
         case '$degrees':
             break;
         default:
-            const exception = new trees.Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Parser',
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
@@ -302,7 +302,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = decoder.base64Decode(value);
             break;
         default:
-            const exception = new trees.Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Parser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
@@ -670,7 +670,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Stack(parameters, this.debug);
             break;
         default:
-            const exception = new trees.Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Parser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
@@ -801,7 +801,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 
     // there must be at least one parameter
     if (this.result.isEmpty()) {
-        const exception = new trees.Exception({
+        const exception = new agents.Exception({
             $module: '/bali/agents/Parser',
             $procedure: '$visitParameters',
             $exception: '$noParameters',
@@ -1160,7 +1160,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context.exception = cause;
         context = context.parentCtx;
     }
-    const exception = new trees.Exception({
+    const exception = new agents.Exception({
         $module: '/bali/agents/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
@@ -1207,7 +1207,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     message = addContext(recognizer, message);
 
     // capture the exception
-    const exception = new trees.Exception({
+    const exception = new agents.Exception({
         $module: '/bali/agents/Parser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',

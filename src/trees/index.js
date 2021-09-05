@@ -11,6 +11,5 @@
 
 const elements = require('../elements/');
 
-exports.Exception = require('./Exception').Exception;
 exports.Node = require('./Node').Node;
 exports.Procedure = require('./Procedure').Procedure;

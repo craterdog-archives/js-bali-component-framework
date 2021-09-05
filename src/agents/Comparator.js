@@ -144,7 +144,7 @@ const natural = function(first, second) {
         if (result === 0) result = natural(first.getValue(), second.getValue());
         return result;
     }
-    if (first.isComponent && first.isType('/bali/trees/Exception')) {
+    if (first.isComponent && first.isType('/bali/agents/Exception')) {
         return natural(first.getAttributes(), second.getAttributes());
     }
     if (first.isComponent && first.isType('/bali/trees/Procedure')) {

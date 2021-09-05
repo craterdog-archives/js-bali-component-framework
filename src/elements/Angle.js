@@ -15,7 +15,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -51,7 +50,7 @@ const Angle = function(value, parameters, debug) {
     // check the value
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value)) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/elements/Angle',
             $procedure: '$Angle',
             $exception: '$invalidParameter',

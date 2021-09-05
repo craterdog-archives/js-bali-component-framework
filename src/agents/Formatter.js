@@ -14,10 +14,10 @@
  * This class implements a formatter object that uses a visitor to format, in
  * a canonical way, components as strings containing Bali Document Notation™.
  */
+const Exception = require('./Exception').Exception;
 const Decoder = require('./Decoder').Decoder;
 const Validator = require('./Validator').Validator;
 const Visitor = require('../abstractions/Visitor').Visitor;
-const Exception = require('../trees/Exception').Exception;
 
 
 // This private constant sets the POSIX end of line character
@@ -131,7 +131,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Formatter',
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
@@ -239,7 +239,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = decoder.base64Encode(value);
             break;
         default:
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Formatter',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',

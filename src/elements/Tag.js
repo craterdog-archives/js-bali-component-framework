@@ -15,7 +15,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS

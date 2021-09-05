@@ -16,7 +16,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -59,7 +58,7 @@ const Bulean = function(value, parameters, debug) {
             break;
         case 'number':
             if (value !== 0 && value !== 1) {
-                const exception = new Exception({
+                const exception = new agents.Exception({
                     $module: '/bali/elements/Boolean',
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
@@ -73,7 +72,7 @@ const Bulean = function(value, parameters, debug) {
             break;
         case 'string':
             if (value !== 'false' && value !== 'true') {
-                const exception = new Exception({
+                const exception = new agents.Exception({
                     $module: '/bali/elements/Boolean',
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
@@ -85,7 +84,7 @@ const Bulean = function(value, parameters, debug) {
             }
             if (value !== 'false') value = true;
         default:
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/elements/Boolean',
                 $procedure: '$Boolean',
                 $exception: '$invalidParameter',

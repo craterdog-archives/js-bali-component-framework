@@ -12,8 +12,9 @@
 /**
  * This abstract class defines the methods that all elemental components must support.
  */
+const agents = require('../agents');
 const Component = require('./Component').Component;
-const Exception = require('../trees/Exception').Exception;
+//const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -52,7 +53,7 @@ exports.Element = Element;
  * @returns {Object} The raw value of the element.
  */
 Element.prototype.getValue = function() {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Element',
         $procedure: '$getValue',
         $exception: '$abstractMethod',

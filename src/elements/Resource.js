@@ -17,7 +17,6 @@
 const URL = require('url').URL;
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -51,7 +50,7 @@ const Resource =function(value, parameters, debug) {
             value = new URL(value);
         }
     } catch (cause) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/elements/Resource',
             $procedure: '$Resource',
             $exception: '$invalidParameter',

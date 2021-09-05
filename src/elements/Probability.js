@@ -16,7 +16,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -60,7 +59,7 @@ const Probability = function(value, parameters, debug) {
             break;
         case 'number':
             if (!isFinite(value) || value < 0 || value > 1) {
-                const exception = new Exception({
+                const exception = new agents.Exception({
                     $module: '/bali/elements/Probability',
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
@@ -76,7 +75,7 @@ const Probability = function(value, parameters, debug) {
             if (value === '1.') {
                 value = 1;
             } else {
-                const exception = new Exception({
+                const exception = new agents.Exception({
                     $module: '/bali/elements/Probability',
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
@@ -88,7 +87,7 @@ const Probability = function(value, parameters, debug) {
             }
             break;
         default:
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/elements/Probability',
                 $procedure: '$Probability',
                 $exception: '$invalidParameter',

@@ -167,7 +167,7 @@ exports.Set = Set;
  * @returns {Set} The resulting set.
  */
 Set.not = function(set, debug) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/collections/Set',
         $procedure: '$not',
         $exception: '$meaningless',

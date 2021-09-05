@@ -16,7 +16,7 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
+
 
 /*
  * This method defines a missing stack function for the standard Array class.
@@ -77,7 +77,7 @@ const Queue = function(parameters, debug) {
             ]);
         }
         if (array.length === capacity) {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/collections/Queue',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',

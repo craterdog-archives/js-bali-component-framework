@@ -16,7 +16,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -49,7 +48,7 @@ const Version = function(value, parameters, debug) {
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/elements/Version',
             $procedure: '$version',
             $exception: '$invalidParameter',

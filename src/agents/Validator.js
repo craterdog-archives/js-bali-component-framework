@@ -14,7 +14,7 @@
  * This class performs various validation functions on object types and values.
  */
 const URL = require('url').URL;
-const Exception = require('../trees/Exception').Exception;
+const Exception = require('./Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -112,7 +112,7 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     }
 
     // the argument type is invalid
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: moduleName,
         $procedure: procedureName,
         $argument: argumentName,

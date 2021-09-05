@@ -85,7 +85,7 @@ const componentize = function(value, debug) {
     return component;
 };
 abstractions.Component.prototype.componentize = componentize;
-trees.Exception.prototype.componentize = componentize;
+agents.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -321,7 +321,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new trees.Exception(attributes, cause);
+            error = new agents.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;

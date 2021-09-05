@@ -21,8 +21,8 @@
  *   * base 64
  * </pre>
  */
+const Exception = require('./Exception').Exception;
 const Validator = require('./Validator').Validator;
-const Exception = require('../trees/Exception').Exception;
 
 
 // This private constant sets the line width for formatting encoded byte strings.
@@ -99,7 +99,7 @@ Decoder.prototype.base2Decode = function(base2) {
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
     if (length % 8 !== 0) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/agents/Decoder',
             $procedure: '$base2Decode',
             $exception: '$invalidParameter',
@@ -121,7 +121,7 @@ Decoder.prototype.base2Decode = function(base2) {
             const character = base2[index++];
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
-                const exception = new Exception({
+                const exception = new agents.Exception({
                     $module: '/bali/agents/Decoder',
                     $procedure: '$base2Decode',
                     $exception: '$invalidParameter',
@@ -178,7 +178,7 @@ Decoder.prototype.base16Decode = function(base16) {
     base16 = base16.toUpperCase();
     const length = base16.length;
     if (length % 2 !== 0) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/agents/Decoder',
             $procedure: '$base16Decode',
             $exception: '$invalidParameter',
@@ -198,7 +198,7 @@ Decoder.prototype.base16Decode = function(base16) {
         var character = base16[index++];
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
@@ -213,7 +213,7 @@ Decoder.prototype.base16Decode = function(base16) {
         character = base16[index++];
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Decoder',
                 $procedure: '$base16Decode',
                 $exception: '$invalidParameter',
@@ -284,7 +284,7 @@ Decoder.prototype.base32Decode = function(base32) {
         character = base32[i];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            const exception = new Exception({
+            const exception = new agents.Exception({
                 $module: '/bali/agents/Decoder',
                 $procedure: '$base32Decode',
                 $exception: '$invalidParameter',

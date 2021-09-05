@@ -14,7 +14,6 @@
  * This abstract class defines the methods that all components must support.
  */
 const agents = require('../agents');
-const Exception = require('../trees/Exception').Exception;
 
 // This private constant sets the POSIX end of line character
 const EOL = '\n';
@@ -265,7 +264,7 @@ Component.prototype.isMatchedBy = function(pattern) {
         }
         return true;  // all pattern items matched successfully
     }
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$isMatchedBy',
         $exception: '$invalidParameter',
@@ -288,7 +287,7 @@ Component.prototype.isMatchedBy = function(pattern) {
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
 Component.prototype.toBoolean = function() {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$toBoolean',
         $exception: '$abstractMethod',
@@ -346,7 +345,7 @@ Component.prototype.duplicate = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$acceptVisitor',
         $exception: '$abstractMethod',

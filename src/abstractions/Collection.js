@@ -16,7 +16,6 @@
 const agents = require('../agents');
 const Component = require('./Component').Component;
 const Iterator = require('./Iterator').Iterator;
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -76,7 +75,7 @@ Collection.prototype.toBoolean = function() {
  * @returns {Array} An array containing the items in this collection.
  */
 Collection.prototype.toArray = function() {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
@@ -126,7 +125,7 @@ Collection.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
@@ -205,7 +204,7 @@ Collection.prototype.normalizedIndex = function(index) {
     }
     const size = this.getSize();
     if (index > size || index < -size) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/abstractions/Collection',
             $procedure: '$normalizedIndex',
             $exception: '$invalidIndex',
@@ -403,7 +402,7 @@ Collection.prototype.containsAll = function(items) {
  * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
-    const exception = new Exception({
+    const exception = new agents.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$removeAll',
         $exception: '$abstractMethod',

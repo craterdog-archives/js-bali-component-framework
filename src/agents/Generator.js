@@ -13,8 +13,8 @@
  * This class provides cryptographically secure random value generation.
  */
 const crypto = require('crypto');
+const Exception = require('./Exception').Exception;
 const Decoder = require('./Decoder').Decoder;
-const Exception = require('../trees/Exception').Exception;
 
 
 // PRIVATE CONSTANTS

@@ -16,7 +16,6 @@
  */
 const agents = require('../agents');
 const abstractions = require('../abstractions');
-const Exception = require('../trees/Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -47,7 +46,7 @@ const Symbol = function(value, parameters, debug) {
     }
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
-        const exception = new Exception({
+        const exception = new agents.Exception({
             $module: '/bali/elements/Symbol',
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
