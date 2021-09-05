@@ -47,27 +47,6 @@ const Procedure = function(code, parameters, debug) {
 
     this.getCode = function() { return code; };
 
-    this.getAttribute = function(key) {
-        if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/trees/Procedures', '$getAttribute', '$key', key, [
-                '/bali/abstractions/Element'
-            ]);
-        }
-        if (key.getValue() === '$code') return this.getCode();
-    };
-
-    this.setAttribute = function(key, value) {
-        const exception = new Exception({
-            $module: '/bali/trees/Procedure',
-            $procedure: '$setAttribute',
-            $exception: '$readOnly',
-            $text: 'The code in a procedure cannot be updated.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    };
-
     return this;
 };
 Procedure.prototype = Object.create(abstractions.Component.prototype);

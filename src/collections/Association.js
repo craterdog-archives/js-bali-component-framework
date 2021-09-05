@@ -86,32 +86,6 @@ const Association = function(key, value, debug) {
         return oldValue;
     };
 
-    this.getAttribute = function(key) {
-        if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/collections/Association', '$getAttribute', '$key', key, [
-                '/bali/abstractions/Element'
-            ]);
-        }
-        key = key.toString();
-        if (key === '$key') return this.getKey();
-        if (key === '$value') return this.getValue();
-    };
-
-    this.setAttribute = function(key, value) {
-        if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
-            validator.validateType('/bali/collections/Association', '$setAttribute', '$key', key, [
-                '/bali/abstractions/Element'
-            ]);
-            validator.validateType('/bali/collections/Association', '$setAttribute', '$value', value, [
-                '/bali/abstractions/Component'
-            ]);
-        }
-        key = key.toString();
-        if (key === '$value') return this.setValue(value);
-    };
-
     return this;
 };
 Association.prototype = Object.create(abstractions.Component.prototype);
