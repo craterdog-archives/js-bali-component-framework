@@ -45,7 +45,8 @@ const Exception = function(attributes, cause) {
     const interfaces = [
         '/bali/interfaces/Reflective',
         '/bali/interfaces/Exportable',
-        '/bali/interfaces/Comparable'
+        '/bali/interfaces/Comparable',
+        '/bali/interfaces/Composite'
     ];
 
     // convert the attributes into a catalog

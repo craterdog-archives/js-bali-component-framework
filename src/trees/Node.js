@@ -35,6 +35,7 @@ const Node = function(type, debug) {
         this,
         [type, '/bali/trees/Node'],
         [
+            '/bali/interfaces/Composite',
             '/bali/interfaces/Sequential'
         ],
         undefined,
