@@ -98,43 +98,6 @@ Stryng.prototype.getIterator = function() {
 
 
 /**
- * This method returns the index of the specified item in this string.
- * NOTE: It is tempting when dealing with a string that uses an array
- * as an underlying data composite to use the Array.indexOf() method to
- * provide a faster implementation of this method. However, the indexOf()
- * method uses strict equality checks which for items that are objects
- * returns false even when all attributes on each item are the same. Therefore
- * it is better not to override this method in that case.
- *
- * @param {Object} item The item to be looked up.
- * @returns {Number} The index of the item in this string.
- */
-Stryng.prototype.getIndex = function(item) {
-    if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/abstractions/String', '$getIndex', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ]);
-    }
-    const comparator = new agents.Comparator(undefined, this.debug);
-    var index = 0;
-    const iterator = this.getIterator();
-    while (iterator.hasNext()) {
-        const candidate = iterator.getNext();  // the candidate may be a javascript primitive type
-        index++;
-        if (comparator.compareComponents(candidate, item) === 0) return index;
-    }
-    return 0;  // not found
-};
-
-
-/**
  * This abstract method retrieves from this string the item that is associated with the
  * specified index.  It must be implemented by a subclass.
  *

@@ -98,7 +98,7 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
 
     describe('Test symbol methods', function() {
 
-        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
+        it('should perform the getItem() and getItems() methods correctly', function() {
             const symbol = bali.symbol('foobar');
             const range = bali.range(3, '..', 5);
             const first = symbol.getItem(3);
@@ -106,14 +106,13 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
             const items = symbol.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
-            expect(2).to.equal(symbol.getIndex('o'));
         });
 
     });
 
     describe('Test reserved symbol methods', function() {
 
-        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
+        it('should perform the getItem() and getItems() methods correctly', function() {
             const symbol = bali.component('$foobar-1');
             expect(symbol.isReserved()).to.equal(true);
             const range = bali.range(3, '..', 5);
@@ -122,7 +121,6 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
             const items = symbol.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
-            expect(2).to.equal(symbol.getIndex('o'));
         });
 
     });

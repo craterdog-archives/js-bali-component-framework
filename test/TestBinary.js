@@ -56,7 +56,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
     describe('Test binary methods', function() {
 
-        it('should perform the getIndex(), getItem() and getItems() methods correctly', function() {
+        it('should perform the getItem() and getItems() methods correctly', function() {
             const buffer = Buffer.from([0x62, 0x64, 0x66, 0x68, 0x69, 0x72, 0x74, 0x75, 0x78, 0x79]);
             const binary = bali.binary(buffer);
             const range = bali.range(3, '..', 5);
@@ -65,7 +65,6 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
             const items = binary.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
-            expect(3).to.equal(binary.getIndex(0x66));
         });
 
     });
