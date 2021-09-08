@@ -40,7 +40,7 @@ const Set = function(parameters, debug) {
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
-    const comparator = new agents.Comparator(undefined, this.debug);
+    const comparator = new agents.Comparator(this.debug);
     const tree = new RandomizedTree(comparator);
 
     this.toArray = function() {

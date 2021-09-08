@@ -23,15 +23,15 @@ const Comparator = require('./Comparator').Comparator;
 /**
  * This function creates a new sorter object.
  *
- * @param {Function} algorithm An optional function implementing the desired comparison algorithm.
+ * @param {Comparator} comparator An optional comparator implementing the desired comparison algorithm.
  * @param {Number} debug A number in the range 0..3.
  * sorting. If none is specified, the natural comparator will be used.
  */
-const Sorter = function(algorithm, debug) {
+const Sorter = function(comparator, debug) {
     this.debug = debug || 0;
 
     // the comparator is a private attribute so methods that use it are defined in the constructor
-    const comparator = new Comparator(algorithm, debug);
+    comparator = comparator || new Comparator(debug);
 
     this.sortCollection = function(collection) {
         if (collection && collection.getSize() > 1) {

@@ -279,8 +279,8 @@ const Catalog = function(parameters, debug) {
         array.splice(0);
     };
 
-    this.sortItems = function(algorithm) {
-        const sorter = new agents.Sorter(algorithm, this.debug);
+    this.sortItems = function(comparator) {
+        const sorter = new agents.Sorter(comparator, this.debug);
         sorter.sortCollection(this);
     };
 

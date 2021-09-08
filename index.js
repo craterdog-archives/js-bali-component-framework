@@ -256,9 +256,9 @@ exports.api = function(defaultLevel) {
     };
 
     // COMPARATOR
-    const comparator = function(algorithm, debug) {
+    const comparator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Comparator(algorithm, debug);
+        return new agents.Comparator(debug);
     };
 
     // COMPONENT
@@ -553,6 +553,13 @@ exports.api = function(defaultLevel) {
     set.xor = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return collections.Set.xor(first, second, debug);
+    };
+
+    // SORTER
+    const sorter = function(comparator, debug) {
+        if (comparator === undefined) comparator = new agents.Comparator(debug);
+        if (debug === undefined) debug = defaultLevel;
+        return new agents.Sorter(comparator, debug);
     };
 
     // STACK

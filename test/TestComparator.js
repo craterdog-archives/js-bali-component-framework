@@ -12,7 +12,7 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api();
-const comparator = bali.comparator(undefined, debug);
+const comparator = bali.comparator(debug);
 
 describe('Bali Nebula™ Component Framework - Comparator', function() {
 

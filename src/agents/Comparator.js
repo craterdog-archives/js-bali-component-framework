@@ -18,15 +18,13 @@
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new comparator object that can be used to compare two objects.
- * if an algorithm function is specified, that function is used to do the comparison, otherwise,
- * a natural comparison will be performed.
+ * This function creates a new comparator object that can be used to compare two objects using
+ * their natural ordering.
  *
- * @param {Function} algorithm An optional function implementing a comparison algorithm.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Comparator} The new comparator.
  */
-const Comparator = function(algorithm, debug) {
+const Comparator = function(debug) {
     debug = debug || 0;
 
     // PUBLIC METHODS
@@ -52,7 +50,7 @@ const Comparator = function(algorithm, debug) {
      * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
      *
      */
-    this.compareComponents = algorithm || natural;
+    this.compareComponents = natural;
 
     return this;
 };
