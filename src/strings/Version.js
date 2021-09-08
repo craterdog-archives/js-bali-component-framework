@@ -72,16 +72,6 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Version.prototype.acceptVisitor = function(visitor) {
-    visitor.visitVersion(this);
-};
-
-
-/**
  * This method returns the number of levels that this version string has.
  *
  * @returns {Number} The number of levels that this version string has.

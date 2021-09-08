@@ -193,18 +193,6 @@ Node.prototype.getIterator = function() {
 
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {NodeVisitor} visitor The visitor that wants to visit this node.
- */
-Node.prototype.acceptVisitor = function(visitor) {
-    // call the visitor method for the specific type of node
-    const functionName = 'visit' + this.getType().split('/')[3];  // '/bali/trees/<Type>'
-    visitor[functionName](this);
-};
-
-
-/**
  * This method converts negative item indexes into their corresponding positive
  * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
  * composite is empty then the resulting index will be zero.

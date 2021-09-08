@@ -138,16 +138,6 @@ Angle.prototype.getDegrees = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Angle.prototype.acceptVisitor = function(visitor) {
-    visitor.visitAngle(this);
-};
-
-
 // SCALABLE LIBRARY FUNCTIONS
 
 /**

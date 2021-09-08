@@ -127,6 +127,15 @@ Visitor.prototype.visitBreakClause = function(node) {
 };
 
 
+// catalog:
+//     association (',' association)* |
+//     EOL (association EOL)* |
+//     ':' /* no associations */
+Visitor.prototype.visitCatalog = function(catalog) {
+    this.visitCollection(catalog);
+};
+
+
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 Visitor.prototype.visitCheckoutClause = function(node) {
     const iterator = node.getIterator();
@@ -195,6 +204,19 @@ Visitor.prototype.visitComparisonExpression = function(node) {
 Visitor.prototype.visitComplementExpression = function(node) {
     const operand = node.getItem(1);
     operand.acceptVisitor(this);
+};
+
+
+// component: value parameters? note?
+Visitor.prototype.visitComponent = function(component) {
+    const functionName = 'visit' + component.getType().split('/')[3];
+    if (this[functionName]) {
+        // dispatch to the actual type handler
+        this[functionName](component);
+    } else {
+        // dispatch to typed catalog handler
+        this.visitCatalog(component);
+    }
 };
 
 
@@ -354,6 +376,15 @@ Visitor.prototype.visitInversionExpression = function(node) {
 };
 
 
+// list:
+//     expression (',' expression)* |
+//     EOL (expression EOL)* |
+//     /* no items */
+Visitor.prototype.visitList = function(list) {
+    this.visitCollection(list);
+};
+
+
 // logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 Visitor.prototype.visitLogicalExpression = function(node) {
     var operand = node.getItem(1);
@@ -488,6 +519,17 @@ Visitor.prototype.visitPublishClause = function(node) {
 };
 
 
+Visitor.prototype.visitQueue = function(queue) {
+    this.visitCollection(queue);
+};
+
+
+// range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?;
+Visitor.prototype.visitRange = function(range) {
+    this.visitCollection(range);
+};
+
+
 // resource: RESOURCE
 Visitor.prototype.visitResource = function(resource) {
     const parameters = resource.getParameters();
@@ -555,12 +597,22 @@ Visitor.prototype.visitSelectClause = function(node) {
 };
 
 
+Visitor.prototype.visitSet = function(set) {
+    this.visitCollection(set);
+};
+
+
 // signClause: 'sign' expression 'as' expression
 Visitor.prototype.visitSignClause = function(node) {
     const component = node.getItem(1);
     component.acceptVisitor(this);
     const name = node.getItem(2);
     name.acceptVisitor(this);
+};
+
+
+Visitor.prototype.visitStack = function(stack) {
+    this.visitCollection(stack);
 };
 
 

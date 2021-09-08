@@ -173,12 +173,3 @@ Resource.prototype.getFragment = function() {
     return decodeURIComponent(this.getValue().hash.slice(1));  // remove the leading '#'
 };
 
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Resource.prototype.acceptVisitor = function(visitor) {
-    visitor.visitResource(this);
-};

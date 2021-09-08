@@ -63,16 +63,6 @@ exports.Binary = Binary;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Binary.prototype.acceptVisitor = function(visitor) {
-    visitor.visitBinary(this);
-};
-
-
-/**
  * This method returns the number of bytes that this binary string has.
  *
  * @returns {Number} The number of bytes that this binary string has.

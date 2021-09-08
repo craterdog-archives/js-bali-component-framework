@@ -88,16 +88,6 @@ Tag.prototype.toBoolean = function() {
 
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Tag.prototype.acceptVisitor = function(visitor) {
-    visitor.visitTag(this);
-};
-
-
-/**
  * This method returns the raw byte string for the tag element.
  *
  * @returns {Buffer} A buffer containing the bytes for this tag element.

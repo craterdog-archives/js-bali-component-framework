@@ -141,16 +141,6 @@ Probability.prototype.toReal = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Probability.prototype.acceptVisitor = function(visitor) {
-    visitor.visitProbability(this);
-};
-
-
 // PUBLIC FUNCTIONS
 
 /**

@@ -83,16 +83,6 @@ Duration.prototype.toBoolean = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Duration.prototype.acceptVisitor = function(visitor) {
-    visitor.visitDuration(this);
-};
-
-
 // SCALABLE LIBRARY FUNCTIONS
 
 /**

@@ -70,16 +70,6 @@ exports.Name = Name;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Name.prototype.acceptVisitor = function(visitor) {
-    visitor.visitName(this);
-};
-
-
-/**
  * This method returns the number of identifiers that this name string has.
  *
  * @returns {Number} The number of identifiers that this name string has.

@@ -340,18 +340,10 @@ Component.prototype.duplicate = function(levels) {
 
 
 /**
- * This abstract method accepts a visitor as part of the visitor pattern. It must be
- * implemented by a subclass.
+ * This method accepts a visitor as part of the visitor pattern.
  *
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
-    const exception = new agents.Exception({
-        $module: '/bali/abstractions/Component',
-        $procedure: '$acceptVisitor',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
+    visitor.visitComponent(this);
 };

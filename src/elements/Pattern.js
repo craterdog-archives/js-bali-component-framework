@@ -92,12 +92,3 @@ Pattern.prototype.matches = function(component) {
     return this.getValue().test(component.toString());
 };
 
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Pattern.prototype.acceptVisitor = function(visitor) {
-    visitor.visitPattern(this);
-};

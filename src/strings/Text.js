@@ -60,16 +60,6 @@ exports.Text = Text;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Text.prototype.acceptVisitor = function(visitor) {
-    visitor.visitText(this);
-};
-
-
-/**
  * This method returns the number of characters that this text string has.
  *
  * @returns {Number} The number of characters that this text string has.

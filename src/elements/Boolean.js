@@ -31,7 +31,7 @@ const abstractions = require('../abstractions');
 const Bulean = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Bulean'],
+        ['/bali/elements/Boolean'],
         [
             '/bali/libraries/Logical',
             '/bali/interfaces/Discrete'
@@ -41,7 +41,7 @@ const Bulean = function(value, parameters, debug) {
     );
     if (this.debug > 1) {
         const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/elements/Bulean', '$Bulean', '$value', value, [
+        validator.validateType('/bali/elements/Boolean', '$Boolean', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -139,16 +139,6 @@ Bulean.prototype.toReal = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Bulean.prototype.acceptVisitor = function(visitor) {
-    visitor.visitBoolean(this);
-};
-
-
 // LOGICAL LIBRARY FUNCTIONS
 
 /**
@@ -162,8 +152,8 @@ Bulean.prototype.acceptVisitor = function(visitor) {
 Bulean.not = function(value, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Bulean', '$not', '$value', value, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$not', '$value', value, [
+            '/bali/elements/Boolean'
         ]);
     }
     const result = new Bulean(!value.getValue(), value.getParameters(), debug);
@@ -183,11 +173,11 @@ Bulean.not = function(value, debug) {
 Bulean.and = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Bulean', '$and', '$first', first, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$and', '$first', first, [
+            '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Bulean', '$and', '$second', second, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$and', '$second', second, [
+            '/bali/elements/Boolean'
         ]);
     }
     const value = first.getValue() && second.getValue();
@@ -208,11 +198,11 @@ Bulean.and = function(first, second, debug) {
 Bulean.sans = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Bulean', '$sans', '$first', first, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$sans', '$first', first, [
+            '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Bulean', '$sans', '$second', second, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$sans', '$second', second, [
+            '/bali/elements/Boolean'
         ]);
     }
     const value = first.getValue() && !second.getValue();
@@ -233,11 +223,11 @@ Bulean.sans = function(first, second, debug) {
 Bulean.or = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Bulean', '$or', '$first', first, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$or', '$first', first, [
+            '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Bulean', '$or', '$second', second, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$or', '$second', second, [
+            '/bali/elements/Boolean'
         ]);
     }
     const value = first.getValue() || second.getValue();
@@ -258,11 +248,11 @@ Bulean.or = function(first, second, debug) {
 Bulean.xor = function(first, second, debug) {
     if (debug > 1) {
         const validator = new agents.Validator(debug);
-        validator.validateType('/bali/elements/Bulean', '$xor', '$first', first, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$xor', '$first', first, [
+            '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Bulean', '$xor', '$second', second, [
-            '/bali/elements/Bulean'
+        validator.validateType('/bali/elements/Boolean', '$xor', '$second', second, [
+            '/bali/elements/Boolean'
         ]);
     }
     const value = (first.getValue() && !second.getValue()) || (!first.getValue() && second.getValue());

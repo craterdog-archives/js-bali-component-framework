@@ -258,5 +258,5 @@ Exception.prototype.duplicate = function() {
  * @param {Visitor} visitor The visitor that wants to visit the attributes of this exception.
  */
 Exception.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCatalog(this.getAttributes());
+    visitor.visitComponent(this.getAttributes());
 };

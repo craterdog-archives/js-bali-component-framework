@@ -71,16 +71,6 @@ exports.Symbol = Symbol;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Symbol.prototype.acceptVisitor = function(visitor) {
-    visitor.visitSymbol(this);
-};
-
-
-/**
  * This method returns the number of characters in this symbol.
  *
  * @returns {Number} The number of characters in this symbol.

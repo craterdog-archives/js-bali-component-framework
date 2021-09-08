@@ -75,12 +75,3 @@ Element.prototype.toLiteral = function() {
     return copy.toString();
 };
 
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Element.prototype.acceptVisitor = function(visitor) {
-    visitor.visitElement(this);
-};

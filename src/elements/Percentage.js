@@ -81,16 +81,6 @@ Percentage.prototype.toReal = function() {
 };
 
 
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this element.
- */
-Percentage.prototype.acceptVisitor = function(visitor) {
-    visitor.visitPercentage(this);
-};
-
-
 // SCALABLE LIBRARY FUNCTIONS
 
 /**

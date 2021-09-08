@@ -48,16 +48,6 @@ exports.Collection = Collection;
 // PUBLIC METHODS
 
 /**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this collection.
- */
-Collection.prototype.acceptVisitor = function(visitor) {
-    visitor.visitCollection(this);
-};
-
-
-/**
  * This method returns whether or not this collection contains a meaningful value. If the collection
  * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
  *

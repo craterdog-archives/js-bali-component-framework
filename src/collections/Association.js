@@ -105,12 +105,3 @@ Association.prototype.toBoolean = function() {
     return value !== undefined && value !== null;
 };
 
-
-/**
- * This method accepts a visitor as part of the visitor pattern.
- *
- * @param {Visitor} visitor The visitor that wants to visit this association.
- */
-Association.prototype.acceptVisitor = function(visitor) {
-    visitor.visitAssociation(this);
-};
