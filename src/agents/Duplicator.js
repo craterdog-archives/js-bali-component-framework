@@ -28,14 +28,15 @@ const Visitor = require('../abstractions/Visitor').Visitor;
 const Duplicator = function(debug) {
     debug = debug || 0;
 
-    this.duplicateComponent = function(component) {
+    this.duplicateComponent = function(component, levels) {
         if (debug > 1) {
             const validator = new Validator(debug);
             validator.validateType('/bali/agents/Duplicator', '$duplicateComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
-        const visitor = new DuplicatingVisitor(debug);
+        levels = levels || Number.MAX_SAFE_INTEGER;  // default is all levels
+        const visitor = new DuplicatingVisitor(levels, debug);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
@@ -48,8 +49,8 @@ exports.Duplicator = Duplicator;
 
 // PRIVATE CLASSES
 
-const DuplicatingVisitor = function(debug) {
-    Visitor.call(this, debug);
+const DuplicatingVisitor = function(levels, debug) {
+    Visitor.call(this, levels, debug);
     return this;
 };
 DuplicatingVisitor.prototype = Object.create(Visitor.prototype);

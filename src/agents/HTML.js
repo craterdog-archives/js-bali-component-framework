@@ -119,7 +119,7 @@ const footer =
 // PRIVATE CLASSES
 
 const FormattingVisitor = function(style, debug) {
-    Visitor.call(this, debug);
+    Visitor.call(this, undefined, debug);
     this.debug = debug || 0;
     this.result = header.replace(/\${style}/, style);
     this.depth = 4;  // the header and footer take up four levels
