@@ -196,8 +196,8 @@ const List = function(parameters, debug) {
         array.splice(0);
     };
 
-    this.sortItems = function(comparator) {
-        const sorter = new agents.Sorter(comparator, this.debug);
+    this.sortItems = function(sorter) {
+        sorter = sorter || new agents.Sorter(new agents.Comparator(this.debug), this.debug);
         sorter.sortCollection(this);
     };
 
