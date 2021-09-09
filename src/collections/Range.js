@@ -159,7 +159,7 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.getIterator = function() {
     if (this.getSize()) {  // will throw an exception if range is not enumerable
-        const iterator = new RangeIterator(this, this.getParameters(), this.debug);
+        const iterator = new RangeIterator(this);
         return iterator;
     }
 };
@@ -205,13 +205,8 @@ Range.prototype.addItems = function(items) {
 
 // PRIVATE CLASSES
 
-const RangeIterator = function(range, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/collections/RangeIterator'],
-        parameters,
-        debug
-    );
+const RangeIterator = function(range) {
+    agents.Iterator.call(this);
 
     const size = range.getSize();  // will throw an exception if range is not enumerable
     var first = range.getFirst().toInteger();
@@ -239,16 +234,16 @@ const RangeIterator = function(range, parameters, debug) {
 
     this.getPrevious = function() {
         if (!this.hasPrevious()) return;
-        return this.componentize(--slot + first);
+        return range.componentize(--slot + first);
     };
 
     this.getNext = function() {
         if (!this.hasNext()) return;
-        return this.componentize(slot++ + first);
+        return range.componentize(slot++ + first);
     };
 
     return this;
 };
-RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
+RangeIterator.prototype = Object.create(agents.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;
 

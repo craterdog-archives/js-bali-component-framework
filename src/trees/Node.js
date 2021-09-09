@@ -187,7 +187,7 @@ Node.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this composite.
  */
 Node.prototype.getIterator = function() {
-    const iterator = new abstractions.Collection.Iterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new abstractions.Collection.Iterator(this.toArray());
     return iterator;
 };
 

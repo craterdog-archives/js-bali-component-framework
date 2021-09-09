@@ -15,7 +15,6 @@
  */
 const agents = require('../agents');
 const Component = require('./Component').Component;
-const Iterator = require('./Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
@@ -102,7 +101,7 @@ Collection.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this collection.
  */
 Collection.prototype.getIterator = function() {
-    const iterator = new CollectionIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new CollectionIterator(this.toArray());
     return iterator;
 };
 
@@ -405,13 +404,8 @@ Collection.prototype.removeAll = function() {
 
 // PRIVATE CLASSES
 
-const CollectionIterator = function(array, parameters, debug) {
-    Iterator.call(
-        this,
-        ['/bali/collections/CollectionIterator'],
-        parameters,
-        debug
-    );
+const CollectionIterator = function(array) {
+    agents.Iterator.call(this);
 
     // the array and current slot index are private attributes so methods that use them
     // are defined in the constructor
@@ -453,6 +447,6 @@ const CollectionIterator = function(array, parameters, debug) {
 
     return this;
 };
-CollectionIterator.prototype = Object.create(Iterator.prototype);
+CollectionIterator.prototype = Object.create(agents.Iterator.prototype);
 CollectionIterator.prototype.constructor = CollectionIterator;
 Collection.Iterator = CollectionIterator;

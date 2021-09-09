@@ -44,9 +44,7 @@ Visitor.prototype.visitAcceptClause = function(node) {
 
 // angle: ANGLE
 Visitor.prototype.visitAngle = function(angle) {
-    const parameters = angle.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -101,17 +99,13 @@ Visitor.prototype.visitAttributeExpression = function(node) {
 
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
-    const parameters = binary.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
 // boolean: 'false' | 'true'
 Visitor.prototype.visitBoolean = function(boolean) {
-    const parameters = boolean.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -259,7 +253,28 @@ Visitor.prototype.visitDiscardClause = function(node) {
 
 // duration: DURATION
 Visitor.prototype.visitDuration = function(duration) {
-    const parameters = duration.getParameters();
+    this.visitElement(angle);
+};
+
+
+// element:
+//    angle |
+//    binary |
+//    boolean |
+//    duration |
+//    moment |
+//    name |
+//    number |
+//    pattern |
+//    percentage |
+//    probability |
+//    resource |
+//    symbol |
+//    tag |
+//    text |
+//    version
+Visitor.prototype.visitElement = function(element) {
+    const parameters = element.getParameters();
     this.visitParameters(parameters);  // process any parameters first
     // then process the component itself
 };
@@ -421,17 +436,13 @@ Visitor.prototype.visitMessageExpression = function(node) {
 
 // moment: MOMENT
 Visitor.prototype.visitMoment = function(moment) {
-    const parameters = moment.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
 // name: NAME
 Visitor.prototype.visitName = function(name) {
-    const parameters = name.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -443,9 +454,7 @@ Visitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
-    const parameters = number.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -465,17 +474,13 @@ Visitor.prototype.visitParameters = function(parameters) {
 
 // pattern: 'none' | REGEX | 'any'
 Visitor.prototype.visitPattern = function(pattern) {
-    const parameters = pattern.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
 // percentage: PERCENTAGE
 Visitor.prototype.visitPercentage = function(percentage) {
-    const parameters = percentage.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -497,9 +502,7 @@ Visitor.prototype.visitPrecedenceExpression = function(node) {
 
 // probability: FRACTION | '1.'
 Visitor.prototype.visitProbability = function(probability) {
-    const parameters = probability.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -532,9 +535,7 @@ Visitor.prototype.visitRange = function(range) {
 
 // resource: RESOURCE
 Visitor.prototype.visitResource = function(resource) {
-    const parameters = resource.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -627,25 +628,19 @@ Visitor.prototype.visitStatement = function(node) {
 
 // symbol: SYMBOL
 Visitor.prototype.visitSymbol = function(symbol) {
-    const parameters = symbol.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
 // tag: TAG
 Visitor.prototype.visitTag = function(tag) {
-    const parameters = tag.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
 // text: TEXT | NARRATIVE
 Visitor.prototype.visitText = function(text) {
-    const parameters = text.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 
@@ -663,9 +658,7 @@ Visitor.prototype.visitVariable = function(node) {
 
 // version: VERSION
 Visitor.prototype.visitVersion = function(version) {
-    const parameters = version.getParameters();
-    this.visitParameters(parameters);  // process any parameters first
-    // then process the component itself
+    this.visitElement(angle);
 };
 
 

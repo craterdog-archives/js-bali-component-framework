@@ -15,7 +15,6 @@
  */
 const agents = require('../agents');
 const Element = require('./Element').Element;
-const Iterator = require('./Iterator').Iterator;
 
 
 // PUBLIC FUNCTIONS
@@ -92,7 +91,7 @@ Stryng.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this string.
  */
 Stryng.prototype.getIterator = function() {
-    const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
+    const iterator = new StringIterator(this.getValue());
     return iterator;
 };
 
@@ -176,13 +175,8 @@ Stryng.prototype.normalizedIndex = function(index) {
 
 // PRIVATE CLASSES
 
-const StringIterator = function(string, parameters, debug) {
-    Iterator.call(
-        this,
-        ['/bali/elements/StringIterator'],
-        parameters,
-        debug
-    );
+const StringIterator = function(string) {
+    agents.Iterator.call(this);
     var slot = 0;  // the slot before the first number
     const size = string.length;  // static so we can cache it here
 
@@ -218,5 +212,5 @@ const StringIterator = function(string, parameters, debug) {
 
     return this;
 };
-StringIterator.prototype = Object.create(Iterator.prototype);
+StringIterator.prototype = Object.create(agents.Iterator.prototype);
 StringIterator.prototype.constructor = StringIterator;

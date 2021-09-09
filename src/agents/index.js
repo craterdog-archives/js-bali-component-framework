@@ -22,7 +22,9 @@ exports.Duplicator = require('./Duplicator').Duplicator;
 exports.Formatter = require('./Formatter').Formatter;
 exports.Generator = require('./Generator').Generator;  // depends on Decoder
 exports.HTML = require('./HTML').HTML;  // depends on Formatter
+exports.Iterator = require('./Iterator').Iterator;
 exports.Sorter = require('./Sorter').Sorter;  // depends on Comparator
+exports.Visitor = require('./Visitor').Visitor;
 
 // NOTE: Can't include the Parser module since it depends on all components and that
 //       would result in serious circular dependencies!

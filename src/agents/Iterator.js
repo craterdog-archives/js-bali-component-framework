@@ -27,9 +27,7 @@
  *     slot 0     slot 1     slot 2                  slot N
  * </pre>
  */
-const agents = require('../agents');
-const Component = require('./Component').Component;
-//const Exception = require('../trees/Exception').Exception;
+const Exception = require('./Exception').Exception;
 
 
 // PUBLIC FUNCTIONS
@@ -40,98 +38,80 @@ const Component = require('./Component').Component;
  * This function creates a new iterator component with the specified ancestry and interfaces
  * with any optional parameters that are used to parameterize its type.
  *
- * @param {Array} ancestry An array of type names that make up the ancestry for the component.
- * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range 0..3.
  * @returns {Iterator} The new iterator.
  */
-const Iterator = function(ancestry, parameters, debug) {
-    Component.call(
-        this,
-        ancestry.concat('/bali/abstractions/Iterator'),
-        [],
-        parameters,
-        debug
-    );
+const Iterator = function() {
     return this;
 };
-Iterator.prototype = Object.create(Component.prototype);
 Iterator.prototype.constructor = Iterator;
 exports.Iterator = Iterator;
 
 Iterator.prototype.toStart = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.toSlot = function(slot) {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.toEnd = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.hasPrevious = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.hasNext = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.getPrevious = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
 Iterator.prototype.getNext = function() {
     const exception = new agents.Exception({
-        $module: '/bali/abstractions/Iterator',
+        $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };

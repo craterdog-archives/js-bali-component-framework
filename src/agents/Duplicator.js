@@ -14,7 +14,7 @@
  * component.  Since elements are immutable, they are not copied, only referenced.
  */
 const Validator = require('./Validator').Validator;
-const Visitor = require('../abstractions/Visitor').Visitor;
+const Visitor = require('./Visitor').Visitor;
 
 
 // PUBLIC FUNCTIONS

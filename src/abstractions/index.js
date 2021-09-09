@@ -14,7 +14,5 @@ const agents = require('../agents');
 exports.Component = require('./Component').Component;
 exports.Element = require('./Element').Element;  // depends on Component
 exports.String = require('./String').String;  // depends on Element
-exports.Iterator = require('./Iterator').Iterator;
 exports.Collection = require('./Collection').Collection;  // depends on Iterator
-exports.Visitor = require('./Visitor').Visitor;
 

@@ -55,7 +55,7 @@ const Set = function(parameters, debug) {
     };
 
     this.getIterator = function() {
-        return new SetIterator(tree, this.getParameters(), this.debug);
+        return new SetIterator(tree);
     };
 
     this.getIndex = function(item) {
@@ -323,13 +323,8 @@ Set.xor = function(first, second, debug) {
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
-const SetIterator = function(tree, parameters, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/collections/SetIterator'],
-        parameters,
-        debug
-    );
+const SetIterator = function(tree) {
+    agents.Iterator.call(this);
 
     // the tree, current slot index, and previous and next pointers are private attributes
     // so methods that use them are defined in the constructor
@@ -383,7 +378,7 @@ const SetIterator = function(tree, parameters, debug) {
 
     return this;
 };
-SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
+SetIterator.prototype = Object.create(agents.Iterator.prototype);
 SetIterator.prototype.constructor = SetIterator;
 
 
