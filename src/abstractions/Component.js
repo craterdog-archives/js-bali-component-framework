@@ -330,12 +330,11 @@ Component.prototype.getHash = function() {
  * This method returns a duplicate of this component.  A deep copy is made of all mutable
  * (non-elemental) attributes.
  *
- * @param {Number} levels The number of levels to be duplicated (default is all).
  * @returns {Component} A duplicate component.
  */
-Component.prototype.duplicate = function(levels) {
+Component.prototype.duplicate = function() {
     const duplicator = new agents.Duplicator(this.debug);
-    return duplicator.duplicateComponent(this, levels);
+    return duplicator.duplicateComponent(this);
 };
 
 

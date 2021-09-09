@@ -49,8 +49,8 @@ exports.Duplicator = Duplicator;
 
 // PRIVATE CLASSES
 
-const DuplicatingVisitor = function(levels, debug) {
-    Visitor.call(this, levels, debug);
+const DuplicatingVisitor = function(debug) {
+    Visitor.call(this, debug);
     return this;
 };
 DuplicatingVisitor.prototype = Object.create(Visitor.prototype);

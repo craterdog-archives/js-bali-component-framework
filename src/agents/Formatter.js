@@ -74,7 +74,7 @@ exports.Formatter = Formatter;
 // PRIVATE CLASSES
 
 const FormattingVisitor = function(indentation, debug) {
-    Visitor.call(this, undefined, debug);
+    Visitor.call(this, debug);
     this.indentation = indentation || 0;
     this.debug = debug || 0;
     this.depth = 0;
