@@ -33,7 +33,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             queue.removeAll();
             const copy = bali.queue();
             expect(copy).to.exist;
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(queue, copy)).to.equal(true);
             const signum = comparator.compareComponents(queue, copy);
             expect(signum).to.equal(0);
@@ -123,7 +123,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             var size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(queue, expected)).to.equal(true);
             const iterator = queue.getIterator();
             expect(iterator).to.exist;

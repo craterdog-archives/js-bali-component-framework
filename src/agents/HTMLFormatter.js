@@ -50,9 +50,9 @@ const HTMLFormatter = function(style, debug) {
         ]);
     }
 
-    this.formatComponent = function(component) {
+    this.asSource = function(component) {
         if (debug > 1) {
-            validator.validateType('/bali/agents/HTMLFormatter', '$formatComponent', '$component', component, [
+            validator.validateType('/bali/agents/HTMLFormatter', '$asSource', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -195,7 +195,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
         format = parameters.getAttribute('$encoding');
         if (format) format = format.toString();
     }
-    const decoder = new Decoder(0, this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
     switch (format) {
         case '$base2':
             value = decoder.base2Encode(value);

@@ -82,7 +82,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         });
 
         it('should perform the bitwise NOT function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             for (var i = 0; i < 256; i++) {
                 const expected = bali.binary(generator.generateBytes(i));
                 expect(comparator.areEqual(bali.binary.not(bali.binary.not(expected)), expected)).to.equal(true);
@@ -90,7 +90,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         });
 
         it('should perform the bitwise SANS function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));
@@ -101,7 +101,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         });
 
         it('should perform the bitwise XOR function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));
@@ -112,7 +112,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         });
 
         it("should perform the De Morgan's Laws correctly", function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));

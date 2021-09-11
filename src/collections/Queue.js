@@ -16,6 +16,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 /*
@@ -61,6 +62,16 @@ const Queue = function(parameters, debug) {
         if (array.length > 0) {
             return array[0];
         }
+    };
+
+    this.getIndex = function(item) {
+        var index = 0;
+        const comparator = new agents.CanonicalComparator(this.debug);
+        array.forEach(function(candidate) {
+            index++;
+            if (comparator.areEqual(candidate, item)) return index;
+        }, this);
+        return 0;
     };
 
     this.addItem = function(item) {
@@ -114,7 +125,7 @@ exports.Queue = Queue;
  * @returns {Iterator} An iterator for this queue.
  */
 Queue.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
     return iterator;
 };
 

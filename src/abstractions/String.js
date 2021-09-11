@@ -89,7 +89,7 @@ Stryng.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this string.
  */
 Stryng.prototype.getIterator = function() {
-    const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
+    const iterator = new StringIterator(this.getValue(), this.debug);
     return iterator;
 };
 
@@ -134,8 +134,12 @@ Stryng.prototype.getItems = function(range) {
 
 // PRIVATE CLASSES
 
-const StringIterator = function(string, parameters, debug) {
-    Iterator.call(this);
+const StringIterator = function(string, debug) {
+    Iterator.call(
+        this,
+        ['/bali/agents/StringIterator'],
+        debug
+    );
     var slot = 0;  // the slot before the first number
     const size = string.length;  // static so we can cache it here
 

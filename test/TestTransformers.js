@@ -12,8 +12,11 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const pfs = require('fs').promises;
-const bali = require('../').api(debug);
 const style = 'https://bali-nebula.net/static/styles/BDN.css';
+const bali = require('../').api(debug);
+const duplicator = bali.duplicator(debug);
+const bdn = bali.bdn(0, debug);
+const html = bali.html(style, debug);
 
 
 describe('Bali Nebula™ Component Framework - Transformers', function() {
@@ -29,9 +32,9 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
@@ -44,7 +47,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     const item = array[i];
                     const string = item.toString();
                     const element = bali.component(string);
-                    const comparator = new agents.Comparator();
+                    const comparator = new bali.comparator();
                     expect(comparator.areEqual(element, item)).to.equal(true);
                 }
             }
@@ -57,9 +60,9 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
@@ -73,9 +76,9 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
@@ -89,15 +92,15 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML(style);
-            await pfs.writeFile('test/html/components.html', html, 'utf8');
+            formatted = html.asDocument(copy);
+            await pfs.writeFile('test/html/components.html', formatted, 'utf8');
         });
 
         it('should parse and format the test document', async function() {
@@ -107,15 +110,15 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML(style);
-            await pfs.writeFile('test/html/test.html', html, 'utf8');
+            formatted = html.asDocument(copy);
+            await pfs.writeFile('test/html/test.html', formatted, 'utf8');
         });
 
         it('should parse and format the wiki examples', async function() {
@@ -125,15 +128,15 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML(style);
-            await pfs.writeFile('test/html/examples.html', html, 'utf8');
+            formatted = html.asDocument(copy);
+            await pfs.writeFile('test/html/examples.html', formatted, 'utf8');
         });
 
         it('should parse and format the citation', async function() {
@@ -143,15 +146,15 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML(style);
-            await pfs.writeFile('test/html/citation.html', html, 'utf8');
+            formatted = html.asDocument(copy);
+            await pfs.writeFile('test/html/citation.html', formatted, 'utf8');
         });
 
         it('should parse and format the certificate', async function() {
@@ -161,15 +164,15 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            var copy = component.duplicate();
+            const copy = duplicator.duplicateComponent(component);
             expect(copy).to.exist;
-            var formatted = copy.toDocument();
+            var formatted = bdn.asDocument(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            const html = copy.toHTML(style);
-            await pfs.writeFile('test/html/certificate.html', html, 'utf8');
+            formatted = html.asDocument(copy);
+            await pfs.writeFile('test/html/certificate.html', formatted, 'utf8');
         });
 
     });

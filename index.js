@@ -34,7 +34,7 @@ agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
  */
 const toString = function() {
     const formatter = new agents.BDNFormatter();
-    return formatter.formatComponent(this);
+    return formatter.asSource(this);
 };
 utilities.Exception.prototype.toString = toString;
 abstractions.Component.prototype.toString = toString;
@@ -188,6 +188,12 @@ exports.api = function(defaultLevel) {
         return new collections.Association(key, value, debug);
     };
 
+    // BDN
+    const bdn = function(indentation, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new agents.BDNFormatter(indentation, debug);
+    };
+
     // BINARY
     const binary = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -263,13 +269,13 @@ exports.api = function(defaultLevel) {
     // COMPARATOR
     const comparator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.CanonicalComparator(undefined, debug);
+        return new agents.CanonicalComparator(debug);
     };
 
     // COMPONENT
     const component = function(bdn, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const parser = new agents.BDNParser(undefined, debug);
+        const parser = new agents.BDNParser(debug);
         if (bdn.slice(-1) === EOL) {
             return parser.parseDocument(bdn);
         }
@@ -292,6 +298,12 @@ exports.api = function(defaultLevel) {
     const decoder = function(indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Decoder(indentation, debug);
+    };
+
+    // DUPLICATOR
+    const duplicator = function(debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new agents.DeepDuplicator(debug);
     };
 
     // DURATION
@@ -336,6 +348,12 @@ exports.api = function(defaultLevel) {
     const generator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Generator(debug);
+    };
+
+    // HTML
+    const html = function(indentation, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new agents.HTMLFormatter(indentation, debug);
     };
 
     // INSTANCE
@@ -563,8 +581,8 @@ exports.api = function(defaultLevel) {
     // SORTER
     const sorter = function(comparator, debug) {
         if (debug === undefined) debug = defaultLevel;
-        if (comparator === undefined) comparator = new agents.CanonicalComparator(undefined, debug);
-        return new agents.MergeSorter(comparator, undefined, debug);
+        if (comparator === undefined) comparator = new agents.CanonicalComparator(debug);
+        return new agents.MergeSorter(comparator, debug);
     };
 
     // STACK
@@ -669,6 +687,7 @@ exports.api = function(defaultLevel) {
         // instance constructors
         angle: angle,
         association: association,
+        bdn: bdn,
         binary: binary,
         boolean: boolean,
         catalog: catalog,
@@ -677,9 +696,11 @@ exports.api = function(defaultLevel) {
         controller: controller,
         configurator: configurator,
         decoder: decoder,
+        duplicator: duplicator,
         duration: duration,
         exception: exception,
         generator: generator,
+        html: html,
         instance: instance,
         list: list,
         moment: moment,

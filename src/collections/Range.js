@@ -159,9 +159,41 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.getIterator = function() {
     if (this.getSize()) {  // will throw an exception if range is not enumerable
-        const iterator = new RangeIterator(this, this.getParameters(), this.debug);
+        const iterator = new RangeIterator(this, this.debug);
         return iterator;
     }
+};
+
+
+/**
+ * This method returns the index of the specified item, or zero if it is not in
+ * this range.  If the range does not contain integers, an exception is thrown.
+ * @returns {Number} The index of the specified item.
+ */
+Range.prototype.getIndex = function(item) {
+    var first = this.getFirst();
+    var last = this.getLast();
+    if (first && first.isInteger && last && last.isInteger) {
+        const connector = this.getConnector();
+        first = first.toInteger();
+        if (connector.startsWith('<')) first++;
+        last = last.toInteger();
+        if (connector.endsWith('<')) last--;
+        const index = first + item - 1;
+        if (index > 0) {
+            return index;
+        }
+        return 0;
+    }
+    const exception = new utilities.Exception({
+        $module: '/bali/collections/Range',
+        $procedure: '$getIndex',
+        $exception: '$notEnumerable',
+        $range: this,
+        $text: 'Only an enumerable range is indexed.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
@@ -205,11 +237,10 @@ Range.prototype.addItems = function(items) {
 
 // PRIVATE CLASSES
 
-const RangeIterator = function(range, parameters, debug) {
+const RangeIterator = function(range, debug) {
     abstractions.Iterator.call(
         this,
-        ancestry.concat('/bali/agents/RangeIterator'),
-        parameters,
+        ['/bali/agents/RangeIterator'],
         debug
     );
 

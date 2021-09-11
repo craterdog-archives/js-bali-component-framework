@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const EOL = '\n';  // the POSIX end of line character
 
 
 /**
@@ -41,15 +42,15 @@ exports.Formatter = Formatter;
 // PUBLIC METHODS
 
 /**
- * This abstract method formats the specified component into a formal text string.
+ * This abstract method formats the specified component as a formal source string.
  *
  * @param {Component} component The component to be formatted.
- * @returns {String} The formal text string.
+ * @returns {String} The formal source string.
  */
-Formatter.prototype.formatComponent = function(component) {
+Formatter.prototype.asSource = function(component) {
     const exception = new utilities.Exception({
         $module: '/bali/abstractions/Formatter',
-        $procedure: '$formatComponent',
+        $procedure: '$asSource',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
@@ -59,69 +60,12 @@ Formatter.prototype.formatComponent = function(component) {
 
 
 /**
- * This method formats the specified value as a real number consistent with the
- * Bali Document Notation™.
+ * This method formats the specified component as a formal document.
  *
- * @param {Number} value The real number to be formatted.
- * @returns {String} The formatted text string.
+ * @param {Component} component The component to be formatted.
+ * @returns {String} The formal document.
  */
-Formatter.prototype.formatReal = function(value) {
-    var string = Number(value.toPrecision(14)).toString();
-    switch (string) {
-        case '2.718281828459':
-            return 'e';
-        case '-2.718281828459':
-            return '-e';
-        case '3.1415926535898':
-            return 'π';
-        case '-3.1415926535898':
-            return '-π';
-        case '1.6180339887499':
-            return 'φ';
-        case '-1.6180339887499':
-            return '-φ';
-        case '6.2831853071796':
-            return 'τ';
-        case '-6.2831853071796':
-            return '-τ';
-        case 'Infinity':
-        case '-Infinity':
-            return '∞';
-        case '0':
-        case '-0':
-            return '0';
-        case 'NaN':
-            return 'undefined';
-        default:
-            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
-    }
-};
-
-
-/**
- * This method formats the specified value as an imaginary number consistent with the
- * Bali Document Notation™.
- *
- * @param {Number} value The real number to be formatted.
- * @returns {String} The formatted text string.
- */
-Formatter.prototype.formatImaginary = function(value) {
-    var literal = formatReal(value);
-    switch (literal) {
-        case 'undefined':
-        case '∞':
-            return literal;
-        case 'e':
-        case '-e':
-        case 'π':
-        case '-π':
-        case 'φ':
-        case '-φ':
-        case 'τ':
-        case '-τ':
-            return literal + ' i';  // a space is required for numeric symbols
-        default:
-            return literal + 'i';
-    }
+Formatter.prototype.asDocument = function(component) {
+    return this.asSource(component) + EOL;
 };
 

@@ -58,6 +58,16 @@ const List = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
+    this.getIndex = function(item) {
+        var index = 0;
+        const comparator = new agents.CanonicalComparator(this.debug);
+        array.forEach(function(candidate) {
+            index++;
+            if (comparator.areEqual(candidate, item)) return index;
+        }, this);
+        return 0;
+    };
+
     this.getItem = function(index) {
         const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
@@ -258,7 +268,7 @@ exports.List = List;
  * @returns {Iterator} An iterator for this list.
  */
 List.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
     return iterator;
 };
 

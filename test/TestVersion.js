@@ -127,7 +127,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
     describe('Test version functions', function() {
 
         it('should perform the nextVersion function correctly', function() {
-            const comparator = new agents.Comparator(this.debug);
+            const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.version.nextVersion(bali.version([1])), bali.version([2]))).to.equal(true);
             expect(comparator.areEqual(bali.version.nextVersion(bali.version([1], 2)), bali.version([1, 1]))).to.equal(true);
             expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2])), bali.version([1, 3]))).to.equal(true);

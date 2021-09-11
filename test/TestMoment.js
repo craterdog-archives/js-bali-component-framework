@@ -43,7 +43,7 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
     describe('Test moment methods', function() {
 
         it('should compare two moments correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             const first = bali.component('<2017-12-30T17:38:35>');
             const second = bali.component('<2017-12-30T17:38:39>');
             expect(comparator.compareComponents(first, second)).to.equal(-1);
@@ -96,7 +96,7 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
             const duration = bali.moment.duration(first, second);
             const later = bali.moment.later(first, duration);
             const earlier = bali.moment.earlier(later, duration);
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(earlier, first)).to.equal(true);
             expect(comparator.areEqual(later, second)).to.equal(true);
         });

@@ -52,7 +52,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
             expect(bali.angle(180, bali.angle.DEGREES).toReal()).to.equal(Math.PI);
             expect(bali.angle(-180, bali.angle.DEGREES).toReal()).to.equal(Math.PI);
             expect(bali.angle(-180, bali.angle.DEGREES).toString()).to.equal('~180($units: $degrees)');
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.PI, bali.angle(180, bali.angle.DEGREES))).to.equal(true);
         });
 
@@ -97,7 +97,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
     describe('Test angle functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.inverse(bali.angle(0)), bali.angle.PI)).to.equal(true);
             expect(comparator.areEqual(bali.angle.inverse(bali.angle(Math.PI / 4)), bali.angle(-Math.PI * 3 / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.inverse(bali.angle(Math.PI / 2)), bali.angle(-Math.PI / 2))).to.equal(true);
@@ -110,7 +110,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the complement function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.complement(bali.angle(0)), bali.angle(Math.PI / 2))).to.equal(true);
             expect(comparator.areEqual(bali.angle.complement(bali.angle(Math.PI / 4)), bali.angle(Math.PI / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.complement(bali.angle(Math.PI / 2)), bali.angle(0))).to.equal(true);
@@ -123,7 +123,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the supplement function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.supplement(bali.angle(0)), bali.angle.PI)).to.equal(true);
             expect(comparator.areEqual(bali.angle.supplement(bali.angle(Math.PI / 4)), bali.angle(Math.PI * 3 / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.supplement(bali.angle(Math.PI / 2)), bali.angle(Math.PI / 2))).to.equal(true);
@@ -136,7 +136,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the conjugate function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.conjugate(bali.angle(0)), bali.angle(0))).to.equal(true);
             expect(comparator.areEqual(bali.angle.conjugate(bali.angle(Math.PI / 4)), bali.angle(-Math.PI / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.conjugate(bali.angle(Math.PI / 2)), bali.angle(-Math.PI / 2))).to.equal(true);
@@ -149,7 +149,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the sum function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.sum(bali.angle(0), bali.angle(0)), bali.angle(0))).to.equal(true);
             expect(comparator.areEqual(bali.angle.sum(bali.angle(0), bali.angle(Math.PI / 4)), bali.angle(Math.PI / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.sum(bali.angle(0), bali.angle(Math.PI / 2)), bali.angle(Math.PI / 2))).to.equal(true);
@@ -180,7 +180,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the difference function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.difference(bali.angle(0), bali.angle(0)), bali.angle(0))).to.equal(true);
             expect(comparator.areEqual(bali.angle.difference(bali.angle(0), bali.angle(Math.PI / 4)), bali.angle(-Math.PI / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.difference(bali.angle(0), bali.angle(Math.PI / 2)), bali.angle(-Math.PI / 2))).to.equal(true);
@@ -211,7 +211,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should perform the scaled function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.angle.scaled(bali.angle(0), -1), bali.angle(0))).to.equal(true);
             expect(comparator.areEqual(bali.angle.scaled(bali.angle(Math.PI / 4), -1), bali.angle(-Math.PI / 4))).to.equal(true);
             expect(comparator.areEqual(bali.angle.scaled(bali.angle(Math.PI / 2), -1), bali.angle(-Math.PI / 2))).to.equal(true);
@@ -242,7 +242,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should run round-trip angle methods', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             const expectedValues = [
                 bali.angle.PI,
                 bali.angle(Math.PI / 2),

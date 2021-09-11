@@ -37,12 +37,16 @@ const Exception = function(attributes, cause) {
     this.message = attributes['$text'] || 'An undefined exception occurred.';
     Error.call(this.message, { cause: this.cause });
 
+    this.getAttributes = function() {
+        return attributes;
+    };
+
     // setup the ancestry to look like an Exception is a Component
-    ancestry = [
+    const ancestry = [
         '/bali/utilities/Exponent',
         '/bali/abstractions/Component'
     ];
-    interfaces = [
+    const interfaces = [
         '/bali/interfaces/Reflective'
     ];
 
@@ -78,8 +82,6 @@ const Exception = function(attributes, cause) {
     this.setParameters = function(object) {
         if (object) parameters = this.componentize(object);
     };
-
-    this.setParameters(parameters);
 
     this.isType = function(type) {
         var foundIt = false;
@@ -170,6 +172,6 @@ Exception.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Exception.prototype.acceptVisitor = function(visitor) {
-    visitor.visitComponent(this);
+    visitor.visitComponent(this.getAttributes());
 };
 

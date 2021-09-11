@@ -11,6 +11,7 @@
 
 const grammar = require('../grammar');
 
+exports.ArrayIterator = require('./ArrayIterator').ArrayIterator;
 exports.BDNFormatter = require('./BDNFormatter').BDNFormatter;
 exports.CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
 exports.DeepDuplicator = require('./DeepDuplicator').DeepDuplicator;

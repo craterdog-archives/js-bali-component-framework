@@ -33,7 +33,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             set.removeAll();
             const copy = set.constructor(set.getParameters());
             expect(copy).to.exist;
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(set, copy)).to.equal(true);
             const signum = comparator.compareComponents(set, copy);
             expect(signum).to.equal(0);
@@ -176,7 +176,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
                     bali.set.not(set1);
                 }
             ).to.throw();
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.set.and(set1, set2), set3)).to.equal(true);
             const set4 = bali.set();
             set4.addItem('"alpha"');

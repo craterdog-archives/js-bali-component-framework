@@ -12,6 +12,7 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(debug);
+const comparator = bali.comparator(debug);
 
 
 describe('Bali Nebula™ Component Framework - Pattern', function() {
@@ -24,7 +25,6 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
         });
 
         it('should compare patterns for equality', function() {
-            const comparator = new agents.Comparator();
             expect(comparator.areEqual(bali.pattern(), bali.pattern.NONE)).to.equal(true);
             expect(comparator.areEqual(bali.pattern.NONE, bali.component('none'))).to.equal(true);
             expect(comparator.areEqual(bali.pattern.ANY, bali.component('any'))).to.equal(true);
@@ -49,43 +49,43 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
 
     });
 
-    describe('Test the component isMatchedBy method', function() {
+    describe('Test the comparator doesMatch method', function() {
 
         it('the none pattern should only match the none pattern', function() {
-            expect(bali.pattern().isMatchedBy(bali.pattern.NONE)).to.equal(true);
-            expect(bali.pattern('^none$').isMatchedBy(bali.pattern.NONE)).to.equal(true);
-            expect(bali.pattern.NONE.isMatchedBy(bali.pattern.NONE)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern(), bali.pattern.NONE)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern('^none$'), bali.pattern.NONE)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern.NONE, bali.pattern.NONE)).to.equal(true);
         });
 
         it('nothing else should match the none pattern', function() {
-            expect(bali.pattern.ANY.isMatchedBy(bali.pattern.NONE)).to.equal(false);
-            expect(bali.text('any').isMatchedBy(bali.pattern.NONE)).to.equal(false);
-            expect(bali.text('none').isMatchedBy(bali.pattern.NONE)).to.equal(false);
-            expect(bali.text('foobar').isMatchedBy(bali.pattern.NONE)).to.equal(false);
+            expect(comparator.doesMatch(bali.pattern.ANY, bali.pattern.NONE)).to.equal(false);
+            expect(comparator.doesMatch(bali.text('any'), bali.pattern.NONE)).to.equal(false);
+            expect(comparator.doesMatch(bali.text('none'), bali.pattern.NONE)).to.equal(false);
+            expect(comparator.doesMatch(bali.text('foobar'), bali.pattern.NONE)).to.equal(false);
         });
 
         it('should match the any pattern', function() {
-            expect(bali.pattern().isMatchedBy(bali.pattern.ANY)).to.equal(true);
-            expect(bali.pattern.NONE.isMatchedBy(bali.pattern.ANY)).to.equal(true);
-            expect(bali.pattern.ANY.isMatchedBy(bali.pattern.ANY)).to.equal(true);
-            expect(bali.text('any').isMatchedBy(bali.pattern.ANY)).to.equal(true);
-            expect(bali.text('none').isMatchedBy(bali.pattern.ANY)).to.equal(true);
-            expect(bali.text('foobar').isMatchedBy(bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern(), bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern.NONE, bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.pattern.ANY, bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.text('any'), bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.text('none'), bali.pattern.ANY)).to.equal(true);
+            expect(comparator.doesMatch(bali.text('foobar'), bali.pattern.ANY)).to.equal(true);
         });
 
         it('should match matching patterns', function() {
-            expect(bali.text('foobar').isMatchedBy(bali.text('foobar'))).to.equal(true);
-            expect(bali.range(1, '..', 5).isMatchedBy(bali.range(1, '..', 5))).to.equal(true);
-            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('^"fo+"')]))).to.equal(true);
-            expect(bali.catalog({
+            expect(comparator.doesMatch(bali.text('foobar'), bali.text('foobar'))).to.equal(true);
+            expect(comparator.doesMatch(bali.range(1, '..', 5), bali.range(1, '..', 5))).to.equal(true);
+            expect(comparator.doesMatch(bali.list(['"foo"', '"bar"', '"baz"']), bali.list([bali.pattern('^"fo+"')]))).to.equal(true);
+            expect(comparator.doesMatch(bali.catalog({
                 $foo: '"bar"',
                 $bar: '"baz"',
                 $baz: '"foo"'
-            }).isMatchedBy(bali.catalog({
+            }), bali.catalog({
                 $baz: '"foo"',
                 $foo: 'any'  // should match (order doesn't matter)
             }))).to.equal(true);
-            expect(bali.catalog({
+            expect(comparator.doesMatch(bali.catalog({
                 $foo: [1, 2, 3],
                 $bar: {
                     $alpha: '$a',
@@ -94,7 +94,7 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
                     $delta: '$d',
                     $theta: 'none'
                 }
-            }).isMatchedBy(bali.catalog({
+            }), bali.catalog({
                 $foo: [2],
                 $bar: {
                     $delta: '$d',
@@ -108,25 +108,25 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
         });
 
         it('should not match mismatched patterns', function() {
-            expect(bali.text('foobar').isMatchedBy(bali.text('foobaz'))).to.equal(false);
-            expect(bali.range(1, '..', 5).isMatchedBy(bali.range(0, '..', 5))).to.equal(false);
-            expect(bali.list(['"foo"', '"bar"', '"baz"']).isMatchedBy(bali.list([bali.pattern('bo+')]))).to.equal(false);
-            expect(bali.catalog({
+            expect(comparator.doesMatch(bali.text('foobar'), bali.text('foobaz'))).to.equal(false);
+            expect(comparator.doesMatch(bali.range(1, '..', 5), bali.range(0, '..', 5))).to.equal(false);
+            expect(comparator.doesMatch(bali.list(['"foo"', '"bar"', '"baz"']), bali.list([bali.pattern('bo+')]))).to.equal(false);
+            expect(comparator.doesMatch(bali.catalog({
                 $foo: '"bar"',
                 $bar: '"baz"',
                 $baz: '"foo"'
-            }).isMatchedBy(bali.catalog({
+            }), bali.catalog({
                 $baz: '"foo"',
                 $foo: 'none'  // should fail since there is an actual value for that key
             }))).to.equal(false);
-            expect(bali.catalog({
+            expect(comparator.doesMatch(bali.catalog({
                 $foo: [1, 2, 3],
                 $bar: {
                     $alpha: '$a',
                     $beta: '$b',
                     $delta: '$d'
                 }
-            }).isMatchedBy(bali.catalog({
+            }), bali.catalog({
                 $foo: [4],
                 $bar: {
                     $beta: '$b',

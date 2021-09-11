@@ -33,7 +33,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             list.removeAll();
             const copy = list.constructor(list.getParameters());
             expect(copy).to.exist;
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(list, copy)).to.equal(true);
             const signum = comparator.compareComponents(list, copy);
             expect(signum).to.equal(0);
@@ -205,7 +205,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             const list = bali.list(original);
             const sorted = bali.list(original);
             sorted.shuffleItems();
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(sorted, list)).to.equal(false);
             sorted.sortItems();
             expect(comparator.areEqual(sorted, list)).to.equal(true);
@@ -220,7 +220,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             list2.addItem('"epsilon"');
             list2.addItem('"gamma"');
             const list3 = bali.list(array);
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.list.chain(list1, list2), list3)).to.equal(true);
         });
 

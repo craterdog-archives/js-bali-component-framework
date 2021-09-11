@@ -50,6 +50,6 @@ Parser.prototype.parseSource = function(source) {
 };
 
 Parser.prototype.parseDocument = function(document) {
-    return parseSource(document.slice(0, -1));  // remove the EOL at the end of the file
+    return this.parseSource(document.slice(0, -1));  // remove the EOL at the end of the file
 };
 

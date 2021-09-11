@@ -253,7 +253,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
     }
     const exception = new utilities.Exception({
         $module: '/bali/abstractions/Component',
-        $procedure: '$isMatchedBy',
+        $procedure: '$doesMatch',
         $exception: '$invalidParameter',
         $component: component,
         $parameter: pattern,

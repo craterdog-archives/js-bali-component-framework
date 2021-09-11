@@ -56,22 +56,22 @@ describe('Bali Nebula™ Component Framework - Percentage', function() {
     describe('Test percentage functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            const comparator = new agents.Comparator(this.debug);
+            const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.percentage.inverse(bali.percentage(25)), bali.percentage(-25))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            const comparator = new agents.Comparator(this.debug);
+            const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.percentage.sum(bali.percentage(35), bali.percentage(25)), bali.percentage(60))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            const comparator = new agents.Comparator(this.debug);
+            const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.percentage.difference(bali.percentage(35), bali.percentage(25)), bali.percentage(10))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            const comparator = new agents.Comparator(this.debug);
+            const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.percentage.scaled(bali.percentage(10), 5), bali.percentage(50))).to.equal(true);
         });
 

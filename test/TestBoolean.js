@@ -70,45 +70,45 @@ describe('Bali Nebula™ Component Framework - Boolean', function() {
     describe('Test boolean functions', function() {
 
         it('should perform the logical NOT function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.boolean.not(bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
             expect(comparator.areEqual(bali.boolean.not(bali.boolean.TRUE), bali.boolean.FALSE)).to.equal(true);
         });
 
         it('should perform the logical OR function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.boolean.or(bali.boolean.FALSE, bali.boolean.FALSE), bali.boolean.FALSE)).to.equal(true);
             expect(comparator.areEqual(bali.boolean.or(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.or(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.or(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.or(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.or(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
         });
 
         it('should perform the logical AND function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.boolean.and(bali.boolean.FALSE, bali.boolean.FALSE), bali.boolean.FALSE)).to.equal(true);
-            expect(comparator.areEqual(bali.boolean.and(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.and(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.and(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.and(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.FALSE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.and(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.FALSE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.and(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
         });
 
         it('should perform the logical SANS function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.boolean.sans(bali.boolean.FALSE, bali.boolean.FALSE), bali.boolean.FALSE)).to.equal(true);
-            expect(comparator.areEqual(bali.boolean.sans(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.sans(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.sans(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.sans(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.FALSE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.sans(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.sans(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.FALSE)).to.equal(true);
         });
 
         it('should perform the logical XOR function correctly', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.areEqual(bali.boolean.xor(bali.boolean.FALSE, bali.boolean.FALSE), bali.boolean.FALSE)).to.equal(true);
             expect(comparator.areEqual(bali.boolean.xor(bali.boolean.FALSE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.xor(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
-            expect(comparable.areEqual(bali.boolean.xor(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.xor(bali.boolean.TRUE, bali.boolean.FALSE), bali.boolean.TRUE)).to.equal(true);
+            expect(comparator.areEqual(bali.boolean.xor(bali.boolean.TRUE, bali.boolean.TRUE), bali.boolean.FALSE)).to.equal(true);
         });
 
         it("should perform the De Morgan's Laws correctly", function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             const A = bali.boolean(1);
             const B = bali.boolean(0);
             expect(comparator.areEqual(bali.boolean.not(bali.boolean.and(A, B)), bali.boolean.or(bali.boolean.not(A), bali.boolean.not(B)))).to.equal(true);

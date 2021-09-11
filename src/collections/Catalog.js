@@ -74,6 +74,16 @@ const Catalog = function(parameters, debug) {
         return keys;
     };
 
+    this.getIndex = function(association) {
+        var index = 0;
+        const comparator = new agents.CanonicalComparator(this.debug);
+        array.forEach(function(candidate) {
+            index++;
+            if (comparator.areEqual(candidate, association)) return index;
+        }, this);
+        return 0;
+    };
+
     this.getItem = function(index) {
         const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
@@ -239,7 +249,7 @@ const Catalog = function(parameters, debug) {
         if (association) {
             delete map[key.toString()];
             const index = array.findIndex(function(item) {
-                const comparator = new agents.Comparator(this.debug);
+                const comparator = new agents.CanonicalComparator(this.debug);
                 return comparator.areEqual(item, association);
             });
             array.splice(index, 1);
@@ -322,7 +332,7 @@ Catalog.prototype.toObject = function() {
  * @returns {Iterator} An iterator for this catalog.
  */
 Catalog.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
     return iterator;
 };
 

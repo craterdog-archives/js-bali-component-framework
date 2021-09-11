@@ -39,14 +39,17 @@ const Set = function(parameters, debug) {
         debug
     );
 
-    // the comparator and tree are private attributes so methods that use
-    // them are defined in the constructor
+    // private attributes
     const comparator = new agents.CanonicalComparator(this.debug);
     const tree = new RandomizedTree(comparator);
 
+    this.getComparator = function() {
+        return comparator;
+    };
+
     this.toArray = function() {
         const array = [];
-        const iterator = new SetIterator(tree);
+        const iterator = new SetIterator(tree, this.debug);
         while (iterator.hasNext()) array.push(iterator.getNext());
         return array;
     };
@@ -56,7 +59,7 @@ const Set = function(parameters, debug) {
     };
 
     this.getIterator = function() {
-        return new SetIterator(tree, this.getParameters(), this.debug);
+        return new SetIterator(tree, this.debug);
     };
 
     this.getIndex = function(item) {
@@ -198,7 +201,7 @@ Set.and = function(first, second, debug) {
             '/bali/collections/Set'
         ]);
     }
-    const result = new Set(first.getParameters(), first.comparator, debug);
+    const result = new Set(first.getParameters(), debug);
     const iterator = first.getIterator();
     while (iterator.hasNext()) {
         const item = iterator.getNext();
@@ -229,7 +232,7 @@ Set.sans = function(first, second, debug) {
             '/bali/collections/Set'
         ]);
     }
-    const result = new Set(first.getParameters(), first.comparator, debug);
+    const result = new Set(first.getParameters(), debug);
     result.addItems(first);
     result.removeItems(second);
     return result;
@@ -255,7 +258,7 @@ Set.or = function(first, second, debug) {
             '/bali/collections/Set'
         ]);
     }
-    const result = new Set(first.getParameters(), first.comparator, debug);
+    const result = new Set(first.getParameters(), debug);
     result.addItems(first);
     result.addItems(second);
     return result;
@@ -281,8 +284,8 @@ Set.xor = function(first, second, debug) {
             '/bali/collections/Set'
         ]);
     }
-    const comparator = first.comparator;
-    const result = new Set(first.getParameters(), comparator, debug);
+    const result = new Set(first.getParameters(), debug);
+    const comparator = result.getComparator();
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();
@@ -325,11 +328,10 @@ Set.xor = function(first, second, debug) {
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
-const SetIterator = function(tree, parameters, debug) {
+const SetIterator = function(tree, debug) {
     abstractions.Iterator.call(
         this,
-        ancestry.concat('/bali/agents/SetIterator'),
-        parameters,
+        ['/bali/agents/SetIterator'],
         debug
     );
 
@@ -413,7 +415,7 @@ RandomizedTree.prototype.contains = function(value) {
 RandomizedTree.prototype.index = function(value) {
     var index = 0;
     var candidate = minimum(this.root);
-    while (candidate && !this.comparator.componentsAreEqual(candidate.value, value)) {
+    while (candidate && !this.comparator.areEqual(candidate.value, value)) {
         candidate = successor(candidate);
         index++;
     }

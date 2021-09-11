@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 const Angle = require('./Angle').Angle;
 
 
@@ -240,7 +241,7 @@ Complex.sum = function(first, second, debug) {
     }
 
     // handle the special cases
-    const comparator = new agents.Comparator(this.debug);
+    const comparator = new agents.CanonicalComparator(this.debug);
     if (first.isUndefined() || second.isUndefined()) return new Complex([NaN, undefined], first.getParameters(), debug);
     if (first.isInfinite() || second.isInfinite()) return new Complex([Infinity, undefined], first.getParameters(), debug);
     if (comparator.areEqual(first, Complex.inverse(second))) return new Complex([0, undefined], first.getParameters(), debug);

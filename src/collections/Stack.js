@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 /*
@@ -68,6 +69,16 @@ const Stack = function(parameters, debug) {
         });
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
+    };
+
+    this.getIndex = function(item) {
+        var index = 0;
+        const comparator = new agents.CanonicalComparator(this.debug);
+        array.forEach(function(candidate) {
+            index++;
+            if (comparator.areEqual(candidate, item)) return index;
+        }, this);
+        return 0;
     };
 
     this.addItem = function(item) {
@@ -131,7 +142,7 @@ exports.Stack = Stack;
  * @returns {Iterator} An iterator for this stack.
  */
 Stack.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
     return iterator;
 };
 

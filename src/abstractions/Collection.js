@@ -174,39 +174,20 @@ Collection.prototype.addItems = function(items) {
 
 
 /**
- * This method returns the index of the specified item in this collection.
- * NOTE: It is tempting when dealing with a collection that uses an array
- * as an underlying data composite to use the Array.indexOf() method to
- * provide a faster implementation of this method. However, the indexOf()
- * method uses strict equality checks which for items that are objects
- * returns false even when all attributes on each item are the same. Therefore
- * it is better not to override this method in that case.
+ * This abstract method returns the index of the specified item in this collection.
  *
  * @param {Object} item The item to be looked up.
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
-        ]);
-    }
-    var index = 0;
-    const iterator = this.getIterator();
-    while (iterator.hasNext()) {
-        const candidate = iterator.getNext();
-        index++;
-        const comparator = new agents.Comparator(this.debug);
-        if (comparator.areEqual(candidate, item)) return index;
-    }
-    return 0;  // not found
+    const exception = new utilities.Exception({
+        $module: '/bali/abstractions/Collection',
+        $procedure: '$getIndex',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 

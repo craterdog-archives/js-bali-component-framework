@@ -41,10 +41,10 @@ const BDNFormatter = function(indentation, debug) {
     // private attribute
     indentation = indentation || 0;
 
-    this.formatComponent = function(component) {
+    this.asSource = function(component) {
         if (this.debug > 1) {
             const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/agents/BDNFormatter', '$formatComponent', '$component', component, [
+            validator.validateType('/bali/agents/BDNFormatter', '$asSource', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -135,7 +135,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             });
             throw exception;
     }
-    this.result += '~' + this.formatReal(value);
+    this.result += '~' + formatReal(value);
     const parameters = angle.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(angle);
@@ -217,7 +217,7 @@ FormattingVisitor.prototype.visitAttributeExpression = function(node) {
 FormattingVisitor.prototype.visitBinary = function(binary) {
     var value = binary.getValue();
     const format = this.getFormat(binary, '$encoding', '$base32');
-    const decoder = new Decoder(0, this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
     switch (format) {
         case '$base2':
             value = decoder.base2Encode(value);
@@ -665,21 +665,21 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         this.result += '0';
     } else if (number.getReal() !== 0 && number.getImaginary() === 0) {
         // it is a pure real number
-        this.result += this.formatReal(number.getReal());
+        this.result += formatReal(number.getReal());
     } else if (number.getReal() === 0 && number.getImaginary() !== 0) {
         // it is a pure imaginary number
-        this.result += this.formatImaginary(number.getImaginary());
+        this.result += formatImaginary(number.getImaginary());
     } else {
         // must be a complex number
         this.result += '(';
         if (isPolar) {
-            this.result += this.formatReal(number.getMagnitude());
+            this.result += formatReal(number.getMagnitude());
             this.result += ' e^~';
-            this.result += this.formatImaginary(number.getPhase().getValue());
+            this.result += formatImaginary(number.getPhase().getValue());
         } else {
-            this.result += this.formatReal(number.getReal());
+            this.result += formatReal(number.getReal());
             this.result += ', ';
-            this.result += this.formatImaginary(number.getImaginary());
+            this.result += formatImaginary(number.getImaginary());
         }
         this.result += ')';
     }
@@ -740,7 +740,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 // percentage: PERCENTAGE
 FormattingVisitor.prototype.visitPercentage = function(percentage) {
     const value = percentage.getValue();
-    this.result += this.formatReal(value) + '%';
+    this.result += formatReal(value) + '%';
     const parameters = percentage.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(percentage);
@@ -988,5 +988,59 @@ FormattingVisitor.prototype.visitWithClause = function(node) {
     this.result += ' do ';
     const block = node.getItem(size);
     block.acceptVisitor(this);
+};
+
+
+const formatReal = function(value) {
+    var string = Number(value.toPrecision(14)).toString();
+    switch (string) {
+        case '2.718281828459':
+            return 'e';
+        case '-2.718281828459':
+            return '-e';
+        case '3.1415926535898':
+            return 'π';
+        case '-3.1415926535898':
+            return '-π';
+        case '1.6180339887499':
+            return 'φ';
+        case '-1.6180339887499':
+            return '-φ';
+        case '6.2831853071796':
+            return 'τ';
+        case '-6.2831853071796':
+            return '-τ';
+        case 'Infinity':
+        case '-Infinity':
+            return '∞';
+        case '0':
+        case '-0':
+            return '0';
+        case 'NaN':
+            return 'undefined';
+        default:
+            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
+    }
+};
+
+
+const formatImaginary = function(value) {
+    var literal = formatReal(value);
+    switch (literal) {
+        case 'undefined':
+        case '∞':
+            return literal;
+        case 'e':
+        case '-e':
+        case 'π':
+        case '-π':
+        case 'φ':
+        case '-φ':
+        case 'τ':
+        case '-τ':
+            return literal + ' i';  // a space is required for numeric symbols
+        default:
+            return literal + 'i';
+    }
 };
 

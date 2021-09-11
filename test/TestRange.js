@@ -188,7 +188,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         const finite = bali.range(-2, '..', 2);
 
         it('should be able to compare a negative range against the others', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.compareComponents(negative, negative)).to.equal(0);
             expect(comparator.compareComponents(negative, positive)).to.equal(-1);
             expect(comparator.compareComponents(negative, infinite)).to.equal(-1);
@@ -196,7 +196,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare a positive range against the others', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.compareComponents(positive, negative)).to.equal(1);
             expect(comparator.compareComponents(positive, positive)).to.equal(0);
             expect(comparator.compareComponents(positive, infinite)).to.equal(1);
@@ -204,7 +204,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare an infinite range against the others', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.compareComponents(infinite, negative)).to.equal(1);
             expect(comparator.compareComponents(infinite, positive)).to.equal(-1);
             expect(comparator.compareComponents(infinite, infinite)).to.equal(0);
@@ -212,7 +212,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare a finite range against the others', function() {
-            const comparator = new agents.Comparator();
+            const comparator = new bali.comparator();
             expect(comparator.compareComponents(finite, negative)).to.equal(1);
             expect(comparator.compareComponents(finite, positive)).to.equal(-1);
             expect(comparator.compareComponents(finite, infinite)).to.equal(1);
