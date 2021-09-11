@@ -13,7 +13,7 @@
  * This collection class implements a stack (LIFO) data composite.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -72,7 +72,7 @@ const Stack = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Stack', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -122,3 +122,16 @@ const Stack = function(parameters, debug) {
 Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
+
+
+/**
+ * This method returns an object that can be used to iterate over the items in
+ * this stack.
+ *
+ * @returns {Iterator} An iterator for this stack.
+ */
+Stack.prototype.getIterator = function() {
+    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    return iterator;
+};
+

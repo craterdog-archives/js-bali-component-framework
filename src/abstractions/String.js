@@ -9,18 +9,16 @@
  ************************************************************************/
 'use strict';
 
-
 /*
- * This abstract class defines the invariant methods that all strings must inherit.
+ * This abstract class defines the invariant methods that all strings must support.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const Element = require('./Element').Element;
+const Iterator = require('./Iterator').Iterator;
 
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new string with the specified ancestry and interfaces
+ * This constructor creates a new string with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
@@ -74,7 +72,7 @@ Stryng.prototype.isEmpty = function() {
  * @returns {Number} The number of items that this string has.
  */
 Stryng.prototype.getSize = function() {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
@@ -91,7 +89,7 @@ Stryng.prototype.getSize = function() {
  * @returns {Iterator} An iterator for this string.
  */
 Stryng.prototype.getIterator = function() {
-    const iterator = new StringIterator(this.getValue());
+    const iterator = new StringIterator(this.getValue(), this.getParameters(), this.debug);
     return iterator;
 };
 
@@ -104,7 +102,7 @@ Stryng.prototype.getIterator = function() {
  * @returns {Object} The item at the position in this string.
  */
 Stryng.prototype.getItem = function(index) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
@@ -123,7 +121,7 @@ Stryng.prototype.getItem = function(index) {
  * @returns {Stryng} A new string containing the requested items.
  */
 Stryng.prototype.getItems = function(range) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItems',
         $exception: '$abstractMethod',
@@ -134,49 +132,10 @@ Stryng.prototype.getItems = function(range) {
 };
 
 
-/**
- * This method converts negative item indexes into their corresponding positive
- * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
- * string is empty then the resulting index will be zero.
- *
- * The mapping between indexes is as follows:
- * <pre>
- * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
- * Positive Indexes:    1         2          3          4     ...    N
- * </pre>
- *
- * @param {Number} index The index to be normalized [-N..N].
- * @returns {Number} The normalized [1..N] index.
- */
-Stryng.prototype.normalizedIndex = function(index) {
-    if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/abstractions/String', '$normalizedIndex', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    const size = this.getSize();
-    if (index > size || index < -size) {
-        const exception = new agents.Exception({
-            $module: '/bali/abstractions/String',
-            $procedure: '$normalizedIndex',
-            $exception: '$invalidIndex',
-            $index: index,
-            $range: '' + -size + '..' + size,
-            $text: 'The index is out of range.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
-    if (index < 0) index = index + size + 1;
-    return index;
-};
-
-
 // PRIVATE CLASSES
 
-const StringIterator = function(string) {
-    agents.Iterator.call(this);
+const StringIterator = function(string, parameters, debug) {
+    Iterator.call(this);
     var slot = 0;  // the slot before the first number
     const size = string.length;  // static so we can cache it here
 
@@ -212,5 +171,5 @@ const StringIterator = function(string) {
 
     return this;
 };
-StringIterator.prototype = Object.create(agents.Iterator.prototype);
+StringIterator.prototype = Object.create(Iterator.prototype);
 StringIterator.prototype.constructor = StringIterator;

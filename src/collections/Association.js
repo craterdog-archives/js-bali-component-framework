@@ -13,7 +13,7 @@
  * This composite class implements an association between a key and a value. It is used by the
  * catalog class.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -36,7 +36,7 @@ const Association = function(key, value, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/collections/Association', '$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
@@ -69,7 +69,7 @@ const Association = function(key, value, debug) {
 
     this.setValue = function(newValue) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Association', '$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',

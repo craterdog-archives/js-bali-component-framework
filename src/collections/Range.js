@@ -12,7 +12,7 @@
 /*
  * This collection class captures the state and methods associated with a range component.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,7 +39,7 @@ const Range = function(first, connector, last, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/collections/Range', '$Range', '$first', first, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -129,7 +129,7 @@ Range.prototype.getSize = function() {
         if (size > 0) {
             return size;
         }
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/collections/Range',
             $procedure: '$getSize',
             $exception: '$invalidSize',
@@ -140,7 +140,7 @@ Range.prototype.getSize = function() {
         if (this.debug > 0) console.error(exception.toString());
         throw exception;
     }
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$getSize',
         $exception: '$notEnumerable',
@@ -159,7 +159,7 @@ Range.prototype.getSize = function() {
  */
 Range.prototype.getIterator = function() {
     if (this.getSize()) {  // will throw an exception if range is not enumerable
-        const iterator = new RangeIterator(this);
+        const iterator = new RangeIterator(this, this.getParameters(), this.debug);
         return iterator;
     }
 };
@@ -172,7 +172,7 @@ Range.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Range.prototype.addItem = function(item) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItem',
         $exception: '$invalidMethod',
@@ -191,7 +191,7 @@ Range.prototype.addItem = function(item) {
  * @returns {Number} The number of items that were successfully added to the collection.
  */
 Range.prototype.addItems = function(items) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItems',
         $exception: '$invalidMethod',
@@ -205,8 +205,13 @@ Range.prototype.addItems = function(items) {
 
 // PRIVATE CLASSES
 
-const RangeIterator = function(range) {
-    agents.Iterator.call(this);
+const RangeIterator = function(range, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ancestry.concat('/bali/agents/RangeIterator'),
+        parameters,
+        debug
+    );
 
     const size = range.getSize();  // will throw an exception if range is not enumerable
     var first = range.getFirst().toInteger();
@@ -244,6 +249,6 @@ const RangeIterator = function(range) {
 
     return this;
 };
-RangeIterator.prototype = Object.create(agents.Iterator.prototype);
+RangeIterator.prototype = Object.create(abstractions.Iterator.prototype);
 RangeIterator.prototype.constructor = RangeIterator;
 

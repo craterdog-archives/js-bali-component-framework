@@ -23,8 +23,9 @@
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 // PUBLIC FUNCTIONS
@@ -58,19 +59,19 @@ const List = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.setItem = function(index, item) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -84,7 +85,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -93,7 +94,7 @@ const List = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -110,8 +111,8 @@ const List = function(parameters, debug) {
     };
 
     this.insertItem = function(index, item) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$insertItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -126,13 +127,13 @@ const List = function(parameters, debug) {
             ]);
         }
         item = this.componentize(item, this.debug);
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
 
     this.insertItems = function(index, items) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$insertItems', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -156,19 +157,19 @@ const List = function(parameters, debug) {
     };
 
     this.removeItem = function(index) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 1);
     };
 
     this.removeItems = function(range) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
                 '/javascript/String',
                 '/bali/collections/Range'
@@ -187,8 +188,8 @@ const List = function(parameters, debug) {
         } else {
             last = last.toInteger();
         }
-        first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
-        last = this.normalizedIndex(last) - 1;  // zero-based indexing for JS
+        first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
+        last = validator.normalizeIndex(this, last) - 1;  // zero-based indexing for JS
         array.splice(first, last - first + 1);  // include the last item
     };
 
@@ -197,7 +198,7 @@ const List = function(parameters, debug) {
     };
 
     this.sortItems = function(sorter) {
-        sorter = sorter || new agents.Sorter(new agents.Comparator(this.debug), this.debug);
+        sorter = sorter || new agents.MergeSorter(new agents.CanonicalComparator(this.debug), this.debug);
         sorter.sortCollection(this);
     };
 
@@ -206,7 +207,7 @@ const List = function(parameters, debug) {
     };
 
     this.shuffleItems = function() {
-        const generator = new agents.Generator(this.debug);
+        const generator = new utilities.Generator(this.debug);
         const size = this.getSize();
         for (var index = size; index > 1; index--) {
             const random = generator.generateIndex(index);  // in range 1..index ordinal indexing
@@ -218,7 +219,7 @@ const List = function(parameters, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -229,7 +230,7 @@ const List = function(parameters, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/List', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -248,6 +249,20 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
+// PUBLIC FUNCTIONS
+
+/**
+ * This method returns an object that can be used to iterate over the items in
+ * this list.
+ *
+ * @returns {Iterator} An iterator for this list.
+ */
+List.prototype.getIterator = function() {
+    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    return iterator;
+};
+
+
 // CHAINABLE LIBRARY FUNCTIONS
 
 /**
@@ -261,7 +276,7 @@ exports.List = List;
  */
 List.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/List', '$chain', '$first', first, [
             '/bali/collections/List'
         ]);

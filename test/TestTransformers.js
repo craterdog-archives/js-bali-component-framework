@@ -44,7 +44,8 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     const item = array[i];
                     const string = item.toString();
                     const element = bali.component(string);
-                    expect(element.isEqualTo(item)).to.equal(true);
+                    const comparator = new agents.Comparator();
+                    expect(comparator.areEqual(element, item)).to.equal(true);
                 }
             }
         });

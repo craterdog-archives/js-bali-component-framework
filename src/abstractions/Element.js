@@ -9,18 +9,15 @@
  ************************************************************************/
 'use strict';
 
-/**
- * This abstract class defines the methods that all elemental components must support.
+/*
+ * This abstract class defines the invariant methods that all elements must support.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
-//const Exception = require('../trees/Exception').Exception;
 
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new elemental component with the specified ancestry and interfaces
+ * This constructor creates a new elemental component with the specified ancestry and interfaces
  * with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
@@ -53,7 +50,7 @@ exports.Element = Element;
  * @returns {Object} The raw value of the element.
  */
 Element.prototype.getValue = function() {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/Element',
         $procedure: '$getValue',
         $exception: '$abstractMethod',

@@ -14,18 +14,33 @@
  * component framework.
  */
 const EOL = '\n';
-const agents = require('./src/agents');
-const abstractions = require('./src/abstractions');  // depends on agents
-const elements = require('./src/elements');  // depends on abstractions
-const trees = require('./src/trees');  // depends on elements
-const strings = require('./src/strings');  // depends on abstractions
+const utilities = require('./src/utilities');
+const abstractions = require('./src/abstractions');
+const elements = require('./src/elements');
+const strings = require('./src/strings');
 const collections = require('./src/collections');
-agents.Parser = require('./src/agents/Parser').Parser;  // depends on everything (must be last)
+const trees = require('./src/trees');
+const agents = require('./src/agents');
+agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
 
 
-// PRIVATE FUNCTIONS
+// AVOIDING CIRCULAR DEPENDENCIES
 
-/*                            AVOIDING CIRCULAR DEPENDENCIES
+/*
+ * This function defines the canonical toString() method for all Component classes and the
+ * Exception class (which needs to look like a Component class).  It must be declared and
+ * assigned to these classes here instead of in their class definitions to avoid circular
+ * dependencies.
+ */
+const toString = function() {
+    const formatter = new agents.BDNFormatter();
+    return formatter.formatComponent(this);
+};
+utilities.Exception.prototype.toString = toString;
+abstractions.Component.prototype.toString = toString;
+
+
+/*
  * This function is used to convert most JavaScript values into their corresponding
  * Bali Nebula™ component values.  It is needed by the Component and Exception classes and
  * depends on everything else so it must be injected into them after everything has been
@@ -52,7 +67,7 @@ const componentize = function(value, debug) {
         case 'string':
             try {
                 // first try to parse it as a Bali Document Notation™ source string
-                const parser = new agents.Parser(0);  // don't log parsing exceptions here
+                const parser = new agents.BDNParser();  // don't log parsing exceptions here
                 component = parser.parseSource(value);
             } catch (cause) {
                 // otherwise convert it to a text element
@@ -84,8 +99,8 @@ const componentize = function(value, debug) {
     }
     return component;
 };
+utilities.Exception.prototype.componentize = componentize;
 abstractions.Component.prototype.componentize = componentize;
-agents.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE
@@ -105,16 +120,6 @@ agents.Exception.prototype.componentize = componentize;
  *
  * Each function exposed by the interface also supports an optional debug argument as its last
  * argument. If specified, it will override the value specified for the entire interface.
- *
- * @param {Boolean|Number} defaultLevel An optional number in the range 0..3 that controls
- * the level of debugging that occurs:
- * <pre>
- *   0 (or false): debugging turned off
- *   1 (or true): log exceptions to console.error
- *   2: perform argument validation and log exceptions to console.error
- *   3: perform argument validation and log exceptions to console.error and debug info to console.log
- * </pre>
- * @returns {Object} An object that implements the component framework interface.
  */
 exports.api = function(defaultLevel) {
     if (defaultLevel === null || defaultLevel === undefined) defaultLevel = 0;  // default is off
@@ -258,13 +263,13 @@ exports.api = function(defaultLevel) {
     // COMPARATOR
     const comparator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Comparator(debug);
+        return new agents.CanonicalComparator(undefined, debug);
     };
 
     // COMPONENT
     const component = function(bdn, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const parser = new agents.Parser(debug);
+        const parser = new agents.BDNParser(undefined, debug);
         if (bdn.slice(-1) === EOL) {
             return parser.parseDocument(bdn);
         }
@@ -274,19 +279,19 @@ exports.api = function(defaultLevel) {
     // CONFIGURATOR
     const configurator = function(filename, directory, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Configurator(filename, directory, debug);
+        return new utilities.Configurator(filename, directory, debug);
     };
 
     // CONTROLLER
     const controller = function(eventTypes, nextStates, currentState, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Controller(eventTypes, nextStates, currentState, debug);
+        return new utilities.Controller(eventTypes, nextStates, currentState, debug);
     };
 
     // DECODER
     const decoder = function(indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Decoder(indentation, debug);
+        return new utilities.Decoder(indentation, debug);
     };
 
     // DURATION
@@ -321,7 +326,7 @@ exports.api = function(defaultLevel) {
             error = cause;
         } else {
             // wrap the cause in a new exception
-            error = new agents.Exception(attributes, cause);
+            error = new utilities.Exception(attributes, cause);
             if (cause) error.stack = cause.stack;
         }
         return error;
@@ -330,7 +335,7 @@ exports.api = function(defaultLevel) {
     // GENERATOR
     const generator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Generator(debug);
+        return new utilities.Generator(debug);
     };
 
     // INSTANCE
@@ -557,9 +562,9 @@ exports.api = function(defaultLevel) {
 
     // SORTER
     const sorter = function(comparator, debug) {
-        if (comparator === undefined) comparator = new agents.Comparator(debug);
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Sorter(comparator, debug);
+        if (comparator === undefined) comparator = new agents.CanonicalComparator(undefined, debug);
+        return new agents.MergeSorter(comparator, undefined, debug);
     };
 
     // STACK
@@ -599,7 +604,7 @@ exports.api = function(defaultLevel) {
     // TYPE
     const type = function(component, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const type = new agents.Validator(debug).getType(component);
+        const type = new utilities.Validator(debug).getType(component);
         const value = type.split('/').slice(1);
         return new strings.Name(value, undefined, debug);
     };
@@ -607,7 +612,7 @@ exports.api = function(defaultLevel) {
     // VALIDATOR
     const validator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.Validator(debug);
+        return new utilities.Validator(debug);
     };
 
     // VERSION
@@ -626,11 +631,6 @@ exports.api = function(defaultLevel) {
     version.chain = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return strings.Version.chain(first, second, debug);
-    };
-
-    // VISITOR
-    const visitor = function() {
-        return abstractions.Visitor;
     };
 
 
@@ -666,13 +666,14 @@ exports.api = function(defaultLevel) {
     probability.CERTAIN = probability(true, undefined, defaultLevel);
 
     return {
+        // instance constructors
         angle: angle,
         association: association,
         binary: binary,
         boolean: boolean,
         catalog: catalog,
-        component: component,
         comparator: comparator,
+        component: component,
         controller: controller,
         configurator: configurator,
         decoder: decoder,
@@ -693,6 +694,7 @@ exports.api = function(defaultLevel) {
         range: range,
         resource: resource,
         set: set,
+        sorter: sorter,
         stack: stack,
         symbol: symbol,
         tag: tag,
@@ -700,6 +702,15 @@ exports.api = function(defaultLevel) {
         type: type,
         validator: validator,
         version: version,
-        visitor: visitor
+
+        // abstract classes from whence to inherit
+        Collection: abstractions.Collection,
+        Comparator: abstractions.Comparator,
+        Component: abstractions.Component,
+        Element: abstractions.Element,
+        Iterator: abstractions.Iterator,
+        String: abstractions.String,
+        Sorter: abstractions.Sorter,
+        Visitor: abstractions.Visitor
     };
 };

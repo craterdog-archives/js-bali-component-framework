@@ -58,7 +58,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         ]);
     }
     if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/agents/Controller',
             $procedure: '$Controller',
             $exception: '$invalidType',
@@ -68,7 +68,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         throw exception;
     }
     if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/agents/Controller',
             $procedure: '$Controller',
             $exception: '$noStates',
@@ -80,7 +80,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     const numberOfEventTypes = eventTypes.length;
     eventTypes.forEach(function(event) {
         if (typeof event !== 'string') {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidType',
@@ -94,7 +94,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     var numberOfStates = 0;
     for (const state in nextStates) {
         if (typeof state !== 'string') {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidType',
@@ -106,7 +106,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         }
         currentState = currentState || state;
         if (nextStates[state].length !== numberOfEventTypes) {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/agents/Controller',
                 $procedure: '$Controller',
                 $exception: '$invalidParameter',
@@ -119,7 +119,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
         }
         nextStates[state].forEach(function(transition) {
             if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
-                const exception = new agents.Exception({
+                const exception = new utilities.Exception({
                     $module: '/bali/agents/Controller',
                     $procedure: '$Controller',
                     $exception: '$invalidParameter',
@@ -141,7 +141,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     this.validateEvent = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/agents/Controller',
                 $procedure: '$validateEvent',
                 $exception: '$invalidEvent',
@@ -157,7 +157,7 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     this.transitionState = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/agents/Controller',
                 $procedure: '$transitionState',
                 $exception: '$invalidEvent',

@@ -9,51 +9,59 @@
  ************************************************************************/
 'use strict';
 
-/**
- * This class implements a duplicator that can be used to perform a deep copy of a
- * component.  Since elements are immutable, they are not copied, only referenced.
+/*
+ * This class implements the methods for a deep duplicator agent. It performs a
+ * deep copy of a component. Since elements are immutable, they are not copied,
+ * only referenced.
  */
-const Validator = require('./Validator').Validator;
-const Visitor = require('./Visitor').Visitor;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new duplicator object.
+ * This constructor creates a new duplicator agent that can be used to create a deep copy
+ * of any component.
  *
  * @param {Number} debug A number in the range 0..3.
- * @returns {Duplicator} The new component duplicator.
+ * @returns {Duplicator} The new deep duplicator agent.
  */
-const Duplicator = function(debug) {
-    debug = debug || 0;
+const DeepDuplicator = function(debug) {
+    abstractions.Duplicator.call(
+        this,
+        ['/bali/agents/DeepDuplicator'],
+        debug
+    );
 
-    this.duplicateComponent = function(component, levels) {
+    this.duplicateComponent = function(component) {
         if (debug > 1) {
-            const validator = new Validator(debug);
-            validator.validateType('/bali/agents/Duplicator', '$duplicateComponent', '$component', component, [
+            const validator = new utilities.Validator(debug);
+            validator.validateType('/bali/agents/DeepDuplicator', '$duplicateComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
-        levels = levels || Number.MAX_SAFE_INTEGER;  // default is all levels
-        const visitor = new DuplicatingVisitor(levels, debug);
+        const visitor = new DuplicatingVisitor(debug);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
 
     return this;
 };
-Duplicator.prototype.constructor = Duplicator;
-exports.Duplicator = Duplicator;
+DeepDuplicator.prototype = Object.create(abstractions.Duplicator.prototype);
+DeepDuplicator.prototype.constructor = DeepDuplicator;
+exports.DeepDuplicator = DeepDuplicator;
 
 
 // PRIVATE CLASSES
 
 const DuplicatingVisitor = function(debug) {
-    Visitor.call(this, debug);
+    abstractions.Visitor.call(
+        this,
+        ['/bali/agents/DuplicatingVisitor'],
+        debug
+    );
     return this;
 };
-DuplicatingVisitor.prototype = Object.create(Visitor.prototype);
+DuplicatingVisitor.prototype = Object.create(abstractions.Visitor.prototype);
 DuplicatingVisitor.prototype.constructor = DuplicatingVisitor;
 
 

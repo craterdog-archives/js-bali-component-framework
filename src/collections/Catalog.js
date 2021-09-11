@@ -15,8 +15,9 @@
  * multiple keys. The key-value associations are maintained in the order in which they were
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 const Association = require('./Association').Association;
 const List = require('./List').List;
 
@@ -74,19 +75,19 @@ const Catalog = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.addItem = function(association) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
                 '/javascript/Undefined',
                 '/bali/collections/Association'
@@ -104,7 +105,7 @@ const Catalog = function(parameters, debug) {
 
     this.addItems = function(associations) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -146,7 +147,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -162,7 +163,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$getAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -188,7 +189,7 @@ const Catalog = function(parameters, debug) {
 
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$setAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -222,7 +223,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$removeAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -238,7 +239,8 @@ const Catalog = function(parameters, debug) {
         if (association) {
             delete map[key.toString()];
             const index = array.findIndex(function(item) {
-                return item.isEqualTo(association);
+                const comparator = new agents.Comparator(this.debug);
+                return comparator.areEqual(item, association);
             });
             array.splice(index, 1);
             return true;
@@ -248,7 +250,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -280,7 +282,7 @@ const Catalog = function(parameters, debug) {
     };
 
     this.sortItems = function(sorter) {
-        sorter = sorter || new agents.Sorter(new agents.Comparator(this.debug), this.debug);
+        sorter = sorter || new agents.MergeSorter(new agents.CanonicalComparator(this.debug), this.debug);
         sorter.sortCollection(this);
     };
 
@@ -313,6 +315,18 @@ Catalog.prototype.toObject = function() {
 };
 
 
+/**
+ * This method returns an object that can be used to iterate over the items in
+ * this catalog.
+ *
+ * @returns {Iterator} An iterator for this catalog.
+ */
+Catalog.prototype.getIterator = function() {
+    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    return iterator;
+};
+
+
 // PUBLIC FUNCTIONS
 
 /**
@@ -327,7 +341,7 @@ Catalog.prototype.toObject = function() {
  */
 Catalog.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$chain', '$first', first, [
             '/bali/collections/Catalog'
         ]);
@@ -355,7 +369,7 @@ Catalog.chain = function(first, second, debug) {
  */
 Catalog.extraction = function(catalog, keys, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
             '/bali/collections/Catalog'
         ]);

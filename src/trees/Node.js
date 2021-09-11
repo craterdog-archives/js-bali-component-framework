@@ -17,7 +17,7 @@
  * used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -51,18 +51,18 @@ const Node = function(type, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = utilities.Validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.getItems = function(range) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$getItems', '$range', range, [
                 '/javascript/String',
                 '/bali/collections/Range'
@@ -83,7 +83,7 @@ const Node = function(type, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
@@ -94,7 +94,7 @@ const Node = function(type, debug) {
 
     this.setItem = function(index, item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
@@ -108,7 +108,7 @@ const Node = function(type, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // JS uses zero based indexing
+        index = utilities.Validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -117,7 +117,7 @@ const Node = function(type, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -128,7 +128,7 @@ const Node = function(type, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/trees/Node', '$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
@@ -183,50 +183,12 @@ Node.prototype.getSize = function() {
 
 /**
  * This method returns an object that can be used to iterate over the items in
- * this composite.
- * @returns {Iterator} An iterator for this composite.
+ * this node.
+ *
+ * @returns {Iterator} An iterator for this node.
  */
 Node.prototype.getIterator = function() {
-    const iterator = new abstractions.Collection.Iterator(this.toArray());
+    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
     return iterator;
-};
-
-
-/**
- * This method converts negative item indexes into their corresponding positive
- * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
- * composite is empty then the resulting index will be zero.
- *
- * The mapping between indexes is as follows:
- * <pre>
- * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
- * Positive Indexes:    1         2          3          4     ...    N
- * </pre>
- *
- * @param {Number} index The index to be normalized -N..N.
- * @returns {Number} The normalized 1..N index.
- */
-Node.prototype.normalizedIndex = function(index) {
-    if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/trees/Node', '$normalizedIndex', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    const size = this.getSize();
-    if (index > size || index < -size) {
-        const exception = new agents.Exception({
-            $module: '/bali/trees/Node',
-            $procedure: '$normalizedIndex',
-            $exception: '$invalidIndex',
-            $index: index,
-            $range: '' + -size + '..' + size,
-            $text: 'The index is out of range.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
-    if (index < 0) index = index + size + 1;
-    return index;
 };
 

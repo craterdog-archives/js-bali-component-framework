@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * version string element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,7 +39,7 @@ const Version = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$Version', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Array'
@@ -48,7 +48,7 @@ const Version = function(value, parameters, debug) {
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/elements/Version',
             $procedure: '$version',
             $exception: '$invalidParameter',
@@ -88,13 +88,13 @@ Version.prototype.getSize = function() {
  * @returns {Number} The version number at the specified index.
  */
 Version.prototype.getItem = function(index) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -106,8 +106,8 @@ Version.prototype.getItem = function(index) {
  * @returns {Version} A new version string containing the requested version numbers.
  */
 Version.prototype.getItems = function(range) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
@@ -126,8 +126,8 @@ Version.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
-    last = this.normalizedIndex(last);  // slice() is exclusive of last index
+    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
+    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
     const array = this.getValue().slice(first, last);
     return new Version(array, this.getParameters(), this.debug);
 };
@@ -154,7 +154,7 @@ Version.prototype.getItems = function(range) {
  */
 Version.nextVersion = function(currentVersion, level, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Version', '$nextVersion', '$level', level, [
             '/javascript/Undefined',
             '/javascript/Number'
@@ -193,7 +193,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
             '/bali/elements/Version'
         ]);
@@ -233,7 +233,7 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
  */
 Version.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Version', '$chain', '$first', first, [
             '/bali/elements/Version'
         ]);

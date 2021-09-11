@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * symbol element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,14 +39,14 @@ const Symbol = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
             '/javascript/String'
         ]);
     }
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/elements/Symbol',
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
@@ -87,13 +87,13 @@ Symbol.prototype.getSize = function() {
  * @returns {String} The character at the specified index.
  */
 Symbol.prototype.getItem = function(index) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -105,8 +105,8 @@ Symbol.prototype.getItem = function(index) {
  * @returns {Symbol} A new symbol containing the requested characters.
  */
 Symbol.prototype.getItems = function(range) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Symbol', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
@@ -125,8 +125,8 @@ Symbol.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
-    last = this.normalizedIndex(last);  // slice() is exclusive of last index
+    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
+    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Symbol(string, this.getParameters(), this.debug);
 };
@@ -145,7 +145,7 @@ Symbol.prototype.getItems = function(range) {
  */
 Symbol.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Symbol', '$chain', '$first', first, [
             '/bali/elements/Symbol'
         ]);

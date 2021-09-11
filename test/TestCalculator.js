@@ -11,7 +11,7 @@
 const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const Calculator = require('../src/agents/Calculator').Calculator;
+const Calculator = require('../src/utilities/Calculator').Calculator;
 const calculator = new Calculator(debug);
 
 

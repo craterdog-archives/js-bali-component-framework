@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -40,7 +40,7 @@ const Binary = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
             '/javascript/Undefined',
             '/nodejs/Buffer'
@@ -79,13 +79,13 @@ Binary.prototype.getSize = function() {
  * @returns {Number} The byte value (0..255) at the specified index.
  */
 Binary.prototype.getItem = function(index) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -97,8 +97,8 @@ Binary.prototype.getItem = function(index) {
  * @returns {Binary} A new binary string containing the requested bytes.
  */
 Binary.prototype.getItems = function(range) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
@@ -117,8 +117,8 @@ Binary.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
-    last = this.normalizedIndex(last);  // slice() is exclusive of last index
+    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
+    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
     const buffer = this.getValue().slice(first, last);
     return new Binary(buffer, this.getParameters(), this.debug);
 };
@@ -136,7 +136,7 @@ Binary.prototype.getItems = function(range) {
  */
 Binary.not = function(binary, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$not', '$binary', binary, [
             '/bali/elements/Binary'
         ]);
@@ -161,7 +161,7 @@ Binary.not = function(binary, debug) {
  */
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$and', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -190,7 +190,7 @@ Binary.and = function(first, second, debug) {
  */
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$sans', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -219,7 +219,7 @@ Binary.sans = function(first, second, debug) {
  */
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$or', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -248,7 +248,7 @@ Binary.or = function(first, second, debug) {
  */
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$xor', '$first', first, [
             '/bali/elements/Binary'
         ]);
@@ -279,7 +279,7 @@ Binary.xor = function(first, second, debug) {
  */
 Binary.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Binary', '$chain', '$first', first, [
             '/bali/elements/Binary'
         ]);

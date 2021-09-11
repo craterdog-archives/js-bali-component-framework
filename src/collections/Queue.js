@@ -14,7 +14,7 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -65,7 +65,7 @@ const Queue = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -77,7 +77,7 @@ const Queue = function(parameters, debug) {
             ]);
         }
         if (array.length === capacity) {
-            const exception = new agents.Exception({
+            const exception = new utilities.Exception({
                 $module: '/bali/collections/Queue',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
@@ -105,3 +105,16 @@ const Queue = function(parameters, debug) {
 Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;
+
+
+/**
+ * This method returns an object that can be used to iterate over the items in
+ * this queue.
+ *
+ * @returns {Iterator} An iterator for this queue.
+ */
+Queue.prototype.getIterator = function() {
+    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
+    return iterator;
+};
+

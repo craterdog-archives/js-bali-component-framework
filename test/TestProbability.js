@@ -86,48 +86,54 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
         });
 
         it('should perform the logical NOT function correctly', function() {
-            expect(bali.probability.not(bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.not(bali.probability.CERTAIN).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.not(bali.probability(0.25)).isEqualTo(bali.probability(0.75))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.probability.not(bali.probability.IMPOSSIBLE), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.not(bali.probability.CERTAIN), bali.probability.IMPOSSIBLE)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.not(bali.probability(0.25)), bali.probability(0.75))).to.equal(true);
         });
 
         it('should perform the logical OR function correctly', function() {
-            expect(bali.probability.or(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.or(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.or(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.or(bali.probability.CERTAIN, bali.probability.CERTAIN).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.or(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.83))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.probability.or(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE), bali.probability.IMPOSSIBLE)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.or(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.or(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.or(bali.probability.CERTAIN, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.or(bali.probability(0.75), bali.probability(1/3)), bali.probability(0.83))).to.equal(true);
         });
 
         it('should perform the logical AND function correctly', function() {
-            expect(bali.probability.and(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.and(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.and(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.and(bali.probability.CERTAIN, bali.probability.CERTAIN).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.and(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.25))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.probability.and(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE), bali.probability.IMPOSSIBLE)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.and(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.and(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.and(bali.probability.CERTAIN, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.and(bali.probability(0.75), bali.probability(1/3)), bali.probability(0.25))).to.equal(true);
         });
 
         it('should perform the logical SANS function correctly', function() {
-            expect(bali.probability.sans(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.sans(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.sans(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.sans(bali.probability.CERTAIN, bali.probability.CERTAIN).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.sans(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.5))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.probability.sans(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE), bali.probability.IMPOSSIBLE)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.sans(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.sans(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.sans(bali.probability.CERTAIN, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.sans(bali.probability(0.75), bali.probability(1/3)), bali.probability(0.5))).to.equal(true);
         });
 
         it('should perform the logical XOR function correctly', function() {
-            expect(bali.probability.xor(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.xor(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.xor(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE).isEqualTo(bali.probability.CERTAIN)).to.equal(true);
-            expect(bali.probability.xor(bali.probability.CERTAIN, bali.probability.CERTAIN).isEqualTo(bali.probability.IMPOSSIBLE)).to.equal(true);
-            expect(bali.probability.xor(bali.probability(0.75), bali.probability(1/3)).isEqualTo(bali.probability(0.6))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.probability.xor(bali.probability.IMPOSSIBLE, bali.probability.IMPOSSIBLE), bali.probability.IMPOSSIBLE)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.xor(bali.probability.IMPOSSIBLE, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.xor(bali.probability.CERTAIN, bali.probability.IMPOSSIBLE), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.xor(bali.probability.CERTAIN, bali.probability.CERTAIN), bali.probability.CERTAIN)).to.equal(true);
+            expect(comparator.areEqual(bali.probability.sans(bali.probability(0.75), bali.probability(1/3)), bali.probability(0.6))).to.equal(true);
         });
 
         it("should perform the De Morgan's Laws correctly", function() {
+            const comparator = new agents.Comparator();
             const A = bali.probability(0.75);
             const B = bali.probability(1/3);
-            expect(bali.probability.not(bali.probability.and(A, B)).isEqualTo(bali.probability.or(bali.probability.not(A), bali.probability.not(B)))).to.equal(true);
-            expect(bali.probability.not(bali.probability.or(A, B)).isEqualTo(bali.probability.and(bali.probability.not(A), bali.probability.not(B)))).to.equal(true);
+            expect(comparator.areEqual(bali.probability.not(bali.probability.and(A, B)), bali.probability.or(bali.probability.not(A), bali.probability.not(B)))).to.equal(true);
+            expect(comparator.areEqual(bali.probability.not(bali.probability.or(A, B)), bali.probability.and(bali.probability.not(A), bali.probability.not(B)))).to.equal(true);
         });
 
     });

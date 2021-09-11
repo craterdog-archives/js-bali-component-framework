@@ -83,7 +83,8 @@ describe('Bali Nebula™ Component Framework - Number', function() {
             expect(bali.number(Infinity).toReal()).to.equal(Infinity);
             expect(bali.number(-Infinity).toInteger()).to.equal(Infinity);
             expect(bali.number(-Infinity).toReal()).to.equal(Infinity);
-            expect(bali.number(-Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number(-Infinity), bali.number.INFINITY)).to.equal(true);
         });
 
         it('should construct undefined numbers', function() {
@@ -138,10 +139,11 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should perform the getPhase method correctly', function() {
+            const comparator = new agents.Comparator();
             expect(bali.number.UNDEFINED.getPhase()).to.equal(undefined);
-            expect(bali.number.INFINITY.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.number.ZERO.getPhase().isEqualTo(bali.angle(0))).to.equal(true);
-            expect(bali.number(-1).getPhase().isEqualTo(bali.angle(Math.PI))).to.equal(true);
+            expect(comparator.areEqual(bali.number.INFINITY.getPhase(), bali.angle(0))).to.equal(true);
+            expect(comparator.areEqual(bali.number.ZERO.getPhase(), bali.angle(0))).to.equal(true);
+            expect(comparator.areEqual(bali.number(-1).getPhase(), bali.angle(Math.PI))).to.equal(true);
         });
 
     });
@@ -149,90 +151,102 @@ describe('Bali Nebula™ Component Framework - Number', function() {
     describe('Test complex number functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.number.inverse(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.inverse(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.inverse(bali.number.ZERO).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.inverse(bali.number(3)).isEqualTo(bali.number(3, bali.angle(Math.PI)))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.inverse(bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.inverse(bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.inverse(bali.number.ZERO), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.inverse(bali.number(3)), bali.number(3, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the reciprocal function correctly', function() {
-            expect(bali.number.reciprocal(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.reciprocal(bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.reciprocal(bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.reciprocal(bali.number(2, bali.angle(Math.PI))).isEqualTo(bali.number(0.5, bali.angle(Math.PI)))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.reciprocal(bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.reciprocal(bali.number.INFINITY), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.reciprocal(bali.number.ZERO), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.reciprocal(bali.number(2, bali.angle(Math.PI))), bali.number(0.5, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the conjugate function correctly', function() {
-            expect(bali.number.conjugate(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.conjugate(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.conjugate(bali.number.ZERO).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.conjugate(bali.number(3, 4)).isEqualTo(bali.number(3, -4))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.conjugate(bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.conjugate(bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.conjugate(bali.number.ZERO), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.conjugate(bali.number(3, 4)), bali.number(3, -4))).to.equal(true);
         });
 
         it('should perform the factorial function correctly', function() {
-            expect(bali.number.factorial(bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.factorial(bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.factorial(bali.number.ZERO).isEqualTo(bali.number(1))).to.equal(true);
-            expect(bali.number.factorial(bali.number(20)).isEqualTo(bali.number(2432902008176638000))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.factorial(bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.factorial(bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.factorial(bali.number.ZERO), bali.number(1))).to.equal(true);
+            expect(comparator.areEqual(bali.number.factorial(bali.number(20)), bali.number(2432902008176638000))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.number.sum(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.sum(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.sum(bali.number(-3, 4), bali.number(3, -4)).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.sum(bali.number(3, 4), bali.number(2, -2)).isEqualTo(bali.number(5, 2))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.sum(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.sum(bali.number(5), bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.sum(bali.number(-3, 4), bali.number(3, -4)), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.sum(bali.number(3, 4), bali.number(2, -2)), bali.number(5, 2))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.number.difference(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.difference(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.difference(bali.number(3, 4), bali.number(3, 4)).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.difference(bali.number(3, 4), bali.number(2, -2)).isEqualTo(bali.number(1, 6))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.difference(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.difference(bali.number(5), bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.difference(bali.number(3, 4), bali.number(3, 4)), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.difference(bali.number(3, 4), bali.number(2, -2)), bali.number(1, 6))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.number.scaled(bali.number(5), NaN).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.scaled(bali.number(5), Infinity).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.scaled(bali.number(5), 0).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.scaled(bali.number.ZERO, 5).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.scaled(bali.number(3, bali.angle(Math.PI)), -1).isEqualTo(bali.number(-3, bali.angle(Math.PI)))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.scaled(bali.number(5), NaN), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.scaled(bali.number(5), Infinity), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.scaled(bali.number(5), 0), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.scaled(bali.number.ZERO, 5), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.scaled(bali.number(3, bali.angle(Math.PI)), -1), bali.number(-3, bali.angle(Math.PI)))).to.equal(true);
         });
 
         it('should perform the product function correctly', function() {
-            expect(bali.number.product(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.product(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.product(bali.number.ZERO, bali.number(3, 4)).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.product(bali.number(3, bali.angle(2)), bali.number(2, bali.angle(1))).isEqualTo(bali.number(6, bali.angle(3)))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.product(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.product(bali.number(5), bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.product(bali.number.ZERO, bali.number(3, 4)), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.product(bali.number(3, bali.angle(2)), bali.number(2, bali.angle(1))), bali.number(6, bali.angle(3)))).to.equal(true);
         });
 
         it('should perform the quotient function correctly', function() {
-            expect(bali.number.quotient(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.quotient(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.quotient(bali.number(3, 4), bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.quotient(bali.number(4, bali.angle(2)), bali.number(2, bali.angle(1))).isEqualTo(bali.number(2, bali.angle(1)))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.quotient(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.quotient(bali.number(5), bali.number.INFINITY), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.quotient(bali.number(3, 4), bali.number.ZERO), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.quotient(bali.number(4, bali.angle(2)), bali.number(2, bali.angle(1))), bali.number(2, bali.angle(1)))).to.equal(true);
         });
 
         it('should perform the remainder function correctly', function() {
-            expect(bali.number.remainder(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.remainder(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.remainder(bali.number(5), bali.number.ZERO).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.remainder(bali.number(23), bali.number(7)).isEqualTo(bali.number(2))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.remainder(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.remainder(bali.number(5), bali.number.INFINITY), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.remainder(bali.number(5), bali.number.ZERO), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.remainder(bali.number(23), bali.number(7)), bali.number(2))).to.equal(true);
         });
 
         it('should perform the exponential function correctly', function() {
-            expect(bali.number.exponential(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.exponential(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.exponential(bali.number(5), bali.number.ZERO).isEqualTo(bali.number(1))).to.equal(true);
-            expect(bali.number.exponential(bali.number(2), bali.number(7)).isEqualTo(bali.number(128))).to.equal(true);
-            expect(bali.number.exponential(bali.number(0.5), bali.number(0.5)).isEqualTo(bali.number(0.7))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.exponential(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.exponential(bali.number(5), bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.exponential(bali.number(5), bali.number.ZERO), bali.number(1))).to.equal(true);
+            expect(comparator.areEqual(bali.number.exponential(bali.number(2), bali.number(7)), bali.number(128))).to.equal(true);
+            expect(comparator.areEqual(bali.number.exponential(bali.number(0.5), bali.number(0.5)), bali.number(0.7))).to.equal(true);
         });
 
         it('should perform the logarithm function correctly', function() {
-            expect(bali.number.logarithm(bali.number(5), bali.number.UNDEFINED).isEqualTo(bali.number.UNDEFINED)).to.equal(true);
-            expect(bali.number.logarithm(bali.number(5), bali.number.INFINITY).isEqualTo(bali.number.INFINITY)).to.equal(true);
-            expect(bali.number.logarithm(bali.number(5), bali.number(1)).isEqualTo(bali.number.ZERO)).to.equal(true);
-            expect(bali.number.logarithm(bali.number(2), bali.number(128)).isEqualTo(bali.number(7))).to.equal(true);
-            expect(bali.number.logarithm(bali.number(0.5), bali.number(0.7)).isEqualTo(bali.number(0.4))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.number.logarithm(bali.number(5), bali.number.UNDEFINED), bali.number.UNDEFINED)).to.equal(true);
+            expect(comparator.areEqual(bali.number.logarithm(bali.number(5), bali.number.INFINITY), bali.number.INFINITY)).to.equal(true);
+            expect(comparator.areEqual(bali.number.logarithm(bali.number(5), bali.number(1)), bali.number.ZERO)).to.equal(true);
+            expect(comparator.areEqual(bali.number.logarithm(bali.number(2), bali.number(128)), bali.number(7))).to.equal(true);
+            expect(comparator.areEqual(bali.number.logarithm(bali.number(0.5), bali.number(0.7)), bali.number(0.4))).to.equal(true);
         });
 
     });

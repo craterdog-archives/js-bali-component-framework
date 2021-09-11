@@ -13,7 +13,7 @@
  * This composite class implements a procedure that can be assigned as
  * the value of an association.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,7 +39,7 @@ const Procedure = function(code, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/trees/Procedure', '$Procedure', '$code', code, [
             '/bali/trees/Code'
         ]);

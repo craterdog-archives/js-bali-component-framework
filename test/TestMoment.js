@@ -43,11 +43,12 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
     describe('Test moment methods', function() {
 
         it('should compare two moments correctly', function() {
+            const comparator = new agents.Comparator();
             const first = bali.component('<2017-12-30T17:38:35>');
             const second = bali.component('<2017-12-30T17:38:39>');
-            expect(first.comparedTo(second)).to.equal(-1);
-            expect(first.isEqualTo(first)).to.equal(true);
-            expect(second.comparedTo(first)).to.equal(1);
+            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.areEqual(first, first)).to.equal(true);
+            expect(comparator.compareComponents(second, first)).to.equal(1);
         });
 
         it('should retrieve millisecond correctly', function() {
@@ -95,8 +96,9 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
             const duration = bali.moment.duration(first, second);
             const later = bali.moment.later(first, duration);
             const earlier = bali.moment.earlier(later, duration);
-            expect(earlier.isEqualTo(first)).to.equal(true);
-            expect(later.isEqualTo(second)).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(earlier, first)).to.equal(true);
+            expect(comparator.areEqual(later, second)).to.equal(true);
         });
 
     });

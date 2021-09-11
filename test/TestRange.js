@@ -188,31 +188,35 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         const finite = bali.range(-2, '..', 2);
 
         it('should be able to compare a negative range against the others', function() {
-            expect(negative.comparedTo(negative)).to.equal(0);
-            expect(negative.comparedTo(positive)).to.equal(-1);
-            expect(negative.comparedTo(infinite)).to.equal(-1);
-            expect(negative.comparedTo(finite)).to.equal(-1);
+            const comparator = new agents.Comparator();
+            expect(comparator.compareComponents(negative, negative)).to.equal(0);
+            expect(comparator.compareComponents(negative, positive)).to.equal(-1);
+            expect(comparator.compareComponents(negative, infinite)).to.equal(-1);
+            expect(comparator.compareComponents(negative, finite)).to.equal(-1);
         });
 
         it('should be able to compare a positive range against the others', function() {
-            expect(positive.comparedTo(negative)).to.equal(1);
-            expect(positive.comparedTo(positive)).to.equal(0);
-            expect(positive.comparedTo(infinite)).to.equal(1);
-            expect(positive.comparedTo(finite)).to.equal(1);
+            const comparator = new agents.Comparator();
+            expect(comparator.compareComponents(positive, negative)).to.equal(1);
+            expect(comparator.compareComponents(positive, positive)).to.equal(0);
+            expect(comparator.compareComponents(positive, infinite)).to.equal(1);
+            expect(comparator.compareComponents(positive, finite)).to.equal(1);
         });
 
         it('should be able to compare an infinite range against the others', function() {
-            expect(infinite.comparedTo(negative)).to.equal(1);
-            expect(infinite.comparedTo(positive)).to.equal(-1);
-            expect(infinite.comparedTo(infinite)).to.equal(0);
-            expect(infinite.comparedTo(finite)).to.equal(-1);
+            const comparator = new agents.Comparator();
+            expect(comparator.compareComponents(infinite, negative)).to.equal(1);
+            expect(comparator.compareComponents(infinite, positive)).to.equal(-1);
+            expect(comparator.compareComponents(infinite, infinite)).to.equal(0);
+            expect(comparator.compareComponents(infinite, finite)).to.equal(-1);
         });
 
         it('should be able to compare a finite range against the others', function() {
-            expect(finite.comparedTo(negative)).to.equal(1);
-            expect(finite.comparedTo(positive)).to.equal(-1);
-            expect(finite.comparedTo(infinite)).to.equal(1);
-            expect(finite.comparedTo(finite)).to.equal(0);
+            const comparator = new agents.Comparator();
+            expect(comparator.compareComponents(finite, negative)).to.equal(1);
+            expect(comparator.compareComponents(finite, positive)).to.equal(-1);
+            expect(comparator.compareComponents(finite, infinite)).to.equal(1);
+            expect(comparator.compareComponents(finite, finite)).to.equal(0);
         });
 
     });

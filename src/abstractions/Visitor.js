@@ -9,26 +9,35 @@
  ************************************************************************/
 'use strict';
 
-/**
- * This abstract class defines the methods that all visitor components must support. It
- * provides implementations of each method that by default just traverse the parse tree.
- * Subclasses should override most of the methods.
+/*
+ * This abstract class defines the invariant methods that all visitors must support.
  */
+const utilities = require('../utilities');
+const Component = require('./Component').Component;
 
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new visitor component.
+ * This constructor creates a new visitor component that can be used to visit components.
  *
+ * It provides implementations of each method that by default just traverse the
+ * parse tree. Subclasses should override most of the methods.
+ *
+ * @param {Array} ancestry An array of type names that make up the ancestry for the visitor.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Visitor} The new visitor.
  */
-const Visitor = function(debug) {
-    this.debug = debug || 0;
+const Visitor = function(ancestry, debug) {
+    Component.call(
+        this,
+        ancestry.concat('/bali/abstractions/Visitor'),
+        [],
+        undefined,  // must be undefined to avoid infinite loop
+        debug
+    );
     this.depth = 0;
     return this;
 };
+Visitor.prototype = Object.create(Component.prototype);
 Visitor.prototype.constructor = Visitor;
 exports.Visitor = Visitor;
 

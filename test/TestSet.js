@@ -33,8 +33,9 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             set.removeAll();
             const copy = set.constructor(set.getParameters());
             expect(copy).to.exist;
-            expect(set.isEqualTo(copy)).to.equal(true);
-            const signum = set.comparedTo(copy);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(set, copy)).to.equal(true);
+            const signum = comparator.compareComponents(set, copy);
             expect(signum).to.equal(0);
         });
 
@@ -175,22 +176,23 @@ describe('Bali Nebula™ Component Framework - Set', function() {
                     bali.set.not(set1);
                 }
             ).to.throw();
-            expect(bali.set.and(set1, set2).isEqualTo(set3)).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.set.and(set1, set2), set3)).to.equal(true);
             const set4 = bali.set();
             set4.addItem('"alpha"');
-            expect(bali.set.sans(set1, set2).isEqualTo(set4)).to.equal(true);
+            expect(comparator.areEqual(bali.set.sans(set1, set2), set4)).to.equal(true);
             const set5 = bali.set();
             set5.addItem('"alpha"');
             set5.addItem('"beta"');
             set5.addItem('"delta"');
             set5.addItem('"epsilon"');
             set5.addItem('"gamma"');
-            expect(bali.set.or(set1, set2).isEqualTo(set5)).to.equal(true);
+            expect(comparator.areEqual(bali.set.or(set1, set2), set5)).to.equal(true);
             const set6 = bali.set();
             set6.addItem('"alpha"');
             set6.addItem('"epsilon"');
             set6.addItem('"gamma"');
-            expect(bali.set.xor(set1, set2).isEqualTo(set6)).to.equal(true);
+            expect(comparator.areEqual(bali.set.xor(set1, set2), set6)).to.equal(true);
         });
 
     });

@@ -9,75 +9,68 @@
  ************************************************************************/
 'use strict';
 
-
-/**
- * This class implements a formatter object that uses a visitor to format, in
- * a canonical way, components as strings containing Bali Document Notation™.
+/*
+ * This class implements the methods for a Bali Document Notation™ based formatter.
  */
-const Exception = require('./Exception').Exception;
-const Decoder = require('./Decoder').Decoder;
-const Validator = require('./Validator').Validator;
-const Visitor = require('./Visitor').Visitor;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
-
-// This private constant sets the POSIX end of line character
-const EOL = '\n';
 
 /**
- * This constant defines the number of characters allowed in Bali Document Notation™
- * for a component before the source code can no longer be inline (on a single line).
- */
-const MAXIMUM_LENGTH = 25;
-
-
-// PUBLIC FUNCTIONS
-
-/**
- * This function creates a new formatter object that can be used to format components.
+ * This constructor creates a new BDN based formatter agent.
  *
  * @param {Number} indentation The number of levels of indentation that should be inserted
  * to each formatted line at the top level. The default is zero.
  * @param {Number} debug A number in the range 0..3.
- * @returns {Formatter} The new component formatter.
+ * @returns {Formatter} The new BDN formatter agent.
  */
-const Formatter = function(indentation, debug) {
-    debug = debug || 0;
-    if (debug > 1) {
-        const validator = new Validator(debug);
-        validator.validateType('/bali/agents/Formatter', '$formatComponent', '$indentation', indentation, [
+const BDNFormatter = function(indentation, debug) {
+    abstractions.Formatter.call(
+        this,
+        ['/bali/agents/BDNFormatter'],
+        debug
+    );
+    const validator = new utilities.Validator(this.debug);
+    if (this.debug > 1) {
+        validator.validateType('/bali/agents/BDNFormatter', '$BDNFormatter', '$indentation', indentation, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
     }
 
-    // the indentation is a private attribute so methods that use it are defined in the constructor
+    // private attribute
     indentation = indentation || 0;
 
     this.formatComponent = function(component) {
-        if (debug > 1) {
-            const validator = new Validator(debug);
-            validator.validateType('/bali/agents/Formatter', '$formatComponent', '$component', component, [
+        if (this.debug > 1) {
+            const validator = new utilities.Validator(this.debug);
+            validator.validateType('/bali/agents/BDNFormatter', '$formatComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
-        const visitor = new FormattingVisitor(indentation, debug);
+        const visitor = new FormattingVisitor(indentation, this.debug);
         component.acceptVisitor(visitor);
         return visitor.result;
     };
 
     return this;
 };
-Formatter.prototype.constructor = Formatter;
-exports.Formatter = Formatter;
+BDNFormatter.prototype = Object.create(abstractions.Formatter.prototype);
+BDNFormatter.prototype.constructor = BDNFormatter;
+exports.BDNFormatter = BDNFormatter;
 
 
 // PRIVATE CLASSES
 
+const EOL = '\n';  // the POSIX end of line character
+
 const FormattingVisitor = function(indentation, debug) {
-    Visitor.call(this, debug);
+    abstractions.Visitor.call(
+        this,
+        ['/bali/agents/FormattingVisitor'],
+        debug
+    );
     this.indentation = indentation || 0;
-    this.debug = debug || 0;
-    this.depth = 0;
     this.inline = 0;
     this.result = '';
 
@@ -107,7 +100,7 @@ const FormattingVisitor = function(indentation, debug) {
 
     return this;
 };
-FormattingVisitor.prototype = Object.create(Visitor.prototype);
+FormattingVisitor.prototype = Object.create(abstractions.Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 
@@ -131,8 +124,8 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            const exception = new agents.Exception({
-                $module: '/bali/agents/Formatter',
+            const exception = new utilities.Exception({
+                $module: '/bali/agents/FormattingVisitor',
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
@@ -142,7 +135,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             });
             throw exception;
     }
-    this.result += '~' + formatReal(value);
+    this.result += '~' + this.formatReal(value);
     const parameters = angle.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(angle);
@@ -239,8 +232,8 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = decoder.base64Encode(value);
             break;
         default:
-            const exception = new agents.Exception({
-                $module: '/bali/agents/Formatter',
+            const exception = new utilities.Exception({
+                $module: '/bali/agents/FormattingVisitor',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,
@@ -672,21 +665,21 @@ FormattingVisitor.prototype.visitNumber = function(number) {
         this.result += '0';
     } else if (number.getReal() !== 0 && number.getImaginary() === 0) {
         // it is a pure real number
-        this.result += formatReal(number.getReal());
+        this.result += this.formatReal(number.getReal());
     } else if (number.getReal() === 0 && number.getImaginary() !== 0) {
         // it is a pure imaginary number
-        this.result += formatImaginary(number.getImaginary());
+        this.result += this.formatImaginary(number.getImaginary());
     } else {
         // must be a complex number
         this.result += '(';
         if (isPolar) {
-            this.result += formatReal(number.getMagnitude());
+            this.result += this.formatReal(number.getMagnitude());
             this.result += ' e^~';
-            this.result += formatImaginary(number.getPhase().getValue());
+            this.result += this.formatImaginary(number.getPhase().getValue());
         } else {
-            this.result += formatReal(number.getReal());
+            this.result += this.formatReal(number.getReal());
             this.result += ', ';
-            this.result += formatImaginary(number.getImaginary());
+            this.result += this.formatImaginary(number.getImaginary());
         }
         this.result += ')';
     }
@@ -747,7 +740,7 @@ FormattingVisitor.prototype.visitPattern = function(pattern) {
 // percentage: PERCENTAGE
 FormattingVisitor.prototype.visitPercentage = function(percentage) {
     const value = percentage.getValue();
-    this.result += formatReal(value) + '%';
+    this.result += this.formatReal(value) + '%';
     const parameters = percentage.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(percentage);
@@ -997,56 +990,3 @@ FormattingVisitor.prototype.visitWithClause = function(node) {
     block.acceptVisitor(this);
 };
 
-
-const formatReal = function(value) {
-    var string = Number(value.toPrecision(14)).toString();
-    switch (string) {
-        case '2.718281828459':
-            return 'e';
-        case '-2.718281828459':
-            return '-e';
-        case '3.1415926535898':
-            return 'π';
-        case '-3.1415926535898':
-            return '-π';
-        case '1.6180339887499':
-            return 'φ';
-        case '-1.6180339887499':
-            return '-φ';
-        case '6.2831853071796':
-            return 'τ';
-        case '-6.2831853071796':
-            return '-τ';
-        case 'Infinity':
-        case '-Infinity':
-            return '∞';
-        case '0':
-        case '-0':
-            return '0';
-        case 'NaN':
-            return 'undefined';
-        default:
-            return value.toString().replace(/e\+?/g, 'E');  // convert to canonical exponent format
-    }
-};
-
-
-const formatImaginary = function(value) {
-    var literal = formatReal(value);
-    switch (literal) {
-        case 'undefined':
-        case '∞':
-            return literal;
-        case 'e':
-        case '-e':
-        case 'π':
-        case '-π':
-        case 'φ':
-        case '-φ':
-        case 'τ':
-        case '-τ':
-            return literal + ' i';
-        default:
-            return literal + 'i';
-    }
-};

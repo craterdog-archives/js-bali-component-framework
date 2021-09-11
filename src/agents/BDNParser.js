@@ -9,14 +9,13 @@
  ************************************************************************/
 'use strict';
 
-/**
- * This class implements a parser that parses strings containing Bali Document
- * Notation™ and generates the corresponding components.
+/*
+ * This class implements the methods for a Bali Document Notation™ based parser.
  *
  * NOTE: The implementation of this parser uses a raw parser that was
  * generated using ANTLR v4. The raw parse tree composite that comes
  * out of ANTLR is frankly not very well designed and hard to understand.
- * So, we walk the raw parse tree with a visitor object generating a nice
+ * So, we walk the raw parse tree with a visitor agent generating a nice
  * clean parse tree that is constructed exclusively of component
  * types (e.g. elements, collections, and nodes). This means that some of
  * the code in the visitor class in this module is a bit harder to
@@ -28,34 +27,32 @@ const URL = require('url').URL;
 const antlr = require('antlr4');
 const ErrorStrategy = require('antlr4/error/ErrorStrategy');
 const grammar = require('../grammar');
-const agents = require('../agents/');
+const utilities = require('../utilities/');
 const abstractions = require('../abstractions/');
 const elements = require('../elements');
 const strings = require('../strings');
 const collections = require('../collections');
 const trees = require('../trees');
+const agents = require('../agents/');
 
-// This private constant sets the POSIX end of line character
-const EOL = '\n';
-
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new parser object.
+ * This constructor creates a new parser agent that can be used to Bali Document Notation™.
  *
  * @param {Number} debug A number in the range 0..3.
- * @returns {Parser} The new string parser.
+ * @returns {Parser} The new BDN parser agent.
  */
-const Parser = function(debug) {
-
-    // the debug flag is a private attribute so methods that use it are defined in the constructor
-    debug = debug || 0;
+const BDNParser = function(debug) {
+    abstractions.Parser.call(
+        this,
+        ['/bali/agents/BDNParser'],
+        debug
+    );
 
     this.parseSource = function(string) {
         if (debug > 1) {
-            const validator = new agents.Validator(debug);
-            validator.validateType('/bali/agents/Parser', '$parseBDN', '$string', string, [
+            const validator = new utilities.Validator(debug);
+            validator.validateType('/bali/agents/BDNParser', '$parseSource', '$string', string, [
                 '/javascript/String'
             ]);
         }
@@ -65,23 +62,11 @@ const Parser = function(debug) {
         return component;
     };
 
-    this.parseDocument = function(string) {
-        if (debug > 1) {
-            const validator = new agents.Validator(debug);
-            validator.validateType('/bali/agents/Parser', '$parseBDN', '$string', string, [
-                '/javascript/String'
-            ]);
-        }
-        const parser = initializeParser(string, debug);
-        const antlrTree = parser.document();
-        const document = convertParseTree(antlrTree, debug);
-        return document;
-    };
-
     return this;
 };
-Parser.prototype.constructor = Parser;
-exports.Parser = Parser;
+BDNParser.prototype = Object.create(abstractions.Parser.prototype);
+BDNParser.prototype.constructor = BDNParser;
+exports.BDNParser = BDNParser;
 
 
 // PRIVATE FUNCTIONS
@@ -102,42 +87,10 @@ const initializeParser = function(document, debug) {
 };
 
 const convertParseTree = function(antlrTree, debug) {
-    const visitor = new ParsingVisitor(debug);
+    const visitor = new BDNVisitor(debug);
     antlrTree.accept(visitor);
     const baliTree = visitor.result;
     return baliTree;
-};
-
-Math.PHI = (Math.sqrt(5) + 1) / 2;
-Math.TAU = Math.PI * 2;
-
-const literalToNumber = function(literal) {
-    switch (literal) {
-        case '-e':
-            return -Math.E;
-        case 'e':
-            return Math.E;
-        case '-pi':
-        case '-π':
-            return -Math.PI;
-        case 'pi':
-        case 'π':
-            return Math.PI;
-        case '-phi':
-        case '-φ':
-            return -Math.PHI;
-        case 'phi':
-        case 'φ':
-            return Math.PHI;
-        case '-tau':
-        case '-τ':
-            return -Math.TAU;
-        case 'tau':
-        case 'τ':
-            return Math.TAU;
-        default:
-            return Number(literal);
-    }
 };
 
 
@@ -145,29 +98,32 @@ const literalToNumber = function(literal) {
 
 /*
  * NOTE: This visitor implements the raw ANTLR4 visitor pattern, NOT the
- * component visitor pattern. It is used to convert the raw ANTLR4 parse
- * tree into a clean parse tree.
+ * component visitor pattern. It is used to convert the (rather ugly) raw
+ * ANTLR4 parse tree into a clean BDN parse tree.  Careful below,
+ * "there be monsters there...".
  */
 
-const ParsingVisitor = function(debug) {
+const EOL = '\n';  // the POSIX end of line character
+
+const BDNVisitor = function(debug) {
     grammar.DocumentVisitor.call(this);
     this.depth = 0;
     this.parameters = undefined;
     this.debug = debug || 0;
     return this;
 };
-ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
-ParsingVisitor.prototype.constructor = ParsingVisitor;
+BDNVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
+BDNVisitor.prototype.constructor = BDNVisitor;
 
 
-ParsingVisitor.prototype.getParameters = function() {
+BDNVisitor.prototype.getParameters = function() {
     const parameters = this.parameters;
     this.parameters = undefined;  // must unset it so other values don't see it
     return parameters;
 };
 
 
-ParsingVisitor.prototype.getIndentation = function() {
+BDNVisitor.prototype.getIndentation = function() {
     var indentation = '';
     for (var i = 0; i < this.depth; i++) {
         indentation += '    ';
@@ -177,7 +133,7 @@ ParsingVisitor.prototype.getIndentation = function() {
 
 
 // acceptClause: 'accept' expression
-ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
+BDNVisitor.prototype.visitAcceptClause = function(ctx) {
     const node = new trees.Node('/bali/trees/AcceptClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
@@ -187,7 +143,7 @@ ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
 
 
 // angle: ANGLE
-ParsingVisitor.prototype.visitAngle = function(ctx) {
+BDNVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
     var units = '$radians';  // default value
     if (parameters) {
@@ -199,8 +155,8 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
         case '$degrees':
             break;
         default:
-            const exception = new agents.Exception({
-                $module: '/bali/agents/Parser',
+            const exception = new utilities.Exception({
+                $module: '/bali/agents/BDNParser',
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
                 $units: units,
@@ -218,7 +174,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
 // arguments:
 //     expression (',' expression)* |
 //     /* no expressions */
-ParsingVisitor.prototype.visitArguments = function(ctx) {
+BDNVisitor.prototype.visitArguments = function(ctx) {
     const node = new trees.Node('/bali/trees/Arguments', this.debug);
     const expressions = ctx.expression();
     this.depth++;
@@ -232,7 +188,7 @@ ParsingVisitor.prototype.visitArguments = function(ctx) {
 
 
 // arithmeticExpression: expression operator=('*' | '/' | '//' | '+' | '-') expression
-ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
+BDNVisitor.prototype.visitArithmeticExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ArithmeticExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -245,7 +201,7 @@ ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
 
 
 // association: element ':' expression
-ParsingVisitor.prototype.visitAssociation = function(ctx) {
+BDNVisitor.prototype.visitAssociation = function(ctx) {
     ctx.element().accept(this);
     const key = this.result;
     ctx.expression().accept(this);
@@ -256,7 +212,7 @@ ParsingVisitor.prototype.visitAssociation = function(ctx) {
 
 
 // attribute: variable '[' indices ']'
-ParsingVisitor.prototype.visitAttribute = function(ctx) {
+BDNVisitor.prototype.visitAttribute = function(ctx) {
     const node = new trees.Node('/bali/trees/Attribute', this.debug);
     ctx.variable().accept(this);
     node.addItem(this.result);
@@ -267,7 +223,7 @@ ParsingVisitor.prototype.visitAttribute = function(ctx) {
 
 
 // attributeExpression: expression '[' indices ']'
-ParsingVisitor.prototype.visitAttributeExpression = function(ctx) {
+BDNVisitor.prototype.visitAttributeExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/AttributeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -278,7 +234,7 @@ ParsingVisitor.prototype.visitAttributeExpression = function(ctx) {
 
 
 // binary: BINARY
-ParsingVisitor.prototype.visitBinary = function(ctx) {
+BDNVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the "'" delimiters
     value = value.replace(/\s/g, '');  // strip out any whitespace
@@ -287,7 +243,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
         encoding = parameters.getAttribute('$encoding');
         if (encoding) encoding = encoding.toString();
     }
-    const decoder = new agents.Decoder(0, this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
     switch (encoding) {
         case '$base2':
             value = decoder.base2Decode(value);
@@ -302,8 +258,8 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
             value = decoder.base64Decode(value);
             break;
         default:
-            const exception = new agents.Exception({
-                $module: '/bali/agents/Parser',
+            const exception = new utilities.Exception({
+                $module: '/bali/agents/BDNParser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $encoding: encoding,
@@ -318,7 +274,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
 
 
 // block: '{' code '}'
-ParsingVisitor.prototype.visitBlock = function(ctx) {
+BDNVisitor.prototype.visitBlock = function(ctx) {
     ctx.code().accept(this);
     const code = this.result;
     const node = new trees.Node('/bali/trees/Block', this.debug);
@@ -328,7 +284,7 @@ ParsingVisitor.prototype.visitBlock = function(ctx) {
 
 
 // bulean: 'false' | 'true'
-ParsingVisitor.prototype.visitBulean = function(ctx) {
+BDNVisitor.prototype.visitBulean = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     value = (value === 'true') ? 1 : 0;
@@ -338,7 +294,7 @@ ParsingVisitor.prototype.visitBulean = function(ctx) {
 
 
 // breakClause: 'break' 'loop'
-ParsingVisitor.prototype.visitBreakClause = function(ctx) {
+BDNVisitor.prototype.visitBreakClause = function(ctx) {
     const node = new trees.Node('/bali/trees/BreakClause', this.debug);
     this.result = node;
 };
@@ -348,7 +304,7 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     association (',' association)* |
 //     EOL (association EOL)* |
 //     ':' /* no associations */
-ParsingVisitor.prototype.visitCatalog = function(ctx) {
+BDNVisitor.prototype.visitCatalog = function(ctx) {
     const parameters = this.getParameters();
     const component = new collections.Catalog(parameters, this.debug);
     if (ctx.association) {
@@ -365,7 +321,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 
 
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
-ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
+BDNVisitor.prototype.visitCheckoutClause = function(ctx) {
     const node = new trees.Node('/bali/trees/CheckoutClause', this.debug);
     const expressions = ctx.expression();
     var index = 0;
@@ -385,7 +341,7 @@ ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
 //     statement (';' statement)*   |
 //     EOL (statement EOL)* |
 //     /* no statements */
-ParsingVisitor.prototype.visitCode = function(ctx) {
+BDNVisitor.prototype.visitCode = function(ctx) {
     const node = new trees.Node('/bali/trees/Code', this.debug);
     if (ctx.statement) {
         const code = ctx.statement();
@@ -401,7 +357,7 @@ ParsingVisitor.prototype.visitCode = function(ctx) {
 
 
 // comment: NOTE | COMMENT
-ParsingVisitor.prototype.visitComment = function(ctx) {
+BDNVisitor.prototype.visitComment = function(ctx) {
     const text = ctx.getText();
     const comment = new trees.Node('/bali/trees/Comment', this.debug);
     comment.text = text;
@@ -410,7 +366,7 @@ ParsingVisitor.prototype.visitComment = function(ctx) {
 
 
 // comparisonExpression: expression operator=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
-ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
+BDNVisitor.prototype.visitComparisonExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ComparisonExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -423,7 +379,7 @@ ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 
 // complementExpression: 'NOT' expression
-ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
+BDNVisitor.prototype.visitComplementExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ComplementExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -439,7 +395,7 @@ ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
 //       are during its initialization.
 //       Also, the parameters object is an object rather than a catalog to avoid circular
 //       dependencies in the component class.
-ParsingVisitor.prototype.visitComponent = function(ctx) {
+BDNVisitor.prototype.visitComponent = function(ctx) {
     const parameters = ctx.parameters();
     if (parameters) {
         // this is a parameterized component so parse the parameters first
@@ -454,7 +410,7 @@ ParsingVisitor.prototype.visitComponent = function(ctx) {
 
 
 // chainExpression: expression '&' expression
-ParsingVisitor.prototype.visitChainExpression = function(ctx) {
+BDNVisitor.prototype.visitChainExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ChainExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -466,14 +422,14 @@ ParsingVisitor.prototype.visitChainExpression = function(ctx) {
 
 
 // continueClause: 'continue' 'loop'
-ParsingVisitor.prototype.visitContinueClause = function(ctx) {
+BDNVisitor.prototype.visitContinueClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ContinueClause', this.debug);
     this.result = node;
 };
 
 
 // defaultExpression: expression '?' expression
-ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
+BDNVisitor.prototype.visitDefaultExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/DefaultExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -485,7 +441,7 @@ ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 
 // dereferenceExpression: '@' expression
-ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
+BDNVisitor.prototype.visitDereferenceExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/DereferenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -494,7 +450,7 @@ ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 
 // discardClause: 'discard' expression
-ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
+BDNVisitor.prototype.visitDiscardClause = function(ctx) {
     const node = new trees.Node('/bali/trees/DiscardClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -503,13 +459,13 @@ ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
 
 
 // document: component EOF
-ParsingVisitor.prototype.visitDocument = function(ctx) {
+BDNVisitor.prototype.visitDocument = function(ctx) {
     ctx.component().accept(this);
 };
 
 
 // duration: DURATION
-ParsingVisitor.prototype.visitDuration = function(ctx) {
+BDNVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '~'
     const duration = new elements.Duration(value, parameters, this.debug);
@@ -518,7 +474,7 @@ ParsingVisitor.prototype.visitDuration = function(ctx) {
 
 
 // evaluateClause: (recipient operator=(':=' | '+=' | '-=' | '*='))? expression
-ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
+BDNVisitor.prototype.visitEvaluateClause = function(ctx) {
     const node = new trees.Node('/bali/trees/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
     if (recipient) {
@@ -533,7 +489,7 @@ ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
+BDNVisitor.prototype.visitExponentialExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ExponentialExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -545,7 +501,7 @@ ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 
 // factorialExpression: expression '!'
-ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
+BDNVisitor.prototype.visitFactorialExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/FactorialExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -554,7 +510,7 @@ ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 
 // funcxion: IDENTIFIER
-ParsingVisitor.prototype.visitFuncxion = function(ctx) {
+BDNVisitor.prototype.visitFuncxion = function(ctx) {
     const identifier = ctx.getText();
     const funcxion = new trees.Node('/bali/trees/Function', this.debug);
     funcxion.identifier = identifier;
@@ -563,7 +519,7 @@ ParsingVisitor.prototype.visitFuncxion = function(ctx) {
 
 
 // functionExpression: function '(' arguments ')'
-ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
+BDNVisitor.prototype.visitFunctionExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/FunctionExpression', this.debug);
     ctx.funcxion().accept(this);
     node.addItem(this.result);
@@ -574,7 +530,7 @@ ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 
 // handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
-ParsingVisitor.prototype.visitHandleClause = function(ctx) {
+BDNVisitor.prototype.visitHandleClause = function(ctx) {
     const node = new trees.Node('/bali/trees/HandleClause', this.debug);
     ctx.symbol().accept(this);
     node.addItem(this.result);
@@ -596,7 +552,7 @@ ParsingVisitor.prototype.visitHandleClause = function(ctx) {
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-ParsingVisitor.prototype.visitIfClause = function(ctx) {
+BDNVisitor.prototype.visitIfClause = function(ctx) {
     const node = new trees.Node('/bali/trees/IfClause', this.debug);
     const expressions = ctx.expression();
     const blocks = ctx.block();
@@ -616,7 +572,7 @@ ParsingVisitor.prototype.visitIfClause = function(ctx) {
 
 
 // indices: expression (',' expression)*
-ParsingVisitor.prototype.visitIndices = function(ctx) {
+BDNVisitor.prototype.visitIndices = function(ctx) {
     const node = new trees.Node('/bali/trees/Indices', this.debug);
     const expressions = ctx.expression();
     this.depth++;
@@ -630,7 +586,7 @@ ParsingVisitor.prototype.visitIndices = function(ctx) {
 
 
 // inversionExpression: operator=('-' | '/' | '*') expression
-ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
+BDNVisitor.prototype.visitInversionExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/InversionExpression', this.debug);
     node.operator = ctx.operator.text;
     ctx.expression().accept(this);
@@ -643,7 +599,7 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
 //     /* no items */
-ParsingVisitor.prototype.visitList = function(ctx) {
+BDNVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
     var name;
@@ -670,8 +626,8 @@ ParsingVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Stack(parameters, this.debug);
             break;
         default:
-            const exception = new agents.Exception({
-                $module: '/bali/agents/Parser',
+            const exception = new utilities.Exception({
+                $module: '/bali/agents/BDNParser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
                 $type: type,
@@ -694,7 +650,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
 
 
 // logicalExpression: expression operator=('AND' | 'SANS' | 'XOR' | 'OR') expression
-ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
+BDNVisitor.prototype.visitLogicalExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/LogicalExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -707,7 +663,7 @@ ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 
 // magnitudeExpression: '|' expression '|'
-ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
+BDNVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/MagnitudeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -716,7 +672,7 @@ ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 
 // message: IDENTIFIER
-ParsingVisitor.prototype.visitMessage = function(ctx) {
+BDNVisitor.prototype.visitMessage = function(ctx) {
     const identifier = ctx.getText();
     const message = new trees.Node('/bali/trees/Message', this.debug);
     message.identifier = identifier;
@@ -725,7 +681,7 @@ ParsingVisitor.prototype.visitMessage = function(ctx) {
 
 
 // messageExpression: expression operator=('.' | '<-') message '(' arguments ')'
-ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
+BDNVisitor.prototype.visitMessageExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/MessageExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -739,7 +695,7 @@ ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
 
 
 // moment: MOMENT
-ParsingVisitor.prototype.visitMoment = function(ctx) {
+BDNVisitor.prototype.visitMoment = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
     const moment = new elements.Moment(value, parameters, this.debug);
@@ -748,7 +704,7 @@ ParsingVisitor.prototype.visitMoment = function(ctx) {
 
 
 // name: NAME
-ParsingVisitor.prototype.visitName = function(ctx) {
+BDNVisitor.prototype.visitName = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().split('/').slice(1);  // extract the parts of the name
     const name = new strings.Name(value, parameters, this.debug);
@@ -763,7 +719,7 @@ ParsingVisitor.prototype.visitName = function(ctx) {
 //    real |
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
-ParsingVisitor.prototype.visitNumber = function(ctx) {
+BDNVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
     var real = ctx.real();
     if (real) {
@@ -795,14 +751,14 @@ ParsingVisitor.prototype.visitNumber = function(ctx) {
 
 
 // parameters: '(' catalog ')'
-ParsingVisitor.prototype.visitParameters = function(ctx) {
+BDNVisitor.prototype.visitParameters = function(ctx) {
     // process the catalog
     ctx.catalog().accept(this);
 
     // there must be at least one parameter
     if (this.result.isEmpty()) {
-        const exception = new agents.Exception({
-            $module: '/bali/agents/Parser',
+        const exception = new utilities.Exception({
+            $module: '/bali/agents/BDNParser',
             $procedure: '$visitParameters',
             $exception: '$noParameters',
             $text: 'A parameter list must contain at least one association.'
@@ -814,7 +770,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
 
 
 // pattern: 'none' | REGEX | 'any'
-ParsingVisitor.prototype.visitPattern = function(ctx) {
+BDNVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     switch (value) {
@@ -834,7 +790,7 @@ ParsingVisitor.prototype.visitPattern = function(ctx) {
 
 
 // percentage: PERCENTAGE
-ParsingVisitor.prototype.visitPercentage = function(ctx) {
+BDNVisitor.prototype.visitPercentage = function(ctx) {
     const parameters = this.getParameters();
     const value = literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
     const percentage = new elements.Percentage(value, parameters, this.debug);
@@ -843,7 +799,7 @@ ParsingVisitor.prototype.visitPercentage = function(ctx) {
 
 
 // postClause: 'post' expression 'to' expression
-ParsingVisitor.prototype.visitPostClause = function(ctx) {
+BDNVisitor.prototype.visitPostClause = function(ctx) {
     const node = new trees.Node('/bali/trees/PostClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -855,7 +811,7 @@ ParsingVisitor.prototype.visitPostClause = function(ctx) {
 
 
 // precedenceExpression: '(' expression ')'
-ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
+BDNVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/PrecedenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -864,7 +820,7 @@ ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 
 
 // probability: FRACTION | '1.'
-ParsingVisitor.prototype.visitProbability = function(ctx) {
+BDNVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     if (value === '1.') {
@@ -878,7 +834,7 @@ ParsingVisitor.prototype.visitProbability = function(ctx) {
 
 
 // procedure: '{' code '}'
-ParsingVisitor.prototype.visitProcedure = function(ctx) {
+BDNVisitor.prototype.visitProcedure = function(ctx) {
     const parameters = this.getParameters();
     ctx.code().accept(this);
     const code = this.result;
@@ -888,7 +844,7 @@ ParsingVisitor.prototype.visitProcedure = function(ctx) {
 
 
 // publishClause: 'publish' expression
-ParsingVisitor.prototype.visitPublishClause = function(ctx) {
+BDNVisitor.prototype.visitPublishClause = function(ctx) {
     const node = new trees.Node('/bali/trees/PublishClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -897,7 +853,7 @@ ParsingVisitor.prototype.visitPublishClause = function(ctx) {
 
 
 // range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?
-ParsingVisitor.prototype.visitRange = function(ctx) {
+BDNVisitor.prototype.visitRange = function(ctx) {
     var first, last;
     const parameters = this.getParameters();
     const connector = ctx.connector.text;
@@ -927,7 +883,7 @@ ParsingVisitor.prototype.visitRange = function(ctx) {
 
 
 // resource: RESOURCE
-ParsingVisitor.prototype.visitResource = function(ctx) {
+BDNVisitor.prototype.visitResource = function(ctx) {
     const parameters = this.getParameters();
     const value = new URL(ctx.getText().slice(1, -1));  // remove the '<' and '>' delimiters
     const resource = new elements.Resource(value, parameters, this.debug);
@@ -936,7 +892,7 @@ ParsingVisitor.prototype.visitResource = function(ctx) {
 
 
 // rejectClause: 'reject' expression
-ParsingVisitor.prototype.visitRejectClause = function(ctx) {
+BDNVisitor.prototype.visitRejectClause = function(ctx) {
     const node = new trees.Node('/bali/trees/RejectClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
@@ -946,7 +902,7 @@ ParsingVisitor.prototype.visitRejectClause = function(ctx) {
 
 
 // retrieveClause: 'retrieve' recipient 'from' expression
-ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
+BDNVisitor.prototype.visitRetrieveClause = function(ctx) {
     const node = new trees.Node('/bali/trees/RetrieveClause', this.debug);
     ctx.recipient().accept(this);
     node.addItem(this.result);
@@ -957,7 +913,7 @@ ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
 
 
 // returnClause: 'return' expression?
-ParsingVisitor.prototype.visitReturnClause = function(ctx) {
+BDNVisitor.prototype.visitReturnClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ReturnClause', this.debug);
     const expression = ctx.expression();
     if (expression) {
@@ -969,7 +925,7 @@ ParsingVisitor.prototype.visitReturnClause = function(ctx) {
 
 
 // saveClause: 'save' expression ('as' recipient)?
-ParsingVisitor.prototype.visitSaveClause = function(ctx) {
+BDNVisitor.prototype.visitSaveClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SaveClause', this.debug);
     const document = ctx.expression();
     document.accept(this);
@@ -984,7 +940,7 @@ ParsingVisitor.prototype.visitSaveClause = function(ctx) {
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-ParsingVisitor.prototype.visitSelectClause = function(ctx) {
+BDNVisitor.prototype.visitSelectClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SelectClause', this.debug);
     var expressions = ctx.expression();
     const selector = expressions[0];
@@ -1008,7 +964,7 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 
 
 // signClause: 'sign' expression 'as' expression
-ParsingVisitor.prototype.visitSignClause = function(ctx) {
+BDNVisitor.prototype.visitSignClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SignClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -1020,7 +976,7 @@ ParsingVisitor.prototype.visitSignClause = function(ctx) {
 
 
 // statement: comment | mainClause handleClause?
-ParsingVisitor.prototype.visitStatement = function(ctx) {
+BDNVisitor.prototype.visitStatement = function(ctx) {
     const node = new trees.Node('/bali/trees/Statement', this.debug);
     const comment = ctx.comment();
     if (comment) {
@@ -1040,7 +996,7 @@ ParsingVisitor.prototype.visitStatement = function(ctx) {
 
 
 // symbol: SYMBOL
-ParsingVisitor.prototype.visitSymbol = function(ctx) {
+BDNVisitor.prototype.visitSymbol = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '$'
     const symbol = new strings.Symbol(value, parameters, this.debug);
@@ -1049,7 +1005,7 @@ ParsingVisitor.prototype.visitSymbol = function(ctx) {
 
 
 // tag: TAG
-ParsingVisitor.prototype.visitTag = function(ctx) {
+BDNVisitor.prototype.visitTag = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '#'
     const tag = new elements.Tag(value, parameters, this.debug);
@@ -1058,7 +1014,7 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 
 
 // text: TEXT | NARRATIVE
-ParsingVisitor.prototype.visitText = function(ctx) {
+BDNVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
     this.depth++;
@@ -1075,7 +1031,7 @@ ParsingVisitor.prototype.visitText = function(ctx) {
 
 
 // throwClause: 'throw' expression
-ParsingVisitor.prototype.visitThrowClause = function(ctx) {
+BDNVisitor.prototype.visitThrowClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ThrowClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -1084,7 +1040,7 @@ ParsingVisitor.prototype.visitThrowClause = function(ctx) {
 
 
 // variable: IDENTIFIER
-ParsingVisitor.prototype.visitVariable = function(ctx) {
+BDNVisitor.prototype.visitVariable = function(ctx) {
     const identifier = ctx.getText();
     const variable = new trees.Node('/bali/trees/Variable', this.debug);
     variable.identifier = identifier;
@@ -1093,7 +1049,7 @@ ParsingVisitor.prototype.visitVariable = function(ctx) {
 
 
 // version: VERSION
-ParsingVisitor.prototype.visitVersion = function(ctx) {
+BDNVisitor.prototype.visitVersion = function(ctx) {
     const parameters = this.getParameters();
     const levels = ctx.getText().slice(1).split('.');  // pull out the version level strings
     const value = [];
@@ -1106,7 +1062,7 @@ ParsingVisitor.prototype.visitVersion = function(ctx) {
 
 
 // whileClause: 'while' expression 'do' block
-ParsingVisitor.prototype.visitWhileClause = function(ctx) {
+BDNVisitor.prototype.visitWhileClause = function(ctx) {
     const node = new trees.Node('/bali/trees/WhileClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -1117,7 +1073,7 @@ ParsingVisitor.prototype.visitWhileClause = function(ctx) {
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-ParsingVisitor.prototype.visitWithClause = function(ctx) {
+BDNVisitor.prototype.visitWithClause = function(ctx) {
     const node = new trees.Node('/bali/trees/WithClause', this.debug);
     const symbol = ctx.symbol();
     if (symbol) {
@@ -1160,8 +1116,8 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context.exception = cause;
         context = context.parentCtx;
     }
-    const exception = new agents.Exception({
-        $module: '/bali/agents/Parser',
+    const exception = new utilities.Exception({
+        $module: '/bali/agents/BDNParser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: cause.toString()
@@ -1207,8 +1163,8 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     message = addContext(recognizer, message);
 
     // capture the exception
-    const exception = new agents.Exception({
-        $module: '/bali/agents/Parser',
+    const exception = new utilities.Exception({
+        $module: '/bali/agents/BDNParser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: new strings.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
@@ -1285,3 +1241,37 @@ const addContext = function(recognizer, message) {
     }
     return message;
 };
+
+
+Math.PHI = (Math.sqrt(5) + 1) / 2;
+Math.TAU = Math.PI * 2;
+
+const literalToNumber = function(literal) {
+    switch (literal) {
+        case '-e':
+            return -Math.E;
+        case 'e':
+            return Math.E;
+        case '-pi':
+        case '-π':
+            return -Math.PI;
+        case 'pi':
+        case 'π':
+            return Math.PI;
+        case '-phi':
+        case '-φ':
+            return -Math.PHI;
+        case 'phi':
+        case 'φ':
+            return Math.PHI;
+        case '-tau':
+        case '-τ':
+            return -Math.TAU;
+        case 'tau':
+        case 'τ':
+            return Math.TAU;
+        default:
+            return Number(literal);
+    }
+};
+

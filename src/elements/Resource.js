@@ -15,7 +15,7 @@
  * resource element.
  */
 const URL = require('url').URL;
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -38,7 +38,7 @@ const Resource =function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Resource', '$Resource', '$value', value, [
             '/javascript/String',
             '/nodejs/URL'
@@ -50,7 +50,7 @@ const Resource =function(value, parameters, debug) {
             value = new URL(value);
         }
     } catch (cause) {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/elements/Resource',
             $procedure: '$Resource',
             $exception: '$invalidParameter',

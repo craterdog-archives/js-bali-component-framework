@@ -9,13 +9,11 @@
  ************************************************************************/
 'use strict';
 
-const grammar = require('../grammar');
+exports.Exception = require('./Exception').Exception;  // must be first
+exports.Validator = require('./Validator').Validator;  // must be second
+exports.Calculator = require('./Calculator').Calculator;
+exports.Configurator = require('./Configurator').Configurator;
+exports.Controller = require('./Controller').Controller;
+exports.Decoder = require('./Decoder').Decoder;
+exports.Generator = require('./Generator').Generator;
 
-exports.BDNFormatter = require('./BDNFormatter').BDNFormatter;
-exports.CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
-exports.DeepDuplicator = require('./DeepDuplicator').DeepDuplicator;
-exports.HTMLFormatter = require('./HTMLFormatter').HTMLFormatter;
-exports.MergeSorter = require('./MergeSorter').MergeSorter;
-
-// NOTE: Can't include the BDNParser module since it depends on all components
-//       and that would result in serious circular dependencies!

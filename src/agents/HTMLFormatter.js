@@ -9,20 +9,11 @@
  ************************************************************************/
 'use strict';
 
-
-/**
- * This class implements an HTML formatter object that uses a visitor to format, in
- * a canonical way, components as HTML documents.
+/*
+ * This class implements the methods for an HTML based formatter agent.
  */
-const Exception = require('./Exception').Exception;
-const Formatter = require('./Formatter').Formatter;
-const Decoder = require('./Decoder').Decoder;
-const Validator = require('./Validator').Validator;
-const Visitor = require('./Visitor').Visitor;
-
-
-// This private constant sets the POSIX end of line character
-const EOL = '\n';
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
 
 
 /*
@@ -37,43 +28,49 @@ Array.prototype.peek = function() {
 // PUBLIC FUNCTIONS
 
 /**
- * This function creates a new formatter object that can be used to format components.
+ * This constructor creates a new formatter agent that can be used to generate a canonical HTML
+ * documents from any component.
  *
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
  * @param {Number} debug A number in the range 0..3.
- * @returns {HTML} The new component formatter.
+ * @returns {HTML} The new HTML formatter agent.
  */
-const HTML = function(style, debug) {
-    debug = debug || 0;
+const HTMLFormatter = function(style, debug) {
+    abstractions.Formatter.call(
+        this,
+        ['/bali/agents/HTMLFormatter'],
+        debug
+    );
+    const validator = new utilities.Validator(debug);
+
     if (debug > 1) {
-        const validator = new Validator(debug);
-        validator.validateType('/bali/agents/HTML', '$formatComponent', '$style', style, [
+        validator.validateType('/bali/agents/HTMLFormatter', '$formatComponent', '$style', style, [
             '/javascript/String'
         ]);
     }
 
-    // the style is a private attribute so methods that use it are defined in the constructor
-
     this.formatComponent = function(component) {
         if (debug > 1) {
-            const validator = new Validator(debug);
-            validator.validateType('/bali/agents/HTML', '$formatComponent', '$component', component, [
+            validator.validateType('/bali/agents/HTMLFormatter', '$formatComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
-        const visitor = new FormattingVisitor(style, debug);
+        const visitor = new FormattingVisitor(style, this.debug);
         component.acceptVisitor(visitor);
         return visitor.getResult();
     };
 
     return this;
 };
-HTML.prototype.constructor = HTML;
-exports.HTML = HTML;
+HTMLFormatter.prototype = Object.create(abstractions.Formatter.prototype);
+HTMLFormatter.prototype.constructor = HTMLFormatter;
+exports.HTMLFormatter = HTMLFormatter;
 
 
 // PRIVATE CONSTANTS
+
+const EOL = '\n'; // the POSIX end of line character
 
 const header =
 '<!DOCTYPE html>\n' +
@@ -119,8 +116,11 @@ const footer =
 // PRIVATE CLASSES
 
 const FormattingVisitor = function(style, debug) {
-    Visitor.call(this, debug);
-    this.debug = debug || 0;
+    abstractions.Visitor.call(
+        this,
+        ['/bali/agents/FormattingVisitor'],
+        debug
+    );
     this.result = header.replace(/\${style}/, style);
     this.depth = 4;  // the header and footer take up four levels
     this.width = [];  // stack of key widths for nested catalogs
@@ -140,7 +140,7 @@ const FormattingVisitor = function(style, debug) {
 
     return this;
 };
-FormattingVisitor.prototype = Object.create(Visitor.prototype);
+FormattingVisitor.prototype = Object.create(abstractions.Visitor.prototype);
 FormattingVisitor.prototype.constructor = FormattingVisitor;
 
 

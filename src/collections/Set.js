@@ -14,8 +14,9 @@
  * duplicate items. By default a set orders its items based on the natural ordering
  * of its items.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 // PUBLIC FUNCTIONS
@@ -40,7 +41,7 @@ const Set = function(parameters, debug) {
 
     // the comparator and tree are private attributes so methods that use
     // them are defined in the constructor
-    const comparator = new agents.Comparator(this.debug);
+    const comparator = new agents.CanonicalComparator(this.debug);
     const tree = new RandomizedTree(comparator);
 
     this.toArray = function() {
@@ -55,12 +56,12 @@ const Set = function(parameters, debug) {
     };
 
     this.getIterator = function() {
-        return new SetIterator(tree);
+        return new SetIterator(tree, this.getParameters(), this.debug);
     };
 
     this.getIndex = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -78,19 +79,19 @@ const Set = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
+        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = this.normalizedIndex(index) - 1;  // convert to javascript zero based indexing
+        index = validator.normalizeIndex(this,index) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -107,7 +108,7 @@ const Set = function(parameters, debug) {
 
     this.removeItem = function(item) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
@@ -124,7 +125,7 @@ const Set = function(parameters, debug) {
 
     this.removeItems = function(items) {
         if (this.debug > 1) {
-            const validator = new agents.Validator(this.debug);
+            const validator = new utilities.Validator(this.debug);
             validator.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
                 '/javascript/Undefined',
                 '/javascript/Array',
@@ -167,7 +168,7 @@ exports.Set = Set;
  * @returns {Set} The resulting set.
  */
 Set.not = function(set, debug) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/collections/Set',
         $procedure: '$not',
         $exception: '$meaningless',
@@ -189,7 +190,7 @@ Set.not = function(set, debug) {
  */
 Set.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$and', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -220,7 +221,7 @@ Set.and = function(first, second, debug) {
  */
 Set.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$sans', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -246,7 +247,7 @@ Set.sans = function(first, second, debug) {
  */
 Set.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$or', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -272,7 +273,7 @@ Set.or = function(first, second, debug) {
  */
 Set.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/collections/Set', '$xor', '$first', first, [
             '/bali/collections/Set'
         ]);
@@ -280,7 +281,8 @@ Set.xor = function(first, second, debug) {
             '/bali/collections/Set'
         ]);
     }
-    const result = new Set(first.getParameters(), first.comparator, debug);
+    const comparator = first.comparator;
+    const result = new Set(first.getParameters(), comparator, debug);
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();
@@ -288,7 +290,7 @@ Set.xor = function(first, second, debug) {
     while (iterator1.hasNext() && iterator2.hasNext()) {
         if (item1 === undefined) item1 = iterator1.getNext();
         if (item2 === undefined) item2 = iterator2.getNext();
-        const signum = item1.comparedTo(item2);
+        const signum = comparator.compareComponents(item1, item2);
         switch (signum) {
             case -1:
                 result.addItem(item1);
@@ -323,8 +325,13 @@ Set.xor = function(first, second, debug) {
  * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
  */
 
-const SetIterator = function(tree) {
-    agents.Iterator.call(this);
+const SetIterator = function(tree, parameters, debug) {
+    abstractions.Iterator.call(
+        this,
+        ancestry.concat('/bali/agents/SetIterator'),
+        parameters,
+        debug
+    );
 
     // the tree, current slot index, and previous and next pointers are private attributes
     // so methods that use them are defined in the constructor
@@ -378,7 +385,7 @@ const SetIterator = function(tree) {
 
     return this;
 };
-SetIterator.prototype = Object.create(agents.Iterator.prototype);
+SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
 SetIterator.prototype.constructor = SetIterator;
 
 

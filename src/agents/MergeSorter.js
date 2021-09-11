@@ -10,28 +10,31 @@
 'use strict';
 
 /*
- * This class implements a sorter that can be used on any collection to sort its
- * items into their natural order.  The class implements a standard merge sort algorithm.
- * The collection to be sorted is recursively split into two collections each of which are
- * then sorted and then the two collections are merged back into a sorted collection.
+ * This class implements the methods for a merge sorter agent. It uses a comparator
+ * agent to compare each pair of components in a sortable collection.
  */
-const Comparator = require('./Comparator').Comparator;
+const utilities = require('../utilities');
+const abstractions = require('../abstractions');
+const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
 
-
-// PUBLIC FUNCTIONS
 
 /**
- * This function creates a new sorter object.
+ * This constructor creates a new merge sorter agent that can be used to sort any sortable collection.
  *
  * @param {Comparator} comparator An optional comparator implementing the desired comparison algorithm.
  * @param {Number} debug A number in the range 0..3.
  * sorting. If none is specified, the natural comparator will be used.
+ * @returns {Sorter} The new merge sorter agent.
  */
-const Sorter = function(comparator, debug) {
-    this.debug = debug || 0;
+const MergeSorter = function(comparator, debug) {
+    abstractions.Sorter.call(
+        this,
+        ['/bali/agents/MergeSorter'],
+        debug
+    );
 
-    // the comparator is a private attribute so methods that use it are defined in the constructor
-    comparator = comparator || new Comparator(debug);
+    // private attribute
+    comparator = comparator || new CanonicalComparator(debug);
 
     this.sortCollection = function(collection) {
         if (collection && collection.getSize() > 1) {
@@ -44,8 +47,9 @@ const Sorter = function(comparator, debug) {
 
     return this;
 };
-Sorter.prototype.constructor = Sorter;
-exports.Sorter = Sorter;
+MergeSorter.prototype = Object.create(abstractions.Sorter.prototype);
+MergeSorter.prototype.constructor = MergeSorter;
+exports.MergeSorter = MergeSorter;
 
 
 const sortArray = function(comparator, array) {

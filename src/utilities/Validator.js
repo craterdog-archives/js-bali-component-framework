@@ -112,7 +112,7 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     }
 
     // the argument type is invalid
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: moduleName,
         $procedure: procedureName,
         $argument: argumentName,
@@ -125,3 +125,37 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
+
+
+/**
+ * This method converts a negative item index into its corresponding positive
+ * index and checks to make sure the resulting index is in the range [1..size].
+ *
+ * The mapping between indices is as follows:
+ * <pre>
+ * Negative Indices:   -N      -N + 1     -N + 2     -N + 3   ...   -1
+ * Positive Indices:    1         2          3          4     ...    N
+ * </pre>
+ *
+ * @param {Sequence} sequence The sequence of items being indexed.
+ * @param {Number} index The index in the range [-N..N] to be normalized.
+ * @returns {Number} The normalized [1..N] index.
+ */
+Validator.prototype.normalizeIndex = function(sequence, index) {
+    const size = sequence.getSize();
+    if (index > size || index < -size) {
+        const exception = new utilities.Exception({
+            $module: '/bali/utilities/Validator',
+            $procedure: '$normalizeIndex',
+            $exception: '$invalidIndex',
+            $index: index,
+            $range: '' + -size + '..' + size,
+            $text: 'The index is out of range.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    }
+    if (index < 0) index = index + size + 1;
+    return index;
+};
+

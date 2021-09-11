@@ -15,7 +15,7 @@
  * duration element.
  */
 const moment = require('moment');
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -40,7 +40,7 @@ const Duration = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -96,7 +96,7 @@ Duration.prototype.toBoolean = function() {
 Duration.inverse = function(duration, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Duration', '$inverse', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
@@ -116,7 +116,7 @@ Duration.inverse = function(duration, debug) {
 Duration.sum = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Duration', '$sum', '$first', first, [
             '/bali/elements/Duration'
         ]);
@@ -139,7 +139,7 @@ Duration.sum = function(first, second, debug) {
 Duration.difference = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Duration', '$difference', '$first', first, [
             '/bali/elements/Duration'
         ]);
@@ -161,7 +161,7 @@ Duration.difference = function(first, second, debug) {
  */
 Duration.scaled = function(duration, factor, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Duration', '$scaled', '$duration', duration, [
             '/bali/elements/Duration'
         ]);

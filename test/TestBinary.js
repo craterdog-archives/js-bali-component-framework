@@ -82,38 +82,42 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         });
 
         it('should perform the bitwise NOT function correctly', function() {
+            const comparator = new agents.Comparator();
             for (var i = 0; i < 256; i++) {
                 const expected = bali.binary(generator.generateBytes(i));
-                expect(bali.binary.not(bali.binary.not(expected)).isEqualTo(expected)).to.equal(true);
+                expect(comparator.areEqual(bali.binary.not(bali.binary.not(expected)), expected)).to.equal(true);
             }
         });
 
         it('should perform the bitwise SANS function correctly', function() {
+            const comparator = new agents.Comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));
                 const C = bali.binary.sans(A, B);
                 const D = bali.binary.sans(B, A);
-                expect(bali.binary.or(C, D).isEqualTo(bali.binary.xor(A, B))).to.equal(true);
+                expect(comparator.areEqual(bali.binary.or(C, D), bali.binary.xor(A, B))).to.equal(true);
             }
         });
 
         it('should perform the bitwise XOR function correctly', function() {
+            const comparator = new agents.Comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));
                 const C = bali.binary.xor(A, B);
-                expect(bali.binary.xor(B, C).isEqualTo(A)).to.equal(true);
-                expect(bali.binary.xor(C, A).isEqualTo(B)).to.equal(true);
+                expect(comparator.areEqual(bali.binary.xor(B, C), A)).to.equal(true);
+                expect(comparator.areEqual(bali.binary.xor(C, A), B)).to.equal(true);
             }
         });
 
         it("should perform the De Morgan's Laws correctly", function() {
+            const comparator = new agents.Comparator();
             for (var i = 0; i < 10; i++) {
                 const A = bali.binary(generator.generateBytes(i));
                 const B = bali.binary(generator.generateBytes(i));
-                expect(bali.binary.not(bali.binary.and(A, B)).isEqualTo(bali.binary.or(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
-                expect(bali.binary.not(bali.binary.or(A, B)).isEqualTo(bali.binary.and(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
+                expect(comparator.areEqual(bali.binary.not(bali.binary.and(A, B)), bali.binary.or(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
+                expect(comparator.areEqual(bali.binary.not(bali.binary.or(A, B)), bali.binary.and(bali.binary.not(A), bali.binary.not(B)))).to.equal(true);
             }
         });
 

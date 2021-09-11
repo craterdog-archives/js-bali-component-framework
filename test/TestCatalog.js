@@ -38,8 +38,9 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             catalog.removeAll();
             const copy = catalog.constructor(catalog.getParameters());
             expect(copy).to.exist;
-            expect(catalog.isEqualTo(copy)).to.equal(true);
-            const signum = catalog.comparedTo(copy);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(catalog, copy)).to.equal(true);
+            const signum = comparator.compareComponents(catalog, copy);
             expect(signum).to.equal(0);
         });
 
@@ -327,7 +328,8 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             catalog2.addItem(association5);
             const catalog3 = bali.catalog(array);
             const catalog4 = bali.catalog.chain(catalog1, catalog2);
-            expect(catalog4.isEqualTo(catalog3)).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(catalog4, catalog3)).to.equal(true);
         });
 
     });

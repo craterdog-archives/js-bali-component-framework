@@ -58,9 +58,10 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
             const days = bali.component('~P7D');
             const week = bali.component('~P1W');
             const month = bali.component('~P1M');
-            expect(week.comparedTo(month)).to.equal(-1);
-            expect(week.isEqualTo(days)).to.equal(true);
-            expect(month.comparedTo(days)).to.equal(1);
+            const comparator = new agents.Comparator();
+            expect(comparator.compareComponents(week, month)).to.equal(-1);
+            expect(comparator.areEqual(week, days)).to.equal(true);
+            expect(comparator.compareComponents(month, days)).to.equal(1);
         });
 
         it('should retrieve milliseconds correctly', function() {
@@ -108,20 +109,24 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
     describe('Test time duration functions', function() {
 
         it('should perform the inverse function correctly', function() {
-            expect(bali.duration.inverse(bali.component('~P3D')).isEqualTo(bali.component('~-P3D'))).to.equal(true);
-            expect(bali.duration.inverse(bali.component('~-P2Y3M6D')).isEqualTo(bali.component('~P2Y3M6D'))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.duration.inverse(bali.component('~P3D')), bali.component('~-P3D'))).to.equal(true);
+            expect(comparator.areEqual(bali.duration.inverse(bali.component('~-P2Y3M6D')), bali.component('~P2Y3M6D'))).to.equal(true);
         });
 
         it('should perform the sum function correctly', function() {
-            expect(bali.duration.sum(bali.component('~P2Y3M6D'), bali.component('~P2M4D')).isEqualTo(bali.component('~P2Y5M10D'))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.duration.sum(bali.component('~P2Y3M6D'), bali.component('~P2M4D')), bali.component('~P2Y5M10D'))).to.equal(true);
         });
 
         it('should perform the difference function correctly', function() {
-            expect(bali.duration.difference(bali.component('~P2Y3M6D'), bali.component('~P2M4D')).isEqualTo(bali.component('~P2Y1M2D'))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.duration.difference(bali.component('~P2Y3M6D'), bali.component('~P2M4D')), bali.component('~P2Y1M2D'))).to.equal(true);
         });
 
         it('should perform the scaled function correctly', function() {
-            expect(bali.duration.scaled(bali.component('~P6D'), 3).isEqualTo(bali.component('~P18D'))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.duration.scaled(bali.component('~P6D'), 3), bali.component('~P18D'))).to.equal(true);
         });
 
     });

@@ -9,10 +9,17 @@
  ************************************************************************/
 'use strict';
 
-const agents = require('../agents');
+const utilities = require('../utilities');  // force these to load completely
 
-exports.Component = require('./Component').Component;
-exports.Element = require('./Element').Element;  // depends on Component
-exports.String = require('./String').String;  // depends on Element
-exports.Collection = require('./Collection').Collection;  // depends on Iterator
+exports.Component = require('./Component').Component;  // must be first
+exports.Collection = require('./Collection').Collection;
+exports.Comparator = require('./Comparator').Comparator;
+exports.Duplicator = require('./Duplicator').Duplicator;
+exports.Element = require('./Element').Element;
+exports.Formatter = require('./Formatter').Formatter;
+exports.Iterator = require('./Iterator').Iterator;
+exports.Parser = require('./Parser').Parser;
+exports.Sorter = require('./Sorter').Sorter;
+exports.String = require('./String').String;
+exports.Visitor = require('./Visitor').Visitor;
 

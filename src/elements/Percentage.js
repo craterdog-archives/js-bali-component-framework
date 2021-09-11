@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a
  * percentage element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,14 +39,14 @@ const Percentage = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Percentage', '$Percentage', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
     }
     value = value || 0;  // default value
-    this.calculator = new agents.Calculator(this.debug);
+    this.calculator = new utilities.Calculator(this.debug);
 
     // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
@@ -92,7 +92,7 @@ Percentage.prototype.toReal = function() {
  */
 Percentage.inverse = function(percentage, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percentage', '$inverse', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
@@ -111,7 +111,7 @@ Percentage.inverse = function(percentage, debug) {
  */
 Percentage.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percentage', '$sum', '$first', first, [
             '/bali/elements/Percentage'
         ]);
@@ -119,7 +119,7 @@ Percentage.sum = function(first, second, debug) {
             '/bali/elements/Percentage'
         ]);
     }
-    const calculator = new agents.Calculator(this.debug);
+    const calculator = new utilities.Calculator(this.debug);
     return new Percentage(calculator.sum(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -134,7 +134,7 @@ Percentage.sum = function(first, second, debug) {
  */
 Percentage.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percentage', '$difference', '$first', first, [
             '/bali/elements/Percentage'
         ]);
@@ -142,7 +142,7 @@ Percentage.difference = function(first, second, debug) {
             '/bali/elements/Percentage'
         ]);
     }
-    const calculator = new agents.Calculator(this.debug);
+    const calculator = new utilities.Calculator(this.debug);
     return new Percentage(calculator.difference(first.getValue(), second.getValue()), first.getParameters(), debug);
 };
 
@@ -157,7 +157,7 @@ Percentage.difference = function(first, second, debug) {
  */
 Percentage.scaled = function(percentage, factor, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Percentage', '$scaled', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
@@ -165,6 +165,6 @@ Percentage.scaled = function(percentage, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    const calculator = new agents.Calculator(this.debug);
+    const calculator = new utilities.Calculator(this.debug);
     return new Percentage(calculator.product(percentage.getValue(), factor), percentage.getParameters(), debug);
 };

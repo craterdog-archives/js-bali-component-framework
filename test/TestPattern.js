@@ -24,9 +24,10 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
         });
 
         it('should compare patterns for equality', function() {
-            expect(bali.pattern().isEqualTo(bali.pattern.NONE)).to.equal(true);
-            expect(bali.pattern.NONE.isEqualTo(bali.component('none'))).to.equal(true);
-            expect(bali.pattern.ANY.isEqualTo(bali.component('any'))).to.equal(true);
+            const comparator = new agents.Comparator();
+            expect(comparator.areEqual(bali.pattern(), bali.pattern.NONE)).to.equal(true);
+            expect(comparator.areEqual(bali.pattern.NONE, bali.component('none'))).to.equal(true);
+            expect(comparator.areEqual(bali.pattern.ANY, bali.component('any'))).to.equal(true);
         });
 
     });

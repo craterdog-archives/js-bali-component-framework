@@ -9,28 +9,50 @@
  ************************************************************************/
 'use strict';
 
-/*
- * This abstract class defines the invariant methods that all components must support.
- */
-
 
 /**
- * This constructor creates a new component with the specified ancestry and interfaces candidate
- * with any optional parameters that are used to parameterize its type.
- *
- * @param {Array} ancestry An array of type names that make up the ancestry for the component.
- * @param {Array} interfaces An array of interface names that are supported by the component.
- * @param {Object} parameters Optional parameters used to parameterize this component.
- * @param {Number} debug A number in the range 0..3.
- * @returns {Component} The new component.
+ * This composite class implements a smart exception class that knows how to format itself
+ * as a Bali Document Notation™ string. It provides a consistent way to do exception
+ * handling within the Bali Nebula™. This class must look like it is a Component class
+ * but also inherit from the JavaScript Error class. So it implements all of the methods
+ * defined in the Component class.
  */
-const Component = function(ancestry, interfaces, parameters, debug) {
-    ancestry = ancestry || [];
-    ancestry = ancestry.concat('/bali/abstractions/Component');
-    interfaces = interfaces || [];
-    interfaces = interfaces.concat('/bali/interfaces/Reflective');
-    parameters = parameters || undefined;  // must be undefined to avoid infinite loop
-    this.debug = debug || 0;  // default value
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function creates a new Bali exception with the specified attributes.  It must
+ * be very careful not to cause additional exceptions to be thrown or an infinite loop
+ * may result.
+ *
+ * @param {Object} attributes An object containing the exception attributes.
+ * @param {Object} cause An optional exception that caused this one.
+ * @returns {Exception} The new exception.
+ */
+const Exception = function(attributes, cause) {
+    if (attributes === null || typeof attributes !== 'object') attributes = {};
+    attributes = this.componentize(attributes);
+    this.cause = cause || undefined;
+    this.message = attributes['$text'] || 'An undefined exception occurred.';
+    Error.call(this.message, { cause: this.cause });
+
+    // setup the ancestry to look like an Exception is a Component
+    ancestry = [
+        '/bali/utilities/Exponent',
+        '/bali/abstractions/Component'
+    ];
+    interfaces = [
+        '/bali/interfaces/Reflective'
+    ];
+
+    // save the current error stack if possible
+    try {
+        this.stack = Error().stack;
+    } catch (ignore) {
+        // a stack trace is not supported on this platform
+    }
+
 
     // Reflective Interface
 
@@ -89,8 +111,8 @@ const Component = function(ancestry, interfaces, parameters, debug) {
 
     return this;
 };
-Component.prototype.constructor = Component;
-exports.Component = Component;
+Exception.prototype.constructor = Exception;
+exports.Exception = Exception;
 
 
 // Standard Methods
@@ -102,7 +124,7 @@ exports.Component = Component;
  *
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
-Component.prototype.toBoolean = function() {
+Exception.prototype.toBoolean = function() {
     return true;
 };
 
@@ -113,9 +135,9 @@ Component.prototype.toBoolean = function() {
  *
  * @returns {String} The corresponding string representation.
  */
-Component.prototype.toString = function() {
+Exception.prototype.toString = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Component',
+        $module: '/bali/utilities/Exception',
         $procedure: '$toString',
         $exception: '$notDefined',
         $text: 'This method gets attached to this class when the index.js file is loaded.'
@@ -129,7 +151,7 @@ Component.prototype.toString = function() {
  *
  * @returns {Number} The unique hash value for this component.
  */
-Component.prototype.getHash = function() {
+Exception.prototype.getHash = function() {
     var hash = 0;
     const source = this.toString();
     if (source.length === 0) return hash;
@@ -147,6 +169,7 @@ Component.prototype.getHash = function() {
  *
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
-Component.prototype.acceptVisitor = function(visitor) {
+Exception.prototype.acceptVisitor = function(visitor) {
     visitor.visitComponent(this);
 };
+

@@ -14,7 +14,7 @@
  * This element class captures the state and methods associated with a
  * name string element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -39,14 +39,14 @@ const Name = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$Name', '$value', value, [
             '/javascript/Array'
         ]);
     }
 
     if (!Array.isArray(value) || value.length === 0) {
-        const exception = new agents.Exception({
+        const exception = new utilities.Exception({
             $module: '/bali/elements/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',
@@ -87,13 +87,13 @@ Name.prototype.getSize = function() {
  * @returns {String} The identifier at the specified index.
  */
 Name.prototype.getItem = function(index) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = this.normalizedIndex(index) - 1;  // zero-based indexing for JS
+    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -105,8 +105,8 @@ Name.prototype.getItem = function(index) {
  * @returns {Name} A new name string containing the requested identifiers.
  */
 Name.prototype.getItems = function(range) {
+    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
         validator.validateType('/bali/elements/Name', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
@@ -125,8 +125,8 @@ Name.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = this.normalizedIndex(first) - 1;  // zero-based indexing for JS
-    last = this.normalizedIndex(last);  // slice() is exclusive of last index
+    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
+    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
     const identifiers = this.getValue().slice(first, last);
     return new Name(identifiers, this.getParameters(), this.debug);
 };
@@ -145,7 +145,7 @@ Name.prototype.getItems = function(range) {
  */
 Name.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Name', '$chain', '$first', first, [
             '/bali/elements/Name'
         ]);

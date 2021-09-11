@@ -9,18 +9,15 @@
  ************************************************************************/
 'use strict';
 
-
 /*
- * This abstract class defines the invariant methods that all collections must inherit.
+ * This abstract class defines the invariant methods that all collections must support.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const Component = require('./Component').Component;
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new collection with the specified ancestry and interfaces
+ * This constructor creates a new collection with the specified ancestry and interfaces
  * with any optional parameters that are used to parameterize its type.
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the collection.
@@ -64,7 +61,7 @@ Collection.prototype.toBoolean = function() {
  * @returns {Array} An array containing the items in this collection.
  */
 Collection.prototype.toArray = function() {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
@@ -96,13 +93,19 @@ Collection.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the items in
+ * This abstract method returns an object that can be used to iterate over the items in
  * this collection.
+ *
  * @returns {Iterator} An iterator for this collection.
  */
 Collection.prototype.getIterator = function() {
-    const iterator = new CollectionIterator(this.toArray());
-    return iterator;
+    const exception = new Exception({
+        $module: '/bali/abstractions/Collections',
+        $procedure: '$getIterator',
+        $exception: '$abstractMethod',
+        $text: 'An abstract method must be implemented by a subclass.'
+    });
+    throw exception;
 };
 
 
@@ -114,7 +117,7 @@ Collection.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
@@ -133,7 +136,7 @@ Collection.prototype.addItem = function(item) {
  */
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
@@ -171,45 +174,6 @@ Collection.prototype.addItems = function(items) {
 
 
 /**
- * This method converts negative item indexes into their corresponding positive
- * indexes and then checks to make sure the index is in the range 1..size. NOTE: if the
- * collection is empty then the resulting index will be zero.
- *
- * The mapping between indexes is as follows:
- * <pre>
- * Negative Indexes:   -N      -N + 1     -N + 2     -N + 3   ...   -1
- * Positive Indexes:    1         2          3          4     ...    N
- * </pre>
- *
- * @param {Number} index The index to be normalized -N..N.
- * @returns {Number} The normalized 1..N index.
- */
-Collection.prototype.normalizedIndex = function(index) {
-    if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$normalizedIndex', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    const size = this.getSize();
-    if (index > size || index < -size) {
-        const exception = new agents.Exception({
-            $module: '/bali/abstractions/Collection',
-            $procedure: '$normalizedIndex',
-            $exception: '$invalidIndex',
-            $index: index,
-            $range: '' + -size + '..' + size,
-            $text: 'The index is out of range.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
-    if (index < 0) index = index + size + 1;
-    return index;
-};
-
-
-/**
  * This method returns the index of the specified item in this collection.
  * NOTE: It is tempting when dealing with a collection that uses an array
  * as an underlying data composite to use the Array.indexOf() method to
@@ -223,7 +187,7 @@ Collection.prototype.normalizedIndex = function(index) {
  */
 Collection.prototype.getIndex = function(item) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getIndex', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -239,7 +203,8 @@ Collection.prototype.getIndex = function(item) {
     while (iterator.hasNext()) {
         const candidate = iterator.getNext();
         index++;
-        if (candidate.isEqualTo(item)) return index;
+        const comparator = new agents.Comparator(this.debug);
+        if (comparator.areEqual(candidate, item)) return index;
     }
     return 0;  // not found
 };
@@ -254,7 +219,7 @@ Collection.prototype.getIndex = function(item) {
  */
 Collection.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItem', '$index', index, [
             '/javascript/Number'
         ]);
@@ -273,7 +238,7 @@ Collection.prototype.getItem = function(index) {
  */
 Collection.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
@@ -301,7 +266,7 @@ Collection.prototype.getItems = function(range) {
  */
 Collection.prototype.containsItem = function(item) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
@@ -327,7 +292,7 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
@@ -361,7 +326,7 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
@@ -391,7 +356,7 @@ Collection.prototype.containsAll = function(items) {
  * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
-    const exception = new agents.Exception({
+    const exception = new utilities.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$removeAll',
         $exception: '$abstractMethod',
@@ -401,52 +366,3 @@ Collection.prototype.removeAll = function() {
     throw exception;
 };
 
-
-// PRIVATE CLASSES
-
-const CollectionIterator = function(array) {
-    agents.Iterator.call(this);
-
-    // the array and current slot index are private attributes so methods that use them
-    // are defined in the constructor
-    var slot = 0;  // the slot before the first item
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first item
-    };
-
-    this.toSlot = function(newSlot) {
-        const size = array.length;
-        if (newSlot > size) newSlot = size;
-        if (newSlot < -size) newSlot = -size;
-        if (newSlot < 0) newSlot = newSlot + size + 1;
-        slot = newSlot;
-    };
-
-    this.toEnd = function() {
-        slot = array.length;  // the slot after the last item
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < array.length;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        return array[--slot];
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        return array[slot++];
-    };
-
-    return this;
-};
-CollectionIterator.prototype = Object.create(agents.Iterator.prototype);
-CollectionIterator.prototype.constructor = CollectionIterator;
-Collection.Iterator = CollectionIterator;

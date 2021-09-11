@@ -15,7 +15,7 @@
  * in time.
  */
 const moment = require('moment');
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
 
@@ -53,7 +53,7 @@ const Moment = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -129,7 +129,7 @@ Moment.prototype.toBoolean = function() {
 Moment.duration = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$duration', '$first', first, [
             '/bali/elements/Moment'
         ]);
@@ -153,7 +153,7 @@ Moment.duration = function(first, second, debug) {
  */
 Moment.earlier = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$earlier', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
@@ -177,7 +177,7 @@ Moment.earlier = function(moment, duration, debug) {
  */
 Moment.later = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new agents.Validator(debug);
+        const validator = new utilities.Validator(debug);
         validator.validateType('/bali/elements/Moment', '$later', '$moment', moment, [
             '/bali/elements/Moment'
         ]);

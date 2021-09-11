@@ -13,7 +13,7 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
-const agents = require('../agents');
+const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
@@ -37,7 +37,7 @@ const Tag = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new agents.Validator(this.debug);
+        const validator = new utilities.Validator(this.debug);
         validator.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
@@ -47,8 +47,8 @@ const Tag = function(value, parameters, debug) {
 
     value = value || 20;  // the default number of bytes
     var bytes, numberOfBytes, hash;
-    const decoder = new agents.Decoder(0, this.debug);
-    const generator = new agents.Generator(this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
+    const generator = new utilities.Generator(this.debug);
     switch (typeof value) {
         case 'number':
             numberOfBytes = value;
@@ -94,6 +94,6 @@ Tag.prototype.toBoolean = function() {
  */
 Tag.prototype.getBytes = function() {
     // not called very often so save space by doing it on demand
-    const decoder = new agents.Decoder(0, this.debug);
+    const decoder = new utilities.Decoder(0, this.debug);
     return decoder.base32Decode(this.getValue());
 };
