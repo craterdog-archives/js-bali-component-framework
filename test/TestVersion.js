@@ -129,11 +129,11 @@ describe('Bali Nebula™ Component Framework - Version', function() {
         it('should perform the nextVersion function correctly', function() {
             const comparator = new bali.comparator(this.debug);
             expect(comparator.areEqual(bali.version.nextVersion(bali.version([1])), bali.version([2]))).to.equal(true);
-            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1], 2)), bali.version([1, 1]))).to.equal(true);
+            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1]), 2), bali.version([1, 1]))).to.equal(true);
             expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2])), bali.version([1, 3]))).to.equal(true);
-            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2], 2)), bali.version([1, 3]))).to.equal(true);
-            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2], 1)), bali.version([2]))).to.equal(true);
-            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2], 3)), bali.version([1, 2, 1]))).to.equal(true);
+            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2]), 2), bali.version([1, 3]))).to.equal(true);
+            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2]), 1), bali.version([2]))).to.equal(true);
+            expect(comparator.areEqual(bali.version.nextVersion(bali.version([1, 2]), 3), bali.version([1, 2, 1]))).to.equal(true);
         });
 
         it('should perform the validNextVersion function correctly', function() {

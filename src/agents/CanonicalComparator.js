@@ -138,11 +138,19 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
     if (first.getFirst) {
         var result = this.compareComponents(first.getFirst(), second.getFirst());
         if (result === 0) {
+            // compare the first part of the connectors
+            if (first.getConnector().startsWith('<') && second.getConnector().startsWith('.')) return 1;
+            if (first.getConnector().startsWith('.') && second.getConnector().startsWith('<')) return -1;
             // special case when last element is undefined it means GREATEST possible value
-            if (first.getLast() !== undefined && second.getLast() === undefined) return -1;
             if (first.getLast() === undefined && second.getLast() !== undefined) return 1;
+            if (first.getLast() !== undefined && second.getLast() === undefined) return -1;
             // otherwise, compare the two last elements
             result = this.compareComponents(first.getLast(), second.getLast());
+        }
+        if (result === 0) {
+            // compare the last part of the connectors
+            if (first.getConnector().endsWith('.') && second.getConnector().endsWith('<')) return 1;
+            if (first.getConnector().endsWith('<') && second.getConnector().endsWith('.')) return -1;
         }
         return result;
     }

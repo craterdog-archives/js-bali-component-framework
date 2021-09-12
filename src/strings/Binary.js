@@ -104,7 +104,7 @@ Binary.prototype.getItems = function(range) {
             '/bali/collections/Range'
         ]);
     }
-    range = this.componentize(range);
+    range = this.componentize(range).effectiveRange();
     var first = range.getFirst();
     if (first === undefined) {
         first = 1;  // first byte

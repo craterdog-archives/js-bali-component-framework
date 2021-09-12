@@ -60,32 +60,49 @@ const Range = function(first, connector, last, parameters, debug) {
         ]);
     }
 
-    // convert the arguments to components
-    if (first === null) {
-        first = undefined;
-    } else if (first !== undefined) {
-        first = this.componentize(first, this.debug);
-    }
-    if (last === null) {
-        last = undefined;
-    } else if (last !== undefined) {
-        last = this.componentize(last, this.debug);
-    }
-    if (connector === null || connector === undefined) {
-        connector = '..';
-    }
-
-    // since this collection is immutable the values must be read-only
-
-    this.setFirst = function(value) { first = this.componentize(value); };
+    this.setFirst = function(value) {
+        if (first === null) first = undefined;
+        if (value !== undefined) first = this.componentize(value);
+    };
 
     this.getFirst = function() { return first; };
 
-    this.setLast = function(value) { last = this.componentize(value); };
+    this.setLast = function(value) {
+        if (last === null) last = undefined;
+        if (value !== undefined) last = this.componentize(value);
+    }
 
     this.getLast = function() { return last; };
 
+    this.getSize = function() { return size; };
+
     this.getConnector = function() { return connector; };
+
+    this.isEnumerable = function() { return first && first.isInteger && last && last.isInteger; };
+
+    // private attributes
+    this.setFirst(first);
+    this.setLast(last);
+    if (connector === null || connector === undefined) connector = '..';
+    var size = 0;  // assume this range is innumerable
+
+    if (this.isEnumerable()) {
+        size = last.toInteger() - first.toInteger() + 1;
+        if (connector.endsWith('<')) size--;
+        if (connector.startsWith('<')) size--;
+        if (size < 1) {
+            const exception = new utilities.Exception({
+                $module: '/bali/collections/Range',
+                $procedure: '$Range',
+                $exception: '$invalidSize',
+                $range: this,
+                $size: size,
+                $text: 'An enumerable range must have a positive size.'
+            });
+            if (this.debug > 0) console.error(exception.toString());
+            throw exception;
+        }
+    }
 
     return this;
 };
@@ -97,55 +114,55 @@ exports.Range = Range;
 // PUBLIC METHODS
 
 /**
- * This method returns an array containing the items in this collection.
+ * This method returns an array containing the items in this range. If
+ * this range is not enumerable this method throws an exception.
  *
- * @returns {Array} An array containing the items in this collection.
+ * @returns {Array} An array containing the items in this range.
  */
 Range.prototype.toArray = function() {
-    const iterator = this.getIterator();
-    const array = [];
-    while (iterator.hasNext()) {
-        array.push(iterator.getNext());
+    if (this.isEnumerable()) {
+        const iterator = this.getIterator();
+        const array = [];
+        while (iterator.hasNext()) {
+            array.push(iterator.getNext());
+        }
+        return array;
     }
-    return array;
+    const exception = new utilities.Exception({
+        $module: '/bali/collections/Range',
+        $procedure: '$toArray',
+        $exception: '$notEnumerable',
+        $range: this,
+        $text: 'Only an enumerable range of integers may be represented as an array.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
 /**
- * This method returns the number of items that this collection contains.
+ * This method returns an effective range for this range that takes into account the
+ * inclusivity of the endpoints. If this range is not enumerable this method throws
+ * an exception.
  *
- * @returns {Number} The number of items that this collection contains.
+ * @returns {Range} The effective range.
  */
-Range.prototype.getSize = function() {
-    var first = this.getFirst();
-    var last = this.getLast();
-    if (first && first.isInteger && last && last.isInteger) {
+Range.prototype.effectiveRange = function() {
+    if (this.isEnumerable()) {
         const connector = this.getConnector();
-        first = first.toInteger();
+        if (connector === '..') return this;
+        var first = this.getFirst().toInteger();
         if (connector.startsWith('<')) first++;
-        last = last.toInteger();
+        var last = this.getLast().toInteger();
         if (connector.endsWith('<')) last--;
-        const size = last - first + 1;
-        if (size > 0) {
-            return size;
-        }
-        const exception = new utilities.Exception({
-            $module: '/bali/collections/Range',
-            $procedure: '$getSize',
-            $exception: '$invalidSize',
-            $range: this,
-            $size: size,
-            $text: 'A range must have a positive size.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
+        return new Range(first, '..', last, this.getParameters(), this.debug);
     }
     const exception = new utilities.Exception({
         $module: '/bali/collections/Range',
-        $procedure: '$getSize',
+        $procedure: '$effectiveRange',
         $exception: '$notEnumerable',
         $range: this,
-        $text: 'Only an enumerable range has a size and may be iterated over.'
+        $text: 'Only an enumerable range of integers has an effective range.'
     });
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
@@ -154,43 +171,58 @@ Range.prototype.getSize = function() {
 
 /**
  * This method returns an object that can be used to iterate over the integers in
- * this range.  If the range does not contain integers, an exception is thrown.
+ * this range.  If this range is not enumerable this method throws an exception.
+ *
  * @returns {Iterator} An iterator for this range.
  */
 Range.prototype.getIterator = function() {
-    if (this.getSize()) {  // will throw an exception if range is not enumerable
+    if (this.isEnumerable()) {
         const iterator = new RangeIterator(this, this.debug);
         return iterator;
     }
+    const exception = new utilities.Exception({
+        $module: '/bali/collections/Range',
+        $procedure: '$getIterator',
+        $exception: '$notEnumerable',
+        $range: this,
+        $text: 'Only an enumerable range of integers may be iterated over.'
+    });
+    if (this.debug > 0) console.error(exception.toString());
+    throw exception;
 };
 
 
 /**
  * This method returns the index of the specified item, or zero if it is not in
- * this range.  If the range does not contain integers, an exception is thrown.
+ * this range.  If this range is not enumerable this method throws an exception.
+ *
+ * @param {Component} item The item to be indexed.
  * @returns {Number} The index of the specified item.
  */
 Range.prototype.getIndex = function(item) {
-    var first = this.getFirst();
-    var last = this.getLast();
-    if (first && first.isInteger && last && last.isInteger) {
-        const connector = this.getConnector();
-        first = first.toInteger();
-        if (connector.startsWith('<')) first++;
-        last = last.toInteger();
-        if (connector.endsWith('<')) last--;
-        const index = first + item - 1;
-        if (index > 0) {
-            return index;
+    if (this.debug > 1) {
+        const validator = new utilities.Validator(this.debug);
+        validator.validateType('/bali/collections/Range', '$getIndex', '$item', item, [
+            '/javascript/Number',
+            '/bali/elements/Number'
+        ]);
+    }
+    if (this.isEnumerable()) {
+        const size = this.getSize();  // will throw an exception if range is not enumerable
+        const offset = this.componentize(item).toInteger();
+        var index = offset - this.getFirst().toInteger();
+        if (this.getConnector().startsWith('.')) {
+            index++;
         }
-        return 0;
+        if (index < 0 || index > size) return 0;  // not in the range
+        return index;
     }
     const exception = new utilities.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$getIndex',
         $exception: '$notEnumerable',
         $range: this,
-        $text: 'Only an enumerable range is indexed.'
+        $text: 'Only an enumerable range of integers is indexed.'
     });
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
@@ -217,7 +249,7 @@ Range.prototype.addItem = function(item) {
 
 
 /**
- * This method adds the specified sequence of items to the collection.
+ * Ranges are immutable so this method throws an exception.
  *
  * @param {Array|Sequential} items The items to be added to this collection.
  * @returns {Number} The number of items that were successfully added to the collection.

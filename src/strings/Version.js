@@ -59,8 +59,20 @@ const Version = function(value, parameters, debug) {
         throw exception;
     }
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value.slice(); };  // return a copy
+
+    this.getSize = function() { return value.length; };
+
+    this.getItem = function(index) {
+        const validator = new utilities.Validator(this.debug);
+        if (this.debug > 1) {
+            validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
+                '/javascript/Number'
+            ]);
+        }
+        index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+        return value[index];
+    };
 
     return this;
 };
@@ -70,34 +82,6 @@ exports.Version = Version;
 
 
 // PUBLIC METHODS
-
-/**
- * This method returns the number of levels that this version string has.
- *
- * @returns {Number} The number of levels that this version string has.
- */
-Version.prototype.getSize = function() {
-    return this.getValue().length;
-};
-
-
-/**
- * This method returns the version number at the specified index from this version string.
- *
- * @param {Number} index The index of the version number to be retrieved from this version string.
- * @returns {Number} The version number at the specified index.
- */
-Version.prototype.getItem = function(index) {
-    const validator = new utilities.Validator(this.debug);
-    if (this.debug > 1) {
-        validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
-    return this.getValue()[index];
-};
-
 
 /**
  * This method returns a new version string containing the version numbers in the specified range.
@@ -113,7 +97,7 @@ Version.prototype.getItems = function(range) {
             '/bali/collections/Range'
         ]);
     }
-    range = this.componentize(range);
+    range = this.componentize(range).effectiveRange();
     var first = range.getFirst();
     if (first === undefined) {
         first = 1;  // first level

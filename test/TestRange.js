@@ -12,6 +12,7 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(debug);
+const comparator = new bali.comparator();
 
 
 describe('Bali Nebula™ Component Framework - Range', function() {
@@ -28,6 +29,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('..');
+            expect(range.getSize()).to.equal(0);
             expect(
                 function() {
                     range.getIterator();
@@ -56,6 +58,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             last = range.getLast();
             expect(last).to.exist;
             expect(last.toInteger()).to.equal(5);
+            expect(range.getSize()).to.equal(0);
             expect(
                 function() {
                     range.getIterator();
@@ -72,8 +75,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const last = range.getLast();
             expect(last).to.exist;
             expect(last.toInteger()).to.equal(5);
+            expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
+            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(0);
         });
 
         it('should create an integer range with "<.." connector type', function() {
@@ -89,6 +94,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('<..');
+            expect(range.getSize()).to.equal(0);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
         });
@@ -106,11 +112,12 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('<..<');
+            expect(range.getSize()).to.equal(0);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
         });
 
-        it('should create a zero length integer range with "<..<" connector type', function() {
+        it('should create a unit length integer range with "<..<" connector type', function() {
             const range = bali.range(2, '<..<', 4);
             expect(range).to.exist;
             const first = range.getFirst();
@@ -122,27 +129,19 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('<..<');
+            expect(range.getSize()).to.equal(1);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
             expect(iterator.getNext()).to.exist;
             expect(iterator.hasNext()).to.equal(false);
+            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(-1);
+            expect(comparator.compareComponents(bali.range(3, '..', 3), range.effectiveRange())).to.equal(0);
         });
 
         it('should create a negative length integer range with "<..<" connector type', function() {
-            const range = bali.range(2, '<..<', 3);
-            expect(range).to.exist;
-            const first = range.getFirst();
-            expect(first).to.exist;
-            expect(first.toInteger()).to.equal(2);
-            const last = range.getLast();
-            expect(last).to.exist;
-            expect(last.toInteger()).to.equal(3);
-            const connector = range.getConnector();
-            expect(connector).to.exist;
-            expect(connector).to.equal('<..<');
             expect(
                 function() {
-                    range.getIterator();
+                    const range = bali.range(2, '<..<', 3);
                 }
             ).to.throw();
         });
@@ -159,8 +158,11 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('..<');
+            expect(range.getSize()).to.equal(3);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
+            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(1);
+            expect(comparator.compareComponents(bali.range(2, '..', 4), range.effectiveRange())).to.equal(0);
         });
 
         it('should create an integer range with ".." connector type', function() {
@@ -175,8 +177,10 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             const connector = range.getConnector();
             expect(connector).to.exist;
             expect(connector).to.equal('..');
+            expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
+            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(0);
         });
 
     });
@@ -188,7 +192,6 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         const finite = bali.range(-2, '..', 2);
 
         it('should be able to compare a negative range against the others', function() {
-            const comparator = new bali.comparator();
             expect(comparator.compareComponents(negative, negative)).to.equal(0);
             expect(comparator.compareComponents(negative, positive)).to.equal(-1);
             expect(comparator.compareComponents(negative, infinite)).to.equal(-1);
@@ -196,7 +199,6 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare a positive range against the others', function() {
-            const comparator = new bali.comparator();
             expect(comparator.compareComponents(positive, negative)).to.equal(1);
             expect(comparator.compareComponents(positive, positive)).to.equal(0);
             expect(comparator.compareComponents(positive, infinite)).to.equal(1);
@@ -204,7 +206,6 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare an infinite range against the others', function() {
-            const comparator = new bali.comparator();
             expect(comparator.compareComponents(infinite, negative)).to.equal(1);
             expect(comparator.compareComponents(infinite, positive)).to.equal(-1);
             expect(comparator.compareComponents(infinite, infinite)).to.equal(0);
@@ -212,7 +213,6 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         });
 
         it('should be able to compare a finite range against the others', function() {
-            const comparator = new bali.comparator();
             expect(comparator.compareComponents(finite, negative)).to.equal(1);
             expect(comparator.compareComponents(finite, positive)).to.equal(-1);
             expect(comparator.compareComponents(finite, infinite)).to.equal(1);

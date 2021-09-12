@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 /**
