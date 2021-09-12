@@ -101,14 +101,13 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     const actualType = this.getType(argumentValue);
     if (allowedTypes.indexOf(actualType) > -1) return;
     if (argumentValue && argumentValue.isComponent) {
-        var foundIt = false;
-        allowedTypes.forEach(function(allowedType) {
-            if (argumentValue.isType(allowedType)) foundIt = true;
-        }, this);
-        argumentValue.getInterfaces().forEach(function(iface) {
-            if (allowedTypes.indexOf(iface) > -1) foundIt = true;
-        }, this);
-        if (foundIt) return;
+        for (const allowedType of allowedTypes) {
+            if (argumentValue.isType(allowedType)) return true;
+        }
+        for (const iface of argumentValue.getInterfaces()) {
+            if (allowedTypes.indexOf(iface) > -1) return true;
+        }
+        return false;
     }
 
     // the argument type is invalid

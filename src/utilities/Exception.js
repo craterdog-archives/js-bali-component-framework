@@ -84,11 +84,10 @@ const Exception = function(attributes, cause) {
     };
 
     this.isType = function(type) {
-        var foundIt = false;
-        ancestry.forEach(function(ancestor) {
-            if (ancestor === type) foundIt = true;
-        }, this);
-        return foundIt;
+        for (const candidate of ancestry) {
+            if (candidate === type) return true;
+        }
+        return false;
     };
 
     this.getType = function() {
@@ -99,12 +98,11 @@ const Exception = function(attributes, cause) {
         return ancestry;
     };
 
-    this.supportsInterface = function(iface) {
-        var foundIt = false;
-        interfaces.forEach(function(candidate) {
-            if (candidate === iface) foundIt = true;
-        }, this);
-        return foundIt;
+    this.supportsInterface = function(type) {
+        for (const candidate of interfaces) {
+            if (candidate === type) return true;
+        }
+        return false;
     };
 
     this.getInterfaces = function() {

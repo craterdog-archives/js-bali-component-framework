@@ -280,21 +280,18 @@ Collection.prototype.containsAny = function(items) {
             '/bali/interfaces/Sequential'
         ]);
     }
-    var result = false;
     if (Array.isArray(items)) {
-        items.forEach(function(item) {
-            result = this.containsItem(item);
-            if (result) return;
-        }, this);
+        for (const item of items) {
+            if (this.containsItem(item)) return true;
+        }
     } else if (items && items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
-            result = this.containsItem(item);
-            if (result) break;
+            if (this.containsItem(item)) return true;
         }
     }
-    return result;
+    return false;
 };
 
 
@@ -314,21 +311,18 @@ Collection.prototype.containsAll = function(items) {
             '/bali/interfaces/Sequential'
         ]);
     }
-    var result = false;
     if (Array.isArray(items)) {
-        items.forEach(function(item) {
-            result = this.containsItem(item);
-            if (!result) return;
-        }, this);
+        for (const item of items) {
+            if (!this.containsItem(item)) return false;
+        }
     } else if (items && items.getIterator) {
         const iterator = items.getIterator();
         while (iterator.hasNext()) {
             const item = iterator.getNext();
-            result = this.containsItem(item);
-            if (!result) break;
+            if (!this.containsItem(item)) return false;
         }
     }
-    return result;
+    return true;
 };
 
 

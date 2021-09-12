@@ -75,13 +75,11 @@ const Catalog = function(parameters, debug) {
     };
 
     this.getIndex = function(association) {
-        var index = 0;
         const comparator = new agents.CanonicalComparator(this.debug);
-        array.forEach(function(candidate) {
-            index++;
-            if (comparator.areEqual(candidate, association)) return index;
+        const index = array.findIndex(function(candidate) {
+            return comparator.areEqual(candidate, association);
         }, this);
-        return 0;
+        return index + 1;  // convert to unit based indexing
     };
 
     this.getItem = function(index) {
@@ -248,10 +246,10 @@ const Catalog = function(parameters, debug) {
         const association = map[key.toString()];
         if (association) {
             delete map[key.toString()];
+            const comparator = new agents.CanonicalComparator(this.debug);
             const index = array.findIndex(function(item) {
-                const comparator = new agents.CanonicalComparator(this.debug);
                 return comparator.areEqual(item, association);
-            });
+            }, this);
             array.splice(index, 1);
             return true;
         }

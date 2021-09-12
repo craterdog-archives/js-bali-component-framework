@@ -72,13 +72,11 @@ const Stack = function(parameters, debug) {
     };
 
     this.getIndex = function(item) {
-        var index = 0;
         const comparator = new agents.CanonicalComparator(this.debug);
-        array.forEach(function(candidate) {
-            index++;
-            if (comparator.areEqual(candidate, item)) return index;
+        const index = array.findIndex(function(candidate) {
+            return comparator.areEqual(candidate, item);
         }, this);
-        return 0;
+        return index + 1;  // convert to unit based indexing
     };
 
     this.addItem = function(item) {
