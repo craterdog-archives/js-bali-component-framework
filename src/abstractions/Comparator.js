@@ -50,7 +50,7 @@ exports.Comparator = Comparator;
  *
  */
 Comparator.prototype.areEqual = function(firstComponent, secondComponent) {
-    return this.compareComponents(firstComponent, secondComponent) === 0;
+    return this.ranking(firstComponent, secondComponent) === 0;
 };
 
 
@@ -62,10 +62,10 @@ Comparator.prototype.areEqual = function(firstComponent, secondComponent) {
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  *
  */
-Comparator.prototype.compareComponents = function(first, second) {
+Comparator.prototype.ranking = function(first, second) {
     const exception = new utilities.Exception({
         $module: '/bali/abstractions/Comparator',
-        $procedure: '$compareComponents',
+        $procedure: '$rank',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
@@ -91,7 +91,7 @@ Comparator.prototype.compareComponents = function(first, second) {
 Comparator.prototype.matchesPattern = function(component, pattern) {
     const exception = new utilities.Exception({
         $module: '/bali/abstractions/Comparator',
-        $procedure: '$compareComponents',
+        $procedure: '$matchesPattern',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });

@@ -46,9 +46,9 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
             const comparator = new bali.comparator();
             const first = bali.component('<2017-12-30T17:38:35>');
             const second = bali.component('<2017-12-30T17:38:39>');
-            expect(comparator.compareComponents(first, second)).to.equal(-1);
+            expect(comparator.ranking(first, second)).to.equal(-1);
             expect(comparator.areEqual(first, first)).to.equal(true);
-            expect(comparator.compareComponents(second, first)).to.equal(1);
+            expect(comparator.ranking(second, first)).to.equal(1);
         });
 
         it('should retrieve millisecond correctly', function() {

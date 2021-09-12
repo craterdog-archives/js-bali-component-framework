@@ -35,7 +35,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(copy).to.exist;
             const comparator = new bali.comparator();
             expect(comparator.areEqual(stack, copy)).to.equal(true);
-            const signum = comparator.compareComponents(stack, copy);
+            const signum = comparator.ranking(stack, copy);
             expect(signum).to.equal(0);
         });
 

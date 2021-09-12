@@ -47,7 +47,7 @@ exports.CanonicalComparator = CanonicalComparator;
  * @returns {Number} -1 if first < second; 0 if first === second; and 1 if first > second.
  *
  */
-CanonicalComparator.prototype.compareComponents = function(first, second) {
+CanonicalComparator.prototype.ranking = function(first, second) {
 
     // handle undefined objects
     if (first === null) first = undefined;  // normalize nulls
@@ -61,10 +61,10 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
     if (first.isComponent && typeof second === 'boolean') {
-        return this.compareComponents(first, this.componentize(second));
+        return this.ranking(first, this.componentize(second));
     }
     if (typeof first === 'boolean' && second.isComponent) {
-        return this.compareComponents(this.componentize(first), second);
+        return this.ranking(this.componentize(first), second);
     }
 
     // handle number types
@@ -73,10 +73,10 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
         return Math.sign(Math.fround(first) - Math.fround(second));
     }
     if (first.isComponent && typeof second === 'number') {
-        return this.compareComponents(first, this.componentize(second));
+        return this.ranking(first, this.componentize(second));
     }
     if (typeof first === 'number' && second.isComponent) {
-        return this.compareComponents(this.componentize(first), second);
+        return this.ranking(this.componentize(first), second);
     }
 
     // handle string types
@@ -84,18 +84,18 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
         return Math.sign(first.localeCompare(second));
     }
     if (first.isComponent && typeof second === 'string') {
-        return this.compareComponents(first, this.componentize(second));
+        return this.ranking(first, this.componentize(second));
     }
     if (typeof first === 'string' && second.isComponent) {
-        return this.compareComponents(this.componentize(first), second);
+        return this.ranking(this.componentize(first), second);
     }
 
     // handle heterogeneous types
     if (first.isComponent && second.isComponent && first.getType() !== second.getType()) {
-        return this.compareComponents(first.getType(), second.getType());
+        return this.ranking(first.getType(), second.getType());
     }
     if (first.constructor.name !== second.constructor.name) {
-        return this.compareComponents(first.constructor.name, second.constructor.name);
+        return this.ranking(first.constructor.name, second.constructor.name);
     }
 
     // handle buffers
@@ -109,7 +109,7 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
         var secondIndex = 0;
         var result = 0;
         while (result === 0 && firstIndex < first.length && secondIndex < second.length) {
-            result = this.compareComponents(first[firstIndex++], second[secondIndex++]);
+            result = this.ranking(first[firstIndex++], second[secondIndex++]);
         }
         if (result !== 0) return result;  // found a difference
         if (firstIndex < first.length) return 1;  // the first is longer than the second
@@ -119,24 +119,24 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
 
     // handle composites
     if (first.isComponent && first.isType('/bali/collections/Association')) {
-        var result = this.compareComponents(first.getKey(), second.getKey());
-        if (result === 0) result = this.compareComponents(first.getValue(), second.getValue());
+        var result = this.ranking(first.getKey(), second.getKey());
+        if (result === 0) result = this.ranking(first.getValue(), second.getValue());
         return result;
     }
     if (first.isComponent && first.isType('/bali/agents/Exception')) {
-        return this.compareComponents(first.getAttributes(), second.getAttributes());
+        return this.ranking(first.getAttributes(), second.getAttributes());
     }
     if (first.isComponent && first.isType('/bali/trees/Procedure')) {
-        return this.compareComponents(first.getCode(), second.getCode());
+        return this.ranking(first.getCode(), second.getCode());
     }
     if (first.isComponent && first.isType('/bali/trees/Node')) {
         // leaf nodes are treated as empty arrays
-        return this.compareComponents(first.toArray(), second.toArray());
+        return this.ranking(first.toArray(), second.toArray());
     }
 
     // handle ranges
     if (first.getFirst) {
-        var result = this.compareComponents(first.getFirst(), second.getFirst());
+        var result = this.ranking(first.getFirst(), second.getFirst());
         if (result === 0) {
             // compare the first part of the connectors
             if (first.getConnector().startsWith('<') && second.getConnector().startsWith('.')) return 1;
@@ -145,7 +145,7 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
             if (first.getLast() === undefined && second.getLast() !== undefined) return 1;
             if (first.getLast() !== undefined && second.getLast() === undefined) return -1;
             // otherwise, compare the two last elements
-            result = this.compareComponents(first.getLast(), second.getLast());
+            result = this.ranking(first.getLast(), second.getLast());
         }
         if (result === 0) {
             // compare the last part of the connectors
@@ -157,13 +157,13 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
 
     // handle collections
     if (first.isComponent && first.isType('/bali/abstractions/Collection')) {
-        return this.compareComponents(first.toArray(), second.toArray());
+        return this.ranking(first.toArray(), second.toArray());
     }
 
     // handle specific element types
     if (first.isComponent && first.isType('/bali/elements/Number')) {
-        var result = this.compareComponents(first.getReal(), second.getReal());
-        if (result === 0) result = this.compareComponents(first.getImaginary(), second.getImaginary());
+        var result = this.ranking(first.getReal(), second.getReal());
+        if (result === 0) result = this.ranking(first.getImaginary(), second.getImaginary());
         return result;
     }
     if (first.isComponent && (first.isType('/bali/elements/Duration') || first.isType('/bali/elements/Moment'))) {
@@ -171,14 +171,14 @@ CanonicalComparator.prototype.compareComponents = function(first, second) {
         return Math.sign(first.getValue() - second.getValue());
     }
     if (first.getReal) {
-        return this.compareComponents(first.getReal(), second.getReal());
+        return this.ranking(first.getReal(), second.getReal());
     }
     if (first.getValue) {
-        return this.compareComponents(first.getValue(), second.getValue());
+        return this.ranking(first.getValue(), second.getValue());
     }
 
     // anything else, compare their string values (handles both JS and Bali types)
-    return this.compareComponents(first.toString(), second.toString());
+    return this.ranking(first.toString(), second.toString());
 };
 
 

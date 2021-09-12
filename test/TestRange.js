@@ -78,7 +78,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, range.effectiveRange())).to.equal(0);
         });
 
         it('should create an integer range with "<.." connector type', function() {
@@ -134,8 +134,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(iterator).to.exist;
             expect(iterator.getNext()).to.exist;
             expect(iterator.hasNext()).to.equal(false);
-            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(-1);
-            expect(comparator.compareComponents(bali.range(3, '..', 3), range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, range.effectiveRange())).to.equal(-1);
+            expect(comparator.ranking(bali.range(3, '..', 3), range.effectiveRange())).to.equal(0);
         });
 
         it('should create a negative length integer range with "<..<" connector type', function() {
@@ -161,8 +161,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(3);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(1);
-            expect(comparator.compareComponents(bali.range(2, '..', 4), range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, range.effectiveRange())).to.equal(1);
+            expect(comparator.ranking(bali.range(2, '..', 4), range.effectiveRange())).to.equal(0);
         });
 
         it('should create an integer range with ".." connector type', function() {
@@ -180,7 +180,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.compareComponents(range, range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, range.effectiveRange())).to.equal(0);
         });
 
     });
@@ -192,31 +192,31 @@ describe('Bali Nebula™ Component Framework - Range', function() {
         const finite = bali.range(-2, '..', 2);
 
         it('should be able to compare a negative range against the others', function() {
-            expect(comparator.compareComponents(negative, negative)).to.equal(0);
-            expect(comparator.compareComponents(negative, positive)).to.equal(-1);
-            expect(comparator.compareComponents(negative, infinite)).to.equal(-1);
-            expect(comparator.compareComponents(negative, finite)).to.equal(-1);
+            expect(comparator.ranking(negative, negative)).to.equal(0);
+            expect(comparator.ranking(negative, positive)).to.equal(-1);
+            expect(comparator.ranking(negative, infinite)).to.equal(-1);
+            expect(comparator.ranking(negative, finite)).to.equal(-1);
         });
 
         it('should be able to compare a positive range against the others', function() {
-            expect(comparator.compareComponents(positive, negative)).to.equal(1);
-            expect(comparator.compareComponents(positive, positive)).to.equal(0);
-            expect(comparator.compareComponents(positive, infinite)).to.equal(1);
-            expect(comparator.compareComponents(positive, finite)).to.equal(1);
+            expect(comparator.ranking(positive, negative)).to.equal(1);
+            expect(comparator.ranking(positive, positive)).to.equal(0);
+            expect(comparator.ranking(positive, infinite)).to.equal(1);
+            expect(comparator.ranking(positive, finite)).to.equal(1);
         });
 
         it('should be able to compare an infinite range against the others', function() {
-            expect(comparator.compareComponents(infinite, negative)).to.equal(1);
-            expect(comparator.compareComponents(infinite, positive)).to.equal(-1);
-            expect(comparator.compareComponents(infinite, infinite)).to.equal(0);
-            expect(comparator.compareComponents(infinite, finite)).to.equal(-1);
+            expect(comparator.ranking(infinite, negative)).to.equal(1);
+            expect(comparator.ranking(infinite, positive)).to.equal(-1);
+            expect(comparator.ranking(infinite, infinite)).to.equal(0);
+            expect(comparator.ranking(infinite, finite)).to.equal(-1);
         });
 
         it('should be able to compare a finite range against the others', function() {
-            expect(comparator.compareComponents(finite, negative)).to.equal(1);
-            expect(comparator.compareComponents(finite, positive)).to.equal(-1);
-            expect(comparator.compareComponents(finite, infinite)).to.equal(1);
-            expect(comparator.compareComponents(finite, finite)).to.equal(0);
+            expect(comparator.ranking(finite, negative)).to.equal(1);
+            expect(comparator.ranking(finite, positive)).to.equal(-1);
+            expect(comparator.ranking(finite, infinite)).to.equal(1);
+            expect(comparator.ranking(finite, finite)).to.equal(0);
         });
 
     });

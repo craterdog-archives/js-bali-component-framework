@@ -59,9 +59,9 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
             const week = bali.component('~P1W');
             const month = bali.component('~P1M');
             const comparator = new bali.comparator();
-            expect(comparator.compareComponents(week, month)).to.equal(-1);
+            expect(comparator.ranking(week, month)).to.equal(-1);
             expect(comparator.areEqual(week, days)).to.equal(true);
-            expect(comparator.compareComponents(month, days)).to.equal(1);
+            expect(comparator.ranking(month, days)).to.equal(1);
         });
 
         it('should retrieve milliseconds correctly', function() {

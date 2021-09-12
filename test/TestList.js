@@ -35,7 +35,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(copy).to.exist;
             const comparator = new bali.comparator();
             expect(comparator.areEqual(list, copy)).to.equal(true);
-            const signum = comparator.compareComponents(list, copy);
+            const signum = comparator.ranking(list, copy);
             expect(signum).to.equal(0);
         });
 

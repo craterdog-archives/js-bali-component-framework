@@ -40,7 +40,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(copy).to.exist;
             const comparator = new bali.comparator();
             expect(comparator.areEqual(catalog, copy)).to.equal(true);
-            const signum = comparator.compareComponents(catalog, copy);
+            const signum = comparator.ranking(catalog, copy);
             expect(signum).to.equal(0);
         });
 

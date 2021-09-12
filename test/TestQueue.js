@@ -35,7 +35,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(copy).to.exist;
             const comparator = new bali.comparator();
             expect(comparator.areEqual(queue, copy)).to.equal(true);
-            const signum = comparator.compareComponents(queue, copy);
+            const signum = comparator.ranking(queue, copy);
             expect(signum).to.equal(0);
         });
 

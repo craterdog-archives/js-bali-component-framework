@@ -78,8 +78,8 @@ const mergeArrays = function(comparator, left, right) {
     var result = [];
     while (leftIndex < left.length && rightIndex < right.length) {
         // still have elements in both halves
-        const comparison = comparator.compareComponents(left[leftIndex], right[rightIndex]);
-        switch (comparison) {
+        const ranking = comparator.ranking(left[leftIndex], right[rightIndex]);
+        switch (ranking) {
             case -1:
                 // copy the next left element to the result
                 result.push(left[leftIndex++]);
