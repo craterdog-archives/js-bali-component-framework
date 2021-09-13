@@ -619,14 +619,6 @@ exports.api = function(defaultLevel) {
         return strings.Text.chain(first, second, debug);
     };
 
-    // TYPE
-    const type = function(component, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        const type = new utilities.Validator(debug).getType(component);
-        const value = type.split('/').slice(1);
-        return new strings.Name(value, undefined, debug);
-    };
-
     // VALIDATOR
     const validator = function(debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -720,7 +712,6 @@ exports.api = function(defaultLevel) {
         symbol: symbol,
         tag: tag,
         text: text,
-        type: type,
         validator: validator,
         version: version,
 
