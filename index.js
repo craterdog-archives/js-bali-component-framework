@@ -182,6 +182,13 @@ exports.api = function(defaultLevel) {
         return elements.Angle.arctangent(opposite, adjacent, debug);
     };
 
+    // ARE EQUAL
+    const areEqual = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const comparator = new agents.CanonicalComparator(debug);
+        return comparator.areEqual(first, second);
+    };
+
     // ASSOCIATION
     const association = function(key, value, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -304,6 +311,27 @@ exports.api = function(defaultLevel) {
     const decoder = function(indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
         return new utilities.Decoder(indentation, debug);
+    };
+
+    // DOCUMENT
+    const document = function(component, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const formatter = new agents.BDNFormatter(0, debug);
+        return formatter.asDocument(component);
+    };
+
+    // DOES MATCH
+    const doesMatch = function(component, pattern, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const comparator = new agents.CanonicalComparator(debug);
+        return comparator.doesMatch(component, pattern);
+    };
+
+    // DUPLICATE
+    const duplicate = function(component, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const duplicator = new agents.DeepDuplicator(debug);
+        return duplicator.duplicateComponent(component);
     };
 
     // DUPLICATOR
@@ -476,6 +504,12 @@ exports.api = function(defaultLevel) {
         return elements.Number.sum(first, second, debug);
     };
 
+    // PARSER
+    const parser = function(debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new agents.BDNParser(debug);
+    };
+
     // PATTERN
     const pattern = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -558,6 +592,13 @@ exports.api = function(defaultLevel) {
         return collections.Range.effective(range, debug);
     };
 
+    // RANKING
+    const ranking = function(first, second, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const comparator = new agents.CanonicalComparator(debug);
+        return comparator.ranking(first, second);
+    };
+
     // RESOURCE
     const resource = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -588,11 +629,26 @@ exports.api = function(defaultLevel) {
         return collections.Set.xor(first, second, debug);
     };
 
+    // SORTED
+    const sorted = function(collection, comparator, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        if (comparator === undefined) comparator = new agents.CanonicalComparator(debug);
+        const sorter = new agents.MergeSorter(comparator, debug);
+        return sorter.sortCollection(collection);
+    };
+
     // SORTER
     const sorter = function(comparator, debug) {
         if (debug === undefined) debug = defaultLevel;
         if (comparator === undefined) comparator = new agents.CanonicalComparator(debug);
         return new agents.MergeSorter(comparator, debug);
+    };
+
+    // SOURCE
+    const source = function(component, indentation, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        const formatter = new agents.BDNFormatter(indentation, debug);
+        return formatter.asSource(component);
     };
 
     // STACK
@@ -688,6 +744,7 @@ exports.api = function(defaultLevel) {
     return {
         // instance constructors
         angle: angle,
+        areEqual: areEqual,
         association: association,
         bdn: bdn,
         binary: binary,
@@ -699,6 +756,9 @@ exports.api = function(defaultLevel) {
         controller: controller,
         configurator: configurator,
         decoder: decoder,
+        document: document,
+        doesMatch: doesMatch,
+        duplicate: duplicate,
         duplicator: duplicator,
         duration: duration,
         exception: exception,
@@ -710,15 +770,19 @@ exports.api = function(defaultLevel) {
         name: name,
         node: node,
         number: number,
+        parser: parser,
         pattern: pattern,
         percentage: percentage,
         probability: probability,
         procedure: procedure,
         queue: queue,
         range: range,
+        ranking: ranking,
         resource: resource,
         set: set,
+        sorted: sorted,
         sorter: sorter,
+        source: source,
         stack: stack,
         symbol: symbol,
         tag: tag,
@@ -737,3 +801,4 @@ exports.api = function(defaultLevel) {
         Visitor: abstractions.Visitor
     };
 };
+

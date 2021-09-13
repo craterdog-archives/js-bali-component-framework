@@ -88,10 +88,10 @@ Comparator.prototype.ranking = function(first, second) {
  * @param {Component} pattern The pattern to be used for matching.
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
-Comparator.prototype.matchesPattern = function(component, pattern) {
+Comparator.prototype.doesMatch = function(component, pattern) {
     const exception = new utilities.Exception({
         $module: '/bali/abstractions/Comparator',
-        $procedure: '$matchesPattern',
+        $procedure: '$doesMatch',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
     });
