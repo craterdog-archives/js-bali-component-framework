@@ -1,6 +1,6 @@
 {
   "name": "bali-component-framework",
-  "version": "2.57.0",
+  "version": "2.58.0",
   "description": "This library provides a JavaScript based implementation of the Bali Nebula™ Component Framework.",
   "main": "index.js",
   "repository": {
@@ -33,8 +33,8 @@
     "grunt-eslint": "^23.0.0",
     "grunt-mocha-test": "^0.13.3",
     "grunt-webpack": "^4.0.3",
-    "mocha": "^9.0.1",
-    "webpack": "^5.41.0"
+    "mocha": "^9.1.1",
+    "webpack": "^5.52.1"
   },
   "dependencies": {
     "antlr4": "4.8.0",
