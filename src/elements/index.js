@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const abstractions = require('../abstractions/');
+const agents = require('../agents');  // force these to load completely
 
 exports.Angle = require('./Angle').Angle;
 exports.Boolean = require('./Boolean').Boolean;

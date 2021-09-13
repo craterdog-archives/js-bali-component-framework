@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const elements = require('../elements/');
+const strings = require('../strings');  // force these to load completely
 
 exports.Node = require('./Node').Node;
 exports.Procedure = require('./Procedure').Procedure;

@@ -11,8 +11,8 @@
 const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const Calculator = require('../src/utilities/Calculator').Calculator;
-const calculator = new Calculator(debug);
+const bali = require('../').api();
+const calculator = bali.calculator(debug);
 
 
 describe('Bali Nebula™ Component Framework - Calculator', function() {

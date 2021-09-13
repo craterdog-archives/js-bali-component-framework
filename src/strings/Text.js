@@ -15,6 +15,7 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const collections = require('../collections');
 
 
 // PUBLIC FUNCTIONS
@@ -101,7 +102,7 @@ Text.prototype.getItems = function(range) {
             '/bali/collections/Range'
         ]);
     }
-    range = this.componentize(range).effectiveRange();
+    range = collections.Range.effective(this.componentize(range), this.debug);
     var first = range.getFirst();
     if (first === undefined) {
         first = 1;  // first character

@@ -16,11 +16,11 @@
 const EOL = '\n';
 const utilities = require('./src/utilities');
 const abstractions = require('./src/abstractions');
-const elements = require('./src/elements');
-const strings = require('./src/strings');
-const collections = require('./src/collections');
-const trees = require('./src/trees');
 const agents = require('./src/agents');
+const elements = require('./src/elements');  // depends on agents
+const collections = require('./src/collections');
+const strings = require('./src/strings');  // depends on collections
+const trees = require('./src/trees');
 agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
 
 
@@ -248,6 +248,12 @@ exports.api = function(defaultLevel) {
     boolean.xor = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Boolean.xor(first, second, debug);
+    };
+
+    // CALCULATOR
+    const calculator = function(debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return new utilities.Calculator(debug);
     };
 
     // CATALOG
@@ -547,6 +553,10 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return new collections.Range(first, connector, last, parameters, debug);
     };
+    range.effective = function(range, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return collections.Range.effective(range, debug);
+    };
 
     // RESOURCE
     const resource = function(value, parameters, debug) {
@@ -672,8 +682,8 @@ exports.api = function(defaultLevel) {
     pattern.ANY = component('any', defaultLevel);
     pattern.NONE = component('none', defaultLevel);
 
-    probability.IMPOSSIBLE = probability(false, undefined, defaultLevel);
-    probability.CERTAIN = probability(true, undefined, defaultLevel);
+    probability.IMPOSSIBLE = probability(0, undefined, defaultLevel);
+    probability.CERTAIN = probability(1, undefined, defaultLevel);
 
     return {
         // instance constructors
@@ -682,6 +692,7 @@ exports.api = function(defaultLevel) {
         bdn: bdn,
         binary: binary,
         boolean: boolean,
+        calculator: calculator,
         catalog: catalog,
         comparator: comparator,
         component: component,

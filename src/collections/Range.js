@@ -141,35 +141,6 @@ Range.prototype.toArray = function() {
 
 
 /**
- * This method returns an effective range for this range that takes into account the
- * inclusivity of the endpoints. If this range is not enumerable this method throws
- * an exception.
- *
- * @returns {Range} The effective range.
- */
-Range.prototype.effectiveRange = function() {
-    if (this.isEnumerable()) {
-        const connector = this.getConnector();
-        if (connector === '..') return this;
-        var first = this.getFirst().toInteger();
-        if (connector.startsWith('<')) first++;
-        var last = this.getLast().toInteger();
-        if (connector.endsWith('<')) last--;
-        return new Range(first, '..', last, this.getParameters(), this.debug);
-    }
-    const exception = new utilities.Exception({
-        $module: '/bali/collections/Range',
-        $procedure: '$effectiveRange',
-        $exception: '$notEnumerable',
-        $range: this,
-        $text: 'Only an enumerable range of integers has an effective range.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
-    throw exception;
-};
-
-
-/**
  * This method returns an object that can be used to iterate over the integers in
  * this range.  If this range is not enumerable this method throws an exception.
  *
@@ -263,6 +234,44 @@ Range.prototype.addItems = function(items) {
         $text: 'A range is immutable.'
     });
     if (this.debug > 0) console.error(exception.toString());
+    throw exception;
+};
+
+
+// PUBLIC FUNCTIONS
+
+/**
+ * This function returns an effective range that takes into account the inclusivity of
+ * the endpoints for the specified range. If the specified range is not enumerable this
+ * function throws an exception.
+ *
+ * @param {Range} The specified range.
+ * @param {Number} debug A number in the range 0..3.
+ */
+Range.effective = function(range, debug) {
+    if (debug > 1) {
+        const validator = new utilities.Validator(debug);
+        validator.validateType('/bali/collections/Range', '$effective', '$range', range, [
+            '/bali/collections/Range'
+        ]);
+    }
+    if (range.isEnumerable()) {
+        const connector = range.getConnector();
+        if (connector === '..') return range;
+        var first = range.getFirst().toInteger();
+        if (connector.startsWith('<')) first++;
+        var last = range.getLast().toInteger();
+        if (connector.endsWith('<')) last--;
+        return new Range(first, '..', last, range.getParameters(), debug);
+    }
+    const exception = new utilities.Exception({
+        $module: '/bali/collections/Range',
+        $procedure: '$effective',
+        $exception: '$notEnumerable',
+        $range: range,
+        $text: 'Only an enumerable range of integers has an effective range.'
+    });
+    if (debug > 0) console.error(exception.toString());
     throw exception;
 };
 

@@ -26,6 +26,7 @@
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
+const Range = require('./Range').Range;
 
 
 // PUBLIC FUNCTIONS
@@ -183,7 +184,7 @@ const List = function(parameters, debug) {
                 '/bali/collections/Range'
             ]);
         }
-        range = this.componentize(range).effectiveRange();
+        range = Range.effective(this.componentize(range), this.debug);
         var first = range.getFirst();
         if (first === undefined) {
             first = 1;  // first character

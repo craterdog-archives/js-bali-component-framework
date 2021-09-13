@@ -9,7 +9,7 @@
  ************************************************************************/
 'use strict';
 
-const abstractions = require('../abstractions/');
+const collections = require('../collections');  // force these to load completely
 
 exports.Binary = require('./Binary').Binary;
 exports.Name = require('./Name').Name;

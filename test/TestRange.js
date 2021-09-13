@@ -78,7 +78,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.ranking(range, range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(0);
         });
 
         it('should create an integer range with "<.." connector type', function() {
@@ -134,8 +134,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(iterator).to.exist;
             expect(iterator.getNext()).to.exist;
             expect(iterator.hasNext()).to.equal(false);
-            expect(comparator.ranking(range, range.effectiveRange())).to.equal(-1);
-            expect(comparator.ranking(bali.range(3, '..', 3), range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(-1);
+            expect(comparator.ranking(bali.range(3, '..', 3), bali.range.effective(range, debug))).to.equal(0);
         });
 
         it('should create a negative length integer range with "<..<" connector type', function() {
@@ -161,8 +161,8 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(3);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.ranking(range, range.effectiveRange())).to.equal(1);
-            expect(comparator.ranking(bali.range(2, '..', 4), range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(1);
+            expect(comparator.ranking(bali.range(2, '..', 4), bali.range.effective(range, debug))).to.equal(0);
         });
 
         it('should create an integer range with ".." connector type', function() {
@@ -180,7 +180,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getSize()).to.equal(4);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
-            expect(comparator.ranking(range, range.effectiveRange())).to.equal(0);
+            expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(0);
         });
 
     });

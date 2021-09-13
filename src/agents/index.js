@@ -9,6 +9,7 @@
  ************************************************************************/
 'use strict';
 
+const abstractions = require('../abstractions');  // force these to load completely
 const grammar = require('../grammar');
 
 exports.ArrayIterator = require('./ArrayIterator').ArrayIterator;

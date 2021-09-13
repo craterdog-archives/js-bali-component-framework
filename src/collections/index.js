@@ -9,6 +9,8 @@
  ************************************************************************/
 'use strict';
 
+const elements = require('../elements');  // force these to load completely
+
 exports.Association = require('./Association').Association;
 exports.List = require('./List').List;
 exports.Catalog = require('./Catalog').Catalog;  // depends on List

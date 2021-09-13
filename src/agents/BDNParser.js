@@ -33,7 +33,6 @@ const elements = require('../elements');
 const strings = require('../strings');
 const collections = require('../collections');
 const trees = require('../trees');
-const agents = require('../agents/');
 
 
 /**
