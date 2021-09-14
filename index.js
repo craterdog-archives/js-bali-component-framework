@@ -195,12 +195,6 @@ exports.api = function(defaultLevel) {
         return new collections.Association(key, value, debug);
     };
 
-    // BDN
-    const bdn = function(indentation, debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new agents.BDNFormatter(indentation, debug);
-    };
-
     // BINARY
     const binary = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -334,12 +328,6 @@ exports.api = function(defaultLevel) {
         return duplicator.duplicateComponent(component);
     };
 
-    // DUPLICATOR
-    const duplicator = function(debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new agents.DeepDuplicator(debug);
-    };
-
     // DURATION
     const duration = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -385,9 +373,10 @@ exports.api = function(defaultLevel) {
     };
 
     // HTML
-    const html = function(indentation, debug) {
+    const html = function(component, indentation, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new agents.HTMLFormatter(indentation, debug);
+        const formatter = new agents.HTMLFormatter(indentation, debug);
+        return formatter.asSource(component);
     };
 
     // INSTANCE
@@ -502,12 +491,6 @@ exports.api = function(defaultLevel) {
     number.sum = function(first, second, debug) {
         if (debug === undefined) debug = defaultLevel;
         return elements.Number.sum(first, second, debug);
-    };
-
-    // PARSER
-    const parser = function(debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new agents.BDNParser(debug);
     };
 
     // PATTERN
@@ -746,7 +729,6 @@ exports.api = function(defaultLevel) {
         angle: angle,
         areEqual: areEqual,
         association: association,
-        bdn: bdn,
         binary: binary,
         boolean: boolean,
         calculator: calculator,
@@ -759,7 +741,6 @@ exports.api = function(defaultLevel) {
         document: document,
         doesMatch: doesMatch,
         duplicate: duplicate,
-        duplicator: duplicator,
         duration: duration,
         exception: exception,
         generator: generator,
@@ -770,7 +751,6 @@ exports.api = function(defaultLevel) {
         name: name,
         node: node,
         number: number,
-        parser: parser,
         pattern: pattern,
         percentage: percentage,
         probability: probability,
