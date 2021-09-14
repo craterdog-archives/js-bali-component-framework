@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Iterator = require('./Iterator').Iterator;
 
 
 /**
@@ -93,19 +94,14 @@ Collection.prototype.getSize = function() {
 
 
 /**
- * This abstract method returns an object that can be used to iterate over the items in
- * this collection.
+ * This method returns an agent that can be used to iterate over the items in
+ * a collection.
  *
  * @returns {Iterator} An iterator for this collection.
  */
 Collection.prototype.getIterator = function() {
-    const exception = new Exception({
-        $module: '/bali/abstractions/Collections',
-        $procedure: '$getIterator',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
-    });
-    throw exception;
+    const iterator = new CollectionIterator(this, this.debug);
+    return iterator;
 };
 
 
@@ -340,4 +336,55 @@ Collection.prototype.removeAll = function() {
     if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
+
+
+/**
+ * This constructor creates a new iterator agent that can be used to iterate over the items
+ * in a collection.
+ *
+ * @param {Collection} collection The collection to be iterated over.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Collection} The new collection iterator agent.
+ */
+const CollectionIterator = function(collection, debug) {
+    Iterator.call(
+        this,
+        ['/bali/agents/CollectionIterator'],
+        debug
+    );
+
+    // private attributes
+    const array = collection.toArray();
+    const size = array.length;
+    var slot = 0;  // the slot before the first item
+
+    this.toSlot = function(newSlot) {
+        if (newSlot > size) newSlot = size;
+        if (newSlot < -size) newSlot = -size;
+        if (newSlot < 0) newSlot = newSlot + size + 1;
+        slot = newSlot;
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < array.length;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return array[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return array[slot++];
+    };
+
+    return this;
+};
+CollectionIterator.prototype = Object.create(Iterator.prototype);
+CollectionIterator.prototype.constructor = CollectionIterator;
 

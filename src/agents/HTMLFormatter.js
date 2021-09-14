@@ -45,7 +45,7 @@ const HTMLFormatter = function(style, debug) {
     const validator = new utilities.Validator(debug);
 
     if (debug > 1) {
-        validator.validateType('/bali/agents/HTMLFormatter', '$formatComponent', '$style', style, [
+        validator.validateType('/bali/agents/HTMLFormatter', '$HTMLFormatter', '$style', style, [
             '/javascript/String'
         ]);
     }
@@ -110,7 +110,7 @@ const footer =
 '            <div class="company">Powered by Crater Dog Technologies™</div>\n' +
 '        </div>\n' +
 '    </body>\n' +
-'</html>\n';
+'</html>';
 
 
 // PRIVATE CLASSES

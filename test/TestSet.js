@@ -140,7 +140,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(set.getIndex('"alpha"')).to.equal(1);
             expect(set.getItem(5).toString()).to.equal('"gamma"');
             expect(set.getIndex('"delta"')).to.equal(3);
-            const iterator = set.getIterator();
+            var iterator = set.getIterator();
             expect(iterator).to.exist;
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
@@ -150,10 +150,12 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(3);
-            iterator.toStart();
+            iterator = set.getIterator();
             var index = 2;
+            console.error("SET: " + set);
             while (iterator.hasNext()) {
                 item = iterator.getNext().toString();
+                console.error("ITEM: " + item);
                 expect(item).to.equal(array[index++]);
             }
         });

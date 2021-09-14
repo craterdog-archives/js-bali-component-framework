@@ -115,15 +115,3 @@ Queue.prototype = Object.create(abstractions.Collection.prototype);
 Queue.prototype.constructor = Queue;
 exports.Queue = Queue;
 
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this queue.
- *
- * @returns {Iterator} An iterator for this queue.
- */
-Queue.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
-    return iterator;
-};
-

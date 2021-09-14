@@ -323,18 +323,6 @@ Catalog.prototype.toObject = function() {
 };
 
 
-/**
- * This method returns an object that can be used to iterate over the items in
- * this catalog.
- *
- * @returns {Iterator} An iterator for this catalog.
- */
-Catalog.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
-    return iterator;
-};
-
-
 // PUBLIC FUNCTIONS
 
 /**

@@ -19,7 +19,6 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
-const agents = require('../agents');
 
 
 // PUBLIC FUNCTIONS
@@ -47,8 +46,25 @@ const Node = function(type, debug) {
     const array = [];
     const validator = new utilities.Validator(this.debug);
 
+    this.toBoolean = function() {
+        return array.length > 0;
+    };
+
     this.toArray = function() {
         return array.slice();  // a copy of the array
+    };
+
+    this.isEmpty = function() {
+        return array.length === 0;
+    };
+
+    this.getSize = function() {
+        return array.length;
+    };
+
+    this.getIterator = function() {
+        const iterator = new NodeIterator(this, this.debug);
+        return iterator;
     };
 
     this.getItem = function(index) {
@@ -143,48 +159,54 @@ Node.prototype.constructor = Node;
 exports.Node = Node;
 
 
-// PUBLIC METHODS
-
 /**
- * This method returns whether or not this composite contains a meaningful value. If the composite
- * is empty it returns <code>false</code>, otherwise it returns <code>true</code>.
+ * This constructor creates a new iterator agent that can be used to iterate over the items
+ * in a tree node.
  *
- * @returns {Boolean} Whether or not this composite contains a meaningful value.
+ * @param {Node} node The tree node to be iterated over.
+ * @param {Number} debug A number in the range 0..3.
+ * @returns {Iterator} The new node iterator agent.
  */
-Node.prototype.toBoolean = function() {
-    return this.getSize() > 0;
+const NodeIterator = function(node, debug) {
+    abstractions.Iterator.call(
+        this,
+        ['/bali/trees/NodeIterator'],
+        debug
+    );
+
+    // private attributes
+    const array = node.toArray();
+    const size = array.length;
+    var slot = 0;  // the slot before the first item
+
+    this.toSlot = function(newSlot) {
+        if (newSlot > size) newSlot = size;
+        if (newSlot < -size) newSlot = -size;
+        if (newSlot < 0) newSlot = newSlot + size + 1;
+        slot = newSlot;
+    };
+
+    this.hasPrevious = function() {
+        return slot > 0;
+    };
+
+    this.hasNext = function() {
+        return slot < array.length;
+    };
+
+    this.getPrevious = function() {
+        if (!this.hasPrevious()) return;
+        return array[--slot];
+    };
+
+    this.getNext = function() {
+        if (!this.hasNext()) return;
+        return array[slot++];
+    };
+
+    return this;
 };
-
-
-/**
- * This method returns whether or not this composite contains any items.
- *
- * @returns {Boolean} Whether or not this composite contains any items.
- */
-Node.prototype.isEmpty = function() {
-    return this.getSize() === 0;
-};
-
-
-/**
- * This method returns the number of items that this composite contains.
- * It must be implemented by a subclass.
- *
- * @returns {Number} The number of items that this composite contains.
- */
-Node.prototype.getSize = function() {
-    return this.toArray().length;
-};
-
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this node.
- *
- * @returns {Iterator} An iterator for this node.
- */
-Node.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.getParameters(), this.debug);
-    return iterator;
-};
+NodeIterator.prototype = Object.create(abstractions.Iterator.prototype);
+NodeIterator.prototype.constructor = NodeIterator;
+exports.NodeIterator = NodeIterator;
 

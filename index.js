@@ -373,10 +373,10 @@ exports.api = function(defaultLevel) {
     };
 
     // HTML
-    const html = function(component, indentation, debug) {
+    const html = function(component, style, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const formatter = new agents.HTMLFormatter(indentation, debug);
-        return formatter.asSource(component);
+        const formatter = new agents.HTMLFormatter(style, debug);
+        return formatter.asDocument(component);
     };
 
     // INSTANCE

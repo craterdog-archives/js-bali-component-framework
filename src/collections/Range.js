@@ -141,8 +141,8 @@ Range.prototype.toArray = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the integers in
- * this range.  If this range is not enumerable this method throws an exception.
+ * This method returns an agent that can be used to iterate over the integers in
+ * a range.  If this range is not enumerable this method throws an exception.
  *
  * @returns {Iterator} An iterator for this range.
  */

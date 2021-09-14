@@ -84,12 +84,12 @@ Stryng.prototype.getSize = function() {
 
 
 /**
- * This method returns an object that can be used to iterate over the items in
- * this string.  It must be implemented by a subclass.
- * @returns {Iterator} An iterator for this string.
+ * This method returns an agent that can be used to iterate over the items in
+ * a string element.  It must be implemented by a subclass.
+ * @returns {Iterator} An iterator for this string element.
  */
 Stryng.prototype.getIterator = function() {
-    const iterator = new StringIterator(this.getValue(), this.debug);
+    const iterator = new StringIterator(this, this.debug);
     return iterator;
 };
 
@@ -134,14 +134,15 @@ Stryng.prototype.getItems = function(range) {
 
 // PRIVATE CLASSES
 
-const StringIterator = function(string, debug) {
+const StringIterator = function(element, debug) {
     Iterator.call(
         this,
         ['/bali/agents/StringIterator'],
         debug
     );
-    var slot = 0;  // the slot before the first number
+    const string = element.getValue();
     const size = string.length;  // static so we can cache it here
+    var slot = 0;  // the slot before the first number
 
     this.toStart = function() {
         slot = 0;  // the slot before the first number

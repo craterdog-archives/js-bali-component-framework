@@ -111,7 +111,7 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
     }
 
     // the argument type is invalid
-    const exception = new utilities.Exception({
+    const exception = new Exception({
         $module: moduleName,
         $procedure: procedureName,
         $argument: argumentName,
@@ -143,7 +143,7 @@ Validator.prototype.validateType = function(moduleName, procedureName, argumentN
 Validator.prototype.normalizeIndex = function(sequence, index) {
     const size = sequence.getSize();
     if (index > size || index < -size) {
-        const exception = new utilities.Exception({
+        const exception = new Exception({
             $module: '/bali/utilities/Validator',
             $procedure: '$normalizeIndex',
             $exception: '$invalidIndex',

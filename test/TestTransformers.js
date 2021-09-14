@@ -96,7 +96,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            formatted = bali.html(copy);
+            formatted = bali.html(copy, style);
             await pfs.writeFile('test/html/components.html', formatted, 'utf8');
         });
 
@@ -114,7 +114,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            formatted = bali.html(copy);
+            formatted = bali.html(copy, style);
             await pfs.writeFile('test/html/test.html', formatted, 'utf8');
         });
 
@@ -132,7 +132,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            formatted = bali.html(copy);
+            formatted = bali.html(copy, style);
             await pfs.writeFile('test/html/examples.html', formatted, 'utf8');
         });
 
@@ -150,7 +150,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            formatted = bali.html(copy);
+            formatted = bali.html(copy, style);
             await pfs.writeFile('test/html/citation.html', formatted, 'utf8');
         });
 
@@ -168,7 +168,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(formatted).to.equal(document);
             component = bali.component(formatted);
             expect(component).to.exist;
-            formatted = bali.html(copy);
+            formatted = bali.html(copy, style);
             await pfs.writeFile('test/html/certificate.html', formatted, 'utf8');
         });
 

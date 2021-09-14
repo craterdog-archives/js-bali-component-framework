@@ -49,17 +49,16 @@ const Set = function(parameters, debug) {
 
     this.toArray = function() {
         const array = [];
-        const iterator = new SetIterator(tree, this.debug);
-        while (iterator.hasNext()) array.push(iterator.getNext());
+        var node = minimum(tree.root);
+        while (node) {
+            array.push(node.value);
+            node = successor(node);
+        }
         return array;
     };
 
     this.getSize = function() {
         return tree.size;
-    };
-
-    this.getIterator = function() {
-        return new SetIterator(tree, this.debug);
     };
 
     this.getIndex = function(item) {
@@ -322,74 +321,6 @@ Set.xor = function(first, second, debug) {
 
 
 // PRIVATE CLASSES
-
-/*
- * The set class is backed by a binary tree (treap) composite. Therefore,
- * it can be traversed more efficiently using a custom iterator. This class implements a tree iterator.
- */
-
-const SetIterator = function(tree, debug) {
-    abstractions.Iterator.call(
-        this,
-        ['/bali/agents/SetIterator'],
-        debug
-    );
-
-    // the tree, current slot index, and previous and next pointers are private attributes
-    // so methods that use them are defined in the constructor
-    var slot = 0;  // the slot before the first item
-    var previous = undefined;
-    var next = minimum(tree.root);
-
-    this.toStart = function() {
-        slot = 0;  // the slot before the first item
-        previous = undefined;
-        next = minimum(tree.root);
-    };
-
-    this.toSlot = function(newSlot) {
-        slot = newSlot;
-        previous = tree.node(newSlot - 1);  // javascript index of item before the slot
-        next = successor(previous);
-    };
-
-    this.toEnd = function() {
-        slot = tree.size;  // the slot after the last item
-        previous = maximum(tree.root);
-        next = undefined;
-    };
-
-    this.hasPrevious = function() {
-        return slot > 0;
-    };
-
-    this.hasNext = function() {
-        return slot < tree.size;
-    };
-
-    this.getPrevious = function() {
-        if (!this.hasPrevious()) return;
-        const value = previous.value;
-        next = previous;
-        previous = predecessor(next);
-        slot--;
-        return value;
-    };
-
-    this.getNext = function() {
-        if (!this.hasNext()) return;
-        const value = next.value;
-        previous = next;
-        next = successor(previous);
-        slot++;
-        return value;
-    };
-
-    return this;
-};
-SetIterator.prototype = Object.create(abstractions.Iterator.prototype);
-SetIterator.prototype.constructor = SetIterator;
-
 
 /*
  * This class implements a randomized self balancing binary search tree composite (treap).

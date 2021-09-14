@@ -132,15 +132,3 @@ Stack.prototype = Object.create(abstractions.Collection.prototype);
 Stack.prototype.constructor = Stack;
 exports.Stack = Stack;
 
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this stack.
- *
- * @returns {Iterator} An iterator for this stack.
- */
-Stack.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
-    return iterator;
-};
-

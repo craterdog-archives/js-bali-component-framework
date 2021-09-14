@@ -258,20 +258,6 @@ List.prototype.constructor = List;
 exports.List = List;
 
 
-// PUBLIC FUNCTIONS
-
-/**
- * This method returns an object that can be used to iterate over the items in
- * this list.
- *
- * @returns {Iterator} An iterator for this list.
- */
-List.prototype.getIterator = function() {
-    const iterator = new agents.ArrayIterator(this.toArray(), this.debug);
-    return iterator;
-};
-
-
 // CHAINABLE LIBRARY FUNCTIONS
 
 /**
