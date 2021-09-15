@@ -281,13 +281,17 @@ Range.effective = function(range, debug) {
 const RangeIterator = function(range, debug) {
     abstractions.Iterator.call(
         this,
-        ['/bali/agents/RangeIterator'],
+        ['/bali/collections/RangeIterator'],
+        range,
         debug
     );
-
     const size = range.getSize();  // will throw an exception if range is not enumerable
     var first = range.getFirst().toInteger();
     var slot = 0;  // the slot before the first integer
+
+    this.getSlot = function() {
+        return slot;
+    };
 
     this.toStart = function() {
         slot = 0;  // the slot before the first integer

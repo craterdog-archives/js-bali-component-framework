@@ -171,6 +171,7 @@ const NodeIterator = function(node, debug) {
     abstractions.Iterator.call(
         this,
         ['/bali/trees/NodeIterator'],
+        node,
         debug
     );
 
@@ -178,6 +179,10 @@ const NodeIterator = function(node, debug) {
     const array = node.toArray();
     const size = array.length;
     var slot = 0;  // the slot before the first item
+
+    this.getSlot = function() {
+        return slot;
+    };
 
     this.toSlot = function(newSlot) {
         if (newSlot > size) newSlot = size;

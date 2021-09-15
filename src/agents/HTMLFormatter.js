@@ -227,6 +227,11 @@ FormattingVisitor.prototype.visitBoolean = function(boolean) {
 };
 
 
+FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
+    this.result += '[:]($type: ' + comparator.getType() + '/v1)';  // HACK!!
+};
+
+
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     // check for an explicit type, otherwise use the implicit type
@@ -315,10 +320,47 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 };
 
 
+FormattingVisitor.prototype.visitException = function(exception) {
+    const attributes = exception.getAttributes();
+    attributes.acceptVisitor(this);
+    const parameters = exception.getParameters();
+    this.visitParameters(parameters);  // then format any parameterization
+};
+
+
 FormattingVisitor.prototype.visitExpression = function(expression) {
     this.result += '<pre class="element code">';
     this.result += expression.toString();
     this.result += '</pre>';
+};
+
+
+FormattingVisitor.prototype.visitIterator = function(iterator) {
+    this.result += '[';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '$slot: ';
+    const slot = iterator.getSlot();
+    slot.acceptVisitor(this);
+    this.result += '$sequence: ';
+    const sequence = iterator.getSequence();
+    sequence.acceptVisitor(this);
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += ']($type: ' + iterator.getType() + '/v1)';  // HACK!!
+};
+
+
+FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
+    this.result += '[';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '$comparator: ';
+    const comparator = sorter.getComparator();
+    comparator.acceptVisitor(this);
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += ']($type: ' + sorter.getType() + '/v1)';  // HACK!!
 };
 
 

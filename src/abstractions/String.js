@@ -137,12 +137,17 @@ Stryng.prototype.getItems = function(range) {
 const StringIterator = function(element, debug) {
     Iterator.call(
         this,
-        ['/bali/agents/StringIterator'],
+        ['/bali/abstractions/StringIterator'],
+        element,
         debug
     );
     const string = element.getValue();
     const size = string.length;  // static so we can cache it here
-    var slot = 0;  // the slot before the first number
+    var slot = 0;
+
+    this.getSlot = function() {
+        return slot;
+    };
 
     this.toStart = function() {
         slot = 0;  // the slot before the first number

@@ -152,10 +152,8 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(size).to.equal(3);
             iterator = set.getIterator();
             var index = 2;
-            console.error("SET: " + set);
             while (iterator.hasNext()) {
                 item = iterator.getNext().toString();
-                console.error("ITEM: " + item);
                 expect(item).to.equal(array[index++]);
             }
         });

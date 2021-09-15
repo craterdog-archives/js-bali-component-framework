@@ -29,6 +29,7 @@ const ErrorStrategy = require('antlr4/error/ErrorStrategy');
 const grammar = require('../grammar');
 const utilities = require('../utilities/');
 const abstractions = require('../abstractions/');
+const agents = require('../agents/');
 const elements = require('../elements');
 const strings = require('../strings');
 const collections = require('../collections');
@@ -305,15 +306,43 @@ BDNVisitor.prototype.visitBreakClause = function(ctx) {
 //     ':' /* no associations */
 BDNVisitor.prototype.visitCatalog = function(ctx) {
     const parameters = this.getParameters();
-    const component = new collections.Catalog(parameters, this.debug);
+    const attributes = new collections.Catalog(undefined, this.debug);
     if (ctx.association) {
         this.depth++;
         const associations = ctx.association();
         associations.forEach(function(association) {
             association.accept(this);
-            component.addItem(this.result);
+            attributes.addItem(this.result);
         }, this);
         this.depth--;
+    }
+    var component = attributes;
+    if (parameters) {
+        const type = parameters.getAttribute('$type');
+        switch (type.toString()) {
+            case '/bali/utilities/Exception/v1':
+                component = new utilities.Exception(attributes);
+                break;
+                /*
+            case '/bali/agents/CanonicalComparator/v1':
+                component = new CanonicalComparator(this.debug);
+                break;
+            case '/bali/agents/MergeSorter/v1':
+                const comparator = attributes.getAttribute('$comparator');
+                component = new MergeSorter(comparator, this.debug);
+                break;
+                */
+            case '/bali/collections/CollectionIterator/v1':
+            case '/bali/collections/RangeIterator/v1':
+            case '/bali/strings/StringIterator/v1':
+            case '/bali/trees/NodeIterator/v1':
+                const sequence = attributes.getAttribute('$sequence');
+                component = sequence.getIterator();
+                const slot = attributes.getAttribute('$slot');
+                component.toSlot(slot.toInteger());
+                break;
+        }
+        component.setParameters(parameters);
     }
     this.result = component;
 };

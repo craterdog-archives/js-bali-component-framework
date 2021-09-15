@@ -23,7 +23,7 @@ const Component = require('./Component').Component;
  * @param {Number} debug A number in the range 0..3.
  * @returns {Sorter} The new sorter.
  */
-const Sorter = function(ancestry, debug) {
+const Sorter = function(ancestry, comparator, debug) {
     Component.call(
         this,
         ancestry.concat('/bali/abstractions/Sorter'),
@@ -31,6 +31,11 @@ const Sorter = function(ancestry, debug) {
         undefined,  // must be undefined to avoid infinite loop
         debug
     );
+
+    this.getComparator = function() {
+        return comparator;
+    };
+
     return this;
 };
 Sorter.prototype = Object.create(Component.prototype);

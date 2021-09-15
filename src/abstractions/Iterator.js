@@ -36,10 +36,11 @@ const Component = require('./Component').Component;
  * </pre>
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the iterator.
+ * @param {Sequential} sequence The sequence over which the iterator will operate.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Iterator} The new iterator.
  */
-const Iterator = function(ancestry, debug) {
+const Iterator = function(ancestry, sequence, debug) {
     Component.call(
         this,
         ancestry.concat('/bali/abstractions/Iterator'),
@@ -47,6 +48,19 @@ const Iterator = function(ancestry, debug) {
         undefined,  // must be undefined to avoid infinite loop
         debug
     );
+
+    this.getSequence = function() { return sequence; };
+
+    this.getSlot = function() {
+        const exception = new utilities.Exception({
+            $module: '/bali/agents/Iterator',
+            $procedure: '$getSlot',
+            $exception: '$abstractMethod',
+            $text: 'An abstract method must be implemented by a subclass.'
+        });
+        throw exception;
+    };
+
     return this;
 };
 Iterator.prototype = Object.create(Component.prototype);

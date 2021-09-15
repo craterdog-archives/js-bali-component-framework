@@ -349,7 +349,8 @@ Collection.prototype.removeAll = function() {
 const CollectionIterator = function(collection, debug) {
     Iterator.call(
         this,
-        ['/bali/agents/CollectionIterator'],
+        ['/bali/abstractions/CollectionIterator'],
+        collection,
         debug
     );
 
@@ -357,6 +358,10 @@ const CollectionIterator = function(collection, debug) {
     const array = collection.toArray();
     const size = array.length;
     var slot = 0;  // the slot before the first item
+
+    this.getSlot = function() {
+        return slot;
+    };
 
     this.toSlot = function(newSlot) {
         if (newSlot > size) newSlot = size;

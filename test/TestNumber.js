@@ -26,6 +26,11 @@ describe('Bali Nebula™ Component Framework - Number', function() {
             expect(bali.component('(1 e^~2.3i)').toString()).to.equal('(1 e^~2.3i)');
             expect(bali.component('(5 e^~π i)').toString()).to.equal('-5');
             expect(bali.component('(-5 e^~π i)').toString()).to.equal('5');
+            expect(
+                function() {
+                    bali.component('42').setParameters({ $answer: 'everything' });
+                }
+            ).to.throw();
         });
 
         it('should construct numbers that equal zero', function() {

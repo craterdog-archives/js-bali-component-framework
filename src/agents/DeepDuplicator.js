@@ -16,6 +16,8 @@
  */
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
+const MergeSorter = require('./MergeSorter').MergeSorter;
 
 
 /**
@@ -77,10 +79,7 @@ DuplicatingVisitor.prototype.visitAcceptClause = function(node) {
 
 // angle: ANGLE
 DuplicatingVisitor.prototype.visitAngle = function(angle) {
-    this.visitParameters(angle.getParameters());
-    const parameters = this.result;
-    this.result = new angle.constructor(angle.getValue(), parameters, this.debug);
-    this.result.note = angle.note;
+    this.result = angle;
 };
 
 
@@ -145,10 +144,7 @@ DuplicatingVisitor.prototype.visitAttributeExpression = function(node) {
 
 // binary: BINARY
 DuplicatingVisitor.prototype.visitBinary = function(binary) {
-    this.visitParameters(binary.getParameters());
-    const parameters = this.result;
-    this.result = new binary.constructor(binary.getValue(), parameters, this.debug);
-    this.result.note = binary.note;
+    this.result = binary;
 };
 
 
@@ -163,16 +159,19 @@ DuplicatingVisitor.prototype.visitBlock = function(node) {
 
 // boolean: 'false' | 'true'
 DuplicatingVisitor.prototype.visitBoolean = function(boolean) {
-    this.visitParameters(boolean.getParameters());
-    const parameters = this.result;
-    this.result = new boolean.constructor(boolean.getValue(), parameters, this.debug);
-    this.result.note = boolean.note;
+    this.result = boolean;
 };
 
 
 // breakClause: 'break' 'loop'
 DuplicatingVisitor.prototype.visitBreakClause = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
+    this.result = copy;
+};
+
+
+DuplicatingVisitor.prototype.visitCanonicalComparator = function(comparator) {
+    const copy = new CanonicalComparator();
     this.result = copy;
 };
 
@@ -303,10 +302,7 @@ DuplicatingVisitor.prototype.visitDiscardClause = function(node) {
 
 // duration: DURATION
 DuplicatingVisitor.prototype.visitDuration = function(duration) {
-    this.visitParameters(duration.getParameters());
-    const parameters = this.result;
-    this.result = new duration.constructor(duration.getTime().toISOString(), parameters, this.debug);
-    this.result.note = duration.note;
+    this.result = duration;
 };
 
 
@@ -319,6 +315,18 @@ DuplicatingVisitor.prototype.visitEvaluateClause = function(node) {
         copy.addItem(this.result);
     }
     copy.operator = node.operator;
+    this.result = copy;
+};
+
+
+DuplicatingVisitor.prototype.visitException = function(exception) {
+    const attributes = exception.getAttributes();
+    attributes.acceptVisitor(this);
+    const copy = new utilities.Exception(this.result);
+    const parameters = exception.getParameters();
+    parameters.acceptVisitor(this);
+    copy.setParameters(this.result);
+    copy.note = exception.note;
     this.result = copy;
 };
 
@@ -409,6 +417,16 @@ DuplicatingVisitor.prototype.visitInversionExpression = function(node) {
 };
 
 
+DuplicatingVisitor.prototype.visitIterator = function(iterator) {
+    const slot = iterator.getSlot();
+    const sequence = iterator.getSequence();
+    sequence.acceptVisitor(this);
+    const copy = this.result.getIterator();
+    copy.setSlot(slot.toInteger());
+    this.result = copy;
+};
+
+
 // logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 DuplicatingVisitor.prototype.visitLogicalExpression = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
@@ -426,6 +444,14 @@ DuplicatingVisitor.prototype.visitMagnitudeExpression = function(node) {
     const copy = new node.constructor(node.getType(), this.debug);
     node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);
+    this.result = copy;
+};
+
+
+DuplicatingVisitor.prototype.visitMergeSorter = function(sorter) {
+    const comparator = sorter.getComparator();
+    comparator.acceptVisitor(this);
+    const copy = new MergeSorter(this.result);
     this.result = copy;
 };
 
@@ -453,20 +479,13 @@ DuplicatingVisitor.prototype.visitMessageExpression = function(node) {
 
 // moment: MOMENT
 DuplicatingVisitor.prototype.visitMoment = function(moment) {
-    const value = moment.getTimestamp().format(moment.getFormat());
-    this.visitParameters(moment.getParameters());
-    const parameters = this.result;
-    this.result = new moment.constructor(value, parameters, this.debug);
-    this.result.note = moment.note;
+    this.result = moment;
 };
 
 
 // name: NAME
 DuplicatingVisitor.prototype.visitName = function(name) {
-    this.visitParameters(name.getParameters());
-    const parameters = this.result;
-    this.result = new name.constructor(name.getValue(), parameters, this.debug);
-    this.result.note = name.note;
+    this.result = name;
 };
 
 
@@ -478,10 +497,7 @@ DuplicatingVisitor.prototype.visitName = function(name) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
 DuplicatingVisitor.prototype.visitNumber = function(number) {
-    this.visitParameters(number.getParameters());
-    const parameters = this.result;
-    this.result = new number.constructor(number.getValue(), parameters, this.debug);
-    this.result.note = number.note;
+    this.result = number;
 };
 
 
@@ -504,19 +520,13 @@ DuplicatingVisitor.prototype.visitParameters = function(parameters) {
 
 // pattern: 'none' | REGEX | 'any'
 DuplicatingVisitor.prototype.visitPattern = function(pattern) {
-    this.visitParameters(pattern.getParameters());
-    const parameters = this.result;
-    this.result = new pattern.constructor(pattern.getValue(), parameters, this.debug);
-    this.result.note = pattern.note;
+    this.result = pattern;
 };
 
 
 // percentage: PERCENTAGE
 DuplicatingVisitor.prototype.visitPercentage = function(percentage) {
-    this.visitParameters(percentage.getParameters());
-    const parameters = this.result;
-    this.result = new percentage.constructor(percentage.getValue(), parameters, this.debug);
-    this.result.note = percentage.note;
+    this.result = percentage;
 };
 
 
@@ -542,10 +552,7 @@ DuplicatingVisitor.prototype.visitPrecedenceExpression = function(node) {
 
 // probability: FRACTION | '1.'
 DuplicatingVisitor.prototype.visitProbability = function(probability) {
-    this.visitParameters(probability.getParameters());
-    const parameters = this.result;
-    this.result = new probability.constructor(probability.getValue(), parameters, this.debug);
-    this.result.note = probability.note;
+    this.result = probability;
 };
 
 
@@ -572,10 +579,7 @@ DuplicatingVisitor.prototype.visitPublishClause = function(node) {
 
 // resource: RESOURCE
 DuplicatingVisitor.prototype.visitResource = function(resource) {
-    this.visitParameters(resource.getParameters());
-    const parameters = this.result;
-    this.result = new resource.constructor(resource.getValue(), parameters, this.debug);
-    this.result.note = resource.note;
+    this.result = resource;
 };
 
 
@@ -661,28 +665,19 @@ DuplicatingVisitor.prototype.visitStatement = function(node) {
 
 // symbol: SYMBOL
 DuplicatingVisitor.prototype.visitSymbol = function(symbol) {
-    this.visitParameters(symbol.getParameters());
-    const parameters = this.result;
-    this.result = new symbol.constructor(symbol.getValue(), parameters, this.debug);
-    this.result.note = symbol.note;
+    this.result = symbol;
 };
 
 
 // tag: TAG
 DuplicatingVisitor.prototype.visitTag = function(tag) {
-    this.visitParameters(tag.getParameters());
-    const parameters = this.result;
-    this.result = new tag.constructor(tag.getValue(), parameters, this.debug);
-    this.result.note = tag.note;
+    this.result = tag;
 };
 
 
 // text: TEXT | NARRATIVE
 DuplicatingVisitor.prototype.visitText = function(text) {
-    this.visitParameters(text.getParameters());
-    const parameters = this.result;
-    this.result = new text.constructor(text.getValue(), parameters, this.debug);
-    this.result.note = text.note;
+    this.result = text;
 };
 
 
@@ -705,10 +700,7 @@ DuplicatingVisitor.prototype.visitVariable = function(node) {
 
 // version: VERSION
 DuplicatingVisitor.prototype.visitVersion = function(version) {
-    this.visitParameters(version.getParameters());
-    const parameters = this.result;
-    this.result = new version.constructor(version.getValue(), parameters, this.debug);
-    this.result.note = version.note;
+    this.result = version;
 };
 
 

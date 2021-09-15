@@ -100,6 +100,32 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             await pfs.writeFile('test/html/components.html', formatted, 'utf8');
         });
 
+        it('should parse and format the same agents', async function() {
+            const file = 'test/source/agents.bali';
+            console.error('        ' + file);
+            const document = await pfs.readFile(file, 'utf8');
+            expect(document).to.exist;
+            var component = bali.component(document);
+            expect(component).to.exist;
+            /*
+            const comparator = component.getAttribute('$comparator');
+            expect(comparator.getType() === '/bali/agents/CanonicalComparator').to.equal(true);
+            const sorter = component.getAttribute('$sorter');
+            expect(sorter.getType() === '/bali/agents/MergeSorter').to.equal(true);
+            expect(bali.areEqual(comparator, sorter.getComparator())).to.equal(true);
+            */
+            const copy = bali.duplicate(component);
+            expect(copy).to.exist;
+            expect(bali.areEqual(component, copy)).to.equal(true);
+            var formatted = bali.document(copy);
+            //await pfs.writeFile(file, formatted, 'utf8');
+            expect(formatted).to.equal(document);
+            component = bali.component(formatted);
+            expect(component).to.exist;
+            formatted = bali.html(copy, style);
+            await pfs.writeFile('test/html/agents.html', formatted, 'utf8');
+        });
+
         it('should parse and format the test document', async function() {
             const file = 'test/source/test.bali';
             console.error('        ' + file);

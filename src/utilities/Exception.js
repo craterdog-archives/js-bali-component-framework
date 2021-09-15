@@ -32,23 +32,20 @@
  */
 const Exception = function(attributes, cause) {
     if (attributes === null || typeof attributes !== 'object') attributes = {};
+    cause = cause || undefined;
+    const message = attributes['$text'] || 'An undefined exception occurred.';
+    Error.call(message, { cause: cause });
     attributes = this.componentize(attributes);
-    this.cause = cause || undefined;
-    this.message = attributes['$text'] || 'An undefined exception occurred.';
-    Error.call(this.message, { cause: this.cause });
-
-    this.getAttributes = function() {
-        return attributes;
-    };
 
     // setup the ancestry to look like an Exception is a Component
     const ancestry = [
-        '/bali/utilities/Exponent',
+        '/bali/utilities/Exception',
         '/bali/abstractions/Component'
     ];
     const interfaces = [
         '/bali/interfaces/Reflective'
     ];
+    var parameters = this.componentize({ $type: ancestry[0] + '/v1' });
 
     // save the current error stack if possible
     try {
@@ -56,6 +53,10 @@ const Exception = function(attributes, cause) {
     } catch (ignore) {
         // a stack trace is not supported on this platform
     }
+
+    this.getAttributes = function() {
+        return attributes;
+    };
 
 
     // Reflective Interface
@@ -67,11 +68,10 @@ const Exception = function(attributes, cause) {
     };
 
     this.getParameter = function(key) {
-        if (parameters) return parameters.getAttribute(key);
+        return parameters.getAttribute(key);
     };
 
     this.setParameter = function(key, value) {
-        parameters = parameters || this.componentize({});
         parameters.setAttribute(key, value);
     };
 
@@ -170,6 +170,6 @@ Exception.prototype.getHash = function() {
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Exception.prototype.acceptVisitor = function(visitor) {
-    visitor.visitComponent(this.getAttributes());
+    visitor.visitComponent(this);
 };
 

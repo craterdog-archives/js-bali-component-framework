@@ -123,7 +123,7 @@ CanonicalComparator.prototype.ranking = function(first, second) {
         if (result === 0) result = this.ranking(first.getValue(), second.getValue());
         return result;
     }
-    if (first.isComponent && first.isType('/bali/agents/Exception')) {
+    if (first.isComponent && first.isType('/bali/utilities/Exception')) {
         return this.ranking(first.getAttributes(), second.getAttributes());
     }
     if (first.isComponent && first.isType('/bali/trees/Procedure')) {
@@ -132,6 +132,16 @@ CanonicalComparator.prototype.ranking = function(first, second) {
     if (first.isComponent && first.isType('/bali/trees/Node')) {
         // leaf nodes are treated as empty arrays
         return this.ranking(first.toArray(), second.toArray());
+    }
+    if (first.isComponent && first.isType('/bali/abstractions/Comparator')) {
+        return 0;
+    }
+    if (first.isComponent && first.isType('/bali/abstractions/Sorter')) {
+        return this.ranking(first.getComparator(), second.getComparator());
+    }
+    if (first.isComponent && first.isType('/bali/abstractions/Iterator')) {
+        var result = this.ranking(first.getSlot(), second.getSlot());
+        if (result === 0) this.ranking(first.getSequence(), second.getSequence());
     }
 
     // handle ranges

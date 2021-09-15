@@ -34,6 +34,32 @@ const Element = function(ancestry, interfaces, parameters, debug) {
         parameters,
         debug
     );
+
+    this.setParameter = function(key, value) {
+        const exception = new utilities.Exception({
+            $module: '/bali/abstractions/Element',
+            $procedure: '$setParameter',
+            $exception: '$immutableElement',
+            $key: key,
+            $value: value,
+            $text: 'All elements are immutable.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
+
+    this.setParameters = function(parameters) {
+        const exception = new utilities.Exception({
+            $module: '/bali/abstractions/Element',
+            $procedure: '$setParameters',
+            $exception: '$immutableElement',
+            $parameters: parameters,
+            $text: 'All elements are immutable.'
+        });
+        if (this.debug > 0) console.error(exception.toString());
+        throw exception;
+    };
+
     return this;
 };
 Element.prototype = Object.create(Component.prototype);

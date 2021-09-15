@@ -27,14 +27,13 @@ const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator
  * @returns {Sorter} The new merge sorter agent.
  */
 const MergeSorter = function(comparator, debug) {
+    comparator = comparator || new CanonicalComparator(debug);
     abstractions.Sorter.call(
         this,
         ['/bali/agents/MergeSorter'],
+        comparator,
         debug
     );
-
-    // private attribute
-    comparator = comparator || new CanonicalComparator(debug);
 
     this.sortCollection = function(collection) {
         if (collection && collection.getSize() > 1) {

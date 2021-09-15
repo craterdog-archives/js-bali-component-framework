@@ -280,6 +280,11 @@ FormattingVisitor.prototype.visitBreakClause = function(node) {
 };
 
 
+FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
+    this.result += '[:]($type: ' + comparator.getType() + '/v1)';  // HACK!!
+};
+
+
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
 FormattingVisitor.prototype.visitCheckoutClause = function(node) {
     this.result += 'checkout ';
@@ -318,7 +323,7 @@ FormattingVisitor.prototype.visitCode = function(node) {
 // collection: range | list | catalog
 FormattingVisitor.prototype.visitCollection = function(collection) {
     this.result += '[';
-    if (collection.getType() === '/bali/collections/Range') {
+    if (collection.isType('/bali/collections/Range')) {
         const first = collection.getFirst();
         if (first !== undefined) {
             first.acceptVisitor(this);
@@ -454,6 +459,15 @@ FormattingVisitor.prototype.visitEvaluateClause = function(node) {
 };
 
 
+FormattingVisitor.prototype.visitException = function(exception) {
+    const attributes = exception.getAttributes();
+    attributes.acceptVisitor(this);
+    const parameters = exception.getParameters();
+    this.visitParameters(parameters);  // then format any parameterization
+    this.formatNote(exception);
+};
+
+
 // exponentialExpression: <assoc=right> expression '^' expression
 FormattingVisitor.prototype.visitExponentialExpression = function(node) {
     this.inline++;
@@ -583,6 +597,22 @@ FormattingVisitor.prototype.visitInversionExpression = function(node) {
 };
 
 
+FormattingVisitor.prototype.visitIterator = function(iterator) {
+    this.result += '[';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '$slot: ';
+    const slot = iterator.getSlot();
+    slot.acceptVisitor(this);
+    this.result += '$sequence: ';
+    const sequence = iterator.getSequence();
+    sequence.acceptVisitor(this);
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += ']($type: ' + iterator.getType() + '/v1)';  // HACK!!
+};
+
+
 // logicalExpression: expression ('AND' | 'SANS' | 'XOR' | 'OR') expression
 FormattingVisitor.prototype.visitLogicalExpression = function(node) {
     this.inline++;
@@ -603,6 +633,19 @@ FormattingVisitor.prototype.visitMagnitudeExpression = function(node) {
     operand.acceptVisitor(this);
     this.result += '|';
     this.inline--;
+};
+
+
+FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
+    this.result += '[';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '$comparator: ';
+    const comparator = sorter.getComparator();
+    comparator.acceptVisitor(this);
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += ']($type: ' + sorter.getType() + '/v1)';  // HACK!!
 };
 
 

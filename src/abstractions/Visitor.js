@@ -130,6 +130,10 @@ Visitor.prototype.visitBreakClause = function(node) {
 };
 
 
+Visitor.prototype.visitCanonicalComparator = function(comparator) {
+};
+
+
 // catalog:
 //     association (',' association)* |
 //     EOL (association EOL)* |
@@ -185,6 +189,11 @@ Visitor.prototype.visitCollection = function(collection) {
         }
         this.depth--;
     }
+};
+
+
+Visitor.prototype.visitCollectionIterator = function(iterator) {
+    this.visitIterator(iterator);
 };
 
 
@@ -300,6 +309,14 @@ Visitor.prototype.visitEvaluateClause = function(node) {
 };
 
 
+Visitor.prototype.visitException = function(exception) {
+    const attributes = exception.getAttributes();
+    attributes.acceptVisitor(this);
+    const parameters = exception.getParameters();
+    parameters.acceptVisitor(this);
+};
+
+
 // exponentialExpression: <assoc=right> expression '^' expression
 Visitor.prototype.visitExponentialExpression = function(node) {
     var operand = node.getItem(1);
@@ -400,6 +417,13 @@ Visitor.prototype.visitInversionExpression = function(node) {
 };
 
 
+Visitor.prototype.visitIterator = function(iterator) {
+    const sequence = iterator.getSequence();
+    sequence.acceptVisitor(this);
+    const slot = iterator.getSlot();
+};
+
+
 // list:
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
@@ -423,6 +447,12 @@ Visitor.prototype.visitLogicalExpression = function(node) {
 Visitor.prototype.visitMagnitudeExpression = function(node) {
     const operand = node.getItem(1);
     operand.acceptVisitor(this);
+};
+
+
+Visitor.prototype.visitMergeSorter = function(sorter) {
+    const comparator = sorter.getComparator();
+    comparator.acceptVisitor(this);
 };
 
 
@@ -452,6 +482,11 @@ Visitor.prototype.visitMoment = function(moment) {
 // name: NAME
 Visitor.prototype.visitName = function(name) {
     this.visitElement(angle);
+};
+
+
+Visitor.prototype.visitNodeIterator = function(iterator) {
+    this.visitIterator(iterator);
 };
 
 
@@ -539,6 +574,11 @@ Visitor.prototype.visitQueue = function(queue) {
 // range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?;
 Visitor.prototype.visitRange = function(range) {
     this.visitCollection(range);
+};
+
+
+Visitor.prototype.visitRangeIterator = function(iterator) {
+    this.visitIterator(iterator);
 };
 
 
@@ -632,6 +672,11 @@ Visitor.prototype.visitStatement = function(node) {
     while (iterator.hasNext()) {
         iterator.getNext().acceptVisitor(this);
     }
+};
+
+
+Visitor.prototype.visitStringIterator = function(iterator) {
+    this.visitIterator(iterator);
 };
 
 
