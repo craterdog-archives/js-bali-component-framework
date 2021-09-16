@@ -353,17 +353,7 @@ exports.api = function(defaultLevel) {
     // EXCEPTION
     const exception = function(attributes, cause, debug) {
         if (debug === undefined) debug = defaultLevel;
-        var error;
-        if (cause && cause.isComponent &&
-            cause.getAttributes().getAttribute('$module').toString() === attributes['$module']) {
-            // same module so no need to wrap it
-            error = cause;
-        } else {
-            // wrap the cause in a new exception
-            error = new utilities.Exception(attributes, cause);
-            if (cause) error.stack = cause.stack;
-        }
-        return error;
+        return new utilities.Exception(attributes, cause);
     };
 
     // GENERATOR

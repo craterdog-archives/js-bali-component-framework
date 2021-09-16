@@ -17,6 +17,7 @@
  * but also inherit from the JavaScript Error class. So it implements all of the methods
  * defined in the Component class.
  */
+const EOL = '\n';  // This private constant sets the POSIX end of line character
 
 
 // PUBLIC FUNCTIONS
@@ -47,12 +48,44 @@ const Exception = function(attributes, cause) {
     ];
     var parameters = this.componentize({ $type: ancestry[0] + '/v1' });
 
-    // save the current error stack if possible
-    try {
-        this.stack = Error().stack;
-    } catch (ignore) {
-        // a stack trace is not supported on this platform
+    // process the cause if possible
+    if (cause) {
+        var trace;
+        if (cause.isComponent) {
+            // the cause is a bali exception so migrate its trace upward
+            trace = cause.getAttribute('$trace');
+            if (trace) {
+                cause.getAttributes().removeAttribute('$trace');
+                trace.insertItem(1, cause);
+            } else {
+                trace = [];
+                trace.push(cause);
+            }
+            attributes.setAttribute('$trace', trace);
+        } else {
+            // the cause is a javascript exception, extract the actual stack trace
+            try {
+                const stack = cause.stack.split(EOL).slice(1);  // remove the first line of the trace
+                stack.forEach(function(line, index) {
+                    line = line.slice(7);  // remove leading "    at " prefix
+                    if (line.length > 80) {
+                        line = line.slice(0, 42) + '..' + line.slice(-35);  // shorten line to 80 chars
+                    }
+                    stack[index] = line;  // replace the formatted line
+                }, this);
+                attributes.setAttribute('$trace', []);
+                trace = attributes.getAttribute('$trace');
+                trace.addItem(EOL + stack.join(EOL) + EOL);  // turn the stack trace into a text narrative
+            } catch (ignore) {
+                // a stack trace is not supported on this platform
+            }
+        }
     }
+
+    this.getAttribute = function(key) {
+        return attributes.getAttribute(key);
+    };
+
 
     this.getAttributes = function() {
         return attributes;
