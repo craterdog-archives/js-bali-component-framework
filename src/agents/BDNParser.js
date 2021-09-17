@@ -46,7 +46,7 @@ const trees = require('../trees');
 const BDNParser = function(debug) {
     abstractions.Parser.call(
         this,
-        [moduleName],
+        [ moduleName ],
         debug
     );
 

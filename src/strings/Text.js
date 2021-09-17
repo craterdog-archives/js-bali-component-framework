@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * text string element.
  */
+const moduleName = '/bali/strings/Text';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const collections = require('../collections');
@@ -47,7 +48,6 @@ const Text = function(value, parameters, debug) {
 
     value = value || '';  // default value
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;
@@ -132,10 +132,10 @@ Text.prototype.getItems = function(range) {
  */
 Text.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
             '/bali/elements/Text'
         ]);
-        first.validateArgument('$chain', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
             '/bali/elements/Text'
         ]);
     }

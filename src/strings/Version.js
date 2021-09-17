@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * version string element.
  */
+const moduleName = '/bali/strings/Version';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const collections = require('../collections');
@@ -57,7 +58,7 @@ const Version = function(value, parameters, debug) {
         throw exception;
     }
 
-    this.getValue = function() { return value.slice(); };  // return a copy
+    this.getValue = function() { return value.slice(); };  // make sure it is immutable
 
     this.getSize = function() { return value.length; };
 
@@ -134,7 +135,7 @@ Version.prototype.getItems = function(range) {
  */
 Version.nextVersion = function(currentVersion, level, debug) {
     if (debug > 1) {
-        currentVersion.validateArgument('$nextVersion', '$level', level, [
+        abstractions.Component.validateArgument(moduleName, '$nextVersion', '$level', level, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -172,7 +173,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
-        currentVersion.validateArgument('$validNextVersion', '$nextVersion', nextVersion, [
+        abstractions.Component.validateArgument(moduleName, '$validNextVersion', '$nextVersion', nextVersion, [
             '/bali/elements/Version'
         ]);
     }
@@ -211,10 +212,10 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
  */
 Version.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
             '/bali/elements/Version'
         ]);
-        first.validateArgument('$chain', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
             '/bali/elements/Version'
         ]);
     }

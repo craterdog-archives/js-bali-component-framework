@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * name string element.
  */
+const moduleName = '/bali/strings/Name';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const collections = require('../collections');
@@ -55,8 +56,7 @@ const Name = function(value, parameters, debug) {
         throw exception;
     }
 
-    // since this element is immutable the value must be read-only
-    this.getValue = function() { return value.slice(); };  // return a copy
+    this.getValue = function() { return value.slice(); };  // make sure it is immutable
 
     return this;
 };
@@ -141,10 +141,10 @@ Name.prototype.getItems = function(range) {
  */
 Name.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
             '/bali/elements/Name'
         ]);
-        first.validateArgument('$chain', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
             '/bali/elements/Name'
         ]);
     }

@@ -37,6 +37,16 @@ const Element = function(ancestry, interfaces, parameters, debug) {
         debug
     );
 
+    this.getValue = function() {
+        const exception = new Exception({
+            $module: moduleName,
+            $procedure: '$getValue',
+            $exception: '$abstractMethod',
+            $text: 'An abstract method must be implemented by a subclass.'
+        }, undefined, this.debug);
+        throw exception;
+    };
+
     this.setParameter = function(key, value) {
         const exception = new Exception({
             $module: moduleName,

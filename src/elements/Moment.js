@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a moment
  * in time.
  */
+const moduleName = '/bali/elements/Moment';
 const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -47,7 +48,7 @@ const FORMATS = [
 const Moment = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Moment'],
+        [ moduleName ],
         [ ],
         parameters,
         debug
@@ -84,8 +85,8 @@ const Moment = function(value, parameters, debug) {
     value = timestamp.valueOf();  // set canonical value
 
     // since this element is immutable the attributes must be read-only
-    this.getFormat = function() { return format; };
     this.getValue = function() { return value; };
+    this.getFormat = function() { return format; };
     this.getTimestamp = function() { return timestamp; };
     this.getMillisecond = function() { return timestamp.millisecond(); };
     this.getSecond = function() { return timestamp.second(); };
@@ -128,10 +129,10 @@ Moment.prototype.toBoolean = function() {
 Moment.duration = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        first.validateArgument('$duration', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$duration', '$first', first, [
             '/bali/elements/Moment'
         ]);
-        first.validateArgument('$duration', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$duration', '$second', second, [
             '/bali/elements/Moment'
         ]);
     }
@@ -151,10 +152,10 @@ Moment.duration = function(first, second, debug) {
  */
 Moment.earlier = function(moment, duration, debug) {
     if (debug > 1) {
-        moment.validateArgument('$earlier', '$moment', moment, [
+        abstractions.Component.validateArgument(moduleName, '$earlier', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
-        moment.validateArgument('$earlier', '$duration', duration, [
+        abstractions.Component.validateArgument(moduleName, '$earlier', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }
@@ -174,10 +175,10 @@ Moment.earlier = function(moment, duration, debug) {
  */
 Moment.later = function(moment, duration, debug) {
     if (debug > 1) {
-        moment.validateArgument('$later', '$moment', moment, [
+        abstractions.Component.validateArgument(moduleName, '$later', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
-        moment.validateArgument('$later', '$duration', duration, [
+        abstractions.Component.validateArgument(moduleName, '$later', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }

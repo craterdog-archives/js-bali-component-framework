@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * resource element.
  */
+const moduleName = '/bali/elements/Resource';
 const URL = require('url').URL;
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -29,10 +30,10 @@ const abstractions = require('../abstractions');
  * @param {Number} debug A number in the range 0..3.
  * @returns {Resource} The new resource element.
  */
-const Resource =function(value, parameters, debug) {
+const Resource = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Resource'],
+        [ moduleName ],
         [],
         parameters,
         debug
@@ -50,7 +51,7 @@ const Resource =function(value, parameters, debug) {
         }
     } catch (cause) {
         const exception = new abstractions.Exception({
-            $module: '/bali/elements/Resource',
+            $module: moduleName,
             $procedure: '$Resource',
             $exception: '$invalidParameter',
             $parameter: value,
@@ -59,7 +60,6 @@ const Resource =function(value, parameters, debug) {
         throw exception;
     }
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;

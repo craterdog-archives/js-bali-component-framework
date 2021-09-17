@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a time
  * duration element.
  */
+const moduleName = '/bali/elements/Duration';
 const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -32,7 +33,7 @@ const abstractions = require('../abstractions');
 const Duration = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Duration'],
+        [ moduleName ],
         [
             '/bali/libraries/Scalable'
         ],
@@ -51,7 +52,6 @@ const Duration = function(value, parameters, debug) {
     value = time.asMilliseconds();  // set canonical value
 
     // since this element is immutable the value must be read-only
-    this.getValue = function() { return value; };
     this.getTime = function() { return time; };
     this.getMilliseconds = function() { return time.milliseconds(); };
     this.getSeconds = function() { return time.seconds(); };
@@ -61,6 +61,8 @@ const Duration = function(value, parameters, debug) {
     this.getWeeks = function() { return time.weeks(); };
     this.getMonths = function() { return time.months(); };
     this.getYears = function() { return time.years(); };
+
+    this.getValue = function() { return value; };
 
     return this;
 };
@@ -95,7 +97,7 @@ Duration.prototype.toBoolean = function() {
 Duration.inverse = function(duration, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        duration.validateArgument('$inverse', '$duration', duration, [
+        abstractions.Component.validateArgument(moduleName, '$inverse', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }
@@ -114,10 +116,10 @@ Duration.inverse = function(duration, debug) {
 Duration.sum = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        first.validateArgument('$sum', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$first', first, [
             '/bali/elements/Duration'
         ]);
-        first.validateArgument('$sum', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$second', second, [
             '/bali/elements/Duration'
         ]);
     }
@@ -136,10 +138,10 @@ Duration.sum = function(first, second, debug) {
 Duration.difference = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        first.validateArgument('$difference', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$first', first, [
             '/bali/elements/Duration'
         ]);
-        first.validateArgument('$difference', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$second', second, [
             '/bali/elements/Duration'
         ]);
     }
@@ -157,12 +159,13 @@ Duration.difference = function(first, second, debug) {
  */
 Duration.scaled = function(duration, factor, debug) {
     if (debug > 1) {
-        duration.validateArgument('$scaled', '$duration', duration, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
-        duration.validateArgument('$scaled', '$factor', factor, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }
     return new Duration(moment.duration(Math.round(duration.getValue() * factor)).toISOString(), duration.getParameters(), debug);
 };
+

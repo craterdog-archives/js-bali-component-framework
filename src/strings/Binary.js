@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * binary string element.
  */
+const moduleName = '/bali/strings/Binary';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const collections = require('../collections');
@@ -50,8 +51,7 @@ const Binary = function(value, parameters, debug) {
     // analyze the value
     value = value || Buffer.alloc(0);  // the default value is an empty buffer
 
-    // since this element is immutable the value must be read-only
-    this.getValue = function() { return value; };
+    this.getValue = function() { return Buffer.from(value); };  // make sure it is immutable
 
     return this;
 };
@@ -134,7 +134,7 @@ Binary.prototype.getItems = function(range) {
  */
 Binary.not = function(binary, debug) {
     if (debug > 1) {
-        binary.validateArgument('$not', '$binary', binary, [
+        abstractions.Component.validateArgument(moduleName, '$not', '$binary', binary, [
             '/bali/elements/Binary'
         ]);
     }
@@ -158,10 +158,10 @@ Binary.not = function(binary, debug) {
  */
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$and', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        first.validateArgument('$and', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -186,10 +186,10 @@ Binary.and = function(first, second, debug) {
  */
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sans', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        first.validateArgument('$sans', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -214,10 +214,10 @@ Binary.sans = function(first, second, debug) {
  */
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$or', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        first.validateArgument('$or', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -242,10 +242,10 @@ Binary.or = function(first, second, debug) {
  */
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$xor', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        first.validateArgument('$xor', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -272,10 +272,10 @@ Binary.xor = function(first, second, debug) {
  */
 Binary.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        first.validateArgument('$chain', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }

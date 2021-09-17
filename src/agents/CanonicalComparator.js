@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
 const CanonicalComparator = function(debug) {
     abstractions.Comparator.call(
         this,
-        [moduleName],
+        [ moduleName ],
         debug
     );
     return this;

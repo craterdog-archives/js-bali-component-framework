@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * percentage element.
  */
+const moduleName = '/bali/elements/Percentage';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -30,7 +31,7 @@ const abstractions = require('../abstractions');
 const Percentage = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Percentage'],
+        [ moduleName ],
         [
             '/bali/libraries/Scalable',
             '/bali/interfaces/Continuous'
@@ -47,7 +48,6 @@ const Percentage = function(value, parameters, debug) {
     value = value || 0;  // default value
     this.calculator = new utilities.Calculator(this.debug);
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;
@@ -91,7 +91,7 @@ Percentage.prototype.toReal = function() {
  */
 Percentage.inverse = function(percentage, debug) {
     if (debug > 1) {
-        percentage.validateArgument('$inverse', '$percentage', percentage, [
+        abstractions.Component.validateArgument(moduleName, '$inverse', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -109,10 +109,10 @@ Percentage.inverse = function(percentage, debug) {
  */
 Percentage.sum = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sum', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$first', first, [
             '/bali/elements/Percentage'
         ]);
-        first.validateArgument('$sum', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$second', second, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -131,10 +131,10 @@ Percentage.sum = function(first, second, debug) {
  */
 Percentage.difference = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$difference', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$first', first, [
             '/bali/elements/Percentage'
         ]);
-        first.validateArgument('$difference', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$second', second, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -153,13 +153,14 @@ Percentage.difference = function(first, second, debug) {
  */
 Percentage.scaled = function(percentage, factor, debug) {
     if (debug > 1) {
-        percentage.validateArgument('$scaled', '$percentage', percentage, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
-        percentage.validateArgument('$scaled', '$factor', factor, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }
     const calculator = new utilities.Calculator(this.debug);
     return new Percentage(calculator.product(percentage.getValue(), factor), percentage.getParameters(), debug);
 };
+

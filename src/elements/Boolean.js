@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * boolean element.
  */
+const moduleName = '/bali/elements/Boolean';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +32,7 @@ const abstractions = require('../abstractions');
 const Bulean = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Boolean'],
+        [ moduleName ],
         [
             '/bali/libraries/Logical',
             '/bali/interfaces/Discrete'
@@ -58,7 +59,7 @@ const Bulean = function(value, parameters, debug) {
         case 'number':
             if (value !== 0 && value !== 1) {
                 const exception = new abstractions.Exception({
-                    $module: '/bali/elements/Boolean',
+                    $module: moduleName,
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
                     $parameter: value,
@@ -71,7 +72,7 @@ const Bulean = function(value, parameters, debug) {
         case 'string':
             if (value !== 'false' && value !== 'true') {
                 const exception = new abstractions.Exception({
-                    $module: '/bali/elements/Boolean',
+                    $module: moduleName,
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
                     $parameter: value,
@@ -82,7 +83,7 @@ const Bulean = function(value, parameters, debug) {
             if (value !== 'false') value = true;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/elements/Boolean',
+                $module: moduleName,
                 $procedure: '$Boolean',
                 $exception: '$invalidParameter',
                 $parameter: value,
@@ -91,7 +92,6 @@ const Bulean = function(value, parameters, debug) {
             throw exception;
     }
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;
@@ -147,7 +147,7 @@ Bulean.prototype.toReal = function() {
  */
 Bulean.not = function(value, debug) {
     if (debug > 1) {
-        value.validateArgument('$not', '$value', value, [
+        abstractions.Component.validateArgument(moduleName, '$not', '$value', value, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -167,10 +167,10 @@ Bulean.not = function(value, debug) {
  */
 Bulean.and = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$and', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        first.validateArgument('$and', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -191,10 +191,10 @@ Bulean.and = function(first, second, debug) {
  */
 Bulean.sans = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sans', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        first.validateArgument('$sans', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -215,10 +215,10 @@ Bulean.sans = function(first, second, debug) {
  */
 Bulean.or = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$or', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        first.validateArgument('$or', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -239,10 +239,10 @@ Bulean.or = function(first, second, debug) {
  */
 Bulean.xor = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$xor', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        first.validateArgument('$xor', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -250,3 +250,4 @@ Bulean.xor = function(first, second, debug) {
     const result = new Bulean(value, first.getParameters(), debug);
     return result;
 };
+

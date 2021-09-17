@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * symbol element.
  */
+const moduleName = '/bali/strings/Symbol';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const collections = require('../collections');
@@ -141,10 +142,10 @@ Symbol.prototype.getItems = function(range) {
  */
 Symbol.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
             '/bali/elements/Symbol'
         ]);
-        first.validateArgument('$chain', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
             '/bali/elements/Symbol'
         ]);
     }

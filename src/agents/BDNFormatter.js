@@ -28,7 +28,7 @@ const abstractions = require('../abstractions');
 const BDNFormatter = function(indentation, debug) {
     abstractions.Formatter.call(
         this,
-        [moduleName],
+        [ moduleName ],
         debug
     );
     if (this.debug > 1) {

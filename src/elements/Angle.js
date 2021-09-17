@@ -13,6 +13,7 @@
 /*
  * This class captures the state, methods, and functions associated with an angle element.
  */
+const moduleName = '/bali/elements/Angle';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -30,7 +31,7 @@ const abstractions = require('../abstractions');
 const Angle = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Angle'],
+        [ moduleName ],
         [
             '/bali/interfaces/Continuous',
             '/bali/libraries/Scalable',
@@ -39,6 +40,7 @@ const Angle = function(value, parameters, debug) {
         parameters,
         debug
     );
+
     if (this.debug > 1) {
         this.validateArgument('$Angle', '$value', value, [
             '/javascript/Undefined',
@@ -50,7 +52,7 @@ const Angle = function(value, parameters, debug) {
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value)) {
         const exception = new abstractions.Exception({
-            $module: '/bali/elements/Angle',
+            $module: moduleName,
             $procedure: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value,
@@ -82,7 +84,6 @@ const Angle = function(value, parameters, debug) {
     }
     if (value === -0) value = 0;  // normalize to positive zero
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;
@@ -147,7 +148,7 @@ Angle.prototype.getDegrees = function() {
  */
 Angle.inverse = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$inverse', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$inverse', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -167,10 +168,10 @@ Angle.inverse = function(angle, debug) {
  */
 Angle.sum = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sum', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$first', first, [
             '/bali/elements/Angle'
         ]);
-        first.validateArgument('$sum', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$second', second, [
             '/bali/elements/Angle'
         ]);
     }
@@ -190,10 +191,10 @@ Angle.sum = function(first, second, debug) {
  */
 Angle.difference = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$difference', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$first', first, [
             '/bali/elements/Angle'
         ]);
-        first.validateArgument('$difference', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$second', second, [
             '/bali/elements/Angle'
         ]);
     }
@@ -213,10 +214,10 @@ Angle.difference = function(first, second, debug) {
  */
 Angle.scaled = function(angle, factor, debug) {
     if (debug > 1) {
-        angle.validateArgument('$scaled', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
-        angle.validateArgument('$scaled', '$factor', factor, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }
@@ -237,7 +238,7 @@ Angle.scaled = function(angle, factor, debug) {
  */
 Angle.complement = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$complement', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$complement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -256,7 +257,7 @@ Angle.complement = function(angle, debug) {
  */
 Angle.supplement = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$supplement', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$supplement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -275,7 +276,7 @@ Angle.supplement = function(angle, debug) {
  */
 Angle.conjugate = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$conjugate', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$conjugate', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -293,7 +294,7 @@ Angle.conjugate = function(angle, debug) {
  */
 Angle.sine = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$sine', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$sine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -311,7 +312,7 @@ Angle.sine = function(angle, debug) {
  */
 Angle.cosine = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$cosine', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$cosine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -329,7 +330,7 @@ Angle.cosine = function(angle, debug) {
  */
 Angle.tangent = function(angle, debug) {
     if (debug > 1) {
-        angle.validateArgument('$tangent', '$angle', angle, [
+        abstractions.Component.validateArgument(moduleName, '$tangent', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -347,6 +348,11 @@ Angle.tangent = function(angle, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio, debug) {
+    if (debug > 1) {
+        abstractions.Component.validateArgument(moduleName, '$arcsine', '$ratio', ratio, [
+            '/javascript/Number'
+        ]);
+    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arcsine(ratio), undefined, debug);
 };
@@ -361,6 +367,11 @@ Angle.arcsine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio, debug) {
+    if (debug > 1) {
+        abstractions.Component.validateArgument(moduleName, '$arccosine', '$ratio', ratio, [
+            '/javascript/Number'
+        ]);
+    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arccosine(ratio), undefined, debug);
 };
@@ -376,6 +387,15 @@ Angle.arccosine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, debug) {
+    if (debug > 1) {
+        abstractions.Component.validateArgument(moduleName, '$arctangent', '$opposite', opposite, [
+            '/javascript/Number'
+        ]);
+        abstractions.Component.validateArgument(moduleName, '$arctangent', '$adjacent', adjacent, [
+            '/javascript/Number'
+        ]);
+    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arctangent(opposite, adjacent), undefined, debug);
 };
+

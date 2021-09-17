@@ -14,6 +14,7 @@
  * This element class captures the state and methods associated with a
  * probability element.
  */
+const moduleName = '/bali/elements/Probability';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +32,7 @@ const abstractions = require('../abstractions');
 const Probability = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Probability'],
+        [ moduleName ],
         [
             '/bali/libraries/Logical',
             '/bali/interfaces/Discrete',
@@ -59,7 +60,7 @@ const Probability = function(value, parameters, debug) {
         case 'number':
             if (!isFinite(value) || value < 0 || value > 1) {
                 const exception = new abstractions.Exception({
-                    $module: '/bali/elements/Probability',
+                    $module: moduleName,
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
                     $parameter: value,
@@ -74,7 +75,7 @@ const Probability = function(value, parameters, debug) {
                 value = 1;
             } else {
                 const exception = new abstractions.Exception({
-                    $module: '/bali/elements/Probability',
+                    $module: moduleName,
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
                     $parameter: value,
@@ -85,7 +86,7 @@ const Probability = function(value, parameters, debug) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/elements/Probability',
+                $module: moduleName,
                 $procedure: '$Probability',
                 $exception: '$invalidParameter',
                 $parameter: value,
@@ -94,7 +95,6 @@ const Probability = function(value, parameters, debug) {
             throw exception;
     }
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;
@@ -169,7 +169,7 @@ Probability.random = function(debug) {
  */
 Probability.not = function(probability, debug) {
     if (debug > 1) {
-        probability.validateArgument('$not', '$probability', probability, [
+        abstractions.Component.validateArgument(moduleName, '$not', '$probability', probability, [
             '/bali/elements/Probability'
         ]);
     }
@@ -195,10 +195,10 @@ Probability.not = function(probability, debug) {
  */
 Probability.and = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$and', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        first.validateArgument('$and', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$and', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -227,10 +227,10 @@ Probability.and = function(first, second, debug) {
  */
 Probability.sans = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sans', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        first.validateArgument('$sans', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sans', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -260,10 +260,10 @@ Probability.sans = function(first, second, debug) {
  */
 Probability.or = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$or', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        first.validateArgument('$or', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$or', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -293,10 +293,10 @@ Probability.or = function(first, second, debug) {
  */
 Probability.xor = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$xor', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        first.validateArgument('$xor', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$xor', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }

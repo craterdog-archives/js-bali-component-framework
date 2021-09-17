@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * complex number element.
  */
+const moduleName = '/bali/elements/Number';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -34,7 +35,7 @@ const Angle = require('./Angle').Angle;
 const Complex = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Number'],
+        [ moduleName ],
         [
             '/bali/libraries/Scalable',
             '/bali/libraries/Numerical',
@@ -199,7 +200,7 @@ Complex.prototype.isInfinite = function() {
  */
 Complex.inverse = function(number, debug) {
     if (debug > 1) {
-        number.validateArgument('$inverse', '$number', number, [
+        abstractions.Component.validateArgument(moduleName, '$inverse', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
@@ -229,10 +230,10 @@ Complex.inverse = function(number, debug) {
  */
 Complex.sum = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sum', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$first', first, [
             '/bali/elements/Number'
         ]);
-        first.validateArgument('$sum', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$sum', '$second', second, [
             '/bali/elements/Number'
         ]);
     }
@@ -264,10 +265,10 @@ Complex.sum = function(first, second, debug) {
  */
 Complex.difference = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$difference', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$first', first, [
             '/bali/elements/Number'
         ]);
-        first.validateArgument('$difference', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$difference', '$second', second, [
             '/bali/elements/Number'
         ]);
     }
@@ -290,10 +291,10 @@ Complex.difference = function(first, second, debug) {
  */
 Complex.scaled = function(number, factor, debug) {
     if (debug > 1) {
-        number.validateArgument('$scaled', '$number', number, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$number', number, [
             '/bali/elements/Number'
         ]);
-        number.validateArgument('$scaled', '$factor', factor, [
+        abstractions.Component.validateArgument(moduleName, '$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }
@@ -329,7 +330,7 @@ Complex.scaled = function(number, factor, debug) {
  */
 Complex.reciprocal = function(number, debug) {
     if (debug > 1) {
-        number.validateArgument('$reciprocal', '$number', number, [
+        abstractions.Component.validateArgument(moduleName, '$reciprocal', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
@@ -360,7 +361,7 @@ Complex.reciprocal = function(number, debug) {
  */
 Complex.conjugate = function(number, debug) {
     if (debug > 1) {
-        number.validateArgument('$conjugate', '$number', number, [
+        abstractions.Component.validateArgument(moduleName, '$conjugate', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
@@ -386,7 +387,7 @@ Complex.conjugate = function(number, debug) {
  */
 Complex.factorial = function(number, debug) {
     if (debug > 1) {
-        number.validateArgument('$factorial', '$number', number, [
+        abstractions.Component.validateArgument(moduleName, '$factorial', '$number', number, [
             '/bali/elements/Number'
         ]);
     }
@@ -417,10 +418,10 @@ Complex.factorial = function(number, debug) {
  */
 Complex.product = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$product', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$product', '$first', first, [
             '/bali/elements/Number'
         ]);
-        first.validateArgument('$product', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$product', '$second', second, [
             '/bali/elements/Number'
         ]);
     }
@@ -453,10 +454,10 @@ Complex.product = function(first, second, debug) {
  */
 Complex.quotient = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$quotient', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$quotient', '$first', first, [
             '/bali/elements/Number'
         ]);
-        first.validateArgument('$quotient', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$quotient', '$second', second, [
             '/bali/elements/Number'
         ]);
     }
@@ -474,10 +475,10 @@ Complex.quotient = function(first, second, debug) {
  */
 Complex.remainder = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$remainder', '$first', first, [
+        abstractions.Component.validateArgument(moduleName, '$remainder', '$first', first, [
             '/bali/elements/Number'
         ]);
-        first.validateArgument('$remainder', '$second', second, [
+        abstractions.Component.validateArgument(moduleName, '$remainder', '$second', second, [
             '/bali/elements/Number'
         ]);
     }
@@ -511,10 +512,10 @@ Complex.remainder = function(first, second, debug) {
  */
 Complex.exponential = function(base, exponent, debug) {
     if (debug > 1) {
-        base.validateArgument('$exponential', '$base', base, [
+        abstractions.Component.validateArgument(moduleName, '$exponential', '$base', base, [
             '/bali/elements/Number'
         ]);
-        base.validateArgument('$exponential', '$exponent', exponent, [
+        abstractions.Component.validateArgument(moduleName, '$exponential', '$exponent', exponent, [
             '/bali/elements/Number'
         ]);
     }
@@ -545,10 +546,10 @@ Complex.exponential = function(base, exponent, debug) {
  */
 Complex.logarithm = function(base, value, debug) {
     if (debug > 1) {
-        base.validateArgument('$logarithm', '$base', base, [
+        abstractions.Component.validateArgument(moduleName, '$logarithm', '$base', base, [
             '/bali/elements/Number'
         ]);
-        base.validateArgument('$logarithm', '$value', value, [
+        abstractions.Component.validateArgument(moduleName, '$logarithm', '$value', value, [
             '/bali/elements/Number'
         ]);
     }

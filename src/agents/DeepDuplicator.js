@@ -31,7 +31,7 @@ const MergeSorter = require('./MergeSorter').MergeSorter;
 const DeepDuplicator = function(debug) {
     abstractions.Duplicator.call(
         this,
-        [moduleName],
+        [ moduleName ],
         debug
     );
 

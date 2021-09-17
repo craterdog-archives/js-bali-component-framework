@@ -31,7 +31,7 @@ const MergeSorter = function(comparator, debug) {
     comparator = comparator || new CanonicalComparator(debug);
     abstractions.Sorter.call(
         this,
-        [moduleName],
+        [ moduleName ],
         comparator,
         debug
     );

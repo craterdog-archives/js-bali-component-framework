@@ -40,7 +40,7 @@ Array.prototype.peek = function() {
 const HTMLFormatter = function(style, debug) {
     abstractions.Formatter.call(
         this,
-        [moduleName],
+        [ moduleName ],
         debug
     );
     if (debug > 1) {

@@ -12,6 +12,7 @@
 /*
  * This element class captures the state and methods associated with a pattern element.
  */
+const moduleName = '/bali/elements/Pattern';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -29,7 +30,7 @@ const abstractions = require('../abstractions');
 const Pattern = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Pattern'],
+        [ moduleName ],
         [],
         parameters,
         debug
@@ -44,7 +45,6 @@ const Pattern = function(value, parameters, debug) {
     value = value || '^none$';  // the default value matches nothing
     if (typeof value === 'string') value = new RegExp(value);
 
-    // since this element is immutable the value must be read-only
     this.getValue = function() { return value; };
 
     return this;

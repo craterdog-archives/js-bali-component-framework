@@ -13,6 +13,7 @@
  * This element class captures the state and methods associated with a
  * tag element.
  */
+const moduleName = '/bali/elements/Tag';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +32,7 @@ const abstractions = require('../abstractions');
 const Tag = function(value, parameters, debug) {
     abstractions.Element.call(
         this,
-        ['/bali/elements/Tag'],
+        [ moduleName ],
         [],
         parameters,
         debug
@@ -62,8 +63,8 @@ const Tag = function(value, parameters, debug) {
     hash = decoder.bytesToInteger(bytes);  // the first four bytes work perfectly
 
     // since this element is immutable the attributes must be read-only
-    this.getSize = function() { return numberOfBytes; };
     this.getValue = function() { return value; };
+    this.getSize = function() { return numberOfBytes; };
     this.getHash = function() { return hash; };
 
     return this;
