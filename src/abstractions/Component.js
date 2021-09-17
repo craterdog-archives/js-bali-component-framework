@@ -14,6 +14,7 @@
  * defines an exception class that inherits from the abstract component class and is used by
  * all other component classes.
  */
+const moduleName = '/bali/abstractions/Component';
 
 
 // COMPONENT CLASS
@@ -31,25 +32,22 @@
 const Component = function(ancestry, interfaces, parameters, debug) {
     this.debug = debug || 0;  // default value
 
-    // define this temporarily so it can be used by this.validateArgument() below
-    this.getType = function() {
-        return '/bali/abstractions/Component';
-    };
     if (this.debug > 1) {
-        this.validateArgument('$Component', '$ancestry', ancestry, [
+        // NOTE: We must use the class version of validateArgument() here!
+        Component.validateArgument(moduleName, '$Component', '$ancestry', ancestry, [
             '/javascript/Array'
-        ]);
-        this.validateArgument('$Component', '$interfaces', interfaces, [
+        ], this.debug);
+        Component.validateArgument(moduleName, '$Component', '$interfaces', interfaces, [
             '/javascript/Array'
-        ]);
-        this.validateArgument('$Component', '$parameters', parameters, [
+        ], this.debug);
+        Component.validateArgument(moduleName, '$Component', '$parameters', parameters, [
             '/javascript/Undefined',
             '/javascript/Object',
             '/bali/collections/Catalog'
-        ]);
+        ], this.debug);
     }
     ancestry = ancestry || [];
-    ancestry = ancestry.concat('/bali/abstractions/Component');
+    ancestry = ancestry.concat(moduleName);
     interfaces = interfaces || [];
     interfaces = interfaces.concat('/bali/interfaces/Reflective');
     parameters = parameters || undefined;  // must be undefined to avoid infinite loop
@@ -166,47 +164,7 @@ Component.prototype.getHash = function() {
  * value.
  */
 Component.prototype.validateArgument = function(procedureName, argumentName, argumentValue, allowedTypes) {
-    const moduleName = this.getType();
-    // we can't use validateArgument() to validate its own arguments so do it explicitly
-    if (typeof procedureName !== 'string' || typeof argumentName !== 'string' || !Array.isArray(allowedTypes)) {
-        const exception = Exception({
-            $module: moduleName,
-            $procedure: '$validateArgument',
-            $exception: '$invalidParameter',
-            $procedureName: procedureName,
-            $argumentName: argumentName,
-            $argumentValue: argumentValue,
-            $allowedTypes: allowedTypes,
-            $text: 'An invalid argument was passed as part of the validation attempt.'
-        }, undefined, this.debug);
-        throw exception;
-    }
-
-    // validate the argument
-    const actualType = Component.canonicalType(argumentValue);
-    if (allowedTypes.indexOf(actualType) > -1) return true;
-    if (argumentValue && argumentValue.isComponent) {
-        for (const allowedType of allowedTypes) {
-            if (argumentValue.isType(allowedType)) return true;
-        }
-        for (const iface of argumentValue.getInterfaces()) {
-            if (allowedTypes.indexOf(iface) > -1) return true;
-        }
-        return false;
-    }
-
-    // the argument type is invalid
-    const exception = new Exception({
-        $module: moduleName,
-        $procedure: procedureName,
-        $argument: argumentName,
-        $exception: '$argumentType',
-        $allowedTypes: allowedTypes,
-        $actualType: actualType,
-        $argumentValue: argumentValue,
-        $text: 'An invalid argument type was passed to the procedure.'
-    }, undefined, this.debug);
-    throw exception;
+    Component.validateArgument(this.getType(), procedureName, argumentName, argumentValue, allowedTypes, this.debug);
 };
 
 
@@ -265,6 +223,65 @@ Component.canonicalType = function(value, debug) {
 
 
 /**
+ * This function compares the type of an argument value with the allowed types for that
+ * argument and throws an exception if it does not match.
+ *
+ * @param {String} moduleName The name of the module containing the procedure being called.
+ * @param {String} procedureName The name of the procedure being called.
+ * @param {String} argumentName The name of the argument being validated.
+ * @param {Any} argumentValue The value of the argument being validated.
+ * @param {Array} allowedTypes An array of strings representing the allowed types for the argument
+ * @param {Number} debug A number in the range 0..3.
+ * value.
+ */
+Component.validateArgument = function(moduleName, procedureName, argumentName, argumentValue, allowedTypes, debug) {
+    debug = debug || 0;  // default value
+    // we can't use validateArgument() to validate its own arguments so do it explicitly
+    if (typeof moduleName !== 'string' || typeof procedureName !== 'string' ||
+            typeof argumentName !== 'string' || !Array.isArray(allowedTypes)) {
+        const exception = Exception({
+            $module: moduleName,
+            $procedure: '$validateArgument',
+            $exception: '$invalidParameter',
+            $moduleName: moduleName,
+            $procedureName: procedureName,
+            $argumentName: argumentName,
+            $argumentValue: argumentValue,
+            $allowedTypes: allowedTypes,
+            $text: 'An invalid argument was passed as part of the validation attempt.'
+        }, undefined, debug);
+        throw exception;
+    }
+
+    // validate the argument
+    const actualType = Component.canonicalType(argumentValue);
+    if (allowedTypes.indexOf(actualType) > -1) return true;
+    if (argumentValue && argumentValue.isComponent) {
+        for (const allowedType of allowedTypes) {
+            if (argumentValue.isType(allowedType)) return true;
+        }
+        for (const iface of argumentValue.getInterfaces()) {
+            if (allowedTypes.indexOf(iface) > -1) return true;
+        }
+        return false;
+    }
+
+    // the argument type is invalid
+    const exception = new Exception({
+        $module: moduleName,
+        $procedure: procedureName,
+        $argument: argumentName,
+        $exception: '$argumentType',
+        $allowedTypes: allowedTypes,
+        $actualType: actualType,
+        $argumentValue: argumentValue,
+        $text: 'An invalid argument type was passed to the procedure.'
+    }, undefined, debug);
+    throw exception;
+};
+
+
+/**
  * This function converts a negative item index into its corresponding positive
  * index and checks to make sure the resulting index is in the range [1..size].
  *
@@ -281,10 +298,18 @@ Component.canonicalType = function(value, debug) {
  */
 Component.normalizedIndex = function(sequence, index, debug) {
     debug = debug || 0;  // default value
+    if (this.debug > 1) {
+        Component.validateArgument(moduleName, '$normalizedIndex', '$sequence', sequence, [
+            '/bali/interfaces/Sequential'
+        ], debug);
+        Component.validateArgument(moduleName, '$normalizedIndex', '$index', index, [
+            '/javascript/Number'
+        ], debug);
+    }
     const size = sequence.getSize();
     if (index > size || index < -size) {
         const exception = new Exception({
-            $module: '/bali/abstractions/Component',
+            $module: moduleName,
             $procedure: '$normalizeIndex',
             $exception: '$invalidIndex',
             $sequence: sequence,

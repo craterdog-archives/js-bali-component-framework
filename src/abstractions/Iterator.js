@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all iterators must support.
  */
+const moduleName = '/bali/abstractions/Iterator';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -44,11 +45,16 @@ const Exception = require('./Component').Exception;
 const Iterator = function(ancestry, sequence, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Iterator'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug
     );
+    if (this.debug > 1) {
+        this.validateArgument('$Iterator', '$sequence', sequence, [
+            '/bali/interfaces/Sequential'
+        ]);
+    }
 
     this.getSequence = function() { return sequence; };
 

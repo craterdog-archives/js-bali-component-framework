@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all visitors must support.
  */
+const moduleName = '/bali/abstractions/Visitor';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 
@@ -29,7 +30,7 @@ const Component = require('./Component').Component;
 const Visitor = function(ancestry, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Visitor'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug

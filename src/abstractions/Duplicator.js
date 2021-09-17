@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all duplicators must support.
  */
+const moduleName = '/bali/abstractions/Duplicator';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -27,7 +28,7 @@ const Exception = require('./Component').Exception;
 const Duplicator = function(ancestry, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Duplicator'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug
@@ -49,7 +50,7 @@ exports.Duplicator = Duplicator;
  */
 Duplicator.prototype.duplicateComponent = function(component) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Duplicator',
+        $module: moduleName,
         $procedure: '$duplicateComponent',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

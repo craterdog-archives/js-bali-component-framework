@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all collections must support.
  */
+const moduleName = '/bali/abstractions/Collection';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -31,7 +32,7 @@ const Iterator = require('./Iterator').Iterator;
 const Collection = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Collection'),
+        ancestry.concat(moduleName),
         interfaces.concat('/bali/interfaces/Sequential'),
         parameters,
         debug
@@ -64,7 +65,7 @@ Collection.prototype.toBoolean = function() {
  */
 Collection.prototype.toArray = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: moduleName,
         $procedure: '$toArray',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -114,7 +115,7 @@ Collection.prototype.getIterator = function() {
  */
 Collection.prototype.addItem = function(item) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: moduleName,
         $procedure: '$addItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -175,7 +176,7 @@ Collection.prototype.addItems = function(items) {
  */
 Collection.prototype.getIndex = function(item) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: moduleName,
         $procedure: '$getIndex',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -320,7 +321,7 @@ Collection.prototype.containsAll = function(items) {
  */
 Collection.prototype.removeAll = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Collection',
+        $module: moduleName,
         $procedure: '$removeAll',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -355,6 +356,11 @@ const CollectionIterator = function(collection, debug) {
     };
 
     this.toSlot = function(newSlot) {
+        if (this.debug > 1) {
+            this.validateArgument('$toSlot', '$newSlot', newSlot, [
+                '/javascript/Number'
+            ]);
+        }
         if (newSlot > size) newSlot = size;
         if (newSlot < -size) newSlot = -size;
         if (newSlot < 0) newSlot = newSlot + size + 1;

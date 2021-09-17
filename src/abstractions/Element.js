@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all elements must support.
  */
+const moduleName = '/bali/abstractions/Element';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -30,7 +31,7 @@ const Exception = require('./Component').Exception;
 const Element = function(ancestry, interfaces, parameters, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Element'),
+        ancestry.concat(moduleName),
         interfaces.concat('/bali/interfaces/Literal'),
         parameters,
         debug
@@ -38,7 +39,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
 
     this.setParameter = function(key, value) {
         const exception = new Exception({
-            $module: '/bali/abstractions/Element',
+            $module: moduleName,
             $procedure: '$setParameter',
             $exception: '$immutableElement',
             $key: key,
@@ -50,7 +51,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
 
     this.setParameters = function(parameters) {
         const exception = new Exception({
-            $module: '/bali/abstractions/Element',
+            $module: moduleName,
             $procedure: '$setParameters',
             $exception: '$immutableElement',
             $parameters: parameters,
@@ -76,7 +77,7 @@ exports.Element = Element;
  */
 Element.prototype.getValue = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/Element',
+        $module: moduleName,
         $procedure: '$getValue',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

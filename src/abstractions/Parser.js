@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all parsers must support.
  */
+const moduleName = '/bali/abstractions/Parser';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -27,7 +28,7 @@ const Exception = require('./Component').Exception;
 const Parser = function(ancestry, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Parser'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug
@@ -41,7 +42,7 @@ exports.Parser = Parser;
 
 Parser.prototype.parseSource = function(source) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Parser',
+        $module: moduleName,
         $procedure: '$parseSource',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -50,6 +51,11 @@ Parser.prototype.parseSource = function(source) {
 };
 
 Parser.prototype.parseDocument = function(document) {
+    if (this.debug > 1) {
+        this.validateArgument('$parseDocument', '$document', document, [
+            '/javascript/String'
+        ]);
+    }
     return this.parseSource(document.slice(0, -1));  // remove the EOL at the end of the file
 };
 

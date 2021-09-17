@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all strings must support.
  */
+const moduleName = '/bali/abstractions/String';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -32,7 +33,7 @@ const Iterator = require('./Iterator').Iterator;
 const Stryng = function(ancestry, interfaces, parameters, debug) {
     Element.call(
         this,
-        ancestry.concat('/bali/abstractions/String'),
+        ancestry.concat(moduleName),
         interfaces.concat('/bali/interfaces/Sequential'),
         parameters,
         debug
@@ -75,7 +76,7 @@ Stryng.prototype.isEmpty = function() {
  */
 Stryng.prototype.getSize = function() {
     const exception = new Exception({
-        $module: '/bali/abstractions/String',
+        $module: moduleName,
         $procedure: '$getSize',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -104,7 +105,7 @@ Stryng.prototype.getIterator = function() {
  */
 Stryng.prototype.getItem = function(index) {
     const exception = new Exception({
-        $module: '/bali/abstractions/String',
+        $module: moduleName,
         $procedure: '$getItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -122,7 +123,7 @@ Stryng.prototype.getItem = function(index) {
  */
 Stryng.prototype.getItems = function(range) {
     const exception = new Exception({
-        $module: '/bali/abstractions/String',
+        $module: moduleName,
         $procedure: '$getItems',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -153,6 +154,11 @@ const StringIterator = function(element, debug) {
     };
 
     this.toSlot = function(newSlot) {
+        if (this.debug > 1) {
+            this.validateArgument('$toSlot', '$newSlot', newSlot, [
+                '/javascript/Number'
+            ]);
+        }
         slot = newSlot;
     };
 

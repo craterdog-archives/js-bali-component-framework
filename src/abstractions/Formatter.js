@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all formatters must support.
  */
+const moduleName = '/bali/abstractions/Formatter';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -28,7 +29,7 @@ const EOL = '\n';  // the POSIX end of line character
 const Formatter = function(ancestry, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Formatter'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug
@@ -50,7 +51,7 @@ exports.Formatter = Formatter;
  */
 Formatter.prototype.asSource = function(component) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Formatter',
+        $module: moduleName,
         $procedure: '$asSource',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -66,6 +67,11 @@ Formatter.prototype.asSource = function(component) {
  * @returns {String} The formal document.
  */
 Formatter.prototype.asDocument = function(component) {
+    if (this.debug > 1) {
+        this.validateArgument('$asDocument', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
+    }
     return this.asSource(component) + EOL;
 };
 

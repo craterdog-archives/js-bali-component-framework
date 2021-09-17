@@ -12,6 +12,7 @@
 /*
  * This abstract class defines the invariant methods that all comparators must support.
  */
+const moduleName = '/bali/abstractions/Comparator';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -28,7 +29,7 @@ const Exception = require('./Component').Exception;
 const Comparator = function(ancestry, debug) {
     Component.call(
         this,
-        ancestry.concat('/bali/abstractions/Comparator'),
+        ancestry.concat(moduleName),
         [],
         undefined,  // must be undefined to avoid infinite loop
         debug
@@ -65,7 +66,7 @@ Comparator.prototype.areEqual = function(firstComponent, secondComponent) {
  */
 Comparator.prototype.ranking = function(first, second) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Comparator',
+        $module: moduleName,
         $procedure: '$rank',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -90,7 +91,7 @@ Comparator.prototype.ranking = function(first, second) {
  */
 Comparator.prototype.doesMatch = function(component, pattern) {
     const exception = new Exception({
-        $module: '/bali/abstractions/Comparator',
+        $module: moduleName,
         $procedure: '$doesMatch',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
