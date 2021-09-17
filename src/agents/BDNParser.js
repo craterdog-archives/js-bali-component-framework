@@ -262,8 +262,7 @@ BDNVisitor.prototype.visitBinary = function(ctx) {
                 $exception: '$invalidFormat',
                 $encoding: encoding,
                 $text: 'An invalid encoding format was used for a binary string.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
     }
     const binary = new strings.Binary(value, parameters, this.debug);
@@ -658,8 +657,7 @@ BDNVisitor.prototype.visitList = function(ctx) {
                 $exception: '$invalidType',
                 $type: type,
                 $text: 'An invalid collection type was specified in the parameters.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
     }
     if (ctx.expression) {
@@ -788,8 +786,7 @@ BDNVisitor.prototype.visitParameters = function(ctx) {
             $procedure: '$visitParameters',
             $exception: '$noParameters',
             $text: 'A parameter list must contain at least one association.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     }
 };
@@ -1147,8 +1144,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: cause.toString()
-    }, cause);
-    if (this.debug > 0) console.error(exception.toString());
+    }, cause, this.debug);
     throw exception;
 };
 
@@ -1194,10 +1190,9 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: new strings.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
-    });
+    }, undefined, this.debug);
 
     // stop the processing
-    if (this.debug > 0) console.error(exception.toString());
     throw exception;
 };
 
