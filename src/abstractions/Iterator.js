@@ -57,7 +57,7 @@ const Iterator = function(ancestry, sequence, debug) {
             $procedure: '$getSlot',
             $exception: '$abstractMethod',
             $text: 'An abstract method must be implemented by a subclass.'
-        });
+        }, undefined, this.debug);
         throw exception;
     };
 
@@ -79,7 +79,7 @@ Iterator.prototype.toSlot = function(slot) {
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -112,7 +112,7 @@ Iterator.prototype.hasPrevious = function() {
         $procedure: '$hasPrevious',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -128,7 +128,7 @@ Iterator.prototype.getPrevious = function() {
         $procedure: '$getPrevious',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -145,7 +145,7 @@ Iterator.prototype.hasNext = function() {
         $procedure: '$hasNext',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -161,7 +161,7 @@ Iterator.prototype.getNext = function() {
         $procedure: '$getNext',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
+    }, undefined, this.debug);
     throw exception;
 };
 

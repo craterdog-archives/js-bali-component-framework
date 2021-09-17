@@ -68,8 +68,7 @@ Comparator.prototype.ranking = function(first, second) {
         $procedure: '$rank',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -94,8 +93,7 @@ Comparator.prototype.doesMatch = function(component, pattern) {
         $procedure: '$doesMatch',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 

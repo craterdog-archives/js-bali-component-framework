@@ -97,8 +97,7 @@ const Range = function(first, connector, last, parameters, debug) {
                 $range: this,
                 $size: size,
                 $text: 'An enumerable range must have a positive size.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
         }
     }
@@ -133,8 +132,7 @@ Range.prototype.toArray = function() {
         $exception: '$notEnumerable',
         $range: this,
         $text: 'Only an enumerable range of integers may be represented as an array.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -156,8 +154,7 @@ Range.prototype.getIterator = function() {
         $exception: '$notEnumerable',
         $range: this,
         $text: 'Only an enumerable range of integers may be iterated over.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -192,8 +189,7 @@ Range.prototype.getIndex = function(item) {
         $exception: '$notEnumerable',
         $range: this,
         $text: 'Only an enumerable range of integers is indexed.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -211,8 +207,7 @@ Range.prototype.addItem = function(item) {
         $exception: '$invalidMethod',
         $range: this,
         $text: 'A range is immutable.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -230,8 +225,7 @@ Range.prototype.addItems = function(items) {
         $exception: '$invalidMethod',
         $range: this,
         $text: 'A range is immutable.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -267,8 +261,7 @@ Range.effective = function(range, debug) {
         $exception: '$notEnumerable',
         $range: range,
         $text: 'Only an enumerable range of integers has an effective range.'
-    });
-    if (debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 

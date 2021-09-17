@@ -64,8 +64,7 @@ const Probability = function(value, parameters, debug) {
                     $exception: '$invalidParameter',
                     $parameter: value,
                     $text: 'An invalid numeric value was passed to the constructor.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+                }, undefined, this.debug);
                 throw exception;
             }
             // already a number
@@ -80,8 +79,7 @@ const Probability = function(value, parameters, debug) {
                     $exception: '$invalidParameter',
                     $parameter: value,
                     $text: 'An invalid string value was passed to the constructor.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+                }, undefined, this.debug);
                 throw exception;
             }
             break;
@@ -92,8 +90,7 @@ const Probability = function(value, parameters, debug) {
                 $exception: '$invalidParameter',
                 $parameter: value,
                 $text: 'An invalid probability value was passed to the constructor.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
     }
 

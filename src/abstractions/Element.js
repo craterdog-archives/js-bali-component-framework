@@ -43,8 +43,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
             $key: key,
             $value: value,
             $text: 'All elements are immutable.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     };
 
@@ -55,8 +54,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
             $exception: '$immutableElement',
             $parameters: parameters,
             $text: 'All elements are immutable.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     };
 
@@ -81,8 +79,7 @@ Element.prototype.getValue = function() {
         $procedure: '$getValue',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 

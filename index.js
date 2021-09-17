@@ -354,7 +354,7 @@ exports.api = function(defaultLevel) {
     // EXCEPTION
     const exception = function(attributes, cause, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new abstractions.Exception(attributes, cause);
+        return new abstractions.Exception(attributes, cause, debug);
     };
 
     // GENERATOR

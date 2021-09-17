@@ -63,8 +63,7 @@ const Bulean = function(value, parameters, debug) {
                     $exception: '$invalidParameter',
                     $parameter: value,
                     $text: 'An invalid numeric value was passed to the constructor.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+                }, undefined, this.debug);
                 throw exception;
             }
             value = !!value;  // convert number to boolean
@@ -77,8 +76,7 @@ const Bulean = function(value, parameters, debug) {
                     $exception: '$invalidParameter',
                     $parameter: value,
                     $text: 'An invalid string value was passed to the constructor.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+                }, undefined, this.debug);
                 throw exception;
             }
             if (value !== 'false') value = true;
@@ -89,8 +87,7 @@ const Bulean = function(value, parameters, debug) {
                 $exception: '$invalidParameter',
                 $parameter: value,
                 $text: 'An invalid boolean value was passed to the constructor.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
     }
 

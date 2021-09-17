@@ -52,8 +52,7 @@ Duplicator.prototype.duplicateComponent = function(component) {
         $procedure: '$duplicateComponent',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 

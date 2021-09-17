@@ -170,8 +170,7 @@ Set.not = function(set, debug) {
         $procedure: '$not',
         $exception: '$meaningless',
         $text: 'The logical NOT of a set is meaningless.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, debug);
     throw exception;
 };
 

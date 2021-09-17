@@ -66,8 +66,7 @@ const Stack = function(parameters, debug) {
             $procedure: '$getTop',
             $exception: '$emptyStack',
             $text: 'Attempted to access an item on an empty stack.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     };
 
@@ -98,8 +97,7 @@ const Stack = function(parameters, debug) {
                 $exception: '$resourceLimit',
                 $capacity: capacity,
                 $text: 'The stack has reached its maximum capacity.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
         }
         item = this.componentize(item, this.debug);
@@ -116,8 +114,7 @@ const Stack = function(parameters, debug) {
             $procedure: '$removeItem',
             $exception: '$emptyStack',
             $text: 'Attempted to remove an item from an empty stack.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     };
 

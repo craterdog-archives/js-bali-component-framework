@@ -160,8 +160,7 @@ BDNVisitor.prototype.visitAngle = function(ctx) {
                 $exception: '$invalidUnits',
                 $units: units,
                 $text: 'An invalid unit was specified for an angle.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
     }
     const value = literalToNumber(ctx.getText().slice(1));  // remove the leading '~'

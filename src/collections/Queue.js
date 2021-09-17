@@ -91,8 +91,7 @@ const Queue = function(parameters, debug) {
                 $exception: '$resourceLimit',
                 $capacity: capacity,
                 $text: 'The queue has reached its maximum capacity.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            }, undefined, this.debug);
             throw exception;
         }
         item = this.componentize(item, this.debug);

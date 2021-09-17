@@ -130,7 +130,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
                 $type: angle.getType(),
                 $value: angle.getValue(),
                 $text: 'An invalid angle format was specified.'
-            });
+            }, undefined, this.debug);
             throw exception;
     }
     this.result += '~' + formatReal(value);
@@ -236,7 +236,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
                 $exception: '$invalidFormat',
                 $format: format,
                 $text: 'An invalid binary string format was specified.'
-            });
+            }, undefined, this.debug);
             throw exception;
     }
     this.depth++;

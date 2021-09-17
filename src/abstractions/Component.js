@@ -151,8 +151,7 @@ Component.prototype.validateArgument = function(procedureName, argumentName, arg
             $argumentValue: argumentValue,
             $allowedTypes: allowedTypes,
             $text: 'An invalid argument was passed as part of the validation attempt.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     }
 
@@ -179,8 +178,7 @@ Component.prototype.validateArgument = function(procedureName, argumentName, arg
         $actualType: actualType,
         $argumentValue: argumentValue,
         $text: 'An invalid argument type was passed to the procedure.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -207,6 +205,7 @@ Component.prototype.acceptVisitor = function(visitor) {
 Component.canonicalType = function(value, debug) {
     // handle null legacy
     if (value === null) value = undefined;  // null is of type 'object' so undefine it!
+    debug = debug || 0;  // default value
 
     // handle primitive javascript types
     if (typeof value === 'undefined') return '/javascript/Undefined';
@@ -258,8 +257,7 @@ Component.normalizedIndex = function(sequence, index, debug) {
             $index: index,
             $range: '' + -size + '..' + size,
             $text: 'The index is out of range.'
-        });
-        if (debug > 0) console.error(exception.toString());
+        }, undefined, this.debug);
         throw exception;
     }
     if (index < 0) index = index + size + 1;
@@ -297,6 +295,7 @@ const Exception = function(attributes, cause, debug) {
         attributes = this.componentize(attributes);
     } catch (ignore) {
         // something is wrong with the attributes so reset them
+        if (this.debug > 0) console.log('Invalid attributes passed to the exception:\n' + ignore);
         attributes = this.componentize({});
     }
 
@@ -331,9 +330,11 @@ const Exception = function(attributes, cause, debug) {
                 trace.addItem(EOL + stack.join(EOL) + EOL);  // turn the stack trace into a text narrative
             } catch (ignore) {
                 // a stack trace is not supported on this platform
+                if (this.debug > 0) console.log('Unable to generate a stack trace:\n' + ignore);
             }
         }
     }
+    if (this.debug > 0) console.error(this.toString());
 
     this.getAttributes = function() {
         return attributes;

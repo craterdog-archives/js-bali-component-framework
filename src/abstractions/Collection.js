@@ -67,8 +67,7 @@ Collection.prototype.toArray = function() {
         $procedure: '$toArray',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -118,8 +117,7 @@ Collection.prototype.addItem = function(item) {
         $procedure: '$addItem',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -180,8 +178,7 @@ Collection.prototype.getIndex = function(item) {
         $procedure: '$getIndex',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 
@@ -326,8 +323,7 @@ Collection.prototype.removeAll = function() {
         $procedure: '$removeAll',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
-    });
-    if (this.debug > 0) console.error(exception.toString());
+    }, undefined, this.debug);
     throw exception;
 };
 

@@ -55,8 +55,7 @@ const Resource =function(value, parameters, debug) {
             $exception: '$invalidParameter',
             $parameter: value,
             $text: 'An invalid resource value was passed to the constructor.'
-        }, cause);
-        if (this.debug > 0) console.error(exception.toString());
+        }, cause, this.debug);
         throw exception;
     }
 
