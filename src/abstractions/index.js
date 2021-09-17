@@ -13,14 +13,14 @@ const utilities = require('../utilities');  // force these to load completely
 
 exports.Component = require('./Component').Component;  // must be first
 exports.Exception = require('./Component').Exception;  // must be second
+exports.Iterator = require('./Iterator').Iterator;
+exports.Element = require('./Element').Element;
+exports.String = require('./String').String;
 exports.Collection = require('./Collection').Collection;
 exports.Comparator = require('./Comparator').Comparator;
 exports.Duplicator = require('./Duplicator').Duplicator;
-exports.Element = require('./Element').Element;
 exports.Formatter = require('./Formatter').Formatter;
-exports.Iterator = require('./Iterator').Iterator;
 exports.Parser = require('./Parser').Parser;
 exports.Sorter = require('./Sorter').Sorter;
-exports.String = require('./String').String;
 exports.Visitor = require('./Visitor').Visitor;
 

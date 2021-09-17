@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 
 
 /**
@@ -36,7 +37,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
     );
 
     this.setParameter = function(key, value) {
-        const exception = new abstractions.Exception({
+        const exception = new Exception({
             $module: '/bali/abstractions/Element',
             $procedure: '$setParameter',
             $exception: '$immutableElement',
@@ -48,7 +49,7 @@ const Element = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.setParameters = function(parameters) {
-        const exception = new abstractions.Exception({
+        const exception = new Exception({
             $module: '/bali/abstractions/Element',
             $procedure: '$setParameters',
             $exception: '$immutableElement',
@@ -74,7 +75,7 @@ exports.Element = Element;
  * @returns {Object} The raw value of the element.
  */
 Element.prototype.getValue = function() {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Element',
         $procedure: '$getValue',
         $exception: '$abstractMethod',

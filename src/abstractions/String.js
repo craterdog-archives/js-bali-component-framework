@@ -13,6 +13,8 @@
  * This abstract class defines the invariant methods that all strings must support.
  */
 const utilities = require('../utilities');
+const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 const Element = require('./Element').Element;
 const Iterator = require('./Iterator').Iterator;
 
@@ -72,7 +74,7 @@ Stryng.prototype.isEmpty = function() {
  * @returns {Number} The number of items that this string has.
  */
 Stryng.prototype.getSize = function() {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
@@ -101,7 +103,7 @@ Stryng.prototype.getIterator = function() {
  * @returns {Object} The item at the position in this string.
  */
 Stryng.prototype.getItem = function(index) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
@@ -119,7 +121,7 @@ Stryng.prototype.getItem = function(index) {
  * @returns {Stryng} A new string containing the requested items.
  */
 Stryng.prototype.getItems = function(range) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItems',
         $exception: '$abstractMethod',

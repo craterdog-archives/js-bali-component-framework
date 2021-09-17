@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 const Iterator = require('./Iterator').Iterator;
 
 
@@ -62,7 +63,7 @@ Collection.prototype.toBoolean = function() {
  * @returns {Array} An array containing the items in this collection.
  */
 Collection.prototype.toArray = function() {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
@@ -112,7 +113,7 @@ Collection.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
@@ -173,7 +174,7 @@ Collection.prototype.addItems = function(items) {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$getIndex',
         $exception: '$abstractMethod',
@@ -318,7 +319,7 @@ Collection.prototype.containsAll = function(items) {
  * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$removeAll',
         $exception: '$abstractMethod',

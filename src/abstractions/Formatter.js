@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 const EOL = '\n';  // the POSIX end of line character
 
 
@@ -48,7 +49,7 @@ exports.Formatter = Formatter;
  * @returns {String} The formal source string.
  */
 Formatter.prototype.asSource = function(component) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Formatter',
         $procedure: '$asSource',
         $exception: '$abstractMethod',

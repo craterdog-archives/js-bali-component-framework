@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 
 
 /**
@@ -39,7 +40,7 @@ exports.Parser = Parser;
 
 
 Parser.prototype.parseSource = function(source) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Parser',
         $procedure: '$parseSource',
         $exception: '$abstractMethod',

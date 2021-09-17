@@ -14,6 +14,7 @@
  */
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 
 
 /**
@@ -49,7 +50,7 @@ exports.Sorter = Sorter;
  * @param {Sortable} collection The sortable collection to be sorted.
  */
 Sorter.prototype.sortCollection = function(collection) {
-    const exception = new abstractions.Exception({
+    const exception = new Exception({
         $module: '/bali/abstractions/Sorter',
         $procedure: '$sortCollection',
         $exception: '$abstractMethod',

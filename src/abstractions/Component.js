@@ -29,12 +29,30 @@
  * @returns {Component} The new component.
  */
 const Component = function(ancestry, interfaces, parameters, debug) {
+    this.debug = debug || 0;  // default value
+
+    // define this temporarily so it can be used by this.validateArgument() below
+    this.getType = function() {
+        return '/bali/abstractions/Component';
+    };
+    if (this.debug > 1) {
+        this.validateArgument('$Component', '$ancestry', ancestry, [
+            '/javascript/Array'
+        ]);
+        this.validateArgument('$Component', '$interfaces', interfaces, [
+            '/javascript/Array'
+        ]);
+        this.validateArgument('$Component', '$parameters', parameters, [
+            '/javascript/Undefined',
+            '/javascript/Object',
+            '/bali/collections/Catalog'
+        ]);
+    }
     ancestry = ancestry || [];
     ancestry = ancestry.concat('/bali/abstractions/Component');
     interfaces = interfaces || [];
     interfaces = interfaces.concat('/bali/interfaces/Reflective');
     parameters = parameters || undefined;  // must be undefined to avoid infinite loop
-    this.debug = debug || 0;  // default value
 
     // Reflective Interface
 
@@ -64,6 +82,11 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     this.setParameters(parameters);
 
     this.isType = function(type) {
+        if (this.debug > 1) {
+            this.validateArgument('$isType', '$type', type, [
+                '/javascript/String'
+            ]);
+        }
         for (const candidate of ancestry) {
             if (candidate === type) return true;
         }
@@ -75,10 +98,15 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.getAncestry = function() {
-        return ancestry;
+        return ancestry.slice();  // immutable
     };
 
     this.supportsInterface = function(type) {
+        if (this.debug > 1) {
+            this.validateArgument('$supportsInterface', '$type', type, [
+                '/javascript/String'
+            ]);
+        }
         for (const candidate of interfaces) {
             if (candidate === type) return true;
         }
@@ -86,7 +114,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.getInterfaces = function() {
-        return interfaces;
+        return interfaces.slice();  // immutable
     };
 
     return this;
@@ -139,13 +167,12 @@ Component.prototype.getHash = function() {
  */
 Component.prototype.validateArgument = function(procedureName, argumentName, argumentValue, allowedTypes) {
     const moduleName = this.getType();
-    // we can't use validateArgument() to validate its own arguments so do it manually
+    // we can't use validateArgument() to validate its own arguments so do it explicitly
     if (typeof procedureName !== 'string' || typeof argumentName !== 'string' || !Array.isArray(allowedTypes)) {
         const exception = Exception({
-            $module: this.getType(),
+            $module: moduleName,
             $procedure: '$validateArgument',
             $exception: '$invalidParameter',
-            $moduleName: moduleName,
             $procedureName: procedureName,
             $argumentName: argumentName,
             $argumentValue: argumentValue,
@@ -189,6 +216,11 @@ Component.prototype.validateArgument = function(procedureName, argumentName, arg
  * @param {Visitor} visitor The visitor that wants to visit this component.
  */
 Component.prototype.acceptVisitor = function(visitor) {
+    if (this.debug > 1) {
+        this.validateArgument('$acceptVisitor', '$visitor', visitor, [
+            '/bali/abstractions/Visitor'
+        ]);
+    }
     visitor.visitComponent(this);
 };
 
@@ -203,9 +235,10 @@ Component.prototype.acceptVisitor = function(visitor) {
  * @returns {String} A string containing the canonical name for the type of the specified value.
  */
 Component.canonicalType = function(value, debug) {
+    debug = debug || 0;  // default value
+
     // handle null legacy
     if (value === null) value = undefined;  // null is of type 'object' so undefine it!
-    debug = debug || 0;  // default value
 
     // handle primitive javascript types
     if (typeof value === 'undefined') return '/javascript/Undefined';
@@ -254,9 +287,10 @@ Component.normalizedIndex = function(sequence, index, debug) {
             $module: '/bali/abstractions/Component',
             $procedure: '$normalizeIndex',
             $exception: '$invalidIndex',
+            $sequence: sequence,
             $index: index,
-            $range: '' + -size + '..' + size,
-            $text: 'The index is out of range.'
+            $range: '[' + -size + '..' + size + ']',
+            $text: 'The index is out of range for the sequence.'
         }, undefined, this.debug);
         throw exception;
     }
