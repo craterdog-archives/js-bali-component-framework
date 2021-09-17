@@ -12,6 +12,7 @@
 /*
  * This class implements the methods for a Bali Document Notation™ based formatter.
  */
+const moduleName = '/bali/agents/BDNFormatter';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -27,7 +28,7 @@ const abstractions = require('../abstractions');
 const BDNFormatter = function(indentation, debug) {
     abstractions.Formatter.call(
         this,
-        ['/bali/agents/BDNFormatter'],
+        [moduleName],
         debug
     );
     if (this.debug > 1) {
@@ -123,7 +124,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/agents/FormattingVisitor',
+                $module: moduleName,
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
                 $format: format,
@@ -231,7 +232,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/agents/FormattingVisitor',
+                $module: moduleName,
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $format: format,

@@ -14,6 +14,7 @@
  * deep copy of a component. Since elements are immutable, they are not copied,
  * only referenced.
  */
+const moduleName = '/bali/agents/DeepDuplicator';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
@@ -30,7 +31,7 @@ const MergeSorter = require('./MergeSorter').MergeSorter;
 const DeepDuplicator = function(debug) {
     abstractions.Duplicator.call(
         this,
-        ['/bali/agents/DeepDuplicator'],
+        [moduleName],
         debug
     );
 

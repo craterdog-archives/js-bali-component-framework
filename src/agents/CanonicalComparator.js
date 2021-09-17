@@ -13,6 +13,7 @@
  * This class implements the methods for a canonical comparator that compares components
  * for their natural ordering.
  */
+const moduleName = '/bali/agents/CanonicalComparator';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -27,7 +28,7 @@ const abstractions = require('../abstractions');
 const CanonicalComparator = function(debug) {
     abstractions.Comparator.call(
         this,
-        ['/bali/agents/CanonicalComparator'],
+        [moduleName],
         debug
     );
     return this;
@@ -207,6 +208,15 @@ CanonicalComparator.prototype.ranking = function(first, second) {
  * @returns {Boolean} Whether or not the component matches the pattern.
  */
 CanonicalComparator.prototype.doesMatch = function(component, pattern) {
+    if (this.debug > 1) {
+        this.validateArgument('$doesMatch', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
+        this.validateArgument('$doesMatch', '$pattern', pattern, [
+            '/bali/abstractions/Component'
+        ]);
+    }
+
     /* Case 1
      * If the pattern component is an actual bali.Pattern element then see if it
      * matches the target component.
@@ -270,7 +280,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
         return true;  // all pattern items matched successfully
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/abstractions/Component',
+        $module: moduleName,
         $procedure: '$doesMatch',
         $exception: '$invalidParameter',
         $component: component,

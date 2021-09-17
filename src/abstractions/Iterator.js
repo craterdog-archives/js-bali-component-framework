@@ -60,7 +60,7 @@ const Iterator = function(ancestry, sequence, debug) {
 
     this.getSlot = function() {
         const exception = new Exception({
-            $module: '/bali/agents/Iterator',
+            $module: moduleName,
             $procedure: '$getSlot',
             $exception: '$abstractMethod',
             $text: 'An abstract method must be implemented by a subclass.'
@@ -82,7 +82,7 @@ exports.Iterator = Iterator;
  */
 Iterator.prototype.toSlot = function(slot) {
     const exception = new Exception({
-        $module: '/bali/agents/Iterator',
+        $module: moduleName,
         $procedure: '$toStart',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -115,7 +115,7 @@ Iterator.prototype.toEnd = function() {
  */
 Iterator.prototype.hasPrevious = function() {
     const exception = new Exception({
-        $module: '/bali/agents/Iterator',
+        $module: moduleName,
         $procedure: '$hasPrevious',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -131,7 +131,7 @@ Iterator.prototype.hasPrevious = function() {
  */
 Iterator.prototype.getPrevious = function() {
     const exception = new Exception({
-        $module: '/bali/agents/Iterator',
+        $module: moduleName,
         $procedure: '$getPrevious',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -148,7 +148,7 @@ Iterator.prototype.getPrevious = function() {
  */
 Iterator.prototype.hasNext = function() {
     const exception = new Exception({
-        $module: '/bali/agents/Iterator',
+        $module: moduleName,
         $procedure: '$hasNext',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'
@@ -164,7 +164,7 @@ Iterator.prototype.hasNext = function() {
  */
 Iterator.prototype.getNext = function() {
     const exception = new Exception({
-        $module: '/bali/agents/Iterator',
+        $module: moduleName,
         $procedure: '$getNext',
         $exception: '$abstractMethod',
         $text: 'An abstract method must be implemented by a subclass.'

@@ -12,6 +12,7 @@
 /*
  * This class implements the methods for an HTML based formatter agent.
  */
+const moduleName = '/bali/agents/HTMLFormatter';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -39,10 +40,9 @@ Array.prototype.peek = function() {
 const HTMLFormatter = function(style, debug) {
     abstractions.Formatter.call(
         this,
-        ['/bali/agents/HTMLFormatter'],
+        [moduleName],
         debug
     );
-
     if (debug > 1) {
         this.validateArgument('$HTMLFormatter', '$style', style, [
             '/javascript/String'

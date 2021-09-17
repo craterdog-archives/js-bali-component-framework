@@ -13,6 +13,7 @@
  * This class implements the methods for a merge sorter agent. It uses a comparator
  * agent to compare each pair of components in a sortable collection.
  */
+const moduleName = '/bali/agents/MergeSorter';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator;
@@ -30,12 +31,17 @@ const MergeSorter = function(comparator, debug) {
     comparator = comparator || new CanonicalComparator(debug);
     abstractions.Sorter.call(
         this,
-        ['/bali/agents/MergeSorter'],
+        [moduleName],
         comparator,
         debug
     );
 
     this.sortCollection = function(collection) {
+        if (debug > 1) {
+            this.validateArgument('$sortCollection', '$collection', collection, [
+                '/bali/interfaces/Sortable'
+            ]);
+        }
         if (collection && collection.getSize() > 1) {
             var array = collection.toArray();
             array = sortArray(comparator, array);

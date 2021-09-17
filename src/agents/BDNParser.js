@@ -23,6 +23,7 @@
  * makes up all of the modules for the Bali Nebula™ is simpler, clean and
  * easy to read. You're welcome ;-)
  */
+const moduleName = '/bali/agents/BDNParser';
 const URL = require('url').URL;
 const antlr = require('antlr4');
 const ErrorStrategy = require('antlr4/error/ErrorStrategy');
@@ -45,7 +46,7 @@ const trees = require('../trees');
 const BDNParser = function(debug) {
     abstractions.Parser.call(
         this,
-        ['/bali/agents/BDNParser'],
+        [moduleName],
         debug
     );
 
@@ -155,7 +156,7 @@ BDNVisitor.prototype.visitAngle = function(ctx) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/agents/BDNParser',
+                $module: moduleName,
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
                 $units: units,
@@ -257,7 +258,7 @@ BDNVisitor.prototype.visitBinary = function(ctx) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/agents/BDNParser',
+                $module: moduleName,
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $encoding: encoding,
@@ -320,7 +321,6 @@ BDNVisitor.prototype.visitCatalog = function(ctx) {
             case '/bali/abstractions/Exception/v1':
                 component = new abstractions.Exception(attributes);
                 break;
-                /*
             case '/bali/agents/CanonicalComparator/v1':
                 component = new CanonicalComparator(this.debug);
                 break;
@@ -328,7 +328,6 @@ BDNVisitor.prototype.visitCatalog = function(ctx) {
                 const comparator = attributes.getAttribute('$comparator');
                 component = new MergeSorter(comparator, this.debug);
                 break;
-                */
             case '/bali/collections/CollectionIterator/v1':
             case '/bali/collections/RangeIterator/v1':
             case '/bali/strings/StringIterator/v1':
@@ -652,7 +651,7 @@ BDNVisitor.prototype.visitList = function(ctx) {
             break;
         default:
             const exception = new abstractions.Exception({
-                $module: '/bali/agents/BDNParser',
+                $module: moduleName,
                 $procedure: '$visitList',
                 $exception: '$invalidType',
                 $type: type,
@@ -782,7 +781,7 @@ BDNVisitor.prototype.visitParameters = function(ctx) {
     // there must be at least one parameter
     if (this.result.isEmpty()) {
         const exception = new abstractions.Exception({
-            $module: '/bali/agents/BDNParser',
+            $module: moduleName,
             $procedure: '$visitParameters',
             $exception: '$noParameters',
             $text: 'A parameter list must contain at least one association.'
@@ -1140,7 +1139,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context = context.parentCtx;
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/agents/BDNParser',
+        $module: moduleName,
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: cause.toString()
@@ -1186,7 +1185,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
 
     // capture the exception
     const exception = new abstractions.Exception({
-        $module: '/bali/agents/BDNParser',
+        $module: moduleName,
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
         $text: new strings.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
