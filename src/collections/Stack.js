@@ -81,8 +81,7 @@ const Stack = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Stack', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',

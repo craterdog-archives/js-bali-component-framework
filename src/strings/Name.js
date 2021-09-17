@@ -39,14 +39,13 @@ const Name = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Name', '$Name', '$value', value, [
+        this.validateArgument('$Name', '$value', value, [
             '/javascript/Array'
         ]);
     }
 
     if (!Array.isArray(value) || value.length === 0) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/elements/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',
@@ -87,13 +86,12 @@ Name.prototype.getSize = function() {
  * @returns {String} The identifier at the specified index.
  */
 Name.prototype.getItem = function(index) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Name', '$getItem', '$index', index, [
+        this.validateArgument('$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+    index = abstractions.Component.normalizedIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -105,9 +103,8 @@ Name.prototype.getItem = function(index) {
  * @returns {Name} A new name string containing the requested identifiers.
  */
 Name.prototype.getItems = function(range) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Name', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -125,8 +122,8 @@ Name.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
+    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
     const identifiers = this.getValue().slice(first, last);
     return new Name(identifiers, this.getParameters(), this.debug);
 };
@@ -145,11 +142,10 @@ Name.prototype.getItems = function(range) {
  */
 Name.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Name', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/elements/Name'
         ]);
-        validator.validateType('/bali/elements/Name', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/elements/Name'
         ]);
     }

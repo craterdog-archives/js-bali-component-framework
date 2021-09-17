@@ -39,19 +39,18 @@ const Range = function(first, connector, last, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/collections/Range', '$Range', '$first', first, [
+        this.validateArgument('$Range', '$first', first, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/collections/Range', '$Range', '$connector', connector, [
+        this.validateArgument('$Range', '$connector', connector, [
             '/javascript/Undefined',
             '/javascript/String'
         ]);
-        validator.validateType('/bali/collections/Range', '$Range', '$last', last, [
+        this.validateArgument('$Range', '$last', last, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -91,7 +90,7 @@ const Range = function(first, connector, last, parameters, debug) {
         if (connector.endsWith('<')) size--;
         if (connector.startsWith('<')) size--;
         if (size < 1) {
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/collections/Range',
                 $procedure: '$Range',
                 $exception: '$invalidSize',
@@ -128,7 +127,7 @@ Range.prototype.toArray = function() {
         }
         return array;
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$toArray',
         $exception: '$notEnumerable',
@@ -151,7 +150,7 @@ Range.prototype.getIterator = function() {
         const iterator = new RangeIterator(this, this.debug);
         return iterator;
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$getIterator',
         $exception: '$notEnumerable',
@@ -172,8 +171,7 @@ Range.prototype.getIterator = function() {
  */
 Range.prototype.getIndex = function(item) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/collections/Range', '$getIndex', '$item', item, [
+        this.validateArgument('$getIndex', '$item', item, [
             '/javascript/Number',
             '/bali/elements/Number'
         ]);
@@ -188,7 +186,7 @@ Range.prototype.getIndex = function(item) {
         if (index < 0 || index > size) return 0;  // not in the range
         return index;
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$getIndex',
         $exception: '$notEnumerable',
@@ -207,7 +205,7 @@ Range.prototype.getIndex = function(item) {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Range.prototype.addItem = function(item) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItem',
         $exception: '$invalidMethod',
@@ -226,7 +224,7 @@ Range.prototype.addItem = function(item) {
  * @returns {Number} The number of items that were successfully added to the collection.
  */
 Range.prototype.addItems = function(items) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$addItems',
         $exception: '$invalidMethod',
@@ -250,8 +248,7 @@ Range.prototype.addItems = function(items) {
  */
 Range.effective = function(range, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Range', '$effective', '$range', range, [
+        range.validateArgument('$effective', '$range', range, [
             '/bali/collections/Range'
         ]);
     }
@@ -264,7 +261,7 @@ Range.effective = function(range, debug) {
         if (connector.endsWith('<')) last--;
         return new Range(first, '..', last, range.getParameters(), debug);
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Range',
         $procedure: '$effective',
         $exception: '$notEnumerable',

@@ -12,6 +12,7 @@
 const utilities = require('../utilities');  // force these to load completely
 
 exports.Component = require('./Component').Component;  // must be first
+exports.Exception = require('./Component').Exception;  // must be second
 exports.Collection = require('./Collection').Collection;
 exports.Comparator = require('./Comparator').Comparator;
 exports.Duplicator = require('./Duplicator').Duplicator;

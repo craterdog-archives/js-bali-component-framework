@@ -21,8 +21,6 @@
  *   * base 64
  * </pre>
  */
-const Exception = require('./Exception').Exception;
-const Validator = require('./Validator').Validator;
 
 
 // This private constant sets the line width for formatting encoded byte strings.
@@ -49,13 +47,6 @@ const base32LookupTable = '0123456789ABCDFGHJKLMNPQRSTVWXYZ';  // missing 'E', '
  */
 const Decoder = function(indentation, debug) {
     this.debug = debug || 0;
-    if (this.debug > 1) {
-        const validator = new Validator(this.debug);
-        validator.validateType('/bali/agents/Decoder', '$Decoder', '$indentation', indentation, [
-            '/javascript/Undefined',
-            '/javascript/Number'
-        ]);
-    }
     this.indentation = indentation || 0;
     return this;
 };
@@ -99,14 +90,8 @@ Decoder.prototype.base2Decode = function(base2) {
     base2 = base2.replace(/\s/g, '');  // strip out whitespace
     const length = base2.length;
     if (length % 8 !== 0) {
-        const exception = new utilities.Exception({
-            $module: '/bali/agents/Decoder',
-            $procedure: '$base2Decode',
-            $exception: '$invalidParameter',
-            $parameter: base2,
-            $text: 'The number of characters in the base 2 binary string was not divisible by 8.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        const exception = Error('The number of characters in the base 2 binary string was not divisible by 8.');
+        if (this.debug > 0) console.error(exception);
         throw exception;
     }
 
@@ -121,14 +106,8 @@ Decoder.prototype.base2Decode = function(base2) {
             const character = base2[index++];
             const bit = base2LookupTable.indexOf(character);
             if (bit < 0) {
-                const exception = new utilities.Exception({
-                    $module: '/bali/agents/Decoder',
-                    $procedure: '$base2Decode',
-                    $exception: '$invalidParameter',
-                    $parameter: base2,
-                    $text: 'The binary string was not encoded using base 2.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+                const exception = Error('The binary string was not encoded using base 2.');
+                if (this.debug > 0) console.error(exception);
                 throw exception;
             }
             byte |= (bit << b);
@@ -178,14 +157,8 @@ Decoder.prototype.base16Decode = function(base16) {
     base16 = base16.toUpperCase();
     const length = base16.length;
     if (length % 2 !== 0) {
-        const exception = new utilities.Exception({
-            $module: '/bali/agents/Decoder',
-            $procedure: '$base16Decode',
-            $exception: '$invalidParameter',
-            $parameter: base16,
-            $text: 'The number of characters in the base 16 binary string was not divisible by 2.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
+        const exception = Error('The number of characters in the base 16 binary string was not divisible by 2.');
+        if (this.debug > 0) console.error(exception);
         throw exception;
     }
 
@@ -198,14 +171,8 @@ Decoder.prototype.base16Decode = function(base16) {
         var character = base16[index++];
         const highOrderNybble = base16LookupTable.indexOf(character);
         if (highOrderNybble < 0) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Decoder',
-                $procedure: '$base16Decode',
-                $exception: '$invalidParameter',
-                $parameter: base16,
-                $text: 'The binary string was not encoded using base 16.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('The binary string was not encoded using base 16.');
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
 
@@ -213,14 +180,8 @@ Decoder.prototype.base16Decode = function(base16) {
         character = base16[index++];
         const lowOrderNybble = base16LookupTable.indexOf(character);
         if (lowOrderNybble < 0) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Decoder',
-                $procedure: '$base16Decode',
-                $exception: '$invalidParameter',
-                $parameter: base16,
-                $text: 'The binary string was not encoded using base 16.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('The binary string was not encoded using base 16.');
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
 
@@ -284,14 +245,8 @@ Decoder.prototype.base32Decode = function(base32) {
         character = base32[i];
         chunk = base32LookupTable.indexOf(character);
         if (chunk < 0) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Decoder',
-                $procedure: '$base32Decode',
-                $exception: '$invalidParameter',
-                $parameter: base32,
-                $text: 'The binary string was not encoded using base 32.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('The binary string was not encoded using base 32.');
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
         if (i < length - 1) {

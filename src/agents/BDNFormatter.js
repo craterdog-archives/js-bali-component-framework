@@ -30,9 +30,8 @@ const BDNFormatter = function(indentation, debug) {
         ['/bali/agents/BDNFormatter'],
         debug
     );
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/agents/BDNFormatter', '$BDNFormatter', '$indentation', indentation, [
+        this.validateArgument('$BDNFormatter', '$indentation', indentation, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -43,8 +42,7 @@ const BDNFormatter = function(indentation, debug) {
 
     this.asSource = function(component) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/agents/BDNFormatter', '$asSource', '$component', component, [
+            this.validateArgument('$asSource', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -124,7 +122,7 @@ FormattingVisitor.prototype.visitAngle = function(angle) {
             value = angle.getDegrees();
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/agents/FormattingVisitor',
                 $procedure: '$visitAngle',
                 $exception: '$invalidFormat',
@@ -232,7 +230,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
             value = decoder.base64Encode(value);
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/agents/FormattingVisitor',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',

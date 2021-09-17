@@ -27,28 +27,26 @@ agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
 // AVOIDING CIRCULAR DEPENDENCIES
 
 /*
- * This function defines the canonical toString() method for all Component classes and the
- * Exception class (which needs to look like a Component class).  It must be declared and
- * assigned to these classes here instead of in their class definitions to avoid circular
- * dependencies.
+ * This function defines the canonical toString() method for all Component classes. It must
+ * be declared and assigned to these classes here instead of in their class definitions to
+ * avoid circular dependencies.
  */
 const toString = function() {
     const formatter = new agents.BDNFormatter();
     return formatter.asSource(this);
 };
-utilities.Exception.prototype.toString = toString;
 abstractions.Component.prototype.toString = toString;
 
 
 /*
  * This function is used to convert most JavaScript values into their corresponding
- * Bali Nebula™ component values.  It is needed by the Component and Exception classes and
- * depends on everything else so it must be injected into them after everything has been
- * imported. Just to be safe, this function does not depend on any functions defined later
+ * Bali Nebula™ component values.  It is needed by the Component class and depends on
+ * everything else so it must be injected into them after everything has been imported.
+ * Just to be safe, this function does not depend on any functions defined later
  * in this file, even though that should not matter. When possible circular dependencies
  * are involved we can't be too careful!  Also, no exceptions are thrown by this function
- * since the Exception class calls the componentize function on its attributes and again we
- * want to avoid circular dependencies.
+ * since the Exception class calls the componentize function on its attributes and again
+ * we want to avoid circular dependencies.
  */
 const componentize = function(value, debug) {
     if (value === null) value = undefined;
@@ -99,7 +97,6 @@ const componentize = function(value, debug) {
     }
     return component;
 };
-utilities.Exception.prototype.componentize = componentize;
 abstractions.Component.prototype.componentize = componentize;
 
 
@@ -288,6 +285,10 @@ exports.api = function(defaultLevel) {
         }
         return parser.parseSource(bdn);
     };
+    component.canonicalType = function(component, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return abstractions.Component.canonicalType(component, debug);
+    };
 
     // CONFIGURATOR
     const configurator = function(filename, directory, debug) {
@@ -353,7 +354,7 @@ exports.api = function(defaultLevel) {
     // EXCEPTION
     const exception = function(attributes, cause, debug) {
         if (debug === undefined) debug = defaultLevel;
-        return new utilities.Exception(attributes, cause);
+        return new abstractions.Exception(attributes, cause);
     };
 
     // GENERATOR
@@ -658,12 +659,6 @@ exports.api = function(defaultLevel) {
         return strings.Text.chain(first, second, debug);
     };
 
-    // VALIDATOR
-    const validator = function(debug) {
-        if (debug === undefined) debug = defaultLevel;
-        return new utilities.Validator(debug);
-    };
-
     // VERSION
     const version = function(value, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
@@ -757,7 +752,6 @@ exports.api = function(defaultLevel) {
         symbol: symbol,
         tag: tag,
         text: text,
-        validator: validator,
         version: version,
 
         // abstract classes from whence to inherit

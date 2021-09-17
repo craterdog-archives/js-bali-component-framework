@@ -62,7 +62,7 @@ Collection.prototype.toBoolean = function() {
  * @returns {Array} An array containing the items in this collection.
  */
 Collection.prototype.toArray = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$toArray',
         $exception: '$abstractMethod',
@@ -113,7 +113,7 @@ Collection.prototype.getIterator = function() {
  * @returns {Boolean} Whether or not the item was successfully added.
  */
 Collection.prototype.addItem = function(item) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$addItem',
         $exception: '$abstractMethod',
@@ -132,8 +132,7 @@ Collection.prototype.addItem = function(item) {
  */
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$addItems', '$items', items, [
+        this.validateArgument('$addItems', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
@@ -176,7 +175,7 @@ Collection.prototype.addItems = function(items) {
  * @returns {Number} The index of the item in this collection.
  */
 Collection.prototype.getIndex = function(item) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$getIndex',
         $exception: '$abstractMethod',
@@ -196,8 +195,7 @@ Collection.prototype.getIndex = function(item) {
  */
 Collection.prototype.getItem = function(index) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getItem', '$index', index, [
+        this.validateArgument('$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
@@ -215,8 +213,7 @@ Collection.prototype.getItem = function(index) {
  */
 Collection.prototype.getItems = function(range) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -243,8 +240,7 @@ Collection.prototype.getItems = function(range) {
  */
 Collection.prototype.containsItem = function(item) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsItem', '$item', item, [
+        this.validateArgument('$containsItem', '$item', item, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -269,8 +265,7 @@ Collection.prototype.containsItem = function(item) {
  */
 Collection.prototype.containsAny = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsAny', '$items', items, [
+        this.validateArgument('$containsAny', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
@@ -300,8 +295,7 @@ Collection.prototype.containsAny = function(items) {
  */
 Collection.prototype.containsAll = function(items) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/abstractions/Collection', '$containsAll', '$items', items, [
+        this.validateArgument('$containsAll', '$items', items, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
@@ -327,7 +321,7 @@ Collection.prototype.containsAll = function(items) {
  * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Collection',
         $procedure: '$removeAll',
         $exception: '$abstractMethod',

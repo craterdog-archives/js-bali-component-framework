@@ -38,8 +38,7 @@ const Resource =function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Resource', '$Resource', '$value', value, [
+        this.validateArgument('$Resource', '$value', value, [
             '/javascript/String',
             '/nodejs/URL'
         ]);
@@ -50,7 +49,7 @@ const Resource =function(value, parameters, debug) {
             value = new URL(value);
         }
     } catch (cause) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/elements/Resource',
             $procedure: '$Resource',
             $exception: '$invalidParameter',

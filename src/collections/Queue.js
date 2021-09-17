@@ -74,8 +74,7 @@ const Queue = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Queue', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -86,7 +85,7 @@ const Queue = function(parameters, debug) {
             ]);
         }
         if (array.length === capacity) {
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/collections/Queue',
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',

@@ -35,8 +35,7 @@ const Pattern = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Pattern', '$Pattern', '$value', value, [
+        this.validateArgument('$Pattern', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/RegExp'
@@ -77,8 +76,7 @@ Pattern.prototype.toBoolean = function() {
  */
 Pattern.prototype.matches = function(component) {
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Pattern', '$matches', '$component', component, [
+        this.validateArgument('$matches', '$component', component, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',

@@ -4,5 +4,5 @@
         $procedure: $toArray
         $exception: $abstractMethod
         $text: "An abstract method must be implemented by a subclass."
-    ]($type: /bali/utilities/Exception/v1)
+    ]($type: /bali/abstractions/Exception/v1)
 ]

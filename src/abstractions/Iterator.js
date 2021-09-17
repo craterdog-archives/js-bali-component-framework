@@ -52,7 +52,7 @@ const Iterator = function(ancestry, sequence, debug) {
     this.getSequence = function() { return sequence; };
 
     this.getSlot = function() {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/agents/Iterator',
             $procedure: '$getSlot',
             $exception: '$abstractMethod',
@@ -74,7 +74,7 @@ exports.Iterator = Iterator;
  * @param {Number} slot The number of the target slot.
  */
 Iterator.prototype.toSlot = function(slot) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/Iterator',
         $procedure: '$toStart',
         $exception: '$abstractMethod',
@@ -107,7 +107,7 @@ Iterator.prototype.toEnd = function() {
  * @returns {Boolean} Whether or not there is an item before the current slot.
  */
 Iterator.prototype.hasPrevious = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/Iterator',
         $procedure: '$hasPrevious',
         $exception: '$abstractMethod',
@@ -123,7 +123,7 @@ Iterator.prototype.hasPrevious = function() {
  * @returns {Component} The item before the current slot.
  */
 Iterator.prototype.getPrevious = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/Iterator',
         $procedure: '$getPrevious',
         $exception: '$abstractMethod',
@@ -140,7 +140,7 @@ Iterator.prototype.getPrevious = function() {
  * @returns {Boolean} Whether or not there is an item after the current slot.
  */
 Iterator.prototype.hasNext = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/Iterator',
         $procedure: '$hasNext',
         $exception: '$abstractMethod',
@@ -156,7 +156,7 @@ Iterator.prototype.hasNext = function() {
  * @returns {Component} The item after the current slot.
  */
 Iterator.prototype.getNext = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/Iterator',
         $procedure: '$getNext',
         $exception: '$abstractMethod',

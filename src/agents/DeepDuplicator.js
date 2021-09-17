@@ -36,8 +36,7 @@ const DeepDuplicator = function(debug) {
 
     this.duplicateComponent = function(component) {
         if (debug > 1) {
-            const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/agents/DeepDuplicator', '$duplicateComponent', '$component', component, [
+            this.validateArgument('$duplicateComponent', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -322,7 +321,7 @@ DuplicatingVisitor.prototype.visitEvaluateClause = function(node) {
 DuplicatingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
-    const copy = new utilities.Exception(this.result);
+    const copy = new abstractions.Exception(this.result);
     const parameters = exception.getParameters();
     parameters.acceptVisitor(this);
     copy.setParameters(this.result);

@@ -39,14 +39,13 @@ const Symbol = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Symbol', '$Symbol', '$value', value, [
+        this.validateArgument('$Symbol', '$value', value, [
             '/javascript/String'
         ]);
     }
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/elements/Symbol',
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
@@ -87,13 +86,12 @@ Symbol.prototype.getSize = function() {
  * @returns {String} The character at the specified index.
  */
 Symbol.prototype.getItem = function(index) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Symbol', '$getItem', '$index', index, [
+        this.validateArgument('$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+    index = abstractions.Component.normalizedIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -105,9 +103,8 @@ Symbol.prototype.getItem = function(index) {
  * @returns {Symbol} A new symbol containing the requested characters.
  */
 Symbol.prototype.getItems = function(range) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Symbol', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -125,8 +122,8 @@ Symbol.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
+    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Symbol(string, this.getParameters(), this.debug);
 };
@@ -145,11 +142,10 @@ Symbol.prototype.getItems = function(range) {
  */
 Symbol.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Symbol', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/elements/Symbol'
         ]);
-        validator.validateType('/bali/elements/Symbol', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/elements/Symbol'
         ]);
     }

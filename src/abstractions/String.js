@@ -72,7 +72,7 @@ Stryng.prototype.isEmpty = function() {
  * @returns {Number} The number of items that this string has.
  */
 Stryng.prototype.getSize = function() {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getSize',
         $exception: '$abstractMethod',
@@ -102,7 +102,7 @@ Stryng.prototype.getIterator = function() {
  * @returns {Object} The item at the position in this string.
  */
 Stryng.prototype.getItem = function(index) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItem',
         $exception: '$abstractMethod',
@@ -121,7 +121,7 @@ Stryng.prototype.getItem = function(index) {
  * @returns {Stryng} A new string containing the requested items.
  */
 Stryng.prototype.getItems = function(range) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/String',
         $procedure: '$getItems',
         $exception: '$abstractMethod',

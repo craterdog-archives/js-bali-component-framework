@@ -44,7 +44,6 @@ const Node = function(type, debug) {
 
     // private attributes
     const array = [];
-    const validator = new utilities.Validator(this.debug);
 
     this.toBoolean = function() {
         return array.length > 0;
@@ -69,17 +68,17 @@ const Node = function(type, debug) {
 
     this.getItem = function(index) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$getItem', '$index', index, [
+            this.validateArgument('$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.getItems = function(range) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$getItems', '$range', range, [
+            this.validateArgument('$getItems', '$range', range, [
                 '/javascript/String',
                 '/bali/collections/Range'
             ]);
@@ -99,7 +98,7 @@ const Node = function(type, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -109,10 +108,10 @@ const Node = function(type, debug) {
 
     this.setItem = function(index, item) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$setItem', '$index', index, [
+            this.validateArgument('$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/trees/Node', '$setItem', '$item', item, [
+            this.validateArgument('$setItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -122,7 +121,7 @@ const Node = function(type, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -131,7 +130,7 @@ const Node = function(type, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$getAttribute', '$index', index, [
+            this.validateArgument('$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
@@ -141,10 +140,10 @@ const Node = function(type, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            validator.validateType('/bali/trees/Node', '$setAttribute', '$index', index, [
+            this.validateArgument('$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/trees/Node', '$setAttribute', '$value', value, [
+            this.validateArgument('$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }

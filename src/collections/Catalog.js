@@ -83,20 +83,18 @@ const Catalog = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/Catalog', '$getItem', '$index', index, [
+            this.validateArgument('$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.addItem = function(association) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$addItem', '$association', association, [
+            this.validateArgument('$addItem', '$association', association, [
                 '/javascript/Undefined',
                 '/bali/collections/Association'
             ]);
@@ -113,8 +111,7 @@ const Catalog = function(parameters, debug) {
 
     this.addItems = function(associations) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$addItems', '$associations', associations, [
+            this.validateArgument('$addItems', '$associations', associations, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/javascript/Object',
@@ -155,8 +152,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$getAttribute', '$key', key, [
+            this.validateArgument('$getAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -171,8 +167,7 @@ const Catalog = function(parameters, debug) {
 
     this.getAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$getAttributes', '$keys', keys, [
+            this.validateArgument('$getAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
@@ -197,15 +192,14 @@ const Catalog = function(parameters, debug) {
 
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$setAttribute', '$key', key, [
+            this.validateArgument('$setAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
                 '/bali/abstractions/Element'
             ]);
-            validator.validateType('/bali/collections/Catalog', '$setAttribute', '$value', value, [
+            this.validateArgument('$setAttribute', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -231,8 +225,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttribute = function(key) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$removeAttribute', '$key', key, [
+            this.validateArgument('$removeAttribute', '$key', key, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -258,8 +251,7 @@ const Catalog = function(parameters, debug) {
 
     this.removeAttributes = function(keys) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Catalog', '$removeAttributes', '$keys', keys, [
+            this.validateArgument('$removeAttributes', '$keys', keys, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/collections/Range',
@@ -337,11 +329,10 @@ Catalog.prototype.toObject = function() {
  */
 Catalog.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Catalog', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/collections/Catalog'
         ]);
-        validator.validateType('/bali/collections/Catalog', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/collections/Catalog'
         ]);
     }
@@ -365,11 +356,10 @@ Catalog.chain = function(first, second, debug) {
  */
 Catalog.extraction = function(catalog, keys, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Catalog', '$extraction', '$catalog', catalog, [
+        catalog.validateArgument('$extraction', '$catalog', catalog, [
             '/bali/collections/Catalog'
         ]);
-        validator.validateType('/bali/collections/Catalog', '$extraction', '$keys', keys, [
+        catalog.validateArgument('$extraction', '$keys', keys, [
             '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'

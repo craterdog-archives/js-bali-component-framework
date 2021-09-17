@@ -15,8 +15,6 @@
  * machine and allowed transitions between states given a finite set of possible event
  * types.
  */
-const Exception = require('./Exception').Exception;
-const Validator = require('./Validator').Validator;
 
 
 // PUBLIC FUNCTIONS
@@ -45,94 +43,45 @@ const Validator = require('./Validator').Validator;
 const Controller = function(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
     if (debug > 1) {
-        const validator = new Validator(debug);
-        validator.validateType('/bali/agents/Controller', '$Controller', '$eventTypes', eventTypes, [
-            '/javascript/Array'
-        ]);
-        validator.validateType('/bali/agents/Controller', '$Controller', '$nextStates', nextStates, [
-            '/javascript/Object'
-        ]);
-        validator.validateType('/bali/agents/Controller', '$Controller', '$currentState', currentState, [
-            '/javascript/Undefined',
-            '/javascript/String'
-        ]);
-    }
-    if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
-        const exception = new utilities.Exception({
-            $module: '/bali/agents/Controller',
-            $procedure: '$Controller',
-            $exception: '$invalidType',
-            $text: 'One of the parameters to the constructor is not the right type.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
-    if (eventTypes.length === 0 || Object.keys(nextStates).length === 0) {
-        const exception = new utilities.Exception({
-            $module: '/bali/agents/Controller',
-            $procedure: '$Controller',
-            $exception: '$noStates',
-            $text: 'The state machine must have at least one state and event.'
-        });
-        if (this.debug > 0) console.error(exception.toString());
-        throw exception;
-    }
-    const numberOfEventTypes = eventTypes.length;
-    eventTypes.forEach(function(event) {
-        if (typeof event !== 'string') {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Controller',
-                $procedure: '$Controller',
-                $exception: '$invalidType',
-                $event: event,
-                $text: 'Each event must be of type string.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+        if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
+            const exception = Error('One of the parameters to the constructor is not the right type.');
+            console.error(exception);
             throw exception;
         }
-    }, this);
-    var numberOfStates = 0;
-    for (const state in nextStates) {
-        if (typeof state !== 'string') {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Controller',
-                $procedure: '$Controller',
-                $exception: '$invalidType',
-                $state: state,
-                $text: 'Each state must be of type string.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+        const numberOfEventTypes = eventTypes.length;
+        if (numberOfEventTypes === 0 || Object.keys(nextStates).length === 0) {
+            const exception = Error('The state machine must have at least one state and one event.');
+            console.error(exception);
             throw exception;
         }
-        currentState = currentState || state;
-        if (nextStates[state].length !== numberOfEventTypes) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Controller',
-                $procedure: '$Controller',
-                $exception: '$invalidParameter',
-                $expected: numberOfEventTypes,
-                $actual: nextStates[state].length,
-                $text: 'Each next state list must have the same length as the number of event types.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
-            throw exception;
-        }
-        nextStates[state].forEach(function(transition) {
-            if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
-                const exception = new utilities.Exception({
-                    $module: '/bali/agents/Controller',
-                    $procedure: '$Controller',
-                    $exception: '$invalidParameter',
-                    $expected: Object.keys(nextStates),
-                    $actual: transition,
-                    $text: 'A next state was found that is not in the possible states.'
-                });
-                if (this.debug > 0) console.error(exception.toString());
+        for (const event in eventTypes) {
+            if (typeof event !== 'string') {
+                const exception = Error('Each event must be of type string.');
+                console.error(exception);
                 throw exception;
             }
-        }, this);
-        numberOfStates++;
+        }
+        for (const state in nextStates) {
+            if (typeof state !== 'string') {
+                const exception = Error('Each state must be of type string.');
+                console.error(exception);
+                throw exception;
+            }
+            if (nextStates[state].length !== numberOfEventTypes) {
+                const exception = Error('Each next state list must have the same length as the number of event types.');
+                console.error(exception);
+                throw exception;
+            }
+            nextStates[state].forEach(function(transition) {
+                if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
+                    const exception = Error('A next state was found that is not in the possible states: ' + transition);
+                    console.error(exception);
+                    throw exception;
+                }
+            }, this);
+        }
     }
+    currentState = currentState || Object.keys(nextStates)[0];  // defaults to first state
 
     this.getState = function() {
         return currentState;
@@ -141,33 +90,15 @@ const Controller = function(eventTypes, nextStates, currentState, debug) {
     this.validateEvent = function(event) {
         const index = eventTypes.indexOf(event);
         if (!nextStates[currentState][index]) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Controller',
-                $procedure: '$validateEvent',
-                $exception: '$invalidEvent',
-                $event: event,
-                $state: currentState,
-                $text: 'The event is not allowed in the current state.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('The event is not allowed in the current state: ' + event);
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
     };
 
     this.transitionState = function(event) {
         const index = eventTypes.indexOf(event);
-        if (!nextStates[currentState][index]) {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Controller',
-                $procedure: '$transitionState',
-                $exception: '$invalidEvent',
-                $event: event,
-                $state: currentState,
-                $text: 'The event is not allowed in the current state.'
-            });
-            if (this.debug > 0) console.error(exception.toString());
-            throw exception;
-        }
+        this.validateEvent(event);
         currentState = nextStates[currentState][index];
         return currentState;
     };

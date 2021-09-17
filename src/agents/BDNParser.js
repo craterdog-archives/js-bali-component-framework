@@ -51,8 +51,7 @@ const BDNParser = function(debug) {
 
     this.parseSource = function(string) {
         if (debug > 1) {
-            const validator = new utilities.Validator(debug);
-            validator.validateType('/bali/agents/BDNParser', '$parseSource', '$string', string, [
+            this.validateArgument('$parseSource', '$string', string, [
                 '/javascript/String'
             ]);
         }
@@ -155,7 +154,7 @@ BDNVisitor.prototype.visitAngle = function(ctx) {
         case '$degrees':
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/agents/BDNParser',
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
@@ -258,7 +257,7 @@ BDNVisitor.prototype.visitBinary = function(ctx) {
             value = decoder.base64Decode(value);
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/agents/BDNParser',
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
@@ -320,8 +319,8 @@ BDNVisitor.prototype.visitCatalog = function(ctx) {
     if (parameters) {
         const type = parameters.getAttribute('$type');
         switch (type.toString()) {
-            case '/bali/utilities/Exception/v1':
-                component = new utilities.Exception(attributes);
+            case '/bali/abstractions/Exception/v1':
+                component = new abstractions.Exception(attributes);
                 break;
                 /*
             case '/bali/agents/CanonicalComparator/v1':
@@ -654,7 +653,7 @@ BDNVisitor.prototype.visitList = function(ctx) {
             collection = new collections.Stack(parameters, this.debug);
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/agents/BDNParser',
                 $procedure: '$visitList',
                 $exception: '$invalidType',
@@ -785,7 +784,7 @@ BDNVisitor.prototype.visitParameters = function(ctx) {
 
     // there must be at least one parameter
     if (this.result.isEmpty()) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/agents/BDNParser',
             $procedure: '$visitParameters',
             $exception: '$noParameters',
@@ -1144,7 +1143,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         context.exception = cause;
         context = context.parentCtx;
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/BDNParser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
@@ -1191,7 +1190,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
     message = addContext(recognizer, message);
 
     // capture the exception
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/agents/BDNParser',
         $procedure: '$parseBDN',
         $exception: '$syntaxError',

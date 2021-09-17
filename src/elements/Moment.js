@@ -53,8 +53,7 @@ const Moment = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Moment', '$Moment', '$value', value, [
+        this.validateArgument('$Moment', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Number'
@@ -129,11 +128,10 @@ Moment.prototype.toBoolean = function() {
 Moment.duration = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Moment', '$duration', '$first', first, [
+        first.validateArgument('$duration', '$first', first, [
             '/bali/elements/Moment'
         ]);
-        validator.validateType('/bali/elements/Moment', '$duration', '$second', second, [
+        first.validateArgument('$duration', '$second', second, [
             '/bali/elements/Moment'
         ]);
     }
@@ -153,11 +151,10 @@ Moment.duration = function(first, second, debug) {
  */
 Moment.earlier = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Moment', '$earlier', '$moment', moment, [
+        moment.validateArgument('$earlier', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
-        validator.validateType('/bali/elements/Duration', '$earlier', '$duration', duration, [
+        moment.validateArgument('$earlier', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }
@@ -177,11 +174,10 @@ Moment.earlier = function(moment, duration, debug) {
  */
 Moment.later = function(moment, duration, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Moment', '$later', '$moment', moment, [
+        moment.validateArgument('$later', '$moment', moment, [
             '/bali/elements/Moment'
         ]);
-        validator.validateType('/bali/elements/Duration', '$later', '$duration', duration, [
+        moment.validateArgument('$later', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }

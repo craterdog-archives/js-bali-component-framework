@@ -39,7 +39,7 @@ exports.Parser = Parser;
 
 
 Parser.prototype.parseSource = function(source) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Parser',
         $procedure: '$parseSource',
         $exception: '$abstractMethod',

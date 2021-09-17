@@ -63,7 +63,7 @@ Comparator.prototype.areEqual = function(firstComponent, secondComponent) {
  *
  */
 Comparator.prototype.ranking = function(first, second) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Comparator',
         $procedure: '$rank',
         $exception: '$abstractMethod',
@@ -89,7 +89,7 @@ Comparator.prototype.ranking = function(first, second) {
  * @returns {Boolean} Whether or not this component matches the pattern.
  */
 Comparator.prototype.doesMatch = function(component, pattern) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Comparator',
         $procedure: '$doesMatch',
         $exception: '$abstractMethod',

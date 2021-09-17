@@ -123,7 +123,7 @@ CanonicalComparator.prototype.ranking = function(first, second) {
         if (result === 0) result = this.ranking(first.getValue(), second.getValue());
         return result;
     }
-    if (first.isComponent && first.isType('/bali/utilities/Exception')) {
+    if (first.isComponent && first.isType('/bali/abstractions/Exception')) {
         return this.ranking(first.getAttributes(), second.getAttributes());
     }
     if (first.isComponent && first.isType('/bali/trees/Procedure')) {
@@ -269,7 +269,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
         }
         return true;  // all pattern items matched successfully
     }
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Component',
         $procedure: '$doesMatch',
         $exception: '$invalidParameter',

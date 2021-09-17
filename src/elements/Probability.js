@@ -41,8 +41,7 @@ const Probability = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Probability', '$Probability', '$value', value, [
+        this.validateArgument('$Probability', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -59,7 +58,7 @@ const Probability = function(value, parameters, debug) {
             break;
         case 'number':
             if (!isFinite(value) || value < 0 || value > 1) {
-                const exception = new utilities.Exception({
+                const exception = new abstractions.Exception({
                     $module: '/bali/elements/Probability',
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
@@ -75,7 +74,7 @@ const Probability = function(value, parameters, debug) {
             if (value === '1.') {
                 value = 1;
             } else {
-                const exception = new utilities.Exception({
+                const exception = new abstractions.Exception({
                     $module: '/bali/elements/Probability',
                     $procedure: '$Probability',
                     $exception: '$invalidParameter',
@@ -87,7 +86,7 @@ const Probability = function(value, parameters, debug) {
             }
             break;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/elements/Probability',
                 $procedure: '$Probability',
                 $exception: '$invalidParameter',
@@ -173,8 +172,7 @@ Probability.random = function(debug) {
  */
 Probability.not = function(probability, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Probability', '$not', '$probability', probability, [
+        probability.validateArgument('$not', '$probability', probability, [
             '/bali/elements/Probability'
         ]);
     }
@@ -200,11 +198,10 @@ Probability.not = function(probability, debug) {
  */
 Probability.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Probability', '$and', '$first', first, [
+        first.validateArgument('$and', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        validator.validateType('/bali/elements/Probability', '$and', '$second', second, [
+        first.validateArgument('$and', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -233,11 +230,10 @@ Probability.and = function(first, second, debug) {
  */
 Probability.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Probability', '$sans', '$first', first, [
+        first.validateArgument('$sans', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        validator.validateType('/bali/elements/Probability', '$sans', '$second', second, [
+        first.validateArgument('$sans', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -267,11 +263,10 @@ Probability.sans = function(first, second, debug) {
  */
 Probability.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Probability', '$or', '$first', first, [
+        first.validateArgument('$or', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        validator.validateType('/bali/elements/Probability', '$or', '$second', second, [
+        first.validateArgument('$or', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }
@@ -301,11 +296,10 @@ Probability.or = function(first, second, debug) {
  */
 Probability.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Probability', '$xor', '$first', first, [
+        first.validateArgument('$xor', '$first', first, [
             '/bali/elements/Probability'
         ]);
-        validator.validateType('/bali/elements/Probability', '$xor', '$second', second, [
+        first.validateArgument('$xor', '$second', second, [
             '/bali/elements/Probability'
         ]);
     }

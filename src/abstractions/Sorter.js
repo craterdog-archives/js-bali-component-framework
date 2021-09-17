@@ -49,7 +49,7 @@ exports.Sorter = Sorter;
  * @param {Sortable} collection The sortable collection to be sorted.
  */
 Sorter.prototype.sortCollection = function(collection) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Sorter',
         $procedure: '$sortCollection',
         $exception: '$abstractMethod',

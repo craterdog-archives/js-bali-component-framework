@@ -15,8 +15,6 @@
 const os = require('os');
 const pfs = require('fs').promises;
 const EOL = '\n'; // The POSIX end of line character
-const Exception = require('./Exception').Exception;
-const Validator = require('./Validator').Validator;
 
 
 // PUBLIC FUNCTIONS
@@ -40,17 +38,6 @@ const Configurator = function(filename, directory, debug) {
     if (debug === null || debug === undefined) debug = 0;  // default is off
     this.debug = debug;
 
-    if (this.debug > 1) {
-        const validator = new Validator(this.debug);
-        validator.validateType('/bali/agents/Configurator', '$Configurator', '$filename', filename, [
-            '/javascript/String'
-        ]);
-        validator.validateType('/bali/agents/Configurator', '$Configurator', '$directory', directory, [
-            '/javascript/Undefined',
-            '/javascript/String'
-        ]);
-    }
-
     if (directory && !directory.endsWith('/')) directory += '/';
     this.directory = directory || os.homedir() + '/.bali/';
     this.file = this.directory + filename;
@@ -69,24 +56,11 @@ exports.Configurator = Configurator;
  */
 Configurator.prototype.store = async function(configuration) {
     try {
-        if (this.debug > 1) {
-            const validator = new Validator(this.debug);
-            validator.validateType('/bali/agents/Configurator', '$store', '$configuration', configuration, [
-                '/javascript/String'
-            ]);
-        }
         try { await pfs.mkdir(this.directory, 0o700); } catch (ignore) {};
         await pfs.writeFile(this.file, configuration + EOL, {encoding: 'utf8', mode: 0o600});  // add POSIX EOL
     } catch (cause) {
-        const exception = new utilities.Exception({
-            $module: '/bali/agents/Configurator',
-            $procedure: '$store',
-            $file: this.file,
-            $configuration: configuration,
-            $exception: '$unexpected',
-            $text: 'An unexpected error occurred while attempting to store the configuration.'
-        }, cause);
-        if (this.debug > 0) console.error(exception.toString());
+        const exception = Error('An error occurred while attempting to store the configuration.', cause);
+        if (this.debug > 0) console.error(exception);
         throw exception;
     }
 };
@@ -102,14 +76,8 @@ Configurator.prototype.load = async function() {
         return configuration.slice(0, -1);  // remove the trailing EOL  // remove POSIX EOL
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Configurator',
-                $procedure: '$load',
-                $file: this.file,
-                $exception: '$unexpected',
-                $text: 'An unexpected error occurred while attempting to load the configuration.'
-            }, cause);
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('An error occurred while attempting to load the configuration.', cause);
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
     }
@@ -124,14 +92,8 @@ Configurator.prototype.delete = async function() {
         await pfs.unlink(this.file);
     } catch (cause) {
         if (cause.code !== 'ENOENT') {
-            const exception = new utilities.Exception({
-                $module: '/bali/agents/Configurator',
-                $procedure: '$delete',
-                $file: this.file,
-                $exception: '$unexpected',
-                $text: 'An unexpected error occurred while attempting to delete the configuration.'
-            }, cause);
-            if (this.debug > 0) console.error(exception.toString());
+            const exception = Error('An error occurred while attempting to delete the configuration.', cause);
+            if (this.debug > 0) console.error(exception);
             throw exception;
         }
     }

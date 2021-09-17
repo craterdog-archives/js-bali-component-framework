@@ -40,8 +40,7 @@ const Angle = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Angle', '$Angle', '$value', value, [
+        this.validateArgument('$Angle', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -50,7 +49,7 @@ const Angle = function(value, parameters, debug) {
     // check the value
     if (value === value) value = value || 0;  // default value if not NaN and not defined
     if (!isFinite(value)) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/elements/Angle',
             $procedure: '$Angle',
             $exception: '$invalidParameter',
@@ -149,8 +148,7 @@ Angle.prototype.getDegrees = function() {
  */
 Angle.inverse = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$inverse', '$angle', angle, [
+        angle.validateArgument('$inverse', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -170,11 +168,10 @@ Angle.inverse = function(angle, debug) {
  */
 Angle.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$sum', '$first', first, [
+        first.validateArgument('$sum', '$first', first, [
             '/bali/elements/Angle'
         ]);
-        validator.validateType('/bali/elements/Angle', '$sum', '$second', second, [
+        first.validateArgument('$sum', '$second', second, [
             '/bali/elements/Angle'
         ]);
     }
@@ -194,11 +191,10 @@ Angle.sum = function(first, second, debug) {
  */
 Angle.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$difference', '$first', first, [
+        first.validateArgument('$difference', '$first', first, [
             '/bali/elements/Angle'
         ]);
-        validator.validateType('/bali/elements/Angle', '$difference', '$second', second, [
+        first.validateArgument('$difference', '$second', second, [
             '/bali/elements/Angle'
         ]);
     }
@@ -218,11 +214,10 @@ Angle.difference = function(first, second, debug) {
  */
 Angle.scaled = function(angle, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$scaled', '$angle', angle, [
+        angle.validateArgument('$scaled', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
-        validator.validateType('/bali/elements/Angle', '$scaled', '$factor', factor, [
+        angle.validateArgument('$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }
@@ -243,8 +238,7 @@ Angle.scaled = function(angle, factor, debug) {
  */
 Angle.complement = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$complement', '$angle', angle, [
+        angle.validateArgument('$complement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -263,8 +257,7 @@ Angle.complement = function(angle, debug) {
  */
 Angle.supplement = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$supplement', '$angle', angle, [
+        angle.validateArgument('$supplement', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -283,8 +276,7 @@ Angle.supplement = function(angle, debug) {
  */
 Angle.conjugate = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$conjugate', '$angle', angle, [
+        angle.validateArgument('$conjugate', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -302,8 +294,7 @@ Angle.conjugate = function(angle, debug) {
  */
 Angle.sine = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$sine', '$angle', angle, [
+        angle.validateArgument('$sine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -321,8 +312,7 @@ Angle.sine = function(angle, debug) {
  */
 Angle.cosine = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$cosine', '$angle', angle, [
+        angle.validateArgument('$cosine', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -340,8 +330,7 @@ Angle.cosine = function(angle, debug) {
  */
 Angle.tangent = function(angle, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$tangent', '$angle', angle, [
+        angle.validateArgument('$tangent', '$angle', angle, [
             '/bali/elements/Angle'
         ]);
     }
@@ -359,12 +348,6 @@ Angle.tangent = function(angle, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arcsine = function(ratio, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$arcsine', '$ratio', ratio, [
-            '/javascript/Number'
-        ]);
-    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arcsine(ratio), undefined, debug);
 };
@@ -379,12 +362,6 @@ Angle.arcsine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arccosine = function(ratio, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$arccosine', '$ratio', ratio, [
-            '/javascript/Number'
-        ]);
-    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arccosine(ratio), undefined, debug);
 };
@@ -400,15 +377,6 @@ Angle.arccosine = function(ratio, debug) {
  * @returns {Angle} The angle of the triangle.
  */
 Angle.arctangent = function(opposite, adjacent, debug) {
-    if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Angle', '$arctangent', '$opposite', opposite, [
-            '/javascript/Number'
-        ]);
-        validator.validateType('/bali/elements/Angle', '$arctangent', '$adjacent', adjacent, [
-            '/javascript/Number'
-        ]);
-    }
     const calculator = new utilities.Calculator(debug);
     return new Angle(calculator.arctangent(opposite, adjacent), undefined, debug);
 };

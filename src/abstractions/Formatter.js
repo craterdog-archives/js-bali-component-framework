@@ -48,7 +48,7 @@ exports.Formatter = Formatter;
  * @returns {String} The formal source string.
  */
 Formatter.prototype.asSource = function(component) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Formatter',
         $procedure: '$asSource',
         $exception: '$abstractMethod',

@@ -39,8 +39,7 @@ const Percentage = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Percentage', '$Percentage', '$value', value, [
+        this.validateArgument('$Percentage', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -92,8 +91,7 @@ Percentage.prototype.toReal = function() {
  */
 Percentage.inverse = function(percentage, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Percentage', '$inverse', '$percentage', percentage, [
+        percentage.validateArgument('$inverse', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -111,11 +109,10 @@ Percentage.inverse = function(percentage, debug) {
  */
 Percentage.sum = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Percentage', '$sum', '$first', first, [
+        first.validateArgument('$sum', '$first', first, [
             '/bali/elements/Percentage'
         ]);
-        validator.validateType('/bali/elements/Percentage', '$sum', '$second', second, [
+        first.validateArgument('$sum', '$second', second, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -134,11 +131,10 @@ Percentage.sum = function(first, second, debug) {
  */
 Percentage.difference = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Percentage', '$difference', '$first', first, [
+        first.validateArgument('$difference', '$first', first, [
             '/bali/elements/Percentage'
         ]);
-        validator.validateType('/bali/elements/Percentage', '$difference', '$second', second, [
+        first.validateArgument('$difference', '$second', second, [
             '/bali/elements/Percentage'
         ]);
     }
@@ -157,11 +153,10 @@ Percentage.difference = function(first, second, debug) {
  */
 Percentage.scaled = function(percentage, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Percentage', '$scaled', '$percentage', percentage, [
+        percentage.validateArgument('$scaled', '$percentage', percentage, [
             '/bali/elements/Percentage'
         ]);
-        validator.validateType('/bali/elements/Percentage', '$scaled', '$factor', factor, [
+        percentage.validateArgument('$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }

@@ -40,8 +40,7 @@ const Bulean = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Boolean', '$Boolean', '$value', value, [
+        this.validateArgument('$Boolean', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Boolean',
             '/javascript/Number',
@@ -58,7 +57,7 @@ const Bulean = function(value, parameters, debug) {
             break;
         case 'number':
             if (value !== 0 && value !== 1) {
-                const exception = new utilities.Exception({
+                const exception = new abstractions.Exception({
                     $module: '/bali/elements/Boolean',
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
@@ -72,7 +71,7 @@ const Bulean = function(value, parameters, debug) {
             break;
         case 'string':
             if (value !== 'false' && value !== 'true') {
-                const exception = new utilities.Exception({
+                const exception = new abstractions.Exception({
                     $module: '/bali/elements/Boolean',
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
@@ -84,7 +83,7 @@ const Bulean = function(value, parameters, debug) {
             }
             if (value !== 'false') value = true;
         default:
-            const exception = new utilities.Exception({
+            const exception = new abstractions.Exception({
                 $module: '/bali/elements/Boolean',
                 $procedure: '$Boolean',
                 $exception: '$invalidParameter',
@@ -151,8 +150,7 @@ Bulean.prototype.toReal = function() {
  */
 Bulean.not = function(value, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Boolean', '$not', '$value', value, [
+        value.validateArgument('$not', '$value', value, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -172,11 +170,10 @@ Bulean.not = function(value, debug) {
  */
 Bulean.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Boolean', '$and', '$first', first, [
+        first.validateArgument('$and', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Boolean', '$and', '$second', second, [
+        first.validateArgument('$and', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -197,11 +194,10 @@ Bulean.and = function(first, second, debug) {
  */
 Bulean.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Boolean', '$sans', '$first', first, [
+        first.validateArgument('$sans', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Boolean', '$sans', '$second', second, [
+        first.validateArgument('$sans', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -222,11 +218,10 @@ Bulean.sans = function(first, second, debug) {
  */
 Bulean.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Boolean', '$or', '$first', first, [
+        first.validateArgument('$or', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Boolean', '$or', '$second', second, [
+        first.validateArgument('$or', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }
@@ -247,11 +242,10 @@ Bulean.or = function(first, second, debug) {
  */
 Bulean.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Boolean', '$xor', '$first', first, [
+        first.validateArgument('$xor', '$first', first, [
             '/bali/elements/Boolean'
         ]);
-        validator.validateType('/bali/elements/Boolean', '$xor', '$second', second, [
+        first.validateArgument('$xor', '$second', second, [
             '/bali/elements/Boolean'
         ]);
     }

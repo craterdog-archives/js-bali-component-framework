@@ -37,8 +37,7 @@ const Tag = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Tag', '$Tag', '$value', value, [
+        this.validateArgument('$Tag', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Number'

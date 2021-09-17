@@ -39,8 +39,7 @@ const Text = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Text', '$Text', '$value', value, [
+        this.validateArgument('$Text', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String'
         ]);
@@ -77,13 +76,12 @@ Text.prototype.getSize = function() {
  * @returns {String} The character at the specified index.
  */
 Text.prototype.getItem = function(index) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Text', '$getItem', '$index', index, [
+        this.validateArgument('$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+    index = abstractions.Component.normalizedIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -95,9 +93,8 @@ Text.prototype.getItem = function(index) {
  * @returns {Text} A new text string containing the requested characters.
  */
 Text.prototype.getItems = function(range) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Text', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -115,8 +112,8 @@ Text.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
+    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
     const string = this.getValue().slice(first, last);
     return new Text(string, this.getParameters(), this.debug);
 };
@@ -135,11 +132,10 @@ Text.prototype.getItems = function(range) {
  */
 Text.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Text', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/elements/Text'
         ]);
-        validator.validateType('/bali/elements/Text', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/elements/Text'
         ]);
     }

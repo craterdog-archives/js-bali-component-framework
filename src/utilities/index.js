@@ -9,8 +9,6 @@
  ************************************************************************/
 'use strict';
 
-exports.Exception = require('./Exception').Exception;  // must be first
-exports.Validator = require('./Validator').Validator;  // must be second
 exports.Calculator = require('./Calculator').Calculator;
 exports.Configurator = require('./Configurator').Configurator;
 exports.Controller = require('./Controller').Controller;

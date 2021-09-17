@@ -39,8 +39,7 @@ const Version = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Version', '$Version', '$value', value, [
+        this.validateArgument('$Version', '$value', value, [
             '/javascript/Undefined',
             '/javascript/Array'
         ]);
@@ -48,7 +47,7 @@ const Version = function(value, parameters, debug) {
 
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
-        const exception = new utilities.Exception({
+        const exception = new abstractions.Exception({
             $module: '/bali/elements/Version',
             $procedure: '$version',
             $exception: '$invalidParameter',
@@ -64,13 +63,12 @@ const Version = function(value, parameters, debug) {
     this.getSize = function() { return value.length; };
 
     this.getItem = function(index) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/elements/Version', '$getItem', '$index', index, [
+            this.validateArgument('$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // zero-based indexing for JS
         return value[index];
     };
 
@@ -90,9 +88,8 @@ exports.Version = Version;
  * @returns {Version} A new version string containing the requested version numbers.
  */
 Version.prototype.getItems = function(range) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Version', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -110,8 +107,8 @@ Version.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
+    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
     const array = this.getValue().slice(first, last);
     return new Version(array, this.getParameters(), this.debug);
 };
@@ -138,8 +135,7 @@ Version.prototype.getItems = function(range) {
  */
 Version.nextVersion = function(currentVersion, level, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Version', '$nextVersion', '$level', level, [
+        currentVersion.validateArgument('$nextVersion', '$level', level, [
             '/javascript/Undefined',
             '/javascript/Number'
         ]);
@@ -177,8 +173,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
  */
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Version', '$validNextVersion', '$nextVersion', nextVersion, [
+        currentVersion.validateArgument('$validNextVersion', '$nextVersion', nextVersion, [
             '/bali/elements/Version'
         ]);
     }
@@ -217,11 +212,10 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
  */
 Version.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Version', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/elements/Version'
         ]);
-        validator.validateType('/bali/elements/Version', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/elements/Version'
         ]);
     }

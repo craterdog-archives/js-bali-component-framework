@@ -13,7 +13,6 @@
  * This class provides cryptographically secure random value generation.
  */
 const crypto = require('crypto');
-const Exception = require('./Exception').Exception;
 const Decoder = require('./Decoder').Decoder;
 
 
@@ -50,13 +49,8 @@ Generator.prototype.generateBytes = function(numberOfBytes) {
         const buffer = crypto.randomBytes(numberOfBytes);
         return buffer;
     } catch (cause) {
-        const exception = Exception({
-            $module: '/bali/agents/Generator',
-            $procedure: '$bytes',
-            $exception: '$insufficientEntropy',
-            $text: 'There was not enough system entropy to generate random bytes.'
-        });
-        if (debug > 0) console.error(exception.toString());
+        const exception = Error('There was not enough system entropy to generate random bytes.');
+        if (debug > 0) console.error(exception);
         throw exception;
     }
 };

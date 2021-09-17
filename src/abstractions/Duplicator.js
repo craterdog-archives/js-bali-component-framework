@@ -47,7 +47,7 @@ exports.Duplicator = Duplicator;
  * @returns {Component} A duplicate component.
  */
 Duplicator.prototype.duplicateComponent = function(component) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/abstractions/Duplicator',
         $procedure: '$duplicateComponent',
         $exception: '$abstractMethod',

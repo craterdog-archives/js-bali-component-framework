@@ -39,8 +39,7 @@ const Procedure = function(code, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/trees/Procedure', '$Procedure', '$code', code, [
+        this.validateArgument('$Procedure', '$code', code, [
             '/bali/trees/Code'
         ]);
     }

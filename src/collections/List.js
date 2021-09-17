@@ -68,23 +68,21 @@ const List = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/List', '$getItem', '$index', index, [
+            this.validateArgument('$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         return array[index];
     };
 
     this.setItem = function(index, item) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/List', '$setItem', '$index', index, [
+            this.validateArgument('$setItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/collections/List', '$setItem', '$item', item, [
+            this.validateArgument('$setItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -94,7 +92,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         item = this.componentize(item, this.debug);
         const oldItem = array[index];
         array[index] = item;
@@ -103,8 +101,7 @@ const List = function(parameters, debug) {
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -120,12 +117,11 @@ const List = function(parameters, debug) {
     };
 
     this.insertItem = function(index, item) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/List', '$insertItem', '$index', index, [
+            this.validateArgument('$insertItem', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/collections/List', '$insertItem', '$item', item, [
+            this.validateArgument('$insertItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -136,17 +132,16 @@ const List = function(parameters, debug) {
             ]);
         }
         item = this.componentize(item, this.debug);
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };
 
     this.insertItems = function(index, items) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$insertItems', '$index', index, [
+            this.validateArgument('$insertItems', '$index', index, [
                 '/javascript/Number'
             ]);
-            validator.validateType('/bali/collections/List', '$insertItems', '$items', items, [
+            this.validateArgument('$insertItems', '$items', items, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
@@ -166,20 +161,18 @@ const List = function(parameters, debug) {
     };
 
     this.removeItem = function(index) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/List', '$removeItem', '$index', index, [
+            this.validateArgument('$removeItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this, index) - 1;  // JS uses zero based indexing
+        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 1);
     };
 
     this.removeItems = function(range) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/List', '$removeItems', '$range', range, [
+            this.validateArgument('$removeItems', '$range', range, [
                 '/javascript/String',
                 '/bali/collections/Range'
             ]);
@@ -197,8 +190,8 @@ const List = function(parameters, debug) {
         } else {
             last = last.toInteger();
         }
-        first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-        last = validator.normalizeIndex(this, last) - 1;  // zero-based indexing for JS
+        first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+        last = abstractions.Component.normalizedIndex(this, last) - 1;  // zero-based indexing for JS
         array.splice(first, last - first + 1);  // include the last item
     };
 
@@ -228,8 +221,7 @@ const List = function(parameters, debug) {
 
     this.getAttribute = function(index) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$getAttribute', '$index', index, [
+            this.validateArgument('$getAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
         }
@@ -239,11 +231,10 @@ const List = function(parameters, debug) {
 
     this.setAttribute = function(index, value) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/List', '$setAttribute', '$index', index, [
+            this.validateArgument('$setAttribute', '$index', index, [
                 '/bali/elements/Number'
             ]);
-            validator.validateType('/bali/collections/List', '$setAttribute', '$value', value, [
+            this.validateArgument('$setAttribute', '$value', value, [
                 '/bali/abstractions/Component'
             ]);
         }
@@ -271,11 +262,10 @@ exports.List = List;
  */
 List.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/List', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/collections/List'
         ]);
-        validator.validateType('/bali/collections/List', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/collections/List'
         ]);
     }

@@ -63,8 +63,7 @@ const Set = function(parameters, debug) {
 
     this.getIndex = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Set', '$getIndex', '$item', item, [
+            this.validateArgument('$getIndex', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -81,20 +80,18 @@ const Set = function(parameters, debug) {
     };
 
     this.getItem = function(index) {
-        const validator = new utilities.Validator(this.debug);
         if (this.debug > 1) {
-            validator.validateType('/bali/collections/Set', '$getItem', '$index', index, [
+            this.validateArgument('$getItem', '$index', index, [
                 '/javascript/Number'
             ]);
         }
-        index = validator.normalizeIndex(this,index) - 1;  // convert to javascript zero based indexing
+        index = abstractions.Component.normalizedIndex(this,index) - 1;  // convert to javascript zero based indexing
         return tree.node(index).value;
     };
 
     this.addItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -110,8 +107,7 @@ const Set = function(parameters, debug) {
 
     this.removeItem = function(item) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Set', '$addItem', '$item', item, [
+            this.validateArgument('$addItem', '$item', item, [
                 '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
@@ -127,8 +123,7 @@ const Set = function(parameters, debug) {
 
     this.removeItems = function(items) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Set', '$removeItems', '$items', items, [
+            this.validateArgument('$removeItems', '$items', items, [
                 '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
@@ -170,7 +165,7 @@ exports.Set = Set;
  * @returns {Set} The resulting set.
  */
 Set.not = function(set, debug) {
-    const exception = new utilities.Exception({
+    const exception = new abstractions.Exception({
         $module: '/bali/collections/Set',
         $procedure: '$not',
         $exception: '$meaningless',
@@ -192,11 +187,10 @@ Set.not = function(set, debug) {
  */
 Set.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Set', '$and', '$first', first, [
+        first.validateArgument('$and', '$first', first, [
             '/bali/collections/Set'
         ]);
-        validator.validateType('/bali/collections/Set', '$and', '$second', second, [
+        first.validateArgument('$and', '$second', second, [
             '/bali/collections/Set'
         ]);
     }
@@ -223,11 +217,10 @@ Set.and = function(first, second, debug) {
  */
 Set.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Set', '$sans', '$first', first, [
+        first.validateArgument('$sans', '$first', first, [
             '/bali/collections/Set'
         ]);
-        validator.validateType('/bali/collections/Set', '$sans', '$second', second, [
+        first.validateArgument('$sans', '$second', second, [
             '/bali/collections/Set'
         ]);
     }
@@ -249,11 +242,10 @@ Set.sans = function(first, second, debug) {
  */
 Set.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Set', '$or', '$first', first, [
+        first.validateArgument('$or', '$first', first, [
             '/bali/collections/Set'
         ]);
-        validator.validateType('/bali/collections/Set', '$or', '$second', second, [
+        first.validateArgument('$or', '$second', second, [
             '/bali/collections/Set'
         ]);
     }
@@ -275,11 +267,10 @@ Set.or = function(first, second, debug) {
  */
 Set.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/collections/Set', '$xor', '$first', first, [
+        first.validateArgument('$xor', '$first', first, [
             '/bali/collections/Set'
         ]);
-        validator.validateType('/bali/collections/Set', '$xor', '$second', second, [
+        first.validateArgument('$xor', '$second', second, [
             '/bali/collections/Set'
         ]);
     }

@@ -40,8 +40,7 @@ const Duration = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Duration', '$Duration', '$value', value, [
+        this.validateArgument('$Duration', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Number'
@@ -96,8 +95,7 @@ Duration.prototype.toBoolean = function() {
 Duration.inverse = function(duration, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Duration', '$inverse', '$duration', duration, [
+        duration.validateArgument('$inverse', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
     }
@@ -116,11 +114,10 @@ Duration.inverse = function(duration, debug) {
 Duration.sum = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Duration', '$sum', '$first', first, [
+        first.validateArgument('$sum', '$first', first, [
             '/bali/elements/Duration'
         ]);
-        validator.validateType('/bali/elements/Duration', '$sum', '$second', second, [
+        first.validateArgument('$sum', '$second', second, [
             '/bali/elements/Duration'
         ]);
     }
@@ -139,11 +136,10 @@ Duration.sum = function(first, second, debug) {
 Duration.difference = function(first, second, debug) {
     debug = debug || 0;  // default value
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Duration', '$difference', '$first', first, [
+        first.validateArgument('$difference', '$first', first, [
             '/bali/elements/Duration'
         ]);
-        validator.validateType('/bali/elements/Duration', '$difference', '$second', second, [
+        first.validateArgument('$difference', '$second', second, [
             '/bali/elements/Duration'
         ]);
     }
@@ -161,11 +157,10 @@ Duration.difference = function(first, second, debug) {
  */
 Duration.scaled = function(duration, factor, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Duration', '$scaled', '$duration', duration, [
+        duration.validateArgument('$scaled', '$duration', duration, [
             '/bali/elements/Duration'
         ]);
-        validator.validateType('/bali/elements/Duration', '$scaled', '$factor', factor, [
+        duration.validateArgument('$scaled', '$factor', factor, [
             '/javascript/Number'
         ]);
     }

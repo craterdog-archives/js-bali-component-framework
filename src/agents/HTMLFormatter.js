@@ -42,17 +42,16 @@ const HTMLFormatter = function(style, debug) {
         ['/bali/agents/HTMLFormatter'],
         debug
     );
-    const validator = new utilities.Validator(debug);
 
     if (debug > 1) {
-        validator.validateType('/bali/agents/HTMLFormatter', '$HTMLFormatter', '$style', style, [
+        this.validateArgument('$HTMLFormatter', '$style', style, [
             '/javascript/String'
         ]);
     }
 
     this.asSource = function(component) {
         if (debug > 1) {
-            validator.validateType('/bali/agents/HTMLFormatter', '$asSource', '$component', component, [
+            this.validateArgument('$asSource', '$component', component, [
                 '/bali/abstractions/Component'
             ]);
         }

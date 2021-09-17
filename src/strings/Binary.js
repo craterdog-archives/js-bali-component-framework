@@ -41,8 +41,7 @@ const Binary = function(value, parameters, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/elements/Binary', '$Binary', '$value', value, [
+        this.validateArgument('$Binary', '$value', value, [
             '/javascript/Undefined',
             '/nodejs/Buffer'
         ]);
@@ -80,13 +79,12 @@ Binary.prototype.getSize = function() {
  * @returns {Number} The byte value (0..255) at the specified index.
  */
 Binary.prototype.getItem = function(index) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Binary', '$getItem', '$index', index, [
+        this.validateArgument('$getItem', '$index', index, [
             '/javascript/Number'
         ]);
     }
-    index = validator.normalizeIndex(this, index) - 1;  // zero-based indexing for JS
+    index = abstractions.Component.normalizedIndex(this, index) - 1;  // zero-based indexing for JS
     return this.getValue()[index];
 };
 
@@ -98,9 +96,8 @@ Binary.prototype.getItem = function(index) {
  * @returns {Binary} A new binary string containing the requested bytes.
  */
 Binary.prototype.getItems = function(range) {
-    const validator = new utilities.Validator(this.debug);
     if (this.debug > 1) {
-        validator.validateType('/bali/elements/Binary', '$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$range', range, [
             '/javascript/String',
             '/bali/collections/Range'
         ]);
@@ -118,8 +115,8 @@ Binary.prototype.getItems = function(range) {
     } else {
         last = last.toInteger();
     }
-    first = validator.normalizeIndex(this, first) - 1;  // zero-based indexing for JS
-    last = validator.normalizeIndex(this, last);  // slice() is exclusive of last index
+    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
+    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
     const buffer = this.getValue().slice(first, last);
     return new Binary(buffer, this.getParameters(), this.debug);
 };
@@ -137,8 +134,7 @@ Binary.prototype.getItems = function(range) {
  */
 Binary.not = function(binary, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$not', '$binary', binary, [
+        binary.validateArgument('$not', '$binary', binary, [
             '/bali/elements/Binary'
         ]);
     }
@@ -162,11 +158,10 @@ Binary.not = function(binary, debug) {
  */
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$and', '$first', first, [
+        first.validateArgument('$and', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        validator.validateType('/bali/elements/Binary', '$and', '$second', second, [
+        first.validateArgument('$and', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -191,11 +186,10 @@ Binary.and = function(first, second, debug) {
  */
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$sans', '$first', first, [
+        first.validateArgument('$sans', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        validator.validateType('/bali/elements/Binary', '$sans', '$second', second, [
+        first.validateArgument('$sans', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -220,11 +214,10 @@ Binary.sans = function(first, second, debug) {
  */
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$or', '$first', first, [
+        first.validateArgument('$or', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        validator.validateType('/bali/elements/Binary', '$or', '$second', second, [
+        first.validateArgument('$or', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -249,11 +242,10 @@ Binary.or = function(first, second, debug) {
  */
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$xor', '$first', first, [
+        first.validateArgument('$xor', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        validator.validateType('/bali/elements/Binary', '$xor', '$second', second, [
+        first.validateArgument('$xor', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }
@@ -280,11 +272,10 @@ Binary.xor = function(first, second, debug) {
  */
 Binary.chain = function(first, second, debug) {
     if (debug > 1) {
-        const validator = new utilities.Validator(debug);
-        validator.validateType('/bali/elements/Binary', '$chain', '$first', first, [
+        first.validateArgument('$chain', '$first', first, [
             '/bali/elements/Binary'
         ]);
-        validator.validateType('/bali/elements/Binary', '$chain', '$second', second, [
+        first.validateArgument('$chain', '$second', second, [
             '/bali/elements/Binary'
         ]);
     }

@@ -36,14 +36,13 @@ const Association = function(key, value, debug) {
         debug
     );
     if (this.debug > 1) {
-        const validator = new utilities.Validator(this.debug);
-        validator.validateType('/bali/collections/Association', '$Association', '$key', key, [
+        this.validateArgument('$Association', '$key', key, [
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
             '/bali/abstractions/Element'
         ]);
-        validator.validateType('/bali/collections/Association', '$Association', '$value', value, [
+        this.validateArgument('$Association', '$value', value, [
             '/javascript/Undefined',
             '/javascript/String',
             '/javascript/Boolean',
@@ -69,8 +68,7 @@ const Association = function(key, value, debug) {
 
     this.setValue = function(newValue) {
         if (this.debug > 1) {
-            const validator = new utilities.Validator(this.debug);
-            validator.validateType('/bali/collections/Association', '$setValue', '$value', value, [
+            this.validateArgument('$setValue', '$value', value, [
                 '/javascript/Undefined',
                 '/javascript/String',
                 '/javascript/Boolean',
