@@ -63,7 +63,11 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(size).to.exist;
             expect(size).to.equal(3);
             expect(queue.headItem().toString()).to.equal('"alpha"');
-            expect(function() {queue.addItem('"delta"');}).to.throw(bali.Exception);
+            expect(
+                function() {
+                    queue.addItem('"delta"');
+                }
+            ).to.throw(bali.Exception);
             var item = queue.removeItem();
             expect(item).to.exist;
             expect(item.toString()).to.equal('"alpha"');
@@ -175,6 +179,21 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(queue.toString()).to.equal('[\n    "epsilon"\n    "gamma"\n]($type: /bali/collections/Queue/v1)');
             first = queue.headItem();
             expect(first.toString()).to.equal('"epsilon"');
+            expect(
+                function() {
+                    queue.getIndex('"gamma"');
+                }
+            ).to.throw(bali.Exception);
+            expect(
+                function() {
+                    queue.getItem(1);
+                }
+            ).to.throw(bali.Exception);
+            expect(
+                function() {
+                    queue.getItems('[1..3]');
+                }
+            ).to.throw(bali.Exception);
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 4);

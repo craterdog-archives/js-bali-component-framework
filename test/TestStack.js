@@ -52,7 +52,11 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(size).to.equal(1);
             expect(stack.isEmpty()).to.equal(false);
             expect(stack.toBoolean()).to.equal(true);
-            expect(function() {stack.addItem('"beta"');}).to.throw(bali.Exception);
+            expect(
+                function() {
+                    stack.addItem('"beta"');
+                }
+            ).to.throw(bali.Exception);
             const top = stack.removeItem();
             expect(top).to.exist;
             expect(top.toString()).to.equal('"alpha"');
@@ -133,6 +137,21 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             var size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
+            expect(
+                function() {
+                    stack.getIndex('"gamma"');
+                }
+            ).to.throw(bali.Exception);
+            expect(
+                function() {
+                    stack.getItem(1);
+                }
+            ).to.throw(bali.Exception);
+            expect(
+                function() {
+                    stack.getItems('[1..3]');
+                }
+            ).to.throw(bali.Exception);
             var top = stack.topItem();
             expect(top.toString()).to.equal('"gamma"');
             var pop = stack.removeItem();
@@ -160,8 +179,16 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
             expect(stack.toBoolean()).to.equal(false);
-            expect(function() {stack.topItem();}).to.throw(bali.Exception);
-            expect(function() {stack.removeItem();}).to.throw(bali.Exception);
+            expect(
+                function() {
+                    stack.topItem();
+                }
+            ).to.throw(bali.Exception);
+            expect(
+                function() {
+                    stack.removeItem();
+                }
+            ).to.throw(bali.Exception);
         });
 
     });

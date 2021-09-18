@@ -69,14 +69,6 @@ const Queue = function(parameters, debug) {
         }
     };
 
-    this.getIndex = function(item) {
-        const comparator = new agents.CanonicalComparator(this.debug);
-        const index = array.findIndex(function(candidate) {
-            return comparator.areEqual(candidate, item);
-        }, this);
-        return index + 1;  // convert to unit based indexing
-    };
-
     this.addItem = function(item) {
         if (this.debug > 1) {
             this.validateArgument('$addItem', '$item', item, [

@@ -65,6 +65,11 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.toBoolean()).to.equal(false);
             expect(
                 function() {
+                    range.removeAll();
+                }
+            ).to.throw();
+            expect(
+                function() {
                     range.getIterator();
                 }
             ).to.throw();
@@ -80,6 +85,11 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(last).to.exist;
             expect(last.toInteger()).to.equal(5);
             expect(range.getSize()).to.equal(4);
+            expect(
+                function() {
+                    stack.addItem(6);
+                }
+            ).to.throw(bali.Exception);
             const iterator = range.getIterator();
             expect(range.isEmpty()).to.equal(false);
             expect(range.toBoolean()).to.equal(true);
