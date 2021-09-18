@@ -69,7 +69,7 @@ Stryng.prototype.isEmpty = function() {
 
 
 /**
- * This abstract method returns the number of items that this string has.
+ * This method returns the number of items that this string has.
  * It must be implemented by a subclass.
  *
  * @returns {Number} The number of items that this string has.
@@ -79,7 +79,7 @@ Stryng.prototype.getSize = function() {
         $module: moduleName,
         $procedure: '$getSize',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -97,7 +97,7 @@ Stryng.prototype.getIterator = function() {
 
 
 /**
- * This abstract method retrieves from this string the item that is associated with the
+ * This method retrieves from this string the item that is associated with the
  * specified index.  It must be implemented by a subclass.
  *
  * @param {Number} index The index of the desired item.
@@ -108,7 +108,7 @@ Stryng.prototype.getItem = function(index) {
         $module: moduleName,
         $procedure: '$getItem',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -126,7 +126,7 @@ Stryng.prototype.getItems = function(range) {
         $module: moduleName,
         $procedure: '$getItems',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

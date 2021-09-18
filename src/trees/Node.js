@@ -20,6 +20,7 @@
 const moduleName = '/bali/trees/Node';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const agents = require('../agents');
 
 
 // PUBLIC FUNCTIONS
@@ -68,6 +69,14 @@ const Node = function(type, debug) {
     this.getIterator = function() {
         const iterator = new NodeIterator(this, this.debug);
         return iterator;
+    };
+
+    this.getIndex = function(item) {
+        const comparator = new agents.CanonicalComparator(this.debug);
+        const index = array.findIndex(function(candidate) {
+            return comparator.areEqual(candidate, item);
+        }, this);
+        return index + 1;  // convert to unit based indexing
     };
 
     this.getItem = function(index) {

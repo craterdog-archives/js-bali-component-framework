@@ -40,16 +40,31 @@ Parser.prototype.constructor = Parser;
 exports.Parser = Parser;
 
 
+/**
+ * This method parses a Bali Document Notation™ source string and returns the corresponding
+ * component.
+ *
+ * @param {String} source The Bali Document Notation™ source string to be parsed.
+ * @returns {Component} The corresponding component.
+ */
 Parser.prototype.parseSource = function(source) {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$parseSource',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
 
+
+/**
+ * This method parses a Bali Document Notation™ document and returns the corresponding
+ * component. A document must end with an EOL character to be POSIX compliant.
+ *
+ * @param {String} document The Bali Document Notation™ document to be parsed.
+ * @returns {Component} The corresponding component.
+ */
 Parser.prototype.parseDocument = function(document) {
     if (this.debug > 1) {
         this.validateArgument('$parseDocument', '$document', document, [

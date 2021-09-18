@@ -23,12 +23,17 @@ describe('Bali Nebula™ Component Framework - Node', function() {
             const child = bali.node('/bali/trees/Comment', debug);
             const sibling = bali.node('/bali/trees/Comment', debug);
             expect(parent.isEmpty()).to.equal(true);
+            expect(parent.toBoolean()).to.equal(false);
+            expect(parent.getSize()).to.equal(0);
+            expect(parent.getIndex('"alpha"')).to.equal(0);
             parent.addItem(child);
             expect(parent.getItem(1)).to.equal(child);
             parent.addItem(sibling);
             const children = parent.getItems('[1..2]');
             expect(children.isEmpty()).to.equal(false);
+            expect(children.toBoolean()).to.equal(true);
             expect(children.getSize()).to.equal(2);
+            expect(parent.getIndex(child)).to.equal(1);
         });
 
     });

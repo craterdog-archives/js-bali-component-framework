@@ -63,7 +63,7 @@ const Iterator = function(ancestry, sequence, debug) {
             $module: moduleName,
             $procedure: '$getSlot',
             $exception: '$abstractMethod',
-            $text: 'An abstract method must be implemented by a subclass.'
+            $text: 'This abstract method must be implemented by each subclass.'
         }, undefined, this.debug);
         throw exception;
     };
@@ -76,7 +76,7 @@ exports.Iterator = Iterator;
 
 
 /**
- * This abstract method moves the iterator to the specified slot between items.
+ * This method moves the iterator to the specified slot between items.
  *
  * @param {Number} slot The number of the target slot.
  */
@@ -85,7 +85,7 @@ Iterator.prototype.toSlot = function(slot) {
         $module: moduleName,
         $procedure: '$toStart',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -108,7 +108,7 @@ Iterator.prototype.toEnd = function() {
 
 
 /**
- * This abstract method determines whether or not there is an item before the current
+ * This method determines whether or not there is an item before the current
  * slot.
  *
  * @returns {Boolean} Whether or not there is an item before the current slot.
@@ -118,14 +118,14 @@ Iterator.prototype.hasPrevious = function() {
         $module: moduleName,
         $procedure: '$hasPrevious',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
 
 
 /**
- * This abstract method returns the item before the current slot.
+ * This method returns the item before the current slot.
  *
  * @returns {Component} The item before the current slot.
  */
@@ -134,14 +134,14 @@ Iterator.prototype.getPrevious = function() {
         $module: moduleName,
         $procedure: '$getPrevious',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
 
 
 /**
- * This abstract method determines whether or not there is an item after the current
+ * This method determines whether or not there is an item after the current
  * slot.
  *
  * @returns {Boolean} Whether or not there is an item after the current slot.
@@ -151,14 +151,14 @@ Iterator.prototype.hasNext = function() {
         $module: moduleName,
         $procedure: '$hasNext',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
 
 
 /**
- * This abstract method returns the item after the current slot.
+ * This method returns the item after the current slot.
  *
  * @returns {Component} The item after the current slot.
  */
@@ -167,7 +167,7 @@ Iterator.prototype.getNext = function() {
         $module: moduleName,
         $procedure: '$getNext',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

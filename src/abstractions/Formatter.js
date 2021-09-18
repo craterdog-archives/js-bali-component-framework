@@ -44,7 +44,7 @@ exports.Formatter = Formatter;
 // PUBLIC METHODS
 
 /**
- * This abstract method formats the specified component as a formal source string.
+ * This method formats the specified component as a formal source string.
  *
  * @param {Component} component The component to be formatted.
  * @returns {String} The formal source string.
@@ -54,7 +54,7 @@ Formatter.prototype.asSource = function(component) {
         $module: moduleName,
         $procedure: '$asSource',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

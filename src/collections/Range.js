@@ -214,38 +214,21 @@ Range.prototype.getIndex = function(item) {
 
 
 /**
- * Ranges are immutable so this method throws an exception.
+ * This method retrieves the item that is associated with the specified index
+ * from this collection.
  *
- * @param {Component} item The item to be added.
- * @returns {Boolean} Whether or not the item was successfully added.
+ * @param {Number} index The index of the desired item.
+ * @returns {Component} The item at the position in this collection.
  */
-Range.prototype.addItem = function(item) {
-    const exception = new abstractions.Exception({
-        $module: moduleName,
-        $procedure: '$addItem',
-        $exception: '$invalidMethod',
-        $range: this,
-        $text: 'A range is immutable.'
-    }, undefined, this.debug);
-    throw exception;
-};
-
-
-/**
- * Ranges are immutable so this method throws an exception.
- *
- * @param {Array|Sequential} items The items to be added to this collection.
- * @returns {Number} The number of items that were successfully added to the collection.
- */
-Range.prototype.addItems = function(items) {
-    const exception = new abstractions.Exception({
-        $module: moduleName,
-        $procedure: '$addItems',
-        $exception: '$invalidMethod',
-        $range: this,
-        $text: 'A range is immutable.'
-    }, undefined, this.debug);
-    throw exception;
+Range.prototype.getItem = function(index) {
+    if (this.debug > 1) {
+        this.validateArgument('$getItem', '$index', index, [
+            '/javascript/Number'
+        ]);
+    }
+    const iterator = this.getIterator();
+    iterator.toSlot(index);
+    return iterator.getPrevious();
 };
 
 

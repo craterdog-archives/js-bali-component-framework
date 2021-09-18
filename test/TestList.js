@@ -26,6 +26,8 @@ describe('Bali Nebula™ Component Framework - List', function() {
             const size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(list.isEmpty()).to.equal(true);
+            expect(list.toBoolean()).to.equal(false);
             const iterator = list.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
@@ -44,6 +46,8 @@ describe('Bali Nebula™ Component Framework - List', function() {
             var size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
+            expect(list.isEmpty()).to.equal(false);
+            expect(list.toBoolean()).to.equal(true);
             const iterator = list.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
@@ -55,6 +59,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(list.toBoolean()).to.equal(false);
         });
 
         it('should create a list from a list', function() {
@@ -63,6 +68,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             var size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
+            expect(list.toBoolean()).to.equal(true);
             const iterator = list.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
@@ -74,6 +80,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(list.toBoolean()).to.equal(false);
         });
 
         it('should create a list from a set', function() {
@@ -93,6 +100,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(list.toBoolean()).to.equal(false);
         });
 
         it('should throw an exception when constructing a list with an invalid type', function() {
@@ -135,6 +143,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             list2.addItems(list1);
             size = list2.getSize();
             expect(size).to.equal(7);
+            expect(list2.toBoolean()).to.equal(true);
             expect(list2.containsAll(list1)).to.equal(true);
             expect(list2.containsItem('zeta')).to.equal(false);
         });

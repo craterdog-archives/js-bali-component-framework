@@ -59,7 +59,7 @@ Collection.prototype.toBoolean = function() {
 
 
 /**
- * This abstract method returns an array containing the items in this collection.
+ * This method returns an array containing the items in this collection.
  * It must be implemented by a subclass.
  *
  * @returns {Array} An array containing the items in this collection.
@@ -69,7 +69,7 @@ Collection.prototype.toArray = function() {
         $module: moduleName,
         $procedure: '$toArray',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -91,7 +91,13 @@ Collection.prototype.isEmpty = function() {
  * @returns {Number} The number of items that this collection contains.
  */
 Collection.prototype.getSize = function() {
-    return this.toArray().length;
+    const exception = new Exception({
+        $module: moduleName,
+        $procedure: '$getSize',
+        $exception: '$abstractMethod',
+        $text: 'This abstract method must be implemented by each subclass.'
+    }, undefined, this.debug);
+    throw exception;
 };
 
 
@@ -108,7 +114,7 @@ Collection.prototype.getIterator = function() {
 
 
 /**
- * This abstract method adds the specified item to the collection.  It must be implemented by
+ * This method adds the specified item to the collection.  It must be implemented by
  * a subclass.
  *
  * @param {Component} item The item to be added.
@@ -118,8 +124,8 @@ Collection.prototype.addItem = function(item) {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$addItem',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $exception: '$immutableCollection',
+        $text: 'This type of collection is immutable.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -170,7 +176,7 @@ Collection.prototype.addItems = function(items) {
 
 
 /**
- * This abstract method returns the index of the specified item in this collection.
+ * This method returns the index of the specified item in this collection.
  *
  * @param {Object} item The item to be looked up.
  * @returns {Number} The index of the item in this collection.
@@ -179,8 +185,8 @@ Collection.prototype.getIndex = function(item) {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$getIndex',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $exception: '$noRandomAccess',
+        $text: 'This type of collection does not allow random access to its items.'
     }, undefined, this.debug);
     throw exception;
 };
@@ -194,14 +200,13 @@ Collection.prototype.getIndex = function(item) {
  * @returns {Component} The item at the position in this collection.
  */
 Collection.prototype.getItem = function(index) {
-    if (this.debug > 1) {
-        this.validateArgument('$getItem', '$index', index, [
-            '/javascript/Number'
-        ]);
-    }
-    const iterator = this.getIterator();
-    iterator.toSlot(index);
-    return iterator.getPrevious();
+    const exception = new Exception({
+        $module: moduleName,
+        $procedure: '$getItem',
+        $exception: '$noRandomAccess',
+        $text: 'This type of collection does not allow random access to its items.'
+    }, undefined, this.debug);
+    throw exception;
 };
 
 
@@ -317,15 +322,15 @@ Collection.prototype.containsAll = function(items) {
 
 
 /**
- * This abstract method removes all items that are currently contained in this collection.
+ * This method removes all items that are currently contained in this collection.
  * It must be implemented by a subclass.
  */
 Collection.prototype.removeAll = function() {
     const exception = new Exception({
         $module: moduleName,
-        $procedure: '$removeAll',
-        $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $procedure: '$addItem',
+        $exception: '$immutableCollection',
+        $text: 'This type of collection is immutable.'
     }, undefined, this.debug);
     throw exception;
 };

@@ -26,6 +26,8 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             const size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(stack.isEmpty()).to.equal(true);
+            expect(stack.toBoolean()).to.equal(false);
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
@@ -48,6 +50,8 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(1);
+            expect(stack.isEmpty()).to.equal(false);
+            expect(stack.toBoolean()).to.equal(true);
             expect(function() {stack.addItem('"beta"');}).to.throw(bali.Exception);
             const top = stack.removeItem();
             expect(top).to.exist;
@@ -55,6 +59,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(stack.toBoolean()).to.equal(false);
         });
 
         it('should create a stack from an array', function() {
@@ -62,6 +67,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             var size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
+            expect(stack.toBoolean()).to.equal(true);
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
@@ -73,6 +79,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(stack.toBoolean()).to.equal(false);
         });
 
         it('should create a stack from a list', function() {
@@ -92,6 +99,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(stack.toBoolean()).to.equal(false);
         });
 
         it('should create a stack from a stack', function() {
@@ -113,6 +121,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
+            expect(stack.toBoolean()).to.equal(false);
         });
 
     });
@@ -150,6 +159,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(0);
+            expect(stack.toBoolean()).to.equal(false);
             expect(function() {stack.topItem();}).to.throw(bali.Exception);
             expect(function() {stack.removeItem();}).to.throw(bali.Exception);
         });

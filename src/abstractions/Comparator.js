@@ -69,14 +69,14 @@ Comparator.prototype.ranking = function(first, second) {
         $module: moduleName,
         $procedure: '$rank',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };
 
 
 /**
- * This abstract method determines whether or not the specified component matches the
+ * This method determines whether or not the specified component matches the
  * specified pattern. The pattern may be a bali.pattern element or an composite component
  * containing bali.pattern attributes. In either case, the bali.patterns are evaluated
  * against the string version of the component or its corresponding attribute. If the
@@ -94,7 +94,7 @@ Comparator.prototype.doesMatch = function(component, pattern) {
         $module: moduleName,
         $procedure: '$doesMatch',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

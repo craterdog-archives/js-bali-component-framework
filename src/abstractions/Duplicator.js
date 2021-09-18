@@ -43,7 +43,7 @@ exports.Duplicator = Duplicator;
 // PUBLIC METHODS
 
 /**
- * This abstract method duplicates the specified component.
+ * This method duplicates the specified component.
  *
  * @param {Component} component The component to be duplicated.
  * @returns {Component} A duplicate component.
@@ -53,7 +53,7 @@ Duplicator.prototype.duplicateComponent = function(component) {
         $module: moduleName,
         $procedure: '$duplicateComponent',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

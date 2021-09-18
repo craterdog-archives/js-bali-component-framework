@@ -37,16 +37,6 @@ const Element = function(ancestry, interfaces, parameters, debug) {
         debug
     );
 
-    this.getValue = function() {
-        const exception = new Exception({
-            $module: moduleName,
-            $procedure: '$getValue',
-            $exception: '$abstractMethod',
-            $text: 'An abstract method must be implemented by a subclass.'
-        }, undefined, this.debug);
-        throw exception;
-    };
-
     this.setParameter = function(key, value) {
         const exception = new Exception({
             $module: moduleName,
@@ -80,7 +70,7 @@ exports.Element = Element;
 // PUBLIC METHODS
 
 /**
- * This abstract method returns the raw value of the element as a native Javascript type.
+ * This method returns the raw value of the element as a native Javascript type.
  * Each element decides what type this is.  This method must be implemented by a subclass.
  *
  * @returns {Object} The raw value of the element.
@@ -90,7 +80,7 @@ Element.prototype.getValue = function() {
         $module: moduleName,
         $procedure: '$getValue',
         $exception: '$abstractMethod',
-        $text: 'An abstract method must be implemented by a subclass.'
+        $text: 'This abstract method must be implemented by each subclass.'
     }, undefined, this.debug);
     throw exception;
 };

@@ -67,6 +67,10 @@ const Catalog = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
+    this.getSize = function() {
+        return array.length;
+    };
+
     this.getKeys = function() {
         const keys = new List(undefined, this.debug);
         array.forEach(function(association) {

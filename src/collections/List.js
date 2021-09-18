@@ -60,6 +60,10 @@ const List = function(parameters, debug) {
         return array.slice();  // copy the array
     };
 
+    this.getSize = function() {
+        return array.length;
+    };
+
     this.getIndex = function(item) {
         const comparator = new agents.CanonicalComparator(this.debug);
         const index = array.findIndex(function(candidate) {
