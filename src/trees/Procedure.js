@@ -13,6 +13,7 @@
  * This composite class implements a procedure that can be assigned as
  * the value of an association.
  */
+const moduleName = '/bali/trees/Procedure';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +32,7 @@ const abstractions = require('../abstractions');
 const Procedure = function(code, parameters, debug) {
     abstractions.Component.call(
         this,
-        ['/bali/trees/Procedure'],
+        [ moduleName ],
         [
             '/bali/interfaces/Literal'
         ],

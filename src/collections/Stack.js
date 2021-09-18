@@ -13,6 +13,7 @@
  * This collection class implements a stack (LIFO) data composite.  Attempting to access an
  * empty stack is considered a bug in the calling code and a runtime exception is thrown.
  */
+const moduleName = '/bali/collections/Stack';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -38,10 +39,10 @@ Array.prototype.peek = function() {
  * @returns {Stack} The new stack.
  */
 const Stack = function(parameters, debug) {
-    parameters = parameters || {$type: '/bali/collections/Stack/v1'};
+    parameters = parameters || {$type: moduleName + '/v1'};
     abstractions.Collection.call(
         this,
-        ['/bali/collections/Stack'],
+        [ moduleName ],
         [],
         parameters,
         debug
@@ -62,7 +63,7 @@ const Stack = function(parameters, debug) {
             return array.peek();
         }
         const exception = Exception({
-            $module: '/bali/collections/Stack',
+            $module: moduleName,
             $procedure: '$getTop',
             $exception: '$emptyStack',
             $text: 'Attempted to access an item on an empty stack.'
@@ -92,7 +93,7 @@ const Stack = function(parameters, debug) {
         }
         if (array.length === capacity) {
             const exception = Exception({
-                $module: '/bali/collections/Stack',
+                $module: moduleName,
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,
@@ -110,7 +111,7 @@ const Stack = function(parameters, debug) {
             return array.pop();
         }
         const exception = Exception({
-            $module: '/bali/collections/Stack',
+            $module: moduleName,
             $procedure: '$removeItem',
             $exception: '$emptyStack',
             $text: 'Attempted to remove an item from an empty stack.'

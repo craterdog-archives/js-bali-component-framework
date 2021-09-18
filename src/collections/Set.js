@@ -14,6 +14,7 @@
  * duplicate items. By default a set orders its items based on the natural ordering
  * of its items.
  */
+const moduleName = '/bali/collections/Set';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -30,10 +31,10 @@ const agents = require('../agents');
  * @returns {Set} The new set.
  */
 const Set = function(parameters, debug) {
-    parameters = parameters || {$type: '/bali/collections/Set/v1'};
+    parameters = parameters || {$type: moduleName + '/v1'};
     abstractions.Collection.call(
         this,
-        ['/bali/collections/Set'],
+        [ moduleName ],
         ['/bali/libraries/Logical'],
         parameters,
         debug
@@ -124,7 +125,6 @@ const Set = function(parameters, debug) {
     this.removeItems = function(items) {
         if (this.debug > 1) {
             this.validateArgument('$removeItems', '$items', items, [
-                '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
@@ -166,7 +166,7 @@ exports.Set = Set;
  */
 Set.not = function(set, debug) {
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Set',
+        $module: moduleName,
         $procedure: '$not',
         $exception: '$meaningless',
         $text: 'The logical NOT of a set is meaningless.'
@@ -186,11 +186,11 @@ Set.not = function(set, debug) {
  */
 Set.and = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$and', '$first', first, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$and', '$first', first, [
+            moduleName,
         ]);
-        first.validateArgument('$and', '$second', second, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$and', '$second', second, [
+            moduleName,
         ]);
     }
     const result = new Set(first.getParameters(), debug);
@@ -216,11 +216,11 @@ Set.and = function(first, second, debug) {
  */
 Set.sans = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$sans', '$first', first, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$sans', '$first', first, [
+            moduleName,
         ]);
-        first.validateArgument('$sans', '$second', second, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$sans', '$second', second, [
+            moduleName,
         ]);
     }
     const result = new Set(first.getParameters(), debug);
@@ -241,11 +241,11 @@ Set.sans = function(first, second, debug) {
  */
 Set.or = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$or', '$first', first, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$or', '$first', first, [
+            moduleName,
         ]);
-        first.validateArgument('$or', '$second', second, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$or', '$second', second, [
+            moduleName,
         ]);
     }
     const result = new Set(first.getParameters(), debug);
@@ -266,11 +266,11 @@ Set.or = function(first, second, debug) {
  */
 Set.xor = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$xor', '$first', first, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$xor', '$first', first, [
+            moduleName,
         ]);
-        first.validateArgument('$xor', '$second', second, [
-            '/bali/collections/Set'
+        abstractions.Component.validateArgument(moduleName, '$xor', '$second', second, [
+            moduleName,
         ]);
     }
     const result = new Set(first.getParameters(), debug);

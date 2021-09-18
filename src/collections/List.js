@@ -23,6 +23,7 @@
  * The items in the list are maintained in the order in which they were added to the list.
  * But they may be reordered by sorting the list.
  */
+const moduleName = '/bali/collections/List';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -42,7 +43,7 @@ const Range = require('./Range').Range;
 const List = function(parameters, debug) {
     abstractions.Collection.call(
         this,
-        ['/bali/collections/List'],
+        [ moduleName ],
         [
             '/bali/interfaces/Composite',
             '/bali/interfaces/Sortable',
@@ -142,7 +143,6 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
             this.validateArgument('$insertItems', '$items', items, [
-                '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
@@ -262,11 +262,11 @@ exports.List = List;
  */
 List.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
-            '/bali/collections/List'
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
+            moduleName
         ]);
-        first.validateArgument('$chain', '$second', second, [
-            '/bali/collections/List'
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
+            moduleName
         ]);
     }
     const result = new List(first.getParameters(), debug);
@@ -274,3 +274,4 @@ List.chain = function(first, second, debug) {
     result.addItems(second);
     return result;
 };
+

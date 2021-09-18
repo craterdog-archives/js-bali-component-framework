@@ -12,6 +12,7 @@
 /*
  * This collection class captures the state and methods associated with a range component.
  */
+const moduleName = '/bali/collections/Range';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -31,7 +32,7 @@ const abstractions = require('../abstractions');
 const Range = function(first, connector, last, parameters, debug) {
     abstractions.Collection.call(
         this,
-        ['/bali/collections/Range'],
+        [ moduleName ],
         [
             '/bali/interfaces/Sequential'
         ],
@@ -44,7 +45,7 @@ const Range = function(first, connector, last, parameters, debug) {
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
-            '/bali/abstractions/Element'
+            '/bali/abstractions/Component'
         ]);
         this.validateArgument('$Range', '$connector', connector, [
             '/javascript/Undefined',
@@ -55,11 +56,20 @@ const Range = function(first, connector, last, parameters, debug) {
             '/javascript/String',
             '/javascript/Boolean',
             '/javascript/Number',
-            '/bali/abstractions/Element'
+            '/bali/abstractions/Component'
         ]);
     }
 
     this.setFirst = function(value) {
+        if (this.debug > 1) {
+            this.validateArgument('$setFirst', '$value', value, [
+                '/javascript/Undefined',
+                '/javascript/String',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/bali/abstractions/Component'
+            ]);
+        }
         if (first === null) first = undefined;
         if (value !== undefined) first = this.componentize(value);
     };
@@ -67,6 +77,15 @@ const Range = function(first, connector, last, parameters, debug) {
     this.getFirst = function() { return first; };
 
     this.setLast = function(value) {
+        if (this.debug > 1) {
+            this.validateArgument('$setLast', '$value', value, [
+                '/javascript/Undefined',
+                '/javascript/String',
+                '/javascript/Boolean',
+                '/javascript/Number',
+                '/bali/abstractions/Component'
+            ]);
+        }
         if (last === null) last = undefined;
         if (value !== undefined) last = this.componentize(value);
     }
@@ -91,7 +110,7 @@ const Range = function(first, connector, last, parameters, debug) {
         if (connector.startsWith('<')) size--;
         if (size < 1) {
             const exception = new abstractions.Exception({
-                $module: '/bali/collections/Range',
+                $module: moduleName,
                 $procedure: '$Range',
                 $exception: '$invalidSize',
                 $range: this,
@@ -127,7 +146,7 @@ Range.prototype.toArray = function() {
         return array;
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$toArray',
         $exception: '$notEnumerable',
         $range: this,
@@ -149,7 +168,7 @@ Range.prototype.getIterator = function() {
         return iterator;
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$getIterator',
         $exception: '$notEnumerable',
         $range: this,
@@ -184,7 +203,7 @@ Range.prototype.getIndex = function(item) {
         return index;
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$getIndex',
         $exception: '$notEnumerable',
         $range: this,
@@ -202,7 +221,7 @@ Range.prototype.getIndex = function(item) {
  */
 Range.prototype.addItem = function(item) {
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$addItem',
         $exception: '$invalidMethod',
         $range: this,
@@ -220,7 +239,7 @@ Range.prototype.addItem = function(item) {
  */
 Range.prototype.addItems = function(items) {
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$addItems',
         $exception: '$invalidMethod',
         $range: this,
@@ -242,8 +261,8 @@ Range.prototype.addItems = function(items) {
  */
 Range.effective = function(range, debug) {
     if (debug > 1) {
-        range.validateArgument('$effective', '$range', range, [
-            '/bali/collections/Range'
+        abstractions.Component.validateArgument(moduleName, '$effective', '$range', range, [
+            moduleName,
         ]);
     }
     if (range.isEnumerable()) {
@@ -256,7 +275,7 @@ Range.effective = function(range, debug) {
         return new Range(first, '..', last, range.getParameters(), debug);
     }
     const exception = new abstractions.Exception({
-        $module: '/bali/collections/Range',
+        $module: moduleName,
         $procedure: '$effective',
         $exception: '$notEnumerable',
         $range: range,

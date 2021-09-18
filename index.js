@@ -258,7 +258,7 @@ exports.api = function(defaultLevel) {
     const catalog = function(associations, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         const collection = new collections.Catalog(parameters, debug);
-        collection.addItems(associations);
+        if (associations) collection.addItems(associations);
         return collection;
     };
     catalog.chain = function(first, second, debug) {
@@ -387,7 +387,7 @@ exports.api = function(defaultLevel) {
     const list = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         const collection = new collections.List(parameters, debug);
-        collection.addItems(items);
+        if (items) collection.addItems(items);
         return collection;
     };
     list.chain = function(first, second, debug) {
@@ -552,7 +552,7 @@ exports.api = function(defaultLevel) {
     const queue = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         const collection = new collections.Queue(parameters, debug);
-        collection.addItems(items);
+        if (items) collection.addItems(items);
         return collection;
     };
 
@@ -583,7 +583,7 @@ exports.api = function(defaultLevel) {
     const set = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         const collection = new collections.Set(parameters, debug);
-        collection.addItems(items);
+        if (items) collection.addItems(items);
         return collection;
     };
     set.and = function(first, second, debug) {
@@ -629,7 +629,7 @@ exports.api = function(defaultLevel) {
     const stack = function(items, parameters, debug) {
         if (debug === undefined) debug = defaultLevel;
         const collection = new collections.Stack(parameters, debug);
-        collection.addItems(items);
+        if (items) collection.addItems(items);
         return collection;
     };
 

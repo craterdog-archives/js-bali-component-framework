@@ -15,6 +15,7 @@
  * multiple keys. The key-value associations are maintained in the order in which they were
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
+const moduleName = '/bali/collections/Catalog';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -36,14 +37,14 @@ const Catalog = function(parameters, debug) {
     const ancestry = [];
     if (parameters) {
         var type;
-        if (parameters.isComponent && parameters.isType('/bali/collections/Catalog')) {
+        if (parameters.isComponent && parameters.isType(moduleName)) {
             type = parameters.getAttribute('$type');
         } else {
             type = parameters['$type'];
         }
         if (type) ancestry.push(type.toString().split('/').slice(0, -1).join('/'));  // remove the version string
     }
-    ancestry.push('/bali/collections/Catalog');
+    ancestry.push(moduleName);
     abstractions.Collection.call(
         this,
         ancestry,
@@ -75,6 +76,11 @@ const Catalog = function(parameters, debug) {
     };
 
     this.getIndex = function(association) {
+        if (this.debug > 1) {
+            this.validateArgument('$getIndex', '$association', association, [
+                '/bali/collections/Association'
+            ]);
+        }
         const comparator = new agents.CanonicalComparator(this.debug);
         const index = array.findIndex(function(candidate) {
             return comparator.areEqual(candidate, association);
@@ -95,7 +101,6 @@ const Catalog = function(parameters, debug) {
     this.addItem = function(association) {
         if (this.debug > 1) {
             this.validateArgument('$addItem', '$association', association, [
-                '/javascript/Undefined',
                 '/bali/collections/Association'
             ]);
         }
@@ -112,7 +117,6 @@ const Catalog = function(parameters, debug) {
     this.addItems = function(associations) {
         if (this.debug > 1) {
             this.validateArgument('$addItems', '$associations', associations, [
-                '/javascript/Undefined',
                 '/javascript/Array',
                 '/javascript/Object',
                 '/bali/interfaces/Sequential'
@@ -153,7 +157,6 @@ const Catalog = function(parameters, debug) {
     this.getAttribute = function(key) {
         if (this.debug > 1) {
             this.validateArgument('$getAttribute', '$key', key, [
-                '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
@@ -168,7 +171,6 @@ const Catalog = function(parameters, debug) {
     this.getAttributes = function(keys) {
         if (this.debug > 1) {
             this.validateArgument('$getAttributes', '$keys', keys, [
-                '/javascript/Undefined',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
@@ -193,7 +195,6 @@ const Catalog = function(parameters, debug) {
     this.setAttribute = function(key, value) {
         if (this.debug > 1) {
             this.validateArgument('$setAttribute', '$key', key, [
-                '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
@@ -226,13 +227,10 @@ const Catalog = function(parameters, debug) {
     this.removeAttribute = function(key) {
         if (this.debug > 1) {
             this.validateArgument('$removeAttribute', '$key', key, [
-                '/javascript/Undefined',
                 '/javascript/Boolean',
                 '/javascript/Number',
                 '/javascript/String',
-                '/javascript/Array',
-                '/javascript/Object',
-                '/bali/abstractions/Component'
+                '/bali/abstractions/Element'
             ]);
         }
         key = this.componentize(key, this.debug);
@@ -252,9 +250,7 @@ const Catalog = function(parameters, debug) {
     this.removeAttributes = function(keys) {
         if (this.debug > 1) {
             this.validateArgument('$removeAttributes', '$keys', keys, [
-                '/javascript/Undefined',
                 '/javascript/Array',
-                '/bali/collections/Range',
                 '/bali/interfaces/Sequential'
             ]);
         }
@@ -282,6 +278,12 @@ const Catalog = function(parameters, debug) {
     };
 
     this.sortItems = function(sorter) {
+        if (this.debug > 1) {
+            this.validateArgument('$sortItems', '$sorter', sorter, [
+                '/javascript/Undefined',
+                '/bali/abstractions/Sorter'
+            ]);
+        }
         sorter = sorter || new agents.MergeSorter(new agents.CanonicalComparator(this.debug), this.debug);
         sorter.sortCollection(this);
     };
@@ -329,11 +331,11 @@ Catalog.prototype.toObject = function() {
  */
 Catalog.chain = function(first, second, debug) {
     if (debug > 1) {
-        first.validateArgument('$chain', '$first', first, [
-            '/bali/collections/Catalog'
+        abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
+            moduleName
         ]);
-        first.validateArgument('$chain', '$second', second, [
-            '/bali/collections/Catalog'
+        abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
+            moduleName
         ]);
     }
     const result = new Catalog(first.getParameters(), debug);
@@ -356,11 +358,10 @@ Catalog.chain = function(first, second, debug) {
  */
 Catalog.extraction = function(catalog, keys, debug) {
     if (debug > 1) {
-        catalog.validateArgument('$extraction', '$catalog', catalog, [
-            '/bali/collections/Catalog'
+        abstractions.Component.validateArgument(moduleName, '$extraction', '$catalog', catalog, [
+            moduleName
         ]);
-        catalog.validateArgument('$extraction', '$keys', keys, [
-            '/javascript/Undefined',
+        abstractions.Component.validateArgument(moduleName, '$extraction', '$keys', keys, [
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);

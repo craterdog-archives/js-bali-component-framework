@@ -14,6 +14,7 @@
  * an item from an empty queue is considered a bug in the calling code and a runtime exception
  * is thrown.
  */
+const moduleName = '/bali/collections/Queue';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -39,10 +40,10 @@ Array.prototype.peek = function() {
  * @returns {Queue} The new queue.
  */
 const Queue = function(parameters, debug) {
-    parameters = parameters || {$type: '/bali/collections/Queue/v1'};
+    parameters = parameters || {$type: moduleName + '/v1'};
     abstractions.Collection.call(
         this,
-        ['/bali/collections/Queue'],
+        [ moduleName ],
         [],
         parameters,
         debug
@@ -86,7 +87,7 @@ const Queue = function(parameters, debug) {
         }
         if (array.length === capacity) {
             const exception = new abstractions.Exception({
-                $module: '/bali/collections/Queue',
+                $module: moduleName,
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,

@@ -17,6 +17,7 @@
  * used to build up the parse trees that result from parsing strings containing
  * Bali Document Notation™.
  */
+const moduleName = '/bali/trees/Node';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -33,7 +34,10 @@ const abstractions = require('../abstractions');
 const Node = function(type, debug) {
     abstractions.Component.call(
         this,
-        [type, '/bali/trees/Node'],
+        [
+            type,
+            moduleName
+        ],
         [
             '/bali/interfaces/Composite',
             '/bali/interfaces/Sequential'
