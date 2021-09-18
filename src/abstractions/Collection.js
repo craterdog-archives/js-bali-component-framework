@@ -13,6 +13,7 @@
  * This abstract class defines the invariant methods that all collections must support.
  */
 const moduleName = '/bali/abstractions/Collection';
+const associationModuleName = '/bali/collections/Association';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
 const Exception = require('./Component').Exception;
@@ -143,7 +144,7 @@ Collection.prototype.addItems = function(items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/collections/Association')) {
+                if (item.isType(associationModuleName)) {
                     item = item.getValue();
                 }
                 this.addItem(item);
@@ -153,7 +154,7 @@ Collection.prototype.addItems = function(items) {
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
                 item = this.componentize(item, this.debug);
-                if (item.isType('/bali/collections/Association')) {
+                if (item.isType(associationModuleName)) {
                     item = item.getValue();
                 }
                 this.addItem(item);

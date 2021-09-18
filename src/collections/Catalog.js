@@ -16,6 +16,7 @@
  * added to the catalog. But they may be reordered by sorting the catalog.
  */
 const moduleName = '/bali/collections/Catalog';
+const associationModuleName = '/bali/collections/Association';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
@@ -78,7 +79,7 @@ const Catalog = function(parameters, debug) {
     this.getIndex = function(association) {
         if (this.debug > 1) {
             this.validateArgument('$getIndex', '$association', association, [
-                '/bali/collections/Association'
+                associationModuleName
             ]);
         }
         const comparator = new agents.CanonicalComparator(this.debug);
@@ -101,7 +102,7 @@ const Catalog = function(parameters, debug) {
     this.addItem = function(association) {
         if (this.debug > 1) {
             this.validateArgument('$addItem', '$association', association, [
-                '/bali/collections/Association'
+                associationModuleName
             ]);
         }
         if (association) {
@@ -128,7 +129,7 @@ const Catalog = function(parameters, debug) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/collections/Association')) {
+                    if (item.isType(associationModuleName)) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);
@@ -139,7 +140,7 @@ const Catalog = function(parameters, debug) {
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
                     item = this.componentize(item, this.debug);
-                    if (item.isType('/bali/collections/Association')) {
+                    if (item.isType(associationModuleName)) {
                         if (this.addItem(item)) index++;
                     } else {
                         this.setAttribute(index++, item);

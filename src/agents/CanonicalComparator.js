@@ -14,6 +14,7 @@
  * for their natural ordering.
  */
 const moduleName = '/bali/agents/CanonicalComparator';
+const associationModuleName = '/bali/collections/Association';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
@@ -119,7 +120,7 @@ CanonicalComparator.prototype.ranking = function(first, second) {
     }
 
     // handle composites
-    if (first.isComponent && first.isType('/bali/collections/Association')) {
+    if (first.isComponent && first.isType(associationModuleName)) {
         var result = this.ranking(first.getKey(), second.getKey());
         if (result === 0) result = this.ranking(first.getValue(), second.getValue());
         return result;
@@ -242,7 +243,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
      * If the pattern component is a bali.Association then the pattern key and the target key
      * must be EQUAL and the pattern value must MATCH the target value.
      */
-    if (pattern.isType('/bali/collections/Association')) {
+    if (pattern.isType(associationModuleName)) {
         if (!this.areEqual(component.getKey(), pattern.getKey())) return false;  // try the next one
         if (!this.doesMatch(component.getValue(), pattern.getValue())) throw false;  // abort the search
         return true;  // they match
@@ -266,7 +267,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
             } } catch (e) {
                 return false;  // aborted, an association value that should be 'none' wasn't
             }
-            if (patternItem.isType('/bali/collections/Association')) {
+            if (patternItem.isType(associationModuleName)) {
                 var patternValue = patternItem.getValue();
                 if (patternValue.isType('/bali/elements/Pattern') && (
                     patternValue.toString() === 'any' ||
