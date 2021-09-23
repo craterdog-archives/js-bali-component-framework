@@ -393,7 +393,6 @@ const Exception = function(attributes, cause, debug) {
             }
         }
     }
-    if (this.debug > 0) console.error(this.toString());
 
     this.getAttributes = function() {
         return attributes;
@@ -403,6 +402,7 @@ const Exception = function(attributes, cause, debug) {
         return attributes.getAttribute(key);
     };
 
+    if (this.debug > 0) console.error(this.toString());
     return this;
 };
 Exception.prototype = Object.create(Component.prototype);
