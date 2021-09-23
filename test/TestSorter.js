@@ -72,4 +72,25 @@ describe('Bali Nebula™ Component Framework - Sorter', function() {
 
     });
 
+    describe('Test internal vs external sorting', function() {
+
+        it('sorted lists should be the same', function() {
+            const first = bali.list(array);
+            first.sortItems();
+            const second = bali.list(array);
+            sorter.sortCollection(second);
+            expect(bali.areEqual(first, second)).to.equal(true);
+        });
+
+
+        it('sorted catalogs should be the same', function() {
+            const first = bali.catalog(object);
+            first.sortItems();
+            const second = bali.catalog(object);
+            sorter.sortCollection(second);
+            expect(bali.areEqual(first, second)).to.equal(true);
+        });
+
+    });
+
 });
