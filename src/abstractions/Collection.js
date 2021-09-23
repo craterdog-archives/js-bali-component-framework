@@ -149,7 +149,7 @@ Collection.prototype.addItems = function(items) {
     if (items) {
         if (Array.isArray(items)) {
             items.forEach(function(item) {
-                item = this.componentize(item, this.debug);
+                item = this.componentize(item);
                 if (item.isType(associationModuleName)) {
                     item = item.getValue();
                 }
@@ -159,7 +159,7 @@ Collection.prototype.addItems = function(items) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 var item = iterator.getNext();
-                item = this.componentize(item, this.debug);
+                item = this.componentize(item);
                 if (item.isType(associationModuleName)) {
                     item = item.getValue();
                 }

@@ -98,7 +98,7 @@ const List = function(parameters, debug) {
             ]);
         }
         index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         const oldItem = array[index];
         array[index] = item;
         return oldItem;
@@ -116,7 +116,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         array.push(item);
         return true;
     };
@@ -136,7 +136,7 @@ const List = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
     };

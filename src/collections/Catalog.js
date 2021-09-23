@@ -132,7 +132,7 @@ const Catalog = function(parameters, debug) {
         if (associations) {
             if (Array.isArray(associations)) {
                 associations.forEach(function(item) {
-                    item = this.componentize(item, this.debug);
+                    item = this.componentize(item);
                     if (item.isType(associationModuleName)) {
                         if (this.addItem(item)) index++;
                     } else {
@@ -143,7 +143,7 @@ const Catalog = function(parameters, debug) {
                 const iterator = associations.getIterator();
                 while (iterator.hasNext()) {
                     var item = iterator.getNext();
-                    item = this.componentize(item, this.debug);
+                    item = this.componentize(item);
                     if (item.isType(associationModuleName)) {
                         if (this.addItem(item)) index++;
                     } else {
@@ -168,7 +168,7 @@ const Catalog = function(parameters, debug) {
                 '/bali/abstractions/Element'
             ]);
         }
-        key = this.componentize(key, this.debug);
+        key = this.componentize(key);
         const association = map[key.toString()];
         if (association) return association.getValue();
     };
@@ -215,8 +215,8 @@ const Catalog = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        key = this.componentize(key, this.debug);
-        value = this.componentize(value, this.debug);
+        key = this.componentize(key);
+        value = this.componentize(value);
         var association = map[key.toString()];
         if (association) {
             const oldValue = association.getValue();
@@ -238,7 +238,7 @@ const Catalog = function(parameters, debug) {
                 '/bali/abstractions/Element'
             ]);
         }
-        key = this.componentize(key, this.debug);
+        key = this.componentize(key);
         const association = map[key.toString()];
         if (association) {
             delete map[key.toString()];

@@ -298,7 +298,7 @@ Component.validateArgument = function(moduleName, procedureName, argumentName, a
  */
 Component.normalizedIndex = function(sequence, index, debug) {
     debug = debug || 0;  // default value
-    if (this.debug > 1) {
+    if (debug > 1) {
         Component.validateArgument(moduleName, '$normalizedIndex', '$sequence', sequence, [
             '/bali/interfaces/Sequential'
         ], debug);
@@ -316,7 +316,7 @@ Component.normalizedIndex = function(sequence, index, debug) {
             $index: index,
             $range: '[' + -size + '..' + size + ']',
             $text: 'The index is out of range for the sequence.'
-        }, undefined, this.debug);
+        }, undefined, debug);
         throw exception;
     }
     if (index < 0) index = index + size + 1;

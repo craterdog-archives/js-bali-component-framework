@@ -91,7 +91,7 @@ const Queue = function(parameters, debug) {
             }, undefined, this.debug);
             throw exception;
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         array.push(item);
         return true;
     };

@@ -86,7 +86,7 @@ Pattern.prototype.matches = function(component) {
             '/bali/abstractions/Component'
         ]);
     }
-    component = this.componentize(component, this.debug);
+    component = this.componentize(component);
     return this.getValue().test(component.toString());
 };
 

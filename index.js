@@ -32,7 +32,7 @@ agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
  * avoid circular dependencies.
  */
 const toString = function() {
-    const formatter = new agents.BDNFormatter();
+    const formatter = new agents.BDNFormatter(0, this.debug);
     return formatter.asSource(this);
 };
 abstractions.Component.prototype.toString = toString;
@@ -48,19 +48,18 @@ abstractions.Component.prototype.toString = toString;
  * since the Exception class calls the componentize function on its attributes and again
  * we want to avoid circular dependencies.
  */
-const componentize = function(value, debug) {
+const componentize = function(value) {
     if (value === null) value = undefined;
-    if (debug === null || debug === undefined) debug = 0;  // default is off
     var component;
     switch (typeof value) {
         case 'undefined':
-            component = new elements.Pattern(undefined, undefined, debug);  // none
+            component = new elements.Pattern(undefined, undefined, this.debug);  // none
             break;
         case 'boolean':
-            component = new elements.Boolean(value, undefined, debug);
+            component = new elements.Boolean(value, undefined, this.debug);
             break;
         case 'number':  // NOTE: doesn't handle probabilities, they must be parsed as a string
-            component = new elements.Number([value, undefined], undefined, debug);
+            component = new elements.Number([value, undefined], undefined, this.debug);
             break;
         case 'string':
             try {
@@ -69,13 +68,13 @@ const componentize = function(value, debug) {
                 component = parser.parseSource(value);
             } catch (cause) {
                 // otherwise convert it to a text element
-                component = new strings.Text(value, undefined, debug);
+                component = new strings.Text(value, undefined, this.debug);
             }
             break;
         case 'object':
             if (Array.isArray(value)) {
                 // convert the array to a list
-                component = new collections.List(undefined, debug);
+                component = new collections.List(undefined, this.debug);
                 value.forEach(function(item) {
                     component.addItem(item);  // item converted in addItem()
                 });
@@ -84,7 +83,7 @@ const componentize = function(value, debug) {
                 component = value;
             } else {
                 // convert the object to a catalog
-                component = new collections.Catalog(undefined, debug);
+                component = new collections.Catalog(undefined, this.debug);
                 const keys = Object.keys(value);
                 keys.forEach(function(key) {
                     component.setAttribute(key, value[key]);  // key and value are converted in setAttribute()
@@ -93,7 +92,7 @@ const componentize = function(value, debug) {
             break;
         default:
             // punt, convert whatever it is to a multi-line text element
-            component = new strings.Text('"' + EOL + value + EOL + '"', undefined, debug);
+            component = new strings.Text('"' + EOL + value + EOL + '"', undefined, this.debug);
     }
     return component;
 };

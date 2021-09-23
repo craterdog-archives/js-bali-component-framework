@@ -21,7 +21,7 @@ describe('Bali Nebula™ Component Framework - Controller', function() {
         it('should detect an empty event types array', function() {
             expect(
                 function() {
-                    bali.controller([], undefined, undefined, 2);
+                    bali.controller([]);
                 }
             ).to.throw();
         });
@@ -32,7 +32,7 @@ describe('Bali Nebula™ Component Framework - Controller', function() {
                     bali.controller(['$event1', '$event2'], {
                         $state1: [],
                         $state2: []
-                    }, undefined, 2);
+                    });
                 }
             ).to.throw();
         });
@@ -43,7 +43,7 @@ describe('Bali Nebula™ Component Framework - Controller', function() {
                     bali.controller([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state3']
-                    }, undefined, 2);
+                    });
                 }
             ).to.throw();
         });
@@ -72,7 +72,7 @@ describe('Bali Nebula™ Component Framework - Controller', function() {
                     bali.controller([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state1']
-                    }, undefined, 2);
+                    });
                     fsa.validateEvent('$event2');
                 }
             ).to.throw();
@@ -81,7 +81,7 @@ describe('Bali Nebula™ Component Framework - Controller', function() {
                     bali.controller([ '$event1', '$event2' ], {
                         $state1: ['$state2', undefined],
                         $state2: [undefined, '$state1']
-                    }, undefined, 2);
+                    });
                     fsa.transitionState('$event2');
                 }
             ).to.throw();

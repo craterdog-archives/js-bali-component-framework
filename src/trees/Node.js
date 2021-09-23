@@ -115,7 +115,7 @@ const Node = function(type, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         array.push(item);
     };
 
@@ -135,7 +135,7 @@ const Node = function(type, debug) {
             ]);
         }
         index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         const oldItem = array[index];
         array[index] = item;
         return oldItem;

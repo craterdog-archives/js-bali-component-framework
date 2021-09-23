@@ -42,44 +42,42 @@
  */
 const Controller = function(eventTypes, nextStates, currentState, debug) {
     debug = debug || 0;
-    if (debug > 1) {
-        if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
-            const exception = Error('One of the parameters to the constructor is not the right type.');
-            console.error(exception);
+    if (!Array.isArray(eventTypes) || typeof nextStates !== 'object') {
+        const exception = Error('One of the parameters to the constructor is not the right type.');
+        if (debug > 0) console.error(exception);
+        throw exception;
+    }
+    const numberOfEventTypes = eventTypes.length;
+    if (numberOfEventTypes === 0 || Object.keys(nextStates).length === 0) {
+        const exception = Error('The state machine must have at least one state and one event.');
+        if (debug > 0) console.error(exception);
+        throw exception;
+    }
+    for (const event in eventTypes) {
+        if (typeof event !== 'string') {
+            const exception = Error('Each event must be of type string.');
+            if (debug > 0) console.error(exception);
             throw exception;
         }
-        const numberOfEventTypes = eventTypes.length;
-        if (numberOfEventTypes === 0 || Object.keys(nextStates).length === 0) {
-            const exception = Error('The state machine must have at least one state and one event.');
-            console.error(exception);
+    }
+    for (const state in nextStates) {
+        if (typeof state !== 'string') {
+            const exception = Error('Each state must be of type string.');
+            if (debug > 0) console.error(exception);
             throw exception;
         }
-        for (const event in eventTypes) {
-            if (typeof event !== 'string') {
-                const exception = Error('Each event must be of type string.');
-                console.error(exception);
-                throw exception;
-            }
+        if (nextStates[state].length !== numberOfEventTypes) {
+            const exception = Error('Each next state list must have the same length as the number of event types.');
+            if (debug > 0) console.error(exception);
+            throw exception;
         }
-        for (const state in nextStates) {
-            if (typeof state !== 'string') {
-                const exception = Error('Each state must be of type string.');
-                console.error(exception);
+        nextStates[state].forEach(function(transition) {
+            if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
+                const exception = Error('A next state was found that is not in the possible states: ' + transition);
+                if (debug > 0) console.error(exception);
                 throw exception;
             }
-            if (nextStates[state].length !== numberOfEventTypes) {
-                const exception = Error('Each next state list must have the same length as the number of event types.');
-                console.error(exception);
-                throw exception;
-            }
-            nextStates[state].forEach(function(transition) {
-                if (transition && Object.keys(nextStates).indexOf(transition) < 0) {
-                    const exception = Error('A next state was found that is not in the possible states: ' + transition);
-                    console.error(exception);
-                    throw exception;
-                }
-            }, this);
-        }
+        }, this);
     }
     currentState = currentState || Object.keys(nextStates)[0];  // defaults to first state
 

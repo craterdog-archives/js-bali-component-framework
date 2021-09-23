@@ -75,7 +75,7 @@ const Set = function(parameters, debug) {
             ]);
         }
         var index = 0;
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         index = tree.index(item) + 1;  // convert to ordinal based indexing
         return index;
     };
@@ -102,7 +102,7 @@ const Set = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         return tree.insert(item);
     };
 
@@ -118,7 +118,7 @@ const Set = function(parameters, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        item = this.componentize(item, this.debug);
+        item = this.componentize(item);
         return tree.remove(item);
     };
 
