@@ -31,6 +31,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -59,6 +60,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -75,6 +77,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -91,6 +94,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -116,6 +120,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             */
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             expect(bali.areEqual(component, copy)).to.equal(true);
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
@@ -135,6 +140,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -153,6 +159,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -171,6 +178,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);
@@ -189,6 +197,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
+            expect(component.getHash()).to.equal(copy.getHash());
             var formatted = bali.document(copy);
             //await pfs.writeFile(file, formatted, 'utf8');
             expect(formatted).to.equal(document);

@@ -89,6 +89,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
                 const angle = testValues[i];
                 expect(angle.toString()).to.equal(stringValues[i]);
                 expect(angle.toReal()).to.equal(numericValues[i]);
+                expect(angle.getHash()).to.exist;
             }
         });
 

@@ -44,6 +44,7 @@ describe('Bali Nebula™ Component Framework - Resource', function() {
         it('should construct resources and format matching resources', function() {
             tests.forEach(function(expected) {
                 const resource = bali.component(expected);
+                expect(resource.getHash()).to.exist;
                 const string = resource.toString();
                 expect(string).to.equal(expected);
                 const scheme = resource.getScheme();

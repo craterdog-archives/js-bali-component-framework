@@ -45,7 +45,9 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
         it('should compare two moments correctly', function() {
             const comparator = new bali.comparator();
             const first = bali.component('<2017-12-30T17:38:35>');
+            expect(first.getHash()).to.exist;
             const second = bali.component('<2017-12-30T17:38:39>');
+            expect(second.getHash()).to.exist;
             expect(comparator.ranking(first, second)).to.equal(-1);
             expect(comparator.areEqual(first, first)).to.equal(true);
             expect(comparator.ranking(second, first)).to.equal(1);

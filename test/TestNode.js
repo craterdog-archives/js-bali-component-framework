@@ -19,11 +19,12 @@ describe('Bali Nebula™ Component Framework - Node', function() {
     describe('Test node constructors and methods', function() {
 
         it('should construct nodes and access children', function() {
-            const parent = bali.node('/bali/trees/Block', debug);
+            const parent = bali.node('/bali/trees/Code', debug);
             const child = bali.node('/bali/trees/Comment', debug);
             const sibling = bali.node('/bali/trees/Comment', debug);
             expect(parent.isEmpty()).to.equal(true);
             expect(parent.toBoolean()).to.equal(false);
+            expect(parent.getHash()).to.exist;
             expect(parent.getSize()).to.equal(0);
             expect(parent.getIndex('"alpha"')).to.equal(0);
             parent.addItem(child);
@@ -32,6 +33,7 @@ describe('Bali Nebula™ Component Framework - Node', function() {
             const children = parent.getItems('[1..2]');
             expect(children.isEmpty()).to.equal(false);
             expect(children.toBoolean()).to.equal(true);
+            expect(children.getHash()).to.exist;
             expect(children.getSize()).to.equal(2);
             expect(parent.getIndex(child)).to.equal(1);
         });

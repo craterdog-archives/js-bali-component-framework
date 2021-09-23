@@ -42,8 +42,11 @@ describe('Bali Nebula™ Component Framework - Pattern', function() {
         });
 
         it('should recognize composite patterns', function() {
+            expect(bali.pattern.ANY.getHash()).to.exist;
             expect(bali.pattern.ANY.matches(bali.list([1, 2, 3]))).to.equal(true);
+            expect(bali.component('"\\[\\s*([1-9]\\s*)*\\]"?').getHash()).to.exist;
             expect(bali.component('"\\[\\s*([1-9]\\s*)*\\]"?').matches(bali.list([1, 2, 3]))).to.equal(true);
+            expect(bali.pattern.NONE.getHash()).to.exist;
             expect(bali.pattern.NONE.matches(bali.list([1, 2, 3]))).to.equal(false);
         });
 

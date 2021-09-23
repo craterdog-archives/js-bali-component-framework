@@ -41,6 +41,7 @@ describe('Bali Nebula™ Component Framework - Tag', function() {
                 expect(random.getSize()).to.equal(i);
                 const expected = random.toString();
                 const tag = bali.component(expected);
+                expect(tag.getHash()).to.exist;
                 const result = tag.toString();
                 console.log('        ' + result);
                 expect(result).to.equal(expected);

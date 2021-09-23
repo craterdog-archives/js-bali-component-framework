@@ -28,6 +28,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(size).to.equal(0);
             expect(queue.isEmpty()).to.equal(true);
             expect(queue.toBoolean()).to.equal(false);
+            expect(queue.getHash()).to.exist;
             const iterator = queue.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
@@ -95,6 +96,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(queue.toBoolean()).to.equal(true);
+            expect(queue.getHash()).to.exist;
             const iterator = queue.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);

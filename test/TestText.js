@@ -25,6 +25,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
         it('should generate a default empty text string', function() {
             const text = bali.text();
+            expect(text.getHash()).to.exist;
             const string = text.toString();
             expect(string).to.equal('""');
             const raw = text.getValue();
@@ -33,6 +34,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
         it('should generate an explicit empty text string', function() {
             const text = bali.text('');
+            expect(text.getHash()).to.exist;
             const string = text.toString();
             expect(string).to.equal('""');
             const raw = text.getValue();
@@ -41,6 +43,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
         it('should generate a specific text block containing quotes', function() {
             const text = bali.text('\nThis is a \"text block\" containing \'quotes\'.\n');
+            expect(text.getHash()).to.exist;
             const string = text.toString();
             expect(string).to.equal('"\n    This is a \"text block\" containing \'quotes\'.\n"');
             const raw = text.getValue();
@@ -53,6 +56,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
 
         it('should perform the getItem() and getItems() methods correctly', function() {
             const text = bali.text('This is text.');
+            expect(text.getHash()).to.exist;
             const range = bali.range(3, '..', 9);
             const first = text.getItem(3);
             const last = text.getItem(9);

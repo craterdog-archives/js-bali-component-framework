@@ -28,6 +28,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(size).to.equal(0);
             expect(list.isEmpty()).to.equal(true);
             expect(list.toBoolean()).to.equal(false);
+            expect(list.getHash()).to.exist;
             const iterator = list.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
@@ -48,6 +49,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(size).to.equal(array.length);
             expect(list.isEmpty()).to.equal(false);
             expect(list.toBoolean()).to.equal(true);
+            expect(list.getHash()).to.exist;
             const iterator = list.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);

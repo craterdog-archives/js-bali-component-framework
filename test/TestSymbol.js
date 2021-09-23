@@ -100,6 +100,7 @@ describe('Bali Nebula™ Component Framework - Symbol', function() {
 
         it('should perform the getItem() and getItems() methods correctly', function() {
             const symbol = bali.symbol('foobar');
+            expect(symbol.getHash()).to.exist;
             const range = bali.range(3, '..', 5);
             const first = symbol.getItem(3);
             const last = symbol.getItem(5);

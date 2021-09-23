@@ -12,6 +12,8 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(debug);
+const comparator = bali.comparator();
+const sorter = bali.sorter(comparator);
 
 
 describe('Bali Nebula™ Component Framework - Sorter', function() {
@@ -33,14 +35,16 @@ describe('Bali Nebula™ Component Framework - Sorter', function() {
 
         it('should sort an empty list', function() {
             const list = bali.list();
-            list.sortItems();
+            list.sortItems();  // no sorter specified
             expect(list.isEmpty()).to.equal(true);
         });
 
 
         it('should sort an out of order list', function() {
+            expect(comparator.getHash()).to.exist;
+            expect(sorter.getHash()).to.exist;
             const list = bali.list(array);
-            list.sortItems();
+            list.sortItems(sorter);
             expect(list.toString()).to.equal(bali.list(set).toString());
         });
 
@@ -50,7 +54,7 @@ describe('Bali Nebula™ Component Framework - Sorter', function() {
 
         it('should sort an empty catalogs', function() {
             const catalog = bali.catalog();
-            catalog.sortItems();
+            catalog.sortItems(sorter);
             expect(catalog.isEmpty()).to.equal(true);
         });
 
@@ -60,8 +64,8 @@ describe('Bali Nebula™ Component Framework - Sorter', function() {
             var keys = catalog.getKeys();
             const list = bali.list(array);
             expect(keys.toString()).to.equal(list.toString());
-            catalog.sortItems();
-            list.sortItems();
+            catalog.sortItems();  // no sorter specified
+            list.sortItems();  // no sorter specified
             keys = catalog.getKeys();
             expect(keys.toString()).to.equal(list.toString());
         });

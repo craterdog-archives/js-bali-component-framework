@@ -114,6 +114,7 @@ describe('Bali Nebula™ Component Framework - Version', function() {
 
         it('should perform the getItem() and getItems() methods correctly', function() {
             const version = bali.version([1, 23, 456, 7890]);
+            expect(version.getHash()).to.exist;
             const range = bali.range(2, '..', 4);
             const first = version.getItem(2);
             const last = version.getItem(4);

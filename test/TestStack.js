@@ -28,6 +28,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(size).to.equal(0);
             expect(stack.isEmpty()).to.equal(true);
             expect(stack.toBoolean()).to.equal(false);
+            expect(stack.getHash()).to.exist;
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
@@ -52,6 +53,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(size).to.equal(1);
             expect(stack.isEmpty()).to.equal(false);
             expect(stack.toBoolean()).to.equal(true);
+            expect(stack.getHash()).to.exist;
             expect(
                 function() {
                     stack.addItem('"beta"');
@@ -72,6 +74,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(stack.toBoolean()).to.equal(true);
+            expect(stack.getHash()).to.exist;
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
@@ -92,6 +95,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             var size = stack.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
+            expect(stack.getHash()).to.exist;
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);
@@ -114,6 +118,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(size).to.equal(array.length);
             const comparator = new bali.comparator();
             expect(comparator.areEqual(stack, expected)).to.equal(true);
+            expect(stack.getHash()).to.exist;
             const iterator = stack.getIterator();
             expect(iterator).to.exist;
             expect(iterator.hasNext() === true);

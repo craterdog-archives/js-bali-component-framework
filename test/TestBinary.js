@@ -65,6 +65,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
             const items = binary.getItems(range);
             expect(first).to.equal(items.getItem(1));
             expect(last).to.equal(items.getItem(items.getSize()));
+           expect(binary.getHash()).to.exist;
         });
 
     });

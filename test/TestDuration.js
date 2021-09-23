@@ -56,8 +56,11 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
 
         it('should compare two time durations correctly', function() {
             const days = bali.component('~P7D');
+            expect(days.getHash()).to.exist;
             const week = bali.component('~P1W');
+            expect(week.getHash()).to.exist;
             const month = bali.component('~P1M');
+            expect(month.getHash()).to.exist;
             const comparator = new bali.comparator();
             expect(comparator.ranking(week, month)).to.equal(-1);
             expect(comparator.areEqual(week, days)).to.equal(true);

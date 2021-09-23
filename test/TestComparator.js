@@ -34,6 +34,7 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         const number = bali.number(3, 4);
         const percentage = bali.percentage(25);
         const probability = bali.probability(0.5);
+        expect(comparator.getHash()).to.exist;
 
         it('should handle angles', function() {
             expect(comparator.ranking(angle, angle)).to.equal(0);

@@ -19,8 +19,11 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
     describe('Test probability constructors', function() {
 
         it('should construct probabilities using literals', function() {
+            expect(bali.component('.0').getHash()).to.exist;
             expect(bali.component('.0').toString()).to.equal('.0');
+            expect(bali.component('.5').getHash()).to.exist;
             expect(bali.component('.5').toString()).to.equal('.5');
+            expect(bali.component('1.').getHash()).to.exist;
             expect(bali.component('1.').toString()).to.equal('1.');
         });
 
