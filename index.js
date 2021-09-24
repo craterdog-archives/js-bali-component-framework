@@ -689,7 +689,7 @@ exports.api = function(defaultLevel) {
     angle.DEGREES = {$units: '$degrees'};
     angle.RADIANS = {$units: '$radians'};
 
-    binary.BASE2 = {$encoding: '$base2'};
+    binary.BASE02 = {$encoding: '$base02'};
     binary.BASE16 = {$encoding: '$base16'};
     binary.BASE32 = {$encoding: '$base32'};
     binary.BASE64 = {$encoding: '$base64'};

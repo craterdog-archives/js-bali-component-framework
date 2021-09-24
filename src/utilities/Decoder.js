@@ -30,7 +30,7 @@ const LINE_WIDTH = 60;
 const EOL = '\n';
 
 // The symbol lookup tables
-const base2LookupTable = '01';
+const base02LookupTable = '01';
 const base16LookupTable = '0123456789ABCDEF';
 const base32LookupTable = '0123456789ABCDFGHJKLMNPQRSTVWXYZ';  // missing 'E', 'I', 'O', and 'U'
 
@@ -60,7 +60,7 @@ exports.Decoder = Decoder;
  * @param {Buffer} buffer A data buffer containing the integer.
  * @return {String} The base 2 encoded string.
  */
-Decoder.prototype.base2Encode = function(buffer) {
+Decoder.prototype.base02Encode = function(buffer) {
     // encode each byte
     var string = '';
     buffer.forEach(function(byte) {
@@ -68,13 +68,13 @@ Decoder.prototype.base2Encode = function(buffer) {
         for (var b = 7; b >= 0; b--) {
             const mask = 1 << b;
             const bit = (byte & mask) >>> b;
-            string += base2LookupTable[bit];
+            string += base02LookupTable[bit];
         }
     }, this);
 
     // break the string into formatted lines
-    const base2 = formatLines(string, this.indentation);
-    return base2;
+    const base02 = formatLines(string, this.indentation);
+    return base02;
 };
 
 
@@ -82,13 +82,13 @@ Decoder.prototype.base2Encode = function(buffer) {
  * This method decodes a base 2 encoded string into a data buffer containing the
  * decoded bytes.
  *
- * @param {String} base2 The base 2 encoded string.
+ * @param {String} base02 The base 2 encoded string.
  * @return {Buffer} A data buffer containing the decoded bytes.
  */
-Decoder.prototype.base2Decode = function(base2) {
+Decoder.prototype.base02Decode = function(base02) {
     // validate the base 2 encoded string
-    base2 = base2.replace(/\s/g, '');  // strip out whitespace
-    const length = base2.length;
+    base02 = base02.replace(/\s/g, '');  // strip out whitespace
+    const length = base02.length;
     if (length % 8 !== 0) {
         const exception = Error('The number of characters in the base 2 binary string was not divisible by 8.');
         if (this.debug > 0) console.error(exception);
@@ -103,8 +103,8 @@ Decoder.prototype.base2Decode = function(base2) {
         // decode one byte
         var byte = 0;
         for (var b = 7; b >= 0; b--) {
-            const character = base2[index++];
-            const bit = base2LookupTable.indexOf(character);
+            const character = base02[index++];
+            const bit = base02LookupTable.indexOf(character);
             if (bit < 0) {
                 const exception = Error('The binary string was not encoded using base 2.');
                 if (this.debug > 0) console.error(exception);

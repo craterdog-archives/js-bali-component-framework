@@ -218,8 +218,8 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     const format = this.getFormat(binary, '$encoding', '$base32');
     const decoder = new utilities.Decoder(0, this.debug);
     switch (format) {
-        case '$base2':
-            value = decoder.base2Encode(value);
+        case '$base02':
+            value = decoder.base02Encode(value);
             break;
         case '$base16':
             value = decoder.base16Encode(value);

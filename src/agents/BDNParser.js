@@ -244,8 +244,8 @@ BDNVisitor.prototype.visitBinary = function(ctx) {
     }
     const decoder = new utilities.Decoder(0, this.debug);
     switch (encoding) {
-        case '$base2':
-            value = decoder.base2Decode(value);
+        case '$base02':
+            value = decoder.base02Decode(value);
             break;
         case '$base16':
             value = decoder.base16Decode(value);

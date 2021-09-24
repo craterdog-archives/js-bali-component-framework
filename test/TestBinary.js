@@ -27,7 +27,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
 
         it('should construct binary strings using literals', function() {
             expect(bali.component("'ABC0'").toString()).to.equal("'ABC0'");
-            expect(bali.component("'01101010'($encoding: $base2)").toString()).to.equal("'01101010'($encoding: $base2)");
+            expect(bali.component("'01101010'($encoding: $base02)").toString()).to.equal("'01101010'($encoding: $base02)");
             expect(bali.component("'ABC0'($encoding: $base16)").toString()).to.equal("'ABC0'($encoding: $base16)");
             expect(bali.component("'ABC0'($encoding: $base32)").toString()).to.equal("'ABC0'($encoding: $base32)");
             expect(bali.component("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)").toString()).to.equal("'gV2qMVdiG7XYRSqV6jg='($encoding: $base64)");

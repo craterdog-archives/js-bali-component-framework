@@ -34,11 +34,11 @@ describe('Bali Nebula™ Component Framework - Decoder', function() {
         it('should convert bytes to base 2 and back again', function() {
             for (var i = 0; i < 21; i++) {
                 const expectedBuffer = generator.generateBytes(i);
-                const expectedBase2 = decoder.base2Encode(expectedBuffer);
-                const buffer = decoder.base2Decode(expectedBase2);
+                const expectedBase02 = decoder.base02Encode(expectedBuffer);
+                const buffer = decoder.base02Decode(expectedBase02);
                 expect(buffer.toString()).to.equal(expectedBuffer.toString());
-                const base2 = decoder.base2Encode(buffer);
-                expect(base2).to.equal(expectedBase2);
+                const base02 = decoder.base02Encode(buffer);
+                expect(base02).to.equal(expectedBase02);
             }
         });
 
