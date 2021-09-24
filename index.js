@@ -27,15 +27,17 @@ agents.BDNParser = require('./src/agents/BDNParser').BDNParser;  // must be last
 // AVOIDING CIRCULAR DEPENDENCIES
 
 /*
- * This function defines the canonical toString() method for all Component classes. It must
- * be declared and assigned to these classes here instead of in their class definitions to
- * avoid circular dependencies.
+ * This function defines the canonical toString() method for all Component classes including
+ * the Exception class which attempts to inherit from both Component and Error. The function
+ * must be declared and assigned to these classes here instead of in their class definitions
+ * to avoid circular dependencies.
  */
 const toString = function() {
     const formatter = new agents.BDNFormatter(0, this.debug);
     return formatter.asSource(this);
 };
 abstractions.Component.prototype.toString = toString;
+abstractions.Exception.prototype.toString = toString;
 
 
 /*
@@ -97,6 +99,7 @@ const componentize = function(value) {
     return component;
 };
 abstractions.Component.prototype.componentize = componentize;
+abstractions.Exception.prototype.componentize = componentize;
 
 
 // PUBLIC INTERFACE

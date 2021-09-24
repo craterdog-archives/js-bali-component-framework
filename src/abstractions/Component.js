@@ -31,7 +31,6 @@ const moduleName = '/bali/abstractions/Component';
  */
 const Component = function(ancestry, interfaces, parameters, debug) {
     this.debug = debug || 0;  // default value
-
     if (this.debug > 1) {
         // NOTE: We must use the class version of validateArgument() here!
         Component.validateArgument(moduleName, '$Component', '$ancestry', ancestry, [
@@ -50,9 +49,9 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     ancestry = ancestry.concat(moduleName);
     interfaces = interfaces || [];
     interfaces = interfaces.concat('/bali/interfaces/Reflective');
-    parameters = parameters || undefined;  // must be undefined to avoid infinite loop
+    parameters = parameters || undefined;  // must not be an empty catalog
 
-    // Reflective Interface
+    // reflective interface methods
 
     this.isComponent = true;
 
@@ -76,8 +75,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     this.setParameters = function(object) {
         if (object) parameters = this.componentize(object);
     };
-
-    this.setParameters(parameters);
 
     this.isType = function(type) {
         if (this.debug > 1) {
@@ -115,6 +112,7 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         return interfaces.slice();  // immutable
     };
 
+    this.setParameters(parameters);
     return this;
 };
 Component.prototype.constructor = Component;
@@ -330,12 +328,14 @@ const EOL = '\n';  // This private constant sets the POSIX end of line character
 
 
 /**
- * This function creates a new Bali exception with the specified attributes.  It must
- * be very careful not to cause additional exceptions to be thrown or an infinite loop
- * may result.
+ * This function creates a new Bali exception with the specified attributes.  Since we
+ * want an exception to be both a component and a javascript error we must make it look
+ * like it inherits from both.  This requires some additional patching at the end of this
+ * file and in the main index.js file.  This function must be very careful not to cause
+ * additional exceptions to be thrown or an infinite loop may result.
  *
  * @param {Object} attributes An object containing the exception attributes.
- * @param {Object} cause An optional exception that caused this one.
+ * @param {Object} cause An optional exception (or javascript error) that caused this one.
  * @param {Number} debug A number in the range 0..3.
  * @returns {Exception} The new exception.
  */
@@ -350,7 +350,9 @@ const Exception = function(attributes, cause, debug) {
         attributes = this.componentize({});
     }
 
-    // inherit from both Component and Error
+    // make it look like we inherit from both Error and Component
+    this.message = attributes.getAttribute('$text') || 'An unexpected exception occurred.';
+    this.cause = cause || undefined;
     Component.call(
         this,
         ['/bali/abstractions/Exception'],
@@ -358,11 +360,8 @@ const Exception = function(attributes, cause, debug) {
         { $type: '/bali/abstractions/Exception/v1' },
         debug
     );
-    const message = attributes.getAttribute('$text') || 'An unexpected exception occurred.';
-    cause = cause || undefined;
-    Error.call(this, message, {cause: cause});
 
-    // Composite Interface
+    // composite interface methods
 
     this.getAttributes = function() {
         return attributes;
@@ -376,14 +375,16 @@ const Exception = function(attributes, cause, debug) {
         return attributes.setAttribute(key, value);
     };
 
+    // stack formatting
     const formatStack = function(stack) {
-        stack = stack.split(EOL).slice(3);  // remove the first three lines of the trace
-        stack.forEach(function(line, index) {
+        stack = stack.split(EOL);
+        stack.slice(1).forEach(function(line, index) {
+            // each line starting with 'at'
             line = line.slice(4);  // remove leading "   " prefix
             if (line.length > 80) {
                 line = line.slice(0, 42) + '..' + line.slice(-35);  // shorten line to 80 chars
             }
-            stack[index] = line;  // replace the formatted line
+            stack[index + 1] = line;  // replace the formatted line
         });
         stack = stack.join(EOL);
         return stack;
@@ -423,8 +424,9 @@ const Exception = function(attributes, cause, debug) {
     if (this.debug > 0) console.error(this.toString());
     return this;
 };
-Exception.prototype = Object.create(Component.prototype);
-Exception.prototype = Object.assign(Exception.prototype, Error.prototype);
+Exception.prototype = Object.create(Error.prototype);  // make it look like an Error...
+Exception.prototype = Object.assign(Exception.prototype, Component.prototype);  // and a Component
 Exception.prototype.constructor = Exception;
+Exception.prototype.name = 'Exception';
 exports.Exception = Exception;
 
