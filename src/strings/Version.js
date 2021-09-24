@@ -32,7 +32,7 @@ const collections = require('../collections');
 const Version = function(value, parameters, debug) {
     abstractions.String.call(
         this,
-        ['/bali/elements/Version'],
+        ['/bali/strings/Version'],
         [
             '/bali/libraries/Chainable'
         ],
@@ -49,7 +49,7 @@ const Version = function(value, parameters, debug) {
     value = value || [1];  // the default value
     if (value.indexOf(0) >= 0) {
         const exception = new abstractions.Exception({
-            $module: '/bali/elements/Version',
+            $module: '/bali/strings/Version',
             $procedure: '$version',
             $exception: '$invalidParameter',
             $parameter: value,
@@ -174,7 +174,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
 Version.validNextVersion = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$validNextVersion', '$nextVersion', nextVersion, [
-            '/bali/elements/Version'
+            '/bali/strings/Version'
         ]);
     }
 
@@ -213,10 +213,10 @@ Version.validNextVersion = function(currentVersion, nextVersion, debug) {
 Version.chain = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
-            '/bali/elements/Version'
+            '/bali/strings/Version'
         ]);
         abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
-            '/bali/elements/Version'
+            '/bali/strings/Version'
         ]);
     }
     const levels1 = first.getValue();

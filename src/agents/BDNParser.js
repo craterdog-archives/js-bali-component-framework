@@ -629,7 +629,7 @@ BDNVisitor.prototype.visitList = function(ctx) {
     var name;
     if (parameters) {
         name = parameters.getAttribute('$type');
-        if (name && name.isComponent && name.isType('/bali/elements/Name')) {
+        if (name && name.isComponent && name.isType('/bali/strings/Name')) {
             type = name.getValue()[2];  // /bali/collections/<type>/<version>
         } else {
             type = 'Invalid';

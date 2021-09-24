@@ -32,7 +32,7 @@ const collections = require('../collections');
 const Name = function(value, parameters, debug) {
     abstractions.String.call(
         this,
-        ['/bali/elements/Name'],
+        ['/bali/strings/Name'],
         [
             '/bali/libraries/Chainable'
         ],
@@ -47,7 +47,7 @@ const Name = function(value, parameters, debug) {
 
     if (!Array.isArray(value) || value.length === 0) {
         const exception = new abstractions.Exception({
-            $module: '/bali/elements/Name',
+            $module: '/bali/strings/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',
             $parameter: value,
@@ -142,10 +142,10 @@ Name.prototype.getItems = function(range) {
 Name.chain = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
-            '/bali/elements/Name'
+            '/bali/strings/Name'
         ]);
         abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
-            '/bali/elements/Name'
+            '/bali/strings/Name'
         ]);
     }
     const identifiers1 = first.getValue();

@@ -33,7 +33,7 @@ const collections = require('../collections');
 const Binary = function(value, parameters, debug) {
     abstractions.String.call(
         this,
-        ['/bali/elements/Binary'],
+        ['/bali/strings/Binary'],
         [
             '/bali/libraries/Logical',
             '/bali/libraries/Chainable'
@@ -135,7 +135,7 @@ Binary.prototype.getItems = function(range) {
 Binary.not = function(binary, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$not', '$binary', binary, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     const length = binary.getValue().length;
@@ -159,10 +159,10 @@ Binary.not = function(binary, debug) {
 Binary.and = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$and', '$first', first, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
         abstractions.Component.validateArgument(moduleName, '$and', '$second', second, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     var length = Math.max(first.getValue().length, second.getValue().length);
@@ -187,10 +187,10 @@ Binary.and = function(first, second, debug) {
 Binary.sans = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$sans', '$first', first, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
         abstractions.Component.validateArgument(moduleName, '$sans', '$second', second, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     var length = Math.max(first.getValue().length, second.getValue().length);
@@ -215,10 +215,10 @@ Binary.sans = function(first, second, debug) {
 Binary.or = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$or', '$first', first, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
         abstractions.Component.validateArgument(moduleName, '$or', '$second', second, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     var length = Math.max(first.getValue().length, second.getValue().length);
@@ -243,10 +243,10 @@ Binary.or = function(first, second, debug) {
 Binary.xor = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$xor', '$first', first, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
         abstractions.Component.validateArgument(moduleName, '$xor', '$second', second, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     var length = Math.max(first.getValue().length, second.getValue().length);
@@ -273,10 +273,10 @@ Binary.xor = function(first, second, debug) {
 Binary.chain = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
         abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
-            '/bali/elements/Binary'
+            '/bali/strings/Binary'
         ]);
     }
     const buffer1 = first.getValue();

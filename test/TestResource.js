@@ -72,6 +72,6 @@ const tests = [
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYM>',
     '<bali:RKVVW90GXFP44PBTLFLF8ZG8NR425JYMv3.1>',
     '<bali:/Text?[$protocol:v1,$tag:#K21FK6QD5G0CZ54S773DSTSTC827Q3VS,$version:v1.2.3,$digest:none]>',
-    '<bali:/bali/elements/Text?version=6.12.1>',
+    '<bali:/bali/strings/Text?version=6.12.1>',
     '<bali:/abcCorp/reports/2010/Q3>'
 ];

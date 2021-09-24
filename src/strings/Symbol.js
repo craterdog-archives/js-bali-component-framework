@@ -32,7 +32,7 @@ const collections = require('../collections');
 const Symbol = function(value, parameters, debug) {
     abstractions.String.call(
         this,
-        ['/bali/elements/Symbol'],
+        ['/bali/strings/Symbol'],
         [
             '/bali/libraries/Chainable'
         ],
@@ -47,7 +47,7 @@ const Symbol = function(value, parameters, debug) {
 
     if (!value || !/^[a-zA-Z][0-9a-zA-Z]*(-[0-9]+)?$/g.test(value)) {
         const exception = new abstractions.Exception({
-            $module: '/bali/elements/Symbol',
+            $module: '/bali/strings/Symbol',
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
             $parameter: value,
@@ -143,10 +143,10 @@ Symbol.prototype.getItems = function(range) {
 Symbol.chain = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
-            '/bali/elements/Symbol'
+            '/bali/strings/Symbol'
         ]);
         abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
-            '/bali/elements/Symbol'
+            '/bali/strings/Symbol'
         ]);
     }
     const string1 = first.getValue();

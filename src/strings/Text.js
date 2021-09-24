@@ -32,7 +32,7 @@ const collections = require('../collections');
 const Text = function(value, parameters, debug) {
     abstractions.String.call(
         this,
-        ['/bali/elements/Text'],
+        ['/bali/strings/Text'],
         [
             '/bali/libraries/Chainable'
         ],
@@ -133,10 +133,10 @@ Text.prototype.getItems = function(range) {
 Text.chain = function(first, second, debug) {
     if (debug > 1) {
         abstractions.Component.validateArgument(moduleName, '$chain', '$first', first, [
-            '/bali/elements/Text'
+            '/bali/strings/Text'
         ]);
         abstractions.Component.validateArgument(moduleName, '$chain', '$second', second, [
-            '/bali/elements/Text'
+            '/bali/strings/Text'
         ]);
     }
     const string1 = first.getValue();
