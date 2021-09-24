@@ -340,14 +340,6 @@ const EOL = '\n';  // This private constant sets the POSIX end of line character
  * @returns {Exception} The new exception.
  */
 const Exception = function(attributes, cause, debug) {
-    Component.call(
-        this,
-        ['/bali/abstractions/Exception'],
-        [ ],
-        { $type: '/bali/abstractions/Exception/v1' },
-        debug
-    );
-
     // attempt to process the attributes
     try {
         attributes = attributes || {};
@@ -356,6 +348,45 @@ const Exception = function(attributes, cause, debug) {
         // something is wrong with the attributes so reset them
         if (this.debug > 0) console.log('Invalid attributes passed to the exception:\n' + ignore);
         attributes = this.componentize({});
+    }
+
+    // inherit from both Component and Error
+    Component.call(
+        this,
+        ['/bali/abstractions/Exception'],
+        ['/bali/interfaces/Composite'],
+        { $type: '/bali/abstractions/Exception/v1' },
+        debug
+    );
+    const message = attributes.getAttribute('$text') || 'An unexpected exception occurred.';
+    cause = cause || undefined;
+    Error.call(this, message, {cause: cause});
+
+    // Composite Interface
+
+    this.getAttributes = function() {
+        return attributes;
+    };
+
+    this.getAttribute = function(key) {
+        return attributes.getAttribute(key);
+    };
+
+    this.setAttribute = function(key, value) {
+        return attributes.setAttribute(key, value);
+    };
+
+    const formatStack = function(stack) {
+        stack = stack.split(EOL).slice(3);  // remove the first three lines of the trace
+        stack.forEach(function(line, index) {
+            line = line.slice(4);  // remove leading "   " prefix
+            if (line.length > 80) {
+                line = line.slice(0, 42) + '..' + line.slice(-35);  // shorten line to 80 chars
+            }
+            stack[index] = line;  // replace the formatted line
+        });
+        stack = stack.join(EOL);
+        return stack;
     }
 
     // process the cause if necessary
@@ -376,36 +407,24 @@ const Exception = function(attributes, cause, debug) {
         } else {
             // the cause is a javascript exception, extract the actual stack trace
             try {
-                const stack = cause.stack.split(EOL).slice(1);  // remove the first line of the trace
-                stack.forEach(function(line, index) {
-                    line = line.slice(7);  // remove leading "    at " prefix
-                    if (line.length > 80) {
-                        line = line.slice(0, 42) + '..' + line.slice(-35);  // shorten line to 80 chars
-                    }
-                    stack[index] = line;  // replace the formatted line
-                }, this);
                 attributes.setAttribute('$trace', []);
                 trace = attributes.getAttribute('$trace');
-                trace.addItem(EOL + stack.join(EOL) + EOL);  // turn the stack trace into a text narrative
+                const stack = formatStack(cause.stack);
+                trace.addItem(EOL + stack + EOL);  // turn the stack trace into a text narrative
             } catch (ignore) {
                 // a stack trace is not supported on this platform
                 if (this.debug > 0) console.log('Unable to generate a stack trace:\n' + ignore);
             }
         }
+    } else {
+        this.stack = formatStack(Error().stack);
     }
-
-    this.getAttributes = function() {
-        return attributes;
-    };
-
-    this.getAttribute = function(key) {
-        return attributes.getAttribute(key);
-    };
 
     if (this.debug > 0) console.error(this.toString());
     return this;
 };
 Exception.prototype = Object.create(Component.prototype);
+Exception.prototype = Object.assign(Exception.prototype, Error.prototype);
 Exception.prototype.constructor = Exception;
 exports.Exception = Exception;
 
