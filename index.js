@@ -291,6 +291,16 @@ exports.api = function(defaultLevel) {
         if (debug === undefined) debug = defaultLevel;
         return abstractions.Component.canonicalType(component, debug);
     };
+    component.normalizedIndex = function(sequence, index, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return abstractions.Component.normalizedIndex(sequence, index, debug);
+    };
+    component.validateArgument = function(moduleName, procedureName, argumentName,
+            argumentValue, allowedTypes, debug) {
+        if (debug === undefined) debug = defaultLevel;
+        return abstractions.Component.validateArgument(moduleName, procedureName,
+            argumentName, argumentValue, allowedTypes, debug);
+    };
 
     // CONFIGURATOR
     const configurator = function(filename, directory, debug) {
