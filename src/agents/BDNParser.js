@@ -304,53 +304,52 @@ ParsingVisitor.prototype.visitBreakClause = function(ctx) {
 //     ':' /* no associations */
 ParsingVisitor.prototype.visitCatalog = function(ctx) {
     const parameters = this.getParameters();
-    const attributes = new collections.Catalog(undefined, this.debug);
+
+    // assume the component is just a catalog
+    const catalog = new collections.Catalog(parameters, this.debug);
     if (ctx.association) {
         this.depth++;
         const associations = ctx.association();
         associations.forEach(function(association) {
             association.accept(this);
-            attributes.addItem(this.result);
+            catalog.addItem(this.result);
         }, this);
         this.depth--;
     }
-    var component = attributes;  // assume the component is just a catalog
+    var component = catalog;
+
+    // now determine its real type
     if (parameters) {
         var type = parameters.getAttribute('$type');
         if (type) {
             type = type.toString();
             switch (type) {
                 case '/bali/abstractions/Exception/v1':
-                    component = new abstractions.Exception(attributes);
-                    parameters.removeAttribute('$type');
+                    // call catalog.toObject() to strip off the parameters
+                    component = new abstractions.Exception(catalog.toObject(), undefined, this.debug);
                     break;
                 case '/bali/agents/CanonicalComparator/v1':
                     component = new CanonicalComparator(this.debug);
-                    parameters.removeAttribute('$type');
                     break;
                 case '/bali/agents/MergeSorter/v1':
-                    const comparator = attributes.getAttribute('$comparator');
+                    const comparator = catalog.getAttribute('$comparator');
                     component = new MergeSorter(comparator, this.debug);
-                    parameters.removeAttribute('$type');
                     break;
                 case '/bali/collections/CollectionIterator/v1':
                 case '/bali/collections/RangeIterator/v1':
                 case '/bali/strings/StringIterator/v1':
                 case '/bali/trees/NodeIterator/v1':
-                    const sequence = attributes.getAttribute('$sequence');
+                    const sequence = catalog.getAttribute('$sequence');
                     component = sequence.getIterator();
-                    const slot = attributes.getAttribute('$slot');
+                    const slot = catalog.getAttribute('$slot');
                     component.toSlot(slot.toInteger());
-                    parameters.removeAttribute('$type');
                     break;
                 default:
-                    // it's a typed catalog so leave it as is
+                    // it's a TYPED catalog so leave it as is
             }
-            if (!parameters.isEmpty()) component.setParameters(parameters);
-        } else {
-            component.setParameters(parameters);
         }
     }
+
     this.result = component;
 };
 

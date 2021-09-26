@@ -45,11 +45,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
             '/bali/collections/Catalog'
         ], this.debug);
     }
-    ancestry = ancestry || [];
-    ancestry = ancestry.concat(moduleName);
-    interfaces = interfaces || [];
-    interfaces = interfaces.concat('/bali/interfaces/Reflective');
-    parameters = parameters || undefined;  // must not be an empty catalog
 
     // reflective interface methods
 
@@ -64,7 +59,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.setParameter = function(key, value) {
-        parameters = parameters || this.componentize({});
         parameters.setAttribute(key, value);
     };
 
@@ -73,7 +67,11 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.setParameters = function(object) {
-        if (object) parameters = this.componentize(object);
+        parameters = object || undefined;
+        if (parameters) {
+            parameters = this.componentize(parameters);
+            if (parameters.isEmpty()) parameters = undefined;  // must not be an empty catalog
+        }
     };
 
     this.isType = function(type) {
@@ -112,7 +110,12 @@ const Component = function(ancestry, interfaces, parameters, debug) {
         return interfaces.slice();  // immutable
     };
 
+    ancestry = ancestry || [];
+    ancestry = ancestry.concat(moduleName);
+    interfaces = interfaces || [];
+    interfaces = interfaces.concat('/bali/interfaces/Reflective');
     this.setParameters(parameters);
+
     return this;
 };
 Component.prototype.constructor = Component;
