@@ -107,6 +107,7 @@ describe('Bali Nebula™ Component Framework - Text', function() {
             iterator.toStart();
             expect(iterator.hasNext() === true);
             expect(iterator.hasPrevious() === false);
+            expect(bali.source(iterator)).to.exist;
         });
 
     });

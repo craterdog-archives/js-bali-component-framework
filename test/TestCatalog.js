@@ -38,6 +38,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
+            expect(bali.source(iterator)).to.exist;
             catalog.removeAll();
             const copy = catalog.constructor(catalog.getParameters());
             expect(copy).to.exist;

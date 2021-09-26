@@ -33,6 +33,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
+            expect(bali.source(iterator)).to.exist;
             stack.removeAll();
             const copy = bali.stack();
             expect(copy).to.exist;

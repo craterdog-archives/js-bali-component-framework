@@ -396,10 +396,9 @@ const Exception = function(attributes, cause, debug) {
     // process the cause if necessary
     cause = cause || undefined;
     if (cause) {
-        var trace;
         if (cause.isComponent) {
             // the cause is a bali exception so migrate its trace upward
-            trace = cause.getAttribute('$trace');
+            var trace = cause.getAttribute('$trace');
             if (trace) {
                 cause.getAttributes().removeAttribute('$trace');
                 trace.insertItem(1, cause);
@@ -411,16 +410,16 @@ const Exception = function(attributes, cause, debug) {
         } else {
             // the cause is a javascript exception, extract the actual stack trace
             try {
-                attributes.setAttribute('$trace', []);
-                trace = attributes.getAttribute('$trace');
+                // turn the raw stack trace into a text narrative
                 const stack = formatStack(cause.stack);
-                trace.addItem(EOL + stack + EOL);  // turn the stack trace into a text narrative
+                attributes.setAttribute('$trace', [ EOL + stack + EOL ]);
             } catch (ignore) {
                 // a stack trace is not supported on this platform
                 if (this.debug > 0) console.log('Unable to generate a stack trace:\n' + ignore);
             }
         }
     } else {
+        // make it look like an Error object
         this.stack = formatStack(Error().stack);
     }
 

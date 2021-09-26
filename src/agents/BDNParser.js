@@ -335,14 +335,13 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
                     const comparator = catalog.getAttribute('$comparator');
                     component = new MergeSorter(comparator, this.debug);
                     break;
-                case '/bali/collections/CollectionIterator/v1':
+                case '/bali/abstractions/CollectionIterator/v1':
                 case '/bali/collections/RangeIterator/v1':
-                case '/bali/strings/StringIterator/v1':
-                case '/bali/trees/NodeIterator/v1':
+                case '/bali/abstractions/StringIterator/v1':
                     const sequence = catalog.getAttribute('$sequence');
                     component = sequence.getIterator();
                     const slot = catalog.getAttribute('$slot');
-                    component.toSlot(slot.toInteger());
+                    component.toSlot(slot);
                     break;
                 default:
                     // it's a TYPED catalog so leave it as is

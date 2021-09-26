@@ -323,11 +323,7 @@ DuplicatingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
     const copy = new abstractions.Exception(this.result);
-    const cause = exception.cause;
-    if (cause && cause.isComponent) {
-        cause.acceptVisitor(this);
-        copy.cause = this.result;
-    }
+    // Note: any cause has already been integrated into the trace attribute
     const parameters = exception.getParameters();
     parameters.acceptVisitor(this);
     copy.setParameters(this.result);
@@ -427,7 +423,7 @@ DuplicatingVisitor.prototype.visitIterator = function(iterator) {
     const sequence = iterator.getSequence();
     sequence.acceptVisitor(this);
     const copy = this.result.getIterator();
-    copy.setSlot(slot.toInteger());
+    copy.toSlot(slot);
     this.result = copy;
 };
 

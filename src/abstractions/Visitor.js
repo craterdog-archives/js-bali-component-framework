@@ -15,6 +15,7 @@
 const moduleName = '/bali/abstractions/Visitor';
 const utilities = require('../utilities');
 const Component = require('./Component').Component;
+const Exception = require('./Component').Exception;
 
 
 /**
@@ -313,10 +314,7 @@ Visitor.prototype.visitEvaluateClause = function(node) {
 Visitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
-    const cause = exception.cause;
-    if (cause && cause.isComponent) {
-        cause.acceptVisitor(this);
-    }
+    // Note: any cause has already been integrated into the trace attribute
     const parameters = exception.getParameters();
     parameters.acceptVisitor(this);
 };
@@ -491,7 +489,13 @@ Visitor.prototype.visitName = function(name) {
 
 
 Visitor.prototype.visitNodeIterator = function(iterator) {
-    this.visitIterator(iterator);
+    const exception = new Exception({
+        $module: moduleName,
+        $procedure: '$visitNodeIterator',
+        $exception: '$notSupported',
+        $text: 'This method is not supported for node iterators.'
+    }, undefined, this.debug);
+    throw exception;
 };
 
 

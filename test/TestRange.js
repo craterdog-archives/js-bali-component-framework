@@ -97,6 +97,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.isEmpty()).to.equal(false);
             expect(range.toBoolean()).to.equal(true);
             expect(iterator).to.exist;
+            expect(bali.source(iterator)).to.exist;
             expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(0);
         });
 

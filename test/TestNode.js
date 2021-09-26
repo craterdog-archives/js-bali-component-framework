@@ -36,6 +36,18 @@ describe('Bali Nebula™ Component Framework - Node', function() {
             expect(children.getHash()).to.exist;
             expect(children.getSize()).to.equal(2);
             expect(parent.getIndex(child)).to.equal(1);
+            const iterator = parent.getIterator();
+            expect(iterator).to.exist;
+            expect(iterator.hasNext()).to.equal(true);
+            expect(iterator.hasPrevious()).to.equal(false);
+            expect(iterator.getNext()).to.exist;
+            expect(iterator.hasNext()).to.equal(true);
+            expect(iterator.hasPrevious()).to.equal(true);
+            expect(
+                function() {
+                    bali.source(iterator);
+                }
+            ).to.throw();
         });
 
     });

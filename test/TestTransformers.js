@@ -49,6 +49,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
                     expect(comparator.areEqual(element, item)).to.equal(true);
                 }
             }
+            expect(bali.source(iterator)).to.exist;
         });
 
         it('should parse and format the same expressions', async function() {

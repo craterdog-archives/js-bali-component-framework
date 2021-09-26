@@ -33,6 +33,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
+            expect(bali.source(iterator)).to.exist;
             queue.removeAll();
             const copy = bali.queue();
             expect(copy).to.exist;

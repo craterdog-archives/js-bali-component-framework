@@ -322,10 +322,7 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 FormattingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
-    const cause = exception.cause;
-    if (cause && cause.isComponent) {
-        cause.acceptVisitor(this);
-    }
+    // Note: any cause has already been integrated into the trace attribute
     const parameters = exception.getParameters();
     this.visitParameters(parameters);  // then format any parameterization
 };

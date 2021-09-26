@@ -33,6 +33,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(iterator).to.exist;
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
+            expect(bali.source(iterator)).to.exist;
             list.removeAll();
             const copy = list.constructor(list.getParameters());
             expect(copy).to.exist;

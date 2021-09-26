@@ -461,10 +461,7 @@ FormattingVisitor.prototype.visitEvaluateClause = function(node) {
 FormattingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
-    const cause = exception.cause;
-    if (cause && cause.isComponent) {
-        cause.acceptVisitor(this);
-    }
+    // Note: any cause has already been integrated into the trace attribute
     const parameters = exception.getParameters();
     this.visitParameters(parameters);  // then format any parameterization
     this.formatNote(exception);
@@ -606,7 +603,8 @@ FormattingVisitor.prototype.visitIterator = function(iterator) {
     this.result += this.getNewline();
     this.result += '$slot: ';
     const slot = iterator.getSlot();
-    slot.acceptVisitor(this);
+    this.result += slot;
+    this.result += this.getNewline();
     this.result += '$sequence: ';
     const sequence = iterator.getSequence();
     sequence.acceptVisitor(this);
