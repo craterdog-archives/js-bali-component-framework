@@ -313,6 +313,10 @@ Visitor.prototype.visitEvaluateClause = function(node) {
 Visitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
+    const cause = exception.cause;
+    if (cause && cause.isComponent) {
+        cause.acceptVisitor(this);
+    }
     const parameters = exception.getParameters();
     parameters.acceptVisitor(this);
 };

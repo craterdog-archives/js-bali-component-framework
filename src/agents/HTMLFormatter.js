@@ -322,6 +322,10 @@ FormattingVisitor.prototype.visitDuration = function(duration) {
 FormattingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
+    const cause = exception.cause;
+    if (cause && cause.isComponent) {
+        cause.acceptVisitor(this);
+    }
     const parameters = exception.getParameters();
     this.visitParameters(parameters);  // then format any parameterization
 };

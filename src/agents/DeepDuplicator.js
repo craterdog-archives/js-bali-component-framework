@@ -323,6 +323,11 @@ DuplicatingVisitor.prototype.visitException = function(exception) {
     const attributes = exception.getAttributes();
     attributes.acceptVisitor(this);
     const copy = new abstractions.Exception(this.result);
+    const cause = exception.cause;
+    if (cause && cause.isComponent) {
+        cause.acceptVisitor(this);
+        copy.cause = this.result;
+    }
     const parameters = exception.getParameters();
     parameters.acceptVisitor(this);
     copy.setParameters(this.result);

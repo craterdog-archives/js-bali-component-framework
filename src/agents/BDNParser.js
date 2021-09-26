@@ -87,7 +87,7 @@ const initializeParser = function(document, debug) {
 };
 
 const convertParseTree = function(antlrTree, debug) {
-    const visitor = new BDNVisitor(debug);
+    const visitor = new ParsingVisitor(debug);
     antlrTree.accept(visitor);
     const baliTree = visitor.result;
     return baliTree;
@@ -105,25 +105,25 @@ const convertParseTree = function(antlrTree, debug) {
 
 const EOL = '\n';  // the POSIX end of line character
 
-const BDNVisitor = function(debug) {
+const ParsingVisitor = function(debug) {
     grammar.DocumentVisitor.call(this);
     this.depth = 0;
     this.parameters = undefined;
     this.debug = debug || 0;
     return this;
 };
-BDNVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
-BDNVisitor.prototype.constructor = BDNVisitor;
+ParsingVisitor.prototype = Object.create(grammar.DocumentVisitor.prototype);
+ParsingVisitor.prototype.constructor = ParsingVisitor;
 
 
-BDNVisitor.prototype.getParameters = function() {
+ParsingVisitor.prototype.getParameters = function() {
     const parameters = this.parameters;
     this.parameters = undefined;  // must unset it so other values don't see it
     return parameters;
 };
 
 
-BDNVisitor.prototype.getIndentation = function() {
+ParsingVisitor.prototype.getIndentation = function() {
     var indentation = '';
     for (var i = 0; i < this.depth; i++) {
         indentation += '    ';
@@ -133,7 +133,7 @@ BDNVisitor.prototype.getIndentation = function() {
 
 
 // acceptClause: 'accept' expression
-BDNVisitor.prototype.visitAcceptClause = function(ctx) {
+ParsingVisitor.prototype.visitAcceptClause = function(ctx) {
     const node = new trees.Node('/bali/trees/AcceptClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
@@ -143,7 +143,7 @@ BDNVisitor.prototype.visitAcceptClause = function(ctx) {
 
 
 // angle: ANGLE
-BDNVisitor.prototype.visitAngle = function(ctx) {
+ParsingVisitor.prototype.visitAngle = function(ctx) {
     const parameters = this.getParameters();
     var units = '$radians';  // default value
     if (parameters) {
@@ -173,7 +173,7 @@ BDNVisitor.prototype.visitAngle = function(ctx) {
 // arguments:
 //     expression (',' expression)* |
 //     /* no expressions */
-BDNVisitor.prototype.visitArguments = function(ctx) {
+ParsingVisitor.prototype.visitArguments = function(ctx) {
     const node = new trees.Node('/bali/trees/Arguments', this.debug);
     const expressions = ctx.expression();
     this.depth++;
@@ -187,7 +187,7 @@ BDNVisitor.prototype.visitArguments = function(ctx) {
 
 
 // arithmeticExpression: expression operator=('*' | '/' | '//' | '+' | '-') expression
-BDNVisitor.prototype.visitArithmeticExpression = function(ctx) {
+ParsingVisitor.prototype.visitArithmeticExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ArithmeticExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -200,7 +200,7 @@ BDNVisitor.prototype.visitArithmeticExpression = function(ctx) {
 
 
 // association: element ':' expression
-BDNVisitor.prototype.visitAssociation = function(ctx) {
+ParsingVisitor.prototype.visitAssociation = function(ctx) {
     ctx.element().accept(this);
     const key = this.result;
     ctx.expression().accept(this);
@@ -211,7 +211,7 @@ BDNVisitor.prototype.visitAssociation = function(ctx) {
 
 
 // attribute: variable '[' indices ']'
-BDNVisitor.prototype.visitAttribute = function(ctx) {
+ParsingVisitor.prototype.visitAttribute = function(ctx) {
     const node = new trees.Node('/bali/trees/Attribute', this.debug);
     ctx.variable().accept(this);
     node.addItem(this.result);
@@ -222,7 +222,7 @@ BDNVisitor.prototype.visitAttribute = function(ctx) {
 
 
 // attributeExpression: expression '[' indices ']'
-BDNVisitor.prototype.visitAttributeExpression = function(ctx) {
+ParsingVisitor.prototype.visitAttributeExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/AttributeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -233,7 +233,7 @@ BDNVisitor.prototype.visitAttributeExpression = function(ctx) {
 
 
 // binary: BINARY
-BDNVisitor.prototype.visitBinary = function(ctx) {
+ParsingVisitor.prototype.visitBinary = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the "'" delimiters
     value = value.replace(/\s/g, '');  // strip out any whitespace
@@ -272,7 +272,7 @@ BDNVisitor.prototype.visitBinary = function(ctx) {
 
 
 // block: '{' code '}'
-BDNVisitor.prototype.visitBlock = function(ctx) {
+ParsingVisitor.prototype.visitBlock = function(ctx) {
     ctx.code().accept(this);
     const code = this.result;
     const node = new trees.Node('/bali/trees/Block', this.debug);
@@ -282,7 +282,7 @@ BDNVisitor.prototype.visitBlock = function(ctx) {
 
 
 // bulean: 'false' | 'true'
-BDNVisitor.prototype.visitBulean = function(ctx) {
+ParsingVisitor.prototype.visitBulean = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     value = (value === 'true') ? 1 : 0;
@@ -292,7 +292,7 @@ BDNVisitor.prototype.visitBulean = function(ctx) {
 
 
 // breakClause: 'break' 'loop'
-BDNVisitor.prototype.visitBreakClause = function(ctx) {
+ParsingVisitor.prototype.visitBreakClause = function(ctx) {
     const node = new trees.Node('/bali/trees/BreakClause', this.debug);
     this.result = node;
 };
@@ -302,7 +302,7 @@ BDNVisitor.prototype.visitBreakClause = function(ctx) {
 //     association (',' association)* |
 //     EOL (association EOL)* |
 //     ':' /* no associations */
-BDNVisitor.prototype.visitCatalog = function(ctx) {
+ParsingVisitor.prototype.visitCatalog = function(ctx) {
     const parameters = this.getParameters();
     const attributes = new collections.Catalog(undefined, this.debug);
     if (ctx.association) {
@@ -314,38 +314,49 @@ BDNVisitor.prototype.visitCatalog = function(ctx) {
         }, this);
         this.depth--;
     }
-    var component = attributes;
+    var component = attributes;  // assume the component is just a catalog
     if (parameters) {
-        const type = parameters.getAttribute('$type');
-        switch (type.toString()) {
-            case '/bali/abstractions/Exception/v1':
-                component = new abstractions.Exception(attributes);
-                break;
-            case '/bali/agents/CanonicalComparator/v1':
-                component = new CanonicalComparator(this.debug);
-                break;
-            case '/bali/agents/MergeSorter/v1':
-                const comparator = attributes.getAttribute('$comparator');
-                component = new MergeSorter(comparator, this.debug);
-                break;
-            case '/bali/collections/CollectionIterator/v1':
-            case '/bali/collections/RangeIterator/v1':
-            case '/bali/strings/StringIterator/v1':
-            case '/bali/trees/NodeIterator/v1':
-                const sequence = attributes.getAttribute('$sequence');
-                component = sequence.getIterator();
-                const slot = attributes.getAttribute('$slot');
-                component.toSlot(slot.toInteger());
-                break;
+        var type = parameters.getAttribute('$type');
+        if (type) {
+            type = type.toString();
+            switch (type) {
+                case '/bali/abstractions/Exception/v1':
+                    component = new abstractions.Exception(attributes);
+                    parameters.removeAttribute('$type');
+                    break;
+                case '/bali/agents/CanonicalComparator/v1':
+                    component = new CanonicalComparator(this.debug);
+                    parameters.removeAttribute('$type');
+                    break;
+                case '/bali/agents/MergeSorter/v1':
+                    const comparator = attributes.getAttribute('$comparator');
+                    component = new MergeSorter(comparator, this.debug);
+                    parameters.removeAttribute('$type');
+                    break;
+                case '/bali/collections/CollectionIterator/v1':
+                case '/bali/collections/RangeIterator/v1':
+                case '/bali/strings/StringIterator/v1':
+                case '/bali/trees/NodeIterator/v1':
+                    const sequence = attributes.getAttribute('$sequence');
+                    component = sequence.getIterator();
+                    const slot = attributes.getAttribute('$slot');
+                    component.toSlot(slot.toInteger());
+                    parameters.removeAttribute('$type');
+                    break;
+                default:
+                    // it's a typed catalog so leave it as is
+            }
+            if (!parameters.isEmpty()) component.setParameters(parameters);
+        } else {
+            component.setParameters(parameters);
         }
-        component.setParameters(parameters);
     }
     this.result = component;
 };
 
 
 // checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
-BDNVisitor.prototype.visitCheckoutClause = function(ctx) {
+ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     const node = new trees.Node('/bali/trees/CheckoutClause', this.debug);
     const expressions = ctx.expression();
     var index = 0;
@@ -365,7 +376,7 @@ BDNVisitor.prototype.visitCheckoutClause = function(ctx) {
 //     statement (';' statement)*   |
 //     EOL (statement EOL)* |
 //     /* no statements */
-BDNVisitor.prototype.visitCode = function(ctx) {
+ParsingVisitor.prototype.visitCode = function(ctx) {
     const node = new trees.Node('/bali/trees/Code', this.debug);
     if (ctx.statement) {
         const code = ctx.statement();
@@ -381,7 +392,7 @@ BDNVisitor.prototype.visitCode = function(ctx) {
 
 
 // comment: NOTE | COMMENT
-BDNVisitor.prototype.visitComment = function(ctx) {
+ParsingVisitor.prototype.visitComment = function(ctx) {
     const text = ctx.getText();
     const comment = new trees.Node('/bali/trees/Comment', this.debug);
     comment.text = text;
@@ -390,7 +401,7 @@ BDNVisitor.prototype.visitComment = function(ctx) {
 
 
 // comparisonExpression: expression operator=('<' | '=' | '>' | 'IS' | 'MATCHES') expression
-BDNVisitor.prototype.visitComparisonExpression = function(ctx) {
+ParsingVisitor.prototype.visitComparisonExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ComparisonExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -403,7 +414,7 @@ BDNVisitor.prototype.visitComparisonExpression = function(ctx) {
 
 
 // complementExpression: 'NOT' expression
-BDNVisitor.prototype.visitComplementExpression = function(ctx) {
+ParsingVisitor.prototype.visitComplementExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ComplementExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -419,7 +430,7 @@ BDNVisitor.prototype.visitComplementExpression = function(ctx) {
 //       are during its initialization.
 //       Also, the parameters object is an object rather than a catalog to avoid circular
 //       dependencies in the component class.
-BDNVisitor.prototype.visitComponent = function(ctx) {
+ParsingVisitor.prototype.visitComponent = function(ctx) {
     const parameters = ctx.parameters();
     if (parameters) {
         // this is a parameterized component so parse the parameters first
@@ -434,7 +445,7 @@ BDNVisitor.prototype.visitComponent = function(ctx) {
 
 
 // chainExpression: expression '&' expression
-BDNVisitor.prototype.visitChainExpression = function(ctx) {
+ParsingVisitor.prototype.visitChainExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ChainExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -446,14 +457,14 @@ BDNVisitor.prototype.visitChainExpression = function(ctx) {
 
 
 // continueClause: 'continue' 'loop'
-BDNVisitor.prototype.visitContinueClause = function(ctx) {
+ParsingVisitor.prototype.visitContinueClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ContinueClause', this.debug);
     this.result = node;
 };
 
 
 // defaultExpression: expression '?' expression
-BDNVisitor.prototype.visitDefaultExpression = function(ctx) {
+ParsingVisitor.prototype.visitDefaultExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/DefaultExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -465,7 +476,7 @@ BDNVisitor.prototype.visitDefaultExpression = function(ctx) {
 
 
 // dereferenceExpression: '@' expression
-BDNVisitor.prototype.visitDereferenceExpression = function(ctx) {
+ParsingVisitor.prototype.visitDereferenceExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/DereferenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -474,7 +485,7 @@ BDNVisitor.prototype.visitDereferenceExpression = function(ctx) {
 
 
 // discardClause: 'discard' expression
-BDNVisitor.prototype.visitDiscardClause = function(ctx) {
+ParsingVisitor.prototype.visitDiscardClause = function(ctx) {
     const node = new trees.Node('/bali/trees/DiscardClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -483,13 +494,13 @@ BDNVisitor.prototype.visitDiscardClause = function(ctx) {
 
 
 // document: component EOF
-BDNVisitor.prototype.visitDocument = function(ctx) {
+ParsingVisitor.prototype.visitDocument = function(ctx) {
     ctx.component().accept(this);
 };
 
 
 // duration: DURATION
-BDNVisitor.prototype.visitDuration = function(ctx) {
+ParsingVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '~'
     const duration = new elements.Duration(value, parameters, this.debug);
@@ -498,7 +509,7 @@ BDNVisitor.prototype.visitDuration = function(ctx) {
 
 
 // evaluateClause: (recipient operator=(':=' | '+=' | '-=' | '*='))? expression
-BDNVisitor.prototype.visitEvaluateClause = function(ctx) {
+ParsingVisitor.prototype.visitEvaluateClause = function(ctx) {
     const node = new trees.Node('/bali/trees/EvaluateClause', this.debug);
     const recipient = ctx.recipient();
     if (recipient) {
@@ -513,7 +524,7 @@ BDNVisitor.prototype.visitEvaluateClause = function(ctx) {
 
 
 // exponentialExpression: <assoc=right> expression '^' expression
-BDNVisitor.prototype.visitExponentialExpression = function(ctx) {
+ParsingVisitor.prototype.visitExponentialExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/ExponentialExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -525,7 +536,7 @@ BDNVisitor.prototype.visitExponentialExpression = function(ctx) {
 
 
 // factorialExpression: expression '!'
-BDNVisitor.prototype.visitFactorialExpression = function(ctx) {
+ParsingVisitor.prototype.visitFactorialExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/FactorialExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -534,7 +545,7 @@ BDNVisitor.prototype.visitFactorialExpression = function(ctx) {
 
 
 // funcxion: IDENTIFIER
-BDNVisitor.prototype.visitFuncxion = function(ctx) {
+ParsingVisitor.prototype.visitFuncxion = function(ctx) {
     const identifier = ctx.getText();
     const funcxion = new trees.Node('/bali/trees/Function', this.debug);
     funcxion.identifier = identifier;
@@ -543,7 +554,7 @@ BDNVisitor.prototype.visitFuncxion = function(ctx) {
 
 
 // functionExpression: function '(' arguments ')'
-BDNVisitor.prototype.visitFunctionExpression = function(ctx) {
+ParsingVisitor.prototype.visitFunctionExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/FunctionExpression', this.debug);
     ctx.funcxion().accept(this);
     node.addItem(this.result);
@@ -554,7 +565,7 @@ BDNVisitor.prototype.visitFunctionExpression = function(ctx) {
 
 
 // handleClause: 'handle' symbol (('with' block) | ('matching' expression 'with' block)+);
-BDNVisitor.prototype.visitHandleClause = function(ctx) {
+ParsingVisitor.prototype.visitHandleClause = function(ctx) {
     const node = new trees.Node('/bali/trees/HandleClause', this.debug);
     ctx.symbol().accept(this);
     node.addItem(this.result);
@@ -576,7 +587,7 @@ BDNVisitor.prototype.visitHandleClause = function(ctx) {
 
 
 // ifClause: 'if' expression 'then' block ('else' 'if' expression 'then' block)* ('else' block)?
-BDNVisitor.prototype.visitIfClause = function(ctx) {
+ParsingVisitor.prototype.visitIfClause = function(ctx) {
     const node = new trees.Node('/bali/trees/IfClause', this.debug);
     const expressions = ctx.expression();
     const blocks = ctx.block();
@@ -596,7 +607,7 @@ BDNVisitor.prototype.visitIfClause = function(ctx) {
 
 
 // indices: expression (',' expression)*
-BDNVisitor.prototype.visitIndices = function(ctx) {
+ParsingVisitor.prototype.visitIndices = function(ctx) {
     const node = new trees.Node('/bali/trees/Indices', this.debug);
     const expressions = ctx.expression();
     this.depth++;
@@ -610,7 +621,7 @@ BDNVisitor.prototype.visitIndices = function(ctx) {
 
 
 // inversionExpression: operator=('-' | '/' | '*') expression
-BDNVisitor.prototype.visitInversionExpression = function(ctx) {
+ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/InversionExpression', this.debug);
     node.operator = ctx.operator.text;
     ctx.expression().accept(this);
@@ -623,7 +634,7 @@ BDNVisitor.prototype.visitInversionExpression = function(ctx) {
 //     expression (',' expression)* |
 //     EOL (expression EOL)* |
 //     /* no items */
-BDNVisitor.prototype.visitList = function(ctx) {
+ParsingVisitor.prototype.visitList = function(ctx) {
     var type = 'List';
     const parameters = this.getParameters();
     var name;
@@ -673,7 +684,7 @@ BDNVisitor.prototype.visitList = function(ctx) {
 
 
 // logicalExpression: expression operator=('AND' | 'SANS' | 'XOR' | 'OR') expression
-BDNVisitor.prototype.visitLogicalExpression = function(ctx) {
+ParsingVisitor.prototype.visitLogicalExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/LogicalExpression', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -686,7 +697,7 @@ BDNVisitor.prototype.visitLogicalExpression = function(ctx) {
 
 
 // magnitudeExpression: '|' expression '|'
-BDNVisitor.prototype.visitMagnitudeExpression = function(ctx) {
+ParsingVisitor.prototype.visitMagnitudeExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/MagnitudeExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -695,7 +706,7 @@ BDNVisitor.prototype.visitMagnitudeExpression = function(ctx) {
 
 
 // message: IDENTIFIER
-BDNVisitor.prototype.visitMessage = function(ctx) {
+ParsingVisitor.prototype.visitMessage = function(ctx) {
     const identifier = ctx.getText();
     const message = new trees.Node('/bali/trees/Message', this.debug);
     message.identifier = identifier;
@@ -704,7 +715,7 @@ BDNVisitor.prototype.visitMessage = function(ctx) {
 
 
 // messageExpression: expression operator=('.' | '<-') message '(' arguments ')'
-BDNVisitor.prototype.visitMessageExpression = function(ctx) {
+ParsingVisitor.prototype.visitMessageExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/MessageExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -718,7 +729,7 @@ BDNVisitor.prototype.visitMessageExpression = function(ctx) {
 
 
 // moment: MOMENT
-BDNVisitor.prototype.visitMoment = function(ctx) {
+ParsingVisitor.prototype.visitMoment = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1, -1);  // remove the '<' and '>' delimiters
     const moment = new elements.Moment(value, parameters, this.debug);
@@ -727,7 +738,7 @@ BDNVisitor.prototype.visitMoment = function(ctx) {
 
 
 // name: NAME
-BDNVisitor.prototype.visitName = function(ctx) {
+ParsingVisitor.prototype.visitName = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().split('/').slice(1);  // extract the parts of the name
     const name = new strings.Name(value, parameters, this.debug);
@@ -742,7 +753,7 @@ BDNVisitor.prototype.visitName = function(ctx) {
 //    real |
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
-BDNVisitor.prototype.visitNumber = function(ctx) {
+ParsingVisitor.prototype.visitNumber = function(ctx) {
     const parameters = this.getParameters();
     var real = ctx.real();
     if (real) {
@@ -774,7 +785,7 @@ BDNVisitor.prototype.visitNumber = function(ctx) {
 
 
 // parameters: '(' catalog ')'
-BDNVisitor.prototype.visitParameters = function(ctx) {
+ParsingVisitor.prototype.visitParameters = function(ctx) {
     // process the catalog
     ctx.catalog().accept(this);
 
@@ -792,7 +803,7 @@ BDNVisitor.prototype.visitParameters = function(ctx) {
 
 
 // pattern: 'none' | REGEX | 'any'
-BDNVisitor.prototype.visitPattern = function(ctx) {
+ParsingVisitor.prototype.visitPattern = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     switch (value) {
@@ -812,7 +823,7 @@ BDNVisitor.prototype.visitPattern = function(ctx) {
 
 
 // percentage: PERCENTAGE
-BDNVisitor.prototype.visitPercentage = function(ctx) {
+ParsingVisitor.prototype.visitPercentage = function(ctx) {
     const parameters = this.getParameters();
     const value = literalToNumber(ctx.getText().slice(0, -1));  // remove the trailing '%'
     const percentage = new elements.Percentage(value, parameters, this.debug);
@@ -821,7 +832,7 @@ BDNVisitor.prototype.visitPercentage = function(ctx) {
 
 
 // postClause: 'post' expression 'to' expression
-BDNVisitor.prototype.visitPostClause = function(ctx) {
+ParsingVisitor.prototype.visitPostClause = function(ctx) {
     const node = new trees.Node('/bali/trees/PostClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -833,7 +844,7 @@ BDNVisitor.prototype.visitPostClause = function(ctx) {
 
 
 // precedenceExpression: '(' expression ')'
-BDNVisitor.prototype.visitPrecedenceExpression = function(ctx) {
+ParsingVisitor.prototype.visitPrecedenceExpression = function(ctx) {
     const node = new trees.Node('/bali/trees/PrecedenceExpression', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -842,7 +853,7 @@ BDNVisitor.prototype.visitPrecedenceExpression = function(ctx) {
 
 
 // probability: FRACTION | '1.'
-BDNVisitor.prototype.visitProbability = function(ctx) {
+ParsingVisitor.prototype.visitProbability = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText();
     if (value === '1.') {
@@ -856,7 +867,7 @@ BDNVisitor.prototype.visitProbability = function(ctx) {
 
 
 // procedure: '{' code '}'
-BDNVisitor.prototype.visitProcedure = function(ctx) {
+ParsingVisitor.prototype.visitProcedure = function(ctx) {
     const parameters = this.getParameters();
     ctx.code().accept(this);
     const code = this.result;
@@ -866,7 +877,7 @@ BDNVisitor.prototype.visitProcedure = function(ctx) {
 
 
 // publishClause: 'publish' expression
-BDNVisitor.prototype.visitPublishClause = function(ctx) {
+ParsingVisitor.prototype.visitPublishClause = function(ctx) {
     const node = new trees.Node('/bali/trees/PublishClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -875,7 +886,7 @@ BDNVisitor.prototype.visitPublishClause = function(ctx) {
 
 
 // range: expression? connector=('<..<' | '<..' | '..<' | '..') expression?
-BDNVisitor.prototype.visitRange = function(ctx) {
+ParsingVisitor.prototype.visitRange = function(ctx) {
     var first, last;
     const parameters = this.getParameters();
     const connector = ctx.connector.text;
@@ -905,7 +916,7 @@ BDNVisitor.prototype.visitRange = function(ctx) {
 
 
 // resource: RESOURCE
-BDNVisitor.prototype.visitResource = function(ctx) {
+ParsingVisitor.prototype.visitResource = function(ctx) {
     const parameters = this.getParameters();
     const value = new URL(ctx.getText().slice(1, -1));  // remove the '<' and '>' delimiters
     const resource = new elements.Resource(value, parameters, this.debug);
@@ -914,7 +925,7 @@ BDNVisitor.prototype.visitResource = function(ctx) {
 
 
 // rejectClause: 'reject' expression
-BDNVisitor.prototype.visitRejectClause = function(ctx) {
+ParsingVisitor.prototype.visitRejectClause = function(ctx) {
     const node = new trees.Node('/bali/trees/RejectClause', this.debug);
     const message = ctx.expression();
     message.accept(this);
@@ -924,7 +935,7 @@ BDNVisitor.prototype.visitRejectClause = function(ctx) {
 
 
 // retrieveClause: 'retrieve' recipient 'from' expression
-BDNVisitor.prototype.visitRetrieveClause = function(ctx) {
+ParsingVisitor.prototype.visitRetrieveClause = function(ctx) {
     const node = new trees.Node('/bali/trees/RetrieveClause', this.debug);
     ctx.recipient().accept(this);
     node.addItem(this.result);
@@ -935,7 +946,7 @@ BDNVisitor.prototype.visitRetrieveClause = function(ctx) {
 
 
 // returnClause: 'return' expression?
-BDNVisitor.prototype.visitReturnClause = function(ctx) {
+ParsingVisitor.prototype.visitReturnClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ReturnClause', this.debug);
     const expression = ctx.expression();
     if (expression) {
@@ -947,7 +958,7 @@ BDNVisitor.prototype.visitReturnClause = function(ctx) {
 
 
 // saveClause: 'save' expression ('as' recipient)?
-BDNVisitor.prototype.visitSaveClause = function(ctx) {
+ParsingVisitor.prototype.visitSaveClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SaveClause', this.debug);
     const document = ctx.expression();
     document.accept(this);
@@ -962,7 +973,7 @@ BDNVisitor.prototype.visitSaveClause = function(ctx) {
 
 
 // selectClause: 'select' expression 'from' (expression 'do' block)+ ('else' block)?
-BDNVisitor.prototype.visitSelectClause = function(ctx) {
+ParsingVisitor.prototype.visitSelectClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SelectClause', this.debug);
     var expressions = ctx.expression();
     const selector = expressions[0];
@@ -986,7 +997,7 @@ BDNVisitor.prototype.visitSelectClause = function(ctx) {
 
 
 // signClause: 'sign' expression 'as' expression
-BDNVisitor.prototype.visitSignClause = function(ctx) {
+ParsingVisitor.prototype.visitSignClause = function(ctx) {
     const node = new trees.Node('/bali/trees/SignClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
@@ -998,7 +1009,7 @@ BDNVisitor.prototype.visitSignClause = function(ctx) {
 
 
 // statement: comment | mainClause handleClause?
-BDNVisitor.prototype.visitStatement = function(ctx) {
+ParsingVisitor.prototype.visitStatement = function(ctx) {
     const node = new trees.Node('/bali/trees/Statement', this.debug);
     const comment = ctx.comment();
     if (comment) {
@@ -1018,7 +1029,7 @@ BDNVisitor.prototype.visitStatement = function(ctx) {
 
 
 // symbol: SYMBOL
-BDNVisitor.prototype.visitSymbol = function(ctx) {
+ParsingVisitor.prototype.visitSymbol = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '$'
     const symbol = new strings.Symbol(value, parameters, this.debug);
@@ -1027,7 +1038,7 @@ BDNVisitor.prototype.visitSymbol = function(ctx) {
 
 
 // tag: TAG
-BDNVisitor.prototype.visitTag = function(ctx) {
+ParsingVisitor.prototype.visitTag = function(ctx) {
     const parameters = this.getParameters();
     const value = ctx.getText().slice(1);  // remove the leading '#'
     const tag = new elements.Tag(value, parameters, this.debug);
@@ -1036,7 +1047,7 @@ BDNVisitor.prototype.visitTag = function(ctx) {
 
 
 // text: TEXT | NARRATIVE
-BDNVisitor.prototype.visitText = function(ctx) {
+ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
     this.depth++;
@@ -1053,7 +1064,7 @@ BDNVisitor.prototype.visitText = function(ctx) {
 
 
 // throwClause: 'throw' expression
-BDNVisitor.prototype.visitThrowClause = function(ctx) {
+ParsingVisitor.prototype.visitThrowClause = function(ctx) {
     const node = new trees.Node('/bali/trees/ThrowClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -1062,7 +1073,7 @@ BDNVisitor.prototype.visitThrowClause = function(ctx) {
 
 
 // variable: IDENTIFIER
-BDNVisitor.prototype.visitVariable = function(ctx) {
+ParsingVisitor.prototype.visitVariable = function(ctx) {
     const identifier = ctx.getText();
     const variable = new trees.Node('/bali/trees/Variable', this.debug);
     variable.identifier = identifier;
@@ -1071,7 +1082,7 @@ BDNVisitor.prototype.visitVariable = function(ctx) {
 
 
 // version: VERSION
-BDNVisitor.prototype.visitVersion = function(ctx) {
+ParsingVisitor.prototype.visitVersion = function(ctx) {
     const parameters = this.getParameters();
     const levels = ctx.getText().slice(1).split('.');  // pull out the version level strings
     const value = [];
@@ -1084,7 +1095,7 @@ BDNVisitor.prototype.visitVersion = function(ctx) {
 
 
 // whileClause: 'while' expression 'do' block
-BDNVisitor.prototype.visitWhileClause = function(ctx) {
+ParsingVisitor.prototype.visitWhileClause = function(ctx) {
     const node = new trees.Node('/bali/trees/WhileClause', this.debug);
     ctx.expression().accept(this);
     node.addItem(this.result);
@@ -1095,7 +1106,7 @@ BDNVisitor.prototype.visitWhileClause = function(ctx) {
 
 
 // withClause: 'with' ('each' symbol 'in')? expression 'do' block
-BDNVisitor.prototype.visitWithClause = function(ctx) {
+ParsingVisitor.prototype.visitWithClause = function(ctx) {
     const node = new trees.Node('/bali/trees/WithClause', this.debug);
     const symbol = ctx.symbol();
     if (symbol) {

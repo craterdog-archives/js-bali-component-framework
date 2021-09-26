@@ -36,6 +36,15 @@ const List = require('./List').List;
  */
 const Catalog = function(parameters, debug) {
     const ancestry = [];
+    if (parameters) {
+        var type;
+        if (parameters.isComponent && parameters.isType(moduleName)) {
+            type = parameters.getAttribute('$type');
+        } else {
+            type = parameters['$type'];
+        }
+        if (type) ancestry.push(type.toString().split('/').slice(0, -1).join('/'));  // remove the version string
+    }
     ancestry.push(moduleName);
     abstractions.Collection.call(
         this,
