@@ -256,15 +256,15 @@ Component.validateArgument = function(moduleName, procedureName, argumentName, a
 
     // validate the argument
     const actualType = Component.canonicalType(argumentValue);
-    if (allowedTypes.indexOf(actualType) > -1) return true;
     if (argumentValue && argumentValue.isComponent) {
         for (const allowedType of allowedTypes) {
-            if (argumentValue.isType(allowedType)) return true;
+            if (argumentValue.isType(allowedType)) return;
         }
         for (const iface of argumentValue.getInterfaces()) {
-            if (allowedTypes.indexOf(iface) > -1) return true;
+            if (allowedTypes.indexOf(iface) > -1) return;
         }
-        return false;
+    } else {
+        if (allowedTypes.indexOf(actualType) > -1) return;
     }
 
     // the argument type is invalid
