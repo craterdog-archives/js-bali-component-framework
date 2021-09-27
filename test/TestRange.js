@@ -93,10 +93,14 @@ describe('Bali Nebula™ Component Framework - Range', function() {
                     stack.addItem(6);
                 }
             ).to.throw(bali.Exception);
-            const iterator = range.getIterator();
             expect(range.isEmpty()).to.equal(false);
             expect(range.toBoolean()).to.equal(true);
+            const iterator = range.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            iterator.toStart();
             expect(bali.source(iterator)).to.exist;
             expect(comparator.ranking(range, bali.range.effective(range, debug))).to.equal(0);
         });

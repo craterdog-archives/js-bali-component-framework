@@ -38,6 +38,10 @@ describe('Bali Nebula™ Component Framework - Node', function() {
             expect(parent.getIndex(child)).to.equal(1);
             const iterator = parent.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            iterator.toStart();
             expect(iterator.hasNext()).to.equal(true);
             expect(iterator.hasPrevious()).to.equal(false);
             expect(iterator.getNext()).to.exist;

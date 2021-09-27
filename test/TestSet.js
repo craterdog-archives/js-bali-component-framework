@@ -31,6 +31,10 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(set.getHash()).to.exist;
             const iterator = set.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            iterator.toStart();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             expect(bali.source(iterator)).to.exist;

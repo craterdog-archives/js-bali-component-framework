@@ -159,6 +159,9 @@ const StringIterator = function(element, debug) {
                 '/javascript/Number'
             ]);
         }
+        if (newSlot > size) newSlot = size;
+        if (newSlot < -size) newSlot = -size;
+        if (newSlot < 0) newSlot = newSlot + size + 1;
         slot = newSlot;
     };
 

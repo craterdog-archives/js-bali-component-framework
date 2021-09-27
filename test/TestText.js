@@ -84,6 +84,9 @@ describe('Bali Nebula™ Component Framework - Text', function() {
             const text = bali.text('Hello World!');
             const iterator = text.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

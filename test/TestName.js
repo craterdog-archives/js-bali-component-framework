@@ -87,6 +87,9 @@ describe('Bali Nebula™ Component Framework - Name', function() {
             const name = bali.name(['foo', 'bar', 'v1.2.3']);
             const iterator = name.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

@@ -31,6 +31,10 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(queue.getHash()).to.exist;
             const iterator = queue.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
+            iterator.toStart();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             expect(bali.source(iterator)).to.exist;

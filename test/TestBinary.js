@@ -130,6 +130,9 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
             const binary = bali.binary(generator.generateBytes(4));
             const iterator = binary.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);

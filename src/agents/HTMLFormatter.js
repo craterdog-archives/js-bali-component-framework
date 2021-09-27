@@ -341,7 +341,8 @@ FormattingVisitor.prototype.visitIterator = function(iterator) {
     this.result += this.getNewline();
     this.result += '$slot: ';
     const slot = iterator.getSlot();
-    slot.acceptVisitor(this);
+    this.result += slot;
+    this.result += this.getNewline();
     this.result += '$sequence: ';
     const sequence = iterator.getSequence();
     sequence.acceptVisitor(this);

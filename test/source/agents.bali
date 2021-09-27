@@ -44,7 +44,7 @@
         $sequence: [1..5]
     ]($type: /bali/collections/RangeIterator/v1)
     $string: [
-        $slot: 2
+        $slot: 19
         $sequence: "This is a string..."
     ]($type: /bali/abstractions/StringIterator/v1)
 ]

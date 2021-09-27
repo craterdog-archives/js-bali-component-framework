@@ -341,7 +341,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
                     const sequence = catalog.getAttribute('$sequence');
                     component = sequence.getIterator();
                     const slot = catalog.getAttribute('$slot');
-                    component.toSlot(slot);
+                    component.toSlot(slot.toInteger());
                     break;
                 default:
                     // it's a TYPED catalog so leave it as is

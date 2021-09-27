@@ -197,6 +197,11 @@ const NodeIterator = function(node, debug) {
     };
 
     this.toSlot = function(newSlot) {
+        if (this.debug > 1) {
+            this.validateArgument('$toSlot', '$newSlot', newSlot, [
+                '/javascript/Number'
+            ]);
+        }
         if (newSlot > size) newSlot = size;
         if (newSlot < -size) newSlot = -size;
         if (newSlot < 0) newSlot = newSlot + size + 1;

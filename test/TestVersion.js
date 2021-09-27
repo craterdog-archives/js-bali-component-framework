@@ -83,6 +83,9 @@ describe('Bali Nebula™ Component Framework - Version', function() {
             const version = bali.version([1, 2, 3]);
             const iterator = version.getIterator();
             expect(iterator).to.exist;
+            iterator.toSlot(-1);
+            expect(iterator.hasNext() === false);
+            expect(iterator.hasPrevious() === true);
             iterator.toEnd();
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === true);
