@@ -135,42 +135,37 @@ Collection.prototype.addItem = function(item) {
  * This method adds the specified sequence of items to the collection.
  *
  * @param {Array|Sequential} items The items to be added to this collection.
- * @returns {Number} The number of items that were successfully added to the collection.
  */
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
         this.validateArgument('$addItems', '$items', items, [
-            '/javascript/Undefined',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
-    items = items || undefined;  // normalize nulls to undefined
-    if (items) {
-        if (Array.isArray(items)) {
-            items.forEach(function(item) {
-                item = this.componentize(item);
-                if (item.isType(associationModuleName)) {
-                    item = item.getValue();
-                }
-                this.addItem(item);
-            }, this);
-        } else if (items.supportsInterface('/bali/interfaces/Sequential')) {
-            const iterator = items.getIterator();
-            while (iterator.hasNext()) {
-                var item = iterator.getNext();
-                item = this.componentize(item);
-                if (item.isType(associationModuleName)) {
-                    item = item.getValue();
-                }
-                this.addItem(item);
+    if (Array.isArray(items)) {
+        items.forEach(function(item) {
+            item = this.componentize(item);
+            if (item.isType(associationModuleName)) {
+                item = item.getValue();
             }
-        } else if (typeof items === 'object') {
-            const keys = Object.keys(items);
-            keys.forEach(function(key) {
-                this.addItem(items[key]);
-            }, this);
+            this.addItem(item);
+        }, this);
+    } else if (items.isComponent && items.supportsInterface('/bali/interfaces/Sequential')) {
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            var item = iterator.getNext();
+            item = this.componentize(item);
+            if (item.isType(associationModuleName)) {
+                item = item.getValue();
+            }
+            this.addItem(item);
         }
+    } else if (typeof items === 'object') {
+        const keys = Object.keys(items);
+        keys.forEach(function(key) {
+            this.addItem(items[key]);
+        }, this);
     }
 };
 
