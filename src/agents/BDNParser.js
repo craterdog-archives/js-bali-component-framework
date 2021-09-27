@@ -329,11 +329,11 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
                     component = new abstractions.Exception(catalog.toObject(), undefined, this.debug);
                     break;
                 case '/bali/agents/CanonicalComparator/v1':
-                    component = new CanonicalComparator(this.debug);
+                    component = new agents.CanonicalComparator(this.debug);
                     break;
                 case '/bali/agents/MergeSorter/v1':
                     const comparator = catalog.getAttribute('$comparator');
-                    component = new MergeSorter(comparator, this.debug);
+                    component = new agents.MergeSorter(comparator, this.debug);
                     break;
                 case '/bali/abstractions/CollectionIterator/v1':
                 case '/bali/collections/RangeIterator/v1':

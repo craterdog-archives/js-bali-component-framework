@@ -112,13 +112,6 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(document).to.exist;
             var component = bali.component(document);
             expect(component).to.exist;
-            /*
-            const comparator = component.getAttribute('$comparator');
-            expect(comparator.getType() === '/bali/agents/CanonicalComparator').to.equal(true);
-            const sorter = component.getAttribute('$sorter');
-            expect(sorter.getType() === '/bali/agents/MergeSorter').to.equal(true);
-            expect(bali.areEqual(comparator, sorter.getComparator())).to.equal(true);
-            */
             const copy = bali.duplicate(component);
             expect(copy).to.exist;
             expect(component.getHash()).to.equal(copy.getHash());

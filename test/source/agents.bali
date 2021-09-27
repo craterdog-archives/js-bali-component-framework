@@ -1,12 +1,10 @@
 [
     $single: [
-        $exception: [
-            $module: /bali/abstractions/Collection
-            $procedure: $toArray
-            $exception: $abstractMethod
-            $text: "An abstract method must be implemented by a subclass."
-        ]($type: /bali/abstractions/Exception/v1)
-    ]
+        $module: /bali/abstractions/Collection
+        $procedure: $toArray
+        $exception: $abstractMethod
+        $text: "An abstract method must be implemented by a subclass."
+    ]($type: /bali/abstractions/Exception/v1)
     $nested: [
         $foo: "bar"
         $trace: [
@@ -28,10 +26,10 @@
             "
         ]
     ]($type: /bali/abstractions/Exception/v1)
-    $comparable: [:]($type: /bali/abstractions/Comparable/v1)
-    $sortable: [
-        $comparable: [:]($type: /bali/abstractions/Comparable/v1)
-    ]($type: /bali/abstractions/Sortable/v1)
+    $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
+    $sorter: [
+        $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
+    ]($type: /bali/agents/MergeSorter/v1)
     $collection: [
         $slot: 0
         $sequence: [
@@ -46,7 +44,7 @@
         $sequence: [1..5]
     ]($type: /bali/collections/RangeIterator/v1)
     $string: [
-        $slot: -1
+        $slot: 2
         $sequence: "This is a string..."
     ]($type: /bali/abstractions/StringIterator/v1)
 ]
