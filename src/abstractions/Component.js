@@ -355,6 +355,7 @@ const Exception = function(attributes, cause, debug) {
 
     // make it look like we inherit from both Error and Component
     this.message = attributes.getAttribute('$text') || 'An unexpected exception occurred.';
+    this.message = this.message.toString();  // in case it is a text component
     this.cause = cause || undefined;
     Component.call(
         this,
@@ -394,33 +395,20 @@ const Exception = function(attributes, cause, debug) {
     }
 
     // process the cause if necessary
-    cause = cause || undefined;
-    if (cause) {
-        if (cause.isComponent) {
-            // the cause is a bali exception so migrate its trace upward
-            var trace = cause.getAttribute('$trace');
-            if (trace) {
-                cause.getAttributes().removeAttribute('$trace');
-                trace.insertItem(1, cause);
-            } else {
-                trace = [];
-                trace.push(cause);
-            }
-            attributes.setAttribute('$trace', trace);
+    if (this.cause) {
+        if (this.cause.isComponent) {
+            attributes.setAttribute('$cause', this.cause);
         } else {
-            // the cause is a javascript exception, extract the actual stack trace
-            try {
-                // turn the raw stack trace into a text narrative
-                const stack = formatStack(cause.stack);
-                attributes.setAttribute('$trace', [ EOL + stack + EOL ]);
-            } catch (ignore) {
-                // a stack trace is not supported on this platform
-                if (this.debug > 0) console.log('Unable to generate a stack trace:\n' + ignore);
-            }
+            const stack = formatStack(this.cause.stack);
+            attributes.setAttribute('$cause', [ '"' + EOL + stack + EOL + '"' ]);
         }
     } else {
         // make it look like an Error object
-        this.stack = formatStack(Error().stack);
+        this.cause = attributes.getAttribute('$cause');
+        if (!this.cause) {
+            this.stack = formatStack(Error().stack);
+            attributes.setAttribute('$cause', [ '"' + EOL + this.stack + EOL + '"' ]);
+        }
     }
 
     if (this.debug > 0) console.error(this.toString());

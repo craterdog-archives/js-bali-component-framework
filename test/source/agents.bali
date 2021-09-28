@@ -1,19 +1,12 @@
 [
     $single: [
-        $module: /bali/abstractions/Collection
-        $procedure: $toArray
-        $exception: $abstractMethod
-        $text: "An abstract method must be implemented by a subclass."
-    ]($type: /bali/abstractions/Exception/v1)
-    $nested: [
         $foo: "bar"
-        $trace: [
-            [
-                $cas: "baw"
-            ]($type: /bali/abstractions/Exception/v1)
+        $cause: [
             "
-                Error: A raw error...
-                at Context.<anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:89)
+                Error
+                at new Exception (/Users/derk/Development/..c/abstractions/Component.js:412:38)
+                at Object.exception (/Users/derk/Developme..omponent-framework/index.js:369:16)
+                at Context.<anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:32)
                 at callFn (/Users/derk/Development/craterd..dules/mocha/lib/runnable.js:366:21)
                 at Test.Runnable.run (/Users/derk/Developm..odules/mocha/lib/runnable.js:354:5)
                 at Runner.runTest (/Users/derk/Development..modules/mocha/lib/runner.js:681:10)
@@ -21,10 +14,29 @@
                 at next (/Users/derk/Development/craterdog..modules/mocha/lib/runner.js:596:14)
                 at /Users/derk/Development/craterdog-bali/..e_modules/mocha/lib/runner.js:606:7
                 at next (/Users/derk/Development/craterdog..modules/mocha/lib/runner.js:489:14)
-                at Immediate._onImmediate (/Users/derk/Dev.._modules/mocha/lib/runner.js:574:5)
-                at processImmediate (node:internal/timers:464:21)
             "
         ]
+    ]($type: /bali/abstractions/Exception/v1)
+    $nested: [
+        $foo: "bar"
+        $cause: [
+            $caz: "baw"
+            $cause: [
+                "
+                    Error: Raw error...
+                    at Context.<anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:91)
+                    at callFn (/Users/derk/Development/craterd..dules/mocha/lib/runnable.js:366:21)
+                    at Test.Runnable.run (/Users/derk/Developm..odules/mocha/lib/runnable.js:354:5)
+                    at Runner.runTest (/Users/derk/Development..modules/mocha/lib/runner.js:681:10)
+                    at /Users/derk/Development/craterdog-bali/.._modules/mocha/lib/runner.js:804:12
+                    at next (/Users/derk/Development/craterdog..modules/mocha/lib/runner.js:596:14)
+                    at /Users/derk/Development/craterdog-bali/..e_modules/mocha/lib/runner.js:606:7
+                    at next (/Users/derk/Development/craterdog..modules/mocha/lib/runner.js:489:14)
+                    at Immediate._onImmediate (/Users/derk/Dev.._modules/mocha/lib/runner.js:574:5)
+                    at processImmediate (node:internal/timers:464:21)
+                "
+            ]
+        ]($type: /bali/abstractions/Exception/v1)
     ]($type: /bali/abstractions/Exception/v1)
     $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
     $sorter: [
