@@ -63,7 +63,7 @@ const Iterator = function(ancestry, sequence, debug) {
             $module: moduleName,
             $procedure: '$getSlot',
             $exception: '$abstractMethod',
-            $text: 'This abstract method must be implemented by each subclass.'
+            $text: '"This abstract method must be implemented by each subclass."'
         }, undefined, this.debug);
         throw exception;
     };
@@ -85,7 +85,7 @@ Iterator.prototype.toSlot = function(slot) {
         $module: moduleName,
         $procedure: '$toStart',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -118,7 +118,7 @@ Iterator.prototype.hasPrevious = function() {
         $module: moduleName,
         $procedure: '$hasPrevious',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -134,7 +134,7 @@ Iterator.prototype.getPrevious = function() {
         $module: moduleName,
         $procedure: '$getPrevious',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -151,7 +151,7 @@ Iterator.prototype.hasNext = function() {
         $module: moduleName,
         $procedure: '$hasNext',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -167,7 +167,7 @@ Iterator.prototype.getNext = function() {
         $module: moduleName,
         $procedure: '$getNext',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

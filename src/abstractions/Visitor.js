@@ -493,7 +493,7 @@ Visitor.prototype.visitNodeIterator = function(iterator) {
         $module: moduleName,
         $procedure: '$visitNodeIterator',
         $exception: '$notSupported',
-        $text: 'This method is not supported for node iterators.'
+        $text: '"This method is not supported for node iterators."'
     }, undefined, this.debug);
     throw exception;
 };

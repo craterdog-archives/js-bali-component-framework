@@ -286,7 +286,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
         $exception: '$invalidParameter',
         $component: component,
         $parameter: pattern,
-        $text: 'An invalid pattern was passed to match.'
+        $text: '"An invalid pattern was passed to match."'
     }, undefined, this.debug);
     throw exception;
 };

@@ -63,7 +63,7 @@ const Bulean = function(value, parameters, debug) {
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
                     $parameter: value,
-                    $text: 'An invalid numeric value was passed to the constructor.'
+                    $text: '"An invalid numeric value was passed to the constructor."'
                 }, undefined, this.debug);
                 throw exception;
             }
@@ -76,7 +76,7 @@ const Bulean = function(value, parameters, debug) {
                     $procedure: '$Boolean',
                     $exception: '$invalidParameter',
                     $parameter: value,
-                    $text: 'An invalid string value was passed to the constructor.'
+                    $text: '"An invalid string value was passed to the constructor."'
                 }, undefined, this.debug);
                 throw exception;
             }
@@ -87,7 +87,7 @@ const Bulean = function(value, parameters, debug) {
                 $procedure: '$Boolean',
                 $exception: '$invalidParameter',
                 $parameter: value,
-                $text: 'An invalid boolean value was passed to the constructor.'
+                $text: '"An invalid boolean value was passed to the constructor."'
             }, undefined, this.debug);
             throw exception;
     }

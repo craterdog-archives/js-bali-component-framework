@@ -53,7 +53,7 @@ const Version = function(value, parameters, debug) {
             $procedure: '$version',
             $exception: '$invalidParameter',
             $parameter: value,
-            $text: 'An invalid version value was passed to the constructor.'
+            $text: '"An invalid version value was passed to the constructor."'
         }, undefined, this.debug);
         throw exception;
     }

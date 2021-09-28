@@ -53,7 +53,7 @@ Duplicator.prototype.duplicateComponent = function(component) {
         $module: moduleName,
         $procedure: '$duplicateComponent',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

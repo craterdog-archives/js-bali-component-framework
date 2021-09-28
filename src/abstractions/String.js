@@ -79,7 +79,7 @@ Stryng.prototype.getSize = function() {
         $module: moduleName,
         $procedure: '$getSize',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -108,7 +108,7 @@ Stryng.prototype.getItem = function(index) {
         $module: moduleName,
         $procedure: '$getItem',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -126,7 +126,7 @@ Stryng.prototype.getItems = function(range) {
         $module: moduleName,
         $procedure: '$getItems',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

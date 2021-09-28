@@ -69,7 +69,7 @@ Comparator.prototype.ranking = function(first, second) {
         $module: moduleName,
         $procedure: '$rank',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -94,7 +94,7 @@ Comparator.prototype.doesMatch = function(component, pattern) {
         $module: moduleName,
         $procedure: '$doesMatch',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

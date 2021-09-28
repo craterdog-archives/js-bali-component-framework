@@ -160,7 +160,7 @@ ParsingVisitor.prototype.visitAngle = function(ctx) {
                 $procedure: '$visitAngle',
                 $exception: '$invalidUnits',
                 $units: units,
-                $text: 'An invalid unit was specified for an angle.'
+                $text: '"An invalid unit was specified for an angle."'
             }, undefined, this.debug);
             throw exception;
     }
@@ -262,7 +262,7 @@ ParsingVisitor.prototype.visitBinary = function(ctx) {
                 $procedure: '$visitBinary',
                 $exception: '$invalidFormat',
                 $encoding: encoding,
-                $text: 'An invalid encoding format was used for a binary string.'
+                $text: '"An invalid encoding format was used for a binary string."'
             }, undefined, this.debug);
             throw exception;
     }
@@ -664,7 +664,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
                 $procedure: '$visitList',
                 $exception: '$invalidType',
                 $type: type,
-                $text: 'An invalid collection type was specified in the parameters.'
+                $text: '"An invalid collection type was specified in the parameters."'
             }, undefined, this.debug);
             throw exception;
     }
@@ -793,7 +793,7 @@ ParsingVisitor.prototype.visitParameters = function(ctx) {
             $module: moduleName,
             $procedure: '$visitParameters',
             $exception: '$noParameters',
-            $text: 'A parameter list must contain at least one association.'
+            $text: '"A parameter list must contain at least one association."'
         }, undefined, this.debug);
         throw exception;
     }
@@ -1151,7 +1151,7 @@ CustomErrorStrategy.prototype.recover = function(recognizer, cause) {
         $module: moduleName,
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
-        $text: cause.toString()
+        $text: new strings.Text(EOL + cause.toString() + EOL, undefined, this.debug)
     }, cause, this.debug);
     throw exception;
 };
@@ -1197,7 +1197,7 @@ CustomErrorListener.prototype.syntaxError = function(recognizer, offendingToken,
         $module: moduleName,
         $procedure: '$parseBDN',
         $exception: '$syntaxError',
-        $text: new strings.Text(message, undefined, this.debug)  // must be converted to text explicitly to avoid infinite loop!
+        $text: new strings.Text(message, undefined, this.debug)
     }, undefined, this.debug);
 
     // stop the processing

@@ -51,7 +51,7 @@ const Name = function(value, parameters, debug) {
             $procedure: '$Name',
             $exception: '$invalidParameter',
             $parameter: value,
-            $text: 'An invalid name value was passed to the constructor.'
+            $text: '"An invalid name value was passed to the constructor."'
         }, undefined, this.debug);
         throw exception;
     }

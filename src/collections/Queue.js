@@ -87,7 +87,7 @@ const Queue = function(parameters, debug) {
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,
-                $text: 'The queue has reached its maximum capacity.'
+                $text: '"The queue has reached its maximum capacity."'
             }, undefined, this.debug);
             throw exception;
         }

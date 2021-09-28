@@ -62,7 +62,7 @@ Sorter.prototype.sortCollection = function(collection) {
         $module: moduleName,
         $procedure: '$sortCollection',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

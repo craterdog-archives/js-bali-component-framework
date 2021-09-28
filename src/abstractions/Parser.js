@@ -52,7 +52,7 @@ Parser.prototype.parseSource = function(source) {
         $module: moduleName,
         $procedure: '$parseSource',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };

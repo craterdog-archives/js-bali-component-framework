@@ -169,7 +169,7 @@ Set.not = function(set, debug) {
         $module: moduleName,
         $procedure: '$not',
         $exception: '$meaningless',
-        $text: 'The logical NOT of a set is meaningless.'
+        $text: '"The logical NOT of a set is meaningless."'
     }, undefined, debug);
     throw exception;
 };

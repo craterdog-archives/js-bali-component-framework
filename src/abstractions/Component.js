@@ -249,7 +249,7 @@ Component.validateArgument = function(moduleName, procedureName, argumentName, a
             $argumentName: argumentName,
             $argumentValue: argumentValue,
             $allowedTypes: allowedTypes,
-            $text: 'An invalid argument was passed as part of the validation attempt.'
+            $text: '"An invalid argument was passed as part of the validation attempt."'
         }, undefined, debug);
         throw exception;
     }
@@ -276,7 +276,7 @@ Component.validateArgument = function(moduleName, procedureName, argumentName, a
         $allowedTypes: allowedTypes,
         $actualType: actualType,
         $argumentValue: argumentValue,
-        $text: 'An invalid argument type was passed to the procedure.'
+        $text: '"An invalid argument type was passed to the procedure."'
     }, undefined, debug);
     throw exception;
 };
@@ -316,7 +316,7 @@ Component.normalizedIndex = function(sequence, index, debug) {
             $sequence: sequence,
             $index: index,
             $range: '[' + -size + '..' + size + ']',
-            $text: 'The index is out of range for the sequence.'
+            $text: '"The index is out of range for the sequence."'
         }, undefined, debug);
         throw exception;
     }

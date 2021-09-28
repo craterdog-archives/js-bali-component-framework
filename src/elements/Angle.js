@@ -56,7 +56,7 @@ const Angle = function(value, parameters, debug) {
             $procedure: '$Angle',
             $exception: '$invalidParameter',
             $parameter: value,
-            $text: 'An invalid angle value was passed to the constructor.'
+            $text: '"An invalid angle value was passed to the constructor."'
         }, undefined, this.debug);
         throw exception;
     }

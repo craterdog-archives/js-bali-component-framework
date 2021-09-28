@@ -115,7 +115,7 @@ const Range = function(first, connector, last, parameters, debug) {
                 $exception: '$invalidSize',
                 $range: this,
                 $size: size,
-                $text: 'An enumerable range must have a positive size.'
+                $text: '"An enumerable range must have a positive size."'
             }, undefined, this.debug);
             throw exception;
         }
@@ -150,7 +150,7 @@ Range.prototype.toArray = function() {
         $procedure: '$toArray',
         $exception: '$notEnumerable',
         $range: this,
-        $text: 'Only an enumerable range of integers may be represented as an array.'
+        $text: '"Only an enumerable range of integers may be represented as an array."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -172,7 +172,7 @@ Range.prototype.getIterator = function() {
         $procedure: '$getIterator',
         $exception: '$notEnumerable',
         $range: this,
-        $text: 'Only an enumerable range of integers may be iterated over.'
+        $text: '"Only an enumerable range of integers may be iterated over."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -207,7 +207,7 @@ Range.prototype.getIndex = function(item) {
         $procedure: '$getIndex',
         $exception: '$notEnumerable',
         $range: this,
-        $text: 'Only an enumerable range of integers is indexed.'
+        $text: '"Only an enumerable range of integers is indexed."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -262,7 +262,7 @@ Range.effective = function(range, debug) {
         $procedure: '$effective',
         $exception: '$notEnumerable',
         $range: range,
-        $text: 'Only an enumerable range of integers has an effective range.'
+        $text: '"Only an enumerable range of integers has an effective range."'
     }, undefined, this.debug);
     throw exception;
 };

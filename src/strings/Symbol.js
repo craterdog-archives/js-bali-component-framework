@@ -51,7 +51,7 @@ const Symbol = function(value, parameters, debug) {
             $procedure: '$Symbol',
             $exception: '$invalidParameter',
             $parameter: value,
-            $text: 'An invalid symbol value was passed to the constructor.'
+            $text: '"An invalid symbol value was passed to the constructor."'
         }, undefined, this.debug);
         throw exception;
     }

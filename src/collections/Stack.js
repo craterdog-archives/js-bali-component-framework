@@ -70,7 +70,7 @@ const Stack = function(parameters, debug) {
             $module: moduleName,
             $procedure: '$getTop',
             $exception: '$emptyStack',
-            $text: 'Attempted to access an item on an empty stack.'
+            $text: '"Attempted to access an item on an empty stack."'
         }, undefined, this.debug);
         throw exception;
     };
@@ -93,7 +93,7 @@ const Stack = function(parameters, debug) {
                 $procedure: '$addItem',
                 $exception: '$resourceLimit',
                 $capacity: capacity,
-                $text: 'The stack has reached its maximum capacity.'
+                $text: '"The stack has reached its maximum capacity."'
             }, undefined, this.debug);
             throw exception;
         }
@@ -110,7 +110,7 @@ const Stack = function(parameters, debug) {
             $module: moduleName,
             $procedure: '$removeItem',
             $exception: '$emptyStack',
-            $text: 'Attempted to remove an item from an empty stack.'
+            $text: '"Attempted to remove an item from an empty stack."'
         }, undefined, this.debug);
         throw exception;
     };

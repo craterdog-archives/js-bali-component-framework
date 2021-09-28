@@ -69,7 +69,7 @@ Collection.prototype.toArray = function() {
         $module: moduleName,
         $procedure: '$toArray',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -95,7 +95,7 @@ Collection.prototype.getSize = function() {
         $module: moduleName,
         $procedure: '$getSize',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -125,7 +125,7 @@ Collection.prototype.addItem = function(item) {
         $module: moduleName,
         $procedure: '$addItem',
         $exception: '$immutableCollection',
-        $text: 'This type of collection is immutable.'
+        $text: '"This type of collection is immutable."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -181,7 +181,7 @@ Collection.prototype.getIndex = function(item) {
         $module: moduleName,
         $procedure: '$getIndex',
         $exception: '$noRandomAccess',
-        $text: 'This type of collection does not allow random access to its items.'
+        $text: '"This type of collection does not allow random access to its items."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -199,7 +199,7 @@ Collection.prototype.getItem = function(index) {
         $module: moduleName,
         $procedure: '$getItem',
         $exception: '$noRandomAccess',
-        $text: 'This type of collection does not allow random access to its items.'
+        $text: '"This type of collection does not allow random access to its items."'
     }, undefined, this.debug);
     throw exception;
 };
@@ -325,7 +325,7 @@ Collection.prototype.removeAll = function() {
         $module: moduleName,
         $procedure: '$addItem',
         $exception: '$immutableCollection',
-        $text: 'This type of collection is immutable.'
+        $text: '"This type of collection is immutable."'
     }, undefined, this.debug);
     throw exception;
 };

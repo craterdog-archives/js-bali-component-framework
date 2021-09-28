@@ -54,7 +54,7 @@ Formatter.prototype.asSource = function(component) {
         $module: moduleName,
         $procedure: '$asSource',
         $exception: '$abstractMethod',
-        $text: 'This abstract method must be implemented by each subclass.'
+        $text: '"This abstract method must be implemented by each subclass."'
     }, undefined, this.debug);
     throw exception;
 };
