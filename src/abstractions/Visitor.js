@@ -223,14 +223,25 @@ Visitor.prototype.visitComplementExpression = function(node) {
 
 // component: value parameters? note?
 Visitor.prototype.visitComponent = function(component) {
-    const functionName = 'visit' + component.getType().split('/')[3];
-    if (this[functionName]) {
-        // dispatch to the actual type handler
-        this[functionName](component);
-    } else {
-        // dispatch to typed catalog handler
-        this.visitCatalog(component);
+    const type = component.getType().split('/');
+    if (type[1] === 'bali') {
+        switch (type[2]) {
+            case 'abstractions':
+            case 'agents':
+            case 'collections':
+            case 'elements':
+            case 'strings':
+            case 'trees':
+                const functionName = 'visit' + type[3];
+                if (this[functionName]) {
+                    // dispatch to the actual type handler
+                    this[functionName](component);
+                    return;
+                }
+        }
     }
+    // dispatch to the typed catalog handler
+    this.visitCatalog(component);
 };
 
 
