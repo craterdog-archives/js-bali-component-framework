@@ -677,7 +677,7 @@ FormattingVisitor.prototype.visitResource = function(resource) {
 
 // symbol: SYMBOL
 FormattingVisitor.prototype.visitSymbol = function(symbol) {
-    this.result += '<div class="element symbol">';
+    this.result += '<div class="element ' + (symbol.isReserved() ? 'reserved' : 'symbol') + '">';
     this.result += symbol.getValue();
     this.result += formatParameters(symbol.getParameters());
     this.result += '</div>';
