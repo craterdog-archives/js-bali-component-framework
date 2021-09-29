@@ -388,7 +388,7 @@ exports.api = function(defaultLevel) {
             $type: type,
             $tag: new elements.Tag(),
             $version: 'v1',
-            $permissions: '/bali/permissions/public/v1',
+            $permissions: '/nebula/permissions/public/v1',
             $previous: 'none'
         }, debug);
         catalog.addItems(attributes);

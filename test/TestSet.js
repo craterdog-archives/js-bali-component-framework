@@ -122,7 +122,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             set1.addItem('"alpha"');
             set1.addItem('"beta"');
             set1.addItem('"delta"');
-            expect(set1.toString()).to.equal('[\n    "alpha"\n    "beta"\n    "delta"\n]($type: /bali/collections/Set/v1)');
+            expect(set1.toString()).to.equal('[\n    "alpha"\n    "beta"\n    "delta"\n]($type: /nebula/collections/Set/v1)');
             const set2 = bali.set();
             set2.addItem('"epsilon"');
             set2.addItem('"gamma"');

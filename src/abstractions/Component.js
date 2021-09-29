@@ -59,6 +59,9 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     };
 
     this.setParameter = function(key, value) {
+        if (!parameters) {
+            parameters = this.componentize({});  // must create this on the fly...
+        }
         parameters.setAttribute(key, value);
     };
 
@@ -361,7 +364,7 @@ const Exception = function(attributes, cause, debug) {
         this,
         ['/bali/abstractions/Exception'],
         ['/bali/interfaces/Composite'],
-        { $type: '/bali/abstractions/Exception/v1' },
+        { $type: '/nebula/abstractions/Exception/v1' },
         debug
     );
 

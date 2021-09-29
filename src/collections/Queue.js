@@ -40,7 +40,6 @@ Array.prototype.peek = function() {
  * @returns {Queue} The new queue.
  */
 const Queue = function(parameters, debug) {
-    parameters = parameters || {$type: moduleName + '/v1'};
     abstractions.Collection.call(
         this,
         [ moduleName ],
@@ -48,6 +47,7 @@ const Queue = function(parameters, debug) {
         parameters,
         debug
     );
+    this.setParameter('$type', '/nebula/collections/Queue/v1');
 
     // the capacity and array are private attributes so methods that use them are
     // defined in the constructor

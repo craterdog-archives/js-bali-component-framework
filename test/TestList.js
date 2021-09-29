@@ -116,11 +116,6 @@ describe('Bali Nebula™ Component Framework - List', function() {
                     bali.component('[](:)');
                 }
             ).to.throw();
-            expect(
-                function() {
-                    bali.component('[]($type: /bali/collections/Invalid)');
-                }
-            ).to.throw();
         });
 
     });

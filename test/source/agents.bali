@@ -16,7 +16,7 @@
                 at next (/Users/derk/Development/craterdog..modules/mocha/lib/runner.js:489:14)
             "
         ]
-    ]($type: /bali/abstractions/Exception/v1)
+    ]($type: /nebula/abstractions/Exception/v1)
     $nested: [
         $foo: "bar"
         $cause: [
@@ -36,12 +36,12 @@
                     at processImmediate (node:internal/timers:464:21)
                 "
             ]
-        ]($type: /bali/abstractions/Exception/v1)
-    ]($type: /bali/abstractions/Exception/v1)
-    $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
+        ]($type: /nebula/abstractions/Exception/v1)
+    ]($type: /nebula/abstractions/Exception/v1)
+    $comparator: [:]($type: /nebula/agents/CanonicalComparator/v1)
     $sorter: [
-        $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
-    ]($type: /bali/agents/MergeSorter/v1)
+        $comparator: [:]($type: /nebula/agents/CanonicalComparator/v1)
+    ]($type: /nebula/agents/MergeSorter/v1)
     $collection: [
         $slot: 0
         $sequence: [
@@ -50,13 +50,13 @@
             $gamma
             $delta
         ]
-    ]($type: /bali/abstractions/CollectionIterator/v1)
+    ]($type: /nebula/abstractions/CollectionIterator/v1)
     $range: [
         $slot: 1
         $sequence: [1..5]
-    ]($type: /bali/collections/RangeIterator/v1)
+    ]($type: /nebula/collections/RangeIterator/v1)
     $string: [
         $slot: 19
         $sequence: "This is a string..."
-    ]($type: /bali/abstractions/StringIterator/v1)
+    ]($type: /nebula/abstractions/StringIterator/v1)
 ]

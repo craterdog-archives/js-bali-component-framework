@@ -31,7 +31,6 @@ const agents = require('../agents');
  * @returns {Set} The new set.
  */
 const Set = function(parameters, debug) {
-    parameters = parameters || {$type: moduleName + '/v1'};
     abstractions.Collection.call(
         this,
         [ moduleName ],
@@ -39,6 +38,7 @@ const Set = function(parameters, debug) {
         parameters,
         debug
     );
+    this.setParameter('$type', '/nebula/collections/Set/v1');
 
     // private attributes
     const comparator = new agents.CanonicalComparator(this.debug);

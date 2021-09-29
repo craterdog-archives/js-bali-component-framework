@@ -6,7 +6,7 @@
             1
             2
             3
-        ]($type: /bali/collections/Stack/v1($itemType: /bali/elements/Number/v1($range: [1..])))
+        ]($type: /nebula/collections/Stack/v1($itemType: /nebula/elements/Number/v1($range: [1..])))
     }
     $variables: {
         $variable := x

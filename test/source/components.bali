@@ -14,7 +14,7 @@
             $beta
             $delta
             $gamma
-        ]($type: /bali/collections/Set/v1)
+        ]($type: /nebula/collections/Set/v1)
         [
             target
             any
@@ -70,7 +70,7 @@
         /name: /name($relative: false)
         ~P0D: ~P1Y3M24DT7H32M15S
         <2017-04-01>: <2017-04-01>($country: "USA")
-        <https://craterdog.com/>: <https://bali-nebula.net/bali/examples>(
+        <https://craterdog.com/>: <https://bali-nebula.net/nebula/examples>(
             $foo: 5
             $bar: false
         )
@@ -83,7 +83,7 @@
         $sequence: [
             "short"
             "sequence"
-        ]($type: /bali/collections/Queue/v1)
+        ]($type: /nebula/collections/Queue/v1)
         $table: [
             $a: e
             $b: -π
@@ -97,7 +97,7 @@
             } else {
                 throw exception
             }
-        }($condition: /bali/elements/Boolean/v1)
+        }($condition: /nebula/elements/Boolean/v1)
     ]
     $procedures: [
         {

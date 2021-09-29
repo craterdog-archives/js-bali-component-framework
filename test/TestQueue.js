@@ -183,7 +183,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(size - 3);
-            expect(queue.toString()).to.equal('[\n    "epsilon"\n    "gamma"\n]($type: /bali/collections/Queue/v1)');
+            expect(queue.toString()).to.equal('[\n    "epsilon"\n    "gamma"\n]($type: /nebula/collections/Queue/v1)');
             first = queue.headItem();
             expect(first.toString()).to.equal('"epsilon"');
             expect(

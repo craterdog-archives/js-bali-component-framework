@@ -280,7 +280,7 @@ FormattingVisitor.prototype.visitBreakClause = function(node) {
 
 
 FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
-    this.result += '[:]($type: ' + comparator.getType() + '/v1)';  // HACK!!
+    this.result += '[:]($type: /nebula/agents/CanonicalComparator/v1)';
 };
 
 
@@ -610,7 +610,7 @@ FormattingVisitor.prototype.visitIterator = function(iterator) {
     sequence.acceptVisitor(this);
     this.depth--;
     this.result += this.getNewline();
-    this.result += ']($type: ' + iterator.getType() + '/v1)';  // HACK!!
+    this.result += ']($type: ' + iterator.getType().replace('bali', 'nebula') + '/v1)';
 };
 
 
@@ -646,7 +646,7 @@ FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
     comparator.acceptVisitor(this);
     this.depth--;
     this.result += this.getNewline();
-    this.result += ']($type: ' + sorter.getType() + '/v1)';  // HACK!!
+    this.result += ']($type: /nebula/agents/MergeSorter/v1)';
 };
 
 

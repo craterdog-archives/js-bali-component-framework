@@ -227,7 +227,9 @@ FormattingVisitor.prototype.visitBoolean = function(boolean) {
 
 
 FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
-    this.result += '[:]($type: ' + comparator.getType() + '/v1)';  // HACK!!
+    this.result += '<div class="element symbol">';
+    this.result += 'CanonicalComparator';
+    this.result += '</div>';
 };
 
 
@@ -236,20 +238,39 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
     // check for an explicit type, otherwise use the implicit type
     var iterator;
     const type = collection.getType();
-    const name = type.slice(type.lastIndexOf('/') + 1);  // extract the type name
+    var name = collection.getParameter('$type');
+    if (!name) name = collection.componentize(type + '/vX');  // add a fake version so the offset is correct
+    name = name.getValue();
+    name = name[name.length - 2];  // grab the name right before the version
     switch (type) {
         case '/bali/collections/Range':
-            this.result += '<div class="range">';
+            this.result += '<div class="range">[';
             const first = collection.getFirst();
             if (first !== undefined) {
-                first.acceptVisitor(this);
+                if (first.isType('/bali/trees/Node')) {
+                    this.visitExpression(first);  // must handle expressions differently
+                } else {
+                    first.acceptVisitor(this);
+                }
+            } else {
+                this.result += '<div class="element number">';
+                this.result += ' ';
+                this.result += '</div>';
             }
             this.result += collection.getConnector().replace(/</g, '&lt;');
             const last = collection.getLast();
             if (last !== undefined) {
-                last.acceptVisitor(this);
+                if (last.isType('/bali/trees/Node')) {
+                    this.visitExpression(last);  // must handle expressions differently
+                } else {
+                    last.acceptVisitor(this);
+                }
+            } else {
+                this.result += '<div class="element number">';
+                this.result += ' ';
+                this.result += '</div>';
             }
-            this.result += '</div>';
+            this.result += ']</div>';
             break;
         case '/bali/collections/List':
         case '/bali/collections/Queue':
@@ -336,32 +357,127 @@ FormattingVisitor.prototype.visitExpression = function(expression) {
 
 
 FormattingVisitor.prototype.visitIterator = function(iterator) {
-    this.result += '[';
+    this.result += '<div class="catalog">';
     this.depth++;
     this.result += this.getNewline();
-    this.result += '$slot: ';
-    const slot = iterator.getSlot();
-    this.result += slot;
+    var type = iterator.getType();
+    type = iterator.componentize(type);
+    type = type.getValue();
+    type = type[type.length - 1];
+    this.result += '<div class="type">' + type + '</div>';
     this.result += this.getNewline();
-    this.result += '$sequence: ';
-    const sequence = iterator.getSequence();
-    sequence.acceptVisitor(this);
+
+    this.result += '<div class="association">';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '<div class="key">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    this.result += '<div class="element symbol">';
+    this.result += 'slot';
+    this.result += '</div>';
+
     this.depth--;
     this.result += this.getNewline();
-    this.result += ']($type: ' + iterator.getType() + '/v1)';  // HACK!!
+    this.result += '</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="colon">:</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="value">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    const slot = iterator.getSlot();
+    this.result += '<div class="element number">';
+    this.result += slot;
+    this.result += '</div>';
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+
+    this.result += '<div class="association">';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '<div class="key">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    this.result += '<div class="element symbol">';
+    this.result += 'sequence';
+    this.result += '</div>';
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="colon">:</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="value">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    const sequence = iterator.getSequence();
+    sequence.acceptVisitor(this);
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
 };
 
 
 FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
-    this.result += '[';
+    this.result += '<div class="catalog">';
     this.depth++;
     this.result += this.getNewline();
-    this.result += '$comparator: ';
-    const comparator = sorter.getComparator();
-    comparator.acceptVisitor(this);
+    this.result += '<div class="type">MergeSorter</div>';
+    this.result += this.getNewline();
+
+    this.result += '<div class="association">';
+    this.depth++;
+    this.result += this.getNewline();
+    this.result += '<div class="key">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    this.result += '<div class="element symbol">';
+    this.result += 'comparator';
+    this.result += '</div>';
+
     this.depth--;
     this.result += this.getNewline();
-    this.result += ']($type: ' + sorter.getType() + '/v1)';  // HACK!!
+    this.result += '</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="colon">:</div>';
+    this.result += this.getNewline();
+    this.result += '<div class="value">';
+    this.depth++;
+    this.result += this.getNewline();
+
+    const comparator = sorter.getComparator();
+    comparator.acceptVisitor(this);
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
+
+    this.depth--;
+    this.result += this.getNewline();
+    this.result += '</div>';
 };
 
 
@@ -580,6 +696,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 // text: TEXT | NARRATIVE
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
+    value = value.replace(/</g, '&lt;');  // escape left angle brackets
     const regex = new RegExp('\\n', 'g');
     value = value.replace(regex, '\n    ');  // indent each line
     value = '"' + value + '"';
@@ -673,6 +790,7 @@ const formatParameters = function(parameters) {
             if (count++) formatted += ', ';  // only after the first parameter has been formatted
             formatted += key.getValue() + ': ';  // strip off the leading '$'
             formatted += parameters.getAttribute(key).toString().replace(/\$/g, '');  // strip of any leading '$'s
+
         }
         formatted += ')';
     }

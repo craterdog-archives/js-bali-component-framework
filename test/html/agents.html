@@ -40,7 +40,7 @@
     Error
     at new Exception (/Users/derk/Development/..c/abstractions/Component.js:412:38)
     at Object.exception (/Users/derk/Developme..omponent-framework/index.js:369:16)
-    at Context.<anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:32)
+    at Context.&lt;anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:32)
     at callFn (/Users/derk/Development/craterd..dules/mocha/lib/runnable.js:366:21)
     at Test.Runnable.run (/Users/derk/Developm..odules/mocha/lib/runnable.js:354:5)
     at Runner.runTest (/Users/derk/Development..modules/mocha/lib/runner.js:681:10)
@@ -59,7 +59,7 @@
                                         <div class="element symbol">type</div></div>
                                     <div class="colon">:</div>
                                     <div class="value">
-                                        <div class="element name"><a href="https://bali-nebula.net/repository/names/bali/abstractions/Exception/v1">/bali/abstractions/Exception/v1</a></div>
+                                        <div class="element name"><a href="https://bali-nebula.net/repository/names/nebula/abstractions/Exception/v1">/nebula/abstractions/Exception/v1</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                                             <pre class="element text">
 "
     Error: Raw error...
-    at Context.<anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:91)
+    at Context.&lt;anonymous> (/Users/derk/Develo..-framework/test/TestAngle.js:22:91)
     at callFn (/Users/derk/Development/craterd..dules/mocha/lib/runnable.js:366:21)
     at Test.Runnable.run (/Users/derk/Developm..odules/mocha/lib/runnable.js:354:5)
     at Runner.runTest (/Users/derk/Development..modules/mocha/lib/runner.js:681:10)
@@ -134,7 +134,7 @@
                                                     <div class="element symbol">type</div></div>
                                                 <div class="colon">:</div>
                                                 <div class="value">
-                                                    <div class="element name"><a href="https://bali-nebula.net/repository/names/bali/abstractions/Exception/v1">/bali/abstractions/Exception/v1</a></div>
+                                                    <div class="element name"><a href="https://bali-nebula.net/repository/names/nebula/abstractions/Exception/v1">/nebula/abstractions/Exception/v1</a></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,7 +146,7 @@
                                         <div class="element symbol">type</div></div>
                                     <div class="colon">:</div>
                                     <div class="value">
-                                        <div class="element name"><a href="https://bali-nebula.net/repository/names/bali/abstractions/Exception/v1">/bali/abstractions/Exception/v1</a></div>
+                                        <div class="element name"><a href="https://bali-nebula.net/repository/names/nebula/abstractions/Exception/v1">/nebula/abstractions/Exception/v1</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="colon">:</div>
                         <div class="value">
-                            [:]($type: /bali/agents/CanonicalComparator/v1)
+                            <div class="element symbol">CanonicalComparator</div>
                         </div>
                     </div>
                     <div class="association">
@@ -167,9 +167,18 @@
                         </div>
                         <div class="colon">:</div>
                         <div class="value">
-                            [
-                                $comparator: [:]($type: /bali/agents/CanonicalComparator/v1)
-                            ]($type: /bali/agents/MergeSorter/v1)
+                            <div class="catalog">
+                                <div class="type">MergeSorter</div>
+                                <div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">comparator</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element symbol">CanonicalComparator</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="association">
@@ -178,24 +187,40 @@
                         </div>
                         <div class="colon">:</div>
                         <div class="value">
-                            [
-                                $slot: 0
-                                $sequence: <div class="list">
-                                    <div class="type">List</div>
-                                    <div class="item">
-                                        <div class="element symbol">alpha</div>
+                            <div class="catalog">
+                                <div class="type">CollectionIterator</div>
+                                <div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">slot</div>
                                     </div>
-                                    <div class="item">
-                                        <div class="element symbol">beta</div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element number">0</div>
                                     </div>
-                                    <div class="item">
-                                        <div class="element symbol">gamma</div>
+                                </div><div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">sequence</div>
                                     </div>
-                                    <div class="item">
-                                        <div class="element symbol">delta</div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="list">
+                                            <div class="type">List</div>
+                                            <div class="item">
+                                                <div class="element symbol">alpha</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="element symbol">beta</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="element symbol">gamma</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="element symbol">delta</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            ]($type: /bali/abstractions/CollectionIterator/v1)
+                            </div>
                         </div>
                     </div>
                     <div class="association">
@@ -204,10 +229,26 @@
                         </div>
                         <div class="colon">:</div>
                         <div class="value">
-                            [
-                                $slot: 1
-                                $sequence: <div class="range"><div class="element number">1</div>..<div class="element number">5</div></div>
-                            ]($type: /bali/collections/RangeIterator/v1)
+                            <div class="catalog">
+                                <div class="type">RangeIterator</div>
+                                <div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">slot</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element number">1</div>
+                                    </div>
+                                </div><div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">sequence</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="range">[<div class="element number">1</div>..<div class="element number">5</div>]</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="association">
@@ -216,11 +257,27 @@
                         </div>
                         <div class="colon">:</div>
                         <div class="value">
-                            [
-                                $slot: 19
-                                $sequence: <pre class="element text">
+                            <div class="catalog">
+                                <div class="type">StringIterator</div>
+                                <div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">slot</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <div class="element number">19</div>
+                                    </div>
+                                </div><div class="association">
+                                    <div class="key">
+                                        <div class="element symbol">sequence</div>
+                                    </div>
+                                    <div class="colon">:</div>
+                                    <div class="value">
+                                        <pre class="element text">
 "This is a string..."</pre>
-                            ]($type: /bali/abstractions/StringIterator/v1)
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

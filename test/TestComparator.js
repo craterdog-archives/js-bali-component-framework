@@ -106,8 +106,8 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
 
         it('should handle names', function() {
             const name = bali.name(['bali', 'collections', 'Set', 'v1']);
-            expect(comparator.ranking(name, '/bali/collections/Set/v2')).to.equal(-1);
-            expect(comparator.ranking('/bali/collections/Stack/v1', name)).to.equal(1);
+            expect(comparator.ranking(name, '/nebula/collections/Set/v2')).to.equal(-1);
+            expect(comparator.ranking('/nebula/collections/Stack/v1', name)).to.equal(1);
         });
 
         it('should handle numbers', function() {

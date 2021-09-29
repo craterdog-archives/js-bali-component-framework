@@ -9,10 +9,10 @@
             $signature: "ED25519"
         ]
     ](
-        $type: /bali/notary/Certificate/v1
+        $type: /nebula/notary/Certificate/v1
         $tag: #LM9JSK8KDYKBGGYT0J0M2PG7YWAWX14P
         $version: v1
-        $permissions: /bali/permissions/public/v1
+        $permissions: /nebula/permissions/public/v1
         $previous: none
     )
     $certificate: none
@@ -20,4 +20,4 @@
         XY09453T7A0QHRX5BNTBK7RCTY3JVR42FSJ7VT00WKNH61SMMXD7AQH7QRHW
         A08XBV3FGK1P5GPM0RAZ9ZVG04XYVF3909XS9Z9SC0R
     '
-]($type: /bali/notary/Contract/v1)
+]($type: /nebula/notary/Contract/v1)

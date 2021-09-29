@@ -33,7 +33,7 @@
         } matching any with {
             break loop
         }
-        post message() to /bali/examples/bag/v1 handle $exception with {
+        post message() to /nebula/examples/bag/v1 handle $exception with {
             publish exception
         }
         if false then {
@@ -57,25 +57,25 @@
         break loop
     }
     $lifecycle: {
-        checkout $component from /bali/examples/document/v1
+        checkout $component from /nebula/examples/document/v1
         save component
-        sign component as /bali/examples/document/v2
-        checkout level 2 of components[index] from /bali/examples/document/v2
+        sign component as /nebula/examples/document/v2
+        checkout level 2 of components[index] from /nebula/examples/document/v2
         save components[index] as $citation
-        sign components[index] as /bali/examples/document/v2.1
+        sign components[index] as /nebula/examples/document/v2.1
         discard citation
     }
     $publishEvent: {
         publish event
     }
     $postMessage: {
-        post message() to /bali/examples/bag/v1
-        post message(1) to /bali/examples/bag/v1
-        post message(1, second, "3rd") to /bali/examples/bag/v1
+        post message() to /nebula/examples/bag/v1
+        post message(1) to /nebula/examples/bag/v1
+        post message(1, second, "3rd") to /nebula/examples/bag/v1
     }
     $retrieveMessage: {
-        retrieve $message from /bali/examples/bag/v1
-        retrieve messages[$foo, 5] from /bali/examples/bag/v1
+        retrieve $message from /nebula/examples/bag/v1
+        retrieve messages[$foo, 5] from /nebula/examples/bag/v1
     }
     $rejectMessage: {
         reject citation

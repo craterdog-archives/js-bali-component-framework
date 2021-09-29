@@ -324,20 +324,20 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
         if (type) {
             type = type.toString();
             switch (type) {
-                case '/bali/abstractions/Exception/v1':
+                case '/nebula/abstractions/Exception/v1':
                     // call catalog.toObject() to strip off the parameters
                     component = new abstractions.Exception(catalog.toObject(), undefined, this.debug);
                     break;
-                case '/bali/agents/CanonicalComparator/v1':
+                case '/nebula/agents/CanonicalComparator/v1':
                     component = new agents.CanonicalComparator(this.debug);
                     break;
-                case '/bali/agents/MergeSorter/v1':
+                case '/nebula/agents/MergeSorter/v1':
                     const comparator = catalog.getAttribute('$comparator');
                     component = new agents.MergeSorter(comparator, this.debug);
                     break;
-                case '/bali/abstractions/CollectionIterator/v1':
-                case '/bali/collections/RangeIterator/v1':
-                case '/bali/abstractions/StringIterator/v1':
+                case '/nebula/abstractions/CollectionIterator/v1':
+                case '/nebula/collections/RangeIterator/v1':
+                case '/nebula/abstractions/StringIterator/v1':
                     const sequence = catalog.getAttribute('$sequence');
                     component = sequence.getIterator();
                     const slot = catalog.getAttribute('$slot');
@@ -633,50 +633,48 @@ ParsingVisitor.prototype.visitInversionExpression = function(ctx) {
 //     EOL (expression EOL)* |
 //     /* no items */
 ParsingVisitor.prototype.visitList = function(ctx) {
-    var type = 'List';
     const parameters = this.getParameters();
-    var name;
-    if (parameters) {
-        name = parameters.getAttribute('$type');
-        if (name && name.isComponent && name.isType('/bali/strings/Name')) {
-            type = name.getValue()[2];  // /bali/collections/<type>/<version>
-        } else {
-            type = 'Invalid';
-        }
-    }
-    var collection;
-    switch (type) {
-        case 'List':
-            collection = new collections.List(parameters, this.debug);
-            break;
-        case 'Queue':
-            collection = new collections.Queue(parameters, this.debug);
-            break;
-        case 'Set':
-            collection = new collections.Set(parameters, this.debug);
-            break;
-        case 'Stack':
-            collection = new collections.Stack(parameters, this.debug);
-            break;
-        default:
-            const exception = new abstractions.Exception({
-                $module: moduleName,
-                $procedure: '$visitList',
-                $exception: '$invalidType',
-                $type: type,
-                $text: '"An invalid collection type was specified in the parameters."'
-            }, undefined, this.debug);
-            throw exception;
-    }
+
+    // assume the collection is just a list
+    const list = new collections.List(parameters, this.debug);
     if (ctx.expression) {
-        const expressions = ctx.expression();
         this.depth++;
+        const expressions = ctx.expression();
         expressions.forEach(function(expression) {
             expression.accept(this);
-            collection.addItem(this.result);
+            list.addItem(this.result);
         }, this);
         this.depth--;
     }
+    var collection = list;
+
+    // now determine its real type
+    if (parameters) {
+        var type = parameters.getAttribute('$type');
+        if (type) {
+            type = type.toString();
+            switch (type) {
+                case '/nebula/collections/List/v1':
+                    collection = list;
+                    break;
+                case '/nebula/collections/Queue/v1':
+                    collection = new collections.Queue(parameters, this.debug);
+                    collection.addItems(list);
+                    break;
+                case '/nebula/collections/Set/v1':
+                    collection = new collections.Set(parameters, this.debug);
+                    collection.addItems(list);
+                    break;
+                case '/nebula/collections/Stack/v1':
+                    collection = new collections.Stack(parameters, this.debug);
+                    collection.addItems(list);
+                    break;
+                default:
+                    // it's a TYPED list so leave it as is
+            }
+        }
+    }
+
     this.result = collection;
 };
 

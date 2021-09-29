@@ -177,7 +177,7 @@ describe('Bali Nebula™ Component Framework - Stack', function() {
             pop = stack.removeItem();
             expect(top).to.equal(pop);
             expect(stack.getSize()).to.equal(size - 3);
-            expect(stack.toString()).to.equal('[\n    "alpha"\n    "beta"\n]($type: /bali/collections/Stack/v1)');
+            expect(stack.toString()).to.equal('[\n    "alpha"\n    "beta"\n]($type: /nebula/collections/Stack/v1)');
             top = stack.topItem();
             expect(top.toString()).to.equal('"beta"');
             pop = stack.removeItem();
