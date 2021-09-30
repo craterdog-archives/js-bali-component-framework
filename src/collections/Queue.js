@@ -47,7 +47,7 @@ const Queue = function(parameters, debug) {
         parameters,
         debug
     );
-    this.setParameter('$type', '/nebula/collections/Queue/v1');
+    if (!this.getParameter('$type')) this.setParameter('$type', '/nebula/collections/Queue/v1');
 
     // the capacity and array are private attributes so methods that use them are
     // defined in the constructor

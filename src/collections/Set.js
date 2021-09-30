@@ -38,7 +38,7 @@ const Set = function(parameters, debug) {
         parameters,
         debug
     );
-    this.setParameter('$type', '/nebula/collections/Set/v1');
+    if (!this.getParameter('$type')) this.setParameter('$type', '/nebula/collections/Set/v1');
 
     // private attributes
     const comparator = new agents.CanonicalComparator(this.debug);

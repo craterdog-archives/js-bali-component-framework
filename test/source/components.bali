@@ -14,7 +14,7 @@
             $beta
             $delta
             $gamma
-        ]($type: /nebula/collections/Set/v1)
+        ]($type: /nebula/collections/Set/v1($ItemType: /nebula/strings/Symbol/v1))
         [
             target
             any

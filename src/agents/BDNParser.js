@@ -322,8 +322,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
     if (parameters) {
         var type = parameters.getAttribute('$type');
         if (type) {
-            type = type.toString();
-            switch (type) {
+            switch (type.toLiteral()) {  // strip off any parameterization
                 case '/nebula/abstractions/Exception/v1':
                     // call catalog.toObject() to strip off the parameters
                     component = new abstractions.Exception(catalog.toObject(), undefined, this.debug);
@@ -652,8 +651,7 @@ ParsingVisitor.prototype.visitList = function(ctx) {
     if (parameters) {
         var type = parameters.getAttribute('$type');
         if (type) {
-            type = type.toString();
-            switch (type) {
+            switch (type.toLiteral()) {  // strip off any parameterization
                 case '/nebula/collections/List/v1':
                     collection = list;
                     break;
