@@ -105,7 +105,7 @@ const footer =
 '            </div>\n' +
 '        </div>\n' +
 '        <div class="poweredBy">\n' +
-'            <img class="logo" src="https://bali-nebula.net/static/images/CraterDogLogo.png">\n' +
+'            <img class="logo" src="https://bali-nebula.net/static/images/CraterDog.png">\n' +
 '        </div>\n' +
 '    </body>\n' +
 '</html>';
