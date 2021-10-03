@@ -105,7 +105,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             component = bali.component(formatted);
             expect(component).to.exist;
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/components.html', formatted, 'utf8');
         });
 
@@ -125,7 +125,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             expect(bali.areEqual(component, copy)).to.equal(true);
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/agents.html', formatted, 'utf8');
         });
 
@@ -145,7 +145,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             expect(bali.areEqual(component, copy)).to.equal(true);
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/test.html', formatted, 'utf8');
         });
 
@@ -165,7 +165,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             expect(bali.areEqual(component, copy)).to.equal(true);
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/examples.html', formatted, 'utf8');
         });
 
@@ -185,7 +185,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             expect(bali.areEqual(component, copy)).to.equal(true);
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/citation.html', formatted, 'utf8');
         });
 
@@ -205,7 +205,7 @@ describe('Bali Nebula™ Component Framework - Transformers', function() {
             expect(component).to.exist;
             expect(bali.areEqual(component, copy)).to.equal(true);
             expect(component.getHash()).to.equal(copy.getHash());
-            formatted = bali.html(copy, style);
+            formatted = bali.html(copy, 'TITLE', style);
             await pfs.writeFile('test/html/certificate.html', formatted, 'utf8');
         });
 

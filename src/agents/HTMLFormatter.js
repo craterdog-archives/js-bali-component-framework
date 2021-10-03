@@ -32,18 +32,22 @@ Array.prototype.peek = function() {
  * This constructor creates a new formatter agent that can be used to generate a canonical HTML
  * documents from any component.
  *
+ * @param {String} title The string to be used as the title for the generated web page.
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
  * @param {Number} debug A number in the range 0..3.
  * @returns {HTML} The new HTML formatter agent.
  */
-const HTMLFormatter = function(style, debug) {
+const HTMLFormatter = function(title, style, debug) {
     abstractions.Formatter.call(
         this,
         [ moduleName ],
         debug
     );
     if (debug > 1) {
+        this.validateArgument('$HTMLFormatter', '$title', title, [
+            '/javascript/String'
+        ]);
         this.validateArgument('$HTMLFormatter', '$style', style, [
             '/javascript/String'
         ]);
@@ -55,7 +59,7 @@ const HTMLFormatter = function(style, debug) {
                 '/bali/abstractions/Component'
             ]);
         }
-        const visitor = new FormattingVisitor(style, this.debug);
+        const visitor = new FormattingVisitor(title, style, this.debug);
         component.acceptVisitor(visitor);
         return visitor.getResult();
     };
@@ -98,6 +102,7 @@ const header =
 '    <body>\n' +
 '        <div class="document">\n' +
 '            <div class="value">\n' +
+        '        <div class="title">${title}</div>\n' +
 '                ';
 
 const footer =
@@ -113,13 +118,13 @@ const footer =
 
 // PRIVATE CLASSES
 
-const FormattingVisitor = function(style, debug) {
+const FormattingVisitor = function(title, style, debug) {
     abstractions.Visitor.call(
         this,
         ['/bali/agents/FormattingVisitor'],
         debug
     );
-    this.result = header.replace(/\${style}/, style);
+    this.result = header.replace(/\${title}/, title).replace(/\${style}/, style);
     this.depth = 4;  // the header and footer take up four levels
     this.width = [];  // stack of key widths for nested catalogs
 

@@ -376,9 +376,9 @@ exports.api = function(defaultLevel) {
     };
 
     // HTML
-    const html = function(component, style, debug) {
+    const html = function(component, title, style, debug) {
         if (debug === undefined) debug = defaultLevel;
-        const formatter = new agents.HTMLFormatter(style, debug);
+        const formatter = new agents.HTMLFormatter(title, style, debug);
         return formatter.asDocument(component);
     };
 
