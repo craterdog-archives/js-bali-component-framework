@@ -142,7 +142,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             size = set2.getSize();
             expect(size).to.equal(5);
             expect(set2.containsAll(set1)).to.equal(true);
-            set2.removeItems(set3);
+            expect(set2.removeItems(set3)).to.equal(set3.getSize());
             size = set2.getSize();
             expect(size).to.equal(2);
             expect(set2.toBoolean()).to.equal(true);
@@ -163,8 +163,8 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            set.removeItem('"beta"');
-            set.removeItem('"alpha"');
+            expect(set.removeItem('"beta"')).to.exist;
+            expect(set.removeItem('"alpha"')).to.exist;
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(3);

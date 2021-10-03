@@ -119,7 +119,7 @@ const Set = function(parameters, debug) {
             ]);
         }
         item = this.componentize(item);
-        return tree.remove(item);
+        return tree.remove(item);  // returns true if removed
     };
 
     this.removeItems = function(items) {
@@ -129,17 +129,19 @@ const Set = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
+        var count = 0;
         if (Array.isArray(items)) {
             items.forEach(function(item) {
-                this.removeItem(item);
+                if (this.removeItem(item)) count++;
             }, this);
         } else if (items && items.getIterator) {
             const iterator = items.getIterator();
             while (iterator.hasNext()) {
                 const item = iterator.getNext();
-                this.removeItem(item);
+                if (this.removeItem(item)) count++;
             }
         }
+        return count;  // returns the number of removed items
     };
 
     this.removeAll = function() {

@@ -169,11 +169,11 @@ describe('Bali Nebula™ Component Framework - List', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            list.removeItem(2);
+            expect(list.removeItem(2)).to.exist;
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(4);
-            list.removeItems('[2..3]');
+            expect(list.removeItems('[2..3]').getSize()).to.equal(2);
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(2);

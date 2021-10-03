@@ -171,7 +171,7 @@ const List = function(parameters, debug) {
             ]);
         }
         index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
-        array.splice(index, 1);
+        return array.splice(index, 1)[0];  // returns the removed item
     };
 
     this.removeItems = function(range) {
@@ -196,7 +196,9 @@ const List = function(parameters, debug) {
         }
         first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
         last = abstractions.Component.normalizedIndex(this, last) - 1;  // zero-based indexing for JS
-        array.splice(first, last - first + 1);  // include the last item
+        const items = new List();
+        items.addItems(array.splice(first, last - first + 1));  // include the last item
+        return items;  // returns the removed items
     };
 
     this.removeAll = function() {

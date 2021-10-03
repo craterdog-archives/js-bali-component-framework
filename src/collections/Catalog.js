@@ -235,10 +235,8 @@ const Catalog = function(parameters, debug) {
             const index = array.findIndex(function(item) {
                 return comparator.areEqual(item, association);
             }, this);
-            array.splice(index, 1);
-            return true;
+            return array.splice(index, 1)[0];  // returns the removed attribute value
         }
-        return false;
     };
 
     this.removeAttributes = function(keys) {
@@ -262,6 +260,7 @@ const Catalog = function(parameters, debug) {
                 if (value) values.addItem(value);
             }
         }
+        return values;
     };
 
     this.removeAll = function() {
