@@ -100,7 +100,7 @@ const Queue = function(parameters, debug) {
         if (array.length > 0) return array.splice(0, 1)[0];  // remove the first item in the array
     };
 
-    this.removeAll = function() {
+    this.emptyCollection = function() {
         array.splice(0);
     };
 

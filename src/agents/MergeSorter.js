@@ -45,7 +45,7 @@ const MergeSorter = function(comparator, debug) {
         if (collection && collection.getSize() > 1) {
             var array = collection.toArray();
             array = sortArray(comparator, array);
-            collection.removeAll();
+            collection.emptyCollection();
             collection.addItems(array);
         }
     };

@@ -38,7 +38,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             expect(bali.source(iterator)).to.exist;
-            set.removeAll();
+            set.emptyCollection();
             const copy = set.constructor(set.getParameters());
             expect(copy).to.exist;
             const comparator = new bali.comparator();
@@ -62,7 +62,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            set.removeAll();
+            set.emptyCollection();
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -85,7 +85,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            set.removeAll();
+            set.emptyCollection();
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -106,7 +106,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            set.removeAll();
+            set.emptyCollection();
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);

@@ -320,7 +320,7 @@ Collection.prototype.containsAll = function(items) {
  * This method removes all items that are currently contained in this collection.
  * It must be implemented by a subclass.
  */
-Collection.prototype.removeAll = function() {
+Collection.prototype.emptyCollection = function() {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$addItem',

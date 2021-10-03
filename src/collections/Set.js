@@ -144,7 +144,7 @@ const Set = function(parameters, debug) {
         return count;  // returns the number of removed items
     };
 
-    this.removeAll = function() {
+    this.emptyCollection = function() {
         tree.clear();
     };
 

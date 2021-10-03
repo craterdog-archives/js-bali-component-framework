@@ -43,7 +43,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(iterator.hasNext() === false);
             expect(iterator.hasPrevious() === false);
             expect(bali.source(iterator)).to.exist;
-            catalog.removeAll();
+            catalog.emptyCollection();
             const copy = catalog.constructor(catalog.getParameters());
             expect(copy).to.exist;
             const comparator = new bali.comparator();
@@ -99,7 +99,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getKey().toString()).to.equal('10');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.emptyCollection();
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -132,7 +132,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getKey().toString()).to.equal('5');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.emptyCollection();
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -165,7 +165,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getKey().toString()).to.equal('5');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.emptyCollection();
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -204,7 +204,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getKey().toString()).to.equal('$gamma');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.emptyCollection();
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -237,7 +237,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(association.getKey().toString()).to.equal('5');
             expect(association.getValue().toString()).to.equal('"gamma"');
             expect(iterator.hasNext() === false);
-            catalog.removeAll();
+            catalog.emptyCollection();
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
@@ -329,7 +329,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(catalog.getAttribute(1).toString()).to.equal('"gamma"');
             catalog.setAttribute(6, '"kappa"');
             expect(catalog.getAttribute(6).toString()).to.equal('"kappa"');
-            catalog.removeAll();
+            catalog.emptyCollection();
             expect(catalog.getAttribute(6)).to.equal(undefined);
             size = catalog.getSize();
             expect(size).to.exist;

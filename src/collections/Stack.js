@@ -115,7 +115,7 @@ const Stack = function(parameters, debug) {
         throw exception;
     };
 
-    this.removeAll = function() {
+    this.emptyCollection = function() {
         array.splice(0);
     };
 

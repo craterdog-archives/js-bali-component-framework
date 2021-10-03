@@ -67,7 +67,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(range.getHash()).to.exist;
             expect(
                 function() {
-                    range.removeAll();
+                    range.emptyCollection();
                 }
             ).to.throw();
             expect(

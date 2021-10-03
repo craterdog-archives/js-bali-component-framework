@@ -201,7 +201,7 @@ const List = function(parameters, debug) {
         return items;  // returns the removed items
     };
 
-    this.removeAll = function() {
+    this.emptyCollection = function() {
         array.splice(0);
     };
 

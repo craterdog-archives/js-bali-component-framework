@@ -263,7 +263,7 @@ const Catalog = function(parameters, debug) {
         return values;
     };
 
-    this.removeAll = function() {
+    this.emptyCollection = function() {
         Object.keys(map).forEach(function(key) {
             delete map[key];
         }, this);
