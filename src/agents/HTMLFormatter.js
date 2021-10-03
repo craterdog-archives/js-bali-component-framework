@@ -215,7 +215,7 @@ FormattingVisitor.prototype.visitBinary = function(binary) {
     }
     this.result += '<pre class="element binary">';
     this.result += value;
-    this.result += formatParameters(parameters);
+    this.result += formatParameters(parameters).slice(1);
     this.result += '</pre>';
 };
 
@@ -290,7 +290,12 @@ FormattingVisitor.prototype.visitCollection = function(collection) {
                 this.result += '<div class="item">';
                 this.depth++;
                 this.result += this.getNewline();
-                iterator.getNext().acceptVisitor(this);
+                const value = iterator.getNext();
+                if (value.isType('/bali/trees/Node')) {
+                    this.visitExpression(value);  // must handle expressions differently
+                } else {
+                    value.acceptVisitor(this);
+                }
                 this.depth--;
                 this.result += this.getNewline();
                 this.result += '</div>';
