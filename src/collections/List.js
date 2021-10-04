@@ -178,7 +178,7 @@ const List = function(parameters, debug) {
             ]);
         }
         indices = this.componentize(indices);
-        const items = new List(undefined, this.debug);
+        const items = new List(this.getParameters(), this.debug);
         const iterator = indices.getIterator();
         while (iterator.hasNext()) {
             const index = iterator.getNext().toInteger();

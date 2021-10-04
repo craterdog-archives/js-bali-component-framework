@@ -170,18 +170,12 @@ const Catalog = function(parameters, debug) {
             ]);
         }
         const values = new List(undefined, this.debug);
-        if (Array.isArray(keys)) {
-            keys.forEach(function(key) {
-                const value = this.getAttribute(key);
-                if (value) values.addItem(value);
-            }, this);
-        } else if (keys && keys.getIterator) {
-            const iterator = keys.getIterator();
-            while (iterator.hasNext()) {
-                const key = iterator.getNext();
-                const value = this.getAttribute(key);
-                if (value) values.addItem(value);
-            }
+        keys = this.componentize(keys);
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = this.getAttribute(key);
+            if (value) values.addItem(value);
         }
         return values;
     };
@@ -246,19 +240,13 @@ const Catalog = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        const attributes = new Catalog(undefined, this.debug);
-        if (Array.isArray(keys)) {
-            keys.forEach(function(key) {
-                const value = this.removeAttribute(key);
-                if (value) attributes.setAttribute(key, value);
-            }, this);
-        } else if (keys && keys.getIterator) {
-            const iterator = keys.getIterator();
-            while (iterator.hasNext()) {
-                const key = iterator.getNext();
-                const value = this.removeAttribute(key);
-                if (value) attributes.setAttribute(key, value);
-            }
+        const attributes = new Catalog(this.getParameters(), this.debug);
+        keys = this.componentize(keys);
+        const iterator = keys.getIterator();
+        while (iterator.hasNext()) {
+            const key = iterator.getNext();
+            const value = this.removeAttribute(key);
+            if (value) attributes.setAttribute(key, value);
         }
         return attributes;
     };
@@ -345,7 +333,7 @@ Catalog.chain = function(first, second, debug) {
  * specified keys. The parameters for the catalog are maintained in the resulting catalog.
  *
  * @param {Catalog} catalog The catalog whose items are to be reduced.
- * @param {List} keys The list of keys for the associations to be extracted.
+ * @param {String|Array|Sequential} keys The sequence of keys for the associations to be extracted.
  * @param {Number} debug A number in the range 0..3.
  * @returns The resulting catalog.
  */
@@ -355,23 +343,18 @@ Catalog.extraction = function(catalog, keys, debug) {
             moduleName
         ]);
         abstractions.Component.validateArgument(moduleName, '$extraction', '$keys', keys, [
+            '/javascript/String',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
     const result = new Catalog(catalog.getParameters(), debug);
-    if (Array.isArray(keys)) {
-        keys.forEach(function(key) {
-            const value = catalog.getAttribute(key);
-            if (value) result.setAttribute(key, value);
-        }, this);
-    } else if (keys && keys.getIterator) {
-        const iterator = keys.getIterator();
-        while (iterator.hasNext()) {
-            const key = iterator.getNext();
-            const value = catalog.getAttribute(key);
-            if (value) result.setAttribute(key, value);
-        }
+    keys = catalog.componentize(keys);
+    const iterator = keys.getIterator();
+    while (iterator.hasNext()) {
+        const key = iterator.getNext();
+        const value = catalog.getAttribute(key);
+        if (value) result.setAttribute(key, value);
     }
     return result;
 };

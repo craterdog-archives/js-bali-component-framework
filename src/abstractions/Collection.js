@@ -208,7 +208,7 @@ Collection.prototype.getItems = function(indices) {
         ]);
     }
     indices = this.componentize(indices);
-    const items = new this.constructor(undefined, this.debug);
+    const items = new this.constructor(this.getParameters(), this.debug);
     const iterator = indices.getIterator();
     while (iterator.hasNext()) {
         var index = iterator.getNext().toInteger();

@@ -45,13 +45,13 @@ const Name = function(value, parameters, debug) {
         ]);
     }
 
-    if (!Array.isArray(value) || value.length === 0) {
+    if (value.length === 0) {
         const exception = new abstractions.Exception({
             $module: '/bali/strings/Name',
             $procedure: '$Name',
             $exception: '$invalidParameter',
             $parameter: value,
-            $text: '"An invalid name value was passed to the constructor."'
+            $text: '"A name must contain at least one identifier."'
         }, undefined, this.debug);
         throw exception;
     }
