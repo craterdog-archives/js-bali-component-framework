@@ -146,20 +146,16 @@ const List = function(parameters, debug) {
                 '/javascript/Number'
             ]);
             this.validateArgument('$insertItems', '$items', items, [
+                '/javascript/String',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
         }
-        if (Array.isArray(items)) {
-            items.forEach(function(item) {
-                this.insertItem(index++, item);
-            }, this);
-        } else if (items && items.getIterator) {
-            const iterator = items.getIterator();
-            while (iterator.hasNext()) {
-                const item = iterator.getNext();
-                this.insertItem(index++, item);
-            }
+        items = this.componentize(items);
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            this.insertItem(index++, item);
         }
     };
 
@@ -177,6 +173,7 @@ const List = function(parameters, debug) {
         if (this.debug > 1) {
             this.validateArgument('$removeItems', '$indices', indices, [
                 '/javascript/String',
+                '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
         }

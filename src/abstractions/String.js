@@ -115,13 +115,13 @@ Stryng.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new string containing the items in the specified range.  It
+ * This method returns a new string containing the items associated with the specified indices.  It
  * must be implemented by a subclass.
  *
- * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Stryng} A new string containing the requested items.
  */
-Stryng.prototype.getItems = function(range) {
+Stryng.prototype.getItems = function(indices) {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$getItems',

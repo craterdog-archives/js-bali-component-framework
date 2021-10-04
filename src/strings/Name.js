@@ -96,35 +96,29 @@ Name.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new name string containing the identifiers in the specified range.
+ * This method returns a new name string containing the identifiers associated with the specified indices.
  *
- * @param {Range} range A range depicting the indices of the first and last identifiers to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Name} A new name string containing the requested identifiers.
  */
-Name.prototype.getItems = function(range) {
+Name.prototype.getItems = function(indices) {
     if (this.debug > 1) {
-        this.validateArgument('$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
-            '/bali/collections/Range'
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
         ]);
     }
-    range = collections.Range.effective(this.componentize(range), this.debug);
-    var first = range.getFirst();
-    if (first === undefined) {
-        first = 1;  // first identifier
-    } else {
-        first = first.toInteger();
+    var array = [];
+    indices = this.componentize(indices);
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        var index = iterator.getNext().toInteger();
+        index = abstractions.Component.normalizedIndex(this, index);
+        const item = this.getItem(index);
+        array.push(item);
     }
-    var last = range.getLast();
-    if (last === undefined) {
-        last = -1;  // last identifier
-    } else {
-        last = last.toInteger();
-    }
-    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
-    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
-    const identifiers = this.getValue().slice(first, last);
-    return new Name(identifiers, this.getParameters(), this.debug);
+    return new Name(array, this.getParameters(), this.debug);
 };
 
 

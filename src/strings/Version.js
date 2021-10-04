@@ -82,34 +82,28 @@ exports.Version = Version;
 // PUBLIC METHODS
 
 /**
- * This method returns a new version string containing the version numbers in the specified range.
+ * This method returns a new version string containing the version numbers associated with the specified indices.
  *
- * @param {Range} range A range depicting the indices of the first and last version numbers to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Version} A new version string containing the requested version numbers.
  */
-Version.prototype.getItems = function(range) {
+Version.prototype.getItems = function(indices) {
     if (this.debug > 1) {
-        this.validateArgument('$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
-            '/bali/collections/Range'
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
         ]);
     }
-    range = collections.Range.effective(this.componentize(range), this.debug);
-    var first = range.getFirst();
-    if (first === undefined) {
-        first = 1;  // first level
-    } else {
-        first = first.toInteger();
+    var array = [];
+    indices = this.componentize(indices);
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        var index = iterator.getNext().toInteger();
+        index = abstractions.Component.normalizedIndex(this, index);
+        const item = this.getItem(index);
+        array.push(item);
     }
-    var last = range.getLast();
-    if (last === undefined) {
-        last = -1;  // last level
-    } else {
-        last = last.toInteger();
-    }
-    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
-    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
-    const array = this.getValue().slice(first, last);
     return new Version(array, this.getParameters(), this.debug);
 };
 

@@ -90,34 +90,29 @@ Binary.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new binary string containing the bytes in the specified range.
+ * This method returns a new binary string containing the bytes associated with the specified indices.
  *
- * @param {Range} range A range depicting the indices of the first and last bytes to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Binary} A new binary string containing the requested bytes.
  */
-Binary.prototype.getItems = function(range) {
+Binary.prototype.getItems = function(indices) {
     if (this.debug > 1) {
-        this.validateArgument('$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
-            '/bali/collections/Range'
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
         ]);
     }
-    range = collections.Range.effective(this.componentize(range), this.debug);
-    var first = range.getFirst();
-    if (first === undefined) {
-        first = 1;  // first byte
-    } else {
-        first = first.toInteger();
+    indices = this.componentize(indices);
+    const buffer = Buffer.alloc(indices.getSize());
+    var counter = 0;
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        var index = iterator.getNext().toInteger();
+        index = abstractions.Component.normalizedIndex(this, index);
+        const item = this.getItem(index);
+        buffer[counter++] = item;
     }
-    var last = range.getLast();
-    if (last === undefined) {
-        last = -1;  // last byte
-    } else {
-        last = last.toInteger();
-    }
-    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
-    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
-    const buffer = this.getValue().slice(first, last);
     return new Binary(buffer, this.getParameters(), this.debug);
 };
 

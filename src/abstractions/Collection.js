@@ -134,38 +134,25 @@ Collection.prototype.addItem = function(item) {
 /**
  * This method adds the specified sequence of items to the collection.
  *
- * @param {Array|Sequential} items The items to be added to this collection.
+ * @param {String|Array|Sequential} items The items to be added to this collection.
  */
 Collection.prototype.addItems = function(items) {
     if (this.debug > 1) {
         this.validateArgument('$addItems', '$items', items, [
+            '/javascript/String',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
-    if (Array.isArray(items)) {
-        items.forEach(function(item) {
-            item = this.componentize(item);
-            if (item.isType(associationModuleName)) {
-                item = item.getValue();
-            }
-            this.addItem(item);
-        }, this);
-    } else if (items.isComponent && items.supportsInterface('/bali/interfaces/Sequential')) {
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            var item = iterator.getNext();
-            item = this.componentize(item);
-            if (item.isType(associationModuleName)) {
-                item = item.getValue();
-            }
-            this.addItem(item);
+    items = this.componentize(items);
+    const iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        var item = iterator.getNext();
+        item = this.componentize(item);
+        if (item.isType(associationModuleName)) {
+            item = item.getValue();
         }
-    } else if (typeof items === 'object') {
-        const keys = Object.keys(items);
-        keys.forEach(function(key) {
-            this.addItem(items[key]);
-        }, this);
+        this.addItem(item);
     }
 };
 
@@ -209,13 +196,14 @@ Collection.prototype.getItem = function(index) {
  * This method returns a new collection containing the items associated with the specified sequence of
  * indices.
  *
- * @param {Sequential} indices A sequence of indices specifying which items to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Collection} The new collection containing the requested items.
  */
 Collection.prototype.getItems = function(indices) {
     if (this.debug > 1) {
         this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
+            '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
@@ -223,7 +211,8 @@ Collection.prototype.getItems = function(indices) {
     const items = new this.constructor(undefined, this.debug);
     const iterator = indices.getIterator();
     while (iterator.hasNext()) {
-        const index = iterator.getNext().toInteger();
+        var index = iterator.getNext().toInteger();
+        index = Component.normalizedIndex(this, index);
         const item = this.getItem(index);
         items.addItem(item);
     }
@@ -259,27 +248,22 @@ Collection.prototype.containsItem = function(item) {
  * This method determines whether any of the specified items are contained in
  * this collection.
  *
- * @param {Array|Sequential} items The items to be checked for in this collection.
+ * @param {String|Array|Sequential} items The items to be checked for in this collection.
  * @returns {Boolean} Whether or not any of the specified items are contained in this collection.
  */
 Collection.prototype.containsAny = function(items) {
     if (this.debug > 1) {
         this.validateArgument('$containsAny', '$items', items, [
-            '/javascript/Undefined',
+            '/javascript/String',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
-    if (Array.isArray(items)) {
-        for (const item of items) {
-            if (this.containsItem(item)) return true;
-        }
-    } else if (items && items.getIterator) {
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            if (this.containsItem(item)) return true;
-        }
+    items = this.componentize(items);
+    const iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        if (this.containsItem(item)) return true;
     }
     return false;
 };
@@ -289,27 +273,22 @@ Collection.prototype.containsAny = function(items) {
  * This method determines whether all of the specified items are contained in
  * this collection.
  *
- * @param {Array|Sequential} items The items to be checked for in this collection.
+ * @param {String|Array|Sequential} items The items to be checked for in this collection.
  * @returns {Boolean} Whether or not all of the specified items are contained in this collection.
  */
 Collection.prototype.containsAll = function(items) {
     if (this.debug > 1) {
         this.validateArgument('$containsAll', '$items', items, [
-            '/javascript/Undefined',
+            '/javascript/String',
             '/javascript/Array',
             '/bali/interfaces/Sequential'
         ]);
     }
-    if (Array.isArray(items)) {
-        for (const item of items) {
-            if (!this.containsItem(item)) return false;
-        }
-    } else if (items && items.getIterator) {
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            if (!this.containsItem(item)) return false;
-        }
+    items = this.componentize(items);
+    const iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        if (!this.containsItem(item)) return false;
     }
     return true;
 };

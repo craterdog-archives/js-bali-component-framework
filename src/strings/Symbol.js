@@ -97,34 +97,28 @@ Symbol.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new symbol containing the characters in the specified range.
+ * This method returns a new symbol containing the characters associated with the specified indices.
  *
- * @param {Range} range A range depicting the indices of the first and last characters to be retrieved.
+ * @param {String|Array|Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Symbol} A new symbol containing the requested characters.
  */
-Symbol.prototype.getItems = function(range) {
+Symbol.prototype.getItems = function(indices) {
     if (this.debug > 1) {
-        this.validateArgument('$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
-            '/bali/collections/Range'
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
         ]);
     }
-    range = collections.Range.effective(this.componentize(range), this.debug);
-    var first = range.getFirst();
-    if (first === undefined) {
-        first = 1;  // first character
-    } else {
-        first = first.toInteger();
+    var string = '';
+    indices = this.componentize(indices);
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        var index = iterator.getNext().toInteger();
+        index = abstractions.Component.normalizedIndex(this, index);
+        const item = this.getItem(index);
+        string += item;
     }
-    var last = range.getLast();
-    if (last === undefined) {
-        last = -1;  // last character
-    } else {
-        last = last.toInteger();
-    }
-    first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
-    last = abstractions.Component.normalizedIndex(this, last);  // slice() is exclusive of last index
-    const string = this.getValue().slice(first, last);
     return new Symbol(string, this.getParameters(), this.debug);
 };
 

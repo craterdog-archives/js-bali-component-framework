@@ -125,21 +125,17 @@ const Set = function(parameters, debug) {
     this.removeItems = function(items) {
         if (this.debug > 1) {
             this.validateArgument('$removeItems', '$items', items, [
+                '/javascript/String',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
         }
+        items = this.componentize(items);
         var count = 0;
-        if (Array.isArray(items)) {
-            items.forEach(function(item) {
-                if (this.removeItem(item)) count++;
-            }, this);
-        } else if (items && items.getIterator) {
-            const iterator = items.getIterator();
-            while (iterator.hasNext()) {
-                const item = iterator.getNext();
-                if (this.removeItem(item)) count++;
-            }
+        const iterator = items.getIterator();
+        while (iterator.hasNext()) {
+            const item = iterator.getNext();
+            if (this.removeItem(item)) count++;
         }
         return count;  // returns the number of removed items
     };
