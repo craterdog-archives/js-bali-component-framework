@@ -246,21 +246,21 @@ const Catalog = function(parameters, debug) {
                 '/bali/interfaces/Sequential'
             ]);
         }
-        const values = new List(undefined, this.debug);
+        const attributes = new Catalog(undefined, this.debug);
         if (Array.isArray(keys)) {
             keys.forEach(function(key) {
                 const value = this.removeAttribute(key);
-                if (value) values.addItem(value);
+                if (value) attributes.setAttribute(key, value);
             }, this);
         } else if (keys && keys.getIterator) {
             const iterator = keys.getIterator();
             while (iterator.hasNext()) {
                 const key = iterator.getNext();
                 const value = this.removeAttribute(key);
-                if (value) values.addItem(value);
+                if (value) attributes.setAttribute(key, value);
             }
         }
-        return values;
+        return attributes;
     };
 
     this.emptyCollection = function() {

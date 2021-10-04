@@ -206,27 +206,26 @@ Collection.prototype.getItem = function(index) {
 
 
 /**
- * This method returns a new collection containing the items in the specified range.
+ * This method returns a new collection containing the items associated with the specified sequence of
+ * indices.
  *
- * @param {Range} range A range depicting the indices of the first and last items to be retrieved.
+ * @param {Sequential} indices A sequence of indices specifying which items to be retrieved.
  * @returns {Collection} The new collection containing the requested items.
  */
-Collection.prototype.getItems = function(range) {
+Collection.prototype.getItems = function(indices) {
     if (this.debug > 1) {
-        this.validateArgument('$getItems', '$range', range, [
+        this.validateArgument('$getItems', '$indices', indices, [
             '/javascript/String',
-            '/bali/collections/Range'
+            '/bali/interfaces/Sequential'
         ]);
     }
-    range = this.componentize(range);
-    const items = new this.constructor(this.getParameters(), this.debug);
-    if (range && range.getIterator) {
-        const iterator = range.getIterator();
-        while (iterator.hasNext()) {
-            const index = iterator.getNext().toInteger();
-            const item = this.getItem(index);
-            items.addItem(item);
-        }
+    indices = this.componentize(indices);
+    const items = new this.constructor(undefined, this.debug);
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        const index = iterator.getNext().toInteger();
+        const item = this.getItem(index);
+        items.addItem(item);
     }
     return items;
 };

@@ -27,7 +27,6 @@ const moduleName = '/bali/collections/List';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const agents = require('../agents');
-const Range = require('./Range').Range;
 
 
 // PUBLIC FUNCTIONS
@@ -174,31 +173,22 @@ const List = function(parameters, debug) {
         return array.splice(index, 1)[0];  // returns the removed item
     };
 
-    this.removeItems = function(range) {
+    this.removeItems = function(indices) {
         if (this.debug > 1) {
-            this.validateArgument('$removeItems', '$range', range, [
+            this.validateArgument('$removeItems', '$indices', indices, [
                 '/javascript/String',
-                '/bali/collections/Range'
+                '/bali/interfaces/Sequential'
             ]);
         }
-        range = Range.effective(this.componentize(range), this.debug);
-        var first = range.getFirst();
-        if (first === undefined) {
-            first = 1;  // first character
-        } else {
-            first = first.toInteger();
+        indices = this.componentize(indices);
+        const items = new List(undefined, this.debug);
+        const iterator = indices.getIterator();
+        while (iterator.hasNext()) {
+            const index = iterator.getNext().toInteger();
+            const item = this.removeItem(index);
+            items.addItem(item);
         }
-        var last = range.getLast();
-        if (last === undefined) {
-            last = -1;  // last character
-        } else {
-            last = last.toInteger();
-        }
-        first = abstractions.Component.normalizedIndex(this, first) - 1;  // zero-based indexing for JS
-        last = abstractions.Component.normalizedIndex(this, last) - 1;  // zero-based indexing for JS
-        const items = new List();
-        items.addItems(array.splice(first, last - first + 1));  // include the last item
-        return items;  // returns the removed items
+        return items;
     };
 
     this.emptyCollection = function() {
