@@ -165,6 +165,7 @@ const Catalog = function(parameters, debug) {
     this.getAttributes = function(keys) {
         if (this.debug > 1) {
             this.validateArgument('$getAttributes', '$keys', keys, [
+                '/javascript/String',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
@@ -236,17 +237,18 @@ const Catalog = function(parameters, debug) {
     this.removeAttributes = function(keys) {
         if (this.debug > 1) {
             this.validateArgument('$removeAttributes', '$keys', keys, [
+                '/javascript/String',
                 '/javascript/Array',
                 '/bali/interfaces/Sequential'
             ]);
         }
-        const attributes = new Catalog(this.getParameters(), this.debug);
+        const attributes = new List(undefined, this.debug);
         keys = this.componentize(keys);
         const iterator = keys.getIterator();
         while (iterator.hasNext()) {
             const key = iterator.getNext();
             const value = this.removeAttribute(key);
-            if (value) attributes.setAttribute(key, value);
+            if (value) attributes.addItem(value);
         }
         return attributes;
     };
