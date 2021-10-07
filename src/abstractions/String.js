@@ -24,10 +24,18 @@ const Iterator = require('./Iterator').Iterator;
  * This constructor creates a new string with the specified ancestry and interfaces
  * candidate with any optional parameters that are used to parameterize its type.
  *
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @param {Array} ancestry An array of type names that make up the ancestry for the component.
  * @param {Array} interfaces An array of interface names that are supported by the component.
  * @param {Object} parameters Optional parameters used to parameterize this string.
- * @param {Number} debug A number in the range 0..3.
  * @returns {Stryng} The new string.
  */
 const Stryng = function(ancestry, interfaces, parameters, debug) {

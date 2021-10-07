@@ -40,14 +40,19 @@ const base32LookupTable = '0123456789ABCDFGHJKLMNPQRSTVWXYZ';  // missing 'E', '
 /**
  * This function returns a decoder object that can perform byte encoding and decoding.
  *
- * @param {Number} indentation The number of levels of indentation that should be prepended
- * to each formatted line. The default is zero.
- * @param {Number} debug A number in the range 0..3.
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @returns {Decoder} The new decoder.
  */
-const Decoder = function(indentation, debug) {
+const Decoder = function(debug) {
     this.debug = debug || 0;
-    this.indentation = indentation || 0;
     return this;
 };
 Decoder.prototype.constructor = Decoder;
@@ -58,9 +63,12 @@ exports.Decoder = Decoder;
  * This method encodes the bytes in a data buffer into a base 2 string.
  *
  * @param {Buffer} buffer A data buffer containing the integer.
+ * @param {Number} indentation The number of levels of indentation that should be prepended
+ * to each formatted line. The default is zero.
  * @return {String} The base 2 encoded string.
  */
-Decoder.prototype.base02Encode = function(buffer) {
+Decoder.prototype.base02Encode = function(buffer, indentation) {
+    indentation = indentation || 0;
     // encode each byte
     var string = '';
     buffer.forEach(function(byte) {
@@ -73,7 +81,7 @@ Decoder.prototype.base02Encode = function(buffer) {
     }, this);
 
     // break the string into formatted lines
-    const base02 = formatLines(string, this.indentation);
+    const base02 = formatLines(string, indentation);
     return base02;
 };
 
@@ -126,9 +134,12 @@ Decoder.prototype.base02Decode = function(base02) {
  * This method encodes the bytes in a data buffer into a base 16 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
+ * @param {Number} indentation The number of levels of indentation that should be prepended
+ * to each formatted line. The default is zero.
  * @return {String} The base 16 encoded string.
  */
-Decoder.prototype.base16Encode = function(buffer) {
+Decoder.prototype.base16Encode = function(buffer, indentation) {
+    indentation = indentation || 0;
     // encode the bytes
     var string = '';
     buffer.forEach(function(byte) {
@@ -139,7 +150,7 @@ Decoder.prototype.base16Encode = function(buffer) {
     }, this);
 
     // break the string into formatted lines
-    const base16 = formatLines(string, this.indentation);
+    const base16 = formatLines(string, indentation);
     return base16;
 };
 
@@ -199,9 +210,12 @@ Decoder.prototype.base16Decode = function(base16) {
  * This method encodes the bytes in a data buffer into a base 32 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
+ * @param {Number} indentation The number of levels of indentation that should be prepended
+ * to each formatted line. The default is zero.
  * @return {String} The base 32 encoded string.
  */
-Decoder.prototype.base32Encode = function(buffer) {
+Decoder.prototype.base32Encode = function(buffer, indentation) {
+    indentation = indentation || 0;
     // encode each byte
     var string = '';
     const length = buffer.length;
@@ -218,7 +232,7 @@ Decoder.prototype.base32Encode = function(buffer) {
     string = base32EncodeLast(lastByte, length - 1, string);
 
     // break the string into formatted lines
-    const base32 = formatLines(string, this.indentation);
+    const base32 = formatLines(string, indentation);
     return base32;
 };
 
@@ -263,14 +277,17 @@ Decoder.prototype.base32Decode = function(base32) {
  * This method encodes the bytes in a data buffer into a base 64 string.
  *
  * @param {Buffer} buffer A data buffer containing the bytes to be encoded.
+ * @param {Number} indentation The number of levels of indentation that should be prepended
+ * to each formatted line. The default is zero.
  * @return {String} The base 64 encoded string.
  */
-Decoder.prototype.base64Encode = function(buffer) {
+Decoder.prototype.base64Encode = function(buffer, indentation) {
+    indentation = indentation || 0;
     // format as indented 80 character blocks
     const string = buffer.toString('base64');
 
     // break the string into formatted lines
-    const base64 = formatLines(string, this.indentation);
+    const base64 = formatLines(string, indentation);
     return base64;
 };
 

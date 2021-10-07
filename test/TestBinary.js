@@ -12,7 +12,7 @@ const debug = 0;
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const bali = require('../').api(debug);
-const decoder = bali.decoder(1);  // indent one level
+const decoder = bali.decoder();
 const generator = bali.generator();
 
 
@@ -40,7 +40,7 @@ describe('Bali Nebula™ Component Framework - Binary', function() {
         it('should construct binary strings from a buffer with default encoding', function() {
             const binary = bali.binary(expected);
             expect(binary.getValue().toString('hex')).to.equal(expected.toString('hex'));
-            expect(binary.toString()).to.equal("'" + decoder.base32Encode(expected) + "'");
+            expect(binary.toString()).to.equal("'" + decoder.base32Encode(expected, 1) + "'");
         });
 
         it('should throw and exception when constructing a binary string with an illegal encoding', function() {

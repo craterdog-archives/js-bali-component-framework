@@ -20,43 +20,56 @@ const abstractions = require('../abstractions');
 /**
  * This constructor creates a new BDN based formatter agent.
  *
- * @param {Number} indentation The number of levels of indentation that should be inserted
- * to each formatted line at the top level. The default is zero.
- * @param {Number} debug A number in the range 0..3.
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @returns {Formatter} The new BDN formatter agent.
  */
-const BDNFormatter = function(indentation, debug) {
+const BDNFormatter = function(debug) {
     abstractions.Formatter.call(
         this,
         [ moduleName ],
         debug
     );
-    if (this.debug > 1) {
-        this.validateArgument('$BDNFormatter', '$indentation', indentation, [
-            '/javascript/Undefined',
-            '/javascript/Number'
-        ]);
-    }
-
-    // private attribute
-    indentation = indentation || 0;
-
-    this.asSource = function(component) {
-        if (this.debug > 1) {
-            this.validateArgument('$asSource', '$component', component, [
-                '/bali/abstractions/Component'
-            ]);
-        }
-        const visitor = new FormattingVisitor(indentation, this.debug);
-        component.acceptVisitor(visitor);
-        return visitor.result;
-    };
-
     return this;
 };
 BDNFormatter.prototype = Object.create(abstractions.Formatter.prototype);
 BDNFormatter.prototype.constructor = BDNFormatter;
 exports.BDNFormatter = BDNFormatter;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns a source string containing the Bali Document Notation™ for the specified
+ * component indented the specified number of levels (with four spaces per level).
+ *
+ * @param {Component} component The component to be formatted.
+ * @param {Number} indentation The number of levels of indentation that should be inserted
+ * to each formatted line at the top level. The default is zero.
+ * @returns {String} The BDN source string.
+ */
+BDNFormatter.prototype.asSource = function(component, indentation) {
+    if (this.debug > 1) {
+        this.validateArgument('$asSource', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
+        this.validateArgument('$asSource', '$indentation', indentation, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
+    indentation = indentation || 0;
+    const visitor = new FormattingVisitor(indentation, this.debug);
+    component.acceptVisitor(visitor);
+    return visitor.result;
+};
 
 
 // PRIVATE CLASSES

@@ -23,10 +23,18 @@ const abstractions = require('../abstractions');
 /**
  * This function creates a new tag element using the specified value.
  *
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @param {Number|String} value An optional parameter defining the size of a new random
  * tag or the value it should represent.
  * @param {Object} parameters Optional parameters used to parameterize this element.
- * @param {Number} debug A number in the range 0..3.
  * @returns {Tag} The new tag element.
  */
 const Tag = function(value, parameters, debug) {

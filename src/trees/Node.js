@@ -28,8 +28,16 @@ const agents = require('../agents');
 /**
  * This function creates a new node component.
  *
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @param {String} type The type of the node component.
- * @param {Number} debug A number in the range 0..3.
  * @returns {Node} The new node component.
  */
 const Node = function(type, debug) {

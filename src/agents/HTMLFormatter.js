@@ -32,10 +32,18 @@ Array.prototype.peek = function() {
  * This constructor creates a new formatter agent that can be used to generate a canonical HTML
  * documents from any component.
  *
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @param {String} title The string to be used as the title for the generated web page.
  * @param {String} style A reference to the CSS style sheet that should be used for the look
  * and feel of the generated web page.
- * @param {Number} debug A number in the range 0..3.
  * @returns {HTML} The new HTML formatter agent.
  */
 const HTMLFormatter = function(title, style, debug) {

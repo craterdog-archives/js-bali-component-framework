@@ -22,16 +22,17 @@ const EOL = '\n'; // The POSIX end of line character
 /**
  * This function creates a configurator object.
  *
+ * An optional debug argument may be specified that controls the level of debugging that
+ * should be applied during execution. The allowed levels are as follows:
+ * <pre>
+ *   0: no debugging is applied (this is the default value and has the best performance)
+ *   1: log any exceptions to console.error before throwing them
+ *   2: perform argument validation checks on each call (poor performance)
+ *   3: log interesting arguments, states and results to console.log
+ * </pre>
+ *
  * @param {String} filename The filename for the configuration.
  * @param {String} directory The configuration directory.
- * @param {Boolean|Number} debug An optional number in the range 0..3 that controls
- * the level of debugging that occurs:
- * <pre>
- *   0 (or false): debugging turned off
- *   1 (or true): log exceptions to console.error
- *   2: perform argument validation and log exceptions to console.error
- *   3: perform argument validation and log exceptions to console.error and debug info to console.log
- * </pre>
  * @returns {Configurator} A new association.
  */
 const Configurator = function(filename, directory, debug) {
