@@ -31,39 +31,54 @@ const CanonicalComparator = require('./CanonicalComparator').CanonicalComparator
  *   3: log interesting arguments, states and results to console.log
  * </pre>
  *
- * @param {Comparator} comparator An optional comparator implementing the desired comparison algorithm.
- * If none is specified, the natural comparator will be used.
  * @returns {Sorter} The new merge sorter agent.
  */
-const MergeSorter = function(comparator, debug) {
-    comparator = comparator || new CanonicalComparator(debug);
+const MergeSorter = function(debug) {
     abstractions.Sorter.call(
         this,
         [ moduleName ],
-        comparator,
         debug
     );
-
-    this.sortCollection = function(collection) {
-        if (debug > 1) {
-            this.validateArgument('$sortCollection', '$collection', collection, [
-                '/bali/interfaces/Sortable'
-            ]);
-        }
-        if (collection && collection.getSize() > 1) {
-            var array = collection.toArray();
-            array = sortArray(comparator, array);
-            collection.emptyCollection();
-            collection.addItems(array);
-        }
-    };
-
     return this;
 };
 MergeSorter.prototype = Object.create(abstractions.Sorter.prototype);
 MergeSorter.prototype.constructor = MergeSorter;
 exports.MergeSorter = MergeSorter;
 
+
+// PUBLIC METHODS
+
+/**
+ * This method sorts the specified collection using an optional specified comparator to determine
+ * the relative ordering of each item. If no comparator is specified, the canonical comparator is
+ * used to sort the items in their "natural" order.
+ *
+ * @param {Collection} The collection to be sorted.
+ * @param {Comparator} comparator An optional comparator agent.
+ * @returns {Collection} The sorted collection.
+ */
+MergeSorter.prototype.sortCollection = function(collection, comparator) {
+    if (this.debug > 1) {
+        this.validateArgument('$sortCollection', '$collection', collection, [
+            '/bali/interfaces/Sortable'
+        ]);
+        this.validateArgument('$sortCollection', '$comparator', comparator, [
+            '/javascript/Undefined',
+            '/bali/abstractions/Comparator'
+        ]);
+    }
+    comparator = comparator || new CanonicalComparator(this.debug);
+    if (collection.getSize() > 1) {
+        var array = collection.toArray();
+        array = sortArray(comparator, array);
+        collection.emptyCollection();
+        collection.addItems(array);
+    }
+    return collection;
+};
+
+
+// PRIVATE FUNCTIONS
 
 const sortArray = function(comparator, array) {
     // check to see if the array is already sorted

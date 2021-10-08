@@ -31,11 +31,9 @@ const Exception = require('./Component').Exception;
  * </pre>
  *
  * @param {Array} ancestry An array of type names that make up the ancestry for the sorter.
- * @param {Comparator} comparator A comparator agent to be used to do pair-wise comparisons of
- * the items being sorted.
  * @returns {Sorter} The new sorter.
  */
-const Sorter = function(ancestry, comparator, debug) {
+const Sorter = function(ancestry, debug) {
     Component.call(
         this,
         ancestry.concat(moduleName),
@@ -43,16 +41,6 @@ const Sorter = function(ancestry, comparator, debug) {
         undefined,  // must be undefined to avoid infinite loop
         debug
     );
-    if (this.debug > 1) {
-        this.validateArgument('$Sorter', '$comparator', comparator, [
-            '/bali/abstractions/Comparator'
-        ]);
-    }
-
-    this.getComparator = function() {
-        return comparator;
-    };
-
     return this;
 };
 Sorter.prototype = Object.create(Component.prototype);
@@ -64,8 +52,10 @@ exports.Sorter = Sorter;
  * This method sorts the items in the specified collection.
  * 
  * @param {Sortable} collection The sortable collection to be sorted.
+ * @param {Comparator} comparator An optional comparator agent to be used to
+ * do pair-wise comparisons of the items being sorted.
  */
-Sorter.prototype.sortCollection = function(collection) {
+Sorter.prototype.sortCollection = function(collection, comparator) {
     const exception = new Exception({
         $module: moduleName,
         $procedure: '$sortCollection',

@@ -147,7 +147,7 @@ CanonicalComparator.prototype.ranking = function(first, second) {
         return 0;
     }
     if (first.isComponent && first.isType('/bali/abstractions/Sorter')) {
-        return this.ranking(first.getComparator(), second.getComparator());
+        return 0;
     }
     if (first.isComponent && first.isType('/bali/abstractions/Iterator')) {
         var result = this.ranking(first.getSlot(), second.getSlot());

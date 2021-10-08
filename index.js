@@ -619,16 +619,14 @@ exports.api = function(debug) {
     // SORTED
     const sorted = function(collection, comparator, debug) {
         debug = debug || defaultDebug;
-        if (comparator === undefined) comparator = new agents.CanonicalComparator(debug);
-        const sorter = new agents.MergeSorter(comparator, debug);
-        return sorter.sortCollection(collection);
+        const sorter = new agents.MergeSorter(debug);
+        return sorter.sortCollection(collection, comparator);
     };
 
     // SORTER
-    const sorter = function(comparator, debug) {
+    const sorter = function(debug) {
         debug = debug || defaultDebug;
-        if (comparator === undefined) comparator = new agents.CanonicalComparator(debug);
-        return new agents.MergeSorter(comparator, debug);
+        return new agents.MergeSorter(debug);
     };
 
     // SOURCE

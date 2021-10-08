@@ -38,9 +38,7 @@
         ]($type: /nebula/abstractions/Exception/v1)
     ]($type: /nebula/abstractions/Exception/v1)
     $comparator: [:]($type: /nebula/agents/CanonicalComparator/v1)
-    $sorter: [
-        $comparator: [:]($type: /nebula/agents/CanonicalComparator/v1)
-    ]($type: /nebula/agents/MergeSorter/v1)
+    $sorter: [:]($type: /nebula/agents/MergeSorter/v1)
     $collection: [
         $slot: 0
         $sequence: [

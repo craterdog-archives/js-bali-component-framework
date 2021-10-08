@@ -52,10 +52,6 @@ const Set = function(parameters, debug) {
     const comparator = new agents.CanonicalComparator(this.debug);
     const tree = new RandomizedTree(comparator);
 
-    this.getComparator = function() {
-        return comparator;
-    };
-
     this.toArray = function() {
         const array = [];
         var node = minimum(tree.root);
@@ -280,7 +276,7 @@ Set.xor = function(first, second, debug) {
         ]);
     }
     const result = new Set(first.getParameters(), debug);
-    const comparator = result.getComparator();
+    const comparator = new agents.CanonicalComparator(debug);
     const iterator1 = first.getIterator();
     var item1;
     const iterator2 = second.getIterator();

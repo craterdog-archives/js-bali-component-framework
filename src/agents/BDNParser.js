@@ -57,24 +57,33 @@ const BDNParser = function(debug) {
         [ moduleName ],
         debug
     );
-
-    this.parseSource = function(string) {
-        if (debug > 1) {
-            this.validateArgument('$parseSource', '$string', string, [
-                '/javascript/String'
-            ]);
-        }
-        const parser = initializeParser(string, debug);
-        const antlrTree = parser.source();
-        const component = convertParseTree(antlrTree, debug);
-        return component;
-    };
-
     return this;
 };
 BDNParser.prototype = Object.create(abstractions.Parser.prototype);
 BDNParser.prototype.constructor = BDNParser;
 exports.BDNParser = BDNParser;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method parses the specified Bali Document Notation™ source string and returns
+ * the corresponding component.
+ *
+ * @param {String} The BDN source string.
+ * @returns {Component} The corresponding component.
+ */
+BDNParser.prototype.parseSource = function(string) {
+    if (this.debug > 1) {
+        this.validateArgument('$parseSource', '$string', string, [
+            '/javascript/String'
+        ]);
+    }
+    const parser = initializeParser(string, this.debug);
+    const antlrTree = parser.source();
+    const component = convertParseTree(antlrTree, this.debug);
+    return component;
+};
 
 
 // PRIVATE FUNCTIONS
@@ -339,8 +348,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
                     component = new agents.CanonicalComparator(this.debug);
                     break;
                 case '/nebula/agents/MergeSorter/v1':
-                    const comparator = catalog.getAttribute('$comparator');
-                    component = new agents.MergeSorter(comparator, this.debug);
+                    component = new agents.MergeSorter(this.debug);
                     break;
                 case '/nebula/abstractions/CollectionIterator/v1':
                 case '/nebula/collections/RangeIterator/v1':

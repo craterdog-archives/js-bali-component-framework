@@ -18,7 +18,6 @@ const abstractions = require('../abstractions');
 const EOL = '\n';  // the POSIX end of line character
 
 
-
 /**
  * This constructor creates a new BDN based formatter agent.
  *
@@ -671,15 +670,7 @@ FormattingVisitor.prototype.visitMagnitudeExpression = function(node) {
 
 
 FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
-    this.result += '[';
-    this.depth++;
-    this.result += this.getNewline();
-    this.result += '$comparator: ';
-    const comparator = sorter.getComparator();
-    comparator.acceptVisitor(this);
-    this.depth--;
-    this.result += this.getNewline();
-    this.result += ']($type: /nebula/agents/MergeSorter/v1)';
+    this.result += '[:]($type: /nebula/agents/MergeSorter/v1)';
 };
 
 

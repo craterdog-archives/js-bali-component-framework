@@ -26,8 +26,6 @@ Array.prototype.peek = function() {
 };
 
 
-// PUBLIC FUNCTIONS
-
 /**
  * This constructor creates a new formatter agent that can be used to generate a canonical HTML
  * documents from any component.
@@ -496,45 +494,8 @@ FormattingVisitor.prototype.visitIterator = function(iterator) {
 
 
 FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
-    this.result += '<div class="catalog">';
-    this.depth++;
-    this.result += this.getNewline();
-    this.result += '<div class="type">MergeSorter</div>';
-    this.result += this.getNewline();
-
-    this.result += '<div class="association">';
-    this.depth++;
-    this.result += this.getNewline();
-    this.result += '<div class="key">';
-    this.depth++;
-    this.result += this.getNewline();
-
     this.result += '<div class="element symbol">';
-    this.result += 'comparator';
-    this.result += '</div>';
-
-    this.depth--;
-    this.result += this.getNewline();
-    this.result += '</div>';
-    this.result += this.getNewline();
-    this.result += '<div class="colon">:</div>';
-    this.result += this.getNewline();
-    this.result += '<div class="value">';
-    this.depth++;
-    this.result += this.getNewline();
-
-    const comparator = sorter.getComparator();
-    comparator.acceptVisitor(this);
-
-    this.depth--;
-    this.result += this.getNewline();
-    this.result += '</div>';
-    this.depth--;
-    this.result += this.getNewline();
-    this.result += '</div>';
-
-    this.depth--;
-    this.result += this.getNewline();
+    this.result += 'MergeSorter';
     this.result += '</div>';
 };
 

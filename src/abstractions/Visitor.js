@@ -473,8 +473,6 @@ Visitor.prototype.visitMagnitudeExpression = function(node) {
 
 
 Visitor.prototype.visitMergeSorter = function(sorter) {
-    const comparator = sorter.getComparator();
-    comparator.acceptVisitor(this);
 };
 
 

@@ -200,11 +200,6 @@ const List = function(parameters, debug) {
         array.splice(0);
     };
 
-    this.sortItems = function(sorter) {
-        sorter = sorter || new agents.MergeSorter(new agents.CanonicalComparator(this.debug), this.debug);
-        sorter.sortCollection(this);
-    };
-
     this.reverseItems = function() {
         array.reverse();
     };
@@ -248,6 +243,34 @@ const List = function(parameters, debug) {
 List.prototype = Object.create(abstractions.Collection.prototype);
 List.prototype.constructor = List;
 exports.List = List;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method sorts the items in this list using the specified sorter and
+ * comparator agents.  If no sorter is specified the merge sorter is used.  If no
+ * comparator is specified the canonical comparator is used to order the items in
+ * their "natural" order.
+ *
+ * @param {Sorter} sorter The sorter to be used for sorting.
+ * @param {Comparator} comparator The comparator to be used for comparing two items.
+ * @returns {List} The sorted list.
+ */
+List.prototype.sortItems = function(sorter, comparator) {
+    if (this.debug > 1) {
+        this.validateArgument('$sortItems', '$sorter', sorter, [
+            '/javascript/Undefined',
+            '/bali/abstractions/Sorter'
+        ]);
+        this.validateArgument('$sortItems', '$comparator', comparator, [
+            '/javascript/Undefined',
+            '/bali/abstractions/Comparator'
+        ]);
+    }
+    sorter = sorter || new agents.MergeSorter(this.debug);
+    return sorter.sortCollection(this, comparator);
+};
 
 
 // CHAINABLE LIBRARY FUNCTIONS
