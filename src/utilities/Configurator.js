@@ -36,13 +36,10 @@ const EOL = '\n'; // The POSIX end of line character
  * @returns {Configurator} A new association.
  */
 const Configurator = function(filename, directory, debug) {
-    if (debug === null || debug === undefined) debug = 0;  // default is off
-    this.debug = debug;
-
+    this.debug = debug || 0;  // default is off
     if (directory && !directory.endsWith('/')) directory += '/';
     this.directory = directory || os.homedir() + '/.bali/';
     this.file = this.directory + filename;
-
     return this;
 };
 Configurator.prototype.constructor = Configurator;
