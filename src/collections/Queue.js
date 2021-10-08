@@ -29,10 +29,8 @@ Array.prototype.peek = function() {
 };
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new queue component with optional parameters that are
+ * This constructor creates a new queue component with optional parameters that are
  * used to parameterize its type.
  *
  * An optional debug argument may be specified that controls the level of debugging that
@@ -110,6 +108,7 @@ const Queue = function(parameters, debug) {
 
     this.emptyCollection = function() {
         array.splice(0);
+        return this;
     };
 
     return this;

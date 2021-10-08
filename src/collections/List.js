@@ -29,10 +29,8 @@ const abstractions = require('../abstractions');
 const agents = require('../agents');
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new list component with optional parameters that are
+ * This constructor creates a new list component with optional parameters that are
  * used to parameterize its type.
  *
  * An optional debug argument may be specified that controls the level of debugging that
@@ -125,7 +123,7 @@ const List = function(parameters, debug) {
         }
         item = this.componentize(item);
         array.push(item);
-        return true;
+        return true;  // always succeeds
     };
 
     this.insertItem = function(index, item) {
@@ -146,25 +144,7 @@ const List = function(parameters, debug) {
         item = this.componentize(item);
         index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
         array.splice(index, 0, item);
-    };
-
-    this.insertItems = function(index, items) {
-        if (this.debug > 1) {
-            this.validateArgument('$insertItems', '$index', index, [
-                '/javascript/Number'
-            ]);
-            this.validateArgument('$insertItems', '$items', items, [
-                '/javascript/String',
-                '/javascript/Array',
-                '/bali/interfaces/Sequential'
-            ]);
-        }
-        items = this.componentize(items);
-        const iterator = items.getIterator();
-        while (iterator.hasNext()) {
-            const item = iterator.getNext();
-            this.insertItem(index++, item);
-        }
+        return this;
     };
 
     this.removeItem = function(index) {
@@ -177,65 +157,14 @@ const List = function(parameters, debug) {
         return array.splice(index, 1)[0];  // returns the removed item
     };
 
-    this.removeItems = function(indices) {
-        if (this.debug > 1) {
-            this.validateArgument('$removeItems', '$indices', indices, [
-                '/javascript/String',
-                '/javascript/Array',
-                '/bali/interfaces/Sequential'
-            ]);
-        }
-        indices = this.componentize(indices);
-        const items = new List(this.getParameters(), this.debug);
-        const iterator = indices.getIterator();
-        while (iterator.hasNext()) {
-            const index = iterator.getNext().toInteger();
-            const item = this.removeItem(index);
-            items.addItem(item);
-        }
-        return items;
-    };
-
     this.emptyCollection = function() {
         array.splice(0);
+        return this;
     };
 
     this.reverseItems = function() {
         array.reverse();
-    };
-
-    this.shuffleItems = function() {
-        const generator = new utilities.Generator(this.debug);
-        const size = this.getSize();
-        for (var index = size; index > 1; index--) {
-            const random = generator.generateIndex(index);  // in range 1..index ordinal indexing
-            const item = this.getItem(index);
-            this.setItem(index, this.getItem(random));
-            this.setItem(random, item);
-        }
-    };
-
-    this.getAttribute = function(index) {
-        if (this.debug > 1) {
-            this.validateArgument('$getAttribute', '$index', index, [
-                '/bali/elements/Number'
-            ]);
-        }
-        index = index.toInteger();
-        return this.getItem(index);
-    };
-
-    this.setAttribute = function(index, value) {
-        if (this.debug > 1) {
-            this.validateArgument('$setAttribute', '$index', index, [
-                '/bali/elements/Number'
-            ]);
-            this.validateArgument('$setAttribute', '$value', value, [
-                '/bali/abstractions/Component'
-            ]);
-        }
-        index = index.toInteger();
-        return this.setItem(index, value);
+        return this;
     };
 
     return this;
@@ -246,6 +175,62 @@ exports.List = List;
 
 
 // PUBLIC METHODS
+
+/**
+ * This method inserts the specified sequence of items into this list at the
+ * specified index.
+ *
+ * @param {Number} index The index in this list where the first inserted item should go.
+ * @param {Sequential} items A sequence of items to be inserted.
+ * @returns {List} The updated list.
+ */
+List.prototype.insertItems = function(index, items) {
+    if (this.debug > 1) {
+        this.validateArgument('$insertItems', '$index', index, [
+            '/javascript/Number'
+        ]);
+        this.validateArgument('$insertItems', '$items', items, [
+            '/javascript/String',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
+    items = this.componentize(items);
+    const iterator = items.getIterator();
+    while (iterator.hasNext()) {
+        const item = iterator.getNext();
+        this.insertItem(index++, item);
+    }
+    return this;
+};
+
+
+/**
+ * This method removes from this list the items associated with the specified sequence of
+ * indices.
+ *
+ * @param {Sequential} indices The sequence of indices for the items to be removed.
+ * @returns {List} A list of the removed items.
+ */
+List.prototype.removeItems = function(indices) {
+    if (this.debug > 1) {
+        this.validateArgument('$removeItems', '$indices', indices, [
+            '/javascript/String',
+            '/javascript/Array',
+            '/bali/interfaces/Sequential'
+        ]);
+    }
+    indices = this.componentize(indices);
+    const items = new List(this.getParameters(), this.debug);
+    const iterator = indices.getIterator();
+    while (iterator.hasNext()) {
+        const index = iterator.getNext().toInteger();
+        const item = this.removeItem(index);
+        items.addItem(item);
+    }
+    return items;
+};
+
 
 /**
  * This method sorts the items in this list using the specified sorter and
@@ -270,6 +255,68 @@ List.prototype.sortItems = function(sorter, comparator) {
     }
     sorter = sorter || new agents.MergeSorter(this.debug);
     return sorter.sortCollection(this, comparator);
+};
+
+
+/**
+ * This method randomly shuffles the items in this list.
+ *
+ * @returns {List} The shuffled list.
+ */
+List.prototype.shuffleItems = function() {
+    const generator = new utilities.Generator(this.debug);
+    const size = this.getSize();
+    for (var index = size; index > 1; index--) {
+        const random = generator.generateIndex(index);  // in range 1..index ordinal indexing
+        const item = this.getItem(index);
+        this.setItem(index, this.getItem(random));
+        this.setItem(random, item);
+    }
+    return this;
+};
+
+
+/**
+ * This method returns the attribute value associated with the specified index.
+ *
+ * @param {Number} index The index of the attribute value to be returned.
+ * @returns {Component} The desired attribute value.
+ */
+List.prototype.getAttribute = function(index) {
+    if (this.debug > 1) {
+        this.validateArgument('$getAttribute', '$index', index, [
+            '/bali/elements/Number'
+        ]);
+    }
+    index = index.toInteger();
+    return this.getItem(index);
+};
+
+
+/**
+ * This method sets the attribute value associated with the specified index.
+ *
+ * @param {Number} index The index of the attribute value to be set.
+ * @param {Any} value The new value of the attribute at the specified index.
+ * @returns {Component} The previous attribute value.
+ */
+List.prototype.setAttribute = function(index, value) {
+    if (this.debug > 1) {
+        this.validateArgument('$setAttribute', '$index', index, [
+            '/bali/elements/Number'
+        ]);
+        this.validateArgument('$setAttribute', '$value', value, [
+            '/javascript/Undefined',
+            '/javascript/Boolean',
+            '/javascript/Number',
+            '/javascript/String',
+            '/javascript/Array',
+            '/javascript/Object',
+            '/bali/abstractions/Component'
+        ]);
+    }
+    index = index.toInteger();
+    return this.setItem(index, value);
 };
 
 

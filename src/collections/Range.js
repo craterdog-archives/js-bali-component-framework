@@ -17,10 +17,8 @@ const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new range collection using the specified first and last values.
+ * This constructor creates a new range collection using the specified first and last values.
  *
  * An optional debug argument may be specified that controls the level of debugging that
  * should be applied during execution. The allowed levels are as follows:

@@ -20,10 +20,8 @@ const abstractions = require('../abstractions');
 const agents = require('../agents');
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new set component with optional parameters that are
+ * This constructor creates a new set component with optional parameters that are
  * used to parameterize its type.
  *
  * An optional debug argument may be specified that controls the level of debugging that
@@ -146,6 +144,7 @@ const Set = function(parameters, debug) {
 
     this.emptyCollection = function() {
         tree.clear();
+        return this;
     };
 
 

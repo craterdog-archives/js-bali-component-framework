@@ -24,10 +24,8 @@ const Association = require('./Association').Association;
 const List = require('./List').List;
 
 
-// PUBLIC FUNCTIONS
-
 /**
- * This function creates a new catalog component with optional parameters that are
+ * This constructor creates a new catalog component with optional parameters that are
  * used to parameterize its type.
  *
  * An optional debug argument may be specified that controls the level of debugging that
@@ -113,7 +111,7 @@ const Catalog = function(parameters, debug) {
             array.push(association);
             return true;
         }
-        return false;
+        return false;  // nothing was added
     };
 
     this.addItems = function(associations) {
@@ -154,6 +152,7 @@ const Catalog = function(parameters, debug) {
                 }, this);
             }
         }
+        return this;
     };
 
     this.getAttribute = function(key) {
@@ -219,6 +218,7 @@ const Catalog = function(parameters, debug) {
             map[key.toString()] = association;
             array.push(association);
         }
+        return this;
     };
 
     this.removeAttribute = function(key) {
@@ -266,10 +266,12 @@ const Catalog = function(parameters, debug) {
             delete map[key];
         }, this);
         array.splice(0);
+        return this;
     };
 
     this.reverseItems = function() {
         array.reverse();
+        return this;
     };
 
     return this;
