@@ -77,11 +77,12 @@ Formatter.prototype.asSource = function(component, indentation) {
  * @returns {String} The formal document.
  */
 Formatter.prototype.asDocument = function(component) {
-    if (this.debug > 1) {
-        this.validateArgument('$asDocument', '$component', component, [
-            '/bali/abstractions/Component'
-        ]);
-    }
-    return this.asSource(component) + EOL;
+    const exception = new Exception({
+        $module: moduleName,
+        $procedure: '$asDocument',
+        $exception: '$abstractMethod',
+        $text: '"This abstract method must be implemented by each subclass."'
+    }, undefined, this.debug);
+    throw exception;
 };
 

@@ -15,6 +15,8 @@
 const moduleName = '/bali/agents/BDNFormatter';
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+const EOL = '\n';  // the POSIX end of line character
+
 
 
 /**
@@ -72,9 +74,27 @@ BDNFormatter.prototype.asSource = function(component, indentation) {
 };
 
 
-// PRIVATE CLASSES
+/**
+ * This method returns a document containing the Bali Document Notation™ for the specified
+ * component indented the specified number of levels (with four spaces per level).
+ *
+ * @param {Component} component The component to be formatted.
+ * @returns {String} The BDN document.
+ */
+BDNFormatter.prototype.asDocument = function(component) {
+    if (this.debug > 1) {
+        this.validateArgument('$asDocument', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
+    }
+    const indentation = 0;
+    const visitor = new FormattingVisitor(indentation, this.debug);
+    component.acceptVisitor(visitor);
+    return visitor.result + EOL;
+};
 
-const EOL = '\n';  // the POSIX end of line character
+
+// PRIVATE CLASSES
 
 const FormattingVisitor = function(indentation, debug) {
     abstractions.Visitor.call(
@@ -82,7 +102,7 @@ const FormattingVisitor = function(indentation, debug) {
         ['/bali/agents/FormattingVisitor'],
         debug
     );
-    this.indentation = indentation || 0;
+    this.indentation = indentation;
     this.inline = 0;
     this.result = '';
 

@@ -59,6 +59,39 @@ exports.HTMLFormatter = HTMLFormatter;
 // PUBLIC METHODS
 
 /**
+ * This method returns HTML for the specified component
+ *
+ * @param {Component} component The component to be formatted.
+ * @param {Number} indentation The CSS style sheet to be used for formatting.
+ * @returns {String} The BDN source string.
+ */
+/**
+ * This method returns a source string containing the HTML snippit for the specified
+ * component indented the specified number of levels (with four spaces per level).
+ *
+ * @param {Component} component The component to be formatted.
+ * @param {Number} indentation The number of levels of indentation that should be inserted
+ * to each formatted line at the top level. The default is zero.
+ * @returns {String} The HTML source string.
+ */
+HTMLFormatter.prototype.asSource = function(component, indentation) {
+    if (this.debug > 1) {
+        this.validateArgument('$asSource', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
+        this.validateArgument('$asSource', '$indentation', indentation, [
+            '/javascript/Undefined',
+            '/javascript/Number'
+        ]);
+    }
+    indentation = indentation || 0;
+    const visitor = new FormattingVisitor(indentation, this.debug);
+    component.acceptVisitor(visitor);
+    return visitor.getResult();
+};
+
+
+/**
  * This method returns an HTML document for the specified component with
  * the specified title and using the specified style sheet.
  *
@@ -69,19 +102,22 @@ exports.HTMLFormatter = HTMLFormatter;
  */
 HTMLFormatter.prototype.asDocument = function(component, title, style) {
     if (this.debug > 1) {
-        this.validateArgument('$asSource', '$component', component, [
+        this.validateArgument('$asDocument', '$component', component, [
             '/bali/abstractions/Component'
         ]);
-        this.validateArgument('$HTMLFormatter', '$title', title, [
+        this.validateArgument('$asDocument', '$title', title, [
             '/javascript/String'
         ]);
-        this.validateArgument('$HTMLFormatter', '$style', style, [
+        this.validateArgument('$asDocument', '$style', style, [
             '/javascript/String'
         ]);
     }
-    const visitor = new FormattingVisitor(title, style, this.debug);
+    var document = header.replace(/\${title}/, title).replace(/\${style}/, style);
+    const visitor = new FormattingVisitor(4, this.debug);  // indent four levels
     component.acceptVisitor(visitor);
-    return visitor.getResult();
+    document += visitor.getResult();
+    document += footer;
+    return document;
 };
 
 
@@ -127,20 +163,20 @@ const footer =
 '            <img class="logo" src="https://bali-nebula.net/static/images/CraterDog.png">\n' +
 '        </div>\n' +
 '    </body>\n' +
-'</html>';
+'</html>\n';  // must end with EOL to be POSIX compliant
 
 
 // PRIVATE CLASSES
 
-const FormattingVisitor = function(title, style, debug) {
+const FormattingVisitor = function(indentation, debug) {
     abstractions.Visitor.call(
         this,
         ['/bali/agents/FormattingVisitor'],
         debug
     );
-    this.result = header.replace(/\${title}/, title).replace(/\${style}/, style);
-    this.depth = 4;  // the header and footer take up four levels
+    this.depth = indentation;
     this.width = [];  // stack of key widths for nested catalogs
+    this.result = '';
 
     this.getNewline = function() {
         var separator = EOL;
@@ -151,7 +187,6 @@ const FormattingVisitor = function(title, style, debug) {
     };
 
     this.getResult = function() {
-        this.result += footer;
         return this.result;
     };
 
