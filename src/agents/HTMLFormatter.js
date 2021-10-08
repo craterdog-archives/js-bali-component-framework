@@ -41,18 +41,37 @@ Array.prototype.peek = function() {
  *   3: log interesting arguments, states and results to console.log
  * </pre>
  *
- * @param {String} title The string to be used as the title for the generated web page.
- * @param {String} style A reference to the CSS style sheet that should be used for the look
- * and feel of the generated web page.
  * @returns {HTML} The new HTML formatter agent.
  */
-const HTMLFormatter = function(title, style, debug) {
+const HTMLFormatter = function(debug) {
     abstractions.Formatter.call(
         this,
         [ moduleName ],
         debug
     );
-    if (debug > 1) {
+    return this;
+};
+HTMLFormatter.prototype = Object.create(abstractions.Formatter.prototype);
+HTMLFormatter.prototype.constructor = HTMLFormatter;
+exports.HTMLFormatter = HTMLFormatter;
+
+
+// PUBLIC METHODS
+
+/**
+ * This method returns an HTML document for the specified component with
+ * the specified title and using the specified style sheet.
+ *
+ * @param {Component} component The component to be formatted.
+ * @param {String} title The title of the HTML page to be created.
+ * @param {String} style The CSS style sheet to be used for formatting.
+ * @returns {String} The BDN source string.
+ */
+HTMLFormatter.prototype.asDocument = function(component, title, style) {
+    if (this.debug > 1) {
+        this.validateArgument('$asSource', '$component', component, [
+            '/bali/abstractions/Component'
+        ]);
         this.validateArgument('$HTMLFormatter', '$title', title, [
             '/javascript/String'
         ]);
@@ -60,23 +79,10 @@ const HTMLFormatter = function(title, style, debug) {
             '/javascript/String'
         ]);
     }
-
-    this.asSource = function(component) {
-        if (debug > 1) {
-            this.validateArgument('$asSource', '$component', component, [
-                '/bali/abstractions/Component'
-            ]);
-        }
-        const visitor = new FormattingVisitor(title, style, this.debug);
-        component.acceptVisitor(visitor);
-        return visitor.getResult();
-    };
-
-    return this;
+    const visitor = new FormattingVisitor(title, style, this.debug);
+    component.acceptVisitor(visitor);
+    return visitor.getResult();
 };
-HTMLFormatter.prototype = Object.create(abstractions.Formatter.prototype);
-HTMLFormatter.prototype.constructor = HTMLFormatter;
-exports.HTMLFormatter = HTMLFormatter;
 
 
 // PRIVATE CONSTANTS

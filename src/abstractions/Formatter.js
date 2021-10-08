@@ -74,20 +74,14 @@ Formatter.prototype.asSource = function(component, indentation) {
  * This method formats the specified component as a formal document.
  *
  * @param {Component} component The component to be formatted.
- * @param {Number} indentation The number of levels of indentation that should be inserted
- * to each formatted line at the top level. The default is zero.
  * @returns {String} The formal document.
  */
-Formatter.prototype.asDocument = function(component, indentation) {
+Formatter.prototype.asDocument = function(component) {
     if (this.debug > 1) {
         this.validateArgument('$asDocument', '$component', component, [
             '/bali/abstractions/Component'
         ]);
-        this.validateArgument('$asDocument', '$indentation', indentation, [
-            '/javascript/Undefined',
-            '/javascript/Number'
-        ]);
     }
-    return this.asSource(component, indentation) + EOL;
+    return this.asSource(component) + EOL;
 };
 

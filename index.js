@@ -334,8 +334,10 @@ exports.api = function(debug) {
     };
 
     // DUPLICATE
-    const duplicate = function(component, debug) {
+    const duplicate = function(component, shallow, debug) {
+        shallow = shallow || false;
         debug = debug || defaultDebug;
+        if (shallow) return new component.constructor();
         const duplicator = new agents.DeepDuplicator(debug);
         return duplicator.duplicateComponent(component);
     };
@@ -377,8 +379,8 @@ exports.api = function(debug) {
     // HTML
     const html = function(component, title, style, debug) {
         debug = debug || defaultDebug;
-        const formatter = new agents.HTMLFormatter(title, style, debug);
-        return formatter.asDocument(component);
+        const formatter = new agents.HTMLFormatter(debug);
+        return formatter.asDocument(component, title, style);
     };
 
     // INSTANCE
