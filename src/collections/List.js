@@ -126,9 +126,9 @@ const List = function(parameters, debug) {
         return true;  // always succeeds
     };
 
-    this.insertItem = function(index, item) {
+    this.insertItem = function(slot, item) {
         if (this.debug > 1) {
-            this.validateArgument('$insertItem', '$index', index, [
+            this.validateArgument('$insertItem', '$slot', slot, [
                 '/javascript/Number'
             ]);
             this.validateArgument('$insertItem', '$item', item, [
@@ -142,8 +142,7 @@ const List = function(parameters, debug) {
             ]);
         }
         item = this.componentize(item);
-        index = abstractions.Component.normalizedIndex(this, index) - 1;  // JS uses zero based indexing
-        array.splice(index, 0, item);
+        array.splice(slot, 0, item);  // slot is in the range [0..size]
         return this;
     };
 
@@ -178,15 +177,15 @@ exports.List = List;
 
 /**
  * This method inserts the specified sequence of items into this list at the
- * specified index.
+ * specified slot before an item.
  *
- * @param {Number} index The index in this list where the first inserted item should go.
+ * @param {Number} slot The slot in this list where the first inserted item should go.
  * @param {Sequential} items A sequence of items to be inserted.
  * @returns {List} The updated list.
  */
-List.prototype.insertItems = function(index, items) {
+List.prototype.insertItems = function(slot, items) {
     if (this.debug > 1) {
-        this.validateArgument('$insertItems', '$index', index, [
+        this.validateArgument('$insertItems', '$slot', slot, [
             '/javascript/Number'
         ]);
         this.validateArgument('$insertItems', '$items', items, [
@@ -197,9 +196,10 @@ List.prototype.insertItems = function(index, items) {
     }
     items = this.componentize(items);
     const iterator = items.getIterator();
-    while (iterator.hasNext()) {
-        const item = iterator.getNext();
-        this.insertItem(index++, item);
+    iterator.toEnd();  // the items must be inserted in REVERSE order
+    while (iterator.hasPrevious()) {
+        const item = iterator.getPrevious();
+        this.insertItem(slot, item);
     }
     return this;
 };
@@ -207,10 +207,13 @@ List.prototype.insertItems = function(index, items) {
 
 /**
  * This method removes from this list the items associated with the specified sequence of
- * indices.
+ * indices.  The indices do not need to be consecutive but MUST be listed in increasing order
+ * or the results of this method are not predictable since after each item has been removed
+ * the indexing for the items after that item has changed.  Removing the items starting with
+ * the greatest index and working backwards addresses this problem.
  *
  * @param {Sequential} indices The sequence of indices for the items to be removed.
- * @returns {List} A list of the removed items.
+ * @returns {List} A list of the removed items in the same order as the indices.
  */
 List.prototype.removeItems = function(indices) {
     if (this.debug > 1) {
@@ -223,10 +226,11 @@ List.prototype.removeItems = function(indices) {
     indices = this.componentize(indices);
     const items = new List(this.getParameters(), this.debug);
     const iterator = indices.getIterator();
-    while (iterator.hasNext()) {
-        const index = iterator.getNext().toInteger();
+    iterator.toEnd();  // must go through the indices in REVERSE order
+    while (iterator.hasPrevious()) {
+        const index = iterator.getPrevious().toInteger();
         const item = this.removeItem(index);
-        items.addItem(item);
+        items.insertItem(0, item);  // must also be inserted in REVERSE order
     }
     return items;
 };

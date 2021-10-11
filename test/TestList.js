@@ -148,6 +148,10 @@ describe('Bali Nebula™ Component Framework - List', function() {
             expect(list2.toBoolean()).to.equal(true);
             expect(list2.containsAll(list1)).to.equal(true);
             expect(list2.containsItem('zeta')).to.equal(false);
+            const list4 = bali.list(bali.list(['"delta"', '"gamma"']));
+            list4.insertItem(1, '"epsilon"');
+            list4.insertItems(0, bali.list(['"alpha"', '"beta"']));
+            expect(bali.areEqual(list4, bali.list(array)));
         });
 
         it('should be able to add and remove items from a list', function() {
@@ -169,7 +173,7 @@ describe('Bali Nebula™ Component Framework - List', function() {
             array.forEach(function(item) {
                 expect(item).to.equal(iterator.getNext().toString());
             });
-            expect(list.removeItem(2)).to.exist;
+            expect(bali.areEqual(list.removeItem(2), bali.text('beta')));
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(4);
@@ -177,6 +181,9 @@ describe('Bali Nebula™ Component Framework - List', function() {
             size = list.getSize();
             expect(size).to.exist;
             expect(size).to.equal(2);
+            const source = bali.list(array);
+            const items = source.removeItems(bali.list([2, 5]));
+            expect(bali.areEqual(items, bali.list(['"beta"', '"gamma"'])));
             // the iterator should be pointing at a copy of the array so unaffected
             iterator.toStart();
             var index = 0;
