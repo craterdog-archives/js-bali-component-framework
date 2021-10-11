@@ -124,7 +124,6 @@ const Component = function(ancestry, interfaces, parameters, debug) {
     ancestry = ancestry || [];
     ancestry = ancestry.concat(moduleName);
     interfaces = interfaces || [];
-    interfaces = interfaces.concat('/bali/interfaces/Reflective');
     this.setParameters(parameters);
 
     return this;
