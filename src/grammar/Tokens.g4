@@ -33,7 +33,7 @@ REGEX: '"' TEXT '"?';
 
 SYMBOL: '$' IDENTIFIER ('-' NUMBER)?;
 
-TAG: '#' BASE32*;
+TAG: '#' BASE32+;
 
 // Note: A narrative takes precedence over a quote and may contain any character.
 NARRATIVE: '"' EOL CHARACTER*? EOL SPACE* '"';
