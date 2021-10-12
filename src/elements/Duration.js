@@ -15,6 +15,8 @@
  * duration element.
  */
 const moduleName = '/bali/elements/Duration';
+// TODO: Migrate away from obsolete moment library to native platform support:
+//       https://dockyard.com/blog/2020/02/14/you-probably-don-t-need-moment-js-anymore
 const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
@@ -55,6 +57,7 @@ const Duration = function(value, parameters, debug) {
             '/javascript/Number'
         ]);
     }
+    // TODO: Need to handle negative duration values!
     value = value || 0;  // default value
     const time = moment.duration(value);
     value = time.asMilliseconds();  // set canonical value

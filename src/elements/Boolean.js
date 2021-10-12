@@ -133,16 +133,6 @@ Bulean.prototype.toInteger = function() {
 };
 
 
-/**
- * This method returns a real number representation of the boolean element.
- *
- * @returns {number} The real number representation of the boolean element.
- */
-Bulean.prototype.toReal = function() {
-    return this.toInteger();
-};
-
-
 // LOGICAL LIBRARY FUNCTIONS
 
 /**
