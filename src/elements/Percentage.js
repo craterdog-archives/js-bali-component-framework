@@ -79,6 +79,16 @@ Percentage.prototype.toBoolean = function() {
 
 
 /**
+ * This method determines whether or not this percentage has a negative value.
+ *
+ * @returns {Boolean} Whether or not this percentage is negative.
+ */
+Percentage.prototype.isNegative = function() {
+    return this.getValue() < 0;
+};
+
+
+/**
  * This method returns the real number value of the percentage element, e.g. 25% => 0.25
  *
  * @returns {number} The real number value of the percentage element.

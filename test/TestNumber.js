@@ -20,12 +20,16 @@ describe('Bali Nebula™ Component Framework - Number', function() {
 
         it('should construct numbers using literals', function() {
             expect(bali.component('0').toString()).to.equal('0');
+            expect(bali.component('0').isNegative()).to.equal(false);
             expect(bali.component('e').toString()).to.equal('e');
             expect(bali.component('φ i').toString()).to.equal('φ i');
+            expect(bali.component('φ i').isNegative()).to.equal(false);
             expect(bali.component('(3, 4i)').toString()).to.equal('(3, 4i)');
             expect(bali.component('(1 e^~2.3i)').toString()).to.equal('(1 e^~2.3i)');
             expect(bali.component('(5 e^~π i)').toString()).to.equal('-5');
+            expect(bali.component('(5 e^~π i)').isNegative()).to.equal(true);
             expect(bali.component('(-5 e^~π i)').toString()).to.equal('5');
+            expect(bali.component('(-5 e^~π i)').isNegative()).to.equal(false);
             expect(
                 function() {
                     bali.component('42').setParameters({ $answer: 'everything' });

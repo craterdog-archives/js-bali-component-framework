@@ -95,6 +95,16 @@ Duration.prototype.toBoolean = function() {
 };
 
 
+/**
+ * This method determines whether or not this duration has a negative value.
+ *
+ * @returns {Boolean} Whether or not this duration is negative.
+ */
+Duration.prototype. isNegative = function() {
+    return this.getValue() < 0;
+};
+
+
 // SCALABLE LIBRARY FUNCTIONS
 
 /**

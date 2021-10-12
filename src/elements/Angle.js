@@ -115,6 +115,16 @@ Angle.prototype.toBoolean = function() {
 
 
 /**
+ * This method determines whether or not this angle has a negative value.
+ *
+ * @returns {Boolean} Whether or not this angle is negative.
+ */
+Angle.prototype.isNegative = function() {
+    return this.getValue() < 0;
+};
+
+
+/**
  * This method returns the real number value of the angle.
  *
  * @returns {Number} The real number value of the angle.

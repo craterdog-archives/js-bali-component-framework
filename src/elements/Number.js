@@ -194,6 +194,16 @@ Complex.prototype.isInfinite = function() {
 };
 
 
+/**
+ * This method determines whether or not this number has a negative value.
+ *
+ * @returns {Boolean} Whether or not this number is negative.
+ */
+Complex.prototype.isNegative = function() {
+    return this.getReal() < 0;
+};
+
+
 // SCALABLE LIBRARY FUNCTIONS
 
 /**
