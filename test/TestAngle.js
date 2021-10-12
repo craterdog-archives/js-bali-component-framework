@@ -26,22 +26,22 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should construct angles that equal zero', function() {
-            expect(bali.angle().toBoolean()).to.equal(false);
+            expect(bali.angle().isSignificant()).to.equal(false);
             expect(bali.angle().toString()).to.equal('~0');
             expect(bali.angle().toReal()).to.equal(0);
             expect(bali.angle().isNegative()).to.equal(false);
-            expect(bali.angle(0).toBoolean()).to.equal(false);
+            expect(bali.angle(0).isSignificant()).to.equal(false);
             expect(bali.angle(0).toString()).to.equal('~0');
             expect(bali.angle(0).toReal()).to.equal(0);
             expect(bali.angle(0).isNegative()).to.equal(false);
-            expect(bali.angle(2 * Math.PI).toBoolean()).to.equal(false);
+            expect(bali.angle(2 * Math.PI).isSignificant()).to.equal(false);
             expect(bali.angle(2 * Math.PI).toString()).to.equal('~0');
             expect(bali.angle(2 * Math.PI).toReal()).to.equal(0);
             expect(bali.angle(2 * Math.PI).isNegative()).to.equal(false);
         });
 
         it('should construct angles that equal 45 degrees', function() {
-            expect(bali.angle(45, bali.angle.DEGREES).toBoolean()).to.equal(true);
+            expect(bali.angle(45, bali.angle.DEGREES).isSignificant()).to.equal(true);
             expect(bali.angle(45, bali.angle.DEGREES).toString()).to.equal('~45($units: $degrees)');
             expect(bali.angle(45, bali.angle.DEGREES).toReal()).to.equal(Math.PI/4);
             expect(bali.angle(45, bali.angle.DEGREES).isNegative()).to.equal(false);
@@ -52,7 +52,7 @@ describe('Bali Nebula™ Component Framework - Angle', function() {
         });
 
         it('should construct angles that equal -45 degrees', function() {
-            expect(bali.angle(-45, bali.angle.DEGREES).toBoolean()).to.equal(true);
+            expect(bali.angle(-45, bali.angle.DEGREES).isSignificant()).to.equal(true);
             expect(bali.angle(-45, bali.angle.DEGREES).toString()).to.equal('~-45($units: $degrees)');
             expect(bali.angle(-45, bali.angle.DEGREES).toReal()).to.equal(-Math.PI/4);
             expect(bali.angle(-45, bali.angle.DEGREES).isNegative()).to.equal(true);

@@ -90,7 +90,7 @@ exports.Tag = Tag;
  *
  * @returns {Boolean} Whether or not this tag has a meaningful value.
  */
-Tag.prototype.toBoolean = function() {
+Tag.prototype.isSignificant = function() {
     return true;
 };
 

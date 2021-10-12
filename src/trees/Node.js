@@ -58,7 +58,7 @@ const Node = function(type, debug) {
     // private attributes
     const array = [];
 
-    this.toBoolean = function() {
+    this.isSignificant = function() {
         return array.length > 0;
     };
 

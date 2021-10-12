@@ -27,7 +27,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(size).to.exist;
             expect(size).to.equal(0);
             expect(set.isEmpty()).to.equal(true);
-            expect(set.toBoolean()).to.equal(false);
+            expect(set.isSignificant()).to.equal(false);
             expect(set.getHash()).to.exist;
             const iterator = set.getIterator();
             expect(iterator).to.exist;
@@ -53,7 +53,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(size).to.exist;
             expect(size).to.equal(array.length);
             expect(set.isEmpty()).to.equal(false);
-            expect(set.toBoolean()).to.equal(true);
+            expect(set.isSignificant()).to.equal(true);
             expect(set.getHash()).to.exist;
             const iterator = set.getIterator();
             expect(iterator).to.exist;
@@ -66,7 +66,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(set.toBoolean()).to.equal(false);
+            expect(set.isSignificant()).to.equal(false);
         });
 
         it('should create a set from a list', function() {
@@ -76,7 +76,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             var size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
-            expect(set.toBoolean()).to.equal(true);
+            expect(set.isSignificant()).to.equal(true);
             expect(set.getHash()).to.exist;
             const iterator = set.getIterator();
             expect(iterator).to.exist;
@@ -89,7 +89,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(set.toBoolean()).to.equal(false);
+            expect(set.isSignificant()).to.equal(false);
         });
 
         it('should create a set from a set', function() {
@@ -110,7 +110,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             size = set.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(set.toBoolean()).to.equal(false);
+            expect(set.isSignificant()).to.equal(false);
         });
 
     });
@@ -145,7 +145,7 @@ describe('Bali Nebula™ Component Framework - Set', function() {
             expect(set2.removeItems(set3)).to.equal(set3.getSize());
             size = set2.getSize();
             expect(size).to.equal(2);
-            expect(set2.toBoolean()).to.equal(true);
+            expect(set2.isSignificant()).to.equal(true);
             expect(set2.containsItem('"delta"')).to.equal(false);
         });
 

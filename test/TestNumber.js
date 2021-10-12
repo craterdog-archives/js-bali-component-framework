@@ -38,22 +38,22 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should construct numbers that equal zero', function() {
-            expect(bali.number.ZERO.toBoolean()).to.equal(false);
+            expect(bali.number.ZERO.isSignificant()).to.equal(false);
             expect(bali.number.ZERO.toString()).to.equal('0');
             expect(bali.number.ZERO.toInteger()).to.equal(0);
             expect(bali.number.ZERO.toReal()).to.equal(0);
-            expect(bali.number().toBoolean()).to.equal(false);
+            expect(bali.number().isSignificant()).to.equal(false);
             expect(bali.number().toString()).to.equal('0');
             expect(bali.number().toInteger()).to.equal(0);
             expect(bali.number().toReal()).to.equal(0);
-            expect(bali.number(0).toBoolean()).to.equal(false);
+            expect(bali.number(0).isSignificant()).to.equal(false);
             expect(bali.number(0).toString()).to.equal('0');
             expect(bali.number(0).toInteger()).to.equal(0);
             expect(bali.number(0).toReal()).to.equal(0);
         });
 
         it('should construct real numbers', function() {
-            expect(bali.number(42).toBoolean()).to.equal(true);
+            expect(bali.number(42).isSignificant()).to.equal(true);
             expect(bali.number(42).toString()).to.equal('42');
             expect(bali.number(42).toInteger()).to.equal(42);
             expect(bali.number(42).toReal()).to.equal(42);
@@ -64,7 +64,7 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should construct imaginary numbers', function() {
-            expect(bali.number(0, 42).toBoolean()).to.equal(true);
+            expect(bali.number(0, 42).isSignificant()).to.equal(true);
             expect(bali.number(0, 42).toString()).to.equal('42i');
             expect(bali.number(0, 42).toInteger()).to.equal(0);
             expect(bali.number(0, 42).toReal()).to.equal(0);
@@ -74,7 +74,7 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should construct complex numbers', function() {
-            expect(bali.number(3, 4).toBoolean()).to.equal(true);
+            expect(bali.number(3, 4).isSignificant()).to.equal(true);
             expect(bali.number(3, 4).toString()).to.equal('(3, 4i)');
             expect(bali.number(3, 4).toInteger()).to.equal(3);
             expect(bali.number(3, 4).toReal()).to.equal(3);
@@ -82,11 +82,11 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should construct infinite numbers', function() {
-            expect(bali.number.INFINITY.toBoolean()).to.equal(true);
+            expect(bali.number.INFINITY.isSignificant()).to.equal(true);
             expect(bali.number.INFINITY.toString()).to.equal('∞');
             expect(bali.number.INFINITY.toInteger()).to.equal(Infinity);
             expect(bali.number.INFINITY.toReal()).to.equal(Infinity);
-            expect(bali.number(Infinity).toBoolean()).to.equal(true);
+            expect(bali.number(Infinity).isSignificant()).to.equal(true);
             expect(bali.number(Infinity).toString()).to.equal('∞');
             expect(bali.number(Infinity).toInteger()).to.equal(Infinity);
             expect(bali.number(Infinity).toReal()).to.equal(Infinity);
@@ -97,11 +97,11 @@ describe('Bali Nebula™ Component Framework - Number', function() {
         });
 
         it('should construct undefined numbers', function() {
-            expect(bali.number.UNDEFINED.toBoolean()).to.equal(false);
+            expect(bali.number.UNDEFINED.isSignificant()).to.equal(false);
             expect(bali.number.UNDEFINED.toString()).to.equal('undefined');
             expect(bali.number.UNDEFINED.toInteger().toString()).to.equal('NaN');  // NaN !== NaN
             expect(bali.number.UNDEFINED.toReal().toString()).to.equal('NaN');  // NaN !== NaN
-            expect(bali.number(NaN).toBoolean()).to.equal(false);
+            expect(bali.number(NaN).isSignificant()).to.equal(false);
             expect(bali.number(NaN).toString()).to.equal('undefined');
             expect(bali.number(NaN).toInteger().toString()).to.equal('NaN');  // NaN !== NaN
             expect(bali.number(NaN).toReal().toString()).to.equal('NaN');  // NaN !== NaN

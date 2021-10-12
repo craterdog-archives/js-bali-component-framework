@@ -85,7 +85,7 @@ exports.Resource = Resource;
  *
  * @returns {Boolean} Whether or not this resource has a meaningful value.
  */
-Resource.prototype.toBoolean = function() {
+Resource.prototype.isSignificant = function() {
     return true;
 };
 

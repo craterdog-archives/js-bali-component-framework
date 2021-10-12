@@ -61,7 +61,7 @@ exports.Collection = Collection;
  *
  * @returns {Boolean} Whether or not this collection contains a meaningful value.
  */
-Collection.prototype.toBoolean = function() {
+Collection.prototype.isSignificant = function() {
     return this.getSize() > 0;
 };
 

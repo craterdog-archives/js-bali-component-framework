@@ -140,7 +140,7 @@ exports.Number = Complex;
  *
  * @returns {Boolean} Whether or not this complex number has a meaningful value.
  */
-Complex.prototype.toBoolean = function() {
+Complex.prototype.isSignificant = function() {
     return !(this.isZero() || this.isUndefined());
 };
 

@@ -110,7 +110,7 @@ exports.Angle = Angle;
  *
  * @returns {Boolean} Whether or not this angle has a meaningful value.
  */
-Angle.prototype.toBoolean = function() {
+Angle.prototype.isSignificant = function() {
     return this.getValue() !== 0;
 };
 

@@ -28,33 +28,33 @@ describe('Bali Nebula™ Component Framework - Probability', function() {
         });
 
         it('should construct probabilities that equal zero', function() {
-            expect(bali.probability().toBoolean()).to.equal(false);
+            expect(bali.probability().isSignificant()).to.equal(false);
             expect(bali.probability().toInteger()).to.equal(0);
             expect(bali.probability().toReal()).to.equal(0);
             expect(bali.probability().toString()).to.equal('.0');
-            expect(bali.probability(false).toBoolean()).to.equal(false);
+            expect(bali.probability(false).isSignificant()).to.equal(false);
             expect(bali.probability(false).toInteger()).to.equal(0);
             expect(bali.probability(false).toReal()).to.equal(0);
             expect(bali.probability(false).toString()).to.equal('.0');
-            expect(bali.probability(0).toBoolean()).to.equal(false);
+            expect(bali.probability(0).isSignificant()).to.equal(false);
             expect(bali.probability(0).toInteger()).to.equal(0);
             expect(bali.probability(0).toReal()).to.equal(0);
             expect(bali.probability(0).toString()).to.equal('.0');
         });
 
         it('should construct probabilities that equal one half', function() {
-            expect(bali.probability(0.5).toBoolean()).to.equal(true);
+            expect(bali.probability(0.5).isSignificant()).to.equal(true);
             expect(bali.probability(0.5).toInteger()).to.equal(1);
             expect(bali.probability(0.5).toReal()).to.equal(0.5);
             expect(bali.probability(0.5).toString()).to.equal('.5');
         });
 
         it('should construct probabilities that equal one', function() {
-            expect(bali.probability(true).toBoolean()).to.equal(true);
+            expect(bali.probability(true).isSignificant()).to.equal(true);
             expect(bali.probability(true).toInteger()).to.equal(1);
             expect(bali.probability(true).toReal()).to.equal(1);
             expect(bali.probability(true).toString()).to.equal('1.');
-            expect(bali.probability(1).toBoolean()).to.equal(true);
+            expect(bali.probability(1).isSignificant()).to.equal(true);
             expect(bali.probability(1).toInteger()).to.equal(1);
             expect(bali.probability(1).toReal()).to.equal(1);
             expect(bali.probability(1).toString()).to.equal('1.');

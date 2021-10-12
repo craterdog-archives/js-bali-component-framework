@@ -117,7 +117,7 @@ exports.Boolean = Bulean;
  *
  * @returns {Boolean} The value of this boolean.
  */
-Bulean.prototype.toBoolean = function() {
+Bulean.prototype.isSignificant = function() {
     return this.getValue();
 };
 

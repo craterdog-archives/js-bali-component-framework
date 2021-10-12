@@ -20,22 +20,22 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
 
         it('should construct time durations using literals', function() {
             expect(bali.component('~P0D').getValue()).to.equal(0);
-            expect(bali.component('~P0D').toBoolean()).to.equal(false);
+            expect(bali.component('~P0D').isSignificant()).to.equal(false);
             expect(bali.component('~P0D').toString()).to.equal('~P0D');
             expect(bali.component('~P0D').isNegative()).to.equal(false);
             expect(bali.component('~P3M7DT8H29M54.321S').getValue()).to.equal(8497794321);
-            expect(bali.component('~P3M7DT8H29M54.321S').toBoolean()).to.equal(true);
+            expect(bali.component('~P3M7DT8H29M54.321S').isSignificant()).to.equal(true);
             expect(bali.component('~P3M7DT8H29M54.321S').toString()).to.equal('~P3M7DT8H29M54.321S');
             expect(bali.component('~P3M7DT8H29M54.321S').isNegative()).to.equal(false);
         });
 
         it('should construct time durations that equal zero', function() {
             expect(bali.duration().getValue()).to.equal(0);
-            expect(bali.duration().toBoolean()).to.equal(false);
+            expect(bali.duration().isSignificant()).to.equal(false);
             expect(bali.duration().toString()).to.equal('~P0D');
             expect(bali.duration().isNegative()).to.equal(false);
             expect(bali.duration(0).getValue()).to.equal(0);
-            expect(bali.duration(0).toBoolean()).to.equal(false);
+            expect(bali.duration(0).isSignificant()).to.equal(false);
             expect(bali.duration(0).toString()).to.equal('~P0D');
             expect(bali.duration(0).isNegative()).to.equal(false);
         });

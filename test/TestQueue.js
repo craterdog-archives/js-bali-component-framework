@@ -27,7 +27,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(size).to.exist;
             expect(size).to.equal(0);
             expect(queue.isEmpty()).to.equal(true);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
             expect(queue.getHash()).to.exist;
             const iterator = queue.getIterator();
             expect(iterator).to.exist;
@@ -57,7 +57,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             expect(size).to.exist;
             expect(size).to.equal(1);
             expect(queue.isEmpty()).to.equal(false);
-            expect(queue.toBoolean()).to.equal(true);
+            expect(queue.isSignificant()).to.equal(true);
             expect(queue.headItem().toString()).to.equal('"alpha"');
             queue.addItem('"beta"');
             size = queue.getSize();
@@ -92,7 +92,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
         });
 
         it('should create a queue from an array', function() {
@@ -100,7 +100,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             var size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
-            expect(queue.toBoolean()).to.equal(true);
+            expect(queue.isSignificant()).to.equal(true);
             expect(queue.getHash()).to.exist;
             const iterator = queue.getIterator();
             expect(iterator).to.exist;
@@ -113,7 +113,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
         });
 
         it('should create a queue from a list', function() {
@@ -133,7 +133,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
         });
 
         it('should create a queue from a queue', function() {
@@ -155,7 +155,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
         });
 
     });
@@ -167,7 +167,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             const size = queue.getSize();
             expect(size).to.exist;
             expect(size).to.equal(array.length);
-            expect(queue.toBoolean()).to.equal(true);
+            expect(queue.isSignificant()).to.equal(true);
             var first = queue.headItem();
             expect(first.toString()).to.equal('"alpha"');
             var item = queue.removeItem();
@@ -209,7 +209,7 @@ describe('Bali Nebula™ Component Framework - Queue', function() {
             item = queue.removeItem();
             expect(first).to.equal(item);
             expect(queue.getSize()).to.equal(0);
-            expect(queue.toBoolean()).to.equal(false);
+            expect(queue.isSignificant()).to.equal(false);
             first = queue.headItem();
             expect(first).to.equal(undefined);
             item = queue.removeItem();

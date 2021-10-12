@@ -141,7 +141,7 @@ exports.Component = Component;
  *
  * @returns {Boolean} Whether or not this component has a meaningful value.
  */
-Component.prototype.toBoolean = function() {
+Component.prototype.isSignificant = function() {
     return true;
 };
 

@@ -69,7 +69,7 @@ exports.Procedure = Procedure;
  *
  * @returns {Boolean} Whether or not this procedure is meaningful.
  */
-Procedure.prototype.toBoolean = function() {
+Procedure.prototype.isSignificant = function() {
     return this.getCode().getSize() > 0;
 };
 

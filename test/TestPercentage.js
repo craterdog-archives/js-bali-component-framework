@@ -31,28 +31,28 @@ describe('Bali Nebula™ Component Framework - Percentage', function() {
         });
 
         it('should construct percentages that equal zero', function() {
-            expect(bali.percentage().toBoolean()).to.equal(false);
+            expect(bali.percentage().isSignificant()).to.equal(false);
             expect(bali.percentage().toReal()).to.equal(0);
             expect(bali.percentage().toString()).to.equal('0%');
-            expect(bali.percentage(0).toBoolean()).to.equal(false);
+            expect(bali.percentage(0).isSignificant()).to.equal(false);
             expect(bali.percentage(0).toReal()).to.equal(0);
             expect(bali.percentage(0).toString()).to.equal('0%');
         });
 
         it('should construct percentages that equal 13.25%', function() {
-            expect(bali.percentage(13.25).toBoolean()).to.equal(true);
+            expect(bali.percentage(13.25).isSignificant()).to.equal(true);
             expect(bali.percentage(13.25).toReal()).to.equal(0.1325);
             expect(bali.percentage(13.25).toString()).to.equal('13.25%');
         });
 
         it('should construct percentages that equal -2%', function() {
-            expect(bali.percentage(-2).toBoolean()).to.equal(true);
+            expect(bali.percentage(-2).isSignificant()).to.equal(true);
             expect(bali.percentage(-2).toReal()).to.equal(-0.02);
             expect(bali.percentage(-2).toString()).to.equal('-2%');
         });
 
         it('should construct percentages that equal 150%', function() {
-            expect(bali.percentage(150).toBoolean()).to.equal(true);
+            expect(bali.percentage(150).isSignificant()).to.equal(true);
             expect(bali.percentage(150).toReal()).to.equal(1.5);
             expect(bali.percentage(150).toString()).to.equal('150%');
         });

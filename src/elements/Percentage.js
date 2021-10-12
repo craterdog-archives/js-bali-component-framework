@@ -74,7 +74,7 @@ exports.Percentage = Percentage;
  *
  * @returns {Boolean} Whether or not this percentage has a meaningful value.
  */
-Percentage.prototype.toBoolean = function() {
+Percentage.prototype.isSignificant = function() {
     return this.getValue() !== 0;
 };
 

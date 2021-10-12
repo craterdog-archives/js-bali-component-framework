@@ -119,7 +119,7 @@ exports.Moment = Moment;
  *
  * @returns {Boolean} Whether or not this moment has a meaningful value.
  */
-Moment.prototype.toBoolean = function() {
+Moment.prototype.isSignificant = function() {
     return this.getValue() !== 0;
 };
 

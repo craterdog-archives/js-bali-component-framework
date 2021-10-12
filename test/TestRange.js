@@ -31,7 +31,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('..');
             expect(range.getSize()).to.equal(0);
             expect(range.isEmpty()).to.equal(true);
-            expect(range.toBoolean()).to.equal(false);
+            expect(range.isSignificant()).to.equal(false);
             expect(range.getHash()).to.exist;
             expect(
                 function() {
@@ -63,7 +63,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(last.toInteger()).to.equal(5);
             expect(range.getSize()).to.equal(0);
             expect(range.isEmpty()).to.equal(true);
-            expect(range.toBoolean()).to.equal(false);
+            expect(range.isSignificant()).to.equal(false);
             expect(range.getHash()).to.exist;
             expect(
                 function() {
@@ -94,7 +94,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
                 }
             ).to.throw(bali.Exception);
             expect(range.isEmpty()).to.equal(false);
-            expect(range.toBoolean()).to.equal(true);
+            expect(range.isSignificant()).to.equal(true);
             const iterator = range.getIterator();
             expect(iterator).to.exist;
             iterator.toSlot(-1);
@@ -120,7 +120,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('<..');
             expect(range.getSize()).to.equal(0);
             expect(range.isEmpty()).to.equal(true);
-            expect(range.toBoolean()).to.equal(false);
+            expect(range.isSignificant()).to.equal(false);
             expect(range.getHash()).to.exist;
             const iterator = range.getIterator();
             expect(iterator).to.exist;
@@ -141,7 +141,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('<..<');
             expect(range.getSize()).to.equal(0);
             expect(range.isEmpty()).to.equal(true);
-            expect(range.toBoolean()).to.equal(false);
+            expect(range.isSignificant()).to.equal(false);
             expect(range.getHash()).to.exist;
             const iterator = range.getIterator();
             expect(iterator).to.exist;
@@ -161,7 +161,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('<..<');
             expect(range.getSize()).to.equal(1);
             expect(range.isEmpty()).to.equal(false);
-            expect(range.toBoolean()).to.equal(true);
+            expect(range.isSignificant()).to.equal(true);
             expect(range.getHash()).to.exist;
             const iterator = range.getIterator();
             expect(iterator).to.exist;
@@ -193,7 +193,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('..<');
             expect(range.getSize()).to.equal(3);
             expect(range.isEmpty()).to.equal(false);
-            expect(range.toBoolean()).to.equal(true);
+            expect(range.isSignificant()).to.equal(true);
             expect(range.getHash()).to.exist;
             const iterator = range.getIterator();
             expect(iterator).to.exist;
@@ -215,7 +215,7 @@ describe('Bali Nebula™ Component Framework - Range', function() {
             expect(connector).to.equal('..');
             expect(range.getSize()).to.equal(4);
             expect(range.isEmpty()).to.equal(false);
-            expect(range.toBoolean()).to.equal(true);
+            expect(range.isSignificant()).to.equal(true);
             expect(range.getHash()).to.exist;
             const iterator = range.getIterator();
             expect(iterator).to.exist;

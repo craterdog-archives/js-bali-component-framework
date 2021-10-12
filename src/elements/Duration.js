@@ -91,7 +91,7 @@ exports.Duration = Duration;
  *
  * @returns {Boolean} Whether or not this duration has a meaningful value.
  */
-Duration.prototype.toBoolean = function() {
+Duration.prototype.isSignificant = function() {
     return this.getValue() !== 0;
 };
 

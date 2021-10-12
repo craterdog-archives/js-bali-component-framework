@@ -70,7 +70,7 @@ exports.Pattern = Pattern;
  *
  * @returns {Boolean} Whether or not this pattern has a meaningful value.
  */
-Pattern.prototype.toBoolean = function() {
+Pattern.prototype.isSignificant = function() {
     return this.getValue().source !== '^none$';
 };
 

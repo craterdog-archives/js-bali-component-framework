@@ -120,7 +120,7 @@ exports.Probability = Probability;
  *
  * @returns {Boolean} Whether or not this probability is greater or equal to 0.5.
  */
-Probability.prototype.toBoolean = function() {
+Probability.prototype.isSignificant = function() {
     return this.getValue() >= 0.5;
 };
 

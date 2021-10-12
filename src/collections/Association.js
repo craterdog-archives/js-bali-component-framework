@@ -105,7 +105,7 @@ exports.Association = Association;
  *
  * @returns {Boolean} Whether or not this component is meaningful.
  */
-Association.prototype.toBoolean = function() {
+Association.prototype.isSignificant = function() {
     const value = this.getValue();
     return value !== undefined && value !== null;
 };

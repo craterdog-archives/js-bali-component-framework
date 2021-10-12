@@ -26,22 +26,22 @@ describe('Bali Nebula™ Component Framework - Boolean', function() {
         });
 
         it('should construct booleans that equal zero', function() {
-            expect(bali.boolean().toBoolean()).to.equal(false);
+            expect(bali.boolean().isSignificant()).to.equal(false);
             expect(bali.boolean().toInteger()).to.equal(0);
             expect(bali.boolean().toString()).to.equal('false');
-            expect(bali.boolean(false).toBoolean()).to.equal(false);
+            expect(bali.boolean(false).isSignificant()).to.equal(false);
             expect(bali.boolean(false).toInteger()).to.equal(0);
             expect(bali.boolean(false).toString()).to.equal('false');
-            expect(bali.boolean(0).toBoolean()).to.equal(false);
+            expect(bali.boolean(0).isSignificant()).to.equal(false);
             expect(bali.boolean(0).toInteger()).to.equal(0);
             expect(bali.boolean(0).toString()).to.equal('false');
         });
 
         it('should construct booleans that equal one', function() {
-            expect(bali.boolean(true).toBoolean()).to.equal(true);
+            expect(bali.boolean(true).isSignificant()).to.equal(true);
             expect(bali.boolean(true).toInteger()).to.equal(1);
             expect(bali.boolean(true).toString()).to.equal('true');
-            expect(bali.boolean(1).toBoolean()).to.equal(true);
+            expect(bali.boolean(1).isSignificant()).to.equal(true);
             expect(bali.boolean(1).toInteger()).to.equal(1);
             expect(bali.boolean(1).toString()).to.equal('true');
         });

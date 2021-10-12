@@ -32,7 +32,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(size).to.exist;
             expect(size).to.equal(0);
             expect(catalog.isEmpty()).to.equal(true);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
             expect(catalog.getHash()).to.exist;
             const iterator = catalog.getIterator();
             expect(iterator).to.exist;
@@ -62,7 +62,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             expect(size).to.exist;
             expect(size).to.equal(2 * array.length);
             expect(catalog.isEmpty()).to.equal(false);
-            expect(catalog.toBoolean()).to.equal(true);
+            expect(catalog.isSignificant()).to.equal(true);
             expect(catalog.getHash()).to.exist;
             const iterator = catalog.getIterator();
             expect(iterator).to.exist;
@@ -103,7 +103,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
         it('should create a catalog from a list', function() {
@@ -136,7 +136,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
         it('should create a catalog from a set', function() {
@@ -169,7 +169,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
         it('should create a catalog from an object', function() {
@@ -208,7 +208,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
         it('should create a catalog from a catalog', function() {
@@ -241,7 +241,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
     });
@@ -276,7 +276,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog2.getSize();
             expect(size).to.equal(3);
             expect(catalog2.containsItem(association3)).to.equal(false);
-            expect(catalog2.toBoolean()).to.equal(true);
+            expect(catalog2.isSignificant()).to.equal(true);
         });
 
         it('should be able to add and remove associations from a catalog', function() {
@@ -317,7 +317,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(3);
-            expect(catalog.toBoolean()).to.equal(true);
+            expect(catalog.isSignificant()).to.equal(true);
             // the iterator should be pointing at a copy of the array so unaffected
             associationIterator.toStart();
             index = 0;
@@ -334,7 +334,7 @@ describe('Bali Nebula™ Component Framework - Catalog', function() {
             size = catalog.getSize();
             expect(size).to.exist;
             expect(size).to.equal(0);
-            expect(catalog.toBoolean()).to.equal(false);
+            expect(catalog.isSignificant()).to.equal(false);
         });
 
         it('should be able to perform catalog operations on catalogs', function() {

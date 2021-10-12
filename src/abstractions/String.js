@@ -61,7 +61,7 @@ exports.String = Stryng;
  *
  * @returns {Boolean} Whether or not this string has a meaningful value.
  */
-Stryng.prototype.toBoolean = function() {
+Stryng.prototype.isSignificant = function() {
     return this.getSize() > 0;
 };
 
