@@ -47,6 +47,7 @@ const Complex = function(value, parameters, debug) {
         [
             '/bali/libraries/Scalable',
             '/bali/libraries/Numerical',
+            '/bali/interfaces/Polarized',
             '/bali/interfaces/Discrete',
             '/bali/interfaces/Continuous'
         ],

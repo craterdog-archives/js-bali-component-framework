@@ -41,9 +41,10 @@ const Angle = function(value, parameters, debug) {
         this,
         [ moduleName ],
         [
-            '/bali/interfaces/Continuous',
             '/bali/libraries/Scalable',
-            '/bali/libraries/Radial'
+            '/bali/libraries/Radial',
+            '/bali/interfaces/Polarized',
+            '/bali/interfaces/Continuous'
         ],
         parameters,
         debug

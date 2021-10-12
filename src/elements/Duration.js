@@ -45,7 +45,8 @@ const Duration = function(value, parameters, debug) {
         this,
         [ moduleName ],
         [
-            '/bali/libraries/Scalable'
+            '/bali/libraries/Scalable',
+            '/bali/interfaces/Polarized'
         ],
         parameters,
         debug

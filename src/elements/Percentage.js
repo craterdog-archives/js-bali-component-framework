@@ -42,6 +42,7 @@ const Percentage = function(value, parameters, debug) {
         [ moduleName ],
         [
             '/bali/libraries/Scalable',
+            '/bali/interfaces/Polarized',
             '/bali/interfaces/Continuous'
         ],
         parameters,
