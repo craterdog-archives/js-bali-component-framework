@@ -72,7 +72,7 @@ fragment
 SPAN: INTEGER FRACTION?;
 
 fragment
-LABEL: ('a'..'z' | 'A'..'Z' | '0'..'9' | '+' | '-' | '.')+;
+LABEL: ('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9' | '+' | '-' | '.')*;
 
 fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;  // skip the space and '>' characters
