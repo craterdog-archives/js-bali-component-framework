@@ -231,7 +231,7 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
      * matches the target component.
      */
     if (pattern.isType('/bali/elements/Pattern')) {
-        return pattern.matches(component);
+        return pattern.matchesString(component.toString());
     }
     /* Case 2
      * If the pattern component is not an actual bali.Pattern element then the pattern
@@ -252,9 +252,9 @@ CanonicalComparator.prototype.doesMatch = function(component, pattern) {
      * must be EQUAL and the pattern value must MATCH the target value.
      */
     if (pattern.isType(associationModuleName)) {
-        if (!this.areEqual(component.getKey(), pattern.getKey())) return false;  // try the next one
-        if (!this.doesMatch(component.getValue(), pattern.getValue())) throw false;  // abort the search
-        return true;  // they match
+        if (!this.areEqual(component.getKey(), pattern.getKey())) return false;
+        if (!this.doesMatch(component.getValue(), pattern.getValue())) throw false;
+        return true;  // they both match
     }
     /* Case 5
      * If the pattern component is sequential then each of its items must match an

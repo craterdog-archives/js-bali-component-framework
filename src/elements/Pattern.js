@@ -76,25 +76,17 @@ Pattern.prototype.isSignificant = function() {
 
 
 /**
- * This method determines whether or not this pattern is matched by the source string of the
- * specified component.
+ * This method determines whether or not this pattern is matched by the specified string.
  *
- * @param {Component} component The component to be tested.
- * @returns {Boolean} Whether of not this pattern is matched by the source string of the component.
+ * @param {String} string The string to be tested.
+ * @returns {Boolean} Whether of not this pattern is matched by the specified string.
  */
-Pattern.prototype.matches = function(component) {
+Pattern.prototype.matchesString = function(string) {
     if (this.debug > 1) {
-        this.validateArgument('$matches', '$component', component, [
-            '/javascript/Undefined',
-            '/javascript/Boolean',
-            '/javascript/Number',
-            '/javascript/String',
-            '/javascript/Array',
-            '/javascript/Object',
-            '/bali/abstractions/Component'
+        this.validateArgument('$matchesString', '$string', string, [
+            '/javascript/String'
         ]);
     }
-    component = this.componentize(component);
-    return this.getValue().test(component.toString());
+    return this.getValue().test(string);
 };
 
