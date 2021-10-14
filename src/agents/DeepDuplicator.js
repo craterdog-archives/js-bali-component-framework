@@ -193,7 +193,7 @@ DuplicatingVisitor.prototype.visitCanonicalComparator = function(comparator) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
+// checkoutClause: 'checkout' recipient ('at level' expression)? 'from' expression;
 DuplicatingVisitor.prototype.visitCheckoutClause = function(node) {
     const copy = new node.constructor(node.getType(), node.debug);
     const iterator = node.getIterator();

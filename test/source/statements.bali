@@ -60,7 +60,7 @@
         checkout $document from /nebula/examples/contract/v1
         save document
         notarize document as /nebula/examples/document/v2
-        checkout documents[index] at level from /nebula/examples/contract/v2
+        checkout documents[index] at level 2 from /nebula/examples/contract/v2
         save documents[index] as $citation
         notarize documents[index] as /nebula/examples/contract/v2.1
         discard citation

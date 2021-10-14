@@ -316,14 +316,14 @@ FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
+// checkoutClause: 'checkout' recipient ('at level' expression)? 'from' expression;
 FormattingVisitor.prototype.visitCheckoutClause = function(node) {
     this.result += 'checkout ';
     var index = 1;
     const recipient = node.getItem(index++);
     recipient.acceptVisitor(this);
     if (node.getSize() > 2) {
-        this.result += ' at ';
+        this.result += ' at level ';
         const level = node.getItem(index++);
         level.acceptVisitor(this);
     }

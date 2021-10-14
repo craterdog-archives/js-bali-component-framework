@@ -368,7 +368,7 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
+// checkoutClause: 'checkout' recipient ('at level' expression)? 'from' expression;
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     const node = new trees.Node('/bali/trees/CheckoutClause', this.debug);
     ctx.recipient().accept(this);

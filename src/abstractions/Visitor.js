@@ -153,7 +153,7 @@ Visitor.prototype.visitCatalog = function(catalog) {
 };
 
 
-// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
+// checkoutClause: 'checkout' recipient ('at level' expression)? 'from' expression;
 Visitor.prototype.visitCheckoutClause = function(node) {
     const iterator = node.getIterator();
     while (iterator.hasNext()) {
