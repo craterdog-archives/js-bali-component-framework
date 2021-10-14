@@ -117,7 +117,7 @@ Version.prototype.getItems = function(indices) {
 
 
 /**
- * This function increments the current version string at the specified version level, for example:
+ * This function increments the specified current version string at the specified version level, for example:
  * <pre>
  *            current             next          what likely changed
  * level 1:    v5.7              v6         (interface/symantic changes)
@@ -156,7 +156,7 @@ Version.nextVersion = function(currentVersion, level, debug) {
 
 
 /**
- * This method determines whether or not a proposed next version of the current version string is
+ * This function determines whether or not a proposed next version of a current version string is
  * valid. In order for the next version to be valid the last level in the next version string
  * must be one more than the corresponding level in the current version string; or it must be '1'
  * and the next version string must have one more level of versions than the current version
@@ -173,9 +173,9 @@ Version.nextVersion = function(currentVersion, level, debug) {
  * @param {Number} debug A number in the range 0..3.
  * @returns {Boolean} Whether or not the proposed next version string is valid.
  */
-Version.validNextVersion = function(currentVersion, nextVersion, debug) {
+Version.validNext = function(currentVersion, nextVersion, debug) {
     if (debug > 1) {
-        abstractions.Component.validateArgument(moduleName, '$validNextVersion', '$nextVersion', nextVersion, [
+        abstractions.Component.validateArgument(moduleName, '$validNext', '$nextVersion', nextVersion, [
             '/bali/strings/Version'
         ]);
     }

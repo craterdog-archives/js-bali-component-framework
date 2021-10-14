@@ -679,9 +679,9 @@ exports.api = function(debug) {
         debug = debug || defaultDebug;
         return strings.Version.nextVersion(current, level, debug);
     };
-    version.validNextVersion = function(current, next, debug) {
+    version.validNext = function(current, next, debug) {
         debug = debug || defaultDebug;
-        return strings.Version.validNextVersion(current, next, debug);
+        return strings.Version.validNext(current, next, debug);
     };
     version.chain = function(first, second, debug) {
         debug = debug || defaultDebug;
