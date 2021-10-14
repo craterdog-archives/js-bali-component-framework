@@ -41,7 +41,7 @@ discardClause: 'discard' expression;
 // notarize document as /acme/reports/Q3/v1.4
 notarizeClause: 'notarize' expression 'as' expression;
 
-// checkout $contract at level 2 from /acme/reports/Q3/v1.3.6
+// checkout $draft at level 2 from /acme/reports/Q3/v1.3.6
 checkoutClause: 'checkout' recipient ('at level' expression)? 'from' expression;
 
 // publish event
