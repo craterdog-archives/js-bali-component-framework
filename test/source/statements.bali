@@ -57,12 +57,12 @@
         break loop
     }
     $lifecycle: {
-        checkout $component from /nebula/examples/document/v1
-        save component
-        sign component as /nebula/examples/document/v2
-        checkout level 2 of components[index] from /nebula/examples/document/v2
-        save components[index] as $citation
-        sign components[index] as /nebula/examples/document/v2.1
+        checkout $document from /nebula/examples/contract/v1
+        save document
+        notarize document as /nebula/examples/document/v2
+        checkout documents[index] at level from /nebula/examples/contract/v2
+        save documents[index] as $citation
+        notarize documents[index] as /nebula/examples/contract/v2.1
         discard citation
     }
     $publishEvent: {

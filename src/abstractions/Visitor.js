@@ -153,7 +153,7 @@ Visitor.prototype.visitCatalog = function(catalog) {
 };
 
 
-// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
 Visitor.prototype.visitCheckoutClause = function(node) {
     const iterator = node.getIterator();
     while (iterator.hasNext()) {
@@ -678,8 +678,8 @@ Visitor.prototype.visitSet = function(set) {
 };
 
 
-// signClause: 'sign' expression 'as' expression
-Visitor.prototype.visitSignClause = function(node) {
+// notarizeClause: 'notarize' expression 'as' expression
+Visitor.prototype.visitNotarizeClause = function(node) {
     const component = node.getItem(1);
     component.acceptVisitor(this);
     const name = node.getItem(2);

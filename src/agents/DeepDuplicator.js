@@ -193,7 +193,7 @@ DuplicatingVisitor.prototype.visitCanonicalComparator = function(comparator) {
 };
 
 
-// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
 DuplicatingVisitor.prototype.visitCheckoutClause = function(node) {
     const copy = new node.constructor(node.getType(), node.debug);
     const iterator = node.getIterator();
@@ -656,8 +656,8 @@ DuplicatingVisitor.prototype.visitSelectClause = function(node) {
 };
 
 
-// signClause: 'sign' expression 'as' expression
-DuplicatingVisitor.prototype.visitSignClause = function(node) {
+// notarizeClause: 'notarize' expression 'as' expression
+DuplicatingVisitor.prototype.visitNotarizeClause = function(node) {
     const copy = new node.constructor(node.getType(), node.debug);
     node.getItem(1).acceptVisitor(this);
     copy.addItem(this.result);

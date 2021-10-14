@@ -368,19 +368,16 @@ ParsingVisitor.prototype.visitCatalog = function(ctx) {
 };
 
 
-// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
 ParsingVisitor.prototype.visitCheckoutClause = function(ctx) {
     const node = new trees.Node('/bali/trees/CheckoutClause', this.debug);
-    const expressions = ctx.expression();
-    var index = 0;
-    if (expressions.length ===2) {
-        expressions[index++].accept(this);
-        node.addItem(this.result);
-    }
     ctx.recipient().accept(this);
     node.addItem(this.result);
-    expressions[index].accept(this);
-    node.addItem(this.result);
+    const expressions = ctx.expression();
+    expressions.forEach(function(expression) {
+        expression.accept(this);
+        node.addItem(this.result);
+    }, this);
     this.result = node;
 };
 
@@ -1006,9 +1003,9 @@ ParsingVisitor.prototype.visitSelectClause = function(ctx) {
 };
 
 
-// signClause: 'sign' expression 'as' expression
-ParsingVisitor.prototype.visitSignClause = function(ctx) {
-    const node = new trees.Node('/bali/trees/SignClause', this.debug);
+// notarizeClause: 'notarize' expression 'as' expression
+ParsingVisitor.prototype.visitNotarizeClause = function(ctx) {
+    const node = new trees.Node('/bali/trees/NotarizeClause', this.debug);
     const expressions = ctx.expression();
     expressions[0].accept(this);
     node.addItem(this.result);

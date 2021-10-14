@@ -9,7 +9,7 @@ mainClause:
     evaluateClause |
     saveClause |
     discardClause |
-    signClause |
+    notarizeClause |
     checkoutClause |
     publishClause |
     postClause |
@@ -38,11 +38,11 @@ saveClause: 'save' expression ('as' recipient)?;
 // discard document
 discardClause: 'discard' expression;
 
-// sign contract as /acme/reports/Q3/v1.4
-signClause: 'sign' expression 'as' expression;
+// notarize document as /acme/reports/Q3/v1.4
+notarizeClause: 'notarize' expression 'as' expression;
 
-// checkout level 2 of $contract from /acme/reports/Q3/v1.3.6
-checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression;
+// checkout $contract at level from /acme/reports/Q3/v1.3.6
+checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
 
 // publish event
 publishClause: 'publish' expression;

@@ -316,18 +316,17 @@ FormattingVisitor.prototype.visitCanonicalComparator = function(comparator) {
 };
 
 
-// checkoutClause: 'checkout' ('level' expression 'of')? recipient 'from' expression
+// checkoutClause: 'checkout' recipient ('at' expression)? 'from' expression;
 FormattingVisitor.prototype.visitCheckoutClause = function(node) {
     this.result += 'checkout ';
     var index = 1;
-    if (node.getSize() === 3) {
-        this.result += 'level ';
-        const level = node.getItem(index++);
-        level.acceptVisitor(this);
-        this.result += ' of ';
-    }
     const recipient = node.getItem(index++);
     recipient.acceptVisitor(this);
+    if (node.getSize() > 2) {
+        this.result += ' at ';
+        const level = node.getItem(index++);
+        level.acceptVisitor(this);
+    }
     this.result += ' from ';
     const name = node.getItem(index);
     name.acceptVisitor(this);
@@ -958,9 +957,9 @@ FormattingVisitor.prototype.visitSelectClause = function(node) {
 };
 
 
-// signClause: 'sign' expression 'as' expression
-FormattingVisitor.prototype.visitSignClause = function(node) {
-    this.result += 'sign ';
+// notarizeClause: 'notarize' expression 'as' expression
+FormattingVisitor.prototype.visitNotarizeClause = function(node) {
+    this.result += 'notarize ';
     const component = node.getItem(1);
     component.acceptVisitor(this);
     this.result += ' as ';

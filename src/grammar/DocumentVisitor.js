@@ -72,8 +72,8 @@ DocumentVisitor.prototype.visitDiscardClause = function(ctx) {
 };
 
 
-// Visit a parse tree produced by DocumentParser#signClause.
-DocumentVisitor.prototype.visitSignClause = function(ctx) {
+// Visit a parse tree produced by DocumentParser#notarizeClause.
+DocumentVisitor.prototype.visitNotarizeClause = function(ctx) {
   return this.visitChildren(ctx);
 };
 

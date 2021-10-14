@@ -101,12 +101,12 @@ DocumentListener.prototype.exitDiscardClause = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DocumentParser#signClause.
-DocumentListener.prototype.enterSignClause = function(ctx) {
+// Enter a parse tree produced by DocumentParser#notarizeClause.
+DocumentListener.prototype.enterNotarizeClause = function(ctx) {
 };
 
-// Exit a parse tree produced by DocumentParser#signClause.
-DocumentListener.prototype.exitSignClause = function(ctx) {
+// Exit a parse tree produced by DocumentParser#notarizeClause.
+DocumentListener.prototype.exitNotarizeClause = function(ctx) {
 };
 
 
