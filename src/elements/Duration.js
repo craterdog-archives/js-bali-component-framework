@@ -172,7 +172,7 @@ Duration.prototype. isNegative = function() {
  *
  * @returns {String} The ISO 8601 formatted string.
  */
-Duration.prototype.toISO = function() {
+Duration.prototype.toISOString = function() {
     var isoString = this.isNegative() ? '-' : '';
     const years = this.getYears();
     const months = this.getMonths();

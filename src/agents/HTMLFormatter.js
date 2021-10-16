@@ -503,7 +503,7 @@ FormattingVisitor.prototype.visitMergeSorter = function(sorter) {
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
     this.result += '<div class="element moment">';
-    this.result += moment.toISO().replace(/T/, ' ');
+    this.result += moment.toISOString().replace(/T/, ' ');
     this.result += formatParameters(moment.getParameters());
     this.result += '</div>';
 };

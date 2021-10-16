@@ -69,9 +69,8 @@ const Moment = function(value, parameters, debug) {
     if (value === null || value === undefined) {  // can't check for zero since that is a valid date
         value = Date.now();  // current time in milliseconds since EPOC
     } else if (typeof value === 'string') {
-        const isoString = value;
-        format = detectFormat(isoString);
-        value = parseIsoString(isoString);
+        format = detectFormat(value, this.debug);
+        value = extractUTCValue(value, this.debug);
     }
 
     // since this element is immutable the attributes must be read-only
@@ -125,16 +124,16 @@ exports.Moment = Moment;
  *
  * @returns {String} The ISO 8601 formatted string.
  */
-Moment.prototype.toISO = function() {
-    var isoString = this.getFormat();
-    isoString = isoString.replace('Y', '' + this.getYear());
-    isoString = isoString.replace('MM', ('0' + this.getMonth()).slice(-2));
-    isoString = isoString.replace('DD', ('0' + this.getDay()).slice(-2));
-    isoString = isoString.replace('HH', ('0' + this.getHour()).slice(-2));
-    isoString = isoString.replace('mm', ('0' + this.getMinute()).slice(-2));
-    isoString = isoString.replace('ss', ('0' + this.getSecond()).slice(-2));
-    isoString = isoString.replace('SSS', ('00' + this.getMillisecond()).slice(-3));
-    return isoString;
+Moment.prototype.toISOString = function() {
+    var string = this.getFormat();
+    string = string.replace('Y', '' + this.getYear());
+    string = string.replace('MM', ('0' + this.getMonth()).slice(-2));
+    string = string.replace('DD', ('0' + this.getDay()).slice(-2));
+    string = string.replace('HH', ('0' + this.getHour()).slice(-2));
+    string = string.replace('mm', ('0' + this.getMinute()).slice(-2));
+    string = string.replace('ss', ('0' + this.getSecond()).slice(-2));
+    string = string.replace('SSS', ('00' + this.getMillisecond()).slice(-3));
+    return string;
 };
 
 
@@ -216,24 +215,42 @@ const four = '(\\d\\d\\d\\d)';
 const moment = `${four}(?:-${two})?(?:-${two})?(?:T${two})?(?::${two})?(?::${two})?(?:[\\.,]${three})?`;
 const pattern = new RegExp(moment);
 
-const detectFormat = function(isoString) {
-    const values = isoString.match(pattern).slice(1);
-    var format = FORMATS[values.indexOf(undefined) - 1];
-    return format || FORMATS[6];
+const parseISOString = function(string, debug) {
+    const fields = string.match(pattern).slice(1);  // remove the first matching group which is the entire string
+    var index = fields.indexOf(undefined);  // index of the first undefined field
+    if (index === 0) {
+        const exception = new abstractions.Exception({
+            $module: moduleName,
+            $procedure: '$parseISOString',
+            $exception: '$invalidFormat',
+            $string: string,
+            $text: '"The string is not in a valid ISO 8601 timestamp format."'
+        }, undefined, debug);
+        throw exception;
+    }
+    if (index < 0) index = 7;  // all fields are defined
+    return fields.slice(0, index);  // remove any undefined fields
 };
 
 
-const parseIsoString = function(isoString) {
-    const values = isoString.match(pattern).slice(1);
+const detectFormat = function(string, debug) {
+    const fields = parseISOString(string, debug);
+    return FORMATS[fields.length - 1];
+};
+
+
+const extractUTCValue = function(string, debug) {
+    const fields = parseISOString(string, debug);
     var utcString = '';
-    utcString += values[0];
-    if (values[1] !== undefined) utcString += '-' + values[1];
-    if (values[2] !== undefined) utcString += '-' + values[2];
+    utcString += fields[0];
+    utcString += '-' + (fields[1] || '01');
+    utcString += '-' + (fields[2] || '01');
     utcString += 'T';
-    utcString += (values[3] || '00') + ':';
-    utcString += (values[4] || '00') + ':';
-    utcString += (values[5] || '00') + '.';
-    utcString += (values[6] || '000') + 'Z';
+    utcString += (fields[3] || '00') + ':';
+    utcString += (fields[4] || '00') + ':';
+    utcString += (fields[5] || '00') + '.';
+    utcString += (fields[6] || '000');
+    utcString += 'Z';  // must have UTC symbol or it will treat it is local
     return Date.parse(utcString);
 };
 
