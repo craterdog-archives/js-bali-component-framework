@@ -140,10 +140,10 @@
         '($encoding: $base64)
     ]
     $moments: [
-        <-10000-01-01T00:00:00>($country: "Atlantis")
+        <1000>($country: "Atlantis")
         <1962-04-01>($city: "New York City")
         <1962-04-01T06:31>($city: "San Francisco")
-        <1962-04-01T06:31:60.726>(
+        <1962-04-01T06:31:59.726>(
             $city: "Denver"
             $region: "Colorado"
             $country: "USA"

@@ -23,7 +23,7 @@ IMAGINARY: FLOAT 'i' | 'e i' | 'pi i' | 'π i' | 'phi i' | 'φ i' | 'tau i' | '�
 
 REAL: FLOAT | 'e' | 'pi' | 'π' | 'phi' | 'φ' | 'tau' | 'τ';
 
-MOMENT: '<' YEARS ('-' MONTHS ('-' DAYS ('T' HOURS (':' MINUTES (':' SECONDS FRACTION?)?)?)?)?)? '>';
+MOMENT: '<' YEAR ('-' MONTH ('-' DAY ('T' HOUR (':' MINUTE (':' SECOND FRACTION?)?)?)?)?)? '>';
 
 NAME: ('/' LABEL)+;
 
@@ -78,23 +78,22 @@ fragment
 CONTEXT: ('!'..'=' | '?'..'~')*;  // skip the space and '>' characters
 
 fragment
-YEARS: INTEGER;
+YEAR: INTEGER;  // allows negative years
 
 fragment
-MONTHS: (('0' '0'..'9') | ('1' '0'..'2'));
+MONTH: (('0' '1'..'9') | ('1' '0'..'2'));  // [01..12]
 
 fragment
-DAYS: (('0'..'2' '0'..'9') | ('3' '0'..'1'));
+DAY: (('0' '1'..'9') | ('1'..'2' '0'..'9') | ('3' '0'..'1'));  // [01..31]
 
 fragment
-HOURS: (('0'..'1' '0'..'9') | ('2' '0'..'3'));
+HOUR: (('0'..'1' '0'..'9') | ('2' '0'..'3'));  // [01..23]
 
 fragment
-MINUTES: ('0'..'5' '0'..'9');
+MINUTE: ('0'..'5' '0'..'9');  // [00..59]
 
-// Note: We must include 60 to handle leap seconds.
 fragment
-SECONDS: (('0'..'5' '0'..'9') | '60');
+SECOND: ('0'..'5' '0'..'9');  // [00..59]
 
 fragment
 BASE16: '0'..'9' | 'A'..'F';

@@ -188,7 +188,7 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle durations', function() {
-            const duration = bali.duration('P1W');
+            const duration = bali.duration('~P1W');
             expect(comparator.ranking(duration, '~P1D')).to.equal(1);
             expect(comparator.ranking('~PT1H', duration)).to.equal(-1);
         });
@@ -400,8 +400,8 @@ describe('Bali Nebula™ Component Framework - Comparator', function() {
         });
 
         it('should handle durations', function() {
-            const first = bali.duration('P1W');
-            const second = bali.duration('P1M');
+            const first = bali.duration('~P1W');
+            const second = bali.duration('~P1M');
             expect(comparator.ranking(first, first)).to.equal(0);
             expect(comparator.ranking(first, second)).to.equal(-1);
             expect(comparator.ranking(second, first)).to.equal(1);

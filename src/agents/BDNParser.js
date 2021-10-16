@@ -512,8 +512,8 @@ ParsingVisitor.prototype.visitDocument = function(ctx) {
 // duration: DURATION
 ParsingVisitor.prototype.visitDuration = function(ctx) {
     const parameters = this.getParameters();
-    const value = ctx.getText().slice(1);  // remove the leading '~'
-    const duration = new elements.Duration(value, parameters, this.debug);
+    const string = ctx.getText().slice(1);  // remove the leading '~'
+    const duration = new elements.Duration(string, parameters, this.debug);
     this.result = duration;
 };
 

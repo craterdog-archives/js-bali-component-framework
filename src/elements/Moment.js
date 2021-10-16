@@ -15,7 +15,6 @@
  * in time.
  */
 const moduleName = '/bali/elements/Moment';
-const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
 const Duration = require('./Duration').Duration;
@@ -28,9 +27,7 @@ const FORMATS = [
     'Y-MM-DDTHH',
     'Y-MM-DDTHH:mm',
     'Y-MM-DDTHH:mm:ss',
-    'Y-MM-DDTHH:mm:60',  // HACK:JavaScript doesn't handle leap seconds
-    'Y-MM-DDTHH:mm:ss.SSS',
-    'Y-MM-DDTHH:mm:60.SSS'  // HACK:JavaScript doesn't handle leap seconds
+    'Y-MM-DDTHH:mm:ss.SSS'
 ];
 
 
@@ -68,41 +65,51 @@ const Moment = function(value, parameters, debug) {
             '/javascript/Number'
         ]);
     }
-    value = value || undefined;
-    var timestamp, format;
-    if (!value) {
-        format = FORMATS[7];
-        timestamp = moment.utc();  // the current moment
-    } else {
-        switch (typeof value) {
-            case 'number':
-                format = FORMATS[7];
-                timestamp = moment.utc(value);  // in milliseconds since EPOC
-                break;
-            case 'string':
-                FORMATS.find(function(candidate) {
-                    timestamp = moment.utc(value, candidate, true);  // true means strict mode
-                    if (timestamp.isValid()) {
-                        format = candidate;
-                        return true;
-                    }
-                    return false;
-                });
-        }
+    var format = FORMATS[6];
+    if (value === null || value === undefined) {  // can't check for zero since that is a valid date
+        value = Date.now();  // current time in milliseconds since EPOC
+    } else if (typeof value === 'string') {
+        const isoString = value;
+        format = detectFormat(isoString);
+        value = parseIsoString(isoString);
     }
-    value = timestamp.valueOf();  // set canonical value
 
     // since this element is immutable the attributes must be read-only
-    this.getValue = function() { return value; };
-    this.getFormat = function() { return format; };
-    this.getTimestamp = function() { return timestamp; };
-    this.getMillisecond = function() { return timestamp.millisecond(); };
-    this.getSecond = function() { return timestamp.second(); };
-    this.getMinute = function() { return timestamp.minute(); };
-    this.getHour = function() { return timestamp.hour(); };
-    this.getDay = function() { return timestamp.date(); };
-    this.getMonth = function() { return timestamp.month() + 1; };
-    this.getYear = function() { return timestamp.year(); };
+    this.getValue = function() {
+        return value;
+    };
+
+    this.getFormat = function() {
+        return format;
+    };
+
+    this.getMillisecond = function() {
+        return new Date(value).getUTCMilliseconds();
+    };
+
+    this.getSecond = function() {
+        return new Date(value).getUTCSeconds();
+    };
+
+    this.getMinute = function() {
+        return new Date(value).getUTCMinutes();
+    };
+
+    this.getHour = function() {
+        return new Date(value).getUTCHours();
+    };
+
+    this.getDay = function() {
+        return new Date(value).getUTCDate();
+    };
+
+    this.getMonth = function() {
+        return new Date(value).getUTCMonth() + 1;
+    };
+
+    this.getYear = function() {
+        return new Date(value).getUTCFullYear();
+    };
 
     return this;
 };
@@ -114,13 +121,20 @@ exports.Moment = Moment;
 // PUBLIC METHODS
 
 /**
- * This method returns whether or not this moment has a meaningful value. A moment always has
- * a meaningful value.
+ * This method returns an ISO 8601 formatted string for this moment.
  *
- * @returns {Boolean} Whether or not this moment has a meaningful value.
+ * @returns {String} The ISO 8601 formatted string.
  */
-Moment.prototype.isSignificant = function() {
-    return this.getValue() !== 0;
+Moment.prototype.toISO = function() {
+    var isoString = this.getFormat();
+    isoString = isoString.replace('Y', '' + this.getYear());
+    isoString = isoString.replace('MM', ('0' + this.getMonth()).slice(-2));
+    isoString = isoString.replace('DD', ('0' + this.getDay()).slice(-2));
+    isoString = isoString.replace('HH', ('0' + this.getHour()).slice(-2));
+    isoString = isoString.replace('mm', ('0' + this.getMinute()).slice(-2));
+    isoString = isoString.replace('ss', ('0' + this.getSecond()).slice(-2));
+    isoString = isoString.replace('SSS', ('00' + this.getMillisecond()).slice(-3));
+    return isoString;
 };
 
 
@@ -144,8 +158,7 @@ Moment.duration = function(first, second, debug) {
             '/bali/elements/Moment'
         ]);
     }
-    const duration = moment.duration(second.getTimestamp().diff(first.getTimestamp()));
-    return new Duration(duration.toISOString(), undefined, debug);
+    return new Duration(first.getValue() - second.getValue(), undefined, debug);
 };
 
 
@@ -167,8 +180,8 @@ Moment.earlier = function(moment, duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    const earlier = moment.getTimestamp().clone().subtract(duration.getTime());  // must clone first!
-    return new Moment(earlier.format(FORMATS[7]), moment.getParameters(), debug);
+    const earlier = moment.getValue() - duration.getValue();
+    return new Moment(earlier, moment.getParameters(), debug);
 };
 
 
@@ -190,6 +203,37 @@ Moment.later = function(moment, duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    const later = moment.getTimestamp().clone().add(duration.getTime());  // must clone first!
-    return new Moment(later.format(FORMATS[7]), moment.getParameters(), debug);
+    const later = moment.getValue() + duration.getValue();
+    return new Moment(later, moment.getParameters(), debug);
 };
+
+
+// PRIVATE FUNCTIONS
+
+const two = '(\\d\\d)';
+const three = '(\\d\\d\\d)';
+const four = '(\\d\\d\\d\\d)';
+const moment = `${four}(?:-${two})?(?:-${two})?(?:T${two})?(?::${two})?(?::${two})?(?:[\\.,]${three})?`;
+const pattern = new RegExp(moment);
+
+const detectFormat = function(isoString) {
+    const values = isoString.match(pattern).slice(1);
+    var format = FORMATS[values.indexOf(undefined) - 1];
+    return format || FORMATS[6];
+};
+
+
+const parseIsoString = function(isoString) {
+    const values = isoString.match(pattern).slice(1);
+    var utcString = '';
+    utcString += values[0];
+    if (values[1] !== undefined) utcString += '-' + values[1];
+    if (values[2] !== undefined) utcString += '-' + values[2];
+    utcString += 'T';
+    utcString += (values[3] || '00') + ':';
+    utcString += (values[4] || '00') + ':';
+    utcString += (values[5] || '00') + '.';
+    utcString += (values[6] || '000') + 'Z';
+    return Date.parse(utcString);
+};
+

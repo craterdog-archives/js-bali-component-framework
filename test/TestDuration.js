@@ -23,7 +23,7 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
             expect(bali.component('~P0D').isSignificant()).to.equal(false);
             expect(bali.component('~P0D').toString()).to.equal('~P0D');
             expect(bali.component('~P0D').isNegative()).to.equal(false);
-            expect(bali.component('~P3M7DT8H29M54.321S').getValue()).to.equal(8497794321);
+            expect(bali.component('~P3M7DT8H29M54.321S').getValue()).to.equal(8524632321);
             expect(bali.component('~P3M7DT8H29M54.321S').isSignificant()).to.equal(true);
             expect(bali.component('~P3M7DT8H29M54.321S').toString()).to.equal('~P3M7DT8H29M54.321S');
             expect(bali.component('~P3M7DT8H29M54.321S').isNegative()).to.equal(false);
@@ -44,7 +44,7 @@ describe('Bali Nebula™ Component Framework - Duration', function() {
             expect(bali.component('~P5W').isNegative()).to.equal(false);
             const duration = bali.component('~P5W');
             const string = duration.toString();
-            expect(string).to.equal('~P35D');
+            expect(string).to.equal('~P1M4DT13H30M54S');
         });
 
         it('should construct a time duration and format it the same', function() {

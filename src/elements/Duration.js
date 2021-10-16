@@ -15,11 +15,23 @@
  * duration element.
  */
 const moduleName = '/bali/elements/Duration';
-// TODO: Migrate away from obsolete moment library to native platform support:
-//       https://dockyard.com/blog/2020/02/14/you-probably-don-t-need-moment-js-anymore
-const moment = require('moment');
 const utilities = require('../utilities');
 const abstractions = require('../abstractions');
+
+// locked to the earth's daily revolutions
+const millisecondsPerSecond = 1000;
+const millisecondsPerMinute = millisecondsPerSecond * 60;
+const millisecondsPerHour = millisecondsPerMinute * 60;
+const millisecondsPerDay = millisecondsPerHour * 24;
+const millisecondsPerWeek = millisecondsPerDay * 7;
+
+// locked to the earth's orbit around the sun
+const millisecondsPerYear = 31556952000;
+const millisecondsPerMonth = millisecondsPerYear / 12;  // average but exact
+
+// tying the two together is where things get messy
+const daysPerMonth = millisecondsPerMonth / millisecondsPerDay;    // ~30.436875 days/month
+const weeksPerMonth = millisecondsPerMonth / millisecondsPerWeek;  // ~4.348125 weeks/month
 
 
 // PUBLIC FUNCTIONS
@@ -36,7 +48,8 @@ const abstractions = require('../abstractions');
  *   3: log interesting arguments, states and results to console.log
  * </pre>
  *
- * @param {String|Number} value The source string the duration.
+ * @param {String|Number} value The ISO 8601 duration string, or the total number of milliseconds in the duration.
+ * The default is zero milliseconds.
  * @param {Object} parameters Optional parameters used to parameterize this element.
  * @returns {Duration} The new duration element.
  */
@@ -54,27 +67,75 @@ const Duration = function(value, parameters, debug) {
     if (this.debug > 1) {
         this.validateArgument('$Duration', '$value', value, [
             '/javascript/Undefined',
-            '/javascript/String',
-            '/javascript/Number'
+            '/javascript/Number',
+            '/javascript/String'
         ]);
     }
-    // TODO: Need to handle negative duration values!
-    value = value || 0;  // default value
-    const time = moment.duration(value);
-    value = time.asMilliseconds();  // set canonical value
 
     // since this element is immutable the value must be read-only
-    this.getTime = function() { return time; };
-    this.getMilliseconds = function() { return time.milliseconds(); };
-    this.getSeconds = function() { return time.seconds(); };
-    this.getMinutes = function() { return time.minutes(); };
-    this.getHours = function() { return time.hours(); };
-    this.getDays = function() { return time.days(); };
-    this.getWeeks = function() { return time.weeks(); };
-    this.getMonths = function() { return time.months(); };
-    this.getYears = function() { return time.years(); };
+    value = value || 0;  // default value
+    if (typeof value === 'string') value = isoToMilliseconds(value);
+    const sign = (value < 0) ? -1 : 1;
+    value = sign * value;  // remove the sign
 
-    this.getValue = function() { return value; };
+    this.getSign = function() {
+        return sign;
+    };
+
+    this.getMilliseconds = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        milliseconds = milliseconds % millisecondsPerMonth;  // milliseconds in partial month
+        milliseconds = milliseconds % millisecondsPerDay;  // milliseconds in partial day
+        milliseconds = milliseconds % millisecondsPerHour;  // milliseconds in partial hour
+        milliseconds = milliseconds % millisecondsPerMinute;  // milliseconds in partial minute
+        milliseconds = milliseconds % millisecondsPerSecond;  // milliseconds in partial second
+        return milliseconds;
+    };
+
+    this.getSeconds = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        milliseconds = milliseconds % millisecondsPerMonth;  // milliseconds in partial month
+        milliseconds = milliseconds % millisecondsPerDay;  // milliseconds in partial day
+        milliseconds = milliseconds % millisecondsPerHour;  // milliseconds in partial hour
+        milliseconds = milliseconds % millisecondsPerMinute;  // milliseconds in partial minute
+        return Math.floor(milliseconds / millisecondsPerSecond);
+    };
+
+    this.getMinutes = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        milliseconds = milliseconds % millisecondsPerMonth;  // milliseconds in partial month
+        milliseconds = milliseconds % millisecondsPerDay;  // milliseconds in partial day
+        milliseconds = milliseconds % millisecondsPerHour;  // milliseconds in partial hour
+        return Math.floor(milliseconds / millisecondsPerMinute);
+    };
+
+    this.getHours = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        milliseconds = milliseconds % millisecondsPerMonth;  // milliseconds in partial month
+        milliseconds = milliseconds % millisecondsPerDay;  // milliseconds in partial day
+        return Math.floor(milliseconds / millisecondsPerHour);
+    };
+
+    this.getDays = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        milliseconds = milliseconds % millisecondsPerMonth;  // milliseconds in partial month
+        return Math.floor(milliseconds / millisecondsPerDay);
+    };
+
+    this.getWeeks = function() {
+        return value / millisecondsPerWeek;  // total number of weeks including fraction
+    };
+
+    this.getMonths = function() {
+        var milliseconds = value % millisecondsPerYear;  // milliseconds in partial year
+        return Math.floor(milliseconds / millisecondsPerMonth);
+    };
+
+    this.getYears = function() {
+        return Math.floor(value / millisecondsPerYear);
+    };
+
+    this.getValue = function() { return sign * value; };
 
     return this;
 };
@@ -106,6 +167,36 @@ Duration.prototype. isNegative = function() {
 };
 
 
+/**
+ * This method returns an ISO 8601 formatted string for this duration.
+ *
+ * @returns {String} The ISO 8601 formatted string.
+ */
+Duration.prototype.toISO = function() {
+    var isoString = this.isNegative() ? '-' : '';
+    const years = this.getYears();
+    const months = this.getMonths();
+    const days = this.getDays();
+    const hours = this.getHours();
+    const minutes = this.getMinutes();
+    const seconds = this.getSeconds();
+    const milliseconds = this.getMilliseconds();
+    isoString += 'P';
+    if (years) isoString += years + 'Y';
+    if (months) isoString += months + 'M';
+    if (days) isoString += days + 'D';
+    if (hours || minutes || seconds || milliseconds) isoString += 'T';
+    if (hours) isoString += hours + 'H';
+    if (minutes) isoString += minutes + 'M';
+    if (seconds) isoString += seconds;
+    if (!seconds && milliseconds) isoString += '0';
+    if (milliseconds) isoString += '.' + milliseconds;
+    if (seconds || milliseconds) isoString += 'S';
+    if (!years && !months && !days && !hours && !minutes && !seconds && !milliseconds) isoString += '0D';
+    return isoString;
+};
+
+
 // SCALABLE LIBRARY FUNCTIONS
 
 /**
@@ -123,7 +214,7 @@ Duration.inverse = function(duration, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(moment.duration().subtract(duration.getTime()).toISOString(), duration.getParameters(), debug);
+    return new Duration(-1 * duration.getValue(), duration.getParameters(), debug);
 };
 
 
@@ -145,7 +236,7 @@ Duration.sum = function(first, second, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(first.getTime().clone().add(second.getTime()).toISOString(), first.getParameters(), debug);
+    return new Duration(first.getValue() + second.getValue(), first.getParameters(), debug);
 };
 
 
@@ -167,7 +258,7 @@ Duration.difference = function(first, second, debug) {
             '/bali/elements/Duration'
         ]);
     }
-    return new Duration(first.getTime().clone().subtract(second.getTime()).toISOString(), first.getParameters(), debug);
+    return new Duration(first.getValue() - second.getValue(), first.getParameters(), debug);
 };
 
 
@@ -188,6 +279,56 @@ Duration.scaled = function(duration, factor, debug) {
             '/javascript/Number'
         ]);
     }
-    return new Duration(moment.duration(Math.round(duration.getValue() * factor)).toISOString(), duration.getParameters(), debug);
+    return new Duration(duration.getValue() * factor, duration.getParameters(), debug);
+};
+
+
+// PRIVATE FUNCTIONS
+
+const isoToMilliseconds = function(isoString) {
+    // use template literals to make things more readable             pseudo expressions
+    const span = '\\d+(?:[\\.,]\\d+)?';                        // digit+([.|,]digit+)?
+    const week = `(${span}W)`;                                 // weeksW
+    const date = `(${span}Y)?(${span}M)?(${span}D)?`;          // (yearsY)?(monthsM)?(daysD)?
+    const time = `(T)(${span}H)?(${span}M)?(${span}S)?`;       // T(hoursH)?(minutesM)?(secondsS)?
+    const duration = `(-)?P(?:${week}|${date}(?:${time})?)`;   // (-)?P(week | date(time)?)
+    const pattern = new RegExp(duration);
+    const values = isoString.match(pattern);
+    var milliseconds = 0;
+    var sign = 1;
+    var isTime = false;
+    values.slice(1).forEach(function(value) {
+        if (value) switch (value.slice(-1)) {
+            case '-':
+                sign = -1;
+                break;
+            case 'Y':
+                milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerYear;
+                break;
+            case 'M':
+                if (isTime) {
+                    milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerMinute;
+                } else {
+                    milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerMonth;
+                }
+                break;
+            case 'W':
+                milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerWeek;
+                break;
+            case 'D':
+                milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerDay;
+                break;
+            case 'T':
+                isTime = true;
+                break;
+            case 'H':
+                milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerHour;
+                break;
+            case 'S':
+                milliseconds += parseFloat(value.slice(0, -1)) * millisecondsPerSecond;
+                break;
+        }
+    });
+    return sign * milliseconds;
 };
 

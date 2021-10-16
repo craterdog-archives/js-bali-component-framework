@@ -466,8 +466,8 @@ FormattingVisitor.prototype.visitDiscardClause = function(node) {
 
 // duration: DURATION
 FormattingVisitor.prototype.visitDuration = function(duration) {
-    const value = duration.getTime().toISOString();
-    this.result += '~' + value;
+    this.result += '~';
+    this.result += duration.toISO();
     const parameters = duration.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(duration);
@@ -697,7 +697,7 @@ FormattingVisitor.prototype.visitMessageExpression = function(node) {
 
 // moment: MOMENT
 FormattingVisitor.prototype.visitMoment = function(moment) {
-    const value = moment.getTimestamp().format(moment.getFormat());
+    const value = moment.toISO();
     this.result += '<' + value + '>';
     const parameters = moment.getParameters();
     this.visitParameters(parameters);  // format any parameterization

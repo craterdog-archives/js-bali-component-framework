@@ -118,13 +118,13 @@ Visitor.prototype.visitAttributeExpression = function(node) {
 
 // binary: BINARY
 Visitor.prototype.visitBinary = function(binary) {
-    this.visitElement(angle);
+    this.visitElement(binary);
 };
 
 
 // boolean: 'false' | 'true'
 Visitor.prototype.visitBoolean = function(boolean) {
-    this.visitElement(angle);
+    this.visitElement(boolean);
 };
 
 
@@ -292,7 +292,7 @@ Visitor.prototype.visitDiscardClause = function(node) {
 
 // duration: DURATION
 Visitor.prototype.visitDuration = function(duration) {
-    this.visitElement(angle);
+    this.visitElement(duration);
 };
 
 
@@ -495,13 +495,13 @@ Visitor.prototype.visitMessageExpression = function(node) {
 
 // moment: MOMENT
 Visitor.prototype.visitMoment = function(moment) {
-    this.visitElement(angle);
+    this.visitElement(moment);
 };
 
 
 // name: NAME
 Visitor.prototype.visitName = function(name) {
-    this.visitElement(angle);
+    this.visitElement(name);
 };
 
 
@@ -524,7 +524,7 @@ Visitor.prototype.visitNodeIterator = function(iterator) {
 //    imaginary |
 //    '(' real (',' imaginary | 'e^' angle 'i') ')'
 Visitor.prototype.visitNumber = function(number) {
-    this.visitElement(angle);
+    this.visitElement(number);
 };
 
 
@@ -544,13 +544,13 @@ Visitor.prototype.visitParameters = function(parameters) {
 
 // pattern: 'none' | REGEX | 'any'
 Visitor.prototype.visitPattern = function(pattern) {
-    this.visitElement(angle);
+    this.visitElement(pattern);
 };
 
 
 // percentage: PERCENTAGE
 Visitor.prototype.visitPercentage = function(percentage) {
-    this.visitElement(angle);
+    this.visitElement(percentage);
 };
 
 
@@ -572,7 +572,7 @@ Visitor.prototype.visitPrecedenceExpression = function(node) {
 
 // probability: FRACTION | '1.'
 Visitor.prototype.visitProbability = function(probability) {
-    this.visitElement(angle);
+    this.visitElement(probability);
 };
 
 
@@ -610,7 +610,7 @@ Visitor.prototype.visitRangeIterator = function(iterator) {
 
 // resource: RESOURCE
 Visitor.prototype.visitResource = function(resource) {
-    this.visitElement(angle);
+    this.visitElement(resource);
 };
 
 
@@ -708,19 +708,19 @@ Visitor.prototype.visitStringIterator = function(iterator) {
 
 // symbol: SYMBOL
 Visitor.prototype.visitSymbol = function(symbol) {
-    this.visitElement(angle);
+    this.visitElement(symbol);
 };
 
 
 // tag: TAG
 Visitor.prototype.visitTag = function(tag) {
-    this.visitElement(angle);
+    this.visitElement(tag);
 };
 
 
 // text: TEXT | NARRATIVE
 Visitor.prototype.visitText = function(text) {
-    this.visitElement(angle);
+    this.visitElement(text);
 };
 
 
@@ -738,7 +738,7 @@ Visitor.prototype.visitVariable = function(node) {
 
 // version: VERSION
 Visitor.prototype.visitVersion = function(version) {
-    this.visitElement(angle);
+    this.visitElement(version);
 };
 
 

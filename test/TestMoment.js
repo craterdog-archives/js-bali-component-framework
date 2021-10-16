@@ -20,7 +20,7 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
 
         it('should construct moments in time using literals', function() {
             expect(bali.component('<2017-12-30T17:38:35.726>').toString()).to.equal('<2017-12-30T17:38:35.726>');
-            expect(bali.component('<-10000>').toString()).to.equal('<-10000>');
+            expect(bali.component('<1000>').toString()).to.equal('<1000>');
             // TODO: add tests for parameterized locations
         });
 
@@ -95,7 +95,7 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
         it('should calculate durations correctly', function() {
             const first = bali.component('<2017-12-30T17:38:35>');
             const second = bali.component('<2017-12-30T17:38:39>');
-            const duration = bali.moment.duration(first, second);
+            const duration = bali.moment.duration(second, first);
             const later = bali.moment.later(first, duration);
             const earlier = bali.moment.earlier(later, duration);
             const comparator = new bali.comparator();
@@ -115,6 +115,6 @@ const tests = [
     '<2017-12-30>',
     '<2017-12>',
     '<2017>',
-    '<-10000>'
+    '<1000>'
 ];
 

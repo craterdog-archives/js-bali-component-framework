@@ -344,6 +344,7 @@ exports.api = function(debug) {
 
     // DURATION
     const duration = function(value, parameters, debug) {
+        value = value || 'P0D';  // default is zero days
         debug = debug || defaultDebug;
         return new elements.Duration(value, parameters, debug);
     };
