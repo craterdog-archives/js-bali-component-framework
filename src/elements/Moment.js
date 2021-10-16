@@ -211,8 +211,8 @@ Moment.later = function(moment, duration, debug) {
 
 const two = '(\\d\\d)';
 const three = '(\\d\\d\\d)';
-const four = '(\\d\\d\\d\\d)';
-const moment = `${four}(?:-${two})?(?:-${two})?(?:T${two})?(?::${two})?(?::${two})?(?:[\\.,]${three})?`;
+const any = '(-?\\d+)';
+const moment = `${any}(?:-${two})?(?:-${two})?(?:T${two})?(?::${two})?(?::${two})?(?:[\\.,]${three})?`;
 const pattern = new RegExp(moment);
 
 const parseISOString = function(string, debug) {
@@ -242,15 +242,29 @@ const detectFormat = function(string, debug) {
 const extractUTCValue = function(string, debug) {
     const fields = parseISOString(string, debug);
     var utcString = '';
-    utcString += fields[0];
-    utcString += '-' + (fields[1] || '01');
-    utcString += '-' + (fields[2] || '01');
+    var year = fields[0];
+    if (year.length === 4) {
+        // normal four digit format: dddd
+        utcString += year;
+    } else {
+        // extended signed six digit format: [+-]dddddd
+        var sign = '+';  // default is positive (not specified in language grammar so won't happen
+        if (year[0] === '-') {
+            sign = '-';
+            year = year.slice(1);  // remove the sign
+        }
+        // pad the year with leading zeros to make exactly signed six digits
+        year = ('00000' + year).slice(-6);
+        utcString += sign + year;
+    }
+    utcString += '-' + (fields[1] || '01');  // append the month
+    utcString += '-' + (fields[2] || '01');  // append the day
     utcString += 'T';
-    utcString += (fields[3] || '00') + ':';
-    utcString += (fields[4] || '00') + ':';
-    utcString += (fields[5] || '00') + '.';
-    utcString += (fields[6] || '000');
+    utcString += (fields[3] || '00') + ':';  // append the hour
+    utcString += (fields[4] || '00') + ':';  // append the minute
+    utcString += (fields[5] || '00') + '.';  // append the second
+    utcString += (fields[6] || '000');       // append the milliseconds
     utcString += 'Z';  // must have UTC symbol or it will treat it is local
-    return Date.parse(utcString);
+    return Date.parse(utcString);  // returns the milliseconds since EPOC
 };
 
