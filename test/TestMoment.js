@@ -38,6 +38,83 @@ describe('Bali Nebula™ Component Framework - Moment', function() {
             });
         });
 
+        it('should handle all possible months', function() {
+            var month = 0;
+            expect(
+                function() {
+                    const bad = bali.component('<2021-' + ('0' + month++).slice(-2) + '-01>');
+                }
+            ).to.throw();
+            while (month <= 12) {
+                bali.component('<2021-' + ('0' + month++).slice(-2) + '-01>');
+            }
+            expect(
+                function() {
+                    const bad = bali.component('<2021-' + ('0' + month).slice(-2) + '-01>');
+                }
+            ).to.throw();
+        });
+
+        it('should handle all possible days', function() {
+            var day = 0;
+            expect(
+                function() {
+                    const bad = bali.component('<2021-01-' + ('0' + day++).slice(-2) + '>');
+                }
+            ).to.throw();
+            while (day <= 31) {
+                bali.component('<2021-01-' + ('0' + day++).slice(-2) + '>');
+            }
+            expect(
+                function() {
+                    const bad = bali.component('<2021-01-' + ('0' + day).slice(-2) + '>');
+                }
+            ).to.throw();
+        });
+
+        it('should handle all possible hours', function() {
+            var hour = 0;
+            while (hour <= 23) {
+                bali.component('<2021-01-01T' + ('0' + hour++).slice(-2) + '>');
+            }
+            expect(
+                function() {
+                    const bad = bali.component('<2021-01-01T' + ('0' + hour).slice(-2) + '>');
+                }
+            ).to.throw();
+        });
+
+        it('should handle all possible minutes', function() {
+            var minute = 0;
+            while (minute <= 59) {
+                bali.component('<2021-01-01T00:' + ('0' + minute++).slice(-2) + '>');
+            }
+            expect(
+                function() {
+                    const bad = bali.component('<2021-01-01T00:' + ('0' + minute).slice(-2) + '>');
+                }
+            ).to.throw();
+        });
+
+        it('should handle all possible seconds', function() {
+            var second = 0;
+            while (second <= 59) {
+                bali.component('<2021-01-01T00:00:' + ('0' + second++).slice(-2) + '>');
+            }
+            expect(
+                function() {
+                    const bad = bali.component('<2021-01-01T00:00:' + ('0' + second).slice(-2) + '>');
+                }
+            ).to.throw();
+        });
+
+        it('should handle all possible milliseconds', function() {
+            var millisecond = 0;
+            while (millisecond <= 999) {
+                bali.component('<2021-01-01T00:00:00.' + ('0' + millisecond++).slice(-3) + '>');
+            }
+        });
+
     });
 
     describe('Test moment methods', function() {
