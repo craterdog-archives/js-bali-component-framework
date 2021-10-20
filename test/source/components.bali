@@ -141,6 +141,13 @@
             DW411WRC0YS71NWKA93S
         '($encoding: $base64)
     ]
+    $texts: [
+        "simple"
+        "This is a sentence."
+        "This contains a \"quoted\" word."
+        "This contains a \n new line character."
+        "This contains a {procedure}."
+    ]
     $moments: [
         <1000>($country: "Atlantis")
         <1962-04-01>($city: "New York City")
