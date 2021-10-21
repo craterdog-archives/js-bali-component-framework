@@ -691,7 +691,7 @@ DuplicatingVisitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | NARRATIVE
+// text: QUOTE | NARRATIVE
 DuplicatingVisitor.prototype.visitText = function(text) {
     this.result = text;
 };

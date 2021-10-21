@@ -1053,7 +1053,7 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 };
 
 
-// text: TEXT | NARRATIVE
+// text: QUOTE | NARRATIVE
 ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
     var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
@@ -1063,7 +1063,7 @@ ParsingVisitor.prototype.visitText = function(ctx) {
     value = value.replace(regex, EOL);  // remove the indentation before each text line
     this.depth--;
     indentation = this.getIndentation();
-    var regex = new RegExp('\\n' + indentation, 'g');
+    regex = new RegExp('\\n' + indentation + '$', 'g');
     value = value.replace(regex, EOL);  // remove the indentation from last quote line
     const text = new strings.Text(value, parameters, this.debug);
     this.result = text;

@@ -712,7 +712,7 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | NARRATIVE
+// text: QUOTE | NARRATIVE
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
     value = value.replace(/</g, '&lt;');  // escape left angle brackets

@@ -338,6 +338,7 @@ Component.normalizedIndex = function(sequence, index, debug) {
 // EXCEPTION CLASS
 
 const EOL = '\n';  // This private constant sets the POSIX end of line character
+Error.stackTraceLimit = 20;
 
 
 /**
@@ -429,4 +430,3 @@ Exception.prototype = Object.assign(Exception.prototype, Component.prototype);  
 Exception.prototype.constructor = Exception;
 Exception.prototype.name = 'Exception';
 exports.Exception = Exception;
-

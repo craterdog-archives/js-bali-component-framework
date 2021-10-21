@@ -988,14 +988,14 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 };
 
 
-// text: TEXT | NARRATIVE
+// text: QUOTE | NARRATIVE
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
     this.depth++;
     const separator = this.getNewline();
     var regex = new RegExp('\\n', 'g');
     value = value.replace(regex, separator);  // indent each line
-    var regex = new RegExp('    $');
+    regex = new RegExp('    $');
     value = value.replace(regex, '');  // unindent last line
     this.result += '"' + value + '"';
     this.depth--;
