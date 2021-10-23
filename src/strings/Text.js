@@ -55,6 +55,7 @@ const Text = function(value, parameters, debug) {
     }
 
     value = value || '';  // default value
+    if (value.startsWith('\n')) this.isNarrative = true;
 
     this.getValue = function() { return value; };
 

@@ -1063,14 +1063,13 @@ ParsingVisitor.prototype.visitText = function(ctx) {
         this.depth++;
         var indentation = this.getIndentation();
         var regex = new RegExp('\\n' + indentation, 'g');
-        value = value.replace(regex, EOL);  // remove the indentation before each text line
+        value = value.replace(regex, EOL);  // remove the indentation before each narrative line
         this.depth--;
         indentation = this.getIndentation();
         regex = new RegExp('\\n' + indentation + '$');
-        value = value.replace(regex, EOL);  // remove the indentation from last quote line
+        value = value.replace(regex, EOL);  // remove the indentation from last narrative line
     }
     const text = new strings.Text(value, parameters, this.debug);
-    text.isNarrative = isNarrative;
     this.result = text;
 };
 
