@@ -991,14 +991,16 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 // text: QUOTE | NARRATIVE
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
-    this.depth++;
-    const separator = this.getNewline();
-    var regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, separator);  // indent each line
-    regex = new RegExp('    $');
-    value = value.replace(regex, '');  // unindent last line
+    if (text.isNarrative) {
+        this.depth++;
+        const separator = this.getNewline();
+        var regex = new RegExp('\\n', 'g');
+        value = value.replace(regex, separator);  // indent each line
+        regex = new RegExp('    $');
+        value = value.replace(regex, '');  // unindent last line
+        this.depth--;
+    }
     this.result += '"' + value + '"';
-    this.depth--;
     const parameters = text.getParameters();
     this.visitParameters(parameters);  // format any parameterization
     this.formatNote(text);

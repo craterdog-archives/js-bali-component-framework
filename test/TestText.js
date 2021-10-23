@@ -42,12 +42,12 @@ describe('Bali Nebula™ Component Framework - Text', function() {
         });
 
         it('should generate a specific text block containing quotes', function() {
-            const text = bali.text('\nThis is a \"text block\" containing \'quotes\'.\n');
+            const text = bali.text('\n    This is a \"text block\" containing \'quotes\'.\n');
             expect(text.getHash()).to.exist;
             const string = text.toString();
             expect(string).to.equal('"\n    This is a \"text block\" containing \'quotes\'.\n"');
             const raw = text.getValue();
-            expect(raw).to.equal('\nThis is a \"text block\" containing \'quotes\'.\n');
+            expect(raw).to.equal('\n    This is a \"text block\" containing \'quotes\'.\n');
         });
 
     });

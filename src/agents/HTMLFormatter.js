@@ -716,12 +716,14 @@ FormattingVisitor.prototype.visitTag = function(tag) {
 FormattingVisitor.prototype.visitText = function(text) {
     var value = text.getValue();
     value = value.replace(/</g, '&lt;');  // escape left angle brackets
-    const regex = new RegExp('\\n', 'g');
-    value = value.replace(regex, '\n    ');  // indent each line
+    if (text.isNarrative) {
+        var regex = new RegExp('\\n', 'g');
+        value = value.replace(regex, '\n    ');  // indent each line
+        regex = new RegExp('    $');
+        value = value.replace(regex, '');  // unindent last line
+    }
     value = '"' + value + '"';
-    value = value.replace(/    "/, '"');  // unindent last line
     this.result += '<pre class="element text">';
-    this.result += EOL;
     this.result += value;
     this.result += formatParameters(text.getParameters());
     this.result += '</pre>';

@@ -1056,16 +1056,21 @@ ParsingVisitor.prototype.visitTag = function(ctx) {
 // text: QUOTE | NARRATIVE
 ParsingVisitor.prototype.visitText = function(ctx) {
     const parameters = this.getParameters();
-    var value = ctx.getText().slice(1, -1);  // remove the '"' delimiters
-    this.depth++;
-    var indentation = this.getIndentation();
-    var regex = new RegExp('\\n' + indentation, 'g');
-    value = value.replace(regex, EOL);  // remove the indentation before each text line
-    this.depth--;
-    indentation = this.getIndentation();
-    regex = new RegExp('\\n' + indentation + '$', 'g');
-    value = value.replace(regex, EOL);  // remove the indentation from last quote line
+    var value = ctx.getText();
+    var isNarrative = value.startsWith('"\n');
+    value = value.slice(1, -1);  // remove the '"' delimiters
+    if (isNarrative) {
+        this.depth++;
+        var indentation = this.getIndentation();
+        var regex = new RegExp('\\n' + indentation, 'g');
+        value = value.replace(regex, EOL);  // remove the indentation before each text line
+        this.depth--;
+        indentation = this.getIndentation();
+        regex = new RegExp('\\n' + indentation + '$');
+        value = value.replace(regex, EOL);  // remove the indentation from last quote line
+    }
     const text = new strings.Text(value, parameters, this.debug);
+    text.isNarrative = isNarrative;
     this.result = text;
 };
 
